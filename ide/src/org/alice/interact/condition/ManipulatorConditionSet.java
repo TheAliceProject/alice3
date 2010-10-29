@@ -89,6 +89,15 @@ public class ManipulatorConditionSet {
 		this.inputConditions.add( inputCondition );
 	}
 	
+	public InputCondition getCondition(int index)
+	{
+		if (index > 0 && index < this.inputConditions.size())
+		{
+			return this.inputConditions.get(index);
+		}
+		return null;
+	}
+	
 	public AbstractManipulator getManipulator()
 	{
 		return this.manipulator;

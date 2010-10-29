@@ -51,8 +51,8 @@ import org.alice.interact.PickHint;
  */
 public class ClickedObjectCondition extends MousePickBasedCondition {
 	
-	protected static final double MAX_MOUSE_MOVE = 2.0d;
-	protected static final long MAX_CLICK_TIME = 350;
+	public static final double MAX_MOUSE_MOVE = 2.0d;
+	public static final long MAX_CLICK_TIME = 300;
 	
 	protected InputState mouseDownState = null;
 	

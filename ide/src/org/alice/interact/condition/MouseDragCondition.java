@@ -77,16 +77,6 @@ public class MouseDragCondition extends MousePickBasedCondition{
 		return ( super.stateChanged( currentState, previousState ) || !currentState.getMouseLocation().equals( previousState.getMouseLocation() ) );
 	}
 
-	@Override
-	protected boolean testState( InputState state ) {
-		boolean inputTest = testInputs(state);
-		boolean pickTest = false;
-		if (inputTest)
-		{
-			pickTest = testPick( state );
-		}
-		return  inputTest && pickTest;
-	}
 	
 	@Override
 	public boolean isRunning( InputState currentState, InputState previousState ) {

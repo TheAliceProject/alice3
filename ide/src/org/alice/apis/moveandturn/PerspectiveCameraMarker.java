@@ -115,7 +115,6 @@ public class PerspectiveCameraMarker extends CameraMarker
 	@Override
 	protected void createVisuals()
 	{
-		super.createVisuals();
 		this.sgDetailedComponents = new LinkedList<Visual>();
 		this.farClippingPlane = 100;
 		this.horizontalViewAngle = new edu.cmu.cs.dennisc.math.AngleInDegrees(90);

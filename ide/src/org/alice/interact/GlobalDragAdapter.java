@@ -53,6 +53,7 @@ import org.alice.interact.condition.DoubleClickedObjectCondition;
 import org.alice.interact.condition.DragAndDropCondition;
 import org.alice.interact.condition.KeyPressCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
+import org.alice.interact.condition.MouseCondition;
 import org.alice.interact.condition.MousePressCondition;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.MouseWheelCondition;
@@ -267,8 +268,10 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		this.manipulators.add( mouseRotateObjectLeftRight );
 		
 		ManipulatorConditionSet mouseHandleDrag = new ManipulatorConditionSet( new ObjectGlobalHandleDragManipulator() );
-		MouseDragCondition handleObjectCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.ALL_HANDLES), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		MouseDragCondition handleObjectCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.THREE_D_HANDLES), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		MouseCondition handleObjectClickCondition = new MouseCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.TWO_D_HANDLES), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		mouseHandleDrag.addCondition( handleObjectCondition );
+		mouseHandleDrag.addCondition( handleObjectClickCondition );
 		this.manipulators.add( mouseHandleDrag );
 		
 //		ManipulatorConditionSet mouseHandleClick = new ManipulatorConditionSet( new ObjectGlobalHandleDragManipulator() );

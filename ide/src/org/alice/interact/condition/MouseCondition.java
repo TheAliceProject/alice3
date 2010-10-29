@@ -41,24 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.apis.moveandturn;
+package org.alice.interact.condition;
 
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+import org.alice.interact.InputState;
+import org.alice.interact.ModifierMask;
 
-public abstract class CameraMarker extends MarkerWithIcon 
-{
-	public CameraMarker()
+public class MouseCondition extends MousePickBasedCondition {
+	
+	
+	public MouseCondition( int mouseButton, PickCondition pickCondition )
 	{
-		super();
+		this(mouseButton, pickCondition, null);
+	}
+	
+	public MouseCondition( int mouseButton, PickCondition pickCondition, ModifierMask modifierMask )
+	{
+		super(mouseButton, pickCondition, modifierMask);
 	}
 	
 	@Override
-	public void setName(String name) 
-	{
-		super.setName(name);
-		if (this.getIcon() == null)
-		{
-			this.setIcon( MoveAndTurnSceneEditor.getIconForCameraMarkerName(name) );
-		}
+	public boolean clicked( InputState currentState, InputState previousState ) {
+		return false;
 	}
+	
+
 }

@@ -44,21 +44,6 @@ package org.alice.stageide.sceneeditor;
 
 import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.Scene;
-import org.alice.apis.moveandturn.Transformable;
-import org.alice.apis.moveandturn.gallery.environments.Ground;
-import org.alice.apis.moveandturn.gallery.environments.grounds.DirtGround;
-import org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround;
-import org.alice.apis.moveandturn.gallery.environments.grounds.MoonSurface;
-import org.alice.apis.moveandturn.gallery.environments.grounds.SandyGround;
-import org.alice.apis.moveandturn.gallery.environments.grounds.SeaSurface;
-import org.alice.apis.moveandturn.gallery.environments.grounds.SnowyGround;
-import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
-import org.alice.interact.AbstractDragAdapter;
-
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 
 /**
  * @author Dennis Cosgrove
@@ -166,31 +151,16 @@ public class SetUpMethodGenerator {
 		}
 	}
 	
-	public static void fillInAutomaticVehicleAssignment(edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractField vehicleField, boolean isVehicleScene)
-	{
-		if (vehicleField != null)
-		{
-			bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "setVehicle", org.alice.apis.moveandturn.Composite.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
-		}
-	}
-	
-	public static void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance, FieldAndInstanceMapper mapper ) {
+	public static void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
 		if( instance instanceof org.alice.apis.moveandturn.Element ) {
 			org.alice.apis.moveandturn.Element element = (org.alice.apis.moveandturn.Element)instance;
 			bodyStatementsProperty.add( createStatement( edu.cmu.cs.dennisc.pattern.AbstractElement.class, "setName", String.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( field.getName() ) ) );
 			if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
 				org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)element;
-				
-				boolean isVehicleScene = (transformable.getVehicle() instanceof Scene);
-				SetUpMethodGenerator.fillInAutomaticVehicleAssignment(bodyStatementsProperty, field, mapper.getFieldForInstanceInJavaVM(transformable.getVehicle()), isVehicleScene);
-				
 				if (transformable instanceof CameraMarker)
 				{
-					CameraMarker marker = (CameraMarker)transformable;
 					//CameraMarkers are all fields of the Scene but may be parented to the camera while being edited in the scene editor. Because of this, make sure to get their LocalPointOfView as seen by the Scene
 					bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.AbstractTransformable.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getPointOfView(AsSeenBy.SCENE) ) ) );
-					org.alice.apis.moveandturn.Color markerColor = marker.getColor();
-					bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Marker.class, "setColor", new Class< ? >[] { org.alice.apis.moveandturn.Color.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( markerColor ) ) );
 				}
 				else
 				{
@@ -220,12 +190,6 @@ public class SetUpMethodGenerator {
 					if( instance instanceof org.alice.apis.moveandturn.Model ) {
 						org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)transformable;
 
-						org.alice.apis.moveandturn.Color modelColor = model.getColor();
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Model.class, "setColor", new Class< ? >[] { org.alice.apis.moveandturn.Color.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( modelColor ) ) );
-						
-						Double modelOpacity = model.getOpacity();
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Model.class, "setOpacity", new Class< ? >[] { Number.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( modelOpacity ) ) );
-						
 						if( model instanceof org.alice.apis.moveandturn.Text ) {
 							org.alice.apis.moveandturn.Text text = (org.alice.apis.moveandturn.Text)model;
 							bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setValue", String.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( text.getValue() ) ) );
@@ -252,8 +216,7 @@ public class SetUpMethodGenerator {
 						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Billboard.class, "setBackImageSource", org.alice.apis.moveandturn.ImageSource.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getBackImageSource() ) ) );
 					}
 				}
-//				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Composite.class, "addComponent", org.alice.apis.moveandturn.Transformable.class, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), SetUpMethodGenerator.createInstanceExpression( isThis, field ) ) );
-				
+				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Composite.class, "addComponent", org.alice.apis.moveandturn.Transformable.class, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), SetUpMethodGenerator.createInstanceExpression( isThis, field ) ) );
 			} else if( instance instanceof org.alice.apis.moveandturn.Scene ) {
 				org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)element;
 				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Scene.class, "setAtmosphereColor", org.alice.apis.moveandturn.Color.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( scene.getAtmosphereColor() ) ) );

@@ -43,36 +43,38 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.MarkerWithIcon;
-import org.alice.apis.moveandturn.Element;
-import org.alice.apis.moveandturn.OrthographicCameraMarker;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
+import org.alice.apis.moveandturn.ObjectMarker;
+import org.alice.apis.moveandturn.Transformable;
 import org.alice.ide.IDE;
-import org.alice.ide.operations.ActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
+import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.croquet.ActionOperation;
 import edu.cmu.cs.dennisc.croquet.ActionOperationContext;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;
 
-public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
-	
+public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
+
 	private static class SingletonHolder {
-		private static MoveActiveCameraToMarkerActionOperation instance = new MoveActiveCameraToMarkerActionOperation();
+		private static MoveSelectedObjectToMarkerActionOperation instance = new MoveSelectedObjectToMarkerActionOperation();
 	}
 	
-	public static MoveActiveCameraToMarkerActionOperation getInstance() {
+	public static MoveSelectedObjectToMarkerActionOperation getInstance() {
 		return SingletonHolder.instance;
 	}
 	
 	private FieldDeclaredInAlice markerField;
-	private CameraMarker cameraMarker;
+	private FieldDeclaredInAlice selectedField;
 	private MoveToImageIcon imageIcon;
 
-	private MoveActiveCameraToMarkerActionOperation() {
-		super(edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "8d1cbb1e-3f58-4f48-99ed-350f2decb203" ));
+	private MoveSelectedObjectToMarkerActionOperation() {
+		super(edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "f7f7c4f7-4b12-472a-9fac-77bed71a7de2" ));
 		this.markerField = null;
-		this.cameraMarker = null;
+		this.selectedField = null;
 		this.setToolTipText("Move the camera to this marker.");
 		this.imageIcon = new MoveToImageIcon();
 		this.setSmallIcon(imageIcon);
@@ -81,17 +83,10 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 
 	private void updateBasedOnSettings()
 	{
-		if (this.markerField != null && this.cameraMarker != null)
+		if (this.markerField != null && this.selectedField != null)
 		{
-			this.setToolTipText("Move the current camera to the point of view of "+this.markerField.getName()+".");
-			if (this.cameraMarker instanceof OrthographicCameraMarker)
-			{
-				this.setEnabled(false);
-			}
-			else
-			{
-				this.setEnabled(true);
-			}
+			this.setToolTipText("Move "+this.selectedField.getName()+" to the point of view of "+this.markerField.getName()+".");
+			this.setEnabled(true);
 		}
 		else
 		{
@@ -106,7 +101,7 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 		this.markerField = markerField;
 		if (this.markerField != null)
 		{
-			CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(this.markerField);
+			ObjectMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getObjectMarkerForField(this.markerField);
 			if (marker != null)
 			{
 				this.imageIcon.setRightImage(marker.getIcon());
@@ -115,12 +110,36 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 		this.updateBasedOnSettings();
 	}
 	
-	public void setCameraMarker(CameraMarker cameraMarker)
+	public void setSelectedField(AbstractField field)
 	{
-		this.cameraMarker = cameraMarker;
-		if (this.cameraMarker != null)
+		if (field instanceof FieldDeclaredInAlice)
 		{
-			this.imageIcon.setLeftImage(this.cameraMarker.getIcon());
+			this.selectedField = (FieldDeclaredInAlice)field;
+		}
+		else
+		{
+			this.selectedField = null;
+		}
+		if (this.selectedField != null)
+		{
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
+			Icon icon = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( valueType );
+			if (icon != null)
+			{
+				if (icon instanceof ImageIcon)
+				{
+					icon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( ((javax.swing.ImageIcon)icon).getImage(), MoveToImageIcon.SUB_ICON_WIDTH,  MoveToImageIcon.SUB_ICON_HEIGHT );
+				}
+				else if (icon instanceof ScaledImageIcon)
+				{
+					icon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( ((ScaledImageIcon)icon).getImage(), MoveToImageIcon.SUB_ICON_WIDTH,  MoveToImageIcon.SUB_ICON_HEIGHT );
+				}
+			}
+			this.imageIcon.setLeftImage(icon);
+		}
+		else
+		{
+			this.imageIcon.setLeftImage(null);
 		}
 		this.updateBasedOnSettings();
 	}
@@ -129,35 +148,33 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 	protected void perform(ActionOperationContext context) 
 	{
 		
-		final CameraMarker cameraMarker;
-		final org.alice.apis.moveandturn.AbstractCamera camera;
+		final ObjectMarker objectMarker;
 		final org.alice.apis.moveandturn.PointOfView prevPOV;
 		final org.alice.apis.moveandturn.PointOfView nextPOV;
 		
 		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor());
-		
-		cameraMarker = sceneEditor.getInstanceInJavaForField(this.markerField, org.alice.apis.moveandturn.CameraMarker.class);
-		AbstractCamera sgCamera = sceneEditor.getSGPerspectiveCamera();
-		camera = (org.alice.apis.moveandturn.AbstractCamera)Element.getElement(sgCamera);
-		if( cameraMarker != null ) {
-			nextPOV = cameraMarker.getPointOfView( org.alice.apis.moveandturn.AsSeenBy.SCENE );
-			prevPOV = camera.getPointOfView(org.alice.apis.moveandturn.AsSeenBy.SCENE);
+		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.IDE.getSingleton().getAccessibleListState().getSelectedItem();
+		final Transformable selectedTransformable = sceneEditor.getTransformableForField(selectedField);
+		objectMarker = sceneEditor.getInstanceInJavaForField(this.markerField, org.alice.apis.moveandturn.ObjectMarker.class);
+		if( objectMarker != null ) {
+			nextPOV = objectMarker.getPointOfView( org.alice.apis.moveandturn.AsSeenBy.SCENE );
+			prevPOV = selectedTransformable.getPointOfView(org.alice.apis.moveandturn.AsSeenBy.SCENE);
 			if( nextPOV.getInternal().isNaN() ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveActiveCameraToMarkerActionOperation isNaN" );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveSelectedObjectToMarkerActionOperation isNaN" );
 				context.cancel();
 			} else {
 				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
-					protected final void doOrRedoInternal( boolean isDo ) {
-						setAbsolutePOV( camera, nextPOV );
+					public void doOrRedo( boolean isDo ) {
+						setAbsolutePOV( selectedTransformable, nextPOV );
 					}
 					@Override
-					protected final void undoInternal() {
-						setAbsolutePOV( camera, prevPOV );
+					public void undo() {
+						setAbsolutePOV( selectedTransformable, prevPOV );
 					}
 					@Override
-					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-						rv.append( MoveActiveCameraToMarkerActionOperation.this.getName() );
+					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+						rv.append( MoveSelectedObjectToMarkerActionOperation.this.getName() );
 						return rv;
 					}
 				} );
@@ -173,5 +190,6 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 		assert scene != null;
 		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );
 	}
+
 
 }

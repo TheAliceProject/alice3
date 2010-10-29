@@ -132,6 +132,7 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 			ManipulationHandle tempHandle = this.currentHandle;
 			this.currentHandle = this.nextHandle;
 			this.nextHandle = tempHandle;
+			this.criteriaManager.setTargetTransformable(manipulatedObject);
 		}
 //		else
 //		{

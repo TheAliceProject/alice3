@@ -60,7 +60,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 /**
  * @author Dennis Cosgrove
  */
-public class Marker extends Transformable 
+public abstract class Marker extends Transformable 
 {
 	protected SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
 	
@@ -129,14 +129,7 @@ public class Marker extends Transformable
 		}	
 	}
 	
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
-	public edu.cmu.cs.dennisc.scenegraph.SingleAppearance getSGSingleAppearance() {
-		return sgFrontFacingAppearance;
-	}
-	
-	protected void createVisuals()
-	{
-	}
+	protected abstract void createVisuals();
 	
 	public Color4f getMarkerColor()
 	{
@@ -153,33 +146,7 @@ public class Marker extends Transformable
 		return Color4f.CYAN;
 	}
 	
-	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
-	public Color getColor() {
-		return new Color( sgFrontFacingAppearance.diffuseColor.getValue() );
-	}
-
-	public void setColor( final Color color, Number duration, final Style style) {
-		final double actualDuration = adjustDurationIfNecessary( duration );
-		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, RIGHT_NOW ) ) {
-			Marker.this.setMarkerColor( color.getInternal() );
-		} else {
-			perform( new edu.cmu.cs.dennisc.color.animation.Color4fAnimation( actualDuration, style, getColor().getInternal(), color.getInternal() ) {
-				@Override
-				protected void updateValue( edu.cmu.cs.dennisc.color.Color4f color ) {
-					Marker.this.setMarkerColor( color );
-				}
-			} );
-		}
-	}
-	
-	public void setColor( Color color, Number duration ) {
-		setColor( color, duration, DEFAULT_STYLE );
-	}
-	public void setColor( Color color ) {
-		setColor( color, DEFAULT_DURATION );
-	}
-	
-	protected float getDefaultMarkerOpacity()
+	public float getDefaultMarkerOpacity()
 	{
 		return 1;
 	}

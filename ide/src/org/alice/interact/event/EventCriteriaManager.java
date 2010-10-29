@@ -44,12 +44,15 @@ package org.alice.interact.event;
 
 import java.util.List;
 
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+
 /**
  * @author David Culyba
  */
 public class EventCriteriaManager {
 
 	private List< ManipulationEventCriteria > manipulationConditions = new java.util.LinkedList< ManipulationEventCriteria >();
+	private Transformable targetTransformable;
 
 	public void addCondition( ManipulationEventCriteria condition )
 	{
@@ -68,15 +71,23 @@ public class EventCriteriaManager {
 		}
 	}
 	
+	public void setTargetTransformable(Transformable transformable)
+	{
+		this.targetTransformable = transformable;
+	}
+	
 	public boolean matches( ManipulationEvent event )
 	{
-		for (ManipulationEventCriteria condition : this.manipulationConditions)
+		if (this.targetTransformable == null || event.getTarget() == null || this.targetTransformable == event.getTarget())
 		{
-			boolean matches = condition.matches( event );
-//			System.out.println("checking "+condition+": "+matches);
-			if (condition.matches( event ))
+			for (ManipulationEventCriteria condition : this.manipulationConditions)
 			{
-				return true;
+				boolean matches = condition.matches( event );
+	//			System.out.println("checking "+condition+": "+matches);
+				if (condition.matches( event ))
+				{
+					return true;
+				}
 			}
 		}
 		return false;

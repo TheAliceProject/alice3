@@ -60,6 +60,10 @@ public class ScaledImageIcon implements javax.swing.Icon {
 	public int getIconHeight() {
 		return this.height;
 	}
+	public java.awt.Image getImage()
+	{
+		return this.image;
+	}
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 //

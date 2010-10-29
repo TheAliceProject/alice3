@@ -44,9 +44,9 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 
-import org.alice.apis.moveandturn.CameraMarker;
+
+import org.alice.apis.moveandturn.MarkerWithIcon;
 import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
@@ -54,15 +54,13 @@ import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.croquet.Label;
 import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
 
-public class CameraMarkerFieldTile extends LineAxisPanel
+public class MarkerFieldTile extends LineAxisPanel
 {
 	private FieldDeclaredInAlice field;
 	private Label iconLabel = new Label();
 	private Label textLabel = new Label();
-	private edu.cmu.cs.dennisc.croquet.Button buttonCameraToMarker;
-	private edu.cmu.cs.dennisc.croquet.Button buttonMarkerToCamera;
 	
-	public CameraMarkerFieldTile()
+	public MarkerFieldTile()
 	{
 		super();
 		this.setBackgroundColor(null);
@@ -73,14 +71,14 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 		this.textLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 	}
 	
-	public CameraMarkerFieldTile( FieldDeclaredInAlice field )
+	public MarkerFieldTile( FieldDeclaredInAlice field )
 	{
 		this();
 		setField(field);
 	}
 	
 	public void setSelected( boolean isSelected ) {
-		CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(field);
+		MarkerWithIcon marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getMarkerForField(field);
 		java.awt.Color foregroundColor = java.awt.Color.BLACK;
 		if( marker != null ) {
 			foregroundColor = marker.getMarkerColor().getAsAWTColor();
@@ -102,7 +100,7 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 		
 		this.textLabel.setText( this.field.getName() );
 		
-		CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(field);
+		MarkerWithIcon marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getMarkerForField(field);
 		if (marker != null)
 		{
 			Color4f color = marker.getMarkerColor();

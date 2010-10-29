@@ -57,6 +57,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.alice.apis.moveandturn.CameraMarker;
+import org.alice.apis.moveandturn.ObjectMarker;
 import org.alice.apis.moveandturn.PerspectiveCameraMarker;
 import org.alice.ide.ProjectApplication;
 import org.alice.interact.condition.InputCondition;
@@ -198,17 +199,15 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	protected SnapState snapState = null;
 	
 	private Transformable selectedObject = null;
+	private CameraMarker selectedCameraMarker = null;
+	private ObjectMarker selectedObjectMarker = null;
 	
 	protected ListSelectionState<InteractionGroup> interactionSelectionState = new ListSelectionState< InteractionGroup >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "639f27a5-896d-454b-af00-8527cbdf551c" ), new edu.cmu.cs.dennisc.croquet.Codec< InteractionGroup >() {
-		public StringBuilder appendRepresentation( StringBuilder rv, InteractionGroup value, java.util.Locale locale ) {
-			rv.append( value );
-			return rv;
-		}
 		public org.alice.interact.InteractionGroup decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.interact.InteractionGroup interactionGroup ) {
-			System.err.println( "todo: encode InteractionGroup: " + interactionGroup );
+			throw new RuntimeException( "todo" );
 		}
 	} );
 	private List< SelectionListener > selectionListeners = new java.util.LinkedList< SelectionListener >(); 
@@ -406,39 +405,89 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void setSelectedObject(Transformable selected)
+	private static double MARKER_SELECTION_DURATION = .25;
+	
+	public void setSelectedCameraMarker( CameraMarker selected )
+	{
+		if (selected != this.selectedCameraMarker)
+		{
+			this.fireSelecting( new SelectionEvent(this, selected) );
+			if (this.selectedCameraMarker != null)
+			{
+				this.selectedCameraMarker.setOpacity(.3f, MARKER_SELECTION_DURATION);
+				if (this.selectedCameraMarker instanceof PerspectiveCameraMarker)
+				{
+					((PerspectiveCameraMarker)this.selectedCameraMarker).setDetailedViewShowing(false);
+				}
+			}
+			this.selectedCameraMarker = selected;
+			if (this.selectedCameraMarker != null)
+			{
+				this.selectedCameraMarker.setOpacity(1f, MARKER_SELECTION_DURATION);
+				if (this.sceneEditor != null && this.selectedCameraMarker instanceof PerspectiveCameraMarker)
+				{
+					boolean isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive((PerspectiveCameraMarker)this.selectedCameraMarker);
+					if (!isNewSelectedActiveCameraMarker)
+					{
+						((PerspectiveCameraMarker)this.selectedCameraMarker).setDetailedViewShowing(true);
+					}
+				}
+			}
+		}
+	}
+	
+	public void setSelectedCameraMarker( Transformable selected )
+	{
+		CameraMarker cameraMarker = null;
+		if (selected != null)
+		{
+			org.alice.apis.moveandturn.Element selectedMoveAndTurnObject = org.alice.apis.moveandturn.Element.getElement( selected );
+			if (selectedMoveAndTurnObject instanceof CameraMarker)
+			{
+				cameraMarker = (CameraMarker)selectedMoveAndTurnObject;
+			}
+		}
+		setSelectedCameraMarker(cameraMarker);
+	}
+	
+	public void setSelectedObjectMarker( ObjectMarker selected )
+	{
+		if (selected != this.selectedObjectMarker)
+		{
+			this.fireSelecting( new SelectionEvent(this, selected) );
+			if (this.selectedObjectMarker != null)
+			{
+				this.selectedObjectMarker.setOpacity(.3f, MARKER_SELECTION_DURATION);
+			}
+			this.selectedObjectMarker = selected;
+			if (this.selectedObjectMarker != null)
+			{
+				this.selectedObjectMarker.setOpacity(1f, MARKER_SELECTION_DURATION);
+			}
+		}
+	}
+	
+	public void setSelectedObjectMarker( Transformable selected )
+	{
+		ObjectMarker objectMarker = null;
+		if (selected != null)
+		{
+			org.alice.apis.moveandturn.Element selectedMoveAndTurnObject = org.alice.apis.moveandturn.Element.getElement( selected );
+			if (selectedMoveAndTurnObject instanceof ObjectMarker)
+			{
+				objectMarker = (ObjectMarker)selectedMoveAndTurnObject;
+			}
+		}
+		setSelectedObjectMarker(objectMarker);
+	}
+	
+	public void setSelectedSceneObject( Transformable selected )
 	{
 		if (this.selectedObject != selected)
 		{
-			if (this.isInStateChange())
-			{
-//				PrintUtilities.println("Deferring");
-				this.setToBeSelected(selected);
-				return;
-			}
-//			PrintUtilities.println("\n################Doing: "+selected);
-//			PrintUtilities.println("At Start: HandleSelected object: "+this.handleManager.getSelectedObject());
-			
-			
-			org.alice.apis.moveandturn.Element newMoveAndTurnObject = org.alice.apis.moveandturn.Element.getElement( selected );
-			boolean isNewSelectedActiveCameraMarker = false;
-			if (newMoveAndTurnObject instanceof PerspectiveCameraMarker && this.sceneEditor != null)
-			{
-				isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive((PerspectiveCameraMarker)newMoveAndTurnObject);
-			}
-			boolean isPreviousSelectedActiveCameraMarker = false;
-			org.alice.apis.moveandturn.Element previousMoveAndTurnObject = org.alice.apis.moveandturn.Element.getElement( this.selectedObject );
-			if (previousMoveAndTurnObject instanceof PerspectiveCameraMarker && this.sceneEditor != null)
-			{
-				isPreviousSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive((PerspectiveCameraMarker)previousMoveAndTurnObject);
-			}
-			
 			this.fireSelecting( new SelectionEvent(this, selected) );
-			
-//			PrintUtilities.println("###Trying to set selected object to "+selected);
 			if (HandleManager.canHaveHandles(selected))
 			{
-//				this.handleManager.setHandlesShowing(!isNewSelectedActiveCameraMarker);
 				this.handleManager.setHandlesShowing(true);
 				this.handleManager.setSelectedObject( selected );
 			}
@@ -446,42 +495,41 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			{
 				this.handleManager.setSelectedObject( null );
 			}
-			//Make the handles visible is we're not selecting the active camera marker
-			
-			
-			
-			
 			this.currentInputState.setCurrentlySelectedObject( selected );
 			this.currentInputState.setTimeCaptured();
-			
-			//If the previous object is a camera marker, make sure the state is appropriate
-			if (previousMoveAndTurnObject instanceof PerspectiveCameraMarker)
-			{
-				PerspectiveCameraMarker previousCameraMarker = (PerspectiveCameraMarker)previousMoveAndTurnObject;
-				previousCameraMarker.setDetailedViewShowing(false);
-//				//Turn off all marker visualizations if the marker is active
-//				previousCameraMarker.setShowing(!isPreviousSelectedActiveCameraMarker);
-			}
-			
 			selectedObject = selected;
-			
-			if (newMoveAndTurnObject instanceof PerspectiveCameraMarker && !isNewSelectedActiveCameraMarker)
-			{
-				PerspectiveCameraMarker currentCameraMarker = (PerspectiveCameraMarker)newMoveAndTurnObject;
-				currentCameraMarker.setDetailedViewShowing(true);
-//				//Turn off all marker visualizations if the marker is active
-//				currentCameraMarker.setShowing(!isNewSelectedActiveCameraMarker);
-			}
-			
-//			this.fireSelected( new SelectionEvent(this, selected) );
 			this.handleStateChange();
-//			PrintUtilities.println("At End: HandleSelected object: "+this.handleManager.getSelectedObject());
-//			PrintUtilities.println("################Done doing: "+selected+"\n");
+		}
+	}
+	
+	public void setSelectedObject(Transformable selected)
+	{
+		if (this.isInStateChange())
+		{
+			this.setToBeSelected(selected);
+			return;
+		}
+		if (selected != null)
+		{
+			org.alice.apis.moveandturn.Element selectedMoveAndTurnObject = org.alice.apis.moveandturn.Element.getElement( selected );
+			if (selectedMoveAndTurnObject instanceof ObjectMarker)
+			{
+				setSelectedObjectMarker(selected);
+			}
+			else if (selectedMoveAndTurnObject instanceof CameraMarker)
+			{
+				setSelectedCameraMarker(selected);
+			}
+			else
+			{
+				setSelectedSceneObject(selected);
+			}
 		}
 		else
 		{
-//			PrintUtilities.println("Skipping");
+			setSelectedSceneObject(null);
 		}
+		
 	}
 	
 	public void setInteractionState( InteractionGroup interactionState )
@@ -558,7 +606,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		for (int i=0; i<this.manipulators.size(); i++)
 		{
 			ManipulatorConditionSet currentManipulatorSet = this.manipulators.get( i );
-			
+//			System.out.println(currentManipulatorSet.getManipulator()+": "+currentManipulatorSet.getCondition(0));
 			currentManipulatorSet.update(this.currentInputState, this.previousInputState );
 			if (currentManipulatorSet.isEnabled())
 			{
@@ -579,12 +627,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 					}
 					else if ( currentManipulatorSet.clicked( this.currentInputState, this.previousInputState ) )
 					{
-	//					System.out.println("Adding "+currentManipulatorSet.getManipulator()+" to click array");
-	////					if (currentManipulatorSet.getName().equals("Mouse Translate"))
-	//					{
-	//						boolean started = currentManipulatorSet.clicked( this.currentInputState, this.previousInputState );
-	//						System.out.println("Tested it again and it's "+started);
-	//					}
 						toClick.add( currentManipulatorSet.getManipulator() );
 					}
 				}
@@ -1109,6 +1151,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.handleStateChange();
 		}
 		
+	}
+	
+	public HandleManager getHandleManager()
+	{
+		return this.handleManager;
 	}
 
 	public void keyTyped( KeyEvent e ) {

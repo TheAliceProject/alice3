@@ -257,6 +257,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		if (this.manipulatedObject != manipulatedObjectIn)
 		{
 			this.manipulatedObject = manipulatedObjectIn;
+			this.criteriaManager.setTargetTransformable(this.manipulatedObject);
 			if (this.manipulatedObject != null)
 			{
 				this.setParent( this.manipulatedObject );

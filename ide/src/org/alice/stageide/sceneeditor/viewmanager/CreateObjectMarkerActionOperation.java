@@ -41,24 +41,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.apis.moveandturn;
+package org.alice.stageide.sceneeditor.viewmanager;
 
+import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
-public abstract class CameraMarker extends MarkerWithIcon 
-{
-	public CameraMarker()
-	{
-		super();
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+import edu.cmu.cs.dennisc.pattern.Tuple2;
+
+public class CreateObjectMarkerActionOperation extends AbstractSceneDeclareFieldOperation {
+
+	private static class SingletonHolder {
+		private static CreateObjectMarkerActionOperation instance = new CreateObjectMarkerActionOperation();
+	}
+	public static CreateObjectMarkerActionOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private CreateObjectMarkerActionOperation() {
+		super( java.util.UUID.fromString( "84196555-4775-4660-a510-b9581ba79633" ) );
+		this.setName( "Create object marker here..." );
 	}
 	
 	@Override
-	public void setName(String name) 
+	protected Tuple2< FieldDeclaredInAlice, Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.ActionOperationContext context, TypeDeclaredInAlice ownerType ) 
 	{
-		super.setName(name);
-		if (this.getIcon() == null)
+		return ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).createObjectMarkerField( ownerType );
+	}
+	
+	public void setFieldName(String fieldName)
+	{
+		if (fieldName != null)
 		{
-			this.setIcon( MoveAndTurnSceneEditor.getIconForCameraMarkerName(name) );
+			this.setName("Create "+fieldName+" marker...");
+		}
+		else
+		{
+			this.setName("Create object marker...");
 		}
 	}
+
+
 }
