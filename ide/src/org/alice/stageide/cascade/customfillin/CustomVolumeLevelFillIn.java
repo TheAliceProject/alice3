@@ -51,7 +51,7 @@ public class CustomVolumeLevelFillIn extends org.alice.ide.cascade.customfillin.
 		return "Volume";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > createValueChooser() {
-		return new org.alice.stageide.choosers.VolumeLevelChooser();
+	protected org.alice.stageide.croquet.models.custom.CustomVolumeLevelInputDialogOperation getInputDialogOperation() {
+		return org.alice.stageide.croquet.models.custom.CustomVolumeLevelInputDialogOperation.getInstance();
 	}
 }

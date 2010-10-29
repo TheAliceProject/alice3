@@ -57,7 +57,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	private boolean isInputDialogNotePresent;
 	private DragAndDropOperationCompletor completor;
 	private DragAndDropOperationValidator validator;
-	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler<?> externalOkButtonDisabler;
+	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalCommitButtonDisabler<?> externalOkButtonDisabler;
 	public DragAndDropStep( 
 			String title, 
 			String text, 
@@ -68,7 +68,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			String inputDialogText, 
 			DragAndDropOperationCompletor completor, 
 			DragAndDropOperationValidator validator, 
-			edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler<?> externalOkButtonDisabler ) {
+			edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalCommitButtonDisabler<?> externalOkButtonDisabler ) {
 		super( title, text, new Hole( new FirstComponentResolver( dragResolver ), Feature.ConnectionPreference.EAST_WEST ), dragResolver );
 		this.completor = completor;
 		this.validator = validator;
@@ -233,13 +233,13 @@ package edu.cmu.cs.dennisc.tutorial;
 									}
 								}
 								
-								inputDialogOperation.setExternalOkButtonDisabler( this.externalOkButtonDisabler );
+								inputDialogOperation.setExternalCommitButtonDisabler( this.externalOkButtonDisabler );
 								
 							}
 						}
 					}
 				} else {
-					if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
+					if( child instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent ) {
 						edu.cmu.cs.dennisc.croquet.Edit edit;
 						if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
 							edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
@@ -268,15 +268,15 @@ package edu.cmu.cs.dennisc.tutorial;
 								edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)model;
 								edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = inputDialogOperationContext.getModel();
 								if( inputDialogOperation != null ) {
-									inputDialogOperation.setExternalOkButtonDisabler( this.externalOkButtonDisabler );
+									inputDialogOperation.setExternalCommitButtonDisabler( this.externalOkButtonDisabler );
 								}
 							}
 						}
 					}
 				}
-				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent ) {
-					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent)child;
-					edu.cmu.cs.dennisc.croquet.ModelContext<?> c = windowClosedEvent.getParent();
+				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent ) {
+					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent windowClosingEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent)child;
+					edu.cmu.cs.dennisc.croquet.ModelContext<?> c = windowClosingEvent.getParent();
 					while( c != null ) {
 						if( c.getModel() == this.getModel() ) {
 							rv = true;

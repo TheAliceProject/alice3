@@ -62,7 +62,36 @@ public class DeclareFunctionOperation extends DeclareMethodOperation {
 		this.setName( "Declare Function..." );
 	}
 	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFunctionOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFunctionOperation >( this, this.getDeclaringType(), edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class );
+	}
+	
+	@Override
 	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 		return new org.alice.ide.declarationpanes.CreateFunctionPane( type );
+	}
+	@Override
+	protected String getMethodDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return "Function";
+	}
+	@Override
+	protected StringBuilder appendTutorialFinishNoteText( StringBuilder rv, org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = declareMethodEdit.getMethod();
+		rv.append( "a) Select return value type: " );
+		rv.append( "<strong>" );
+		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
+		rv.append( formatter.getTextForType( method.getReturnType() ) );
+		rv.append( "*</strong>" );
+		rv.append( "<br>" );
+		rv.append( "b) Enter name: " );
+		rv.append( "<strong>" );
+		rv.append( method.getName() );
+		rv.append( "</strong>" );
+		rv.append( "<br>" );
+		rv.append( "c) Press <strong>OK</strong>." );
+		rv.append( "<br>" );
+		rv.append( "<br>" );
+		rv.append( "* <em>Required</em>" );
+		return rv;
 	}
 }

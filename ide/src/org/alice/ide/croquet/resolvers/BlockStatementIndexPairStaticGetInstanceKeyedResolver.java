@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class BlockStatementIndexPairStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T >{
+public class BlockStatementIndexPairStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< T > {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class };
 	private org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
 	public BlockStatementIndexPairStaticGetInstanceKeyedResolver( T instance, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
@@ -56,6 +56,12 @@ public class BlockStatementIndexPairStaticGetInstanceKeyedResolver<T> extends ed
 	public BlockStatementIndexPairStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+	
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		Object[] arguments = this.getArguments();
+		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
+	}
+	
 	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return PARAMETER_TYPES;

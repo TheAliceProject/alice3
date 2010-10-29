@@ -46,11 +46,14 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class NodeUtilities {
-	private static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createFunction( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> returnType ) {
+	public static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createMethod( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> returnType ) {
 		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( name, returnType, new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
 	}
+	public static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createFunction( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> returnType ) {
+		return createMethod( name, returnType );
+	}
 	public static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createProcedure( String name ) {
-		return createFunction( name, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE );
+		return createMethod( name, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE );
 	}
 	
 	public static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createType( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> superType ) {

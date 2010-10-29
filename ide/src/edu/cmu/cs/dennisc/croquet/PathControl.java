@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/ class SelectChildDirectoryMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
+/*package-private*/ class SelectChildDirectoryMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
 	public static SelectChildDirectoryMenuModel getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SelectChildDirectoryPopupMenuOperation.getInstance()" );
 		return new SelectChildDirectoryMenuModel(treeSelectionState, treeNode, initializer);

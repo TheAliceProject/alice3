@@ -66,7 +66,7 @@ public abstract class MenuModel extends Model {
 		return false;
 	}
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 		if( clsForI18N != null ) {
 			//pass
 		} else {
@@ -76,7 +76,8 @@ public abstract class MenuModel extends Model {
 		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, getLocalizedMnemonicKey( clsForI18N ) );
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, getLocalizedAcceleratorKeyStroke( clsForI18N ) );
 	}
-	public String getTutorialNoteText() {
+	@Override
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
 		return this.getName();
 	}
 	private String getName() {
@@ -141,6 +142,11 @@ public abstract class MenuModel extends Model {
 ////		MenuModelContext context = (MenuModelContext)RootContext.getCurrentContext();
 ////		context.handleMenuCanceled( e );
 //		System.err.println( "todo: cancel" + " " + e );
+	}
+	
+	@Override
+	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		return false;
 	}
 	
 	private class PopupMenuListener implements javax.swing.event.PopupMenuListener {

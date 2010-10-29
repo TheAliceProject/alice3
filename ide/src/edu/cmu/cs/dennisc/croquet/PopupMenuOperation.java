@@ -52,13 +52,39 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 		super( POPUP_MENU_GROUP, java.util.UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
 		this.menuModel = menuModel;
 	}
+	
+	public MenuModel getMenuModel() {
+		return this.menuModel;
+	}
+	
 	@Override
 	protected boolean isOwnerOfEdit() {
 		return false;
 	}
 	@Override
-	protected PopupMenuOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public PopupMenuOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushPopupMenuOperationContext( this, e, viewController );
+	}
+	
+	@Override
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
+			return descendantContext.getModel().getTutorialStepTitle( descendantContext, userInformation );
+		} else {
+			return super.getTutorialStepTitle( modelContext, userInformation );
+		}
+	}
+	@Override
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
+			return descendantContext.getModel().getTutorialNoteText( descendantContext, userInformation );
+		} else {
+			return super.getTutorialNoteText( modelContext, userInformation );
+		}
 	}
 	
 	public static class PopupMenuOperationResolver implements CodableResolver< PopupMenuOperation > {
@@ -88,9 +114,12 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 		return new PopupMenuOperationResolver( this );
 	}
 	
+	
+	//todo?
  	@Override
 	protected final void perform( PopupMenuOperationContext context) {
 	}
+ 	
 	@Override
 	protected final void perform( final PopupMenuOperationContext context, final Operation.PerformObserver performObserver ) {
 		//note: do not call super
@@ -115,7 +144,7 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 			}
 			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 				if( this.cancelEvent != null ) {
-					//context.cancel();
+					context.cancel();
 					this.cancelEvent = null;
 				}
 				PopupMenuOperation.this.menuModel.handlePopupMenuEpilogue( popupMenu, context );
@@ -124,6 +153,30 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 			}
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 				this.cancelEvent = e;
+			}
+		} );
+
+		popupMenu.getAwtComponent().addComponentListener( new java.awt.event.ComponentListener() {
+			public void componentShown( java.awt.event.ComponentEvent e ) {
+//				java.awt.Component awtComponent = e.getComponent();
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentShown", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+			}
+			public void componentMoved( java.awt.event.ComponentEvent e ) {
+//				java.awt.Component awtComponent = e.getComponent();
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentMoved", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+			}
+			public void componentResized( java.awt.event.ComponentEvent e ) {
+//				java.awt.Component awtComponent = e.getComponent();
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+				ModelContext< ? > currentContext = ContextManager.getCurrentContext();
+				if( currentContext instanceof PopupMenuOperationContext ) {
+					PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)currentContext;
+					popupMenuOperationContext.handleResized( e );
+				}
+			}
+			public void componentHidden( java.awt.event.ComponentEvent e ) {
+//				java.awt.Component awtComponent = e.getComponent();
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentHidden", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 			}
 		} );
 

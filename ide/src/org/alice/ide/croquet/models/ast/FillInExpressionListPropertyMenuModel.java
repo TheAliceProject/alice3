@@ -57,18 +57,18 @@ public class FillInExpressionListPropertyMenuModel extends FillInSingleExpressio
 		this.desiredType = desiredType;
 		this.itemGroup = itemGroup;
 	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
+		return this.itemGroup;
+	}
 	public edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty getExpressionListProperty() {
 		return this.expressionListProperty;
 	}
 	public int getIndex() {
 		return this.index;
 	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
-		return this.itemGroup;
-	}
 	public org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		return new org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
+		return new org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit( this.getPreviousExpression(), (edu.cmu.cs.dennisc.alice.ast.Expression)value );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {

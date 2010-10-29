@@ -147,6 +147,10 @@ public class IsAbstractSyntaxTreeShowingState extends IsFrameShowingState {
 
 	private IsAbstractSyntaxTreeShowingState() {
 		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "3fb1e733-1736-476d-b40c-7729c82f0b21" ), false );
+	}
+	@Override
+	protected void localize() {
+		super.localize();
 		this.setTextForBothTrueAndFalse( "Abstract Syntax Tree" );
 	}
 	@Override

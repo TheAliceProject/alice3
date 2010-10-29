@@ -152,7 +152,7 @@ public class Tutorial {
 
 	
 	
-	private Step addDragAndDropStep( String title, String text, RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropModel > dragResolver, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidator completorValidator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler externalOkButtonDisabler ) {
+	private Step addDragAndDropStep( String title, String text, RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropModel > dragResolver, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidator completorValidator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalCommitButtonDisabler externalOkButtonDisabler ) {
 		return this.addStep( new DragAndDropStep( title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidator, completorValidator, externalOkButtonDisabler ) );
 	}
 

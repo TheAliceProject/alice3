@@ -97,13 +97,13 @@ public class BetterStandUpAnimation extends StraightenAnimation {
 		}
 		
 		// set body position
-		subject.setPositionRightNow( Point3.createInterpolation(m_positionBegin, m_positionEnd, portion), org.alice.apis.moveandturn.AsSeenBy.SCENE);
+//		subject.setPositionRightNow( Point3.createInterpolation(m_positionBegin, m_positionEnd, portion), org.alice.apis.moveandturn.AsSeenBy.SCENE);
 		
 		// set current orientation for the whole body
 		UnitQuaternion currentQuat = UnitQuaternion.createInterpolation(m_orientationBegin.createUnitQuaternion(), m_orientationEnd.createUnitQuaternion(), portion);
 		subject.setOrientationRightNow( currentQuat.createOrthogonalMatrix3x3(), AsSeenBy.SCENE );
 		
-		this.adjustHeight();
+		this.adjustHeight(Point3.createInterpolation(m_positionBegin, m_positionEnd, portion));
 		
 	}
 

@@ -78,6 +78,12 @@ public class ContextManager {
 	}
 	private static <C extends ModelContext< ? > > C push( C rv ) {
 		ModelContext< ? > parentContext = getCurrentContext();
+		if( parentContext instanceof StringStateContext ) {
+			StringStateContext stringStateContext = (StringStateContext)parentContext;
+			stringStateContext.handlePop();
+			stack.pop();
+			parentContext = stack.peek();
+		}
 		HistoryNode lastChild = parentContext.getLastChild();
 		MenuBarModelContext menuBarModelContextToPushOnto = null;
 		DragAndDropContext dragAndDropContextToPushOnto = null;
@@ -132,6 +138,38 @@ public class ContextManager {
 		stack.push( rv );
 		return rv;
 	}
+	/*package-private*/ static ModelContext< ? > popContext() {
+		ModelContext< ? > childContext = stack.peek();
+		if( childContext instanceof StringStateContext ) {
+			StringStateContext stringStateContext = (StringStateContext)childContext;
+			stringStateContext.handlePop();
+			stack.pop();
+			childContext = stack.peek();
+		}
+		ModelContext< ? > parentContext = mapChildContextPendingParentContext.get( childContext );
+		
+		childContext.popping();
+		ModelContext< ? > rv = stack.pop();
+		childContext.popped();
+		if( parentContext != null ) {
+			mapChildContextPendingParentContext.remove( childContext );
+			assert parentContext == stack.peek() : parentContext + " " + stack.peek();
+			popContext();
+		}
+		return rv;
+	}
+
+	/*package-private*/ static void handleDocumentEvent( StringState stringState, java.util.EventObject e, ViewController< ?, ? > viewController, javax.swing.event.DocumentEvent documentEvent, String previousValue, String nextValue ) {
+		ModelContext< ? > topContext = stack.peek();
+		StringStateContext stringStateContext;
+		if( topContext instanceof StringStateContext ) {
+			stringStateContext = (StringStateContext)topContext;
+		} else {
+			stringStateContext = push( new StringStateContext( stringState, e, viewController, previousValue ) );
+		}
+		stringStateContext.handleDocumentEvent( documentEvent, nextValue );
+	}
+
 	
 	/*package-private*/ static ActionOperationContext createAndPushActionOperationContext(ActionOperation actionOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return push( new ActionOperationContext(actionOperation, e, viewController) );
@@ -145,7 +183,7 @@ public class ContextManager {
 	/*package-private*/ static <J extends Component<?>> InformationDialogOperationContext<J> createAndPushInformationDialogOperationContext(InformationDialogOperation<J> informationDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return push( new InformationDialogOperationContext<J>(informationDialogOperation, e, viewController) );
 	}
-	/*package-private*/ static <J extends Component< ? >> InputDialogOperationContext<J> createAndPushInputDialogOperationContext(InputDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+	/*package-private*/ static <J extends JComponent< ? >> InputDialogOperationContext<J> createAndPushInputDialogOperationContext(InputDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return push( new InputDialogOperationContext<J>(inputDialogOperation, e, viewController) );
 	}
 	/*package-private*/ static WizardDialogOperationContext createAndPushWizardDialogOperationContext(WizardDialogOperation wizardDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
@@ -179,9 +217,6 @@ public class ContextManager {
 	/*package-private*/ static BooleanStateContext createAndPushBooleanStateContext(BooleanState booleanState, java.awt.event.ItemEvent e, ViewController<?, ?> viewController) {
 		return push( new BooleanStateContext( booleanState, e, viewController ) );
 	}
-	/*package-private*/ static StringStateContext createAndPushStringStateContext(StringState stringState, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return push( new StringStateContext( stringState, e, viewController ) );
-	}
 	/*package-private*/ static MenuBarModelContext createAndPushMenuBarModelContext(MenuBarModel menuBarModel, javax.swing.event.ChangeEvent e, MenuBar menuBar) {
 		return push( new MenuBarModelContext(menuBarModel, e, menuBar) );
 	}
@@ -191,20 +226,7 @@ public class ContextManager {
 	/*package-private*/ static DragAndDropContext createAndPushDragAndDropContext(DragAndDropModel dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource) {
 		return push( new DragAndDropContext(dragAndDropOperation, originalMouseEvent, latestMouseEvent, dragSource) );
 	}
-	/*package-private*/ static ModelContext< ? > popContext() {
-		ModelContext< ? > childContext = stack.peek();
-		ModelContext< ? > parentContext = mapChildContextPendingParentContext.get( childContext );
-		
-		childContext.popping();
-		ModelContext< ? > rv = stack.pop();
-		childContext.popped();
-		if( parentContext != null ) {
-			mapChildContextPendingParentContext.remove( childContext );
-			assert parentContext == stack.peek() : parentContext + " " + stack.peek();
-			popContext();
-		}
-		return rv;
-	}
+	
 		
 	private static javax.swing.JMenuBar getJMenuBarOrigin( javax.swing.MenuElement[] menuElements ) { 
 		if( menuElements.length > 0 ) {
@@ -232,113 +254,126 @@ public class ContextManager {
 		}
 	}
 
-	private static javax.swing.MenuElement[] previousMenuElements = {};
-	private static void handleStateChanged( javax.swing.event.ChangeEvent e ) {
-		javax.swing.MenuElement[] menuElements = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
-		if( previousMenuElements.length > 0 ) {
-			if( menuElements.length > 0 ) {
-				java.util.List< Model > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				MenuBar menuBar = getMenuBarOrigin( menuElements );
-				int i0;
-				if( menuBar != null ) {
-					
-					models.add( menuBar.getModel() );
-					javax.swing.JPopupMenu jPreviousPopupMenu;
-					if( previousMenuElements.length >= 3 ) {
-						jPreviousPopupMenu = (javax.swing.JPopupMenu)previousMenuElements[ 2 ];
-					} else {
-						jPreviousPopupMenu = null;
-					}
-					
-					assert menuElements.length >= 3;
-					assert menuElements[ 1 ] instanceof javax.swing.JMenu;
-					assert menuElements[ 2 ] instanceof javax.swing.JPopupMenu;
-					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
-					
-					javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElements[ 1 ];
-					Menu menu = (Menu)Component.lookup( jMenu );
-					assert menu != null;
-
-					MenuModel menuModel = menu.getModel();
-					assert menuModel != null;
-					models.add( menuModel );
-
-					if( jPreviousPopupMenu != jPopupMenu ) {
-						if( jPreviousPopupMenu != null ) {
-							ModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
-							assert popupMenuOperationContext instanceof PopupMenuOperationContext;
-						}
-						
-						
-						
-						/*PopupMenuOperationContext popupMenuOperationContext =*/ ContextManager.createAndPushPopupMenuOperationContext( menuModel.getPopupMenuOperation(), e, null );
-					}
-					i0 = 3;
-				} else {
-					i0 = 0;
-				}
-				for( int i=i0; i<menuElements.length; i++ ) {
-					javax.swing.MenuElement menuElementI = menuElements[ i ];
-					if( menuElementI instanceof javax.swing.JPopupMenu ) {
-						javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElementI;
-						//pass
-					} else if( menuElementI instanceof javax.swing.JMenuItem ) {
-						javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
-						Component< ? > component = Component.lookup( jMenuItem );
-						if( component instanceof ViewController< ?, ? > ) {
-							ViewController< ?, ? > viewController = (ViewController< ?, ? >)component;
-							models.add( viewController.getModel() );
-						}
-					}
-				}
-				ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-				assert modelContext instanceof PopupMenuOperationContext;
-				PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)modelContext;
-				popupMenuOperationContext.handleMenuSelectionChanged( e, models );
-			} else {
-				MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
-				if( menuBarModel != null ) {
-					ModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
-					assert popupMenuOperationContext instanceof PopupMenuOperationContext;
-
-					ModelContext< ? > menuBarContext = ContextManager.popContext();
-					assert menuBarContext instanceof MenuBarModelContext;
-				}
-			}
-		} else {
-			if( menuElements.length > 0 ) {
-				MenuBar menuBar = getMenuBarOrigin( menuElements );
-				if( menuBar != null ) {
-					/*MenuBarModelContext childContext =*/ ContextManager.createAndPushMenuBarModelContext( menuBar.getModel(), e, menuBar );
-					assert menuElements.length == 2;
-				} else {
-					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-					if( modelContext instanceof PopupMenuOperationContext ) {
-						//pass
-					} else {
-						System.err.println( "combo box? " + menuElements.length + " " + java.util.Arrays.toString( menuElements ) );
-						System.err.println( "modelContext: " + modelContext );
-					}
-				}
-			} else {
-				//assert false;
-				ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-				System.err.println( "both prev and current menu selection length 0" );
-				System.err.println( "modelContext: " + modelContext );
+	private static boolean isCroquetMenuSelection( javax.swing.MenuElement[] menuElements ) {
+		for( javax.swing.MenuElement menuElement : menuElements ) {
+			Component< ? > component = Component.lookup( menuElement.getComponent() );
+			if( component instanceof MenuBar || component instanceof MenuItem || component instanceof Menu || component instanceof PopupMenu || component instanceof MenuTextSeparator ) {
+				return true;
 			}
 		}
-		previousMenuElements = menuElements;
+		return menuElements.length == 0;
 	}
-	private static javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+	
+	private static javax.swing.MenuElement[] previousMenuElements = {};
+	private static void handleMenuSelectionStateChanged( javax.swing.event.ChangeEvent e ) {
+		javax.swing.MenuElement[] menuElements = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
+		if( isCroquetMenuSelection( menuElements ) ) {
+			if( previousMenuElements.length > 0 ) {
+				if( menuElements.length > 0 ) {
+					java.util.List< Model > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					MenuBar menuBar = getMenuBarOrigin( menuElements );
+					int i0;
+					if( menuBar != null ) {
+						models.add( menuBar.getModel() );
+						javax.swing.JPopupMenu jPreviousPopupMenu;
+						if( previousMenuElements.length >= 3 ) {
+							jPreviousPopupMenu = (javax.swing.JPopupMenu)previousMenuElements[ 2 ];
+						} else {
+							jPreviousPopupMenu = null;
+						}
+						
+						assert menuElements.length >= 3;
+						assert menuElements[ 1 ] instanceof javax.swing.JMenu;
+						assert menuElements[ 2 ] instanceof javax.swing.JPopupMenu;
+						javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
+						
+						javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElements[ 1 ];
+						Menu menu = (Menu)Component.lookup( jMenu );
+						assert menu != null;
+
+						MenuModel menuModel = menu.getModel();
+						assert menuModel != null;
+						models.add( menuModel );
+
+						if( jPreviousPopupMenu != jPopupMenu ) {
+							if( jPreviousPopupMenu != null ) {
+								ModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
+								assert popupMenuOperationContext instanceof PopupMenuOperationContext;
+							}
+							
+							
+							
+							/*PopupMenuOperationContext popupMenuOperationContext =*/ ContextManager.createAndPushPopupMenuOperationContext( menuModel.getPopupMenuOperation(), e, null );
+						}
+						i0 = 3;
+					} else {
+						i0 = 0;
+					}
+					for( int i=i0; i<menuElements.length; i++ ) {
+						javax.swing.MenuElement menuElementI = menuElements[ i ];
+						if( menuElementI instanceof javax.swing.JPopupMenu ) {
+							javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElementI;
+							//pass
+						} else if( menuElementI instanceof javax.swing.JMenuItem ) {
+							javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
+							Component< ? > component = Component.lookup( jMenuItem );
+							if( component instanceof ViewController< ?, ? > ) {
+								ViewController< ?, ? > viewController = (ViewController< ?, ? >)component;
+								models.add( viewController.getModel() );
+							}
+						}
+					}
+					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+					assert modelContext instanceof PopupMenuOperationContext;
+					PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)modelContext;
+					popupMenuOperationContext.handleMenuSelectionChanged( e, models );
+				} else {
+					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
+					if( menuBarModel != null ) {
+						ModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
+						assert popupMenuOperationContext instanceof PopupMenuOperationContext;
+
+						ModelContext< ? > menuBarContext = ContextManager.popContext();
+						assert menuBarContext instanceof MenuBarModelContext;
+					}
+				}
+			} else {
+				if( menuElements.length > 0 ) {
+					MenuBar menuBar = getMenuBarOrigin( menuElements );
+					if( menuBar != null ) {
+						/*MenuBarModelContext childContext =*/ ContextManager.createAndPushMenuBarModelContext( menuBar.getModel(), e, menuBar );
+						assert menuElements.length == 2;
+					} else {
+						ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+						if( modelContext instanceof PopupMenuOperationContext ) {
+							//pass
+						} else {
+							System.err.println( "combo box? " + menuElements.length + " " + java.util.Arrays.toString( menuElements ) );
+							System.err.println( "modelContext: " + modelContext );
+						}
+					}
+				} else {
+					//assert false;
+					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+					System.err.println( "both prev and current menu selection length 0" );
+					System.err.println( "modelContext: " + modelContext );
+				}
+			}
+			previousMenuElements = menuElements;
+		} else {
+			System.err.println( "warning: not croquet menu selection." );
+		}
+	}
+	private static javax.swing.event.ChangeListener menuSelectionChangeListener = new javax.swing.event.ChangeListener() {
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			handleStateChanged( e );
+			handleMenuSelectionStateChanged( e );
 		}
 	};
 	public static void startListeningToMenuSelection() {
-		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( changeListener );
+		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( menuSelectionChangeListener );
 	}
 	public static void stopListeningToMenuSelection() {
-		javax.swing.MenuSelectionManager.defaultManager().removeChangeListener( changeListener );
+		javax.swing.MenuSelectionManager.defaultManager().removeChangeListener( menuSelectionChangeListener );
 	}
 	
 //	public static <A extends Application> A createAndShowApplication( Class<A> cls, String[] args ) throws IllegalAccessException, InstantiationException {
@@ -347,6 +382,27 @@ public class ContextManager {
 //		//application.getFrame().setVisible( true );
 //		return application;
 //	}
+	
+	public static MenuBarModelContext createContextFor( java.util.List<Model> path, ModelContext<?> descendantContext ) {
+		final int N = path.size();
+		assert N >= 3;
+		MenuBarModel menuBarModel = (MenuBarModel)path.get( 0 );
+		MenuModel menuModel = (MenuModel)path.get( 1 );
+		PopupMenuOperation popupMenuOperation = menuModel.getPopupMenuOperation();
+		MenuBarModelContext rv = new MenuBarModelContext(menuBarModel, null, null);
+		PopupMenuOperationContext popupMenuOperationContext = new PopupMenuOperationContext( popupMenuOperation, null, null );
+		rv.addChild( popupMenuOperationContext );
+		popupMenuOperationContext.handleMenuSelectionChanged( null, path );
+		popupMenuOperationContext.addChild( descendantContext );
+		return rv;
+	}
+	
+	public static <E> ListSelectionStateContext< E > createContextFor( ListSelectionState< E > listSelectionState, E nextValue ) {
+		ListSelectionStateContext< E > rv = new ListSelectionStateContext<E>( listSelectionState, null, null );
+		CommitEvent commitEvent = new CommitEvent( new ListSelectionStateEdit< E >( null, listSelectionState.getValue(), nextValue ) );
+		rv.addChild( commitEvent );
+		return rv;
+	}
 	
 	
 	

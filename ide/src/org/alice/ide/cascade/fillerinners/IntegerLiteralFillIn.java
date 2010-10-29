@@ -54,32 +54,32 @@ public class IntegerLiteralFillIn extends org.alice.ide.cascade.SimpleExpression
 		super( binaryDecoder );
 	}
 	@Override
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super.decode( binaryDecoder );
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super.decodeInternal( binaryDecoder );
 		int value = binaryDecoder.decodeInt();
 		this.setModel( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( value  ) );
 	}
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encodeInternal( binaryEncoder );
 		int value = this.getModel().value.getValue();
 		binaryEncoder.encode( value );
 	}
-	@Override
-	public final boolean equals( Object o ) {
-		if( this == o ) {
-			return true;
-		} else {
-			if( o instanceof IntegerLiteralFillIn ) {
-				IntegerLiteralFillIn other = (IntegerLiteralFillIn)o;
-				return this.getModel().value.getValue() == other.getModel().value.getValue();
-			} else {
-				return false;
-			}
-		}
-	}
-	@Override
-	public final int hashCode() {
-		return this.getModel().value.getValue();
-	}
+//	@Override
+//	public final boolean equals( Object o ) {
+//		if( this == o ) {
+//			return true;
+//		} else {
+//			if( o instanceof IntegerLiteralFillIn ) {
+//				IntegerLiteralFillIn other = (IntegerLiteralFillIn)o;
+//				return this.getModel().value.getValue() == other.getModel().value.getValue();
+//			} else {
+//				return false;
+//			}
+//		}
+//	}
+//	@Override
+//	public final int hashCode() {
+//		return this.getModel().value.getValue();
+//	}
 }

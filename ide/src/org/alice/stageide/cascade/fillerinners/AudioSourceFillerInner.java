@@ -70,7 +70,7 @@ public class AudioSourceFillerInner extends org.alice.ide.cascade.fillerinners.I
 		blank.addFillIn( new org.alice.stageide.cascade.customfillin.ImportNewAudioSourceFillIn() );
 		if( ide.getCascadeManager().isPreviousExpressionSet() ) {
 			blank.addSeparator();
-			blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomizeAudioSourceFillIn() );
+			blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomAudioSourceFillIn() );
 		}
 	}
 }

@@ -45,12 +45,12 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FieldPopupOperation extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
+/*package-private*/ class FieldPopupOperation extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
 	public FieldPopupOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		super( 
 			java.util.UUID.fromString( "525cb5c8-1490-4468-8eca-cee0affff602" ),
 			org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ),
-			new org.alice.ide.operations.ast.DeleteFieldOperation( field )
+			org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field )
 		);
 	}
 }

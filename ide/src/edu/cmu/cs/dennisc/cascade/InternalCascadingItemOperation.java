@@ -46,36 +46,41 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 public class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.croquet.Group, FillIn< ? >, InternalCascadingItemOperation > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.croquet.Group, java.util.UUID, InternalCascadingItemOperation > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static synchronized InternalCascadingItemOperation getInstance( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
-		InternalCascadingItemOperation rv = mapToMap.get( group, fillIn );
+	public static synchronized InternalCascadingItemOperation getInstance( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id ) {
+		InternalCascadingItemOperation rv = mapToMap.get( group, id );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new InternalCascadingItemOperation( group, fillIn );
-			mapToMap.put( group, fillIn, rv );
+			rv = new InternalCascadingItemOperation( group, id );
+			mapToMap.put( group, id, rv );
 		}
 		return rv;
 	}
 
-	private FillIn< ? > fillIn;
-	private InternalCascadingItemOperation( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
+	private java.util.UUID id;
+	private InternalCascadingItemOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id ) {
 		super( group, java.util.UUID.fromString( "98e30a01-242f-4f3c-852c-d0b0a33d277f" ) );
-		this.fillIn = fillIn;
+		this.id = id;
 	}
 	public FillIn< ? > getFillIn() {
-		return this.fillIn;
+		return Node.lookup( this.id );
 	}
 	
 	@Override
-	public String getTutorialNoteText() {
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
-		this.fillIn.appendTutorialNoteText( sb, java.util.Locale.getDefault() );
-		if( sb.length() > 0 ) {
-			return sb.toString();
+		FillIn< ? > fillIn = this.getFillIn();
+		if( fillIn != null ) {
+			fillIn.appendTutorialNoteText( sb, java.util.Locale.getDefault() );
+			if( sb.length() > 0 ) {
+				return sb.toString();
+			} else {
+				return fillIn.toString();
+			}
 		} else {
-			return this.fillIn.toString();
+			return "unknown fill in: " + this;
 		}
 	}
 	@Override
@@ -83,9 +88,15 @@ public class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.A
 		return new org.alice.ide.croquet.resolvers.InternalCascadingItemOperationStaticGetInstanceKeyedResolver( this );
 	}
 	@Override
+	protected edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		Blank rootBlank = this.getFillIn().getRootBlank();
+		CascadingRoot cascadingRoot = rootBlank.getCascadingRoot();
+		return cascadingRoot.createTutorialCompletionEdit( originalEdit, retargeter );
+	}
+	@Override
 	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		this.fillIn.handleActionOperationPerformed( context );
-		Blank rootBlank = this.fillIn.getRootBlank();
+		this.getFillIn().handleActionOperationPerformed( context );
+		Blank rootBlank = this.getFillIn().getRootBlank();
 		CascadingRoot cascadingRoot = rootBlank.getCascadingRoot();
 		try {
 			Object value = rootBlank.getSelectedFillIn().getValue();
@@ -94,5 +105,13 @@ public class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.A
 		} catch( CancelException ce ) {
 			context.cancel();
 		}
+	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "[" );
+		rv.append( this.id );
+		rv.append( "]" );
+		return rv;
 	}
 }

@@ -59,4 +59,9 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	public abstract boolean isAlreadyInTheDesiredState();
 	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child );
+
+	@Override
+	public boolean isAutoAdvanceDesired() {
+		return true;
+	}
 }

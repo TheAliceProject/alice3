@@ -45,41 +45,69 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type;
+public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
+	public static class DeclareMethodEditMemento extends Memento<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
+		private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
+		private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
+		public DeclareMethodEditMemento( DeclareMethodEdit edit ) {
+			super( edit );
+			this.declaringType = edit.declaringType;
+			this.method = edit.method;
+		}
+		public DeclareMethodEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.Edit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> createEdit() {
+			return new DeclareMethodEdit( this );
+		}
+		@Override
+		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).decode( binaryDecoder );
+			this.method = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ).decode( binaryDecoder );
+		}
+		@Override
+		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).encode( binaryEncoder, this.declaringType );
+			org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ).encode( binaryEncoder, this.method );
+		}
+	}
+
+	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode prevFocusedCode;
+	private transient edu.cmu.cs.dennisc.alice.ast.AbstractCode prevFocusedCode;
 
-	public DeclareMethodEdit() {
-	}
-	public DeclareMethodEdit( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		this.type = type;
+	public DeclareMethodEdit( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		this.declaringType = declaringType;
 		this.method = method;
 	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.type = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).decode( binaryDecoder );
-		this.method = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ).decode( binaryDecoder );
+	private DeclareMethodEdit( DeclareMethodEditMemento memento ) {
+		super( memento );
+		this.declaringType = memento.declaringType;
+		this.method = memento.method;
 	}
 	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).encode( binaryEncoder, this.type );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ).encode( binaryEncoder, this.method );
+	public Memento<org.alice.ide.croquet.models.ast.DeclareMethodOperation> createMemento() {
+		return new DeclareMethodEditMemento( this );
 	}
 	
+	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethod() {
+		return this.method;
+	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		this.type.methods.add( this.method );
+		this.declaringType.methods.add( this.method );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		this.prevFocusedCode = ide.getFocusedCode();
 		ide.setFocusedCode( method );
 	}
 	@Override
 	protected final void undoInternal() {
-		int index = type.methods.indexOf( method );
+		int index = this.declaringType.methods.indexOf( method );
 		if( index != -1 ) {
-			type.methods.remove( index );
+			this.declaringType.methods.remove( index );
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 			ide.setFocusedCode( this.prevFocusedCode );
 		} else {
@@ -89,20 +117,65 @@ public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice
 	
 	@Override
 	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-		rv.append( "declare:" );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, method, locale);
+		rv.append( "declare: " );
+		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, this.method, locale);
 		return rv;
 	}
 
 	@Override
-	public boolean isReplacementAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return edit instanceof DeclareMethodEdit;
+	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		if( replacementCandidate instanceof DeclareMethodEdit ) {
+			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)replacementCandidate;
+			if( this.method != null ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > originalReturnType = this.method.getReturnType();
+				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > replacementReturnType = declareMethodEdit.method.getReturnType();
+				if( originalReturnType == replacementReturnType ) {
+					String originalName = this.method.getName();
+					String replacementName = declareMethodEdit.method.getName();
+					if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( originalName, replacementName ) ) {
+						return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH;
+					} else {
+						StringBuilder sb = new StringBuilder();
+						sb.append( "original name: " );
+						sb.append( originalName );
+						sb.append( "; changed to: " );
+						sb.append( replacementName );
+						//sb.append( "." );
+						return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createDeviation( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE, sb.toString() ); 
+					}
+				} else {
+					org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
+					return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createRejection( "<html>return type <strong>MUST</strong> be <strong>" + formatter.getTextForType( method.getReturnType() ) + "</strong></html>" ); 
+				}
+			} else {
+				return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createRejection( "replacement method is null" ); 
+			}
+		} else {
+			return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createRejection( "replacement is not an instance of DeclareMethodEdit" ); 
+		}
+	}
+	
+	public DeclareMethodEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> replacementDeclaringType = retargeter.retarget( this.declaringType );
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice replacementMethod = org.alice.ide.ast.NodeUtilities.createMethod( this.method.getName(), this.method.getReturnType() );
+		retargeter.addKeyValuePair( this.method, replacementMethod );
+		retargeter.addKeyValuePair( this.method.body.getValue(), replacementMethod.body.getValue() );
+		return new DeclareMethodEdit( replacementDeclaringType, replacementMethod );
+	}
+
+	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		super.retarget( retargeter );
+		this.declaringType = retargeter.retarget( this.declaringType );
+		this.method = retargeter.retarget( this.method );
 	}
 	@Override
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		assert edit instanceof DeclareMethodEdit;
 		DeclareMethodEdit replacementEdit = (DeclareMethodEdit)edit;
+		retargeter.addKeyValuePair( this.declaringType, replacementEdit.declaringType );
 		retargeter.addKeyValuePair( this.method, replacementEdit.method );
+		retargeter.addKeyValuePair( this.method.body.getValue(), replacementEdit.method.body.getValue() );
 	}
 }

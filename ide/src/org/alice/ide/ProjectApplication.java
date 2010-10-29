@@ -211,7 +211,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 		return rv;
 	}
 
-	protected void updateTitle() {
+	protected final void updateTitle() {
 		StringBuffer sb = new StringBuffer();
 		this.updateTitle( sb );
 		this.getFrame().setTitle( sb.toString() );

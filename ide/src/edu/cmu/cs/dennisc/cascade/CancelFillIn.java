@@ -50,6 +50,9 @@ public class CancelFillIn extends FillIn< Object > {
 	public CancelFillIn( String text ) {
 		this.label.setText( text );
 	}
+	public CancelFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
 	protected void addChildren() {
 	}

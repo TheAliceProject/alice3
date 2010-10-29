@@ -65,9 +65,12 @@ public abstract class KeyedResolver<T> implements CodableResolver< T > {
 	protected Object[] getArguments() {
 		return this.arguments;
 	}
-	
+//	protected void setRetargetedArguments( Object[] retargetedArguments ) {
+//		this.arguments = retargetedArguments;
+//		this.instance = null;
+//	}
 	protected abstract T resolve( Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments );
-	public final T getResolved() {
+	public T getResolved() {
 		if( this.instance != null ) {
 			return this.instance;
 		} else {

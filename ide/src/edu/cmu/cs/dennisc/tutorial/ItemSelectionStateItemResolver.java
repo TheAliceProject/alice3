@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class ItemSelectionStateItemResolver<E> implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.TrackableShape> {
+public class ItemSelectionStateItemResolver<E> implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.TrackableShape> {
 	private RuntimeResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver;
 	private RuntimeResolver<E> itemResolver;
 

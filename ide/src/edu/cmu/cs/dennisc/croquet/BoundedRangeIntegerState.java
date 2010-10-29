@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class BoundedRangeIntegerState extends Model {
+public final class BoundedRangeIntegerState extends State<Integer> {
 	public static interface ValueObserver {
 		//public void changing( int nextValue );
 		public void changed( int nextValue );
@@ -93,9 +93,9 @@ public final class BoundedRangeIntegerState extends Model {
 	}
 
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 	}
-	
+
 	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public void addValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.add( valueObserver );
@@ -120,10 +120,11 @@ public final class BoundedRangeIntegerState extends Model {
 	public int getMaximum() {
 		return this.boundedRangeModel.getMaximum();
 	}
-	public int getValue() {
+	@Override
+	public Integer getValue() {
 		return this.boundedRangeModel.getValue();
 	}
-	public void setValue( int value ) {
+	public void setValue( Integer value ) {
 		this.boundedRangeModel.setValue( value );
 	}
 	

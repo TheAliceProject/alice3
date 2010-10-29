@@ -55,20 +55,54 @@ public abstract class Model implements RuntimeResolver< Model > {
 		this.group = group;
 		this.id = id;
 	}
-	/*package-private*/ abstract void localize();
+	protected abstract void localize();
 
 	public Group getGroup() {
 		return this.group;
 	}
+	@Deprecated
 	protected abstract boolean isOwnerOfEdit();
 
-//	public String getTutorialNoteText() {
-//		return this.toString();
-//	}
+	private static StringBuilder appendSuccessfulCompletionEventText( StringBuilder rv, SuccessfulCompletionEvent successfulCompletionEvent ) {
+		if( successfulCompletionEvent != null ) {
+			if( successfulCompletionEvent instanceof CommitEvent ) {
+				CommitEvent commitEvent = (CommitEvent)successfulCompletionEvent;
+				rv.append( "[committed=" );
+				rv.append( commitEvent.getEdit() );
+				rv.append( "]" );
+			} else if( successfulCompletionEvent instanceof FinishEvent ) {
+				FinishEvent finishEvent = (FinishEvent)successfulCompletionEvent;
+				rv.append( "[finished]" );
+			} else {
+				rv.append( "[unknown]" );
+			}
+		} else {
+			rv.append( "[null]" );
+		}
+		return rv;
+	}
+	public String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "title: " );
+		sb.append( this );
+		if( modelContext != null ) {
+			appendSuccessfulCompletionEventText( sb, modelContext.getSuccessfulCompletionEvent() );
+		}
+		return sb.toString();
+	}
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this );
+		if( modelContext != null ) {
+			appendSuccessfulCompletionEventText( sb, modelContext.getSuccessfulCompletionEvent() );
+		}
+		return sb.toString();
+	}
 	
 	public java.util.UUID getId() {
 		return this.id;
 	}
+//	protected abstract <M extends Model> CodableResolver< M > createCodableResolver();
 	protected <M extends Model> CodableResolver< M > createCodableResolver() {
 		return new SingletonResolver( this );
 	}
@@ -84,7 +118,11 @@ public abstract class Model implements RuntimeResolver< Model > {
 	public final Model getResolved() {
 		return this;
 	}
-	
+
+	public Edit< ? > commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		System.err.println( "todo: commitTutorialCompletionEdit: " + originalEdit );
+		return null;
+	}
 	protected static String getLocalizedText( Class<?> cls, String subKey ) {
 		String bundleName = cls.getPackage().getName() + ".croquet";
 		try {
@@ -148,8 +186,12 @@ public abstract class Model implements RuntimeResolver< Model > {
 	private static int getKeyCode( String vkFieldName ) {
 		return getField( java.awt.event.KeyEvent.class, vkFieldName, NULL_MNEMONIC );
 	}
-	private static int getModifierMask( String vkFieldName ) {
-		return getField( java.awt.event.InputEvent.class, vkFieldName, NULL_ACCELERATOR_MASK );
+	private static int getModifierMask( String modifierText ) {
+		if( "PLATFORM_ACCELERATOR_MASK".equals( modifierText ) ) {
+			return edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask();
+		} else {
+			return getField( java.awt.event.InputEvent.class, modifierText, NULL_ACCELERATOR_MASK );
+		}
 	}
 	
 	protected static int getLocalizedMnemonicKey( Class<?> cls ) {
@@ -267,8 +309,9 @@ public abstract class Model implements RuntimeResolver< Model > {
 	}
 	
 	private JComponent< ? > firstComponentHint;
+	
 	@Deprecated
-	public <J extends JComponent< ? > > J getFirstComponent( Class<J> cls ) {
+	public <J extends JComponent< ? > > J getFirstComponent( Class<J> cls, boolean isVisibleAcceptable ) {
 		if( this.firstComponentHint != null ) {
 			return cls.cast( this.firstComponentHint );
 		} else {
@@ -284,31 +327,42 @@ public abstract class Model implements RuntimeResolver< Model > {
 					}
 				}
 			}
-			for( JComponent< ? > component : this.components ) {
-				if( cls.isAssignableFrom( component.getClass() ) ) {
-					if( component.getAwtComponent().isVisible() ) {
-//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isVisible:", component.getAwtComponent().getClass() );
-						return cls.cast( component );
-					} else {
-						//pass
+			if( isVisibleAcceptable ) {
+				for( JComponent< ? > component : this.components ) {
+					if( cls.isAssignableFrom( component.getClass() ) ) {
+						if( component.getAwtComponent().isVisible() ) {
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
+							return cls.cast( component );
+						} else {
+							//pass
+						}
 					}
 				}
 			}
 		}
 		return null;
 	}
+//	public JComponent getFirstNotNecessarilyShowingComponent() {
+//		for( JComponent< ? > component : this.components ) {
+//			if( component.getAwtComponent().isVisible() ) {
+//				return component;
+//			} else {
+//				//pass
+//			}
+//		}
+//		return null;
+//	}
+	@Deprecated
+	public<J extends JComponent< ? > > J getFirstComponent( Class<J> cls ) {
+		return getFirstComponent( cls, false );
+	}
+	@Deprecated
+	public JComponent< ? > getFirstComponent( boolean isVisibleAcceptable ) {
+		return getFirstComponent( JComponent.class, isVisibleAcceptable );
+	}
 	@Deprecated
 	public JComponent< ? > getFirstComponent() {
-		JComponent< ? > rv = getFirstComponent( JComponent.class );
-//		assert rv != null;
-//		if( rv.isInView() ) {
-//			//pass
-//		} else {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "not in view:", rv );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "components:", this.components );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "hint:", this.firstComponentHint );
-//		}
-		return rv;
+		return getFirstComponent( false );
 	}
 	@Deprecated
 	public void setFirstComponentHint( JComponent< ? > firstComponentHint ) {
@@ -319,13 +373,21 @@ public abstract class Model implements RuntimeResolver< Model > {
 			this.firstComponentHint = firstComponentHint;
 		}
 	}
+
+	public abstract boolean isAlreadyInState( Edit< ? > edit );
+	
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		rv.append( this.getClass().getName() );
+		rv.append( "[" );
+		rv.append( this.getGroup() );
+		rv.append( "]" );
+		return rv;
+	}
+	
 	@Override
-	public String toString() {
+	public final String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[" );
-		sb.append( this.getGroup() );
-		sb.append( "]" );
+		this.appendRepr( sb );
 		return sb.toString();
 	}
 }

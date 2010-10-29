@@ -55,6 +55,10 @@ public class InsertStatementEdit<M extends edu.cmu.cs.dennisc.cascade.CascadingR
 		this.statement = statement;
 	}
 	@Override
+	public edu.cmu.cs.dennisc.croquet.Edit.Memento< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > createMemento() {
+		throw new RuntimeException( "todo" );
+	}
+	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		this.actualIndex = Math.min( this.specifiedIndex, this.statementListProperty.size() );
 		this.statementListProperty.add( this.actualIndex, this.statement );
@@ -79,11 +83,5 @@ public class InsertStatementEdit<M extends edu.cmu.cs.dennisc.cascade.CascadingR
 		rv.append( "drop: " );
 		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, statement, locale );
 		return rv;
-	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-	}
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 }

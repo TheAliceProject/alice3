@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclareFieldInputDialogOperation<J extends org.alice.ide.preview.PanelWithPreview> extends org.alice.ide.operations.InputDialogWithPreviewOperation<J> {
+public abstract class AbstractDeclareFieldInputDialogOperation<J extends org.alice.ide.preview.PanelWithPreview> extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<J> {
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getOwnerType();
 	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<J> context );
 	protected abstract boolean isInstanceValid();

@@ -100,7 +100,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 	
-	private boolean EPIC_HACK_isIgnoreWindowClosedEventDesired = false;
+	private boolean EPIC_HACK_isIgnoreWindowClosingEventDesired = false;
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 		boolean rv = false;
@@ -122,7 +122,7 @@ package edu.cmu.cs.dennisc.tutorial;
 						}
 					}
 				}
-				this.EPIC_HACK_isIgnoreWindowClosedEventDesired = false;
+				this.EPIC_HACK_isIgnoreWindowClosingEventDesired = false;
 			}
 			break;
 		case WAITING_ON_CLOSE:
@@ -130,14 +130,14 @@ package edu.cmu.cs.dennisc.tutorial;
 				edu.cmu.cs.dennisc.croquet.Model model = ((edu.cmu.cs.dennisc.croquet.ActionOperationContext)child).getModel();
 				if( model instanceof org.alice.stageide.croquet.models.run.RestartOperation ) {
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "EPIC_HACK IGNORE NEXT CLOSE" );
-					this.EPIC_HACK_isIgnoreWindowClosedEventDesired = true;
+					this.EPIC_HACK_isIgnoreWindowClosingEventDesired = true;
 				}
-			} else if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
-				if( EPIC_HACK_isIgnoreWindowClosedEventDesired ) {
-					EPIC_HACK_isIgnoreWindowClosedEventDesired = false;
+			} else if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosingEvent ) {
+				if( EPIC_HACK_isIgnoreWindowClosingEventDesired ) {
+					EPIC_HACK_isIgnoreWindowClosingEventDesired = false;
 				} else {
-					edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent)child;
-					rv = windowClosedEvent.getParent().getModel() == this.getModel();
+					edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosingEvent windowClosingEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosingEvent)child;
+					rv = windowClosingEvent.getParent().getModel() == this.getModel();
 				}
 			}
 			break;

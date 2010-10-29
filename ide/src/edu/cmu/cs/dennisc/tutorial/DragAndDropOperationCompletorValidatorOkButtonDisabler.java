@@ -45,5 +45,5 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-public interface DragAndDropOperationCompletorValidatorOkButtonDisabler< J extends edu.cmu.cs.dennisc.croquet.JComponent<?> > extends DragAndDropOperationCompletorValidator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler< J > {
+public interface DragAndDropOperationCompletorValidatorOkButtonDisabler< J extends edu.cmu.cs.dennisc.croquet.JComponent<?> > extends DragAndDropOperationCompletorValidator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalCommitButtonDisabler< J > {
 }

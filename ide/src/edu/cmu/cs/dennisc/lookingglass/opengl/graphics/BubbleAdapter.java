@@ -42,6 +42,9 @@
  */
 package edu.cmu.cs.dennisc.lookingglass.opengl.graphics;
 
+import edu.cmu.cs.dennisc.scenegraph.graphics.BubbleManager;
+import edu.cmu.cs.dennisc.scenegraph.graphics.OnscreenBubble;
+
 public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graphics.Bubble> extends ShapeEnclosedTextAdapter< E > {
 	private java.awt.geom.Point2D.Float originOfTail = new java.awt.geom.Point2D.Float();
 	private java.awt.geom.Point2D.Float bodyConnectionLocationOfTail = new java.awt.geom.Point2D.Float();
@@ -61,9 +64,7 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 			float wrapWidth,
 			java.awt.Color fillColor, 
 			java.awt.Color outlineColor,
-			java.awt.geom.Point2D.Float originOfTail,
-			java.awt.geom.Point2D.Float bodyConnectionLocationOfTail,
-			java.awt.geom.Point2D.Float textBoundsOffset,
+			OnscreenBubble bubble,
 			double portion );
 	@Override
 	protected void render( 
@@ -82,7 +83,26 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 			g2.setFont( font );
 			java.awt.geom.Dimension2D size = multilineText.getDimension( g2, wrapWidth );
 			originator.calculate( originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, this.m_element, lookingGlass, actualViewport, camera, size );
-			this.render( g2, lookingGlass, actualViewport, camera, multilineText, font, textColor, wrapWidth, fillColor, outlineColor, originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, m_element.portion.getValue() );
+			OnscreenBubble bubble = BubbleManager.getInstance().getBubble(this.m_element);
+			if (bubble == null)
+			{
+				float padding;
+				if (this instanceof ThoughtBubbleAdapter)
+				{
+					padding = font.getSize2D() * 1.2f;
+				}
+				else
+				{
+					padding = font.getSize2D() * .4f;
+				}
+				bubble = BubbleManager.getInstance().addBubble(this.m_element, originOfTail, size, padding, actualViewport);
+			}
+			else
+			{
+				bubble.updateOriginOfTail(originOfTail, actualViewport);
+			}
+			
+			this.render( g2, lookingGlass, actualViewport, camera, multilineText, font, textColor, wrapWidth, fillColor, outlineColor, bubble, m_element.portion.getValue() );
 		}
 	}
 	@Override

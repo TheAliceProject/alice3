@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public /*final*/ class BooleanState extends Model {
+public /*final*/ class BooleanState extends State<Boolean> {
 	public static interface ValueObserver {
 		public void changing( boolean nextValue );
 		public void changed( boolean nextValue );
@@ -76,10 +76,7 @@ public /*final*/ class BooleanState extends Model {
 				//pass
 			} else {
 				if( BooleanState.this.isContextCommitDesired() ) {
-					BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
-					childContext.commitAndInvokeDo( new BooleanStateEdit( e ) );
-					ModelContext< ? > popContext = ContextManager.popContext();
-					assert popContext == childContext;
+					BooleanState.this.commitEdit( new BooleanStateEdit( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ), e );
 				}
 			}
 		}
@@ -102,6 +99,22 @@ public /*final*/ class BooleanState extends Model {
 		this.setTextForBothTrueAndFalse( name );
 	}
 	
+	private void commitEdit( BooleanStateEdit booleanStateEdit, java.awt.event.ItemEvent e ) {
+		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
+		childContext.commitAndInvokeDo( booleanStateEdit );
+		ModelContext< ? > popContext = ContextManager.popContext();
+		assert popContext == childContext;
+	}
+	
+	@Override
+	public Edit<?> commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		assert originalEdit instanceof BooleanStateEdit;
+		BooleanStateEdit booleanStateEdit = (BooleanStateEdit)originalEdit;
+		this.commitEdit( booleanStateEdit, null );
+		return booleanStateEdit;
+	}
+	
+	
 	@Override
 	protected boolean isOwnerOfEdit() {
 		return true;
@@ -111,32 +124,42 @@ public /*final*/ class BooleanState extends Model {
 		return true;
 	}
 	
-	public String getTutorialNoteText( BooleanStateEdit booleanStateEdit ) {
+	@Override
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, UserInformation userInformation ) {
+		return getTutorialNoteText( modelContext, userInformation );
+	}
+
+	@Override
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
-			if( booleanStateEdit.getNextValue() ) {
-				sb.append( "Select " );
+		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			BooleanStateEdit booleanStateEdit = (BooleanStateEdit)successfulCompletionEvent.getEdit();
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
+				if( booleanStateEdit.getNextValue() ) {
+					sb.append( "Select " );
+				} else {
+					sb.append( "Unselect " );
+				}
+				sb.append( "<strong>" );
+				sb.append( this.getTrueText() );
+				sb.append( "</strong>" );
 			} else {
-				sb.append( "Unselect " );
+				sb.append( "Press " );
+				sb.append( "<strong>" );
+				if( booleanStateEdit.getNextValue() ) {
+					sb.append( this.falseText );
+				} else {
+					sb.append( this.trueText );
+				}
+				sb.append( "</strong>" );
 			}
-			sb.append( "<strong>" );
-			sb.append( this.getTrueText() );
-			sb.append( "</strong>" );
-		} else {
-			sb.append( "Press " );
-			sb.append( "<strong>" );
-			if( booleanStateEdit.getNextValue() ) {
-				sb.append( this.falseText );
-			} else {
-				sb.append( this.trueText );
-			}
-			sb.append( "</strong>" );
 		}
 		return sb.toString();
 	}
 	
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 		String text = this.getDefaultLocalizedText();
 		if( text != null ) {
 			this.setTextForBothTrueAndFalse( text );
@@ -159,10 +182,11 @@ public /*final*/ class BooleanState extends Model {
 	/*package-private*/ javax.swing.Action getAction() {
 		return this.action;
 	}
+	@Override
 	public Boolean getValue() {
 		return this.buttonModel.isSelected();
 	}
-	public void setValue( boolean value ) {
+	public void setValue( Boolean value ) {
 		if( value != this.value ) {
 			//this.buttonModel.removeItemListener(itemListener);
 

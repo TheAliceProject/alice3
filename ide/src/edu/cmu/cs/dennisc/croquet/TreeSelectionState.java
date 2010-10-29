@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TreeSelectionState<E> extends Model {
+public class TreeSelectionState<E> extends State<E> {
 	public static interface SelectionObserver<E> {
 		public void selectionChanged(E nextValue);
 	};
@@ -72,8 +72,10 @@ public abstract class TreeSelectionState<E> extends Model {
 	}
 	private SingleTreeSelectionModel treeSelectionModel;
 	private edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel;
-	public TreeSelectionState(Group group, java.util.UUID id, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel, E initialSelection ) {
+	private Codec< E > codec;
+	public TreeSelectionState(Group group, java.util.UUID id, Codec< E > codec, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel, E initialSelection ) {
 		super(group, id);
+		this.codec = codec;
 		this.treeSelectionModel = new SingleTreeSelectionModel();
 		this.treeModel = treeModel;
 		this.setSelection( initialSelection );
@@ -85,16 +87,17 @@ public abstract class TreeSelectionState<E> extends Model {
 		this.localize();
 	}
 
+	public Codec<E> getCodec() {
+		return this.codec;
+	}
+
 	@Override
 	protected boolean isOwnerOfEdit() {
 		return true;
 	}
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 	}
-	protected abstract E decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder);
-	protected abstract void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value);
-
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> getTreeModel() {
 		return this.treeModel;
 	}
@@ -110,6 +113,11 @@ public abstract class TreeSelectionState<E> extends Model {
 		this.treeSelectionModel.setSelectionPath( this.treeModel.getTreePath( e ) );
 	}
 
+	@Override
+	public E getValue() {
+		return this.getSelection();
+	}
+	
 	public Tree<E> createTree() {
 		Tree<E> rv = new Tree<E>( this ) {
 			@Override
@@ -137,69 +145,4 @@ public abstract class TreeSelectionState<E> extends Model {
 		return rv;
 	}
 	
-//	public TrackableShape getTrackableShapeFor( E item ) {
-//		ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( ItemSelectable.class );
-//		if( itemSelectable != null ) {
-//			return itemSelectable.getTrackableShapeFor( item );
-//		} else {
-//			return null;
-//		}
-//	}
-//	public JComponent< ? > getMainComponentFor( E item ) {
-//		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
-//		if( abstractTabbedPane != null ) {
-//			return abstractTabbedPane.getMainComponentFor( item );
-//		} else {
-//			return null;
-//		}
-//	}
-//	public ScrollPane getScrollPaneFor( E item ) {
-//		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
-//		if( abstractTabbedPane != null ) {
-//			return abstractTabbedPane.getScrollPaneFor( item );
-//		} else {
-//			return null;
-//		}
-//	}
-//	public JComponent< ? > getRootComponentFor( E item ) {
-//		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
-//		if( abstractTabbedPane != null ) {
-//			return abstractTabbedPane.getRootComponentFor( item );
-//		} else {
-//			return null;
-//		}
-//	}
-
-//	private javax.swing.Action action = new javax.swing.AbstractAction() {
-//		public void actionPerformed(java.awt.event.ActionEvent e) {
-//		}
-//	};
-//	
-//	public String getName() {
-//		return String.class.cast(this.action.getValue(javax.swing.Action.NAME));
-//	}
-//
-//	public void setName(String name) {
-//		this.action.putValue(javax.swing.Action.NAME, name);
-//	}
-//
-//	public javax.swing.Icon getSmallIcon() {
-//		return javax.swing.Icon.class.cast(this.action.getValue(javax.swing.Action.SMALL_ICON));
-//	}
-//
-//	public void setSmallIcon(javax.swing.Icon icon) {
-//		this.action.putValue(javax.swing.Action.SMALL_ICON, icon);
-//	}
-//
-//	public int getMnemonicKey() {
-//		return Integer.class.cast(this.action.getValue(javax.swing.Action.MNEMONIC_KEY));
-//	}
-//
-//	public void setMnemonicKey(int mnemonicKey) {
-//		this.action.putValue(javax.swing.Action.MNEMONIC_KEY, mnemonicKey);
-//	}
-//
-//	public Menu<ListSelectionState> createMenu() {
-//		throw new RuntimeException( "todo: TreeSelectionOperation createMenu()");
-//	}
 }

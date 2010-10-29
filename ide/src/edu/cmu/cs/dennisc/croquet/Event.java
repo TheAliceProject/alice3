@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class Event<C extends ModelContext<?>> extends HistoryNode {
+/*package-private*/abstract class Event<C extends ModelContext<?>> extends HistoryNode<C> {
 	/*package-private*/ Event() {
 	}
 	public Event(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
@@ -53,5 +53,10 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	}
+	
+	@Override
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return this.toString();
 	}
 }

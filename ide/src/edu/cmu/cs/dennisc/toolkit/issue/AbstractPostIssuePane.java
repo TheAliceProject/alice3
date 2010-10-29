@@ -46,24 +46,16 @@ package edu.cmu.cs.dennisc.toolkit.issue;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPostIssuePane extends IssueReportPane {
-	class TypeSelectionOperation extends edu.cmu.cs.dennisc.zoot.EnumConstantSelectionOperation< edu.cmu.cs.dennisc.jira.JIRAReport.Type > {
-		public TypeSelectionOperation() {
-			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, edu.cmu.cs.dennisc.jira.JIRAReport.Type.class );
-		}
-		@Override
-		protected void handleSelectionChange( edu.cmu.cs.dennisc.jira.JIRAReport.Type value ) {
-			AbstractPostIssuePane.this.refreshRows();
+	public static final edu.cmu.cs.dennisc.croquet.Group POST_ISSUE_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "b010ccc1-b127-494d-9cc0-18c378fe0800" ), "POST_ISSUE_GROUP" );
+	class TypeSelectionState extends edu.cmu.cs.dennisc.toolkit.croquet.models.EnumConstantSelectionState< edu.cmu.cs.dennisc.jira.JIRAReport.Type > {
+		public TypeSelectionState() {
+			super( POST_ISSUE_GROUP, java.util.UUID.fromString( "8998dd3a-4ccc-4f75-8699-5d6d5e468259" ), edu.cmu.cs.dennisc.jira.JIRAReport.Type.class );
 		}
 	}
 
-	private TypeSelectionOperation typeSelectionOperation = new TypeSelectionOperation();
+	private TypeSelectionState typeSelectionState = new TypeSelectionState();
 	private javax.swing.JLabel labelType = createLabelForMultiLine( "type:" );
-	private javax.swing.JComboBox comboType = new edu.cmu.cs.dennisc.zoot.ZComboBox( this.typeSelectionOperation ) {
-		@Override
-		public java.awt.Dimension getMaximumSize() {
-			return this.getPreferredSize();
-		}
-	};
+	private javax.swing.JComboBox comboType = typeSelectionState.createComboBox().getAwtComponent();
 	private java.awt.Component[] rowType = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelType, new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( comboType, javax.swing.Box.createHorizontalGlue() ) );
 	
 	private javax.swing.JLabel labelEnvironment = createLabelForMultiLine( "environment:" );
@@ -107,7 +99,7 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 	}
 
 	public void setIssueType( edu.cmu.cs.dennisc.jira.JIRAReport.Type issueType ) {
-		this.typeSelectionOperation.getComboBoxModel().setSelectedItem( issueType );
+		this.typeSelectionState.setSelectedItem( issueType );
 	}
 	@Override
 	protected String getSMTPReplyTo() {
@@ -125,7 +117,7 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 	
 	@Override
 	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getJIRAType() {
-		return (edu.cmu.cs.dennisc.jira.JIRAReport.Type)this.typeSelectionOperation.getComboBoxModel().getSelectedItem();
+		return this.typeSelectionState.getSelectedItem();
 	}
 	
 	protected java.util.ArrayList< java.awt.Component[] > addRows( java.util.ArrayList< java.awt.Component[] > rows ) {
@@ -137,6 +129,21 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 		}
 		rows.add( this.rowEnvironment );
 		return rows;
+	}
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.jira.JIRAReport.Type > typeSelectionListener = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.jira.JIRAReport.Type >() { 
+		public void changed( edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue ) {
+			AbstractPostIssuePane.this.refreshRows();
+		}
+	};
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.typeSelectionState.addAndInvokeValueObserver( this.typeSelectionListener );
+	}
+	@Override
+	public void removeNotify() {
+		this.typeSelectionState.removeValueObserver( this.typeSelectionListener );
+		super.removeNotify();
 	}
 	protected final void refreshRows() {
 		this.centerPane.removeAll();

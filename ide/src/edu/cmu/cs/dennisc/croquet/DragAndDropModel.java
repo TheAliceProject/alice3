@@ -56,14 +56,23 @@ public abstract class DragAndDropModel extends Model {
 		return false;
 	}
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 	}
 	
-	public String getTutorialDragNoteText() {
+	@Override
+	public String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		return "Drag and Drop...";
+	}
+	public String getTutorialDragNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {
 		return "Drag...";
 	}
-	public String getTutorialDropNoteText() {
+	public String getTutorialDropNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {
 		return "Drop...";
+	}
+
+	@Override
+	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		return false;
 	}
 	
 	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );

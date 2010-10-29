@@ -52,14 +52,19 @@ public class ForwardingBlank extends Blank {
 		this.fillIn.setParent( this );
 		this.setSelectedFillIn( this.fillIn );
 	}
+	public ForwardingBlank( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+		this.fillIn = getFillInAt( 0 );
+		//this.fillIn.setParent( this );
+		//this.setSelectedFillIn( this.fillIn );
+	}
 	@Override
 	protected void addChildren() {
 		this.addFillIn( this.fillIn );
 	}
-	
-	@Override
-	public java.util.List<edu.cmu.cs.dennisc.cascade.Node> getChildren() {
-		Blank blank0 = (Blank)this.fillIn.getChildren().get( 0 );
-		return blank0.getChildren();
-	}
+//	@Override
+//	public java.util.List<edu.cmu.cs.dennisc.cascade.Node> getChildren() {
+//		Blank blank0 = (Blank)this.fillIn.getChildren().get( 0 );
+//		return blank0.getChildren();
+//	}
 }

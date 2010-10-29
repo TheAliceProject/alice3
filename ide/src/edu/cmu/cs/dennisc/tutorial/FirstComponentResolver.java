@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FirstComponentResolver implements RuntimeResolver< edu.cmu.cs.dennisc.croquet.Component<?> > {
+public class FirstComponentResolver implements RuntimeResolver< edu.cmu.cs.dennisc.croquet.Component<?> > {
 	private RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.Model > modelResolver;
 	public FirstComponentResolver( RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.Model > modelResolver ) {
 		this.modelResolver = modelResolver;

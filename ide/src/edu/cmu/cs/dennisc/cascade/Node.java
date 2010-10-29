@@ -45,10 +45,80 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Node {
+public abstract class Node implements edu.cmu.cs.dennisc.croquet.RetargetingData {
+	private static java.util.Map< java.util.UUID, Node > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static <N extends Node> N lookup( java.util.UUID id ) {
+		System.err.println( "lookup: " + id );
+		return (N)map.get( id );
+	}
+	
+	private java.util.UUID id;
 	private Node parent = null;
 	private Node nextSibling = null;
 	protected java.util.List<Node> children = null;
+	
+	public Node() {
+		this.setId( java.util.UUID.randomUUID() );
+		if( this instanceof SeparatorFillIn ) {
+			//pass
+		} else {
+			System.err.println( "Node: " + this.id + " " + this );
+			//Thread.dumpStack();
+		}
+	}
+	public Node( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.decode( binaryDecoder );
+	}
+	public java.util.UUID getId() {
+		return this.id;
+	}
+	private void setId( java.util.UUID id ) {
+		this.id = id;
+		map.put( id, this );
+	}
+	
+	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
+	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.setId( binaryDecoder.decodeId() );
+		System.err.println( "decode: " + this.id + " " + this );
+		this.decodeInternal( binaryDecoder );
+		final int N = binaryDecoder.decodeInt();
+		this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( int i=0; i<N; i++ ) {
+			Node child = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			this.addChild( child );
+		}
+	}
+	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.id );
+		this.encodeInternal( binaryEncoder );
+		
+		java.util.List< Node > children = this.getChildren();
+		final int N = children.size();
+		binaryEncoder.encode( N );
+		for( int i=0; i<N; i++ ) {
+			binaryEncoder.encode( children.get( i ) );
+		}
+	}
+	private void internalAddKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, Node replacement ) {
+		retargeter.addKeyValuePair( this.getId(), replacement.getId() );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "adding replacement:", this, replacement );
+		System.err.println( "adding replacement: " +  this.getId() + " -> " + replacement.getId() );
+		java.util.List<Node> children = this.getChildren();
+		java.util.List<Node> replacementChildren = replacement.getChildren();
+		final int N = children.size();
+		assert N == replacementChildren.size();
+		for( int i=0; i<N; i++ ) {
+			Node child = children.get( i );
+			Node replacementChild = replacementChildren.get( i );
+			//children.set( i, replacementChild );
+			child.internalAddKeyValuePairs( retargeter, replacementChild );
+		}
+	}	
+	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.RetargetingData replacement ) {
+		this.internalAddKeyValuePairs( retargeter, (Node)replacement );
+	}
 	
 	protected void addChild( Node node ) {
 		if( this.children.size() > 0 ) {
@@ -59,11 +129,10 @@ public abstract class Node {
 		node.nextSibling = null;
 		this.children.add( node );
 	}
-
 	protected abstract void addPrefixChildren();
 	protected abstract void cleanUp();
 	protected abstract void addChildren();
-	public java.util.List<Node> getChildren() {
+	public final java.util.List<Node> getChildren() {
 		 if( this.children != null ) {
 			 //pass
 		 } else {

@@ -83,8 +83,12 @@ public class StepsComboBox extends edu.cmu.cs.dennisc.croquet.JComponent< javax.
 			}
 		} );
 
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ", this.isLightWeightPopupEnabled );
-		//rv.setLightWeightPopupEnabled( this.isLightWeightPopupEnabled );
+		rv.setMaximumRowCount( 20 );
+		if( this.isLightWeightPopupEnabled ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.javax.swing.PopupFactoryUtilities.forceHeavyWeightPopups( rv );
+		}
 		StepCellRenderer stepCellRenderer = new StepCellRenderer( this.stepsComboBoxModel.getStepsModel(), TutorialStencil.CONTROL_COLOR );
 		rv.setRenderer( stepCellRenderer );
 		return rv;

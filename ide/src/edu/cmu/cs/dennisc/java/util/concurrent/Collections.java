@@ -62,4 +62,17 @@ public class Collections {
 		rv.addAll( other );
 		return rv;
 	}
+	public static <E> java.util.concurrent.CopyOnWriteArraySet<E> newCopyOnWriteArraySet() {
+		return new java.util.concurrent.CopyOnWriteArraySet< E >();
+	}
+	public static <E> java.util.concurrent.CopyOnWriteArraySet<E> newCopyOnWriteArraySet( E... array ) {
+		java.util.concurrent.CopyOnWriteArraySet<E> rv = new java.util.concurrent.CopyOnWriteArraySet< E >();
+		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( rv, array );
+		return rv;
+	}
+	public static <E> java.util.concurrent.CopyOnWriteArraySet<E> newCopyOnWriteArraySet( java.util.Collection< E > other ) {
+		java.util.concurrent.CopyOnWriteArraySet<E> rv = new java.util.concurrent.CopyOnWriteArraySet< E >();
+		rv.addAll( other );
+		return rv;
+	}
 }

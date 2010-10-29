@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public interface RetargetableDropSite extends DropSite {
-	public void retarget( Retargeter retargeter );
+	public RetargetableDropSite createReplacement( edu.cmu.cs.dennisc.croquet.Retargeter retargeter );
 }

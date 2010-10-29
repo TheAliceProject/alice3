@@ -102,6 +102,10 @@ public abstract class DurationBasedAnimation extends AbstractAnimation {
 		}
 		return tRemaining;
 	}
+	@Override
+	protected final void preEpilogue() {
+		this.setPortion( 1.0 );
+	}
 
 	protected abstract void setPortion( double portion );
 }

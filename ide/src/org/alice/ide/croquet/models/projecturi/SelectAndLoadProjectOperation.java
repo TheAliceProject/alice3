@@ -53,10 +53,10 @@ public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.c
 	}
 	protected abstract boolean isNew();
 	@Override
-	protected String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context) {
+	protected String getInternalExplanation(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context) {
 		assert this.selectProjectToOpenPanel != null;
 		if( this.selectProjectToOpenPanel.getSelectedURI() != null ) {
-			return super.getExplanationIfOkButtonShouldBeDisabled(context);
+			return super.getInternalExplanation(context);
 		} else {
 			return "must select project to open.";
 		}

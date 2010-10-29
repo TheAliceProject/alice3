@@ -47,9 +47,10 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class InternalCascadingMenuModelStaticGetInstanceKeyedResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingMenuModel > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingMenuModel > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.cascade.FillIn.class };
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { java.util.UUID.class };
 	public InternalCascadingMenuModelStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.cascade.InternalCascadingMenuModel instance ) {
 		super( instance );
+		java.util.UUID id = this.getInstance().getFillIn().getId();
 	}
 	public InternalCascadingMenuModelStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
@@ -58,8 +59,8 @@ public class InternalCascadingMenuModelStaticGetInstanceKeyedResolver extends ed
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		Object[] arguments = this.getArguments();
 		assert arguments != null;
-		assert arguments.length == 2;
-		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
+		assert arguments.length == 1;
+		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
 	}
 
 	@Override
@@ -79,11 +80,14 @@ public class InternalCascadingMenuModelStaticGetInstanceKeyedResolver extends ed
 
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		return new Object[] { fillIn };
+		java.util.UUID id = binaryDecoder.decodeId();
+		System.err.println( "decodeArguments: " + id );
+		return new Object[] { id };
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.getInstance().getFillIn() );
+		java.util.UUID id = this.getInstance().getFillIn().getId();
+		System.err.println( "encodeArguments: " + id );
+		binaryEncoder.encode( id );
 	}
 }

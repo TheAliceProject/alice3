@@ -48,8 +48,8 @@ package edu.cmu.cs.dennisc.tutorial;
 /*package-private*/ class InputDialogOpenAndCommitStep extends AuthoredWaitingStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> {
 	private InputDialogOperationCompletor completor;
 	private InputDialogOperationValidator validator;
-	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler externalOkButtonDisabler;
-	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, InputDialogOperationCompletor completor, InputDialogOperationValidator validator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler externalOkButtonDisabler ) {
+	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalCommitButtonDisabler externalOkButtonDisabler;
+	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, InputDialogOperationCompletor completor, InputDialogOperationValidator validator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalCommitButtonDisabler externalOkButtonDisabler ) {
 		super( title, openText, new Hole( new FirstComponentResolver( inputDialogOperationResolver ), Feature.ConnectionPreference.EAST_WEST ), inputDialogOperationResolver );
 		this.completor = completor;
 		this.validator = validator;
@@ -112,7 +112,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	protected void setActiveNote(int activeIndex) {
 		super.setActiveNote(activeIndex);
 		if( activeIndex == 1 ) {
-			this.getModel().setExternalOkButtonDisabler( this.externalOkButtonDisabler );
+			this.getModel().setExternalCommitButtonDisabler( this.externalOkButtonDisabler );
 		}
 	}
 	
@@ -151,8 +151,8 @@ package edu.cmu.cs.dennisc.tutorial;
 				}
 				break;
 			case WAITING_ON_COMMIT:
-				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
-					edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
+				if( child instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent ) {
+					edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent completeEvent = (edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent)child;
 					edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();
 					if( this.getModel() == eventModel ) {
 						edu.cmu.cs.dennisc.croquet.Edit<?> edit;
@@ -169,7 +169,7 @@ package edu.cmu.cs.dennisc.tutorial;
 							SoundCache.FAILURE.startIfNotAlreadyActive();
 						}
 						//todo?
-						this.getModel().setExternalOkButtonDisabler( null );
+						this.getModel().setExternalCommitButtonDisabler( null );
 					}
 				}
 				break;

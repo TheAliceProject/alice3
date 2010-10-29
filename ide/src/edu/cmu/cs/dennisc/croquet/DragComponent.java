@@ -153,12 +153,17 @@ public abstract class DragComponent extends Control {
 	}
 
 	protected javax.swing.JLayeredPane getLayeredPane() {
-		javax.swing.JRootPane rootPane = this.getRoot().getRootPane();
-		if( rootPane != null ) {
-			return rootPane.getLayeredPane();
+		AbstractWindow< ? > root = this.getRoot();
+		if( root != null ) {
+			javax.swing.JRootPane rootPane = root.getRootPane();
+			if( rootPane != null ) {
+				return rootPane.getLayeredPane();
+			} else {
+				//throw new RuntimeException( "cannot find rootPane: " + this );
+				return null;
+			}
 		} else {
-			throw new RuntimeException( "cannot find rootPane: " + this );
-			//return null;
+			return null;
 		}
 	}
 
@@ -300,15 +305,17 @@ public abstract class DragComponent extends Control {
 		}
 	}
 	public void hideDropProxyIfNecessary() {
-		javax.swing.JLayeredPane layeredPane = getLayeredPane();
-		if( this.dropProxy.getParent() != null ) {
+		java.awt.Container parent = this.dropProxy.getParent();
+		if( parent != null ) {
 			java.awt.Rectangle bounds = this.dropProxy.getBounds();
-			if( layeredPane != null ) {
-				layeredPane.remove( this.dropProxy );
-				layeredPane.repaint( bounds );
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: hideDropProxyIfNecessary, layeredPane is null" );
-			}
+			parent.remove( this.dropProxy );
+			parent.repaint( bounds.x, bounds.y, bounds.width, bounds.height );
+//			javax.swing.JLayeredPane layeredPane = getLayeredPane();
+//			if( layeredPane != null ) {
+//				layeredPane.repaint( bounds );
+//			} else {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: hideDropProxyIfNecessary, layeredPane is null" );
+//			}
 		}
 	}
 	public void handleCancel( java.util.EventObject e ) {

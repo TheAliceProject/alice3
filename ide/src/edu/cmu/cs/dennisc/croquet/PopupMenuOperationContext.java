@@ -53,6 +53,56 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 		super( binaryDecoder );
 	}
 	
+	public static class RetargetableMenuModelInitializationEvent extends ModelEvent< PopupMenuOperationContext > {
+		private RetargetingData retargetingData;
+		public RetargetableMenuModelInitializationEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private RetargetableMenuModelInitializationEvent( RetargetingData data ) {
+			this.retargetingData = data;
+		}
+		
+		public RetargetingData getRetargetingData() {
+			return this.retargetingData;
+		}
+//		@Override
+//		public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+//			super.retarget( retargeter );
+//			this.retargetingData = retargeter.retarget( this.retargetingData );
+//		}
+		@Override
+		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super.decodeInternal( binaryDecoder );
+			this.retargetingData = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		}
+		@Override
+		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			super.encodeInternal( binaryEncoder );
+			binaryEncoder.encode( this.retargetingData );
+		}
+		@Override
+		public State getState() {
+			return null;
+		}
+	}
+
+	public static class MenuResizedEvent extends ModelEvent< PopupMenuOperationContext > {
+		private java.awt.event.ComponentEvent componentEvent;
+		public MenuResizedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private MenuResizedEvent( java.awt.event.ComponentEvent componentEvent ) {
+			this.componentEvent = componentEvent;
+		}
+		public java.awt.event.ComponentEvent getComponentEvent() {
+			return this.componentEvent;
+		}
+		@Override
+		public State getState() {
+			return null;
+		}
+	}
+	
 	public static class MenuSelectionEvent extends ModelEvent< PopupMenuOperationContext > {
 		private javax.swing.event.ChangeEvent changeEvent;
 		private Model[] models;
@@ -71,6 +121,23 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 			for( int i=0; i<N; i++ ) {
 				this.models[ i ] = models.get( i );
 				this.modelResolvers[ i ] = this.models[ i ].getCodableResolver();
+			}
+		}
+		
+		@Override
+		public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+			super.retarget( retargeter );
+			final int N = this.models.length;
+			for( int i=0; i<N; i++ ) {
+//				this.models[ i ] = retargeter.retarget( this.models[ i ] );
+//				if( this.models[ i ] != null ) {
+//					this.modelResolvers[ i ] = this.models[ i ].getCodableResolver();
+//				} else {
+				if( this.modelResolvers[ i ] instanceof RetargetableResolver ) {
+					this.models[ i ] = null;
+					((RetargetableResolver)this.modelResolvers[ i ]).retarget( retargeter );
+				}
+//				}
 			}
 		}
 		public javax.swing.event.ChangeEvent getChangeEvent() {
@@ -126,14 +193,21 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 		@Override
 		protected StringBuilder appendRepr( StringBuilder rv ) {
 			super.appendRepr( rv );
-			for( Model model : this.models ) {
+			for( CodableResolver< Model > modelResolver : this.modelResolvers ) {
 				rv.append( " " );
-				rv.append( model.getClass().getName() );
+				rv.append( modelResolver.getResolved() );
 			}
 			return rv;
 		}
 	}
+	
+	/*package-private*/ void handleRetargetableMenuModelInitialization( RetargetingData retargetingData ) {
+		this.addChild( new RetargetableMenuModelInitializationEvent( retargetingData ) );
+	}
 	/*package-private*/ void handleMenuSelectionChanged( javax.swing.event.ChangeEvent e, java.util.List< Model > models ) {
 		this.addChild( new MenuSelectionEvent( e, models ) );
+	}
+	/*package-private*/ void handleResized( java.awt.event.ComponentEvent e ) {
+		this.addChild( new MenuResizedEvent( e ) );
 	}
 }

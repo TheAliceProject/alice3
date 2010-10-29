@@ -51,7 +51,7 @@ public class CustomIntegerFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.
 		return "Integer";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > createValueChooser() {
-		return new org.alice.ide.choosers.IntegerChooser();
+	protected org.alice.ide.croquet.models.custom.CustomIntegerInputDialogOperation getInputDialogOperation() {
+		return org.alice.ide.croquet.models.custom.CustomIntegerInputDialogOperation.getInstance();
 	}
 }

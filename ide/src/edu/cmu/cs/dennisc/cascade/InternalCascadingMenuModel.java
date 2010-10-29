@@ -46,37 +46,51 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 public class InternalCascadingMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
-	private static java.util.Map< FillIn<?>, InternalCascadingMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized InternalCascadingMenuModel getInstance( FillIn<?> fillIn ) {
-		InternalCascadingMenuModel rv = map.get( fillIn );
+	private static java.util.Map< java.util.UUID, InternalCascadingMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized InternalCascadingMenuModel getInstance( java.util.UUID id ) {
+		InternalCascadingMenuModel rv = map.get( id );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new InternalCascadingMenuModel( fillIn );
-			map.put( fillIn, rv );
+			rv = new InternalCascadingMenuModel( id );
+			map.put( id, rv );
 		}
 		return rv;
 	}
-	private FillIn<?> fillIn;
-	private InternalCascadingMenuModel( FillIn<?> fillIn ) {
+	
+	/*package-private*/ static synchronized <E> InternalCascadingMenuModel createInstance( FillIn< E > fillIn ) {
+		InternalCascadingMenuModel rv = getInstance( fillIn.getId() );
+		assert rv.getFillIn() == fillIn;
+		return rv;
+	}
+	private java.util.UUID id;
+	private InternalCascadingMenuModel( java.util.UUID id ) {
 		super( java.util.UUID.fromString( "69570d24-a52f-40d4-ac7d-15a74333c5fa" ) );
-		this.fillIn = fillIn;
+		this.id = id;
 	}
 	public FillIn< ? > getFillIn() {
-		return this.fillIn;
+		return Node.lookup( this.id );
 	}
 	@Override
 	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		super.handleShowing( menuItemContainer, e );
-		this.fillIn.handleMenuSelected( menuItemContainer, e );
+		this.getFillIn().handleMenuSelected( menuItemContainer, e );
 	}
 	@Override
 	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		this.fillIn.handleMenuDeselected( menuItemContainer, e );
+		this.getFillIn().handleMenuDeselected( menuItemContainer, e );
 		super.handleHiding( menuItemContainer, e );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.InternalCascadingMenuModelStaticGetInstanceKeyedResolver createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.InternalCascadingMenuModelStaticGetInstanceKeyedResolver( this );
+	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "[" );
+		rv.append( this.id );
+		rv.append( "]" );
+		return rv;
 	}
 }

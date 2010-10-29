@@ -45,230 +45,296 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogOperation<J extends Component<?>> extends AbstractDialogOperation<InputDialogOperationContext<J>> {
-	protected static final Group ENCLOSING_INPUT_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_INPUT_DIALOG_GROUP" );
-	protected static final Group INPUT_DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "35b47d9d-d17b-4862-ac22-5ece4e317242" ), "INPUT_DIALOG_IMPLEMENTATION_GROUP" );
-	private static abstract class ButtonOperation extends ActionOperation {
-		private boolean isOk;
-		private Dialog dialog;
-		public ButtonOperation(java.util.UUID individualId, String name, boolean isOk) {
-			super( INPUT_DIALOG_IMPLEMENTATION_GROUP, individualId );
-			this.setName(name);
-			this.isOk = isOk;
-		}
-		public void setDialog(Dialog dialog) {
-			if( dialog != null ) {
-				assert this.dialog == null;
-			}
-			this.dialog = dialog;
-		}
-		
-		private InputDialogOperationContext< ? > getInputDialogOperationContext( ActionOperationContext context ) {
-			System.err.println( "todo: getInputDialogOperationContext" );
-			return (InputDialogOperationContext< ? >)context.getParent();
-		}
-		private InputDialogOperation< ? > getInputDialogOperation( ActionOperationContext context ) {
-			return this.getInputDialogOperationContext( context ).getModel();
-		}
-		@Override
-		protected final void perform(ActionOperationContext context) {
-			assert this.dialog != null;
-			InputDialogOperation< ? > inputDialogOperation = this.getInputDialogOperation( context );
-			inputDialogOperation.isOk = this.isOk;
-			this.dialog.setVisible( false );
-			//this.dialog.getAwtWindow().dispose();
-			context.finish();
-		}
-	}
-	
-	public static class CommitOperation extends ButtonOperation { 
+public abstract class InputDialogOperation<J extends JComponent<?>> extends GatedCommitDialogOperation<InputDialogOperationContext<J>> {
+	protected static class OkOperation extends CompleteOperation {
 		private static class SingletonHolder {
-			private static CommitOperation instance = new CommitOperation();
+			private static OkOperation instance = new OkOperation();
 		}
-		public static CommitOperation getInstance() {
+		public static OkOperation getInstance() {
 			return SingletonHolder.instance;
 		}
-		private CommitOperation() {
-			super( java.util.UUID.fromString("f6019ff0-cf2b-4d6c-8c8d-14cac8154ebc"), "OK", true );
+		private OkOperation() {
+			super( java.util.UUID.fromString( "fc908f6f-4b72-48b6-9b65-352dc9f2e18b" ) );
 		}
-	}
-	public static class CancelOperation extends ButtonOperation { 
-		private static class SingletonHolder {
-			private static CancelOperation instance = new CancelOperation();
-		}
-		public static CancelOperation getInstance() {
-			return SingletonHolder.instance;
-		}
-		private CancelOperation() {
-			super( java.util.UUID.fromString("2a7e61c8-119a-45b1-830c-f59edda720a0"), "Cancel", false );
-		}
-	}
-	private static final String NULL_EXPLANATION = "good to go";
-	private Label explanationLabel = new Label( NULL_EXPLANATION ) {
 		@Override
-		protected javax.swing.JLabel createAwtComponent() {
-			return new javax.swing.JLabel() {
-				@Override
-				protected void paintComponent(java.awt.Graphics g) {
-					if( this.getText() == NULL_EXPLANATION ) {
-						//pass
-					} else {
-						super.paintComponent( g );
-					}
-				}
-			};
-		};
-	};
+		protected void localize() {
+			super.localize();
+			this.setName( "OK" );
+		}
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.GatedCommitDialogOperation.CompleteOperation getCompleteOperation() {
+		return OkOperation.getInstance();
+	}
+
+	//	private static abstract class ButtonOperation extends ActionOperation {
+//		private boolean isOk;
+//		private Dialog dialog;
+//		public ButtonOperation(java.util.UUID individualId, String name, boolean isOk) {
+//			super( DIALOG_IMPLEMENTATION_GROUP, individualId );
+//			this.setName(name);
+//			this.isOk = isOk;
+//		}
+//		public void setDialog(Dialog dialog) {
+//			if( dialog != null ) {
+//				assert this.dialog == null;
+//			}
+//			this.dialog = dialog;
+//		}
+//		
+//		private InputDialogOperationContext< ? > getInputDialogOperationContext( ActionOperationContext context ) {
+//			System.err.println( "todo: getInputDialogOperationContext" );
+//			return (InputDialogOperationContext< ? >)context.getParent();
+//		}
+//		private InputDialogOperation< ? > getInputDialogOperation( ActionOperationContext context ) {
+//			return this.getInputDialogOperationContext( context ).getModel();
+//		}
+//		@Override
+//		protected final void perform(ActionOperationContext context) {
+//			assert this.dialog != null;
+//			InputDialogOperation< ? > inputDialogOperation = this.getInputDialogOperation( context );
+//			inputDialogOperation.isOk = this.isOk;
+//			this.dialog.setVisible( false );
+//			//this.dialog.getAwtWindow().dispose();
+//			context.finish();
+//		}
+//	}
+//	
+//	public static class CommitOperation extends ButtonOperation { 
+//		private static class SingletonHolder {
+//			private static CommitOperation instance = new CommitOperation();
+//		}
+//		public static CommitOperation getInstance() {
+//			return SingletonHolder.instance;
+//		}
+//		private CommitOperation() {
+//			super( java.util.UUID.fromString("f6019ff0-cf2b-4d6c-8c8d-14cac8154ebc"), "OK", true );
+//		}
+//	}
+//	public static class CancelOperation extends ButtonOperation { 
+//		private static class SingletonHolder {
+//			private static CancelOperation instance = new CancelOperation();
+//		}
+//		public static CancelOperation getInstance() {
+//			return SingletonHolder.instance;
+//		}
+//		private CancelOperation() {
+//			super( java.util.UUID.fromString("2a7e61c8-119a-45b1-830c-f59edda720a0"), "Cancel", false );
+//		}
+//	}
+//	private static final String NULL_EXPLANATION = "good to go";
+//	private Label explanationLabel = new Label( NULL_EXPLANATION ) {
+//		@Override
+//		protected javax.swing.JLabel createAwtComponent() {
+//			return new javax.swing.JLabel() {
+//				@Override
+//				protected void paintComponent(java.awt.Graphics g) {
+//					if( this.getText() == NULL_EXPLANATION ) {
+//						//pass
+//					} else {
+//						super.paintComponent( g );
+//					}
+//				}
+//			};
+//		};
+//	};
 	private boolean isCancelDesired;
-	private boolean isOk = false;
 	public InputDialogOperation(Group group, java.util.UUID individualId, boolean isCancelDesired) {
 		super(group, individualId);
 		this.isCancelDesired = isCancelDesired;
-		this.explanationLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
-		this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
-		this.explanationLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
+//		this.explanationLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
+//		this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
+//		this.explanationLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
 	}
 	public InputDialogOperation(Group group, java.util.UUID individualId) {
 		this(group, individualId, true);
 	}
 
 	@Override
-	protected InputDialogOperationContext<J> createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public InputDialogOperationContext<J> createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushInputDialogOperationContext( this, e, viewController );
 	}
 
+	
+	public String getTutorialFinishNoteText( InputDialogOperationContext< ? > inputDialogOperationContext, UserInformation userInformation ) {
+		return "When finished press the <strong>OK</strong> button.";
+	}
 
-	public static interface ExternalOkButtonDisabler<J extends Component<?>> {
-		public String getExplanationIfOkButtonShouldBeDisabled( InputDialogOperationContext<J> context );
+	public static interface ExternalCommitButtonDisabler<J extends JComponent<?>> {
+		public String getExplanationIfCommitButtonShouldBeDisabled( InputDialogOperationContext<J> context );
 	}
-	private ExternalOkButtonDisabler<J> externalOkButtonDisabler;
-	public ExternalOkButtonDisabler<J> getExternalOkButtonDisabler() {
-		return this.externalOkButtonDisabler;
+	private ExternalCommitButtonDisabler<J> externalCommitButtonDisabler;
+	public ExternalCommitButtonDisabler<J> getExternalCommitButtonDisabler() {
+		return this.externalCommitButtonDisabler;
 	}
-	public void setExternalOkButtonDisabler( ExternalOkButtonDisabler<J> externalOkButtonDisabler ) {
-		this.externalOkButtonDisabler = externalOkButtonDisabler;
+	public void setExternalCommitButtonDisabler( ExternalCommitButtonDisabler<J> externalCommitButtonDisabler ) {
+		this.externalCommitButtonDisabler = externalCommitButtonDisabler;
 	}
-	protected String getExplanationIfOkButtonShouldBeDisabled( InputDialogOperationContext<J> context ) {
+	
+	protected String getInternalExplanation( InputDialogOperationContext<J> context ) {
 		return null;
 	}
-	protected abstract J prologue( InputDialogOperationContext<J> context );
-	protected abstract void epilogue( InputDialogOperationContext<J> context, boolean isOk );
-
-	protected void updateOkOperationAndExplanation( InputDialogOperationContext<J> context ) {
+	
+	@Override
+	protected final String getExplanation( InputDialogOperationContext<J> context ) {
+		//InputDialogOperationContext<J> context = (InputDialogOperationContext<J>)child.findContextFor( InputDialogOperation.this );
+//		String text;
 		if( context != null ) {
-			String explanation = this.getExplanationIfOkButtonShouldBeDisabled( context );
-			if( this.externalOkButtonDisabler != null ) {
-				String externalExplanation = this.externalOkButtonDisabler.getExplanationIfOkButtonShouldBeDisabled( context );
+			String explanation = this.getInternalExplanation( context );
+			if( this.externalCommitButtonDisabler != null ) {
+				String externalExplanation = this.externalCommitButtonDisabler.getExplanationIfCommitButtonShouldBeDisabled( context );
 				if( externalExplanation != null ) {
 					explanation = externalExplanation;
 				}
 			}
-			CommitOperation.getInstance().setEnabled( explanation == null );
-			if( explanation != null ) {
-				this.explanationLabel.setText( explanation );
-			} else {
-				this.explanationLabel.setText( NULL_EXPLANATION );
-			}
+			return explanation;
+//			if( explanation != null ) {
+//				text = explanation;
+//			} else {
+//				text = NULL_EXPLANATION;
+//			}
+//			this.getCompleteOperation().setEnabled( text == NULL_EXPLANATION );
+//			this.explanationLabel.setText( text );
 		} else {
-			this.explanationLabel.setText( "todo: updateOkOperationAndExplanation context==null" );
-			CommitOperation.getInstance().setEnabled( true );
+//			this.explanationLabel.setText( "todo: updateOperationAndExplanation context==null" );
+			this.getCompleteOperation().setEnabled( true );
+			return "todo: updateOperationAndExplanation context==null";
 		}
 	}
+	protected abstract J prologue( InputDialogOperationContext<J> context );
+	protected abstract void epilogue( InputDialogOperationContext<J> context, boolean isCommit );
 
-	private ModelContext.ChildrenObserver childrenObserver = new ModelContext.ChildrenObserver() {
-		public void addingChild(HistoryNode child) {
-		}
-		public void addedChild(HistoryNode child) {
-			InputDialogOperation.this.updateOkOperationAndExplanation( (InputDialogOperationContext<J>)child.findContextFor( InputDialogOperation.this ) );
-		}
-	};
 
+//	private ModelContext.ChildrenObserver childrenObserver = new ModelContext.ChildrenObserver() {
+//		public void addingChild(HistoryNode child) {
+//		}
+//		public void addedChild(HistoryNode child) {
+//			InputDialogOperation.this.updateOperationAndExplanation( child );
+//		}
+//	};
+
+	@Deprecated
+	public Edit< ? > EPIC_HACK_createEdit( InputDialogOperationContext< J > inputDialogOperationContext ) {
+		//todo
+		return null;
+	}
+	
 	@Override
-	protected final Container<?> createContentPane(InputDialogOperationContext<J> context, Dialog dialog) {
-		J mainPane = this.prologue(context);
-		if( mainPane != null ) {
-			assert mainPane != null;
-			context.setMainPanel( mainPane );
-			class OkCancelPanel extends Panel {
-				private Button okButton = CommitOperation.getInstance().createButton();
-				public OkCancelPanel() {
-					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-						this.internalAddComponent( okButton );
-						if( isCancelDesired ) {
-							//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
-							this.internalAddComponent( CancelOperation.getInstance().createButton() );
-						}
-					} else {
-						this.internalAddComponent( BoxUtilities.createHorizontalGlue() );
-						if( isCancelDesired ) {
-							this.internalAddComponent( CancelOperation.getInstance().createButton() );
-							//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
-						}
-						this.internalAddComponent( okButton );
-					}
-					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,4,0 ) );
-				}
-				@Override
-				protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
-					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-						return new java.awt.FlowLayout( java.awt.FlowLayout.CENTER, 2, 0 );
-					} else {
-						return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
-					}
-				}
-				public Button getOkButton() {
-					return this.okButton;
-				}
-			};
-			
-			OkCancelPanel okCancelPanel = new OkCancelPanel();
-			okCancelPanel.setBackgroundColor( null );
+	protected Component< ? > createControlsPanel( InputDialogOperationContext< J > context, Dialog dialog ) {
+		Button okButton = this.getCompleteOperation().createButton();
+		LineAxisPanel rv = new LineAxisPanel();
+		rv.addComponent( BoxUtilities.createHorizontalGlue() );
+		rv.addComponent( okButton );
+		rv.addComponent( BoxUtilities.createHorizontalSliver( 4 ) );
+		rv.addComponent( this.getCancelOperation().createButton() );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
+		dialog.setDefaultButton( okButton );
+		return rv;
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainPanel( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Label explanationLabel ) {
+		J child = this.prologue( context );
+		context.setMainPanel( child );
+//		child.getAwtComponent().setOpaque( true );
 
-			PageAxisPanel southPanel = new PageAxisPanel();
-			southPanel.addComponent( this.explanationLabel );
-			southPanel.addComponent( okCancelPanel );
-
-			java.awt.Color backgroundColor = mainPane.getBackgroundColor();
-			this.explanationLabel.setBackgroundColor( backgroundColor );
-			
-			BorderPanel borderPanel = dialog.getContentPanel();
-			borderPanel.setBackgroundColor( backgroundColor );
-			borderPanel.addComponent( mainPane, BorderPanel.Constraint.CENTER );
-			borderPanel.addComponent( southPanel, BorderPanel.Constraint.PAGE_END );
-			
-			dialog.setDefaultButton( okCancelPanel.getOkButton() );
-
-			CommitOperation.getInstance().setDialog(dialog);
-			CancelOperation.getInstance().setDialog(dialog);
-			this.isOk = false;
-
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate.  observer should not need to be added to the root" );
-			ContextManager.getRootContext().addChildrenObserver( this.childrenObserver );
-			this.updateOkOperationAndExplanation( context );
-
-			return borderPanel;
-		} else {
-			this.isOk = false;
-			return null;
-		}
+		BorderPanel rv = new BorderPanel();
+		rv.setBackgroundColor( child.getBackgroundColor() );
+		rv.addComponent( child, BorderPanel.Constraint.CENTER );
+		rv.addComponent( explanationLabel, BorderPanel.Constraint.PAGE_END );
+		return rv;
 	}
 	@Override
-	protected final void releaseContentPane(InputDialogOperationContext<J> context, Dialog dialog, Container<?> contentPane) {
-		if( contentPane != null ) {
-			this.epilogue(context, this.isOk);
-			
-			ContextManager.getRootContext().removeChildrenObserver( this.childrenObserver );
-
-			CommitOperation.getInstance().setDialog(null);
-			CancelOperation.getInstance().setDialog(null);
-			if( this.isOk ) {
-				//pass
-			} else {
-				assert context.isCanceled();
-			}
-		} else {
-			context.cancel();
-		}
+	protected void release( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context, edu.cmu.cs.dennisc.croquet.Dialog dialog, boolean isCompleted ) {
+		this.epilogue( context, isCompleted );
 	}
+	
+//	@Override
+//	protected final Container<?> createContentPane(InputDialogOperationContext<J> context, Dialog dialog) {
+//		J mainPane = this.prologue(context);
+//		if( mainPane != null ) {
+//			assert mainPane != null;
+//			context.setMainPanel( mainPane );
+//			class OkCancelPanel extends Panel {
+//				private Button okButton = CommitOperation.getInstance().createButton();
+//				public OkCancelPanel() {
+//					this.internalAddComponent( BoxUtilities.createHorizontalGlue() );
+//					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+//						this.internalAddComponent( okButton );
+//						if( isCancelDesired ) {
+//							//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
+//							this.internalAddComponent( CancelOperation.getInstance().createButton() );
+//						}
+//					} else {
+//						if( isCancelDesired ) {
+//							this.internalAddComponent( CancelOperation.getInstance().createButton() );
+//							//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
+//						}
+//						this.internalAddComponent( okButton );
+//					}
+//					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,4,16 ) );
+//				}
+//				@Override
+//				protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+////					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+////						return new java.awt.FlowLayout( java.awt.FlowLayout.CENTER, 2, 0 );
+////					} else {
+//						return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+////					}
+//				}
+//				public Button getOkButton() {
+//					return this.okButton;
+//				}
+//			};
+//			
+//			OkCancelPanel okCancelPanel = new OkCancelPanel();
+//			okCancelPanel.setBackgroundColor( null );
+//
+//			PageAxisPanel southPanel = new PageAxisPanel();
+//			southPanel.addComponent( this.explanationLabel );
+//			southPanel.addComponent( okCancelPanel );
+//
+//			java.awt.Color backgroundColor = mainPane.getBackgroundColor();
+//			this.explanationLabel.setBackgroundColor( backgroundColor );
+//			
+//			BorderPanel borderPanel = dialog.getContentPanel();
+//			borderPanel.setBackgroundColor( backgroundColor );
+//			borderPanel.addComponent( mainPane, BorderPanel.Constraint.CENTER );
+//			borderPanel.addComponent( southPanel, BorderPanel.Constraint.PAGE_END );
+//			
+//			dialog.setDefaultButton( okCancelPanel.getOkButton() );
+//
+//			CommitOperation.getInstance().setDialog(dialog);
+//			CancelOperation.getInstance().setDialog(dialog);
+//			this.isOk = false;
+//
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate.  observer should not need to be added to the root" );
+//			ContextManager.getRootContext().addChildrenObserver( this.childrenObserver );
+//			this.updateOperationAndExplanation( context );
+//
+//			return borderPanel;
+//		} else {
+//			this.isOk = false;
+//			return null;
+//		}
+//	}
+//	@Override
+//	protected final void releaseContentPane(InputDialogOperationContext<J> context, Dialog dialog, Container<?> contentPane) {
+//		if( contentPane != null ) {
+//			this.epilogue(context, this.isOk);
+//			
+//			ContextManager.getRootContext().removeChildrenObserver( this.childrenObserver );
+//
+//			CommitOperation.getInstance().setDialog(null);
+//			CancelOperation.getInstance().setDialog(null);
+//			if( this.isOk ) {
+//				//pass
+//			} else {
+//				assert context.isCanceled();
+//			}
+//		} else {
+//			context.cancel();
+//		}
+//	}
 
 }

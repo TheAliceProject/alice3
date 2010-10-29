@@ -51,12 +51,16 @@ package edu.cmu.cs.dennisc.tutorial;
 		public void selectionChanged( StepsModel source, int fromIndex, int toIndex );
 	}
 	private int selectedIndex = -1;
+	private int furthestCompletedIndex = -1;
 	private java.util.List<Step> steps = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private boolean isForwardEnabled;
+	private edu.cmu.cs.dennisc.cheshire.StepAccessPolicy stepAccessPolicy = edu.cmu.cs.dennisc.cheshire.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP;
 	
 	private java.util.List< SelectionObserver > selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public StepsModel( boolean isForwardEnabled ) {
-		this.isForwardEnabled = isForwardEnabled;
+	public edu.cmu.cs.dennisc.cheshire.StepAccessPolicy getStepAccessPolicy() {
+		return this.stepAccessPolicy;
+	}
+	public void setStepAccessPolicy( edu.cmu.cs.dennisc.cheshire.StepAccessPolicy stepAccessPolicy ) {
+		this.stepAccessPolicy = stepAccessPolicy;
 	}
 	
 	public void addSelectionObserver( SelectionObserver selectionObserver ) {
@@ -65,8 +69,8 @@ package edu.cmu.cs.dennisc.tutorial;
 	public void removeSelectionObserver( SelectionObserver selectionObserver ) {
 		this.selectionObservers.add( selectionObserver );
 	}
-	public boolean isForwardEnabled() {
-		return this.isForwardEnabled;
+	public boolean isStepAccessible( int nextIndex ) {
+		return this.stepAccessPolicy.isStepAccessible( nextIndex, this.furthestCompletedIndex );
 	}
 	public Step getStepAt(int index) {
 		return this.steps.get(index);
@@ -89,6 +93,7 @@ package edu.cmu.cs.dennisc.tutorial;
 				selectionObserver.selectionChanged( this, prevSelectedIndex, nextSelectedIndex );
 			}
 		}
+		this.furthestCompletedIndex = Math.max( this.furthestCompletedIndex, nextSelectedIndex );
 	}
 
 	/*package-private*/ void decrementSelectedIndex() {
@@ -116,7 +121,8 @@ package edu.cmu.cs.dennisc.tutorial;
 				break;
 			}
 		}
-		if( this.isForwardEnabled || nextSelectedIndex < prevSelectedIndex ) {
+		
+		if( this.stepAccessPolicy.isStepAccessible( nextSelectedIndex, this.furthestCompletedIndex ) || nextSelectedIndex < prevSelectedIndex ) {
 			this.setSelectedIndex( nextSelectedIndex );
 		}
 	}

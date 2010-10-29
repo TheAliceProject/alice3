@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.menubar;
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
+public class ProjectMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static ProjectMenuModel instance = new ProjectMenuModel();
 	}
@@ -55,9 +55,11 @@ public class ProjectMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuMode
 	private ProjectMenuModel() {
 		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ),
 				org.alice.ide.croquet.models.project.ManageResourcesOperation.getInstance(),
-				org.alice.ide.croquet.models.project.StatisticsOperation.getInstance(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ast.TypeRootMenuModel.getInstance()
+				org.alice.ide.croquet.models.project.StatisticsOperation.getInstance()
+//				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+//				org.alice.ide.IDE.getSingleton().getRunOperation()
+//				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+//				org.alice.ide.croquet.models.ast.TypeRootMenuModel.getInstance()
 		);
 	}
 }

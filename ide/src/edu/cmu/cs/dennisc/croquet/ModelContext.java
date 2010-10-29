@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ModelContext<M extends Model> extends HistoryNode {
+public abstract class ModelContext<M extends Model> extends HistoryNode< ModelContext > {
 	public interface CommitObserver {
 		public void committing(Edit edit);
 		public void committed(Edit edit);
@@ -56,7 +56,7 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	}
 	private java.util.List<CommitObserver> commitObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private java.util.List<ChildrenObserver> childrenObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private java.util.List<HistoryNode> children;
+	private java.util.List<HistoryNode<?>> children;
 	private M model;
 	private CodableResolver< M > modelResolver;
 	private java.util.EventObject awtEvent;
@@ -75,22 +75,6 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	/*package-private*/ ModelContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-
-//	public Group getEditGroup() {
-//		Model model = this.getModel();
-//		if( model.isOwnerOfEdit() ) {
-//			return model.getGroup();
-//		} else {
-//			HistoryNode lastChild = this.getLastChild();
-//			if( lastChild instanceof ModelContext< ? > ) {
-//				ModelContext< ? > lastChildContext = (ModelContext< ? >)lastChild;
-//				return lastChildContext.getEditGroup();
-//			} else {
-//				return null;
-//			}
-//		}
-//	}
-
 	public void EPIC_HACK_clear() {
 		this.children.clear();
 	}
@@ -101,6 +85,9 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		HistoryNode[] array = binaryDecoder.decodeBinaryEncodableAndDecodableArray(HistoryNode.class);
 		this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set(this.children, array);
+		for( HistoryNode node : this.children ) {
+			node.setParent( this );
+		}
 	}
 	@Override
 	protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
@@ -118,7 +105,13 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	}
 
 	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( Retargeter retargeter ) {
+		if( this.modelResolver != null ) {
+			//pass
+		} else {
+			System.err.println( "MODEL RESOVER NULL: " + this );
+//			Thread.dumpStack();
+		}
 		if( this.modelResolver instanceof RetargetableResolver< ? > ) {
 			RetargetableResolver< ? > retargetableResolver = (RetargetableResolver< ? >)this.modelResolver;
 			retargetableResolver.retarget( retargeter );
@@ -174,19 +167,22 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		}
 	}
 
-	public Iterable<HistoryNode> getChildren() {
+	public java.util.ListIterator<HistoryNode<?>> getChildListIterator() {
+		return this.children.listIterator();
+	}
+	public Iterable<HistoryNode<?>> getChildren() {
 		return this.children;
 	}
 	public int getChildCount() {
 		return this.children.size();
 	}
-	public HistoryNode getChildAt(int childIndex) {
+	public HistoryNode<?> getChildAt(int childIndex) {
 		return this.children.get(childIndex);
 	}
-	public int getIndexOfChild( HistoryNode child ) {
+	public int getIndexOfChild( HistoryNode<?> child ) {
 		return this.children.indexOf( child );
 	}
-	public HistoryNode getLastChild() {
+	public HistoryNode<?> getLastChild() {
 		final int N = this.getChildCount();
 		if( N > 0 ) {
 			return this.getChildAt( N-1 );
@@ -194,11 +190,11 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			return null;
 		}
 	}
-	public <N extends edu.cmu.cs.dennisc.croquet.HistoryNode> N getLastChildAssignableTo( Class<N> cls ) {
+	public <N extends HistoryNode> N getLastChildAssignableTo( Class<N> cls ) {
 		final int N = this.getChildCount();
 		int i=N-1;
 		while( i >= 0 ) {
-			edu.cmu.cs.dennisc.croquet.HistoryNode node = this.getChildAt( i );
+			HistoryNode node = this.getChildAt( i );
 			if( cls.isAssignableFrom( node.getClass() ) ) {
 				return cls.cast( node );
 			}
@@ -266,7 +262,7 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 //			//todo
 //			if( state == State.DESELECTED ) {
 //				HistoryNode lastNode = this.children.get(N - 1);
-//				if( lastNode instanceof edu.cmu.cs.dennisc.croquet.MenuModelContext.MenuDeselectedEvent ) { 
+//				if( lastNode instanceof MenuModelContext.MenuDeselectedEvent ) { 
 //					//pass
 //				} else {
 //					return null;
@@ -292,16 +288,49 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		}
 		return false;
 	}
+	
+	public final boolean isSuccessfullyCompleted() {
+		State state = this.getState();
+		return state == State.COMMITTED || state == State.FINISHED;
+	}
+	
+	public final SuccessfulCompletionEvent getSuccessfulCompletionEvent() {
+		HistoryNode< ? > lastChild = this.getLastChild();
+		if( lastChild instanceof SuccessfulCompletionEvent ) {
+			return (SuccessfulCompletionEvent)lastChild;
+		} else if( lastChild instanceof ModelContext< ? > ) {
+			return ((ModelContext< ? >)lastChild).getSuccessfulCompletionEvent();
+		} else {
+			return null;
+		}
+//		final int N = this.children.size();
+//		int i = N-1;
+//		while( i >= 0 ) {
+//			HistoryNode node = this.children.get( i );
+//			if( node instanceof SuccessfulCompletionEvent ) {
+//				return (SuccessfulCompletionEvent)node;
+//			}
+//			i --;
+//		}
+//		return null;
+	}
 
-	protected void addChild(HistoryNode child) {
+	public void addChild(HistoryNode child) {
+		this.addChild( -1, child );
+	}
+	public void addChild(int index, HistoryNode child) {
 		this.fireAddingChild(child);
 		synchronized (this.children) {
-			this.children.add(child);
+			if( index == -1 ) {
+				this.children.add( child );
+			} else {
+				this.children.add( index, child );
+			}
 		}
 		child.setParent( this );
 		this.fireAddedChild(child);
 	}
-
+	
 	public void finish() {
 		this.addChild(new FinishEvent());
 	}
@@ -327,6 +356,11 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		return null;
 	}
 
+	@Override
+	public String getTutorialStepTitle( UserInformation userInformation ) {
+		edu.cmu.cs.dennisc.croquet.Model model = this.getModel();
+		return model.getTutorialStepTitle( this, userInformation );
+	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv ) {
 		super.appendRepr( rv );

@@ -47,12 +47,12 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class StringStateContext extends ModelContext<StringState> {
-	public static class StringStateEvent extends ModelEvent<StringStateContext> {
+	public static abstract class DocumentEvent extends ModelEvent<StringStateContext> {
 		private javax.swing.event.DocumentEvent documentEvent;
-		public StringStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		public DocumentEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private StringStateEvent( javax.swing.event.DocumentEvent documentEvent ) {
+		private DocumentEvent( javax.swing.event.DocumentEvent documentEvent ) {
 			this.documentEvent = documentEvent;
 		}
 		public javax.swing.event.DocumentEvent getDocumentEvent() {
@@ -63,6 +63,31 @@ public class StringStateContext extends ModelContext<StringState> {
 			return null;
 		}
 	}
+	public static class DocumentChangeEvent extends DocumentEvent {
+		public DocumentChangeEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private DocumentChangeEvent( javax.swing.event.DocumentEvent documentEvent ) {
+			super( documentEvent );
+		}
+	}
+	public static class DocumentInsertEvent extends DocumentEvent {
+		public DocumentInsertEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private DocumentInsertEvent( javax.swing.event.DocumentEvent documentEvent ) {
+			super( documentEvent );
+		}
+	}
+	public static class DocumentRemoveEvent extends DocumentEvent {
+		public DocumentRemoveEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private DocumentRemoveEvent( javax.swing.event.DocumentEvent documentEvent ) {
+			super( documentEvent );
+		}
+	}
+	
 	
 //	private static class FocusEvent extends ModelEvent< StringStateContext > {
 //		private java.awt.event.FocusEvent focusEvent;
@@ -97,8 +122,11 @@ public class StringStateContext extends ModelContext<StringState> {
 //		}
 //	}
 	
-	/*package-private*/ StringStateContext( StringState stringState, java.util.EventObject e, ViewController< ?,? > viewController ) {
+	private String previousValue;
+	private String nextValue;
+	/*package-private*/ StringStateContext( StringState stringState, java.util.EventObject e, ViewController< ?,? > viewController, String previousValue ) {
 		super( stringState, e, viewController );
+		this.previousValue = previousValue;
 	}
 	public StringStateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
@@ -110,7 +138,26 @@ public class StringStateContext extends ModelContext<StringState> {
 //	/*package-private*/ void handleFocusLost( java.awt.event.FocusEvent e ) {
 //		this.addChild( new FocusLostEvent( e ) );
 //	}
-	/*package-private*/ void handleDocumentEvent( javax.swing.event.DocumentEvent e ) {
-		this.addChild( new StringStateEvent( e ) );
+	/*package-private*/ void handleDocumentEvent( javax.swing.event.DocumentEvent e, String nextValue ) {
+		javax.swing.event.DocumentEvent.EventType eventType = e.getType();
+		DocumentEvent documentEvent;
+		if( eventType == javax.swing.event.DocumentEvent.EventType.CHANGE ) {
+			documentEvent = new DocumentChangeEvent( e );
+		} else if( eventType == javax.swing.event.DocumentEvent.EventType.INSERT ) {
+			documentEvent = new DocumentInsertEvent( e );
+		} else if( eventType == javax.swing.event.DocumentEvent.EventType.REMOVE ) {
+			documentEvent = new DocumentRemoveEvent( e );
+		} else {
+			documentEvent = null;
+		}
+		if( documentEvent != null ) {
+			this.addChild( documentEvent );
+		}
+		this.nextValue = nextValue;
 	}
+	/*package-private*/ void handlePop() {
+		this.commitAndInvokeDo( new StringStateEdit( this.previousValue, this.nextValue ) );
+	}
+	
+	
 }

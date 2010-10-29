@@ -187,6 +187,8 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 //	}
 	private java.awt.Dimension dropSize = new java.awt.Dimension( 0,0 );
 	private int currentPotentialDropIndex = -1;
+	
+	public static boolean EPIC_HACK_ignoreDrawingDesired = false;
 	public void setIsCurrentUnder( boolean isCurrentUnder ) {
 		if( isCurrentUnder ) {
 			//pass
@@ -197,7 +199,15 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 			edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
 			if( component0 instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance ) {
 				org.alice.ide.codeeditor.EmptyStatementListAffordance emptyStatementListAfforance = (org.alice.ide.codeeditor.EmptyStatementListAffordance)component0;
-				emptyStatementListAfforance.setDrawingDesired( isCurrentUnder == false );
+	
+				boolean isDrawingDesired = isCurrentUnder == false;
+				
+				if( EPIC_HACK_ignoreDrawingDesired ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: EmptyStatementListAffordance isDrawingDisabled" );
+					isDrawingDesired = false;
+				}
+				
+				emptyStatementListAfforance.setDrawingDesired( isDrawingDesired );
 			}
 		}
 	}

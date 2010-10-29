@@ -50,6 +50,9 @@ public class MostlyDeterminedStringConcatenationFillIn extends edu.cmu.cs.dennis
 	public MostlyDeterminedStringConcatenationFillIn( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand ) {
 		this.leftOperand = leftOperand;
 	}
+	public MostlyDeterminedStringConcatenationFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}

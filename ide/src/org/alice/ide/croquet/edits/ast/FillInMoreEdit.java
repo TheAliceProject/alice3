@@ -46,15 +46,46 @@ package org.alice.ide.croquet.edits.ast;
  * @author Dennis Cosgrove
  */
 public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.FillInMoreMenuModel > {
+	public static class FillInMoreEditMemento extends Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> {
+		private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
+		public FillInMoreEditMemento( FillInMoreEdit edit ) {
+			super( edit );
+			this.argumentExpression = edit.argumentExpression;
+		}
+		public FillInMoreEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > createEdit() {
+			return new FillInMoreEdit( this );
+		}
+		@Override
+		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+			java.util.UUID prevExpressionId = binaryDecoder.decodeId();
+			this.argumentExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, prevExpressionId );
+		}
+		@Override
+		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			binaryEncoder.encode( this.argumentExpression.getUUID() );
+		}
+	}
+
 	private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
-	public FillInMoreEdit() {
-	}
+
 	public FillInMoreEdit( edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
-		this.setArgumentExpression( argumentExpression );
-	}
-	public void setArgumentExpression(edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression) {
 		this.argumentExpression = argumentExpression;
 	}
+	private FillInMoreEdit( FillInMoreEditMemento memento ) {
+		super( memento );
+		this.argumentExpression = memento.argumentExpression;
+	}
+	@Override
+	public Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> createMemento() {
+		return new FillInMoreEditMemento( this );
+	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		org.alice.ide.croquet.models.ast.FillInMoreMenuModel popupMenuOperation = this.getCascadingRoot();
@@ -110,15 +141,5 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< or
 			edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, argument, locale );
 		}
 		return rv;
-	}
-
-	
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		throw new RuntimeException( "todo" );
-	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
 	}
 }

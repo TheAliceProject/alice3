@@ -476,8 +476,13 @@ public class Child extends Person {
 	public void rubChin() {
 		perform( Cycle.RUB_CHIN );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@Deprecated
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void tabHead() {
+		perform( Cycle.TAP_HEAD );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void tapHead() {
 		perform( Cycle.TAP_HEAD );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )

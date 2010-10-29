@@ -50,6 +50,24 @@ public class MenuItemContainerUtilities {
 	private MenuItemContainerUtilities() {
 		throw new AssertionError();
 	}
+	
+//	public static java.util.List< Model > getMenuPath( MenuItem menuItem ) {
+//		java.util.List< Model > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//		rv.add( menuItem.getModel() );
+//
+//		Container< ? > parent = menuItem.getParent();
+//		while( parent != null ) {
+//			if( parent instanceof MenuItemContainer ) {
+//				MenuItemContainer menuItemContainer = (MenuItemContainer)parent;
+//				rv.add( menuItemContainer.getViewController().getModel() );
+//			} else {
+//				break;
+//			}
+//			parent = parent.getParent();
+//		}
+//		return rv;
+//	}
+	
 	public static MenuItemContainer addMenuElement( MenuItemContainer rv, Model model ) {
 		if( model != null ) {
 			if( model instanceof MenuModel ) {

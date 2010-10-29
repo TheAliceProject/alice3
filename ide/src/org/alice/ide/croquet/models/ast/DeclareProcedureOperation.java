@@ -69,4 +69,18 @@ public class DeclareProcedureOperation extends DeclareMethodOperation {
 	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 		return new org.alice.ide.declarationpanes.CreateProcedurePane( type );
 	}
+	@Override
+	protected String getMethodDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return "Procedure";
+	}
+	@Override
+	protected StringBuilder appendTutorialFinishNoteText( StringBuilder rv, org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		rv.append( "a) Enter name: " );
+		rv.append( "<strong>" );
+		rv.append( declareMethodEdit.getMethod().getName() );
+		rv.append( "</strong>" );
+		rv.append( "<br>" );
+		rv.append( "b) Press <strong>OK</strong>." );
+		return rv;
+	}
 }

@@ -42,31 +42,43 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
+import edu.cmu.cs.dennisc.cheshire.StepAccessPolicy;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class TutorialStencil extends Stencil {
+public class TutorialStencil extends Stencil {
 	@Deprecated
 	/*package-private*/ static boolean isResultOfNextOperation = false;
-	/*package-private*/ static java.awt.Color CONTROL_COLOR = new java.awt.Color(255, 255, 191);
+	/*package-private*/ static java.awt.Color CONTROL_COLOR = new java.awt.Color(230, 230, 255);
 	/*package-private*/ static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" ), "TUTORIAL_GROUP" );
 	private static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_COMPLETION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "ea5df77d-d74d-4364-9bf5-2df1b2ede0a4" ), "TUTORIAL_COMPLETION_GROUP" );
 
+	private boolean isIgnoring = false;
 	private edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
 		public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
 		}
 		public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
-			Step step = stepsModel.getSelectedStep();
-			if (step instanceof WaitingStep) {
-				WaitingStep waitingStep = (WaitingStep) step;
-				if( waitingStep.isWhatWeveBeenWaitingFor( child ) ) {
-					nextStepOperation.setEnabled( true );
-					if( step.isAutoAdvanceDesired() ) {
-						javax.swing.SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								nextStepOperation.fire();
-							}
-						} );
+			if( isIgnoring ) {
+				//pass
+			} else {
+				Step step = stepsModel.getSelectedStep();
+				if (step instanceof WaitingStep) {
+					WaitingStep waitingStep = (WaitingStep) step;
+					if( waitingStep.isWhatWeveBeenWaitingFor( child ) ) {
+						nextStepOperation.setEnabled( true );
+						if( step.isAutoAdvanceDesired() ) {
+							javax.swing.SwingUtilities.invokeLater(new Runnable() {
+								public void run() {
+									isIgnoring = true;
+									try {
+										nextStepOperation.fire();
+									} finally {
+										isIgnoring = false;
+									}
+								}
+							} );
+						}
 					}
 				}
 			}
@@ -82,9 +94,7 @@ package edu.cmu.cs.dennisc.tutorial;
 //		}
 //	} );
 	
-	private static final boolean IS_FORWARD_ENABLED = true;
-	
-	private StepsModel stepsModel = new StepsModel( IS_FORWARD_ENABLED );
+	private StepsModel stepsModel = new StepsModel();
 	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel( stepsModel );
 	
 	private PreviousStepOperation previousStepOperation = new PreviousStepOperation( this.stepsModel );
@@ -97,7 +107,8 @@ package edu.cmu.cs.dennisc.tutorial;
 	
 	private edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
-	private edu.cmu.cs.dennisc.croquet.BorderPanel controlsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+	private boolean isOptimizedForBugRepro;
+	
 	private edu.cmu.cs.dennisc.croquet.CardPanel cardPanel = new edu.cmu.cs.dennisc.croquet.CardPanel();
 	private StepsModel.SelectionObserver selectionObserver = new StepsModel.SelectionObserver() {
 		public void selectionChanging( StepsModel source, int fromIndex, int toIndex ) {
@@ -111,18 +122,31 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	};
 	
-	public static TutorialStencil createInstance( edu.cmu.cs.dennisc.croquet.Group[] groups ) {
+	public static javax.swing.JLayeredPane getLayeredPane( boolean isOptimizedForBugRepro ) {
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		javax.swing.JFrame frame = application.getFrame().getAwtComponent();
 		javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
-		final int PAD = 4;
-		frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(PAD+32,PAD,0,PAD));
-		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD,PAD));
-		return new TutorialStencil( MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() ); 
+		if( isOptimizedForBugRepro ) {
+			frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(0,300,0,0));
+			((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,300,0,0));
+		} else {
+			final int PAD = 4;
+			frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(PAD+32,PAD,0,PAD));
+			((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD,PAD));
+		}
+		return layeredPane; 
 	}
-	/*package-private*/ TutorialStencil( MenuPolicy menuPolicy, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
-		super( menuPolicy, layeredPane );
-		
+	
+	
+	public static TutorialStencil createInstance( edu.cmu.cs.dennisc.croquet.Group[] groups ) {
+		return new TutorialStencil( edu.cmu.cs.dennisc.cheshire.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP, DefaultScrollingRequiredRenderer.INSTANCE, false, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() ); 
+	}
+	
+	public TutorialStencil( edu.cmu.cs.dennisc.cheshire.MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, boolean isOptimizedForBugRepro, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
+		super( menuPolicy, scrollingRequiredRenderer, getLayeredPane( isOptimizedForBugRepro ) );
+		this.isOptimizedForBugRepro = isOptimizedForBugRepro;
+
+		this.stepsModel.setStepAccessPolicy( stepAccessPolicy );
 		rootContext.addChildrenObserver( this.childrenObserver );
 
 		final int N = groups.length;
@@ -159,39 +183,53 @@ package edu.cmu.cs.dennisc.tutorial;
 		} );
 
 
-		edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0);
-		controlPanel.addComponent(this.previousStepOperation.createButton());
-		controlPanel.addComponent( new StepsComboBox( this.stepsComboBoxModel, this.isAbovePopupMenus()==false ) );
-		controlPanel.addComponent(this.nextStepOperation.createButton());
-		this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
-		this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
-		
-		edu.cmu.cs.dennisc.croquet.CheckBox isPlayingSoundsCheckBox = this.isPlayingSounds.createCheckBox();
-		isPlayingSoundsCheckBox.getAwtComponent().setOpaque( false );
-		edu.cmu.cs.dennisc.croquet.CheckBox isInterceptingEventsCheckBox = this.isInterceptingEvents.createCheckBox();
-		isInterceptingEventsCheckBox.getAwtComponent().setOpaque( false );
-		edu.cmu.cs.dennisc.croquet.CheckBox isPaintingStencilCheckBox = this.isPaintingStencil.createCheckBox();
-		isPaintingStencilCheckBox.getAwtComponent().setOpaque( false );
-				
-		edu.cmu.cs.dennisc.croquet.FlowPanel westPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0);
-		westPanel.addComponent( isPlayingSoundsCheckBox );
-		this.controlsPanel.addComponent(westPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START);
+		if( this.isOptimizedForBugRepro ) {
+			edu.cmu.cs.dennisc.croquet.LineAxisPanel prevNextPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+			prevNextPanel.addComponent(this.previousStepOperation.createButton());
+			prevNextPanel.addComponent(this.nextStepOperation.createButton());
 
-		edu.cmu.cs.dennisc.croquet.FlowPanel eastPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0);
-		//eastPanel.addComponent( isInterceptingEventsCheckBox );
-		eastPanel.addComponent( isPaintingStencilCheckBox );
-		this.controlsPanel.addComponent(eastPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END);
-		this.controlsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
+			edu.cmu.cs.dennisc.croquet.BorderPanel controlPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+			controlPanel.addComponent(prevNextPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START);
+			controlPanel.addComponent(new StepsList(stepsComboBoxModel), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
+			
+			this.internalAddComponent(controlPanel, java.awt.BorderLayout.LINE_START);
+			
+		} else {
+			edu.cmu.cs.dennisc.croquet.BorderPanel controlsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+			edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0);
+			controlPanel.addComponent(this.previousStepOperation.createButton());
+			controlPanel.addComponent( new StepsComboBox( this.stepsComboBoxModel, this.isAbovePopupMenus()==false ) );
+			controlPanel.addComponent(this.nextStepOperation.createButton());
+			controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
+			this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
+			
+			edu.cmu.cs.dennisc.croquet.CheckBox isPlayingSoundsCheckBox = this.isPlayingSounds.createCheckBox();
+			isPlayingSoundsCheckBox.getAwtComponent().setOpaque( false );
+			edu.cmu.cs.dennisc.croquet.CheckBox isInterceptingEventsCheckBox = this.isInterceptingEvents.createCheckBox();
+			isInterceptingEventsCheckBox.getAwtComponent().setOpaque( false );
+			edu.cmu.cs.dennisc.croquet.CheckBox isPaintingStencilCheckBox = this.isPaintingStencil.createCheckBox();
+			isPaintingStencilCheckBox.getAwtComponent().setOpaque( false );
+					
+			edu.cmu.cs.dennisc.croquet.FlowPanel westPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0);
+			westPanel.addComponent( isPlayingSoundsCheckBox );
+			//controlsPanel.addComponent(westPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START);
 
-		for( java.awt.Component component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.controlsPanel.getAwtComponent() ) ) {
-			if( component instanceof javax.swing.JPanel ) {
-				//pass
-			} else {
-				component.setCursor( java.awt.Cursor.getDefaultCursor() );
+			edu.cmu.cs.dennisc.croquet.FlowPanel eastPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0);
+			//eastPanel.addComponent( isInterceptingEventsCheckBox );
+			eastPanel.addComponent( isPaintingStencilCheckBox );
+			//controlsPanel.addComponent(eastPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END);
+			controlsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
+
+			for( java.awt.Component component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( controlsPanel.getAwtComponent() ) ) {
+				if( component instanceof javax.swing.JPanel ) {
+					//pass
+				} else {
+					component.setCursor( java.awt.Cursor.getDefaultCursor() );
+				}
 			}
-		}
 
-		this.internalAddComponent(this.controlsPanel, java.awt.BorderLayout.NORTH);
+			this.internalAddComponent(controlsPanel, java.awt.BorderLayout.PAGE_START);
+		}
 		this.internalAddComponent(this.cardPanel, java.awt.BorderLayout.CENTER);
 	}
 
@@ -240,6 +278,11 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 
+	
+	public void restoreHistoryIndicesDueToCancel() {
+		this.restoreHistoryIndices( this.stepsModel.getSelectedIndex() );
+	}
+	
 	private int prevSelectedIndex = -1;
 	private void completeOrUndoIfNecessary() {
 		SoundCache.pushIgnoreStartRequests();
@@ -296,21 +339,23 @@ package edu.cmu.cs.dennisc.tutorial;
 
 			int selectedIndex = stepsModel.getSelectedIndex();
 
+//			boolean isAutoAdvanceDesired = false;
 			boolean isWaiting;
 			if (step instanceof WaitingStep) {
 				WaitingStep waitingStep = (WaitingStep) step;
 				isWaiting = waitingStep.isAlreadyInTheDesiredState() == false;
+//				isAutoAdvanceDesired = isWaiting == false && waitingStep.isAutoAdvanceDesriedWhenAlreadyInTheDesiredState();
 			} else {
 				isWaiting = false;
 			}
 			
-			this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < this.stepsModel.getSize() - 1 && isWaiting==false );
+			if( this.isOptimizedForBugRepro ) {
+				//pass
+			} else {
+				this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < this.stepsModel.getSize() - 1 && isWaiting==false );
+			}
 			this.previousStepOperation.setEnabled(1 <= selectedIndex);
-//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//				public void run() {
-//					TutorialStencil.this.controlsPanel.repaint();
-//				}
-//			} );
+
 			this.requestFocus();
 			this.revalidateAndRepaint();
 		}
@@ -377,11 +422,14 @@ package edu.cmu.cs.dennisc.tutorial;
 	protected Step getCurrentStep() {
 		return this.stepsModel.getSelectedStep();
 	}
-	/*package-private*/ void addStep( Step step ) {
+	public void addStep( Step step ) {
 		this.stepsModel.addStep( step );
 		step.setTutorialStencil( this );
 	}
-	/*package-private*/ void setSelectedIndex( int index ) {
+	public void setSelectedIndex( int index ) {
+		if( index < 0 ) {
+			index += this.stepsModel.getSize();
+		}
 		this.stepsModel.setSelectedIndex( index );
 	}
 		

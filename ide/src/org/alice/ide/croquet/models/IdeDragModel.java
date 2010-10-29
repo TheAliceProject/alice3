@@ -53,10 +53,10 @@ public abstract class IdeDragModel extends edu.cmu.cs.dennisc.croquet.DragAndDro
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	@Override
-	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent dragSource ) {
-		return getIDE().createListOfPotentialDropReceptors( dragSource );
-	}
+//	@Override
+//	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent dragSource ) {
+//		return getIDE().createListOfPotentialDropReceptors( dragSource );
+//	}
 	@Override
 	public void handleDragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		getIDE().handleDragStarted( dragAndDropContext );

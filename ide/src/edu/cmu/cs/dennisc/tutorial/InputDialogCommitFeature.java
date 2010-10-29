@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class InputDialogCommitFeature extends Feature {
+public class InputDialogCommitFeature extends Feature {
 	public InputDialogCommitFeature(edu.cmu.cs.dennisc.croquet.RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> trackableShapeResolver) {
 		super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
 	}

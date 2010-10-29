@@ -45,9 +45,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CommitEvent extends AbstractCompleteEvent {
+public class CommitEvent extends SuccessfulCompletionEvent {
 	private Edit<?> edit;
-	/*package-private*/ CommitEvent( Edit<?> edit ) {
+	public CommitEvent( Edit<?> edit ) {
 		this.edit = edit;
 	}
 	public CommitEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -55,11 +55,12 @@ public class CommitEvent extends AbstractCompleteEvent {
 	}
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.edit = binaryDecoder.decodeBinaryEncodableAndDecodable(/* Edit.class */);
+		edu.cmu.cs.dennisc.croquet.Edit.Memento memento = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		this.edit = memento.createEdit();
 	}
 	@Override
 	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.edit );
+		binaryEncoder.encode( this.edit.createMemento() );
 	}
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
@@ -70,13 +71,16 @@ public class CommitEvent extends AbstractCompleteEvent {
 	public State getState() {
 		return State.COMMITTED;
 	}
+	@Override
 	public Edit<?> getEdit() {
 		return this.edit;
 	}
 	@Override
 	protected java.lang.StringBuilder appendRepr( java.lang.StringBuilder rv ) {
 		super.appendRepr( rv );
+		rv.append( "[" );
 		rv.append( this.edit );
+		rv.append( "]" );
 		return rv;
 	}
 }

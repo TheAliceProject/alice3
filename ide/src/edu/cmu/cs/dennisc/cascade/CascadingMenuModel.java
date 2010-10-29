@@ -45,17 +45,25 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel implements CascadingRoot {
+public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.RetargetableMenuModel implements CascadingRoot {
 	public CascadingMenuModel( java.util.UUID id ) {
 		super( id );
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Group getItemGroup();
 	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel( FillIn< ? > fillIn ) {
-		return InternalCascadingMenuModel.getInstance( fillIn );
+		return InternalCascadingMenuModel.getInstance( fillIn.getId() );
 	}
 	protected edu.cmu.cs.dennisc.croquet.Operation< ? > createItemOperation( FillIn< ? > fillIn ) {
-		return InternalCascadingItemOperation.getInstance( this.getItemGroup(), fillIn );
+		return InternalCascadingItemOperation.getInstance( this.getItemGroup(), fillIn.getId() );
 	}
+//	public edu.cmu.cs.dennisc.croquet.CodableResolver getResolver() {
+//		return this.getCodableResolver();
+//	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.CodableResolver getCodableResolver() {
+		return super.getCodableResolver();
+	}
+	
 	public edu.cmu.cs.dennisc.croquet.Model createCroquetModel( FillIn< ? > fillIn, boolean isLast ) {
 		if( fillIn instanceof SeparatorFillIn ) {
 			SeparatorFillIn separatorFillIn = (SeparatorFillIn)fillIn;
@@ -74,6 +82,11 @@ public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.Menu
 			}
 		}
 	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.croquet.RetargetingData getRetargetableData() {
+		return this.getCascadeBlank();
+	}
 
 	protected abstract edu.cmu.cs.dennisc.cascade.Blank getCascadeBlank();
 	@Override
@@ -81,6 +94,9 @@ public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.Menu
 		super.handlePopupMenuPrologue( popupMenu, context );
 		edu.cmu.cs.dennisc.cascade.Blank blank = this.getCascadeBlank();
 		blank.setCascadingRoot( this );
+		if( blank instanceof ForwardingBlank ) {
+			blank = blank.getFillInAt( 0 ).getBlankAt( 0 );
+		}
 		java.util.List< edu.cmu.cs.dennisc.cascade.Node > children = blank.getChildren();
 		for( edu.cmu.cs.dennisc.cascade.Node child : children ) {
 			edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = (edu.cmu.cs.dennisc.cascade.FillIn< ? >)child;

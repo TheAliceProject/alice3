@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class Feature {
+public abstract class Feature {
 	private static final int ARROW_HEAD_LENGTH = 19;
 	private static final double ARROW_HEAD_LENGTH_SQUARED = ARROW_HEAD_LENGTH*ARROW_HEAD_LENGTH;
 	private static final int ARROW_HEAD_HALF_HEIGHT = 6;
@@ -96,7 +96,11 @@ package edu.cmu.cs.dennisc.tutorial;
 			java.awt.Insets boundsInsets = this.getBoundsInsets();
 			if( boundsInsets != null ) {
 				java.awt.Shape shape = trackableShape.getShape( asSeenBy, boundsInsets );
-				return shape.getBounds();
+				if( shape != null ) {
+					return shape.getBounds();
+				} else {
+					return null;
+				}
 			} else {
 				return null;
 			}
@@ -105,7 +109,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 	
-	/*package-private*/ void setHeightConstraint( Integer heightConstraint ) {
+	public void setHeightConstraint( Integer heightConstraint ) {
 		this.heightConstraint = heightConstraint;
 	}
 

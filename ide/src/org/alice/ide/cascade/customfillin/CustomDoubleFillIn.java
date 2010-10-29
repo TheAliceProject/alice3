@@ -51,7 +51,7 @@ public class CustomDoubleFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.a
 		return "Real Number";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > createValueChooser() {
-		return new org.alice.ide.choosers.DoubleChooser();
+	protected org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation getInputDialogOperation() {
+		return org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance();
 	}
 }

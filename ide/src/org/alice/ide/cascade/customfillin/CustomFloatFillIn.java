@@ -51,7 +51,7 @@ public class CustomFloatFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.as
 		return "(Single Precision) Real Number";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > createValueChooser() {
-		return new org.alice.ide.choosers.FloatChooser();
+	protected org.alice.ide.croquet.models.custom.CustomFloatInputDialogOperation getInputDialogOperation() {
+		return org.alice.ide.croquet.models.custom.CustomFloatInputDialogOperation.getInstance();
 	}
 }

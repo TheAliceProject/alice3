@@ -46,12 +46,40 @@ package org.alice.ide.croquet.edits.ast;
  * @author Dennis Cosgrove
  */
 public class AddExpressionEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.AddExpressionMenuModel > {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	private int index;
-	public AddExpressionEdit() {
+	public static class AddExpressionEditMemento extends Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> {
+		private edu.cmu.cs.dennisc.alice.ast.Expression expression;
+		public AddExpressionEditMemento( AddExpressionEdit edit ) {
+			super( edit );
+			this.expression = edit.expression;
+		}
+		public AddExpressionEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > createEdit() {
+			return new AddExpressionEdit( this );
+		}
+		@Override
+		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			throw new RuntimeException( "todo" );
+		}
+		@Override
+		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			throw new RuntimeException( "todo" );
+		}
 	}
+	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
+	private transient int index;
 	public AddExpressionEdit( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		this.expression = expression;
+	}
+	private AddExpressionEdit( AddExpressionEditMemento memento ) {
+		super( memento );
+		this.expression = memento.expression;
+	}
+	@Override
+	public Memento< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > createMemento() {
+		return new AddExpressionEditMemento( this );
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
@@ -71,15 +99,5 @@ public class AddExpressionEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit<
 		rv.append( "add: " );
 		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.expression, locale );
 		return rv;
-	}
-
-	
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		throw new RuntimeException( "todo" );
-	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
 	}
 }

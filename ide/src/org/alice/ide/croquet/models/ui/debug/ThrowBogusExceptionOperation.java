@@ -54,6 +54,10 @@ public class ThrowBogusExceptionOperation extends org.alice.ide.operations.Incon
 	}
 	private ThrowBogusExceptionOperation() {
 		super( java.util.UUID.fromString( "8c417baa-8be7-42e9-818c-b6ed4ecd8758" ) );
+	}
+	@Override
+	protected void localize() {
+		super.localize();
 		this.setName( "Throw Bogus Exception..." );
 	}
 	@Override

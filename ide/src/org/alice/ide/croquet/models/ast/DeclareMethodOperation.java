@@ -45,12 +45,56 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclareMethodOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> {
+public abstract class DeclareMethodOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
 	public DeclareMethodOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		this.declaringType = declaringType;
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		assert originalEdit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
+		org.alice.ide.croquet.edits.ast.DeclareMethodEdit originalDeclareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)originalEdit;
+		return originalDeclareMethodEdit.createTutorialCompletionEdit( retargeter );
+	}
+	
+	//todo: rename
+	protected abstract String getMethodDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
+	protected abstract StringBuilder appendTutorialFinishNoteText( StringBuilder rv, org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
+
+	@Override
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		StringBuilder sb = new StringBuilder();
+		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
+			assert declareMethodEdit != null;
+			assert declareMethodEdit.getMethod() != null;
+			sb.append( "Declare " );
+			sb.append( this.getMethodDescription( userInformation ) );
+			sb.append( " named " );
+			sb.append( declareMethodEdit.getMethod().getName() );
+		}
+		return sb.toString();
+	}
+	
+	@Override
+	public String getTutorialFinishNoteText( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		StringBuilder sb = new StringBuilder();
+		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = inputDialogOperationContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
+			this.appendTutorialFinishNoteText( sb, declareMethodEdit, userInformation );
+		}
+		return sb.toString();
+	}
+
+//	@Override
+//	public edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+//		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
+//		org.alice.ide.croquet.edits.ast.DeclareMethodEdit originalDeclareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
+//		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( originalDeclareMethodEdit );
+//	}
 	protected String getDeclarationName(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context) {
 		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
 		if( createMethodPane != null ) {
@@ -59,6 +103,13 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 			return null;
 		}
 	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.Edit< ? > EPIC_HACK_createEdit( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context ) {
+		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
+		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getActualInputValue();
+		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( declaringType, method );
+	}
+
 	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType );
 	@Override
 	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > > context) {
@@ -109,15 +160,13 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 		return this.declaringType;
 	}
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[" );
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "[" );
 		if( this.declaringType != null ) {
-			sb.append( this.declaringType.getName() );
+			rv.append( this.declaringType.getName() );
 		}
-		sb.append( "]" );
-		return sb.toString();
-	}
-	
+		rv.append( "]" );
+		return rv;
+	}	
 }

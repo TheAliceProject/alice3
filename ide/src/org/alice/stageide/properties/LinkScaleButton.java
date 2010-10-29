@@ -158,6 +158,7 @@ public class LinkScaleButton  extends edu.cmu.cs.dennisc.croquet.BooleanStateBut
 				{
 					g.drawImage(LinkScaleButton.this.unlinkedIcon.getImage(), 0, 0, null );
 				}
+//				super.paintComponent(g);
 			}
 		};
 	}

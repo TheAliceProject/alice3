@@ -51,6 +51,9 @@ public class LabeledExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Exp
 		super( model );
 		this.text = text;
 	}
+	public LabeledExpressionFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
 		javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );

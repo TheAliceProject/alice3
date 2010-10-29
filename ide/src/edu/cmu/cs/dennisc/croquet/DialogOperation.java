@@ -50,7 +50,11 @@ public abstract class DialogOperation extends AbstractDialogOperation<DialogOper
 		super(group, id);
 	}
 	@Override
-	protected DialogOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public DialogOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushDialogOperationContext( this, e, viewController );
+	}
+	
+	public String getTutorialCloseNoteText( DialogOperationContext dialogOperationContext, UserInformation userInformation ) {
+		return "When finished press the <strong>Close</strong> button.";
 	}
 }

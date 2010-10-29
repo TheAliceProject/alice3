@@ -42,31 +42,11 @@
  */
 package org.alice.ide.choosers;
 
-class DoubleModel extends NumberModel {
-	public DoubleModel() {
-		 super( CALCULATOR_GROUP, java.util.UUID.fromString( "034bda41-f608-4c03-8090-f7c8b8e0bf1a" ) );
-	}
-	@Override
-	protected boolean isDecimalPointSupported() {
-		return true;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s ) {
-		double d = Double.parseDouble( s );
-		if( Double.isNaN( d ) ) {
-			return null;
-		} else {
-			return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( d );
-		}
-	}
-}
-
-
 /**
  * @author Dennis Cosgrove
  */
 public class DoubleChooser extends AbstractNumberChooser {
 	public DoubleChooser() {
-		super( new DoubleModel() );
+		super( org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() ); 
 	}
 }

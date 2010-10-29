@@ -65,7 +65,11 @@ public abstract class AuthoredStep extends Step {
 		return this.notes;
 	}
 	@Override
-	/*package-private*/ void setTutorialStencil( edu.cmu.cs.dennisc.tutorial.TutorialStencil tutorialStencil ) {
+	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability() {
+		return null;
+	}
+	@Override
+	public void setTutorialStencil( edu.cmu.cs.dennisc.tutorial.TutorialStencil tutorialStencil ) {
 		super.setTutorialStencil( tutorialStencil );
 		for( Note note : this.notes ) {
 			note.setTutorialStencil( tutorialStencil );

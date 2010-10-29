@@ -47,26 +47,15 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class InsertStatementActionOperationNewInstanceResolver extends edu.cmu.cs.dennisc.croquet.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.alice.ast.BlockStatement.class, Integer.TYPE, edu.cmu.cs.dennisc.alice.ast.Statement.class };
 	public InsertStatementActionOperationNewInstanceResolver( org.alice.ide.croquet.models.ast.InsertStatementActionOperation instance ) {
 		super( instance );
 	}
 	public InsertStatementActionOperationNewInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		Object[] arguments = this.getArguments();
-		assert arguments != null;
-		assert arguments.length == 3;
-		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
-		//todo: retarget index?
-		arguments[ 2 ] = retargeter.retarget( arguments[ 2 ] );
-	}
-
 	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return PARAMETER_TYPES;
+		return org.alice.ide.croquet.models.ast.InsertStatementActionOperation.CONSTRUCTOR_PARAMETER_TYPES;
 	}
 	@Override
 	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
@@ -74,18 +63,14 @@ public class InsertStatementActionOperationNewInstanceResolver extends edu.cmu.c
 
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		java.util.UUID blockStatementId = binaryDecoder.decodeId();
-		int index = binaryDecoder.decodeInt();
-		java.util.UUID statementId = binaryDecoder.decodeId();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), blockStatementId );
-		return new Object[] { blockStatement, index, statement };
+		return org.alice.ide.croquet.models.ast.InsertStatementActionOperation.decodeArguments( binaryDecoder );
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.getInstance().getBlockStatement().getUUID() );
-		binaryEncoder.encode( this.getInstance().getIndex() );
-		binaryEncoder.encode( this.getInstance().getStatement().getUUID() );
+		this.getInstance().encodeArguments( binaryEncoder );
+	}
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		Object[] arguments = this.getArguments();
+		org.alice.ide.croquet.models.ast.InsertStatementActionOperation.retargetArguments( arguments, retargeter );
 	}
 }

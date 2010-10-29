@@ -47,18 +47,23 @@ package org.alice.ide.openprojectpane;
  * @author Dennis Cosgrove
  */
 public abstract class ListContentPanel extends TabContentPanel {
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState<java.net.URI> uriSelection = new edu.cmu.cs.dennisc.croquet.ListSelectionState<java.net.URI>( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), new edu.cmu.cs.dennisc.croquet.Codec< java.net.URI >() {
-		public StringBuilder appendRepresentation( StringBuilder rv, java.net.URI value, java.util.Locale locale ) {
-			rv.append( value );
-			return rv;
+	private static class UriSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState<java.net.URI> {
+		public UriSelectionState() {
+			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), new edu.cmu.cs.dennisc.croquet.Codec< java.net.URI >() {
+				public StringBuilder appendRepresentation( StringBuilder rv, java.net.URI value, java.util.Locale locale ) {
+					rv.append( value );
+					return rv;
+				}
+				public java.net.URI decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+					throw new RuntimeException( "todo" );
+				}
+				public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.net.URI uri ) {
+					throw new RuntimeException( "todo" );
+				}
+			} );
 		}
-		public java.net.URI decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			throw new RuntimeException( "todo" );
-		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.net.URI uri ) {
-			throw new RuntimeException( "todo" );
-		}
-	} );
+	}
+	private UriSelectionState uriSelection = new UriSelectionState();
 //	register( new edu.cmu.cs.dennisc.croquet.List<java.net.URI>() {
 //		@Override
 //		protected javax.swing.JList createAwtComponent() {

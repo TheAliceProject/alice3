@@ -57,13 +57,37 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	}
 	private java.util.Map< AbstractButton< ?,? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	protected abstract C createContext( java.util.EventObject e, ViewController< ?, ? > viewController );
+	public abstract C createContext( java.util.EventObject e, ViewController< ?, ? > viewController );
 
-	//todo
-	public String getTutorialNoteText( Edit<?> edit ) {
-		return "Press " + this.getName();
+	public String getTutorialStartNoteText( OperationContext< ? > operationContext, UserInformation userInformation ) {
+		return "Press " + this.getTutorialNoteText( operationContext, userInformation );
+	}
+
+	@Override
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		return "<strong>" + this.getName() + "</strong>";
 	}
 	
+	protected Edit< ? > createTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		return null;
+	}
+	@Override
+	public Edit< ? > commitTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		Edit< ? > replacementEdit = this.createTutorialCompletionEdit( originalEdit, retargeter );
+		if( replacementEdit != null ) {
+			final C childContext = this.createContext( null, null );
+			try {
+				childContext.commitAndInvokeDo( replacementEdit );
+			} finally {
+				ModelContext< ? > popContext = ContextManager.popContext();
+				assert popContext == childContext : popContext.getClass() + " " + childContext.getClass();
+			}
+		} else {
+			System.err.println( "createTutorialCompletionEdit returned null" );
+		}
+		return replacementEdit;
+	}
+
 	public C fire( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		if( this.isEnabled() ) {
 			return this.handleFire(e, viewController);
@@ -97,14 +121,10 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	}
 
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 		this.setName( this.getDefaultLocalizedText() );
 		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
 		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
-	}
-	
-	public String getTutorialNoteText() {
-		return this.getName();
 	}
 	
 	protected static interface PerformObserver { 
@@ -129,7 +149,6 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	}
 	protected abstract void perform( C context );
 
-	//protected abstract void perform( ModelContext context, java.util.EventObject e, Component<?> component );
 
 	public String getName() {
 		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
@@ -168,6 +187,10 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
+	@Override
+	public boolean isAlreadyInState( Edit< ? > edit ) {
+		return false;
+	}
 
 	/*package-private*/ void addButton(OperationButton<?,?> button) {
 		button.setAction( Operation.this.action );

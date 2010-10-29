@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ interface WaitingStep {
-	public abstract boolean isAlreadyInTheDesiredState();
+ public interface WaitingStep {
+	public boolean isAlreadyInTheDesiredState();
 	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child );
 }

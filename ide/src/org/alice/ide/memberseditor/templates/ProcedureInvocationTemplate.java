@@ -59,16 +59,10 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 	/*package-private*/ ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		super( org.alice.ide.croquet.models.ast.MethodTemplateDragModel.getInstance( method ) );
 		this.method = method;
-		java.util.List< edu.cmu.cs.dennisc.croquet.Model > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		//operations.add( org.alice.ide.IDE.getSingleton().createPreviewOperation( this ) );
-		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
-			operations.add( org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( methodInAlice ) );
-			operations.add( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( methodInAlice ) );
-			operations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
-			operations.add( new org.alice.ide.operations.ast.DeleteMethodOperation( methodInAlice ) );
+		
+		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+			this.setPopupMenuOperation( org.alice.ide.croquet.models.ast.MethodTemplateMenuModel.getInstance( (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method ).getPopupMenuOperation() );
 		}
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultMenuModel( java.util.UUID.fromString( "96831579-1fb6-4c15-a509-ccdcc51458a8" ), operations).getPopupMenuOperation() );
 	}
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

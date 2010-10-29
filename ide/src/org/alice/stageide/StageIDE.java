@@ -54,7 +54,7 @@ public class StageIDE extends org.alice.ide.IDE {
 //		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setHeight", org.alice.apis.moveandturn.Transformable.class );
 //		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setDepth", org.alice.apis.moveandturn.Transformable.class );
 		//
-		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( new edu.cmu.cs.dennisc.alice.ast.ClassReflectionProxy( "edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel" ), "moveTo", "placeRelativeTo" );
+		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilterWithinClass( new edu.cmu.cs.dennisc.alice.ast.ClassReflectionProxy( "edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel" ), "moveTo", "placeRelativeTo" );
 		
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.alice.apis.moveandturn.Transformable.class );
 		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
@@ -360,9 +360,16 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation() {
+	public edu.cmu.cs.dennisc.croquet.Operation<?> getRunOperation() {
+		return EPIC_HACK_getRunDialogOperation();
+	}
+	
+	public edu.cmu.cs.dennisc.croquet.DialogOperation EPIC_HACK_getRunDialogOperation() {
 		return org.alice.stageide.croquet.models.run.RunOperation.getInstance();
 	}
+	
+	
+	
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > getRestartOperation() {
 		return org.alice.stageide.croquet.models.run.RestartOperation.getInstance();

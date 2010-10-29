@@ -317,7 +317,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			super( Application.UI_STATE_GROUP, java.util.UUID.fromString( "7923b4c8-6a9f-4c8b-99b5-909ae6c0889a" ) );
 		}
 		@Override
-		/*package-private*/ void localize() {
+		protected void localize() {
 			super.localize();
 			this.setName( ">>" );
 		}

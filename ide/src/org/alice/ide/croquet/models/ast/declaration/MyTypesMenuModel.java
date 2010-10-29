@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class MyTypesMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
+public class MyTypesMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static MyTypesMenuModel instance = new MyTypesMenuModel();
 	}

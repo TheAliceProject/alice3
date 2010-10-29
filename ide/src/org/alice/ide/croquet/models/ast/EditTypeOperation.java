@@ -60,7 +60,7 @@ public class EditTypeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOpe
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
 	private EditTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( ENCLOSING_INPUT_DIALOG_GROUP, java.util.UUID.fromString( "027be381-1467-4ca4-82c1-67f908dc0297" ) );
+		super( ENCLOSING_DIALOG_GROUP, java.util.UUID.fromString( "027be381-1467-4ca4-82c1-67f908dc0297" ) );
 		this.type = type;
 		this.setName( "<html>Edit <strong>" + this.type.getName() + "</strong>...</html>" );
 		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );

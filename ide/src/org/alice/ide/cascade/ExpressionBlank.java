@@ -55,6 +55,9 @@ public class ExpressionBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 		this.type = type;
 		this.isArrayLengthDesired = isArrayLengthDesired;
 	}
+	public ExpressionBlank( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
 	protected void addChildren() {
 		if( this.isArrayLengthDesired ) {

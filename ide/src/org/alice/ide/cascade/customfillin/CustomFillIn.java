@@ -42,26 +42,27 @@
  */
 package org.alice.ide.cascade.customfillin;
 
+import org.alice.ide.croquet.models.custom.CustomInputDialogOperation;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.cascade.FillIn< E > {
-	protected abstract org.alice.ide.choosers.ValueChooser< E > createValueChooser();
 	@Override
 	public E getTransientValue() {
 		return null;
 	}
+	protected abstract CustomInputDialogOperation< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > getInputDialogOperation();
 	@Override
 	public E getValue() {
-		org.alice.ide.choosers.ValueChooser< E > chooser = this.createValueChooser();
-		chooser.setTypeDescription( this.getTypeDescription() );
-		CustomInputPane< E > customInputPane = new CustomInputPane<E>(chooser);
-		CustomInputDialogOperation<E> inputDialogOperation = new CustomInputDialogOperation<E>( customInputPane );
-		edu.cmu.cs.dennisc.croquet.InputDialogOperationContext context = inputDialogOperation.fire();
+		CustomInputDialogOperation< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > inputDialogOperation = this.getInputDialogOperation();
+		inputDialogOperation.EPIC_HACK_setChooserTypeDescription( this.getTypeDescription() );
+		edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> context = inputDialogOperation.fire();
 		if( context != null ) {
 			if( context.isCanceled() ) {
 				//pass
 			} else {
+				CustomInputPane< E > customInputPane = (CustomInputPane< E >)context.getMainPanel();
 				E value = customInputPane.getActualInputValue();
 				if( value != null ) {
 					return value;
@@ -71,6 +72,13 @@ public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 		throw new edu.cmu.cs.dennisc.cascade.CancelException( "" );
 	}
 
+	@Override
+	public StringBuilder appendTutorialNoteText( java.lang.StringBuilder rv, java.util.Locale locale ) {
+		super.appendTutorialNoteText( rv, locale );
+		rv.append( getMenuProxyText() );
+		return rv;
+	}
+	
 	@Override
 	protected void addChildren() {
 	}

@@ -70,13 +70,20 @@ public class AbstractDialogOperationContext<M extends AbstractDialogOperation<?>
 		}
 	}
 
-	public static class WindowClosedEvent extends WindowEvent {
-		public WindowClosedEvent() {
+	public static class WindowClosingEvent extends WindowEvent {
+		public WindowClosingEvent() {
 		}
-		/*package-private*/ WindowClosedEvent( java.awt.event.WindowEvent e ) {
+		/*package-private*/ WindowClosingEvent( java.awt.event.WindowEvent e ) {
 			super( e );
 		}
 	}
+//	public static class WindowClosedEvent extends WindowEvent {
+//		public WindowClosedEvent() {
+//		}
+//		/*package-private*/ WindowClosedEvent( java.awt.event.WindowEvent e ) {
+//			super( e );
+//		}
+//	}
 
 	/*package-private*/ AbstractDialogOperationContext( M operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( operation, e, viewController );
@@ -84,22 +91,21 @@ public class AbstractDialogOperationContext<M extends AbstractDialogOperation<?>
 	/*package-private*/ AbstractDialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	/*package-private*/ void handleWindowOpened( java.awt.event.WindowEvent e ) {
+	public void handleWindowOpened( java.awt.event.WindowEvent e ) {
 		this.addChild( new WindowOpenedEvent( e ) );
 	}
-	/*package-private*/ void handleWindowClosed( java.awt.event.WindowEvent e ) {
-		this.addChild( new WindowClosedEvent( e ) );
+	public void handleWindowClosing( java.awt.event.WindowEvent e ) {
+		this.addChild( new WindowClosingEvent( e ) );
 	}
 	
-	@Override
-	public State getState() {
-		final int N = this.getChildCount();
-		if( N > 1 ) {
-			if( this.getChildAt(N-1) instanceof WindowClosedEvent ) {
-				return this.getChildAt(N-2).getState();
-			}
-		}
-		return null;
-	}
-	
+//	@Override
+//	public State getState() {
+//		final int N = this.getChildCount();
+//		if( N > 1 ) {
+//			if( this.getChildAt(N-1) instanceof WindowClosedEvent ) {
+//				return this.getChildAt(N-2).getState();
+//			}
+//		}
+//		return null;
+//	}
 }

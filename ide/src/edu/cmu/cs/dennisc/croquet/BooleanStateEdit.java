@@ -45,42 +45,60 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class BooleanStateEdit extends Edit<BooleanState> {
-	//can't really imagine this values being the same, but it doesn't seem likely to hurt to track both values
-	private boolean previousValue;
-	private boolean nextValue;
-
-	public BooleanStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public BooleanStateEdit( java.awt.event.ItemEvent e ) {
-		if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
-			this.previousValue = false;
-			this.nextValue = true;
-		} else {
-			this.previousValue = true;
-			this.nextValue = false;
+public final class BooleanStateEdit extends StateEdit<BooleanState,Boolean> {
+	public static class BooleanStateEditMemento extends Memento< BooleanState > {
+		private boolean prevValue;
+		private boolean nextValue;
+		private BooleanStateEditMemento( BooleanStateEdit edit ) {
+			super( edit );
+			this.prevValue = edit.prevValue;
+			this.nextValue = edit.nextValue;
+		}
+		public BooleanStateEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.Edit< BooleanState > createEdit() {
+			return new BooleanStateEdit( this );
+		}
+		@Override
+		protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+			this.prevValue = binaryDecoder.decodeBoolean();
+			this.nextValue = binaryDecoder.decodeBoolean();
+		}
+		@Override
+		protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+			binaryEncoder.encode( this.prevValue );
+			binaryEncoder.encode( this.nextValue );
 		}
 	}
-	
-	public boolean getPreviousValue() {
-		return this.previousValue;
+
+	//can't really imagine this values being the same, but it doesn't seem likely to hurt to track both values
+	private final boolean prevValue;
+	private final boolean nextValue;
+
+	/*package-private*/ BooleanStateEdit( boolean nextValue ) {
+		this.prevValue = !nextValue;
+		this.nextValue = nextValue;
 	}
-	public boolean getNextValue() {
+	private BooleanStateEdit( BooleanStateEditMemento memento ) {
+		super( memento );
+		this.prevValue = memento.prevValue;
+		this.nextValue = memento.nextValue;
+	}
+	@Override
+	public Memento<BooleanState> createMemento() {
+		return new BooleanStateEditMemento( this );
+	}
+	@Override
+	public Boolean getPreviousValue() {
+		return this.prevValue;
+	}
+	@Override
+	public Boolean getNextValue() {
 		return this.nextValue;
 	}
-	
-	@Override
-	protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		this.previousValue = binaryDecoder.decodeBoolean();
-		this.nextValue = binaryDecoder.decodeBoolean();
-	}
-	@Override
-	protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		binaryEncoder.encode( this.previousValue );
-		binaryEncoder.encode( this.nextValue );
-	}
-	
+		
 	@Override
 	public boolean canRedo() {
 		return this.getModel() != null;
@@ -97,7 +115,7 @@ public final class BooleanStateEdit extends Edit<BooleanState> {
 
 	@Override
 	protected final void undoInternal() {
-		this.getModel().setValue(this.previousValue);
+		this.getModel().setValue(this.prevValue);
 	}
 
 	@Override

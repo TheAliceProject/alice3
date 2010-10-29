@@ -51,7 +51,7 @@ public class StringFillerInner extends ExpressionFillerInner {
 	}
 	@Override
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		this.addExpressionFillIn( blank, "hello" );
+		blank.addFillIn( new StringLiteralFillIn( "hello" ) );
 		blank.addSeparator();
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomStringFillIn() );
 		blank.addSeparator();

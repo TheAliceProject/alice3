@@ -51,7 +51,7 @@ public class CustomKeyFillIn extends org.alice.ide.cascade.customfillin.CustomFi
 		return "Key";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.FieldAccess > createValueChooser() {
-		return new org.alice.stageide.choosers.KeyChooser();
+	protected org.alice.stageide.croquet.models.custom.CustomKeyInputDialogOperation getInputDialogOperation() {
+		return org.alice.stageide.croquet.models.custom.CustomKeyInputDialogOperation.getInstance();
 	}
 }

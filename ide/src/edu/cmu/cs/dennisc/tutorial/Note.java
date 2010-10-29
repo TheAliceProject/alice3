@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComponent > {
+public class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComponent > {
 	/*package-private*/ class JNote extends javax.swing.JPanel {
 		public boolean isActive() {
 			return Note.this.isActive();
@@ -62,10 +62,21 @@ package edu.cmu.cs.dennisc.tutorial;
 	private String text;
 	private String label = null;
 	
+	public Note() {
+		this( null );
+	}
 	public Note( String text ) {
-		assert text != null;
+//		assert text != null;
 		this.text = text;
 	}
+
+//	private String getText() {
+//		return this.text;
+//	}
+	protected void setText( String text ) {
+		this.text = text;
+	}
+
 	public String getLabel() {
 		return this.label;
 	}
@@ -93,6 +104,9 @@ package edu.cmu.cs.dennisc.tutorial;
 		} else {
 			rv.x = (container.getWidth()-this.getWidth())/2;
 			rv.y = 64;
+		}
+		if( this.text.contains( "resize" ) ) {
+			rv.y = 700;
 		}
 		return rv;
 	}
@@ -123,7 +137,11 @@ package edu.cmu.cs.dennisc.tutorial;
 //		isRepaintRequiredForFeatureViewChanged = true;
 //		return false;
 //	}
-	
+		
+	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability() {
+		return null;
+	}
+
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
 		javax.swing.JEditorPane textComponent = new javax.swing.JEditorPane() {
@@ -234,8 +252,8 @@ package edu.cmu.cs.dennisc.tutorial;
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				java.awt.Dimension rv = super.getPreferredSize();
-				rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, 256 );
-				rv.width = 256;
+				rv.width = 270;
+				rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, rv.width );
 				return rv;
 			}
 		};

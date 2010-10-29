@@ -45,11 +45,15 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class MessageStep extends AuthoredStep {
+public class MessageStep extends AuthoredStep {
 	public MessageStep( String title, String text ) {
 		super( title, text );
 	}
 	@Override
 	protected void complete() {
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability() {
+		return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH;
 	}
 }	

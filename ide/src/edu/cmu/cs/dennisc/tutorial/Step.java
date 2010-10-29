@@ -227,6 +227,8 @@ public abstract class Step {
 		return this.getNoteAt( 0 ).calculateLocation( container );
 	}
 
+	public abstract edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability();
+
 	public abstract java.util.List< ? extends Note > getNotes();
 	public Note getNoteAt( int index ) {
 		return this.getNotes().get( index );
@@ -247,7 +249,7 @@ public abstract class Step {
 		return this.tutorialStencil;
 	}
 	protected abstract void complete();
-	/*package-private*/ void setTutorialStencil( TutorialStencil tutorialStencil ) {
+	public void setTutorialStencil( TutorialStencil tutorialStencil ) {
 		this.tutorialStencil = tutorialStencil;
 	}
 	
@@ -290,10 +292,16 @@ public abstract class Step {
 		return this.stepPanel;
 	}
 	public boolean isAutoAdvanceDesired() {
-		return true;
+		return false;
 	}
 
 	public void reset() {
+		java.awt.LayoutManager layoutManager = this.stepPanel.getAwtComponent().getLayout();
+		if( layoutManager instanceof StepLayoutManager ) {
+			StepLayoutManager stepLayoutManager = (StepLayoutManager)layoutManager;
+			stepLayoutManager.set.clear();
+			this.stepPanel.revalidateAndRepaint();
+		}
 		for( Note note : this.getNotes() ) {
 			note.reset();
 		}

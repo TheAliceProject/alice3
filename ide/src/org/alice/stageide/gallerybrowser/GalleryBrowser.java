@@ -48,8 +48,6 @@ import org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperatio
 import org.alice.stageide.croquet.models.gallerybrowser.CreateTextbookInstanceOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -200,17 +198,17 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		//super(GAP * 2, 0);
 
 		edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<String> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<String>( root );
-		this.treeSelectionState = new edu.cmu.cs.dennisc.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ), treeModel, treeModel.getRoot() ) {
-			
-			@Override
-			protected edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-				throw new RuntimeException("todo");
+		this.treeSelectionState = new edu.cmu.cs.dennisc.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ), new edu.cmu.cs.dennisc.croquet.Codec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> >() {
+			public StringBuilder appendRepresentation( StringBuilder rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > value, java.util.Locale locale ) {
+				throw new RuntimeException( "todo" );
 			}
-			@Override
-			protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> value) {
-				throw new RuntimeException("todo");
+			public edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+				throw new RuntimeException( "todo" );
 			}
-		};
+			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > value ) {
+				throw new RuntimeException( "todo" );
+			}
+		}, treeModel, treeModel.getRoot() );
 		
 		this.filterState = new edu.cmu.cs.dennisc.croquet.StringState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "8648d640-5676-4627-a002-44db06ce58ce" ), "" );
 		

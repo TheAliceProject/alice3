@@ -212,4 +212,56 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public void setDefaultButton( Button button ) {
 		this.getRootPane().setDefaultButton( button.getAwtComponent() );
 	}
+	
+	private MenuBarModel menuBarModel;
+	public MenuBarModel getMenuBarModel() {
+		return this.menuBarModel;
+	}
+	
+	protected abstract void setJMenuBar( javax.swing.JMenuBar jMenuBar );
+	
+	public void setMenuBarModel( MenuBarModel menuBarModel ) {
+		this.menuBarModel = menuBarModel;
+		javax.swing.JMenuBar jMenuBar;
+		if( this.menuBarModel != null ) {
+			jMenuBar = menuBarModel.createMenuBar().getAwtComponent();
+		} else {
+			jMenuBar = null;
+		}
+		this.setJMenuBar( jMenuBar );
+//		try {
+//		java.util.List< javax.swing.KeyStroke > keyStrokesToRemove = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//		javax.swing.JComponent component = this.getAwtComponent().getRootPane();
+//		//javax.swing.JComponent component = new javax.swing.JDesktopPane();
+//		//javax.swing.JComponent component = this.getAwtComponent().getLayeredPane();
+//		
+//		//int condition = javax.swing.JComponent.WHEN_FOCUSED;
+//		int condition = javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
+//		//int condition = javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
+//		javax.swing.InputMap inputMap = javax.swing.SwingUtilities.getUIInputMap( component, condition );
+//		javax.swing.KeyStroke[] allKeys = inputMap.allKeys();
+//		for( javax.swing.KeyStroke keyStroke : allKeys ) {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( keyStroke, inputMap.get( keyStroke ) );
+//			if( keyStroke.getKeyCode() == java.awt.event.KeyEvent.VK_F6 ) {
+//				keyStrokesToRemove.add( keyStroke );
+//			}
+//		}
+//		for( javax.swing.KeyStroke keyStroke : keyStrokesToRemove ) {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "removing:", keyStroke );
+//			inputMap.remove( keyStroke );
+//		}
+//
+//		//javax.swing.SwingUtilities.replaceUIInputMap( component, type, inputMap );
+//		inputMap = javax.swing.SwingUtilities.getUIInputMap( component, condition );
+//		allKeys = inputMap.allKeys();
+//		for( javax.swing.KeyStroke keyStroke : allKeys ) {
+//			if( keyStroke.getKeyCode() == java.awt.event.KeyEvent.VK_F6 ) {
+//				assert false;
+//			}
+//		}
+//	} catch( Exception e ) {
+//		e.printStackTrace();
+//	}
+	}
+	
 }

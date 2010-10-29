@@ -54,35 +54,35 @@ public class DoubleLiteralFillIn extends org.alice.ide.cascade.SimpleExpressionF
 		super( binaryDecoder );
 	}
 	@Override
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super.decode( binaryDecoder );
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super.decodeInternal( binaryDecoder );
 		double value = binaryDecoder.decodeDouble();
 		this.setModel( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value  ) );
 	}
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encodeInternal( binaryEncoder );
 		double value = this.getModel().value.getValue();
 		binaryEncoder.encode( value );
 	}
-	@Override
-	public final boolean equals( Object o ) {
-		if( this == o ) {
-			return true;
-		} else {
-			if( o instanceof DoubleLiteralFillIn ) {
-				DoubleLiteralFillIn other = (DoubleLiteralFillIn)o;
-				return this.getModel().value.getValue() == other.getModel().value.getValue();
-			} else {
-				return false;
-			}
-		}
-	}
-	@Override
-	public final int hashCode() {
-		int rv = 17;
-		long lng = Double.doubleToLongBits( this.getModel().value.getValue() );
-		rv = 37*rv + (int)( lng ^(lng >>>32) );
-		return rv;
-	}
+//	@Override
+//	public final boolean equals( Object o ) {
+//		if( this == o ) {
+//			return true;
+//		} else {
+//			if( o instanceof DoubleLiteralFillIn ) {
+//				DoubleLiteralFillIn other = (DoubleLiteralFillIn)o;
+//				return this.getModel().value.getValue() == other.getModel().value.getValue();
+//			} else {
+//				return false;
+//			}
+//		}
+//	}
+//	@Override
+//	public final int hashCode() {
+//		int rv = 17;
+//		long lng = Double.doubleToLongBits( this.getModel().value.getValue() );
+//		rv = 37*rv + (int)( lng ^(lng >>>32) );
+//		return rv;
+//	}
 }

@@ -45,27 +45,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private ModelContext<M> context;
-	private java.util.UUID contextId;
-	
-	public Edit() {
+public abstract class Edit<M extends Model> {
+	private static <M extends Model> ModelContext<M> getContext( java.util.UUID contextId ) {
+		return HistoryNode.lookup( contextId );
 	}
-	public Edit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.decode( binaryDecoder );
-	}
-	
-	public ModelContext<M> getContext() {
-		if( this.context != null ) {
-			//pass
-		} else {
-			this.context = HistoryNode.lookup( this.contextId );
-		}
-		assert this.context != null;
-		return this.context;
-	}
-	public M getModel() {
-		ModelContext<M> context = this.getContext();
+	private static <M extends Model> M getModel( ModelContext<M> context ) {
 		if( context != null ) {
 			return context.getModel();
 		} else {
@@ -73,8 +57,7 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 			return null;
 		}
 	}
-	public Group getGroup() {
-		M model = this.getModel();
+	private static <M extends Model> Group getGroup( M model ) {
 		if( model != null ) {
 			return model.getGroup();
 		} else {
@@ -82,7 +65,60 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 			return null;
 		}
 	}
-	/*package-private*/ void setContext( ModelContext<M> context ) {
+
+	protected static abstract class Memento< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+		private java.util.UUID contextId;
+		public Memento( Edit<M> edit ) {
+			this.contextId = edit.contextId;
+		}
+		public Memento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			this.decode( binaryDecoder );
+		}
+		public ModelContext<M> getContext() {
+			return Edit.getContext( this.contextId );
+		}
+		public M getModel() {
+			return Edit.getModel( this.getContext() );
+		}
+		public abstract Edit< M > createEdit();
+		protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+		protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
+		public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			this.contextId = binaryDecoder.decodeId();
+			this.decodeInternal(binaryDecoder);
+		}
+		public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			binaryEncoder.encode( this.contextId );
+			this.encodeInternal(binaryEncoder);
+		}
+	};
+	
+	
+	private java.util.UUID contextId;
+	private transient ModelContext<M> context;
+
+	public Edit() {
+	}
+	public Edit( Memento<M> memento ) {
+		this.contextId = memento.contextId;
+	}
+	public abstract Memento<M> createMemento();
+	public ModelContext<M> getContext() {
+		if( this.context != null ) {
+			//pass
+		} else {
+			this.context = getContext( this.contextId );
+		}
+		assert this.context != null;
+		return this.context;
+	}
+	public M getModel() {
+		return getModel( this.getContext() );
+	}
+	public Group getGroup() {
+		return getGroup( this.getModel() );
+	}
+	public void setContext( ModelContext<M> context ) {
 		this.context = context;
 		if( this.context != null ) {
 			this.contextId = context.getId();
@@ -161,23 +197,24 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 		this.updatePresentation( sb, locale );
 		return sb.toString();
 	}
-	
-	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
-	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
-	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.contextId = binaryDecoder.decodeId();
-		this.decodeInternal(binaryDecoder);
-	}
-	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.contextId );
-		this.encodeInternal(binaryEncoder);
-	}
-
-	public boolean isReplacementAcceptable( Edit< ? > edit ) {
-		return edit != null;
+	public ReplacementAcceptability getReplacementAcceptability( Edit< ? > replacementCandidate, UserInformation userInformation ) {
+		if( replacementCandidate != null ) {
+			return ReplacementAcceptability.PERFECT_MATCH;
+		} else {
+			return ReplacementAcceptability.createRejection( "replacement is null" );
+		}
 	}
 	public void retarget( Retargeter retargeter ) {
 	}
 	public void addKeyValuePairs( Retargeter retargeter, Edit< ? > edit ) {
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( ": " );
+		this.updatePresentation( sb, java.util.Locale.getDefault() );
+		return sb.toString();
 	}
 }

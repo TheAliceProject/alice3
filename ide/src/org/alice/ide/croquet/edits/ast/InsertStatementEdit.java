@@ -42,18 +42,83 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
-public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.ActionOperation > {
+public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< edu.cmu.cs.dennisc.croquet.ActionOperation > {
+	public static class InsertStatementEditMemento extends Memento<edu.cmu.cs.dennisc.croquet.ActionOperation> {
+		private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
+		private int index;
+		private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+		private edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions;
+		public InsertStatementEditMemento( InsertStatementEdit edit ) {
+			super( edit );
+			this.blockStatement = edit.blockStatement;
+			this.index = edit.index;
+			this.statement = edit.statement;
+			this.initialExpressions = edit.initialExpressions;
+		}
+		public InsertStatementEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit() {
+			return new InsertStatementEdit( this );
+		}
+		@Override
+		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+			java.util.UUID blockStatementId = binaryDecoder.decodeId();
+			this.blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, blockStatementId );
+			this.index = binaryDecoder.decodeInt();
+			java.util.UUID statementId = binaryDecoder.decodeId();
+			this.statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, statementId );
+			java.util.UUID[] ids = binaryDecoder.decodeIdArray();
+			final int N = ids.length;
+			this.initialExpressions = new edu.cmu.cs.dennisc.alice.ast.Expression[ N ];
+			for( int i=0; i<N; i++ ) {
+				this.initialExpressions[ i ] = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, ids[ i ] );
+			}
+		}
+		@Override
+		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			binaryEncoder.encode( this.blockStatement.getUUID() );
+			binaryEncoder.encode( this.index );
+			binaryEncoder.encode( this.statement.getUUID() );
+			final int N = this.initialExpressions.length;
+			java.util.UUID[] ids = new java.util.UUID[ N ];
+			for( int i=0; i<N; i++ ) {
+				ids[ i ] = this.initialExpressions[ i ].getUUID();
+			}
+			binaryEncoder.encode( ids );
+		}
+	}
+
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private int index;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-	public InsertStatementEdit() {
-	}
-	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	private edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions;
+	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
 		this.blockStatement = blockStatement;
 		this.index = index;
 		this.statement = statement;
+		this.initialExpressions = initialExpressions;
 	}
+	private InsertStatementEdit( InsertStatementEditMemento memento ) {
+		super( memento );
+		this.blockStatement = memento.blockStatement;
+		this.index = memento.index;
+		this.statement = memento.statement;
+		this.initialExpressions = memento.initialExpressions;
+	}
+	@Override
+	public Memento<edu.cmu.cs.dennisc.croquet.ActionOperation> createMemento() {
+		return new InsertStatementEditMemento( this );
+	}
+	
 
+	public edu.cmu.cs.dennisc.alice.ast.Expression[] getInitialExpressions() {
+		return this.initialExpressions;
+	}
+	
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		this.blockStatement.statements.add( this.index, this.statement );
@@ -68,6 +133,17 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< edu.cm
 		}
 	}
 	
+	public edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
+		return this.statement;
+	}
+
+//	@Override
+//	public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.ActionOperation > getAcceptableReplacement( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+//		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+//		edu.cmu.cs.dennisc.alice.ast.Statement replacementStatement = retargeter.retarget( this.statement );
+//		return new InsertStatementEdit( replacementBlockStatement, this.index, replacementStatement );
+//	}
+	
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		//super.updatePresentation( rv, locale );
@@ -76,8 +152,60 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< edu.cm
 		return rv;
 	}
 	@Override
-	public boolean isReplacementAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return edit instanceof InsertStatementEdit;
+	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		if( replacementCandidate instanceof InsertStatementEdit ) {
+			InsertStatementEdit insertStatementEdit = (InsertStatementEdit)replacementCandidate;
+			final int N = this.initialExpressions.length;
+			if( insertStatementEdit.initialExpressions.length == N ) {
+				edu.cmu.cs.dennisc.croquet.ReplacementAcceptability rv = edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
+				//todo
+				if( N == 1 ) {
+					for( int i=0; i<N; i++ ) {
+						edu.cmu.cs.dennisc.alice.ast.Expression originalI = this.initialExpressions[ i ];
+						edu.cmu.cs.dennisc.alice.ast.Expression replacementI = insertStatementEdit.initialExpressions[ i ];
+						if( originalI instanceof edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral ) {
+							if( replacementI instanceof edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral ) {
+								Object originalValue = ((edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral)originalI).getValueProperty().getValue();
+								Object replacementValue = ((edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral)replacementI).getValueProperty().getValue();
+								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( originalValue, replacementValue ) ) {
+									rv = edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH;
+								} else {
+									StringBuilder sb = new StringBuilder();
+									sb.append( "original value: " );
+									sb.append( originalValue );
+									sb.append( "; changed to: " );
+									sb.append( replacementValue );
+									sb.append( "." );
+									rv = edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createDeviation( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.DeviationSeverity.POTENTIAL_SOURCE_OF_PROBLEMS, sb.toString() );
+								}
+							}
+						}
+					}
+				}
+				return rv;
+			} else {
+				return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createRejection( "expressions count not the same" ); 
+			}
+		} else {
+			return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createRejection( "replacement is not an instance of InsertStatementEdit" ); 
+		}
+	}
+	
+	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.alice.ast.Statement replacementStatement ) {
+		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+		retargeter.addKeyValuePair( this.statement, replacementStatement );
+		final int N = this.initialExpressions.length;
+
+		System.err.println( "todo: replacementExpressions" );
+		edu.cmu.cs.dennisc.alice.ast.Expression[] replacementExpressions = this.initialExpressions;
+		
+		return new InsertStatementEdit( replacementBlockStatement, this.index, replacementStatement, replacementExpressions );
+	}
+	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		super.retarget( retargeter );
+		this.blockStatement = retargeter.retarget( this.blockStatement );
+		this.statement = retargeter.retarget( this.statement );
 	}
 	@Override
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
@@ -89,21 +217,10 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< edu.cm
 		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
 			retargeter.addKeyValuePair( ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)this.statement).body.getValue(), ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)replacementEdit.statement).body.getValue() );
 		}
-	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-		java.util.UUID blockStatementId = binaryDecoder.decodeId();
-		this.blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, blockStatementId );
-		this.index = binaryDecoder.decodeInt();
-		java.util.UUID statementId = binaryDecoder.decodeId();
-		this.statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, statementId );
-	}
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.blockStatement.getUUID() );
-		binaryEncoder.encode( this.index );
-		binaryEncoder.encode( this.statement.getUUID() );
+		final int N = this.initialExpressions.length;
+		assert N == replacementEdit.initialExpressions.length;
+		for( int i=0; i<N; i++ ) {
+			retargeter.addKeyValuePair( this.initialExpressions[ i ], replacementEdit.initialExpressions[ i ] );
+		}
 	}
 }

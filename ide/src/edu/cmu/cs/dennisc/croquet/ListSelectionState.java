@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.util.List<E>*/ {
+public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, java.util.List<E>*/ {
 	public static interface ValueObserver<E> {
 		public void changed(E nextValue);
 	};
@@ -227,10 +227,11 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 					if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
 						//pass
 					} else {
-						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
-						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
-						ModelContext< ? > popContext = ContextManager.popContext();
-						assert popContext == childContext;
+						ListSelectionState.this.commitEdit( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ), this.mostRecentEvent, this.mostRecentViewController );
+//						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
+//						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
+//						ModelContext< ? > popContext = ContextManager.popContext();
+//						assert popContext == childContext;
 					}
 					ListSelectionState.this.fireValueChanged(nextSelection);
 					this.mostRecentEvent = null;
@@ -403,21 +404,46 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		this(group, id, codec, -1);
 	}
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 	}
 	@Override
 	protected boolean isOwnerOfEdit() {
 		return true;
 	}
 	
-	public String getTutorialNoteText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
+	private void commitEdit( ListSelectionStateEdit<E> listSelectionStateEdit, java.util.EventObject e, ViewController<?,?> viewController ) {
+		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
+		childContext.commitAndInvokeDo( listSelectionStateEdit );
+		ModelContext< ? > popContext = ContextManager.popContext();
+		assert popContext == childContext;
+	}
+	
+	@Override
+	public Edit< ? > commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		assert originalEdit instanceof ListSelectionStateEdit;
+		ListSelectionStateEdit<E> listSelectionStateEdit = (ListSelectionStateEdit<E>)originalEdit;
+		this.commitEdit( listSelectionStateEdit, null, null );
+		return listSelectionStateEdit;
+	}
+	
+	@Override
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, UserInformation userInformation ) {
+		return getTutorialNoteText( modelContext, userInformation );
+	}
+	@Override
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "Select " );
-		sb.append( "<strong>" );
-		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>" );
+		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)successfulCompletionEvent.getEdit();
+			sb.append( "Select " );
+			sb.append( "<strong>" );
+			this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+			sb.append( "</strong>." );
+		}
 		return sb.toString();
 	}
+	
 	public String getTutorialNoteStartText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "First press on " );
@@ -427,15 +453,15 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		sb.append( " in order to change it to " );
 		sb.append( "<strong>" );
 		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>" );
+		sb.append( "</strong>." );
 		return sb.toString();
 	}
 	public String getTutorialNoteFinishText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "Now select " );
+		sb.append( "Select " );
 		sb.append( "<strong>" );
 		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>" );
+		sb.append( "</strong>." );
 		return sb.toString();
 	}
 
@@ -465,6 +491,11 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 //		}
 //		return this.codecResolver;
 //	}
+	
+	@Override
+	public E getValue() {
+		return this.getSelectedItem();
+	}
 	
 	public E getSelectedItem() {
 		return (E) this.comboBoxModel.getSelectedItem();
@@ -670,6 +701,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	protected javax.swing.Icon getMenuSmallIcon( E item ) {
 		return null;
 	}
+
 	/*package-private*/ javax.swing.Action createAction( final E item ) {
 		javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {

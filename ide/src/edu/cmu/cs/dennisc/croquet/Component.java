@@ -114,7 +114,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 			return null;
 		}
 	}
-
+		
 	private static boolean isWarningAlreadyPrinted = false;
 	
 	private static StringBuilder append( StringBuilder rv, String s, java.awt.Component awtComponent ) {

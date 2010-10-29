@@ -118,6 +118,15 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ) );
 		this.setSmallIcon( new RunIcon() );
 	}
+	
+	@Override
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return "Preview your program.";
+	}
+	@Override
+	public String getTutorialCloseNoteText( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return "Press the <strong>Close</strong> button when you have finished previewing the program.";
+	}
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = null;
 	@Override
@@ -155,6 +164,7 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: releaseContentPane" );
+		context.finish();
 	}
 	
 	@Override
