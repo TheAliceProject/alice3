@@ -80,9 +80,12 @@ public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionStat
 	private E prevValue;
 	private E nextValue;
 	
-	public ListSelectionStateEdit( java.util.EventObject e, E prevValue, E nextValue ) {
+	/*package-private*/ ListSelectionStateEdit( java.util.EventObject e, E prevValue, E nextValue ) {
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
+	}
+	public ListSelectionStateEdit( E prevValue, E nextValue ) {
+		this( null, prevValue, nextValue );
 	}
 	private ListSelectionStateEdit( ListSelectionStateEditMemento<E> memento ) {
 		super( memento );

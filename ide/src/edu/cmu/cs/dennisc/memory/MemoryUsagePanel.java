@@ -150,6 +150,10 @@ public class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				return new MemoryUsagePanel();
 			}
 			@Override
+			public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor( edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+				return null;
+			}
+			@Override
 			protected void handleAbout( java.util.EventObject e ) {
 			}
 			@Override

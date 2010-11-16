@@ -49,6 +49,9 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 	/*package-private*/ PopupMenuOperationContext( PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( popupMenuOperation, e, viewController );
 	}
+	public PopupMenuOperationContext( PopupMenuOperation popupMenuOperation ) {
+		this( popupMenuOperation, null, null );
+	}
 	public PopupMenuOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
@@ -122,6 +125,9 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 				this.models[ i ] = models.get( i );
 				this.modelResolvers[ i ] = this.models[ i ].getCodableResolver();
 			}
+		}
+		public MenuSelectionEvent( java.util.List< Model > models ) {
+			this( null, models );
 		}
 		
 		@Override

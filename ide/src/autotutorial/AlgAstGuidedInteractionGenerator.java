@@ -62,13 +62,32 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 		return rv;
 	}
 	
+	private static edu.cmu.cs.dennisc.croquet.OperationContext< ? > generateMethodDeclarationContext( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType = methodInAlice.getDeclaringType();
+		org.alice.ide.croquet.models.ast.DeclareMethodOperation declareMethodOperation;
+		if( methodInAlice.isProcedure() ) {
+			declareMethodOperation = org.alice.ide.croquet.models.ast.DeclareProcedureOperation.getInstance( declaringType );
+		} else {
+			declareMethodOperation = org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( declaringType );
+		}
+		edu.cmu.cs.dennisc.croquet.OperationContext< org.alice.ide.croquet.models.ast.DeclareMethodOperation > rv = new edu.cmu.cs.dennisc.croquet.InputDialogOperationContext( declareMethodOperation );
+		
+		org.alice.ide.croquet.edits.ast.DeclareMethodEdit edit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( declaringType, methodInAlice );
+		addEdit( rv, edit );
+		return rv;
+	}
+	
+	private static edu.cmu.cs.dennisc.croquet.ModelContext< ? > generate( edu.cmu.cs.dennisc.croquet.ModelContext< ? > rv, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement ) {
+		//will get re-targeted later
+		return generate( rv, blockStatement, blockStatement, 0 );
+	}
 	
 	private static edu.cmu.cs.dennisc.croquet.ModelContext< ? > generate( edu.cmu.cs.dennisc.croquet.ModelContext< ? > rv, edu.cmu.cs.dennisc.alice.ast.BlockStatement src, edu.cmu.cs.dennisc.alice.ast.BlockStatement dst, int dstIndex0 ) {
 		int dstIndex = dstIndex0; 
 		for( edu.cmu.cs.dennisc.alice.ast.Statement statement : src.statements ) {
 			org.alice.ide.croquet.models.ast.InsertStatementActionOperation insertStatementActionOperation = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( dst, dstIndex, statement );
-			edu.cmu.cs.dennisc.croquet.ActionOperationContext actionContext = new edu.cmu.cs.dennisc.croquet.ActionOperationContext( insertStatementActionOperation );
-			addEdit( actionContext, new org.alice.ide.croquet.edits.DependentEdit() );
+			edu.cmu.cs.dennisc.croquet.ActionOperationContext insertStatementContext = new edu.cmu.cs.dennisc.croquet.ActionOperationContext( insertStatementActionOperation );
+			addEdit( insertStatementContext, new org.alice.ide.croquet.edits.DependentEdit() );
 			
 			edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropModel;
 			if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
@@ -76,7 +95,21 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 				edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
 				if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
 					edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
-					dragAndDropModel = org.alice.ide.croquet.models.ast.MethodTemplateDragModel.getInstance( methodInvocation.method.getValue() );
+					edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
+					if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
+						rv.addChild( generateMethodDeclarationContext( methodInAlice ) );
+						
+						generate( rv, methodInAlice.body.getValue() );
+
+						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice invokedFromMethod = dst.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+						
+						edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< edu.cmu.cs.dennisc.alice.ast.AbstractCode > listSelectionStateContext = new edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< edu.cmu.cs.dennisc.alice.ast.AbstractCode >( org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance() );
+						edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< edu.cmu.cs.dennisc.alice.ast.AbstractCode > edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< edu.cmu.cs.dennisc.alice.ast.AbstractCode >( methodInAlice, invokedFromMethod );
+						addEdit( listSelectionStateContext, edit );
+						rv.addChild( listSelectionStateContext );
+					}
+					dragAndDropModel = org.alice.ide.croquet.models.ast.MethodTemplateDragModel.getInstance( method );
 				} else {
 					dragAndDropModel = null;
 				}
@@ -85,18 +118,35 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 			}
 			
 			edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext = createDragAndDropContext( dragAndDropModel ); 
-			//edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor = null;
-			//edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent droppedEvent = new edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent( dropReceptor );
-			//rv.addChild( droppedEvent );
-			dragAndDropContext.addChild( actionContext );
+			edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor = null;
+			edu.cmu.cs.dennisc.croquet.DropSite dropSite = new org.alice.ide.codeeditor.BlockStatementIndexPair( dst, dstIndex );
+			edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredDropReceptorEvent enteredDropReceptorEvent = new edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredDropReceptorEvent( dropReceptor );
+			edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent enteredPotentialDropSiteEvent = new edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent( dropReceptor, dropSite );
+			edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent droppedEvent = new edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent( dropReceptor );
+			dragAndDropContext.addChild( enteredDropReceptorEvent );
+			dragAndDropContext.addChild( enteredPotentialDropSiteEvent );
+			dragAndDropContext.addChild( droppedEvent );
+			
+			if( statement instanceof edu.cmu.cs.dennisc.alice.ast.CountLoop ) {
+				edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation = null;
+				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = new edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext( popupMenuOperation );
+				java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+				models.add( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP, null ) ); 
+				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = new edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent( models );
+				popupMenuOperationContext.addChild( menuSelectionEvent );
+				popupMenuOperationContext.addChild( insertStatementContext );
+				dragAndDropContext.addChild( popupMenuOperationContext );
+			} else {
+				dragAndDropContext.addChild( insertStatementContext );
+			}
+			
 			
 			dstIndex++;
 			rv.addChild( dragAndDropContext );
 			
 			if( statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody = (edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)statement;
-				edu.cmu.cs.dennisc.alice.ast.BlockStatement body = statementWithBody.body.getValue();
-				generate( rv, body, body, 0 );
+				generate( rv, statementWithBody.body.getValue() );
 			}
 		}
 		return rv;

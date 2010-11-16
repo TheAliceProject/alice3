@@ -51,6 +51,9 @@ public class InputDialogOperationContext<J extends JComponent<?>> extends Abstra
 	public InputDialogOperationContext( InputDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( inputDialogOperation, e, viewController );
 	}
+	public InputDialogOperationContext( InputDialogOperation<J> inputDialogOperation ) {
+		this( inputDialogOperation, null, null );
+	}
 	public InputDialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}

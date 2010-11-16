@@ -76,6 +76,9 @@ public class ListSelectionStateContext< T > extends ModelContext<ListSelectionSt
 		//this.nextIndex = nextIndex;
 		//this.nextItem = nextItem;
 	}
+	public ListSelectionStateContext( ListSelectionState< T > itemSelectionState ) {
+		this( itemSelectionState, null, null );
+	}
 	public ListSelectionStateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}

@@ -126,6 +126,9 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 		private EnteredDropReceptorEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor ) {
 			super( mouseEvent, dropReceptor );
 		}
+		public EnteredDropReceptorEvent( DropReceptor dropReceptor ) {
+			this( null, dropReceptor );
+		}
 	}
 	public static class ExitedDropReceptorEvent extends DropReceptorEvent {
 		public ExitedDropReceptorEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -133,6 +136,9 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 		}
 		private ExitedDropReceptorEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor ) {
 			super( mouseEvent, dropReceptor );
+		}
+		public ExitedDropReceptorEvent( DropReceptor dropReceptor ) {
+			this( null, dropReceptor );
 		}
 	}
 
@@ -179,6 +185,9 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 		private EnteredPotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, DropSite potentialDropSite ) {
 			super( mouseEvent, dropReceptor, potentialDropSite );
 		}
+		public EnteredPotentialDropSiteEvent( DropReceptor dropReceptor, DropSite potentialDropSite ) {
+			this( null, dropReceptor, potentialDropSite );
+		}
 	}
 	public static class ExitedPotentialDropSiteEvent extends PotentialDropSiteEvent {
 		public ExitedPotentialDropSiteEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -186,6 +195,9 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 		}
 		private ExitedPotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, DropSite potentialDropSite ) {
 			super( mouseEvent, dropReceptor, potentialDropSite );
+		}
+		public ExitedPotentialDropSiteEvent( DropReceptor dropReceptor, DropSite potentialDropSite ) {
+			this( null, dropReceptor, potentialDropSite );
 		}
 	}
 
@@ -195,6 +207,9 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 		}
 		private DroppedEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor ) {
 			super( mouseEvent, dropReceptor );
+		}
+		public DroppedEvent( DropReceptor dropReceptor ) {
+			this( null, dropReceptor );
 		}
 	}
 

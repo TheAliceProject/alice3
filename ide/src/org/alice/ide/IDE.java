@@ -161,6 +161,17 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return rv;
 	}
 
+	@Override
+	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor( edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		if( dropSite instanceof org.alice.ide.codeeditor.BlockStatementIndexPair ) {
+			org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.codeeditor.BlockStatementIndexPair)dropSite;
+			edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
+			edu.cmu.cs.dennisc.alice.ast.AbstractCode code = blockStatement.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
+			System.err.println( "todo: getDropReceptor: " + dropSite );
+			return getCodeEditorInFocus();
+		}
+		return null;
+	}
 	private void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		this.refreshAccessibles();
 		if( isSceneEditorExpanded ) {

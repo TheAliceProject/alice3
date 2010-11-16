@@ -53,6 +53,12 @@ package edu.cmu.cs.dennisc.cheshire;
 	public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
 		if( this.enteredPotentialDropSiteEvent != null ) {
 			edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor = this.enteredPotentialDropSiteEvent.getDropReceptor();
+			edu.cmu.cs.dennisc.croquet.DropSite dropSite = this.enteredPotentialDropSiteEvent.getPotentialDropSite();
+			if( dropReceptor != null ) {
+				//pass
+			} else {
+				dropReceptor = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getDropReceptor( dropSite );
+			}
 			if( dropReceptor != null ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "DropSiteResolver", this.enteredPotentialDropSiteEvent.getPotentialDropSite() );
 				return dropReceptor.getTrackableShape( this.enteredPotentialDropSiteEvent.getPotentialDropSite() );

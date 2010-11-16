@@ -84,7 +84,8 @@ public abstract class Application {
 	public Frame getFrame() {
 		return this.frame;
 	}
-
+	
+	public abstract DropReceptor getDropReceptor( DropSite dropSite );
 	public void initialize( String[] args ) {
 		this.frame.getContentPanel().addComponent( this.createContentPane(), BorderPanel.Constraint.CENTER );
 		this.frame.setDefaultCloseOperation( Frame.DefaultCloseOperation.DO_NOTHING );
