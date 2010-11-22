@@ -48,7 +48,7 @@ package org.alice.ide.memberseditor.templates;
 /*package-private*/ class SetterTemplate extends ExpressionStatementTemplate {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public SetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( new org.alice.ide.croquet.models.ToDoDragModel() );
+		super( org.alice.ide.croquet.models.ast.SetterTemplateDragModel.getInstance( field ) );
 		this.field = field;
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
@@ -72,5 +72,9 @@ package org.alice.ide.memberseditor.templates;
 			expressions[ 0 ] 
 		);
 		return rv;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
+		return org.alice.ide.croquet.models.ast.templates.SetterMenuModel.getInstance( blockStatementIndexPair, this.field );
 	}
 }
