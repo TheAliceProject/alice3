@@ -87,7 +87,7 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleShowing" );
 			super.handleShowing( menuItemContainer, e );
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-			for (final Object item : this.listSelectionState.comboBoxModel.items) {
+			for (final Object item : this.listSelectionState.listModel.items) {
 				javax.swing.Action action = this.listSelectionState.createAction( (E)item );
 				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem(action);
 				buttonGroup.add(jMenuItem);
@@ -277,43 +277,8 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 
 	};
 
-	private class ComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
+	private class ListModel extends javax.swing.AbstractListModel  {
 		private java.util.ArrayList<E> items = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-
-		public Object getSelectedItem() {
-			int index = ListSelectionState.this.listSelectionModel.getMaxSelectionIndex();
-			if (index >= 0) {
-				if( index < this.getSize() ) {
-					return this.items.get( index );
-				} else {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: item selection out of bounds" );
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-		
-		public void setSelectedItem(Object item) {
-			if( item != this.getSelectedItem() ) {
-				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( item, this.getSelectedItem() ) ) {
-					throw new RuntimeException();
-				}
-				int selectedIndex = -1;
-				if( item != null ) {
-					final int N = this.getSize();
-					for (int i = 0; i < N; i++) {
-						if( item.equals( this.items.get( i ) ) ) {
-							selectedIndex = i;
-							break;
-						}
-					}
-				}
-				ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
-				this.fireContentsChanged(this, -1, -1);
-			}
-		}
-
 		public Object getElementAt(int index) {
 			if( index >= 0 ) {
 				if( index < this.items.size() ) {
@@ -330,23 +295,9 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 		public int getSize() {
 			return this.items.size();
 		}
-
-//		private void forceComboBoxResize() {
-//			for( Component<?> component : ListSelectionState.this.getComponents() ) {
-//				if( component instanceof ComboBox<?> ) {
-//					ComboBox<?> comboBox = (ComboBox<?>) component;
-//					javax.swing.JComboBox jComboBox = comboBox.getAwtComponent();
-//					javax.swing.plaf.ComboBoxUI ui = jComboBox.getUI();
-//					if (ui instanceof javax.swing.plaf.basic.BasicComboBoxUI) {
-//						jComboBox.setModel( new javax.swing.DefaultComboBoxModel() );
-//						jComboBox.setModel( comboBoxModel );
-//					}
-//				}
-//			}
-//		}
-		private void setListDataPrologue() {
+		private void setListDataPrologue( int size ) {
 			this.items.clear();
-			this.items.ensureCapacity( items.size() );
+			this.items.ensureCapacity( size );
 		}
 		private void setListDataEpilogue( int selectedIndex ) {
 			int index0 = 0;
@@ -357,10 +308,9 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 				this.fireContentsChanged(this, index0, index1);	
 			}
 			ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
-			//this.forceComboBoxResize();
 		}
 		private void setListData(int selectedIndex, E[] items) {
-			this.setListDataPrologue();
+			this.setListDataPrologue( items.length );
 			for( E item : items ) {
 				this.items.add( item );
 			}
@@ -368,7 +318,7 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 		}
 
 		private void setListData(int selectedIndex, java.util.Collection<E> items) {
-			this.setListDataPrologue();
+			this.setListDataPrologue( items.size() );
 			for( E item : items ) {
 				this.items.add( item );
 			}
@@ -388,16 +338,74 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 		}
 	}
 
+	private class ComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
+		private javax.swing.ListModel listModel;
+		public ComboBoxModel( javax.swing.ListModel listModel ) {
+			this.listModel = listModel;
+			this.listModel.addListDataListener( new javax.swing.event.ListDataListener() {
+				public void contentsChanged( javax.swing.event.ListDataEvent e ) {
+					ComboBoxModel.this.fireContentsChanged( e.getSource(), e.getIndex0(), e.getIndex1() );
+				}
+				public void intervalAdded( javax.swing.event.ListDataEvent e ) {
+					ComboBoxModel.this.fireIntervalAdded( e.getSource(), e.getIndex0(), e.getIndex1() );
+				}
+				public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
+					ComboBoxModel.this.fireIntervalRemoved( e.getSource(), e.getIndex0(), e.getIndex1() );
+				}
+			} );
+		}
+		public Object getSelectedItem() {
+			int index = ListSelectionState.this.listSelectionModel.getMaxSelectionIndex();
+			if (index >= 0) {
+				if( index < this.getSize() ) {
+					return this.listModel.getElementAt( index );
+				} else {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: item selection out of bounds" );
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
+		
+		public void setSelectedItem(Object item) {
+			if( item != this.getSelectedItem() ) {
+				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( item, this.getSelectedItem() ) ) {
+					throw new RuntimeException();
+				}
+				int selectedIndex = -1;
+				if( item != null ) {
+					final int N = this.getSize();
+					for (int i = 0; i < N; i++) {
+						if( item.equals( this.listModel.getElementAt( i ) ) ) {
+							selectedIndex = i;
+							break;
+						}
+					}
+				}
+				ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
+				this.fireContentsChanged(this, -1, -1);
+			}
+		}
+
+		public Object getElementAt(int index) {
+			return this.listModel.getElementAt( index );
+		}
+
+		public int getSize() {
+			return this.listModel.getSize();
+		}
+	}
+
+	private final ListModel listModel = new ListModel();
 	private final SingleListSelectionModel listSelectionModel = new SingleListSelectionModel();
-	private final ComboBoxModel comboBoxModel = new ComboBoxModel();
+	private final ComboBoxModel comboBoxModel = new ComboBoxModel( listModel );
 	private Codec< E > codec;
-	//private CodableResolver< Codec<E> > codecResolver;
-	
 	public ListSelectionState(Group group, java.util.UUID id, Codec< E > codec, int selectedIndex, E... items) {
 		super(group, id);
 		this.codec = codec;
 		this.listSelectionModel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		this.comboBoxModel.setListData(selectedIndex, items);
+		this.listModel.setListData(selectedIndex, items);
 		this.localize();
 	}
 	public ListSelectionState(Group group, java.util.UUID id, Codec< E > codec) {
@@ -465,10 +473,12 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 		return sb.toString();
 	}
 
+	/*package-private*/ javax.swing.ListModel getListModel() {
+		return this.listModel;
+	}
 	/*package-private*/ ComboBoxModel getComboBoxModel() {
 		return this.comboBoxModel;
 	}
-	
 	/*package-private*/ SingleListSelectionModel getListSelectionModel() {
 		return this.listSelectionModel;
 	}
@@ -482,15 +492,6 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 	public Codec<E> getCodec() {
 		return this.codec;
 	}
-	
-//	/*package-private*/ CodableResolver< Codec<E> > getCodecResolver() {
-//		if( this.codecResolver != null ) {
-//			//pass
-//		} else {
-//			this.codecResolver = this.codec.getResolver();
-//		}
-//		return this.codecResolver;
-//	}
 	
 	@Override
 	public E getValue() {
@@ -512,13 +513,10 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 
 
 	public int indexOf( E item ) {
-		return this.comboBoxModel.items.indexOf( item );
-	}
-	public int lastIndexOf( E item ) {
-		return this.comboBoxModel.items.indexOf( item );
+		return this.listModel.items.indexOf( item );
 	}
 	public java.util.Iterator< E > iterator() {
-		return this.comboBoxModel.items.iterator();
+		return this.listModel.items.iterator();
 	}
 	public E getItemAt(int index) {
 		return (E) this.comboBoxModel.getElementAt(index);
@@ -547,14 +545,14 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 	}
 
 	public void setListData(int selectedIndex, E... items) {
-		synchronized (this.comboBoxModel) {
-			this.comboBoxModel.setListData(selectedIndex, items);
+		synchronized (this.listModel) {
+			this.listModel.setListData(selectedIndex, items);
 		}
 	}
 
 	public void setListData(int selectedIndex, java.util.Collection<E> items) {
-		synchronized (this.comboBoxModel) {
-			this.comboBoxModel.setListData(selectedIndex, items);
+		synchronized (this.listModel) {
+			this.listModel.setListData(selectedIndex, items);
 		}
 	}
 
@@ -571,15 +569,15 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 	}
 
 	public void addItem(E item) {
-		synchronized (this.comboBoxModel) {
-			this.comboBoxModel.addItem( item );
+		synchronized (this.listModel) {
+			this.listModel.addItem( item );
 		}
 	}
 	
 	public void removeItem( E item ) {
-		synchronized (this.comboBoxModel) {
+		synchronized (this.listModel) {
 			this.listSelectionModel.clearSelection();
-			this.comboBoxModel.removeItem( item );
+			this.listModel.removeItem( item );
 			if( this.comboBoxModel.getSize() > 0 ) {
 				this.comboBoxModel.setSelectedItem( this.comboBoxModel.getElementAt( 0 ) );
 			}
@@ -590,73 +588,6 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 		java.util.Collection<E> items = java.util.Collections.emptyList();
 		this.setListData(-1, items);
 	}
-
-	public ComboBox<E> createComboBox() {
-		ComboBox<E> rv = new ComboBox<E>( this ) {
-			// private ItemListener itemListener = new ItemListener( this );
-			@Override
-			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleAddedTo(parent);
-				ListSelectionState.this.addComponent(this);
-				// this.addItemListener( this.itemListener );
-			};
-
-			@Override
-			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				// this.removeItemListener( this.itemListener );
-				ListSelectionState.this.removeComponent(this);
-				super.handleRemovedFrom(parent);
-			}
-		};
-		rv.setSwingComboBoxModel(this.comboBoxModel);
-		return rv;
-	}
-	
-	public List<E> createList() {
-		return new List< E >( this );
-	}
-
-	/*package-private*/ <R extends ItemSelectablePanel<E, ?>> R register(final R rv) {
-		rv.setSwingComboBoxModel(this.comboBoxModel);
-		rv.setSelectionModel(this.listSelectionModel);
-		rv.addContainmentObserver(new Component.ContainmentObserver() {
-			// private ItemListener itemListener = new ItemListener( rv );
-			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				ListSelectionState.this.addComponent(rv);
-				// rv.addItemListener( this.itemListener );
-			}
-
-			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				// rv.removeItemListener( this.itemListener );
-				ListSelectionState.this.removeComponent(rv);
-			}
-		});
-		return rv;
-	}
-
-	public DefaultRadioButtons<E> createDefaultRadioButtons() {
-		return register(new DefaultRadioButtons<E>( this ));
-	}
-	
-	public MutableList<E> createMutableList( MutableList.Factory<E> factory ) {
-		return register( new MutableList<E>( this, factory ) );
-	}
-
-	public interface TabCreator<E> {
-		public java.util.UUID getId(E item);
-		public void customizeTitleComponent(BooleanState booleanState, AbstractButton< ?, BooleanState > button, E item);
-		public JComponent<?> createMainComponent(E item);
-		public ScrollPane createScrollPane(E item);
-		public boolean isCloseable(E item);
-	}
-
-	public FolderTabbedPane<E> createFolderTabbedPane(TabCreator<E> tabCreator) {
-		return register(new FolderTabbedPane<E>(this, tabCreator));
-	};
-
-	public ToolPaletteTabbedPane<E> createToolPaletteTabbedPane(TabCreator<E> tabCreator) {
-		return register(new ToolPaletteTabbedPane<E>(this, tabCreator));
-	};
 
 	public TrackableShape getTrackableShapeFor( E item ) {
 		ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( ItemSelectable.class );
@@ -713,4 +644,31 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 		return action;
 	}
 
+	public ComboBox<E> createComboBox() {
+		return new ComboBox<E>( this );
+	}
+	public List<E> createList() {
+		return new List< E >( this );
+	}
+	public DefaultRadioButtons<E> createDefaultRadioButtons() {
+		return new DefaultRadioButtons<E>( this );
+	}
+	public MutableList<E> createMutableList( MutableList.Factory<E> factory ) {
+		return new MutableList<E>( this, factory );
+	}
+
+	
+	public interface TabCreator<E> {
+		public java.util.UUID getId(E item);
+		public void customizeTitleComponent(BooleanState booleanState, AbstractButton< ?, BooleanState > button, E item);
+		public JComponent<?> createMainComponent(E item);
+		public ScrollPane createScrollPane(E item);
+		public boolean isCloseable(E item);
+	}
+	public FolderTabbedPane<E> createFolderTabbedPane(TabCreator<E> tabCreator) {
+		return new FolderTabbedPane<E>(this, tabCreator);
+	};
+	public ToolPaletteTabbedPane<E> createToolPaletteTabbedPane(TabCreator<E> tabCreator) {
+		return new ToolPaletteTabbedPane<E>(this, tabCreator);
+	};
 }

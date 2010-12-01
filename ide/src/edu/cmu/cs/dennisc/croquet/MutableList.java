@@ -163,7 +163,7 @@ public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.
 	}
 	private Factory<E> factory;
 	private PageAxisPanel pageAxisPanel = new PageAxisPanel();
-	/*package-private*/ MutableList( ListSelectionState<E> model, Factory<E> factory ) {
+	public MutableList( ListSelectionState<E> model, Factory<E> factory ) {
 		super( model );
 		this.factory = factory;
 		this.internalAddComponent( pageAxisPanel, java.awt.BorderLayout.CENTER );

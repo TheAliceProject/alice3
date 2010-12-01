@@ -102,8 +102,28 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 		}
 	}
 
-	/*package-private*/ ItemSelectablePanel( ListSelectionState<E> model ) {
+	
+	public ItemSelectablePanel( ListSelectionState<E> model ) {
 		super( model );
+	}
+	
+	private boolean isInitialized = false;
+	@Override
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		if( this.isInitialized ) {
+			//pass
+		} else {
+			this.setSwingComboBoxModel(this.getModel().getComboBoxModel());
+			this.setSwingListSelectionModel(this.getModel().getListSelectionModel());
+			this.isInitialized = true;
+		}
+		this.getModel().addComponent( this );
+	}
+	@Override
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		this.getModel().removeComponent( this );
+		super.handleRemovedFrom( parent );
 	}
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override
@@ -137,11 +157,6 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 			ItemSelectablePanel.this.handleListSelectionChanged();
 		}
 	};
-	private void fireItemStateChanged( java.awt.event.ItemEvent e ) {
-		for( java.awt.event.ItemListener itemListener : this.itemListeners ) {
-			itemListener.itemStateChanged(e);
-		}
-	}
 
 	protected D getItemDetails( E item ) {
 		return this.map.get( item );
@@ -246,8 +261,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 		}
 	}
 	
-	private java.util.List<java.awt.event.ItemListener> itemListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList(); 
-	/*package-private*/ void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
+	private void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
 		if( this.swingModel != null ) {
 			synchronized( this.swingModel ) {
 				this.swingModel.removeListDataListener( this.listDataListener );
@@ -261,7 +275,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 			}
 		}
 	}
-	/*package-private*/ void setSelectionModel( javax.swing.ListSelectionModel listSelectionModel ) {
+	private void setSwingListSelectionModel( javax.swing.ListSelectionModel listSelectionModel ) {
 		if( this.listSelectionModel != null ) {
 			synchronized( this.listSelectionModel ) {
 				this.listSelectionModel.removeListSelectionListener( this.listSelectionListener );
@@ -275,10 +289,16 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 			}
 		}
 	}
-	/*package-private*/ void addItemListener(java.awt.event.ItemListener itemListener) {
-		this.itemListeners.add( itemListener );
+//	private java.util.List<java.awt.event.ItemListener> itemListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList(); 
+	private void fireItemStateChanged( java.awt.event.ItemEvent e ) {
+//		for( java.awt.event.ItemListener itemListener : this.itemListeners ) {
+//			itemListener.itemStateChanged(e);
+//		}
 	}
-	/*package-private*/ void removeItemListener(java.awt.event.ItemListener itemListener) {
-		this.itemListeners.remove( itemListener );
-	}
+//	/*package-private*/ void addItemListener(java.awt.event.ItemListener itemListener) {
+//		this.itemListeners.add( itemListener );
+//	}
+//	/*package-private*/ void removeItemListener(java.awt.event.ItemListener itemListener) {
+//		this.itemListeners.remove( itemListener );
+//	}
 }

@@ -91,11 +91,10 @@ public class List<E> extends ItemSelectable<javax.swing.JList, E > {
 //		}
 	}
 	
-	/*package-private*/ List( ListSelectionState<E> model ) {
+	public List( ListSelectionState<E> model ) {
 		super( model );
-		this.setSwingListModel(model.getComboBoxModel());
+		this.setSwingListModel(model.getListModel());
 		this.setSelectionModel(model.getListSelectionModel());
-		
 	}
 
 	@Override

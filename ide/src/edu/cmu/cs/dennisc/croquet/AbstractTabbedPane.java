@@ -47,6 +47,11 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemDetails> extends ItemSelectablePanel<E, D> {
+	public AbstractTabbedPane( ListSelectionState<E> model, ListSelectionState.TabCreator< E > tabCreator ) {
+		super( model );
+		this.tabCreator = tabCreator;
+	}
+
 	class TabItemDetails extends ItemDetails {
 		private java.util.UUID id;
 		private JComponent<?> mainComponent;
@@ -110,11 +115,6 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		return createTabItemDetails( item, id, titleButton, this.tabCreator.createScrollPane( item ), this.tabCreator.createMainComponent( item ) );
 	}
 	
-	public AbstractTabbedPane( ListSelectionState<E> model, ListSelectionState.TabCreator< E > tabCreator ) {
-		super( model );
-		this.tabCreator = tabCreator;
-	}
-	
 	/*package-private*/ JComponent< ? > getMainComponentFor( E item ) {
 		TabItemDetails tabItemDetails = this.getItemDetails( item );
 		if( tabItemDetails != null ) {
@@ -139,58 +139,4 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 			return null;
 		}
 	}
-	
-		
-//	protected abstract Tab<E> createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator );
-//	protected abstract void addTab( Tab<E> tab );
-//	protected abstract void removeTab( Tab<E> tab );
-//	@Override
-//	protected AbstractButton<?> createButton(E item) {
-//		Tab< E > tab = createTab( item, this.tabCreator );
-//		AbstractButton<?> rv = tab.getOuterTitleComponent();
-//		map.put(rv, tab);
-//		return rv;
-//	}
-//	@Override
-//	protected void removeAllButtons() {
-//		for( Tab<E> tab : this.map.values() ) {
-//			this.removeTab( tab );
-//		}
-//	}
-//	@Override
-//	protected void addPrologue( int count ) {
-//	}
-//	@Override
-//	protected final void addButton(edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
-//		Tab< E > tab = this.map.get( button );
-//		assert tab != null;
-//		this.addTab( tab );
-//	}
-//	@Override
-//	protected void addEpilogue() {
-//	}
-//	
-//	@Override
-//	protected void handleItemSelected(E item) {
-//		javax.swing.JOptionPane.showMessageDialog( null, "todo: handleItemSelected" );
-//	}
-	
-//	/* package-private */ void addTab( E item ) {
-//		Tab<E> tab = this.map.get( item );
-//		if( tab != null ) {
-//			//pass
-//		} else {
-//			tab = this.createTab( item, this.tabCreator );
-//			this.map.put( item, tab );
-//		}
-//		this.revalidateAndRepaint();
-//	}
-//	/* package-private */ void removeTab( E item ) {
-//		this.revalidateAndRepaint();
-//	}
-//	/* package-private */ void selectTab( E item ) {
-//		Tab<E> tab = this.map.get( item );
-//		assert tab != null;
-//		tab.select();
-//	}
 }

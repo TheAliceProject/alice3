@@ -47,10 +47,11 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
-	/*package-private*/ ComboBox( ListSelectionState<E> model ) {
+	public ComboBox( ListSelectionState<E> model ) {
 		super( model );
+		this.setSwingComboBoxModel( model.getComboBoxModel() );
 	}
-	
+
 	@Override
 	public boolean isSingleStageSelectable() {
 		return false;
@@ -92,9 +93,11 @@ public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
 	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
 		super.handleAddedTo( parent );
 		this.getAwtComponent().addPopupMenuListener( this.popupMenuListener );
+		this.getModel().addComponent( this );
 	}
 	@Override
 	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		this.getModel().removeComponent( this );
 		this.getAwtComponent().removePopupMenuListener( this.popupMenuListener );
 		super.handleRemovedFrom( parent );
 	}
