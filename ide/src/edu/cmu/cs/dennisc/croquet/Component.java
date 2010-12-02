@@ -221,25 +221,25 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		}
 	}
 
-	private java.util.List< ContainmentObserver > containmentObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	protected void addContainmentObserver( ContainmentObserver containmentObserver ) {
-		this.containmentObservers.add( containmentObserver );
-	}
-	protected void removeContainmentObserver( ContainmentObserver containmentObserver ) {
-		this.containmentObservers.remove( containmentObserver );
-	}
+//	private java.util.List< ContainmentObserver > containmentObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+//	protected void addContainmentObserver( ContainmentObserver containmentObserver ) {
+//		this.containmentObservers.add( containmentObserver );
+//	}
+//	protected void removeContainmentObserver( ContainmentObserver containmentObserver ) {
+//		this.containmentObservers.remove( containmentObserver );
+//	}
 
 	protected void handleAddedTo( Component< ? > parent ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "added:", this.hashCode(), parent != null ? parent.hashCode() : 0 );
-		for( ContainmentObserver containmentObserver : this.containmentObservers ) {
-			containmentObserver.addedTo( parent );
-		}
+//		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "added:", this.hashCode(), parent != null ? parent.hashCode() : 0 );
+//		for( ContainmentObserver containmentObserver : this.containmentObservers ) {
+//			containmentObserver.addedTo( parent );
+//		}
 	}
 	protected void handleRemovedFrom( Component< ? > parent ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "removed:", this.hashCode(), parent != null ? parent.hashCode() : 0 );
-		for( ContainmentObserver containmentObserver : this.containmentObservers ) {
-			containmentObserver.removedFrom( parent );
-		}
+//		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "removed:", this.hashCode(), parent != null ? parent.hashCode() : 0 );
+//		for( ContainmentObserver containmentObserver : this.containmentObservers ) {
+//			containmentObserver.removedFrom( parent );
+//		}
 	}
 
 	private J awtComponent;

@@ -52,12 +52,12 @@ public abstract class TextComponent< J extends javax.swing.text.JTextComponent> 
 	private javax.swing.border.CompoundBorder border = new javax.swing.border.CompoundBorder(outsideBorder, insideBorder);
 //	private javax.swing.border.Border border = new edu.cmu.cs.dennisc.javax.swing.border.SunkenBorder( 4, 4, 2, 2 );
 
-	/*package-private*/ TextComponent( StringState model ) {
+	public TextComponent( StringState model ) {
 		super( model );
 		this.getAwtComponent().setBorder( this.border );
-	}
-	/*package-private*/ void setDocument( javax.swing.text.Document document ) {
-		this.getAwtComponent().setDocument( document );
+		this.getAwtComponent().setDocument(model.getDocument());
+		this.setMargin( new java.awt.Insets( 4, 4, 2, 2 ) );
+		this.setBackgroundColor( new java.awt.Color( 255, 255, 221 ) );
 	}
 	public java.awt.Insets getMargin() {
 		//return this.getAwtComponent().getMargin();

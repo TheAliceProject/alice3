@@ -110,9 +110,9 @@ public final class BoundedRangeIntegerState extends State<Integer> {
 		}
 	}
 	
-//	public javax.swing.BoundedRangeModel getBoundedRangeModel() {
-//		return this.boundedRangeModel;
-//	}
+	/*package-private*/public javax.swing.BoundedRangeModel getBoundedRangeModel() {
+		return this.boundedRangeModel;
+	}
 	
 	public int getMinimum() {
 		return this.boundedRangeModel.getMinimum();
@@ -128,20 +128,7 @@ public final class BoundedRangeIntegerState extends State<Integer> {
 		this.boundedRangeModel.setValue( value );
 	}
 	
-	private Slider register( final Slider rv ) {
-		rv.getAwtComponent().setModel( this.boundedRangeModel );
-		rv.addContainmentObserver( new Component.ContainmentObserver() {
-			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BoundedRangeIntegerState.this.addComponent( rv );
-			}
-			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BoundedRangeIntegerState.this.removeComponent( rv );
-			}
-		} );
-		return rv;
-	}
 	public Slider createSlider() {
-		return register( new Slider( this ) );
+		return new Slider( this );
 	}
-	//public abstract void perform( BoundedRangeContext boundedRangeContext );
 }

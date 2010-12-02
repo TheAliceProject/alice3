@@ -47,9 +47,21 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class TextField extends TextComponent< edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField > {
-	/*package-private*/ TextField( StringState model ) {
+	public TextField( StringState model ) {
 		super( model );
 	}
+	
+	@Override
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		this.getModel().addComponent( this );
+	}
+	@Override
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		this.getModel().removeComponent( this );
+		super.handleRemovedFrom( parent );
+	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField createAwtComponent() {
 		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {

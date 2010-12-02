@@ -169,32 +169,10 @@ public class StringState extends State<String> {
 	protected javax.swing.text.Document getDocument() {
 		return this.document;
 	}
-	private < T extends TextComponent<?> > T register( final T rv ) {
-		rv.setDocument(this.document);
-		rv.addContainmentObserver( new Component.ContainmentObserver() {
-			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				StringState.this.addComponent( rv );
-			}
-			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				StringState.this.removeComponent( rv );
-			}
-		} );
-
-		
-		
-		//todo:
-//		rv.getAwtComponent().addFocusListener( new FocusListener( rv ) );
-		
-		
-		
-		rv.setMargin( new java.awt.Insets( 4, 4, 2, 2 ) );
-		rv.setBackgroundColor( new java.awt.Color( 255, 255, 221 ) );
-		return rv;
-	}
 	public TextField createTextField() {
-		return register( new TextField( this ) );
+		return new TextField( this );
 	}
 	public TextArea createTextArea() {
-		return register( new TextArea( this ) );
+		return new TextArea( this );
 	}
 }

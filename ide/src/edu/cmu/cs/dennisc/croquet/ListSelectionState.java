@@ -473,9 +473,9 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 		return sb.toString();
 	}
 
-	/*package-private*/ javax.swing.ListModel getListModel() {
-		return this.listModel;
-	}
+//	/*package-private*/ javax.swing.ListModel getListModel() {
+//		return this.listModel;
+//	}
 	/*package-private*/ ComboBoxModel getComboBoxModel() {
 		return this.comboBoxModel;
 	}
