@@ -292,8 +292,8 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	}
 	
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		org.alice.ide.croquet.models.ast.DeclarationNameState.getInstance().setValue( this.getDefaultNameText() );
 		this.declarationNameTextField.selectAll();
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {

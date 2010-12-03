@@ -402,8 +402,8 @@ public class TutorialStencil extends Stencil {
 	};
 	
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo(parent);
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.stepsModel.addSelectionObserver(this.selectionObserver);
 		this.handleStepChanged( this.stepsModel.getSelectedStep() );
 		this.addKeyListener( this.keyListener );
@@ -411,11 +411,11 @@ public class TutorialStencil extends Stencil {
 	}
 
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		this.removeMouseListener( this.mouseListener );
 		this.removeKeyListener( this.keyListener );
 		this.stepsModel.removeSelectionObserver(this.selectionObserver);
-		super.handleRemovedFrom(parent);
+		super.handleUndisplayable();
 	}
 	
 	@Override

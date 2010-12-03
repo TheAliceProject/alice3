@@ -109,8 +109,8 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 	
 	private boolean isInitialized = false;
 	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		if( this.isInitialized ) {
 			//pass
 		} else {
@@ -121,9 +121,9 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 		this.getModel().addComponent( this );
 	}
 	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+	protected void handleUndisplayable() {
 		this.getModel().removeComponent( this );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override

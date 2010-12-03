@@ -104,16 +104,16 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}		
 		};
 		@Override
-		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-			super.handleAddedTo(parent);
+		protected void handleDisplayable() {
+			super.handleDisplayable();
 			treeSelectionState.addAndInvokeSelectionObserver(this.selectionObserver);
 			filterState.addAndInvokeValueObserver( this.filterObserver );
 		}
 		@Override
-		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		protected void handleUndisplayable() {
 			filterState.removeValueObserver( this.filterObserver );
 			treeSelectionState.removeSelectionObserver(this.selectionObserver);
-			super.handleRemovedFrom(parent);
+			super.handleUndisplayable();
 		}
 		
 		private java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> update( java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, String lcFilter, Criterion criterion ) {

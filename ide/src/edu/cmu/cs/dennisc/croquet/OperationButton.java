@@ -51,13 +51,13 @@ public abstract class OperationButton< J extends javax.swing.AbstractButton, M e
 		super( model );
 	}
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.getModel().addButton( this );
-		super.handleAddedTo(parent);
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleRemovedFrom(parent);
+	protected void handleUndisplayable() {
 		this.getModel().removeButton( this );
+		super.handleUndisplayable();
 	}
 }

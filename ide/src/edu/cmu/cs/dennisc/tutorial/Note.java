@@ -363,20 +363,20 @@ public class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JCo
 	}
 	
 	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.addHierarchyListener( this.hierarchyListener );
 		this.addMouseListener( this.mouseInputListener );
 		this.addMouseMotionListener( this.mouseInputListener );
 		this.bind();
 	}
 	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+	protected void handleUndisplayable() {
 		this.unbind();
 		this.removeMouseMotionListener( this.mouseInputListener );
 		this.removeMouseListener( this.mouseInputListener );
 		this.removeHierarchyListener( this.hierarchyListener );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	
 	public void reset() {

@@ -67,15 +67,15 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 	}
 	
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
 	}
 
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		this.getIDE().removeFromConcealedBin( this.implementor.getIncompleteStatementPane() );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation<?> createDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {

@@ -237,15 +237,15 @@ class MutableList extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
     		}
     	};
     }
-    @Override
-    protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-    	super.handleAddedTo(parent);
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
     	this.expressionListProperty.addListPropertyListener( this.expressionListPropertyListener );
     }
     @Override
-    protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
     	this.expressionListProperty.removeListPropertyListener( this.expressionListPropertyListener );
-    	super.handleRemovedFrom(parent);
+		super.handleUndisplayable();
     }
     private int getIndexOf( java.awt.Component component ) {
 		final int N = this.getComponentCount();
@@ -349,21 +349,21 @@ class MutableList extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 			protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType() {
 				return MutableList.this.componentTypeProperty.getValue();
 			}
-    		@Override
-    		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-    			super.handleAddedTo(parent);
+			@Override
+			protected void handleDisplayable() {
+				super.handleDisplayable();
     	    	this.addMouseListener( MutableList.this.mouseAdapter );
     	    	this.addMouseMotionListener( MutableList.this.mouseAdapter );
     	    	this.addKeyListener( MutableList.this.keyListener );
     	    	MutableList.this.buttonGroup.add( this.getAwtComponent() );
     		}
     		@Override
-    		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+    		protected void handleUndisplayable() {
     	    	MutableList.this.buttonGroup.remove( this.getAwtComponent() );
     	    	this.removeKeyListener( MutableList.this.keyListener );
     	    	this.removeMouseMotionListener( MutableList.this.mouseAdapter );
     	    	this.removeMouseListener( MutableList.this.mouseAdapter );
-    			super.handleRemovedFrom(parent);
+    			super.handleUndisplayable();
     		}
     	};
 		fauxItem.setBackgroundColor( this.getBackgroundColor() );

@@ -73,19 +73,19 @@ package org.alice.ide.memberseditor.templates;
 	}
 	
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			this.refresh();
 			((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method).parameters.addListPropertyListener( this.parameterAdapter );
 		}
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method).parameters.removeListPropertyListener( this.parameterAdapter );
 		}
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getBlankExpressionTypes() {

@@ -95,8 +95,8 @@ public class PopupMenu extends ViewController< javax.swing.JPopupMenu, PopupMenu
 	}
 	
 	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.getAwtComponent().getSelectionModel().addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				System.err.println( e );

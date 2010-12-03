@@ -130,8 +130,8 @@ public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.Bor
 	}
 
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.ProjectApplication.getSingleton().getProject();
 		if( project != null ) {
 			this.projectObserver.projectOpened(null, project);
@@ -139,8 +139,8 @@ public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.Bor
 		org.alice.ide.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		org.alice.ide.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 }

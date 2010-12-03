@@ -87,14 +87,14 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 	}
 	
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.getProperty().addListPropertyListener( this.listPropertyAdapter );
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		this.getProperty().removeListPropertyListener( this.listPropertyAdapter );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInterstitial( int i, final int N ) {
 		return null;

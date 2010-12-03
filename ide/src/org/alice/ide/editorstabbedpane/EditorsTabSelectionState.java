@@ -467,16 +467,16 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			}
 		};
 		@Override
-		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-			super.handleAddedTo( parent );
+		protected void handleDisplayable() {
+			super.handleDisplayable();
 			org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( this.selectionObserver );
 			org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueObserver( this.isEmphasizingClassesObserver );
 		}
 		@Override
-		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		protected void handleUndisplayable() {
 			org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueObserver( this.isEmphasizingClassesObserver );
 			org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().removeValueObserver( this.selectionObserver );
-			super.handleRemovedFrom( parent );
+			super.handleUndisplayable();
 		}
 		private void updateOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;

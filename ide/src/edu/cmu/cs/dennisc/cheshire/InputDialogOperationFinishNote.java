@@ -99,16 +99,16 @@ package edu.cmu.cs.dennisc.cheshire;
 		super.reset();
 	}
 	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation = this.inputDialogOperationContext.getModel();
 		inputDialogOperation.setExternalCommitButtonDisabler( this.externalCommitButtonDisabler );
 	}
 	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+	protected void handleUndisplayable() {
 		edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation = this.inputDialogOperationContext.getModel();
 		inputDialogOperation.setExternalCommitButtonDisabler( null );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	
 }

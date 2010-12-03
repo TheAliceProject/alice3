@@ -73,14 +73,14 @@ public class ToolPalette extends BorderPanel {
 	}
 
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo(parent);
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.title.getModel().addAndInvokeValueObserver( this.valueObserver );
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		this.title.getModel().removeValueObserver( this.valueObserver );
-		super.handleRemovedFrom(parent);
+		super.handleUndisplayable();
 	}
 	
 	@Override

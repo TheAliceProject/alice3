@@ -109,19 +109,19 @@ import edu.cmu.cs.dennisc.cheshire.MenuPolicy;
 		this.layeredPane.remove( this.getAwtComponent() );
 	}
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo(parent);
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		java.awt.Toolkit.getDefaultToolkit().addAWTEventListener( this.awtEventListener, java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
 		this.getAwtComponent().setBounds( this.layeredPane.getBounds() );
 		this.layeredPane.addComponentListener( this.componentListener );
 		edu.cmu.cs.dennisc.stencil.RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		assert edu.cmu.cs.dennisc.stencil.RepaintManagerUtilities.popStencil() == this.getAwtComponent();
 		this.layeredPane.removeComponentListener( this.componentListener );
 		java.awt.Toolkit.getDefaultToolkit().removeAWTEventListener( this.awtEventListener );
-		super.handleRemovedFrom(parent);
+		super.handleUndisplayable();
 	}
 	private void redispatchMouseEvent(java.awt.event.MouseEvent eSrc) {
 		Step step = Stencil.this.getCurrentStep();

@@ -121,15 +121,15 @@ public class TreeSelectionState<E> extends State<E> {
 	public Tree<E> createTree() {
 		Tree<E> rv = new Tree<E>( this ) {
 			@Override
-			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleAddedTo(parent);
+			protected void handleDisplayable() {
+				super.handleDisplayable();
 				TreeSelectionState.this.addComponent(this);
 			};
 
 			@Override
-			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			protected void handleUndisplayable() {
 				TreeSelectionState.this.removeComponent(this);
-				super.handleRemovedFrom(parent);
+				super.handleUndisplayable();
 			}
 		};
 		rv.setSwingTreeModel(this.treeModel);

@@ -340,16 +340,16 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 		};
 		@Override
-		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-			super.handleAddedTo(parent);
+		protected void handleDisplayable() {
+			super.handleDisplayable();
 			this.addMouseListener( this.lenientMouseClickAdapter );
 			this.addMouseMotionListener( this.lenientMouseClickAdapter );
 		}
 		@Override
-		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		protected void handleUndisplayable() {
 			this.removeMouseMotionListener( this.lenientMouseClickAdapter );
 			this.removeMouseListener( this.lenientMouseClickAdapter );
-			super.handleRemovedFrom(parent);
+			super.handleUndisplayable();
 		}
 	}
 	

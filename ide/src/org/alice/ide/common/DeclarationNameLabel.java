@@ -68,8 +68,8 @@ public class DeclarationNameLabel extends edu.cmu.cs.dennisc.croquet.Label {
 		this.scaleFont( fontScaleFactor );
 	}
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		if( this.declaration != null ) {
 			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
 			if( nameProperty != null ) {
@@ -79,14 +79,14 @@ public class DeclarationNameLabel extends edu.cmu.cs.dennisc.croquet.Label {
 	}
 	
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		if( this.declaration != null ) {
 			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
 			if( nameProperty != null ) {
 				nameProperty.removePropertyListener( this.namePropertyAdapter );
 			}
 		}
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration getDeclaration() {
 		return this.declaration;

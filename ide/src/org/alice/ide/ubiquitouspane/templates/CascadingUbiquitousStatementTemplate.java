@@ -70,8 +70,8 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 	}
 	
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		if( this.label != null ) {
 			//pass
 		} else {
@@ -89,10 +89,10 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 	}
 	
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 //		this.removeAllComponents();
 //		this.getIDE().removeFromConcealedBin( this.implementor.getIncompleteStatementPane() );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	
 //	@Override

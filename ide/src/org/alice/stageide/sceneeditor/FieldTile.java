@@ -85,8 +85,8 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		}
 	};
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo(parent);
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().addAndInvokeValueObserver( this.valueObserver );
 		edu.cmu.cs.dennisc.property.StringProperty nameProperty = accessible.getNamePropertyIfItExists();
 		if (nameProperty != null)
@@ -95,14 +95,14 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		}
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().removeValueObserver( this.valueObserver );
 		edu.cmu.cs.dennisc.property.StringProperty nameProperty = accessible.getNamePropertyIfItExists();
 		if (nameProperty != null)
 		{
 			nameProperty.removePropertyListener(this.namePropertyListener);
 		}
-		super.handleRemovedFrom(parent);
+		super.handleUndisplayable();
 	}
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {

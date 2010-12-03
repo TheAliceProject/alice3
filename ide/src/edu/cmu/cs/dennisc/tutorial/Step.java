@@ -184,16 +184,16 @@ public abstract class Step {
 //			}
 //		}
 		@Override
-		protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		protected void handleDisplayable() {
 			for( Note note : Step.this.getNotes() ) {
 				this.internalAddComponent( note );
 			}
-			super.handleAddedTo( parent );
+			super.handleDisplayable();
 		}
 		@Override
-		protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		protected void handleUndisplayable() {
 			this.internalRemoveAllComponents();
-			super.handleRemovedFrom( parent );
+			super.handleUndisplayable();
 		}
 	}
 

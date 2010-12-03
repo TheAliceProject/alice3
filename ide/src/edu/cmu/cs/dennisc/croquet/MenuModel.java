@@ -182,26 +182,19 @@ public abstract class MenuModel extends Model {
 	/*package-private*/ Menu createMenu() {
 		Menu rv = new Menu( this ) {
 			@Override
-			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			protected void handleDisplayable() {
 				this.getAwtComponent().setAction( MenuModel.this.action );
-				super.handleAddedTo( parent );
+				super.handleDisplayable();
+				MenuModel.this.addPopupMenuListener( this );
+				MenuModel.this.addComponent( this );
 			}
 
 			@Override
-			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleRemovedFrom( parent );
+			protected void handleUndisplayable() {
+				MenuModel.this.removeComponent( this );
+				MenuModel.this.removePopupMenuListener( this );
+				super.handleUndisplayable();
 				this.getAwtComponent().setAction( null );
-			}
-			@Override
-			protected void handleDisplayabilityChanged( java.awt.event.HierarchyEvent e ) {
-				super.handleDisplayabilityChanged( e );
-				if( this.getAwtComponent().isDisplayable() ) {
-					MenuModel.this.addPopupMenuListener( this );
-					MenuModel.this.addComponent( this );
-				} else {
-					MenuModel.this.removeComponent( this );
-					MenuModel.this.removePopupMenuListener( this );
-				}
 			}
 		};
 		return rv;

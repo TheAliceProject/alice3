@@ -90,8 +90,8 @@ abstract class AbstractViewer extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		return this.sunLight;
 	}
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		if( this.isInitialized ) {
 			//pass
 		} else {
@@ -103,11 +103,11 @@ abstract class AbstractViewer extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 		this.removeComponent( this.adapter );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	protected edu.cmu.cs.dennisc.animation.Animator getAnimator() {
 		return this.animator;

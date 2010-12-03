@@ -59,14 +59,14 @@ public class MenuTextSeparator extends JComponent< javax.swing.JMenuItem > {
 	}
 	
 	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+	protected void handleDisplayable() {
 		this.getAwtComponent().setText( menuSeparatorModel.getName() );
 		this.getAwtComponent().setIcon( menuSeparatorModel.getIcon() );
 		this.getAwtComponent().setDisabledIcon( menuSeparatorModel.getIcon() );
-		super.handleAddedTo( parent );
+		super.handleDisplayable();
 	}
 	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleRemovedFrom( parent );
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
 	}
 }

@@ -64,13 +64,13 @@ public class StepsList extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swin
 		return rv;
 	}
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo(parent);
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.getAwtComponent().addListSelectionListener( this.listSelectionListener );
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		this.getAwtComponent().removeListSelectionListener( this.listSelectionListener );
-		super.handleRemovedFrom(parent);
+		super.handleUndisplayable();
 	}
 };

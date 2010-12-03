@@ -65,8 +65,8 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
 	private boolean isInitialized = false;
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		if( this.isInitialized ) {
 			//pass
 		} else {
@@ -75,9 +75,9 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 		}
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		//this.removeAllComponents();
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	protected void refresh() {
 		this.removeAllComponents();

@@ -54,13 +54,13 @@ public abstract class BooleanStateButton< J extends javax.swing.AbstractButton >
 		this.setAction( this.getModel().getAction() );
 	}
 	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.getModel().addComponent( this );
 	}
 	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+	protected void handleUndisplayable() {
 		this.getModel().removeComponent( this );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 }

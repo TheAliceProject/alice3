@@ -73,16 +73,16 @@ public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennis
 		return this.nameListener;
 	}
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		//refresh takes care of name listener
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		if( this.prevResource != null ) {
 			this.prevResource.removeNameListener( this.getNameListener() );
 		}
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 
 	@Override

@@ -57,16 +57,16 @@ public abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.Pag
 		}
 	};
 	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		org.alice.ide.croquet.models.members.PartSelectionState.getInstance().addValueObserver( this.partSelectionObserver );
 		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addAndInvokeValueObserver( this.fieldSelectionObserver );
 	}
 	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+	protected void handleUndisplayable() {
 		org.alice.ide.croquet.models.members.PartSelectionState.getInstance().removeValueObserver( this.partSelectionObserver );
 		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().removeValueObserver( this.fieldSelectionObserver );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	
 	protected abstract void refresh( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types );

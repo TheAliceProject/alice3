@@ -185,17 +185,13 @@ public class List<E> extends ItemSelectable<javax.swing.JList, E > {
 		this.getAwtComponent().removeListSelectionListener( listSelectionListener );
 	}
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo(parent);
-		this.getModel().addComponent(this);
-		// this.addListSelectionListener( this.listSelectionListener );
-	};
-
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getModel().addComponent( this );
+	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		// this.removeListSelectionListener( this.listSelectionListener
-		// );
-		this.getModel().removeComponent(this);
-		super.handleRemovedFrom(parent);
+	protected void handleUndisplayable() {
+		this.getModel().removeComponent( this );
+		super.handleUndisplayable();
 	}
 }

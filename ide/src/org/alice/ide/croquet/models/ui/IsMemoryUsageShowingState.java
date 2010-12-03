@@ -51,14 +51,14 @@ class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	} );
 	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.timer.start();
 	}
 	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+	protected void handleUndisplayable() {
 		this.timer.stop();
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 }
 

@@ -64,14 +64,14 @@ public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.propert
 	}
 
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.property.addPropertyListener( this.propertyAdapter );
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		this.property.removePropertyListener( this.propertyAdapter );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	
 	protected Factory getFactory() {

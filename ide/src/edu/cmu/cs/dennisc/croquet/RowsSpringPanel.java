@@ -60,8 +60,8 @@ public abstract class RowsSpringPanel extends SpringPanel {
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 	@Override
-	protected void handleAddedTo( Component<?> parent ) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		if( this.componentRows != null ) {
 			//pass
 		} else {
@@ -71,8 +71,8 @@ public abstract class RowsSpringPanel extends SpringPanel {
 		}
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		//todo?
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	};
 }

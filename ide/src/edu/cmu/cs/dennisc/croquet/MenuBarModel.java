@@ -80,8 +80,8 @@ public class MenuBarModel extends Model {
 	public MenuBar createMenuBar() {
 		MenuBar rv = new MenuBar( this ) {
 			@Override
-			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleAddedTo( parent );
+			protected void handleDisplayable() {
+				super.handleDisplayable();
 //				assert mapMenuBarToListener.containsKey( menuBar ) == false;
 //				MenuBarChangeListener listener = new MenuBarChangeListener( menuBar );
 //				this.mapMenuBarToListener.put( menuBar, listener );
@@ -90,8 +90,8 @@ public class MenuBarModel extends Model {
 			}
 
 			@Override
-			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleRemovedFrom( parent );
+			protected void handleUndisplayable() {
+				super.handleUndisplayable();
 				MenuBarModel.this.removeComponent(this);
 //				MenuBarChangeListener listener = this.mapMenuBarToListener.get( menuBar );
 //				assert listener != null;

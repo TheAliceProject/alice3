@@ -125,19 +125,24 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 		//note: do not call super
 		final PopupMenu popupMenu = new PopupMenu( this ) {
 			@Override
-			protected void handleDisplayabilityChanged( java.awt.event.HierarchyEvent e ) {
-				super.handleDisplayabilityChanged( e );
-				if( this.getAwtComponent().isDisplayable() ) {
-					PopupMenuOperation.this.addComponent( this );
-				} else {
-					PopupMenuOperation.this.removeComponent( this );
-					PopupMenuOperation.this.menuModel.removePopupMenuListener( this );
-				}
+			protected void handleDisplayable() {
+				//todo: investigate
+				super.handleDisplayable();
+				//PopupMenuOperation.this.menuModel.addPopupMenuListener( this );
+				PopupMenuOperation.this.addComponent( this );
+			}
+			@Override
+			protected void handleUndisplayable() {
+				PopupMenuOperation.this.removeComponent( this );
+				PopupMenuOperation.this.menuModel.removePopupMenuListener( this );
+				super.handleUndisplayable();
 			}
 			
 		};
+		//todo: investigate
 		this.menuModel.addPopupMenuListener( popupMenu );
-		popupMenu.getAwtComponent().addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+		
+		popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
 			private javax.swing.event.PopupMenuEvent cancelEvent = null;
 			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
 				this.cancelEvent = null;
@@ -156,7 +161,7 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 			}
 		} );
 
-		popupMenu.getAwtComponent().addComponentListener( new java.awt.event.ComponentListener() {
+		popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
 			public void componentShown( java.awt.event.ComponentEvent e ) {
 //				java.awt.Component awtComponent = e.getComponent();
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentShown", awtComponent.getLocationOnScreen(), awtComponent.getSize() );

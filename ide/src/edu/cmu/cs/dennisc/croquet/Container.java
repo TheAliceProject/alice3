@@ -117,7 +117,9 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 	private void internalRemoveComponent( Component<?> component, boolean isReleaseDesired ) {
 		assert component != null;
 		this.getAwtComponent().remove(component.getAwtComponent());
-		component.handleRemovedFrom( this );
+//		if( component.getAwtComponent().isDisplayable() ) {
+//			component.handleUndisplayable();
+//		}
 		if( isReleaseDesired ) {
 			if( component instanceof Container< ? > ) {
 				Container< ? > container = (Container< ? >)component;

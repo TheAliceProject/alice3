@@ -90,16 +90,16 @@ public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
 		}
 	};
 	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.getAwtComponent().addPopupMenuListener( this.popupMenuListener );
 		this.getModel().addComponent( this );
 	}
 	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+	protected void handleUndisplayable() {
 		this.getModel().removeComponent( this );
 		this.getAwtComponent().removePopupMenuListener( this.popupMenuListener );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	
 	public javax.swing.ListCellRenderer getRenderer() {

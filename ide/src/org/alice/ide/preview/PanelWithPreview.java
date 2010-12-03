@@ -69,14 +69,14 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 			return rv;
 		}
 		@Override
-		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-			super.handleAddedTo( parent );
+		protected void handleDisplayable() {
+			super.handleDisplayable();
 			this.refresh();
 		}
 		@Override
-		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		protected void handleUndisplayable() {
 			this.internalForgetAndRemoveAllComponents();
-			super.handleRemovedFrom( parent );
+			super.handleUndisplayable();
 		}
 	}
 
@@ -130,8 +130,8 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 	public abstract String getDialogTitle();
 	
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo(parent);
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.initializeIfNecessary();
 	}
 //	@Override

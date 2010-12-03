@@ -115,138 +115,138 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		}
 	}
 		
-	private static boolean isWarningAlreadyPrinted = false;
-	
-	private static StringBuilder append( StringBuilder rv, String s, java.awt.Component awtComponent ) {
-		rv.append( "[" );
-		rv.append( s );
-		if( awtComponent != null ) {
-			rv.append( awtComponent.getClass().getName() );
-			rv.append( " " );
-			rv.append( awtComponent.hashCode() );
-		} else {
-			rv.append( "null 0" );
-		}
-		rv.append( "]\n" );
-		return rv;
-	}
 	private java.awt.event.HierarchyListener hierarchyListener = new java.awt.event.HierarchyListener() {
 		public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
-			java.awt.Component awtComponent = e.getComponent();
-			java.awt.Component awtChanged = e.getChanged();
-			java.awt.Container awtParent = e.getChangedParent();
-//			System.err.println( "hierarchyChanged: " + e );
 			long flags = e.getChangeFlags();
-			if( (flags & java.awt.event.HierarchyEvent.PARENT_CHANGED) != 0 ) {
-
-				assert awtComponent == Component.this.getAwtComponent();
-
-				if( awtComponent == awtChanged ) {
-					if( awtParent != Component.this.awtParent ) {
-						Component.this.handleParentChange( awtParent );
-					} else {
-						if( isWarningAlreadyPrinted ) {
-							//pass
-						} else {
-							//Thread.dumpStack();
-							edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: hierarchyChanged seems to not be actually changing the parent" );
-							//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    flags:", flags );
-							//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
-							//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
-							//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.hashCode(), awtParent.getClass().getName(), awtParent.getLayout() );
-							isWarningAlreadyPrinted = true;
-						}
-					}
-				}
-			}
 			if( ( flags & java.awt.event.HierarchyEvent.DISPLAYABILITY_CHANGED ) != 0 ) {
 				Component.this.handleDisplayabilityChanged( e );
-//				StringBuilder sb = new StringBuilder();
-//				sb.append( awtComponent == awtChanged );
-//				sb.append( "\n" );
-//				append( sb, "awtComponent:", awtComponent );
-//				append( sb, "awtChanged:", awtChanged );
-//				append( sb, "awtParent:", awtParent );
-//				//append( sb, "Component.this.awtParent:", Component.this.awtParent );
-//				sb.append( "\n" );
-//				System.err.println( sb.toString() );
-//				assert awtChanged == awtComponent;
-//				assert awtParent != null;
-//				if( awtChanged.isDisplayable() ) {
-//					if( Component.this.awtParent == null ) {
-//						assert Component.this.awtParent == null;
-//						Component.this.handleAddedTo( map.get( awtParent ) );
-//						Component.this.awtParent = awtParent;
-//					}
-//				} else {
-//					if( Component.this.awtParent != null ) {
-//						assert Component.this.awtParent != null;
-//						assert Component.this.awtParent == awtParent;
-//						Component.this.handleRemovedFrom( map.get( awtParent ) );
-//						Component.this.awtParent = null;
-//					}
-//				}
 			}
 		}
 	};
+//	private static boolean isWarningAlreadyPrinted = false;
+//	private static StringBuilder append( StringBuilder rv, String s, java.awt.Component awtComponent ) {
+//		rv.append( "[" );
+//		rv.append( s );
+//		if( awtComponent != null ) {
+//			rv.append( awtComponent.getClass().getName() );
+//			rv.append( " " );
+//			rv.append( awtComponent.hashCode() );
+//		} else {
+//			rv.append( "null 0" );
+//		}
+//		rv.append( "]\n" );
+//		return rv;
+//	}
+//	private java.awt.event.HierarchyListener hierarchyListener = new java.awt.event.HierarchyListener() {
+//		public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
+//			java.awt.Component awtComponent = e.getComponent();
+//			java.awt.Component awtChanged = e.getChanged();
+//			java.awt.Container awtParent = e.getChangedParent();
+////			System.err.println( "hierarchyChanged: " + e );
+//			long flags = e.getChangeFlags();
+//			if( (flags & java.awt.event.HierarchyEvent.PARENT_CHANGED) != 0 ) {
+//
+//				assert awtComponent == Component.this.getAwtComponent();
+//
+//				if( awtComponent == awtChanged ) {
+//					if( awtParent != Component.this.awtParent ) {
+//						Component.this.handleParentChange( awtParent );
+//					} else {
+//						if( isWarningAlreadyPrinted ) {
+//							//pass
+//						} else {
+//							//Thread.dumpStack();
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: hierarchyChanged seems to not be actually changing the parent" );
+//							//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    flags:", flags );
+//							//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
+//							//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
+//							//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.hashCode(), awtParent.getClass().getName(), awtParent.getLayout() );
+//							isWarningAlreadyPrinted = true;
+//						}
+//					}
+//				}
+//			}
+//			if( ( flags & java.awt.event.HierarchyEvent.DISPLAYABILITY_CHANGED ) != 0 ) {
+//				Component.this.handleDisplayabilityChanged( e );
+////				StringBuilder sb = new StringBuilder();
+////				sb.append( awtComponent == awtChanged );
+////				sb.append( "\n" );
+////				append( sb, "awtComponent:", awtComponent );
+////				append( sb, "awtChanged:", awtChanged );
+////				append( sb, "awtParent:", awtParent );
+////				//append( sb, "Component.this.awtParent:", Component.this.awtParent );
+////				sb.append( "\n" );
+////				System.err.println( sb.toString() );
+////				assert awtChanged == awtComponent;
+////				assert awtParent != null;
+////				if( awtChanged.isDisplayable() ) {
+////					if( Component.this.awtParent == null ) {
+////						assert Component.this.awtParent == null;
+////						Component.this.handleAddedTo( map.get( awtParent ) );
+////						Component.this.awtParent = awtParent;
+////					}
+////				} else {
+////					if( Component.this.awtParent != null ) {
+////						assert Component.this.awtParent != null;
+////						assert Component.this.awtParent == awtParent;
+////						Component.this.handleRemovedFrom( map.get( awtParent ) );
+////						Component.this.awtParent = null;
+////					}
+////				}
+//			}
+//		}
+//	};
+//	private java.awt.Container awtParent;
+//	private void handleParentChange( java.awt.Container awtParent ) {
+//		if( this.awtParent != null ) {
+//			Component< ? > parent = Component.lookup( this.awtParent );
+//			if( parent != null ) {
+//				//pass
+//			} else {
+//				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for parent" );
+//				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
+//				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.getClass().getName(), awtParent.getLayout() );
+//			}
+//			this.handleRemovedFrom( parent );
+//		} else {
+//			assert awtParent != null;
+//		}
+//		this.awtParent = awtParent;
+//		if( this.awtParent != null ) {
+//			Component< ? > parent = Component.lookup( this.awtParent );
+//			if( parent != null ) {
+//				//pass
+//			} else {
+//				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for parent" );
+//				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
+//				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.getClass().getName(), awtParent.getLayout() );
+//			}
+//			this.handleAddedTo( parent );
+//		}
+//	}
 
-	protected void handleDisplayabilityChanged( java.awt.event.HierarchyEvent e ) {
+	protected void handleDisplayable() {
 	}
-	private java.awt.Container awtParent;
-	private void handleParentChange( java.awt.Container awtParent ) {
-		if( this.awtParent != null ) {
-			Component< ? > parent = Component.lookup( this.awtParent );
-			if( parent != null ) {
-				//pass
+	protected void handleUndisplayable() {
+	}
+	
+	private void handleDisplayabilityChanged( java.awt.event.HierarchyEvent e ) {
+		//assert e.getComponent() == this.awtComponent : this;
+		if( e.getComponent() == this.awtComponent ) {
+			if( this.awtComponent.isDisplayable() ) {
+				this.handleDisplayable();
 			} else {
-				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for parent" );
-				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
-				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.getClass().getName(), awtParent.getLayout() );
+				this.handleUndisplayable();
 			}
-			this.handleRemovedFrom( parent );
 		} else {
-			assert awtParent != null;
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleDisplayabilityChanged:", this.awtComponent.hashCode(), this.awtComponent.isDisplayable() );
 		}
-		this.awtParent = awtParent;
-		if( this.awtParent != null ) {
-			Component< ? > parent = Component.lookup( this.awtParent );
-			if( parent != null ) {
-				//pass
-			} else {
-				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for parent" );
-				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
-				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.getClass().getName(), awtParent.getLayout() );
-			}
-			this.handleAddedTo( parent );
-		}
-	}
-
-//	private java.util.List< ContainmentObserver > containmentObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-//	protected void addContainmentObserver( ContainmentObserver containmentObserver ) {
-//		this.containmentObservers.add( containmentObserver );
-//	}
-//	protected void removeContainmentObserver( ContainmentObserver containmentObserver ) {
-//		this.containmentObservers.remove( containmentObserver );
-//	}
-
-	protected void handleAddedTo( Component< ? > parent ) {
-//		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "added:", this.hashCode(), parent != null ? parent.hashCode() : 0 );
-//		for( ContainmentObserver containmentObserver : this.containmentObservers ) {
-//			containmentObserver.addedTo( parent );
-//		}
-	}
-	protected void handleRemovedFrom( Component< ? > parent ) {
-//		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "removed:", this.hashCode(), parent != null ? parent.hashCode() : 0 );
-//		for( ContainmentObserver containmentObserver : this.containmentObservers ) {
-//			containmentObserver.removedFrom( parent );
-//		}
 	}
 
 	private J awtComponent;
 
 	protected abstract J createAwtComponent();
 
-	///*package-private*/ final J getAwtComponent() {
 	// todo: reduce visibility to /*package-private*/
 	@Override
 	public final J getAwtComponent() {
@@ -254,13 +254,10 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 			// pass
 		} else {
 			this.awtComponent = this.createAwtComponent();
-			java.awt.Container awtParent = this.awtComponent.getParent();
-			if( awtParent != null ) {
-				this.handleParentChange( awtParent );
+			if( this.awtComponent.isDisplayable() ) {
+				this.handleDisplayable();
 			}
-//			assert this.awtComponent.isDisplayable() == false;
 			this.awtComponent.addHierarchyListener( this.hierarchyListener );
-			//this.jComponent.addContainerListener( this.containerListener );
 			this.awtComponent.setName( this.getClass().getName() );
 			if( this.awtComponent instanceof javax.swing.JComponent ) {
 				((javax.swing.JComponent)this.awtComponent).setComponentOrientation(  java.awt.ComponentOrientation.getOrientation( javax.swing.JComponent.getDefaultLocale() ) );
@@ -272,8 +269,12 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 
 	protected void release() {
 		if( this.awtComponent != null ) {
-			//this.jComponent.removeContainerListener( this.containerListener );
+			System.err.println( "release: " + this.hashCode() );
+			boolean b = this.awtComponent.isDisplayable();
 			this.awtComponent.removeHierarchyListener( this.hierarchyListener );
+			if( b ) {
+				this.handleUndisplayable();
+			}
 			Component.map.remove( this.awtComponent );
 			this.awtComponent = null;
 		}

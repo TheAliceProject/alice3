@@ -67,15 +67,15 @@ public abstract class AbstractDropDownListItemExpressionPane extends org.alice.i
 		return new java.awt.GridLayout( 1, 1 );
 	}
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.expressionListProperty.addListPropertyListener( this.listPropertyAdapter );
 		this.refresh();
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		this.expressionListProperty.removeListPropertyListener( this.listPropertyAdapter );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType();
 	public void refresh() {

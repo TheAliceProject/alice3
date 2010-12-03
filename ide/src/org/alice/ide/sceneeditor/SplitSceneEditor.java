@@ -139,13 +139,13 @@ public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.addComponent( this.root, Constraint.CENTER );
 	}
 	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		org.alice.ide.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
 	}
 	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+	protected void handleUndisplayable() {
 		org.alice.ide.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 }

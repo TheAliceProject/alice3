@@ -109,14 +109,14 @@ class RecursionPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 		};
 		@Override
-		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-			super.handleAddedTo(parent);
+		protected void handleDisplayable() {
+			super.handleDisplayable();
 			IsAccessToRecursionAllowedEnabledState.getInstance().addAndInvokeValueObserver( valueObserver );
 		}
 		@Override
-		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		protected void handleUndisplayable() {
 			IsAccessToRecursionAllowedEnabledState.getInstance().removeValueObserver( valueObserver );
-			super.handleRemovedFrom(parent);
+			super.handleUndisplayable();
 		}
 	}
 

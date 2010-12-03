@@ -195,7 +195,11 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	/*package-private*/ void addButton(OperationButton<?,?> button) {
 		button.setAction( Operation.this.action );
 //			rv.setModel( this.buttonModel );
-		assert Operation.this.mapButtonToListener.containsKey( button ) == false;
+		//assert Operation.this.mapButtonToListener.containsKey( button ) == false : this;
+		
+		if( Operation.this.mapButtonToListener.containsKey( button ) ) {
+			System.err.println( "WARNING: addButton repeat: " + this );
+		}
 		ButtonActionListener buttonActionListener = new ButtonActionListener( button );
 		Operation.this.mapButtonToListener.put( button, buttonActionListener );
 		button.getAwtComponent().addActionListener( buttonActionListener );

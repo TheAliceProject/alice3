@@ -52,14 +52,14 @@ public class TextField extends TextComponent< edu.cmu.cs.dennisc.javax.swing.com
 	}
 	
 	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		this.getModel().addComponent( this );
 	}
 	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+	protected void handleUndisplayable() {
 		this.getModel().removeComponent( this );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 
 	@Override
