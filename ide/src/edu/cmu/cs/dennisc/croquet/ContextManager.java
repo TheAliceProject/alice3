@@ -140,23 +140,28 @@ public class ContextManager {
 	}
 	/*package-private*/ static ModelContext< ? > popContext() {
 		ModelContext< ? > childContext = stack.peek();
-		if( childContext instanceof StringStateContext ) {
-			StringStateContext stringStateContext = (StringStateContext)childContext;
-			stringStateContext.handlePop();
-			stack.pop();
-			childContext = stack.peek();
+		if( childContext instanceof RootContext ) {
+			System.err.println( "WARNING: attempting to pop root context" );
+			return null;
+		} else {
+			if( childContext instanceof StringStateContext ) {
+				StringStateContext stringStateContext = (StringStateContext)childContext;
+				stringStateContext.handlePop();
+				stack.pop();
+				childContext = stack.peek();
+			}
+			ModelContext< ? > parentContext = mapChildContextPendingParentContext.get( childContext );
+			
+			childContext.popping();
+			ModelContext< ? > rv = stack.pop();
+			childContext.popped();
+			if( parentContext != null ) {
+				mapChildContextPendingParentContext.remove( childContext );
+				assert parentContext == stack.peek() : parentContext + " " + stack.peek();
+				popContext();
+			}
+			return rv;
 		}
-		ModelContext< ? > parentContext = mapChildContextPendingParentContext.get( childContext );
-		
-		childContext.popping();
-		ModelContext< ? > rv = stack.pop();
-		childContext.popped();
-		if( parentContext != null ) {
-			mapChildContextPendingParentContext.remove( childContext );
-			assert parentContext == stack.peek() : parentContext + " " + stack.peek();
-			popContext();
-		}
-		return rv;
 	}
 
 	/*package-private*/ static void handleDocumentEvent( StringState stringState, java.util.EventObject e, ViewController< ?, ? > viewController, javax.swing.event.DocumentEvent documentEvent, String previousValue, String nextValue ) {
@@ -324,9 +329,12 @@ public class ContextManager {
 						}
 					}
 					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-					assert modelContext instanceof PopupMenuOperationContext;
-					PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)modelContext;
-					popupMenuOperationContext.handleMenuSelectionChanged( e, models );
+					if( modelContext instanceof PopupMenuOperationContext ) {
+						PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)modelContext;
+						popupMenuOperationContext.handleMenuSelectionChanged( e, models );
+					} else {
+						System.err.println( "WARNING: handleMenuSelectionStateChanged not PopupMenuOperationContext " + modelContext );
+					}
 				} else {
 					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
 					if( menuBarModel != null ) {

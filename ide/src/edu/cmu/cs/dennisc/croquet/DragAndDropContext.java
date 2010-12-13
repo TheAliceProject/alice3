@@ -387,7 +387,11 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 			ContextManager.popParentContextWhenChildContextIsPopped( this, childContext );
 		} else {
 			ModelContext< ? > modelContext = ContextManager.popContext();
-			assert modelContext == this;
+			if( modelContext == this ) {
+				//pass
+			} else {
+				System.err.println( "WARNING: popContext " + childContext + " " + modelContext );
+			}
 		}
 	}
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {

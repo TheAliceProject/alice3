@@ -117,10 +117,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		
 	private java.awt.event.HierarchyListener hierarchyListener = new java.awt.event.HierarchyListener() {
 		public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
-			long flags = e.getChangeFlags();
-			if( ( flags & java.awt.event.HierarchyEvent.DISPLAYABILITY_CHANGED ) != 0 ) {
-				Component.this.handleDisplayabilityChanged( e );
-			}
+			Component.this.handleHierarchyChanged( e );
 		}
 	};
 //	private static boolean isWarningAlreadyPrinted = false;
@@ -230,16 +227,33 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	protected void handleUndisplayable() {
 	}
 	
-	private void handleDisplayabilityChanged( java.awt.event.HierarchyEvent e ) {
-		//assert e.getComponent() == this.awtComponent : this;
-		if( e.getComponent() == this.awtComponent ) {
-			if( this.awtComponent.isDisplayable() ) {
-				this.handleDisplayable();
+	private boolean isDisplayableState = false;
+	private void trackDisplayability() {
+		if( this.awtComponent.isDisplayable() ) {
+			if( this.isDisplayableState ) {
+				//pass
 			} else {
-				this.handleUndisplayable();
+				this.handleDisplayable();
+				this.isDisplayableState = true;
 			}
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleDisplayabilityChanged:", this.awtComponent.hashCode(), this.awtComponent.isDisplayable() );
+			if( this.isDisplayableState ) {
+				this.handleUndisplayable();
+				this.isDisplayableState = false;
+			} else {
+				//pass
+			}
+		}
+	}
+	protected final void handleHierarchyChanged( java.awt.event.HierarchyEvent e ) {
+		//assert e.getComponent() == this.awtComponent : this;
+		long flags = e.getChangeFlags();
+		if( ( flags & java.awt.event.HierarchyEvent.DISPLAYABILITY_CHANGED ) != 0 ) {
+			if( e.getComponent() == this.awtComponent ) {
+				this.trackDisplayability();
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleDisplayabilityChanged:", this.awtComponent.hashCode(), this.awtComponent.isDisplayable() );
+			}
 		}
 	}
 
@@ -254,9 +268,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 			// pass
 		} else {
 			this.awtComponent = this.createAwtComponent();
-			if( this.awtComponent.isDisplayable() ) {
-				this.handleDisplayable();
-			}
+			this.trackDisplayability();
 			this.awtComponent.addHierarchyListener( this.hierarchyListener );
 			this.awtComponent.setName( this.getClass().getName() );
 			if( this.awtComponent instanceof javax.swing.JComponent ) {
@@ -270,11 +282,8 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	protected void release() {
 		if( this.awtComponent != null ) {
 			System.err.println( "release: " + this.hashCode() );
-			boolean b = this.awtComponent.isDisplayable();
 			this.awtComponent.removeHierarchyListener( this.hierarchyListener );
-			if( b ) {
-				this.handleUndisplayable();
-			}
+			this.trackDisplayability();
 			Component.map.remove( this.awtComponent );
 			this.awtComponent = null;
 		}
