@@ -50,13 +50,22 @@ import org.lookingglassandalice.storytelling.*;
 public class StorytellingTest {
 	public static void main( String[] args ) {
 		Scene scene = new Scene();
+
 		Camera camera = new Camera();
+		camera.move( MoveDirection.FORWARD, 10.0 );
+		camera.turn( TurnDirection.LEFT, 0.5 );
+		
 		Sphere sphere = new Sphere();
+		sphere.setRadius( 0.1 );
+		sphere.setColor( Color.RED );
+		
+		Person person = new Person();
+		person.setResource( new org.lookingglassandalice.storytelling.sims2.PersonResource() );
+
 		LookingGlass lookingGlass = new LookingGlass();
 		scene.addEntity( camera );
 		scene.addEntity( sphere );
-		
-		camera.getAGoodLookAt( sphere );
+		scene.addEntity( person );
 		
 		lookingGlass.setScene( scene );
 		lookingGlass.setVisible( true );

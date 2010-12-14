@@ -46,6 +46,8 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class MoveKeywords {
-
+public class RollDetails {
+	public static RollDetails defaultDetails() {
+		return new RollDetails();
+	}
 }

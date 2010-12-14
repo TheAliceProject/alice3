@@ -47,7 +47,7 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public class Target extends Entity {
-	private org.lookingglassandalice.storytelling.implementation.TargetImplementation implementation = new org.lookingglassandalice.storytelling.implementation.TargetImplementation( this );
+	private final org.lookingglassandalice.storytelling.implementation.TargetImplementation implementation = new org.lookingglassandalice.storytelling.implementation.TargetImplementation( this );
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.TargetImplementation getImplementation() {
 		return this.implementation;

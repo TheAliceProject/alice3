@@ -46,9 +46,8 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public interface Turner {
-	void turn( TurnDirection direction, Number amount );
-	void turn( TurnDirection direction, Number amount, TurnDetails details );
-	void roll( RollDirection direction, Number amount );
-	void roll( RollDirection direction, Number amount, RollDetails details );
+public class TurnDetails {
+	public static TurnDetails defaultDetails() {
+		return new TurnDetails();
+	}
 }

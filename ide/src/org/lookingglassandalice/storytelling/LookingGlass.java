@@ -47,7 +47,7 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public class LookingGlass {
-	private org.lookingglassandalice.storytelling.implementation.LookingGlassImplementation implementation = new org.lookingglassandalice.storytelling.implementation.LookingGlassImplementation();
+	private final org.lookingglassandalice.storytelling.implementation.LookingGlassImplementation implementation = new org.lookingglassandalice.storytelling.implementation.LookingGlassImplementation();
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.LookingGlassImplementation getImplementation() {
 		return this.implementation;
 	}

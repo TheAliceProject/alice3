@@ -47,13 +47,21 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public class Joint extends Entity implements Turner {
-	private org.lookingglassandalice.storytelling.implementation.JointImplementation implementation = new org.lookingglassandalice.storytelling.implementation.JointImplementation( this );
+	private final org.lookingglassandalice.storytelling.implementation.JointImplementation implementation = new org.lookingglassandalice.storytelling.implementation.JointImplementation( this );
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.JointImplementation getImplementation() {
 		return this.implementation;
 	}
-	public void turn() {
+	public void turn( TurnDirection direction, Number amount ) {
+		this.turn( direction, amount, TurnDetails.defaultDetails() );
 	}
-	public void roll() {
+	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
+		this.implementation.rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
+	}
+	public void roll( RollDirection direction, Number amount ) {
+		this.roll( direction, amount, RollDetails.defaultDetails() );
+	}
+	public void roll( RollDirection direction, Number amount, RollDetails details ) {
+		this.implementation.rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
 	}
 }

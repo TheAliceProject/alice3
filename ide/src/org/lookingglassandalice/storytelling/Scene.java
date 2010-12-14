@@ -47,7 +47,7 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public class Scene {
-	private org.lookingglassandalice.storytelling.implementation.SceneImplementation implementation = new org.lookingglassandalice.storytelling.implementation.SceneImplementation( this );
+	private final org.lookingglassandalice.storytelling.implementation.SceneImplementation implementation = new org.lookingglassandalice.storytelling.implementation.SceneImplementation( this );
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.SceneImplementation getImplementation() {
 		return this.implementation;
 	}

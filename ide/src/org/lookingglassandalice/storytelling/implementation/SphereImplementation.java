@@ -51,13 +51,21 @@ public class SphereImplementation extends ShapeImplementation {
 	private final org.lookingglassandalice.storytelling.Sphere abstraction;
 	public SphereImplementation( org.lookingglassandalice.storytelling.Sphere abstraction ) {
 		this.abstraction = abstraction;
-		this.getSGVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgSphere } );
+		this.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgSphere } );
 	}
 	public org.lookingglassandalice.storytelling.Sphere getAbstraction() {
 		return this.abstraction;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Sphere getSGGeometry() {
+	public edu.cmu.cs.dennisc.scenegraph.Sphere getSgGeometry() {
 		return this.sgSphere;
 	}
+	
+	public double getRadius() {
+		return this.sgSphere.radius.getValue();
+	}
+	public void setRadius( double radius ) {
+		this.sgSphere.radius.setValue( radius );
+	}
+	
 }

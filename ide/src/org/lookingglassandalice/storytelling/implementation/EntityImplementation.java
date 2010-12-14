@@ -47,8 +47,14 @@ package org.lookingglassandalice.storytelling.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class EntityImplementation {
-	private edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
-	public edu.cmu.cs.dennisc.scenegraph.Transformable getSGTransformable() {
+	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
+	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgTransformable() {
 		return this.sgTransformable;
+	}
+	public void translate( edu.cmu.cs.dennisc.math.Point3 translation ) {
+		this.sgTransformable.applyTranslation( translation );
+	}
+	public void rotate( edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.math.Angle angle ) {
+		this.sgTransformable.applyRotationAboutArbitraryAxis( axis, angle );
 	}
 }

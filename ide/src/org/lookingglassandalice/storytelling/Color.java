@@ -46,9 +46,43 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public interface Turner {
-	void turn( TurnDirection direction, Number amount );
-	void turn( TurnDirection direction, Number amount, TurnDetails details );
-	void roll( RollDirection direction, Number amount );
-	void roll( RollDirection direction, Number amount, RollDetails details );
+public class Color {
+	public static final Color BLACK = new Color( edu.cmu.cs.dennisc.color.Color4f.BLACK );
+	public static final Color BLUE = new Color( edu.cmu.cs.dennisc.color.Color4f.BLUE );
+	public static final Color CYAN = new Color( edu.cmu.cs.dennisc.color.Color4f.CYAN );
+	public static final Color DARK_GRAY = new Color( edu.cmu.cs.dennisc.color.Color4f.DARK_GRAY );
+	public static final Color GRAY = new Color( edu.cmu.cs.dennisc.color.Color4f.GRAY );
+	public static final Color GREEN = new Color( edu.cmu.cs.dennisc.color.Color4f.GREEN );
+	public static final Color LIGHT_GRAY = new Color( edu.cmu.cs.dennisc.color.Color4f.LIGHT_GRAY );
+	public static final Color MAGENTA = new Color( edu.cmu.cs.dennisc.color.Color4f.MAGENTA );
+	public static final Color ORANGE = new Color( edu.cmu.cs.dennisc.color.Color4f.ORANGE );
+	public static final Color PINK = new Color( edu.cmu.cs.dennisc.color.Color4f.PINK );
+	public static final Color RED = new Color( edu.cmu.cs.dennisc.color.Color4f.RED );
+	public static final Color WHITE = new Color( edu.cmu.cs.dennisc.color.Color4f.WHITE );
+	public static final Color YELLOW = new Color( edu.cmu.cs.dennisc.color.Color4f.YELLOW );
+	
+	public static final Color PURPLE = new Color( edu.cmu.cs.dennisc.color.Color4f.PURPLE );
+	public static final Color BROWN = new Color( edu.cmu.cs.dennisc.color.Color4f.BROWN );
+
+	private edu.cmu.cs.dennisc.color.Color4f internal = new edu.cmu.cs.dennisc.color.Color4f();
+	public Color( Number red, Number green, Number blue ) {
+		this.internal.set( red.floatValue(), green.floatValue(), blue.floatValue(), 1.0f );
+	}
+	/*package-private*/ Color( edu.cmu.cs.dennisc.color.Color4f internal ) {
+		this.internal.set( internal );
+	}
+	
+	/*package-private*/ edu.cmu.cs.dennisc.color.Color4f getInternal() {
+		return this.internal;
+	}
+	
+	public Double getRed() {
+		return (double)this.internal.red;
+	}
+	public Double getGreen() {
+		return (double)this.internal.green;
+	}
+	public Double getBlue() {
+		return (double)this.internal.blue;
+	}
 }

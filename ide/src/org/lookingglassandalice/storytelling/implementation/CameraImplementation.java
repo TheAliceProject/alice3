@@ -47,16 +47,19 @@ package org.lookingglassandalice.storytelling.implementation;
  * @author Dennis Cosgrove
  */
 public class CameraImplementation extends EntityImplementation {
-	private org.lookingglassandalice.storytelling.Camera abstraction;
-	private edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera = new edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera();
+	private final org.lookingglassandalice.storytelling.Camera abstraction;
+	private final edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera = new edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera();
 	public CameraImplementation( org.lookingglassandalice.storytelling.Camera abstraction ) {
 		this.abstraction = abstraction;
-		this.sgSymmetricPerspectiveCamera.setParent( this.getSGTransformable() );
+		this.sgSymmetricPerspectiveCamera.setParent( this.getSgTransformable() );
 	}
 	public org.lookingglassandalice.storytelling.Camera getAbstraction() {
 		return this.abstraction;
 	}
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCamera() {
 		return this.sgSymmetricPerspectiveCamera;
+	}
+	public void getAGoodLookAt( EntityImplementation entityImplementation ) {
+		//todo
 	}
 }

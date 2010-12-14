@@ -47,11 +47,20 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public class Person extends Entity implements Walker, Toucher {
-	private org.lookingglassandalice.storytelling.implementation.PersonImplementation implementation = new org.lookingglassandalice.storytelling.implementation.PersonImplementation( this );
+	private final org.lookingglassandalice.storytelling.implementation.PersonImplementation implementation = new org.lookingglassandalice.storytelling.implementation.PersonImplementation( this );
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.PersonImplementation getImplementation() {
 		return this.implementation;
 	}
+	
+	
+	public PersonResource getResource() {
+		return this.implementation.getResource();
+	}
+	public void setResource( PersonResource resource ) {
+		this.implementation.setResource( resource );
+	}
+	
 	public void walkTo( Entity entity ) {
 		
 	}

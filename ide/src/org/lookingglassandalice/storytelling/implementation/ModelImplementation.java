@@ -47,16 +47,22 @@ package org.lookingglassandalice.storytelling.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class ModelImplementation extends EntityImplementation {
-	private edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = new edu.cmu.cs.dennisc.scenegraph.Visual();
-	private edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
+	private final edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = new edu.cmu.cs.dennisc.scenegraph.Visual();
+	private final edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
 	public ModelImplementation() {
 		this.sgVisual.frontFacingAppearance.setValue( this.sgAppearance );
-		this.sgVisual.setParent( this.getSGTransformable() );
+		this.sgVisual.setParent( this.getSgTransformable() );
 	}
-	public edu.cmu.cs.dennisc.scenegraph.Visual getSGVisual() {
+	public edu.cmu.cs.dennisc.scenegraph.Visual getSgVisual() {
 		return this.sgVisual;
 	}
-	public edu.cmu.cs.dennisc.scenegraph.SingleAppearance getSGAppearance() {
+	public edu.cmu.cs.dennisc.scenegraph.SingleAppearance getSgAppearance() {
 		return this.sgAppearance;
+	}
+	public edu.cmu.cs.dennisc.color.Color4f getColor() {
+		return this.sgAppearance.diffuseColor.getValue();
+	}
+	public void setColor( edu.cmu.cs.dennisc.color.Color4f color ) {
+		this.sgAppearance.diffuseColor.setValue( color );
 	}
 }

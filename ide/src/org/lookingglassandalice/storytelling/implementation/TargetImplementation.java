@@ -47,7 +47,7 @@ package org.lookingglassandalice.storytelling.implementation;
  * @author Dennis Cosgrove
  */
 public class TargetImplementation extends EntityImplementation {
-	private org.lookingglassandalice.storytelling.Target abstraction;
+	private final org.lookingglassandalice.storytelling.Target abstraction;
 	public TargetImplementation( org.lookingglassandalice.storytelling.Target abstraction ) {
 		this.abstraction = abstraction;
 	}

@@ -47,8 +47,8 @@ package org.lookingglassandalice.storytelling.implementation;
  * @author Dennis Cosgrove
  */
 public class LookingGlassImplementation {
-	private edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
-	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
+	private final edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
+	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
 	private SceneImplementation sceneImplementation;
 	
 	public LookingGlassImplementation() {
@@ -70,10 +70,10 @@ public class LookingGlassImplementation {
 			}
 		}
 	}
-	public Boolean isVisible() {
+	public boolean isVisible() {
 		return this.frame.isVisible();
 	}
-	public void setVisible( Boolean isVisible ) {
+	public void setVisible( boolean isVisible ) {
 		this.frame.setVisible( isVisible );
 	}
 }

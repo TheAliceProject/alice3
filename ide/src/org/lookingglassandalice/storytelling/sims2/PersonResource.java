@@ -41,14 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.sims2;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Turner {
-	void turn( TurnDirection direction, Number amount );
-	void turn( TurnDirection direction, Number amount, TurnDetails details );
-	void roll( RollDirection direction, Number amount );
-	void roll( RollDirection direction, Number amount, RollDetails details );
+public class PersonResource implements org.lookingglassandalice.storytelling.PersonResource {
+	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
+	
+	public PersonResource() {
+		try {
+			org.alice.apis.stage.Adult adult = new org.alice.apis.stage.Adult();
+			this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( adult );
+			this.nebPerson.setGender( org.alice.apis.stage.Gender.FEMALE );
+			this.nebPerson.setOutfit( org.alice.apis.stage.FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE );
+			this.nebPerson.setSkinTone( org.alice.apis.stage.BaseSkinTone.getRandom() );
+			this.nebPerson.setFitnessLevel( 0.5 );
+			this.nebPerson.setHair( org.alice.apis.stage.FemaleAdultHairBraids.BLACK );
+			this.nebPerson.setEyeColor( org.alice.apis.stage.BaseEyeColor.getRandom() );
+		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
+			throw new RuntimeException( lre );
+		}
+	}
+	public void addPerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation ) {
+		personImplementation.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebPerson } );
+	}
+	public void removePerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation ) {
+		personImplementation.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] {} );
+	}
 }

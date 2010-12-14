@@ -47,7 +47,7 @@ package org.lookingglassandalice.storytelling.implementation;
  * @author Dennis Cosgrove
  */
 public class JointImplementation extends EntityImplementation {
-	private org.lookingglassandalice.storytelling.Joint abstraction;
+	private final org.lookingglassandalice.storytelling.Joint abstraction;
 	public JointImplementation( org.lookingglassandalice.storytelling.Joint abstraction ) {
 		this.abstraction = abstraction;
 	}

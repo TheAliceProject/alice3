@@ -50,10 +50,9 @@ public class SceneImplementation {
 	private final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = new edu.cmu.cs.dennisc.scenegraph.Scene();
 	private final edu.cmu.cs.dennisc.scenegraph.Background sgBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 	private final edu.cmu.cs.dennisc.scenegraph.AmbientLight sgAmbientLight = new edu.cmu.cs.dennisc.scenegraph.AmbientLight(); 
-	
-	
-	private java.util.List< EntityImplementation > entities = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private org.lookingglassandalice.storytelling.Scene abstraction;
+
+	private final java.util.List< EntityImplementation > entities = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final org.lookingglassandalice.storytelling.Scene abstraction;
 	public SceneImplementation( org.lookingglassandalice.storytelling.Scene abstraction ) {
 		this.abstraction = abstraction;
 		this.sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1.0f, 1.0f ) );
@@ -67,17 +66,17 @@ public class SceneImplementation {
 
 	public void addEntity( EntityImplementation entity ) {
 		this.entities.add( entity );
-		entity.getSGTransformable().setParent( this.sgScene );
+		entity.getSgTransformable().setParent( this.sgScene );
 	}
 	public void removeEntity( EntityImplementation entity ) {
-		entity.getSGTransformable().setParent( null );
+		entity.getSgTransformable().setParent( null );
 		this.entities.remove( entity );
 	}
 	/*package-private*/ void addCamerasTo( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		for( EntityImplementation entityImplementation : this.entities ) {
 			if( entityImplementation instanceof CameraImplementation ) {
 				CameraImplementation cameraImplementation = (CameraImplementation)entityImplementation;
-				onscreenLookingGlass.addCamera( cameraImplementation.getSGCamera() );
+				onscreenLookingGlass.addCamera( cameraImplementation.getSgCamera() );
 			}
 		}
 	}
@@ -85,7 +84,7 @@ public class SceneImplementation {
 		for( EntityImplementation entityImplementation : this.entities ) {
 			if( entityImplementation instanceof CameraImplementation ) {
 				CameraImplementation cameraImplementation = (CameraImplementation)entityImplementation;
-				onscreenLookingGlass.removeCamera( cameraImplementation.getSGCamera() );
+				onscreenLookingGlass.removeCamera( cameraImplementation.getSgCamera() );
 			}
 		}
 	}

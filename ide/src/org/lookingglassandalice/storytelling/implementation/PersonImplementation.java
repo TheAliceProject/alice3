@@ -47,11 +47,24 @@ package org.lookingglassandalice.storytelling.implementation;
  * @author Dennis Cosgrove
  */
 public class PersonImplementation extends ModelImplementation {
-	private org.lookingglassandalice.storytelling.Person abstraction;
+	private final org.lookingglassandalice.storytelling.Person abstraction;
+	private org.lookingglassandalice.storytelling.PersonResource resource;
 	public PersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
 		this.abstraction = abstraction;
 	}
 	public org.lookingglassandalice.storytelling.Person getAbstraction() {
 		return this.abstraction;
+	}
+	public org.lookingglassandalice.storytelling.PersonResource getResource() {
+		return this.resource;
+	}
+	public void setResource( org.lookingglassandalice.storytelling.PersonResource resource ) {
+		if( this.resource != null ) {
+			this.resource.removePerson( this );
+		}
+		this.resource = resource;
+		if( this.resource != null ) {
+			this.resource.addPerson( this );
+		}
 	}
 }

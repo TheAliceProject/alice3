@@ -47,9 +47,16 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public class Sphere extends Shape {
-	private org.lookingglassandalice.storytelling.implementation.SphereImplementation implementation = new org.lookingglassandalice.storytelling.implementation.SphereImplementation( this );
+	private final org.lookingglassandalice.storytelling.implementation.SphereImplementation implementation = new org.lookingglassandalice.storytelling.implementation.SphereImplementation( this );
 	@Override
 	public org.lookingglassandalice.storytelling.implementation.SphereImplementation getImplementation() {
 		return this.implementation;
+	}
+	
+	public Double getRadius() {
+		return this.implementation.getRadius();
+	}
+	public void setRadius( Number radius ) {
+		this.implementation.setRadius( radius.doubleValue() );
 	}
 }

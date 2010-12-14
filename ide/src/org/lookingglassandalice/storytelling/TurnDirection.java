@@ -46,9 +46,18 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public interface Turner {
-	void turn( TurnDirection direction, Number amount );
-	void turn( TurnDirection direction, Number amount, TurnDetails details );
-	void roll( RollDirection direction, Number amount );
-	void roll( RollDirection direction, Number amount, RollDetails details );
+public enum TurnDirection {
+	LEFT    ( edu.cmu.cs.dennisc.math.Vector3.createPositiveYAxis() ),
+	RIGHT   ( edu.cmu.cs.dennisc.math.Vector3.createNegativeYAxis() ),
+	FORWARD ( edu.cmu.cs.dennisc.math.Vector3.createNegativeXAxis() ),
+	BACKWARD( edu.cmu.cs.dennisc.math.Vector3.createPositiveXAxis() );
+	
+	private edu.cmu.cs.dennisc.math.Vector3 m_axis;
+	
+	private TurnDirection( edu.cmu.cs.dennisc.math.Vector3 axis ) {
+		m_axis = axis;
+	}
+	public edu.cmu.cs.dennisc.math.Vector3 getAxis() {
+		return m_axis;
+	}
 }
