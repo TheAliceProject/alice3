@@ -46,26 +46,8 @@ package org.lookingglassandalice.storytelling.sims2;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PersonResource implements org.lookingglassandalice.storytelling.PersonResource {
-	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
-	
-	public PersonResource( org.alice.apis.stage.Person temp ) {
-		try {
-			this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( temp );
-			this.nebPerson.setGender( org.alice.apis.stage.Gender.FEMALE );
-			this.nebPerson.setOutfit( org.alice.apis.stage.FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE );
-			this.nebPerson.setSkinTone( org.alice.apis.stage.BaseSkinTone.getRandom() );
-			this.nebPerson.setFitnessLevel( 0.5 );
-			this.nebPerson.setHair( org.alice.apis.stage.FemaleAdultHairBraids.BLACK );
-			this.nebPerson.setEyeColor( org.alice.apis.stage.BaseEyeColor.getRandom() );
-		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
-			throw new RuntimeException( lre );
-		}
-	}
-	public void addPerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation ) {
-		personImplementation.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebPerson } );
-	}
-	public void removePerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation ) {
-		personImplementation.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] {} );
+public class AdultPersonResource extends PersonResource implements org.lookingglassandalice.storytelling.AdultPersonResource {
+	public AdultPersonResource() {
+		super( new org.alice.apis.stage.Adult() );
 	}
 }

@@ -46,18 +46,20 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Person extends Entity implements Walker, Toucher {
+public abstract class Person extends Entity implements Walker, Toucher {
 	private final org.lookingglassandalice.storytelling.implementation.PersonImplementation implementation = new org.lookingglassandalice.storytelling.implementation.PersonImplementation( this );
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.PersonImplementation getImplementation() {
 		return this.implementation;
 	}
+	public Person( PersonResource resource ) {
+		this.setPersonResource( resource );
+	}
 	
-	
-	public PersonResource getResource() {
+	public PersonResource getPersonResource() {
 		return this.implementation.getResource();
 	}
-	public void setResource( PersonResource resource ) {
+	private void setPersonResource( PersonResource resource ) {
 		this.implementation.setResource( resource );
 	}
 	

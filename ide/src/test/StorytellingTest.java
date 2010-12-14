@@ -44,6 +44,27 @@ package test;
 
 import org.lookingglassandalice.storytelling.*;
 
+//abstract class CustomPerson extends Person {
+//}
+//
+//class CustomAdult extends CustomPerson {
+//	public void setAdultPersonResource( AdultPersonResource resource ) {
+//		this.setPersonResource( resource );
+//	}
+//}
+
+abstract class CustomPerson extends Person {
+	public CustomPerson( PersonResource resource ) {
+		super( resource );
+	}
+}
+
+class CustomAdult extends CustomPerson {
+	public CustomAdult( AdultPersonResource resource ) {
+		super( resource );
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,13 +80,15 @@ public class StorytellingTest {
 		sphere.setRadius( 0.1 );
 		sphere.setColor( Color.RED );
 		
-		Person person = new Person();
-		person.setResource( new org.lookingglassandalice.storytelling.sims2.PersonResource() );
+//		CustomAdult adult = new CustomAdult();
+//		adult.setAdultPersonResource( new org.lookingglassandalice.storytelling.sims2.AdultPersonResource() );
+
+		CustomAdult adult = new CustomAdult( new org.lookingglassandalice.storytelling.sims2.AdultPersonResource() );
 
 		LookingGlass lookingGlass = new LookingGlass();
 		scene.addEntity( camera );
 		scene.addEntity( sphere );
-		scene.addEntity( person );
+		scene.addEntity( adult );
 		
 		lookingGlass.setScene( scene );
 		lookingGlass.setVisible( true );
