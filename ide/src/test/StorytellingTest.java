@@ -81,11 +81,11 @@ public class StorytellingTest {
 		sphere.setRadius( 0.1 );
 		sphere.setColor( Color.RED );
 
-		//best practice
-		sphere.move( MoveDirection.LEFT, 0.5, new MoveDetails.Builder().asSeenBy( camera ).duration( 0.5 ).build() );
-		//serves our purpose
-		sphere.turn( TurnDirection.LEFT, 0.5, new TurnDetails().asSeenBy( camera ).duration( 0.5 ) );
-		//less syntax, more magic?
+//		//best practice
+//		sphere.move( MoveDirection.LEFT, 0.5, new MoveDetails.Builder().asSeenBy( camera ).duration( 0.5 ).build() );
+//		//serves our purpose
+//		sphere.turn( TurnDirection.LEFT, 0.5, new TurnDetails().asSeenBy( camera ).duration( 0.5 ) );
+//		//less syntax, more magic?
 		sphere.roll( RollDirection.LEFT, 0.5, RollDetailsFactory.asSeenBy( camera ).duration( 0.5 ) );
 		
 //		CustomAdult adult = new CustomAdult();

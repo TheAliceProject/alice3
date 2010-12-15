@@ -46,32 +46,17 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Shape extends Entity implements Mover, Turner {
-	@Override
-	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.ModelImplementation getImplementation();
-	public Color getColor() {
-		edu.cmu.cs.dennisc.color.Color4f internal = this.getImplementation().getColor();
-		return internal != null ? new Color( internal ) : null;
+/*package-private*/ abstract class AnimationDetails {
+	protected double duration = 1.0;
+	protected Entity asSeenBy = null;
+	protected Style style = TraditionalStyle.BEGIN_AND_END_GENTLY;
+	/*package-private*/ double getDuration() {
+		return this.duration;
 	}
-	public void setColor( Color color ) {
-		this.getImplementation().setColor( color != null ? color.getInternal() : null );
+	/*package-private*/ Entity getAsSeenBy() {
+		return this.asSeenBy;
 	}
-	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, new MoveDetails() );
-	}
-	public void move( MoveDirection direction, Number amount, MoveDetails details ) {
-		this.getImplementation().translate( direction.createTranslation( amount.doubleValue() ) );
-	}
-	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, new TurnDetails() );
-	}
-	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
-		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
-	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, new RollDetails() );
-	}
-	public void roll( RollDirection direction, Number amount, RollDetails details ) {
-		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
+	/*package-private*/ Style getStyle() {
+		return this.style;
 	}
 }

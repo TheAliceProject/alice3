@@ -54,7 +54,7 @@ public class Camera extends Entity implements Mover, Turner {
 	}
 	
 	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, new MoveDetails.Builder().build() );
+		this.move( direction, amount, new MoveDetails() );
 	}
 	public void move( MoveDirection direction, Number amount, MoveDetails details ) {
 		this.getImplementation().translate( direction.createTranslation( amount.doubleValue() ) );

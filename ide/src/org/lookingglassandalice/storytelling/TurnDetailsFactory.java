@@ -46,32 +46,23 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Shape extends Entity implements Mover, Turner {
-	@Override
-	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.ModelImplementation getImplementation();
-	public Color getColor() {
-		edu.cmu.cs.dennisc.color.Color4f internal = this.getImplementation().getColor();
-		return internal != null ? new Color( internal ) : null;
+public class TurnDetailsFactory {
+	private TurnDetailsFactory() {
+		throw new AssertionError();
 	}
-	public void setColor( Color color ) {
-		this.getImplementation().setColor( color != null ? color.getInternal() : null );
+	public static TurnDetails duration( Number value ) {
+		TurnDetails rv = new TurnDetails();
+		rv.duration( value );
+		return rv;
 	}
-	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, new MoveDetails() );
+	public static TurnDetails asSeenBy( Entity value ) {
+		TurnDetails rv = new TurnDetails();
+		rv.asSeenBy( value );
+		return rv;
 	}
-	public void move( MoveDirection direction, Number amount, MoveDetails details ) {
-		this.getImplementation().translate( direction.createTranslation( amount.doubleValue() ) );
-	}
-	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, new TurnDetails() );
-	}
-	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
-		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
-	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, new RollDetails() );
-	}
-	public void roll( RollDirection direction, Number amount, RollDetails details ) {
-		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
+	public static TurnDetails style( Style value ) {
+		TurnDetails rv = new TurnDetails();
+		rv.style( value );
+		return rv;
 	}
 }
