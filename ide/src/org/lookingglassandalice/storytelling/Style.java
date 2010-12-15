@@ -46,33 +46,5 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Camera extends Entity implements Mover, Turner {
-	private final org.lookingglassandalice.storytelling.implementation.CameraImplementation implementation = new org.lookingglassandalice.storytelling.implementation.CameraImplementation( this );
-	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.CameraImplementation getImplementation() {
-		return this.implementation;
-	}
-	
-	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, new MoveDetails.Builder().build() );
-	}
-	public void move( MoveDirection direction, Number amount, MoveDetails details ) {
-		this.getImplementation().translate( direction.createTranslation( amount.doubleValue() ) );
-	}
-	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, new TurnDetails() );
-	}
-	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
-		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
-	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, new RollDetails() );
-	}
-	public void roll( RollDirection direction, Number amount, RollDetails details ) {
-		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
-
-	public void getAGoodLookAt( Entity entity ) {
-		this.implementation.getAGoodLookAt( entity.getImplementation() );
-	}
+public interface Style extends edu.cmu.cs.dennisc.animation.Style {
 }

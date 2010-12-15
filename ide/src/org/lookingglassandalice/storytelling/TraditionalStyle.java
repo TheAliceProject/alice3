@@ -40,39 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Camera extends Entity implements Mover, Turner {
-	private final org.lookingglassandalice.storytelling.implementation.CameraImplementation implementation = new org.lookingglassandalice.storytelling.implementation.CameraImplementation( this );
-	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.CameraImplementation getImplementation() {
-		return this.implementation;
+public enum TraditionalStyle implements Style {
+	BEGIN_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_ABRUPTLY ),
+	BEGIN_GENTLY_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_GENTLY_AND_END_ABRUPTLY ),
+	BEGIN_ABRUPTLY_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ),
+	BEGIN_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+	private edu.cmu.cs.dennisc.animation.TraditionalStyle internal;
+	TraditionalStyle( edu.cmu.cs.dennisc.animation.TraditionalStyle internal ) {
+		this.internal = internal;
 	}
-	
-	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, new MoveDetails.Builder().build() );
-	}
-	public void move( MoveDirection direction, Number amount, MoveDetails details ) {
-		this.getImplementation().translate( direction.createTranslation( amount.doubleValue() ) );
-	}
-	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, new TurnDetails() );
-	}
-	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
-		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
-	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, new RollDetails() );
-	}
-	public void roll( RollDirection direction, Number amount, RollDetails details ) {
-		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
-
-	public void getAGoodLookAt( Entity entity ) {
-		this.implementation.getAGoodLookAt( entity.getImplementation() );
+	public double calculatePortion( double timeElapsed, double timeTotal ) {
+		return this.internal.calculatePortion( timeElapsed, timeTotal );
 	}
 }

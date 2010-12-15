@@ -47,7 +47,29 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public class TurnDetails {
-	public static TurnDetails defaultDetails() {
-		return new TurnDetails();
+	// less syntax
+	private double duration = 1.0;
+	private Entity asSeenBy = null;
+	private Style style = TraditionalStyle.BEGIN_AND_END_GENTLY;
+	public TurnDetails duration( Number value ) {
+		this.duration = value.doubleValue();
+		return this;
+	}
+	public TurnDetails asSeenBy( Entity value ) {
+		this.asSeenBy = value;
+		return this;
+	}
+	public TurnDetails style( Style value ) {
+		this.style = value;
+		return this;
+	}
+	/*package-private*/ double getDuration() {
+		return this.duration;
+	}
+	/*package-private*/ Entity getAsSeenBy() {
+		return this.asSeenBy;
+	}
+	/*package-private*/ Style getStyle() {
+		return this.style;
 	}
 }

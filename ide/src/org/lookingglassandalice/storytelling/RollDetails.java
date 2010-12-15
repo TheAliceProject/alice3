@@ -47,7 +47,32 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public class RollDetails {
-	public static RollDetails defaultDetails() {
-		return new RollDetails();
+	private double duration = 1.0;
+	private Entity asSeenBy = null;
+	private Style style = TraditionalStyle.BEGIN_AND_END_GENTLY;
+
+	/*package-private*/ RollDetails() {
+	}
+	
+	public RollDetails duration( Number value ) {
+		this.duration = value.doubleValue();
+		return this;
+	}
+	public RollDetails asSeenBy( Entity value ) {
+		this.asSeenBy = value;
+		return this;
+	}
+	public RollDetails style( Style value ) {
+		this.style = value;
+		return this;
+	}
+	/*package-private*/ double getDuration() {
+		return this.duration;
+	}
+	/*package-private*/ Entity getAsSeenBy() {
+		return this.asSeenBy;
+	}
+	/*package-private*/ Style getStyle() {
+		return this.style;
 	}
 }

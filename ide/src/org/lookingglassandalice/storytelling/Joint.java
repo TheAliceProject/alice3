@@ -53,15 +53,16 @@ public class Joint extends Entity implements Turner {
 		return this.implementation;
 	}
 	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, TurnDetails.defaultDetails() );
+		this.turn( direction, amount, new TurnDetails() );
 	}
 	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
-		this.implementation.rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
+		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
 	}
 	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, RollDetails.defaultDetails() );
+		this.roll( direction, amount, new RollDetails() );
 	}
 	public void roll( RollDirection direction, Number amount, RollDetails details ) {
-		this.implementation.rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
+		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
 	}
+
 }

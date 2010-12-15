@@ -57,19 +57,19 @@ public abstract class Shape extends Entity implements Mover, Turner {
 		this.getImplementation().setColor( color != null ? color.getInternal() : null );
 	}
 	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, MoveDetails.defaultDetails() );
+		this.move( direction, amount, new MoveDetails.Builder().build() );
 	}
 	public void move( MoveDirection direction, Number amount, MoveDetails details ) {
 		this.getImplementation().translate( direction.createTranslation( amount.doubleValue() ) );
 	}
 	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, TurnDetails.defaultDetails() );
+		this.turn( direction, amount, new TurnDetails() );
 	}
 	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
 		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
 	}
 	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, RollDetails.defaultDetails() );
+		this.roll( direction, amount, new RollDetails() );
 	}
 	public void roll( RollDirection direction, Number amount, RollDetails details ) {
 		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );

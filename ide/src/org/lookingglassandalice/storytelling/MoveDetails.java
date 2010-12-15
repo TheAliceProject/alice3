@@ -47,7 +47,43 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public class MoveDetails {
-	public static MoveDetails defaultDetails() {
-		return new MoveDetails();
+	// example of best practice
+	public static class Builder {
+		private double duration = 1.0;
+		private Entity asSeenBy = null;
+		private Style style = TraditionalStyle.BEGIN_AND_END_GENTLY;
+		
+		public Builder duration( Number value ) {
+			this.duration = value.doubleValue();
+			return this;
+		}
+		public Builder asSeenBy( Entity value ) {
+			this.asSeenBy = value;
+			return this;
+		}
+		public Builder style( Style value ) {
+			this.style = value;
+			return this;
+		}
+		public MoveDetails build() {
+			return new MoveDetails( this );
+		}
+	}
+	private final double duration;
+	private final Entity asSeenBy;
+	private final Style style;
+	private MoveDetails( Builder builder ) {
+		this.duration = builder.duration;
+		this.asSeenBy = builder.asSeenBy;
+		this.style = builder.style;
+	}
+	/*package-private*/ double getDuration() {
+		return this.duration;
+	}
+	/*package-private*/ Entity getAsSeenBy() {
+		return this.asSeenBy;
+	}
+	/*package-private*/ Style getStyle() {
+		return this.style;
 	}
 }

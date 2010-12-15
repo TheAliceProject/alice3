@@ -76,9 +76,17 @@ public class StorytellingTest {
 		camera.move( MoveDirection.FORWARD, 10.0 );
 		camera.turn( TurnDirection.LEFT, 0.5 );
 		
+		
 		Sphere sphere = new Sphere();
 		sphere.setRadius( 0.1 );
 		sphere.setColor( Color.RED );
+
+		//best practice
+		sphere.move( MoveDirection.LEFT, 0.5, new MoveDetails.Builder().asSeenBy( camera ).duration( 0.5 ).build() );
+		//serves our purpose
+		sphere.turn( TurnDirection.LEFT, 0.5, new TurnDetails().asSeenBy( camera ).duration( 0.5 ) );
+		//less syntax, more magic?
+		sphere.roll( RollDirection.LEFT, 0.5, RollDetailsFactory.asSeenBy( camera ).duration( 0.5 ) );
 		
 //		CustomAdult adult = new CustomAdult();
 //		adult.setAdultPersonResource( new org.lookingglassandalice.storytelling.sims2.AdultPersonResource() );
