@@ -43,7 +43,79 @@
 
 package rose;
 
+class IsLayerVisibleState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+	private static java.util.Map< Layer, IsLayerVisibleState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static IsLayerVisibleState getInstance( Layer layer ) {
+		IsLayerVisibleState rv = map.get( layer );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new IsLayerVisibleState( layer );
+			map.put( layer, rv );
+		}
+		return rv;
+	}
+	
+	private Layer layer;
+	private IsLayerVisibleState( Layer layer ) {
+		super( Rose.ROSE_GROUP, java.util.UUID.fromString( "ec4d7690-dfbd-49b1-98c3-0efad175525d" ), true );
+		this.layer = layer;
+	}
+	@Override
+	protected void localize() {
+		super.localize();
+		this.setTextForBothTrueAndFalse( "is visible" );
+	}
+}
+
 class Layer {
+	private java.util.UUID id = java.util.UUID.randomUUID();
+	private final javax.media.jai.PlanarImage planarImage;
+	
+	public static Layer createFromPath( String path ) {
+		return new Layer( javax.media.jai.JAI.create( "fileload", path ) );
+	}
+	public static Layer createFromColor( java.awt.Color color ) {
+		int alpha = color.getAlpha();
+		final Byte[] bandValues;
+		if( alpha < 255 ) {
+			bandValues = new Byte[] { (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue(), (byte)color.getAlpha() };
+		} else {
+			bandValues = new Byte[] { (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue() };
+		}
+		java.awt.image.renderable.ParameterBlock parameterBlock = new java.awt.image.renderable.ParameterBlock();
+		parameterBlock.add( new Float( 640 ) );
+		parameterBlock.add( new Float( 480 ) );
+		parameterBlock.add( bandValues );
+		return new Layer( javax.media.jai.JAI.create( "constant", parameterBlock ) );
+	}
+	
+	private Layer( javax.media.jai.PlanarImage planarImage ) {
+		this.planarImage = planarImage;
+	}
+	public java.util.UUID getId() {
+		return this.id;
+	}
+	public javax.media.jai.PlanarImage getPlanarImage() {
+		return this.planarImage;
+	}
+	@Override
+	public final boolean equals( Object o ) {
+		if( this == o ) {
+			return true;
+		} else {
+			if( o instanceof Layer ) {
+				Layer other = (Layer)o;
+				return this.id.equals( other.id );
+			} else {
+				return false;
+			}
+		}
+	}
+	@Override
+	public final int hashCode() {
+		return this.id.hashCode();
+	}
 }
 
 class LayerListModel extends javax.swing.AbstractListModel {
@@ -54,22 +126,80 @@ class LayerListModel extends javax.swing.AbstractListModel {
 	public int getSize() {
 		return this.layers.size();
 	}
+	public void addLayer( Layer layer ) {
+		this.layers.add( layer );
+	}
+	public void removeLayer( Layer layer ) {
+		this.layers.remove( layer );
+	}
 }
-class Canvas extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComponent > { 
+
+class LayerListSelectionState {
+	public static LayerListModel layerListModel = new LayerListModel();
+	static {
+		layerListModel.addLayer( Layer.createFromColor( new java.awt.Color( 191, 191, 255, 255 ) ) );
+		layerListModel.addLayer( Layer.createFromPath( "C:/Users/dennisc/Pictures/paintingTheRoseBushes.png" ) );
+	}
+}
+
+class Canvas extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComponent > {
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
-		final java.io.File file = new java.io.File( "C:/Users/dennisc/Pictures/paintingTheRoseBushes.png" );
-		final javax.media.jai.PlanarImage planarImage = javax.media.jai.JAI.create( "fileload", file.getAbsolutePath() );
-		
 		return new javax.swing.JComponent() {
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				super.paintComponent( g );
-				g.setColor( java.awt.Color.RED );
-				g.fillRect( 0,0,640,480 );
-				g.drawImage( planarImage.getAsBufferedImage(), 0, 0, this );
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				final int N = LayerListSelectionState.layerListModel.getSize();
+				for( int i=0; i<N; i++ ) {
+					Layer layer = LayerListSelectionState.layerListModel.getElementAt( i );
+					g2.drawImage( layer.getPlanarImage().getAsBufferedImage(), 0, 0, this );
+				}
 			}
 		};
+	}
+}
+
+class LayerDetailsPanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
+	private static java.util.Map< Layer, LayerDetailsPanel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static LayerDetailsPanel getLayerDetailsPanel( Layer layer ) {
+		LayerDetailsPanel rv = map.get( layer );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new LayerDetailsPanel( layer );
+		}
+		return rv;
+	}
+	
+	private LayerDetailsPanel( Layer layer ) {
+		this.addComponent( IsLayerVisibleState.getInstance( layer ).createCheckBox() );
+	}
+}
+
+class LayerDetailsCardPanel extends edu.cmu.cs.dennisc.croquet.CardPanel {
+	public void addLayer( Layer layer ) {
+		LayerDetailsPanel layerDetailsPanel = LayerDetailsPanel.getLayerDetailsPanel( layer );
+		Key key = this.createKey( layerDetailsPanel, layer.getId() );
+		this.addComponent( key );
+		this.show( key );
+	}
+}
+
+class LayerPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	public LayerPanel() {
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "layers" ), Constraint.PAGE_START );
+		edu.cmu.cs.dennisc.croquet.VerticalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.VerticalSplitPane();
+		splitPane.setTopComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( new javax.swing.JList( LayerListSelectionState.layerListModel ) ) );
+		
+		LayerDetailsCardPanel layerDetailsCardPanel = new LayerDetailsCardPanel();
+		
+		//todo
+		layerDetailsCardPanel.addLayer( LayerListSelectionState.layerListModel.getElementAt( 0 ) );
+		
+		
+		splitPane.setBottomComponent( layerDetailsCardPanel );
+		this.addComponent( splitPane, Constraint.CENTER );
 	}
 }
 
@@ -77,19 +207,24 @@ class Canvas extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JCompone
  * @author Dennis Cosgrove
  */
 public class Rose extends edu.cmu.cs.dennisc.croquet.Application {
+	public static final edu.cmu.cs.dennisc.croquet.Group ROSE_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "0275aa15-0e97-4d84-9541-909f488e5fcd" ), "ROSE_GROUP" );
+
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createContentPane() {
 		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		rv.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "toolbox" ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START );
 		rv.addComponent( new Canvas(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-		rv.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "layers" ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
+		rv.addComponent( new LayerPanel(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
 		return rv;
 	}
 	@Override
-	protected void handleAbout( java.util.EventObject e ) {
+	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 	}
 	@Override
 	protected void handlePreferences( java.util.EventObject e ) {
+	}
+	@Override
+	protected void handleAbout( java.util.EventObject e ) {
 	}
 	@Override
 	protected void handleQuit( java.util.EventObject e ) {
@@ -97,14 +232,9 @@ public class Rose extends edu.cmu.cs.dennisc.croquet.Application {
 	}
 	
 	@Override
-	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-	}
-	
-	@Override
 	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor(edu.cmu.cs.dennisc.croquet.DropSite dropSite) {
 		return null;
 	}
-
 	public static void main( String[] args ) {
 		Rose rose = new Rose();
 		rose.initialize( args );
