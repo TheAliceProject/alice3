@@ -84,8 +84,8 @@ class Layer {
 			bandValues = new Byte[] { (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue() };
 		}
 		java.awt.image.renderable.ParameterBlock parameterBlock = new java.awt.image.renderable.ParameterBlock();
-		parameterBlock.add( new Float( 640 ) );
-		parameterBlock.add( new Float( 480 ) );
+		parameterBlock.add( new Float( 302 ) );
+		parameterBlock.add( new Float( 414 ) );
 		parameterBlock.add( bandValues );
 		return new Layer( javax.media.jai.JAI.create( "constant", parameterBlock ) );
 	}
@@ -99,6 +99,14 @@ class Layer {
 	public javax.media.jai.PlanarImage getPlanarImage() {
 		return this.planarImage;
 	}
+	
+	public int getWidth() {
+		return this.planarImage.getWidth();
+	}
+	public int getHeight() {
+		return this.planarImage.getHeight();
+	}
+	
 	@Override
 	public final boolean equals( Object o ) {
 		if( this == o ) {
@@ -116,6 +124,10 @@ class Layer {
 	public final int hashCode() {
 		return this.id.hashCode();
 	}
+}
+
+class SaturationBrightness {
+	
 }
 
 class LayerListModel extends javax.swing.AbstractListModel {
@@ -138,7 +150,7 @@ class LayerListSelectionState {
 	public static LayerListModel layerListModel = new LayerListModel();
 	static {
 		layerListModel.addLayer( Layer.createFromColor( new java.awt.Color( 191, 191, 255, 255 ) ) );
-		layerListModel.addLayer( Layer.createFromPath( "C:/Users/dennisc/Pictures/paintingTheRoseBushes.png" ) );
+		layerListModel.addLayer( Layer.createFromPath( System.getProperty( "user.home" ) + "/Pictures/paintingTheRoseBushes.png" ) );
 	}
 }
 
@@ -149,11 +161,26 @@ class Canvas extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JCompone
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				super.paintComponent( g );
+				
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				final int N = LayerListSelectionState.layerListModel.getSize();
-				for( int i=0; i<N; i++ ) {
-					Layer layer = LayerListSelectionState.layerListModel.getElementAt( i );
-					g2.drawImage( layer.getPlanarImage().getAsBufferedImage(), 0, 0, this );
+				if( N > 0 ) {
+//					java.awt.image.renderable.ParameterBlock parameterBlock = new java.awt.image.renderable.ParameterBlock();
+//					for( int i=0; i<N; i++ ) {
+//						Layer layer = LayerListSelectionState.layerListModel.getElementAt( i );
+//						parameterBlock.addSource( layer.getPlanarImage() );
+//					}
+//=
+//					javax.media.jai.PlanarImage planarImage = javax.media.jai.JAI.create( "overlay", parameterBlock );
+//					
+					int x = ( this.getWidth()-LayerListSelectionState.layerListModel.getElementAt( 0 ).getWidth() ) / 2;
+					int y = ( this.getHeight()-LayerListSelectionState.layerListModel.getElementAt( 0 ).getHeight() ) / 2;
+//					g2.drawImage( planarImage.getAsBufferedImage(), x, y, this );
+
+					for( int i=0; i<N; i++ ) {
+						Layer layer = LayerListSelectionState.layerListModel.getElementAt( i );
+						g2.drawImage( layer.getPlanarImage().getAsBufferedImage(), x, y, this );
+					}
 				}
 			}
 		};
