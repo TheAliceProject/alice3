@@ -130,7 +130,11 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		this.perform( childContext, new PerformObserver() {
 			public void handleFinally() {
 				ModelContext< ? > popContext = ContextManager.popContext();
-				assert popContext == childContext : popContext.getClass() + " " + childContext.getClass();
+				if( popContext != null ) {
+					assert popContext == childContext : popContext.getClass() + " " + childContext.getClass();
+				} else {
+					System.err.println( "handleFinally popContext==null" );
+				}
 			}
 		} );
 		return childContext;
