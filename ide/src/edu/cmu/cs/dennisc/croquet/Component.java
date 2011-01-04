@@ -245,8 +245,47 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 			}
 		}
 	}
+	
+	protected void handleAddedTo( Component< ? > parent ) {
+	}
+	protected void handleRemovedFrom( Component< ? > parent ) {
+	}
+	
+	private java.awt.Container awtParent;
+	private void handleParentChange( java.awt.Container awtParent ) {
+		if( this.awtParent != null ) {
+			Component< ? > parent = Component.lookup( this.awtParent );
+			if( parent != null ) {
+				//pass
+			} else {
+				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for parent" );
+				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
+				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.getClass().getName(), awtParent.getLayout() );
+			}
+			this.handleRemovedFrom( parent );
+		} else {
+			assert awtParent != null;
+		}
+		this.awtParent = awtParent;
+		if( this.awtParent != null ) {
+			Component< ? > parent = Component.lookup( this.awtParent );
+			if( parent != null ) {
+				//pass
+			} else {
+				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for parent" );
+				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
+				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.getClass().getName(), awtParent.getLayout() );
+			}
+			this.handleAddedTo( parent );
+		}
+	}
+	
+	private static boolean isWarningAlreadyPrinted = false;
 	protected final void handleHierarchyChanged( java.awt.event.HierarchyEvent e ) {
 		//assert e.getComponent() == this.awtComponent : this;
+		java.awt.Component awtComponent = e.getComponent();
+		java.awt.Component awtChanged = e.getChanged();
+		java.awt.Container awtParent = e.getChangedParent();
 		long flags = e.getChangeFlags();
 		if( ( flags & java.awt.event.HierarchyEvent.DISPLAYABILITY_CHANGED ) != 0 ) {
 			if( e.getComponent() == this.awtComponent ) {
@@ -255,6 +294,30 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleDisplayabilityChanged:", this.awtComponent.hashCode(), this.awtComponent.isDisplayable() );
 			}
 		}
+
+		if( (flags & java.awt.event.HierarchyEvent.PARENT_CHANGED) != 0 ) {
+
+			assert awtComponent == Component.this.getAwtComponent();
+
+			if( awtComponent == awtChanged ) {
+				if( awtParent != Component.this.awtParent ) {
+					Component.this.handleParentChange( awtParent );
+				} else {
+					if( isWarningAlreadyPrinted ) {
+						//pass
+					} else {
+						//Thread.dumpStack();
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: hierarchyChanged seems to not be actually changing the parent" );
+						//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    flags:", flags );
+						//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
+						//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
+						//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.hashCode(), awtParent.getClass().getName(), awtParent.getLayout() );
+						isWarningAlreadyPrinted = true;
+					}
+				}
+			}
+		}
+		
 	}
 
 	private J awtComponent;
@@ -282,6 +345,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	protected void release() {
 		if( this.awtComponent != null ) {
 			System.err.println( "release: " + this.hashCode() );
+			Thread.dumpStack();
 			this.awtComponent.removeHierarchyListener( this.hierarchyListener );
 			this.trackDisplayability();
 			Component.map.remove( this.awtComponent );

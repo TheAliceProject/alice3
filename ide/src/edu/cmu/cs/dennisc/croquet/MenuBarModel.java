@@ -57,11 +57,6 @@ public class MenuBarModel extends Model {
 	protected void localize() {
 	}
 
-	@Override
-	protected boolean isOwnerOfEdit() {
-		return false;
-	}
-	
 	public void addMenuModel( MenuModel menuModel ) {
 		this.menuModels.add( menuModel );
 	}

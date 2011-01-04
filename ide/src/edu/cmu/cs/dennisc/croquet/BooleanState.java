@@ -115,11 +115,6 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	}
 	
 	
-	@Override
-	protected boolean isOwnerOfEdit() {
-		return true;
-	}
-	
 	/*package-private*/boolean isContextCommitDesired() {
 		return true;
 	}

@@ -52,10 +52,6 @@ public abstract class DragAndDropModel extends Model {
 		this.localize();
 	}
 	@Override
-	protected boolean isOwnerOfEdit() {
-		return false;
-	}
-	@Override
 	protected void localize() {
 	}
 	

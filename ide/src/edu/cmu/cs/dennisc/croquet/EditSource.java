@@ -40,54 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.property.InstanceProperty > extends edu.cmu.cs.dennisc.croquet.AxisPanel {
-	private Factory factory;
-	private E property;
-	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-		public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
-		};
-		public void propertyChanged(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
-			AbstractPropertyPane.this.refresh();
-		};
-	};
-	public AbstractPropertyPane( Factory factory, int direction, E property ) {
-		super( direction );
-		assert property != null;
-		this.factory = factory;
-		this.property = property;
+public abstract class EditSource extends Model {
+	public EditSource( Group group, java.util.UUID id ) {
+		super(group, id);
 	}
-
-	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
-		this.refresh();
-	}
-	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleRemovedFrom( parent );
-	}
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.property.addPropertyListener( this.propertyAdapter );
-	}
-	@Override
-	protected void handleUndisplayable() {
-		this.property.removePropertyListener( this.propertyAdapter );
-		super.handleUndisplayable();
-	}
-	
-	protected Factory getFactory() {
-		return this.factory;
-	}
-	
-	public E getProperty() {
-		return this.property;
-	}
-	protected abstract void refresh();
 }

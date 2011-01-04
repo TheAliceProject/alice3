@@ -141,11 +141,6 @@ public class StringState extends State<String> {
 	}
 
 	@Override
-	protected boolean isOwnerOfEdit() {
-		return true;
-	}
-
-	@Override
 	protected void localize() {
 	}
 

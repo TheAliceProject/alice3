@@ -55,7 +55,6 @@ public class ExpressionPropertyPane extends AbstractPropertyPane< edu.cmu.cs.den
 	//	}
 	public ExpressionPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
-		this.refresh();
 	}
 
 	@Override

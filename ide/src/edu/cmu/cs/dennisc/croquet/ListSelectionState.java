@@ -414,10 +414,6 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 	@Override
 	protected void localize() {
 	}
-	@Override
-	protected boolean isOwnerOfEdit() {
-		return true;
-	}
 	
 	private void commitEdit( ListSelectionStateEdit<E> listSelectionStateEdit, java.util.EventObject e, ViewController<?,?> viewController ) {
 		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );

@@ -92,10 +92,6 @@ public class TreeSelectionState<E> extends State<E> {
 	}
 
 	@Override
-	protected boolean isOwnerOfEdit() {
-		return true;
-	}
-	@Override
 	protected void localize() {
 	}
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> getTreeModel() {

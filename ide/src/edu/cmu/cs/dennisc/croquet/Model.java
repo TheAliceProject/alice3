@@ -60,9 +60,6 @@ public abstract class Model implements RuntimeResolver< Model > {
 	public Group getGroup() {
 		return this.group;
 	}
-	@Deprecated
-	protected abstract boolean isOwnerOfEdit();
-
 	private static StringBuilder appendSuccessfulCompletionEventText( StringBuilder rv, SuccessfulCompletionEvent successfulCompletionEvent ) {
 		if( successfulCompletionEvent != null ) {
 			if( successfulCompletionEvent instanceof CommitEvent ) {

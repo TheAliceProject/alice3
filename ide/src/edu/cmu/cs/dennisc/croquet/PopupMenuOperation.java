@@ -58,10 +58,6 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 	}
 	
 	@Override
-	protected boolean isOwnerOfEdit() {
-		return false;
-	}
-	@Override
 	public PopupMenuOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushPopupMenuOperationContext( this, e, viewController );
 	}
@@ -137,7 +133,6 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 				PopupMenuOperation.this.menuModel.removePopupMenuListener( this );
 				super.handleUndisplayable();
 			}
-			
 		};
 		//todo: investigate
 		this.menuModel.addPopupMenuListener( popupMenu );

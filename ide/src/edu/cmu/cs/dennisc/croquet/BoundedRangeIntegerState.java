@@ -88,11 +88,6 @@ public final class BoundedRangeIntegerState extends State<Integer> {
 	}
 
 	@Override
-	protected boolean isOwnerOfEdit() {
-		return true;
-	}
-
-	@Override
 	protected void localize() {
 	}
 

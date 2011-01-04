@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Operation< C extends OperationContext<? extends Operation<?>>> extends Model {
+public abstract class Operation< C extends OperationContext<? extends Operation<?>>> extends EditSource {
 	private class ButtonActionListener implements java.awt.event.ActionListener {
 		private AbstractButton< ?,? > button;
 		public ButtonActionListener( AbstractButton< ?,? > button ) {
@@ -115,11 +115,6 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		this.localize();
 	}
 	
-	@Override
-	protected boolean isOwnerOfEdit() {
-		return true;
-	}
-
 	@Override
 	protected void localize() {
 		this.setName( this.getDefaultLocalizedText() );
