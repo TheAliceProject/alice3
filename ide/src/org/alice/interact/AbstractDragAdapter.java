@@ -144,11 +144,10 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public ListSelectionState.ValueObserver<InteractionGroup> handleStateValueObserver = new ListSelectionState.ValueObserver<InteractionGroup>() {
-		public void changed(InteractionGroup nextValue) {
-			AbstractDragAdapter.this.setInteractionState(nextValue);
+	public ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.HandleStyle> handleStateValueObserver = new ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.HandleStyle>() {
+		public void changed( org.alice.stageide.sceneeditor.HandleStyle nextValue ) {
+			AbstractDragAdapter.this.setInteractionState( nextValue );
 		}
-		
 	};
 	
 	private AbsoluteTransformationListener cameraTransformationListener = new AbsoluteTransformationListener() {
@@ -202,18 +201,20 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	private Transformable selectedObject = null;
 	private CameraMarker selectedCameraMarker = null;
 	private ObjectMarker selectedObjectMarker = null;
+
+	protected java.util.Map< org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup > mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	protected ListSelectionState<InteractionGroup> interactionSelectionState = new ListSelectionState< InteractionGroup >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "639f27a5-896d-454b-af00-8527cbdf551c" ), new edu.cmu.cs.dennisc.croquet.Codec< InteractionGroup >() {
-		public org.alice.interact.InteractionGroup decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			throw new RuntimeException( "todo" );
-		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.interact.InteractionGroup interactionGroup ) {
-			
-		}
-		public StringBuilder appendRepresentation(StringBuilder rv, InteractionGroup value, Locale locale) {
-			throw new RuntimeException( "todo" );
-		}
-	} );
+//	protected ListSelectionState<InteractionGroup> interactionSelectionState = new ListSelectionState< InteractionGroup >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "639f27a5-896d-454b-af00-8527cbdf551c" ), new edu.cmu.cs.dennisc.croquet.Codec< InteractionGroup >() {
+//		public org.alice.interact.InteractionGroup decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//			throw new RuntimeException( "todo" );
+//		}
+//		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.interact.InteractionGroup interactionGroup ) {
+//			
+//		}
+//		public StringBuilder appendRepresentation(StringBuilder rv, InteractionGroup value, Locale locale) {
+//			throw new RuntimeException( "todo" );
+//		}
+//	} );
 	private List< SelectionListener > selectionListeners = new java.util.LinkedList< SelectionListener >(); 
 	public void addPropertyListener( SelectionListener selectionListener ) {
 		synchronized( this.selectionListeners ) {
@@ -273,10 +274,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return this.sceneEditor != null;
 	}
 	
-	public ListSelectionState<InteractionGroup> getInteractionSelectionStateList()
-	{
-		return this.interactionSelectionState;
-	}
+//	public abstract ListSelectionState<org.alice.stageide.sceneeditor.HandleStyle> getInteractionSelectionStateList();
 	
 	public void triggerManipulationEvent( ManipulationEvent event, boolean isActivate )
 	{
@@ -536,15 +534,18 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		
 	}
 	
-	public void setInteractionState( InteractionGroup interactionState )
+	public void setInteractionState( org.alice.stageide.sceneeditor.HandleStyle handleStyle )
 	{
 		if (this.currentInteractionState != null)
 		{
 			this.currentInteractionState.enabledManipulators(false);
 		}
+		InteractionGroup interactionState = this.mapHandleStyleToInteractionGroup.get( handleStyle );
 		this.currentInteractionState = interactionState;
-		this.handleManager.setHandleSet( interactionState.getHandleSet() );
-		this.currentInteractionState.enabledManipulators(true);
+		if( this.currentInteractionState != null ) {
+			this.handleManager.setHandleSet( this.currentInteractionState.getHandleSet() );
+			this.currentInteractionState.enabledManipulators(true);
+		}
 	}
 	
 	public void pushHandleSet( HandleSet handleSet )

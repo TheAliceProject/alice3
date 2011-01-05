@@ -46,9 +46,8 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 abstract class AbstractListSelectionState<E> extends edu.cmu.cs.dennisc.croquet.ListSelectionState< E > {
-	public AbstractListSelectionState( java.util.UUID individualId, edu.cmu.cs.dennisc.croquet.Codec< E > codec, E... items ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, codec );
-		this.setListData( -1, items );
+	public AbstractListSelectionState( java.util.UUID individualId, edu.cmu.cs.dennisc.croquet.Codec< E > codec, E... elements ) {
+		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, codec, new edu.cmu.cs.dennisc.croquet.DefaultListData< E >( elements ), -1 );
 	}
 	protected int getVisibleRowCount() {
 		return 1;

@@ -60,6 +60,10 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.Bord
 		private boolean isAll;
 		public RestoreDefaultsActionOperation() {
 			super( org.alice.ide.operations.preferences.PreferencesOperation.PREFERENCES_GROUP, java.util.UUID.fromString( "47826a1a-383e-4628-acc9-d07dcc2e55ac" ) );
+		}
+		@Override
+		protected void localize() {
+			super.localize();
 			this.setName( "Restore Defaults" );
 		}
 		@Override

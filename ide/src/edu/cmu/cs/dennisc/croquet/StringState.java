@@ -137,7 +137,6 @@ public class StringState extends State<String> {
 			throw new RuntimeException( ble );
 		}
 		this.document.addDocumentListener( this.documentListener );
-		this.localize();
 	}
 
 	@Override

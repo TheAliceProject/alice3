@@ -53,6 +53,12 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 		this.menuModel = menuModel;
 	}
 	
+	@Override
+	protected void localize() {
+		super.localize();
+		this.setName( this.menuModel.getLocalizedText( "popupMenuOperation" ) );
+	}
+	
 	public MenuModel getMenuModel() {
 		return this.menuModel;
 	}

@@ -91,7 +91,6 @@ public /*final*/ class BooleanState extends State<Boolean> {
 		this.value = initialState;
 		this.buttonModel.setSelected(initialState);
 		this.buttonModel.addItemListener(this.itemListener);
-		this.localize();
 	}
 	@Deprecated
 	public BooleanState(Group group, java.util.UUID id, boolean initialState, String name ) {

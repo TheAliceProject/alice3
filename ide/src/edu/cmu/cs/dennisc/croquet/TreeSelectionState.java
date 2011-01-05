@@ -84,7 +84,6 @@ public class TreeSelectionState<E> extends State<E> {
 				fireValueChanged( getSelection() );
 			}
 		} );
-		this.localize();
 	}
 
 	public Codec<E> getCodec() {

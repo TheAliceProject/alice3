@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.members;
 /**
  * @author Dennis Cosgrove
  */
-public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSelectionState {
+public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.PredeterminedTabSelectionState {
 	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
 			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
@@ -89,8 +89,19 @@ public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 	public static MembersTabSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
+	
 	private MembersTabSelectionState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ), org.alice.ide.croquet.codecs.SingletonCodec.getInstance( edu.cmu.cs.dennisc.croquet.PredeterminedTab.class ) );
+		super( 
+				org.alice.ide.IDE.UI_STATE_GROUP, 
+				java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ), 
+				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( edu.cmu.cs.dennisc.croquet.PredeterminedTab.class ), 
+				new edu.cmu.cs.dennisc.croquet.DefaultListData< edu.cmu.cs.dennisc.croquet.PredeterminedTab >( ProceduresTab.getInstance(), FunctionsTab.getInstance(), FieldsTab.getInstance() ), 
+				0 
+		);
+	}
+	@Override
+	protected void localize() {
+		super.localize();
 		ProceduresTab proceduresTab = ProceduresTab.getInstance();
 		proceduresTab.setTitleIcon( ICON );
 		proceduresTab.setTitleText( this.getLocalizedText( "procedures" ) );
@@ -100,6 +111,5 @@ public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 		FieldsTab fieldsTab = FieldsTab.getInstance();
 		fieldsTab.setTitleIcon( ICON );
 		fieldsTab.setTitleText( this.getLocalizedText( "fields" ) );
-		this.setListData( 0, proceduresTab, functionsTab, fieldsTab );
 	}
 }

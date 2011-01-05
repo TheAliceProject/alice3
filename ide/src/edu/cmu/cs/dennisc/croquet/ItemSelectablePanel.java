@@ -238,7 +238,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 	protected void handleItemSelected( E item ) {
 		if( item != null ) {
 			D itemDetails = this.map.get( item );
-			assert itemDetails != null;
+			assert itemDetails != null : item;
 			itemDetails.setSelected( true );
 		} else {
 			javax.swing.ButtonModel model = this.buttonGroup.getSelection();

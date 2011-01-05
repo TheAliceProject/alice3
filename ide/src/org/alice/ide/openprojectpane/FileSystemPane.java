@@ -72,6 +72,10 @@ class FileSystemPane extends TabContentPanel {
 		class BrowseOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 			public BrowseOperation() {
 				super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString("67936a64-be55-44d5-9441-4cc3cce5cc75"));
+			}
+			@Override
+			protected void localize() {
+				super.localize();
 				this.setName("browse...");
 			}
 

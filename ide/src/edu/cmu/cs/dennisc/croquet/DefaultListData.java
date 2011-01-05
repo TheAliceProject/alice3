@@ -40,25 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.sceneditor;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< org.alice.stageide.sceneeditor.HandleStyle > {
-	private static class SingletonHolder {
-		private static HandleStyleListSelectionState instance = new HandleStyleListSelectionState();
+public class DefaultListData< E > implements ListData< E > {
+	private E[] elements;
+	public DefaultListData( E... elements ) {
+		this.elements = elements;
 	}
-	public static HandleStyleListSelectionState getInstance() {
-		return SingletonHolder.instance;
+	public E getElementAt( int index ) {
+		return this.elements[ index ];
 	}
-	private HandleStyleListSelectionState() {
-		super( 
-				org.alice.ide.ProjectApplication.UI_STATE_GROUP, 
-				java.util.UUID.fromString( "6e9c4eb8-a2a5-4d7e-bd7a-a96a82055d19" ), 
-				edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.stageide.sceneeditor.HandleStyle.class ),
-				new edu.cmu.cs.dennisc.croquet.DefaultListData< org.alice.stageide.sceneeditor.HandleStyle >( org.alice.stageide.sceneeditor.HandleStyle.values() ),
-				0
-		);
+	public int getSize() {
+		return this.elements.length;
+	}
+	public java.util.Iterator< E > iterator() {
+		return new java.util.Iterator< E >() {
+			private int index = 0;
+			public boolean hasNext() {
+				return this.index < DefaultListData.this.elements.length;
+			}
+			public E next() {
+				return DefaultListData.this.elements[ this.index++ ];
+			}
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 }

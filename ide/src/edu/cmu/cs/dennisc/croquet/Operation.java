@@ -112,14 +112,16 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	};
 	public Operation( Group group, java.util.UUID id ) {
 		super( group, id );
-		this.localize();
 	}
 	
 	@Override
 	protected void localize() {
-		this.setName( this.getDefaultLocalizedText() );
-		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
-		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
+		String name = this.getDefaultLocalizedText();
+		if( name != null ) {
+			this.setName( name );
+			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
+			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
+		}
 	}
 	
 	protected static interface PerformObserver { 
@@ -192,22 +194,22 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	}
 
 	/*package-private*/ void addButton(OperationButton<?,?> button) {
+		this.addComponent(button);
 		button.setAction( Operation.this.action );
 //			rv.setModel( this.buttonModel );
 		assert Operation.this.mapButtonToListener.containsKey( button ) == false : this;
 		ButtonActionListener buttonActionListener = new ButtonActionListener( button );
 		Operation.this.mapButtonToListener.put( button, buttonActionListener );
 		button.getAwtComponent().addActionListener( buttonActionListener );
-		this.addComponent(button);
 	}
 	/*package-private*/ void removeButton(OperationButton<?,?> button) {
-		this.removeComponent(button);
 		ButtonActionListener buttonActionListener = Operation.this.mapButtonToListener.get( button );
 		assert buttonActionListener != null;
 		button.getAwtComponent().removeActionListener( buttonActionListener );
 		mapButtonToListener.remove( button );
 //		rv.setModel( null );
 		button.setAction( null );
+		this.removeComponent(button);
 	}
 	
 	public Button createButton() {

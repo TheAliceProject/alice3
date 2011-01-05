@@ -61,7 +61,7 @@ import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
-public class CameraMarkerTracker implements PropertyListener, edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<CameraMarker>
+public class CameraMarkerTracker implements PropertyListener, edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.View>
 {
 	private SymmetricPerspectiveCamera perspectiveCamera = null;
 	private OrthographicCamera orthographicCamera = null;
@@ -72,11 +72,26 @@ public class CameraMarkerTracker implements PropertyListener, edu.cmu.cs.dennisc
 	private MoveAndTurnSceneEditor sceneEditor;
 	private org.alice.apis.moveandturn.CameraMarker activeMarker = null;
 	
+	private java.util.Map< org.alice.stageide.sceneeditor.View, CameraMarker > mapViewToMarker = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< CameraMarker, org.alice.stageide.sceneeditor.View > mapMarkerToView = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
 	public CameraMarkerTracker(MoveAndTurnSceneEditor sceneEditor, Animator animator)
 	{
 		this.sceneEditor = sceneEditor;
 		this.animator = animator;
 	}
+	
+	public void mapViewToMarkerAndViceVersa( org.alice.stageide.sceneeditor.View view, CameraMarker cameraMarker ) {
+		this.mapViewToMarker.put( view, cameraMarker );
+		this.mapMarkerToView.put( cameraMarker, view );
+	}
+	public CameraMarker getCameraMarker( org.alice.stageide.sceneeditor.View view ) {
+		return this.mapViewToMarker.get( view );
+	}
+	public org.alice.stageide.sceneeditor.View getView( CameraMarker cameraMarker ) {
+		return this.mapMarkerToView.get( cameraMarker );
+	}
+	
 	
 	public void setCameras(SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera)
 	{
@@ -166,7 +181,7 @@ public class CameraMarkerTracker implements PropertyListener, edu.cmu.cs.dennisc
 		this.sceneEditor.switchToPerspectiveCamera();
 	}
 	
-	public void changed(CameraMarker nextValue)
+	public void changed(org.alice.stageide.sceneeditor.View nextValue)
 	{
 		if (this.perspectiveCamera == null || this.orthographicCamera == null)
 		{
@@ -175,7 +190,7 @@ public class CameraMarkerTracker implements PropertyListener, edu.cmu.cs.dennisc
 		else
 		{
 			CameraMarker previousMarker = this.activeMarker;
-			this.activeMarker = nextValue;
+			this.activeMarker = this.getCameraMarker( nextValue );
 			if (previousMarker != this.activeMarker)
 			{
 				stopTrackingCamera();

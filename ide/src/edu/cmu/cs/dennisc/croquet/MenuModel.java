@@ -56,7 +56,6 @@ public abstract class MenuModel extends Model {
 	public MenuModel( java.util.UUID individualId, Class<?> clsForI18N ) {
 		super( MENU_GROUP, individualId );
 		this.clsForI18N = clsForI18N;
-		this.localize();
 	}
 	public MenuModel( java.util.UUID individualId ) {
 		this( individualId, null );

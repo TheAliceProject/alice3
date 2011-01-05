@@ -129,6 +129,10 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	class EditVariantOperation extends PreferencesActionOperation {
 		public EditVariantOperation() {
 			super( java.util.UUID.fromString( "6035083a-a50e-43bb-a527-5c680ce25a0d" ) );
+		}
+		@Override
+		protected void localize() {
+			super.localize();
 			this.setName( "Edit..." );
 		}
 		@Override
@@ -138,6 +142,10 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	class RemoveVariantOperation extends PreferencesActionOperation {
 		public RemoveVariantOperation() {
 			super( java.util.UUID.fromString( "b1e27e44-814b-42aa-a6d1-b6a8520b2ff8" ) );
+		}
+		@Override
+		protected void localize() {
+			super.localize();
 			this.setName( "Remove" );
 		}
 		@Override
@@ -147,6 +155,10 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	class NewVariantOperation extends PreferencesActionOperation {
 		public NewVariantOperation() {
 			super( java.util.UUID.fromString( "fac28f32-3beb-4c47-bc73-ff73b34fc597" ) );
+		}
+		@Override
+		protected void localize() {
+			super.localize();
 			this.setName( "New..." );
 		}
 		@Override
@@ -156,6 +168,10 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	class ImportVariantOperation extends PreferencesActionOperation {
 		public ImportVariantOperation() {
 			super( java.util.UUID.fromString( "5cf110be-9d53-40dd-8461-b8d0183ae10d" ) );
+		}
+		@Override
+		protected void localize() {
+			super.localize();
 			this.setName( "Import..." );
 		}
 		@Override

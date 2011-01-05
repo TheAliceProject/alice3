@@ -42,107 +42,181 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+
+//	private class ListModel extends javax.swing.AbstractListModel  {
+//		private java.util.ArrayList<E> items = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+//		public Object getElementAt(int index) {
+//			if( index >= 0 ) {
+//				if( index < this.items.size() ) {
+//					return this.items.get( index );
+//				} else {
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getElementAt out of range" );
+//					return null;
+//				}
+//			} else {
+//				return null;
+//			}
+//		}
+//
+//		public int getSize() {
+//			return this.items.size();
+//		}
+//		private void setListDataPrologue( int size ) {
+//			this.items.clear();
+//			this.items.ensureCapacity( size );
+//		}
+//		private void setListDataEpilogue( int selectedIndex ) {
+//			int index0 = 0;
+//			int index1 = this.getSize() - 1;
+//			if( index1 > 0 ) {
+//				this.fireIntervalAdded(this, index0, index1);
+//			} else {
+//				this.fireContentsChanged(this, index0, index1);	
+//			}
+//			ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
+//		}
+//		private void setListData(int selectedIndex, E[] items) {
+//			this.setListDataPrologue( items.length );
+//			for( E item : items ) {
+//				this.items.add( item );
+//			}
+//			this.setListDataEpilogue( selectedIndex );
+//		}
+//
+//		private void setListData(int selectedIndex, java.util.Collection<E> items) {
+//			this.setListDataPrologue( items.size() );
+//			for( E item : items ) {
+//				this.items.add( item );
+//			}
+//			this.setListDataEpilogue( selectedIndex );
+//		}
+//		
+//		private void addItem( E item ) {
+//			int index = this.items.size();
+//			this.items.add( item );
+//			this.fireIntervalAdded( this, index, index );
+//		}
+//		private void removeItem( E item ) {
+//			int index = this.items.indexOf( item );
+//			assert index >= 0;
+//			this.items.remove( item );
+//			this.fireIntervalRemoved( this, index, index );
+//		}
+//	}
+
+
 /**
  * @author Dennis Cosgrove
  */
-public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, java.util.List<E>*/ {
+public class ListSelectionState<E> extends State< E > implements Iterable< E >/*, java.util.List<E>*/{
 	public static interface ValueObserver<E> {
-		public void changed(E nextValue);
-	};
-
-	public static class ListSelectionMenuModelResolver<E> implements CodableResolver< ListSelectionMenuModel<E> > {
-		private ListSelectionMenuModel<E> listSelectionMenuModel;
-		
-		public ListSelectionMenuModelResolver( ListSelectionMenuModel<E> listSelectionMenuModel ) {
-			this.listSelectionMenuModel = listSelectionMenuModel;
-		}
-		public ListSelectionMenuModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.decode( binaryDecoder );
-		}
-		public ListSelectionMenuModel<E> getResolved() {
-			return this.listSelectionMenuModel;
-		}
-		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			CodableResolver<ListSelectionState<E>> listSelectionStateResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			ListSelectionState<E> listSelectionState = listSelectionStateResolver.getResolved();
-			this.listSelectionMenuModel = listSelectionState.getMenuModel();
-		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			CodableResolver<ListSelectionState<E>> listSelectionStateResolver = this.listSelectionMenuModel.listSelectionState.getCodableResolver();
-			binaryEncoder.encode( listSelectionStateResolver );
-		}
+		public void changed( E nextValue );
 	}
-	public static class ListSelectionMenuModel<E> extends MenuModel {
-		private ListSelectionState< E > listSelectionState;
-		public ListSelectionMenuModel( ListSelectionState<E> listSelectionState ) {
-			super( java.util.UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), listSelectionState.getClass() );
-			this.listSelectionState = listSelectionState;
+
+	private static class InternalModel<E> {
+		private final ListData< E > listData;
+		private int selectionIndex;
+		public InternalModel( ListData< E > listData, int selectionIndex ) {
+			this.listData = listData;
+			this.selectionIndex = selectionIndex;
 		}
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.CodableResolver< ListSelectionMenuModel<E> > createCodableResolver() {
-			return new ListSelectionMenuModelResolver<E>( this );
-		}
-		@Override
-		protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleShowing" );
-			super.handleShowing( menuItemContainer, e );
-			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-			for (final Object item : this.listSelectionState.listModel.items) {
-				javax.swing.Action action = this.listSelectionState.createAction( (E)item );
-				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem(action);
-				buttonGroup.add(jMenuItem);
-				jMenuItem.setSelected( this.listSelectionState.comboBoxModel.getSelectedItem() == item);
-				menuItemContainer.getViewController().getAwtComponent().add(jMenuItem);
+
+		public E getSelectedValue() {
+			if( this.selectionIndex != -1 ) {
+				return this.listData.getElementAt( this.selectionIndex );
+			} else {
+				return null;
 			}
 		}
-		@Override
-		protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-			menuItemContainer.forgetAndRemoveAllMenuItems();
-			super.handleHiding( menuItemContainer, e );
+		private boolean isInMidstOfAtomic = false;
+		private E prevAtomicSelectedValue;
+		public void pushAtomic() {
+			this.prevAtomicSelectedValue = this.getSelectedValue();
+			this.isInMidstOfAtomic = true;
 		}
-	}
-
-	private ListSelectionMenuModel<E> menuModel;
-	public synchronized ListSelectionMenuModel<E> getMenuModel() {
-		if( this.menuModel != null ) {
-			//pass
-		} else {
-			this.menuModel = new ListSelectionMenuModel<E>( this );
+		public void popAtomic() {
+			E nextSelectedValue = this.getSelectedValue();
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
+				
+			}
+			this.isInMidstOfAtomic = false;
 		}
-		return this.menuModel;
 	}
 	
-	private java.util.List<ValueObserver<E>> valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private static class SwingModels<E> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel, javax.swing.ListSelectionModel {
+		private final ListSelectionState< E > listSelectionState;
+		public SwingModels( ListSelectionState< E > listSelectionState ) {
+			this.listSelectionState = listSelectionState;
+			ListData< E > listData = this.listSelectionState.getListData();
+			if( listData instanceof MutableListData< ? > ) {
+				MutableListData< ? > mutableListData = (MutableListData< ? >)listData;
 
-	public void addValueObserver(ValueObserver<E> valueObserver) {
-		this.valueObservers.add(valueObserver);
-	}
-
-	public void addAndInvokeValueObserver(ValueObserver<E> valueObserver) {
-		this.addValueObserver(valueObserver);
-		valueObserver.changed(this.getSelectedItem());
-	}
-
-	public void removeValueObserver(ValueObserver<E> valueObserver) {
-		this.valueObservers.remove(valueObserver);
-	}
-
-	private void fireValueChanged(E nextValue) {
-		for (ValueObserver<E> valueObserver : this.valueObservers) {
-			valueObserver.changed(nextValue);
+				//todo: remove on release
+				mutableListData.addListDataListener( new javax.swing.event.ListDataListener() {
+					public void contentsChanged( javax.swing.event.ListDataEvent e ) {
+						SwingModels.this.fireContentsChanged( e.getSource(), e.getIndex0(), e.getIndex1() );
+					}
+					public void intervalAdded( javax.swing.event.ListDataEvent e ) {
+						SwingModels.this.fireIntervalAdded( e.getSource(), e.getIndex0(), e.getIndex1() );
+					}
+					public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
+						SwingModels.this.fireIntervalRemoved( e.getSource(), e.getIndex0(), e.getIndex1() );
+					}
+				} );
+			}
 		}
-	}
+		public E getSelectedItem() {
+			int index = this.getMaxSelectionIndex();
+			if( index >= 0 ) {
+				if( index < this.getSize() ) {
+					return this.listSelectionState.listData.getElementAt( index );
+				} else {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: item selection out of bounds" );
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
 
-	private class SingleListSelectionModel implements javax.swing.ListSelectionModel {
-		private java.util.List<javax.swing.event.ListSelectionListener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		public void setSelectedItem( Object item ) {
+			if( item != this.getSelectedItem() ) {
+				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( item, this.getSelectedItem() ) ) {
+					throw new RuntimeException();
+				}
+				int selectedIndex = -1;
+				if( item != null ) {
+					final int N = this.getSize();
+					for( int i = 0; i < N; i++ ) {
+						if( item.equals( this.listSelectionState.listData.getElementAt( i ) ) ) {
+							selectedIndex = i;
+							break;
+						}
+					}
+				}
+				this.setSelectedIndex( selectedIndex, true );
+				this.fireContentsChanged( this, -1, -1 );
+			}
+		}
+
+		public Object getElementAt( int index ) {
+			return this.listSelectionState.listData.getElementAt( index );
+		}
+
+		public int getSize() {
+			return this.listSelectionState.listData.getSize();
+		}
+
+		
+		private java.util.List< javax.swing.event.ListSelectionListener > listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 		private int index = -1;
 		private int indexOfLastPerform = -1;
 		private boolean isAdjusting;
 
-		private ViewController<?,?> mostRecentViewController;
+		private ViewController< ?, ? > mostRecentViewController;
 		private java.util.EventObject mostRecentEvent;
 
-		public void setMostRecentEventAndViewController(java.util.EventObject mostRecentEvent, ViewController<?,?> mostRecentViewController) {
+		public void setMostRecentEventAndViewController( java.util.EventObject mostRecentEvent, ViewController< ?, ? > mostRecentViewController ) {
 			this.mostRecentEvent = mostRecentEvent;
 			this.mostRecentViewController = mostRecentViewController;
 		}
@@ -151,28 +225,28 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 			return javax.swing.ListSelectionModel.SINGLE_SELECTION;
 		}
 
-		public void setSelectionMode(int selectionMode) {
+		public void setSelectionMode( int selectionMode ) {
 			assert selectionMode == javax.swing.ListSelectionModel.SINGLE_SELECTION;
 		}
 
-		public void addListSelectionListener(javax.swing.event.ListSelectionListener listener) {
-			this.listeners.add(listener);
+		public void addListSelectionListener( javax.swing.event.ListSelectionListener listener ) {
+			this.listeners.add( listener );
 		}
 
-		public void removeListSelectionListener(javax.swing.event.ListSelectionListener listener) {
-			this.listeners.remove(listener);
+		public void removeListSelectionListener( javax.swing.event.ListSelectionListener listener ) {
+			this.listeners.remove( listener );
 		}
 
 		public boolean getValueIsAdjusting() {
 			return this.isAdjusting;
 		}
 
-		public void setValueIsAdjusting(boolean isAdjusting) {
+		public void setValueIsAdjusting( boolean isAdjusting ) {
 			this.isAdjusting = isAdjusting;
-			this.fireChanged(-1, -1, this.isAdjusting);
+			this.fireChanged( -1, -1, this.isAdjusting );
 		}
 
-		public boolean isSelectedIndex(int index) {
+		public boolean isSelectedIndex( int index ) {
 			return this.index == index;
 		}
 
@@ -196,44 +270,44 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 			return this.index;
 		}
 
-		private void fireChanged(int firstIndex, int lastIndex, boolean isAdjusting) {
-			javax.swing.event.ListSelectionEvent e = new javax.swing.event.ListSelectionEvent(this, firstIndex, lastIndex, isAdjusting);
-			for (javax.swing.event.ListSelectionListener listener : this.listeners) {
-				listener.valueChanged(e);
+		private void fireChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
+			javax.swing.event.ListSelectionEvent e = new javax.swing.event.ListSelectionEvent( this, firstIndex, lastIndex, isAdjusting );
+			for( javax.swing.event.ListSelectionListener listener : this.listeners ) {
+				listener.valueChanged( e );
 			}
 		}
 
-		private E getSelection(int index) {
-			if (index >= 0) {
-				return (E) comboBoxModel.getElementAt(index);
+		private E getSelection( int index ) {
+			if( index >= 0 ) {
+				return (E)this.listSelectionState.listData.getElementAt( index );
 			} else {
 				return null;
 			}
 		}
 
-		private void setSelectedIndex(int nextIndex, boolean isValueChangedInvocationDesired) {
+		private void setSelectedIndex( int nextIndex, boolean isValueChangedInvocationDesired ) {
 			int prevIndex = this.index;
 			this.index = nextIndex;
-			int firstIndex = Math.min(prevIndex, nextIndex);
-			int lastIndex = Math.max(prevIndex, nextIndex);
-			this.fireChanged(firstIndex, lastIndex, this.isAdjusting);
+			int firstIndex = Math.min( prevIndex, nextIndex );
+			int lastIndex = Math.max( prevIndex, nextIndex );
+			this.fireChanged( firstIndex, lastIndex, this.isAdjusting );
 
 			if( isValueChangedInvocationDesired ) {
-				if (nextIndex != this.indexOfLastPerform) {
-					E prevSelection = this.getSelection(this.indexOfLastPerform);
-					E nextSelection = this.getSelection(nextIndex);
+				if( nextIndex != this.indexOfLastPerform ) {
+					E prevSelection = this.getSelection( this.indexOfLastPerform );
+					E nextSelection = this.getSelection( nextIndex );
 					this.indexOfLastPerform = nextIndex;
 
 					if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
 						//pass
 					} else {
-						ListSelectionState.this.commitEdit( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ), this.mostRecentEvent, this.mostRecentViewController );
-//						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
-//						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
-//						ModelContext< ? > popContext = ContextManager.popContext();
-//						assert popContext == childContext;
+						this.listSelectionState.commitEdit( new ListSelectionStateEdit< E >( this.mostRecentEvent, prevSelection, nextSelection ), this.mostRecentEvent, this.mostRecentViewController );
+						//						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
+						//						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
+						//						ModelContext< ? > popContext = ContextManager.popContext();
+						//						assert popContext == childContext;
 					}
-					ListSelectionState.this.fireValueChanged(nextSelection);
+					this.listSelectionState.fireValueChanged( nextSelection );
 					this.mostRecentEvent = null;
 					this.mostRecentViewController = null;
 				}
@@ -243,346 +317,203 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 		}
 
 		public void clearSelection() {
-			this.setSelectedIndex(-1, true);
+			this.setSelectedIndex( -1, true );
 		}
 
-		public void addSelectionInterval(int index0, int index1) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: addSelectionInterval");
+		public void addSelectionInterval( int index0, int index1 ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addSelectionInterval" );
 		}
 
-		public void insertIndexInterval(int index, int length, boolean before) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: insertIndexInterval");
+		public void insertIndexInterval( int index, int length, boolean before ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: insertIndexInterval" );
 		}
 
-		public void removeIndexInterval(int index0, int index1) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: removeIndexInterval");
+		public void removeIndexInterval( int index0, int index1 ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: removeIndexInterval" );
 		}
 
-		public void removeSelectionInterval(int index0, int index1) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: removeSelectionInterval");
+		public void removeSelectionInterval( int index0, int index1 ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: removeSelectionInterval" );
 		}
 
-		public void setAnchorSelectionIndex(int index) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: setAnchorSelectionIndex");
+		public void setAnchorSelectionIndex( int index ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setAnchorSelectionIndex" );
 		}
 
-		public void setLeadSelectionIndex(int index) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: setLeadSelectionIndex");
+		public void setLeadSelectionIndex( int index ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setLeadSelectionIndex" );
 		}
 
-		public void setSelectionInterval(int index0, int index1) {
+		public void setSelectionInterval( int index0, int index1 ) {
 			assert index0 == index1;
-			this.setSelectedIndex(index0, true);
-		}
-
-	};
-
-	private class ListModel extends javax.swing.AbstractListModel  {
-		private java.util.ArrayList<E> items = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-		public Object getElementAt(int index) {
-			if( index >= 0 ) {
-				if( index < this.items.size() ) {
-					return this.items.get( index );
-				} else {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getElementAt out of range" );
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-
-		public int getSize() {
-			return this.items.size();
-		}
-		private void setListDataPrologue( int size ) {
-			this.items.clear();
-			this.items.ensureCapacity( size );
-		}
-		private void setListDataEpilogue( int selectedIndex ) {
-			int index0 = 0;
-			int index1 = this.getSize() - 1;
-			if( index1 > 0 ) {
-				this.fireIntervalAdded(this, index0, index1);
-			} else {
-				this.fireContentsChanged(this, index0, index1);	
-			}
-			ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
-		}
-		private void setListData(int selectedIndex, E[] items) {
-			this.setListDataPrologue( items.length );
-			for( E item : items ) {
-				this.items.add( item );
-			}
-			this.setListDataEpilogue( selectedIndex );
-		}
-
-		private void setListData(int selectedIndex, java.util.Collection<E> items) {
-			this.setListDataPrologue( items.size() );
-			for( E item : items ) {
-				this.items.add( item );
-			}
-			this.setListDataEpilogue( selectedIndex );
-		}
-		
-		private void addItem( E item ) {
-			int index = this.items.size();
-			this.items.add( item );
-			this.fireIntervalAdded( this, index, index );
-		}
-		private void removeItem( E item ) {
-			int index = this.items.indexOf( item );
-			assert index >= 0;
-			this.items.remove( item );
-			this.fireIntervalRemoved( this, index, index );
+			this.setSelectedIndex( index0, true );
 		}
 	}
 
-	private class ComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
-		private javax.swing.ListModel listModel;
-		public ComboBoxModel( javax.swing.ListModel listModel ) {
-			this.listModel = listModel;
-			this.listModel.addListDataListener( new javax.swing.event.ListDataListener() {
-				public void contentsChanged( javax.swing.event.ListDataEvent e ) {
-					ComboBoxModel.this.fireContentsChanged( e.getSource(), e.getIndex0(), e.getIndex1() );
-				}
-				public void intervalAdded( javax.swing.event.ListDataEvent e ) {
-					ComboBoxModel.this.fireIntervalAdded( e.getSource(), e.getIndex0(), e.getIndex1() );
-				}
-				public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
-					ComboBoxModel.this.fireIntervalRemoved( e.getSource(), e.getIndex0(), e.getIndex1() );
-				}
-			} );
-		}
-		public Object getSelectedItem() {
-			int index = ListSelectionState.this.listSelectionModel.getMaxSelectionIndex();
-			if (index >= 0) {
-				if( index < this.getSize() ) {
-					return this.listModel.getElementAt( index );
-				} else {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: item selection out of bounds" );
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-		
-		public void setSelectedItem(Object item) {
-			if( item != this.getSelectedItem() ) {
-				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( item, this.getSelectedItem() ) ) {
-					throw new RuntimeException();
-				}
-				int selectedIndex = -1;
-				if( item != null ) {
-					final int N = this.getSize();
-					for (int i = 0; i < N; i++) {
-						if( item.equals( this.listModel.getElementAt( i ) ) ) {
-							selectedIndex = i;
-							break;
-						}
-					}
-				}
-				ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
-				this.fireContentsChanged(this, -1, -1);
-			}
-		}
+	public static class ListSelectionMenuModelResolver<E> implements CodableResolver< ListSelectionMenuModel< E > > {
+		private ListSelectionMenuModel< E > listSelectionMenuModel;
 
-		public Object getElementAt(int index) {
-			return this.listModel.getElementAt( index );
+		public ListSelectionMenuModelResolver( ListSelectionMenuModel< E > listSelectionMenuModel ) {
+			this.listSelectionMenuModel = listSelectionMenuModel;
 		}
-
-		public int getSize() {
-			return this.listModel.getSize();
+		public ListSelectionMenuModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			this.decode( binaryDecoder );
+		}
+		public ListSelectionMenuModel< E > getResolved() {
+			return this.listSelectionMenuModel;
+		}
+		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			CodableResolver< ListSelectionState< E >> listSelectionStateResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			ListSelectionState< E > listSelectionState = listSelectionStateResolver.getResolved();
+			this.listSelectionMenuModel = listSelectionState.getMenuModel();
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			CodableResolver< ListSelectionState< E >> listSelectionStateResolver = this.listSelectionMenuModel.listSelectionState.getCodableResolver();
+			binaryEncoder.encode( listSelectionStateResolver );
 		}
 	}
 
-	private final ListModel listModel = new ListModel();
-	private final SingleListSelectionModel listSelectionModel = new SingleListSelectionModel();
-	private final ComboBoxModel comboBoxModel = new ComboBoxModel( listModel );
-	private Codec< E > codec;
-	public ListSelectionState(Group group, java.util.UUID id, Codec< E > codec, int selectedIndex, E... items) {
-		super(group, id);
+	public static class ListSelectionMenuModel<E> extends MenuModel {
+		private ListSelectionState< E > listSelectionState;
+
+		public ListSelectionMenuModel( ListSelectionState< E > listSelectionState ) {
+			super( java.util.UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), listSelectionState.getClass() );
+			this.listSelectionState = listSelectionState;
+		}
+		@Override
+		protected ListSelectionMenuModelResolver< E > createCodableResolver() {
+			return new ListSelectionMenuModelResolver< E >( this );
+		}
+		@Override
+		protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleShowing" );
+			super.handleShowing( menuItemContainer, e );
+			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+			for( final Object item : this.listSelectionState.listData ) {
+				javax.swing.Action action = this.listSelectionState.createAction( (E)item );
+				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem( action );
+				buttonGroup.add( jMenuItem );
+				jMenuItem.setSelected( this.listSelectionState.swingModels.getSelectedItem() == item );
+				menuItemContainer.getViewController().getAwtComponent().add( jMenuItem );
+			}
+		}
+		@Override
+		protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+			menuItemContainer.forgetAndRemoveAllMenuItems();
+			super.handleHiding( menuItemContainer, e );
+		}
+	}
+
+	private ListSelectionMenuModel< E > menuModel;
+
+	public synchronized ListSelectionMenuModel< E > getMenuModel() {
+		if( this.menuModel != null ) {
+			//pass
+		} else {
+			this.menuModel = new ListSelectionMenuModel< E >( this );
+		}
+		return this.menuModel;
+	}
+
+	private java.util.List< ValueObserver< E >> valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	public void addValueObserver( ValueObserver< E > valueObserver ) {
+		this.valueObservers.add( valueObserver );
+	}
+
+	public void addAndInvokeValueObserver( ValueObserver< E > valueObserver ) {
+		this.addValueObserver( valueObserver );
+		valueObserver.changed( this.getSelectedItem() );
+	}
+
+	public void removeValueObserver( ValueObserver< E > valueObserver ) {
+		this.valueObservers.remove( valueObserver );
+	}
+
+	private void fireValueChanged( E nextValue ) {
+		for( ValueObserver< E > valueObserver : this.valueObservers ) {
+			valueObserver.changed( nextValue );
+		}
+	}
+
+	private final ListData< E > listData;
+	private final SwingModels< E > swingModels;
+	private final Codec< E > codec;
+
+	public ListSelectionState( Group group, java.util.UUID id, Codec< E > codec, ListData< E > listData, int selectedIndex ) {
+		super( group, id );
 		this.codec = codec;
-		this.listSelectionModel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		this.listModel.setListData(selectedIndex, items);
-		this.localize();
+		this.listData = listData;
+		this.swingModels = new SwingModels< E >( this );
+		this.swingModels.setSelectionMode( javax.swing.ListSelectionModel.SINGLE_SELECTION );
 	}
-	public ListSelectionState(Group group, java.util.UUID id, Codec< E > codec) {
-		this(group, id, codec, -1);
+	public ListSelectionState( Group group, java.util.UUID id, Codec< E > codec ) {
+		this( group, id, codec, new DefaultMutableListData< E >(), -1 );
 	}
+	
+	//	public ListSelectionState(Group group, java.util.UUID id, Codec< E > codec, int selectedIndex, E... items) {
+	//		super(group, id);
+	//		this.codec = codec;
+	//		this.listSelectionModel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+	//		this.listModel.setListData(selectedIndex, items);
+	//		this.localize();
+	//	}
+	//	public ListSelectionState(Group group, java.util.UUID id, Codec< E > codec) {
+	//		this(group, id, codec, -1);
+	//	}
+
 	@Override
 	protected void localize() {
 	}
-	
-	private void commitEdit( ListSelectionStateEdit<E> listSelectionStateEdit, java.util.EventObject e, ViewController<?,?> viewController ) {
-		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
-		childContext.commitAndInvokeDo( listSelectionStateEdit );
-		ModelContext< ? > popContext = ContextManager.popContext();
-		assert popContext == childContext;
+
+	public ListData< E > getListData() {
+		return this.listData;
 	}
-	
-	@Override
-	public Edit< ? > commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		assert originalEdit instanceof ListSelectionStateEdit;
-		ListSelectionStateEdit<E> listSelectionStateEdit = (ListSelectionStateEdit<E>)originalEdit;
-		this.commitEdit( listSelectionStateEdit, null, null );
-		return listSelectionStateEdit;
+	/*package-private*/javax.swing.ComboBoxModel getComboBoxModel() {
+		return this.swingModels;
 	}
-	
-	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, UserInformation userInformation ) {
-		return getTutorialNoteText( modelContext, userInformation );
-	}
-	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-		if( successfulCompletionEvent != null ) {
-			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)successfulCompletionEvent.getEdit();
-			sb.append( "Select " );
-			sb.append( "<strong>" );
-			this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-			sb.append( "</strong>." );
-		}
-		return sb.toString();
-	}
-	
-	public String getTutorialNoteStartText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "First press on " );
-		sb.append( "<strong>" );
-		this.codec.appendRepresentation( sb, listSelectionStateEdit.getPreviousValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>" );
-		sb.append( " in order to change it to " );
-		sb.append( "<strong>" );
-		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>." );
-		return sb.toString();
-	}
-	public String getTutorialNoteFinishText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Select " );
-		sb.append( "<strong>" );
-		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>." );
-		return sb.toString();
+	/*package-private*/javax.swing.ListSelectionModel getListSelectionModel() {
+		return this.swingModels;
 	}
 
-//	/*package-private*/ javax.swing.ListModel getListModel() {
-//		return this.listModel;
-//	}
-	/*package-private*/ ComboBoxModel getComboBoxModel() {
-		return this.comboBoxModel;
-	}
-	/*package-private*/ SingleListSelectionModel getListSelectionModel() {
-		return this.listSelectionModel;
-	}
-	
 	public void addListDataListener( javax.swing.event.ListDataListener listener ) {
-		this.comboBoxModel.addListDataListener( listener );
+		this.swingModels.addListDataListener( listener );
 	}
 	public void removeListDataListener( javax.swing.event.ListDataListener listener ) {
-		this.comboBoxModel.removeListDataListener( listener );
+		this.swingModels.removeListDataListener( listener );
 	}
-	public Codec<E> getCodec() {
+	public Codec< E > getCodec() {
 		return this.codec;
 	}
-	
+	public java.util.Iterator< E > iterator() {
+		return this.listData.iterator();
+	}
+
 	@Override
 	public E getValue() {
 		return this.getSelectedItem();
 	}
-	
 	public E getSelectedItem() {
-		return (E) this.comboBoxModel.getSelectedItem();
+		return (E)this.swingModels.getSelectedItem();
 	}
-	public void setSelectedItem(E selectedItem) {
-		this.comboBoxModel.setSelectedItem(selectedItem);
+	public void setSelectedItem( E selectedItem ) {
+		this.swingModels.setSelectedItem( selectedItem );
 	}
 	public int getSelectedIndex() {
-		return this.listSelectionModel.getMinSelectionIndex();
+		return this.swingModels.getMinSelectionIndex();
 	}
 	public void setSelectedIndex( int nextIndex ) {
-		this.listSelectionModel.setSelectedIndex( nextIndex, true );;
-	}
-
-
-	public int indexOf( E item ) {
-		return this.listModel.items.indexOf( item );
-	}
-	public java.util.Iterator< E > iterator() {
-		return this.listModel.items.iterator();
-	}
-	public E getItemAt(int index) {
-		return (E) this.comboBoxModel.getElementAt(index);
-	}
-	public int getItemCount() {
-		return this.comboBoxModel.getSize();
-	}
-
-	public E[] toArray( Class<E> componentType ) {
-		//todo: make thread safe
-		E[] rv = (E[])java.lang.reflect.Array.newInstance(componentType, this.getItemCount() );
-		for( int i=0; i<rv.length; i++ ) {
-			rv[ i ] = this.getItemAt( i );
-		}
-		return rv;
+		this.swingModels.setSelectedIndex( nextIndex, true );
 	}
 	public void setRandomSelectedValue() {
-		final int N = this.comboBoxModel.getSize();
+		final int N = this.swingModels.getSize();
 		int i;
-		if (N > 0) {
-			i = org.alice.random.RandomUtilities.nextIntegerFrom0ToNExclusive(N);
+		if( N > 0 ) {
+			i = org.alice.random.RandomUtilities.nextIntegerFrom0ToNExclusive( N );
 		} else {
 			i = -1;
 		}
-		this.listSelectionModel.setSelectedIndex(i,true);
-	}
-
-	public void setListData(int selectedIndex, E... items) {
-		synchronized (this.listModel) {
-			this.listModel.setListData(selectedIndex, items);
-		}
-	}
-
-	public void setListData(int selectedIndex, java.util.Collection<E> items) {
-		synchronized (this.listModel) {
-			this.listModel.setListData(selectedIndex, items);
-		}
-	}
-
-	public boolean containsItem(E item) {
-		synchronized (this.comboBoxModel) {
-			final int N = this.comboBoxModel.getSize();
-			for (int i = 0; i < N; i++) {
-				if (this.comboBoxModel.getElementAt(i) == item) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-
-	public void addItem(E item) {
-		synchronized (this.listModel) {
-			this.listModel.addItem( item );
-		}
-	}
-	
-	public void removeItem( E item ) {
-		synchronized (this.listModel) {
-			this.listSelectionModel.clearSelection();
-			this.listModel.removeItem( item );
-			if( this.comboBoxModel.getSize() > 0 ) {
-				this.comboBoxModel.setSelectedItem( this.comboBoxModel.getElementAt( 0 ) );
-			}
-		}
-	}
-
-	public void clear() {
-		java.util.Collection<E> items = java.util.Collections.emptyList();
-		this.setListData(-1, items);
+		this.swingModels.setSelectedIndex( i, true );
 	}
 
 	public TrackableShape getTrackableShapeFor( E item ) {
@@ -617,7 +548,7 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 			return null;
 		}
 	}
-	
+
 	protected String getMenuText( E item ) {
 		if( item != null ) {
 			return item.toString();
@@ -629,42 +560,181 @@ public class ListSelectionState<E> extends State<E> implements Iterable<E>/*, ja
 		return null;
 	}
 
-	/*package-private*/ javax.swing.Action createAction( final E item ) {
+	/*package-private*/javax.swing.Action createAction( final E item ) {
 		javax.swing.Action action = new javax.swing.AbstractAction() {
-			public void actionPerformed(java.awt.event.ActionEvent e) {
-				comboBoxModel.setSelectedItem(item);
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				swingModels.setSelectedItem( item );
 			}
 		};
-		action.putValue(javax.swing.Action.NAME, getMenuText( (E)item ) );
-		action.putValue(javax.swing.Action.SMALL_ICON, getMenuSmallIcon( (E)item ) ); 
+		action.putValue( javax.swing.Action.NAME, getMenuText( (E)item ) );
+		action.putValue( javax.swing.Action.SMALL_ICON, getMenuSmallIcon( (E)item ) );
 		return action;
 	}
 
-	public ComboBox<E> createComboBox() {
-		return new ComboBox<E>( this );
-	}
-	public List<E> createList() {
-		return new List< E >( this );
-	}
-	public DefaultRadioButtons<E> createDefaultRadioButtons() {
-		return new DefaultRadioButtons<E>( this );
-	}
-	public MutableList<E> createMutableList( MutableList.Factory<E> factory ) {
-		return new MutableList<E>( this, factory );
+	private void commitEdit( ListSelectionStateEdit< E > listSelectionStateEdit, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
+		childContext.commitAndInvokeDo( listSelectionStateEdit );
+		ModelContext< ? > popContext = ContextManager.popContext();
+		assert popContext == childContext;
 	}
 
-	
-	public interface TabCreator<E> {
-		public java.util.UUID getId(E item);
-		public void customizeTitleComponent(BooleanState booleanState, AbstractButton< ?, BooleanState > button, E item);
-		public JComponent<?> createMainComponent(E item);
-		public ScrollPane createScrollPane(E item);
-		public boolean isCloseable(E item);
+	@Override
+	public Edit< ? > commitTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		assert originalEdit instanceof ListSelectionStateEdit;
+		ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)originalEdit;
+		this.commitEdit( listSelectionStateEdit, null, null );
+		return listSelectionStateEdit;
 	}
-	public FolderTabbedPane<E> createFolderTabbedPane(TabCreator<E> tabCreator) {
-		return new FolderTabbedPane<E>(this, tabCreator);
+
+	@Override
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, UserInformation userInformation ) {
+		return getTutorialNoteText( modelContext, userInformation );
+	}
+	@Override
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		StringBuilder sb = new StringBuilder();
+		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)successfulCompletionEvent.getEdit();
+			sb.append( "Select " );
+			sb.append( "<strong>" );
+			this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+			sb.append( "</strong>." );
+		}
+		return sb.toString();
+	}
+
+	public String getTutorialNoteStartText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "First press on " );
+		sb.append( "<strong>" );
+		this.codec.appendRepresentation( sb, listSelectionStateEdit.getPreviousValue(), java.util.Locale.getDefault() );
+		sb.append( "</strong>" );
+		sb.append( " in order to change it to " );
+		sb.append( "<strong>" );
+		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+		sb.append( "</strong>." );
+		return sb.toString();
+	}
+	public String getTutorialNoteFinishText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Select " );
+		sb.append( "<strong>" );
+		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+		sb.append( "</strong>." );
+		return sb.toString();
+	}
+
+	public ComboBox< E > createComboBox() {
+		return new ComboBox< E >( this );
+	}
+	public List< E > createList() {
+		return new List< E >( this );
+	}
+	public DefaultRadioButtons< E > createDefaultRadioButtons() {
+		return new DefaultRadioButtons< E >( this );
+	}
+	public MutableList< E > createMutableList( MutableList.Factory< E > factory ) {
+		return new MutableList< E >( this, factory );
+	}
+
+	public interface TabCreator<E> {
+		public java.util.UUID getId( E item );
+		public void customizeTitleComponent( BooleanState booleanState, AbstractButton< ?, BooleanState > button, E item );
+		public JComponent< ? > createMainComponent( E item );
+		public ScrollPane createScrollPane( E item );
+		public boolean isCloseable( E item );
+	}
+
+	public FolderTabbedPane< E > createFolderTabbedPane( TabCreator< E > tabCreator ) {
+		return new FolderTabbedPane< E >( this, tabCreator );
 	};
-	public ToolPaletteTabbedPane<E> createToolPaletteTabbedPane(TabCreator<E> tabCreator) {
-		return new ToolPaletteTabbedPane<E>(this, tabCreator);
+	public ToolPaletteTabbedPane< E > createToolPaletteTabbedPane( TabCreator< E > tabCreator ) {
+		return new ToolPaletteTabbedPane< E >( this, tabCreator );
 	};
+
+	@Deprecated
+	public int indexOf( E item ) {
+		synchronized( this.listData ) {
+			final int N = this.listData.getSize();
+			for( int i=0; i<N; i++ ) {
+				if( item.equals( this.listData.getElementAt( i ) ) ) {
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+	@Deprecated
+	public E getItemAt( int index ) {
+		return (E)this.swingModels.getElementAt( index );
+	}
+	@Deprecated
+	public int getItemCount() {
+		return this.swingModels.getSize();
+	}
+	@Deprecated
+	public E[] toArray( Class< E > componentType ) {
+		//todo: make thread safe
+		E[] rv = (E[])java.lang.reflect.Array.newInstance( componentType, this.getItemCount() );
+		for( int i = 0; i < rv.length; i++ ) {
+			rv[ i ] = this.getItemAt( i );
+		}
+		return rv;
+	}
+	@Deprecated
+	public void setListData( int selectedIndex, E... items ) {
+		if( this.listData instanceof MutableListData ) {
+			synchronized( this.listData ) {
+				((MutableListData<E>)this.listData).set( items );
+				//todo: set selected index
+			}
+		}
+	}
+	@Deprecated
+	public void setListData( int selectedIndex, java.util.Collection< E > items ) {
+		if( this.listData instanceof MutableListData ) {
+			synchronized( this.listData ) {
+				((MutableListData<E>)this.listData).set( items );
+				//todo: set selected index
+			}
+		}
+	}
+	@Deprecated
+	public boolean containsItem( E item ) {
+		synchronized( this.swingModels ) {
+			final int N = this.swingModels.getSize();
+			for( int i = 0; i < N; i++ ) {
+				if( this.swingModels.getElementAt( i ) == item ) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	@Deprecated
+	public void addItem( E item ) {
+		if( this.listData instanceof MutableListData ) {
+			synchronized( this.listData ) {
+				((MutableListData)this.listData).addElement( item );
+			}
+		}
+	}
+	@Deprecated
+	public void removeItem( E item ) {
+		if( this.listData instanceof MutableListData ) {
+			synchronized( this.listData ) {
+				this.swingModels.clearSelection();
+				((MutableListData)this.listData).removeElement( item );
+				if( this.swingModels.getSize() > 0 ) {
+					this.swingModels.setSelectedItem( this.swingModels.getElementAt( 0 ) );
+				}
+			}
+		}
+	}
+	@Deprecated
+	public void clear() {
+		java.util.Collection< E > items = java.util.Collections.emptyList();
+		this.setListData( -1, items );
+	}
 }

@@ -40,54 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+
+package org.alice.stageide.sceneeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TabSelectionState extends ListSelectionState<PredeterminedTab> {
-	private static class PredeterminedTabCreator implements TabCreator< PredeterminedTab > {
-		public final java.util.UUID getId(PredeterminedTab item) {
-			java.util.UUID rv = item.getId();
-			assert rv != null;
-			return rv;
-		}
-		public final JComponent<?> createMainComponent(PredeterminedTab item) {
-			return item.getMainComponent();
-		}
-		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.croquet.PredeterminedTab item ) {
-			item.customizeTitleComponent( booleanState, button );
-		}
-		public final ScrollPane createScrollPane( PredeterminedTab item ) {
-			return item.createScrollPane();
-		}
-		public final boolean isCloseable(edu.cmu.cs.dennisc.croquet.PredeterminedTab item) {
-			return false;
-		}
-	};
-	
-	public TabSelectionState( Group group, java.util.UUID id, Codec< PredeterminedTab > codec ) {
-		super( group, id, codec );
-	}
-	public TabSelectionState( Group group, java.util.UUID id, Codec< PredeterminedTab > codec, int selectedIndex, PredeterminedTab... tabs ) {
-		this( group, id, codec );
-		this.setListData( selectedIndex, tabs );
-	}
-
-	public FolderTabbedPane<PredeterminedTab> createDefaultFolderTabbedPane() {
-		return this.createFolderTabbedPane( new PredeterminedTabCreator() );
-	}
-
-	public ToolPaletteTabbedPane<PredeterminedTab> createDefaultToolPaletteTabbedPane() {
-		return this.createToolPaletteTabbedPane( new PredeterminedTabCreator() );
-	}
-
-	public PredeterminedTab getItemForId( java.util.UUID id ) {
-		for( PredeterminedTab predeterminedTab : this ) {
-			if( predeterminedTab.getId().equals( id ) ) {
-				return predeterminedTab;
-			}
-		}
-		return null;
-	}
+public enum HandleStyle {
+	DEFAULT,
+	ROTATION,
+	TRANSLATION,
+	RESIZE
 }

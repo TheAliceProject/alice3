@@ -40,25 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.sceneditor;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< org.alice.stageide.sceneeditor.HandleStyle > {
-	private static class SingletonHolder {
-		private static HandleStyleListSelectionState instance = new HandleStyleListSelectionState();
+public class DefaultMutableListData< E > extends AbstractMutableListData< E > {
+	private java.util.concurrent.CopyOnWriteArrayList< E > list = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public E getElementAt( int index ) {
+		return this.list.get( index );
 	}
-	public static HandleStyleListSelectionState getInstance() {
-		return SingletonHolder.instance;
+	public int getSize() {
+		return this.list.size();
 	}
-	private HandleStyleListSelectionState() {
-		super( 
-				org.alice.ide.ProjectApplication.UI_STATE_GROUP, 
-				java.util.UUID.fromString( "6e9c4eb8-a2a5-4d7e-bd7a-a96a82055d19" ), 
-				edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.stageide.sceneeditor.HandleStyle.class ),
-				new edu.cmu.cs.dennisc.croquet.DefaultListData< org.alice.stageide.sceneeditor.HandleStyle >( org.alice.stageide.sceneeditor.HandleStyle.values() ),
-				0
-		);
+	public java.util.Iterator< E > iterator() {
+		return this.list.iterator();
+	}
+	public void addElement(E element) {
+		this.list.add( element );
+	}
+	public void insertElementAt(E element, int index) {
+		this.list.add( index, element );
+	}
+	public void removeElement(E element) {
+		this.list.remove( element );
+	}
+	public void removeElementAt( int index ) {
+		this.list.remove( index );
+	}
+	@Deprecated
+	public void set( java.util.Collection< E > elements ) {
+		this.list.clear();
+		this.list.addAll( elements );
+	}
+	@Deprecated
+	public void set( E... elements ) {
+		this.set( java.util.Arrays.asList( elements ) );
 	}
 }

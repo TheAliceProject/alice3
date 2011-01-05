@@ -51,6 +51,9 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 	
 	public ViewController( M model ) {
 		this.model = model;
+		if( this.model != null ) {
+			this.model.initializeIfNecessary();
+		}
 	}
 	public M getModel() {
 		return model;

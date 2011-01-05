@@ -40,25 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.sceneditor;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< org.alice.stageide.sceneeditor.HandleStyle > {
-	private static class SingletonHolder {
-		private static HandleStyleListSelectionState instance = new HandleStyleListSelectionState();
+public abstract class AbstractMutableListData< E > implements MutableListData< E > {
+	private java.util.List< javax.swing.event.ListDataListener > listDataListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public void addListDataListener( javax.swing.event.ListDataListener listDataListener ) {
+		this.listDataListeners.add( listDataListener );
 	}
-	public static HandleStyleListSelectionState getInstance() {
-		return SingletonHolder.instance;
+	public void removeListDataListener( javax.swing.event.ListDataListener listDataListener ) {
+		this.listDataListeners.remove( listDataListener );
 	}
-	private HandleStyleListSelectionState() {
-		super( 
-				org.alice.ide.ProjectApplication.UI_STATE_GROUP, 
-				java.util.UUID.fromString( "6e9c4eb8-a2a5-4d7e-bd7a-a96a82055d19" ), 
-				edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.stageide.sceneeditor.HandleStyle.class ),
-				new edu.cmu.cs.dennisc.croquet.DefaultListData< org.alice.stageide.sceneeditor.HandleStyle >( org.alice.stageide.sceneeditor.HandleStyle.values() ),
-				0
-		);
+	protected void fireContentsChanged( Object source, int index0, int index1 ) { 
+		javax.swing.event.ListDataEvent e = new javax.swing.event.ListDataEvent( source, javax.swing.event.ListDataEvent.CONTENTS_CHANGED, index0, index1 );
+		for( javax.swing.event.ListDataListener listDataListener : this.listDataListeners ) {
+			listDataListener.contentsChanged( e );
+		}
+	}
+	protected void fireIntervalAdded( Object source, int index0, int index1 ) { 
+		javax.swing.event.ListDataEvent e = new javax.swing.event.ListDataEvent( source, javax.swing.event.ListDataEvent.INTERVAL_ADDED, index0, index1 );
+		for( javax.swing.event.ListDataListener listDataListener : this.listDataListeners ) {
+			listDataListener.intervalAdded( e );
+		}
+	}
+	protected void fireIntervalRemoved( Object source, int index0, int index1 ) { 
+		javax.swing.event.ListDataEvent e = new javax.swing.event.ListDataEvent( source, javax.swing.event.ListDataEvent.INTERVAL_REMOVED, index0, index1 );
+		for( javax.swing.event.ListDataListener listDataListener : this.listDataListeners ) {
+			listDataListener.intervalRemoved( e );
+		}
 	}
 }

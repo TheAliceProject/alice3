@@ -40,25 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.sceneditor;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< org.alice.stageide.sceneeditor.HandleStyle > {
-	private static class SingletonHolder {
-		private static HandleStyleListSelectionState instance = new HandleStyleListSelectionState();
-	}
-	public static HandleStyleListSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private HandleStyleListSelectionState() {
-		super( 
-				org.alice.ide.ProjectApplication.UI_STATE_GROUP, 
-				java.util.UUID.fromString( "6e9c4eb8-a2a5-4d7e-bd7a-a96a82055d19" ), 
-				edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.stageide.sceneeditor.HandleStyle.class ),
-				new edu.cmu.cs.dennisc.croquet.DefaultListData< org.alice.stageide.sceneeditor.HandleStyle >( org.alice.stageide.sceneeditor.HandleStyle.values() ),
-				0
-		);
-	}
+public interface MutableListData<E> extends ListData<E> {
+	public void addElement( E element );
+	public void insertElementAt( E element, int index );
+	public void removeElement( E element );
+	public void removeElementAt( int index );
+
+	@Deprecated
+	public void set( E... elements );
+	@Deprecated
+	public void set( java.util.Collection< E > elements );
+	
+	public void addListDataListener( javax.swing.event.ListDataListener listDataListener );
+	public void removeListDataListener( javax.swing.event.ListDataListener listDataListener );
 }
