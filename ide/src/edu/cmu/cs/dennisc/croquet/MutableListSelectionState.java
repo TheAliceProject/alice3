@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MutableListSelectionState<E> extends ListSelectionState< E > {
+public class MutableListSelectionState<E> extends DefaultListSelectionState< E > {
 	public MutableListSelectionState(Group group, java.util.UUID id, Codec< E > codec, MutableListData< E > mutableListData, int selectionIndex ) {
 		super(group, id, codec, mutableListData, selectionIndex );
 	}

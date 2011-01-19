@@ -241,7 +241,7 @@ class Cycle< E > {
 /**
  * @author Dennis Cosgrove
  */
-public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
+public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
 	private static class SingletonHolder {
 		private static EditorsTabSelectionState instance = new EditorsTabSelectionState();
 	}

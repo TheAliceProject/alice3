@@ -123,7 +123,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		super();
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.ListSelectionState< org.alice.stageide.sceneeditor.HandleStyle > getInteractionSelectionStateList() {
+	public org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState getInteractionSelectionStateList() {
 		return org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance();
 	}
 	@Override

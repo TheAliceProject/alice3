@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class PredeterminedTabSelectionState extends ListSelectionState< PredeterminedTab > {
+public class PredeterminedTabSelectionState extends DefaultListSelectionState< PredeterminedTab > {
 	private static class PredeterminedTabCreator implements TabCreator< PredeterminedTab > {
 		public final java.util.UUID getId(PredeterminedTab item) {
 			java.util.UUID rv = item.getId();

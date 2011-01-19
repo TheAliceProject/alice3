@@ -94,7 +94,7 @@ public abstract class ListContentPanel extends TabContentPanel {
 		}
 	}
 	
-	private class UriSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState<java.net.URI> {
+	private class UriSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState<java.net.URI> {
 		public UriSelectionState() {
 			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), org.alice.ide.croquet.codecs.UriCodec.SINGLETON, new UriListData(), -1 );
 		}

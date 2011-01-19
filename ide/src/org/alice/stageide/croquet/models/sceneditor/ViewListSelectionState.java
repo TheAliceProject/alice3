@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.sceneditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ViewListSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< org.alice.stageide.sceneeditor.View > {
+public class ViewListSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState< org.alice.stageide.sceneeditor.View > {
 	private static class SingletonHolder {
 		private static ViewListSelectionState instance = new ViewListSelectionState();
 	}

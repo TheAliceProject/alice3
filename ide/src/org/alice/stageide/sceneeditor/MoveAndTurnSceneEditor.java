@@ -118,6 +118,8 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState;
+import org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState;
 
 /**
  * @author Dennis Cosgrove
@@ -172,8 +174,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private CameraMarkerTracker mainCameraViewTracker;
 	
 	private ListSelectionState<View> mainCameraMarkerList = org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState.getInstance();
-	private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState.getInstance();
-	private ListSelectionState<FieldDeclaredInAlice> objectMarkerFieldList = org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState.getInstance();
+	//private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState.getInstance();
+	//private ListSelectionState<FieldDeclaredInAlice> objectMarkerFieldList = org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState.getInstance();
 
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
 		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode next ) {
@@ -361,15 +363,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return this.mainCameraMarkerList;
 	}
 	
-	public ListSelectionState<FieldDeclaredInAlice> getSceneMarkerFieldList()
-	{
-		return this.sceneMarkerFieldList;
-	}
-	
-	public ListSelectionState<FieldDeclaredInAlice> getObjectMarkerFieldList()
-	{
-		return this.objectMarkerFieldList;
-	}
+//	public ListSelectionState<FieldDeclaredInAlice> getSceneMarkerFieldList()
+//	{
+//		return CameraMarkerFieldListSelectionState.getInstance();
+//	}
+//	
+//	public ListSelectionState<FieldDeclaredInAlice> getObjectMarkerFieldList()
+//	{
+//		return ObjectMarkerFieldListSelectionState.getInstance();
+//	}
 	
 	public void addSceneEditorFieldObserver( SceneEditorFieldObserver fieldObserver ) {
 		this.fieldObservers.add( fieldObserver );
@@ -524,12 +526,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJavaVM( objectInJava );
 		if (objectInJava instanceof CameraMarker)
 		{
-			this.sceneMarkerFieldList.setSelectedItem((FieldDeclaredInAlice)field);
+			CameraMarkerFieldListSelectionState.getInstance().setSelectedItem((FieldDeclaredInAlice)field);
 			
 		}
 		else if (objectInJava instanceof ObjectMarker)
 		{
-			this.objectMarkerFieldList.setSelectedItem((FieldDeclaredInAlice)field);
+			ObjectMarkerFieldListSelectionState.getInstance().setSelectedItem((FieldDeclaredInAlice)field);
 		}
 		else
 		{
@@ -654,13 +656,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 						else if (transformable instanceof org.alice.apis.moveandturn.BookmarkCameraMarker)
 						{
 							MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.alice.apis.moveandturn.BookmarkCameraMarker)transformable );
-							MoveAndTurnSceneEditor.this.sceneMarkerFieldList.setSelectedItem(addedField);
+							CameraMarkerFieldListSelectionState.getInstance().setSelectedItem(addedField);
 							CreateCameraMarkerActionOperation.getInstance().setEnabled(true);
 						}
 						else if (transformable instanceof org.alice.apis.moveandturn.ObjectMarker)
 						{
 							MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.alice.apis.moveandturn.ObjectMarker)transformable );
-							MoveAndTurnSceneEditor.this.objectMarkerFieldList.setSelectedItem(addedField);
+							ObjectMarkerFieldListSelectionState.getInstance().setSelectedItem(addedField);
 							CreateObjectMarkerActionOperation.getInstance().setEnabled(true);
 						}
 						ListSelectionState<Accessible> accessibleListSelectionState = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
@@ -759,21 +761,21 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}
 		
-		FieldDeclaredInAlice sceneMarkerSelectedValue = this.sceneMarkerFieldList.getSelectedItem();
+		FieldDeclaredInAlice sceneMarkerSelectedValue = CameraMarkerFieldListSelectionState.getInstance().getSelectedItem();
 		int sceneMarkerSelectedIndex = -1;
 		if (sceneMarkerSelectedValue != null)
 		{
 			sceneMarkerSelectedIndex = cameraMarkerFields.indexOf(sceneMarkerSelectedValue);
 		}
-		this.sceneMarkerFieldList.setListData(sceneMarkerSelectedIndex, cameraMarkerFields);
+		CameraMarkerFieldListSelectionState.getInstance().setListData(sceneMarkerSelectedIndex, cameraMarkerFields);
 		
-		FieldDeclaredInAlice objectMarkerSelectedValue = this.objectMarkerFieldList.getSelectedItem();
+		FieldDeclaredInAlice objectMarkerSelectedValue = ObjectMarkerFieldListSelectionState.getInstance().getSelectedItem();
 		int objectMarkerSelectedIndex = -1;
 		if (objectMarkerSelectedValue != null)
 		{
 			objectMarkerSelectedIndex = objectMarkerFields.indexOf(objectMarkerSelectedValue);
 		}
-		this.objectMarkerFieldList.setListData(objectMarkerSelectedIndex, objectMarkerFields);
+		ObjectMarkerFieldListSelectionState.getInstance().setListData(objectMarkerSelectedIndex, objectMarkerFields);
 	}
 	
 	/**
@@ -824,7 +826,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		List<FieldDeclaredInAlice> declaredFields = this.getDeclaredFields();
 		for( FieldDeclaredInAlice field : declaredFields) {
 			if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.MarkerWithIcon.class )) {
-				if( this.sceneMarkerFieldList.containsItem( field ) || this.objectMarkerFieldList.containsItem( field ) ) {
+				if( CameraMarkerFieldListSelectionState.getInstance().containsItem( field ) || ObjectMarkerFieldListSelectionState.getInstance().containsItem( field ) ) {
 					//pass
 				} else {
 					int index = org.alice.ide.IDE.getSingleton().getSceneType().fields.indexOf( field );
@@ -846,14 +848,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( this.codeSelectionObserver );
 		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addAndInvokeValueObserver( this.fieldSelectionObserver );
 		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addAndInvokeValueObserver( this.sidePane.getPropertyManager() );
-		this.sceneMarkerFieldList.addListDataListener( this.listDataListener );
-		this.objectMarkerFieldList.addListDataListener(this.listDataListener);
+		CameraMarkerFieldListSelectionState.getInstance().addListDataListener( this.listDataListener );
+		ObjectMarkerFieldListSelectionState.getInstance().addListDataListener(this.listDataListener);
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		this.sceneMarkerFieldList.removeListDataListener( this.listDataListener );
-		this.objectMarkerFieldList.removeListDataListener(this.listDataListener);
+		CameraMarkerFieldListSelectionState.getInstance().removeListDataListener( this.listDataListener );
+		ObjectMarkerFieldListSelectionState.getInstance().removeListDataListener(this.listDataListener);
 		this.splitPane.setLeftComponent( null );
 		this.removeFieldListening();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
@@ -924,8 +926,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.splitPane.setDividerProportionalLocation( 1.0 );
 			this.addComponent( this.splitPane, Constraint.CENTER );
 			
-			this.sceneMarkerFieldList.addAndInvokeValueObserver(this.cameraMarkerFieldSelectionObserver);
-			this.objectMarkerFieldList.addAndInvokeValueObserver(this.objectMarkerFieldSelectionObserver);
+			CameraMarkerFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.cameraMarkerFieldSelectionObserver);
+			ObjectMarkerFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.objectMarkerFieldSelectionObserver);
 			
 			
 			ClickedObjectCondition rightMouseAndInteractive = new ClickedObjectCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.MOVEABLE_OBJECTS ) );
@@ -1825,7 +1827,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		cameraMarkerField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 		cameraMarkerField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
 		
-//		this.sceneMarkerFieldList.setSelectedItem(cameraMarkerField);
+//		CameraMarkerFieldListSelectionState.getInstance().setSelectedItem(cameraMarkerField);
 		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( cameraMarkerField, cameraMarker );
 	}
 
