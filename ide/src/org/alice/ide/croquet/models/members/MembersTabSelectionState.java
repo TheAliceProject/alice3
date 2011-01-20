@@ -95,8 +95,8 @@ public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.Predete
 				org.alice.ide.IDE.UI_STATE_GROUP, 
 				java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ), 
 				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( edu.cmu.cs.dennisc.croquet.PredeterminedTab.class ), 
-				new edu.cmu.cs.dennisc.croquet.DefaultListData< edu.cmu.cs.dennisc.croquet.PredeterminedTab >( ProceduresTab.getInstance(), FunctionsTab.getInstance(), FieldsTab.getInstance() ), 
-				0 
+				0,
+				ProceduresTab.getInstance(), FunctionsTab.getInstance(), FieldsTab.getInstance()
 		);
 	}
 	@Override

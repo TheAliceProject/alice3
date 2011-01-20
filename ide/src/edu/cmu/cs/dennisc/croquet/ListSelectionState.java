@@ -49,7 +49,21 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	public static interface ValueObserver<E> {
 		public void changed( E nextValue );
 	}
-	private java.util.List< ValueObserver< E >> valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	private final Codec< E > codec;
+	private final java.util.List< ValueObserver< E >> valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	
+	public ListSelectionState( Group group, java.util.UUID id, Codec< E > codec ) {
+		super( group, id );
+		this.codec = codec;
+	}
+	public Codec< E > getCodec() {
+		return this.codec;
+	}
+	@Override
+	protected void localize() {
+	}
+
 	public void addValueObserver( ValueObserver< E > valueObserver ) {
 		this.valueObservers.add( valueObserver );
 	}
@@ -65,23 +79,29 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			valueObserver.changed( nextValue );
 		}
 	}
-	private final Codec< E > codec;
-	public ListSelectionState( Group group, java.util.UUID id, Codec< E > codec ) {
-		super( group, id );
-		this.codec = codec;
-	}
-	
 
-	public Codec< E > getCodec() {
-		return this.codec;
+	private int pushCount = 0;
+	private E prevAtomicSelectedValue;
+	public boolean isInMidstOfAtomic() {
+		return this.pushCount < 0;
 	}
-	@Override
-	protected void localize() {
+	public void pushAtomic() {
+		this.prevAtomicSelectedValue = this.getValue();
+		this.pushCount++;
+	}
+	public void popAtomic() {
+		this.pushCount--;
+		if( this.pushCount == 0 ) {
+			E nextSelectedValue = this.getValue();
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
+				//pass
+			} else {
+				this.fireValueChanged( nextSelectedValue );
+			}
+		}
 	}
 
-	/*package-private*/ abstract ListData< E > getListData();
-
-	/*package-private*/ abstract javax.swing.Action createAction( final E item );
+	/*package-private*/ abstract javax.swing.Action createActionForItem( E item );
 	/*package-private*/ abstract javax.swing.ComboBoxModel getComboBoxModel();
 	/*package-private*/ abstract javax.swing.ListSelectionModel getListSelectionModel();
 
@@ -130,8 +150,8 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleShowing" );
 			super.handleShowing( menuItemContainer, e );
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-			for( final Object item : this.listSelectionState.getListData() ) {
-				javax.swing.Action action = this.listSelectionState.createAction( (E)item );
+			for( final Object item : this.listSelectionState ) {
+				javax.swing.Action action = this.listSelectionState.createActionForItem( (E)item );
 				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem( action );
 				buttonGroup.add( jMenuItem );
 				jMenuItem.setSelected( this.listSelectionState.getSelectedItem() == item );
@@ -159,54 +179,33 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	public abstract void addListDataListener( javax.swing.event.ListDataListener listener );
 	public abstract void removeListDataListener( javax.swing.event.ListDataListener listener );
 	
-	public abstract E getSelectedItem();
-	public abstract void setSelectedItem( E selectedItem );
-	public abstract int getSelectedIndex();
-	public abstract void setSelectedIndex( int nextIndex );
-	public abstract void setRandomSelectedValue();
 
 	public abstract E getItemAt( int index );
 	public abstract int getItemCount();
+	
+	
 	public abstract void removeItem( E item );
 
 	public abstract int indexOf( E item );
 	public boolean containsItem( E item ) {
 		return indexOf( item ) != -1;
 	}
-	
-	public TrackableShape getTrackableShapeFor( E item ) {
-		ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( ItemSelectable.class );
-		if( itemSelectable != null ) {
-			return itemSelectable.getTrackableShapeFor( item );
-		} else {
-			return null;
-		}
-	}
-	public JComponent< ? > getMainComponentFor( E item ) {
-		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
-		if( abstractTabbedPane != null ) {
-			return abstractTabbedPane.getMainComponentFor( item );
-		} else {
-			return null;
-		}
-	}
-	public ScrollPane getScrollPaneFor( E item ) {
-		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
-		if( abstractTabbedPane != null ) {
-			return abstractTabbedPane.getScrollPaneFor( item );
-		} else {
-			return null;
-		}
-	}
-	public JComponent< ? > getRootComponentFor( E item ) {
-		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
-		if( abstractTabbedPane != null ) {
-			return abstractTabbedPane.getRootComponentFor( item );
-		} else {
-			return null;
-		}
-	}
 
+	public abstract E getSelectedItem();
+	public abstract void setSelectedItem( E selectedItem );
+	public abstract int getSelectedIndex();
+	public abstract void setSelectedIndex( int nextIndex );
+	public void setRandomSelectedValue() {
+		final int N = this.getItemCount();
+		int i;
+		if( N > 0 ) {
+			i = org.alice.random.RandomUtilities.nextIntegerFrom0ToNExclusive( N );
+		} else {
+			i = -1;
+		}
+		this.setSelectedIndex( i );
+	}
+	
 	protected String getMenuText( E item ) {
 		if( item != null ) {
 			return item.toString();
@@ -299,4 +298,38 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	public ToolPaletteTabbedPane< E > createToolPaletteTabbedPane( TabCreator< E > tabCreator ) {
 		return new ToolPaletteTabbedPane< E >( this, tabCreator );
 	};
+
+
+	public TrackableShape getTrackableShapeFor( E item ) {
+		ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( ItemSelectable.class );
+		if( itemSelectable != null ) {
+			return itemSelectable.getTrackableShapeFor( item );
+		} else {
+			return null;
+		}
+	}
+	public JComponent< ? > getMainComponentFor( E item ) {
+		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
+		if( abstractTabbedPane != null ) {
+			return abstractTabbedPane.getMainComponentFor( item );
+		} else {
+			return null;
+		}
+	}
+	public ScrollPane getScrollPaneFor( E item ) {
+		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
+		if( abstractTabbedPane != null ) {
+			return abstractTabbedPane.getScrollPaneFor( item );
+		} else {
+			return null;
+		}
+	}
+	public JComponent< ? > getRootComponentFor( E item ) {
+		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
+		if( abstractTabbedPane != null ) {
+			return abstractTabbedPane.getRootComponentFor( item );
+		} else {
+			return null;
+		}
+	}
 }

@@ -50,13 +50,13 @@ import org.alice.ide.operations.ast.DeclareFieldEdit;
 //class CreateTextPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
 class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 	private static abstract class TextAttributeSelectionOperation extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState<String> {
-		public TextAttributeSelectionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.croquet.ListData< String > listData, int selectedIndex, String... items ) {
-			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, listData, selectedIndex );
+		public TextAttributeSelectionOperation( java.util.UUID individualId, int selectionIndex, String... items ) {
+			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, selectionIndex, items );
 		}
 	}
 	private static class FamilySelectionOperation extends TextAttributeSelectionOperation {
 		public FamilySelectionOperation() {
-			super( java.util.UUID.fromString( "a5678cc6-78b0-4cc1-adbb-e90969d42823" ), new edu.cmu.cs.dennisc.croquet.DefaultListData< String >( "Serif", "SansSerif" ), 0 );
+			super( java.util.UUID.fromString( "a5678cc6-78b0-4cc1-adbb-e90969d42823" ), 0, "Serif", "SansSerif" );
 		}
 		public org.alice.apis.moveandturn.font.FamilyAttribute getFamilyAttribute() {
 			Object value = this.getSelectedItem();
@@ -79,7 +79,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 
 	private static class StyleSelectionOperation extends TextAttributeSelectionOperation {
 		public StyleSelectionOperation() {
-			super( java.util.UUID.fromString( "a5678cc6-78b0-4cc1-adbb-e90969d42823" ), new edu.cmu.cs.dennisc.croquet.DefaultListData< String >( "Regular", "Bold", "Italic", "Bold Italic" ), 0 );
+			super( java.util.UUID.fromString( "a5678cc6-78b0-4cc1-adbb-e90969d42823" ), 0, "Regular", "Bold", "Italic", "Bold Italic" );
 		}
 		public org.alice.apis.moveandturn.font.WeightAttribute getWeightAttribute() {
 			Object value = this.getSelectedItem();

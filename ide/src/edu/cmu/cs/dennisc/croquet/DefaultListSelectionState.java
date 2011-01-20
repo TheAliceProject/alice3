@@ -47,38 +47,6 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class DefaultListSelectionState< E > extends ListSelectionState< E > {
-	private static class InternalModel<E> {
-		private final ListData< E > listData;
-		private int selectionIndex;
-		public InternalModel( ListData< E > listData, int selectionIndex ) {
-			this.listData = listData;
-			this.selectionIndex = selectionIndex;
-		}
-
-		public E getSelectedValue() {
-			if( this.selectionIndex != -1 ) {
-				return this.listData.getElementAt( this.selectionIndex );
-			} else {
-				return null;
-			}
-		}
-		private boolean isInMidstOfAtomic = false;
-		private E prevAtomicSelectedValue;
-		public void startAtomic() {
-			this.prevAtomicSelectedValue = this.getSelectedValue();
-			this.isInMidstOfAtomic = true;
-		}
-		public void commitAtomic() {
-			E nextSelectedValue = this.getSelectedValue();
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
-				//pass
-			} else {
-				
-			}
-			this.isInMidstOfAtomic = false;
-		}
-	}
-	
 	private static class SwingModels<E> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel, javax.swing.ListSelectionModel {
 		private final DefaultListSelectionState< E > listSelectionState;
 		public SwingModels( DefaultListSelectionState< E > listSelectionState ) {
@@ -287,21 +255,34 @@ public class DefaultListSelectionState< E > extends ListSelectionState< E > {
 	}
 
 
-	private final ListData< E > listData;
+	private final java.util.concurrent.CopyOnWriteArrayList< E > data = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private int selectionIndex = -1;
 	private final SwingModels< E > swingModels;
 
-	public DefaultListSelectionState( Group group, java.util.UUID id, Codec< E > codec, ListData< E > listData, int selectedIndex ) {
+	public DefaultListSelectionState( Group group, java.util.UUID id, Codec< E > codec ) {
 		super( group, id, codec );
-		this.listData = listData;
 		this.swingModels = new SwingModels< E >( this );
 		this.swingModels.setSelectionMode( javax.swing.ListSelectionModel.SINGLE_SELECTION );
 	}
-	public DefaultListSelectionState( Group group, java.util.UUID id, Codec< E > codec ) {
-		this( group, id, codec, new DefaultMutableListData< E >(), -1 );
+	public DefaultListSelectionState( Group group, java.util.UUID id, Codec< E > codec, int selectionIndex, java.util.Collection<E> data ) {
+		this( group, id, codec );
+		this.data.addAll( data );
+		this.selectionIndex = selectionIndex;
+	}
+	public DefaultListSelectionState( Group group, java.util.UUID id, Codec< E > codec, int selectionIndex, E... data ) {
+		this( group, id, codec, -1, java.util.Arrays.asList( data ) );
+	}
+
+	public E getSelectedValue() {
+		if( this.selectionIndex != -1 ) {
+			return this.data.get( this.selectionIndex );
+		} else {
+			return null;
+		}
 	}
 
 	@Override
-	/*package-private*/ javax.swing.Action createAction( final E item ) {
+	/*package-private*/ javax.swing.Action createActionForItem( final E item ) {
 		javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				swingModels.setSelectedItem( item );
@@ -319,11 +300,7 @@ public class DefaultListSelectionState< E > extends ListSelectionState< E > {
 	/*package-private*/ javax.swing.ListSelectionModel getListSelectionModel() {
 		return this.swingModels;
 	}
-	@Override
-	/*package-private*/ ListData< E > getListData() {
-		return this.listData;
-	}
-	
+
 	@Override
 	public void addListDataListener( javax.swing.event.ListDataListener listener ) {
 		this.swingModels.addListDataListener( listener );
@@ -334,7 +311,7 @@ public class DefaultListSelectionState< E > extends ListSelectionState< E > {
 	}
 
 	public java.util.Iterator< E > iterator() {
-		return this.listData.iterator();
+		return this.data.iterator();
 	}
 
 	@Override
@@ -353,54 +330,35 @@ public class DefaultListSelectionState< E > extends ListSelectionState< E > {
 	public void setSelectedIndex( int nextIndex ) {
 		this.swingModels.setSelectedIndex( nextIndex, true );
 	}
-	@Override
-	public void setRandomSelectedValue() {
-		final int N = this.swingModels.getSize();
-		int i;
-		if( N > 0 ) {
-			i = org.alice.random.RandomUtilities.nextIntegerFrom0ToNExclusive( N );
-		} else {
-			i = -1;
-		}
-		this.swingModels.setSelectedIndex( i, true );
-	}
 	
 	@Override
 	public int indexOf( E item ) {
-		synchronized( this.listData ) {
-			final int N = this.listData.getSize();
-			for( int i=0; i<N; i++ ) {
-				if( item.equals( this.listData.getElementAt( i ) ) ) {
-					return i;
-				}
-			}
-		}
-		return -1;
+		return this.data.indexOf( item );
 	}
 	@Override
 	public E getItemAt( int index ) {
-		return (E)this.swingModels.getElementAt( index );
+		return this.data.get( index );
 	}
 	@Override
 	public int getItemCount() {
-		return this.swingModels.getSize();
+		return this.data.size();
 	}
 
-	@Deprecated
-	public E[] toArray( Class< E > componentType ) {
-		//todo: make thread safe
-		E[] rv = (E[])java.lang.reflect.Array.newInstance( componentType, this.getItemCount() );
-		for( int i = 0; i < rv.length; i++ ) {
-			rv[ i ] = this.getItemAt( i );
-		}
-		return rv;
-	}
+//	@Deprecated
+//	public E[] toArray( Class< E > componentType ) {
+//		//todo: make thread safe
+//		E[] rv = (E[])java.lang.reflect.Array.newInstance( componentType, this.getItemCount() );
+//		for( int i = 0; i < rv.length; i++ ) {
+//			rv[ i ] = this.getItemAt( i );
+//		}
+//		return rv;
+//	}
 	@Deprecated
 	public void setListData( int selectedIndex, E... items ) {
 		if( this.listData instanceof MutableListData ) {
 			synchronized( this.listData ) {
 				((MutableListData<E>)this.listData).set( items );
-				//todo: set selected index
+				this.setSelectedIndex( selectedIndex );
 			}
 		}
 	}
@@ -409,7 +367,7 @@ public class DefaultListSelectionState< E > extends ListSelectionState< E > {
 		if( this.listData instanceof MutableListData ) {
 			synchronized( this.listData ) {
 				((MutableListData<E>)this.listData).set( items );
-				//todo: set selected index
+				this.setSelectedIndex( selectedIndex );
 			}
 		}
 	}

@@ -57,8 +57,8 @@ public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.croquet.De
 				org.alice.ide.ProjectApplication.UI_STATE_GROUP, 
 				java.util.UUID.fromString( "6e9c4eb8-a2a5-4d7e-bd7a-a96a82055d19" ), 
 				edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.stageide.sceneeditor.HandleStyle.class ),
-				new edu.cmu.cs.dennisc.croquet.DefaultListData< org.alice.stageide.sceneeditor.HandleStyle >( org.alice.stageide.sceneeditor.HandleStyle.values() ),
-				0
+				0, 
+				org.alice.stageide.sceneeditor.HandleStyle.values()
 		);
 	}
 }

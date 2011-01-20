@@ -66,11 +66,11 @@ public class PredeterminedTabSelectionState extends DefaultListSelectionState< P
 		}
 	};
 	
-	public static PredeterminedTabSelectionState createInstance( Group group, java.util.UUID id, Codec< PredeterminedTab > codec, int selectedIndex, PredeterminedTab... tabs ) {
-		return new PredeterminedTabSelectionState( group, id, codec, new DefaultListData< PredeterminedTab >( tabs ), selectedIndex );
+	public static PredeterminedTabSelectionState createInstance( Group group, java.util.UUID id, Codec< PredeterminedTab > codec, int selectionIndex, PredeterminedTab... tabs ) {
+		return new PredeterminedTabSelectionState( group, id, codec, selectionIndex, tabs );
 	}
-	public PredeterminedTabSelectionState( Group group, java.util.UUID id, Codec< PredeterminedTab > codec, ListData<PredeterminedTab> listData, int selectedIndex ) {
-		super( group, id, codec, listData, selectedIndex );
+	public PredeterminedTabSelectionState( Group group, java.util.UUID id, Codec< PredeterminedTab > codec, int selectionIndex, PredeterminedTab... tabs ) {
+		super( group, id, codec, selectionIndex, tabs );
 	}
 
 	public FolderTabbedPane<PredeterminedTab> createDefaultFolderTabbedPane() {

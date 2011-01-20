@@ -55,11 +55,9 @@ public class FormatterSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultL
 	private FormatterSelectionState() {
 		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "bae5a8d1-29ad-4205-9445-578a54c8d1e3" ), 
 				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.alice.ide.formatter.Formatter.class ), 
-				new edu.cmu.cs.dennisc.croquet.DefaultListData< org.alice.ide.formatter.Formatter >( 
-						org.alice.ide.formatter.AliceFormatter.getInstance(), 
-						org.alice.ide.formatter.JavaFormatter.getInstance()
-				),
-				0
+				0, 
+				org.alice.ide.formatter.AliceFormatter.getInstance(), 
+				org.alice.ide.formatter.JavaFormatter.getInstance()
 		);
 		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
