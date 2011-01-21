@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.toolkit.croquet.models;
  * @author Dennis Cosgrove
  */
 public class EnumConstantSelectionState< T extends Enum< T > > extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState< T > {
-	public EnumConstantSelectionState( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id, Class<T> cls, int selectionIndex ) {
+	public EnumConstantSelectionState( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id, int selectionIndex, Class<T> cls ) {
 		super( group, id, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( cls ), selectionIndex, cls.getEnumConstants() );
 	}
 }

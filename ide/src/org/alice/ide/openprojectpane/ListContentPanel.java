@@ -47,9 +47,12 @@ package org.alice.ide.openprojectpane;
  * @author Dennis Cosgrove
  */
 public abstract class ListContentPanel extends TabContentPanel {
-	private class UriListData extends edu.cmu.cs.dennisc.croquet.AbstractMutableListData< java.net.URI > {
+	private class UriSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState<java.net.URI> {
 		private boolean isRefreshRequired = true;
 		private java.net.URI[] uris;
+		public UriSelectionState() {
+			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), org.alice.ide.croquet.codecs.UriCodec.SINGLETON, -1 );
+		}
 		
 		private void updateUrisIfNecessary() {
 			if( this.isRefreshRequired ) {
@@ -62,41 +65,36 @@ public abstract class ListContentPanel extends TabContentPanel {
 			this.updateUrisIfNecessary();
 			return java.util.Arrays.asList( this.uris ).iterator();
 		}
-		public java.net.URI getElementAt( int index ) {
+		@Override
+		public java.net.URI getItemAt( int index ) {
 			//todo?
 			//this.updateUrisIfNecessary();
 			return this.uris[ index ];
 		}
-		public int getSize() {
+		@Override
+		public int getItemCount() {
 			this.updateUrisIfNecessary();
 			return this.uris.length;
 		}
-		@Deprecated
-		public void set( java.util.Collection< java.net.URI > elements ) {
+		@Override
+		public int indexOf( java.net.URI item ) {
+			return java.util.Arrays.asList( this.uris ).indexOf( item );
+		}
+		@Override
+		public java.net.URI[] toArray( java.lang.Class< java.net.URI > componentType ) {
+			return this.uris;
+		}
+		@Override
+		protected void internalAddItem( java.net.URI item ) {
 			throw new UnsupportedOperationException();
 		}
-		@Deprecated
-		public void set( java.net.URI... elements ) {
+		@Override
+		protected void internalRemoveItem( java.net.URI item ) {
 			throw new UnsupportedOperationException();
 		}
-
-		public void addElement( java.net.URI element ) {
+		@Override
+		protected void internalSetItems( java.util.Collection< java.net.URI > items ) {
 			throw new UnsupportedOperationException();
-		}
-		public void insertElementAt( java.net.URI element, int index ) {
-			throw new UnsupportedOperationException();
-		}
-		public void removeElement( java.net.URI element ) {
-			throw new UnsupportedOperationException();
-		}
-		public void removeElementAt( int index ) {
-			throw new UnsupportedOperationException();
-		}
-	}
-	
-	private class UriSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState<java.net.URI> {
-		public UriSelectionState() {
-			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), org.alice.ide.croquet.codecs.UriCodec.SINGLETON, new UriListData(), -1 );
 		}
 	}
 	private UriSelectionState uriSelection = new UriSelectionState();
