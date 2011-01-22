@@ -569,14 +569,27 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 	};
 	private java.util.Set<edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>> typeSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 	private void startListeningTo( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type ) {
-		if( this.typeSet.contains( type ) ) {
-			//pass
-		} else {
-			this.typeSet.add( type );
-			type.methods.addListPropertyListener( this.typeMembersListener );
-		}
 	}
 
+	@Override
+	protected void handleItemAdded( edu.cmu.cs.dennisc.alice.ast.AbstractCode item ) {
+		super.handleItemAdded( item );
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> declaringType = item.getDeclaringType();
+		if (declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
+			if( this.typeSet.contains( typeInAlice ) ) {
+				//pass
+			} else {
+				this.typeSet.add( typeInAlice );
+				typeInAlice.methods.addListPropertyListener( this.typeMembersListener );
+			}
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: declaringType==null" );
+		}
+	}
+	
+	//todo: handleItemRemoved
+	
 	@Override
 	public void clear() {
 		super.clear();
@@ -584,7 +597,6 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 			type.methods.removeListPropertyListener( this.typeMembersListener );
 		}
 		this.typeSet.clear();
-		
 	}
 	@Deprecated
 	public void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
@@ -592,9 +604,9 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 			if( this.containsItem( code ) ) {
 				//pass
 			} else {
+				this.addItem( code );
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> declaringType = code.getDeclaringType();
 				if( declaringType != null ) {
-					this.addItem( code );
 					if (declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) {
 						edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
 						this.startListeningTo( typeInAlice );

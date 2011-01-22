@@ -199,13 +199,16 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 		edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<String> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<String>( root );
 		this.treeSelectionState = new edu.cmu.cs.dennisc.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ), new edu.cmu.cs.dennisc.croquet.Codec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> >() {
-			public StringBuilder appendRepresentation( StringBuilder rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > value, java.util.Locale locale ) {
-				throw new RuntimeException( "todo" );
+			public Class getValueClass() {
+				return edu.cmu.cs.dennisc.javax.swing.models.TreeNode.class;
 			}
 			public edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}
 			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > value ) {
+				throw new RuntimeException( "todo" );
+			}
+			public StringBuilder appendRepresentation( StringBuilder rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > value, java.util.Locale locale ) {
 				throw new RuntimeException( "todo" );
 			}
 		}, treeModel, treeModel.getRoot() );

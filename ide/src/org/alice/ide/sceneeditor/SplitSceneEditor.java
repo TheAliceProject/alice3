@@ -96,13 +96,16 @@ class LookingGlass extends edu.cmu.cs.dennisc.croquet.CornerSpringPanel {
 class FieldTreeSelectionState extends edu.cmu.cs.dennisc.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<edu.cmu.cs.dennisc.alice.ast.AbstractField>> {
 	public FieldTreeSelectionState() {
 		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "89223cff-76d3-4cb7-baf3-3a5e990bcaff" ), new edu.cmu.cs.dennisc.croquet.Codec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<edu.cmu.cs.dennisc.alice.ast.AbstractField> >() {
-			public StringBuilder appendRepresentation( StringBuilder rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > value, java.util.Locale locale ) {
-				throw new RuntimeException( "todo" );
+			public Class getValueClass() {
+				return edu.cmu.cs.dennisc.javax.swing.models.TreeNode.class;
 			}
 			public edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}
 			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > value ) {
+				throw new RuntimeException( "todo" );
+			}
+			public StringBuilder appendRepresentation( StringBuilder rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > value, java.util.Locale locale ) {
 				throw new RuntimeException( "todo" );
 			}
 		}, null, null );

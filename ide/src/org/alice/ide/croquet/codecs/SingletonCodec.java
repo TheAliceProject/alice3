@@ -54,9 +54,8 @@ public class SingletonCodec< E > implements edu.cmu.cs.dennisc.croquet.Codec< E 
 	}
 	private SingletonCodec() {
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, E value, java.util.Locale locale) {
-		rv.append( value );
-		return rv;
+	public Class< E > getValueClass() {
+		throw new RuntimeException( "todo" );
 	}
 	public E decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
@@ -83,5 +82,9 @@ public class SingletonCodec< E > implements edu.cmu.cs.dennisc.croquet.Codec< E 
 			System.err.println( "SingletonCodec encode null" );
 			binaryEncoder.encode( false );
 		}
+	}
+	public StringBuilder appendRepresentation(StringBuilder rv, E value, java.util.Locale locale) {
+		rv.append( value );
+		return rv;
 	}
 }

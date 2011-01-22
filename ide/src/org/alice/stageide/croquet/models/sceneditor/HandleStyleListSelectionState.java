@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.sceneditor;
 /**
  * @author Dennis Cosgrove
  */
-public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState< org.alice.stageide.sceneeditor.HandleStyle > {
+public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.toolkit.croquet.models.EnumConstantSelectionState< org.alice.stageide.sceneeditor.HandleStyle > {
 	private static class SingletonHolder {
 		private static HandleStyleListSelectionState instance = new HandleStyleListSelectionState();
 	}
@@ -56,9 +56,8 @@ public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.croquet.De
 		super( 
 				org.alice.ide.ProjectApplication.UI_STATE_GROUP, 
 				java.util.UUID.fromString( "6e9c4eb8-a2a5-4d7e-bd7a-a96a82055d19" ), 
-				edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.stageide.sceneeditor.HandleStyle.class ),
 				0, 
-				org.alice.stageide.sceneeditor.HandleStyle.values()
+				org.alice.stageide.sceneeditor.HandleStyle.class
 		);
 	}
 }

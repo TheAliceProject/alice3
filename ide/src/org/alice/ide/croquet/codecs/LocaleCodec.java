@@ -47,6 +47,9 @@ package org.alice.ide.croquet.codecs;
  */
 public enum LocaleCodec implements edu.cmu.cs.dennisc.croquet.Codec< java.util.Locale > {
 	SINGLETON;
+	public Class<java.util.Locale> getValueClass() {
+		return java.util.Locale.class;
+	}
 	public StringBuilder appendRepresentation(StringBuilder rv, java.util.Locale value, java.util.Locale locale) {
 		if( value != null ) {
 			rv.append( value.getDisplayName() );

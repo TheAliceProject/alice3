@@ -55,14 +55,17 @@ public class EnumCodec< T extends Enum< T > > implements edu.cmu.cs.dennisc.croq
 	private EnumCodec( Class<T> cls ) {
 		this.cls = cls;
 	}
-	public final StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
-		rv.append( value );
-		return rv;
+	public java.lang.Class< T > getValueClass() {
+		return this.cls;
 	}
 	public final T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 	public final void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T t) {
 		throw new RuntimeException( "todo" );
+	}
+	public final StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
+		rv.append( value );
+		return rv;
 	}
 }

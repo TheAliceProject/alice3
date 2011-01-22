@@ -62,14 +62,6 @@ public class DefaultListSelectionState< E > extends ListSelectionState< E > {
 		this( group, id, codec, -1, java.util.Arrays.asList( data ) );
 	}
 
-//	public E getSelectedValue() {
-//		if( this.selectionIndex != -1 ) {
-//			return this.data.get( this.selectionIndex );
-//		} else {
-//			return null;
-//		}
-//	}
-	
 	public java.util.Iterator< E > iterator() {
 		return this.data.iterator();
 	}

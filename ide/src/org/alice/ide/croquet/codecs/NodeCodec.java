@@ -54,9 +54,8 @@ public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements e
 	}
 	private NodeCodec() {
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, value, locale );
-		return rv;
+	public Class< T > getValueClass() {
+		throw new RuntimeException( "todo" );
 	}
 	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
@@ -74,5 +73,9 @@ public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements e
 		if( valueIsNotNull ) {
 			binaryEncoder.encode( value.getUUID() );
 		}
+	}
+	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
+		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, value, locale );
+		return rv;
 	}
 }

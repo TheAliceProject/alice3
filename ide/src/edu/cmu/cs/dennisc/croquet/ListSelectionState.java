@@ -420,6 +420,9 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	public void setSelectedIndex( int nextIndex ) {
 		this.swingModels.setSelectionIndex( nextIndex, true );
 	}
+	public final void clearSelection() {
+		this.setSelectedIndex( -1 );
+	}
 
 	public abstract E getItemAt( int index );
 	public abstract int getItemCount();
@@ -430,6 +433,10 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		return indexOf( item ) != -1;
 	}
 
+	protected void handleItemAdded( E item ) {
+	}
+	protected void handleItemRemoved( E item ) {
+	}
 	protected abstract void internalAddItem( E item );
 	protected abstract void internalRemoveItem( E item );
 	protected abstract void internalSetItems( java.util.Collection< E > items );
@@ -438,6 +445,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		this.pushAtomic();
 		try {
 			this.internalAddItem( item );
+			this.handleItemAdded( item );
 		} finally {
 			this.popAtomic();
 		}
@@ -446,6 +454,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		this.pushAtomic();
 		try {
 			this.internalRemoveItem( item );
+			this.handleItemRemoved( item );
 		} finally {
 			this.popAtomic();
 		}
@@ -462,6 +471,10 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 
 	public final void setItems( E... items ) {
 		this.setItems( java.util.Arrays.asList( items ) );
+	}
+	public void clear() {
+		java.util.Collection< E > items = java.util.Collections.emptyList();
+		this.setItems( items );
 	}
 	
 	@Deprecated
@@ -483,11 +496,6 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		} finally {
 			this.popAtomic();
 		}
-	}
-	@Deprecated
-	public void clear() {
-		java.util.Collection< E > items = java.util.Collections.emptyList();
-		this.setListData( -1, items );
 	}
 	
 	public void setRandomSelectedValue() {

@@ -42,8 +42,6 @@
  */
 package org.alice.ide.preferencesinputpane;
 
-import org.alice.apis.moveandturn.CameraMarker;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -51,15 +49,18 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	class ConfigurationSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<org.alice.ide.preferences.programming.Configuration> {
 		public ConfigurationSelectionOperation( org.alice.ide.preferences.programming.Configuration... panes ) {
 			super( java.util.UUID.fromString( "68071aa4-895c-4d30-8b8a-5bbcc5262586" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.ide.preferences.programming.Configuration >() {
-				public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.preferences.programming.Configuration value, java.util.Locale locale ) {
-					rv.append( value );
-					return rv;
+				public Class< org.alice.ide.preferences.programming.Configuration > getValueClass() {
+					return org.alice.ide.preferences.programming.Configuration.class;
 				}
 				public org.alice.ide.preferences.programming.Configuration decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 					throw new RuntimeException( "todo" );
 				}
 				public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.preferences.programming.Configuration t ) {
 					throw new RuntimeException( "todo" );
+				}
+				public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.preferences.programming.Configuration value, java.util.Locale locale ) {
+					rv.append( value );
+					return rv;
 				}
 			}, -1, panes );
 		}
