@@ -427,6 +427,9 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	public abstract E getItemAt( int index );
 	public abstract int getItemCount();
 	public abstract E[] toArray( Class< E > componentType );
+	public final E[] toArray() {
+		return this.toArray( this.codec.getValueClass() );
+	}
 	
 	public abstract int indexOf( E item );
 	public boolean containsItem( E item ) {

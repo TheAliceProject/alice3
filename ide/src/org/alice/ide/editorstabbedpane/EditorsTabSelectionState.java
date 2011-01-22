@@ -538,7 +538,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 //		}
 //	}
 	private void removeDeadCode() {
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractCode code : this.toArray( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class ) ) {
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractCode code : this.toArray() ) {
 			if( code.getDeclaringType() != null ) {
 				//pass
 			} else {
