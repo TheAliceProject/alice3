@@ -59,7 +59,7 @@ public class DefaultListSelectionState< E > extends ListSelectionState< E > {
 		this.data.addAll( data );
 	}
 	public DefaultListSelectionState( Group group, java.util.UUID id, Codec< E > codec, int selectionIndex, E... data ) {
-		this( group, id, codec, -1, java.util.Arrays.asList( data ) );
+		this( group, id, codec, selectionIndex, java.util.Arrays.asList( data ) );
 	}
 
 	public java.util.Iterator< E > iterator() {
