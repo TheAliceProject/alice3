@@ -41,18 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.scenegraph;
+package edu.cmu.cs.dennisc.property;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IndexedPolygonArray extends VertexGeometry {
-	public final edu.cmu.cs.dennisc.property.IntBufferProperty polygonData = new edu.cmu.cs.dennisc.property.IntBufferProperty( this, new int[ 0 ] ) {
-		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, java.nio.IntBuffer value ) {
-			assert value != null;
-			super.setValue( owner, value );
-		}
-	};
-	public abstract int getIndicesPerPolygon();
+public class CharBufferProperty extends PrimitiveBufferProperty< java.nio.CharBuffer > {
+	public CharBufferProperty( InstancePropertyOwner owner, java.nio.CharBuffer value ) {
+		super( owner, value );
+	}
+	public CharBufferProperty( InstancePropertyOwner owner, char[] value ) {
+		super( owner, java.nio.CharBuffer.wrap( value ) );
+	}
+	public final void setValue( char[] value ) {
+		this.setValue( java.nio.CharBuffer.wrap( value ) );
+	}
 }

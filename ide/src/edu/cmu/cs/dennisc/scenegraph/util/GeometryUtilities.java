@@ -90,7 +90,7 @@ public class GeometryUtilities {
 			
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "sharing", rv.getName(), vertices.length, "--->", sharedVertices.size() );
 			rv.vertices.setValue( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( sharedVertices, edu.cmu.cs.dennisc.scenegraph.Vertex.class ) );
-			int[] array = rv.polygonData.getValue();
+			int[] array = rv.polygonData.getValueAsArray();
 			for( int i=0; i<array.length; i++ ) {
 				array[ i ] = map.get( array[ i ] );
 			}
@@ -100,7 +100,7 @@ public class GeometryUtilities {
 	}
 
 	private static boolean isRemovingExcessTrianglesNecessary( IndexedTriangleArray ita ) {
-		int[] polygonData = ita.polygonData.getValue();
+		int[] polygonData = ita.polygonData.getValueAsArray();
 		final int N = polygonData.length;
 		for( int i=0; i<N; i+=3 ) {
 			int a1 = polygonData[ i+0 ];
@@ -179,7 +179,7 @@ public class GeometryUtilities {
 			}
 			Vertex[] vertices = rv.vertices.getValue();
 			
-			int[] polygonData = rv.polygonData.getValue();
+			int[] polygonData = rv.polygonData.getValueAsArray();
 			
 			java.util.ArrayList< Triangle > triangles = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 			final int N_POLYGON_DATA = polygonData.length;
@@ -247,7 +247,7 @@ public class GeometryUtilities {
 		Vertex[] vertices = rv.vertices.getValue();
 		final int N = vertices.length;
 		boolean[] isReferencedArray = new boolean[ N ]; 
-		int[] polygonData = rv.polygonData.getValue();
+		int[] polygonData = rv.polygonData.getValueAsArray();
 		
 		for( int i : polygonData ) {
 			isReferencedArray[ i ] = true;
