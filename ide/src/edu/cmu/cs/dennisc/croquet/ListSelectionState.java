@@ -46,36 +46,9 @@ package edu.cmu.cs.dennisc.croquet;
 	private final ListSelectionState< E > listSelectionState;
 	public SwingModels( ListSelectionState< E > listSelectionState ) {
 		this.listSelectionState = listSelectionState;
-//		ListData< E > listData = this.listSelectionState.getListData();
-//		if( listData instanceof MutableListData< ? > ) {
-//			MutableListData< ? > mutableListData = (MutableListData< ? >)listData;
-//
-//			//todo: remove on release
-//			mutableListData.addListDataListener( new javax.swing.event.ListDataListener() {
-//				public void contentsChanged( javax.swing.event.ListDataEvent e ) {
-//					SwingModels.this.fireContentsChanged( e.getSource(), e.getIndex0(), e.getIndex1() );
-//				}
-//				public void intervalAdded( javax.swing.event.ListDataEvent e ) {
-//					SwingModels.this.fireIntervalAdded( e.getSource(), e.getIndex0(), e.getIndex1() );
-//				}
-//				public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
-//					SwingModels.this.fireIntervalRemoved( e.getSource(), e.getIndex0(), e.getIndex1() );
-//				}
-//			} );
-//		}
 	}
 	public E getSelectedItem() {
-		int index = this.getMaxSelectionIndex();
-		if( index >= 0 ) {
-			if( index < this.getSize() ) {
-				return this.listSelectionState.getItemAt( index );
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: item selection out of bounds" );
-				return null;
-			}
-		} else {
-			return null;
-		}
+		return this.listSelectionState.getSelectedItem();
 	}
 
 	public void setSelectedItem( Object item ) {
@@ -83,17 +56,7 @@ package edu.cmu.cs.dennisc.croquet;
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( item, this.getSelectedItem() ) ) {
 				throw new RuntimeException();
 			}
-			int selectedIndex = -1;
-			if( item != null ) {
-				final int N = this.getSize();
-				for( int i = 0; i < N; i++ ) {
-					if( item.equals( this.listSelectionState.getItemAt( i ) ) ) {
-						selectedIndex = i;
-						break;
-					}
-				}
-			}
-			this.setSelectionIndex( selectedIndex, true );
+			this.listSelectionState.setSelectionFromSwing( (E)item );
 			this.fireContentsChanged( this, -1, -1 );
 		}
 	}
@@ -107,17 +70,11 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 
 	
-	private java.util.List< javax.swing.event.ListSelectionListener > listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private int index = -1;
-	private int indexOfLastPerform = -1;
+	private java.util.List< javax.swing.event.ListSelectionListener > listSelectionListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private boolean isAdjusting;
 
-	private ViewController< ?, ? > mostRecentViewController;
-	private java.util.EventObject mostRecentEvent;
-
-	public void setMostRecentEventAndViewController( java.util.EventObject mostRecentEvent, ViewController< ?, ? > mostRecentViewController ) {
-		this.mostRecentEvent = mostRecentEvent;
-		this.mostRecentViewController = mostRecentViewController;
+	/*package-private*/ Iterable< javax.swing.event.ListSelectionListener > getListSelectionListeners() {
+		return this.listSelectionListeners;
 	}
 
 	public int getSelectionMode() {
@@ -129,11 +86,11 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 
 	public void addListSelectionListener( javax.swing.event.ListSelectionListener listener ) {
-		this.listeners.add( listener );
+		this.listSelectionListeners.add( listener );
 	}
 
 	public void removeListSelectionListener( javax.swing.event.ListSelectionListener listener ) {
-		this.listeners.remove( listener );
+		this.listSelectionListeners.remove( listener );
 	}
 
 	public boolean getValueIsAdjusting() {
@@ -142,81 +99,36 @@ package edu.cmu.cs.dennisc.croquet;
 
 	public void setValueIsAdjusting( boolean isAdjusting ) {
 		this.isAdjusting = isAdjusting;
-		this.fireChanged( -1, -1, this.isAdjusting );
+		//this.fireListSelectionChanged( -1, -1, this.isAdjusting );
 	}
 
 	public boolean isSelectedIndex( int index ) {
-		return this.index == index;
+		return this.listSelectionState.getSelectedIndex() == index;
 	}
 
 	public boolean isSelectionEmpty() {
-		return this.index < 0;
+		return this.listSelectionState.getSelectedIndex() < 0;
 	}
 
 	public int getAnchorSelectionIndex() {
-		return this.index;
+		return this.listSelectionState.getSelectedIndex();
 	}
 
 	public int getLeadSelectionIndex() {
-		return this.index;
+		return this.listSelectionState.getSelectedIndex();
 	}
 
 	public int getMaxSelectionIndex() {
-		return this.index;
+		return this.listSelectionState.getSelectedIndex();
 	}
 
 	public int getMinSelectionIndex() {
-		return this.index;
+		return this.listSelectionState.getSelectedIndex();
 	}
 
-	private void fireChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
-		javax.swing.event.ListSelectionEvent e = new javax.swing.event.ListSelectionEvent( this, firstIndex, lastIndex, isAdjusting );
-		for( javax.swing.event.ListSelectionListener listener : this.listeners ) {
-			listener.valueChanged( e );
-		}
-	}
-
-	private E getSelection( int index ) {
-		if( index >= 0 ) {
-			return (E)this.listSelectionState.getItemAt( index );
-		} else {
-			return null;
-		}
-	}
-
-	/*package-private*/ void setSelectionIndex( int nextIndex, boolean isValueChangedInvocationDesired ) {
-		int prevIndex = this.index;
-		this.index = nextIndex;
-		int firstIndex = Math.min( prevIndex, nextIndex );
-		int lastIndex = Math.max( prevIndex, nextIndex );
-		this.fireChanged( firstIndex, lastIndex, this.isAdjusting );
-
-		if( isValueChangedInvocationDesired ) {
-			if( nextIndex != this.indexOfLastPerform ) {
-				E prevSelection = this.getSelection( this.indexOfLastPerform );
-				E nextSelection = this.getSelection( nextIndex );
-				this.indexOfLastPerform = nextIndex;
-
-				if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
-					//pass
-				} else {
-					this.listSelectionState.commitEdit( new ListSelectionStateEdit< E >( this.mostRecentEvent, prevSelection, nextSelection ), this.mostRecentEvent, this.mostRecentViewController );
-					//						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
-					//						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
-					//						ModelContext< ? > popContext = ContextManager.popContext();
-					//						assert popContext == childContext;
-				}
-				this.listSelectionState.fireValueChanged( nextSelection );
-				this.mostRecentEvent = null;
-				this.mostRecentViewController = null;
-			}
-		} else {
-			this.indexOfLastPerform = nextIndex;
-		}
-	}
 
 	public void clearSelection() {
-		this.setSelectionIndex( -1, true );
+		this.listSelectionState.setSelectionIndexFromSwing( -1 );
 	}
 
 	public void addSelectionInterval( int index0, int index1 ) {
@@ -245,7 +157,7 @@ package edu.cmu.cs.dennisc.croquet;
 
 	public void setSelectionInterval( int index0, int index1 ) {
 		assert index0 == index1;
-		this.setSelectionIndex( index0, true );
+		this.listSelectionState.setSelectionIndexFromSwing( index0 );
 	}
 }
 
@@ -259,14 +171,71 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 
 	private final Codec< E > codec;
 	private final SwingModels< E > swingModels;
-	private final java.util.List< ValueObserver< E >> valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< ValueObserver< E > > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	
+
+	/*package-private*/ void setSelectionIndexFromSwing( int index ) {
+		this.index = index;
+		this.fireValueChanged( this.getSelectedItem() );
+	}
+	/*package-private*/ void setSelectionFromSwing( E item ) {
+		this.index = this.indexOf( item );
+		this.fireValueChanged( this.getSelectedItem() );
+	}
+	
+	private int index = -1;
+	private int indexOfLastPerform = -1;
+	private ViewController< ?, ? > mostRecentViewController;
+	private java.util.EventObject mostRecentEvent;
+//	public void setMostRecentEventAndViewController( java.util.EventObject mostRecentEvent, ViewController< ?, ? > mostRecentViewController ) {
+//		this.mostRecentEvent = mostRecentEvent;
+//		this.mostRecentViewController = mostRecentViewController;
+//	}
+
+	private void fireListSelectionChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
+		javax.swing.event.ListSelectionEvent e = new javax.swing.event.ListSelectionEvent( this, firstIndex, lastIndex, isAdjusting );
+		for( javax.swing.event.ListSelectionListener listener : this.swingModels.getListSelectionListeners() ) {
+			listener.valueChanged( e );
+		}
+	}
+
+	/*package-private*/ void setSelectionIndex( int nextIndex, boolean isValueChangedInvocationDesired ) {
+		int prevIndex = this.index;
+		this.index = nextIndex;
+		int firstIndex = Math.min( prevIndex, nextIndex );
+		int lastIndex = Math.max( prevIndex, nextIndex );
+		this.fireListSelectionChanged( firstIndex, lastIndex, this.swingModels.getValueIsAdjusting() );
+
+		if( isValueChangedInvocationDesired ) {
+			if( nextIndex != this.indexOfLastPerform ) {
+				E prevSelection = this.getItemAt( this.indexOfLastPerform );
+				E nextSelection = this.getItemAt( nextIndex );
+				this.indexOfLastPerform = nextIndex;
+
+				if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
+					//pass
+				} else {
+					this.commitEdit( new ListSelectionStateEdit< E >( this.mostRecentEvent, prevSelection, nextSelection ), this.mostRecentEvent, this.mostRecentViewController );
+					//						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
+					//						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
+					//						ModelContext< ? > popContext = ContextManager.popContext();
+					//						assert popContext == childContext;
+				}
+				this.fireValueChanged( nextSelection );
+				this.mostRecentEvent = null;
+				this.mostRecentViewController = null;
+			}
+		} else {
+			this.indexOfLastPerform = nextIndex;
+		}
+	}
+
 	public ListSelectionState( Group group, java.util.UUID id, Codec< E > codec, int selectionIndex ) {
 		super( group, id );
 		this.codec = codec;
+		this.index = selectionIndex;
 		this.swingModels = new SwingModels< E >( this );
 		this.swingModels.setSelectionMode( javax.swing.ListSelectionModel.SINGLE_SELECTION );
-		this.swingModels.setSelectionIndex( selectionIndex, false );
 	}
 	public Codec< E > getCodec() {
 		return this.codec;
@@ -409,16 +378,25 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	
 
 	public E getSelectedItem() {
-		return (E)this.swingModels.getSelectedItem();
+		if( this.index >= 0 ) {
+			if( this.index < this.getItemCount() ) {
+				return this.getItemAt( index );
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: item selection out of bounds" );
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 	public void setSelectedItem( E selectedItem ) {
-		this.swingModels.setSelectedItem( selectedItem );
+		this.setSelectedIndex( this.indexOf( selectedItem ) );
 	}
 	public int getSelectedIndex() {
-		return this.swingModels.getMinSelectionIndex();
+		return this.index;
 	}
 	public void setSelectedIndex( int nextIndex ) {
-		this.swingModels.setSelectionIndex( nextIndex, true );
+		this.setSelectionIndex( nextIndex, true );
 	}
 	public final void clearSelection() {
 		this.setSelectedIndex( -1 );
