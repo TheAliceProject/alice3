@@ -71,7 +71,11 @@ public class DefaultListSelectionState< E > extends ListSelectionState< E > {
 	}
 	@Override
 	public E getItemAt( int index ) {
-		return this.data.get( index );
+		if( index >= 0 ) {
+			return this.data.get( index );
+		} else {
+			return null;
+		}
 	}
 	@Override
 	public int getItemCount() {
