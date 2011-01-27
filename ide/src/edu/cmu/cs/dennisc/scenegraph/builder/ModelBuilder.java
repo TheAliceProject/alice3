@@ -130,7 +130,7 @@ public class ModelBuilder {
 					if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ) {
 						edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ita = (edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray)geometry;
 						encoder.encode( ita.vertices.getValue() );
-						encoder.encode( ita.polygonData.getValueAsArray() );
+						encoder.encode( ita.polygonData.getValue() );
 					} else if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.Mesh ) {
 						edu.cmu.cs.dennisc.scenegraph.Mesh mesh = (edu.cmu.cs.dennisc.scenegraph.Mesh)geometry;
 						encoder.encode( mesh.xyzs.getValue() );

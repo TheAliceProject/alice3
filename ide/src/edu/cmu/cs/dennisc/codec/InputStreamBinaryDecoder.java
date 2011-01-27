@@ -68,6 +68,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 
+	
 	@Override
 	protected byte[] decodeByteArray( byte[] rv ) {
 		try {
@@ -76,6 +77,28 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
+	}
+
+	public final java.nio.ByteBuffer decodeByteBuffer() {
+		return java.nio.ByteBuffer.wrap( this.decodeByteArray() );
+	}
+	public final java.nio.CharBuffer decodeCharBuffer() {
+		return this.decodeByteBuffer().asCharBuffer();
+	}
+	public final java.nio.DoubleBuffer decodeDoubleBuffer() {
+		return this.decodeByteBuffer().asDoubleBuffer();
+	}
+	public final java.nio.FloatBuffer decodeFloatBuffer() {
+		return this.decodeByteBuffer().asFloatBuffer();
+	}
+	public final java.nio.IntBuffer decodeIntBuffer() {
+		return this.decodeByteBuffer().asIntBuffer();
+	}
+	public final java.nio.LongBuffer decodeLongBuffer() {
+		return this.decodeByteBuffer().asLongBuffer();
+	}
+	public final java.nio.ShortBuffer decodeShortBuffer() {
+		return this.decodeByteBuffer().asShortBuffer();
 	}
 
 	public boolean decodeBoolean() {

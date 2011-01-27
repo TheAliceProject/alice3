@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleArrayProperty extends PrimitiveBufferProperty< java.nio.DoubleBuffer > {
-	public DoubleArrayProperty( InstancePropertyOwner owner, java.nio.DoubleBuffer value ) {
+public class DoubleBufferProperty extends PrimitiveBufferProperty< java.nio.DoubleBuffer > {
+	public DoubleBufferProperty( InstancePropertyOwner owner, java.nio.DoubleBuffer value ) {
 		super( owner, value );
 	}
-	public DoubleArrayProperty( InstancePropertyOwner owner, double[] value ) {
+	public DoubleBufferProperty( InstancePropertyOwner owner, double[] value ) {
 		super( owner, java.nio.DoubleBuffer.wrap( value ) );
 	}
 	public final void setValue( double[] value ) {

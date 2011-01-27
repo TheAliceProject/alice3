@@ -58,6 +58,9 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 	}
 
 	protected abstract void encodeBuffer( byte[] buffer );
+
+	public final void encode( java.nio.Buffer buffer ) {
+	}
 	
 	public final void encode( byte[] array ) {
 		encodeArrayLength( array );
