@@ -45,26 +45,32 @@ package org.alice.ide.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public class SingletonCodec< E > implements edu.cmu.cs.dennisc.croquet.Codec< E > {
-	private static class SingletonHolder {
-		private static SingletonCodec instance = new SingletonCodec();
+public class SingletonCodec< T > implements edu.cmu.cs.dennisc.croquet.Codec< T > {
+	private static java.util.Map< Class<?>, SingletonCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized < T > SingletonCodec< T > getInstance( Class< T > cls ) {
+		SingletonCodec< ? > rv = map.get( cls );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new SingletonCodec< T >( cls );
+		}
+		return (SingletonCodec< T >)rv;
 	}
-	public static <E> SingletonCodec<E> getInstance( Class<E> cls ) {
-		return SingletonHolder.instance;
+	private Class<T> valueCls;
+	private SingletonCodec( Class<T> valueCls ) {
+		this.valueCls = valueCls;
 	}
-	private SingletonCodec() {
+	public Class< T > getValueClass() {
+		return this.valueCls;
 	}
-	public Class< E > getValueClass() {
-		throw new RuntimeException( "todo" );
-	}
-	public E decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			String clsName = binaryDecoder.decodeString();
 			try {
 				Class<?> cls = Class.forName( clsName );
 				java.lang.reflect.Method mthd = cls.getDeclaredMethod( "getInstance" );
-				return (E)mthd.invoke( null );
+				return (T)mthd.invoke( null );
 			} catch( Exception e ) {
 				throw new RuntimeException( e );
 			}
@@ -72,7 +78,7 @@ public class SingletonCodec< E > implements edu.cmu.cs.dennisc.croquet.Codec< E 
 			return null;
 		}
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value ) {
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
 		//Thread.dumpStack();
 		if( value != null ) {
 			System.err.println( "SingletonCodec encode: " + value.getClass().getName() );
@@ -83,7 +89,7 @@ public class SingletonCodec< E > implements edu.cmu.cs.dennisc.croquet.Codec< E 
 			binaryEncoder.encode( false );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, E value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
 		rv.append( value );
 		return rv;
 	}
