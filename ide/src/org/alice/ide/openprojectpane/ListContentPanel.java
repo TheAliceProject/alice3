@@ -81,20 +81,20 @@ public abstract class ListContentPanel extends TabContentPanel {
 			return java.util.Arrays.asList( this.uris ).indexOf( item );
 		}
 		@Override
-		public java.net.URI[] toArray( java.lang.Class< java.net.URI > componentType ) {
+		public java.net.URI[] toArray( Class< java.net.URI > componentType ) {
 			return this.uris;
 		}
 		@Override
 		protected void internalAddItem( java.net.URI item ) {
-			throw new UnsupportedOperationException();
+			this.isRefreshRequired = true;
 		}
 		@Override
 		protected void internalRemoveItem( java.net.URI item ) {
-			throw new UnsupportedOperationException();
+			this.isRefreshRequired = true;
 		}
 		@Override
 		protected void internalSetItems( java.util.Collection< java.net.URI > items ) {
-			throw new UnsupportedOperationException();
+			this.isRefreshRequired = true;
 		}
 	}
 	private UriSelectionState uriSelection = new UriSelectionState();

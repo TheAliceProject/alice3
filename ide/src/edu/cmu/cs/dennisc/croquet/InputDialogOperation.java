@@ -235,6 +235,7 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainPanel( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Label explanationLabel ) {
 		J child = this.prologue( context );
+		assert child != null;
 		context.setMainPanel( child );
 //		child.getAwtComponent().setOpaque( true );
 

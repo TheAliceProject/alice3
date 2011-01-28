@@ -68,6 +68,19 @@ package edu.cmu.cs.dennisc.croquet;
 	public int getSize() {
 		return this.listSelectionState.getItemCount();
 	}
+	
+	@Override
+	protected void fireContentsChanged( java.lang.Object source, int index0, int index1 ) {
+		super.fireContentsChanged( source, index0, index1 );
+	}
+	@Override
+	protected void fireIntervalAdded( java.lang.Object source, int index0, int index1 ) {
+		super.fireIntervalAdded( source, index0, index1 );
+	}
+	@Override
+	protected void fireIntervalRemoved( java.lang.Object source, int index0, int index1 ) {
+		super.fireIntervalRemoved( source, index0, index1 );
+	}
 }
 
 
@@ -86,8 +99,11 @@ package edu.cmu.cs.dennisc.croquet;
 	public void removeListSelectionListener( javax.swing.event.ListSelectionListener listener ) {
 		this.listSelectionListeners.remove( listener );
 	}
-	/*package-private*/ Iterable< javax.swing.event.ListSelectionListener > getListSelectionListeners() {
-		return this.listSelectionListeners;
+	/*package-private*/ void fireListSelectionChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
+		javax.swing.event.ListSelectionEvent e = new javax.swing.event.ListSelectionEvent( this, firstIndex, lastIndex, isAdjusting );
+		for( javax.swing.event.ListSelectionListener listener : this.listSelectionListeners ) {
+			listener.valueChanged( e );
+		}
 	}
 
 	public int getSelectionMode() {
@@ -102,7 +118,7 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 	public void setValueIsAdjusting( boolean isAdjusting ) {
 		this.isAdjusting = isAdjusting;
-		//this.fireListSelectionChanged( -1, -1, this.isAdjusting );
+		this.fireListSelectionChanged( -1, -1, this.isAdjusting );
 	}
 	public boolean isSelectedIndex( int index ) {
 		return this.listSelectionState.getSelectedIndex() == index;
@@ -144,6 +160,7 @@ package edu.cmu.cs.dennisc.croquet;
 	public void setSelectionInterval( int index0, int index1 ) {
 		assert index0 == index1;
 		this.listSelectionState.setSelectionIndexFromSwing( index0 );
+		this.fireListSelectionChanged( index0, index1, this.isAdjusting );
 	}
 	public void clearSelection() {
 		this.setSelectionInterval( -1, -1 );
@@ -181,19 +198,12 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 //		this.mostRecentViewController = mostRecentViewController;
 //	}
 
-	private void fireListSelectionChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
-		javax.swing.event.ListSelectionEvent e = new javax.swing.event.ListSelectionEvent( this, firstIndex, lastIndex, isAdjusting );
-		for( javax.swing.event.ListSelectionListener listener : this.listSelectionModel.getListSelectionListeners() ) {
-			listener.valueChanged( e );
-		}
-	}
-
-	/*package-private*/ void setSelectionIndex( int nextIndex, boolean isValueChangedInvocationDesired ) {
+	private void setSelectionIndex( int nextIndex, boolean isValueChangedInvocationDesired ) {
 		int prevIndex = this.index;
 		this.index = nextIndex;
 		int firstIndex = Math.min( prevIndex, nextIndex );
 		int lastIndex = Math.max( prevIndex, nextIndex );
-		this.fireListSelectionChanged( firstIndex, lastIndex, this.listSelectionModel.getValueIsAdjusting() );
+		this.listSelectionModel.fireListSelectionChanged( firstIndex, lastIndex, this.listSelectionModel.getValueIsAdjusting() );
 
 		if( isValueChangedInvocationDesired ) {
 			if( nextIndex != this.indexOfLastPerform ) {
@@ -413,6 +423,9 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		this.pushAtomic();
 		try {
 			this.internalAddItem( item );
+			
+			int index = this.getItemCount() - 1;
+			this.comboBoxModel.fireIntervalAdded( this, index, index );
 			this.handleItemAdded( item );
 		} finally {
 			this.popAtomic();
@@ -421,7 +434,9 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	public final void removeItem( E item ) {
 		this.pushAtomic();
 		try {
+			int index = this.indexOf( item );
 			this.internalRemoveItem( item );
+			this.comboBoxModel.fireIntervalRemoved( this, index, index );
 			this.handleItemRemoved( item );
 		} finally {
 			this.popAtomic();
@@ -431,7 +446,35 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	public final void setItems( java.util.Collection< E > items ) {
 		this.pushAtomic();
 		try {
+			java.util.Set< E > previous = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( this.toArray() );
+			java.util.Set< E > next = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( items );
+			java.util.List< E > added = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List< E > removed = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			
+			for( E item : previous ) {
+				if( next.contains( item ) ) {
+					//pass
+				} else {
+					removed.add( item );
+				}
+			}
+			for( E item : next ) {
+				if( previous.contains( item ) ) {
+					//pass
+				} else {
+					added.add( item );
+				}
+			}
+			
+			
 			this.internalSetItems( items );
+			this.comboBoxModel.fireContentsChanged( this, 0, this.getItemCount() );
+			for( E item : removed ) {
+				this.handleItemRemoved( item );
+			}
+			for( E item : added ) {
+				this.handleItemAdded( item );
+			}
 		} finally {
 			this.popAtomic();
 		}
