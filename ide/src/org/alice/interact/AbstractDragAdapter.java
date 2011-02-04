@@ -146,6 +146,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	public ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.HandleStyle> handleStateValueObserver = new ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.HandleStyle>() {
 		public void changed( org.alice.stageide.sceneeditor.HandleStyle nextValue ) {
+			PrintUtilities.println( nextValue );
 			AbstractDragAdapter.this.setInteractionState( nextValue );
 		}
 	};
