@@ -221,6 +221,8 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
 				//pass
 			} else {
+				this.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.listSelectionModel.getValueIsAdjusting() );
+
 				if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
 					//pass
 				} else {
@@ -230,6 +232,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 					//						ModelContext< ? > popContext = ContextManager.popContext();
 					//						assert popContext == childContext;
 				}
+
 				this.fireValueChanged( nextSelectedValue );
 				this.mostRecentEvent = null;
 				this.mostRecentViewController = null;
