@@ -46,23 +46,62 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EntityImplementation {
-	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
-	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgTransformable() {
-		return this.sgTransformable;
+public class GroundImplementation extends ModelImplementation {
+	private final org.lookingglassandalice.storytelling.Ground abstraction;
+	private org.lookingglassandalice.storytelling.Ground.Appearance appearance = null;
+	public GroundImplementation( org.lookingglassandalice.storytelling.Ground abstraction ) {
+		this.abstraction = abstraction;
+		
+		edu.cmu.cs.dennisc.scenegraph.QuadArray plane = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
+		
+		double xzMin = -10.0;
+		double xzMax = +10.0;
+		double y = -1.0;
+
+		float i = 0.0f;
+		float j = 1.0f;
+		float k = 0.0f;
+		
+		float uvMin = -1.0f;
+		float uvMax = +1.0f;
+
+		plane.vertices.setValue(
+				new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
+						edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xzMin, y, xzMax, i, j, k, uvMin, uvMax ),
+						edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xzMax, y, xzMax, i, j, k, uvMax, uvMax ),
+						edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xzMax, y, xzMin, i, j, k, uvMax, uvMin ),
+						edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xzMin, y, xzMin, i, j, k, uvMin, uvMin )
+				}
+		);
+		
+		this.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { plane } );
 	}
-	public void translate( edu.cmu.cs.dennisc.math.Point3 translation ) {
-		this.sgTransformable.applyTranslation( translation );
+	public org.lookingglassandalice.storytelling.Ground getAbstraction() {
+		return this.abstraction;
 	}
-	public void rotate( edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.math.Angle angle ) {
-		this.sgTransformable.applyRotationAboutArbitraryAxis( axis, angle );
+	public org.lookingglassandalice.storytelling.Ground.Appearance getAppearance() {
+		return this.appearance;
 	}
-	//protected abstract double getBoundingSphereRadius();
-	protected double getBoundingSphereRadius() {
-		return 0.25;
+	public void setAppearance( org.lookingglassandalice.storytelling.Ground.Appearance appearance ) {
+		if( this.appearance != null ) {
+			
+		}
+		this.appearance = appearance;
+		edu.cmu.cs.dennisc.texture.BufferedImageTexture diffuseColorTexture;
+		if( this.appearance != null ) {
+			//todo
+			java.net.URL resource = this.appearance.getResource();
+			try {
+				java.awt.image.BufferedImage bufferedImage = javax.imageio.ImageIO.read( resource );
+				diffuseColorTexture = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
+				diffuseColorTexture.setBufferedImage( bufferedImage );
+			} catch( java.io.IOException ioe ) {
+				throw new RuntimeException( ioe );
+			}
+		} else {
+			diffuseColorTexture = null;
+		}
+		this.getSgAppearance().setDiffuseColorTexture( diffuseColorTexture );
 	}
-	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( EntityImplementation asSeenBy ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgTransformable().getTransformation( asSeenBy.getSgTransformable() );
-		return new edu.cmu.cs.dennisc.math.Sphere( m.translation, 1.0 );
-	}
+	
 }

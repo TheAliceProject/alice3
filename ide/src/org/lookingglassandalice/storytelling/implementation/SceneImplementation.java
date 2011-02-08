@@ -51,7 +51,6 @@ public class SceneImplementation {
 	private final edu.cmu.cs.dennisc.scenegraph.Background sgBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 	private final edu.cmu.cs.dennisc.scenegraph.AmbientLight sgAmbientLight = new edu.cmu.cs.dennisc.scenegraph.AmbientLight(); 
 
-	private final java.util.List< EntityImplementation > entities = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final org.lookingglassandalice.storytelling.Scene abstraction;
 	public SceneImplementation( org.lookingglassandalice.storytelling.Scene abstraction ) {
 		this.abstraction = abstraction;
@@ -65,27 +64,9 @@ public class SceneImplementation {
 	}
 
 	public void addEntity( EntityImplementation entity ) {
-		this.entities.add( entity );
 		entity.getSgTransformable().setParent( this.sgScene );
 	}
 	public void removeEntity( EntityImplementation entity ) {
 		entity.getSgTransformable().setParent( null );
-		this.entities.remove( entity );
-	}
-	/*package-private*/ void addCamerasTo( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		for( EntityImplementation entityImplementation : this.entities ) {
-			if( entityImplementation instanceof CameraImplementation ) {
-				CameraImplementation cameraImplementation = (CameraImplementation)entityImplementation;
-				onscreenLookingGlass.addCamera( cameraImplementation.getSgCamera() );
-			}
-		}
-	}
-	/*package-private*/ void removeCamerasFrom( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		for( EntityImplementation entityImplementation : this.entities ) {
-			if( entityImplementation instanceof CameraImplementation ) {
-				CameraImplementation cameraImplementation = (CameraImplementation)entityImplementation;
-				onscreenLookingGlass.removeCamera( cameraImplementation.getSgCamera() );
-			}
-		}
 	}
 }

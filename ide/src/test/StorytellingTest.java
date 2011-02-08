@@ -44,15 +44,6 @@ package test;
 
 import org.lookingglassandalice.storytelling.*;
 
-//abstract class CustomPerson extends Person {
-//}
-//
-//class CustomAdult extends CustomPerson {
-//	public void setAdultPersonResource( AdultPersonResource resource ) {
-//		this.setPersonResource( resource );
-//	}
-//}
-
 abstract class CustomPerson extends Person {
 	public CustomPerson( PersonResource resource ) {
 		super( resource );
@@ -65,18 +56,84 @@ class CustomAdult extends CustomPerson {
 	}
 }
 
+class SnowScene extends Scene {
+	private final Sun sun = new Sun();
+	private final Ground snow = new Ground();
+	private final Camera camera;
+	private final CustomAdult susan;
+	public SnowScene( Camera camera, CustomAdult susan ) {
+		this.camera = camera;
+		this.susan = susan;
+		this.addEntity( this.sun );
+		this.addEntity( this.snow );
+		this.addEntity( this.camera );
+		this.addEntity( this.susan );
+	}
+	
+	private void performGeneratedSetup() {
+		this.snow.setAppearance( Ground.Appearance.SNOW );
+	}
+	private void performCustomSetup() {
+	}
+	
+	@Override
+	protected void handleActivation( int count ) {
+		if( count == 1 ) {
+			this.performGeneratedSetup();
+			this.performCustomSetup();
+		} else {
+			this.restorePointsOfView();
+		}
+	}
+	@Override
+	protected void handleDeactivation( int count ) {
+		this.preservePointsOfView();
+	}
+}
+
+class DesertScene extends Scene {
+	private final Sun sun = new Sun();
+	private final Ground desert = new Ground();
+	private final Sphere sphere = new Sphere();
+	private final Camera camera;
+	public DesertScene( Camera camera ) {
+		this.camera = camera;
+		this.addEntity( this.sun );
+		this.addEntity( this.desert );
+		this.addEntity( this.sphere );
+		this.addEntity( this.camera );
+	}
+	private void performGeneratedSetup() {
+		this.desert.setAppearance( Ground.Appearance.SAND );
+		this.sphere.setRadius( 0.1 );
+		this.sphere.setColor( Color.RED );
+	}
+	private void performCustomSetup() {
+	}
+	@Override
+	protected void handleActivation( int count ) {
+		if( count == 1 ) {
+			this.performGeneratedSetup();
+			this.performCustomSetup();
+		} else {
+			this.restorePointsOfView();
+		}
+	}
+	@Override
+	protected void handleDeactivation( int count ) {
+		this.preservePointsOfView();
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
 public class StorytellingTest {
 	public static void main( String[] args ) {
-		Scene scene = new Scene();
-
 		Camera camera = new Camera();
 		camera.move( MoveDirection.FORWARD, 10.0 );
 		camera.turn( TurnDirection.LEFT, 0.5 );
-		
-		
+
 		Sphere sphere = new Sphere();
 		sphere.setRadius( 0.1 );
 		sphere.setColor( Color.RED );
@@ -88,17 +145,14 @@ public class StorytellingTest {
 //		//less syntax, more magic?
 		sphere.roll( RollDirection.LEFT, 0.5, RollDetailsFactory.asSeenBy( camera ).duration( 0.5 ) );
 		
-//		CustomAdult adult = new CustomAdult();
-//		adult.setAdultPersonResource( new org.lookingglassandalice.storytelling.sims2.AdultPersonResource() );
+		CustomAdult susan = new CustomAdult( new org.lookingglassandalice.storytelling.sims2.AdultPersonResource() );
 
-		CustomAdult adult = new CustomAdult( new org.lookingglassandalice.storytelling.sims2.AdultPersonResource() );
+		SnowScene snowScene = new SnowScene( camera, susan );
+		//DesertScene desertScene = new DesertScene( camera );
 
 		LookingGlass lookingGlass = new LookingGlass();
-		scene.addEntity( camera );
-		scene.addEntity( sphere );
-		scene.addEntity( adult );
-		
-		lookingGlass.setScene( scene );
+		//lookingGlass.setActiveScene( desertScene );
+		lookingGlass.setActiveScene( snowScene );
 		lookingGlass.setVisible( true );
 	}
 }

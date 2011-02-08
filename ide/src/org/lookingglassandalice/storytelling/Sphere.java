@@ -49,7 +49,7 @@ package org.lookingglassandalice.storytelling;
 public class Sphere extends Shape {
 	private final org.lookingglassandalice.storytelling.implementation.SphereImplementation implementation = new org.lookingglassandalice.storytelling.implementation.SphereImplementation( this );
 	@Override
-	public org.lookingglassandalice.storytelling.implementation.SphereImplementation getImplementation() {
+	/*package-private*/ org.lookingglassandalice.storytelling.implementation.SphereImplementation getImplementation() {
 		return this.implementation;
 	}
 	

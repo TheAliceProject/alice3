@@ -49,27 +49,31 @@ package org.lookingglassandalice.storytelling.implementation;
 public class LookingGlassImplementation {
 	private final edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
 	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
-	private SceneImplementation sceneImplementation;
+//	private SceneImplementation sceneImplementation;
 	
 	public LookingGlassImplementation() {
-		frame.setSize( 640, 480 );
-		frame.getAwtComponent().add( onscreenLookingGlass.getAWTComponent() );
-		frame.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Frame.DefaultCloseOperation.DISPOSE );
+		this.frame.setSize( 640, 480 );
+		this.frame.getAwtComponent().add( this.onscreenLookingGlass.getAWTComponent() );
+		this.frame.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Frame.DefaultCloseOperation.DISPOSE );
 	}
-	public SceneImplementation getScene() {
-		return this.sceneImplementation;
+	
+	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+		return this.onscreenLookingGlass;
 	}
-	public void setScene( SceneImplementation sceneImplementation ) {
-		if( this.sceneImplementation != sceneImplementation ) {
-			if( this.sceneImplementation != null ) {
-				this.sceneImplementation.removeCamerasFrom( this.onscreenLookingGlass );
-			}
-			this.sceneImplementation = sceneImplementation;
-			if( this.sceneImplementation != null ) {
-				this.sceneImplementation.addCamerasTo( this.onscreenLookingGlass );
-			}
-		}
-	}
+//	public SceneImplementation getScene() {
+//		return this.sceneImplementation;
+//	}
+//	public void setScene( SceneImplementation sceneImplementation ) {
+//		if( this.sceneImplementation != sceneImplementation ) {
+//			if( this.sceneImplementation != null ) {
+//				this.sceneImplementation.removeCamerasFrom( this.onscreenLookingGlass );
+//			}
+//			this.sceneImplementation = sceneImplementation;
+//			if( this.sceneImplementation != null ) {
+//				this.sceneImplementation.addCamerasTo( this.onscreenLookingGlass );
+//			}
+//		}
+//	}
 	public boolean isVisible() {
 		return this.frame.isVisible();
 	}

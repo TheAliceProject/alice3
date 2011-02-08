@@ -68,4 +68,8 @@ public class SphereImplementation extends ShapeImplementation {
 		this.sgSphere.radius.setValue( radius );
 	}
 	
+	@Override
+	protected double getBoundingSphereRadius() {
+		return this.getRadius();
+	}
 }

@@ -46,23 +46,19 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EntityImplementation {
-	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
-	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgTransformable() {
-		return this.sgTransformable;
+public class SunImplementation extends EntityImplementation {
+	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgSun = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
+	private final org.lookingglassandalice.storytelling.Sun abstraction;
+	public SunImplementation( org.lookingglassandalice.storytelling.Sun abstraction ) {
+		this.abstraction = abstraction;
+		this.getSgTransformable().addComponent( this.sgSun );
+		this.getSgTransformable().applyRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRevolutions( 0.25 ) );
 	}
-	public void translate( edu.cmu.cs.dennisc.math.Point3 translation ) {
-		this.sgTransformable.applyTranslation( translation );
+	public org.lookingglassandalice.storytelling.Sun getAbstraction() {
+		return this.abstraction;
 	}
-	public void rotate( edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.math.Angle angle ) {
-		this.sgTransformable.applyRotationAboutArbitraryAxis( axis, angle );
-	}
-	//protected abstract double getBoundingSphereRadius();
+	@Override
 	protected double getBoundingSphereRadius() {
-		return 0.25;
-	}
-	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( EntityImplementation asSeenBy ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgTransformable().getTransformation( asSeenBy.getSgTransformable() );
-		return new edu.cmu.cs.dennisc.math.Sphere( m.translation, 1.0 );
+		return Double.parseDouble( "6.995E8" );
 	}
 }

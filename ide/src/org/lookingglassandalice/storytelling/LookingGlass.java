@@ -48,15 +48,21 @@ package org.lookingglassandalice.storytelling;
  */
 public class LookingGlass {
 	private final org.lookingglassandalice.storytelling.implementation.LookingGlassImplementation implementation = new org.lookingglassandalice.storytelling.implementation.LookingGlassImplementation();
+	private Scene activeScene;
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.LookingGlassImplementation getImplementation() {
 		return this.implementation;
 	}
-	public Scene getScene() {
-		org.lookingglassandalice.storytelling.implementation.SceneImplementation sceneImplementation = this.implementation.getScene();
-		return sceneImplementation != null ? sceneImplementation.getAbstraction() : null;
+	public Scene getActiveScene() {
+		return this.activeScene;
 	}
-	public void setScene( Scene scene ) {
-		this.implementation.setScene( scene != null ? scene.getImplementation() : null );
+	public void setActiveScene( Scene scene ) {
+		if( this.activeScene != null ) {
+			this.activeScene.deactivate( this );
+		}
+		this.activeScene = scene;
+		if( this.activeScene != null ) {
+			this.activeScene.activate( this );
+		}
 	}
 	public Boolean isVisible() {
 		return this.implementation.isVisible();

@@ -46,67 +46,31 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Scene {
-	private final org.lookingglassandalice.storytelling.implementation.SceneImplementation implementation = new org.lookingglassandalice.storytelling.implementation.SceneImplementation( this );
-	private final java.util.List< Entity > entities = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final java.util.Map< Entity, edu.cmu.cs.dennisc.math.AffineMatrix4x4 > pointOfViewMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.SceneImplementation getImplementation() {
+public class Ground extends Entity {
+	public static enum Appearance {
+		GRASS( "grass" ),
+		DIRT( "dirt" ),
+		SAND( "sand" ),
+		SNOW( "snow" ),
+		WATER( "water" ),
+		MOON( "moon" );
+		private String resourceName;
+		Appearance( String resourceName ) {
+			this.resourceName = resourceName;
+		}
+		public java.net.URL getResource() {
+			return Ground.class.getResource( "resources/grounds/" + this.resourceName + ".png" );
+		}
+	}
+	private final org.lookingglassandalice.storytelling.implementation.GroundImplementation implementation = new org.lookingglassandalice.storytelling.implementation.GroundImplementation( this );
+	@Override
+	/*package-private*/ org.lookingglassandalice.storytelling.implementation.GroundImplementation getImplementation() {
 		return this.implementation;
 	}
-
-	private void addCamerasTo( LookingGlass lookingGlass ) {
-		for( Entity entity : this.entities ) {
-			if( entity instanceof Camera ) {
-				Camera camera = (Camera)entity;
-				lookingGlass.getImplementation().getOnscreenLookingGlass().addCamera( camera.getImplementation().getSgCamera() );
-			}
-		}
+	public Appearance getAppearance() {
+		return this.getImplementation().getAppearance();
 	}
-	private void removeCamerasFrom( LookingGlass lookingGlass ) {
-		for( Entity entity : this.entities ) {
-			if( entity instanceof Camera ) {
-				Camera camera = (Camera)entity;
-				lookingGlass.getImplementation().getOnscreenLookingGlass().removeCamera( camera.getImplementation().getSgCamera() );
-			}
-		}
-	}
-	
-	private int activateCount;
-	private int deactivateCount;
-	/*package-private*/ void activate( LookingGlass lookingGlass ) {
-		assert deactivateCount == activateCount;
-		activateCount++;
-		this.handleActivation( activateCount );
-		this.addCamerasTo( lookingGlass );
-		
-	}
-	/*package-private*/ void deactivate( LookingGlass lookingGlass ) {
-		this.removeCamerasFrom( lookingGlass );
-		deactivateCount++;
-		assert deactivateCount == activateCount;
-		this.handleDeactivation( activateCount );
-	}
-	
-	protected abstract void handleActivation( int count );
-	protected abstract void handleDeactivation( int count );
-	
-	protected void preservePointsOfView() {
-		for( Entity entity : this.entities ) {
-			this.pointOfViewMap.put( entity, null );
-		}
-	}
-	protected void restorePointsOfView() {
-		for( Entity entity : this.entities ) {
-			this.pointOfViewMap.put( entity, null );
-		}
-	}
-	
-	public void addEntity( Entity entity ) {
-		this.entities.add( entity );
-		this.implementation.addEntity( entity.getImplementation() );
-	}
-	public void removeEntity( Entity entity ) {
-		this.entities.remove( entity );
-		this.implementation.removeEntity( entity.getImplementation() );
+	public void setAppearance( Appearance appearance ) {
+		this.getImplementation().setAppearance( appearance );
 	}
 }

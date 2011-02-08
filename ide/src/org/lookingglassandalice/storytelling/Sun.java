@@ -46,67 +46,10 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Scene {
-	private final org.lookingglassandalice.storytelling.implementation.SceneImplementation implementation = new org.lookingglassandalice.storytelling.implementation.SceneImplementation( this );
-	private final java.util.List< Entity > entities = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final java.util.Map< Entity, edu.cmu.cs.dennisc.math.AffineMatrix4x4 > pointOfViewMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.SceneImplementation getImplementation() {
+public class Sun extends Entity {
+	private final org.lookingglassandalice.storytelling.implementation.SunImplementation implementation = new org.lookingglassandalice.storytelling.implementation.SunImplementation( this );
+	@Override
+	/*package-private*/ org.lookingglassandalice.storytelling.implementation.SunImplementation getImplementation() {
 		return this.implementation;
-	}
-
-	private void addCamerasTo( LookingGlass lookingGlass ) {
-		for( Entity entity : this.entities ) {
-			if( entity instanceof Camera ) {
-				Camera camera = (Camera)entity;
-				lookingGlass.getImplementation().getOnscreenLookingGlass().addCamera( camera.getImplementation().getSgCamera() );
-			}
-		}
-	}
-	private void removeCamerasFrom( LookingGlass lookingGlass ) {
-		for( Entity entity : this.entities ) {
-			if( entity instanceof Camera ) {
-				Camera camera = (Camera)entity;
-				lookingGlass.getImplementation().getOnscreenLookingGlass().removeCamera( camera.getImplementation().getSgCamera() );
-			}
-		}
-	}
-	
-	private int activateCount;
-	private int deactivateCount;
-	/*package-private*/ void activate( LookingGlass lookingGlass ) {
-		assert deactivateCount == activateCount;
-		activateCount++;
-		this.handleActivation( activateCount );
-		this.addCamerasTo( lookingGlass );
-		
-	}
-	/*package-private*/ void deactivate( LookingGlass lookingGlass ) {
-		this.removeCamerasFrom( lookingGlass );
-		deactivateCount++;
-		assert deactivateCount == activateCount;
-		this.handleDeactivation( activateCount );
-	}
-	
-	protected abstract void handleActivation( int count );
-	protected abstract void handleDeactivation( int count );
-	
-	protected void preservePointsOfView() {
-		for( Entity entity : this.entities ) {
-			this.pointOfViewMap.put( entity, null );
-		}
-	}
-	protected void restorePointsOfView() {
-		for( Entity entity : this.entities ) {
-			this.pointOfViewMap.put( entity, null );
-		}
-	}
-	
-	public void addEntity( Entity entity ) {
-		this.entities.add( entity );
-		this.implementation.addEntity( entity.getImplementation() );
-	}
-	public void removeEntity( Entity entity ) {
-		this.entities.remove( entity );
-		this.implementation.removeEntity( entity.getImplementation() );
 	}
 }
