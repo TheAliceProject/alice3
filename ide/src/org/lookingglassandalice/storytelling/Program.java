@@ -41,43 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling.implementation;
+package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LookingGlassImplementation {
-	private final edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
-	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
-//	private SceneImplementation sceneImplementation;
-	
-	public LookingGlassImplementation() {
-		this.frame.setSize( 640, 480 );
-		this.frame.getAwtComponent().add( this.onscreenLookingGlass.getAWTComponent() );
-		this.frame.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Frame.DefaultCloseOperation.DISPOSE );
+public abstract class Program {
+	private final org.lookingglassandalice.storytelling.implementation.ProgramImplementation implementation = new org.lookingglassandalice.storytelling.implementation.ProgramImplementation();
+	private Scene activeScene;
+	/*package-private*/ org.lookingglassandalice.storytelling.implementation.ProgramImplementation getImplementation() {
+		return this.implementation;
 	}
 	
-	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
+	public Scene getActiveScene() {
+		return this.activeScene;
 	}
-//	public SceneImplementation getScene() {
-//		return this.sceneImplementation;
-//	}
-//	public void setScene( SceneImplementation sceneImplementation ) {
-//		if( this.sceneImplementation != sceneImplementation ) {
-//			if( this.sceneImplementation != null ) {
-//				this.sceneImplementation.removeCamerasFrom( this.onscreenLookingGlass );
-//			}
-//			this.sceneImplementation = sceneImplementation;
-//			if( this.sceneImplementation != null ) {
-//				this.sceneImplementation.addCamerasTo( this.onscreenLookingGlass );
-//			}
-//		}
-//	}
-	public boolean isVisible() {
-		return this.frame.isVisible();
+	public void setActiveScene( Scene scene ) {
+		if( this.activeScene != null ) {
+			this.activeScene.deactivate( this );
+		}
+		this.activeScene = scene;
+		if( this.activeScene != null ) {
+			this.activeScene.activate( this );
+		}
 	}
-	public void setVisible( boolean isVisible ) {
-		this.frame.setVisible( isVisible );
+	protected abstract void handleStarted();
+	public void start() {
+		this.implementation.setVisible( true );
+		this.handleStarted();
 	}
 }

@@ -71,23 +71,29 @@ class SnowScene extends Scene {
 	}
 	
 	private void performGeneratedSetup() {
+		// this code is automatically generated
+		// edit performCustomSetup instead
 		this.snow.setAppearance( Ground.Appearance.SNOW );
+		this.camera.getAGoodLookAt( this.susan );
 	}
 	private void performCustomSetup() {
 	}
 	
 	@Override
-	protected void handleActivation( int count ) {
-		if( count == 1 ) {
-			this.performGeneratedSetup();
-			this.performCustomSetup();
+	protected void handleActiveChanged( boolean isActive, int activeCount ) {
+		if( isActive ) {
+			if( activeCount == 1 ) {
+				this.performGeneratedSetup();
+				this.performCustomSetup();
+			} else {
+				this.restorePointsOfView();
+			}
 		} else {
-			this.restorePointsOfView();
+			this.preservePointsOfView();
 		}
 	}
-	@Override
-	protected void handleDeactivation( int count ) {
-		this.preservePointsOfView();
+
+	public void chillInSkiChalet() {
 	}
 }
 
@@ -104,55 +110,59 @@ class DesertScene extends Scene {
 		this.addEntity( this.camera );
 	}
 	private void performGeneratedSetup() {
+		// this code is automatically generated
+		// edit performCustomSetup instead
 		this.desert.setAppearance( Ground.Appearance.SAND );
 		this.sphere.setRadius( 0.1 );
 		this.sphere.setColor( Color.RED );
+		this.camera.getAGoodLookAt( this.sphere );
 	}
 	private void performCustomSetup() {
 	}
 	@Override
-	protected void handleActivation( int count ) {
-		if( count == 1 ) {
-			this.performGeneratedSetup();
-			this.performCustomSetup();
+	protected void handleActiveChanged( boolean isActive, int activeCount ) {
+		if( isActive ) {
+			if( activeCount == 1 ) {
+				this.performGeneratedSetup();
+				this.performCustomSetup();
+			} else {
+				this.restorePointsOfView();
+			}
 		} else {
-			this.restorePointsOfView();
+			this.preservePointsOfView();
 		}
 	}
-	@Override
-	protected void handleDeactivation( int count ) {
-		this.preservePointsOfView();
+	
+	public void turnBigRocksIntoLittleRocks() {
 	}
 }
 
 /**
  * @author Dennis Cosgrove
  */
-public class StorytellingTest {
+class RagsToRichesStory extends Program {
+	private final Camera camera = new Camera();
+	private final CustomAdult susan = new CustomAdult( new org.lookingglassandalice.storytelling.sims2.AdultPersonResource() );
+	private final DesertScene desertScene = new DesertScene( camera );
+	private final SnowScene snowScene = new SnowScene( camera, susan );
+	
+	public RagsToRichesStory() {
+	}
+	@Override
+	protected void handleStarted() {
+		//this.setActiveScene( this.desertScene );
+		//this.desertScene.turnBigRocksIntoLittleRocks();
+		this.setActiveScene( this.snowScene );
+		this.snowScene.chillInSkiChalet();
+	}
 	public static void main( String[] args ) {
-		Camera camera = new Camera();
-		camera.move( MoveDirection.FORWARD, 10.0 );
-		camera.turn( TurnDirection.LEFT, 0.5 );
-
-		Sphere sphere = new Sphere();
-		sphere.setRadius( 0.1 );
-		sphere.setColor( Color.RED );
-
-//		//best practice
-//		sphere.move( MoveDirection.LEFT, 0.5, new MoveDetails.Builder().asSeenBy( camera ).duration( 0.5 ).build() );
-//		//serves our purpose
-//		sphere.turn( TurnDirection.LEFT, 0.5, new TurnDetails().asSeenBy( camera ).duration( 0.5 ) );
-//		//less syntax, more magic?
-		sphere.roll( RollDirection.LEFT, 0.5, RollDetailsFactory.asSeenBy( camera ).duration( 0.5 ) );
-		
-		CustomAdult susan = new CustomAdult( new org.lookingglassandalice.storytelling.sims2.AdultPersonResource() );
-
-		SnowScene snowScene = new SnowScene( camera, susan );
-		//DesertScene desertScene = new DesertScene( camera );
-
-		LookingGlass lookingGlass = new LookingGlass();
-		//lookingGlass.setActiveScene( desertScene );
-		lookingGlass.setActiveScene( snowScene );
-		lookingGlass.setVisible( true );
+		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
+		ragsToRichesStory.start();
 	}
 }
+////best practice
+//sphere.move( MoveDirection.LEFT, 0.5, new MoveDetails.Builder().asSeenBy( camera ).duration( 0.5 ).build() );
+////serves our purpose
+//sphere.turn( TurnDirection.LEFT, 0.5, new TurnDetails().asSeenBy( camera ).duration( 0.5 ) );
+////less syntax, more magic?
+//sphere.roll( RollDirection.LEFT, 0.5, RollDetailsFactory.asSeenBy( camera ).duration( 0.5 ) );
