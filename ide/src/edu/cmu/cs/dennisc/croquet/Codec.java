@@ -46,7 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public interface Codec<T> {
-	public StringBuilder appendRepresentation( StringBuilder rv, T value, java.util.Locale locale );
+	public Class<T> getValueClass();
 	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value );
+	public StringBuilder appendRepresentation( StringBuilder rv, T value, java.util.Locale locale );
 }

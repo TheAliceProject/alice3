@@ -49,7 +49,7 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 	public static final edu.cmu.cs.dennisc.croquet.Group POST_ISSUE_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "b010ccc1-b127-494d-9cc0-18c378fe0800" ), "POST_ISSUE_GROUP" );
 	class TypeSelectionState extends edu.cmu.cs.dennisc.toolkit.croquet.models.EnumConstantSelectionState< edu.cmu.cs.dennisc.jira.JIRAReport.Type > {
 		public TypeSelectionState() {
-			super( POST_ISSUE_GROUP, java.util.UUID.fromString( "8998dd3a-4ccc-4f75-8699-5d6d5e468259" ), edu.cmu.cs.dennisc.jira.JIRAReport.Type.class );
+			super( POST_ISSUE_GROUP, java.util.UUID.fromString( "8998dd3a-4ccc-4f75-8699-5d6d5e468259" ), -1, edu.cmu.cs.dennisc.jira.JIRAReport.Type.class );
 		}
 	}
 

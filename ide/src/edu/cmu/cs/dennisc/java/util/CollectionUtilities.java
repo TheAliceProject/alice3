@@ -76,13 +76,15 @@ public abstract class CollectionUtilities {
 	}
 	public static <E extends Object> void set( java.util.Collection< E > collection, E... array ) {
 		collection.clear();
-		if( collection instanceof java.util.ArrayList< ? > ) {
-			java.util.ArrayList< ? > arrayList = (java.util.ArrayList< ? >)collection;
-			arrayList.ensureCapacity( array.length );
-		}
-		if( collection instanceof java.util.Vector< ? > ) {
-			java.util.Vector< ? > vector = (java.util.Vector< ? >)collection;
-			vector.ensureCapacity( array.length );
+		if( array != null ) {
+			if( collection instanceof java.util.ArrayList< ? > ) {
+				java.util.ArrayList< ? > arrayList = (java.util.ArrayList< ? >)collection;
+				arrayList.ensureCapacity( array.length );
+			}
+			if( collection instanceof java.util.Vector< ? > ) {
+				java.util.Vector< ? > vector = (java.util.Vector< ? >)collection;
+				vector.ensureCapacity( array.length );
+			}
 		}
 		for( E e : array ) {
 			collection.add( e );

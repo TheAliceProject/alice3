@@ -46,23 +46,31 @@ package edu.cmu.cs.dennisc.toolkit.croquet.codecs;
  * @author Dennis Cosgrove
  */
 public class EnumCodec< T extends Enum< T > > implements edu.cmu.cs.dennisc.croquet.Codec< T > {
-	//todo?
-	//private static java.util.Map< Class<?>, EnumCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T extends Enum< T > > EnumCodec< T > getInstance( Class< T > cls ) {
-		return new EnumCodec< T >( cls );
+	private static java.util.Map< Class<?>, EnumCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized < T extends Enum< T > > EnumCodec< T > getInstance( Class< T > valueCls ) {
+		EnumCodec< ? > rv = map.get( valueCls );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new EnumCodec< T >( valueCls );
+		}
+		return (EnumCodec< T >)rv;
 	}
-	private Class<T> cls;
-	private EnumCodec( Class<T> cls ) {
-		this.cls = cls;
+	private Class<T> valueCls;
+	private EnumCodec( Class<T> valueCls ) {
+		this.valueCls = valueCls;
 	}
-	public final StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
-		rv.append( value );
-		return rv;
+	public java.lang.Class< T > getValueClass() {
+		return this.valueCls;
 	}
 	public final T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 	public final void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T t) {
 		throw new RuntimeException( "todo" );
+	}
+	public final StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
+		rv.append( value );
+		return rv;
 	}
 }

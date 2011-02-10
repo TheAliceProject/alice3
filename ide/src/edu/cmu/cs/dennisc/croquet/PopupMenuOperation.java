@@ -53,14 +53,16 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 		this.menuModel = menuModel;
 	}
 	
+	@Override
+	protected void localize() {
+		super.localize();
+		this.setName( this.menuModel.getLocalizedText( "popupMenuOperation" ) );
+	}
+	
 	public MenuModel getMenuModel() {
 		return this.menuModel;
 	}
 	
-	@Override
-	protected boolean isOwnerOfEdit() {
-		return false;
-	}
 	@Override
 	public PopupMenuOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushPopupMenuOperationContext( this, e, viewController );
@@ -137,7 +139,6 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 				PopupMenuOperation.this.menuModel.removePopupMenuListener( this );
 				super.handleUndisplayable();
 			}
-			
 		};
 		//todo: investigate
 		this.menuModel.addPopupMenuListener( popupMenu );

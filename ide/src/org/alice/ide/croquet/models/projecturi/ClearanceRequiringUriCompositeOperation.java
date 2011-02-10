@@ -42,8 +42,6 @@
  */
 package org.alice.ide.croquet.models.projecturi;
 
-import edu.cmu.cs.dennisc.croquet.Operation;
-
 /**
  * @author Dennis Cosgrove
  */

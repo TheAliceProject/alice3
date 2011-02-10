@@ -55,73 +55,26 @@ public abstract class Model implements RuntimeResolver< Model > {
 		this.group = group;
 		this.id = id;
 	}
+	private boolean isInitialized = false;
+	protected void initialize() {
+		this.localize();
+	}
+	/*package-private*/ final void initializeIfNecessary() {
+		if( this.isInitialized ) {
+			//pass
+		} else {
+			this.initialize();
+			this.isInitialized = true;
+		}
+	}
+
 	protected abstract void localize();
 
 	public Group getGroup() {
 		return this.group;
 	}
-	@Deprecated
-	protected abstract boolean isOwnerOfEdit();
-
-	private static StringBuilder appendSuccessfulCompletionEventText( StringBuilder rv, SuccessfulCompletionEvent successfulCompletionEvent ) {
-		if( successfulCompletionEvent != null ) {
-			if( successfulCompletionEvent instanceof CommitEvent ) {
-				CommitEvent commitEvent = (CommitEvent)successfulCompletionEvent;
-				rv.append( "[committed=" );
-				rv.append( commitEvent.getEdit() );
-				rv.append( "]" );
-			} else if( successfulCompletionEvent instanceof FinishEvent ) {
-				FinishEvent finishEvent = (FinishEvent)successfulCompletionEvent;
-				rv.append( "[finished]" );
-			} else {
-				rv.append( "[unknown]" );
-			}
-		} else {
-			rv.append( "[null]" );
-		}
-		return rv;
-	}
-	public String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "title: " );
-		sb.append( this );
-		if( modelContext != null ) {
-			appendSuccessfulCompletionEventText( sb, modelContext.getSuccessfulCompletionEvent() );
-		}
-		return sb.toString();
-	}
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this );
-		if( modelContext != null ) {
-			appendSuccessfulCompletionEventText( sb, modelContext.getSuccessfulCompletionEvent() );
-		}
-		return sb.toString();
-	}
-	
 	public java.util.UUID getId() {
 		return this.id;
-	}
-//	protected abstract <M extends Model> CodableResolver< M > createCodableResolver();
-	protected <M extends Model> CodableResolver< M > createCodableResolver() {
-		return new SingletonResolver( this );
-	}
-	public <M extends Model> CodableResolver< M > getCodableResolver() {
-		if( this.codableResolver != null ) {
-			//pass
-		} else {
-			this.codableResolver = this.createCodableResolver();
-		}
-		return (CodableResolver< M >)this.codableResolver;
-	}
-	
-	public final Model getResolved() {
-		return this;
-	}
-
-	public Edit< ? > commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		System.err.println( "todo: commitTutorialCompletionEdit: " + originalEdit );
-		return null;
 	}
 	protected static String getLocalizedText( Class<?> cls, String subKey ) {
 		String bundleName = cls.getPackage().getName() + ".croquet";
@@ -374,6 +327,62 @@ public abstract class Model implements RuntimeResolver< Model > {
 		}
 	}
 
+//	protected abstract <M extends Model> CodableResolver< M > createCodableResolver();
+	protected <M extends Model> CodableResolver< M > createCodableResolver() {
+		return new SingletonResolver( this );
+	}
+	public <M extends Model> CodableResolver< M > getCodableResolver() {
+		if( this.codableResolver != null ) {
+			//pass
+		} else {
+			this.codableResolver = this.createCodableResolver();
+		}
+		return (CodableResolver< M >)this.codableResolver;
+	}
+	
+	public final Model getResolved() {
+		return this;
+	}
+
+	public Edit< ? > commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		System.err.println( "todo: commitTutorialCompletionEdit: " + originalEdit );
+		return null;
+	}
+	private static StringBuilder appendSuccessfulCompletionEventText( StringBuilder rv, SuccessfulCompletionEvent successfulCompletionEvent ) {
+		if( successfulCompletionEvent != null ) {
+			if( successfulCompletionEvent instanceof CommitEvent ) {
+				CommitEvent commitEvent = (CommitEvent)successfulCompletionEvent;
+				rv.append( "[committed=" );
+				rv.append( commitEvent.getEdit() );
+				rv.append( "]" );
+			} else if( successfulCompletionEvent instanceof FinishEvent ) {
+				FinishEvent finishEvent = (FinishEvent)successfulCompletionEvent;
+				rv.append( "[finished]" );
+			} else {
+				rv.append( "[unknown]" );
+			}
+		} else {
+			rv.append( "[null]" );
+		}
+		return rv;
+	}
+	public String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "title: " );
+		sb.append( this );
+		if( modelContext != null ) {
+			appendSuccessfulCompletionEventText( sb, modelContext.getSuccessfulCompletionEvent() );
+		}
+		return sb.toString();
+	}
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this );
+		if( modelContext != null ) {
+			appendSuccessfulCompletionEventText( sb, modelContext.getSuccessfulCompletionEvent() );
+		}
+		return sb.toString();
+	}
 	public abstract boolean isAlreadyInState( Edit< ? > edit );
 	
 	protected StringBuilder appendRepr( StringBuilder rv ) {

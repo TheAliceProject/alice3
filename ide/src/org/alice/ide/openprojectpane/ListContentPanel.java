@@ -47,20 +47,54 @@ package org.alice.ide.openprojectpane;
  * @author Dennis Cosgrove
  */
 public abstract class ListContentPanel extends TabContentPanel {
-	private static class UriSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState<java.net.URI> {
+	private class UriSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState<java.net.URI> {
+		private boolean isRefreshRequired = true;
+		private java.net.URI[] uris = new java.net.URI[] {};
 		public UriSelectionState() {
-			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), new edu.cmu.cs.dennisc.croquet.Codec< java.net.URI >() {
-				public StringBuilder appendRepresentation( StringBuilder rv, java.net.URI value, java.util.Locale locale ) {
-					rv.append( value );
-					return rv;
-				}
-				public java.net.URI decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-					throw new RuntimeException( "todo" );
-				}
-				public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.net.URI uri ) {
-					throw new RuntimeException( "todo" );
-				}
-			} );
+			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), org.alice.ide.croquet.codecs.UriCodec.SINGLETON, -1 );
+		}
+		
+		private void updateUrisIfNecessary() {
+			if( this.isRefreshRequired ) {
+				this.uris = ListContentPanel.this.getURIs();
+				this.isRefreshRequired = false;
+			}
+		}
+		
+		public java.util.Iterator< java.net.URI > iterator() {
+			this.updateUrisIfNecessary();
+			return java.util.Arrays.asList( this.uris ).iterator();
+		}
+		@Override
+		public java.net.URI getItemAt( int index ) {
+			//todo?
+			//this.updateUrisIfNecessary();
+			return this.uris[ index ];
+		}
+		@Override
+		public int getItemCount() {
+			this.updateUrisIfNecessary();
+			return this.uris.length;
+		}
+		@Override
+		public int indexOf( java.net.URI item ) {
+			return java.util.Arrays.asList( this.uris ).indexOf( item );
+		}
+		@Override
+		public java.net.URI[] toArray( Class< java.net.URI > componentType ) {
+			return this.uris;
+		}
+		@Override
+		protected void internalAddItem( java.net.URI item ) {
+			this.isRefreshRequired = true;
+		}
+		@Override
+		protected void internalRemoveItem( java.net.URI item ) {
+			this.isRefreshRequired = true;
+		}
+		@Override
+		protected void internalSetItems( java.util.Collection< java.net.URI > items ) {
+			this.isRefreshRequired = true;
 		}
 	}
 	private UriSelectionState uriSelection = new UriSelectionState();

@@ -49,10 +49,9 @@ import org.alice.ide.operations.ast.DeclareFieldEdit;
  */
 //class CreateTextPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
 class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
-	private static abstract class TextAttributeSelectionOperation extends edu.cmu.cs.dennisc.croquet.ListSelectionState<String> {
-		public TextAttributeSelectionOperation( java.util.UUID individualId, int selectedIndex, String... items ) {
-			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, org.alice.ide.croquet.codecs.StringCodec.SINGLETON );
-			this.setListData(selectedIndex, items);
+	private static abstract class TextAttributeSelectionOperation extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState<String> {
+		public TextAttributeSelectionOperation( java.util.UUID individualId, int selectionIndex, String... items ) {
+			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, selectionIndex, items );
 		}
 	}
 	private static class FamilySelectionOperation extends TextAttributeSelectionOperation {

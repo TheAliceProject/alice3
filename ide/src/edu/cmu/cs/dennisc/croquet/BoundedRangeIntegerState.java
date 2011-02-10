@@ -84,12 +84,6 @@ public final class BoundedRangeIntegerState extends State<Integer> {
 		this.boundedRangeModel.setValue( value );
 		this.previousValue = this.boundedRangeModel.getValue();
 		this.boundedRangeModel.addChangeListener( this.changeListener );
-		this.localize();
-	}
-
-	@Override
-	protected boolean isOwnerOfEdit() {
-		return true;
 	}
 
 	@Override

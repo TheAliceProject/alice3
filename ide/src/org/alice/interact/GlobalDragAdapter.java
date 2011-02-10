@@ -113,7 +113,6 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 	
 	TargetManipulator dropTargetManipulator;
 	
-	
 	public GlobalDragAdapter( MoveAndTurnSceneEditor sceneEditor )
 	{
 		super(sceneEditor);
@@ -124,6 +123,9 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		super();
 	}
 	
+	public org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState getInteractionSelectionStateList() {
+		return org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance();
+	}
 	@Override
 	protected void setUpControls()
 	{
@@ -450,14 +452,18 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			InteractionGroup translationInteraction = new InteractionGroup(HandleSet.TRANSLATION_INTERACTION, leftClickMouseTranslateObject);
 			InteractionGroup resizeInteraction = new InteractionGroup(HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject);
 			
-			this.interactionSelectionState.addItem(defaultInteraction);
-			this.interactionSelectionState.addItem(rotationInteraction);
-			this.interactionSelectionState.addItem(translationInteraction);
-			this.interactionSelectionState.addItem(resizeInteraction);
+			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.DEFAULT, defaultInteraction );
+			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.ROTATION, defaultInteraction );
+			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.TRANSLATION, defaultInteraction );
+			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.RESIZE, defaultInteraction );
+//			this.interactionSelectionState.addItem(defaultInteraction);
+//			this.interactionSelectionState.addItem(rotationInteraction);
+//			this.interactionSelectionState.addItem(translationInteraction);
+//			this.interactionSelectionState.addItem(resizeInteraction);
+//			
+//			this.interactionSelectionState.setSelectedItem(defaultInteraction);
 			
-			this.interactionSelectionState.setSelectedItem(defaultInteraction);
-			
-			this.interactionSelectionState.addAndInvokeValueObserver(this.handleStateValueObserver);
+			org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().addAndInvokeValueObserver(this.handleStateValueObserver);
 		}
 	}
 	

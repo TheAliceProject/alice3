@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ui.formatter;
 /**
  * @author Dennis Cosgrove
  */
-public class FormatterSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< org.alice.ide.formatter.Formatter > {
+public class FormatterSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState< org.alice.ide.formatter.Formatter > {
 	private static class SingletonHolder {
 		private static FormatterSelectionState instance = new FormatterSelectionState();
 	}
@@ -57,7 +57,7 @@ public class FormatterSelectionState extends edu.cmu.cs.dennisc.croquet.ListSele
 				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.alice.ide.formatter.Formatter.class ), 
 				0, 
 				org.alice.ide.formatter.AliceFormatter.getInstance(), 
-				org.alice.ide.formatter.JavaFormatter.getInstance() 
+				org.alice.ide.formatter.JavaFormatter.getInstance()
 		);
 		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}

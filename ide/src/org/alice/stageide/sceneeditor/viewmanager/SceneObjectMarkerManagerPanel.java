@@ -121,7 +121,7 @@ public class SceneObjectMarkerManagerPanel extends GridBagPanel {
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.addComponent(sceneEditor.getObjectMarkerFieldList().createMutableList( factory ), new GridBagConstraints( 
+		this.addComponent(org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState.getInstance().createMutableList( factory ), new GridBagConstraints( 
 				0, //gridX
 				1, //gridY
 				3, //gridWidth

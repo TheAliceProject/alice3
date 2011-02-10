@@ -60,9 +60,17 @@ public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.propert
 		assert property != null;
 		this.factory = factory;
 		this.property = property;
-		this.refresh();
 	}
 
+	@Override
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		this.refresh();
+	}
+	@Override
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleRemovedFrom( parent );
+	}
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();

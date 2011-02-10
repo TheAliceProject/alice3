@@ -48,15 +48,18 @@ package org.alice.stageide.personeditor;
 class FullBodyOutfitSelectionState extends AbstractListSelectionState<org.alice.apis.stage.FullBodyOutfit> {
 	public FullBodyOutfitSelectionState() {
 		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.apis.stage.FullBodyOutfit >(){
-			public StringBuilder appendRepresentation( StringBuilder rv, org.alice.apis.stage.FullBodyOutfit value, java.util.Locale locale ) {
-				rv.append( value );
-				return rv;
+			public Class< org.alice.apis.stage.FullBodyOutfit > getValueClass() {
+				return org.alice.apis.stage.FullBodyOutfit.class;
 			}
 			public org.alice.apis.stage.FullBodyOutfit decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}
 			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.apis.stage.FullBodyOutfit t ) {
 				throw new RuntimeException( "todo" );
+			}
+			public StringBuilder appendRepresentation( StringBuilder rv, org.alice.apis.stage.FullBodyOutfit value, java.util.Locale locale ) {
+				rv.append( value );
+				return rv;
 			}
 		} );
 	}

@@ -49,11 +49,6 @@ public abstract class DragAndDropModel extends Model {
 	public static final Group DRAG_GROUP = Group.getInstance( java.util.UUID.fromString( "16f67072-dd57-453c-a812-69f2303bc948" ), "DRAG_GROUP" );
 	public DragAndDropModel( java.util.UUID inividualUUID ) {
 		super( DRAG_GROUP, inividualUUID );
-		this.localize();
-	}
-	@Override
-	protected boolean isOwnerOfEdit() {
-		return false;
 	}
 	@Override
 	protected void localize() {

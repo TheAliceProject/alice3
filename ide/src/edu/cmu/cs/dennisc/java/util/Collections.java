@@ -84,7 +84,9 @@ public class Collections {
 	}
 	public static <E> java.util.Vector<E> newVector( E... array ) {
 		java.util.Vector<E> rv = new java.util.Vector< E >();
-		CollectionUtilities.set( rv, array );
+		if( array != null ) {
+			CollectionUtilities.set( rv, array );
+		}
 		return rv;
 	}
 	public static <E> java.util.Vector< E > newVector( java.util.Collection< E > other ) {
@@ -112,8 +114,10 @@ public class Collections {
 	}
 	public static <E> java.util.HashSet< E > newHashSet( E... values ) {
 		java.util.HashSet<E> rv = new java.util.HashSet< E >();
-		for( E value : values ) {
-			rv.add( value );
+		if( values != null ) {
+			for( E value : values ) {
+				rv.add( value );
+			}
 		}
 		return rv;
 	}

@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-public class CameraMarkerFieldListSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice > {
+public class CameraMarkerFieldListSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState< FieldDeclaredInAlice > {
 	private static class SingletonHolder {
 		private static CameraMarkerFieldListSelectionState instance = new CameraMarkerFieldListSelectionState();
 	}

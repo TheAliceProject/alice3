@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ui.locale;
 /**
  * @author Dennis Cosgrove
  */
-public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< java.util.Locale > {
+public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState< java.util.Locale > {
 	private static class SingletonHolder {
 		private static LocaleSelectionState instance = new LocaleSelectionState();
 	}
@@ -53,8 +53,10 @@ public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelecti
 		return SingletonHolder.instance;
 	}
 	private LocaleSelectionState() {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON,
-				0, 
+		super( 
+				edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), 
+				org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON,
+				0,
 				new java.util.Locale( "en", "US" ),
 				new java.util.Locale( "pt" ),
 				new java.util.Locale( "pt", "BR" ),

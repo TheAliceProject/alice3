@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.members;
 /**
  * @author Dennis Cosgrove
  */
-public class PartSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField > {
+public class PartSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField > {
 	private static class SingletonHolder {
 		private static PartSelectionState instance = new PartSelectionState();
 	}

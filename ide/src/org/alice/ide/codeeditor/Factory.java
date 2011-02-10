@@ -93,12 +93,20 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 class ConvertDoInOrderToDoTogetherActionOperation extends ConvertStatementWithBodyActionOperation {
 	public ConvertDoInOrderToDoTogetherActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.DoInOrder doInOrder ) {
 		super( java.util.UUID.fromString( "d3abb3c6-f016-4687-be00-f0921de7cb39" ), property, doInOrder, new edu.cmu.cs.dennisc.alice.ast.DoTogether() );
+	}
+	@Override
+	protected void localize() {
+		super.localize();
 		this.setName( "Convert To DoTogether" );
 	}
 }
 class ConvertDoTogetherToDoInOrderActionOperation extends ConvertStatementWithBodyActionOperation {
 	public ConvertDoTogetherToDoInOrderActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.DoTogether doTogether ) {
 		super( java.util.UUID.fromString( "14aec49f-ae07-4a4c-9c0b-73c5533d514f" ), property, doTogether, new edu.cmu.cs.dennisc.alice.ast.DoInOrder() );
+	}
+	@Override
+	protected void localize() {
+		super.localize();
 		this.setName( "Convert To DoInOrder" );
 	}
 }
@@ -108,9 +116,9 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody;
 	public DissolveStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d" ) );
-		this.setName( "Dissolve " + abstractStatementWithBody.getClass().getSimpleName() );
 		this.property = property;
 		this.abstractStatementWithBody = abstractStatementWithBody;
+		this.setName( "Dissolve " + this.abstractStatementWithBody.getClass().getSimpleName() );
 	}
 	@Override
 	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
@@ -157,6 +165,8 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 
 	public DeleteStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "c2b2810b-68ad-4935-b47f-458fe90f877b" ) );
+		this.property = property;
+		this.statement = statement;
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Delete " );
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
@@ -164,13 +174,11 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 		} else if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ) {
 			sb.append( "If/Else" );
 		} else {
-			sb.append( statement.getClass().getSimpleName() );
+			sb.append( this.statement.getClass().getSimpleName() );
 		}
 		this.setName( sb.toString() );
-		this.property = property;
-		this.statement = statement;
 	}
-@Override
+	@Override
 	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final int index = this.property.indexOf( this.statement );
 		if( index >= 0 ) {

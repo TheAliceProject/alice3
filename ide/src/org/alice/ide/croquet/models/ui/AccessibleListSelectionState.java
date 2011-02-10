@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ui;
 /**
  * @author Dennis Cosgrove
  */
-public class AccessibleListSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > {
+public class AccessibleListSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > {
 	private static class SingletonHolder {
 		private static AccessibleListSelectionState instance = new AccessibleListSelectionState();
 	}

@@ -84,17 +84,12 @@ public class TreeSelectionState<E> extends State<E> {
 				fireValueChanged( getSelection() );
 			}
 		} );
-		this.localize();
 	}
 
 	public Codec<E> getCodec() {
 		return this.codec;
 	}
 
-	@Override
-	protected boolean isOwnerOfEdit() {
-		return true;
-	}
 	@Override
 	protected void localize() {
 	}

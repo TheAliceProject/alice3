@@ -46,8 +46,41 @@ package edu.cmu.cs.dennisc.toolkit.croquet.models;
  * @author Dennis Cosgrove
  */
 public class EnumConstantSelectionState< T extends Enum< T > > extends edu.cmu.cs.dennisc.croquet.ListSelectionState< T > {
-	public EnumConstantSelectionState( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id, Class<T> cls ) {
-		super( group, id, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( cls ) );
-		this.setListData( -1, cls.getEnumConstants() );
+	private final T[] constants;
+	public EnumConstantSelectionState( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id, int selectionIndex, Class<T> cls ) {
+		super( group, id, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( cls ), selectionIndex );
+		constants = cls.getEnumConstants();
+	}
+	@Override
+	public T getItemAt( int index ) {
+		return this.constants[ index ];
+	}
+	@Override
+	public int getItemCount() {
+		return this.constants.length;
+	}
+	@Override
+	public int indexOf(T item) {
+		return java.util.Arrays.asList( this.constants ).indexOf( item );
+	}
+	@Override
+	protected void internalAddItem(T item) {
+		throw new UnsupportedOperationException();
+	}
+	@Override
+	protected void internalRemoveItem(T item) {
+		throw new UnsupportedOperationException();
+	}
+	@Override
+	protected void internalSetItems( java.util.Collection< T > items ) {
+		throw new UnsupportedOperationException();
+	}
+	public java.util.Iterator< T > iterator() {
+		return java.util.Arrays.asList( this.constants ).iterator();
+	}
+	@Override
+	public T[] toArray( Class< T > componentType ) {
+		//todo?
+		return this.constants;
 	}
 }

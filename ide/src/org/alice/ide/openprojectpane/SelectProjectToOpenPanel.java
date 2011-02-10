@@ -99,7 +99,7 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 		}
 	};
 
-	private edu.cmu.cs.dennisc.croquet.TabSelectionState tabSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionState(
+	private edu.cmu.cs.dennisc.croquet.PredeterminedTabSelectionState tabSelectionOperation = edu.cmu.cs.dennisc.croquet.PredeterminedTabSelectionState.createInstance( 
 			edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, 
 			java.util.UUID.fromString("12e1d59b-2893-4144-b995-08090680a318"),
 			null,

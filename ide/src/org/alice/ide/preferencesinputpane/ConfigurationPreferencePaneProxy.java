@@ -42,8 +42,6 @@
  */
 package org.alice.ide.preferencesinputpane;
 
-import org.alice.apis.moveandturn.CameraMarker;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -51,15 +49,18 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	class ConfigurationSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<org.alice.ide.preferences.programming.Configuration> {
 		public ConfigurationSelectionOperation( org.alice.ide.preferences.programming.Configuration... panes ) {
 			super( java.util.UUID.fromString( "68071aa4-895c-4d30-8b8a-5bbcc5262586" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.ide.preferences.programming.Configuration >() {
-				public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.preferences.programming.Configuration value, java.util.Locale locale ) {
-					rv.append( value );
-					return rv;
+				public Class< org.alice.ide.preferences.programming.Configuration > getValueClass() {
+					return org.alice.ide.preferences.programming.Configuration.class;
 				}
 				public org.alice.ide.preferences.programming.Configuration decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 					throw new RuntimeException( "todo" );
 				}
 				public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.preferences.programming.Configuration t ) {
 					throw new RuntimeException( "todo" );
+				}
+				public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.preferences.programming.Configuration value, java.util.Locale locale ) {
+					rv.append( value );
+					return rv;
 				}
 			}, -1, panes );
 		}
@@ -129,6 +130,10 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	class EditVariantOperation extends PreferencesActionOperation {
 		public EditVariantOperation() {
 			super( java.util.UUID.fromString( "6035083a-a50e-43bb-a527-5c680ce25a0d" ) );
+		}
+		@Override
+		protected void localize() {
+			super.localize();
 			this.setName( "Edit..." );
 		}
 		@Override
@@ -138,6 +143,10 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	class RemoveVariantOperation extends PreferencesActionOperation {
 		public RemoveVariantOperation() {
 			super( java.util.UUID.fromString( "b1e27e44-814b-42aa-a6d1-b6a8520b2ff8" ) );
+		}
+		@Override
+		protected void localize() {
+			super.localize();
 			this.setName( "Remove" );
 		}
 		@Override
@@ -147,6 +156,10 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	class NewVariantOperation extends PreferencesActionOperation {
 		public NewVariantOperation() {
 			super( java.util.UUID.fromString( "fac28f32-3beb-4c47-bc73-ff73b34fc597" ) );
+		}
+		@Override
+		protected void localize() {
+			super.localize();
 			this.setName( "New..." );
 		}
 		@Override
@@ -156,6 +169,10 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	class ImportVariantOperation extends PreferencesActionOperation {
 		public ImportVariantOperation() {
 			super( java.util.UUID.fromString( "5cf110be-9d53-40dd-8461-b8d0183ae10d" ) );
+		}
+		@Override
+		protected void localize() {
+			super.localize();
 			this.setName( "Import..." );
 		}
 		@Override

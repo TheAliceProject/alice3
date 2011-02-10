@@ -46,17 +46,22 @@ package org.alice.ide.croquet.codecs;
  * @author Dennis Cosgrove
  */
 public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements edu.cmu.cs.dennisc.croquet.Codec< T > {
-	private static class SingletonHolder {
-		private static NodeCodec instance = new NodeCodec();
+	private static java.util.Map< Class<?>, NodeCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized < T extends edu.cmu.cs.dennisc.alice.ast.Node > NodeCodec< T > getInstance( Class< T > cls ) {
+		NodeCodec< ? > rv = map.get( cls );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new NodeCodec< T >( cls );
+		}
+		return (NodeCodec< T >)rv;
 	}
-	public static <T extends edu.cmu.cs.dennisc.alice.ast.Node> NodeCodec<T> getInstance( Class<T> cls ) {
-		return SingletonHolder.instance;
+	private Class<T> valueCls;
+	private NodeCodec( Class<T> valueCls ) {
+		this.valueCls = valueCls;
 	}
-	private NodeCodec() {
-	}
-	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, value, locale );
-		return rv;
+	public Class< T > getValueClass() {
+		return this.valueCls;
 	}
 	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
@@ -74,5 +79,9 @@ public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements e
 		if( valueIsNotNull ) {
 			binaryEncoder.encode( value.getUUID() );
 		}
+	}
+	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
+		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, value, locale );
+		return rv;
 	}
 }

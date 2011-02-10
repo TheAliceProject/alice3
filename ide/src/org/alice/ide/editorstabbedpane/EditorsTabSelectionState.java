@@ -241,7 +241,7 @@ class Cycle< E > {
 /**
  * @author Dennis Cosgrove
  */
-public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
+public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
 	private static class SingletonHolder {
 		private static EditorsTabSelectionState instance = new EditorsTabSelectionState();
 	}
@@ -538,7 +538,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 //		}
 //	}
 	private void removeDeadCode() {
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractCode code : this.toArray( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class ) ) {
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractCode code : this.toArray() ) {
 			if( code.getDeclaringType() != null ) {
 				//pass
 			} else {
@@ -569,14 +569,27 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 	};
 	private java.util.Set<edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>> typeSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 	private void startListeningTo( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type ) {
-		if( this.typeSet.contains( type ) ) {
-			//pass
-		} else {
-			this.typeSet.add( type );
-			type.methods.addListPropertyListener( this.typeMembersListener );
-		}
 	}
 
+	@Override
+	protected void handleItemAdded( edu.cmu.cs.dennisc.alice.ast.AbstractCode item ) {
+		super.handleItemAdded( item );
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> declaringType = item.getDeclaringType();
+		if (declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
+			if( this.typeSet.contains( typeInAlice ) ) {
+				//pass
+			} else {
+				this.typeSet.add( typeInAlice );
+				typeInAlice.methods.addListPropertyListener( this.typeMembersListener );
+			}
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: declaringType==null" );
+		}
+	}
+	
+	//todo: handleItemRemoved
+	
 	@Override
 	public void clear() {
 		super.clear();
@@ -584,7 +597,6 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			type.methods.removeListPropertyListener( this.typeMembersListener );
 		}
 		this.typeSet.clear();
-		
 	}
 	@Deprecated
 	public void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
@@ -592,9 +604,9 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			if( this.containsItem( code ) ) {
 				//pass
 			} else {
+				this.addItem( code );
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> declaringType = code.getDeclaringType();
 				if( declaringType != null ) {
-					this.addItem( code );
 					if (declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) {
 						edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
 						this.startListeningTo( typeInAlice );

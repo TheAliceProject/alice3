@@ -308,7 +308,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	
 	private java.util.Map<E, javax.swing.Action> mapItemToAction = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private javax.swing.Action getActionFor( E item ) {
-		return FolderTabbedPane.this.getModel().createAction( item );
+		return FolderTabbedPane.this.getModel().createActionForItem( item );
 	}
 	
 	//todo: PopupOperation

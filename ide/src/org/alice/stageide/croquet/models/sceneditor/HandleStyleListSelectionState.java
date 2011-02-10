@@ -42,11 +42,10 @@
  */
 package org.alice.stageide.croquet.models.sceneditor;
 
-import org.alice.apis.moveandturn.CameraMarker;
 /**
  * @author Dennis Cosgrove
  */
-public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< CameraMarker > {
+public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.toolkit.croquet.models.EnumConstantSelectionState< org.alice.stageide.sceneeditor.HandleStyle > {
 	private static class SingletonHolder {
 		private static HandleStyleListSelectionState instance = new HandleStyleListSelectionState();
 	}
@@ -54,18 +53,11 @@ public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.croquet.Li
 		return SingletonHolder.instance;
 	}
 	private HandleStyleListSelectionState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "6e9c4eb8-a2a5-4d7e-bd7a-a96a82055d19" ), new edu.cmu.cs.dennisc.croquet.Codec< CameraMarker >() {
-			public StringBuilder appendRepresentation( StringBuilder rv, CameraMarker value, java.util.Locale locale ) {
-				rv.append( value );
-				return rv;
-			}
-			public CameraMarker decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-				System.err.println( "todo: convert mainCameraMarkerList to AST: returning null" );
-				return null;
-			}
-			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, CameraMarker cameraMarker ) {
-				System.err.println( "todo: convert mainCameraMarkerList to AST: " + cameraMarker );
-			}
-		} );
+		super( 
+				org.alice.ide.ProjectApplication.UI_STATE_GROUP, 
+				java.util.UUID.fromString( "6e9c4eb8-a2a5-4d7e-bd7a-a96a82055d19" ), 
+				0, 
+				org.alice.stageide.sceneeditor.HandleStyle.class
+		);
 	}
 }
