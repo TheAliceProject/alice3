@@ -46,13 +46,10 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Entity {
+public abstract class Entity implements Rider {
 	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.EntityImplementation getImplementation();
 	public Entity getVehicle() {
 		org.lookingglassandalice.storytelling.implementation.EntityImplementation vehicleImplementation = this.getImplementation().getVehicle();
 		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;
-	}
-	public void setVehicle( Entity vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 }

@@ -47,6 +47,12 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public interface PersonResource {
-	void addPerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation );
-	void removePerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation );
+	public static enum JointId {
+		RIGHT_SHOULDER,
+		RIGHT_ELBOW,
+		RIGHT_WRIST;
+	};
+	public void addPerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation );
+	public void removePerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation );
+	//public edu.cmu.cs.dennisc.scenegraph.Transformable getJoint( JointId jointId );
 }

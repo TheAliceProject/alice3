@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Shape extends Entity implements Mover, Turner {
+public abstract class Shape extends Entity implements MutableRider, Mover, Turner {
 	@Override
 	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.ModelImplementation getImplementation();
 	public Color getColor() {
@@ -55,6 +55,9 @@ public abstract class Shape extends Entity implements Mover, Turner {
 	}
 	public void setColor( Color color ) {
 		this.getImplementation().setColor( color != null ? color.getInternal() : null );
+	}
+	public void setVehicle( Entity vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 	public void move( MoveDirection direction, Number amount ) {
 		this.move( direction, amount, new MoveDetails() );

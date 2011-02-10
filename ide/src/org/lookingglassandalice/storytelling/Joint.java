@@ -48,6 +48,9 @@ package org.lookingglassandalice.storytelling;
  */
 public class Joint extends Entity implements Turner {
 	private final org.lookingglassandalice.storytelling.implementation.JointImplementation implementation = new org.lookingglassandalice.storytelling.implementation.JointImplementation( this );
+//	/*package-private*/ Joint( org.lookingglassandalice.storytelling.implementation.JointImplementation implementation ) {
+//		this.implementation = implementation;
+//	}
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.JointImplementation getImplementation() {
 		return this.implementation;

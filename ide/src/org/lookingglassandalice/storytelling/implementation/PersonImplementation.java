@@ -49,6 +49,7 @@ package org.lookingglassandalice.storytelling.implementation;
 public class PersonImplementation extends ModelImplementation {
 	private final org.lookingglassandalice.storytelling.Person abstraction;
 	private org.lookingglassandalice.storytelling.PersonResource resource;
+	private java.util.Map< org.lookingglassandalice.storytelling.PersonResource.JointId, JointImplementation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public PersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
 		this.abstraction = abstraction;
 	}
@@ -66,6 +67,17 @@ public class PersonImplementation extends ModelImplementation {
 		this.resource = resource;
 		if( this.resource != null ) {
 			this.resource.addPerson( this );
+		}
+	}
+	public JointImplementation getJoint( org.lookingglassandalice.storytelling.PersonResource.JointId jointId ) {
+		synchronized( this.map ) {
+			JointImplementation rv = this.map.get( jointId );
+			if( rv != null ) {
+				//pass
+			} else {
+				org.lookingglassandalice.storytelling.Joint joint = new org.lookingglassandalice.storytelling.Joint();
+			}
+			return rv;
 		}
 	}
 }

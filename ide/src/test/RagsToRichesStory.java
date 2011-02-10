@@ -143,7 +143,7 @@ class DesertScene extends Scene {
  */
 class RagsToRichesStory extends Program {
 	private final Camera camera = new Camera();
-	private final CustomAdult susan = new CustomAdult( new org.lookingglassandalice.storytelling.sims2.AdultPersonResource() );
+	private final CustomAdult susan = new CustomAdult( new org.lookingglassandalice.storytelling.resources.sims2.AdultPersonResource() );
 	private final DesertScene desertScene = new DesertScene( camera );
 	private final SnowScene snowScene = new SnowScene( camera, susan );
 	

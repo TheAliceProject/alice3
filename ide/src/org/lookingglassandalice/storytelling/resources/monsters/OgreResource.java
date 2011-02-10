@@ -41,51 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.resources.monsters;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Person extends Entity implements MutableRider, Walker, Toucher {
-	private final org.lookingglassandalice.storytelling.implementation.PersonImplementation implementation = new org.lookingglassandalice.storytelling.implementation.PersonImplementation( this );
-	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.PersonImplementation getImplementation() {
-		return this.implementation;
+public class OgreResource implements org.lookingglassandalice.storytelling.AdultPersonResource {
+	public void addPerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation ) {
 	}
-	public Person( PersonResource resource ) {
-		this.setPersonResource( resource );
+	public void removePerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation ) {
 	}
-	
-	public PersonResource getPersonResource() {
-		return this.implementation.getResource();
-	}
-	private void setPersonResource( PersonResource resource ) {
-		this.implementation.setResource( resource );
-	}
-	
-	public void setVehicle( Entity vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
-	}
-	public void walkTo( Entity entity ) {
-		
-	}
-	public void touch( Entity entity ) {
-		
-	}
-	private Joint getJoint( PersonResource.JointId jointId ) {
-		org.lookingglassandalice.storytelling.implementation.JointImplementation jointImplementation = this.implementation.getJoint( jointId );
-		return jointImplementation != null ? jointImplementation.getAbstraction() : null;
-	}
-	public Joint getRightShoulder() {
-		return this.getJoint( PersonResource.JointId.RIGHT_SHOULDER );
-	}
-	public Joint getRightElbow() {
-		return this.getJoint( PersonResource.JointId.RIGHT_ELBOW );
-	}
-	public Joint getRightWrist() {
-		return this.getJoint( PersonResource.JointId.RIGHT_WRIST );
-	}
-//	public Target getRightFingerTipTarget() {
-//		return null;
-//	}
 }

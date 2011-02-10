@@ -46,10 +46,13 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Sun extends Entity {
+public class Sun extends Entity implements MutableRider {
 	private final org.lookingglassandalice.storytelling.implementation.SunImplementation implementation = new org.lookingglassandalice.storytelling.implementation.SunImplementation( this );
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.SunImplementation getImplementation() {
 		return this.implementation;
+	}
+	public void setVehicle( Entity vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 }

@@ -41,11 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.resources.sims2;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Vehicle {
-
+public class AdultPersonResource extends PersonResource implements org.lookingglassandalice.storytelling.AdultPersonResource {
+	public AdultPersonResource() {
+		super( new org.alice.apis.stage.Adult() );
+	}
 }

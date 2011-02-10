@@ -46,13 +46,16 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Camera extends Entity implements Mover, Turner {
+public class Camera extends Entity implements MutableRider, Mover, Turner {
 	private final org.lookingglassandalice.storytelling.implementation.CameraImplementation implementation = new org.lookingglassandalice.storytelling.implementation.CameraImplementation( this );
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.CameraImplementation getImplementation() {
 		return this.implementation;
 	}
 	
+	public void setVehicle( Entity vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
+	}
 	public void move( MoveDirection direction, Number amount ) {
 		this.move( direction, amount, new MoveDetails() );
 	}

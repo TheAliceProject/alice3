@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Ground extends Entity {
+public class Ground extends Entity implements MutableRider {
 	public static enum Appearance {
 		GRASS( "grass" ),
 		DIRT( "dirt" ),
@@ -66,6 +66,9 @@ public class Ground extends Entity {
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.GroundImplementation getImplementation() {
 		return this.implementation;
+	}
+	public void setVehicle( Entity vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 	public Appearance getAppearance() {
 		return this.getImplementation().getAppearance();
