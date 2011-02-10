@@ -64,15 +64,19 @@ class SnowScene extends Scene {
 	public SnowScene( Camera camera, CustomAdult susan ) {
 		this.camera = camera;
 		this.susan = susan;
-		this.addEntity( this.sun );
-		this.addEntity( this.snow );
-		this.addEntity( this.camera );
-		this.addEntity( this.susan );
+//		this.addEntity( this.sun );
+//		this.addEntity( this.snow );
+//		this.addEntity( this.camera );
+//		this.addEntity( this.susan );
 	}
 	
 	private void performGeneratedSetup() {
 		// this code is automatically generated
 		// edit performCustomSetup instead
+		this.snow.setVehicle( this );
+		this.sun.setVehicle( this );
+		this.camera.setVehicle( this );
+		this.susan.setVehicle( this );
 		this.snow.setAppearance( Ground.Appearance.SNOW );
 		this.camera.getAGoodLookAt( this.susan );
 	}
@@ -86,10 +90,10 @@ class SnowScene extends Scene {
 				this.performGeneratedSetup();
 				this.performCustomSetup();
 			} else {
-				this.restorePointsOfView();
+				this.restoreVehiclesAndPointsOfView();
 			}
 		} else {
-			this.preservePointsOfView();
+			this.preserveVehiclesAndPointsOfView();
 		}
 	}
 
@@ -104,14 +108,19 @@ class DesertScene extends Scene {
 	private final Camera camera;
 	public DesertScene( Camera camera ) {
 		this.camera = camera;
-		this.addEntity( this.sun );
-		this.addEntity( this.desert );
-		this.addEntity( this.sphere );
-		this.addEntity( this.camera );
+//		this.addEntity( this.sun );
+//		this.addEntity( this.desert );
+//		this.addEntity( this.sphere );
+//		this.addEntity( this.camera );
 	}
 	private void performGeneratedSetup() {
 		// this code is automatically generated
 		// edit performCustomSetup instead
+		this.desert.setVehicle( this );
+		this.sun.setVehicle( this );
+		this.camera.setVehicle( this );
+		this.sphere.setVehicle( this );
+
 		this.desert.setAppearance( Ground.Appearance.SAND );
 		this.sphere.setRadius( 0.1 );
 		this.sphere.setColor( Color.RED );
@@ -126,10 +135,10 @@ class DesertScene extends Scene {
 				this.performGeneratedSetup();
 				this.performCustomSetup();
 			} else {
-				this.restorePointsOfView();
+				this.restoreVehiclesAndPointsOfView();
 			}
 		} else {
-			this.preservePointsOfView();
+			this.preserveVehiclesAndPointsOfView();
 		}
 	}
 	
@@ -160,6 +169,10 @@ class RagsToRichesStory extends Program {
 		ragsToRichesStory.start();
 	}
 }
+
+
+
+
 ////best practice
 //sphere.move( MoveDirection.LEFT, 0.5, new MoveDetails.Builder().asSeenBy( camera ).duration( 0.5 ).build() );
 ////serves our purpose

@@ -52,6 +52,7 @@ public class PersonImplementation extends ModelImplementation {
 	public PersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
 		this.abstraction = abstraction;
 	}
+	@Override
 	public org.lookingglassandalice.storytelling.Person getAbstraction() {
 		return this.abstraction;
 	}

@@ -46,22 +46,27 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class CameraImplementation extends TransformableImplementation {
-	private final org.lookingglassandalice.storytelling.Camera abstraction;
-	private final edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera = new edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera();
-	public CameraImplementation( org.lookingglassandalice.storytelling.Camera abstraction ) {
-		this.abstraction = abstraction;
-		this.sgSymmetricPerspectiveCamera.setParent( this.getSgComposite() );
+public abstract class TransformableImplementation extends EntityImplementation {
+	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
+	public TransformableImplementation() {
+		this.putInstance( this.sgTransformable );
 	}
 	@Override
-	public org.lookingglassandalice.storytelling.Camera getAbstraction() {
-		return this.abstraction;
+	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgComposite() {
+		return this.sgTransformable;
 	}
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCamera() {
-		return this.sgSymmetricPerspectiveCamera;
+	public void translate( edu.cmu.cs.dennisc.math.Point3 translation ) {
+		this.sgTransformable.applyTranslation( translation );
 	}
-	public void getAGoodLookAt( EntityImplementation entityImplementation ) {
-		this.getSgComposite().setTranslationOnly( 4,4,-4, entityImplementation.getSgComposite() );
-		this.getSgComposite().setAxesOnlyToPointAt( entityImplementation.getSgComposite() );
+	public void rotate( edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.math.Angle angle ) {
+		this.sgTransformable.applyRotationAboutArbitraryAxis( axis, angle );
+	}
+	//protected abstract double getBoundingSphereRadius();
+	protected double getBoundingSphereRadius() {
+		return 0.25;
+	}
+	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( EntityImplementation asSeenBy ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgComposite().getTransformation( asSeenBy.getSgComposite() );
+		return new edu.cmu.cs.dennisc.math.Sphere( m.translation, 1.0 );
 	}
 }

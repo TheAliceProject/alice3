@@ -46,12 +46,12 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ModelImplementation extends EntityImplementation {
+public abstract class ModelImplementation extends TransformableImplementation {
 	private final edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = new edu.cmu.cs.dennisc.scenegraph.Visual();
 	private final edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
 	public ModelImplementation() {
 		this.sgVisual.frontFacingAppearance.setValue( this.sgAppearance );
-		this.sgVisual.setParent( this.getSgTransformable() );
+		this.sgVisual.setParent( this.getSgComposite() );
 	}
 	public edu.cmu.cs.dennisc.scenegraph.Visual getSgVisual() {
 		return this.sgVisual;

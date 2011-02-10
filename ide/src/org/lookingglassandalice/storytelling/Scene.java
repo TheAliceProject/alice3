@@ -46,44 +46,25 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Scene {
+public abstract class Scene extends Entity {
 	private final org.lookingglassandalice.storytelling.implementation.SceneImplementation implementation = new org.lookingglassandalice.storytelling.implementation.SceneImplementation( this );
-	private final java.util.List< Entity > entities = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final java.util.Map< Entity, edu.cmu.cs.dennisc.math.AffineMatrix4x4 > pointOfViewMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
+	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.SceneImplementation getImplementation() {
 		return this.implementation;
 	}
 
-	
-	private void addCamerasTo( Program program ) {
-		for( Entity entity : this.entities ) {
-			if( entity instanceof Camera ) {
-				Camera camera = (Camera)entity;
-				program.getImplementation().getOnscreenLookingGlass().addCamera( camera.getImplementation().getSgCamera() );
-			}
-		}
-	}
-	private void removeCamerasFrom( Program program ) {
-		for( Entity entity : this.entities ) {
-			if( entity instanceof Camera ) {
-				Camera camera = (Camera)entity;
-				program.getImplementation().getOnscreenLookingGlass().removeCamera( camera.getImplementation().getSgCamera() );
-			}
-		}
-	}
-	
 	private int activeCount;
 	private int deactiveCount;
 	/*package-private*/ void activate( Program program ) {
 		assert deactiveCount == activeCount;
 		activeCount++;
 		this.handleActiveChanged( false, activeCount );
-		this.addCamerasTo( program );
+		this.implementation.addCamerasTo( program.getImplementation() );
 		
 	}
 	/*package-private*/ void deactivate( Program program ) {
-		this.removeCamerasFrom( program );
+		this.implementation.removeCamerasFrom( program.getImplementation() );
 		deactiveCount++;
 		assert deactiveCount == activeCount;
 		this.handleActiveChanged( false, activeCount );
@@ -91,23 +72,17 @@ public abstract class Scene {
 	
 	protected abstract void handleActiveChanged( boolean isActive, int activeCount );
 	
-	protected void preservePointsOfView() {
-		for( Entity entity : this.entities ) {
-			this.pointOfViewMap.put( entity, null );
-		}
+	protected void preserveVehiclesAndPointsOfView() {
+		this.implementation.preserveVehiclesAndPointsOfView();
 	}
-	protected void restorePointsOfView() {
-		for( Entity entity : this.entities ) {
-			this.pointOfViewMap.put( entity, null );
-		}
+	protected void restoreVehiclesAndPointsOfView() {
+		this.implementation.restoreVehiclesAndPointsOfView();
 	}
 	
 	public void addEntity( Entity entity ) {
-		this.entities.add( entity );
 		this.implementation.addEntity( entity.getImplementation() );
 	}
 	public void removeEntity( Entity entity ) {
-		this.entities.remove( entity );
 		this.implementation.removeEntity( entity.getImplementation() );
 	}
 }

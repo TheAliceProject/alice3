@@ -47,22 +47,21 @@ package org.lookingglassandalice.storytelling.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class EntityImplementation {
-	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
-	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgTransformable() {
-		return this.sgTransformable;
+	protected static final String KEY = EntityImplementation.class.getName() + ".KEY";
+	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
+	public abstract org.lookingglassandalice.storytelling.Entity getAbstraction();
+	
+	protected static EntityImplementation getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+		return (EntityImplementation)sgElement.getBonusDataFor( KEY );
 	}
-	public void translate( edu.cmu.cs.dennisc.math.Point3 translation ) {
-		this.sgTransformable.applyTranslation( translation );
+	protected void putInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+		sgElement.putBonusDataFor( KEY, this );
 	}
-	public void rotate( edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.math.Angle angle ) {
-		this.sgTransformable.applyRotationAboutArbitraryAxis( axis, angle );
+	
+	public EntityImplementation getVehicle() {
+		return (EntityImplementation)this.getSgComposite().getBonusDataFor( KEY );
 	}
-	//protected abstract double getBoundingSphereRadius();
-	protected double getBoundingSphereRadius() {
-		return 0.25;
-	}
-	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( EntityImplementation asSeenBy ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgTransformable().getTransformation( asSeenBy.getSgTransformable() );
-		return new edu.cmu.cs.dennisc.math.Sphere( m.translation, 1.0 );
+	public void setVehicle( EntityImplementation vehicle ) {
+		this.getSgComposite().setParent( vehicle.getSgComposite() );
 	}
 }

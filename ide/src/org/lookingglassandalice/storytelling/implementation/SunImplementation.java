@@ -46,14 +46,15 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class SunImplementation extends EntityImplementation {
+public class SunImplementation extends TransformableImplementation {
 	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgSun = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
 	private final org.lookingglassandalice.storytelling.Sun abstraction;
 	public SunImplementation( org.lookingglassandalice.storytelling.Sun abstraction ) {
 		this.abstraction = abstraction;
-		this.getSgTransformable().addComponent( this.sgSun );
-		this.getSgTransformable().applyRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRevolutions( 0.25 ) );
+		this.getSgComposite().addComponent( this.sgSun );
+		this.getSgComposite().applyRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRevolutions( 0.25 ) );
 	}
+	@Override
 	public org.lookingglassandalice.storytelling.Sun getAbstraction() {
 		return this.abstraction;
 	}

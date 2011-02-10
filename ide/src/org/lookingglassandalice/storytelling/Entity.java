@@ -48,4 +48,11 @@ package org.lookingglassandalice.storytelling;
  */
 public abstract class Entity {
 	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.EntityImplementation getImplementation();
+	public Entity getVehicle() {
+		org.lookingglassandalice.storytelling.implementation.EntityImplementation vehicleImplementation = this.getImplementation().getVehicle();
+		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;
+	}
+	public void setVehicle( Entity vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
+	}
 }

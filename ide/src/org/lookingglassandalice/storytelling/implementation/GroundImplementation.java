@@ -76,6 +76,7 @@ public class GroundImplementation extends ModelImplementation {
 		
 		this.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { plane } );
 	}
+	@Override
 	public org.lookingglassandalice.storytelling.Ground getAbstraction() {
 		return this.abstraction;
 	}

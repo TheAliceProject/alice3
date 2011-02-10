@@ -46,10 +46,29 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneImplementation {
+public class SceneImplementation extends EntityImplementation {
+	private static class Capsule {
+		private final TransformableImplementation transformable;
+		private EntityImplementation vehicle;
+		private edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTransformation;
+		public Capsule( TransformableImplementation transformable ) {
+			this.transformable = transformable;
+		}
+		public void preserve() {
+			this.vehicle = this.transformable.getVehicle();
+			this.localTransformation = this.transformable.getSgComposite().getLocalTransformation();
+		}
+		public void restore() {
+			this.transformable.setVehicle( this.vehicle );
+			this.transformable.getSgComposite().setLocalTransformation( this.localTransformation );
+		}
+	}
+
 	private final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = new edu.cmu.cs.dennisc.scenegraph.Scene();
 	private final edu.cmu.cs.dennisc.scenegraph.Background sgBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 	private final edu.cmu.cs.dennisc.scenegraph.AmbientLight sgAmbientLight = new edu.cmu.cs.dennisc.scenegraph.AmbientLight(); 
+
+	private final java.util.List< Capsule > capsules = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private final org.lookingglassandalice.storytelling.Scene abstraction;
 	public SceneImplementation( org.lookingglassandalice.storytelling.Scene abstraction ) {
@@ -58,15 +77,51 @@ public class SceneImplementation {
 		this.sgScene.background.setValue( this.sgBackground );
 		this.sgAmbientLight.brightness.setValue( 0.3f );
 		this.sgScene.addComponent( this.sgAmbientLight );
+		this.putInstance( this.sgScene );
 	}
+	@Override
+	public edu.cmu.cs.dennisc.scenegraph.Scene getSgComposite() {
+		return this.sgScene;
+	}
+	@Override
 	public org.lookingglassandalice.storytelling.Scene getAbstraction() {
 		return this.abstraction;
 	}
 
+	public void preserveVehiclesAndPointsOfView() {
+//		for( Entity entity : this.entities ) {
+//			this.pointOfViewMap.put( entity, null );
+//		}
+	}
+	public void restoreVehiclesAndPointsOfView() {
+//		for( Entity entity : this.entities ) {
+//			this.pointOfViewMap.put( entity, null );
+//		}
+	}
+	
+	public void addCamerasTo( ProgramImplementation program ) {
+		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
+			EntityImplementation entityImplementation = EntityImplementation.getInstance( sgComponent );
+			if( entityImplementation instanceof CameraImplementation ) {
+				CameraImplementation cameraImplementation = (CameraImplementation)entityImplementation;
+				program.getOnscreenLookingGlass().addCamera( cameraImplementation.getSgCamera() );
+			}
+		}
+	}
+	public void removeCamerasFrom( ProgramImplementation program ) {
+		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
+			EntityImplementation entityImplementation = EntityImplementation.getInstance( sgComponent );
+			if( entityImplementation instanceof CameraImplementation ) {
+				CameraImplementation cameraImplementation = (CameraImplementation)entityImplementation;
+				program.getOnscreenLookingGlass().removeCamera( cameraImplementation.getSgCamera() );
+			}
+		}
+	}
+	
 	public void addEntity( EntityImplementation entity ) {
-		entity.getSgTransformable().setParent( this.sgScene );
+		entity.getSgComposite().setParent( this.sgScene );
 	}
 	public void removeEntity( EntityImplementation entity ) {
-		entity.getSgTransformable().setParent( null );
+		entity.getSgComposite().setParent( null );
 	}
 }

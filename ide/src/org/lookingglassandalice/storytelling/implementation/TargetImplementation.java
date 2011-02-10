@@ -46,11 +46,12 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class TargetImplementation extends EntityImplementation {
+public class TargetImplementation extends TransformableImplementation {
 	private final org.lookingglassandalice.storytelling.Target abstraction;
 	public TargetImplementation( org.lookingglassandalice.storytelling.Target abstraction ) {
 		this.abstraction = abstraction;
 	}
+	@Override
 	public org.lookingglassandalice.storytelling.Target getAbstraction() {
 		return this.abstraction;
 	}

@@ -41,27 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling.implementation;
+package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CameraImplementation extends TransformableImplementation {
-	private final org.lookingglassandalice.storytelling.Camera abstraction;
-	private final edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera = new edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera();
-	public CameraImplementation( org.lookingglassandalice.storytelling.Camera abstraction ) {
-		this.abstraction = abstraction;
-		this.sgSymmetricPerspectiveCamera.setParent( this.getSgComposite() );
-	}
-	@Override
-	public org.lookingglassandalice.storytelling.Camera getAbstraction() {
-		return this.abstraction;
-	}
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCamera() {
-		return this.sgSymmetricPerspectiveCamera;
-	}
-	public void getAGoodLookAt( EntityImplementation entityImplementation ) {
-		this.getSgComposite().setTranslationOnly( 4,4,-4, entityImplementation.getSgComposite() );
-		this.getSgComposite().setAxesOnlyToPointAt( entityImplementation.getSgComposite() );
-	}
+public interface Vehicle {
+
 }
