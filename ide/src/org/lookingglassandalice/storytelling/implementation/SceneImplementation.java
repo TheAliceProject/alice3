@@ -118,10 +118,10 @@ public class SceneImplementation extends EntityImplementation {
 		}
 	}
 	
-	public void addEntity( EntityImplementation entity ) {
-		entity.getSgComposite().setParent( this.sgScene );
-	}
-	public void removeEntity( EntityImplementation entity ) {
-		entity.getSgComposite().setParent( null );
-	}
+//	public void addEntity( EntityImplementation entity ) {
+//		entity.getSgComposite().setParent( this.sgScene );
+//	}
+//	public void removeEntity( EntityImplementation entity ) {
+//		entity.getSgComposite().setParent( null );
+//	}
 }

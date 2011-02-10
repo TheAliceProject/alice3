@@ -59,7 +59,7 @@ public abstract class Scene extends Entity {
 	/*package-private*/ void activate( Program program ) {
 		assert deactiveCount == activeCount;
 		activeCount++;
-		this.handleActiveChanged( false, activeCount );
+		this.handleActiveChanged( true, activeCount );
 		this.implementation.addCamerasTo( program.getImplementation() );
 		
 	}
@@ -79,10 +79,10 @@ public abstract class Scene extends Entity {
 		this.implementation.restoreVehiclesAndPointsOfView();
 	}
 	
-	public void addEntity( Entity entity ) {
-		this.implementation.addEntity( entity.getImplementation() );
-	}
-	public void removeEntity( Entity entity ) {
-		this.implementation.removeEntity( entity.getImplementation() );
-	}
+//	public void addEntity( Entity entity ) {
+//		this.implementation.addEntity( entity.getImplementation() );
+//	}
+//	public void removeEntity( Entity entity ) {
+//		this.implementation.removeEntity( entity.getImplementation() );
+//	}
 }

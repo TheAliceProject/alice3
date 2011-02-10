@@ -159,8 +159,8 @@ class RagsToRichesStory extends Program {
 	}
 	@Override
 	protected void handleStarted() {
-		//this.setActiveScene( this.desertScene );
-		//this.desertScene.turnBigRocksIntoLittleRocks();
+		this.setActiveScene( this.desertScene );
+		this.desertScene.turnBigRocksIntoLittleRocks();
 		this.setActiveScene( this.snowScene );
 		this.snowScene.chillInSkiChalet();
 	}
