@@ -64,10 +64,6 @@ class SnowScene extends Scene {
 	public SnowScene( Camera camera, CustomAdult susan ) {
 		this.camera = camera;
 		this.susan = susan;
-//		this.addEntity( this.sun );
-//		this.addEntity( this.snow );
-//		this.addEntity( this.camera );
-//		this.addEntity( this.susan );
 	}
 	
 	private void performGeneratedSetup() {
@@ -108,10 +104,6 @@ class DesertScene extends Scene {
 	private final Camera camera;
 	public DesertScene( Camera camera ) {
 		this.camera = camera;
-//		this.addEntity( this.sun );
-//		this.addEntity( this.desert );
-//		this.addEntity( this.sphere );
-//		this.addEntity( this.camera );
 	}
 	private void performGeneratedSetup() {
 		// this code is automatically generated
@@ -155,8 +147,6 @@ class RagsToRichesStory extends Program {
 	private final DesertScene desertScene = new DesertScene( camera );
 	private final SnowScene snowScene = new SnowScene( camera, susan );
 	
-	public RagsToRichesStory() {
-	}
 	@Override
 	protected void handleStarted() {
 		this.setActiveScene( this.desertScene );

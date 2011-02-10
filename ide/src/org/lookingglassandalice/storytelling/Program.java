@@ -67,7 +67,11 @@ public abstract class Program {
 	}
 	protected abstract void handleStarted();
 	public void start() {
-		this.implementation.setVisible( true );
-		this.handleStarted();
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				Program.this.implementation.setVisible( true );
+				Program.this.handleStarted();
+			}
+		} );
 	}
 }

@@ -48,9 +48,8 @@ package org.lookingglassandalice.storytelling.implementation;
  */
 public class ProgramImplementation {
 	private final edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
+	private final edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
-//	private SceneImplementation sceneImplementation;
-	
 	public ProgramImplementation() {
 		this.frame.setSize( 640, 480 );
 		this.frame.getAwtComponent().add( this.onscreenLookingGlass.getAWTComponent() );
@@ -79,5 +78,9 @@ public class ProgramImplementation {
 	}
 	public void setVisible( boolean isVisible ) {
 		this.frame.setVisible( isVisible );
+	}
+	
+	/*package-private*/ void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+		this.animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary( animation, animationObserver );
 	}
 }
