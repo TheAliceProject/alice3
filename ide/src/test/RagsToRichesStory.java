@@ -59,6 +59,9 @@ class CustomAdult extends CustomPerson {
 class SnowScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground snow = new Ground();
+	private final Cone redCone = new Cone(); 
+	private final Cone greenCone = new Cone(); 
+	private final Cone blueCone = new Cone(); 
 	private final Camera camera;
 	private final CustomAdult susan;
 	public SnowScene( Camera camera, CustomAdult susan ) {
@@ -71,8 +74,26 @@ class SnowScene extends Scene {
 		// edit performCustomSetup instead
 		this.snow.setVehicle( this );
 		this.sun.setVehicle( this );
+		this.redCone.setVehicle( this );
+		this.greenCone.setVehicle( this );
+		this.blueCone.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.susan.setVehicle( this );
+		
+		this.redCone.setColor( Color.RED );
+		this.greenCone.setColor( Color.GREEN );
+		this.blueCone.setColor( Color.BLUE );
+		this.redCone.setBaseRadius( 0.1 );
+		this.greenCone.setBaseRadius( 0.1 );
+		this.blueCone.setBaseRadius( 0.1 );
+		this.redCone.setLength( 0.25 );
+		this.greenCone.setLength( 0.25 );
+		this.blueCone.setLength( 0.25 );
+
+		this.redCone.move( MoveDirection.LEFT, 0.5 );
+		this.greenCone.move( MoveDirection.LEFT, 1.0 );
+		this.blueCone.move( MoveDirection.LEFT, 1.5 );
+		
 		this.snow.setAppearance( Ground.Appearance.SNOW );
 		this.camera.getAGoodLookAt( this.susan );
 	}

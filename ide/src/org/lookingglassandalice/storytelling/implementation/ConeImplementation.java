@@ -46,31 +46,42 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class SphereImplementation extends ShapeImplementation {
-	private final edu.cmu.cs.dennisc.scenegraph.Sphere sgSphere = new edu.cmu.cs.dennisc.scenegraph.Sphere();
-	private final org.lookingglassandalice.storytelling.Sphere abstraction;
-	public SphereImplementation( org.lookingglassandalice.storytelling.Sphere abstraction ) {
+public class ConeImplementation extends ShapeImplementation {
+	private final edu.cmu.cs.dennisc.scenegraph.Cylinder sgCylinder = new edu.cmu.cs.dennisc.scenegraph.Cylinder();
+	private final org.lookingglassandalice.storytelling.Cone abstraction;
+
+	public ConeImplementation( org.lookingglassandalice.storytelling.Cone abstraction ) {
 		this.abstraction = abstraction;
-		this.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgSphere } );
+		this.sgCylinder.topRadius.setValue( 0.0 );
+		this.sgCylinder.hasTopCap.setValue( false );
+		this.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
 	}
 	@Override
-	public org.lookingglassandalice.storytelling.Sphere getAbstraction() {
+	public org.lookingglassandalice.storytelling.Cone getAbstraction() {
 		return this.abstraction;
 	}
 //	@Override
-//	public edu.cmu.cs.dennisc.scenegraph.Sphere getSgGeometry() {
-//		return this.sgSphere;
+//	public edu.cmu.cs.dennisc.scenegraph.Cylinder getSgGeometry() {
+//		return this.sgCylinder;
 //	}
-	
-	public double getRadius() {
-		return this.sgSphere.radius.getValue();
+
+	public double getLength() {
+		return this.sgCylinder.length.getValue();
 	}
-	public void setRadius( double radius ) {
-		this.sgSphere.radius.setValue( radius );
+	public void setLength( double radius ) {
+		this.sgCylinder.length.setValue( radius );
 	}
-	
+	public double getBaseRadius() {
+		return this.sgCylinder.bottomRadius.getValue();
+	}
+	public void setBaseRadius( double radius ) {
+		this.sgCylinder.bottomRadius.setValue( radius );
+	}
+
+	//todo: produce more tight bound by shifting center of bounding sphere
 	@Override
 	protected double getBoundingSphereRadius() {
-		return this.getRadius();
+		return Math.max( this.getLength(), this.getBaseRadius());
 	}
+
 }

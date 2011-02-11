@@ -41,36 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling.implementation;
+package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SphereImplementation extends ShapeImplementation {
-	private final edu.cmu.cs.dennisc.scenegraph.Sphere sgSphere = new edu.cmu.cs.dennisc.scenegraph.Sphere();
-	private final org.lookingglassandalice.storytelling.Sphere abstraction;
-	public SphereImplementation( org.lookingglassandalice.storytelling.Sphere abstraction ) {
-		this.abstraction = abstraction;
-		this.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgSphere } );
-	}
+public class Cone extends Shape {
+	private final org.lookingglassandalice.storytelling.implementation.ConeImplementation implementation = new org.lookingglassandalice.storytelling.implementation.ConeImplementation( this );
 	@Override
-	public org.lookingglassandalice.storytelling.Sphere getAbstraction() {
-		return this.abstraction;
-	}
-//	@Override
-//	public edu.cmu.cs.dennisc.scenegraph.Sphere getSgGeometry() {
-//		return this.sgSphere;
-//	}
-	
-	public double getRadius() {
-		return this.sgSphere.radius.getValue();
-	}
-	public void setRadius( double radius ) {
-		this.sgSphere.radius.setValue( radius );
+	/*package-private*/ org.lookingglassandalice.storytelling.implementation.ConeImplementation getImplementation() {
+		return this.implementation;
 	}
 	
-	@Override
-	protected double getBoundingSphereRadius() {
-		return this.getRadius();
+	public Double getBaseRadius() {
+		return this.implementation.getBaseRadius();
+	}
+	public void setBaseRadius( Number baseRadius ) {
+		this.implementation.setBaseRadius( baseRadius.doubleValue() );
+	}
+	public Double getLength() {
+		return this.implementation.getLength();
+	}
+	public void setLength( Number baseRadius ) {
+		this.implementation.setLength( baseRadius.doubleValue() );
 	}
 }

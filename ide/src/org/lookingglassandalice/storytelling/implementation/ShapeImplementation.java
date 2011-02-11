@@ -47,5 +47,5 @@ package org.lookingglassandalice.storytelling.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class ShapeImplementation extends ModelImplementation {
-	public abstract edu.cmu.cs.dennisc.scenegraph.Geometry getSgGeometry();
+	//public abstract edu.cmu.cs.dennisc.scenegraph.Geometry getSgGeometry();
 }
