@@ -51,7 +51,6 @@ public class TargetImplementation extends TransformableImplementation {
 	public TargetImplementation( org.lookingglassandalice.storytelling.Target abstraction ) {
 		this.abstraction = abstraction;
 	}
-	@Override
 	public org.lookingglassandalice.storytelling.Target getAbstraction() {
 		return this.abstraction;
 	}

@@ -53,7 +53,6 @@ public class CameraImplementation extends TransformableImplementation {
 		this.abstraction = abstraction;
 		this.sgSymmetricPerspectiveCamera.setParent( this.getSgComposite() );
 	}
-	@Override
 	public org.lookingglassandalice.storytelling.Camera getAbstraction() {
 		return this.abstraction;
 	}

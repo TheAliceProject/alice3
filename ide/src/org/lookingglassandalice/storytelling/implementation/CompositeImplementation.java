@@ -40,39 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Joint extends Entity implements Turner {
-	/*package-private*/ static Joint getInstance( org.lookingglassandalice.storytelling.implementation.JointedModelImplementation jointedModelImplementation, org.lookingglassandalice.storytelling.resources.JointId jointId ) {
-		org.lookingglassandalice.storytelling.implementation.JointImplementation implementation = jointedModelImplementation.getJointImplementation( jointId );
-		Joint rv = new Joint( implementation );
-		implementation.setAbstraction( rv );
-		return rv;
+public abstract class CompositeImplementation implements EntityImplementation {
+	protected static final String KEY = EntityImplementation.class.getName() + ".KEY";
+	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
+	
+	protected static CompositeImplementation getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+		return (CompositeImplementation)sgElement.getBonusDataFor( KEY );
 	}
-
-	private final org.lookingglassandalice.storytelling.implementation.JointImplementation implementation;
-	private Joint( org.lookingglassandalice.storytelling.implementation.JointImplementation implementation ) {
-		this.implementation = implementation;
+	protected void putInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+		sgElement.putBonusDataFor( KEY, this );
 	}
-	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.JointImplementation getImplementation() {
-		return this.implementation;
+	public EntityImplementation getVehicle() {
+		return getInstance( this.getSgComposite() );
 	}
-	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, new TurnDetails() );
+	public void setVehicle( EntityImplementation vehicle ) {
+		this.getSgComposite().setParent( vehicle.getSgComposite() );
 	}
-	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
-		//this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
-	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, new RollDetails() );
-	}
-	public void roll( RollDirection direction, Number amount, RollDetails details ) {
-		//this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
-
 }

@@ -41,38 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.resources;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Joint extends Entity implements Turner {
-	/*package-private*/ static Joint getInstance( org.lookingglassandalice.storytelling.implementation.JointedModelImplementation jointedModelImplementation, org.lookingglassandalice.storytelling.resources.JointId jointId ) {
-		org.lookingglassandalice.storytelling.implementation.JointImplementation implementation = jointedModelImplementation.getJointImplementation( jointId );
-		Joint rv = new Joint( implementation );
-		implementation.setAbstraction( rv );
-		return rv;
-	}
-
-	private final org.lookingglassandalice.storytelling.implementation.JointImplementation implementation;
-	private Joint( org.lookingglassandalice.storytelling.implementation.JointImplementation implementation ) {
-		this.implementation = implementation;
-	}
-	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.JointImplementation getImplementation() {
-		return this.implementation;
-	}
-	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, new TurnDetails() );
-	}
-	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
-		//this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
-	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, new RollDetails() );
-	}
-	public void roll( RollDirection direction, Number amount, RollDetails details ) {
-		//this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
+public interface AdultPersonResource extends PersonResource {
 
 }

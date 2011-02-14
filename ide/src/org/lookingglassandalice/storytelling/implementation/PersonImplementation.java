@@ -46,38 +46,26 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class PersonImplementation extends ModelImplementation {
+public abstract class PersonImplementation extends JointedModelImplementation {
 	private final org.lookingglassandalice.storytelling.Person abstraction;
-	private org.lookingglassandalice.storytelling.PersonResource resource;
-	private java.util.Map< org.lookingglassandalice.storytelling.PersonResource.JointId, JointImplementation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public PersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
+	private final org.lookingglassandalice.storytelling.resources.PersonResource resource;
+	public PersonImplementation( org.lookingglassandalice.storytelling.Person abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource ) {
 		this.abstraction = abstraction;
+		this.resource = resource;
 	}
-	@Override
 	public org.lookingglassandalice.storytelling.Person getAbstraction() {
 		return this.abstraction;
 	}
-	public org.lookingglassandalice.storytelling.PersonResource getResource() {
+	public org.lookingglassandalice.storytelling.resources.PersonResource getResource() {
 		return this.resource;
 	}
-	public void setResource( org.lookingglassandalice.storytelling.PersonResource resource ) {
-		if( this.resource != null ) {
-			this.resource.removePerson( this );
-		}
-		this.resource = resource;
-		if( this.resource != null ) {
-			this.resource.addPerson( this );
-		}
-	}
-	public JointImplementation getJoint( org.lookingglassandalice.storytelling.PersonResource.JointId jointId ) {
-		synchronized( this.map ) {
-			JointImplementation rv = this.map.get( jointId );
-			if( rv != null ) {
-				//pass
-			} else {
-				org.lookingglassandalice.storytelling.Joint joint = new org.lookingglassandalice.storytelling.Joint();
-			}
-			return rv;
-		}
-	}
+//	public void setResource( org.lookingglassandalice.storytelling.resources.PersonResource resource ) {
+//		if( this.resource != null ) {
+//			this.resource.removePerson( this );
+//		}
+//		this.resource = resource;
+//		if( this.resource != null ) {
+//			this.resource.addPerson( this );
+//		}
+//	}
 }

@@ -41,38 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.implementation.monsters;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Joint extends Entity implements Turner {
-	/*package-private*/ static Joint getInstance( org.lookingglassandalice.storytelling.implementation.JointedModelImplementation jointedModelImplementation, org.lookingglassandalice.storytelling.resources.JointId jointId ) {
-		org.lookingglassandalice.storytelling.implementation.JointImplementation implementation = jointedModelImplementation.getJointImplementation( jointId );
-		Joint rv = new Joint( implementation );
-		implementation.setAbstraction( rv );
-		return rv;
+public class JointImplementation extends org.lookingglassandalice.storytelling.implementation.CompositeImplementation implements org.lookingglassandalice.storytelling.implementation.JointImplementation {
+	private final edu.cmu.cs.dennisc.scenegraph.Composite sgJoint;
+	private final org.lookingglassandalice.storytelling.resources.JointId jointId;
+	private org.lookingglassandalice.storytelling.Joint abstraction;
+	public JointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId, edu.cmu.cs.dennisc.scenegraph.Composite sgJoint ) {
+		this.jointId = jointId;
+		this.sgJoint = sgJoint;
 	}
-
-	private final org.lookingglassandalice.storytelling.implementation.JointImplementation implementation;
-	private Joint( org.lookingglassandalice.storytelling.implementation.JointImplementation implementation ) {
-		this.implementation = implementation;
+	public org.lookingglassandalice.storytelling.Entity getAbstraction() {
+		return this.abstraction;
+	}
+	public void setAbstraction( org.lookingglassandalice.storytelling.Joint abstraction ) {
+		assert abstraction != null;
+		assert this.abstraction == null;
+		this.abstraction = abstraction;
+	}
+	public org.lookingglassandalice.storytelling.resources.JointId getJointId() {
+		return this.jointId;
 	}
 	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.JointImplementation getImplementation() {
-		return this.implementation;
+	public edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite() {
+		return this.sgJoint;
 	}
-	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, new TurnDetails() );
-	}
-	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
-		//this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
-	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, new RollDetails() );
-	}
-	public void roll( RollDirection direction, Number amount, RollDetails details ) {
-		//this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
-
 }

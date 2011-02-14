@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneImplementation extends EntityImplementation {
+public class SceneImplementation extends CompositeImplementation {
 	private static class Capsule {
 		private final TransformableImplementation transformable;
 		private EntityImplementation vehicle;
@@ -83,7 +83,6 @@ public class SceneImplementation extends EntityImplementation {
 	public edu.cmu.cs.dennisc.scenegraph.Scene getSgComposite() {
 		return this.sgScene;
 	}
-	@Override
 	public org.lookingglassandalice.storytelling.Scene getAbstraction() {
 		return this.abstraction;
 	}
@@ -101,18 +100,18 @@ public class SceneImplementation extends EntityImplementation {
 	
 	public void addCamerasTo( ProgramImplementation program ) {
 		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
-			EntityImplementation entityImplementation = EntityImplementation.getInstance( sgComponent );
-			if( entityImplementation instanceof CameraImplementation ) {
-				CameraImplementation cameraImplementation = (CameraImplementation)entityImplementation;
+			CompositeImplementation compositeImplementation = CompositeImplementation.getInstance( sgComponent );
+			if( compositeImplementation instanceof CameraImplementation ) {
+				CameraImplementation cameraImplementation = (CameraImplementation)compositeImplementation;
 				program.getOnscreenLookingGlass().addCamera( cameraImplementation.getSgCamera() );
 			}
 		}
 	}
 	public void removeCamerasFrom( ProgramImplementation program ) {
 		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
-			EntityImplementation entityImplementation = EntityImplementation.getInstance( sgComponent );
-			if( entityImplementation instanceof CameraImplementation ) {
-				CameraImplementation cameraImplementation = (CameraImplementation)entityImplementation;
+			CompositeImplementation compositeImplementation = CompositeImplementation.getInstance( sgComponent );
+			if( compositeImplementation instanceof CameraImplementation ) {
+				CameraImplementation cameraImplementation = (CameraImplementation)compositeImplementation;
 				program.getOnscreenLookingGlass().removeCamera( cameraImplementation.getSgCamera() );
 			}
 		}

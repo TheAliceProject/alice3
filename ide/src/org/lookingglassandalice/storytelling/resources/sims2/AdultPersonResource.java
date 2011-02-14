@@ -46,8 +46,8 @@ package org.lookingglassandalice.storytelling.resources.sims2;
 /**
  * @author Dennis Cosgrove
  */
-public class AdultPersonResource extends PersonResource implements org.lookingglassandalice.storytelling.AdultPersonResource {
-	public AdultPersonResource() {
-		super( new org.alice.apis.stage.Adult() );
+public class AdultPersonResource extends PersonResource implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
+	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
+		return new org.lookingglassandalice.storytelling.implementation.sims2.MegImplementation( abstraction, this );
 	}
 }

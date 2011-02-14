@@ -43,6 +43,8 @@
 package test;
 
 import org.lookingglassandalice.storytelling.*;
+import org.lookingglassandalice.storytelling.resources.AdultPersonResource;
+import org.lookingglassandalice.storytelling.resources.PersonResource;
 
 abstract class CustomPerson extends Person {
 	public CustomPerson( PersonResource resource ) {

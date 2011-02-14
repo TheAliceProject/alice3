@@ -46,9 +46,8 @@ package org.lookingglassandalice.storytelling.resources.monsters;
 /**
  * @author Dennis Cosgrove
  */
-public class OgreResource implements org.lookingglassandalice.storytelling.AdultPersonResource {
-	public void addPerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation ) {
-	}
-	public void removePerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation ) {
+public class OgreResource implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
+	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
+		return new org.lookingglassandalice.storytelling.implementation.monsters.MonsterImplementation( abstraction, this );
 	}
 }

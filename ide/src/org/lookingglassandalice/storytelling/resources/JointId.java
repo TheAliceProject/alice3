@@ -41,18 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.resources;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface PersonResource {
-	public static enum JointId {
-		RIGHT_SHOULDER,
-		RIGHT_ELBOW,
-		RIGHT_WRIST;
-	};
-	public void addPerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation );
-	public void removePerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation );
-	//public edu.cmu.cs.dennisc.scenegraph.Transformable getJoint( JointId jointId );
+public interface JointId {
 }

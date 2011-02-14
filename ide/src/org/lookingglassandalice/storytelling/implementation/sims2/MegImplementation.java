@@ -41,38 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.implementation.sims2;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Joint extends Entity implements Turner {
-	/*package-private*/ static Joint getInstance( org.lookingglassandalice.storytelling.implementation.JointedModelImplementation jointedModelImplementation, org.lookingglassandalice.storytelling.resources.JointId jointId ) {
-		org.lookingglassandalice.storytelling.implementation.JointImplementation implementation = jointedModelImplementation.getJointImplementation( jointId );
-		Joint rv = new Joint( implementation );
-		implementation.setAbstraction( rv );
-		return rv;
+public class MegImplementation extends org.lookingglassandalice.storytelling.implementation.PersonImplementation {
+	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
+//	public void addPerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation ) {
+//		personImplementation.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebPerson } );
+//	}
+//	public void removePerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation ) {
+//		personImplementation.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] {} );
+//	}
+	public MegImplementation( org.lookingglassandalice.storytelling.Person abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource) {
+		super( abstraction, resource );
+		try {
+			org.alice.apis.stage.Adult temp = new org.alice.apis.stage.Adult();
+			this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( temp );
+			this.nebPerson.setGender( org.alice.apis.stage.Gender.FEMALE );
+			this.nebPerson.setOutfit( org.alice.apis.stage.FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE );
+			this.nebPerson.setSkinTone( org.alice.apis.stage.BaseSkinTone.getRandom() );
+			this.nebPerson.setFitnessLevel( 0.5 );
+			this.nebPerson.setHair( org.alice.apis.stage.FemaleAdultHairBraids.BLACK );
+			this.nebPerson.setEyeColor( org.alice.apis.stage.BaseEyeColor.getRandom() );
+		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
+			throw new RuntimeException( lre );
+		}
+		this.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebPerson } );
 	}
-
-	private final org.lookingglassandalice.storytelling.implementation.JointImplementation implementation;
-	private Joint( org.lookingglassandalice.storytelling.implementation.JointImplementation implementation ) {
-		this.implementation = implementation;
-	}
-	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.JointImplementation getImplementation() {
-		return this.implementation;
-	}
-	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, new TurnDetails() );
-	}
-	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
-		//this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
-	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, new RollDetails() );
-	}
-	public void roll( RollDirection direction, Number amount, RollDetails details ) {
-		//this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ) );
-	}
-
 }

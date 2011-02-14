@@ -54,7 +54,6 @@ public class SunImplementation extends TransformableImplementation {
 		this.getSgComposite().addComponent( this.sgSun );
 		this.getSgComposite().applyRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRevolutions( 0.25 ) );
 	}
-	@Override
 	public org.lookingglassandalice.storytelling.Sun getAbstraction() {
 		return this.abstraction;
 	}

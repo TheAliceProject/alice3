@@ -47,21 +47,21 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public abstract class Person extends Entity implements MutableRider, Walker, Toucher {
-	private final org.lookingglassandalice.storytelling.implementation.PersonImplementation implementation = new org.lookingglassandalice.storytelling.implementation.PersonImplementation( this );
+	private final org.lookingglassandalice.storytelling.implementation.PersonImplementation implementation;
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.PersonImplementation getImplementation() {
 		return this.implementation;
 	}
-	public Person( PersonResource resource ) {
-		this.setPersonResource( resource );
+	public Person( org.lookingglassandalice.storytelling.resources.PersonResource resource ) {
+		this.implementation = resource.createPersonImplementation( this );
 	}
 	
-	public PersonResource getPersonResource() {
-		return this.implementation.getResource();
-	}
-	private void setPersonResource( PersonResource resource ) {
-		this.implementation.setResource( resource );
-	}
+//	public PersonResource getPersonResource() {
+//		return this.implementation.getResource();
+//	}
+//	private void setPersonResource( PersonResource resource ) {
+//		this.implementation.setResource( resource );
+//	}
 	
 	public void setVehicle( Entity vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
@@ -72,18 +72,27 @@ public abstract class Person extends Entity implements MutableRider, Walker, Tou
 	public void touch( Entity entity ) {
 		
 	}
-	private Joint getJoint( PersonResource.JointId jointId ) {
-		org.lookingglassandalice.storytelling.implementation.JointImplementation jointImplementation = this.implementation.getJoint( jointId );
-		return jointImplementation != null ? jointImplementation.getAbstraction() : null;
+	
+	private java.util.Map< org.lookingglassandalice.storytelling.resources.JointId, Joint > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private Joint getJoint( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
+		synchronized( this.map ) {
+			Joint rv = this.map.get( jointId );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = org.lookingglassandalice.storytelling.Joint.getInstance( this.implementation, jointId );
+			}
+			return rv;
+		}
 	}
 	public Joint getRightShoulder() {
-		return this.getJoint( PersonResource.JointId.RIGHT_SHOULDER );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_SHOULDER );
 	}
 	public Joint getRightElbow() {
-		return this.getJoint( PersonResource.JointId.RIGHT_ELBOW );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_ELBOW );
 	}
 	public Joint getRightWrist() {
-		return this.getJoint( PersonResource.JointId.RIGHT_WRIST );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_WRIST );
 	}
 //	public Target getRightFingerTipTarget() {
 //		return null;

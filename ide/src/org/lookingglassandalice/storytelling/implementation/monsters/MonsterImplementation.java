@@ -41,11 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.implementation.monsters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface AdultPersonResource extends PersonResource {
-
+public class MonsterImplementation extends org.lookingglassandalice.storytelling.implementation.PersonImplementation {
+	public MonsterImplementation( org.lookingglassandalice.storytelling.Person abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource) {
+		super( abstraction, resource );
+	}
 }
