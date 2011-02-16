@@ -70,7 +70,7 @@ public class ProgramImplementation {
 		this.simulationSpeedFactor = simulationSpeedFactor;
 	}
 	
-	public void startInFrame( final javax.swing.JFrame frame, final Runnable runnable ) {
+	public void initializeInFrame( final javax.swing.JFrame frame, final Runnable runnable ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				frame.getContentPane().add( ProgramImplementation.this.onscreenLookingGlass.getAWTComponent() );
@@ -80,11 +80,29 @@ public class ProgramImplementation {
 			}
 		} );
 	}
-	public void initializeInFrame( String[] args, Runnable runnable ) {
+	public void initializeInFrame( String[] args ) {
 		edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
 		frame.setSize( 640, 480 );
 		frame.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Frame.DefaultCloseOperation.DISPOSE );
-		this.startInFrame( frame.getAwtComponent(), runnable );
+		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
+		this.initializeInFrame( frame.getAwtComponent(), new Runnable() {
+			public void run() {
+				try {
+					barrier.await();
+				} catch( InterruptedException ie ) {
+					throw new RuntimeException( ie );
+				} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+					throw new RuntimeException( bbe );
+				}
+			}
+		} );
+		try {
+			barrier.await();
+		} catch( InterruptedException ie ) {
+			throw new RuntimeException( ie );
+		} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+			throw new RuntimeException( bbe );
+		}
 	}
 	public void initializeInApplet( javax.swing.JApplet applet ) {
 		//applet.setLayout( new java.awt.BorderLayout() );

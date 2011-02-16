@@ -74,25 +74,7 @@ public abstract class Program {
 	}
 	
 	public void initializeInFrame( String[] args ) {
-		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
-		this.implementation.initializeInFrame( args, new Runnable() {
-			public void run() {
-				try {
-					barrier.await();
-				} catch( InterruptedException ie ) {
-					throw new RuntimeException( ie );
-				} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-					throw new RuntimeException( bbe );
-				}
-			}
-		} );
-		try {
-			barrier.await();
-		} catch( InterruptedException ie ) {
-			throw new RuntimeException( ie );
-		} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-			throw new RuntimeException( bbe );
-		}
+		this.implementation.initializeInFrame( args );
 	}
 	public void initializeInApplet( javax.swing.JApplet applet ) {
 		this.implementation.initializeInApplet( applet );
