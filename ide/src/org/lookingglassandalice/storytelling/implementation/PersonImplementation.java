@@ -53,6 +53,7 @@ public abstract class PersonImplementation extends JointedModelImplementation {
 		this.abstraction = abstraction;
 		this.resource = resource;
 	}
+	@Override
 	public org.lookingglassandalice.storytelling.Person getAbstraction() {
 		return this.abstraction;
 	}

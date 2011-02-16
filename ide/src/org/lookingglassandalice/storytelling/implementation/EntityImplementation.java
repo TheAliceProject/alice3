@@ -46,9 +46,21 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public interface EntityImplementation {
-	public edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
-	public org.lookingglassandalice.storytelling.Entity getAbstraction();
-	public EntityImplementation getVehicle();
-	public void setVehicle( EntityImplementation vehicle );
+public abstract class EntityImplementation {
+	protected static final String KEY = EntityImplementation.class.getName() + ".KEY";
+	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
+	public abstract org.lookingglassandalice.storytelling.Entity getAbstraction();
+	
+	protected static EntityImplementation getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+		return (EntityImplementation)sgElement.getBonusDataFor( KEY );
+	}
+	protected void putInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+		sgElement.putBonusDataFor( KEY, this );
+	}
+	public EntityImplementation getVehicle() {
+		return getInstance( this.getSgComposite() );
+	}
+	public void setVehicle( EntityImplementation vehicle ) {
+		this.getSgComposite().setParent( vehicle.getSgComposite() );
+	}
 }

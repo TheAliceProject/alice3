@@ -56,6 +56,7 @@ public class ConeImplementation extends ShapeImplementation {
 		this.sgCylinder.hasTopCap.setValue( false );
 		this.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
 	}
+	@Override
 	public org.lookingglassandalice.storytelling.Cone getAbstraction() {
 		return this.abstraction;
 	}

@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TransformableImplementation extends CompositeImplementation {
+public abstract class TransformableImplementation extends EntityImplementation {
 	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
 	public TransformableImplementation() {
 		this.putInstance( this.sgTransformable );

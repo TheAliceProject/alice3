@@ -46,9 +46,10 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointImplementation extends CompositeImplementation {
+public abstract class JointImplementation extends EntityImplementation {
 	private org.lookingglassandalice.storytelling.Joint abstraction;
 	public abstract org.lookingglassandalice.storytelling.resources.JointId getJointId();
+	@Override
 	public final org.lookingglassandalice.storytelling.Joint getAbstraction() {
 		return this.abstraction;
 	}
