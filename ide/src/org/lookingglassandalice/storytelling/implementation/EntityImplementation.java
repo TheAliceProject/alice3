@@ -47,9 +47,7 @@ package org.lookingglassandalice.storytelling.implementation;
  * @author Dennis Cosgrove
  */
 public interface EntityImplementation {
-	//todo
 	public edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
-
 	public org.lookingglassandalice.storytelling.Entity getAbstraction();
 	public EntityImplementation getVehicle();
 	public void setVehicle( EntityImplementation vehicle );

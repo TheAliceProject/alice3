@@ -46,7 +46,15 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public interface JointImplementation extends EntityImplementation {
-	public org.lookingglassandalice.storytelling.resources.JointId getJointId();
-	public void setAbstraction( org.lookingglassandalice.storytelling.Joint abstraction );
+public abstract class JointImplementation extends CompositeImplementation {
+	private org.lookingglassandalice.storytelling.Joint abstraction;
+	public abstract org.lookingglassandalice.storytelling.resources.JointId getJointId();
+	public final org.lookingglassandalice.storytelling.Joint getAbstraction() {
+		return this.abstraction;
+	}
+	public final void setAbstraction( org.lookingglassandalice.storytelling.Joint abstraction ) {
+		assert abstraction != null;
+		assert this.abstraction == null;
+		this.abstraction = abstraction;
+	}
 }

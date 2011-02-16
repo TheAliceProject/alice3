@@ -70,4 +70,8 @@ public class MegImplementation extends org.lookingglassandalice.storytelling.imp
 		}
 		this.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebPerson } );
 	}
+	@Override
+	protected JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
+		return new JointImplementation( new SgJoint( this.nebPerson, jointId ) );
+	}
 }

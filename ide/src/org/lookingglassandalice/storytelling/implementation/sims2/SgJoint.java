@@ -41,41 +41,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling.implementation;
+package org.lookingglassandalice.storytelling.implementation.sims2;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConeImplementation extends ShapeImplementation {
-	private final edu.cmu.cs.dennisc.scenegraph.Cylinder sgCylinder = new edu.cmu.cs.dennisc.scenegraph.Cylinder();
-	private final org.lookingglassandalice.storytelling.Cone abstraction;
-
-	public ConeImplementation( org.lookingglassandalice.storytelling.Cone abstraction ) {
-		this.abstraction = abstraction;
-		this.sgCylinder.topRadius.setValue( 0.0 );
-		this.sgCylinder.hasTopCap.setValue( false );
-		this.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
+public class SgJoint extends edu.cmu.cs.dennisc.scenegraph.Composite {
+	private final edu.cmu.cs.dennisc.nebulous.Model nebModel;
+	private final org.lookingglassandalice.storytelling.resources.JointId jointId;
+	public SgJoint( edu.cmu.cs.dennisc.nebulous.Model nebModel, org.lookingglassandalice.storytelling.resources.JointId jointId ) {
+		this.nebModel = nebModel;
+		this.jointId = jointId;
 	}
-	public org.lookingglassandalice.storytelling.Cone getAbstraction() {
-		return this.abstraction;
+	public org.lookingglassandalice.storytelling.resources.JointId getJointId() {
+		return this.jointId;
 	}
-	public double getLength() {
-		return this.sgCylinder.length.getValue();
-	}
-	public void setLength( double radius ) {
-		this.sgCylinder.length.setValue( radius );
-	}
-	public double getBaseRadius() {
-		return this.sgCylinder.bottomRadius.getValue();
-	}
-	public void setBaseRadius( double radius ) {
-		this.sgCylinder.bottomRadius.setValue( radius );
-	}
-
-	//todo: produce more tight bound by shifting center of bounding sphere
+	
 	@Override
-	protected double getBoundingSphereRadius() {
-		return Math.max( this.getLength(), this.getBaseRadius());
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+		edu.cmu.cs.dennisc.scenegraph.Composite vehicle = this.getParent();
+		//edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.nebModel.getTransformation( this.jointId );
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+		if( vehicle == null || vehicle.isSceneOf( this ) ) {
+			rv.set( m );
+		} else {
+			rv = vehicle.getAbsoluteTransformation( rv );
+			rv.setToMultiplication( rv, m );
+		}
+		return rv;
 	}
 
+	// todo: cache this information
+	@Override
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+		rv = getAbsoluteTransformation( rv );
+		rv.invert();
+		return rv;
+	}
 }

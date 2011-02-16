@@ -56,18 +56,12 @@ public class SphereImplementation extends ShapeImplementation {
 	public org.lookingglassandalice.storytelling.Sphere getAbstraction() {
 		return this.abstraction;
 	}
-//	@Override
-//	public edu.cmu.cs.dennisc.scenegraph.Sphere getSgGeometry() {
-//		return this.sgSphere;
-//	}
-	
 	public double getRadius() {
 		return this.sgSphere.radius.getValue();
 	}
 	public void setRadius( double radius ) {
 		this.sgSphere.radius.setValue( radius );
 	}
-	
 	@Override
 	protected double getBoundingSphereRadius() {
 		return this.getRadius();

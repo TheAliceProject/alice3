@@ -47,7 +47,18 @@ package org.lookingglassandalice.storytelling.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class JointedModelImplementation extends ModelImplementation {
+	private final java.util.Map< org.lookingglassandalice.storytelling.resources.JointId, JointImplementation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	protected abstract JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId );
 	public JointImplementation getJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
-		return null;
+		synchronized( this.map ) {
+			JointImplementation rv = this.map.get( jointId );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = this.createJointImplementation( jointId );
+				this.map.put( jointId, rv );
+			}
+			return rv;
+		}
 	}
 }

@@ -50,4 +50,9 @@ public class MonsterImplementation extends org.lookingglassandalice.storytelling
 	public MonsterImplementation( org.lookingglassandalice.storytelling.Person abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource) {
 		super( abstraction, resource );
 	}
+	@Override
+	protected JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
+		//todo
+		return new JointImplementation( jointId, null );
+	}
 }
