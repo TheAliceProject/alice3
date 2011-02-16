@@ -63,7 +63,7 @@ public abstract class Shape extends Entity implements MutableRider, Mover, Turne
 		this.move( direction, amount, new MoveDetails() );
 	}
 	public void move( MoveDirection direction, Number amount, MoveDetails details ) {
-		this.getImplementation().translate( direction.createTranslation( amount.doubleValue() ) );
+		this.getImplementation().translate( direction.createTranslation( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
 	public void turn( TurnDirection direction, Number amount ) {
 		this.turn( direction, amount, new TurnDetails() );

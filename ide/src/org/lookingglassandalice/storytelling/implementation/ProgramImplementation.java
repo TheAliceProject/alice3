@@ -47,37 +47,48 @@ package org.lookingglassandalice.storytelling.implementation;
  * @author Dennis Cosgrove
  */
 public class ProgramImplementation {
-	private final edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
+	private final org.lookingglassandalice.storytelling.Program abstraction;
 	private final edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
-	public ProgramImplementation() {
-		this.frame.setSize( 640, 480 );
-		this.frame.getAwtComponent().add( this.onscreenLookingGlass.getAWTComponent() );
-		this.frame.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Frame.DefaultCloseOperation.DISPOSE );
-	}
 	
+	private double simulationSpeedFactor = Double.POSITIVE_INFINITY; 
+	public ProgramImplementation( org.lookingglassandalice.storytelling.Program abstraction ) {
+		this.abstraction = abstraction;
+	}
+
+	public org.lookingglassandalice.storytelling.Program getAbstraction() {
+		return this.abstraction;
+	}
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
 	}
-//	public SceneImplementation getScene() {
-//		return this.sceneImplementation;
-//	}
-//	public void setScene( SceneImplementation sceneImplementation ) {
-//		if( this.sceneImplementation != sceneImplementation ) {
-//			if( this.sceneImplementation != null ) {
-//				this.sceneImplementation.removeCamerasFrom( this.onscreenLookingGlass );
-//			}
-//			this.sceneImplementation = sceneImplementation;
-//			if( this.sceneImplementation != null ) {
-//				this.sceneImplementation.addCamerasTo( this.onscreenLookingGlass );
-//			}
-//		}
-//	}
-	public boolean isVisible() {
-		return this.frame.isVisible();
+	
+	public double getSimulationSpeedFactor() {
+		return this.simulationSpeedFactor;
 	}
-	public void setVisible( boolean isVisible ) {
-		this.frame.setVisible( isVisible );
+	public void setSimulationSpeedFactor( double simulationSpeedFactor ) {
+		this.simulationSpeedFactor = simulationSpeedFactor;
+	}
+	
+	public void startInFrame( final javax.swing.JFrame frame, final Runnable runnable ) {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				frame.getContentPane().add( ProgramImplementation.this.onscreenLookingGlass.getAWTComponent() );
+				frame.setVisible( true );
+				ProgramImplementation.this.simulationSpeedFactor = 1.0;
+				runnable.run();
+			}
+		} );
+	}
+	public void initializeInFrame( String[] args, Runnable runnable ) {
+		edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
+		frame.setSize( 640, 480 );
+		frame.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Frame.DefaultCloseOperation.DISPOSE );
+		this.startInFrame( frame.getAwtComponent(), runnable );
+	}
+	public void initializeInApplet( javax.swing.JApplet applet ) {
+		//applet.setLayout( new java.awt.BorderLayout() );
+		applet.getContentPane().add( this.onscreenLookingGlass.getAWTComponent(), java.awt.BorderLayout.CENTER );
 	}
 	
 	/*package-private*/ void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {

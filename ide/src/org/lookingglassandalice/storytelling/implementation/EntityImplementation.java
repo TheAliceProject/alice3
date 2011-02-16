@@ -63,4 +63,50 @@ public abstract class EntityImplementation {
 	public void setVehicle( EntityImplementation vehicle ) {
 		this.getSgComposite().setParent( vehicle.getSgComposite() );
 	}
+	
+	protected SceneImplementation getScene() {
+		EntityImplementation vehicle = this.getVehicle();
+		return vehicle != null ? vehicle.getScene() : null;
+	}
+	protected ProgramImplementation getProgram() {
+		SceneImplementation scene = this.getScene();
+		return scene != null ? scene.getProgram() : null;
+	}
+
+	protected static final double RIGHT_NOW = 1.0;
+	private double getSimulationSpeedFactor() {
+		ProgramImplementation programImplementation = this.getProgram();
+		if( programImplementation != null ) {
+			return programImplementation.getSimulationSpeedFactor();
+		} else {
+			return Double.NaN;
+		}
+	}
+	protected double adjustDurationIfNecessary( double duration ) {
+		if( duration == RIGHT_NOW ) {
+			//pass
+		} else {
+			double simulationSpeedFactor = this.getSimulationSpeedFactor();
+			if( Double.isNaN( simulationSpeedFactor ) ) {
+				duration = RIGHT_NOW;
+			} else if( Double.isInfinite( simulationSpeedFactor ) ) {
+				duration = RIGHT_NOW;
+			} else {
+				duration = duration / simulationSpeedFactor;
+			}
+		}
+		return duration;
+	}
+	
+	protected void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+		ProgramImplementation programImplementation = this.getProgram();
+		if( programImplementation != null ) {
+			programImplementation.perform( animation, animationObserver );
+		} else {
+			animation.complete( animationObserver );
+		}
+	}
+	protected final void perform( edu.cmu.cs.dennisc.animation.Animation animation ) {
+		this.perform( animation, null );
+	}
 }

@@ -53,8 +53,8 @@ package org.lookingglassandalice.storytelling;
 	/*package-private*/ double getDuration() {
 		return this.duration;
 	}
-	/*package-private*/ Entity getAsSeenBy() {
-		return this.asSeenBy;
+	/*package-private*/ Entity getAsSeenBy( Entity valueIfNull ) {
+		return this.asSeenBy != null ? this.asSeenBy : valueIfNull;
 	}
 	/*package-private*/ Style getStyle() {
 		return this.style;

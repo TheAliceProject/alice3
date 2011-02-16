@@ -60,11 +60,11 @@ public abstract class Scene extends Entity {
 		assert deactiveCount == activeCount;
 		activeCount++;
 		this.handleActiveChanged( true, activeCount );
-		this.implementation.addCamerasTo( program.getImplementation() );
+		this.implementation.setProgram( program.getImplementation() );
 		
 	}
 	/*package-private*/ void deactivate( Program program ) {
-		this.implementation.removeCamerasFrom( program.getImplementation() );
+		this.implementation.setProgram( null );
 		deactiveCount++;
 		assert deactiveCount == activeCount;
 		this.handleActiveChanged( false, activeCount );

@@ -47,7 +47,7 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public abstract class Program {
-	private final org.lookingglassandalice.storytelling.implementation.ProgramImplementation implementation = new org.lookingglassandalice.storytelling.implementation.ProgramImplementation();
+	private final org.lookingglassandalice.storytelling.implementation.ProgramImplementation implementation = new org.lookingglassandalice.storytelling.implementation.ProgramImplementation( this );
 	private Scene activeScene;
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.ProgramImplementation getImplementation() {
 		return this.implementation;
@@ -65,13 +65,36 @@ public abstract class Program {
 			this.activeScene.activate( this );
 		}
 	}
-	protected abstract void handleStarted();
-	public void start() {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+	
+	public Double getSimulationSpeedFactor() {
+		return this.implementation.getSimulationSpeedFactor();
+	}
+	public void setSimulationSpeedFactor( Number simulationSpeedFactor ) {
+		this.implementation.setSimulationSpeedFactor( simulationSpeedFactor.doubleValue() );
+	}
+	
+	public void initializeInFrame( String[] args ) {
+		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
+		this.implementation.initializeInFrame( args, new Runnable() {
 			public void run() {
-				Program.this.implementation.setVisible( true );
-				Program.this.handleStarted();
+				try {
+					barrier.await();
+				} catch( InterruptedException ie ) {
+					throw new RuntimeException( ie );
+				} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+					throw new RuntimeException( bbe );
+				}
 			}
 		} );
+		try {
+			barrier.await();
+		} catch( InterruptedException ie ) {
+			throw new RuntimeException( ie );
+		} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+			throw new RuntimeException( bbe );
+		}
+	}
+	public void initializeInApplet( javax.swing.JApplet applet ) {
+		this.implementation.initializeInApplet( applet );
 	}
 }

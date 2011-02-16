@@ -117,6 +117,7 @@ class SnowScene extends Scene {
 	}
 
 	public void chillInSkiChalet() {
+		this.redCone.move( MoveDirection.UP, 1.0 );
 	}
 }
 
@@ -156,7 +157,7 @@ class DesertScene extends Scene {
 			this.preserveVehiclesAndPointsOfView();
 		}
 	}
-	
+		
 	public void turnBigRocksIntoLittleRocks() {
 	}
 }
@@ -170,8 +171,7 @@ class RagsToRichesStory extends Program {
 	private final DesertScene desertScene = new DesertScene( camera );
 	private final SnowScene snowScene = new SnowScene( camera, susan );
 	
-	@Override
-	protected void handleStarted() {
+	public void playOutStory() {
 		this.setActiveScene( this.desertScene );
 		this.desertScene.turnBigRocksIntoLittleRocks();
 		this.setActiveScene( this.snowScene );
@@ -179,12 +179,10 @@ class RagsToRichesStory extends Program {
 	}
 	public static void main( String[] args ) {
 		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
-		ragsToRichesStory.start();
+		ragsToRichesStory.initializeInFrame( args );
+		ragsToRichesStory.playOutStory();
 	}
 }
-
-
-
 
 ////best practice
 //sphere.move( MoveDirection.LEFT, 0.5, new MoveDetails.Builder().asSeenBy( camera ).duration( 0.5 ).build() );
