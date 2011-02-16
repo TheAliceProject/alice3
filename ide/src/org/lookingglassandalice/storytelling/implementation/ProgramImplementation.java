@@ -51,7 +51,7 @@ public class ProgramImplementation {
 	private final edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
 	
-	private double simulationSpeedFactor = Double.POSITIVE_INFINITY; 
+	private double simulationSpeedFactor = 1.0; 
 	public ProgramImplementation( org.lookingglassandalice.storytelling.Program abstraction ) {
 		this.abstraction = abstraction;
 	}
@@ -70,12 +70,24 @@ public class ProgramImplementation {
 		this.simulationSpeedFactor = simulationSpeedFactor;
 	}
 	
+	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+			ProgramImplementation.this.animator.update();
+		}
+	};
+	private void startAnimator() {
+		this.onscreenLookingGlass.getLookingGlassFactory().addAutomaticDisplayListener( this.automaticDisplayListener );
+		this.onscreenLookingGlass.getLookingGlassFactory().incrementAutomaticDisplayCount();
+	}
+	private void stopAnimator() {
+		this.onscreenLookingGlass.getLookingGlassFactory().decrementAutomaticDisplayCount();
+		this.onscreenLookingGlass.getLookingGlassFactory().removeAutomaticDisplayListener( this.automaticDisplayListener );
+	}
 	public void initializeInFrame( final javax.swing.JFrame frame, final Runnable runnable ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				frame.getContentPane().add( ProgramImplementation.this.onscreenLookingGlass.getAWTComponent() );
 				frame.setVisible( true );
-				ProgramImplementation.this.simulationSpeedFactor = 1.0;
 				runnable.run();
 			}
 		} );
@@ -103,10 +115,14 @@ public class ProgramImplementation {
 		} catch( java.util.concurrent.BrokenBarrierException bbe ) {
 			throw new RuntimeException( bbe );
 		}
+		this.startAnimator();
 	}
 	public void initializeInApplet( javax.swing.JApplet applet ) {
-		//applet.setLayout( new java.awt.BorderLayout() );
 		applet.getContentPane().add( this.onscreenLookingGlass.getAWTComponent(), java.awt.BorderLayout.CENTER );
+		this.startAnimator();
+	}
+	public void shutDown() {
+		this.stopAnimator();
 	}
 	
 	/*package-private*/ void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {

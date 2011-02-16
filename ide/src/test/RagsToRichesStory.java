@@ -117,7 +117,14 @@ class SnowScene extends Scene {
 	}
 
 	public void chillInSkiChalet() {
-		this.redCone.move( MoveDirection.UP, 1.0 );
+		while( true ) {
+			this.redCone.move( MoveDirection.UP, 1.0 );
+			this.redCone.move( MoveDirection.DOWN, 1.0 );
+			this.greenCone.move( MoveDirection.UP, 1.0 );
+			this.greenCone.move( MoveDirection.DOWN, 1.0 );
+			this.blueCone.move( MoveDirection.UP, 1.0 );
+			this.blueCone.move( MoveDirection.DOWN, 1.0 );
+		}
 	}
 }
 

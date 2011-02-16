@@ -54,20 +54,30 @@ public abstract class Scene extends Entity {
 		return this.implementation;
 	}
 
+	private void changeActiveStatus( Program program, boolean isActive, int activeCount ) {
+		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
+		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
+		this.handleActiveChanged( isActive, activeCount );
+		if( isActive ) {
+			this.implementation.addCamerasTo( program.getImplementation() );
+		} else {
+			this.implementation.removeCamerasFrom( program.getImplementation() );
+		}
+		program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
+	}
 	private int activeCount;
 	private int deactiveCount;
 	/*package-private*/ void activate( Program program ) {
 		assert deactiveCount == activeCount;
 		activeCount++;
-		this.handleActiveChanged( true, activeCount );
 		this.implementation.setProgram( program.getImplementation() );
-		
+		this.changeActiveStatus( program, true, activeCount );
 	}
 	/*package-private*/ void deactivate( Program program ) {
-		this.implementation.setProgram( null );
 		deactiveCount++;
 		assert deactiveCount == activeCount;
-		this.handleActiveChanged( false, activeCount );
+		this.changeActiveStatus( program, false, activeCount );
+		this.implementation.setProgram( null );
 	}
 	
 	protected abstract void handleActiveChanged( boolean isActive, int activeCount );

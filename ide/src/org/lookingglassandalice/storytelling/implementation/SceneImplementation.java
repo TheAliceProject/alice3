@@ -99,15 +99,15 @@ public class SceneImplementation extends EntityImplementation {
 		return this.program;
 	}
 	public void setProgram( ProgramImplementation program ) {
-		if( this.program != null ) {
-			this.removeCamerasFrom( this.program );
-		}
+//		if( this.program != null ) {
+//			this.removeCamerasFrom( this.program );
+//		}
 		this.program = program;
-		if( this.program != null ) {
-			this.addCamerasTo( this.program );
-		}
+//		if( this.program != null ) {
+//			this.addCamerasTo( this.program );
+//		}
 	}
-	
+
 	public void preserveVehiclesAndPointsOfView() {
 //		for( Entity entity : this.entities ) {
 //			this.pointOfViewMap.put( entity, null );
@@ -118,7 +118,7 @@ public class SceneImplementation extends EntityImplementation {
 //			this.pointOfViewMap.put( entity, null );
 //		}
 	}
-	private void addCamerasTo( ProgramImplementation program ) {
+	public void addCamerasTo( ProgramImplementation program ) {
 		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
 			EntityImplementation entityImplementation = EntityImplementation.getInstance( sgComponent );
 			if( entityImplementation instanceof CameraImplementation ) {
@@ -127,7 +127,7 @@ public class SceneImplementation extends EntityImplementation {
 			}
 		}
 	}
-	private void removeCamerasFrom( ProgramImplementation program ) {
+	public void removeCamerasFrom( ProgramImplementation program ) {
 		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
 			EntityImplementation entityImplementation = EntityImplementation.getInstance( sgComponent );
 			if( entityImplementation instanceof CameraImplementation ) {

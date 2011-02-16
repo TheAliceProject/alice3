@@ -58,9 +58,10 @@ public abstract class EntityImplementation {
 		sgElement.putBonusDataFor( KEY, this );
 	}
 	public EntityImplementation getVehicle() {
-		return getInstance( this.getSgComposite() );
+		return getInstance( this.getSgComposite().getParent() );
 	}
 	public void setVehicle( EntityImplementation vehicle ) {
+		assert vehicle != this;
 		this.getSgComposite().setParent( vehicle.getSgComposite() );
 	}
 	
@@ -73,7 +74,7 @@ public abstract class EntityImplementation {
 		return scene != null ? scene.getProgram() : null;
 	}
 
-	protected static final double RIGHT_NOW = 1.0;
+	protected static final double RIGHT_NOW = 0.0;
 	private double getSimulationSpeedFactor() {
 		ProgramImplementation programImplementation = this.getProgram();
 		if( programImplementation != null ) {
