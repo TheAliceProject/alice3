@@ -55,7 +55,7 @@ public abstract class JointImplementation extends EntityImplementation {
 	}
 	public final void setAbstraction( org.lookingglassandalice.storytelling.Joint abstraction ) {
 		assert abstraction != null;
-		assert this.abstraction == null;
+		assert this.abstraction == null : this.abstraction;
 		this.abstraction = abstraction;
 	}
 }

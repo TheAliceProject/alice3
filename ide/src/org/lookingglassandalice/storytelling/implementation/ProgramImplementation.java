@@ -92,12 +92,9 @@ public class ProgramImplementation {
 			}
 		} );
 	}
-	public void initializeInFrame( String[] args ) {
-		edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
-		frame.setSize( 640, 480 );
-		frame.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Frame.DefaultCloseOperation.DISPOSE );
+	public void initializeInFrame( javax.swing.JFrame frame ) {
 		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
-		this.initializeInFrame( frame.getAwtComponent(), new Runnable() {
+		this.initializeInFrame( frame, new Runnable() {
 			public void run() {
 				try {
 					barrier.await();

@@ -49,8 +49,13 @@ package org.lookingglassandalice.storytelling;
 public class Joint extends Entity implements Turner {
 	/*package-private*/ static Joint getInstance( org.lookingglassandalice.storytelling.implementation.JointedModelImplementation jointedModelImplementation, org.lookingglassandalice.storytelling.resources.JointId jointId ) {
 		org.lookingglassandalice.storytelling.implementation.JointImplementation implementation = jointedModelImplementation.getJointImplementation( jointId );
-		Joint rv = new Joint( implementation );
-		implementation.setAbstraction( rv );
+		Joint rv = implementation.getAbstraction();
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new Joint( implementation );
+			implementation.setAbstraction( rv );
+		}
 		return rv;
 	}
 

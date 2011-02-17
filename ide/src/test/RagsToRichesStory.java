@@ -182,6 +182,8 @@ class DesertScene extends Scene {
 		
 	public void turnBigRocksIntoLittleRocks() {
 		//this.camera.turn( TurnDirection.LEFT, 1.0 );
+//		this.ogre.getRightShoulder().turn( TurnDirection.FORWARD, 0.25 );
+//		this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 	}
 }
 

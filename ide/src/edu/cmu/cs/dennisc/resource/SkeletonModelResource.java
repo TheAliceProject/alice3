@@ -68,7 +68,7 @@ public class SkeletonModelResource extends Visual
     {      
         jointReference.applyTranslation(x, y, z, sgAsSeenBy);
     }
-            
+
     public Joint getJoint(String jointID)
     {
         return this.skeleton.getValue().getJoint(jointID);

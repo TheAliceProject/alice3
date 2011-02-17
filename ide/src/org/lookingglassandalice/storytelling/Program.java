@@ -74,7 +74,11 @@ public abstract class Program {
 	}
 	
 	public void initializeInFrame( String[] args ) {
-		this.implementation.initializeInFrame( args );
+		final int DEFAULT_CLOSE_OPERATION = javax.swing.WindowConstants.EXIT_ON_CLOSE;
+		javax.swing.JFrame frame = new javax.swing.JFrame();
+		frame.setSize( 640, 480 );
+		frame.setDefaultCloseOperation( DEFAULT_CLOSE_OPERATION );
+		this.implementation.initializeInFrame( frame );
 	}
 	public void initializeInApplet( javax.swing.JApplet applet ) {
 		this.implementation.initializeInApplet( applet );
