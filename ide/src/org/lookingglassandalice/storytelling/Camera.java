@@ -60,19 +60,19 @@ public class Camera extends Entity implements MutableRider, Mover, Turner {
 		this.move( direction, amount, new MoveDetails() );
 	}
 	public void move( MoveDirection direction, Number amount, MoveDetails details ) {
-		this.getImplementation().translate( direction.createTranslation( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
+		this.getImplementation().animateTranslation( direction.createTranslation( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
 	public void turn( TurnDirection direction, Number amount ) {
 		this.turn( direction, amount, new TurnDetails() );
 	}
 	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
-		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
+		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
 	public void roll( RollDirection direction, Number amount ) {
 		this.roll( direction, amount, new RollDetails() );
 	}
 	public void roll( RollDirection direction, Number amount, RollDetails details ) {
-		this.getImplementation().rotate( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
+		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
 
 	public void getAGoodLookAt( Entity entity ) {

@@ -56,17 +56,23 @@ public abstract class TransformableImplementation extends EntityImplementation {
 		return this.sgTransformable;
 	}
 	
-	public void translate( edu.cmu.cs.dennisc.math.Point3 translation, double duration, EntityImplementation asSeenBy, edu.cmu.cs.dennisc.animation.Style style ) {
+	public void translate( double x, double y, double z, EntityImplementation asSeenBy ) {
+		this.getSgComposite().applyTranslation( x, y, z, asSeenBy.getSgComposite() );
+	}
+	public void translate( edu.cmu.cs.dennisc.math.Point3 translation, EntityImplementation asSeenBy ) {
+		this.translate( translation.x, translation.y, translation.z, asSeenBy );
+	}
+	public void animateTranslation( edu.cmu.cs.dennisc.math.Point3 translation, double duration, EntityImplementation asSeenBy, edu.cmu.cs.dennisc.animation.Style style ) {
 		assert translation.isNaN() == false;
 		assert duration >= 0 : "Invalid argument: duration " + duration + " must be >= 0";
 		assert style != null;
 		assert asSeenBy != null;
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
-			this.getSgComposite().applyTranslation( translation, asSeenBy.getSgComposite() );
+			this.translate( translation, asSeenBy );
 		} else {
 			class TranslateAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
-				private edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy;
+				private EntityImplementation asSeenBy;
 				private double x;
 				private double y;
 				private double z;
@@ -74,12 +80,12 @@ public abstract class TransformableImplementation extends EntityImplementation {
 				private double ySum;
 				private double zSum;
 
-				public TranslateAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Point3 translation, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy ) {
+				public TranslateAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Point3 translation, EntityImplementation asSeenBy ) {
 					super( duration, style );
 					this.x = translation.x;
 					this.y = translation.y;
 					this.z = translation.z;
-					this.sgAsSeenBy = sgAsSeenBy;
+					this.asSeenBy = asSeenBy;
 				}
 				
 				@Override
@@ -95,7 +101,7 @@ public abstract class TransformableImplementation extends EntityImplementation {
 					double yPortion = (this.y * portion) - this.ySum;
 					double zPortion = (this.z * portion) - this.zSum;
 
-					TransformableImplementation.this.getSgComposite().applyTranslation( xPortion, yPortion, zPortion, this.sgAsSeenBy );
+					TransformableImplementation.this.translate( xPortion, yPortion, zPortion, this.asSeenBy );
 
 					this.xSum += xPortion;
 					this.ySum += yPortion;
@@ -104,30 +110,36 @@ public abstract class TransformableImplementation extends EntityImplementation {
 				
 				@Override
 				protected void epilogue() {
-					TransformableImplementation.this.getSgComposite().applyTranslation( this.x - this.xSum, this.y - this.ySum, this.z - this.zSum, this.sgAsSeenBy );
+					TransformableImplementation.this.translate( this.x - this.xSum, this.y - this.ySum, this.z - this.zSum, this.asSeenBy );
 				}
 			}
-			this.perform( new TranslateAnimation( duration, style, translation, asSeenBy.getSgComposite() ) );
+			this.perform( new TranslateAnimation( duration, style, translation, asSeenBy ) );
 		}
 	}
-	public void rotate( edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.math.Angle angle, double duration, EntityImplementation asSeenBy, edu.cmu.cs.dennisc.animation.Style style ) {
+	public void rotateInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, EntityImplementation asSeenBy ) {
+		this.getSgComposite().applyRotationAboutArbitraryAxisInRadians( axis, angleInRadians, asSeenBy.getSgComposite() );
+	}
+	public void rotate( edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.math.Angle angle, EntityImplementation asSeenBy ) {
+		this.rotateInRadians( axis, angle.getAsRadians(), asSeenBy );
+	}
+	public void animateRotation( edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.math.Angle angle, double duration, EntityImplementation asSeenBy, edu.cmu.cs.dennisc.animation.Style style ) {
 		assert axis != null;
 		assert duration >= 0 : "Invalid argument: duration " + duration + " must be >= 0";
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
-			this.getSgComposite().applyRotationAboutArbitraryAxisInRadians( axis, angle.getAsRadians(), asSeenBy.getSgComposite() );
+			this.rotate( axis, angle, asSeenBy );
 		} else {
 			class RotateAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
-				private edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy;
+				private EntityImplementation asSeenBy;
 				private edu.cmu.cs.dennisc.math.Vector3 axis;
 				private double angleInRadians;
 				private double angleSumInRadians;
 
-				public RotateAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.math.Angle angle, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy ) {
+				public RotateAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.math.Angle angle, EntityImplementation asSeenBy ) {
 					super( duration, style );
 					this.axis = axis;
 					this.angleInRadians = angle.getAsRadians();
-					this.sgAsSeenBy = sgAsSeenBy;
+					this.asSeenBy = asSeenBy;
 				}
 				@Override
 				protected void prologue() {
@@ -137,19 +149,17 @@ public abstract class TransformableImplementation extends EntityImplementation {
 				protected void setPortion( double portion ) {
 					double anglePortionInRadians = (this.angleInRadians * portion) - this.angleSumInRadians;
 
-					TransformableImplementation.this.getSgComposite().applyRotationAboutArbitraryAxisInRadians( this.axis, anglePortionInRadians, this.sgAsSeenBy );
+					TransformableImplementation.this.rotateInRadians( this.axis, anglePortionInRadians, this.asSeenBy );
 
 					this.angleSumInRadians += anglePortionInRadians;
 				}
 				@Override
 				protected void epilogue() {
-					TransformableImplementation.this.getSgComposite().applyRotationAboutArbitraryAxisInRadians( this.axis, this.angleInRadians - this.angleSumInRadians, this.sgAsSeenBy );
+					TransformableImplementation.this.rotateInRadians( this.axis, this.angleInRadians - this.angleSumInRadians, this.asSeenBy );
 				}
 			}
-			this.perform( new RotateAnimation( duration, style, axis, angle, asSeenBy.getSgComposite() ) );
+			this.perform( new RotateAnimation( duration, style, axis, angle, asSeenBy ) );
 		}
-
-		this.sgTransformable.applyRotationAboutArbitraryAxis( axis, angle );
 	}
 	//protected abstract double getBoundingSphereRadius();
 	protected double getBoundingSphereRadius() {
