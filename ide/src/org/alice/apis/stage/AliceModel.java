@@ -60,14 +60,14 @@ import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.resource.SkeletonModelResource;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
+import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 public abstract class AliceModel extends org.alice.apis.moveandturn.Model {
 
-	private SkeletonModelResource skeletonModelResource;
+	private SkeletonVisual skeletonModelResource;
 	
 	@Override
 	protected Visual createSGVisual()

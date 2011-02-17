@@ -41,30 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.resource;
+package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import org.alice.ide.IDE;
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-import edu.cmu.cs.dennisc.lookingglass.opengl.GeometryAdapter;
-import edu.cmu.cs.dennisc.lookingglass.opengl.PickContext;
-import edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext;
-import edu.cmu.cs.dennisc.lookingglass.opengl.WeightedMeshAdapter;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
+import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
-public class SkeletonModelResourceAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter< SkeletonModelResource >  implements PropertyListener{
+public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter< SkeletonVisual >  implements PropertyListener{
     
     private boolean skeletonIsDirty = true;
     private Joint currentSkeleton = null;
     
     
-    public SkeletonModelResourceAdapter()
+    public SkeletonVisualAdapter()
     {
         super();
     }

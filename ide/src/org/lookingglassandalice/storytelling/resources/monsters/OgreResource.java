@@ -47,7 +47,7 @@ package org.lookingglassandalice.storytelling.resources.monsters;
  * @author Dennis Cosgrove
  */
 public class OgreResource implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
-    private final edu.cmu.cs.dennisc.resource.SkeletonModelResource skeletonModelResource;
+    private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual skeletonModelResource;
     private final edu.cmu.cs.dennisc.texture.Texture texture;
     public OgreResource() {
     	java.io.InputStream is = OgreResource.class.getResourceAsStream( "ogre.alice" );
@@ -59,7 +59,7 @@ public class OgreResource implements org.lookingglassandalice.storytelling.resou
 	}
 	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
 		System.err.println( "TODO: create copy. OgreResource." );
-		edu.cmu.cs.dennisc.resource.SkeletonModelResource sgCopy = this.skeletonModelResource;
+		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgCopy = this.skeletonModelResource;
 		return new org.lookingglassandalice.storytelling.implementation.monsters.MonsterImplementation( sgCopy, abstraction, this, this.texture );
 	}
 }

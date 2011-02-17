@@ -41,24 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.resource;
+package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.property.InstanceProperty;
-import edu.cmu.cs.dennisc.scenegraph.Joint;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
-
-public class SkeletonModelResource extends Visual
-{
-    static {
-        edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( SkeletonModelResource.class, SkeletonModelResourceAdapter.class );
-    }
-    public final InstanceProperty<Joint> skeleton = new InstanceProperty<Joint>(this, null);
-
-    
-    public SkeletonModelResource()
-    {
-    }
-    
+public class SkeletonVisual extends Visual {
+    public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>(this, null);
     public void applyRotationToJointAboutArbitraryAxisInRadians( Joint jointReference, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy)
     {
         jointReference.applyRotationAboutArbitraryAxisInRadians(axis, angleInRadians, sgAsSeenBy);
