@@ -55,7 +55,7 @@ public class MegImplementation extends org.lookingglassandalice.storytelling.imp
 //		personImplementation.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] {} );
 //	}
 	public MegImplementation( org.lookingglassandalice.storytelling.Person abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource) {
-		super( abstraction, resource );
+		super( new edu.cmu.cs.dennisc.scenegraph.Visual(), abstraction, resource );
 		try {
 			org.alice.apis.stage.Adult temp = new org.alice.apis.stage.Adult();
 			this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( temp );

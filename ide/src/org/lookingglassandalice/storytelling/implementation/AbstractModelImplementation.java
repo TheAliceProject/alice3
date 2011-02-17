@@ -46,22 +46,25 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointedModelImplementation extends AbstractModelImplementation {
-	private final java.util.Map< org.lookingglassandalice.storytelling.resources.JointId, JointImplementation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	protected abstract JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId );
-	public JointedModelImplementation( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
-		super( sgVisual );
+public abstract class AbstractModelImplementation extends TransformableImplementation {
+	private final edu.cmu.cs.dennisc.scenegraph.Visual sgVisual;
+	private final edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
+	public AbstractModelImplementation( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
+		this.sgVisual = sgVisual;;
+		this.sgVisual.frontFacingAppearance.setValue( this.sgAppearance );
+		this.sgVisual.setParent( this.getSgComposite() );
 	}
-	public JointImplementation getJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
-		synchronized( this.map ) {
-			JointImplementation rv = this.map.get( jointId );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = this.createJointImplementation( jointId );
-				this.map.put( jointId, rv );
-			}
-			return rv;
-		}
+	public edu.cmu.cs.dennisc.scenegraph.Visual getSgVisual() {
+		return this.sgVisual;
 	}
+	public edu.cmu.cs.dennisc.scenegraph.SingleAppearance getSgAppearance() {
+		return this.sgAppearance;
+	}
+	public edu.cmu.cs.dennisc.color.Color4f getColor() {
+		return this.sgAppearance.diffuseColor.getValue();
+	}
+	public void setColor( edu.cmu.cs.dennisc.color.Color4f color ) {
+		this.sgAppearance.diffuseColor.setValue( color );
+	}
+
 }

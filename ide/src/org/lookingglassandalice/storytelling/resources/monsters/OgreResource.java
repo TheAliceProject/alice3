@@ -47,7 +47,37 @@ package org.lookingglassandalice.storytelling.resources.monsters;
  * @author Dennis Cosgrove
  */
 public class OgreResource implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
+    private static java.io.File s_galleryRootDirectory;
+    private static final String CHILD_NAME = "assets";
+    private static final String GRANDCHILD_NAME = "org.alice.apis.stage";
+    static {
+        s_galleryRootDirectory = org.alice.apis.moveandturn.gallery.GalleryRootUtilities.calculateGalleryRootDirectory( org.alice.apis.moveandturn.gallery.GalleryModel.class, "/Alice3Beta/gallery", "gallery", "assets", "org.alice.apis.stage", "Alice Move & Turn Gallery", "Alice" );
+    }
+    public static java.io.File getGalleryRootDirectory() {
+        return s_galleryRootDirectory;
+    }
+
+    private final edu.cmu.cs.dennisc.resource.SkeletonModelResource skeletonModelResource;
+    public OgreResource() {
+        java.io.File directory = new java.io.File( new java.io.File( s_galleryRootDirectory, CHILD_NAME ), GRANDCHILD_NAME );
+        java.io.File file = new java.io.File( directory, this.getResourceString()+".alice" );
+        assert file.exists();
+        try {
+            java.io.InputStream is = new java.io.FileInputStream(file);
+            edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
+            this.skeletonModelResource = decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap< Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable >() );
+        } catch( java.io.FileNotFoundException fnfe ) {
+        	throw new RuntimeException( fnfe );
+        }
+	}
+	protected String getResourceString()
+	{
+		return "ogre";
+	}
+
+	
 	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
-		return new org.lookingglassandalice.storytelling.implementation.monsters.MonsterImplementation( abstraction, this );
+		edu.cmu.cs.dennisc.resource.SkeletonModelResource sgCopy = this.skeletonModelResource;
+		return new org.lookingglassandalice.storytelling.implementation.monsters.MonsterImplementation( sgCopy, abstraction, this );
 	}
 }

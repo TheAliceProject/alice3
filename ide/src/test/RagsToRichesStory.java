@@ -145,8 +145,10 @@ class DesertScene extends Scene {
 	private final Ground desert = new Ground();
 	private final Sphere sphere = new Sphere();
 	private final Camera camera;
-	public DesertScene( Camera camera ) {
+	private final CustomAdult ogre;
+	public DesertScene( Camera camera, CustomAdult ogre ) {
 		this.camera = camera;
+		this.ogre = ogre;
 	}
 	private void performGeneratedSetup() {
 		// this code is automatically generated
@@ -155,6 +157,7 @@ class DesertScene extends Scene {
 		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.sphere.setVehicle( this );
+		this.ogre.setVehicle( this );
 
 		this.desert.setAppearance( Ground.Appearance.SAND );
 		this.sphere.setRadius( 0.1 );
@@ -178,7 +181,7 @@ class DesertScene extends Scene {
 	}
 		
 	public void turnBigRocksIntoLittleRocks() {
-		this.camera.turn( TurnDirection.LEFT, 1.0 );
+		//this.camera.turn( TurnDirection.LEFT, 1.0 );
 	}
 }
 
@@ -188,14 +191,15 @@ class DesertScene extends Scene {
 class RagsToRichesStory extends Program {
 	private final Camera camera = new Camera();
 	private final CustomAdult susan = new CustomAdult( new org.lookingglassandalice.storytelling.resources.sims2.AdultPersonResource() );
-	private final DesertScene desertScene = new DesertScene( camera );
+	private final CustomAdult ogre = new CustomAdult( new org.lookingglassandalice.storytelling.resources.monsters.OgreResource() );
+	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, susan );
 	
 	public void playOutStory() {
 		this.setActiveScene( this.desertScene );
 		this.desertScene.turnBigRocksIntoLittleRocks();
-		this.setActiveScene( this.snowScene );
-		this.snowScene.chillInSkiChalet();
+//		this.setActiveScene( this.snowScene );
+//		this.snowScene.chillInSkiChalet();
 	}
 	public static void main( String[] args ) {
 		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
