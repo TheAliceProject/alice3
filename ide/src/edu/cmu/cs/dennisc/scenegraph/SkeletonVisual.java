@@ -45,38 +45,4 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 public class SkeletonVisual extends Visual {
     public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>(this, null);
-//    public void applyRotationToJointAboutArbitraryAxisInRadians( Joint jointReference, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy)
-//    {
-//        jointReference.applyRotationAboutArbitraryAxisInRadians(axis, angleInRadians, sgAsSeenBy);
-//    }
-//    
-//    public void applyTranslationToJoint( Joint jointReference, double x, double y, double z, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy)
-//    {      
-//        jointReference.applyTranslation(x, y, z, sgAsSeenBy);
-//    }
-//
-//    public Joint getJoint(String jointID)
-//    {
-//        return this.skeleton.getValue().getJoint(jointID);
-//    }
-//    
-//    public int getJointCount()
-//    {
-//        return this.skeleton.getValue().getJointCount();
-//    }
-//    
-//    public Joint getJointForIndex(int index)
-//    {
-//        return this.skeleton.getValue().getJointForIndex(index);
-//    }
-//    
-//    public boolean hasJoint(String jointID)
-//    {
-//        if ( getJoint(jointID) != null )
-//        {
-//            return true;
-//        }
-//        return false;
-//    }
-
 }
