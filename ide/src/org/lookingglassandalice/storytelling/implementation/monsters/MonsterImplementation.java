@@ -47,12 +47,16 @@ package org.lookingglassandalice.storytelling.implementation.monsters;
  * @author Dennis Cosgrove
  */
 public class MonsterImplementation extends org.lookingglassandalice.storytelling.implementation.PersonImplementation {
-	public MonsterImplementation( org.lookingglassandalice.storytelling.Person abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource) {
-		super( abstraction, resource );
+	public MonsterImplementation( edu.cmu.cs.dennisc.resource.SkeletonModelResource skeletonModelResource, org.lookingglassandalice.storytelling.Person abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource ) {
+		super( skeletonModelResource, abstraction, resource );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.resource.SkeletonModelResource getSgVisual() {
+		return (edu.cmu.cs.dennisc.resource.SkeletonModelResource)super.getSgVisual();
 	}
 	@Override
 	protected JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
 		//todo
-		return new JointImplementation( jointId, null );
+		return new JointImplementation( jointId, this.getSgVisual().getJoint( jointId.toString() ) );
 	}
 }

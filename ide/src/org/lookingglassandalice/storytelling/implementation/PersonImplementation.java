@@ -49,7 +49,8 @@ package org.lookingglassandalice.storytelling.implementation;
 public abstract class PersonImplementation extends JointedModelImplementation {
 	private final org.lookingglassandalice.storytelling.Person abstraction;
 	private final org.lookingglassandalice.storytelling.resources.PersonResource resource;
-	public PersonImplementation( org.lookingglassandalice.storytelling.Person abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource ) {
+	public PersonImplementation( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, org.lookingglassandalice.storytelling.Person abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource ) {
+		super( sgVisual );
 		this.abstraction = abstraction;
 		this.resource = resource;
 	}
