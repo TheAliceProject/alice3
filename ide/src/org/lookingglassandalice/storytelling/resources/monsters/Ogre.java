@@ -46,12 +46,14 @@ package org.lookingglassandalice.storytelling.resources.monsters;
 /**
  * @author Dennis Cosgrove
  */
-public class OgreResource implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
+public enum Ogre implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
+	GREEN;
+	
 	private final edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot;
     private final edu.cmu.cs.dennisc.texture.Texture texture;
     private final edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries;
-    public OgreResource() {
-    	java.io.InputStream is = OgreResource.class.getResourceAsStream( "ogre.alice" );
+    private Ogre() {
+    	java.io.InputStream is = Ogre.class.getResourceAsStream( "ogre.alice" );
     	edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
     	edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal = decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap< Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable >() );
     	edu.cmu.cs.dennisc.scenegraph.SingleAppearance appearance = (edu.cmu.cs.dennisc.scenegraph.SingleAppearance)sgOriginal.frontFacingAppearance.getValue();

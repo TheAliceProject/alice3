@@ -63,7 +63,7 @@ class SnowScene extends Scene {
 	private final Ground snow = new Ground();
 	private final Cone redCone = new Cone(); 
 	private final Cone greenCone = new Cone(); 
-	private final Cone blueCone = new Cone(); 
+	private final Cone blueCone = new Cone();
 	private final Camera camera;
 	private final CustomAdult susan;
 	private final CustomAdult ogre;
@@ -150,6 +150,7 @@ class DesertScene extends Scene {
 	private final Sphere sphere = new Sphere();
 	private final Camera camera;
 	private final CustomAdult ogre;
+	private final CustomAdult fellowLaborer = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Ogre.GREEN );
 	public DesertScene( Camera camera, CustomAdult ogre ) {
 		this.camera = camera;
 		this.ogre = ogre;
@@ -162,6 +163,7 @@ class DesertScene extends Scene {
 		this.camera.setVehicle( this );
 		this.sphere.setVehicle( this );
 		this.ogre.setVehicle( this );
+		this.fellowLaborer.setVehicle( this );
 
 		this.desert.setAppearance( Ground.Appearance.SAND );
 		this.sphere.setRadius( 0.1 );
@@ -185,7 +187,7 @@ class DesertScene extends Scene {
 	}
 		
 	public void turnBigRocksIntoLittleRocks() {
-		this.camera.turn( TurnDirection.LEFT, 1.0 );
+//		this.camera.turn( TurnDirection.LEFT, 1.0 );
 		while( true ) {
 			this.ogre.getRightShoulder().turn( TurnDirection.FORWARD, 0.25 );
 			this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
@@ -199,16 +201,15 @@ class DesertScene extends Scene {
 class RagsToRichesStory extends Program {
 	private final Camera camera = new Camera();
 	private final CustomAdult susan = new CustomAdult( new org.lookingglassandalice.storytelling.resources.sims2.AdultPersonResource() );
-	private final CustomAdult ogre = new CustomAdult( new org.lookingglassandalice.storytelling.resources.monsters.OgreResource() );
+	private final CustomAdult ogre = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Ogre.GREEN );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, susan, ogre );
 	
 	public void playOutStory() {
 		this.setActiveScene( this.desertScene );
-		edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );
 		this.desertScene.turnBigRocksIntoLittleRocks();
-		this.setActiveScene( this.snowScene );
-		this.snowScene.chillInSkiChalet();
+//		this.setActiveScene( this.snowScene );
+//		this.snowScene.chillInSkiChalet();
 	}
 	public static void main( String[] args ) {
 		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
