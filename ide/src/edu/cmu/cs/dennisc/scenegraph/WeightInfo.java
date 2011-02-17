@@ -82,9 +82,11 @@ public class WeightInfo implements BinaryEncodableAndDecodable
         for (int i=0; i<count; i++)
         {
             String reference = binaryDecoder.decodeString();
-            Object o = binaryDecoder.decodeBinaryEncodableAndDecodable();
-            assert o instanceof InverseAbsoluteTransformationWeightsPair;
-            this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.put(reference, (InverseAbsoluteTransformationWeightsPair)o);
+            InverseAbsoluteTransformationWeightsPair inverseAbsoluteTransformationWeightsPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
+            this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.put(reference, inverseAbsoluteTransformationWeightsPair);
+//            Object o = binaryDecoder.decodeBinaryEncodableAndDecodable();
+//            assert o instanceof InverseAbsoluteTransformationWeightsPair;
+//            this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.put(reference, (InverseAbsoluteTransformationWeightsPair)o);
         }
     }
 
@@ -93,7 +95,7 @@ public class WeightInfo implements BinaryEncodableAndDecodable
         binaryEncoder.encode(this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.size());
         for (Entry<String, InverseAbsoluteTransformationWeightsPair> entry : this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet())
         {
-            binaryEncoder.encode((String)entry.getKey());
+            binaryEncoder.encode(entry.getKey());
             binaryEncoder.encode(entry.getValue());
         }
     }
