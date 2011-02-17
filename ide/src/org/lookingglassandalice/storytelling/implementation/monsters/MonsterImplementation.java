@@ -59,10 +59,8 @@ public class MonsterImplementation extends org.lookingglassandalice.storytelling
 	protected JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
 		//todo
 		String key = jointId.toString();
-		System.err.println( jointId );
-		edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = this.getSgVisual().getJoint( key );
-		System.err.println( sgJoint.getName() );
-		System.err.println( sgJoint.jointID.getValue() );
+		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = this.getSgVisual().skeleton.getValue();
+		edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( key );
 		return new JointImplementation( this, jointId, sgJoint );
 	}
 }

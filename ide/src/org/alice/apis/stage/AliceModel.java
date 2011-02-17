@@ -138,24 +138,29 @@ public abstract class AliceModel extends org.alice.apis.moveandturn.Model {
 	
 	private void applyRotationInRadians( Joint jointReference, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy ) 
 	{
-	    skeletonModelResource.applyRotationToJointAboutArbitraryAxisInRadians( jointReference, axis, angleInRadians, sgAsSeenBy);
+	    //skeletonModelResource.applyRotationToJointAboutArbitraryAxisInRadians( jointReference, axis, angleInRadians, sgAsSeenBy);
+		jointReference.applyRotationAboutArbitraryAxisInRadians(  axis, angleInRadians, sgAsSeenBy );
     }
 	
 	private void applyTranslationToJointReference( Joint jointReference, double x, double y, double z, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy ) 
     {
 //	    System.out.println("Moving <"+x+", "+y+", "+z+">");
-        skeletonModelResource.applyTranslationToJoint(jointReference, x, y, z, sgAsSeenBy);
+		jointReference.applyTranslation( x, y, z, sgAsSeenBy );
+        //skeletonModelResource.applyTranslationToJoint(jointReference, x, y, z, sgAsSeenBy);
     }
 	
 	protected void applyRotationInRadiansToJoint( String jointName, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, Number duration, ReferenceFrame asSeenBy, Style style ) {
         assert axis != null;
         assert duration.doubleValue() >= 0 : "Invalid argument: duration " + duration + " must be >= 0";
-        if (!this.skeletonModelResource.hasJoint(jointName))
-        {
+        Joint sgSkeletonRoot = this.skeletonModelResource.skeleton.getValue();
+        final Joint joint = sgSkeletonRoot.getJoint(jointName);
+
+        if ( joint != null ) {
+        	//pass
+        } else {
             System.err.println("No joint named "+jointName);
             return;
         }
-        final Joint joint = this.skeletonModelResource.getJoint(jointName);
         
         class RotateAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
             private edu.cmu.cs.dennisc.scenegraph.ReferenceFrame m_sgAsSeenBy;
@@ -200,12 +205,15 @@ public abstract class AliceModel extends org.alice.apis.moveandturn.Model {
         assert duration.doubleValue() >= 0 : "Invalid argument: duration " + duration + " must be >= 0";
         assert style != null;
         assert asSeenBy != null;
-        if (!this.skeletonModelResource.hasJoint(jointName))
-        {
+        Joint sgSkeletonRoot = this.skeletonModelResource.skeleton.getValue();
+        final Joint joint = sgSkeletonRoot.getJoint(jointName);
+
+        if ( joint != null ) {
+        	//pass
+        } else {
             System.err.println("No joint named "+jointName);
             return;
         }
-        final Joint joint = this.skeletonModelResource.getJoint(jointName);
 
         class TranslateAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
             private edu.cmu.cs.dennisc.scenegraph.ReferenceFrame m_sgAsSeenBy;
@@ -388,24 +396,24 @@ public abstract class AliceModel extends org.alice.apis.moveandturn.Model {
         moveJoint( jointName, direction, amount, DEFAULT_DURATION );
     }
 	
-    @MethodTemplate( visibility=Visibility.PRIME_TIME )
-    public Integer getJointCount()
-    {
-        return this.skeletonModelResource.getJointCount();
-    }
-    
-    @MethodTemplate( visibility=Visibility.PRIME_TIME )
-    public String getJointNameForIndex(Integer index)
-    {
-        Joint joint = this.skeletonModelResource.getJointForIndex(index);
-        if (joint != null)
-        {
-            return joint.jointID.getValue();
-        }
-        else
-        {
-            return null;
-        }
-    }
+//    @MethodTemplate( visibility=Visibility.PRIME_TIME )
+//    public Integer getJointCount()
+//    {
+//        return this.skeletonModelResource.getJointCount();
+//    }
+//    
+//    @MethodTemplate( visibility=Visibility.PRIME_TIME )
+//    public String getJointNameForIndex(Integer index)
+//    {
+//        Joint joint = this.skeletonModelResource.getJointForIndex(index);
+//        if (joint != null)
+//        {
+//            return joint.jointID.getValue();
+//        }
+//        else
+//        {
+//            return null;
+//        }
+//    }
 
 }
