@@ -54,6 +54,7 @@ import org.alice.apis.moveandturn.Style;
 import org.alice.apis.moveandturn.TurnDirection;
 import org.alice.apis.moveandturn.gallery.GalleryModel;
 import org.alice.apis.moveandturn.gallery.GalleryRootUtilities;
+import org.lookingglassandalice.storytelling.resources.monsters.OgreResource;
 
 import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
@@ -66,16 +67,6 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 public abstract class AliceModel extends org.alice.apis.moveandturn.Model {
 
-    private static java.io.File s_galleryRootDirectory;
-    private static final String CHILD_NAME = "assets";
-    private static final String GRANDCHILD_NAME = "org.alice.apis.stage";
-    static {
-        s_galleryRootDirectory = GalleryRootUtilities.calculateGalleryRootDirectory( GalleryModel.class, "/Alice3Beta/gallery", "gallery", "assets", "org.alice.apis.stage", "Alice Move & Turn Gallery", "Alice" );
-    }
-    public static java.io.File getGalleryRootDirectory() {
-        return s_galleryRootDirectory;
-    }
-    
 	private SkeletonModelResource skeletonModelResource;
 	
 	@Override
@@ -85,14 +76,10 @@ public abstract class AliceModel extends org.alice.apis.moveandturn.Model {
 	        //pass
 	    } else {
 	        try {
-	            java.io.File directory = new java.io.File( new java.io.File( s_galleryRootDirectory, CHILD_NAME ), GRANDCHILD_NAME );
-	            java.io.File file = new java.io.File( directory, this.getResourceString()+".alice" );
-	            assert file.exists();
-	            java.io.InputStream is = new FileInputStream(file);
+	            
+	            java.io.InputStream is = OgreResource.class.getResourceAsStream( this.getResourceString()+".alice" );
 	            edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
-	            skeletonModelResource = decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap< Integer, ReferenceableBinaryEncodableAndDecodable >() );
-	            
-	            
+	            this.skeletonModelResource = decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap< Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable >() );
 	            
 	        } catch( Exception  lre ) {
 	            throw new RuntimeException( lre );
