@@ -70,11 +70,15 @@ import org.alice.apis.moveandturn.ReferenceFrame;
 import org.alice.apis.moveandturn.Scene;
 import org.alice.apis.moveandturn.StandIn;
 import org.alice.apis.moveandturn.Transformable;
+import org.alice.apis.stage.Collada;
+import org.alice.apis.stage.Ogre;
+import org.alice.apis.stage.Penguin;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.declarationpanes.CreateFieldFromGalleryPane;
 import org.alice.ide.name.validators.FieldNameValidator;
 import org.alice.ide.name.validators.MarkerColorValidator;
+import org.alice.ide.operations.ast.DeclareFieldEdit;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.InteractionGroup;
@@ -123,8 +127,8 @@ import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
 import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
-import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;import edu.cmu.cs.dennisc.croquet.Operation;
-import edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver;
+import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;
+import edu.cmu.cs.dennisc.croquet.Operation;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
@@ -142,7 +146,6 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
@@ -1066,6 +1069,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 					MoveAndTurnSceneEditor.this.handleSelectionEvent( e );
 				}
 			} );
+			
 		}
 	}
 	
@@ -1472,6 +1476,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.sidePane.setLookingglassRoot();
 		}
 		
+		
+//		this.createPenguinModelField();	
+//		this.createColladaModelField();
+//		this.createOgreModelField();
 		return rv;
 	}
 	
@@ -1798,6 +1806,56 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			markerName = makeMarkerName(selectedField.getName(), colorIndex, addOnNumber);
 		}
 		return markerName;
+	}
+	
+	private void createPenguinModelField()
+	{
+		String penguinName = "Penguin";
+		
+		Penguin penguinModel = new Penguin();
+		penguinModel.setName( penguinName );
+
+		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.stage.Penguin.class );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice penguinModelField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( penguinName, org.alice.apis.stage.Penguin.class, initializer );
+		penguinModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+		penguinModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+		
+		org.alice.ide.IDE.getSingleton().getSceneEditor().putInstanceForInitializingPendingField( penguinModelField, penguinModel );
+		this.sceneType.fields.add(penguinModelField);
+	}
+	
+	private void createColladaModelField()
+    {
+        
+        String colladaName = "Collada";
+        
+        Collada colladaModel = new Collada();
+        colladaModel.setName( colladaName );
+
+        edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.stage.Collada.class );
+        edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice colladaModelField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( colladaName, org.alice.apis.stage.Collada.class, initializer );
+        colladaModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+        colladaModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+        
+        org.alice.ide.IDE.getSingleton().getSceneEditor().putInstanceForInitializingPendingField( colladaModelField, colladaModel );
+        this.sceneType.fields.add(colladaModelField);
+    }
+	
+	private void createOgreModelField()
+	{
+	    
+		String ogreName = "Ogre";
+		
+		Ogre ogreModel = new Ogre();
+		ogreModel.setName( ogreName );
+
+		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.stage.Ogre.class );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ogreModelField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( ogreName, org.alice.apis.stage.Ogre.class, initializer );
+		ogreModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+		ogreModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+		
+		org.alice.ide.IDE.getSingleton().getSceneEditor().putInstanceForInitializingPendingField( ogreModelField, ogreModel );
+		this.sceneType.fields.add(ogreModelField);
 	}
 	
 	public Tuple2< FieldDeclaredInAlice, Object > createObjectMarkerField( TypeDeclaredInAlice ownerType ) {

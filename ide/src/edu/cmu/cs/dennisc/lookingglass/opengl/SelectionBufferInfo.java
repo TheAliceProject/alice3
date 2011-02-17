@@ -117,9 +117,8 @@ class SelectionBufferInfo {
 	public edu.cmu.cs.dennisc.scenegraph.Geometry getSGGeometry() {
 		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSGVisual();
 		if( sgVisual != null ) {
-			edu.cmu.cs.dennisc.scenegraph.Geometry[] gs = sgVisual.geometries.getValue();
-			if( 0 <= this.geometryIndex && this.geometryIndex < gs.length ) {
-				return gs[ this.geometryIndex ];
+			if( 0 <= this.geometryIndex && this.geometryIndex < sgVisual.getGeometryCount() ) {
+				return sgVisual.getGeometryAt( this.geometryIndex );
 			} else {
 				return null;
 			}

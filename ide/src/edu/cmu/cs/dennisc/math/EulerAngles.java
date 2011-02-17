@@ -162,7 +162,7 @@ public class EulerAngles implements Orientation, edu.cmu.cs.dennisc.codec.Binary
 	public final Angle roll = new AngleInRadians( Double.NaN );
 	public Order order = Order.NOT_APPLICABLE;
 
-	private EulerAngles() {
+	public EulerAngles() {
 	}
 	public EulerAngles( OrthogonalMatrix3x3 other ) {
 		setValue( other );
@@ -179,6 +179,10 @@ public class EulerAngles implements Orientation, edu.cmu.cs.dennisc.codec.Binary
 	public EulerAngles( ForwardAndUpGuide other ) {
 		setValue( other );
 	}
+	public EulerAngles( Angle pitch, Angle yaw, Angle roll, Order order ){
+	    setPitchYawRollOrder(pitch, yaw, roll, order);
+	}
+	
 	public OrthogonalMatrix3x3 createOrthogonalMatrix3x3() {
 		return new OrthogonalMatrix3x3( this );
 	}

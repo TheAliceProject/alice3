@@ -42,7 +42,16 @@
  */
 package org.alice.apis.stage;
 
+import org.alice.apis.moveandturn.AngleInRevolutions;
+import org.alice.apis.moveandturn.AsSeenBy;
+import org.alice.apis.moveandturn.ReferenceFrame;
+import org.alice.apis.moveandturn.RollDirection;
+import org.alice.apis.moveandturn.Style;
+import org.alice.apis.moveandturn.TurnDirection;
+
 import edu.cmu.cs.dennisc.alice.annotations.*;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.Joint;
 
 /**
  * @author Dennis Cosgrove
@@ -456,5 +465,139 @@ public abstract class Person extends Model {
 		//todo: asSeenBy
 		return rv;
 	}
+	
+	private void applyRotationInRadiansToJoint( final JointIdentifier joint, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, Number duration, Style style ) {
+        assert axis != null;
+        assert duration.doubleValue() >= 0 : "Invalid argument: duration " + duration + " must be >= 0";
+        if (!this.getNebPerson().hasJoint(joint))
+        {
+            System.err.println("No joint named "+joint);
+            return;
+        }
+        
+        class RotateAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
+            private edu.cmu.cs.dennisc.math.Vector3 m_axis;
+            private double m_angleInRadians;
+            private double m_angleSumInRadians;
+
+            public RotateAnimation( Number duration, Style style, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) {
+                super( duration, style );
+                m_axis = axis;
+                m_angleInRadians = angleInRadians;
+            }
+            @Override
+            protected void prologue() {
+                m_angleSumInRadians = 0;
+            }
+            @Override
+            protected void setPortion( double portion ) {
+                double anglePortionInRadians = (m_angleInRadians * portion) - m_angleSumInRadians;
+                applyRotationInRadians(joint, m_axis, anglePortionInRadians );
+                m_angleSumInRadians += anglePortionInRadians;
+            }
+            @Override
+            protected void epilogue() {
+                applyRotationInRadians( joint, m_axis, m_angleInRadians - m_angleSumInRadians  );
+            }
+        }
+
+        duration = adjustDurationIfNecessary( duration );
+        if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+            applyRotationInRadians( joint, axis, angleInRadians );
+        } else {
+            perform( new RotateAnimation( duration, style, axis, angleInRadians ) );
+        }
+    }
+	
+	private void applyRotationInRadians( JointIdentifier joint, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) 
+    {
+	    this.getNebPerson().applyRotationToJointAboutArbitraryAxisInRadians( joint, axis, angleInRadians);
+    }
+	
+	private Vector3 getAxisForTurnDirection( TurnDirection direction )
+    {
+        switch (direction)
+        {
+            case LEFT     : return edu.cmu.cs.dennisc.math.Vector3.createPositiveYAxis();
+            case RIGHT    : return edu.cmu.cs.dennisc.math.Vector3.createNegativeYAxis();
+            case FORWARD  : return edu.cmu.cs.dennisc.math.Vector3.createNegativeXAxis();
+            case BACKWARD : return edu.cmu.cs.dennisc.math.Vector3.createPositiveXAxis();
+            default       : return edu.cmu.cs.dennisc.math.Vector3.createPositiveXAxis();
+        }
+    }
+    
+    private Vector3 getAxisForRollDirection( RollDirection direction )
+    {
+        switch (direction)
+        {
+            case LEFT     : return edu.cmu.cs.dennisc.math.Vector3.createPositiveZAxis();
+            case RIGHT    : return edu.cmu.cs.dennisc.math.Vector3.createNegativeZAxis();
+            default       : return edu.cmu.cs.dennisc.math.Vector3.createPositiveZAxis();
+        }
+    }
+    
+    @MethodTemplate( visibility=Visibility.PRIME_TIME )
+    public void turnJoint( 
+            JointIdentifier joint,
+            TurnDirection direction, 
+            @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
+            Number amount, 
+            Number duration,
+            Style style 
+        ) 
+    {
+        applyRotationInRadiansToJoint( joint, getAxisForTurnDirection(direction), edu.cmu.cs.dennisc.math.AngleUtilities.revolutionsToRadians( amount.doubleValue() ), duration, style );
+    }
+    @MethodTemplate( visibility=Visibility.CHAINED )
+    public void turnJoint(
+            JointIdentifier joint,
+            TurnDirection direction, 
+            @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
+            Number amount,
+            Number duration
+        ) {
+        turnJoint( joint, direction, amount, duration, DEFAULT_STYLE );
+    }
+    
+    @MethodTemplate( visibility=Visibility.CHAINED )
+    public void turnJoint( 
+            JointIdentifier joint,
+            TurnDirection direction, 
+            @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
+            Number amount 
+        ) {
+        turnJoint( joint, direction, amount, DEFAULT_DURATION );
+    }
+    
+    @MethodTemplate( visibility=Visibility.PRIME_TIME )
+    public void rollJoint( 
+            JointIdentifier joint,
+            RollDirection direction, 
+            @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
+            Number amount, 
+            Number duration,
+            Style style 
+        ) {
+        applyRotationInRadiansToJoint( joint, getAxisForRollDirection(direction), edu.cmu.cs.dennisc.math.AngleUtilities.revolutionsToRadians( amount.doubleValue() ), duration, style );
+    }
+    @MethodTemplate( visibility=Visibility.CHAINED )
+    public void rollJoint( 
+            JointIdentifier joint,
+            RollDirection direction, 
+            @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
+            Number amount, 
+            Number duration
+        ) {
+        rollJoint( joint, direction, amount, duration, DEFAULT_STYLE );
+    }
+    @MethodTemplate( visibility=Visibility.CHAINED )
+    public void rollJoint( 
+            JointIdentifier joint,
+            RollDirection direction, 
+            @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
+            Number amount 
+        ) {
+        rollJoint( joint, direction, amount, DEFAULT_DURATION );
+    }
 	
 }

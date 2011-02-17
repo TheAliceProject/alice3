@@ -43,6 +43,12 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import java.util.Map;
+
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -184,6 +190,23 @@ public abstract class Composite extends Component {
 				child.fireHierarchyChanged();
 			}
 		}
+	}
+	
+	@Override
+	public void encode(BinaryEncoder binaryEncoder, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map) {
+	    super.encode(binaryEncoder, map);
+	    binaryEncoder.encode( m_children.size() );
+	    for( Component component : m_children ) {
+	        binaryEncoder.encode( component, map );
+	    }
+	}
+	@Override
+	public void decode(BinaryDecoder binaryDecoder, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
+	    super.decode(binaryDecoder, map);
+	    final int N = binaryDecoder.decodeInt();
+	    for( int i=0; i<N; i++ ) {
+	        this.addComponent( (Component)binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( map ) );
+	    }
 	}
 
 	@Override

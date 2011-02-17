@@ -380,7 +380,7 @@ public class InputState {
 	{
 		if (pickResult != null)
 		{
-			Visual sgVisual = pickResult.getVisual();
+		    Visual sgVisual = pickResult.getVisual();
 			if( sgVisual != null ) {
 				Composite sgParent = sgVisual.getParent();
 				if( sgParent instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {

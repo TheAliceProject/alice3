@@ -41,58 +41,70 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package edu.cmu.cs.dennisc.scenegraph;
 
-import javax.media.opengl.GL;
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
-/**
- * @author Dennis Cosgrove
- */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+public abstract class InverseAbsoluteTransformationWeightsPair implements BinaryEncodableAndDecodable
+{
+    protected AffineMatrix4x4 inverseAbsoluteTransformation;
+    protected float[] weights;
+    protected int index = 0;
+    
+    public void setWeights(float[] weightsIn) 
+    {
+        this.weights = weightsIn;
+    }
 
-	private java.util.HashMap< Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> > m_pickNameMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private PickParameters m_pickParameters;
+    public float getWeight()
+    {
+        return this.weights[this.index];
+    }
 
-	public void pick( PickParameters pickParameters ) {
-		m_pickParameters = pickParameters;
-//		javax.media.opengl.Threading.invokeOnOpenGLThread( new Runnable() {
-//			public void run() {
-				m_pickParameters.getGLAutoDrawable().display();
-//			}
-//		} );
-	}
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
-		}
-	}
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
-	}
+    public int getIndex()
+    {
+        return this.index;
+    }
 
-	protected void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-	public void pickScene( AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-		gl.glMatrixMode( GL.GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters, conformanceTestResults );
-	}
+    public boolean isDone()
+    {
+        return this.index == this.weights.length;
+    }
 
-	@Override
-	protected void handleGLChange() {
-	}
-	
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
-	}
+    public void advance()
+    {
+        this.index++;
+    }
+
+    public void reset()
+    {
+        this.index = 0;
+    }
+    
+    public void setInverseAbsoluteTransformation(AffineMatrix4x4 transform)
+    {
+        this.inverseAbsoluteTransformation = transform;
+    }
+    
+    public AffineMatrix4x4 getInverseAbsoluteTransformation()
+    {
+        return this.inverseAbsoluteTransformation;
+    }
+    
+    public void decode(BinaryDecoder binaryDecoder)
+    {
+        this.inverseAbsoluteTransformation = new AffineMatrix4x4();
+        binaryDecoder.decodeBinaryEncodableAndDecodable(this.inverseAbsoluteTransformation);
+        this.weights = binaryDecoder.decodeFloatArray();
+    }
+
+    public void encode(BinaryEncoder binaryEncoder)
+    {
+        binaryEncoder.encode(this.inverseAbsoluteTransformation);
+        binaryEncoder.encode(this.weights);
+    }
+    
 }

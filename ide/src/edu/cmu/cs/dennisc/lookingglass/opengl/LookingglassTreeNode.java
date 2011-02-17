@@ -144,7 +144,7 @@ public class LookingglassTreeNode extends BasicTreeNode{
 	public LookingglassTreeNode( VisualAdapter<Visual> lgComponent )
 	{
 		this((ElementAdapter)lgComponent);
-		this.add( new LookingglassTreeNode( lgComponent.m_frontFacingAppearanceAdapter) );
+		this.add( new LookingglassTreeNode( lgComponent.getFrontFacingAppearanceAdapter()) );
 		if( lgComponent.m_geometryAdapters != null )
 		{
 			for (GeometryAdapter<?> g : lgComponent.m_geometryAdapters)
@@ -152,6 +152,6 @@ public class LookingglassTreeNode extends BasicTreeNode{
 				this.add( new LookingglassTreeNode(g));
 			}
 		}
-		this.add( new LookingglassTreeNode( lgComponent.m_frontFacingAppearanceAdapter) );
+//		this.add( new LookingglassTreeNode( lgComponent.getFrontFacingAppearanceAdapter()) );
 	}
 }
