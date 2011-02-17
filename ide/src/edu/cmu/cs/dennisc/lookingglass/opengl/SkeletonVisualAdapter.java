@@ -81,13 +81,13 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         }
         
         //DEBUG RENDERING
-        if (SystemUtilities.isPropertyTrue(IDE.DEBUG_DRAW_PROPERTY_KEY))
-        {
-            if( this.currentSkeleton != null) 
-            {
-                this.currentSkeleton.renderVisualization(rc);
-            }
-        }
+//        if (SystemUtilities.isPropertyTrue(IDE.DEBUG_DRAW_PROPERTY_KEY))
+//        {
+//            if( this.currentSkeleton != null) 
+//            {
+//                this.currentSkeleton.renderVisualization(rc);
+//            }
+//        }
         //END DEBUG RENDERING
         
         super.renderGeometry(rc);
