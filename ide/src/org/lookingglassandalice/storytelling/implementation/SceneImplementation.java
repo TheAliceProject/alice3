@@ -130,4 +130,22 @@ public class SceneImplementation extends EntityImplementation {
 			}
 		}
 	}
+	
+	public void setGlobalBrightness( float globalBrightness ) {
+		this.sgScene.globalBrightness.setValue( globalBrightness );
+	}
+	public void animateGlobalBrightness( float globalBrightness, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		duration = adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			this.setGlobalBrightness( globalBrightness );
+		} else {
+			this.perform( new edu.cmu.cs.dennisc.animation.interpolation.FloatAnimation( duration, style, this.sgScene.globalBrightness.getValue(), globalBrightness ) {
+				@Override
+				protected void updateValue( Float globalBrightness ) {
+					SceneImplementation.this.setGlobalBrightness( globalBrightness );
+				}
+			} );
+		}
+		
+	}
 }

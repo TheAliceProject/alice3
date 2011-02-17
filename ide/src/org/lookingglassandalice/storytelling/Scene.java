@@ -71,11 +71,14 @@ public abstract class Scene extends Entity {
 		assert deactiveCount == activeCount;
 		activeCount++;
 		this.implementation.setProgram( program.getImplementation() );
+		this.implementation.setGlobalBrightness( 0.0f );
 		this.changeActiveStatus( program, true, activeCount );
+		this.implementation.animateGlobalBrightness( 1.0f, 1.0, TraditionalStyle.BEGIN_AND_END_GENTLY );
 	}
 	/*package-private*/ void deactivate( Program program ) {
 		deactiveCount++;
 		assert deactiveCount == activeCount;
+		this.implementation.animateGlobalBrightness( 0.0f, 0.5, TraditionalStyle.BEGIN_AND_END_GENTLY );
 		this.changeActiveStatus( program, false, activeCount );
 		this.implementation.setProgram( null );
 	}
