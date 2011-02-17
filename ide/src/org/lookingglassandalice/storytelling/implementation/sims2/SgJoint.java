@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling.implementation.sims2;
 /**
  * @author Dennis Cosgrove
  */
-public class SgJoint extends edu.cmu.cs.dennisc.scenegraph.Composite {
+public class SgJoint extends edu.cmu.cs.dennisc.scenegraph.Transformable {
 	private final edu.cmu.cs.dennisc.nebulous.Model nebModel;
 	private final org.lookingglassandalice.storytelling.resources.JointId jointId;
 	public SgJoint( edu.cmu.cs.dennisc.nebulous.Model nebModel, org.lookingglassandalice.storytelling.resources.JointId jointId ) {

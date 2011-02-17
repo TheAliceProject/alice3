@@ -66,9 +66,11 @@ class SnowScene extends Scene {
 	private final Cone blueCone = new Cone(); 
 	private final Camera camera;
 	private final CustomAdult susan;
-	public SnowScene( Camera camera, CustomAdult susan ) {
+	private final CustomAdult ogre;
+	public SnowScene( Camera camera, CustomAdult susan, CustomAdult ogre ) {
 		this.camera = camera;
 		this.susan = susan;
+		this.ogre = ogre;
 	}
 	
 	private void performGeneratedSetup() {
@@ -81,6 +83,7 @@ class SnowScene extends Scene {
 		this.blueCone.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.susan.setVehicle( this );
+		this.ogre.setVehicle( this );
 		
 		this.redCone.setColor( Color.RED );
 		this.greenCone.setColor( Color.GREEN );
@@ -118,6 +121,7 @@ class SnowScene extends Scene {
 
 	public void chillInSkiChalet() {
 		while( true ) {
+			this.ogre.getRightShoulder().turn( TurnDirection.FORWARD, 0.25 );
 			this.redCone.turn( TurnDirection.FORWARD, 1.0 );
 			this.blueCone.roll( RollDirection.LEFT, 1.0 );
 			org.alice.virtualmachine.DoTogether.invokeAndWait( new Runnable() {
@@ -181,9 +185,11 @@ class DesertScene extends Scene {
 	}
 		
 	public void turnBigRocksIntoLittleRocks() {
-		//this.camera.turn( TurnDirection.LEFT, 1.0 );
-//		this.ogre.getRightShoulder().turn( TurnDirection.FORWARD, 0.25 );
-//		this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
+		this.camera.turn( TurnDirection.LEFT, 1.0 );
+		while( true ) {
+			this.ogre.getRightShoulder().turn( TurnDirection.FORWARD, 0.25 );
+			this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
+		}
 	}
 }
 
@@ -195,13 +201,14 @@ class RagsToRichesStory extends Program {
 	private final CustomAdult susan = new CustomAdult( new org.lookingglassandalice.storytelling.resources.sims2.AdultPersonResource() );
 	private final CustomAdult ogre = new CustomAdult( new org.lookingglassandalice.storytelling.resources.monsters.OgreResource() );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
-	private final SnowScene snowScene = new SnowScene( camera, susan );
+	private final SnowScene snowScene = new SnowScene( camera, susan, ogre );
 	
 	public void playOutStory() {
 		this.setActiveScene( this.desertScene );
+		edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );
 		this.desertScene.turnBigRocksIntoLittleRocks();
-//		this.setActiveScene( this.snowScene );
-//		this.snowScene.chillInSkiChalet();
+		this.setActiveScene( this.snowScene );
+		this.snowScene.chillInSkiChalet();
 	}
 	public static void main( String[] args ) {
 		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();

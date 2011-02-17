@@ -47,9 +47,12 @@ package org.lookingglassandalice.storytelling.implementation.monsters;
  * @author Dennis Cosgrove
  */
 public class JointImplementation extends org.lookingglassandalice.storytelling.implementation.JointImplementation {
-	private final edu.cmu.cs.dennisc.scenegraph.Composite sgJoint;
+	private final edu.cmu.cs.dennisc.scenegraph.Joint sgJoint;
 	private final org.lookingglassandalice.storytelling.resources.JointId jointId;
-	public JointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId, edu.cmu.cs.dennisc.scenegraph.Composite sgJoint ) {
+	public JointImplementation( org.lookingglassandalice.storytelling.implementation.JointedModelImplementation jointedModelImplementation, org.lookingglassandalice.storytelling.resources.JointId jointId, edu.cmu.cs.dennisc.scenegraph.Joint sgJoint ) {
+		super( jointedModelImplementation );
+		assert sgJoint != null;
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( sgJoint );
 		this.jointId = jointId;
 		this.sgJoint = sgJoint;
 	}
@@ -58,7 +61,7 @@ public class JointImplementation extends org.lookingglassandalice.storytelling.i
 		return this.jointId;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite() {
+	public edu.cmu.cs.dennisc.scenegraph.Joint getSgComposite() {
 		return this.sgJoint;
 	}
 }

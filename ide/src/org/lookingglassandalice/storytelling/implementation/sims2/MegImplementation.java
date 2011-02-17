@@ -48,12 +48,6 @@ package org.lookingglassandalice.storytelling.implementation.sims2;
  */
 public class MegImplementation extends org.lookingglassandalice.storytelling.implementation.PersonImplementation {
 	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
-//	public void addPerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation ) {
-//		personImplementation.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebPerson } );
-//	}
-//	public void removePerson( org.lookingglassandalice.storytelling.implementation.PersonImplementation personImplementation ) {
-//		personImplementation.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] {} );
-//	}
 	public MegImplementation( org.lookingglassandalice.storytelling.Person abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource) {
 		super( new edu.cmu.cs.dennisc.scenegraph.Visual(), abstraction, resource );
 		try {
@@ -72,6 +66,6 @@ public class MegImplementation extends org.lookingglassandalice.storytelling.imp
 	}
 	@Override
 	protected JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
-		return new JointImplementation( new SgJoint( this.nebPerson, jointId ) );
+		return new JointImplementation( this, new SgJoint( this.nebPerson, jointId ) );
 	}
 }

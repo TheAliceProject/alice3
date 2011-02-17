@@ -56,21 +56,12 @@ public abstract class Person extends Entity implements MutableRider, Walker, Tou
 		this.implementation = resource.createPersonImplementation( this );
 	}
 	
-//	public PersonResource getPersonResource() {
-//		return this.implementation.getResource();
-//	}
-//	private void setPersonResource( PersonResource resource ) {
-//		this.implementation.setResource( resource );
-//	}
-	
 	public void setVehicle( Entity vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 	public void walkTo( Entity entity ) {
-		
 	}
 	public void touch( Entity entity ) {
-		
 	}
 	
 	private java.util.Map< org.lookingglassandalice.storytelling.resources.JointId, Joint > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
