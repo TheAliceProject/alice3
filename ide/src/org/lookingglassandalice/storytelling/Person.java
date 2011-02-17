@@ -85,6 +85,50 @@ public abstract class Person extends Entity implements MutableRider, Walker, Tou
 			return rv;
 		}
 	}
+
+	public Joint getPelvisForLowerBody() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.PELVIS_LOWER_BODY );
+	}
+	public Joint getPelvisForUpperBody() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.PELVIS_LOWER_BODY );
+	}
+
+	public Joint getSpineMiddle() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.SPINE_MIDDLE );
+	}
+	public Joint getSpineUpper() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.SPINE_UPPER );
+	}
+	public Joint getNeck() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.NECK );
+	}
+	public Joint getHead() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.HEAD );
+	}
+	
+	public Joint getRightHip() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_HIP );
+	}
+	public Joint getRightKnee() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_KNEE );
+	}
+	public Joint getRightAnkle() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_ANKLE );
+	}
+	public Joint getLeftHip() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_HIP );
+	}
+	public Joint getLeftKnee() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_KNEE );
+	}
+	public Joint getLeftAnkle() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_ANKLE );
+	}
+
+	
+	public Joint getRightClavicle() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_CLAVICLE );
+	}
 	public Joint getRightShoulder() {
 		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_SHOULDER );
 	}
@@ -94,7 +138,16 @@ public abstract class Person extends Entity implements MutableRider, Walker, Tou
 	public Joint getRightWrist() {
 		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_WRIST );
 	}
-//	public Target getRightFingerTipTarget() {
-//		return null;
-//	}
+	public Joint getLeftClavicle() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_CLAVICLE );
+	}
+	public Joint getLeftShoulder() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_SHOULDER );
+	}
+	public Joint getLeftElbow() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_ELBOW );
+	}
+	public Joint getLeftWrist() {
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_WRIST );
+	}
 }

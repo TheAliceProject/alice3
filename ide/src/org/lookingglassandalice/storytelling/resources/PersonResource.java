@@ -55,7 +55,7 @@ public interface PersonResource {
 		RIGHT_HIP,
 		RIGHT_KNEE,
 		RIGHT_ANKLE,
-		PELVIS_UPPER_BODDY,
+		PELVIS_UPPER_BODY,
 		SPINE_MIDDLE,
 		SPINE_UPPER,
 		NECK,
