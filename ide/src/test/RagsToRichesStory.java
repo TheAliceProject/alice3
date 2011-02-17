@@ -118,12 +118,24 @@ class SnowScene extends Scene {
 
 	public void chillInSkiChalet() {
 		while( true ) {
-			this.redCone.move( MoveDirection.UP, 1.0 );
-			this.redCone.move( MoveDirection.DOWN, 1.0 );
-			this.greenCone.move( MoveDirection.UP, 1.0 );
-			this.greenCone.move( MoveDirection.DOWN, 1.0 );
-			this.blueCone.move( MoveDirection.UP, 1.0 );
-			this.blueCone.move( MoveDirection.DOWN, 1.0 );
+			this.redCone.turn( TurnDirection.FORWARD, 1.0 );
+			this.blueCone.roll( RollDirection.LEFT, 1.0 );
+			org.alice.virtualmachine.DoTogether.invokeAndWait( new Runnable() {
+				public void run() {
+					SnowScene.this.redCone.move( MoveDirection.UP, 1.0 );
+				}
+			}, new Runnable() {
+				public void run() {
+					SnowScene.this.greenCone.move( MoveDirection.UP, 1.0 );
+				}
+			}, new Runnable() {
+				public void run() {
+					SnowScene.this.blueCone.move( MoveDirection.UP, 1.0 );
+				}
+			} );
+			this.redCone.move( MoveDirection.DOWN, 1.0, MoveDetailsFactory.duration( 0.333 ) );
+			this.greenCone.move( MoveDirection.DOWN, 1.0, MoveDetailsFactory.duration( 0.333 ) );
+			this.blueCone.move( MoveDirection.DOWN, 1.0, MoveDetailsFactory.duration( 0.333 ) );
 		}
 	}
 }
@@ -166,6 +178,7 @@ class DesertScene extends Scene {
 	}
 		
 	public void turnBigRocksIntoLittleRocks() {
+		this.camera.turn( TurnDirection.LEFT, 1.0 );
 	}
 }
 

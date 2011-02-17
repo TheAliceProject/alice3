@@ -99,13 +99,7 @@ public class SceneImplementation extends EntityImplementation {
 		return this.program;
 	}
 	public void setProgram( ProgramImplementation program ) {
-//		if( this.program != null ) {
-//			this.removeCamerasFrom( this.program );
-//		}
 		this.program = program;
-//		if( this.program != null ) {
-//			this.addCamerasTo( this.program );
-//		}
 	}
 
 	public void preserveVehiclesAndPointsOfView() {
