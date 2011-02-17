@@ -48,9 +48,26 @@ package org.lookingglassandalice.storytelling.resources;
  */
 public interface PersonResource {
 	public static enum PersonJointId implements JointId {
+		PELVIS_LOWER_BODY,
+		LEFT_HIP,
+		LEFT_KNEE,
+		LEFT_ANKLE,
+		RIGHT_HIP,
+		RIGHT_KNEE,
+		RIGHT_ANKLE,
+		PELVIS_UPPER_BODDY,
+		SPINE_MIDDLE,
+		SPINE_UPPER,
+		NECK,
+		HEAD,
+		RIGHT_CLAVICLE,
 		RIGHT_SHOULDER,
 		RIGHT_ELBOW,
-		RIGHT_WRIST;
+		RIGHT_WRIST,
+		LEFT_CLAVICLE,
+		LEFT_SHOULDER,
+		LEFT_ELBOW,
+		LEFT_WRIST;
 	};
 	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction );
 }

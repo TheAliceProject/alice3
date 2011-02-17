@@ -58,6 +58,7 @@ public class OgreResource implements org.lookingglassandalice.storytelling.resou
     	this.skeletonModelResource.frontFacingAppearance.setValue( null );
 	}
 	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
+		System.err.println( "TODO: create copy. OgreResource." );
 		edu.cmu.cs.dennisc.resource.SkeletonModelResource sgCopy = this.skeletonModelResource;
 		return new org.lookingglassandalice.storytelling.implementation.monsters.MonsterImplementation( sgCopy, abstraction, this, this.texture );
 	}
