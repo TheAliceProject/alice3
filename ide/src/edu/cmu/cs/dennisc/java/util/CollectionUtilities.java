@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.java.util;
 
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -108,5 +110,26 @@ public abstract class CollectionUtilities {
 		}
 		return rv;
 	}
-	//todo createFloatArray...
+	
+    public static float[] createFloatArray(java.util.Collection<Float> collection )
+    {
+        final int N = collection.size();
+        float[] rv = new float[ N ];
+        int i = 0;
+        for( Float v : collection ) {
+            rv[ i++ ] = v;
+        }
+        return rv;
+    }
+    
+    public static double[] createDoubleArray(java.util.Collection<Double> collection )
+    {
+        final int N = collection.size();
+        double[] rv = new double[ N ];
+        int i = 0;
+        for( Double v : collection ) {
+            rv[ i++ ] = v;
+        }
+        return rv;
+    }
 }

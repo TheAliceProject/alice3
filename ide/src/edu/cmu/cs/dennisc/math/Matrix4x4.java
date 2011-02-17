@@ -62,6 +62,43 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 	public Matrix4x4( double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33 ) {
 		set( m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33 );
 	}
+	public Matrix4x4(double[] vals)
+	{
+	    if (vals.length == 12)
+	    {
+	        right.x = vals[0];
+	        right.y = vals[1];
+	        right.z = vals[2];
+	        up.x = vals[3];
+	        up.y = vals[4];
+	        up.z = vals[5];
+	        backward.x = vals[6];
+	        backward.y = vals[7];
+	        backward.z = vals[8];
+	        translation.x = vals[9];
+	        translation.y = vals[10];
+	        translation.z = vals[11];
+	    }
+	    else if (vals.length == 16)
+	    {
+	        right.x = vals[0];
+            right.y = vals[1];
+            right.z = vals[2];
+            right.w = vals[3];
+            up.x = vals[4];
+            up.y = vals[5];
+            up.z = vals[6];
+            up.w = vals[7];
+            backward.x = vals[8];
+            backward.y = vals[9];
+            backward.z = vals[10];
+            backward.w = vals[11];
+            translation.x = vals[12];
+            translation.y = vals[13];
+            translation.z = vals[14];
+            translation.w = vals[15];
+	    }
+	}
 
 	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		right.decode( binaryDecoder );

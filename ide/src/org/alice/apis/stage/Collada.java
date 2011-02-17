@@ -41,58 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package org.alice.apis.stage;
 
-import javax.media.opengl.GL;
+public class Collada extends AliceModel 
+{
+    
+    @Override
+    protected String getResourceString()
+    {
+//        return "Sword_Sporsal.nebundle";
+//        return "Detective Bosc Johnson.dae";
+        return "Detective Bosc Johnson.nebundle";
+//        return "Bio Castle.dae";
+    }
 
-/**
- * @author Dennis Cosgrove
- */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
-
-	private java.util.HashMap< Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> > m_pickNameMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private PickParameters m_pickParameters;
-
-	public void pick( PickParameters pickParameters ) {
-		m_pickParameters = pickParameters;
-//		javax.media.opengl.Threading.invokeOnOpenGLThread( new Runnable() {
-//			public void run() {
-				m_pickParameters.getGLAutoDrawable().display();
-//			}
-//		} );
-	}
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
-		}
-	}
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
-	}
-
-	protected void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-	public void pickScene( AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-		gl.glMatrixMode( GL.GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters, conformanceTestResults );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-	
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
-	}
 }

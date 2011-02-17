@@ -41,58 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package edu.cmu.cs.dennisc.math.property;
 
-import javax.media.opengl.GL;
+public class Vector3fProperty extends edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.math.Vector3f >  implements edu.cmu.cs.dennisc.property.CopyableProperty< edu.cmu.cs.dennisc.math.Vector3f >{
+    public Vector3fProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Vector3f value) {
+        super( owner, value );
+    }
 
-/**
- * @author Dennis Cosgrove
- */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
-
-	private java.util.HashMap< Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> > m_pickNameMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private PickParameters m_pickParameters;
-
-	public void pick( PickParameters pickParameters ) {
-		m_pickParameters = pickParameters;
-//		javax.media.opengl.Threading.invokeOnOpenGLThread( new Runnable() {
-//			public void run() {
-				m_pickParameters.getGLAutoDrawable().display();
-//			}
-//		} );
-	}
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
-		}
-	}
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
-	}
-
-	protected void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-	public void pickScene( AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-		gl.glMatrixMode( GL.GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters, conformanceTestResults );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-	
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
-	}
+    @Override
+    public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Vector3f value ) {
+        assert value != null;
+        super.setValue( owner, value );
+    }
+    
+    public edu.cmu.cs.dennisc.math.Vector3f getCopy( edu.cmu.cs.dennisc.math.Vector3f rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+        rv.set( getValue( owner ) );
+        return rv;
+    }
+    public edu.cmu.cs.dennisc.math.Vector3f getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+        return getCopy( edu.cmu.cs.dennisc.math.Vector3f.createNaN(), owner );
+    }
+    public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Vector3f value ) {
+        setValue( owner, new edu.cmu.cs.dennisc.math.Vector3f( value ) );
+    }
 }

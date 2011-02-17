@@ -41,58 +41,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package org.alice.apis.stage;
 
-import javax.media.opengl.GL;
-
-/**
- * @author Dennis Cosgrove
- */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
-
-	private java.util.HashMap< Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> > m_pickNameMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private PickParameters m_pickParameters;
-
-	public void pick( PickParameters pickParameters ) {
-		m_pickParameters = pickParameters;
-//		javax.media.opengl.Threading.invokeOnOpenGLThread( new Runnable() {
-//			public void run() {
-				m_pickParameters.getGLAutoDrawable().display();
-//			}
-//		} );
-	}
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
-		}
-	}
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
-	}
-
-	protected void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-	public void pickScene( AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-		gl.glMatrixMode( GL.GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters, conformanceTestResults );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-	
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
-	}
+public enum JointIdentifier
+{
+    ROOT("__Root_rot__"),
+    SPINE_BASE("__Spine0__"),
+    SPINE_MIDDLE("__Spine1__"),
+    SPINE_TOP("__Spine2__"),
+    NECK("__Neck__"),
+    HEAD("__Head__"),
+    RIGHT_CLAVICLE("__R_Clavicle__"),
+    RIGHT_UPPER_ARM("__R_UpperArm__"),
+    RIGHT_BICEP("__R_Bicep__"),
+    RIGHT_FOREARM("__R_Forearm__"),
+    RIGHT_WRIST("__R_Wrist__"),
+    RIGHT_HAND("__R_Hand__"),
+    LEFT_CLAVICLE("__L_Clavicle__"),
+    LEFT_UPPER_ARM("__L_UpperArm__"),
+    LEFT_BICEP("__L_Bicep__"),
+    LEFT_FOREARM("__L_Forearm__"),
+    LEFT_WRIST("__L_Wrist__"),
+    LEFT_HAND("__L_Hand__"),
+    PELVIS("__Pelvis__"),
+    RIGHT_THIGH("__R_Thigh__"),
+    RIGHT_CALF("__R_Calf__"),
+    RIGHT_FOOT("__R_Foot__"),
+    LEFT_THIGH("__L_Thigh__"),
+    LEFT_CALF("__L_Calf__"),
+    LEFT_FOOT("__L_Foot__");
+    
+    private String nameKey;
+    private JointIdentifier(String nameKey)
+    {
+        this.nameKey = nameKey;
+    }
+    
+    public String getNameKey()
+    {
+        return this.nameKey;
+    }
 }

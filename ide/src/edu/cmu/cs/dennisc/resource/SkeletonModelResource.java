@@ -41,58 +41,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package edu.cmu.cs.dennisc.resource;
 
-import javax.media.opengl.GL;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.Joint;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 
-/**
- * @author Dennis Cosgrove
- */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+public class SkeletonModelResource extends Visual
+{
+    static {
+        edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( SkeletonModelResource.class, SkeletonModelResourceAdapter.class );
+    }
+    public final InstanceProperty<Joint> skeleton = new InstanceProperty<Joint>(this, null);
 
-	private java.util.HashMap< Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> > m_pickNameMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private PickParameters m_pickParameters;
+    
+    public SkeletonModelResource()
+    {
+    }
+    
+    public void applyRotationToJointAboutArbitraryAxisInRadians( Joint jointReference, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy)
+    {
+        jointReference.applyRotationAboutArbitraryAxisInRadians(axis, angleInRadians, sgAsSeenBy);
+    }
+    
+    public void applyTranslationToJoint( Joint jointReference, double x, double y, double z, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy)
+    {      
+        jointReference.applyTranslation(x, y, z, sgAsSeenBy);
+    }
+            
+    public Joint getJoint(String jointID)
+    {
+        return this.skeleton.getValue().getJoint(jointID);
+    }
+    
+    public int getJointCount()
+    {
+        return this.skeleton.getValue().getJointCount();
+    }
+    
+    public Joint getJointForIndex(int index)
+    {
+        return this.skeleton.getValue().getJointForIndex(index);
+    }
+    
+    public boolean hasJoint(String jointID)
+    {
+        if ( getJoint(jointID) != null )
+        {
+            return true;
+        }
+        return false;
+    }
 
-	public void pick( PickParameters pickParameters ) {
-		m_pickParameters = pickParameters;
-//		javax.media.opengl.Threading.invokeOnOpenGLThread( new Runnable() {
-//			public void run() {
-				m_pickParameters.getGLAutoDrawable().display();
-//			}
-//		} );
-	}
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
-		}
-	}
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
-	}
-
-	protected void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-	public void pickScene( AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-		gl.glMatrixMode( GL.GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters, conformanceTestResults );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-	
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
-	}
 }

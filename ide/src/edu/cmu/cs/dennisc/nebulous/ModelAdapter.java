@@ -4,6 +4,10 @@
 
 package edu.cmu.cs.dennisc.nebulous;
 
+import org.alice.ide.IDE;
+
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -23,9 +27,6 @@ public class ModelAdapter< E extends Model > extends edu.cmu.cs.dennisc.lookingg
 	}
 	@Override
 	protected void renderGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
-//		if( rc.isGLChanged() ) {
-//			m_element.forget();
-//		}
 		m_element.render();
 	}
 	@Override

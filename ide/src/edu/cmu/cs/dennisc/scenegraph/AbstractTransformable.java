@@ -100,6 +100,7 @@ public abstract class AbstractTransformable extends Composite {
 		assert affect != null;
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = localTransformation.getValue();
 		affect.set( m, transformation );
+		
 		localTransformation.touch();
 		fireAbsoluteTransformationChange();
 	}

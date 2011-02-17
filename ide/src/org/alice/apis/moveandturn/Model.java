@@ -44,6 +44,7 @@
 package org.alice.apis.moveandturn;
 
 import edu.cmu.cs.dennisc.alice.annotations.*; 
+import edu.cmu.cs.dennisc.scenegraph.Appearance;
 
 /**
  * @author Dennis Cosgrove
@@ -60,18 +61,24 @@ public abstract class Model extends AbstractModel {
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< SurfaceTexture > SURFACE_TEXTURE_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< SurfaceTexture >( Model.class, "SurfaceTexture" );
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< SurfaceTexture[] > POTENTIAL_SURFACE_TEXTURES_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< SurfaceTexture[] >( Model.class, "PotentialSurfaceTextures" );
 	
-	private edu.cmu.cs.dennisc.scenegraph.Visual m_sgVisual = new edu.cmu.cs.dennisc.scenegraph.Visual();
-	private edu.cmu.cs.dennisc.scenegraph.SingleAppearance m_sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
+	protected edu.cmu.cs.dennisc.scenegraph.Visual m_sgVisual;
+	protected edu.cmu.cs.dennisc.scenegraph.SingleAppearance m_sgAppearance;
 
 	private java.util.List< SurfaceTexture > m_potentialSurfaceTextures = new java.util.LinkedList< SurfaceTexture >();
 	
 
 	public Model() {
-		putElement( m_sgVisual );
+        m_sgVisual = this.createSGVisual();
+        m_sgAppearance = (edu.cmu.cs.dennisc.scenegraph.SingleAppearance)m_sgVisual.frontFacingAppearance.getValue();
+        m_sgVisual.setParent( getSGTransformable() );
+        putElement( m_sgVisual );
 		putElement( m_sgAppearance );
-
-		m_sgVisual.frontFacingAppearance.setValue( m_sgAppearance );
-		m_sgVisual.setParent( getSGTransformable() );
+	}
+	
+	protected edu.cmu.cs.dennisc.scenegraph.Visual createSGVisual() {
+        edu.cmu.cs.dennisc.scenegraph.Visual rv = new edu.cmu.cs.dennisc.scenegraph.Visual();
+	    rv.frontFacingAppearance.setValue( new edu.cmu.cs.dennisc.scenegraph.SingleAppearance() );
+	    return rv;
 	}
 	
 	protected abstract void createSGGeometryIfNecessary();
@@ -91,8 +98,9 @@ public abstract class Model extends AbstractModel {
 	
 	@Override
 	protected void realize() {
-		createSGGeometryIfNecessary();
-		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = getSGGeometry();
+        createSGGeometryIfNecessary();
+
+        edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = getSGGeometry();
 		if( sgGeometry != null ) {
 			putElement( sgGeometry );
 			m_sgVisual.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { sgGeometry } );
@@ -150,10 +158,10 @@ public abstract class Model extends AbstractModel {
 
 	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
 	public Scale getVisualScale() {
-		return new Scale( m_sgVisual.scale.getValue() );
+		return new Scale( getSGVisual().scale.getValue() );
 	}
 	public void setVisualScale( Scale scale ) {
-		m_sgVisual.scale.setValue( scale.getInternal() );
+	    getSGVisual().scale.setValue( scale.getInternal() );
 	}
 
 	@Override
@@ -304,11 +312,11 @@ public abstract class Model extends AbstractModel {
 	//todo: until this descends it does not make sense
 	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
 	public Boolean isShowing() {
-		return m_sgVisual.isShowing.getValue();
+		return getSGVisual().isShowing.getValue();
 	}
 	//todo: howMuch
 	public void setShowing( Boolean isShowing ) {
-		m_sgVisual.isShowing.setValue( isShowing );
+	    getSGVisual().isShowing.setValue( isShowing );
 	}
 
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
@@ -360,16 +368,16 @@ public abstract class Model extends AbstractModel {
 	@Override
 	protected void applyScale( edu.cmu.cs.dennisc.math.Vector3 axis, boolean isScootDesired ) {
 		super.applyScale( axis, isScootDesired );
-		edu.cmu.cs.dennisc.math.Matrix3x3 scale = m_sgVisual.scale.getValue();
+		edu.cmu.cs.dennisc.math.Matrix3x3 scale = getSGVisual().scale.getValue();
 		edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
-		m_sgVisual.scale.setValue( scale );
+		getSGVisual().scale.setValue( scale );
 	}
 
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans, boolean isOriginIncluded ) {
 		super.updateCumulativeBound( rv, trans, isOriginIncluded );
-		if( m_sgVisual.isShowing.getValue() ) {
-			rv.add( m_sgVisual, trans );
+		if( getSGVisual().isShowing.getValue() ) {
+			rv.add( getSGVisual(), trans );
 		}
 		return rv;
 	}	

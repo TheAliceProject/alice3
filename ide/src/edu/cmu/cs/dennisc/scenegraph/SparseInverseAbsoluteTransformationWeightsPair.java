@@ -41,58 +41,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package edu.cmu.cs.dennisc.scenegraph;
 
-import javax.media.opengl.GL;
+import java.util.LinkedList;
+import java.util.List;
 
-/**
- * @author Dennis Cosgrove
- */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair
+{
+    protected int[] indices;
+    
+    @Override
+    public void setWeights(float[] weightsIn)
+    {
+        List<Float> nonZeroWeights = new LinkedList<Float>();
+        List<Integer> nonZeroIndices = new LinkedList<Integer>();
+        for (int i=0; i<weightsIn.length; i++)
+        {
+            if (weightsIn[i] != 0)
+            {
+                nonZeroWeights.add(new Float(weightsIn[i]));
+                nonZeroIndices.add(new Integer(i));
+            }
+        }
+        
+        this.weights = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createFloatArray(nonZeroWeights);
+        this.indices = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createIntArray(nonZeroIndices);
+    }
 
-	private java.util.HashMap< Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> > m_pickNameMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private PickParameters m_pickParameters;
+    public void setWeightsAndIndices(float[] weights, int[] indices)
+    {
+        this.weights = weights;
+        this.indices = indices;
+    }
+    
+    @Override
+    public int getIndex()
+    {
+        return this.indices[this.index];
+    }
 
-	public void pick( PickParameters pickParameters ) {
-		m_pickParameters = pickParameters;
-//		javax.media.opengl.Threading.invokeOnOpenGLThread( new Runnable() {
-//			public void run() {
-				m_pickParameters.getGLAutoDrawable().display();
-//			}
-//		} );
-	}
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
-		}
-	}
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
-	}
-
-	protected void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-	public void pickScene( AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-		gl.glMatrixMode( GL.GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters, conformanceTestResults );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-	
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
-	}
 }

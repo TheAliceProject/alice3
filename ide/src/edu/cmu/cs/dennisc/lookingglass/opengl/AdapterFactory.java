@@ -105,7 +105,16 @@ public abstract class AdapterFactory {
 				register( sgClass, cls );
 			}
 		}
-		return (AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
+		AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement > rv = null;
+		try
+		{
+			rv = (AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return rv;
 	}
 
 	public static void forget( edu.cmu.cs.dennisc.pattern.AbstractElement sgElement ) {
