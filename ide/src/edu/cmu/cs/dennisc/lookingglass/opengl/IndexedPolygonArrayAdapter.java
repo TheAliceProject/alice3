@@ -65,7 +65,7 @@ public abstract class IndexedPolygonArrayAdapter< E extends edu.cmu.cs.dennisc.s
 	protected void renderGeometry( RenderContext rc ) {
 		float uRatio = rc.getURatio();
 		float vRatio = rc.getVRatio();
-		int[] polygonData = m_element.polygonData.getValue();
+		int[] polygonData = m_element.polygonData.getValueAsArray();
 		int mode = getMode();
 		int indicesPerPolygon = getIndicesPerPolygon();
 		rc.gl.glBegin( mode );
@@ -83,7 +83,7 @@ public abstract class IndexedPolygonArrayAdapter< E extends edu.cmu.cs.dennisc.s
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
 		int mode = getMode();
 		int indicesPerPolygon = getIndicesPerPolygon();
-		int[] polygonData = m_element.polygonData.getValue();
+		int[] polygonData = m_element.polygonData.getValueAsArray();
 		//todo: add try/finally pairs
 		pc.gl.glPushName( -1 );
 		if( isSubElementRequired ) {
@@ -121,7 +121,7 @@ public abstract class IndexedPolygonArrayAdapter< E extends edu.cmu.cs.dennisc.s
 	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
 		if( subElement != -1 ) {
 			int indicesPerPolygon = getIndicesPerPolygon();
-			int[] polygonData = m_element.polygonData.getValue();
+			int[] polygonData = m_element.polygonData.getValueAsArray();
 			int index = subElement * indicesPerPolygon; 
 			if( 0 <= index && index < polygonData.length ) {
 				edu.cmu.cs.dennisc.scenegraph.Vertex v = accessVertexAt( polygonData[ index ] );				

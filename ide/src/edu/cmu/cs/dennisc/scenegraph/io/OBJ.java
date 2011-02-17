@@ -180,7 +180,7 @@ public class OBJ {
 	}
 	public static void encode( java.io.OutputStream os, edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ita, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, String groupName ) {
 		edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices = ita.vertices.getValue();
-		int[] indices = ita.polygonData.getValue();
+		int[] indices = ita.polygonData.getValueAsArray();
 		if( vertices!=null && indices!=null ) {
 			java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( os );
 			java.io.PrintWriter pw = new java.io.PrintWriter( bos );
