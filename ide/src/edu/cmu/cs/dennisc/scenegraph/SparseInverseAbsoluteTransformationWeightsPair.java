@@ -46,6 +46,9 @@ package edu.cmu.cs.dennisc.scenegraph;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
 public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair
 {
     protected int[] indices;
@@ -72,6 +75,20 @@ public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsol
     {
         this.weights = weights;
         this.indices = indices;
+    }
+    
+    @Override
+    public void decode(BinaryDecoder binaryDecoder)
+    {
+        super.decode(binaryDecoder);
+        this.indices = binaryDecoder.decodeIntArray();
+    }
+
+    @Override
+    public void encode(BinaryEncoder binaryEncoder)
+    {
+        super.encode(binaryEncoder);
+        binaryEncoder.encode(this.indices);
     }
     
     @Override

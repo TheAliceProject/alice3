@@ -49,6 +49,7 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.lookingglass.opengl.GeometryAdapter;
 import edu.cmu.cs.dennisc.lookingglass.opengl.PickContext;
 import edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext;
+import edu.cmu.cs.dennisc.lookingglass.opengl.WeightedMeshAdapter;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
@@ -56,7 +57,6 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
-import edu.cmu.cs.dennisc.scenegraph.WeightedMeshAdapter;
 
 public class SkeletonModelResourceAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter< SkeletonModelResource >  implements PropertyListener{
     

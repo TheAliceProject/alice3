@@ -131,6 +131,11 @@ public abstract class AliceModel extends org.alice.apis.moveandturn.Model {
     protected void realize() {
         createSGGeometryIfNecessary();
         super.realize();
+        for (edu.cmu.cs.dennisc.scenegraph.Geometry g : skeletonModelResource.geometries.getValue())
+        {
+            putElement( g );
+        }
+        m_sgVisual.geometries.setValue( skeletonModelResource.geometries.getValue());
     }
    
    @Override

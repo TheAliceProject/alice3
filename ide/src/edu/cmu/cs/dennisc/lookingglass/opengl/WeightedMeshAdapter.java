@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.scenegraph;
+package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
@@ -55,11 +55,12 @@ import org.alice.ide.IDE;
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
-import edu.cmu.cs.dennisc.lookingglass.opengl.MeshAdapter;
-import edu.cmu.cs.dennisc.lookingglass.opengl.PickContext;
-import edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.scenegraph.Indices;
+import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
+import edu.cmu.cs.dennisc.scenegraph.Joint;
+import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 import edu.cmu.cs.dennisc.scenegraph.Mesh.MeshType;
 
 public class WeightedMeshAdapter< E extends WeightedMesh > extends MeshAdapter<E>
@@ -131,6 +132,9 @@ public class WeightedMeshAdapter< E extends WeightedMesh > extends MeshAdapter<E
     
     private void initializeAliceBased()
     {
+        this.textureCoordinates = m_element.textureCoordinates.getValue();
+        this.indices = m_element.indices.getValue();
+        
         this.vertices = new double[this.m_element.vertices.getValue().length];
         this.normals = new float[this.m_element.normals.getValue().length];
         
@@ -160,6 +164,9 @@ public class WeightedMeshAdapter< E extends WeightedMesh > extends MeshAdapter<E
     
     private void initializeColladaBased()
     {
+        this.textCoordBuffer = m_element.textCoordBuffer.getValue();
+        this.indexBuffer = m_element.indexBuffer.getValue();
+        
         this.normalBuffer = BufferUtilities.copyFloatBuffer(this.m_element.normalBuffer.getValue());
         this.vertexBuffer = BufferUtilities.copyDoubleBuffer(this.m_element.vertexBuffer.getValue());
         int nVertexCount = this.vertexBuffer.limit() / 3;
