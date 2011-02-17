@@ -58,7 +58,7 @@ public class Polygons extends Element {
 	}
 	
 	public int[] getPolygonData() {
-		return m_sgITA.polygonData.getValue();
+		return m_sgITA.polygonData.getValueAsArray();
 	}
 	public void setPolygonData( int[] polygonData ) {
 		m_sgITA.polygonData.setValue( polygonData );

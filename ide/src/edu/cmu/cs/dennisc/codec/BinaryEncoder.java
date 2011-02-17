@@ -60,6 +60,7 @@ public interface BinaryEncoder {
 	public void encode( BinaryEncodableAndDecodable value );
 	public void encode( ReferenceableBinaryEncodableAndDecodable value, java.util.Map< ReferenceableBinaryEncodableAndDecodable, Integer > map );
 
+	public void encode( java.nio.Buffer value );
 	public void encode( boolean[] array );
 	public void encode( byte[] array );
 	public void encode( char[] array );

@@ -73,6 +73,14 @@ public interface BinaryDecoder {
 //	@Deprecated
 //	public <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable( Class< E > cls, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map );
 
+	public java.nio.ByteBuffer decodeByteBuffer();
+	public java.nio.CharBuffer decodeCharBuffer();
+	public java.nio.ShortBuffer decodeShortBuffer();
+	public java.nio.IntBuffer decodeIntBuffer();
+	public java.nio.LongBuffer decodeLongBuffer();
+	public java.nio.FloatBuffer decodeFloatBuffer();
+	public java.nio.DoubleBuffer decodeDoubleBuffer();
+	
 	public boolean[] decodeBooleanArray();
 	public byte[] decodeByteArray();
 	public char[] decodeCharArray();

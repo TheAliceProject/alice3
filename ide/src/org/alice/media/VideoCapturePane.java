@@ -1097,6 +1097,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 
 	private void close()
 	{
+	    this.moviePlayer.close();
 		if (this.recordedMovieFile != null)
 		{
 			this.recordedMovieFile.delete();
@@ -1110,9 +1111,15 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 		{
 			return this.recordedMovieFile;
 		}
-		String filename = "myAliceMovie.mov";
-		String path = this.getDefaultDirectory();
-		this.recordedMovieFile = new File(path, filename);
+		try
+		{
+		    this.recordedMovieFile = File.createTempFile("TEMP_AliceMovie", ".mov");
+		}
+		catch (Exception e)
+		{
+		    this.recordedMovieFile = null;
+		    return null;
+		}
 		if (this.recordedMovieFile.exists())
 		{
 			return this.recordedMovieFile;
@@ -1176,7 +1183,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	
 	private void setRecordMode()
 	{
-		this.moviePlayer.destroy();
+		this.moviePlayer.close();
 		this.restartWorld();
 		this.isRestart = false;
 		this.recordButton.setIcon( this.recordIcon );

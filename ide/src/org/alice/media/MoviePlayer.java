@@ -157,11 +157,16 @@ public class MoviePlayer extends JPanel implements ControllerListener{
 		}
 	}
 
-	public void destroy() 
+	public void close() 
 	{
 		if (this.player != null)
 		{
 			this.player.close();
+            this.player.removeControllerListener( this );
+            this.player.deallocate();
+            this.visualComponent = null;
+            this.controlComponent = null;
+            this.player = null;
 		}
 	}
 	
