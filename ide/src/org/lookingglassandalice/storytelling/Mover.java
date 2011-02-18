@@ -48,5 +48,5 @@ package org.lookingglassandalice.storytelling;
  */
 public interface Mover {
 	void move( MoveDirection direction, Number amount );
-	void move( MoveDirection direction, Number amount, MoveDetails keywords );
+	void move( MoveDirection direction, Number amount, VantagePointAnimationDetails keywords );
 }

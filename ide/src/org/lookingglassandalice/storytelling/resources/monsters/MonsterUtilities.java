@@ -41,22 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.resources.monsters;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TurnDetails extends AnimationDetails {
-	public TurnDetails duration( Number value ) {
-		this.duration = value.doubleValue();
-		return this;
+public class MonsterUtilities {
+	private MonsterUtilities() {
 	}
-	public TurnDetails asSeenBy( Entity value ) {
-		this.asSeenBy = value;
-		return this;
+	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual decode( String path ) {
+    	java.io.InputStream is = MonsterUtilities.class.getResourceAsStream( path );
+    	edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
+    	return decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap< Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable >() );
 	}
-	public TurnDetails style( Style value ) {
-		this.style = value;
-		return this;
+	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual createCopy( edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal ) {
+	    edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = sgOriginal.geometries.getValue();
+		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
+
+	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual rv = new edu.cmu.cs.dennisc.scenegraph.SkeletonVisual();
+		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRootCopy = (edu.cmu.cs.dennisc.scenegraph.Joint)sgSkeletonRoot.newCopy();
+
+    	rv.skeleton.setValue( sgSkeletonRootCopy );
+		rv.geometries.setValue( sgGeometries );
+		return rv;
+	}
+	public static edu.cmu.cs.dennisc.texture.Texture getTexture( edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal ) {
+		edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance = (edu.cmu.cs.dennisc.scenegraph.SingleAppearance)sgOriginal.frontFacingAppearance.getValue();
+	    return sgAppearance.diffuseColorTexture.getValue();
 	}
 }

@@ -46,23 +46,22 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class TurnDetailsFactory {
-	private TurnDetailsFactory() {
-		throw new AssertionError();
+public class VantagePointAnimationDetails extends AbstractAnimationDetails {
+	protected Entity asSeenBy = null;
+	/*package-private*/ Entity getAsSeenBy( Entity valueIfNull ) {
+		return this.asSeenBy != null ? this.asSeenBy : valueIfNull;
 	}
-	public static TurnDetails duration( Number value ) {
-		TurnDetails rv = new TurnDetails();
-		rv.duration( value );
-		return rv;
+
+	public VantagePointAnimationDetails duration( Number value ) {
+		this.duration = value.doubleValue();
+		return this;
 	}
-	public static TurnDetails asSeenBy( Entity value ) {
-		TurnDetails rv = new TurnDetails();
-		rv.asSeenBy( value );
-		return rv;
+	public VantagePointAnimationDetails asSeenBy( Entity value ) {
+		this.asSeenBy = value;
+		return this;
 	}
-	public static TurnDetails style( Style value ) {
-		TurnDetails rv = new TurnDetails();
-		rv.style( value );
-		return rv;
+	public VantagePointAnimationDetails style( Style value ) {
+		this.style = value;
+		return this;
 	}
 }

@@ -85,11 +85,11 @@ public abstract class Scene extends Entity {
 	
 	protected abstract void handleActiveChanged( boolean isActive, int activeCount );
 	
-	protected void preserveVehiclesAndPointsOfView() {
-		this.implementation.preserveVehiclesAndPointsOfView();
+	protected void preserveVehiclesAndVantagePoints() {
+		this.implementation.preserveVehiclesAndVantagePoints();
 	}
-	protected void restoreVehiclesAndPointsOfView() {
-		this.implementation.restoreVehiclesAndPointsOfView();
+	protected void restoreVehiclesAndVantagePoints() {
+		this.implementation.restoreVehiclesAndVantagePoints();
 	}
 	
 //	public void addEntity( Entity entity ) {

@@ -46,24 +46,16 @@ package org.lookingglassandalice.storytelling.resources.monsters;
 /**
  * @author Dennis Cosgrove
  */
-public class OgreResource implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
-	private final edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot;
-    private final edu.cmu.cs.dennisc.texture.Texture texture;
-    private final edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries;
-    public OgreResource() {
-    	java.io.InputStream is = OgreResource.class.getResourceAsStream( "ogre.alice" );
-    	edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
-    	edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal = decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap< Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable >() );
-    	edu.cmu.cs.dennisc.scenegraph.SingleAppearance appearance = (edu.cmu.cs.dennisc.scenegraph.SingleAppearance)sgOriginal.frontFacingAppearance.getValue();
-    	this.texture = appearance.diffuseColorTexture.getValue();
-    	this.sgGeometries = sgOriginal.geometries.getValue();
-    	this.sgSkeletonRoot = sgOriginal.skeleton.getValue();
+public enum Ogre implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
+	GREEN;
+	
+	private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal;
+    private Ogre() {
+    	this.sgOriginal = MonsterUtilities.decode( "ogre.alice" );
 	}
 	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
-		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = new edu.cmu.cs.dennisc.scenegraph.SkeletonVisual();
-		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRootCopy = (edu.cmu.cs.dennisc.scenegraph.Joint)this.sgSkeletonRoot.newCopy();
-		sgSkeletonVisual.skeleton.setValue( sgSkeletonRootCopy );
-		sgSkeletonVisual.geometries.setValue( this.sgGeometries );
-		return new org.lookingglassandalice.storytelling.implementation.monsters.MonsterImplementation( sgSkeletonVisual, abstraction, this, this.texture );
+	    edu.cmu.cs.dennisc.texture.Texture texture = MonsterUtilities.getTexture( this.sgOriginal );
+	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = MonsterUtilities.createCopy( this.sgOriginal );
+		return new org.lookingglassandalice.storytelling.implementation.monsters.MonsterImplementation( sgSkeletonVisual, abstraction, this, texture );
 	}
 }

@@ -66,5 +66,11 @@ public abstract class AbstractModelImplementation extends TransformableImplement
 	public void setColor( edu.cmu.cs.dennisc.color.Color4f color ) {
 		this.sgAppearance.diffuseColor.setValue( color );
 	}
+	public float getOpacity() {
+		return this.sgAppearance.opacity.getValue();
+	}
+	public void setOpacity( float opacity ) {
+		this.sgAppearance.opacity.setValue( opacity );
+	}
 
 }

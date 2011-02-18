@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Joint extends Entity implements Turner {
+public class Joint extends Transformable {
 	/*package-private*/ static Joint getInstance( org.lookingglassandalice.storytelling.implementation.JointedModelImplementation jointedModelImplementation, org.lookingglassandalice.storytelling.resources.JointId jointId ) {
 		org.lookingglassandalice.storytelling.implementation.JointImplementation implementation = jointedModelImplementation.getJointImplementation( jointId );
 		Joint rv = implementation.getAbstraction();
@@ -66,17 +66,5 @@ public class Joint extends Entity implements Turner {
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.JointImplementation getImplementation() {
 		return this.implementation;
-	}
-	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, new TurnDetails() );
-	}
-	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
-		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
-	}
-	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, new RollDetails() );
-	}
-	public void roll( RollDirection direction, Number amount, RollDetails details ) {
-		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
 }

@@ -54,7 +54,7 @@ import org.alice.apis.moveandturn.Style;
 import org.alice.apis.moveandturn.TurnDirection;
 import org.alice.apis.moveandturn.gallery.GalleryModel;
 import org.alice.apis.moveandturn.gallery.GalleryRootUtilities;
-import org.lookingglassandalice.storytelling.resources.monsters.OgreResource;
+import org.lookingglassandalice.storytelling.resources.monsters.Ogre;
 
 import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
@@ -78,7 +78,7 @@ public abstract class AliceModel extends org.alice.apis.moveandturn.Model {
 	    } else {
 	        try {
 	            
-	            java.io.InputStream is = OgreResource.class.getResourceAsStream( this.getResourceString()+".alice" );
+	            java.io.InputStream is = Ogre.class.getResourceAsStream( this.getResourceString()+".alice" );
 	            edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
 	            this.skeletonModelResource = decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap< Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable >() );
 	            

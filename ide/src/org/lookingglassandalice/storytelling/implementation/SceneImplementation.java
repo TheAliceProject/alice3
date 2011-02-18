@@ -102,12 +102,12 @@ public class SceneImplementation extends EntityImplementation {
 		this.program = program;
 	}
 
-	public void preserveVehiclesAndPointsOfView() {
+	public void preserveVehiclesAndVantagePoints() {
 //		for( Entity entity : this.entities ) {
 //			this.pointOfViewMap.put( entity, null );
 //		}
 	}
-	public void restoreVehiclesAndPointsOfView() {
+	public void restoreVehiclesAndVantagePoints() {
 //		for( Entity entity : this.entities ) {
 //			this.pointOfViewMap.put( entity, null );
 //		}

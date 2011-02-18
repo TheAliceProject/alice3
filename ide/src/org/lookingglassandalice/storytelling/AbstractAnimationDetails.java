@@ -46,17 +46,13 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class RollDetails extends AnimationDetails {
-	public RollDetails duration( Number value ) {
-		this.duration = value.doubleValue();
-		return this;
+public class AbstractAnimationDetails {
+	protected double duration = 1.0;
+	protected Style style = TraditionalStyle.BEGIN_AND_END_GENTLY;
+	/*package-private*/ double getDuration() {
+		return this.duration;
 	}
-	public RollDetails asSeenBy( Entity value ) {
-		this.asSeenBy = value;
-		return this;
-	}
-	public RollDetails style( Style value ) {
-		this.style = value;
-		return this;
+	/*package-private*/ Style getStyle() {
+		return this.style;
 	}
 }
