@@ -48,7 +48,7 @@ package org.lookingglassandalice.storytelling;
  */
 public interface Turner {
 	void turn( TurnDirection direction, Number amount );
-	void turn( TurnDirection direction, Number amount, TurnDetails details );
+	void turn( TurnDirection direction, Number amount, VantagePointAnimationDetails details );
 	void roll( RollDirection direction, Number amount );
-	void roll( RollDirection direction, Number amount, RollDetails details );
+	void roll( RollDirection direction, Number amount, VantagePointAnimationDetails details );
 }

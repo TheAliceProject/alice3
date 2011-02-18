@@ -46,17 +46,13 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class AnimationDetails {
-	protected double duration = 1.0;
-	protected Entity asSeenBy = null;
-	protected Style style = TraditionalStyle.BEGIN_AND_END_GENTLY;
-	/*package-private*/ double getDuration() {
-		return this.duration;
+/*package-private*/ class AnimationDetails extends AbstractAnimationDetails {
+	public AnimationDetails duration( Number value ) {
+		this.duration = value.doubleValue();
+		return this;
 	}
-	/*package-private*/ Entity getAsSeenBy( Entity valueIfNull ) {
-		return this.asSeenBy != null ? this.asSeenBy : valueIfNull;
-	}
-	/*package-private*/ Style getStyle() {
-		return this.style;
+	public AnimationDetails style( Style value ) {
+		this.style = value;
+		return this;
 	}
 }

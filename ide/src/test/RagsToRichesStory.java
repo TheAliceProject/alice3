@@ -112,10 +112,10 @@ class SnowScene extends Scene {
 				this.performGeneratedSetup();
 				this.performCustomSetup();
 			} else {
-				this.restoreVehiclesAndPointsOfView();
+				this.restoreVehiclesAndVantagePoints();
 			}
 		} else {
-			this.preserveVehiclesAndPointsOfView();
+			this.preserveVehiclesAndVantagePoints();
 		}
 	}
 
@@ -137,9 +137,9 @@ class SnowScene extends Scene {
 					SnowScene.this.blueCone.move( MoveDirection.UP, 1.0 );
 				}
 			} );
-			this.redCone.move( MoveDirection.DOWN, 1.0, MoveDetailsFactory.duration( 0.333 ) );
-			this.greenCone.move( MoveDirection.DOWN, 1.0, MoveDetailsFactory.duration( 0.333 ) );
-			this.blueCone.move( MoveDirection.DOWN, 1.0, MoveDetailsFactory.duration( 0.333 ) );
+			this.redCone.move( MoveDirection.DOWN, 1.0, VantagePointAnimationDetailsFactory.duration( 0.333 ) );
+			this.greenCone.move( MoveDirection.DOWN, 1.0, VantagePointAnimationDetailsFactory.duration( 0.333 ) );
+			this.blueCone.move( MoveDirection.DOWN, 1.0, VantagePointAnimationDetailsFactory.duration( 0.333 ) );
 		}
 	}
 }
@@ -179,10 +179,10 @@ class DesertScene extends Scene {
 				this.performGeneratedSetup();
 				this.performCustomSetup();
 			} else {
-				this.restoreVehiclesAndPointsOfView();
+				this.restoreVehiclesAndVantagePoints();
 			}
 		} else {
-			this.preserveVehiclesAndPointsOfView();
+			this.preserveVehiclesAndVantagePoints();
 		}
 	}
 		

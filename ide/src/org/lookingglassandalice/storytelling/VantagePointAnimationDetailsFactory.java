@@ -46,17 +46,24 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class MoveDetails extends AnimationDetails {
-	public MoveDetails duration( Number value ) {
-		this.duration = value.doubleValue();
-		return this;
+public class VantagePointAnimationDetailsFactory {
+	private VantagePointAnimationDetailsFactory() {
+		throw new AssertionError();
 	}
-	public MoveDetails asSeenBy( Entity value ) {
-		this.asSeenBy = value;
-		return this;
+	public static VantagePointAnimationDetails duration( Number value ) {
+		VantagePointAnimationDetails rv = new VantagePointAnimationDetails();
+		rv.duration( value );
+		return rv;
 	}
-	public MoveDetails style( Style value ) {
-		this.style = value;
-		return this;
+	public static VantagePointAnimationDetails asSeenBy( Entity value ) {
+		VantagePointAnimationDetails rv = new VantagePointAnimationDetails();
+		rv.asSeenBy( value );
+		return rv;
+	}
+	public static VantagePointAnimationDetails style( Style value ) {
+		VantagePointAnimationDetails rv = new VantagePointAnimationDetails();
+		rv.style( value );
+		return rv;
 	}
 }
+

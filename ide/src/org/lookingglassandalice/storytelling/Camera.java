@@ -46,35 +46,12 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Camera extends Entity implements MutableRider, Mover, Turner {
+public class Camera extends Transformable {
 	private final org.lookingglassandalice.storytelling.implementation.CameraImplementation implementation = new org.lookingglassandalice.storytelling.implementation.CameraImplementation( this );
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.CameraImplementation getImplementation() {
 		return this.implementation;
 	}
-	
-	public void setVehicle( Entity vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
-	}
-	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, new MoveDetails() );
-	}
-	public void move( MoveDirection direction, Number amount, MoveDetails details ) {
-		this.getImplementation().animateTranslation( direction.createTranslation( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
-	}
-	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, new TurnDetails() );
-	}
-	public void turn( TurnDirection direction, Number amount, TurnDetails details ) {
-		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
-	}
-	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, new RollDetails() );
-	}
-	public void roll( RollDirection direction, Number amount, RollDetails details ) {
-		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
-	}
-
 	public void getAGoodLookAt( Entity entity ) {
 		this.implementation.getAGoodLookAt( entity.getImplementation() );
 	}

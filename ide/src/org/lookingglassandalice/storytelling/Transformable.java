@@ -46,23 +46,28 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class MoveDetailsFactory {
-	private MoveDetailsFactory() {
-		throw new AssertionError();
+public abstract class Transformable extends Entity implements MutableRider, Mover, Turner {
+	@Override
+	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.AbstractTransformableImplementation getImplementation();
+	public void setVehicle( Entity vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
-	public static MoveDetails duration( Number value ) {
-		MoveDetails rv = new MoveDetails();
-		rv.duration( value );
-		return rv;
+	public void move( MoveDirection direction, Number amount ) {
+		this.move( direction, amount, new VantagePointAnimationDetails() );
 	}
-	public static MoveDetails asSeenBy( Entity value ) {
-		MoveDetails rv = new MoveDetails();
-		rv.asSeenBy( value );
-		return rv;
+	public void move( MoveDirection direction, Number amount, VantagePointAnimationDetails details ) {
+		this.getImplementation().animateTranslation( direction.createTranslation( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
-	public static MoveDetails style( Style value ) {
-		MoveDetails rv = new MoveDetails();
-		rv.style( value );
-		return rv;
+	public void turn( TurnDirection direction, Number amount ) {
+		this.turn( direction, amount, new VantagePointAnimationDetails() );
+	}
+	public void turn( TurnDirection direction, Number amount, VantagePointAnimationDetails details ) {
+		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
+	}
+	public void roll( RollDirection direction, Number amount ) {
+		this.roll( direction, amount, new VantagePointAnimationDetails() );
+	}
+	public void roll( RollDirection direction, Number amount, VantagePointAnimationDetails details ) {
+		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
 }

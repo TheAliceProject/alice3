@@ -46,23 +46,20 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class RollDetailsFactory {
-	private RollDetailsFactory() {
-		throw new AssertionError();
+public abstract class Model extends Transformable {
+	@Override
+	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.AbstractModelImplementation getImplementation();
+	public Color getColor() {
+		edu.cmu.cs.dennisc.color.Color4f internal = this.getImplementation().getColor();
+		return internal != null ? new Color( internal ) : null;
 	}
-	public static RollDetails duration( Number value ) {
-		RollDetails rv = new RollDetails();
-		rv.duration( value );
-		return rv;
+	public void setColor( Color color ) {
+		this.getImplementation().setColor( color != null ? color.getInternal() : null );
 	}
-	public static RollDetails asSeenBy( Entity value ) {
-		RollDetails rv = new RollDetails();
-		rv.asSeenBy( value );
-		return rv;
+	public Double getOpacity() {
+		return (double)this.getImplementation().getOpacity();
 	}
-	public static RollDetails style( Style value ) {
-		RollDetails rv = new RollDetails();
-		rv.style( value );
-		return rv;
+	public void setOpacity( Number opacity ) {
+		this.getImplementation().setOpacity( opacity.floatValue() );
 	}
 }

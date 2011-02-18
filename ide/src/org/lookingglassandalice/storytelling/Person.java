@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Person extends Entity implements MutableRider, Walker, Toucher {
+public abstract class Person extends Model implements Walker, Toucher {
 	private final org.lookingglassandalice.storytelling.implementation.PersonImplementation implementation;
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.PersonImplementation getImplementation() {
@@ -56,9 +56,6 @@ public abstract class Person extends Entity implements MutableRider, Walker, Tou
 		this.implementation = resource.createPersonImplementation( this );
 	}
 	
-	public void setVehicle( Entity vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
-	}
 	public void walkTo( Entity entity ) {
 	}
 	public void touch( Entity entity ) {
