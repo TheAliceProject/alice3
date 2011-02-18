@@ -91,6 +91,7 @@ public class WeightedMeshAdapter< E extends WeightedMesh > extends MeshAdapter<E
             property == m_element.textCoordBuffer ||
             property == m_element.indexBuffer ||
             property == m_element.weightInfo ||
+            property == m_element.meshType ||
             property == m_element.skeleton )
         {
             this.needsInitialization = true;

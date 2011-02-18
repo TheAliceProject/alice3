@@ -65,12 +65,12 @@ class SnowScene extends Scene {
 	private final Cone greenCone = new Cone(); 
 	private final Cone blueCone = new Cone();
 	private final Camera camera;
-	private final CustomAdult susan;
 	private final CustomAdult ogre;
-	public SnowScene( Camera camera, CustomAdult susan, CustomAdult ogre ) {
+	private final CustomAdult susan;
+	public SnowScene( Camera camera, CustomAdult ogre, CustomAdult susan ) {
 		this.camera = camera;
-		this.susan = susan;
 		this.ogre = ogre;
+		this.susan = susan;
 	}
 	
 	private void performGeneratedSetup() {
@@ -148,9 +148,9 @@ class DesertScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground desert = new Ground();
 	private final Sphere sphere = new Sphere();
+	private final CustomAdult fellowLaborer = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Ogre.GREEN );
 	private final Camera camera;
 	private final CustomAdult ogre;
-	private final CustomAdult fellowLaborer = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Ogre.GREEN );
 	public DesertScene( Camera camera, CustomAdult ogre ) {
 		this.camera = camera;
 		this.ogre = ogre;
@@ -165,6 +165,9 @@ class DesertScene extends Scene {
 		this.ogre.setVehicle( this );
 		this.fellowLaborer.setVehicle( this );
 
+		this.ogre.move( MoveDirection.LEFT, 1.0 );
+		this.fellowLaborer.move( MoveDirection.RIGHT, 1.0 );
+		
 		this.desert.setAppearance( Ground.Appearance.SAND );
 		this.sphere.setRadius( 0.1 );
 		this.sphere.setColor( Color.RED );
@@ -188,10 +191,8 @@ class DesertScene extends Scene {
 		
 	public void turnBigRocksIntoLittleRocks() {
 //		this.camera.turn( TurnDirection.LEFT, 1.0 );
-		while( true ) {
-			this.ogre.getRightShoulder().turn( TurnDirection.FORWARD, 0.25 );
-			this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
-		}
+		this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
+		this.ogre.getRightShoulder().turn( TurnDirection.FORWARD, 0.25 );
 	}
 }
 
@@ -203,13 +204,13 @@ class RagsToRichesStory extends Program {
 	private final CustomAdult susan = new CustomAdult( new org.lookingglassandalice.storytelling.resources.sims2.AdultPersonResource() );
 	private final CustomAdult ogre = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Ogre.GREEN );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
-	private final SnowScene snowScene = new SnowScene( camera, susan, ogre );
+	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 	
 	public void playOutStory() {
 		this.setActiveScene( this.desertScene );
 		this.desertScene.turnBigRocksIntoLittleRocks();
-//		this.setActiveScene( this.snowScene );
-//		this.snowScene.chillInSkiChalet();
+		this.setActiveScene( this.snowScene );
+		this.snowScene.chillInSkiChalet();
 	}
 	public static void main( String[] args ) {
 		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();

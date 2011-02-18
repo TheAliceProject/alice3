@@ -46,16 +46,27 @@ package org.lookingglassandalice.storytelling.resources.monsters;
 /**
  * @author Dennis Cosgrove
  */
-public enum Ogre implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
-	GREEN;
-	
-	private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal;
-    private Ogre() {
-    	this.sgOriginal = MonsterUtilities.decode( "ogre.alice" );
+public class MonsterUtilities {
+	private MonsterUtilities() {
 	}
-	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
-	    edu.cmu.cs.dennisc.texture.Texture texture = MonsterUtilities.getTexture( this.sgOriginal );
-	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = MonsterUtilities.createCopy( this.sgOriginal );
-		return new org.lookingglassandalice.storytelling.implementation.monsters.MonsterImplementation( sgSkeletonVisual, abstraction, this, texture );
+	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual decode( String path ) {
+    	java.io.InputStream is = MonsterUtilities.class.getResourceAsStream( path );
+    	edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
+    	return decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap< Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable >() );
+	}
+	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual createCopy( edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal ) {
+	    edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = sgOriginal.geometries.getValue();
+		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
+
+	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual rv = new edu.cmu.cs.dennisc.scenegraph.SkeletonVisual();
+		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRootCopy = (edu.cmu.cs.dennisc.scenegraph.Joint)sgSkeletonRoot.newCopy();
+
+    	rv.skeleton.setValue( sgSkeletonRootCopy );
+		rv.geometries.setValue( sgGeometries );
+		return rv;
+	}
+	public static edu.cmu.cs.dennisc.texture.Texture getTexture( edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal ) {
+		edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance = (edu.cmu.cs.dennisc.scenegraph.SingleAppearance)sgOriginal.frontFacingAppearance.getValue();
+	    return sgAppearance.diffuseColorTexture.getValue();
 	}
 }
