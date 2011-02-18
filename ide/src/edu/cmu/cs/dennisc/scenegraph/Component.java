@@ -47,20 +47,10 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Component extends Element implements edu.cmu.cs.dennisc.pattern.Visitable, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame {
-	//public static final String VEHICLE_PROPERTY_NAME = "Vehicle"; 
 	private Composite m_vehicle = null;
-	private java.util.Vector< edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener > m_absoluteTransformationListeners = new java.util.Vector< edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener >();
-	private java.util.Vector< edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener > m_hierarchyListeners = new java.util.Vector< edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener >();
+	private java.util.List< edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener > m_absoluteTransformationListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private java.util.List< edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener > m_hierarchyListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
-	public boolean isLocalOf( Component other ) {
-		return this == other;
-	}
-	public boolean isVehicleOf(Component other) {
-		return this == other.getParent();
-	}
-	public boolean isSceneOf(Component other) {
-		return this == other.getRoot();
-	}
 	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
 		visitor.visit( this );
 	}
@@ -158,6 +148,15 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 		}
 	}
 
+	public boolean isLocalOf( Component other ) {
+		return this == other;
+	}
+	public boolean isVehicleOf(Component other) {
+		return this == other.getParent();
+	}
+	public boolean isSceneOf(Component other) {
+		return this == other.getRoot();
+	}
 	public boolean isDescendantOf( Composite possibleAncestor ) {
 		if( possibleAncestor == null ) {
 			return false;
@@ -174,13 +173,10 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 	}
 
 	public void addAbsoluteTransformationListener( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener absoluteTransformationListener ) {
-		m_absoluteTransformationListeners.addElement( absoluteTransformationListener );
+		m_absoluteTransformationListeners.add( absoluteTransformationListener );
 	}
 	public void removeAbsoluteTransformationListener( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener absoluteTransformationListener ) {
-		m_absoluteTransformationListeners.removeElement( absoluteTransformationListener );
-	}
-	public Iterable< edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener > accessAbsoluteTransformationListeners() {
-		return m_absoluteTransformationListeners;
+		m_absoluteTransformationListeners.remove( absoluteTransformationListener );
 	}
 	private void fireAbsoluteTransformationChange( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent ) {
 		for( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener atl : m_absoluteTransformationListeners ) {
@@ -192,13 +188,10 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 	}
 
 	public void addHierarchyListener( edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener hierarchyListener ) {
-		m_hierarchyListeners.addElement( hierarchyListener );
+		m_hierarchyListeners.add( hierarchyListener );
 	}
 	public void removeHierarchyListener( edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener hierarchyListener ) {
-		m_hierarchyListeners.removeElement( hierarchyListener );
-	}
-	public Iterable< edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener > accessHierarchyListeners() {
-		return m_hierarchyListeners;
+		m_hierarchyListeners.remove( hierarchyListener );
 	}
 	private void fireHierarchyChanged( edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent hierarchyEvent ) {
 		for( edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener hl : m_hierarchyListeners ) {
@@ -298,35 +291,4 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 	public edu.cmu.cs.dennisc.math.Point3 transformFromAWT_NewPointD3( java.awt.Point p, double z, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, AbstractCamera camera ) {
 		return edu.cmu.cs.dennisc.math.Point3.createFromXYZW( transformFromAWT_NewVectorD4( p, z, lookingGlass, camera ) );
 	}
-
-//	public <E extends Component> E getFirst( edu.cmu.cs.dennisc.pattern.HowMuch candidateMask, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
-//		return edu.cmu.cs.dennisc.pattern.util.ComponentUtilities.getFirstToAccept( candidateMask, this, cls, criterions );
-//	}
-//	public <E extends Component> E getFirst( Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
-//		return getFirst( edu.cmu.cs.dennisc.pattern.HowMuch.COMPONENT_AND_DESCENDANTS, cls, criterions );
-//	}
-//	public <E extends Component> E getFirst( Class< E > cls ) {
-//		return getFirst( cls, (edu.cmu.cs.dennisc.pattern.Criterion< ? >[])null );
-//	}
-//	public Component getFirst( edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
-//		return getFirst( null, criterions );
-//	}
-//
-//	public <E extends Component> java.util.List< E > getAll( edu.cmu.cs.dennisc.pattern.HowMuch candidateMask, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
-//		java.util.List< E > list = new java.util.LinkedList< E >();
-//		edu.cmu.cs.dennisc.pattern.util.ComponentUtilities.updateAllToAccept( candidateMask, list, this, cls, criterions );
-//		return list;
-//	}
-//	public <E extends Component> java.util.List< E > getAll( Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
-//		return getAll( edu.cmu.cs.dennisc.pattern.HowMuch.COMPONENT_AND_DESCENDANTS, cls, criterions );
-//	}
-//	public <E extends Component> java.util.List< E > getAll( Class< E > cls ) {
-//		return getAll( cls, (edu.cmu.cs.dennisc.pattern.Criterion< ? >[])null );
-//	}
-//	public java.util.List< Component > getAll( edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
-//		return getAll( null, criterions );
-//	}
-//	public java.util.List< Component > getAll() {
-//		return getAll( null, (edu.cmu.cs.dennisc.pattern.Criterion< ? >[])null );
-//	}
 }

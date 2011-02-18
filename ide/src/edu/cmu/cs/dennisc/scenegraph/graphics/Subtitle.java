@@ -43,5 +43,8 @@
 
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public class Subtitle extends Title {
 }

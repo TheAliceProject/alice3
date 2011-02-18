@@ -66,6 +66,6 @@ public class MegImplementation extends org.lookingglassandalice.storytelling.imp
 	}
 	@Override
 	protected JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
-		return new JointImplementation( this, new SgJoint( this.nebPerson, jointId ) );
+		return new JointImplementation( this, new NativeJoint( this.nebPerson, jointId ) );
 	}
 }

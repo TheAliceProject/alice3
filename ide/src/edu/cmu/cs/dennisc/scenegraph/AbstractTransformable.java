@@ -43,21 +43,40 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.property.PropertyOwner;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTransformable extends Composite {
-	public final edu.cmu.cs.dennisc.math.property.AffineMatrix4x4Property localTransformation = new edu.cmu.cs.dennisc.math.property.AffineMatrix4x4Property( this, edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity() ) {
-		@Override
-		public void setValue( PropertyOwner owner, edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
-			super.setValue( owner, value );
-			AbstractTransformable.this.fireAbsoluteTransformationChange();
-		}
-	};
-
 	protected abstract Composite getVehicle();
+
+	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessLocalTransformation();
+	protected abstract void touchLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m );
+
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+		rv.set( this.accessLocalTransformation() );
+		return rv;
+	}
+	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation() {
+		return getLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
+	}
+	private void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation, TransformationAffect affect ) {
+		if( transformation == null ) {
+			throw new NullPointerException();
+		}
+		if( transformation.isNaN() ) {
+			throw new RuntimeException( "isNaN" );
+		}
+		
+		assert affect != null;
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.accessLocalTransformation();
+		affect.set( m, transformation );
+		this.touchLocalTransformation( m );
+		fireAbsoluteTransformationChange();
+	}
+	public final void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation ) {
+		setLocalTransformation( transformation, TransformationAffect.AFFECT_ALL );
+	}
+
 	// todo: cache this information
 	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
@@ -66,7 +85,7 @@ public abstract class AbstractTransformable extends Composite {
 			rv = getLocalTransformation( rv );
 		} else {
 			rv = vehicle.getAbsoluteTransformation( rv );
-			rv.setToMultiplication( rv, localTransformation.getValue() );
+			rv.setToMultiplication( rv, this.accessLocalTransformation() );
 		}
 		return rv;
 	}
@@ -77,35 +96,6 @@ public abstract class AbstractTransformable extends Composite {
 		rv = getAbsoluteTransformation( rv );
 		rv.invert();
 		return rv;
-	}
-
-	@Deprecated
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
-		rv.set( localTransformation.getValue() );
-		return rv;
-	}
-	@Deprecated
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation() {
-		return getLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
-	}
-
-	protected void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation, TransformationAffect affect ) {
-		if( transformation == null ) {
-			throw new NullPointerException();
-		}
-		if( transformation.isNaN() ) {
-			throw new RuntimeException( "isNaN" );
-		}
-		
-		assert affect != null;
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = localTransformation.getValue();
-		affect.set( m, transformation );
-		
-		localTransformation.touch();
-		fireAbsoluteTransformationChange();
-	}
-	public final void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation ) {
-		setLocalTransformation( transformation, TransformationAffect.AFFECT_ALL );
 	}
 
 	@Override
@@ -122,35 +112,6 @@ public abstract class AbstractTransformable extends Composite {
 		}
 		return rv;
 	}
-//		boolean isReturnValueAlreadySet = false;
-//		if( asSeenBy instanceof edu.cmu.cs.dennisc.referenceframe.ReferenceFrame ) {
-//			edu.cmu.cs.dennisc.referenceframe.ReferenceFrame referenceFrame = (edu.cmu.cs.dennisc.referenceframe.ReferenceFrame)asSeenBy;
-//			if( referenceFrame.isParentOf( this ) ) {
-//				rv = getLocalTransformation( rv );
-//				isReturnValueAlreadySet = true;
-//			} else if( referenceFrame.isSceneOf( this ) ) {
-//				rv = getAbsoluteTransformation( rv );
-//				isReturnValueAlreadySet = true;
-//			} else if( referenceFrame.isLocalOf( this ) ) {
-//				rv.setIdentity();
-//				isReturnValueAlreadySet = true;
-//			// todo: handle this case? might not be worth it if caching abolute and inverseAbsolute
-//			// } else if( asSeenBy.isAncestorOf( this ) ) {
-//			//
-//			}
-//		}
-//		if( isReturnValueAlreadySet ) {
-//			//pass
-//		} else {
-////			todo: optimize
-////			rv.setIdentity();
-////			LinearAlgebra.applyTransformation( rv, asSeenBy.getInverseAbsoluteTransformation() );
-////			LinearAlgebra.applyTransformation( rv, getAbsoluteTransformation() );
-//			rv.set( asSeenBy.getInverseAbsoluteTransformation() );
-//			LinearAlgebra.applyTransformation( rv, getAbsoluteTransformation() );
-//		}
-//		return rv;
-//	}
 
 	public void setTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy, TransformationAffect affect ) {
 		if( asSeenBy.isVehicleOf( this ) ) {
@@ -201,21 +162,6 @@ public abstract class AbstractTransformable extends Composite {
 	public void setAxesOnly( edu.cmu.cs.dennisc.math.Orientation orientation, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		setTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createOrientation( orientation ), asSeenBy, TransformationAffect.AFFECT_ORIENTAION_ONLY );
 	}
-//	public void setAxesOnly( edu.cmu.cs.dennisc.math.EulerAngles ea, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-//		setAxesOnly( new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3( ea ), asSeenBy );
-//	}
-//	public void setAxesOnly( edu.cmu.cs.dennisc.math.UnitQuaternion q, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-//		setAxesOnly( new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3( q ), asSeenBy );
-//	}
-//	public void setAxesOnly( edu.cmu.cs.dennisc.math.ForwardAndUpGuide faug, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-//		setAxesOnly( new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3( faug ), asSeenBy );
-//	}
-//	public void setAxesOnly( edu.cmu.cs.dennisc.math.AxisRotation ar, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-//		setAxesOnly( new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3( ar ), asSeenBy );
-//	}
-////	public void setAxesOnlyFromForwardAndUpGuide( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-////		setAxesOnly( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createFromForwardAndUpGuide( forward, upGuide ), asSeenBy );
-////	}
 
 	public void setAxesOnlyToPointAt( Component target, edu.cmu.cs.dennisc.math.Point3 targetOffset, edu.cmu.cs.dennisc.math.Vector3 upGuide ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 mSelf = getAbsoluteTransformation();

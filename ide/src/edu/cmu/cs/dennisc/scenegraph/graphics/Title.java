@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public abstract class Title extends ShapeEnclosedText {
 	@Override
 	protected edu.cmu.cs.dennisc.color.Color4f getDefaultTextColor() {

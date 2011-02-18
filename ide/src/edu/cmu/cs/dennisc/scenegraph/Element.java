@@ -47,15 +47,15 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner {
-	private java.util.HashMap< Object, Object > m_runtimeDataMap = new java.util.HashMap< Object, Object >();
-
-	public static final String CREATION_STACK_TRACK_KEY = "CREATION_STACK_TRACK_KEY";
+	public static final String CREATION_STACK_TRACE_KEY = "CREATION_STACK_TRACE_KEY";
 	private static boolean isCreationStackTraceDesired = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.scenegraph.Element.isCreationStackTraceDesired" );
+
+	private java.util.HashMap< Object, Object > runtimeDataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public Element() {
 		if( isCreationStackTraceDesired ) {
 			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-			this.putBonusDataFor( CREATION_STACK_TRACK_KEY, stackTrace );
+			this.putBonusDataFor( CREATION_STACK_TRACE_KEY, stackTrace );
 		}
 	}
 
@@ -64,16 +64,16 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 		return false;
 	}
 	public boolean containsBonusDataFor( Object key ) {
-		return m_runtimeDataMap.containsKey( key );
+		return this.runtimeDataMap.containsKey( key );
 	}
 	public Object getBonusDataFor( Object key ) {
-		return m_runtimeDataMap.get( key );
+		return this.runtimeDataMap.get( key );
 	}
 	public void putBonusDataFor( Object key, Object value ) {
-		m_runtimeDataMap.put( key, value );
+		this.runtimeDataMap.put( key, value );
 	}
 	public void removeBonusDataFor( Object key ) {
-		m_runtimeDataMap.remove( key );
+		this.runtimeDataMap.remove( key );
 	}
 
 	//todo: investigate typing return value with generics

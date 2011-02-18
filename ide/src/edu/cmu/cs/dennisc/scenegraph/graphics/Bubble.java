@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public abstract class Bubble extends ShapeEnclosedText {
 	public interface Originator {
 		public void calculate(

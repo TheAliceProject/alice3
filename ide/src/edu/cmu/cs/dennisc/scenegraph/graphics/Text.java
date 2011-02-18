@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public abstract class Text extends edu.cmu.cs.dennisc.scenegraph.Graphic {
 	public edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );
 	public edu.cmu.cs.dennisc.color.property.Color4fProperty textColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, this.getDefaultTextColor(), false );
