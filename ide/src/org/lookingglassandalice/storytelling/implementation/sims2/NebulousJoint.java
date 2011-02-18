@@ -46,10 +46,10 @@ package org.lookingglassandalice.storytelling.implementation.sims2;
 /**
  * @author Dennis Cosgrove
  */
-public class NativeJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable {
+public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable {
 	private final edu.cmu.cs.dennisc.nebulous.Model nebModel;
 	private final org.lookingglassandalice.storytelling.resources.JointId jointId;
-	public NativeJoint( edu.cmu.cs.dennisc.nebulous.Model nebModel, org.lookingglassandalice.storytelling.resources.JointId jointId ) {
+	public NebulousJoint( edu.cmu.cs.dennisc.nebulous.Model nebModel, org.lookingglassandalice.storytelling.resources.JointId jointId ) {
 		this.nebModel = nebModel;
 		this.jointId = jointId;
 	}
