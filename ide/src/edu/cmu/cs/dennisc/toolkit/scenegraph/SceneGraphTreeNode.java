@@ -88,14 +88,15 @@ public class SceneGraphTreeNode extends BasicTreeNode
 				}
 			}
 		}
-		if (element.containsBonusDataFor(Element.DEBUG_STACK_TRACK_PROPERTY_NAME))
-		{
-			this.stackTrace = (StackTraceElement[])element.getBonusDataFor(Element.DEBUG_STACK_TRACK_PROPERTY_NAME);
-		}
-		else
-		{
-			this.stackTrace = null;
-		}
+		this.stackTrace = (StackTraceElement[])element.getBonusDataFor(Element.CREATION_STACK_TRACK_KEY);
+//		if (element.containsBonusDataFor(Element.CREATION_STACK_TRACK_KEY))
+//		{
+//			this.stackTrace = (StackTraceElement[])element.getBonusDataFor(Element.CREATION_STACK_TRACK_KEY);
+//		}
+//		else
+//		{
+//			this.stackTrace = null;
+//		}
 		if (element.getName() != null)
 		{
 			this.name = element.getName()+":"+this.hashCode;

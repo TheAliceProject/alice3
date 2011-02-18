@@ -110,12 +110,6 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 		return getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), asSeenBy );
 	}
 
-	//	public edu.cmu.cs.dennisc.math.Vector3d getTranslationAsVector3d( edu.cmu.cs.dennisc.math.Vector3d rv, ReferenceFrame asSeenBy ) {
-	//		return LinearAlgebra.getTranslationAsVector3d( rv, getTransformation( asSeenBy ) );
-	//	}
-	//	public final edu.cmu.cs.dennisc.math.Vector3d getTranslationAsVector3d( ReferenceFrame asSeenBy ) {
-	//		return getTranslationAsVector3d( new edu.cmu.cs.dennisc.math.Vector3d(), asSeenBy );
-	//	}
 	public edu.cmu.cs.dennisc.math.Point3 getTranslation( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		rv.set( getTransformation( asSeenBy ).translation );
 		return rv;
