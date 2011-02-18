@@ -1475,7 +1475,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		
 //		this.createPenguinModelField();	
 //		this.createColladaModelField();
-//		this.createOgreModelField();
+		this.createOgreModelField();
 		return rv;
 	}
 	

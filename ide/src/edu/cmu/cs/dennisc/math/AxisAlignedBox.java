@@ -258,12 +258,25 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	}
 
 	public void union( Point3 p ) {
-		m_minimum.x = Math.min( m_minimum.x, p.x );
-		m_minimum.y = Math.min( m_minimum.y, p.y );
-		m_minimum.z = Math.min( m_minimum.z, p.z );
-		m_maximum.x = Math.max( m_maximum.x, p.x );
-		m_maximum.y = Math.max( m_maximum.y, p.y );
-		m_maximum.z = Math.max( m_maximum.z, p.z );
+	    if( m_minimum.isNaN() ) {
+	        m_minimum.set( p );
+	    }
+	    else
+	    {
+    		m_minimum.x = Math.min( m_minimum.x, p.x );
+    		m_minimum.y = Math.min( m_minimum.y, p.y );
+    		m_minimum.z = Math.min( m_minimum.z, p.z );
+	    }
+	    if ( m_maximum.isNaN() )
+	    {
+	        m_maximum.set( p );
+	    }
+	    else
+	    {
+    		m_maximum.x = Math.max( m_maximum.x, p.x );
+    		m_maximum.y = Math.max( m_maximum.y, p.y );
+    		m_maximum.z = Math.max( m_maximum.z, p.z );
+	    }
 	}
 	public void union( AxisAlignedBox other ) {
 		assert other != null;

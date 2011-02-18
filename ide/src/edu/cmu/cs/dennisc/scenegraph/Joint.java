@@ -43,7 +43,10 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.EulerAngles;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3f;
 import edu.cmu.cs.dennisc.math.property.EulerAnglesProperty;
 import edu.cmu.cs.dennisc.math.property.Vector3fProperty;
@@ -54,7 +57,10 @@ public class Joint extends Transformable
     public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInX = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
     public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInY = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
     public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInZ = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
-   
+    
+    public final edu.cmu.cs.dennisc.property.DoubleProperty boundRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, .5d );
+    
+    public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> boundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>(this, new AxisAlignedBox());
     
     public final Vector3fProperty oStiffness = new Vector3fProperty(this, new Vector3f());
     public final EulerAnglesProperty oBoneOrientation = new EulerAnglesProperty(this, EulerAngles.createIdentity());
@@ -99,6 +105,53 @@ public class Joint extends Transformable
             }
         }
         return null;
+    }
+    
+    public AxisAlignedBox getBoundingBox(Composite c, AxisAlignedBox rv, AffineMatrix4x4 transform)
+    {
+        if (c == null)
+        {
+            return null;
+        }
+        
+        if (c instanceof AbstractTransformable)
+        {
+            transform.setToMultiplication( transform, ((AbstractTransformable)c).localTransformation.getValue() );
+        }
+        if (c instanceof Joint)
+        {
+            Joint j = (Joint)c;
+            rv.union(new AxisAlignedBox(transform.createTransformed(j.boundingBox.getValue().getMinimum()), transform.createTransformed(j.boundingBox.getValue().getMaximum())));
+        }
+        for (int i=0; i<c.getComponentCount(); i++)
+        {
+            Component comp = c.getComponentAt(i);
+            if (comp instanceof Composite)
+            {
+                getBoundingBox((Composite)comp, rv, transform);
+            }
+        }
+        return rv;
+    }
+    
+    public AxisAlignedBox getBoundingBox(AxisAlignedBox rv, AffineMatrix4x4 transform)
+    {
+        if (rv == null)
+        {
+            rv = new AxisAlignedBox();
+        }
+        getBoundingBox(this, rv, transform);
+        return rv;
+    }
+    
+    public AxisAlignedBox getBoundingBox(AxisAlignedBox rv)
+    {
+        if (rv == null)
+        {
+            rv = new AxisAlignedBox();
+        }
+        getBoundingBox(this, rv, AffineMatrix4x4.createIdentity());
+        return rv;
     }
     
     public Joint getJoint(String jointID)
@@ -172,67 +225,111 @@ public class Joint extends Transformable
     
    
     
-//    public void renderVisualization(edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc)
-//    {
-//        if (SystemUtilities.isPropertyTrue(IDE.DEBUG_DRAW_PROPERTY_KEY))
-//        {
-//            rc.gl.glPushMatrix();
-//            renderSelfVisualization(rc);
-//            renderChildrenVisualization(rc);
-//            rc.gl.glPopMatrix();
-//        }
-//    }
-//    
-//    protected void renderChildrenVisualization(edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc)
-//    {
-//        if (SystemUtilities.isPropertyTrue(IDE.DEBUG_DRAW_PROPERTY_KEY))
-//        {
-//            for (Component child : this.getComponents())
-//            {
-//                if (child instanceof Joint)
-//                {
-//                    ((Joint)child).renderVisualization(rc);
-//                }
-//            }
-//        }
-//    }
-//    
-//    private double[] m_local = new double[ 16 ];
-//    private java.nio.DoubleBuffer m_localBuffer = java.nio.DoubleBuffer.wrap( m_local );
-//    
-//    protected void renderSelfVisualization(RenderContext rc) 
-//    {
-//        if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
-//        {
-//            final double UNIT_LENGTH = 0.5;
-//            this.localTransformation.getValue().getAsColumnMajorArray16(m_local);
-//            rc.gl.glMultMatrixd(m_localBuffer);
-//            {
-//                rc.gl.glDisable( GL.GL_LIGHTING );
-//        
-//                rc.gl.glBegin( GL.GL_LINES );
-//        
-//                rc.gl.glColor3f( 1.0f, 0.0f, 0.0f );
-//                rc.gl.glVertex3d( 0, 0, 0 );
-//                rc.gl.glVertex3d( UNIT_LENGTH, 0, 0 );
-//        
-//                rc.gl.glColor3f( 0.0f, 1.0f, 0.0f );
-//                rc.gl.glVertex3d( 0, 0, 0 );
-//                rc.gl.glVertex3d( 0, UNIT_LENGTH, 0 );
-//        
-//                rc.gl.glColor3f( 0.0f, 0.0f, 1.0f );
-//                rc.gl.glVertex3d( 0, 0, 0 );
-//                rc.gl.glVertex3d( 0, 0, UNIT_LENGTH );
-//        
-//                rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
-//                rc.gl.glVertex3d( 0, 0, 0 );
-//                rc.gl.glVertex3d( 0, 0, -2*UNIT_LENGTH );
-//        
-//                rc.gl.glEnd();
-//        
-//                rc.gl.glEnable( GL.GL_LIGHTING );
-//            }
-//        }
-//    }
+    public void renderVisualization(edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc)
+    {
+        if ( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue(org.alice.ide.IDE.DEBUG_DRAW_PROPERTY_KEY))
+        {
+            rc.gl.glPushMatrix();
+            renderSelfVisualization(rc);
+            renderChildrenVisualization(rc);
+            rc.gl.glPopMatrix();
+        }
+    }
+    
+    protected void renderChildrenVisualization(edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc)
+    {
+        if ( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue(org.alice.ide.IDE.DEBUG_DRAW_PROPERTY_KEY))
+        {
+            for (Component child : this.getComponents())
+            {
+                if (child instanceof Joint)
+                {
+                    ((Joint)child).renderVisualization(rc);
+                }
+            }
+        }
+    }
+    
+    private double[] m_local = new double[ 16 ];
+    private java.nio.DoubleBuffer m_localBuffer = java.nio.DoubleBuffer.wrap( m_local );
+    
+    protected void renderSelfVisualization(edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc) 
+    {
+        if (edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue(org.alice.ide.IDE.DEBUG_PROPERTY_KEY))
+        {
+            final double UNIT_LENGTH = .5;
+            this.localTransformation.getValue().getAsColumnMajorArray16(m_local);
+            rc.gl.glMultMatrixd(m_localBuffer);
+            {
+                rc.gl.glDisable( javax.media.opengl.GL.GL_LIGHTING );
+        
+                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+        
+                rc.gl.glColor3f( 1.0f, 0.0f, 0.0f );
+                rc.gl.glVertex3d( 0, 0, 0 );
+                rc.gl.glVertex3d( UNIT_LENGTH, 0, 0 );
+        
+                rc.gl.glColor3f( 0.0f, 1.0f, 0.0f );
+                rc.gl.glVertex3d( 0, 0, 0 );
+                rc.gl.glVertex3d( 0, UNIT_LENGTH, 0 );
+        
+                rc.gl.glColor3f( 0.0f, 0.0f, 1.0f );
+                rc.gl.glVertex3d( 0, 0, 0 );
+                rc.gl.glVertex3d( 0, 0, UNIT_LENGTH );
+        
+                rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
+                rc.gl.glVertex3d( 0, 0, 0 );
+                rc.gl.glVertex3d( 0, 0, -2*UNIT_LENGTH );
+                rc.gl.glEnd();
+                
+                if (false && this.boundingBox.getValue() != null && this.getComponentCount() == 0)
+                {
+                    rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
+                    Point3 min = this.boundingBox.getValue().getMinimum();
+                    Point3 max = this.boundingBox.getValue().getMaximum();
+                    
+                    //Bottom
+                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
+                    rc.gl.glVertex3d( min.x, min.y, min.z );
+                    rc.gl.glVertex3d( min.x, min.y, max.z );
+                    rc.gl.glVertex3d( max.x, min.y, max.z );
+                    rc.gl.glVertex3d( max.x, min.y, min.z );
+                    rc.gl.glEnd();
+                    
+                    //Top
+                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
+                    rc.gl.glVertex3d( min.x, max.y, min.z );
+                    rc.gl.glVertex3d( min.x, max.y, max.z );
+                    rc.gl.glVertex3d( max.x, max.y, max.z );
+                    rc.gl.glVertex3d( max.x, max.y, min.z );
+                    rc.gl.glEnd();
+                    
+                    //Sides
+                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+                    rc.gl.glVertex3d( min.x, min.y, min.z );
+                    rc.gl.glVertex3d( min.x, max.y, min.z );
+                    rc.gl.glEnd();
+                    
+                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+                    rc.gl.glVertex3d( max.x, min.y, min.z );
+                    rc.gl.glVertex3d( max.x, max.y, min.z );
+                    rc.gl.glEnd();
+                    
+                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+                    rc.gl.glVertex3d( min.x, min.y, max.z );
+                    rc.gl.glVertex3d( min.x, max.y, max.z );
+                    rc.gl.glEnd();
+                    
+                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+                    rc.gl.glVertex3d( max.x, min.y, max.z );
+                    rc.gl.glVertex3d( max.x, max.y, max.z );
+                    rc.gl.glEnd();
+                }
+                
+        
+                rc.gl.glEnable( javax.media.opengl.GL.GL_LIGHTING );
+            }
+        }
+    }
     
 }

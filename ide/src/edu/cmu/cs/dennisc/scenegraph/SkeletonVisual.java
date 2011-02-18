@@ -43,6 +43,33 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.Point3;
+
 public class SkeletonVisual extends Visual {
     public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>(this, null);
+    
+    @Override
+    public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
+        if( skeleton.getValue()!= null  ) {
+            skeleton.getValue().getBoundingBox(rv);
+            rv.scale( scale.getValue() );
+        } else {
+            rv.setNaN();
+        }
+        return rv;
+    }
+    @Override
+    public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere rv ) {
+        if( skeleton.getValue()!= null  ) {
+            edu.cmu.cs.dennisc.math.AxisAlignedBox box = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
+            skeleton.getValue().getBoundingBox(box);
+            double diameter = Point3.calculateDistanceBetween(box.getMinimum(), box.getMaximum());
+            rv.center.set(box.getCenter());
+            rv.radius = diameter/2;
+            rv.scale( scale.getValue() );
+        } else {
+            rv.setNaN();
+        }
+        return rv;
+    }
 }

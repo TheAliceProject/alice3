@@ -59,6 +59,7 @@ import org.lookingglassandalice.storytelling.resources.monsters.OgreResource;
 import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
@@ -80,6 +81,17 @@ public abstract class AliceModel extends org.alice.apis.moveandturn.Model {
 	            java.io.InputStream is = OgreResource.class.getResourceAsStream( this.getResourceString()+".alice" );
 	            edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
 	            this.skeletonModelResource = decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap< Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable >() );
+	            
+	            Joint head = this.skeletonModelResource.skeleton.getValue().getJoint("HEAD");
+	            Joint foot = this.skeletonModelResource.skeleton.getValue().getJoint("LEFT_ANKLE");
+	            
+	            Point3 headPos = head.getAbsoluteTransformation().translation;
+	            Point3 footPos = foot.getAbsoluteTransformation().translation;
+	            
+	            double height = Point3.calculateDistanceBetween(headPos, footPos);
+	            
+	            System.out.println("Height: "+height);
+	            
 	            
 	        } catch( Exception  lre ) {
 	            throw new RuntimeException( lre );
