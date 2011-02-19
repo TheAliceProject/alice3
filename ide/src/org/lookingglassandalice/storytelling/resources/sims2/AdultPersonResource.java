@@ -47,7 +47,19 @@ package org.lookingglassandalice.storytelling.resources.sims2;
  * @author Dennis Cosgrove
  */
 public class AdultPersonResource extends PersonResource implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
+	private final org.alice.apis.stage.Gender gender;
+	private final org.alice.apis.stage.SkinTone skinTone;
+	private final org.alice.apis.stage.AdultFullBodyOutfit outfit; 
+	public AdultPersonResource( org.alice.apis.stage.Gender gender, org.alice.apis.stage.SkinTone skinTone, org.alice.apis.stage.AdultFullBodyOutfit outfit ) {
+		this.gender = gender;
+		this.skinTone = skinTone;
+		this.outfit = outfit;
+	}
+	@Override
+	public org.alice.apis.stage.LifeStage getLifeStage() {
+		return org.alice.apis.stage.LifeStage.ADULT;
+	}
 	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
-		return new org.lookingglassandalice.storytelling.implementation.sims2.MegImplementation( abstraction, this );
+		return new org.lookingglassandalice.storytelling.implementation.sims2.AdultImplementation( abstraction, this, this.gender, this.skinTone, this.outfit );
 	}
 }

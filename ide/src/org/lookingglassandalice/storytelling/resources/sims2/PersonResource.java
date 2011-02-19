@@ -47,4 +47,5 @@ package org.lookingglassandalice.storytelling.resources.sims2;
  * @author Dennis Cosgrove
  */
 public abstract class PersonResource implements org.lookingglassandalice.storytelling.resources.PersonResource {
+	public abstract org.alice.apis.stage.LifeStage getLifeStage();
 }

@@ -46,16 +46,16 @@ package org.lookingglassandalice.storytelling.implementation.sims2;
 /**
  * @author Dennis Cosgrove
  */
-public class MegImplementation extends org.lookingglassandalice.storytelling.implementation.PersonImplementation {
+public class AdultImplementation extends org.lookingglassandalice.storytelling.implementation.PersonImplementation {
 	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
-	public MegImplementation( org.lookingglassandalice.storytelling.Person abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource) {
+	public AdultImplementation( org.lookingglassandalice.storytelling.Person abstraction, org.lookingglassandalice.storytelling.resources.AdultPersonResource resource, org.alice.apis.stage.Gender gender, org.alice.apis.stage.SkinTone skinTone, org.alice.apis.stage.AdultFullBodyOutfit outfit ) {
 		super( new edu.cmu.cs.dennisc.scenegraph.Visual(), abstraction, resource );
 		try {
 			org.alice.apis.stage.Adult temp = new org.alice.apis.stage.Adult();
 			this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( temp );
-			this.nebPerson.setGender( org.alice.apis.stage.Gender.FEMALE );
-			this.nebPerson.setOutfit( org.alice.apis.stage.FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE );
-			this.nebPerson.setSkinTone( org.alice.apis.stage.BaseSkinTone.getRandom() );
+			this.nebPerson.setGender( gender );
+			this.nebPerson.setOutfit( outfit );
+			this.nebPerson.setSkinTone( skinTone );
 			this.nebPerson.setFitnessLevel( 0.5 );
 			this.nebPerson.setHair( org.alice.apis.stage.FemaleAdultHairBraids.BLACK );
 			this.nebPerson.setEyeColor( org.alice.apis.stage.BaseEyeColor.getRandom() );
@@ -64,8 +64,11 @@ public class MegImplementation extends org.lookingglassandalice.storytelling.imp
 		}
 		this.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebPerson } );
 	}
+	public void setGender( org.alice.apis.stage.Gender gender ) {
+	}
+	
 	@Override
 	protected JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
-		return new JointImplementation( this, new SgJoint( this.nebPerson, jointId ) );
+		return new JointImplementation( this, new NebulousJoint( this.nebPerson, jointId ) );
 	}
 }

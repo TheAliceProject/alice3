@@ -48,7 +48,7 @@ package org.lookingglassandalice.storytelling.implementation;
  */
 public abstract class AbstractTransformableImplementation extends EntityImplementation {
 	@Override
-	public abstract edu.cmu.cs.dennisc.scenegraph.Transformable getSgComposite();
+	public abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSgComposite();
 	public void translate( double x, double y, double z, EntityImplementation asSeenBy ) {
 		this.getSgComposite().applyTranslation( x, y, z, asSeenBy.getSgComposite() );
 	}

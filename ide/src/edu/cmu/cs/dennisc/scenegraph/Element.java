@@ -43,48 +43,37 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import org.alice.ide.IDE;
-
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner {
-	//	@Override
-	//	protected void finalize() throws Throwable {
-	//		super.finalize();
-	//		System.out.println( "finalize: " + this );
-	//	}
+	public static final String CREATION_STACK_TRACE_KEY = "CREATION_STACK_TRACE_KEY";
+	private static boolean isCreationStackTraceDesired = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.scenegraph.Element.isCreationStackTraceDesired" );
 
-	private java.util.HashMap< Object, Object > m_runtimeDataMap = new java.util.HashMap< Object, Object >();
+	private java.util.HashMap< Object, Object > runtimeDataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static final String DEBUG_STACK_TRACK_PROPERTY_NAME = "DEBUG_STACK_TRACK_PROPERTY";
-	
-	public Element()
-	{
-		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
-		{
+	public Element() {
+		if( isCreationStackTraceDesired ) {
 			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-			this.putBonusDataFor(DEBUG_STACK_TRACK_PROPERTY_NAME, stackTrace);
+			this.putBonusDataFor( CREATION_STACK_TRACE_KEY, stackTrace );
 		}
 	}
-	
+
 	@Override
 	public boolean isComposedOfGetterAndSetterProperties() {
 		return false;
 	}
 	public boolean containsBonusDataFor( Object key ) {
-		return m_runtimeDataMap.containsKey( key );
+		return this.runtimeDataMap.containsKey( key );
 	}
 	public Object getBonusDataFor( Object key ) {
-		return m_runtimeDataMap.get( key );
+		return this.runtimeDataMap.get( key );
 	}
 	public void putBonusDataFor( Object key, Object value ) {
-		m_runtimeDataMap.put( key, value );
+		this.runtimeDataMap.put( key, value );
 	}
 	public void removeBonusDataFor( Object key ) {
-		m_runtimeDataMap.remove( key );
+		this.runtimeDataMap.remove( key );
 	}
 
 	//todo: investigate typing return value with generics

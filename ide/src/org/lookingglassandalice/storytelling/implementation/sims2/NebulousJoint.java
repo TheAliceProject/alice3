@@ -46,36 +46,47 @@ package org.lookingglassandalice.storytelling.implementation.sims2;
 /**
  * @author Dennis Cosgrove
  */
-public class SgJoint extends edu.cmu.cs.dennisc.scenegraph.Transformable {
+public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable {
 	private final edu.cmu.cs.dennisc.nebulous.Model nebModel;
 	private final org.lookingglassandalice.storytelling.resources.JointId jointId;
-	public SgJoint( edu.cmu.cs.dennisc.nebulous.Model nebModel, org.lookingglassandalice.storytelling.resources.JointId jointId ) {
+	public NebulousJoint( edu.cmu.cs.dennisc.nebulous.Model nebModel, org.lookingglassandalice.storytelling.resources.JointId jointId ) {
 		this.nebModel = nebModel;
 		this.jointId = jointId;
 	}
 	public org.lookingglassandalice.storytelling.resources.JointId getJointId() {
 		return this.jointId;
 	}
-	
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
-		edu.cmu.cs.dennisc.scenegraph.Composite vehicle = this.getParent();
-		//edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.nebModel.getTransformation( this.jointId );
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
-		if( vehicle == null || vehicle.isSceneOf( this ) ) {
-			rv.set( m );
-		} else {
-			rv = vehicle.getAbsoluteTransformation( rv );
-			rv.setToMultiplication( rv, m );
-		}
-		return rv;
+	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessLocalTransformation() {
+		return edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
 	}
-
-	// todo: cache this information
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
-		rv = getAbsoluteTransformation( rv );
-		rv.invert();
-		return rv;
+	protected void touchLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.Composite getVehicle() {
+		return null;
+	}
+//	
+//	@Override
+//	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+//		edu.cmu.cs.dennisc.scenegraph.Composite vehicle = this.getParent();
+//		//edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.nebModel.getTransformation( this.jointId );
+//		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+//		if( vehicle == null || vehicle.isSceneOf( this ) ) {
+//			rv.set( m );
+//		} else {
+//			rv = vehicle.getAbsoluteTransformation( rv );
+//			rv.setToMultiplication( rv, m );
+//		}
+//		return rv;
+//	}
+//
+//	// todo: cache this information
+//	@Override
+//	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+//		rv = getAbsoluteTransformation( rv );
+//		rv.invert();
+//		return rv;
+//	}
 }
