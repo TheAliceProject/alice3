@@ -110,7 +110,7 @@ public abstract class AliceModel extends org.alice.apis.moveandturn.Model {
         putElement( m_sgAppearance );
 
         skeletonModelResource.frontFacingAppearance.setValue( m_sgAppearance );
-        skeletonModelResource.setParent( getSGTransformable() );
+//        skeletonModelResource.setParent( getSGTransformable() );
 	}
 	
 	@Override
@@ -130,11 +130,11 @@ public abstract class AliceModel extends org.alice.apis.moveandturn.Model {
     protected void realize() {
         createSGGeometryIfNecessary();
         super.realize();
-        for (edu.cmu.cs.dennisc.scenegraph.Geometry g : skeletonModelResource.geometries.getValue())
-        {
-            putElement( g );
-        }
-        m_sgVisual.geometries.setValue( skeletonModelResource.geometries.getValue());
+//        for (edu.cmu.cs.dennisc.scenegraph.Geometry g : skeletonModelResource.geometries.getValue())
+//        {
+//            putElement( g );
+//        }
+//        m_sgVisual.geometries.setValue( skeletonModelResource.geometries.getValue());
     }
    
    @Override

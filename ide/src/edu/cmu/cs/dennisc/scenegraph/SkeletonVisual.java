@@ -47,6 +47,18 @@ import edu.cmu.cs.dennisc.math.Point3;
 
 public class SkeletonVisual extends Visual {
     public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>(this, null);
+    public final edu.cmu.cs.dennisc.property.CopyableArrayProperty< WeightedMesh > weightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty< WeightedMesh >( this, new WeightedMesh[ 0 ] )
+    {
+        @Override
+        protected WeightedMesh[] createArray( int length ) {
+            return new WeightedMesh[ length ];
+        }
+        @Override
+        protected WeightedMesh createCopy( WeightedMesh src ) {
+            //todo?
+            return src;
+        }
+    };
     
     @Override
     public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {

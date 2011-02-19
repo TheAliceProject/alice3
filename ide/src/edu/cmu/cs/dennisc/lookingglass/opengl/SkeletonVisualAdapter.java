@@ -43,9 +43,9 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import org.alice.ide.IDE;
+import java.util.LinkedList;
+import java.util.List;
 
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
@@ -54,12 +54,14 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
 public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter< SkeletonVisual >  implements PropertyListener{
     
     private boolean skeletonIsDirty = true;
     private Joint currentSkeleton = null;
-    
+    private WeightedMeshControl[] meshControls;
+    private boolean isDataDirty = true;
     
     public SkeletonVisualAdapter()
     {
@@ -67,14 +69,64 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
     }
     
     @Override
+    public void initialize(SkeletonVisual element)
+    {
+        super.initialize(element);
+        initializeDataIfNecessary();
+    }
+    
+    private void initializeDataIfNecessary()
+    {
+        if (this.isDataDirty)
+        {
+            initializeData();
+        }
+    }
+    
+    private void initializeData()
+    {
+        if (this.m_element != null)
+        {
+            if (this.currentSkeleton != null)
+            {
+                this.setListeningOnSkeleton(this.currentSkeleton, false);
+            }
+            this.currentSkeleton = m_element.skeleton.getValue();
+            if (this.currentSkeleton != null)
+            {
+                this.setListeningOnSkeleton(this.currentSkeleton, true);
+                this.skeletonIsDirty = true;
+            }
+            
+            this.meshControls = new WeightedMeshControl[this.m_element.weightedMeshes.getValue().length];
+            for (int i=0; i<this.m_element.weightedMeshes.getValue().length; i++)
+            {
+                this.meshControls[i] = new WeightedMeshControl();
+                this.meshControls[i].initialize(this.m_element.weightedMeshes.getValue()[i]);
+            }
+        }
+        this.isDataDirty = false;
+    }
+    
+    @Override
     protected void pickGeometry(PickContext pc, boolean isSubElementActuallyRequired)
     {
+        initializeDataIfNecessary();
+        if (this.skeletonIsDirty)
+        {
+            this.processWeightedMesh();
+        }
         super.pickGeometry(pc, isSubElementActuallyRequired);
+        for (WeightedMeshControl wmc : this.meshControls)
+        {
+            wmc.pickGeometry(pc, isSubElementActuallyRequired);
+        }
     }
     
     @Override
     protected void renderGeometry(RenderContext rc)
     {
+        initializeDataIfNecessary();
         if (this.skeletonIsDirty)
         {
             this.processWeightedMesh();
@@ -91,6 +143,60 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         //END DEBUG RENDERING
         
         super.renderGeometry(rc);
+        for (WeightedMeshControl wmc : this.meshControls)
+        {
+            wmc.renderGeometry(rc);
+        }
+    }
+    
+    @Override
+    protected boolean isActuallyShowing() {
+        initializeDataIfNecessary();
+        if (super.isActuallyShowing())
+        {
+            return true;
+        }
+        if (m_isShowing && meshControls != null && meshControls.length > 0)
+        {
+            if( m_frontFacingAppearanceAdapter != null ) {
+                if( m_frontFacingAppearanceAdapter.isActuallyShowing() ) {
+                    return true;
+                }
+            }
+            if( m_backFacingAppearanceAdapter != null ) {
+                if( m_backFacingAppearanceAdapter.isActuallyShowing() ) {
+                    return true;
+                }
+            }
+        }
+        System.out.println("FAIL SHOWING");
+        return false;
+    }
+
+    @Override
+    protected boolean isAlphaBlended() 
+    {
+        initializeDataIfNecessary();
+        if (super.isAlphaBlended())
+        {
+            return true;
+        }
+        
+        if (meshControls != null && meshControls.length > 0)
+        {
+            if( m_frontFacingAppearanceAdapter != null ) {
+                if( m_frontFacingAppearanceAdapter.isAlphaBlended() ) {
+                    return true;
+                }
+            }
+            if( m_backFacingAppearanceAdapter != null ) {
+                if( m_backFacingAppearanceAdapter.isAlphaBlended() ) {
+                    return true;
+                }
+            }
+        }
+        System.out.println("FAIL ALPHA");
+        return false;
     }
     
     //PropertyListener methods for listening to changes on skeleton transforms
@@ -139,22 +245,16 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
     {
         if (this.currentSkeleton != null)
         {
-            synchronized( m_geometryAdapters ) {
-                for (GeometryAdapter adapter : this.m_geometryAdapters)
+            synchronized( meshControls ) {
+                for (WeightedMeshControl wmControl : this.meshControls)
                 {
-                    if (adapter instanceof WeightedMeshAdapter)
-                    {
-                        ((WeightedMeshAdapter)adapter).preProcess();
-                    }
+                    wmControl.preProcess();
                 }
                 AffineMatrix4x4 oTransformationPre = new AffineMatrix4x4();
                 processWeightedMesh(this.currentSkeleton, oTransformationPre);
-                for (GeometryAdapter adapter : this.m_geometryAdapters)
+                for (WeightedMeshControl wmControl : this.meshControls)
                 {
-                    if (adapter instanceof WeightedMeshAdapter)
-                    {
-                        ((WeightedMeshAdapter)adapter).postProcess();
-                    }
+                    wmControl.postProcess();
                 }
             }
         }
@@ -173,12 +273,9 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
             oTransformationPost = AffineMatrix4x4.createMultiplication(oTransformationPre, ((Transformable)currentNode).localTransformation.getValue());
             if (currentNode instanceof Joint)
             {
-                for (GeometryAdapter adapter : this.m_geometryAdapters)
+                for (WeightedMeshControl wmControl : this.meshControls)
                 {
-                    if (adapter instanceof WeightedMeshAdapter)
-                    {
-                        ((WeightedMeshAdapter)adapter).process( (Joint)currentNode, oTransformationPost );
-                    }
+                    wmControl.process( (Joint)currentNode, oTransformationPost );
                 }
             }
         }
@@ -195,18 +292,11 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
     
     @Override
     protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-        if( property == m_element.skeleton ) {
-            if (this.currentSkeleton != null)
-            {
-                this.setListeningOnSkeleton(this.currentSkeleton, false);
-            }
-            this.currentSkeleton = m_element.skeleton.getValue();
-            if (this.currentSkeleton != null)
-            {
-                this.setListeningOnSkeleton(this.currentSkeleton, true);
-                this.skeletonIsDirty = true;
-            }
-        } else {
+        if( property == m_element.skeleton ||
+            property == m_element.weightedMeshes ) {
+            this.isDataDirty = true;
+        } 
+        else {
             super.propertyChanged( property );
         }
     }

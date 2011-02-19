@@ -282,7 +282,7 @@ public class Joint extends Transformable
                 rc.gl.glVertex3d( 0, 0, -2*UNIT_LENGTH );
                 rc.gl.glEnd();
                 
-                if (false && this.boundingBox.getValue() != null && this.getComponentCount() == 0)
+                if (this.boundingBox.getValue() != null && this.getComponentCount() == 0)
                 {
                     rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
                     Point3 min = this.boundingBox.getValue().getMinimum();

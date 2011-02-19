@@ -114,26 +114,26 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
         }
     }
     
-    private void renderMeshWithBuffers( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc)
+    public static void renderMeshWithBuffers( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer)
     {
         rc.gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
-        this.vertexBuffer.rewind();
-        rc.gl.glVertexPointer(3, GL.GL_DOUBLE, 0, this.vertexBuffer);
+        vertexBuffer.rewind();
+        rc.gl.glVertexPointer(3, GL.GL_DOUBLE, 0, vertexBuffer);
         rc.gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
-        this.normalBuffer.rewind();
-        rc.gl.glNormalPointer(GL.GL_FLOAT, 0, this.normalBuffer);
+        normalBuffer.rewind();
+        rc.gl.glNormalPointer(GL.GL_FLOAT, 0, normalBuffer);
         rc.gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
-        this.textCoordBuffer.rewind();
-        rc.gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, this.textCoordBuffer);
+        textCoordBuffer.rewind();
+        rc.gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, textCoordBuffer);
         
-        this.indexBuffer.rewind();
+        indexBuffer.rewind();
 
-        rc.gl.glDrawElements(GL.GL_TRIANGLES, this.indexBuffer.remaining(), GL.GL_UNSIGNED_INT, this.indexBuffer);
+        rc.gl.glDrawElements(GL.GL_TRIANGLES, indexBuffer.remaining(), GL.GL_UNSIGNED_INT, indexBuffer);
     }
     
-    private void renderMeshWithArrays( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc)
+    public static void renderMeshWithArrays( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, double[] vertices, float[] normals, float[] textureCoordinates, Indices[] indices)
     {
-        for( Indices ip : this.indices ) 
+        for( Indices ip : indices ) 
         {
             ip.adjustIndicesIfNecessary();
             int[] pnIndices = ip.getIndices();
@@ -144,32 +144,32 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
             
             for( int i=0; i<nIndexCount;  ) {
                 nIndex = pnIndices[ i++ ];
-                rc.gl.glTexCoord2fv(this.textureCoordinates, nIndex);
+                rc.gl.glTexCoord2fv(textureCoordinates, nIndex);
                 nIndex = pnIndices[ i++ ];
-                rc.gl.glNormal3fv(this.normals, nIndex);
+                rc.gl.glNormal3fv(normals, nIndex);
                 nIndex = pnIndices[ i++ ];
-                rc.gl.glVertex3dv( this.vertices, nIndex );
+                rc.gl.glVertex3dv( vertices, nIndex );
             }
             
             rc.gl.glEnd();
         }
     }
     
-    private void pickMeshWithBuffers( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc)
+    public static void pickMeshWithBuffers( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer)
     {
         pc.gl.glPushName( -1 );
         pc.gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
-        this.vertexBuffer.rewind();
+        vertexBuffer.rewind();
         pc.gl.glVertexPointer(3, GL.GL_DOUBLE, 0, vertexBuffer);
-        this.indexBuffer.rewind();
-        pc.gl.glDrawElements(GL.GL_TRIANGLES, this.indexBuffer.remaining(), GL.GL_UNSIGNED_INT, this.indexBuffer);
+        indexBuffer.rewind();
+        pc.gl.glDrawElements(GL.GL_TRIANGLES, indexBuffer.remaining(), GL.GL_UNSIGNED_INT, indexBuffer);
         pc.gl.glPopName();
     }
     
-    private void pickMeshWithArrays( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc)
+    public static void pickMeshWithArrays( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, double[] vertices, Indices[] indices)
     {
         pc.gl.glPushName( -1 );
-        for( Indices ip : this.indices ) 
+        for( Indices ip : indices ) 
         {
             ip.adjustIndicesIfNecessary();
             int[] pnIndices = ip.getIndices();
@@ -180,23 +180,25 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
                 i++;
                 i++;
                 nIndex = pnIndices[ i++ ];
-                pc.gl.glVertex3dv( this.vertices, nIndex );
+                pc.gl.glVertex3dv( vertices, nIndex );
             }
             pc.gl.glEnd();
         }
         pc.gl.glPopName();
     }
+    
+    
 
     @Override
     protected void renderGeometry(RenderContext rc)
     {
         if (m_element.meshType.getValue() == MeshType.COLLADA_BASED)
         {
-            renderMeshWithBuffers(rc);
+            renderMeshWithBuffers(rc, this.vertexBuffer, this.normalBuffer, this.textCoordBuffer, this.indexBuffer);
         }
         else if (m_element.meshType.getValue() == MeshType.ALICE_BASED)
         {
-            renderMeshWithArrays(rc);
+            renderMeshWithArrays(rc, this.vertices, this.normals, this.textureCoordinates, this.indices);
         }
     }
 
@@ -205,11 +207,11 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
     {
         if (m_element.meshType.getValue() == MeshType.COLLADA_BASED)
         {
-            pickMeshWithBuffers(pc);
+            pickMeshWithBuffers(pc, vertexBuffer, indexBuffer);
         }
         else if (m_element.meshType.getValue() == MeshType.ALICE_BASED)
         {
-            pickMeshWithArrays(pc);
+            pickMeshWithArrays(pc, vertices, indices);
         }
     }
 

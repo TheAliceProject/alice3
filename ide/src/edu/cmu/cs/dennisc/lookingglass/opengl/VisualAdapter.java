@@ -52,8 +52,8 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
 
 	//todo: make private?
 	protected AppearanceAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Appearance > m_frontFacingAppearanceAdapter = null;
-	private AppearanceAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Appearance > m_backFacingAppearanceAdapter = null;
-	private boolean m_isShowing = false;
+	protected AppearanceAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Appearance > m_backFacingAppearanceAdapter = null;
+	protected boolean m_isShowing = false;
 	private double[] m_scale = new double[ 16 ];
 
 	protected java.nio.DoubleBuffer m_scaleBuffer = java.nio.DoubleBuffer.wrap( m_scale );
@@ -152,6 +152,7 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
 	protected void actuallyRender( RenderContext rc ) {
         assert m_frontFacingAppearanceAdapter != null || m_backFacingAppearanceAdapter != null;
 
+        
         if( m_isScaleIdentity ) {
             rc.gl.glDisable( GL.GL_NORMALIZE );
         } else {
