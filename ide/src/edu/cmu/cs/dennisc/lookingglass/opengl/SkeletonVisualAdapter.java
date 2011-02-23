@@ -169,7 +169,6 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
                 }
             }
         }
-        System.out.println("FAIL SHOWING");
         return false;
     }
 
@@ -195,7 +194,6 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
                 }
             }
         }
-        System.out.println("FAIL ALPHA");
         return false;
     }
     

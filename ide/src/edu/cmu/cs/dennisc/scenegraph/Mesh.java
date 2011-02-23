@@ -50,88 +50,32 @@ import edu.cmu.cs.dennisc.property.IntBufferProperty;
 
 public class Mesh extends Geometry
 {
-    public final edu.cmu.cs.dennisc.property.InstanceProperty< Indices[] > indices = new edu.cmu.cs.dennisc.property.InstanceProperty< Indices[] >( this, null );
-    public final edu.cmu.cs.dennisc.property.InstanceProperty< float[] > textureCoordinates = new edu.cmu.cs.dennisc.property.InstanceProperty< float[] >( this, null );
-    public final edu.cmu.cs.dennisc.property.InstanceProperty< double[] > vertices = new edu.cmu.cs.dennisc.property.InstanceProperty< double[] >( this, null );
-    public final edu.cmu.cs.dennisc.property.InstanceProperty< float[] > normals = new edu.cmu.cs.dennisc.property.InstanceProperty< float[] >( this, null );
-    
     public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty(this, (java.nio.DoubleBuffer)null);
     public final FloatBufferProperty normalBuffer = new FloatBufferProperty(this, (java.nio.FloatBuffer)null);
     public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty(this, (java.nio.FloatBuffer)null);
     public final IntBufferProperty indexBuffer = new IntBufferProperty(this, (java.nio.IntBuffer)null);
     
-    public final EnumProperty<MeshType> meshType = new EnumProperty<MeshType>(this, MeshType.ALICE_BASED);
-    
-    public enum MeshType
-    {
-        ALICE_BASED,
-        COLLADA_BASED;
-        
-        public static MeshType getMeshType(int intVal)
-        {
-            return MeshType.values()[intVal];
-        }
-    }
-    
     public Mesh()
     {
-    }
-    
-    public Indices getIndicesAt( int nIndex )
-    {
-        return this.indices.getValue()[nIndex];
-    }
-
-    public int getIndicesCount()
-    {
-        return this.indices.getValue().length;
     }
     
     @Override
     protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) 
     {
-        if (meshType.getValue() == MeshType.ALICE_BASED)
-        {
-            edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, vertices.getValue() );
-        }
-        else if (meshType.getValue() == MeshType.COLLADA_BASED)
-        {
-            edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, vertexBuffer.getValue().array() );
-        }
+        edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, vertexBuffer.getValue().array() );
     }
     
     @Override
     protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) 
     {
-        if (meshType.getValue() == MeshType.ALICE_BASED)
-        {
-            edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingSphere( boundingSphere, vertices.getValue() );
-        }
-        else if (meshType.getValue() == MeshType.COLLADA_BASED)
-        {
-            edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingSphere( boundingSphere, vertexBuffer.getValue().array() );
-        }
+        edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingSphere( boundingSphere, vertexBuffer.getValue().array() );
     }
     
     @Override
     protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
-        double[] xyzs;
-        float[] ijks;
-        if (meshType.getValue() == MeshType.ALICE_BASED)
-        {
-            xyzs = vertices.getValue();
-            ijks = normals.getValue();
-        }
-        else if (meshType.getValue() == MeshType.COLLADA_BASED)
-        {
-            xyzs = vertexBuffer.getValue().array();
-            ijks = normalBuffer.getValue().array();
-        }
-        else
-        {
-            xyzs = new double[0];
-            ijks = new float[0];
-        }
+
+        double[] xyzs = vertexBuffer.getValue().array();
+        float[] ijks = normalBuffer.getValue().array();
         
         assert xyzs.length >= 6;
         assert ijks.length >= 3;

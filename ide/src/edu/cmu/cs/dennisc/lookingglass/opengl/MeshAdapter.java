@@ -56,7 +56,6 @@ import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.nebulous.Model;
 import edu.cmu.cs.dennisc.scenegraph.Indices;
 import edu.cmu.cs.dennisc.scenegraph.Mesh;
-import edu.cmu.cs.dennisc.scenegraph.Mesh.MeshType;
 
 public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
 {
@@ -85,19 +84,7 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
     
     @Override
     protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
-        if( property == m_element.vertices ) {
-            this.vertices = m_element.vertices.getValue();
-            setIsGeometryChanged( true );
-        } else if ( property == m_element.normals ) {
-            this.normals = m_element.normals.getValue();
-            setIsGeometryChanged( true );
-        } else if ( property == m_element.textureCoordinates ) {
-            this.textureCoordinates = m_element.textureCoordinates.getValue();
-            setIsGeometryChanged( true );
-        } else if ( property == m_element.indices ) {
-            this.indices = m_element.indices.getValue();
-            setIsGeometryChanged( true );
-        } else if ( property == m_element.vertexBuffer ) {
+        if ( property == m_element.vertexBuffer ) {
             this.vertexBuffer = m_element.vertexBuffer.getValue();
             setIsGeometryChanged( true );
         } else if ( property == m_element.normalBuffer ) {
@@ -192,27 +179,13 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
     @Override
     protected void renderGeometry(RenderContext rc)
     {
-        if (m_element.meshType.getValue() == MeshType.COLLADA_BASED)
-        {
-            renderMeshWithBuffers(rc, this.vertexBuffer, this.normalBuffer, this.textCoordBuffer, this.indexBuffer);
-        }
-        else if (m_element.meshType.getValue() == MeshType.ALICE_BASED)
-        {
-            renderMeshWithArrays(rc, this.vertices, this.normals, this.textureCoordinates, this.indices);
-        }
+        renderMeshWithBuffers(rc, this.vertexBuffer, this.normalBuffer, this.textCoordBuffer, this.indexBuffer);
     }
 
     @Override
     protected void pickGeometry(PickContext pc, boolean isSubElementRequired)
     {
-        if (m_element.meshType.getValue() == MeshType.COLLADA_BASED)
-        {
-            pickMeshWithBuffers(pc, vertexBuffer, indexBuffer);
-        }
-        else if (m_element.meshType.getValue() == MeshType.ALICE_BASED)
-        {
-            pickMeshWithArrays(pc, vertices, indices);
-        }
+        pickMeshWithBuffers(pc, vertexBuffer, indexBuffer);
     }
 
     @Override
