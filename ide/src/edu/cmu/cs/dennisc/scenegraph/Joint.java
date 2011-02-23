@@ -116,7 +116,7 @@ public class Joint extends Transformable
         
         if (c instanceof AbstractTransformable)
         {
-            transform.setToMultiplication( transform, ((AbstractTransformable)c).localTransformation.getValue() );
+            transform.setToMultiplication( transform, ((AbstractTransformable)c).accessLocalTransformation() );
         }
         if (c instanceof Joint)
         {

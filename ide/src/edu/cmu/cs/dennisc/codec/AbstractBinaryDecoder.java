@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.codec;
 
+import edu.cmu.cs.dennisc.java.util.BufferUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -64,10 +66,19 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	}
 
 	protected abstract byte[] decodeByteArray( byte[] rv );
+//	public final byte[] decodeByteArray() {
+//		byte[] rv = (byte[])createArray( Byte.TYPE );
+//		return decodeByteArray( rv );
+//	}
+//	
 	public final byte[] decodeByteArray() {
-		byte[] rv = (byte[])createArray( Byte.TYPE );
-		return decodeByteArray( rv );
-	}
+	    byte[] rv = (byte[])createArray( Byte.TYPE );
+        for( int i=0; i<rv.length; i++ ) {
+            rv[ i ] = decodeByte();
+        }
+        return rv;
+    }
+	
 	public final char[] decodeCharArray() {
 		char[] rv = (char[])createArray( Character.TYPE );
 		for( int i=0; i<rv.length; i++ ) {
@@ -117,6 +128,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		}
 		return rv;
 	}
+	
 	public final < E extends Enum< E > > E[] decodeEnumArray( Class< E > cls ) {
 		E[] rv = (E[])createArray( cls );
 		for( int i=0; i<rv.length; i++ ) {

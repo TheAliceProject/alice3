@@ -45,9 +45,12 @@ package edu.cmu.cs.dennisc.java.util;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.CharBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.nio.LongBuffer;
+import java.nio.ShortBuffer;
 
 public class BufferUtilities
 {
@@ -55,6 +58,63 @@ public class BufferUtilities
         throw new AssertionError();
     }
 
+    public static byte[] convertByteBufferToArray( ByteBuffer buf )
+    {
+        if (buf.hasArray())
+        {
+            return buf.array();
+        }
+        else
+        {
+            buf.rewind();
+            byte[] array = new byte[buf.remaining()];
+            int index = 0;
+            while (buf.hasRemaining())
+            {
+                array[index++] = buf.get();
+            }
+            return array;
+        }
+    }
+    
+    public static char[] convertCharBufferToArray( CharBuffer buf )
+    {
+        if (buf.hasArray())
+        {
+            return buf.array();
+        }
+        else
+        {
+            buf.rewind();
+            char[] array = new char[buf.remaining()];
+            int index = 0;
+            while (buf.hasRemaining())
+            {
+                array[index++] = buf.get();
+            }
+            return array;
+        }
+    }
+    
+    public static short[] convertShortBufferToArray( ShortBuffer buf )
+    {
+        if (buf.hasArray())
+        {
+            return buf.array();
+        }
+        else
+        {
+            buf.rewind();
+            short[] array = new short[buf.remaining()];
+            int index = 0;
+            while (buf.hasRemaining())
+            {
+                array[index++] = buf.get();
+            }
+            return array;
+        }
+    }
+    
     public static int[] convertIntBufferToArray( IntBuffer buf )
     {
         if (buf.hasArray())
@@ -64,13 +124,32 @@ public class BufferUtilities
         else
         {
             buf.rewind();
-            int[] intArray = new int[buf.remaining()];
+            int[] array = new int[buf.remaining()];
             int index = 0;
             while (buf.hasRemaining())
             {
-                intArray[index++] = buf.get();
+                array[index++] = buf.get();
             }
-            return intArray;
+            return array;
+        }
+    }
+    
+    public static long[] convertLongBufferToArray( LongBuffer buf )
+    {
+        if (buf.hasArray())
+        {
+            return buf.array();
+        }
+        else
+        {
+            buf.rewind();
+            long[] array = new long[buf.remaining()];
+            int index = 0;
+            while (buf.hasRemaining())
+            {
+                array[index++] = buf.get();
+            }
+            return array;
         }
     }
     
@@ -83,13 +162,13 @@ public class BufferUtilities
         else
         {
             buf.rewind();
-            float[] floatArray = new float[buf.remaining()];
+            float[] array = new float[buf.remaining()];
             int index = 0;
             while (buf.hasRemaining())
             {
-                floatArray[index++] = buf.get();
+                array[index++] = buf.get();
             }
-            return floatArray;
+            return array;
         }
     }
     
@@ -102,23 +181,23 @@ public class BufferUtilities
         else
         {
             buf.rewind();
-            double[] doubleArray = new double[buf.remaining()];
+            double[] array = new double[buf.remaining()];
             int index = 0;
             while (buf.hasRemaining())
             {
-                doubleArray[index++] = buf.get();
+                array[index++] = buf.get();
             }
-            return doubleArray;
+            return array;
         }
     }
     
-    public static DoubleBuffer createDoubleBuffer( double[] data )
+    public static DoubleBuffer createDirectDoubleBuffer( double[] data )
     {
         if (data == null)
         {
             return null;
         }
-        DoubleBuffer buf = ByteBuffer.allocateDirect(4 * data.length).order(ByteOrder.nativeOrder()).asDoubleBuffer();
+        DoubleBuffer buf = ByteBuffer.allocateDirect((Double.SIZE / 8) * data.length).order(ByteOrder.nativeOrder()).asDoubleBuffer();
         buf.clear();
         buf.put(data);
         buf.flip();
@@ -131,17 +210,17 @@ public class BufferUtilities
         {
             return null;
         }
-        DoubleBuffer buf = createDoubleBuffer( convertDoubleBufferToArray(data) );
+        DoubleBuffer buf = createDirectDoubleBuffer( convertDoubleBufferToArray(data) );
         return buf;
     }
     
-    public static FloatBuffer createFloatBuffer( float[] data )
+    public static FloatBuffer createDirectFloatBuffer( float[] data )
     {
         if (data == null)
         {
             return null;
         }
-        FloatBuffer buf = ByteBuffer.allocateDirect(4 * data.length).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        FloatBuffer buf = ByteBuffer.allocateDirect((Float.SIZE / 8) * data.length).order(ByteOrder.nativeOrder()).asFloatBuffer();
         buf.clear();
         buf.put(data);
         buf.flip();
@@ -154,17 +233,17 @@ public class BufferUtilities
         {
             return null;
         }
-        FloatBuffer buf = createFloatBuffer( convertFloatBufferToArray(data) );
+        FloatBuffer buf = createDirectFloatBuffer( convertFloatBufferToArray(data) );
         return buf;
     }
     
-    public static IntBuffer createIntBuffer( int[] data )
+    public static IntBuffer createDirectIntBuffer( int[] data )
     {
         if (data == null)
         {
             return null;
         }
-        IntBuffer buf = ByteBuffer.allocateDirect(4 * data.length).order(ByteOrder.nativeOrder()).asIntBuffer();
+        IntBuffer buf = ByteBuffer.allocateDirect((Integer.SIZE / 8) * data.length).order(ByteOrder.nativeOrder()).asIntBuffer();
         buf.clear();
         buf.put(data);
         buf.flip();
@@ -177,7 +256,99 @@ public class BufferUtilities
         {
             return null;
         }
-        IntBuffer buf = createIntBuffer( convertIntBufferToArray(data) );
+        IntBuffer buf = createDirectIntBuffer( convertIntBufferToArray(data) );
+        return buf;
+    }
+    
+    public static LongBuffer createDirectLongBuffer( long[] data )
+    {
+        if (data == null)
+        {
+            return null;
+        }
+        LongBuffer buf = ByteBuffer.allocateDirect((Long.SIZE / 8) * data.length).order(ByteOrder.nativeOrder()).asLongBuffer();
+        buf.clear();
+        buf.put(data);
+        buf.flip();
+        return buf;
+    }
+    
+    public static LongBuffer copyLongBuffer( LongBuffer data )
+    {
+        if (data == null)
+        {
+            return null;
+        }
+        LongBuffer buf = createDirectLongBuffer( convertLongBufferToArray(data) );
+        return buf;
+    }
+    
+    public static ByteBuffer createDirectByteBuffer( byte[] data )
+    {
+        if (data == null)
+        {
+            return null;
+        }
+        ByteBuffer buf = ByteBuffer.allocateDirect((Byte.SIZE / 8) * data.length).order(ByteOrder.nativeOrder());
+        buf.clear();
+        buf.put(data);
+        buf.flip();
+        return buf;
+    }
+    
+    public static ByteBuffer copyByteBuffer( ByteBuffer data )
+    {
+        if (data == null)
+        {
+            return null;
+        }
+        ByteBuffer buf = createDirectByteBuffer( convertByteBufferToArray(data) );
+        return buf;
+    }
+    
+    public static CharBuffer createDirectCharBuffer( char[] data )
+    {
+        if (data == null)
+        {
+            return null;
+        }
+        CharBuffer buf = ByteBuffer.allocateDirect((Character.SIZE / 8) * data.length).order(ByteOrder.nativeOrder()).asCharBuffer();
+        buf.clear();
+        buf.put(data);
+        buf.flip();
+        return buf;
+    }
+    
+    public static CharBuffer copyCharBuffer( CharBuffer data )
+    {
+        if (data == null)
+        {
+            return null;
+        }
+        CharBuffer buf = createDirectCharBuffer( convertCharBufferToArray(data) );
+        return buf;
+    }
+    
+    public static ShortBuffer createDirectShortBuffer( short[] data )
+    {
+        if (data == null)
+        {
+            return null;
+        }
+        ShortBuffer buf = ByteBuffer.allocateDirect((Short.SIZE / 8) * data.length).order(ByteOrder.nativeOrder()).asShortBuffer();
+        buf.clear();
+        buf.put(data);
+        buf.flip();
+        return buf;
+    }
+    
+    public static ShortBuffer copyShortBuffer( ShortBuffer data )
+    {
+        if (data == null)
+        {
+            return null;
+        }
+        ShortBuffer buf = createDirectShortBuffer( convertShortBufferToArray(data) );
         return buf;
     }
 }

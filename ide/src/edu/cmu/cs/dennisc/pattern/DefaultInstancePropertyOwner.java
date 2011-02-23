@@ -42,6 +42,7 @@
  */
 package edu.cmu.cs.dennisc.pattern;
 
+
 import edu.cmu.cs.dennisc.property.*;
 
 /**
@@ -242,7 +243,21 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 			rv = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		} else if( edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
 			rv = binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( map );
-		} else if( Boolean.class == valueCls ) {
+		} else if( java.nio.ByteBuffer.class.isAssignableFrom(valueCls) ) {
+            rv = binaryDecoder.decodeByteBuffer();
+	    } else if( java.nio.CharBuffer.class.isAssignableFrom(valueCls) ) {
+            rv = binaryDecoder.decodeCharBuffer();
+        } else if( java.nio.ShortBuffer.class.isAssignableFrom(valueCls) ) {
+            rv = binaryDecoder.decodeShortBuffer();
+        } else if( java.nio.IntBuffer.class.isAssignableFrom(valueCls) ) {
+            rv = binaryDecoder.decodeIntBuffer();
+        } else if( java.nio.LongBuffer.class.isAssignableFrom(valueCls) ) {
+            rv = binaryDecoder.decodeLongBuffer();
+        } else if( java.nio.FloatBuffer.class.isAssignableFrom(valueCls) ) {
+            rv = binaryDecoder.decodeFloatBuffer();
+        } else if( java.nio.DoubleBuffer.class.isAssignableFrom(valueCls) ) {
+            rv = binaryDecoder.decodeDoubleBuffer();
+        } else if( Boolean.class == valueCls ) {
 			rv = binaryDecoder.decodeBoolean();
 		} else if( Byte.class == valueCls ) {
 			rv = binaryDecoder.decodeByte();
@@ -271,7 +286,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, java.util.Map< Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable > map ) {
 		while( true ) {
-			String propertyName = binaryDecoder.decodeString();
+		    String propertyName = binaryDecoder.decodeString();
 			if( propertyName.length() > 0 ) {
 				Property property = getPropertyNamed( propertyName );
 				assert property != null;
@@ -341,7 +356,9 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 				binaryEncoder.encode( (edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable)value );
 			} else if( edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
 				binaryEncoder.encode( (edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable)value, map );
-			} else if( Boolean.class == valueCls ) {
+			} else if( java.nio.Buffer.class.isAssignableFrom( valueCls ) ) {
+                binaryEncoder.encode((java.nio.Buffer)value);
+            } else if( Boolean.class == valueCls ) {
 				binaryEncoder.encode( (Boolean)value );
 			} else if( Byte.class == valueCls ) {
 				binaryEncoder.encode( (Byte)value );

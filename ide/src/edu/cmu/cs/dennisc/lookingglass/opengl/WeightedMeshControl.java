@@ -61,6 +61,7 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Indices;
 import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
+import edu.cmu.cs.dennisc.scenegraph.SparseInverseAbsoluteTransformationWeightsPair;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 import edu.cmu.cs.dennisc.scenegraph.Mesh.MeshType;
 
@@ -113,17 +114,6 @@ public class WeightedMeshControl
             this.meshAdapter = (WeightedMeshAdapter<WeightedMesh>)AdapterFactory.getAdapterFor( weightedMesh );
             
             needsInitialization = false;
-            //DEBUG
-            if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
-            {
-                for( int i=0; i<this.normalIndices.length; i++ ) {
-                    if( this.normalIndices[ i ].size() == 0 ) 
-                    {
-                        PrintUtilities.println( "WARNING: no normals on index "+i );
-                    }
-                }
-            }
-            //END DEBUG
         }        
     }
     

@@ -81,18 +81,6 @@ public abstract class AliceModel extends org.alice.apis.moveandturn.Model {
 	            java.io.InputStream is = Ogre.class.getResourceAsStream( this.getResourceString()+".alice" );
 	            edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
 	            this.skeletonModelResource = decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap< Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable >() );
-	            
-	            Joint head = this.skeletonModelResource.skeleton.getValue().getJoint("HEAD");
-	            Joint foot = this.skeletonModelResource.skeleton.getValue().getJoint("LEFT_ANKLE");
-	            
-	            Point3 headPos = head.getAbsoluteTransformation().translation;
-	            Point3 footPos = foot.getAbsoluteTransformation().translation;
-	            
-	            double height = Point3.calculateDistanceBetween(headPos, footPos);
-	            
-	            System.out.println("Height: "+height);
-	            
-	            
 	        } catch( Exception  lre ) {
 	            throw new RuntimeException( lre );
 	        }

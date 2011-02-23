@@ -117,17 +117,6 @@ public class WeightedMeshAdapter< E extends WeightedMesh > extends MeshAdapter<E
                 initializeColladaBased();
             }
             needsInitialization = false;
-            //DEBUG
-            if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
-            {
-                for( int i=0; i<this.normalIndices.length; i++ ) {
-                    if( this.normalIndices[ i ].size() == 0 ) 
-                    {
-                        PrintUtilities.println( "WARNING: no normals on index "+i );
-                    }
-                }
-            }
-            //END DEBUG
         }        
     }
     
