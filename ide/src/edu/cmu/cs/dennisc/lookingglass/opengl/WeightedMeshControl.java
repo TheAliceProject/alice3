@@ -46,39 +46,21 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import org.alice.ide.IDE;
-
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-import edu.cmu.cs.dennisc.scenegraph.Indices;
 import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
-import edu.cmu.cs.dennisc.scenegraph.Joint;
-import edu.cmu.cs.dennisc.scenegraph.SparseInverseAbsoluteTransformationWeightsPair;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
-import edu.cmu.cs.dennisc.scenegraph.Mesh.MeshType;
 
 public class WeightedMeshControl
 {
     protected WeightedMesh weightedMesh;
-    protected WeightedMeshAdapter<WeightedMesh> meshAdapter;
     
     protected DoubleBuffer vertexBuffer;
     protected FloatBuffer normalBuffer;
     protected FloatBuffer textCoordBuffer;
     protected IntBuffer indexBuffer;
-    
-    protected double[] vertices;
-    protected float[] normals;
-    protected float[] textureCoordinates;
-    protected Indices[] indices;
 
     protected AffineMatrix4x4[] affineMatrices;
     protected float[] weights;
@@ -103,80 +85,23 @@ public class WeightedMeshControl
     {
         if (this.weightedMesh != null)
         {
-            if ( this.weightedMesh.meshType.getValue() == MeshType.ALICE_BASED )
-            {
-                initializeAliceBased();
-            }
-            else if ( this.weightedMesh.meshType.getValue() == MeshType.COLLADA_BASED )
-            {
-                initializeColladaBased();
-            }
-            this.meshAdapter = (WeightedMeshAdapter<WeightedMesh>)AdapterFactory.getAdapterFor( weightedMesh );
+            this.textCoordBuffer = this.weightedMesh.textCoordBuffer.getValue();
+            this.indexBuffer = this.weightedMesh.indexBuffer.getValue();
             
+            this.normalBuffer = BufferUtilities.copyFloatBuffer(this.weightedMesh.normalBuffer.getValue());
+            this.vertexBuffer = BufferUtilities.copyDoubleBuffer(this.weightedMesh.vertexBuffer.getValue());
+            int nVertexCount = this.vertexBuffer.limit() / 3;
+            
+            this.affineMatrices = new AffineMatrix4x4[ nVertexCount ];
+            this.weights = new float[ nVertexCount ];
+            for (int i=0; i<nVertexCount; i++)
+            {
+                this.affineMatrices[i] = new AffineMatrix4x4();
+                this.weights[i] = 0f;
+            }
             needsInitialization = false;
+
         }        
-    }
-    
-    private void initializeAliceBased()
-    {
-        this.textureCoordinates = this.weightedMesh.textureCoordinates.getValue();
-        this.indices = this.weightedMesh.indices.getValue();
-        
-        this.vertices = new double[this.weightedMesh.vertices.getValue().length];
-        this.normals = new float[this.weightedMesh.normals.getValue().length];
-        
-        int nVertexCount = this.weightedMesh.vertices.getValue().length / 3;
-        this.affineMatrices = new AffineMatrix4x4[ nVertexCount ];
-        this.weights = new float[ nVertexCount ];
-        this.normalIndices = (List<Integer>[])new LinkedList[ nVertexCount ];
-        for (int i=0; i<nVertexCount; i++)
-        {
-            this.affineMatrices[i] = new AffineMatrix4x4();
-            this.weights[i] = 0f;
-            this.normalIndices[i] = new LinkedList<Integer>();
-        }
-        for(Indices indices : this.weightedMesh.indices.getValue()) 
-        {
-            for( int j=0; j<indices.getTriangleCount(); j++ ) 
-            {
-                for( int k=0; k<3; k++ ) 
-                {
-                    int nVertexIndex = indices.getVertexIndex( j, k );
-                    int nNormalIndex = indices.getNormalIndex( j, k );
-                    this.addNormalIndex( nVertexIndex, nNormalIndex );
-                }
-            }
-        }
-    }
-    
-    private void initializeColladaBased()
-    {
-        this.textCoordBuffer = this.weightedMesh.textCoordBuffer.getValue();
-        this.indexBuffer = this.weightedMesh.indexBuffer.getValue();
-        
-        this.normalBuffer = BufferUtilities.copyFloatBuffer(this.weightedMesh.normalBuffer.getValue());
-        this.vertexBuffer = BufferUtilities.copyDoubleBuffer(this.weightedMesh.vertexBuffer.getValue());
-        int nVertexCount = this.vertexBuffer.limit() / 3;
-        
-        this.affineMatrices = new AffineMatrix4x4[ nVertexCount ];
-        this.weights = new float[ nVertexCount ];
-        for (int i=0; i<nVertexCount; i++)
-        {
-            this.affineMatrices[i] = new AffineMatrix4x4();
-            this.weights[i] = 0f;
-        }
-    }
-    
-    private void addNormalIndex( int nIndex, int nNormalIndex ) 
-    {
-        for( int i=0; i<this.normalIndices[ nIndex ].size(); i++ ) 
-        {
-            if( this.normalIndices[ nIndex ].get(i) == nNormalIndex ) 
-            {
-                return;
-            }
-        }
-        this.normalIndices[nIndex].add( nNormalIndex );
     }
     
     public void preProcess() 
@@ -217,27 +142,8 @@ public class WeightedMeshControl
                 this.affineMatrices[ i ].multiply(weight);
             }
         }
-        if (this.weightedMesh.meshType.getValue() == MeshType.ALICE_BASED)
-        {
-            this.transformArrays( this.affineMatrices, this.normalIndices, this.vertices, this.normals, this.weightedMesh.vertices.getValue(), this.weightedMesh.normals.getValue() );
-        }
-        else
-        {
-            this.transformBuffers(this.affineMatrices, this.vertexBuffer, this.normalBuffer, this.weightedMesh.vertexBuffer.getValue(), this.weightedMesh.normalBuffer.getValue());
-        }
+        this.transformBuffers(this.affineMatrices, this.vertexBuffer, this.normalBuffer, this.weightedMesh.vertexBuffer.getValue(), this.weightedMesh.normalBuffer.getValue());
         setIsGeometryChanged(true);
-    }
-    
-    private void transformArrays(AffineMatrix4x4[] voAffineMatrices, List< Integer >[] vnNormalIndices, double[] verticesDst, float[] normalsDst, double[] verticesSrc, float[] normalsSrc )
-    {
-        int iTimes3 = 0;
-        for( int i=0; i<voAffineMatrices.length; i++, iTimes3+=3 ) {
-            voAffineMatrices[i].transformVertex( verticesDst, iTimes3, verticesSrc, iTimes3 );
-            for( int j=0; j<vnNormalIndices[i].size(); j++ ) {
-                int kTimes3 = vnNormalIndices[i].get(j)*3;
-                voAffineMatrices[i].transformNormal( normalsDst, kTimes3, normalsSrc, kTimes3 );
-            }
-        }
     }
     
     private void transformBuffers( AffineMatrix4x4[] voAffineMatrices, DoubleBuffer vertices, FloatBuffer normals, DoubleBuffer verticesSrc, FloatBuffer normalsSrc ) 
@@ -273,14 +179,7 @@ public class WeightedMeshControl
         {
             this.internalInitialize();
         }
-        if (this.weightedMesh.meshType.getValue() == MeshType.COLLADA_BASED)
-        {
-            MeshAdapter.renderMeshWithBuffers(rc, this.vertexBuffer, this.normalBuffer, this.textCoordBuffer, this.indexBuffer);
-        }
-        else if (this.weightedMesh.meshType.getValue() == MeshType.ALICE_BASED)
-        {
-            MeshAdapter.renderMeshWithArrays(rc, this.vertices, this.normals, this.textureCoordinates, this.indices);
-        }
+        MeshAdapter.renderMeshWithBuffers(rc, this.vertexBuffer, this.normalBuffer, this.textCoordBuffer, this.indexBuffer);
     }
     
     public void pickGeometry(PickContext pc, boolean isSubElementRequired)
@@ -289,14 +188,7 @@ public class WeightedMeshControl
         {
             this.internalInitialize();
         }
-        if (this.weightedMesh.meshType.getValue() == MeshType.COLLADA_BASED)
-        {
-            MeshAdapter.pickMeshWithBuffers(pc, vertexBuffer, indexBuffer);
-        }
-        else if (this.weightedMesh.meshType.getValue() == MeshType.ALICE_BASED)
-        {
-            MeshAdapter.pickMeshWithArrays(pc, vertices, indices);
-        }
+        MeshAdapter.pickMeshWithBuffers(pc, vertexBuffer, indexBuffer);
     }
     
     
