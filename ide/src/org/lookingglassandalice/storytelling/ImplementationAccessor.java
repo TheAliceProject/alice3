@@ -50,7 +50,10 @@ public class ImplementationAccessor {
 	private ImplementationAccessor() {
 		throw new AssertionError();
 	}
-	public static org.lookingglassandalice.storytelling.implementation.SceneImplementation getImplementation( Scene scene ) {
-		return scene.getImplementation();
+	public static <T extends org.lookingglassandalice.storytelling.implementation.EntityImplementation> T getImplementation( Entity entity ) {
+		return (T)entity.getImplementation();
+	}
+	public static org.lookingglassandalice.storytelling.implementation.ProgramImplementation getImplementation( Program program ) {
+		return program.getImplementation();
 	}
 }
