@@ -53,4 +53,7 @@ public class ImplementationAccessor {
 	public static org.lookingglassandalice.storytelling.implementation.SceneImplementation getImplementation( Scene scene ) {
 		return scene.getImplementation();
 	}
+	public static org.lookingglassandalice.storytelling.implementation.ProgramImplementation getImplementation( Program program ) {
+		return program.getImplementation();
+	}
 }

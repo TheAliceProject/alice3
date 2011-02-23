@@ -47,4 +47,6 @@ package org.lookingglassandalice.storytelling.resources;
  * @author Dennis Cosgrove
  */
 public interface JointId {
+	public JointId getParent();
+	public Iterable< JointId > getChildren();
 }
