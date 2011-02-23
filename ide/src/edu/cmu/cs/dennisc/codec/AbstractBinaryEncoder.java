@@ -71,37 +71,94 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 
 	protected abstract void encodeBuffer( byte[] buffer );
 
-	public final void encode( java.nio.Buffer buffer ) {
-	    if (buffer instanceof java.nio.ByteBuffer)
-	    {
-	        java.nio.ByteBuffer b = (java.nio.ByteBuffer)buffer;
-	        encode(BufferUtilities.convertByteBufferToArray(b));
-	    } else if (buffer instanceof java.nio.CharBuffer)
-        {
-            java.nio.CharBuffer b = (java.nio.CharBuffer)buffer;
-            encode(BufferUtilities.convertCharBufferToArray(b));
-        } else if (buffer instanceof java.nio.ShortBuffer)
-        {
-            java.nio.ShortBuffer b = (java.nio.ShortBuffer)buffer;
-            encode(BufferUtilities.convertShortBufferToArray(b));
-        } else if (buffer instanceof java.nio.IntBuffer)
-        {
-            java.nio.IntBuffer b = (java.nio.IntBuffer)buffer;
-            encode(BufferUtilities.convertIntBufferToArray(b));
-        } else if (buffer instanceof java.nio.LongBuffer)
-        {
-            java.nio.LongBuffer b = (java.nio.LongBuffer)buffer;
-            encode(BufferUtilities.convertLongBufferToArray(b));
-        } else if (buffer instanceof java.nio.FloatBuffer)
-        {
-            java.nio.FloatBuffer b = (java.nio.FloatBuffer)buffer;
-            encode(BufferUtilities.convertFloatBufferToArray(b));
-        } else if (buffer instanceof java.nio.DoubleBuffer)
-        {
-            java.nio.DoubleBuffer b = (java.nio.DoubleBuffer)buffer;
-            encode(BufferUtilities.convertDoubleBufferToArray(b));
-        }
+	private void encodeBufferHeader( java.nio.Buffer buffer, boolean isDirect, java.nio.ByteOrder byteOrder ) {
+		buffer.rewind();
+		this.encode( buffer.limit() );
+		this.encode( buffer.isReadOnly() );
+		this.encode( isDirect );
+		this.encode( byteOrder == java.nio.ByteOrder.BIG_ENDIAN );
 	}
+	public final void encode( java.nio.ByteBuffer buffer ) {
+		this.encodeBufferHeader( buffer, buffer.isDirect(), buffer.order() );
+		while( buffer.hasRemaining() ) {
+			this.encode( buffer.get() );
+		}
+		buffer.rewind();
+	}
+	public final void encode( java.nio.CharBuffer buffer ) {
+		this.encodeBufferHeader( buffer, buffer.isDirect(), buffer.order() );
+		while( buffer.hasRemaining() ) {
+			this.encode( buffer.get() );
+		}
+		buffer.rewind();
+	}
+	public final void encode( java.nio.ShortBuffer buffer ) {
+		this.encodeBufferHeader( buffer, buffer.isDirect(), buffer.order() );
+		while( buffer.hasRemaining() ) {
+			this.encode( buffer.get() );
+		}
+		buffer.rewind();
+	}
+	public final void encode( java.nio.IntBuffer buffer ) {
+		this.encodeBufferHeader( buffer, buffer.isDirect(), buffer.order() );
+		while( buffer.hasRemaining() ) {
+			this.encode( buffer.get() );
+		}
+		buffer.rewind();
+	}
+	public final void encode( java.nio.LongBuffer buffer ) {
+		this.encodeBufferHeader( buffer, buffer.isDirect(), buffer.order() );
+		while( buffer.hasRemaining() ) {
+			this.encode( buffer.get() );
+		}
+		buffer.rewind();
+	}
+	public final void encode( java.nio.FloatBuffer buffer ) {
+		this.encodeBufferHeader( buffer, buffer.isDirect(), buffer.order() );
+		while( buffer.hasRemaining() ) {
+			this.encode( buffer.get() );
+		}
+		buffer.rewind();
+	}
+	public final void encode( java.nio.DoubleBuffer buffer ) {
+		this.encodeBufferHeader( buffer, buffer.isDirect(), buffer.order() );
+		while( buffer.hasRemaining() ) {
+			this.encode( buffer.get() );
+		}
+		buffer.rewind();
+	}
+	
+//	public final void encode( java.nio.Buffer buffer ) {
+//	    if (buffer instanceof java.nio.ByteBuffer)
+//	    {
+//	        java.nio.ByteBuffer b = (java.nio.ByteBuffer)buffer;
+//	        encode(BufferUtilities.convertByteBufferToArray(b));
+//	    } else if (buffer instanceof java.nio.CharBuffer)
+//        {
+//            java.nio.CharBuffer b = (java.nio.CharBuffer)buffer;
+//            encode(BufferUtilities.convertCharBufferToArray(b));
+//        } else if (buffer instanceof java.nio.ShortBuffer)
+//        {
+//            java.nio.ShortBuffer b = (java.nio.ShortBuffer)buffer;
+//            encode(BufferUtilities.convertShortBufferToArray(b));
+//        } else if (buffer instanceof java.nio.IntBuffer)
+//        {
+//            java.nio.IntBuffer b = (java.nio.IntBuffer)buffer;
+//            encode(BufferUtilities.convertIntBufferToArray(b));
+//        } else if (buffer instanceof java.nio.LongBuffer)
+//        {
+//            java.nio.LongBuffer b = (java.nio.LongBuffer)buffer;
+//            encode(BufferUtilities.convertLongBufferToArray(b));
+//        } else if (buffer instanceof java.nio.FloatBuffer)
+//        {
+//            java.nio.FloatBuffer b = (java.nio.FloatBuffer)buffer;
+//            encode(BufferUtilities.convertFloatBufferToArray(b));
+//        } else if (buffer instanceof java.nio.DoubleBuffer)
+//        {
+//            java.nio.DoubleBuffer b = (java.nio.DoubleBuffer)buffer;
+//            encode(BufferUtilities.convertDoubleBufferToArray(b));
+//        }
+//	}
 	
 	public final void encode( byte[] array ) {
 		this.encodeArrayLength( array );

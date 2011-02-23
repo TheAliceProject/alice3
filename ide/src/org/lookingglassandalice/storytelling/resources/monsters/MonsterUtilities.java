@@ -56,6 +56,7 @@ public class MonsterUtilities {
 	}
 	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual createCopy( edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal ) {
 	    edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = sgOriginal.geometries.getValue();
+	    edu.cmu.cs.dennisc.scenegraph.WeightedMesh[] sgWeightedMeshes = sgOriginal.weightedMeshes.getValue();
 		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
 
 	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual rv = new edu.cmu.cs.dennisc.scenegraph.SkeletonVisual();
@@ -63,6 +64,7 @@ public class MonsterUtilities {
 
     	rv.skeleton.setValue( sgSkeletonRootCopy );
 		rv.geometries.setValue( sgGeometries );
+		rv.weightedMeshes.setValue( sgWeightedMeshes );
 		return rv;
 	}
 	public static edu.cmu.cs.dennisc.texture.Texture getTexture( edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal ) {

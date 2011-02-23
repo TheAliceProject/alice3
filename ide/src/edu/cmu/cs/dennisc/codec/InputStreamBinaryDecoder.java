@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.codec;
 
-import edu.cmu.cs.dennisc.java.util.BufferUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -81,29 +79,6 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 	
-
-	public final java.nio.ByteBuffer decodeByteBuffer() {
-		return BufferUtilities.createDirectByteBuffer(decodeByteArray());
-	}
-	public final java.nio.CharBuffer decodeCharBuffer() {
-		return BufferUtilities.createDirectCharBuffer(decodeCharArray());
-	}
-	public final java.nio.DoubleBuffer decodeDoubleBuffer() {
-		return BufferUtilities.createDirectDoubleBuffer(decodeDoubleArray());
-	}
-	public final java.nio.FloatBuffer decodeFloatBuffer() {
-		return BufferUtilities.createDirectFloatBuffer(decodeFloatArray());
-	}
-	public final java.nio.IntBuffer decodeIntBuffer() {
-		return BufferUtilities.createDirectIntBuffer(decodeIntArray());
-	}
-	public final java.nio.LongBuffer decodeLongBuffer() {
-		return BufferUtilities.createDirectLongBuffer(decodeLongArray());
-	}
-	public final java.nio.ShortBuffer decodeShortBuffer() {
-		return BufferUtilities.createDirectShortBuffer(decodeShortArray());
-	}
-
 	public boolean decodeBoolean() {
 		try {
 			return m_ois.readBoolean();

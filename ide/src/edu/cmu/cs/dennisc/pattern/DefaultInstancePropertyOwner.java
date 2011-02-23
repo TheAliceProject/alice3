@@ -356,8 +356,20 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 				binaryEncoder.encode( (edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable)value );
 			} else if( edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
 				binaryEncoder.encode( (edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable)value, map );
-			} else if( java.nio.Buffer.class.isAssignableFrom( valueCls ) ) {
-                binaryEncoder.encode((java.nio.Buffer)value);
+			} else if( java.nio.ByteBuffer.class.isAssignableFrom( valueCls ) ) {
+                binaryEncoder.encode( (java.nio.ByteBuffer)value);
+			} else if( java.nio.CharBuffer.class.isAssignableFrom( valueCls ) ) {
+                binaryEncoder.encode( (java.nio.CharBuffer)value);
+			} else if( java.nio.ShortBuffer.class.isAssignableFrom( valueCls ) ) {
+                binaryEncoder.encode( (java.nio.ShortBuffer)value);
+			} else if( java.nio.IntBuffer.class.isAssignableFrom( valueCls ) ) {
+                binaryEncoder.encode( (java.nio.IntBuffer)value);
+			} else if( java.nio.LongBuffer.class.isAssignableFrom( valueCls ) ) {
+                binaryEncoder.encode( (java.nio.LongBuffer)value);
+			} else if( java.nio.FloatBuffer.class.isAssignableFrom( valueCls ) ) {
+                binaryEncoder.encode( (java.nio.FloatBuffer)value);
+			} else if( java.nio.DoubleBuffer.class.isAssignableFrom( valueCls ) ) {
+                binaryEncoder.encode( (java.nio.DoubleBuffer)value);
             } else if( Boolean.class == valueCls ) {
 				binaryEncoder.encode( (Boolean)value );
 			} else if( Byte.class == valueCls ) {
