@@ -154,8 +154,8 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
     
     public static void pickMesh( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer )
     {
-        int maxIndices = GetUtilities.getInteger(pc.gl, pc.gl.GL_MAX_ELEMENTS_INDICES);
-        int maxVertices = GetUtilities.getInteger(pc.gl, pc.gl.GL_MAX_ELEMENTS_VERTICES);
+        int maxIndices = GetUtilities.getInteger(pc.gl, GL.GL_MAX_ELEMENTS_INDICES);
+        int maxVertices = GetUtilities.getInteger(pc.gl, GL.GL_MAX_ELEMENTS_VERTICES);
         if (vertexBuffer.capacity() / 3 >= maxVertices || indexBuffer.capacity() >= maxIndices)
         {
             pickMeshAsArrays(pc, vertexBuffer, indexBuffer);

@@ -146,9 +146,15 @@ public class BufferUtilities {
 	public static java.nio.DoubleBuffer decodeDoubleBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
 		Header header = new Header( decoder );
 		java.nio.ByteBuffer byteBuffer = header.createByteBuffer();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( header );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( byteBuffer );
 		java.nio.DoubleBuffer rv = byteBuffer.asDoubleBuffer();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
 		while( rv.hasRemaining() ) {
-			rv.put( decoder.decodeDouble() );
+			double d = decoder.decodeDouble();
+			
+			rv.put( d );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( d );
 		}
 		rv.rewind();
 		if( header.isReadOnly ) {
