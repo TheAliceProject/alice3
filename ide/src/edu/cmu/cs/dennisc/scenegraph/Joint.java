@@ -58,7 +58,7 @@ public class Joint extends Transformable
     public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInY = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
     public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInZ = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
     
-    public final edu.cmu.cs.dennisc.property.DoubleProperty boundRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, .5d );
+//    public final edu.cmu.cs.dennisc.property.DoubleProperty boundingRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, Double.NaN, true);
     
     public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> boundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>(this, new AxisAlignedBox());
     
@@ -287,49 +287,94 @@ public class Joint extends Transformable
 //                rc.gl.glVertex3d( 0, 0, -2*UNIT_LENGTH );
 //                rc.gl.glEnd();
                 
-                if (this.boundingBox.getValue() != null)
-                {
-                    rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
-                    Point3 min = this.boundingBox.getValue().getMinimum();
-                    Point3 max = this.boundingBox.getValue().getMaximum();
+//                if (!this.boundingRadius.getValue().isNaN())
+//                {
+//                    rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
+//                    double r = this.boundingRadius.getValue() / 2;
+//                    
+//                    Point3 min = new Point3(-r,-r,-r);
+//                    Point3 max = new Point3(r,r,r);
+//                  //Bottom
+//                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
+//                    rc.gl.glVertex3d( min.x, min.y, min.z );
+//                    rc.gl.glVertex3d( min.x, min.y, max.z );
+//                    rc.gl.glVertex3d( max.x, min.y, max.z );
+//                    rc.gl.glVertex3d( max.x, min.y, min.z );
+//                    rc.gl.glEnd();
+//                    
+//                    //Top
+//                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
+//                    rc.gl.glVertex3d( min.x, max.y, min.z );
+//                    rc.gl.glVertex3d( min.x, max.y, max.z );
+//                    rc.gl.glVertex3d( max.x, max.y, max.z );
+//                    rc.gl.glVertex3d( max.x, max.y, min.z );
+//                    rc.gl.glEnd();
+//                    
+//                    //Sides
+//                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+//                    rc.gl.glVertex3d( min.x, min.y, min.z );
+//                    rc.gl.glVertex3d( min.x, max.y, min.z );
+//                    rc.gl.glEnd();
+//                    
+//                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+//                    rc.gl.glVertex3d( max.x, min.y, min.z );
+//                    rc.gl.glVertex3d( max.x, max.y, min.z );
+//                    rc.gl.glEnd();
+//                    
+//                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+//                    rc.gl.glVertex3d( min.x, min.y, max.z );
+//                    rc.gl.glVertex3d( min.x, max.y, max.z );
+//                    rc.gl.glEnd();
+//                    
+//                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+//                    rc.gl.glVertex3d( max.x, min.y, max.z );
+//                    rc.gl.glVertex3d( max.x, max.y, max.z );
+//                    rc.gl.glEnd();
+//                }
                     
-                    //Bottom
-                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
-                    rc.gl.glVertex3d( min.x, min.y, min.z );
-                    rc.gl.glVertex3d( min.x, min.y, max.z );
-                    rc.gl.glVertex3d( max.x, min.y, max.z );
-                    rc.gl.glVertex3d( max.x, min.y, min.z );
-                    rc.gl.glEnd();
-                    
-                    //Top
-                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
-                    rc.gl.glVertex3d( min.x, max.y, min.z );
-                    rc.gl.glVertex3d( min.x, max.y, max.z );
-                    rc.gl.glVertex3d( max.x, max.y, max.z );
-                    rc.gl.glVertex3d( max.x, max.y, min.z );
-                    rc.gl.glEnd();
-                    
-                    //Sides
-                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
-                    rc.gl.glVertex3d( min.x, min.y, min.z );
-                    rc.gl.glVertex3d( min.x, max.y, min.z );
-                    rc.gl.glEnd();
-                    
-                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
-                    rc.gl.glVertex3d( max.x, min.y, min.z );
-                    rc.gl.glVertex3d( max.x, max.y, min.z );
-                    rc.gl.glEnd();
-                    
-                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
-                    rc.gl.glVertex3d( min.x, min.y, max.z );
-                    rc.gl.glVertex3d( min.x, max.y, max.z );
-                    rc.gl.glEnd();
-                    
-                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
-                    rc.gl.glVertex3d( max.x, min.y, max.z );
-                    rc.gl.glVertex3d( max.x, max.y, max.z );
-                    rc.gl.glEnd();
-                }
+//                if (this.boundingBox.getValue() != null)
+//                {
+//                    rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
+//                    Point3 min = this.boundingBox.getValue().getMinimum();
+//                    Point3 max = this.boundingBox.getValue().getMaximum();
+//                    
+//                    //Bottom
+//                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
+//                    rc.gl.glVertex3d( min.x, min.y, min.z );
+//                    rc.gl.glVertex3d( min.x, min.y, max.z );
+//                    rc.gl.glVertex3d( max.x, min.y, max.z );
+//                    rc.gl.glVertex3d( max.x, min.y, min.z );
+//                    rc.gl.glEnd();
+//                    
+//                    //Top
+//                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
+//                    rc.gl.glVertex3d( min.x, max.y, min.z );
+//                    rc.gl.glVertex3d( min.x, max.y, max.z );
+//                    rc.gl.glVertex3d( max.x, max.y, max.z );
+//                    rc.gl.glVertex3d( max.x, max.y, min.z );
+//                    rc.gl.glEnd();
+//                    
+//                    //Sides
+//                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+//                    rc.gl.glVertex3d( min.x, min.y, min.z );
+//                    rc.gl.glVertex3d( min.x, max.y, min.z );
+//                    rc.gl.glEnd();
+//                    
+//                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+//                    rc.gl.glVertex3d( max.x, min.y, min.z );
+//                    rc.gl.glVertex3d( max.x, max.y, min.z );
+//                    rc.gl.glEnd();
+//                    
+//                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+//                    rc.gl.glVertex3d( min.x, min.y, max.z );
+//                    rc.gl.glVertex3d( min.x, max.y, max.z );
+//                    rc.gl.glEnd();
+//                    
+//                    rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+//                    rc.gl.glVertex3d( max.x, min.y, max.z );
+//                    rc.gl.glVertex3d( max.x, max.y, max.z );
+//                    rc.gl.glEnd();
+//                }
                 
         
 //                rc.gl.glEnable( javax.media.opengl.GL.GL_LIGHTING );
