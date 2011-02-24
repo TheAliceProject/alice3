@@ -57,6 +57,13 @@ public class TestBufferCodec {
 	public static void main( String[] args ) {
 		int[] srcArray = { 1,2,4,8,16 };
 		java.nio.IntBuffer srcBuffer = java.nio.IntBuffer.wrap( srcArray );
+//		java.nio.IntBuffer srcBuffer = java.nio.ByteBuffer.allocate( 5*4 ).order( java.nio.ByteOrder.LITTLE_ENDIAN ).asIntBuffer();
+//		srcBuffer.put( 1 );
+//		srcBuffer.put( 2 );
+//		srcBuffer.put( 3 );
+//		srcBuffer.put( 4 );
+//		srcBuffer.put( 5 );
+//		srcBuffer.rewind();
 		print( srcBuffer );
 		
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();

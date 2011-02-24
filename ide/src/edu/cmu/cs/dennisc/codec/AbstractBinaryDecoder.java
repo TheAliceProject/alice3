@@ -63,7 +63,8 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
-	private static final boolean USE_BYTE_ARRAY_FOR_BYTE_BUFFER = true; 
+	private static final boolean DECODE_ONE_BYTE_AT_A_TIME = false; 
+/*
 	private java.nio.ByteBuffer decodeByteBuffer( int bitsPerPrimative ) {
 		final int N = this.decodeInt() * (bitsPerPrimative/8);
 		boolean isReadOnly = this.decodeBoolean();
@@ -76,13 +77,10 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		} else {
 			actualByteOrder = java.nio.ByteOrder.LITTLE_ENDIAN;
 		}
-		//java.nio.ByteOrder desiredByteOrder;
 		if( isDirect ) {
 			rv = java.nio.ByteBuffer.allocateDirect( N );
-			//desiredByteOrder = java.nio.ByteOrder.nativeOrder();
 		} else {
 			rv = java.nio.ByteBuffer.allocate( N );
-			//desiredByteOrder = actualByteOrder;
 		}
 		java.nio.ByteOrder desiredByteOrder = rv.order();
 		if( actualByteOrder.equals( desiredByteOrder ) ) {
@@ -91,14 +89,14 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 			rv.order( desiredByteOrder );
 			rv.rewind();
 		}
-		if( USE_BYTE_ARRAY_FOR_BYTE_BUFFER ) {
-			byte[] array = new byte[ N ];
-			this.decodeByteArray( array );
-			rv.put( array );
-		} else {
+		if( DECODE_ONE_BYTE_AT_A_TIME ) {
 			for( int i = 0; i < N; i++ ) {
 				rv.put( this.decodeByte() );
 			}
+		} else {
+			byte[] array = new byte[ N ];
+			this.decodeByteArray( array );
+			rv.put( array );
 		}
 		rv.rewind();
 
@@ -129,7 +127,95 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	public final java.nio.DoubleBuffer decodeDoubleBuffer() {
 		return decodeByteBuffer( Double.SIZE ).asDoubleBuffer();
 	}
+*/
 
+	private java.nio.ByteBuffer createByteBufferFromHeader( int bitsPerPrimative ) {
+		final int N = this.decodeInt() * (bitsPerPrimative/8);
+		boolean isReadOnly = this.decodeBoolean();
+		boolean isDirect = this.decodeBoolean();
+		boolean isBigEndian = this.decodeBoolean();
+		java.nio.ByteBuffer rv;
+		java.nio.ByteOrder actualByteOrder;
+		if( isBigEndian ) {
+			actualByteOrder = java.nio.ByteOrder.BIG_ENDIAN;
+		} else {
+			actualByteOrder = java.nio.ByteOrder.LITTLE_ENDIAN;
+		}
+		if( isDirect ) {
+			rv = java.nio.ByteBuffer.allocateDirect( N );
+		} else {
+			rv = java.nio.ByteBuffer.allocate( N );
+		}
+		java.nio.ByteOrder desiredByteOrder = rv.order();
+		if( actualByteOrder.equals( desiredByteOrder ) ) {
+			//pass
+		} else {
+			rv.order( desiredByteOrder );
+			rv.rewind();
+		}
+		if( isReadOnly ) {
+			rv = rv.asReadOnlyBuffer();
+		}
+		return rv;
+	}
+	
+	public final java.nio.ByteBuffer decodeByteBuffer() {
+		java.nio.ByteBuffer rv = createByteBufferFromHeader( Byte.SIZE );
+		byte[] array = new byte[ rv.limit() ];
+		this.decodeByteArray( array );
+		rv.put( array );
+		rv.rewind();
+		return rv;
+	}
+	public final java.nio.CharBuffer decodeCharBuffer() {
+		java.nio.CharBuffer rv = createByteBufferFromHeader( Character.SIZE ).asCharBuffer();
+		while( rv.hasRemaining() ) {
+			rv.put( this.decodeChar() );
+		}
+		rv.rewind();
+		return rv;
+	}
+	public final java.nio.ShortBuffer decodeShortBuffer() {
+		java.nio.ShortBuffer rv = createByteBufferFromHeader( Short.SIZE ).asShortBuffer();
+		while( rv.hasRemaining() ) {
+			rv.put( this.decodeShort() );
+		}
+		rv.rewind();
+		return rv;
+	}
+	public final java.nio.IntBuffer decodeIntBuffer() {
+		java.nio.IntBuffer rv = createByteBufferFromHeader( Integer.SIZE ).asIntBuffer();
+		while( rv.hasRemaining() ) {
+			rv.put( this.decodeInt() );
+		}
+		rv.rewind();
+		return rv;
+	}
+	public final java.nio.LongBuffer decodeLongBuffer() {
+		java.nio.LongBuffer rv = createByteBufferFromHeader( Long.SIZE ).asLongBuffer();
+		while( rv.hasRemaining() ) {
+			rv.put( this.decodeLong() );
+		}
+		rv.rewind();
+		return rv;
+	}
+	public final java.nio.FloatBuffer decodeFloatBuffer() {
+		java.nio.FloatBuffer rv = createByteBufferFromHeader( Float.SIZE ).asFloatBuffer();
+		while( rv.hasRemaining() ) {
+			rv.put( this.decodeFloat() );
+		}
+		rv.rewind();
+		return rv;
+	}
+	public final java.nio.DoubleBuffer decodeDoubleBuffer() {
+		java.nio.DoubleBuffer rv = createByteBufferFromHeader( Double.SIZE ).asDoubleBuffer();
+		while( rv.hasRemaining() ) {
+			rv.put( this.decodeDouble() );
+		}
+		rv.rewind();
+		return rv;
+	}
+	
 	protected abstract byte[] decodeByteArray( byte[] rv );
 //	public final byte[] decodeByteArray() {
 //		byte[] rv = (byte[])createArray( Byte.TYPE );
