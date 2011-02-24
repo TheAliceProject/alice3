@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.codec;
 
-import edu.cmu.cs.dennisc.java.util.BufferUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
