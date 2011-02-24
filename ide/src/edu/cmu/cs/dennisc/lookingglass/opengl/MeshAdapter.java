@@ -101,7 +101,21 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
         }
     }
     
-    public static void renderMeshWithBuffers( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer)
+    public static void renderMesh(edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
+    {
+        int maxIndices = GetUtilities.getInteger(rc.gl, javax.media.opengl.GL.GL_MAX_ELEMENTS_INDICES);
+        int maxVertices = GetUtilities.getInteger(rc.gl, javax.media.opengl.GL.GL_MAX_ELEMENTS_VERTICES);
+        if (vertexBuffer.capacity() / 3 >= maxVertices || indexBuffer.capacity() >= maxIndices)
+        {
+            renderMeshAsArrays(rc, vertexBuffer, normalBuffer, textCoordBuffer, indexBuffer);
+        }
+        else
+        {
+            renderMeshWithBuffers(rc, vertexBuffer, normalBuffer, textCoordBuffer, indexBuffer);
+        }
+    }
+    
+    public static void renderMeshWithBuffers( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
     {
         rc.gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
         vertexBuffer.rewind();
@@ -118,27 +132,37 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
         rc.gl.glDrawElements(GL.GL_TRIANGLES, indexBuffer.remaining(), GL.GL_UNSIGNED_INT, indexBuffer);
     }
     
-    public static void renderMeshWithArrays( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, double[] vertices, float[] normals, float[] textureCoordinates, Indices[] indices)
+    //This is really slow in debug mode
+    public static void renderMeshAsArrays( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
     {
-        for( Indices ip : indices ) 
+        indexBuffer.rewind();
+        rc.gl.glBegin( GL.GL_TRIANGLES );
+        while (indexBuffer.hasRemaining())
         {
-            ip.adjustIndicesIfNecessary();
-            int[] pnIndices = ip.getIndices();
-
-            rc.gl.glBegin( GL.GL_TRIANGLES );
-            int nIndexCount = ip.getIndexCount();
-            int nIndex;
-            
-            for( int i=0; i<nIndexCount;  ) {
-                nIndex = pnIndices[ i++ ];
-                rc.gl.glTexCoord2fv(textureCoordinates, nIndex);
-                nIndex = pnIndices[ i++ ];
-                rc.gl.glNormal3fv(normals, nIndex);
-                nIndex = pnIndices[ i++ ];
-                rc.gl.glVertex3dv( vertices, nIndex );
-            }
-            
-            rc.gl.glEnd();
+            int index = indexBuffer.get();
+            int index2x = index*2;
+            int index3x = index*3;
+            textCoordBuffer.position( index2x );
+            rc.gl.glTexCoord2f(textCoordBuffer.get(), textCoordBuffer.get());
+            normalBuffer.position( index3x );
+            rc.gl.glNormal3f(normalBuffer.get(), normalBuffer.get(), normalBuffer.get());
+            vertexBuffer.position( index3x );
+            rc.gl.glVertex3d(vertexBuffer.get(), vertexBuffer.get(), vertexBuffer.get());            
+        }
+        rc.gl.glEnd();
+    }
+    
+    public static void pickMesh( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer )
+    {
+        int maxIndices = GetUtilities.getInteger(pc.gl, pc.gl.GL_MAX_ELEMENTS_INDICES);
+        int maxVertices = GetUtilities.getInteger(pc.gl, pc.gl.GL_MAX_ELEMENTS_VERTICES);
+        if (vertexBuffer.capacity() / 3 >= maxVertices || indexBuffer.capacity() >= maxIndices)
+        {
+            pickMeshAsArrays(pc, vertexBuffer, indexBuffer);
+        }
+        else
+        {
+            pickMeshWithBuffers(pc, vertexBuffer, indexBuffer);
         }
     }
     
@@ -153,24 +177,19 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
         pc.gl.glPopName();
     }
     
-    public static void pickMeshWithArrays( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, double[] vertices, Indices[] indices)
+    public static void pickMeshAsArrays(edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer)
     {
         pc.gl.glPushName( -1 );
-        for( Indices ip : indices ) 
+        
+        indexBuffer.rewind();
+        pc.gl.glBegin( GL.GL_TRIANGLES );
+        while (indexBuffer.hasRemaining()) 
         {
-            ip.adjustIndicesIfNecessary();
-            int[] pnIndices = ip.getIndices();
-            pc.gl.glBegin( GL.GL_TRIANGLES );
-            int nIndexCount = ip.getIndexCount();
-            int nIndex;
-            for( int i=0; i<nIndexCount;  ) {
-                i++;
-                i++;
-                nIndex = pnIndices[ i++ ];
-                pc.gl.glVertex3dv( vertices, nIndex );
-            }
-            pc.gl.glEnd();
+            int index = indexBuffer.get();
+            int index3x = index*3;
+            pc.gl.glVertex3d(vertexBuffer.get(index3x), vertexBuffer.get(index3x+1), vertexBuffer.get(index3x+2));            
         }
+        pc.gl.glEnd();
         pc.gl.glPopName();
     }
     
@@ -179,13 +198,13 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
     @Override
     protected void renderGeometry(RenderContext rc)
     {
-        renderMeshWithBuffers(rc, this.vertexBuffer, this.normalBuffer, this.textCoordBuffer, this.indexBuffer);
+        renderMesh(rc, this.vertexBuffer, this.normalBuffer, this.textCoordBuffer, this.indexBuffer);
     }
 
     @Override
     protected void pickGeometry(PickContext pc, boolean isSubElementRequired)
     {
-        pickMeshWithBuffers(pc, vertexBuffer, indexBuffer);
+        pickMesh(pc, vertexBuffer, indexBuffer);
     }
 
     @Override

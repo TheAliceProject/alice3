@@ -179,7 +179,7 @@ public class WeightedMeshControl
         {
             this.internalInitialize();
         }
-        MeshAdapter.renderMeshWithBuffers(rc, this.vertexBuffer, this.normalBuffer, this.textCoordBuffer, this.indexBuffer);
+        MeshAdapter.renderMesh(rc, vertexBuffer, normalBuffer, textCoordBuffer, indexBuffer);
     }
     
     public void pickGeometry(PickContext pc, boolean isSubElementRequired)
@@ -188,7 +188,7 @@ public class WeightedMeshControl
         {
             this.internalInitialize();
         }
-        MeshAdapter.pickMeshWithBuffers(pc, vertexBuffer, indexBuffer);
+        MeshAdapter.pickMesh(pc, vertexBuffer, indexBuffer);
     }
     
     

@@ -114,9 +114,13 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
             this.processWeightedMesh();
         }
         super.pickGeometry(pc, isSubElementActuallyRequired);
+        
+        int i = this.m_element.geometries.getLength();
         for (WeightedMeshControl wmc : this.meshControls)
         {
+            pc.gl.glPushName( i++ );
             wmc.pickGeometry(pc, isSubElementActuallyRequired);
+            pc.gl.glPopName();
         }
     }
     

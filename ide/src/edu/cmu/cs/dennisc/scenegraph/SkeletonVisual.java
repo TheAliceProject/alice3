@@ -61,6 +61,25 @@ public class SkeletonVisual extends Visual {
     };
     
     @Override
+    public int getGeometryCount() 
+    {
+        return super.getGeometryCount() + this.weightedMeshes.getLength();
+    }
+    
+    @Override
+    public Geometry getGeometryAt(int index)
+    {
+        if (index < super.getGeometryCount())
+        {
+            return super.getGeometryAt(index);
+        }
+        else
+        {
+            return this.weightedMeshes.getValue()[index - super.getGeometryCount()];
+        }
+    };
+    
+    @Override
     public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
         if( skeleton.getValue()!= null  ) {
             skeleton.getValue().getBoundingBox(rv);
