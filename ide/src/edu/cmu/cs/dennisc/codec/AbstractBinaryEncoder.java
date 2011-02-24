@@ -76,7 +76,7 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 		this.encode( buffer.limit() );
 		this.encode( buffer.isReadOnly() );
 		this.encode( isDirect );
-		this.encode( byteOrder == java.nio.ByteOrder.BIG_ENDIAN );
+		this.encode( java.nio.ByteOrder.BIG_ENDIAN.equals( byteOrder ) );
 	}
 	public final void encode( java.nio.ByteBuffer buffer ) {
 		this.encodeBufferHeader( buffer, buffer.isDirect(), buffer.order() );

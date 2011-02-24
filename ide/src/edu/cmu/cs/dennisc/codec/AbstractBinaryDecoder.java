@@ -78,13 +78,20 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		} else {
 			actualByteOrder = java.nio.ByteOrder.LITTLE_ENDIAN;
 		}
-		java.nio.ByteOrder desiredByteOrder;
+		//java.nio.ByteOrder desiredByteOrder;
 		if( isDirect ) {
 			rv = java.nio.ByteBuffer.allocateDirect( N );
-			desiredByteOrder = java.nio.ByteOrder.nativeOrder();
+			//desiredByteOrder = java.nio.ByteOrder.nativeOrder();
 		} else {
 			rv = java.nio.ByteBuffer.allocate( N );
-			desiredByteOrder = java.nio.ByteOrder.BIG_ENDIAN;
+			//desiredByteOrder = actualByteOrder;
+		}
+		java.nio.ByteOrder desiredByteOrder = rv.order();
+		if( actualByteOrder.equals( desiredByteOrder ) ) {
+			//pass
+		} else {
+			rv.order( desiredByteOrder );
+			rv.rewind();
 		}
 		if( USE_BYTE_ARRAY_FOR_BYTE_BUFFER ) {
 			byte[] array = new byte[ N ];
@@ -97,12 +104,6 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		}
 		rv.rewind();
 
-		if( actualByteOrder == desiredByteOrder ) {
-			//pass
-		} else {
-			rv.order( desiredByteOrder );
-			rv.rewind();
-		}
 		if( isReadOnly ) {
 			rv = rv.asReadOnlyBuffer();
 		}
