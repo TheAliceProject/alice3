@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.codec;
  */
 public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	//todo: handle null arrays
-	private Object createArray( Class<?> componentType ) {
+	private Object createArray( Class< ? > componentType ) {
 		int length = this.decodeInt();
 		if( length != -1 ) {
 			return java.lang.reflect.Array.newInstance( componentType, length );
@@ -57,80 +57,81 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	}
 	public final boolean[] decodeBooleanArray() {
 		boolean[] rv = (boolean[])createArray( Boolean.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeBoolean();
 		}
 		return rv;
 	}
 
-	private static final boolean DECODE_ONE_BYTE_AT_A_TIME = false; 
-/*
-	private java.nio.ByteBuffer decodeByteBuffer( int bitsPerPrimative ) {
-		final int N = this.decodeInt() * (bitsPerPrimative/8);
-		boolean isReadOnly = this.decodeBoolean();
-		boolean isDirect = this.decodeBoolean();
-		boolean isBigEndian = this.decodeBoolean();
-		java.nio.ByteBuffer rv;
-		java.nio.ByteOrder actualByteOrder;
-		if( isBigEndian ) {
-			actualByteOrder = java.nio.ByteOrder.BIG_ENDIAN;
-		} else {
-			actualByteOrder = java.nio.ByteOrder.LITTLE_ENDIAN;
-		}
-		if( isDirect ) {
-			rv = java.nio.ByteBuffer.allocateDirect( N );
-		} else {
-			rv = java.nio.ByteBuffer.allocate( N );
-		}
-		java.nio.ByteOrder desiredByteOrder = rv.order();
-		if( actualByteOrder.equals( desiredByteOrder ) ) {
-			//pass
-		} else {
-			rv.order( desiredByteOrder );
-			rv.rewind();
-		}
-		if( DECODE_ONE_BYTE_AT_A_TIME ) {
-			for( int i = 0; i < N; i++ ) {
-				rv.put( this.decodeByte() );
-			}
-		} else {
-			byte[] array = new byte[ N ];
-			this.decodeByteArray( array );
-			rv.put( array );
-		}
-		rv.rewind();
+	private static final boolean DECODE_ONE_BYTE_AT_A_TIME = false;
 
-		if( isReadOnly ) {
-			rv = rv.asReadOnlyBuffer();
+	/*
+		private java.nio.ByteBuffer decodeByteBuffer( int bitsPerPrimative ) {
+			final int N = this.decodeInt() * (bitsPerPrimative/8);
+			boolean isReadOnly = this.decodeBoolean();
+			boolean isDirect = this.decodeBoolean();
+			boolean isBigEndian = this.decodeBoolean();
+			java.nio.ByteBuffer rv;
+			java.nio.ByteOrder actualByteOrder;
+			if( isBigEndian ) {
+				actualByteOrder = java.nio.ByteOrder.BIG_ENDIAN;
+			} else {
+				actualByteOrder = java.nio.ByteOrder.LITTLE_ENDIAN;
+			}
+			if( isDirect ) {
+				rv = java.nio.ByteBuffer.allocateDirect( N );
+			} else {
+				rv = java.nio.ByteBuffer.allocate( N );
+			}
+			java.nio.ByteOrder desiredByteOrder = rv.order();
+			if( actualByteOrder.equals( desiredByteOrder ) ) {
+				//pass
+			} else {
+				rv.order( desiredByteOrder );
+				rv.rewind();
+			}
+			if( DECODE_ONE_BYTE_AT_A_TIME ) {
+				for( int i = 0; i < N; i++ ) {
+					rv.put( this.decodeByte() );
+				}
+			} else {
+				byte[] array = new byte[ N ];
+				this.decodeByteArray( array );
+				rv.put( array );
+			}
+			rv.rewind();
+
+			if( isReadOnly ) {
+				rv = rv.asReadOnlyBuffer();
+			}
+			return rv;
 		}
-		return rv;
-	}
-	
-	public final java.nio.ByteBuffer decodeByteBuffer() {
-		return decodeByteBuffer( Byte.SIZE );
-	}
-	public final java.nio.CharBuffer decodeCharBuffer() {
-		return decodeByteBuffer( Character.SIZE ).asCharBuffer();
-	}
-	public final java.nio.ShortBuffer decodeShortBuffer() {
-		return decodeByteBuffer( Short.SIZE ).asShortBuffer();
-	}
-	public final java.nio.IntBuffer decodeIntBuffer() {
-		return decodeByteBuffer( Integer.SIZE ).asIntBuffer();
-	}
-	public final java.nio.LongBuffer decodeLongBuffer() {
-		return decodeByteBuffer( Long.SIZE ).asLongBuffer();
-	}
-	public final java.nio.FloatBuffer decodeFloatBuffer() {
-		return decodeByteBuffer( Float.SIZE ).asFloatBuffer();
-	}
-	public final java.nio.DoubleBuffer decodeDoubleBuffer() {
-		return decodeByteBuffer( Double.SIZE ).asDoubleBuffer();
-	}
-*/
+		
+		public final java.nio.ByteBuffer decodeByteBuffer() {
+			return decodeByteBuffer( Byte.SIZE );
+		}
+		public final java.nio.CharBuffer decodeCharBuffer() {
+			return decodeByteBuffer( Character.SIZE ).asCharBuffer();
+		}
+		public final java.nio.ShortBuffer decodeShortBuffer() {
+			return decodeByteBuffer( Short.SIZE ).asShortBuffer();
+		}
+		public final java.nio.IntBuffer decodeIntBuffer() {
+			return decodeByteBuffer( Integer.SIZE ).asIntBuffer();
+		}
+		public final java.nio.LongBuffer decodeLongBuffer() {
+			return decodeByteBuffer( Long.SIZE ).asLongBuffer();
+		}
+		public final java.nio.FloatBuffer decodeFloatBuffer() {
+			return decodeByteBuffer( Float.SIZE ).asFloatBuffer();
+		}
+		public final java.nio.DoubleBuffer decodeDoubleBuffer() {
+			return decodeByteBuffer( Double.SIZE ).asDoubleBuffer();
+		}
+	*/
 
 	private java.nio.ByteBuffer createByteBufferFromHeader( int bitsPerPrimative ) {
-		final int N = this.decodeInt() * (bitsPerPrimative/8);
+		final int N = this.decodeInt() * (bitsPerPrimative / 8);
 		boolean isReadOnly = this.decodeBoolean();
 		boolean isDirect = this.decodeBoolean();
 		boolean isBigEndian = this.decodeBoolean();
@@ -158,7 +159,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		}
 		return rv;
 	}
-	
+
 	public final java.nio.ByteBuffer decodeByteBuffer() {
 		java.nio.ByteBuffer rv = createByteBufferFromHeader( Byte.SIZE );
 		byte[] array = new byte[ rv.limit() ];
@@ -189,7 +190,8 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 			rv.put( this.decodeInt() );
 		}
 		rv.rewind();
-		return rv;
+//		return rv;
+		return edu.cmu.cs.dennisc.java.util.BufferUtilities.createDirectIntBuffer( edu.cmu.cs.dennisc.java.util.BufferUtilities.convertIntBufferToArray( rv ) );
 	}
 	public final java.nio.LongBuffer decodeLongBuffer() {
 		java.nio.LongBuffer rv = createByteBufferFromHeader( Long.SIZE ).asLongBuffer();
@@ -205,7 +207,8 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 			rv.put( this.decodeFloat() );
 		}
 		rv.rewind();
-		return rv;
+//		return rv;
+		return edu.cmu.cs.dennisc.java.util.BufferUtilities.createDirectFloatBuffer( edu.cmu.cs.dennisc.java.util.BufferUtilities.convertFloatBufferToArray( rv ) );
 	}
 	public final java.nio.DoubleBuffer decodeDoubleBuffer() {
 		java.nio.DoubleBuffer rv = createByteBufferFromHeader( Double.SIZE ).asDoubleBuffer();
@@ -213,97 +216,98 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 			rv.put( this.decodeDouble() );
 		}
 		rv.rewind();
+		//return rv;
+		return edu.cmu.cs.dennisc.java.util.BufferUtilities.createDirectDoubleBuffer( edu.cmu.cs.dennisc.java.util.BufferUtilities.convertDoubleBufferToArray( rv ) );
+	}
+
+	protected abstract byte[] decodeByteArray( byte[] rv );
+	//	public final byte[] decodeByteArray() {
+	//		byte[] rv = (byte[])createArray( Byte.TYPE );
+	//		return decodeByteArray( rv );
+	//	}
+	//	
+	public final byte[] decodeByteArray() {
+		byte[] rv = (byte[])createArray( Byte.TYPE );
+		for( int i = 0; i < rv.length; i++ ) {
+			rv[ i ] = decodeByte();
+		}
 		return rv;
 	}
-	
-	protected abstract byte[] decodeByteArray( byte[] rv );
-//	public final byte[] decodeByteArray() {
-//		byte[] rv = (byte[])createArray( Byte.TYPE );
-//		return decodeByteArray( rv );
-//	}
-//	
-	public final byte[] decodeByteArray() {
-	    byte[] rv = (byte[])createArray( Byte.TYPE );
-        for( int i=0; i<rv.length; i++ ) {
-            rv[ i ] = decodeByte();
-        }
-        return rv;
-    }
-	
+
 	public final char[] decodeCharArray() {
 		char[] rv = (char[])createArray( Character.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeChar();
 		}
 		return rv;
 	}
 	public final double[] decodeDoubleArray() {
 		double[] rv = (double[])createArray( Double.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeDouble();
 		}
 		return rv;
 	}
 	public final float[] decodeFloatArray() {
 		float[] rv = (float[])createArray( Float.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeFloat();
 		}
 		return rv;
 	}
 	public final int[] decodeIntArray() {
 		int[] rv = (int[])createArray( Integer.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeInt();
 		}
 		return rv;
 	}
 	public final long[] decodeLongArray() {
 		long[] rv = (long[])createArray( Long.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeLong();
 		}
 		return rv;
 	}
 	public final short[] decodeShortArray() {
 		short[] rv = (short[])createArray( Short.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeShort();
 		}
 		return rv;
 	}
 	public final String[] decodeStringArray() {
 		String[] rv = (String[])createArray( String.class );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeString();
 		}
 		return rv;
 	}
-	
-	public final < E extends Enum< E > > E[] decodeEnumArray( Class< E > cls ) {
+
+	public final <E extends Enum< E >> E[] decodeEnumArray( Class< E > cls ) {
 		E[] rv = (E[])createArray( cls );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeEnum( cls );
 		}
 		return rv;
 	}
 	public final java.util.UUID[] decodeIdArray() {
 		java.util.UUID[] rv = (java.util.UUID[])createArray( java.util.UUID.class );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeId();
 		}
 		return rv;
 	}
 	public final <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( Class< E > componentCls ) {
 		E[] rv = (E[])createArray( componentCls );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeBinaryEncodableAndDecodable();
 		}
 		return rv;
 	}
 	public final <E extends ReferenceableBinaryEncodableAndDecodable> E[] decodeReferenceableBinaryEncodableAndDecodableArray( Class< E > componentCls, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map ) {
 		E[] rv = (E[])createArray( componentCls );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeReferenceableBinaryEncodableAndDecodable( componentCls, map );
 		}
 		return rv;
@@ -313,7 +317,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		if( isNotNull ) {
 			String clsName = decodeString();
 			String name = decodeString();
-			Class< E > clsActual = (Class<E>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
+			Class< E > clsActual = (Class< E >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
 			return Enum.valueOf( clsActual, name );
 		} else {
 			return null;
@@ -356,22 +360,22 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 			return null;
 		}
 	}
-//	@Deprecated
-//	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Class< E > cls ) {
-//		E rv = decodeBinaryEncodableAndDecodable();
-//		assert cls.isInstance( rv );
-//		return rv;
-//	}
-//	public final BinaryEncodableAndDecodable decodeBinaryEncodableAndDecodable( BinaryEncodableAndDecodable rv ) {
-//		String clsName = decodeString();
-//		if( rv != null ) {
-//			assert edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( clsName, rv.getClass().getName() );
-//			rv.decode( this );
-//		} else {
-//			assert clsName.length() == 0;
-//		}
-//		return rv;
-//	}
+	//	@Deprecated
+	//	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Class< E > cls ) {
+	//		E rv = decodeBinaryEncodableAndDecodable();
+	//		assert cls.isInstance( rv );
+	//		return rv;
+	//	}
+	//	public final BinaryEncodableAndDecodable decodeBinaryEncodableAndDecodable( BinaryEncodableAndDecodable rv ) {
+	//		String clsName = decodeString();
+	//		if( rv != null ) {
+	//			assert edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( clsName, rv.getClass().getName() );
+	//			rv.decode( this );
+	//		} else {
+	//			assert clsName.length() == 0;
+	//		}
+	//		return rv;
+	//	}
 	public final <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable( java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map ) {
 		String clsName = decodeString();
 		if( clsName.length() > 0 ) {
@@ -383,22 +387,22 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 				rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( clsName );
 				map.put( reference, rv );
 				rv.decode( this, map );
-				
+
 				//
 				//
 				//todo?
 				//
 				//
-//				Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-//				java.lang.reflect.Constructor< E > cnstrctr;
-//				try {
-//					cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class, java.util.Map.class } );
-//					rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this, map );
-//				} catch( NoSuchMethodException nsme ) {
-//					cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
-//					rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
-//					rv.decode( this, map );
-//				}
+				//				Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
+				//				java.lang.reflect.Constructor< E > cnstrctr;
+				//				try {
+				//					cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class, java.util.Map.class } );
+				//					rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this, map );
+				//				} catch( NoSuchMethodException nsme ) {
+				//					cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
+				//					rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+				//					rv.decode( this, map );
+				//				}
 			}
 			return rv;
 		} else {
