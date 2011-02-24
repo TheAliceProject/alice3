@@ -116,12 +116,17 @@ public class Joint extends Transformable
         
         if (c instanceof AbstractTransformable)
         {
-            transform.setToMultiplication( transform, ((AbstractTransformable)c).accessLocalTransformation() );
+            transform = AffineMatrix4x4.createMultiplication(transform, ((AbstractTransformable)c).accessLocalTransformation());
         }
         if (c instanceof Joint)
         {
             Joint j = (Joint)c;
-            rv.union(new AxisAlignedBox(transform.createTransformed(j.boundingBox.getValue().getMinimum()), transform.createTransformed(j.boundingBox.getValue().getMaximum())));
+            Point3 localMin = j.boundingBox.getValue().getMinimum();
+            Point3 localMax = j.boundingBox.getValue().getMaximum();
+            Point3 transformedMin = transform.createTransformed(localMin);
+            Point3 transformedMax = transform.createTransformed(localMax);
+            AxisAlignedBox transformedBBox = new AxisAlignedBox(transformedMin, transformedMax);
+            rv.union(transformedBBox);
         }
         for (int i=0; i<c.getComponentCount(); i++)
         {
@@ -261,28 +266,28 @@ public class Joint extends Transformable
             this.localTransformation.getValue().getAsColumnMajorArray16(m_local);
             rc.gl.glMultMatrixd(m_localBuffer);
             {
-                rc.gl.glDisable( javax.media.opengl.GL.GL_LIGHTING );
+//                rc.gl.glDisable( javax.media.opengl.GL.GL_LIGHTING );
         
-                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
-        
-                rc.gl.glColor3f( 1.0f, 0.0f, 0.0f );
-                rc.gl.glVertex3d( 0, 0, 0 );
-                rc.gl.glVertex3d( UNIT_LENGTH, 0, 0 );
-        
-                rc.gl.glColor3f( 0.0f, 1.0f, 0.0f );
-                rc.gl.glVertex3d( 0, 0, 0 );
-                rc.gl.glVertex3d( 0, UNIT_LENGTH, 0 );
-        
-                rc.gl.glColor3f( 0.0f, 0.0f, 1.0f );
-                rc.gl.glVertex3d( 0, 0, 0 );
-                rc.gl.glVertex3d( 0, 0, UNIT_LENGTH );
-        
-                rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
-                rc.gl.glVertex3d( 0, 0, 0 );
-                rc.gl.glVertex3d( 0, 0, -2*UNIT_LENGTH );
-                rc.gl.glEnd();
+//                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+//        
+//                rc.gl.glColor3f( 1.0f, 0.0f, 0.0f );
+//                rc.gl.glVertex3d( 0, 0, 0 );
+//                rc.gl.glVertex3d( UNIT_LENGTH, 0, 0 );
+//        
+//                rc.gl.glColor3f( 0.0f, 1.0f, 0.0f );
+//                rc.gl.glVertex3d( 0, 0, 0 );
+//                rc.gl.glVertex3d( 0, UNIT_LENGTH, 0 );
+//        
+//                rc.gl.glColor3f( 0.0f, 0.0f, 1.0f );
+//                rc.gl.glVertex3d( 0, 0, 0 );
+//                rc.gl.glVertex3d( 0, 0, UNIT_LENGTH );
+//        
+//                rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
+//                rc.gl.glVertex3d( 0, 0, 0 );
+//                rc.gl.glVertex3d( 0, 0, -2*UNIT_LENGTH );
+//                rc.gl.glEnd();
                 
-                if (this.boundingBox.getValue() != null && this.getComponentCount() == 0)
+                if (this.boundingBox.getValue() != null)
                 {
                     rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
                     Point3 min = this.boundingBox.getValue().getMinimum();
@@ -327,7 +332,7 @@ public class Joint extends Transformable
                 }
                 
         
-                rc.gl.glEnable( javax.media.opengl.GL.GL_LIGHTING );
+//                rc.gl.glEnable( javax.media.opengl.GL.GL_LIGHTING );
             }
         }
     }
