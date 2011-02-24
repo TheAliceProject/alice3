@@ -55,7 +55,7 @@ public class TestBufferCodec {
 		buffer.rewind();
 	}
 	public static void main( String[] args ) {
-		int[] srcArray = { 1,2,4,8,16 };
+		int[] srcArray = { 1,1,2,3,5,8,13,21 };
 		java.nio.IntBuffer srcBuffer = java.nio.IntBuffer.wrap( srcArray );
 //		java.nio.IntBuffer srcBuffer = java.nio.ByteBuffer.allocate( 5*4 ).order( java.nio.ByteOrder.LITTLE_ENDIAN ).asIntBuffer();
 //		srcBuffer.put( 1 );

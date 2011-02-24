@@ -50,6 +50,8 @@ import edu.cmu.cs.dennisc.property.*;
  */
 
 public abstract class DefaultInstancePropertyOwner extends AbstractElement implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
+	private static final boolean IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS = true;
+
 	private static java.util.HashMap< Class< ? extends edu.cmu.cs.dennisc.property.PropertyOwner >, java.util.List< Property< ? > > > s_classToPropertiesMap = new java.util.HashMap< Class< ? extends edu.cmu.cs.dennisc.property.PropertyOwner >, java.util.List< Property< ? > > >();
 	private java.util.List< Property< ? > > m_properties = null;
 
@@ -250,13 +252,13 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
         } else if( java.nio.ShortBuffer.class.isAssignableFrom(valueCls) ) {
             rv = binaryDecoder.decodeShortBuffer();
         } else if( java.nio.IntBuffer.class.isAssignableFrom(valueCls) ) {
-            rv = binaryDecoder.decodeIntBuffer();
+            rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeIntBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
         } else if( java.nio.LongBuffer.class.isAssignableFrom(valueCls) ) {
             rv = binaryDecoder.decodeLongBuffer();
         } else if( java.nio.FloatBuffer.class.isAssignableFrom(valueCls) ) {
-            rv = binaryDecoder.decodeFloatBuffer();
+            rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeFloatBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
         } else if( java.nio.DoubleBuffer.class.isAssignableFrom(valueCls) ) {
-            rv = binaryDecoder.decodeDoubleBuffer();
+            rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeDoubleBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
         } else if( Boolean.class == valueCls ) {
 			rv = binaryDecoder.decodeBoolean();
 		} else if( Byte.class == valueCls ) {
@@ -352,6 +354,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 	private void encodeObject( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object value, java.util.Map< edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable, Integer > map ) {
 		if( value != null ) {
 			Class< ? > valueCls = value.getClass();
+			
 			if( edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
 				binaryEncoder.encode( (edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable)value );
 			} else if( edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
@@ -363,13 +366,13 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 			} else if( java.nio.ShortBuffer.class.isAssignableFrom( valueCls ) ) {
                 binaryEncoder.encode( (java.nio.ShortBuffer)value);
 			} else if( java.nio.IntBuffer.class.isAssignableFrom( valueCls ) ) {
-                binaryEncoder.encode( (java.nio.IntBuffer)value);
+				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.IntBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
 			} else if( java.nio.LongBuffer.class.isAssignableFrom( valueCls ) ) {
                 binaryEncoder.encode( (java.nio.LongBuffer)value);
 			} else if( java.nio.FloatBuffer.class.isAssignableFrom( valueCls ) ) {
-                binaryEncoder.encode( (java.nio.FloatBuffer)value);
+				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.FloatBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
 			} else if( java.nio.DoubleBuffer.class.isAssignableFrom( valueCls ) ) {
-                binaryEncoder.encode( (java.nio.DoubleBuffer)value);
+				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.DoubleBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
             } else if( Boolean.class == valueCls ) {
 				binaryEncoder.encode( (Boolean)value );
 			} else if( Byte.class == valueCls ) {

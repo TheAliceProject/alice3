@@ -42,10 +42,6 @@
  */
 package edu.cmu.cs.dennisc.codec;
 
-import com.sun.media.util.ByteBuffer;
-
-import edu.cmu.cs.dennisc.java.util.BufferUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -71,12 +67,14 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 
 	protected abstract void encodeBuffer( byte[] buffer );
 
+	private static final boolean IS_ENCODING_BIG_ENDIAN = true;
+	
 	private void encodeBufferHeader( java.nio.Buffer buffer, boolean isDirect, java.nio.ByteOrder byteOrder ) {
 		buffer.rewind();
 		this.encode( buffer.limit() );
 		this.encode( buffer.isReadOnly() );
 		this.encode( isDirect );
-		this.encode( java.nio.ByteOrder.BIG_ENDIAN.equals( byteOrder ) );
+		this.encode( IS_ENCODING_BIG_ENDIAN );//this.encode( java.nio.ByteOrder.BIG_ENDIAN.equals( byteOrder ) );
 	}
 	public final void encode( java.nio.ByteBuffer buffer ) {
 		this.encodeBufferHeader( buffer, buffer.isDirect(), buffer.order() );
