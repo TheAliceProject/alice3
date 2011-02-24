@@ -60,7 +60,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
     
     private boolean skeletonIsDirty = true;
     private Joint currentSkeleton = null;
-    private WeightedMeshControl[] meshControls;
+    protected WeightedMeshControl[] meshControls;
     private boolean isDataDirty = true;
     
     public SkeletonVisualAdapter()
@@ -239,7 +239,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         this.skeletonIsDirty = true;
     }
     
-    private void processWeightedMesh()
+    public void processWeightedMesh()
     {
         if (this.currentSkeleton != null)
         {
