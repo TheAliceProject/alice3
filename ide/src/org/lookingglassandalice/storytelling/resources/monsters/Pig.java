@@ -46,12 +46,12 @@ package org.lookingglassandalice.storytelling.resources.monsters;
 /**
  * @author Dennis Cosgrove
  */
-public enum Pig implements org.lookingglassandalice.storytelling.resources.PersonResource {
+public enum Pig implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
 	STRIPED;
 	
 	private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal;
     private Pig() {
-    	this.sgOriginal = MonsterUtilities.decode( "pig.alice" );
+    	this.sgOriginal = MonsterUtilities.decode( "pig.a3r" );
 	}
 	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
 	    edu.cmu.cs.dennisc.texture.Texture texture = MonsterUtilities.getTexture( this.sgOriginal );

@@ -51,7 +51,7 @@ public enum Tiger implements org.lookingglassandalice.storytelling.resources.Adu
 	
 	private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal;
     private Tiger() {
-    	this.sgOriginal = MonsterUtilities.decode( "tiger.alice" );
+    	this.sgOriginal = MonsterUtilities.decode( "tigrrr.a3r" );
 	}
 	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
 	    edu.cmu.cs.dennisc.texture.Texture texture = MonsterUtilities.getTexture( this.sgOriginal );

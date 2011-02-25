@@ -78,7 +78,7 @@ public abstract class AliceModel extends org.alice.apis.moveandturn.Model {
 	    } else {
 	        try {
 	            
-	            java.io.InputStream is = Ogre.class.getResourceAsStream( this.getResourceString()+".alice" );
+	            java.io.InputStream is = Ogre.class.getResourceAsStream( this.getResourceString()+".a3r" );
 	            edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
 	            this.skeletonModelResource = decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap< Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable >() );
 	        } catch( Exception  lre ) {

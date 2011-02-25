@@ -51,7 +51,7 @@ public enum Penguin implements org.lookingglassandalice.storytelling.resources.A
 	
 	private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal;
     private Penguin() {
-    	this.sgOriginal = MonsterUtilities.decode( "penguin.alice" );
+    	this.sgOriginal = MonsterUtilities.decode( "penguin.a3r" );
 	}
 	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
 	    edu.cmu.cs.dennisc.texture.Texture texture = MonsterUtilities.getTexture( this.sgOriginal );

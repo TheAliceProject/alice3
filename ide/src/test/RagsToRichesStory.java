@@ -67,10 +67,14 @@ class SnowScene extends Scene {
 	private final Camera camera;
 	private final CustomAdult ogre;
 	private final CustomAdult susan;
-	public SnowScene( Camera camera, CustomAdult ogre, CustomAdult susan ) {
+	private final CustomAdult pig;
+    private final CustomAdult penguin;
+	public SnowScene( Camera camera, CustomAdult ogre, CustomAdult susan, CustomAdult pig, CustomAdult penguin ) {
 		this.camera = camera;
 		this.ogre = ogre;
 		this.susan = susan;
+		this.pig = pig;
+		this.penguin = penguin;
 	}
 	
 	private void performGeneratedSetup() {
@@ -84,6 +88,8 @@ class SnowScene extends Scene {
 		this.camera.setVehicle( this );
 		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
+		this.pig.setVehicle( this );
+		this.penguin.setVehicle( this );
 		
 		this.redCone.setColor( Color.RED );
 		this.greenCone.setColor( Color.GREEN );
@@ -207,8 +213,10 @@ class RagsToRichesStory extends Program {
 			org.alice.apis.stage.FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
 	private final CustomAdult ogre = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Ogre.GREEN );
+	private final CustomAdult pig = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Pig.STRIPED );
+	private final CustomAdult penguin = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Penguin.EMPEROR );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
-	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
+	private final SnowScene snowScene = new SnowScene( camera, ogre, susan, pig, penguin );
 	
 	public void playOutStory() {
 //		this.setActiveScene( this.desertScene );
