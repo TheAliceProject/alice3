@@ -138,8 +138,8 @@ public class WeightedMeshControl
             float weight = this.weights[ i ];
             if( 0.999f < weight && weight < 1.001f ) {
                 //pass
-            } else {
-                this.affineMatrices[ i ].multiply(weight);
+            } else if (weight != 0){
+                this.affineMatrices[ i ].multiply(1.0/weight);
             }
         }
         this.transformBuffers(this.affineMatrices, this.vertexBuffer, this.normalBuffer, this.weightedMesh.vertexBuffer.getValue(), this.weightedMesh.normalBuffer.getValue());

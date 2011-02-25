@@ -58,6 +58,49 @@ class CustomAdult extends CustomPerson {
 	}
 }
 
+class TestScene extends Scene {
+    private final Sun sun = new Sun();
+    private final Ground ground = new Ground();
+    private final Camera camera;
+    private final CustomPerson generic;
+    public TestScene(  Camera camera, CustomPerson generic ) {
+        this.camera = camera;
+        this.generic = generic;
+    }
+    
+    private void performGeneratedSetup() {
+        // this code is automatically generated
+        // edit performCustomSetup instead
+        this.ground.setVehicle( this );
+        this.sun.setVehicle( this );
+        this.camera.setVehicle( this );
+        this.generic.setVehicle( this );
+       
+        
+        this.ground.setAppearance( Ground.Appearance.GRASS );
+        this.camera.getAGoodLookAt( this.generic );
+    }
+    private void performCustomSetup() {
+    }
+    
+    @Override
+    protected void handleActiveChanged( boolean isActive, int activeCount ) {
+        if( isActive ) {
+            if( activeCount == 1 ) {
+                this.performGeneratedSetup();
+                this.performCustomSetup();
+            } else {
+                this.restoreVehiclesAndVantagePoints();
+            }
+        } else {
+            this.preserveVehiclesAndVantagePoints();
+        }
+    }
+
+    public void testStuff() {
+    }
+}
+
 class SnowScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground snow = new Ground();
@@ -67,16 +110,10 @@ class SnowScene extends Scene {
 	private final Camera camera;
 	private final CustomAdult ogre;
 	private final CustomAdult susan;
-	private final CustomAdult pig;
-    private final CustomAdult penguin;
-    private final CustomPerson generic;
-	public SnowScene( Camera camera, CustomAdult ogre, CustomAdult susan, CustomAdult pig, CustomAdult penguin, CustomPerson generic ) {
+	public SnowScene( Camera camera, CustomAdult susan, CustomAdult ogre ) {
 		this.camera = camera;
-		this.ogre = ogre;
 		this.susan = susan;
-		this.pig = pig;
-		this.penguin = penguin;
-		this.generic = generic;
+		this.ogre = ogre;
 	}
 	
 	private void performGeneratedSetup() {
@@ -90,9 +127,6 @@ class SnowScene extends Scene {
 		this.camera.setVehicle( this );
 		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
-		this.pig.setVehicle( this );
-        this.penguin.setVehicle( this );
-        this.generic.setVehicle( this );
 		
 		this.redCone.setColor( Color.RED );
 		this.greenCone.setColor( Color.GREEN );
@@ -107,10 +141,6 @@ class SnowScene extends Scene {
 		this.redCone.move( MoveDirection.LEFT, 0.5 );
 		this.greenCone.move( MoveDirection.LEFT, 1.0 );
 		this.blueCone.move( MoveDirection.LEFT, 1.5 );
-		
-        this.penguin.move(MoveDirection.LEFT, 1.0);
-        this.pig.move(MoveDirection.RIGHT, 1.0);
-        this.generic.move(MoveDirection.BACKWARD, 1.0);
 		
 		this.snow.setAppearance( Ground.Appearance.SNOW );
 		this.camera.getAGoodLookAt( this.susan );
@@ -220,17 +250,18 @@ class RagsToRichesStory extends Program {
 			org.alice.apis.stage.FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
 	private final CustomAdult ogre = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Ogre.GREEN );
-	private final CustomAdult pig = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Pig.STRIPED );
-    private final CustomAdult penguin = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Penguin.EMPEROR );
-    private final CustomPerson generic = new CustomPerson( org.lookingglassandalice.storytelling.resources.monsters.MonsterUtilities.getInstance( "camel.a3r" ) ) {};
+    private final CustomPerson generic = new CustomPerson( org.lookingglassandalice.storytelling.resources.monsters.MonsterUtilities.getInstance( "bigBadWolf.a3r" ) ) {};
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
-	private final SnowScene snowScene = new SnowScene( camera, ogre, susan, pig, penguin, generic );
+	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
+	
+	private final TestScene testScene = new TestScene( camera, generic );
 	
 	public void playOutStory() {
 //		this.setActiveScene( this.desertScene );
 //		this.desertScene.turnBigRocksIntoLittleRocks();
-		this.setActiveScene( this.snowScene );
-		this.snowScene.chillInSkiChalet();
+//		this.setActiveScene( this.snowScene );
+//		this.snowScene.chillInSkiChalet();
+	    this.setActiveScene( this.testScene );
 	}
 	public static void main( String[] args ) {
 		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
