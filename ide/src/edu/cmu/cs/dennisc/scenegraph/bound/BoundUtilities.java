@@ -46,7 +46,10 @@ package edu.cmu.cs.dennisc.scenegraph.bound;
  * @author Dennis Cosgrove
  */
 public class BoundUtilities {
-
+	private BoundUtilities() {
+		throw new AssertionError();
+	}
+	
 	//TODO: remove duplicate code, if possible
 
 	public static edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv, edu.cmu.cs.dennisc.scenegraph.Vertex[] va ) {

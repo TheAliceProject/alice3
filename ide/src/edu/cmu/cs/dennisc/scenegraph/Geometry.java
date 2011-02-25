@@ -43,13 +43,11 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.scenegraph.event.BoundListener;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Geometry extends Element {
-	private java.util.List<BoundListener> boundObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private java.util.List<edu.cmu.cs.dennisc.scenegraph.event.BoundListener> boundObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
 	private edu.cmu.cs.dennisc.math.Sphere boundingSphere = new edu.cmu.cs.dennisc.math.Sphere();
 
@@ -101,20 +99,20 @@ public abstract class Geometry extends Element {
 		return getBoundingSphere( new edu.cmu.cs.dennisc.math.Sphere() );
 	}
 
-	public void addBoundObserver( BoundListener boundObserver ) {
+	public void addBoundObserver( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundObserver ) {
 		this.boundObservers.add( boundObserver );
 	}
-	public void removeBoundObserver( BoundListener boundObserver ) {
+	public void removeBoundObserver( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundObserver ) {
 		this.boundObservers.remove( boundObserver );
 	}
-	public Iterable< BoundListener > accessBoundObservers() {
+	public Iterable< edu.cmu.cs.dennisc.scenegraph.event.BoundListener > accessBoundObservers() {
 		return this.boundObservers;
 	}
 	protected void fireBoundChange() {
 		this.boundingBox.setNaN();
 		this.boundingSphere.setNaN();
 		edu.cmu.cs.dennisc.scenegraph.event.BoundEvent e = new edu.cmu.cs.dennisc.scenegraph.event.BoundEvent( this );
-		for( BoundListener boundObserver : this.boundObservers ) {
+		for( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundObserver : this.boundObservers ) {
 			boundObserver.boundChanged( e );
 		}
 	}
