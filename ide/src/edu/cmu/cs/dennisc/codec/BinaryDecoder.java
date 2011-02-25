@@ -46,6 +46,9 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public interface BinaryDecoder {
+//	public byte[] read( byte[] rv );
+//	public byte[] read( byte[] rv, int offset, int length );
+		
 	public boolean decodeBoolean();
 	public byte decodeByte();
 	public char decodeChar();

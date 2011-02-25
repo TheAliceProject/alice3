@@ -105,11 +105,33 @@ public class BufferUtilities {
 	}
 
 	private static void encodeHeader( BinaryEncoder encoder, java.nio.Buffer buffer, int bitsPerPrimitive, boolean isDirect, boolean isNativeRequired ) {
+		buffer.rewind();
 		Header header = new Header( buffer, bitsPerPrimitive, isDirect, isNativeRequired );
 		header.encode( encoder );
 	}
+	public static void encode( BinaryEncoder encoder, java.nio.CharBuffer buffer, boolean isNativeRequired ) {
+		encodeHeader( encoder, buffer, Character.SIZE, buffer.isDirect(), isNativeRequired );
+		while( buffer.hasRemaining() ) {
+			encoder.encode( buffer.get() );
+		}
+		encoder.flush();
+	}
+	public static void encode( BinaryEncoder encoder, java.nio.ShortBuffer buffer, boolean isNativeRequired ) {
+		encodeHeader( encoder, buffer, Short.SIZE, buffer.isDirect(), isNativeRequired );
+		while( buffer.hasRemaining() ) {
+			encoder.encode( buffer.get() );
+		}
+		encoder.flush();
+	}
 	public static void encode( BinaryEncoder encoder, java.nio.IntBuffer buffer, boolean isNativeRequired ) {
 		encodeHeader( encoder, buffer, Integer.SIZE, buffer.isDirect(), isNativeRequired );
+		while( buffer.hasRemaining() ) {
+			encoder.encode( buffer.get() );
+		}
+		encoder.flush();
+	}
+	public static void encode( BinaryEncoder encoder, java.nio.LongBuffer buffer, boolean isNativeRequired ) {
+		encodeHeader( encoder, buffer, Long.SIZE, buffer.isDirect(), isNativeRequired );
 		while( buffer.hasRemaining() ) {
 			encoder.encode( buffer.get() );
 		}
@@ -151,10 +173,7 @@ public class BufferUtilities {
 		java.nio.DoubleBuffer rv = byteBuffer.asDoubleBuffer();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
 		while( rv.hasRemaining() ) {
-			double d = decoder.decodeDouble();
-			
-			rv.put( d );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( d );
+			rv.put( decoder.decodeDouble() );
 		}
 		rv.rewind();
 		if( header.isReadOnly ) {
