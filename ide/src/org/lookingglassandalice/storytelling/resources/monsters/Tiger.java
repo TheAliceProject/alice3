@@ -43,19 +43,17 @@
 
 package org.lookingglassandalice.storytelling.resources.monsters;
 
+
 /**
  * @author Dennis Cosgrove
  */
 public enum Tiger implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
 	STRIPED;
-	
-	private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal;
+	private final org.lookingglassandalice.storytelling.resources.monsters.PersonResource implementation;
     private Tiger() {
-    	this.sgOriginal = MonsterUtilities.decode( "tiger.alice" );
+    	this.implementation = org.lookingglassandalice.storytelling.resources.monsters.PersonResource.getInstance( "tiger.alice" );
 	}
 	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
-	    edu.cmu.cs.dennisc.texture.Texture texture = MonsterUtilities.getTexture( this.sgOriginal );
-	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = MonsterUtilities.createCopy( this.sgOriginal );
-		return new org.lookingglassandalice.storytelling.implementation.monsters.MonsterImplementation( sgSkeletonVisual, abstraction, this, texture );
+		return this.implementation.createPersonImplementation( abstraction );
 	}
 }

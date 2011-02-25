@@ -43,19 +43,17 @@
 
 package org.lookingglassandalice.storytelling.resources.monsters;
 
+
 /**
  * @author Dennis Cosgrove
  */
 public enum Penguin implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
 	EMPEROR;
-	
-	private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal;
+	private final PersonResource implementation;
     private Penguin() {
-    	this.sgOriginal = MonsterUtilities.decode( "penguin.alice" );
+    	this.implementation = org.lookingglassandalice.storytelling.resources.monsters.PersonResource.getInstance( "penguin.alice" );
 	}
 	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
-	    edu.cmu.cs.dennisc.texture.Texture texture = MonsterUtilities.getTexture( this.sgOriginal );
-	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = MonsterUtilities.createCopy( this.sgOriginal );
-		return new org.lookingglassandalice.storytelling.implementation.monsters.MonsterImplementation( sgSkeletonVisual, abstraction, this, texture );
+		return this.implementation.createPersonImplementation( abstraction );
 	}
 }
