@@ -43,10 +43,7 @@
 
 package edu.cmu.cs.dennisc.codec;
 
-/**
- * @author Dennis Cosgrove
- */
-public class BufferUtilities {
+/*package-private*/ class Header {
 	private static byte[] swap( byte[] rv, int offsetA, int offsetB ) {
 		byte tmp = rv[ offsetA ];
 		rv[ offsetA ] = rv[ offsetB ];
@@ -78,70 +75,103 @@ public class BufferUtilities {
 		}
 		return rv;
 	}
+
+	private final int limit;
+	private final int bitsPerPrimitive;
+	private final boolean isDirect;
+	private final boolean isReadOnly;
+	private final boolean isNativeRequired;
+	
+	public Header( java.nio.Buffer buffer, int bitsPerPrimitive, boolean isDirect, boolean isNativeRequired ) {
+		this.limit = buffer.limit();
+		this.bitsPerPrimitive = bitsPerPrimitive;
+		this.isReadOnly = buffer.isReadOnly();
+		this.isDirect = isDirect;
+		this.isNativeRequired = isNativeRequired;
+	}
+	public Header( BinaryDecoder decoder ) {
+		this.limit = decoder.decodeInt();
+		this.bitsPerPrimitive = decoder.decodeInt();
+		this.isReadOnly = decoder.decodeBoolean();
+		this.isDirect = decoder.decodeBoolean();
+		this.isNativeRequired = decoder.decodeBoolean();
+	}
+	public void encode( BinaryEncoder encoder ) {
+		encoder.encode( this.limit );
+		encoder.encode( this.bitsPerPrimitive );
+		encoder.encode( this.isReadOnly );
+		encoder.encode( this.isDirect );
+		encoder.encode( this.isNativeRequired );
+	}
+	public java.nio.ByteBuffer createByteBuffer( BinaryDecoder decoder ) {
+		java.nio.ByteBuffer rv;
+		final int N = this.limit * (this.bitsPerPrimitive/8);
+		if( this.isDirect ) {
+			rv = java.nio.ByteBuffer.allocateDirect( N );
+		} else {
+			rv = java.nio.ByteBuffer.allocate( N );
+		}
+		byte[] data = new byte[ rv.limit() ];
+		decoder.readFully( data );
+		if( this.isNativeOrderChangeNecessary( rv ) ) {
+			rv.order( java.nio.ByteOrder.nativeOrder() );
+			int bytesPerPrimitive = this.getBytesPerPrimitive();
+			switch( bytesPerPrimitive ) {
+			case 1:
+				break;
+			case 2:
+				swap2( data );
+				break;
+			case 4:
+				swap4( data );
+				break;
+			case 8:
+				swap8( data );
+				break;
+			default:
+				assert false : bytesPerPrimitive;
+			}
+		}
+		rv.put( data );
+		rv.rewind();
+		
+		if( this.isReadOnly ) {
+			rv = rv.asReadOnlyBuffer();
+		}
+		return rv;
+	}
+	private int getBytesPerPrimitive() {
+		return this.bitsPerPrimitive/8;
+	}
+	private boolean isNativeOrderChangeNecessary( java.nio.ByteBuffer buffer ) {
+		return this.isNativeRequired && buffer.order().equals( java.nio.ByteOrder.nativeOrder() ) == false;
+	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Header[limit=" );
+		sb.append( this.limit );
+		sb.append( ";bitsPerPrimitive=" );
+		sb.append( this.bitsPerPrimitive );
+		sb.append( ";isReadOnly=" );
+		sb.append( this.isReadOnly );
+		sb.append( ";isDirect=" );
+		sb.append( this.isDirect );
+		sb.append( ";isNativeRequired=" );
+		sb.append( this.isNativeRequired );
+		sb.append( "]" );
+		return sb.toString();
+	}
+}
+
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class BufferUtilities {
 	private BufferUtilities() {
 	}
 	
-	private static class Header {
-		private final int limit;
-		private final int bitsPerPrimitive;
-		private final boolean isDirect;
-		private final boolean isReadOnly;
-		private final boolean isNativeRequired;
-		public Header( java.nio.Buffer buffer, int bitsPerPrimitive, boolean isDirect, boolean isNativeRequired ) {
-			this.limit = buffer.limit();
-			this.bitsPerPrimitive = bitsPerPrimitive;
-			this.isReadOnly = buffer.isReadOnly();
-			this.isDirect = isDirect;
-			this.isNativeRequired = isNativeRequired;
-		}
-		public Header( BinaryDecoder decoder ) {
-			this.limit = decoder.decodeInt();
-			this.bitsPerPrimitive = decoder.decodeInt();
-			this.isReadOnly = decoder.decodeBoolean();
-			this.isDirect = decoder.decodeBoolean();
-			this.isNativeRequired = decoder.decodeBoolean();
-		}
-		public void encode( BinaryEncoder encoder ) {
-			encoder.encode( this.limit );
-			encoder.encode( this.bitsPerPrimitive );
-			encoder.encode( this.isReadOnly );
-			encoder.encode( this.isDirect );
-			encoder.encode( this.isNativeRequired );
-		}
-		public java.nio.ByteBuffer createByteBuffer() {
-			java.nio.ByteBuffer rv;
-			final int N = this.limit * (this.bitsPerPrimitive/8);
-			if( this.isDirect ) {
-				rv = java.nio.ByteBuffer.allocateDirect( N );
-			} else {
-				rv = java.nio.ByteBuffer.allocate( N );
-			}
-			if( this.isNativeOrderChangeNecessary( rv ) ) {
-				rv.order( java.nio.ByteOrder.nativeOrder() );
-			}
-			return rv;
-		}
-		private boolean isNativeOrderChangeNecessary( java.nio.ByteBuffer buffer ) {
-			return this.isNativeRequired && buffer.order().equals( java.nio.ByteOrder.nativeOrder() ) == false;
-		}
-		@Override
-		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "Header[limit=" );
-			sb.append( this.limit );
-			sb.append( ";bitsPerPrimitive=" );
-			sb.append( this.bitsPerPrimitive );
-			sb.append( ";isReadOnly=" );
-			sb.append( this.isReadOnly );
-			sb.append( ";isDirect=" );
-			sb.append( this.isDirect );
-			sb.append( ";isNativeRequired=" );
-			sb.append( this.isNativeRequired );
-			sb.append( "]" );
-			return sb.toString();
-		}
-	}
-
 	private static void encodeHeader( BinaryEncoder encoder, java.nio.Buffer buffer, int bitsPerPrimitive, boolean isDirect, boolean isNativeRequired ) {
 		buffer.rewind();
 		Header header = new Header( buffer, bitsPerPrimitive, isDirect, isNativeRequired );
@@ -200,99 +230,71 @@ public class BufferUtilities {
 	
 	public static java.nio.ByteBuffer decodeByteBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
 		Header header = new Header( decoder );
-		java.nio.ByteBuffer rv = header.createByteBuffer();
-		while( rv.hasRemaining() ) {
-			rv.put( decoder.decodeByte() );
-		}
-		rv.rewind();
-		if( header.isReadOnly ) {
-			rv = rv.asReadOnlyBuffer();
-		}
+		java.nio.ByteBuffer rv = header.createByteBuffer( decoder );
+//		while( rv.hasRemaining() ) {
+//			rv.put( decoder.decodeByte() );
+//		}
+//		rv.rewind();
 		return rv;
 	}
 	public static java.nio.CharBuffer decodeCharBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
 		Header header = new Header( decoder );
-		java.nio.ByteBuffer byteBuffer = header.createByteBuffer();
+		java.nio.ByteBuffer byteBuffer = header.createByteBuffer( decoder );
 		java.nio.CharBuffer rv = byteBuffer.asCharBuffer();
-		while( rv.hasRemaining() ) {
-			rv.put( decoder.decodeChar() );
-		}
-		rv.rewind();
-		if( header.isReadOnly ) {
-			rv = rv.asReadOnlyBuffer();
-		}
+//		while( rv.hasRemaining() ) {
+//			rv.put( decoder.decodeChar() );
+//		}
+//		rv.rewind();
 		return rv;
 	}
 	public static java.nio.ShortBuffer decodeShortBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
 		Header header = new Header( decoder );
-		java.nio.ByteBuffer byteBuffer = header.createByteBuffer();
+		java.nio.ByteBuffer byteBuffer = header.createByteBuffer( decoder );
 		java.nio.ShortBuffer rv = byteBuffer.asShortBuffer();
-		while( rv.hasRemaining() ) {
-			rv.put( decoder.decodeShort() );
-		}
-		rv.rewind();
-		if( header.isReadOnly ) {
-			rv = rv.asReadOnlyBuffer();
-		}
+//		while( rv.hasRemaining() ) {
+//			rv.put( decoder.decodeShort() );
+//		}
+//		rv.rewind();
 		return rv;
 	}
 	public static java.nio.IntBuffer decodeIntBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
 		Header header = new Header( decoder );
-		java.nio.ByteBuffer byteBuffer = header.createByteBuffer();
-
-//		byte[] data = new byte[ byteBuffer.limit() ];
-//		decoder.readFully( data );
-//		swap4( data );
-//		byteBuffer.put( data );
-//		byteBuffer.rewind();
-		
+		java.nio.ByteBuffer byteBuffer = header.createByteBuffer( decoder );		
 		java.nio.IntBuffer rv = byteBuffer.asIntBuffer();
-		while( rv.hasRemaining() ) {
-			rv.put( decoder.decodeInt() );
-		}
-		rv.rewind();
-		if( header.isReadOnly ) {
-			rv = rv.asReadOnlyBuffer();
-		}
+//		while( rv.hasRemaining() ) {
+//			rv.put( decoder.decodeInt() );
+//		}
+//		rv.rewind();
 		return rv;
 	}
 	public static java.nio.LongBuffer decodeLongBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
 		Header header = new Header( decoder );
-		java.nio.ByteBuffer byteBuffer = header.createByteBuffer();
+		java.nio.ByteBuffer byteBuffer = header.createByteBuffer( decoder );
 		java.nio.LongBuffer rv = byteBuffer.asLongBuffer();
-		while( rv.hasRemaining() ) {
-			rv.put( decoder.decodeLong() );
-		}
-		rv.rewind();
-		if( header.isReadOnly ) {
-			rv = rv.asReadOnlyBuffer();
-		}
+//		while( rv.hasRemaining() ) {
+//			rv.put( decoder.decodeLong() );
+//		}
+//		rv.rewind();
 		return rv;
 	}
 	public static java.nio.FloatBuffer decodeFloatBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
 		Header header = new Header( decoder );
-		java.nio.ByteBuffer byteBuffer = header.createByteBuffer();
+		java.nio.ByteBuffer byteBuffer = header.createByteBuffer( decoder );
 		java.nio.FloatBuffer rv = byteBuffer.asFloatBuffer();
-		while( rv.hasRemaining() ) {
-			rv.put( decoder.decodeFloat() );
-		}
-		rv.rewind();
-		if( header.isReadOnly ) {
-			rv = rv.asReadOnlyBuffer();
-		}
+//		while( rv.hasRemaining() ) {
+//			rv.put( decoder.decodeFloat() );
+//		}
+//		rv.rewind();
 		return rv;
 	}
 	public static java.nio.DoubleBuffer decodeDoubleBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
 		Header header = new Header( decoder );
-		java.nio.ByteBuffer byteBuffer = header.createByteBuffer();
+		java.nio.ByteBuffer byteBuffer = header.createByteBuffer( decoder );
 		java.nio.DoubleBuffer rv = byteBuffer.asDoubleBuffer();
-		while( rv.hasRemaining() ) {
-			rv.put( decoder.decodeDouble() );
-		}
-		rv.rewind();
-		if( header.isReadOnly ) {
-			rv = rv.asReadOnlyBuffer();
-		}
+//		while( rv.hasRemaining() ) {
+//			rv.put( decoder.decodeDouble() );
+//		}
+//		rv.rewind();
 		return rv;
 	}
 }
