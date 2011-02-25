@@ -65,8 +65,6 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 		}
 	}
 
-	protected abstract void encodeBuffer( byte[] buffer );
-
 	private static final boolean IS_ENCODING_BIG_ENDIAN = true;
 	
 	private void encodeBufferHeader( java.nio.Buffer buffer, boolean isDirect, java.nio.ByteOrder byteOrder ) {
@@ -160,7 +158,7 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 	
 	public final void encode( byte[] array ) {
 		this.encodeArrayLength( array );
-		this.encodeBuffer( array );
+		this.write( array );
 	}
 	public final void encode( char[] array ) {
 		this.encodeArrayLength( array );
