@@ -41,15 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.apis.stage;
+package org.lookingglassandalice.storytelling.resources.monsters;
 
-public class Penguin extends AliceModel {
 
-	@Override
-	protected String getResourceString()
-	{
-		return "penguin.a3r";
+
+/**
+ * @author Dennis Cosgrove
+ */
+/*package-protected*/ class PersonResource implements org.lookingglassandalice.storytelling.resources.PersonResource {
+	private static java.util.Map< String, PersonResource > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+    /*package-protected*/ static PersonResource getInstance( String path ) {
+    	synchronized( map ) {
+    		PersonResource rv = map.get( path );
+    		if( rv != null ) {
+    			//pass
+    		} else {
+    			rv = new PersonResource( path );
+    			map.put( path, rv );
+    		}
+    		return rv;
+		}
+    }
+
+    private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal;
+    private PersonResource( String path ) {
+    	this.sgOriginal = MonsterUtilities.decode( path );
 	}
-	
-
+	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
+	    edu.cmu.cs.dennisc.texture.Texture texture = MonsterUtilities.getTexture( this.sgOriginal );
+	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = MonsterUtilities.createCopy( this.sgOriginal );
+		return new org.lookingglassandalice.storytelling.implementation.monsters.MonsterImplementation( sgSkeletonVisual, abstraction, this, texture );
+	}
 }

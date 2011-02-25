@@ -69,12 +69,14 @@ class SnowScene extends Scene {
 	private final CustomAdult susan;
 	private final CustomAdult pig;
     private final CustomAdult penguin;
-	public SnowScene( Camera camera, CustomAdult ogre, CustomAdult susan, CustomAdult pig, CustomAdult penguin ) {
+    private final CustomPerson generic;
+	public SnowScene( Camera camera, CustomAdult ogre, CustomAdult susan, CustomAdult pig, CustomAdult penguin, CustomPerson generic ) {
 		this.camera = camera;
 		this.ogre = ogre;
 		this.susan = susan;
 		this.pig = pig;
 		this.penguin = penguin;
+		this.generic = generic;
 	}
 	
 	private void performGeneratedSetup() {
@@ -89,7 +91,8 @@ class SnowScene extends Scene {
 		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
 		this.pig.setVehicle( this );
-		this.penguin.setVehicle( this );
+        this.penguin.setVehicle( this );
+        this.generic.setVehicle( this );
 		
 		this.redCone.setColor( Color.RED );
 		this.greenCone.setColor( Color.GREEN );
@@ -104,6 +107,10 @@ class SnowScene extends Scene {
 		this.redCone.move( MoveDirection.LEFT, 0.5 );
 		this.greenCone.move( MoveDirection.LEFT, 1.0 );
 		this.blueCone.move( MoveDirection.LEFT, 1.5 );
+		
+        this.penguin.move(MoveDirection.LEFT, 1.0);
+        this.pig.move(MoveDirection.RIGHT, 1.0);
+        this.generic.move(MoveDirection.BACKWARD, 1.0);
 		
 		this.snow.setAppearance( Ground.Appearance.SNOW );
 		this.camera.getAGoodLookAt( this.susan );
@@ -214,9 +221,10 @@ class RagsToRichesStory extends Program {
 	) );
 	private final CustomAdult ogre = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Ogre.GREEN );
 	private final CustomAdult pig = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Pig.STRIPED );
-	private final CustomAdult penguin = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Penguin.EMPEROR );
+    private final CustomAdult penguin = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Penguin.EMPEROR );
+    private final CustomPerson generic = new CustomPerson( org.lookingglassandalice.storytelling.resources.monsters.MonsterUtilities.getInstance( "camel.a3r" ) ) {};
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
-	private final SnowScene snowScene = new SnowScene( camera, ogre, susan, pig, penguin );
+	private final SnowScene snowScene = new SnowScene( camera, ogre, susan, pig, penguin, generic );
 	
 	public void playOutStory() {
 //		this.setActiveScene( this.desertScene );

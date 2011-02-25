@@ -49,6 +49,12 @@ package org.lookingglassandalice.storytelling.resources.monsters;
 public class MonsterUtilities {
 	private MonsterUtilities() {
 	}
+	
+	@Deprecated
+	public static org.lookingglassandalice.storytelling.resources.PersonResource getInstance( String path ) {
+		return PersonResource.getInstance( path );
+	}
+	
 	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual decode( String path ) {
     	java.io.InputStream is = MonsterUtilities.class.getResourceAsStream( path );
     	edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
