@@ -246,15 +246,15 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 		} else if( edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
 			rv = binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( map );
 		} else if( java.nio.ByteBuffer.class.isAssignableFrom(valueCls) ) {
-            rv = binaryDecoder.decodeByteBuffer();
+            rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeByteBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
 	    } else if( java.nio.CharBuffer.class.isAssignableFrom(valueCls) ) {
-            rv = binaryDecoder.decodeCharBuffer();
+            rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeCharBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
         } else if( java.nio.ShortBuffer.class.isAssignableFrom(valueCls) ) {
-            rv = binaryDecoder.decodeShortBuffer();
+            rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeShortBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
         } else if( java.nio.IntBuffer.class.isAssignableFrom(valueCls) ) {
             rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeIntBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
         } else if( java.nio.LongBuffer.class.isAssignableFrom(valueCls) ) {
-            rv = binaryDecoder.decodeLongBuffer();
+            rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeLongBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
         } else if( java.nio.FloatBuffer.class.isAssignableFrom(valueCls) ) {
             rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeFloatBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
         } else if( java.nio.DoubleBuffer.class.isAssignableFrom(valueCls) ) {
@@ -360,15 +360,15 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 			} else if( edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
 				binaryEncoder.encode( (edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable)value, map );
 			} else if( java.nio.ByteBuffer.class.isAssignableFrom( valueCls ) ) {
-                binaryEncoder.encode( (java.nio.ByteBuffer)value);
+				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.ByteBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
 			} else if( java.nio.CharBuffer.class.isAssignableFrom( valueCls ) ) {
-                binaryEncoder.encode( (java.nio.CharBuffer)value);
+				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.CharBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
 			} else if( java.nio.ShortBuffer.class.isAssignableFrom( valueCls ) ) {
-                binaryEncoder.encode( (java.nio.ShortBuffer)value);
+				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.ShortBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
 			} else if( java.nio.IntBuffer.class.isAssignableFrom( valueCls ) ) {
 				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.IntBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
 			} else if( java.nio.LongBuffer.class.isAssignableFrom( valueCls ) ) {
-                binaryEncoder.encode( (java.nio.LongBuffer)value);
+				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.LongBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
 			} else if( java.nio.FloatBuffer.class.isAssignableFrom( valueCls ) ) {
 				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.FloatBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
 			} else if( java.nio.DoubleBuffer.class.isAssignableFrom( valueCls ) ) {

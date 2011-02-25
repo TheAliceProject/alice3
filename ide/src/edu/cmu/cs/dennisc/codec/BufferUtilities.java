@@ -47,6 +47,37 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public class BufferUtilities {
+	private static byte[] swap( byte[] rv, int offsetA, int offsetB ) {
+		byte tmp = rv[ offsetA ];
+		rv[ offsetA ] = rv[ offsetB ];
+		rv[ offsetB ] = tmp;
+		return rv;
+	}
+	private static byte[] swap2( byte[] rv ) {
+		final int N = rv.length;
+		for( int i=0; i<N; i+=2 ) {
+			swap( rv, i, i+1 );
+		}
+		return rv;
+	}
+	private static byte[] swap4( byte[] rv ) {
+		final int N = rv.length;
+		for( int i=0; i<N; i+=4 ) {
+			swap( rv, i,   i+3 );
+			swap( rv, i+1, i+2 );
+		}
+		return rv;
+	}
+	private static byte[] swap8( byte[] rv ) {
+		final int N = rv.length;
+		for( int i=0; i<N; i+=8 ) {
+			swap( rv, i,   i+7 );
+			swap( rv, i+1, i+6 );
+			swap( rv, i+2, i+5 );
+			swap( rv, i+3, i+4 );
+		}
+		return rv;
+	}
 	private BufferUtilities() {
 	}
 	
@@ -90,16 +121,23 @@ public class BufferUtilities {
 			}
 			return rv;
 		}
-		public boolean isNativeOrderChangeNecessary( java.nio.ByteBuffer buffer ) {
+		private boolean isNativeOrderChangeNecessary( java.nio.ByteBuffer buffer ) {
 			return this.isNativeRequired && buffer.order().equals( java.nio.ByteOrder.nativeOrder() ) == false;
 		}
 		@Override
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
-			sb.append( "limit=" );
+			sb.append( "Header[limit=" );
 			sb.append( this.limit );
 			sb.append( ";bitsPerPrimitive=" );
 			sb.append( this.bitsPerPrimitive );
+			sb.append( ";isReadOnly=" );
+			sb.append( this.isReadOnly );
+			sb.append( ";isDirect=" );
+			sb.append( this.isDirect );
+			sb.append( ";isNativeRequired=" );
+			sb.append( this.isNativeRequired );
+			sb.append( "]" );
 			return sb.toString();
 		}
 	}
@@ -108,6 +146,14 @@ public class BufferUtilities {
 		buffer.rewind();
 		Header header = new Header( buffer, bitsPerPrimitive, isDirect, isNativeRequired );
 		header.encode( encoder );
+	}
+	
+	public static void encode( BinaryEncoder encoder, java.nio.ByteBuffer buffer, boolean isNativeRequired ) {
+		encodeHeader( encoder, buffer, Character.SIZE, buffer.isDirect(), isNativeRequired );
+		while( buffer.hasRemaining() ) {
+			encoder.encode( buffer.get() );
+		}
+		encoder.flush();
 	}
 	public static void encode( BinaryEncoder encoder, java.nio.CharBuffer buffer, boolean isNativeRequired ) {
 		encodeHeader( encoder, buffer, Character.SIZE, buffer.isDirect(), isNativeRequired );
@@ -152,9 +198,54 @@ public class BufferUtilities {
 		encoder.flush();
 	}
 	
+	public static java.nio.ByteBuffer decodeByteBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
+		Header header = new Header( decoder );
+		java.nio.ByteBuffer rv = header.createByteBuffer();
+		while( rv.hasRemaining() ) {
+			rv.put( decoder.decodeByte() );
+		}
+		rv.rewind();
+		if( header.isReadOnly ) {
+			rv = rv.asReadOnlyBuffer();
+		}
+		return rv;
+	}
+	public static java.nio.CharBuffer decodeCharBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
+		Header header = new Header( decoder );
+		java.nio.ByteBuffer byteBuffer = header.createByteBuffer();
+		java.nio.CharBuffer rv = byteBuffer.asCharBuffer();
+		while( rv.hasRemaining() ) {
+			rv.put( decoder.decodeChar() );
+		}
+		rv.rewind();
+		if( header.isReadOnly ) {
+			rv = rv.asReadOnlyBuffer();
+		}
+		return rv;
+	}
+	public static java.nio.ShortBuffer decodeShortBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
+		Header header = new Header( decoder );
+		java.nio.ByteBuffer byteBuffer = header.createByteBuffer();
+		java.nio.ShortBuffer rv = byteBuffer.asShortBuffer();
+		while( rv.hasRemaining() ) {
+			rv.put( decoder.decodeShort() );
+		}
+		rv.rewind();
+		if( header.isReadOnly ) {
+			rv = rv.asReadOnlyBuffer();
+		}
+		return rv;
+	}
 	public static java.nio.IntBuffer decodeIntBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
 		Header header = new Header( decoder );
 		java.nio.ByteBuffer byteBuffer = header.createByteBuffer();
+
+//		byte[] data = new byte[ byteBuffer.limit() ];
+//		decoder.readFully( data );
+//		swap4( data );
+//		byteBuffer.put( data );
+//		byteBuffer.rewind();
+		
 		java.nio.IntBuffer rv = byteBuffer.asIntBuffer();
 		while( rv.hasRemaining() ) {
 			rv.put( decoder.decodeInt() );
@@ -165,15 +256,12 @@ public class BufferUtilities {
 		}
 		return rv;
 	}
-	public static java.nio.DoubleBuffer decodeDoubleBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
+	public static java.nio.LongBuffer decodeLongBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
 		Header header = new Header( decoder );
 		java.nio.ByteBuffer byteBuffer = header.createByteBuffer();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( header );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( byteBuffer );
-		java.nio.DoubleBuffer rv = byteBuffer.asDoubleBuffer();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
+		java.nio.LongBuffer rv = byteBuffer.asLongBuffer();
 		while( rv.hasRemaining() ) {
-			rv.put( decoder.decodeDouble() );
+			rv.put( decoder.decodeLong() );
 		}
 		rv.rewind();
 		if( header.isReadOnly ) {
@@ -187,6 +275,19 @@ public class BufferUtilities {
 		java.nio.FloatBuffer rv = byteBuffer.asFloatBuffer();
 		while( rv.hasRemaining() ) {
 			rv.put( decoder.decodeFloat() );
+		}
+		rv.rewind();
+		if( header.isReadOnly ) {
+			rv = rv.asReadOnlyBuffer();
+		}
+		return rv;
+	}
+	public static java.nio.DoubleBuffer decodeDoubleBuffer( BinaryDecoder decoder, boolean isNativeRequired ) {
+		Header header = new Header( decoder );
+		java.nio.ByteBuffer byteBuffer = header.createByteBuffer();
+		java.nio.DoubleBuffer rv = byteBuffer.asDoubleBuffer();
+		while( rv.hasRemaining() ) {
+			rv.put( decoder.decodeDouble() );
 		}
 		rv.rewind();
 		if( header.isReadOnly ) {

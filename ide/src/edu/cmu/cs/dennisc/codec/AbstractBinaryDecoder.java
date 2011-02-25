@@ -135,150 +135,150 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 //		return decodeByteBuffer( Double.SIZE ).asDoubleBuffer();
 //	}
 
-	private java.nio.ByteBuffer createByteBufferFromHeader( int bitsPerPrimative ) {
-		final int N = this.decodeInt() * (bitsPerPrimative / 8);
-		boolean isReadOnly = this.decodeBoolean();
-		boolean isDirect = this.decodeBoolean();
-		boolean isBigEndian = this.decodeBoolean();
-		java.nio.ByteBuffer rv;
-//		java.nio.ByteOrder actualByteOrder;
-//		if( isBigEndian ) {
-//			actualByteOrder = java.nio.ByteOrder.BIG_ENDIAN;
+//	private java.nio.ByteBuffer createByteBufferFromHeader( int bitsPerPrimative ) {
+//		final int N = this.decodeInt() * (bitsPerPrimative / 8);
+//		boolean isReadOnly = this.decodeBoolean();
+//		boolean isDirect = this.decodeBoolean();
+//		boolean isBigEndian = this.decodeBoolean();
+//		java.nio.ByteBuffer rv;
+////		java.nio.ByteOrder actualByteOrder;
+////		if( isBigEndian ) {
+////			actualByteOrder = java.nio.ByteOrder.BIG_ENDIAN;
+////		} else {
+////			actualByteOrder = java.nio.ByteOrder.LITTLE_ENDIAN;
+////		}
+//		if( isDirect ) {
+//			rv = java.nio.ByteBuffer.allocateDirect( N );
 //		} else {
-//			actualByteOrder = java.nio.ByteOrder.LITTLE_ENDIAN;
+//			rv = java.nio.ByteBuffer.allocate( N );
 //		}
-		if( isDirect ) {
-			rv = java.nio.ByteBuffer.allocateDirect( N );
-		} else {
-			rv = java.nio.ByteBuffer.allocate( N );
-		}
-//		if( isReadOnly ) {
-//			rv = rv.asReadOnlyBuffer();
-//		}
-		return rv;
-	}
-
-	public final java.nio.ByteBuffer decodeByteBuffer() {
-		java.nio.ByteBuffer rv = createByteBufferFromHeader( Byte.SIZE );
-		byte[] array = new byte[ rv.limit() ];
-		this.decodeByteArray( array );
-		rv.put( array );
-		rv.rewind();
-		return rv;
-	}
-	public final java.nio.CharBuffer decodeCharBuffer() {
-		java.nio.CharBuffer rv = createByteBufferFromHeader( Character.SIZE ).asCharBuffer();
-		while( rv.hasRemaining() ) {
-			rv.put( this.decodeChar() );
-		}
-		rv.rewind();
-		return rv;
-	}
-	public final java.nio.ShortBuffer decodeShortBuffer() {
-		java.nio.ShortBuffer rv = createByteBufferFromHeader( Short.SIZE ).asShortBuffer();
-		while( rv.hasRemaining() ) {
-			rv.put( this.decodeShort() );
-		}
-		rv.rewind();
-		return rv;
-	}
-	public final java.nio.IntBuffer decodeIntBuffer() {
-		java.nio.ByteBuffer byteBuffer = createByteBufferFromHeader( Integer.SIZE );
-		byte[] array = new byte[ byteBuffer.limit() ];
-		this.decodeByteArray( array );
-		final int N = array.length;
-		byte temp;
-		for( int i=0; i<N; i+=4 ) {
-			temp = array[ i+0 ]; 
-			array[ i+0 ] = array[ i+3 ];
-			array[ i+3 ] = temp;
-			temp = array[ i+1 ]; 
-			array[ i+1 ] = array[ i+2 ];
-			array[ i+2 ] = temp;
-		}
-		byteBuffer.put( array );
-		byteBuffer.rewind();
-//		byteBuffer.order( java.nio.ByteOrder.nativeOrder() );
-
-		java.nio.IntBuffer rv = byteBuffer.order( java.nio.ByteOrder.nativeOrder() ).asIntBuffer();
-		
+////		if( isReadOnly ) {
+////			rv = rv.asReadOnlyBuffer();
+////		}
+//		return rv;
+//	}
+//
+//	public final java.nio.ByteBuffer decodeByteBuffer() {
+//		java.nio.ByteBuffer rv = createByteBufferFromHeader( Byte.SIZE );
+//		byte[] array = new byte[ rv.limit() ];
+//		this.decodeByteArray( array );
+//		rv.put( array );
+//		rv.rewind();
+//		return rv;
+//	}
+//	public final java.nio.CharBuffer decodeCharBuffer() {
+//		java.nio.CharBuffer rv = createByteBufferFromHeader( Character.SIZE ).asCharBuffer();
 //		while( rv.hasRemaining() ) {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( rv.get() );
+//			rv.put( this.decodeChar() );
 //		}
 //		rv.rewind();
-		
+//		return rv;
+//	}
+//	public final java.nio.ShortBuffer decodeShortBuffer() {
+//		java.nio.ShortBuffer rv = createByteBufferFromHeader( Short.SIZE ).asShortBuffer();
 //		while( rv.hasRemaining() ) {
-//			rv.put( this.decodeInt() );
+//			rv.put( this.decodeShort() );
 //		}
 //		rv.rewind();
-		
-		java.nio.IntBuffer srcBuffer = rv;
+//		return rv;
+//	}
+//	public final java.nio.IntBuffer decodeIntBuffer() {
+//		java.nio.ByteBuffer byteBuffer = createByteBufferFromHeader( Integer.SIZE );
+//		byte[] array = new byte[ byteBuffer.limit() ];
+//		this.decodeByteArray( array );
+//		final int N = array.length;
+//		byte temp;
+//		for( int i=0; i<N; i+=4 ) {
+//			temp = array[ i+0 ]; 
+//			array[ i+0 ] = array[ i+3 ];
+//			array[ i+3 ] = temp;
+//			temp = array[ i+1 ]; 
+//			array[ i+1 ] = array[ i+2 ];
+//			array[ i+2 ] = temp;
+//		}
+//		byteBuffer.put( array );
+//		byteBuffer.rewind();
+////		byteBuffer.order( java.nio.ByteOrder.nativeOrder() );
+//
+//		java.nio.IntBuffer rv = byteBuffer.order( java.nio.ByteOrder.nativeOrder() ).asIntBuffer();
+//		
+////		while( rv.hasRemaining() ) {
+////			edu.cmu.cs.dennisc.print.PrintUtilities.println( rv.get() );
+////		}
+////		rv.rewind();
+//		
+////		while( rv.hasRemaining() ) {
+////			rv.put( this.decodeInt() );
+////		}
+////		rv.rewind();
+//		
+//		java.nio.IntBuffer srcBuffer = rv;
+//
+//		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+//		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
+//		BufferUtilities.encode( encoder, srcBuffer, true );
+//		byte[] bytes = baos.toByteArray();
+//		
+//		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( bytes );
+//		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
+//		java.nio.IntBuffer dstBuffer = BufferUtilities.decodeIntBuffer( decoder, true );
+//		
+//		rv = dstBuffer;
+//
+//		return rv;
+//	}
+//	public final java.nio.LongBuffer decodeLongBuffer() {
+//		java.nio.LongBuffer rv = createByteBufferFromHeader( Long.SIZE ).asLongBuffer();
+//		while( rv.hasRemaining() ) {
+//			rv.put( this.decodeLong() );
+//		}
+//		rv.rewind();
+//		return rv;
+//	}
+//	public final java.nio.FloatBuffer decodeFloatBuffer() {
+//		java.nio.FloatBuffer rv = createByteBufferFromHeader( Float.SIZE ).order( java.nio.ByteOrder.nativeOrder() ).asFloatBuffer();
+//		while( rv.hasRemaining() ) {
+//			rv.put( this.decodeFloat() );
+//		}
+//		rv.rewind();
+//		java.nio.FloatBuffer srcBuffer = rv;
+//
+//		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+//		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
+//		BufferUtilities.encode( encoder, srcBuffer, true );
+//		byte[] bytes = baos.toByteArray();
+//		
+//		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( bytes );
+//		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
+//		java.nio.FloatBuffer dstBuffer = BufferUtilities.decodeFloatBuffer( decoder, true );
+//		
+//		rv = dstBuffer;
+//		return rv;
+//	}
+//	public final java.nio.DoubleBuffer decodeDoubleBuffer() {
+//		java.nio.DoubleBuffer rv = createByteBufferFromHeader( Double.SIZE ).order( java.nio.ByteOrder.nativeOrder() ).asDoubleBuffer();
+//		while( rv.hasRemaining() ) {
+//			rv.put( this.decodeDouble() );
+//		}
+//		rv.rewind();
+//		
+//		java.nio.DoubleBuffer srcBuffer = rv;
+//
+//		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+//		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
+//		BufferUtilities.encode( encoder, srcBuffer, true );
+//		byte[] bytes = baos.toByteArray();
+//		
+//		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( bytes );
+//		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
+//		java.nio.DoubleBuffer dstBuffer = BufferUtilities.decodeDoubleBuffer( decoder, true );
+//		
+//		rv = dstBuffer;
+//		
+//		return rv;
+//	}
 
-		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
-		BufferUtilities.encode( encoder, srcBuffer, true );
-		byte[] bytes = baos.toByteArray();
-		
-		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( bytes );
-		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
-		java.nio.IntBuffer dstBuffer = BufferUtilities.decodeIntBuffer( decoder, true );
-		
-		rv = dstBuffer;
-
-		return rv;
-	}
-	public final java.nio.LongBuffer decodeLongBuffer() {
-		java.nio.LongBuffer rv = createByteBufferFromHeader( Long.SIZE ).asLongBuffer();
-		while( rv.hasRemaining() ) {
-			rv.put( this.decodeLong() );
-		}
-		rv.rewind();
-		return rv;
-	}
-	public final java.nio.FloatBuffer decodeFloatBuffer() {
-		java.nio.FloatBuffer rv = createByteBufferFromHeader( Float.SIZE ).order( java.nio.ByteOrder.nativeOrder() ).asFloatBuffer();
-		while( rv.hasRemaining() ) {
-			rv.put( this.decodeFloat() );
-		}
-		rv.rewind();
-		java.nio.FloatBuffer srcBuffer = rv;
-
-		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
-		BufferUtilities.encode( encoder, srcBuffer, true );
-		byte[] bytes = baos.toByteArray();
-		
-		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( bytes );
-		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
-		java.nio.FloatBuffer dstBuffer = BufferUtilities.decodeFloatBuffer( decoder, true );
-		
-		rv = dstBuffer;
-		return rv;
-	}
-	public final java.nio.DoubleBuffer decodeDoubleBuffer() {
-		java.nio.DoubleBuffer rv = createByteBufferFromHeader( Double.SIZE ).order( java.nio.ByteOrder.nativeOrder() ).asDoubleBuffer();
-		while( rv.hasRemaining() ) {
-			rv.put( this.decodeDouble() );
-		}
-		rv.rewind();
-		
-		java.nio.DoubleBuffer srcBuffer = rv;
-
-		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
-		BufferUtilities.encode( encoder, srcBuffer, true );
-		byte[] bytes = baos.toByteArray();
-		
-		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( bytes );
-		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
-		java.nio.DoubleBuffer dstBuffer = BufferUtilities.decodeDoubleBuffer( decoder, true );
-		
-		rv = dstBuffer;
-		
-		return rv;
-	}
-
-	protected abstract byte[] decodeByteArray( byte[] rv );
+//	protected abstract byte[] decodeByteArray( byte[] rv );
 	//	public final byte[] decodeByteArray() {
 	//		byte[] rv = (byte[])createArray( Byte.TYPE );
 	//		return decodeByteArray( rv );

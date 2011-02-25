@@ -69,8 +69,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 	}
 
 	
-	@Override
-	protected byte[] decodeByteArray( byte[] rv ) {
+	public byte[] readFully( byte[] rv ) {
 		try {
 			m_ois.readFully( rv );
 			return rv;
@@ -78,6 +77,15 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			throw new RuntimeException( ioe );
 		}
 	}
+	public byte[] readFully( byte[] rv, int offset, int length ) {
+		try {
+			m_ois.readFully( rv, offset, length );
+			return rv;
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( ioe );
+		}
+	}
+	
 	
 	public boolean decodeBoolean() {
 		try {

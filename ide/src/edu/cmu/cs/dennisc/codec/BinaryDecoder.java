@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public interface BinaryDecoder {
-//	public byte[] read( byte[] rv );
-//	public byte[] read( byte[] rv, int offset, int length );
+	public byte[] readFully( byte[] rv );
+	public byte[] readFully( byte[] rv, int offset, int length );
 		
 	public boolean decodeBoolean();
 	public byte decodeByte();
@@ -76,13 +76,13 @@ public interface BinaryDecoder {
 //	@Deprecated
 //	public <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable( Class< E > cls, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map );
 
-	public java.nio.ByteBuffer decodeByteBuffer();
-	public java.nio.CharBuffer decodeCharBuffer();
-	public java.nio.ShortBuffer decodeShortBuffer();
-	public java.nio.IntBuffer decodeIntBuffer();
-	public java.nio.LongBuffer decodeLongBuffer();
-	public java.nio.FloatBuffer decodeFloatBuffer();
-	public java.nio.DoubleBuffer decodeDoubleBuffer();
+//	public java.nio.ByteBuffer decodeByteBuffer();
+//	public java.nio.CharBuffer decodeCharBuffer();
+//	public java.nio.ShortBuffer decodeShortBuffer();
+//	public java.nio.IntBuffer decodeIntBuffer();
+//	public java.nio.LongBuffer decodeLongBuffer();
+//	public java.nio.FloatBuffer decodeFloatBuffer();
+//	public java.nio.DoubleBuffer decodeDoubleBuffer();
 	
 	public boolean[] decodeBooleanArray();
 	public byte[] decodeByteArray();
