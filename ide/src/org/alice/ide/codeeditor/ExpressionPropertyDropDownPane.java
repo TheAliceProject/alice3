@@ -105,7 +105,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 				@Override
 				protected void initializeInternal(edu.cmu.cs.dennisc.croquet.ModelContext<?> context, java.util.UUID id, edu.cmu.cs.dennisc.croquet.ViewController<?, ?> viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver,
 						edu.cmu.cs.dennisc.alice.ast.Expression prevExpression) {
-					expressionCreatorPane.createExpression( context, this.getExpressionProperty(), taskObserver );
+					expressionCreatorPane.createExpression( context, this.getExpressionProperty().getExpressionType(), taskObserver );
 				}
 			}
 			rv = new DropOperation();

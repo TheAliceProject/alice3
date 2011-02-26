@@ -227,8 +227,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	public java.util.List< ? extends ExpressionPropertyDropDownPane > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		return edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List expressionReceptors = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
 			public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
 				if( expressionType.isAssignableFrom( type ) ) {
@@ -249,9 +250,16 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 				return false;
 			}
 		} );
+		rv.addAll( expressionReceptors );
+		if( IS_VARIABLE_DECLARATION_STATEMENT_CREATION_DESIRED ) {
+			rv.add( this );
+		}
+		return rv;
 	}
+	
+	private static final boolean IS_VARIABLE_DECLARATION_STATEMENT_CREATION_DESIRED = true;
 	public final boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
-		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
+		if( source instanceof org.alice.ide.templates.StatementTemplate  || IS_VARIABLE_DECLARATION_STATEMENT_CREATION_DESIRED && source instanceof org.alice.ide.templates.ExpressionTemplate ) {
 			return getIDE().getFocusedCode() == this.code;
 		} else {
 			return false;
@@ -441,7 +449,72 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 				}
 			}
 			
-			if( source instanceof org.alice.ide.templates.StatementTemplate ) {
+			if( source instanceof org.alice.ide.common.ExpressionCreatorPane ) {
+				final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source;
+				class DropOperation extends org.alice.ide.operations.ActionOperation {
+					public DropOperation() {
+						super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "a918ac51-170a-4836-8d81-05407baa6e28" ) );
+					}
+					@Override
+					protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+						final java.awt.event.MouseEvent mouseEvent = context.getMouseEvent();
+						class DropEdit extends org.alice.ide.ToDoEdit {
+							private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+							@Override
+							public void doOrRedo( boolean isDo ) {
+								statementListPropertyPane.getProperty().add( index, statement );
+								CodeEditor.this.refresh();
+								CodeEditor.this.resetScrollPane( viewPosition );
+							}
+
+							@Override
+							public void undo() {
+								if( statementListPropertyPane.getProperty().get( index ) == statement ) {
+									statementListPropertyPane.getProperty().remove( index );
+									CodeEditor.this.refresh();
+									CodeEditor.this.resetScrollPane( viewPosition );
+								} else {
+									throw new javax.swing.undo.CannotUndoException();
+								}
+							}
+							
+							@Override
+							protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+								//super.updatePresentation( rv, locale );
+								rv.append( "drop: " );
+								edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, statement, locale );
+								return rv;
+							}
+						}
+						context.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< DropEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+							public DropEdit createEdit() {
+								return new DropEdit();
+							}
+							public DropEdit initialize(DropEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
+								expressionCreatorPane.createExpression( context, expressionCreatorPane.getExpressionType(), taskObserver );
+								return rv;
+							}
+							
+							public DropEdit handleCompletion(DropEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression initializerExpression ) {
+								String name = javax.swing.JOptionPane.showInputDialog( "please enter the name of the new variable: " );
+								if( name != null ) {
+									//pass
+								} else {
+									name = "TODO_handleCancel";
+								}
+								edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( name, initializerExpression.getType() );
+								rv.statement = org.alice.ide.ast.NodeUtilities.createVariableDeclarationStatement( variable, initializerExpression );
+								source.hideDropProxyIfNecessary();
+								return rv;
+							}
+							public void handleCancelation() {
+								source.hideDropProxyIfNecessary();
+							}
+						} );
+					};
+				}
+				rv = new DropOperation();
+			} else if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
 				if( org.alice.ide.croquet.models.recursion.IsRecursionAllowedState.getInstance().getValue() ) {
 					//pass

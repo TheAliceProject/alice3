@@ -653,7 +653,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private ComponentStencil stencil;
-	private java.util.List< ? extends edu.cmu.cs.dennisc.croquet.Component< ? > > holes = null;
+	private java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > holes = null;
 	private edu.cmu.cs.dennisc.croquet.DragComponent potentialDragSource;
 	private edu.cmu.cs.dennisc.croquet.Component< ? > currentDropReceptorComponent;
 
@@ -692,7 +692,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					}
 
 					if( isFauxStencilDesired() ) {
-						for( edu.cmu.cs.dennisc.croquet.Component< ? > component : IDE.this.holes ) {
+						for( edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor : IDE.this.holes ) {
+							edu.cmu.cs.dennisc.croquet.Component< ? > component = dropReceptor.getViewController();
 							java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle(component.getParent().getAwtComponent(), component.getBounds(), this);
 							area.subtract( new java.awt.geom.Area( holeBounds ) );
 						}
@@ -705,44 +706,49 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 					g2.setStroke( THICK_STROKE );
 					final int BUFFER = 6;
-					for( edu.cmu.cs.dennisc.croquet.Component< ? > component : IDE.this.holes ) {
-						java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this );
-						holeBounds.x -= BUFFER;
-						holeBounds.y -= BUFFER;
-						holeBounds.width += 2 * BUFFER;
-						holeBounds.height += 2 * BUFFER;
+					for( edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor : IDE.this.holes ) {
+						if( dropReceptor instanceof org.alice.ide.codeeditor.CodeEditor ) {
+							//pass
+						} else {
+							edu.cmu.cs.dennisc.croquet.Component< ? > component = dropReceptor.getViewController();
+							java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this );
+							holeBounds.x -= BUFFER;
+							holeBounds.y -= BUFFER;
+							holeBounds.width += 2 * BUFFER;
+							holeBounds.height += 2 * BUFFER;
 
-						g2.setColor( new java.awt.Color( 0, 0, 0 ) );
-						g2.draw( holeBounds );
-						if( IDE.this.currentDropReceptorComponent == component ) {
-							g2.setColor( new java.awt.Color( 0, 255, 0 ) );
-							g2.setStroke( THIN_STROKE );
+							g2.setColor( new java.awt.Color( 0, 0, 0 ) );
 							g2.draw( holeBounds );
-							g2.setStroke( THICK_STROKE );
-							g2.setColor( new java.awt.Color( 191, 255, 191, 63 ) );
-							g2.fill( holeBounds );
+							if( IDE.this.currentDropReceptorComponent == component ) {
+								g2.setColor( new java.awt.Color( 0, 255, 0 ) );
+								g2.setStroke( THIN_STROKE );
+								g2.draw( holeBounds );
+								g2.setStroke( THICK_STROKE );
+								g2.setColor( new java.awt.Color( 191, 255, 191, 63 ) );
+								g2.fill( holeBounds );
+							}
+							//
+							////						g2.translate( 1, 1 );
+							////						g2.draw( holeBounds );
+							////						g2.translate( -1, -1 );
+							//						if( IDE.this.currentDropReceptorComponent == component ) {
+							//							g2.setColor( new java.awt.Color( 0, 0, 0 ) );
+							//							g2.draw( holeBounds );
+							//						} else {
+							////							g2.setColor( java.awt.Color.YELLOW );
+							////							g2.draw3DRect( holeBounds.x, holeBounds.y, holeBounds.width, holeBounds.height, false );
+							//							int x0 = holeBounds.x;
+							//							int x1 = holeBounds.x+holeBounds.width;
+							//							int y0 = holeBounds.y;
+							//							int y1 = holeBounds.y+holeBounds.height;
+							//							g2.setColor( new java.awt.Color( 63, 91, 63 ) );
+							//							g2.drawLine( x0, y1, x0, y0 );
+							//							g2.drawLine( x0, y0, x1, y0 );
+							//							g2.setColor( new java.awt.Color( 160, 191, 160 ) );
+							//							g2.drawLine( x0, y1, x1, y1 );
+							//							g2.drawLine( x1, y1, x1, y0 );
+							//						}
 						}
-						//
-						////						g2.translate( 1, 1 );
-						////						g2.draw( holeBounds );
-						////						g2.translate( -1, -1 );
-						//						if( IDE.this.currentDropReceptorComponent == component ) {
-						//							g2.setColor( new java.awt.Color( 0, 0, 0 ) );
-						//							g2.draw( holeBounds );
-						//						} else {
-						////							g2.setColor( java.awt.Color.YELLOW );
-						////							g2.draw3DRect( holeBounds.x, holeBounds.y, holeBounds.width, holeBounds.height, false );
-						//							int x0 = holeBounds.x;
-						//							int x1 = holeBounds.x+holeBounds.width;
-						//							int y0 = holeBounds.y;
-						//							int y1 = holeBounds.y+holeBounds.height;
-						//							g2.setColor( new java.awt.Color( 63, 91, 63 ) );
-						//							g2.drawLine( x0, y1, x0, y0 );
-						//							g2.drawLine( x0, y0, x1, y0 );
-						//							g2.setColor( new java.awt.Color( 160, 191, 160 ) );
-						//							g2.drawLine( x0, y1, x1, y1 );
-						//							g2.drawLine( x1, y1, x1, y0 );
-						//						}
 					}
 //					if( potentialDragSourceBounds != null ) {
 //						g2.setColor( java.awt.Color.BLUE );
