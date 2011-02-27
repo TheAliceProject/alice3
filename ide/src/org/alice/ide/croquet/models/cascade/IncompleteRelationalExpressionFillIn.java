@@ -41,16 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingMenuBlank< T > extends CascadingMenuNode< T > {
-	public CascadingMenuBlank( Group group, java.util.UUID id ) {
-		super( group, id );
+public class IncompleteRelationalExpressionFillIn extends edu.cmu.cs.dennisc.croquet.CascadingMenuFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
+	private static edu.cmu.cs.dennisc.map.MapToMap< Class<?>, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator, IncompleteRelationalExpressionFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static IncompleteRelationalExpressionFillIn getInstance( Class<?> cls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
+		synchronized( mapToMap ) {
+			IncompleteRelationalExpressionFillIn rv = mapToMap.get( cls, operator );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new IncompleteRelationalExpressionFillIn( cls, operator );
+				mapToMap.put( cls, operator, rv );
+			}
+			return rv;
+		}
 	}
-	public void addFillIn( CascadingMenuFillIn< T > fillIn ) {
-		
+	private Class<?> cls;
+	private edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator;
+	private IncompleteRelationalExpressionFillIn( Class<?> cls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ) );
 	}
 }

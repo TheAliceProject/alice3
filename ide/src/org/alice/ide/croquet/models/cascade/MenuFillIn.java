@@ -41,16 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingMenuBlank< T > extends CascadingMenuNode< T > {
-	public CascadingMenuBlank( Group group, java.util.UUID id ) {
+public abstract class MenuFillIn< T > extends edu.cmu.cs.dennisc.croquet.CascadingMenuFillIn< T > {
+	public MenuFillIn( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id ) {
 		super( group, id );
 	}
-	public void addFillIn( CascadingMenuFillIn< T > fillIn ) {
-		
-	}
+	protected abstract void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadingMenuBlank< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > blank );
 }

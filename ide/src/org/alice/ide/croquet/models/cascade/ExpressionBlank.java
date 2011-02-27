@@ -41,13 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingMenuModel<T> extends Model {
-	public CascadingMenuModel( Group group, java.util.UUID id ) {
+public abstract class ExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadingMenuBlank< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	public ExpressionBlank( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id ) {
 		super( group, id );
 	}
 }

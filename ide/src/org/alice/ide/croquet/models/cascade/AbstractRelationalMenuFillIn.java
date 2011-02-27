@@ -41,16 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingMenuBlank< T > extends CascadingMenuNode< T > {
-	public CascadingMenuBlank( Group group, java.util.UUID id ) {
-		super( group, id );
+public abstract class AbstractRelationalMenuFillIn extends MenuFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
+	private Class< ? extends Number > cls;
+	public AbstractRelationalMenuFillIn( java.util.UUID id, Class< ? extends Number > cls ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
+		this.cls = cls;
 	}
-	public void addFillIn( CascadingMenuFillIn< T > fillIn ) {
-		
+	@Override
+	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadingMenuBlank< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > blank ) {
+		for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
+			blank.addFillIn( IncompleteRelationalExpressionFillIn.getInstance( Number.class, operator ) );
+		}
 	}
 }

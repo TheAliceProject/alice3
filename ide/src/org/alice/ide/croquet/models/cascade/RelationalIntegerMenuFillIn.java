@@ -41,16 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingMenuBlank< T > extends CascadingMenuNode< T > {
-	public CascadingMenuBlank( Group group, java.util.UUID id ) {
-		super( group, id );
+public class RelationalIntegerMenuFillIn extends AbstractRelationalMenuFillIn {
+	private static class SingletonHolder {
+		private static RelationalIntegerMenuFillIn instance = new RelationalIntegerMenuFillIn();
 	}
-	public void addFillIn( CascadingMenuFillIn< T > fillIn ) {
-		
+	public static RelationalIntegerMenuFillIn getInstance() {
+		return SingletonHolder.instance;
+	}
+	private RelationalIntegerMenuFillIn() {
+		super( java.util.UUID.fromString( "d527e85d-de5c-4a0a-a1e6-e51253893779" ), Number.class );
 	}
 }
