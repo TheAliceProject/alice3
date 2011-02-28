@@ -174,8 +174,9 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
 		handleControlPanel.addComponent( new edu.cmu.cs.dennisc.croquet.Label( resourceBundle.getString("handleStyleTitle"), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), BorderPanel.Constraint.PAGE_START );
-		DefaultRadioButtons<org.alice.stageide.sceneeditor.HandleStyle> handleRadioButtons = new DefaultRadioButtons<HandleStyle>(org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance()){
-		    @Override
+		
+		DefaultRadioButtons<org.alice.stageide.sceneeditor.HandleStyle> handleRadioButtons = new DefaultRadioButtons<HandleStyle>(org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance(), false){
+		    @Override 
 		    protected BooleanStateButton<?> createBooleanStateButton(
 		            HandleStyle item, BooleanState booleanState)
 		    {
