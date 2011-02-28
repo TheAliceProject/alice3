@@ -47,8 +47,23 @@ package org.alice.stageide.sceneeditor;
  * @author Dennis Cosgrove
  */
 public enum HandleStyle {
-	DEFAULT,
-	ROTATION,
-	TRANSLATION,
-	RESIZE
+	DEFAULT("defaultHandleIcon.png"),
+	ROTATION("defaultHandleIcon.png"),
+	TRANSLATION("defaultHandleIcon.png"),
+	RESIZE("defaultHandleIcon.png");
+	
+	private javax.swing.Icon icon;
+	private HandleStyle(String iconName)
+	{
+	    if (iconName != null)
+	    {
+	        this.icon = new javax.swing.ImageIcon(HandleStyle.class.getResource("images/"+iconName));
+	    }
+	}
+	
+	public javax.swing.Icon getIcon()
+	{
+	    return this.icon;
+	}
+	
 }

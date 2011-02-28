@@ -59,9 +59,13 @@ import org.alice.ide.swing.FieldListCellRenderer;
 import org.alice.interact.handle.HandleSet;
 
 import edu.cmu.cs.dennisc.croquet.ActionOperation;
+import edu.cmu.cs.dennisc.croquet.BooleanState;
+import edu.cmu.cs.dennisc.croquet.BooleanStateButton;
 import edu.cmu.cs.dennisc.croquet.ComboBox;
+import edu.cmu.cs.dennisc.croquet.DefaultRadioButtons;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
 import edu.cmu.cs.dennisc.croquet.PageAxisPanel;
+import edu.cmu.cs.dennisc.croquet.RadioButton;
 import edu.cmu.cs.dennisc.croquet.ScrollPane;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory;
@@ -170,7 +174,25 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
 		handleControlPanel.addComponent( new edu.cmu.cs.dennisc.croquet.Label( resourceBundle.getString("handleStyleTitle"), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), BorderPanel.Constraint.PAGE_START );
-		handleControlPanel.addComponent( org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().createDefaultRadioButtons(), BorderPanel.Constraint.CENTER);
+		DefaultRadioButtons<org.alice.stageide.sceneeditor.HandleStyle> handleRadioButtons = new DefaultRadioButtons<HandleStyle>(org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance()){
+		    @Override
+		    protected BooleanStateButton<?> createBooleanStateButton(
+		            HandleStyle item, BooleanState booleanState)
+		    {
+		        booleanState.setTextForBothTrueAndFalse( item.toString() );
+		        if (item.getIcon() != null)
+		        {
+		            booleanState.setIconForBothTrueAndFalse( item.getIcon() );
+		        }
+		        RadioButton b = booleanState.createRadioButton();
+		        if (item.getIcon() != null)
+		        {
+		            b.getAwtComponent().setIcon(item.getIcon());
+		        }
+		        return b;
+		    }
+		};
+		handleControlPanel.addComponent( handleRadioButtons, BorderPanel.Constraint.CENTER);
 		handleControlPanel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
 		ScrollPane markerScrollPane = new ScrollPane(new PageAxisPanel(this.viewManagerPanel, this.objectMarkerManagerPanel), ScrollPane.VerticalScrollbarPolicy.AS_NEEDED, ScrollPane.HorizontalScrollbarPolicy.AS_NEEDED);
