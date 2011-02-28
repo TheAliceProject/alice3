@@ -170,7 +170,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
 		handleControlPanel.addComponent( new edu.cmu.cs.dennisc.croquet.Label( resourceBundle.getString("handleStyleTitle"), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), BorderPanel.Constraint.PAGE_START );
-		handleControlPanel.addComponent( org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().createDefaultRadioButtons(), BorderPanel.Constraint.CENTER);
+		handleControlPanel.addComponent( org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().createHorizontalDefaultRadioButtons(), BorderPanel.Constraint.CENTER);
 		handleControlPanel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
 		ScrollPane markerScrollPane = new ScrollPane(new PageAxisPanel(this.viewManagerPanel, this.objectMarkerManagerPanel), ScrollPane.VerticalScrollbarPolicy.AS_NEEDED, ScrollPane.HorizontalScrollbarPolicy.AS_NEEDED);
