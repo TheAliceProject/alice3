@@ -46,64 +46,38 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
-	private static final java.awt.GridBagConstraints GBC_VERTICAL;
-	private static final java.awt.GridBagConstraints GBC_HORIZONTAL;
-	static {
-		GBC_VERTICAL = new java.awt.GridBagConstraints();
-		GBC_VERTICAL.fill = java.awt.GridBagConstraints.BOTH;
-		GBC_VERTICAL.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		GBC_VERTICAL.weightx = 1.0f;
-		GBC_VERTICAL.weighty = 0.0f;
-
-		GBC_HORIZONTAL = new java.awt.GridBagConstraints();
-		GBC_HORIZONTAL.fill = java.awt.GridBagConstraints.VERTICAL;
-		GBC_HORIZONTAL.anchor = java.awt.GridBagConstraints.NORTHWEST;
-		GBC_HORIZONTAL.weightx = 0.0f;
-	}
-	private final boolean isVertical;
-	public DefaultRadioButtons( ListSelectionState<E> model, boolean isVertical ) {
+public class PushButton extends BooleanStateButton< javax.swing.JButton > {
+	/*package-private*/ PushButton( BooleanState model ) {
 		super( model );
-		this.isVertical = isVertical;
 	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
-		return new java.awt.GridBagLayout();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.BooleanStateButton<?> createBooleanStateButton( E item, BooleanState booleanState ) {
-		booleanState.setTextForBothTrueAndFalse( item.toString() );
-		return booleanState.createPushButton(); 
-	}
-	@Override
-	protected void removeAllDetails() {
-		this.internalRemoveAllComponents();
-	}
-	
-	private java.awt.GridBagConstraints getGridBagConstraints() {
-		if( isVertical ) {
-			return GBC_VERTICAL;
-		} else {
-			return GBC_HORIZONTAL;
-		}
-	}
-	@Override
-	protected void addPrologue(int count) {
-	}
-	@Override
-	protected void addItem(ItemSelectablePanel.ItemDetails itemDetails) {
-		this.internalAddComponent( itemDetails.getButton(), this.getGridBagConstraints() );
-	}
-	@Override
-	protected void addEpilogue() {
-		if( this.isVertical ) {
-			//pass
-		} else {
-			GBC_HORIZONTAL.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-			GBC_HORIZONTAL.weightx = 1.0f;
-			this.internalAddComponent( BoxUtilities.createHorizontalGlue(), this.getGridBagConstraints() );
-			GBC_HORIZONTAL.gridwidth = java.awt.GridBagConstraints.RELATIVE;
-			GBC_HORIZONTAL.weightx = 0.0f;
-		}
+	protected javax.swing.JButton createAwtComponent() {
+		javax.swing.JButton rv = new javax.swing.JButton() {
+			@Override
+			public void updateUI() {
+				super.updateUI();
+				this.setUI( new javax.swing.plaf.metal.MetalToggleButtonUI() {
+					@Override
+					protected java.awt.Color getSelectColor() {
+						return java.awt.Color.YELLOW;
+					}
+					@Override
+					protected void paintFocus(java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle viewRect, java.awt.Rectangle textRect, java.awt.Rectangle iconRect) {
+					}
+				} );
+			}
+
+//			@Override
+//			public java.awt.Color getForeground() {
+//				javax.swing.ButtonModel buttonModel = this.getModel();
+//				if( buttonModel.isPressed() || buttonModel.isSelected() ) {
+//					return java.awt.Color.YELLOW;
+//				} else {
+//					return java.awt.Color.BLACK;
+//				}
+//			}
+		};
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
+		return rv;
 	}
 }

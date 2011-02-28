@@ -220,8 +220,8 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	public javax.swing.Icon getFalseIcon() {
 		return this.falseIcon;
 	}
-	public void setIconForBothTrueAndFalse( javax.swing.Icon text ) {
-		this.setIconForTrueAndIconForFalse( text, text );
+	public void setIconForBothTrueAndFalse( javax.swing.Icon icon ) {
+		this.setIconForTrueAndIconForFalse( icon, icon );
 	}
 	public void setIconForTrueAndIconForFalse( javax.swing.Icon trueIcon, javax.swing.Icon falseIcon ) {
 		this.trueIcon = trueIcon;
@@ -249,6 +249,9 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	}
 	public CheckBox createCheckBox() {
 		return new CheckBox( this );
+	}
+	public PushButton createPushButton() {
+		return new PushButton( this );
 	}
 	public CheckBoxMenuItem createCheckBoxMenuItem() {
 		return new CheckBoxMenuItem( this );
