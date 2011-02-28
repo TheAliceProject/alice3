@@ -73,7 +73,7 @@ public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.BooleanStateButton<?> createBooleanStateButton( E item, BooleanState booleanState ) {
 		booleanState.setTextForBothTrueAndFalse( item.toString() );
-		return booleanState.createPushButton(); 
+		return booleanState.createRadioButton(); 
 	}
 	@Override
 	protected void removeAllDetails() {
