@@ -85,6 +85,8 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	private boolean value;
 	private String trueText;
 	private String falseText;
+	private javax.swing.Icon trueIcon;
+	private javax.swing.Icon falseIcon;
 
 	public BooleanState(Group group, java.util.UUID id, boolean initialState ) {
 		super(group, id);
@@ -194,7 +196,7 @@ public /*final*/ class BooleanState extends State<Boolean> {
 			}
 
 			//this.buttonModel.addItemListener(itemListener);
-			this.updateName();
+			this.updateNameAndIcon();
 		}
 	}
 
@@ -210,18 +212,36 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	public void setTextForTrueAndTextForFalse(String trueText, String falseText) {
 		this.trueText = trueText;
 		this.falseText = falseText;
-		this.updateName();
+		this.updateNameAndIcon();
+	}
+	public javax.swing.Icon getTrueIcon() {
+		return this.trueIcon;
+	}
+	public javax.swing.Icon getFalseIcon() {
+		return this.falseIcon;
+	}
+	public void setIconForBothTrueAndFalse( javax.swing.Icon text ) {
+		this.setIconForTrueAndIconForFalse( text, text );
+	}
+	public void setIconForTrueAndIconForFalse( javax.swing.Icon trueIcon, javax.swing.Icon falseIcon ) {
+		this.trueIcon = trueIcon;
+		this.falseIcon = falseIcon;
+		this.updateNameAndIcon();
 	}
 
 
-	private void updateName() {
+	private void updateNameAndIcon() {
 		String name;
+		javax.swing.Icon icon;
 		if (this.getValue()) {
 			name = this.trueText;
+			icon = this.trueIcon;
 		} else {
 			name = this.falseText;
+			icon = this.falseIcon;
 		}
 		this.action.putValue(javax.swing.Action.NAME, name);
+		this.action.putValue(javax.swing.Action.SMALL_ICON, icon);
 	}
 	
 	public RadioButton createRadioButton() {
