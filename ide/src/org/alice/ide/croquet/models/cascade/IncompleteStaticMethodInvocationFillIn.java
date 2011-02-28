@@ -46,16 +46,21 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRelationalMenuFillIn extends MenuFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
-	private Class< ? extends Number > cls;
-	public AbstractRelationalMenuFillIn( java.util.UUID id, Class< ? extends Number > cls ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
-		this.cls = cls;
-	}
-	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadingMenuBlank< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > blank ) {
-		for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
-			blank.addFillIn( IncompleteRelationalExpressionFillIn.getInstance( this.cls, operator ) );
+public class IncompleteStaticMethodInvocationFillIn extends ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, IncompleteStaticMethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static IncompleteStaticMethodInvocationFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		synchronized( map ) {
+			IncompleteStaticMethodInvocationFillIn rv = map.get( method );
+			if( rv != null ) {
+				rv = new IncompleteStaticMethodInvocationFillIn( method );
+				map.put( method, rv );
+			}
+			return rv;
 		}
+	}
+	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
+	private IncompleteStaticMethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ) );
+		this.method = method;
 	}
 }

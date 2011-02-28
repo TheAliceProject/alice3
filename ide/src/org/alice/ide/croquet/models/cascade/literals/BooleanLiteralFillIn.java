@@ -41,21 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.croquet.models.cascade.literals;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRelationalMenuFillIn extends MenuFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
-	private Class< ? extends Number > cls;
-	public AbstractRelationalMenuFillIn( java.util.UUID id, Class< ? extends Number > cls ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
-		this.cls = cls;
-	}
-	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadingMenuBlank< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > blank ) {
-		for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
-			blank.addFillIn( IncompleteRelationalExpressionFillIn.getInstance( this.cls, operator ) );
+public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.BooleanLiteral > {
+	private static BooleanLiteralFillIn trueLiteral = new BooleanLiteralFillIn( true );
+	private static BooleanLiteralFillIn falseLiteral = new BooleanLiteralFillIn( true );
+	public static BooleanLiteralFillIn getInstance( boolean value ) {
+		if( value ) {
+			return trueLiteral;
+		} else {
+			return falseLiteral;
 		}
+	}
+	private final boolean value;
+	public BooleanLiteralFillIn( boolean value ) {
+		super( java.util.UUID.fromString( "85b65750-aded-4a5f-a41d-d30fa2914115" ) );
+		this.value = value;
 	}
 }

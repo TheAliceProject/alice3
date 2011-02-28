@@ -41,21 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.croquet.models.cascade.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRelationalMenuFillIn extends MenuFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
-	private Class< ? extends Number > cls;
-	public AbstractRelationalMenuFillIn( java.util.UUID id, Class< ? extends Number > cls ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
-		this.cls = cls;
+public class CustomIntegerLiteralFillIn extends CustomExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.IntegerLiteral >{
+	private static class SingletonHolder {
+		private static CustomIntegerLiteralFillIn instance = new CustomIntegerLiteralFillIn();
 	}
-	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadingMenuBlank< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > blank ) {
-		for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
-			blank.addFillIn( IncompleteRelationalExpressionFillIn.getInstance( this.cls, operator ) );
-		}
+	public static CustomIntegerLiteralFillIn getInstance() {
+		return SingletonHolder.instance;
+	}
+	private CustomIntegerLiteralFillIn() {
+		super( java.util.UUID.fromString( "68d8f0da-d75e-4b20-b44c-38150ec3e687" ), org.alice.ide.croquet.models.custom.CustomIntegerInputDialogOperation.getInstance() );
 	}
 }

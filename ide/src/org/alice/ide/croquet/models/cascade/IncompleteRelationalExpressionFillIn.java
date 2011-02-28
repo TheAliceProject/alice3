@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteRelationalExpressionFillIn extends edu.cmu.cs.dennisc.croquet.CascadingMenuFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
+public class IncompleteRelationalExpressionFillIn extends ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
 	private static edu.cmu.cs.dennisc.map.MapToMap< Class<?>, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator, IncompleteRelationalExpressionFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static IncompleteRelationalExpressionFillIn getInstance( Class<?> cls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
 		synchronized( mapToMap ) {
@@ -63,6 +63,8 @@ public class IncompleteRelationalExpressionFillIn extends edu.cmu.cs.dennisc.cro
 	private Class<?> cls;
 	private edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator;
 	private IncompleteRelationalExpressionFillIn( Class<?> cls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ) );
+		super( java.util.UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ) );
+		this.cls = cls;
+		this.operator = operator;
 	}
 }
