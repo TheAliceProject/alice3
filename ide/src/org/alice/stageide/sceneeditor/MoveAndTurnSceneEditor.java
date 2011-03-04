@@ -119,7 +119,9 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState;
+import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
 import org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState;
+import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 
 /**
  * @author Dennis Cosgrove
@@ -240,6 +242,17 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			MoveAndTurnSceneEditor.this.setShowSnapGrid(nextValue);	
 		}
 	};
+	
+	private BooleanState.ValueObserver snapEnabledObserver = new BooleanState.ValueObserver() {
+        public void changing(boolean nextValue) {
+        }
+        public void changed(boolean nextValue) {
+            if (MoveAndTurnSceneEditor.this.snapState.isShowSnapGridEnabled())
+            {
+                MoveAndTurnSceneEditor.this.setShowSnapGrid(nextValue);
+            }
+        }
+    };
 	
 	private SceneEditorFieldObserver sceneEditorFieldObserver = new SceneEditorFieldObserver() {
 		public void fieldsSet(Collection<? extends FieldDeclaredInAlice> newFields) {
@@ -414,7 +427,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		
 		MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField(cameraMarkerField);
-		this.sidePane.getViewManager().updateButtons();
+		MarkerPanelTab.getInstance().getMainComponent().getCameraMarkerPanel().updateButtons();
 	}
 	
 	private void handleObjectMarkerFieldSelection( FieldDeclaredInAlice objectMarkerField )
@@ -431,7 +444,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		
 		MoveSelectedObjectToMarkerActionOperation.getInstance().setMarkerField(objectMarkerField);
 		MoveMarkerToSelectedObjectActionOperation.getInstance().setMarkerField(objectMarkerField);
-		this.sidePane.getObjectMarkerManager().updateButtons();
+		MarkerPanelTab.getInstance().getMainComponent().getObjectMarkerPanel().updateButtons();
 		
 	}
 	
@@ -505,7 +518,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			CreateObjectMarkerActionOperation.getInstance().setFieldName(null);
 		}
 		this.updateFieldLabels();
-		this.sidePane.getObjectMarkerManager().updateButtons();
+		MarkerPanelTab.getInstance().getMainComponent().getObjectMarkerPanel().updateButtons();
 	}
 	
 	private void handleSelectionEvent( org.alice.interact.event.SelectionEvent e ) {
@@ -847,7 +860,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.splitPane.setLeftComponent( this.lookingGlassPanel );
 		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( this.codeSelectionObserver );
 		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addAndInvokeValueObserver( this.fieldSelectionObserver );
-		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addAndInvokeValueObserver( this.sidePane.getPropertyManager() );
+		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addAndInvokeValueObserver( ObjectPropertiesTab.getInstance().getMainComponent() );
 		CameraMarkerFieldListSelectionState.getInstance().addListDataListener( this.listDataListener );
 		ObjectMarkerFieldListSelectionState.getInstance().addListDataListener(this.listDataListener);
 	}
@@ -862,7 +875,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().removeValueObserver( this.codeSelectionObserver );
 		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().removeValueObserver( this.fieldSelectionObserver );
-		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().removeValueObserver( this.sidePane.getPropertyManager() );
+		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().removeValueObserver( ObjectPropertiesTab.getInstance().getMainComponent() );
 		super.handleUndisplayable();
 	}
 	
@@ -914,6 +927,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.snapGrid = new SnapGrid();
 			this.snapState = new SnapState();
 			this.snapState.getShowSnapGridState().addAndInvokeValueObserver(this.showSnapGridObserver);
+			this.snapState.getIsSnapEnabledState().addAndInvokeValueObserver(this.snapEnabledObserver);
 			
 			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter(this);
 			this.globalDragAdapter.setSnapState(this.snapState);

@@ -43,23 +43,17 @@
 
 package org.alice.stageide.properties.uicontroller;
 
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
+
 import org.alice.apis.moveandturn.Composite;
-import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.PropertyAdapter;
-import org.alice.ide.properties.uicontroller.AbstractAdapterController;
+import org.alice.ide.properties.uicontroller.LabelBasedPropertyController;
 import org.alice.stageide.properties.TransformableVehicleAdapter;
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.FlowPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
+public class CompositePropertyController extends LabelBasedPropertyController<Composite>{
 
-public class CompositePropertyController extends AbstractAdapterController<Composite>{
-
-	private BorderPanel mainPanel;
-	private Label compositeLabel;
-	
 	public CompositePropertyController(PropertyAdapter<Composite, ?> propertyAdapter) 
 	{
 		super(propertyAdapter);
@@ -74,32 +68,20 @@ public class CompositePropertyController extends AbstractAdapterController<Compo
 	@Override
 	protected void initializeComponents() 
 	{
-		this.mainPanel = new BorderPanel();
-		this.compositeLabel = new Label();
+		super.initializeComponents();
+		this.label.setBorder(BorderFactory.createCompoundBorder(
+		        BorderFactory.createLineBorder(org.alice.ide.IDE.getSingleton().getTheme().getPrimaryBackgroundColor(), 2), 
+                BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+		this.label.getAwtComponent().setOpaque(true);
+		this.label.setBackgroundColor(Color.WHITE);
 	}
 
 	@Override
 	protected void setValueOnUI(Composite value) 
 	{
-		this.compositeLabel.setIcon(TransformableVehicleAdapter.getIconForVehicle(value));
-		this.compositeLabel.setText(TransformableVehicleAdapter.getNameForVehicle(value));
+		this.label.setIcon(TransformableVehicleAdapter.getIconForVehicle(value));
+		this.label.setText(TransformableVehicleAdapter.getNameForVehicle(value));
 	}
 	
-	@Override
-	protected void updateUIFromNewAdapter() 
-	{
-		this.mainPanel.removeAllComponents();
-		this.mainPanel.addComponent(this.compositeLabel, BorderPanel.Constraint.CENTER);
-		if (this.propertyAdapter != null)
-		{
-			this.mainPanel.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
-		}
-	}
-
-	@Override
-	public Panel getPanel() 
-	{
-		return this.mainPanel;
-	}
 
 }

@@ -41,46 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.adapter;
+package org.alice.stageide.croquet.models.sceneditor;
 
-import edu.cmu.cs.dennisc.croquet.Button;
-import edu.cmu.cs.dennisc.croquet.Operation;
+import org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel;
 
-public interface PropertyAdapter <P, O>
+import edu.cmu.cs.dennisc.croquet.PredeterminedTab;
+
+public class MarkerPanelTab extends PredeterminedTab
 {
-	public static interface ValueChangeObserver<P>
-	{
-		public void valueChanged(P newValue);
-	}
-	
-	public String getRepr();
-	
-	public Class<P> getPropertyType();
-	
-	public void setInstance(O instance);
-	
-	public P getValue();
-	
-	public P getValueCopy();
-	
-	public O getInstance();
-	
-	public P getLastSetValue();
-	
-	public void setValue(P value);
-	
-	public void addValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public Operation getEditOperation();
-	
-	public Button createEditButton();
-	
-	public SetValueOperation<P> getSetValueOperation(P value); 
-	
-	public String getUndoRedoDescription(java.util.Locale locale);
-	
+    private static class SingletonHolder {
+        private static MarkerPanelTab instance = new MarkerPanelTab();
+    }
+    public static MarkerPanelTab getInstance() {
+        return SingletonHolder.instance;
+    }
+    private MarkerPanelTab() {
+        super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ) );
+    }
+    @Override
+    protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+        return new MarkerManagerPanel();
+    }
+    
+    @Override
+    public MarkerManagerPanel getMainComponent()
+    {
+        edu.cmu.cs.dennisc.croquet.JComponent< ? > c = super.getMainComponent();
+        if ( c instanceof MarkerManagerPanel)
+        {
+            return (MarkerManagerPanel)c;
+        }
+        return null;
+    }
 }

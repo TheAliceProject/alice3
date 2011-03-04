@@ -41,46 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.adapter;
+package org.alice.stageide.sceneeditor;
 
-import edu.cmu.cs.dennisc.croquet.Button;
-import edu.cmu.cs.dennisc.croquet.Operation;
-
-public interface PropertyAdapter <P, O>
+public enum PropertyAndMarkerPanelOptions
 {
-	public static interface ValueChangeObserver<P>
-	{
-		public void valueChanged(P newValue);
-	}
-	
-	public String getRepr();
-	
-	public Class<P> getPropertyType();
-	
-	public void setInstance(O instance);
-	
-	public P getValue();
-	
-	public P getValueCopy();
-	
-	public O getInstance();
-	
-	public P getLastSetValue();
-	
-	public void setValue(P value);
-	
-	public void addValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public Operation getEditOperation();
-	
-	public Button createEditButton();
-	
-	public SetValueOperation<P> getSetValueOperation(P value); 
-	
-	public String getUndoRedoDescription(java.util.Locale locale);
-	
+    PROPERTIES,
+    MARKERS,
 }

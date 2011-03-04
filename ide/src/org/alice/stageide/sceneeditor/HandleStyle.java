@@ -47,18 +47,22 @@ package org.alice.stageide.sceneeditor;
  * @author Dennis Cosgrove
  */
 public enum HandleStyle {
-	DEFAULT("defaultHandlesIcon.png"),
-	ROTATION("rotationHandlesIcon.png"),
-	TRANSLATION("translateHandlesIcon.png"),
-	RESIZE("resizeHandlesIcon.png");
+    
+    //TODO: Localize this
+	DEFAULT("defaultHandlesIcon.png", "Default handles: provide simple rotation and simple movement."),
+	ROTATION("rotationHandlesIcon.png", "Rotation handles: allow you to rotate the object about the X, Y, and Z axes."),
+	TRANSLATION("translateHandlesIcon.png", "Movement handles: allow you to move the object along the X, Y, and Z axes."),
+	RESIZE("resizeHandlesIcon.png", "Resize handles: allow you to change the total size of an object as well as stretch it along the X, Y, and Z axes.");
 	
 	private javax.swing.Icon icon;
-	private HandleStyle(String iconName)
+	private String toolTipText;
+	private HandleStyle(String iconName, String toolTipText)
 	{
 	    if (iconName != null)
 	    {
 	        this.icon = new javax.swing.ImageIcon(HandleStyle.class.getResource("images/"+iconName));
 	    }
+	    this.toolTipText = toolTipText;
 	}
 	
 	public javax.swing.Icon getIcon()
@@ -66,4 +70,8 @@ public enum HandleStyle {
 	    return this.icon;
 	}
 	
+	public String getToolTipText()
+	{
+	    return this.toolTipText;
+	}
 }

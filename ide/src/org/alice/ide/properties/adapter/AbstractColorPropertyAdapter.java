@@ -49,6 +49,7 @@ import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.swing.icons.ColorIcon;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.croquet.Button;
 import edu.cmu.cs.dennisc.croquet.Model;
 import edu.cmu.cs.dennisc.croquet.Operation;
 
@@ -130,7 +131,6 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 		}
 		return this.popupMenuOperation;
 	}
-	
 	
 	@Override
 	public SetValueOperation<Color4f> getSetValueOperation(Color4f value) 

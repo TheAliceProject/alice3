@@ -43,39 +43,16 @@
 
 package org.alice.ide.properties.uicontroller;
 
-import java.awt.Color;
-import java.util.Locale;
-
-import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.swing.icons.ColorIcon;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Model;
-import edu.cmu.cs.dennisc.croquet.Panel;
-import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 
-public class Color4fPropertyController extends AbstractAdapterController<Color4f>
+public class Color4fPropertyController extends LabelBasedPropertyController<Color4f>
 {
-	private BorderPanel mainPanel;
-	private Label colorLabel;
-	
-	private static final String BLANK_STRING = "NO COLOR";
-	
-	
 	public Color4fPropertyController(PropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, ?> propertyAdapter)
 	{
 		super(propertyAdapter);
-	}
-
-	@Override
-	protected void initializeComponents() 
-	{
-		this.mainPanel = new BorderPanel();
-		this.colorLabel = new Label();
-		this.colorLabel.getAwtComponent().setOpaque(true);
 	}
 	
 	@Override
@@ -89,34 +66,15 @@ public class Color4fPropertyController extends AbstractAdapterController<Color4f
 	{
 		if (color != null)
 		{
-			this.colorLabel.getAwtComponent().setOpaque(true);
-			this.colorLabel.setText(null);
-			this.colorLabel.setIcon(new ColorIcon( color.getAsAWTColor(), 50, 20 ) );
+			this.label.setText(null);
+			this.label.setIcon(new ColorIcon( color.getAsAWTColor(), 50, 20 ) );
 		}
 		else
 		{
-			this.colorLabel.getAwtComponent().setOpaque(false);
-			this.colorLabel.setText(BLANK_STRING);
-			this.colorLabel.setIcon(null);
+			this.label.setText(BLANK_STRING);
+			this.label.setIcon(null);
 		}
 		
-	}
-
-	@Override
-	protected void updateUIFromNewAdapter() 
-	{
-		this.mainPanel.removeAllComponents();
-		this.mainPanel.addComponent(this.colorLabel, BorderPanel.Constraint.CENTER);
-		if (this.propertyAdapter != null)
-		{
-			this.mainPanel.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
-		}
-	}
-	
-	@Override
-	public Panel getPanel() 
-	{
-		return this.mainPanel;
 	}
 
 }

@@ -60,10 +60,12 @@ public class MoveToImageIcon extends ImageIcon {
 	
 	public static int SUB_ICON_WIDTH = 25;
 	public static int SUB_ICON_HEIGHT = 20;
+	private final static int HALF_CENTER_SPACE = 8; 
 
 	private Icon leftImage;
 	private Icon rightImage;
 	
+	private int leftOffsetX;
 	private int rightOffsetX;
 	private int rightOffsetY;
 	
@@ -83,6 +85,12 @@ public class MoveToImageIcon extends ImageIcon {
 	public void setLeftImage(Icon leftImage)
 	{
 		this.leftImage = leftImage;
+		if (this.leftImage != null)
+        {
+            int thisWidth = this.getIconWidth();
+            int imageWidth = this.leftImage.getIconWidth();
+            this.leftOffsetX = (thisWidth/2 - HALF_CENTER_SPACE) - imageWidth;
+        }
 	}
 	
 	public void setRightImage(Icon rightImage)
@@ -92,7 +100,7 @@ public class MoveToImageIcon extends ImageIcon {
 		{
 			int thisWidth = this.getIconWidth();
 			int imageWidth = this.rightImage.getIconWidth();
-			this.rightOffsetX = thisWidth - imageWidth;
+			this.rightOffsetX = thisWidth/2 + HALF_CENTER_SPACE;
 			this.rightOffsetY = 0;
 		}
 	}
@@ -103,7 +111,7 @@ public class MoveToImageIcon extends ImageIcon {
 		super.paintIcon(c, g, x, y);
 		if (this.leftImage != null)
 		{
-			this.leftImage.paintIcon(c, g, x, y);
+			this.leftImage.paintIcon(c, g, x+this.leftOffsetX, y);
 		}
 		if (this.rightImage != null)
 		{

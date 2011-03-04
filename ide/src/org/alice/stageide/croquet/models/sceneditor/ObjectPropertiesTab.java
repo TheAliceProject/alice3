@@ -41,46 +41,38 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.adapter;
+package org.alice.stageide.croquet.models.sceneditor;
 
-import edu.cmu.cs.dennisc.croquet.Button;
-import edu.cmu.cs.dennisc.croquet.Operation;
+import org.alice.stageide.sceneeditor.SceneObjectPropertyManager;
 
-public interface PropertyAdapter <P, O>
+import edu.cmu.cs.dennisc.croquet.PredeterminedTab;
+
+public class ObjectPropertiesTab extends PredeterminedTab
 {
-	public static interface ValueChangeObserver<P>
-	{
-		public void valueChanged(P newValue);
-	}
-	
-	public String getRepr();
-	
-	public Class<P> getPropertyType();
-	
-	public void setInstance(O instance);
-	
-	public P getValue();
-	
-	public P getValueCopy();
-	
-	public O getInstance();
-	
-	public P getLastSetValue();
-	
-	public void setValue(P value);
-	
-	public void addValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public Operation getEditOperation();
-	
-	public Button createEditButton();
-	
-	public SetValueOperation<P> getSetValueOperation(P value); 
-	
-	public String getUndoRedoDescription(java.util.Locale locale);
-	
+    private static class SingletonHolder {
+        private static ObjectPropertiesTab instance = new ObjectPropertiesTab();
+    }
+    public static ObjectPropertiesTab getInstance() {
+        return SingletonHolder.instance;
+    }
+    private ObjectPropertiesTab() {
+        super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
+    }
+    @Override
+    protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+        return new SceneObjectPropertyManager();
+    }
+
+    @Override
+    public SceneObjectPropertyManager getMainComponent()
+    {
+        edu.cmu.cs.dennisc.croquet.JComponent< ? > c = super.getMainComponent();
+        if ( c instanceof SceneObjectPropertyManager)
+        {
+            return (SceneObjectPropertyManager)c;
+        }
+        return null;
+    }
+    
+    
 }

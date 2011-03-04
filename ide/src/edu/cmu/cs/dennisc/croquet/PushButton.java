@@ -47,6 +47,9 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class PushButton extends BooleanStateButton< javax.swing.JButton > {
+    
+    private java.awt.Color selectedColor = java.awt.Color.YELLOW;
+    
 	/*package-private*/ PushButton( BooleanState model ) {
 		super( model );
 	}
@@ -59,8 +62,9 @@ public class PushButton extends BooleanStateButton< javax.swing.JButton > {
 				this.setUI( new javax.swing.plaf.metal.MetalToggleButtonUI() {
 					@Override
 					protected java.awt.Color getSelectColor() {
-						return java.awt.Color.YELLOW;
+						return PushButton.this.getSelectedColor();
 					}
+					
 					@Override
 					protected void paintFocus(java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle viewRect, java.awt.Rectangle textRect, java.awt.Rectangle iconRect) {
 					}
@@ -79,5 +83,15 @@ public class PushButton extends BooleanStateButton< javax.swing.JButton > {
 		};
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 		return rv;
+	}
+	
+	public void setSelectedColor(java.awt.Color selectedColor)
+	{
+	    this.selectedColor = selectedColor;
+	}
+	
+	public java.awt.Color getSelectedColor()
+	{
+	    return this.selectedColor;
 	}
 }

@@ -49,6 +49,8 @@ import edu.cmu.cs.dennisc.croquet.Panel;
 
 public interface PropertyAdapterController<P>
 {
+    public final static int MIN_ADAPTER_HEIGHT = 28;
+    
 	public void setPropertyAdapter(PropertyAdapter<P, ?> propertyAdapter);
 	
 	public Class<?> getPropertyType();
