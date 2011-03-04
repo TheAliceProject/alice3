@@ -101,92 +101,6 @@ class TestScene extends Scene {
     }
 }
 
-class SnowScene extends Scene {
-	private final Sun sun = new Sun();
-	private final Ground snow = new Ground();
-	private final Cone redCone = new Cone(); 
-	private final Cone greenCone = new Cone(); 
-	private final Cone blueCone = new Cone();
-	private final Camera camera;
-	private final CustomAdult ogre;
-	private final CustomAdult susan;
-	public SnowScene( Camera camera, CustomAdult susan, CustomAdult ogre ) {
-		this.camera = camera;
-		this.susan = susan;
-		this.ogre = ogre;
-	}
-	
-	private void performGeneratedSetup() {
-		// this code is automatically generated
-		// edit performCustomSetup instead
-		this.snow.setVehicle( this );
-		this.sun.setVehicle( this );
-		this.redCone.setVehicle( this );
-		this.greenCone.setVehicle( this );
-		this.blueCone.setVehicle( this );
-		this.camera.setVehicle( this );
-		this.susan.setVehicle( this );
-		this.ogre.setVehicle( this );
-		
-		this.redCone.setColor( Color.RED );
-		this.greenCone.setColor( Color.GREEN );
-		this.blueCone.setColor( Color.BLUE );
-		this.redCone.setBaseRadius( 0.1 );
-		this.greenCone.setBaseRadius( 0.1 );
-		this.blueCone.setBaseRadius( 0.1 );
-		this.redCone.setLength( 0.25 );
-		this.greenCone.setLength( 0.25 );
-		this.blueCone.setLength( 0.25 );
-
-		this.redCone.move( MoveDirection.LEFT, 0.5 );
-		this.greenCone.move( MoveDirection.LEFT, 1.0 );
-		this.blueCone.move( MoveDirection.LEFT, 1.5 );
-		
-		this.snow.setAppearance( Ground.Appearance.SNOW );
-		this.camera.getAGoodLookAt( this.susan );
-	}
-	private void performCustomSetup() {
-	}
-	
-	@Override
-	protected void handleActiveChanged( boolean isActive, int activeCount ) {
-		if( isActive ) {
-			if( activeCount == 1 ) {
-				this.performGeneratedSetup();
-				this.performCustomSetup();
-			} else {
-				this.restoreVehiclesAndVantagePoints();
-			}
-		} else {
-			this.preserveVehiclesAndVantagePoints();
-		}
-	}
-
-	public void chillInSkiChalet() {
-		while( true ) {
-			this.ogre.getRightShoulder().turn( TurnDirection.FORWARD, 0.25 );
-			this.redCone.turn( TurnDirection.FORWARD, 1.0 );
-			this.blueCone.roll( RollDirection.LEFT, 1.0 );
-			org.alice.virtualmachine.DoTogether.invokeAndWait( new Runnable() {
-				public void run() {
-					SnowScene.this.redCone.move( MoveDirection.UP, 1.0 );
-				}
-			}, new Runnable() {
-				public void run() {
-					SnowScene.this.greenCone.move( MoveDirection.UP, 1.0 );
-				}
-			}, new Runnable() {
-				public void run() {
-					SnowScene.this.blueCone.move( MoveDirection.UP, 1.0 );
-				}
-			} );
-			this.redCone.move( MoveDirection.DOWN, 1.0, VantagePointAnimationDetailsFactory.duration( 0.333 ) );
-			this.greenCone.move( MoveDirection.DOWN, 1.0, VantagePointAnimationDetailsFactory.duration( 0.333 ) );
-			this.blueCone.move( MoveDirection.DOWN, 1.0, VantagePointAnimationDetailsFactory.duration( 0.333 ) );
-		}
-	}
-}
-
 class DesertScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground desert = new Ground();
@@ -239,6 +153,97 @@ class DesertScene extends Scene {
 	}
 }
 
+class SnowScene extends Scene {
+	private final Sun sun = new Sun();
+	private final Ground snow = new Ground();
+	private final Cone redCone = new Cone(); 
+	private final Cone greenCone = new Cone(); 
+	private final Cone blueCone = new Cone();
+	private final Camera camera;
+	private final CustomAdult ogre;
+	private final CustomAdult susan;
+	public SnowScene( Camera camera, CustomAdult ogre, CustomAdult susan ) {
+		this.camera = camera;
+		this.susan = susan;
+		this.ogre = ogre;
+	}
+	
+	private void performGeneratedSetup() {
+		// this code is automatically generated
+		// edit performCustomSetup instead
+		this.snow.setVehicle( this );
+		this.sun.setVehicle( this );
+		this.redCone.setVehicle( this );
+		this.greenCone.setVehicle( this );
+		this.blueCone.setVehicle( this );
+		this.camera.setVehicle( this );
+		this.susan.setVehicle( this );
+		this.ogre.setVehicle( this );
+		
+		this.redCone.setColor( Color.RED );
+		this.greenCone.setColor( Color.GREEN );
+		this.blueCone.setColor( Color.BLUE );
+		this.redCone.setBaseRadius( 0.1 );
+		this.greenCone.setBaseRadius( 0.1 );
+		this.blueCone.setBaseRadius( 0.1 );
+		this.redCone.setLength( 0.25 );
+		this.greenCone.setLength( 0.25 );
+		this.blueCone.setLength( 0.25 );
+
+		this.redCone.move( MoveDirection.LEFT, 0.5 );
+		this.greenCone.move( MoveDirection.LEFT, 1.0 );
+		this.blueCone.move( MoveDirection.LEFT, 1.5 );
+		
+		this.ogre.move( MoveDirection.LEFT, 1.5 );
+		
+		this.snow.setAppearance( Ground.Appearance.SNOW );
+		this.camera.getAGoodLookAt( this.susan );
+	}
+	private void performCustomSetup() {
+	}
+	
+	@Override
+	protected void handleActiveChanged( boolean isActive, int activeCount ) {
+		if( isActive ) {
+			if( activeCount == 1 ) {
+				this.performGeneratedSetup();
+				this.performCustomSetup();
+			} else {
+				this.restoreVehiclesAndVantagePoints();
+			}
+		} else {
+			this.preserveVehiclesAndVantagePoints();
+		}
+	}
+
+	public void chillInSkiChalet() {
+		while( true ) {
+			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
+			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
+			this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
+			this.redCone.turn( TurnDirection.FORWARD, 1.0 );
+			this.blueCone.roll( RollDirection.LEFT, 1.0 );
+			this.ogre.getRightShoulder().turn( TurnDirection.LEFT, 0.25 );
+			org.alice.virtualmachine.DoTogether.invokeAndWait( new Runnable() {
+				public void run() {
+					SnowScene.this.redCone.move( MoveDirection.UP, 1.0 );
+				}
+			}, new Runnable() {
+				public void run() {
+					SnowScene.this.greenCone.move( MoveDirection.UP, 1.0 );
+				}
+			}, new Runnable() {
+				public void run() {
+					SnowScene.this.blueCone.move( MoveDirection.UP, 1.0 );
+				}
+			} );
+			this.redCone.move( MoveDirection.DOWN, 1.0, VantagePointAnimationDetailsFactory.duration( 0.333 ) );
+			this.greenCone.move( MoveDirection.DOWN, 1.0, VantagePointAnimationDetailsFactory.duration( 0.333 ) );
+			this.blueCone.move( MoveDirection.DOWN, 1.0, VantagePointAnimationDetailsFactory.duration( 0.333 ) );
+		}
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -259,9 +264,9 @@ class RagsToRichesStory extends Program {
 	public void playOutStory() {
 //		this.setActiveScene( this.desertScene );
 //		this.desertScene.turnBigRocksIntoLittleRocks();
-//		this.setActiveScene( this.snowScene );
-//		this.snowScene.chillInSkiChalet();
-	    this.setActiveScene( this.testScene );
+		this.setActiveScene( this.snowScene );
+		this.snowScene.chillInSkiChalet();
+//	    this.setActiveScene( this.testScene );
 	}
 	public static void main( String[] args ) {
 		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
