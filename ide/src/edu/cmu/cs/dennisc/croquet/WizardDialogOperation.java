@@ -265,7 +265,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 		this.updateExplanation( null );
 	}
 	@Override
-	public WizardDialogOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public WizardDialogOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushWizardDialogOperationContext( this, e, viewController );
 	}
 

@@ -58,6 +58,14 @@ public class IncompleteStaticMethodInvocationFillIn extends ExpressionFillIn< ed
 			return rv;
 		}
 	}
+	public static IncompleteStaticMethodInvocationFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
+		assert method != null : methodName;
+		return getInstance( method );
+	}
+	public static IncompleteStaticMethodInvocationFillIn getInstance( Class cls, String methodName, Class<?>... parameterClses ) {
+		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), methodName, parameterClses );
+	}
 	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
 	private IncompleteStaticMethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ) );

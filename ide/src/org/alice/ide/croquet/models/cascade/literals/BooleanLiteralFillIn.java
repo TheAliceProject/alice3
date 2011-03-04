@@ -48,7 +48,7 @@ package org.alice.ide.croquet.models.cascade.literals;
  */
 public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.BooleanLiteral > {
 	private static BooleanLiteralFillIn trueLiteral = new BooleanLiteralFillIn( true );
-	private static BooleanLiteralFillIn falseLiteral = new BooleanLiteralFillIn( true );
+	private static BooleanLiteralFillIn falseLiteral = new BooleanLiteralFillIn( false );
 	public static BooleanLiteralFillIn getInstance( boolean value ) {
 		if( value ) {
 			return trueLiteral;

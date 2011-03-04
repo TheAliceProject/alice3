@@ -123,7 +123,7 @@ public class SystemUtilities {
 				n += array.length;
 			}
 		}
-		E[] rv = (E[])edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newArrayInstance( componentType, n );
+		E[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( componentType, n );
 		int offset = 0;
 		for( E[] array : arrays ) {
 			if( array != null ) {

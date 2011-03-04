@@ -57,7 +57,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	}
 	private java.util.Map< AbstractButton< ?,? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	public abstract C createContext( java.util.EventObject e, ViewController< ?, ? > viewController );
+	public abstract C createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController );
 
 	public String getTutorialStartNoteText( OperationContext< ? > operationContext, UserInformation userInformation ) {
 		return "Press " + this.getTutorialNoteText( operationContext, userInformation );
@@ -75,7 +75,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	public Edit< ? > commitTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		Edit< ? > replacementEdit = this.createTutorialCompletionEdit( originalEdit, retargeter );
 		if( replacementEdit != null ) {
-			final C childContext = this.createContext( null, null );
+			final C childContext = this.createAndPushContext( null, null );
 			try {
 				childContext.commitAndInvokeDo( replacementEdit );
 			} finally {
@@ -128,12 +128,12 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		public void handleFinally(); 
 	}
 	/*package-private*/ final C handleFire( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		final C childContext = this.createContext( e, viewController );
+		final C childContext = this.createAndPushContext( e, viewController );
 		this.perform( childContext, new PerformObserver() {
 			public void handleFinally() {
 				ModelContext< ? > popContext = ContextManager.popContext();
 				if( popContext != null ) {
-					assert popContext == childContext : popContext.getClass() + " " + childContext.getClass();
+					assert popContext == childContext : "actual: " + popContext.getClass() + " expected: " + childContext.getClass();
 				} else {
 					System.err.println( "handleFinally popContext==null" );
 				}
@@ -141,14 +141,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		} );
 		return childContext;
 	}
-	protected void perform( C context, PerformObserver performObserver ) {
-		try {
-			this.perform( context );
-		} finally {
-			performObserver.handleFinally();
-		}
-	}
-	protected abstract void perform( C context );
+	protected abstract void perform( C context, PerformObserver performObserver );
 
 
 	public String getName() {

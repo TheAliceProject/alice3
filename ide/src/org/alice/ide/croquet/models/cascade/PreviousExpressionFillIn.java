@@ -41,13 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingMenuFillIn< T > extends CascadingMenuNode< T > {
-	public CascadingMenuFillIn( Group group, java.util.UUID id ) {
-		super( group, id );
+public class PreviousExpressionFillIn extends AbstractPreviousExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	private static class SingletonHolder {
+		private static PreviousExpressionFillIn instance = new PreviousExpressionFillIn();
+	}
+	public static PreviousExpressionFillIn getInstance() {
+		return SingletonHolder.instance;
+	}
+	private PreviousExpressionFillIn() {
+		super( java.util.UUID.fromString( "a15cbb4f-f955-498a-9291-60bf23007c34" ) );
+	}
+	@Override
+	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+//		if( this.previousExpression != null ) {
+//			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> prevExpressionType = this.previousExpression.getType();
+//			if( prevExpressionType != null && prevExpressionType.isAssignableTo( type ) ) {
+//				if( blank.isTop() ) {
+//					//pass
+//				} else {
+//					blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( this.previousExpression, "(current value)" ) );
+//					blank.addSeparator();
+//				}
+//			}
+//		}
+		return true;
 	}
 }

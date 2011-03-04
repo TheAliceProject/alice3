@@ -198,6 +198,10 @@ public class ContextManager {
 	/*package-private*/ static PopupMenuOperationContext createAndPushPopupMenuOperationContext(PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return push( new PopupMenuOperationContext(popupMenuOperation, e, viewController) );
 	}
+	/*package-private*/ static <T> CascadeOperationContext< T > createAndPushCascadeOperationContext(CascadeOperation< T > cascadeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		return push( new CascadeOperationContext<T>(cascadeOperation, e, viewController) );
+	}
+	
 	/*package-private*/ static <E> ListSelectionStateContext<E> createAndPushItemSelectionStateContext(ListSelectionState<E> itemSelectionState, java.util.EventObject e, ViewController<?, ?> viewController/*, int prevIndex, E prevItem, int nextIndex, E nextItem*/) {
 		ModelContext< ? > currentContext = getCurrentContext();
 		if( currentContext instanceof ListSelectionStateContext ) {

@@ -52,11 +52,11 @@ public class AngleFillerInner extends org.alice.ide.cascade.fillerinners.Instanc
 		super( org.alice.apis.moveandturn.AngleInRevolutions.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
 		for( double d : new double[] { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0 } ) {
-			blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( d ) ) ); 
+			blank.addFillIn( org.alice.stageide.croquet.models.cascade.values.AngleValueFillIn.getInstance( d ) ); 
 		}
 		blank.addSeparator();
-		blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomAngleFillIn() );
+		blank.addFillIn( org.alice.stageide.croquet.models.cascade.custom.CustomAngleFillIn.getInstance() );
 	}
 }

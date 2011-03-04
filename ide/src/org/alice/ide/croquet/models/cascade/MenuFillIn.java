@@ -46,9 +46,9 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuFillIn< T > extends edu.cmu.cs.dennisc.croquet.CascadingMenuFillIn< T > {
-	public MenuFillIn( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id ) {
-		super( group, id );
+public abstract class MenuFillIn< T > extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< T > {
+	public MenuFillIn( java.util.UUID id ) {
+		super( id );
 	}
-	protected abstract void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadingMenuBlank< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > blank );
+	protected abstract void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank< T > blank );
 }

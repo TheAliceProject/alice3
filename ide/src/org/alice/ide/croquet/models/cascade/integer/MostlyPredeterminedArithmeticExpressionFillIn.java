@@ -41,16 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade.integer;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingMenuBlank< T > extends CascadingMenuNode< T > {
-	public CascadingMenuBlank( Group group, java.util.UUID id ) {
-		super( group, id );
+public class MostlyPredeterminedArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.MostlyPredeterminedArithmeticExpressionFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, MostlyPredeterminedArithmeticExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static MostlyPredeterminedArithmeticExpressionFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+		synchronized( map ) {
+			MostlyPredeterminedArithmeticExpressionFillIn rv = map.get( operator );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new MostlyPredeterminedArithmeticExpressionFillIn( operator );
+				map.put( operator, rv );
+			}
+			return rv;
+		}
 	}
-	public void addFillIn( CascadingMenuFillIn< T > fillIn ) {
-		
+	private MostlyPredeterminedArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+		//todo: right operand type?  expression type?
+		super( java.util.UUID.fromString( "17a328e0-b763-4375-84f5-0a6a63e94964" ), operator );
 	}
 }

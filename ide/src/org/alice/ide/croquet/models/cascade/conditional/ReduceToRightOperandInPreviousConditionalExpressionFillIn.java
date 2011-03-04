@@ -41,23 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade.conditional;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingMenuNode< T > extends Model {
-	public CascadingMenuNode( Group group, java.util.UUID id ) {
-		super( group, id );
+public class ReduceToRightOperandInPreviousConditionalExpressionFillIn extends PreviousConditionalExpressionFillIn {
+	private static class SingletonHolder {
+		private static ReduceToRightOperandInPreviousConditionalExpressionFillIn instance = new ReduceToRightOperandInPreviousConditionalExpressionFillIn();
 	}
-	
-	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		//todo?
-		return false;
+	public static ReduceToRightOperandInPreviousConditionalExpressionFillIn getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected void localize() {
-		//todo
+	private ReduceToRightOperandInPreviousConditionalExpressionFillIn() {
+		super( java.util.UUID.fromString( "56cba468-e24c-461d-acdd-163bb2e6dbb0" ) );
 	}
 }

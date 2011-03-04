@@ -50,13 +50,11 @@ public class VolumeLevelFillerInner extends org.alice.ide.cascade.fillerinners.A
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.VolumeLevel.class ), edu.cmu.cs.dennisc.alice.ast.DoubleLiteral.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		this.addExpressionFillIn( blank, 0.0 );
-		this.addExpressionFillIn( blank, 0.25 );
-		this.addExpressionFillIn( blank, 0.5 );
-		this.addExpressionFillIn( blank, 1.0 );
-		this.addExpressionFillIn( blank, 2.0 );
+	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
+		for( double d : new double[] { 0.0, 0.25, 0.5, 1.0, 2.0 } ) {
+			blank.addFillIn( org.alice.stageide.croquet.models.cascade.values.VolumeLevelValueFillIn.getInstance( d ) ); 
+		}
 		blank.addSeparator();
-		blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomVolumeLevelFillIn() );
+		blank.addFillIn( org.alice.stageide.croquet.models.cascade.custom.CustomVolumeLevelFillIn.getInstance() );
 	}
 }

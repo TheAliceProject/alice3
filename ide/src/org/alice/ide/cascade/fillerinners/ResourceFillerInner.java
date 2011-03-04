@@ -52,20 +52,20 @@ public abstract class ResourceFillerInner extends org.alice.ide.cascade.fillerin
 	protected abstract edu.cmu.cs.dennisc.alice.ast.ResourceExpression createResourceExpressionIfAppropriate( org.alice.virtualmachine.Resource resource );
 	protected abstract edu.cmu.cs.dennisc.cascade.FillIn< ? > createImportNewResourceFillIn();
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		java.util.Set< org.alice.virtualmachine.Resource > resources = ide.getResources();
-		if( resources != null && resources.isEmpty() == false ) {
-			synchronized( resources ) {
-				for( org.alice.virtualmachine.Resource resource : resources ) {
-					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = this.createResourceExpressionIfAppropriate( resource );
-					if( resourceExpression != null ) {
-						blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( resourceExpression ) ); 
-					}
-				}
-			}
-			blank.addSeparator();
-		}
-		blank.addFillIn( this.createImportNewResourceFillIn() );
+	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
+//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//		java.util.Set< org.alice.virtualmachine.Resource > resources = ide.getResources();
+//		if( resources != null && resources.isEmpty() == false ) {
+//			synchronized( resources ) {
+//				for( org.alice.virtualmachine.Resource resource : resources ) {
+//					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = this.createResourceExpressionIfAppropriate( resource );
+//					if( resourceExpression != null ) {
+//						blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( resourceExpression ) ); 
+//					}
+//				}
+//			}
+//			blank.addSeparator();
+//		}
+//		blank.addFillIn( this.createImportNewResourceFillIn() );
 	}
 }

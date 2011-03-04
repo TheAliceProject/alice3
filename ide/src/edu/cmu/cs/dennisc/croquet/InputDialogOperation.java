@@ -151,7 +151,7 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 	}
 
 	@Override
-	public InputDialogOperationContext<J> createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public InputDialogOperationContext<J> createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushInputDialogOperationContext( this, e, viewController );
 	}
 

@@ -61,6 +61,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
 		final edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
 		final int index = blockStatementIndexPair.getIndex();
+		
 		if( types.length == 1 ) {
 			return new org.alice.ide.croquet.models.ast.FillInSingleExpressionMenuModel( java.util.UUID.fromString( "9a67ff7b-df1f-492e-b128-721f58ea2ad1" ) ) {
 				@Override
@@ -118,17 +119,48 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 		}
 	}
 	
+	protected edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > createCascadeOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types ) {
+		class ExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > {
+			private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type;
+			public ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+				super( java.util.UUID.fromString( "4bc689cf-3381-43db-a54e-757f67db30e7" ) );
+				this.type = type;
+			}
+		}
+		
+		class ExpressionCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
+			private final ExpressionBlank[] expressionBlanks;
+			public ExpressionCascadeOperation( ) {
+				super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "2ac86fcd-f740-480e-8cfa-06501ab7bac5" ), edu.cmu.cs.dennisc.alice.ast.Expression.class );
+				this.expressionBlanks = new ExpressionBlank[] {};
+			}
+
+			@Override
+			protected edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >[] getBlanks() {
+				return this.expressionBlanks;
+			}
+			@Override
+			protected edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
+				edu.cmu.cs.dennisc.alice.ast.Statement statement = CascadingExpressionsStatementTemplate.this.createStatement( values );
+				return new org.alice.ide.codeeditor.InsertStatementEdit( blockStatementIndexPair.getBlockStatement().statements, blockStatementIndexPair.getIndex(), statement );
+			}
+		}
+		return new ExpressionCascadeOperation();
+	}
+
 	@Override
 	public final edu.cmu.cs.dennisc.croquet.Operation< ? > createDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
 		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types = this.getBlankExpressionTypes();
-		edu.cmu.cs.dennisc.alice.ast.Expression[] predeterminedExpressions = org.alice.ide.IDE.getSingleton().createPredeterminedExpressionsIfAppropriate( types );
-		if( predeterminedExpressions != null ) {
-			edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement( predeterminedExpressions ); 
-			return new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( blockStatement, index, statement );
-		} else {
-			org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
-			return this.createMenuModel( dragAndDropContext, blockStatementIndexPair, types ).getPopupMenuOperation();
-		}
+//		edu.cmu.cs.dennisc.alice.ast.Expression[] predeterminedExpressions = org.alice.ide.IDE.getSingleton().createPredeterminedExpressionsIfAppropriate( types );
+//		if( predeterminedExpressions != null ) {
+//			edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement( predeterminedExpressions ); 
+//			return new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( blockStatement, index, statement );
+//		} else {
+//			org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
+//			return this.createMenuModel( dragAndDropContext, blockStatementIndexPair, types ).getPopupMenuOperation();
+//		}
+		org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
+		return this.createCascadeOperation( dragAndDropContext, blockStatementIndexPair, types );
 	}
 //	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes();
 //	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );

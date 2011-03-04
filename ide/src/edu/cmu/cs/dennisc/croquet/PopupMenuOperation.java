@@ -64,7 +64,7 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 	}
 	
 	@Override
-	public PopupMenuOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public PopupMenuOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushPopupMenuOperationContext( this, e, viewController );
 	}
 	
@@ -117,11 +117,6 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 	}
 	
 	
-	//todo?
- 	@Override
-	protected final void perform( PopupMenuOperationContext context) {
-	}
- 	
 	@Override
 	protected final void perform( final PopupMenuOperationContext context, final Operation.PerformObserver performObserver ) {
 		//note: do not call super

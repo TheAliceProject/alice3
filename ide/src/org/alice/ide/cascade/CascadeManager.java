@@ -47,7 +47,6 @@ package org.alice.ide.cascade;
  */
 public abstract class CascadeManager {
 	private java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private java.util.Map< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public CascadeManager() {
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.NumberFillerInner() );
@@ -83,20 +82,6 @@ public abstract class CascadeManager {
 	protected void addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner ) {
 		this.expressionFillerInners.add( expressionFillerInner );
 	}
-
-	protected org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner getExpressionFillerInnerFor( Class< ? extends Enum > clsEnum ) {
-		org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner rv = map.get( clsEnum );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( clsEnum );
-			map.put( clsEnum, rv );
-		}
-		return rv;
-	}
-	//	protected org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner getExpressionFillerInnerFor( Class< ? extends Enum > clsEnum ) {
-	//		return getExpressionFillerInnerFor( clsEnum, clsEnum );
-	//	}
 
 	@Deprecated
 	public edu.cmu.cs.dennisc.cascade.FillIn createExpressionsFillIn( final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types, final boolean isArrayLengthDesired ) {
@@ -139,8 +124,9 @@ public abstract class CascadeManager {
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getActualTypeForDesiredParameterType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return type;
 	}
-	protected void addFillInAndPossiblyPartFills( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type2 ) {
-		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( expression ) );
+	protected void addFillInAndPossiblyPartFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type2 ) {
+		System.err.println( "todo: addFillInAndPossiblyPartFillIns" );
+		//blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( expression ) );
 	}
 
 	private java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > updateAccessibleLocalsForBlockStatementAndIndex( java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > rv, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
@@ -190,71 +176,71 @@ public abstract class CascadeManager {
 		updateAccessibleLocals( rv, blockStatement );
 		return rv;
 	}
-	protected void addExpressionBonusFillInsForType( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getSingleton().getFocusedCode();
-		if( codeInFocus != null ) {
-
-			//todo: fix
-			type = this.getActualTypeForDesiredParameterType( type );
-
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> selectedType = org.alice.ide.IDE.getSingleton().getTypeInScope();
-			//boolean isNecessary = true;
-			if( type.isAssignableFrom( selectedType ) ) {
-				//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
-				this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), selectedType, type );
-			}
-			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : selectedType.getDeclaredFields() ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldType = field.getValueType();
-				if( type.isAssignableFrom( fieldType ) ) {
-					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
-					edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
-					this.addFillInAndPossiblyPartFills( blank, fieldAccess, fieldType, type );
-				}
-				if( fieldType.isArray() ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldComponentType = fieldType.getComponentType();
-					if( type.isAssignableFrom( fieldComponentType ) ) {
-						//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
-						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
-						//blank.addFillIn( new ArrayAccessFillIn( fieldType, fieldAccess ) );
-					}
-					if( type.isAssignableFrom( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) ) {
-						//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
-						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
-						edu.cmu.cs.dennisc.alice.ast.ArrayLength arrayLength = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( fieldAccess );
-						blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.ArrayLength >( arrayLength ) );
-					}
-				}
-			}
-//			edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = this.getPreviousExpression();
-//			if( prevExpression != null ) {
-//				edu.cmu.cs.dennisc.alice.ast.Statement statement = prevExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
-				if( this.dropParent != null && this.dropIndex != -1 ) {
-					for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : codeInFocus.getParameters() ) {
-						if( type.isAssignableFrom( parameter.getValueType() ) ) {
-							//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
-							this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
-						}
-					}
-					for( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local : this.getAccessibleLocals( this.dropParent, this.dropIndex ) ) {
-						if( type.isAssignableFrom( local.valueType.getValue() ) ) {
-							edu.cmu.cs.dennisc.alice.ast.Expression expression;
-							if( local instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
-								edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)local;
-								expression = new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable );
-							} else if( local instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
-								edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant = (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)local;
-								expression = new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( constant );
-							} else {
-								expression = null;
-							}
-							if( expression != null ) {
-								this.addFillInAndPossiblyPartFills( blank, expression, local.valueType.getValue(), type );
-							}
-						}
-					}
+	protected void addExpressionBonusFillInsForType( edu.cmu.cs.dennisc.croquet.CascadeBlank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+//		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getSingleton().getFocusedCode();
+//		if( codeInFocus != null ) {
+//
+//			//todo: fix
+//			type = this.getActualTypeForDesiredParameterType( type );
+//
+//			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> selectedType = org.alice.ide.IDE.getSingleton().getTypeInScope();
+//			//boolean isNecessary = true;
+//			if( type.isAssignableFrom( selectedType ) ) {
+//				//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+//				this.addFillInAndPossiblyPartFillIns( blank, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), selectedType, type );
+//			}
+//			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : selectedType.getDeclaredFields() ) {
+//				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldType = field.getValueType();
+//				if( type.isAssignableFrom( fieldType ) ) {
+//					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+//					edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
+//					this.addFillInAndPossiblyPartFillIns( blank, fieldAccess, fieldType, type );
 //				}
-			}
-		}
+//				if( fieldType.isArray() ) {
+//					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldComponentType = fieldType.getComponentType();
+//					if( type.isAssignableFrom( fieldComponentType ) ) {
+//						//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+//						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
+//						//blank.addFillIn( new ArrayAccessFillIn( fieldType, fieldAccess ) );
+//					}
+//					if( type.isAssignableFrom( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) ) {
+//						//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+//						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
+//						edu.cmu.cs.dennisc.alice.ast.ArrayLength arrayLength = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( fieldAccess );
+//						blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.ArrayLength >( arrayLength ) );
+//					}
+//				}
+//			}
+////			edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = this.getPreviousExpression();
+////			if( prevExpression != null ) {
+////				edu.cmu.cs.dennisc.alice.ast.Statement statement = prevExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
+//				if( this.dropParent != null && this.dropIndex != -1 ) {
+//					for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : codeInFocus.getParameters() ) {
+//						if( type.isAssignableFrom( parameter.getValueType() ) ) {
+//							//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+//							this.addFillInAndPossiblyPartFillIns( blank, new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
+//						}
+//					}
+//					for( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local : this.getAccessibleLocals( this.dropParent, this.dropIndex ) ) {
+//						if( type.isAssignableFrom( local.valueType.getValue() ) ) {
+//							edu.cmu.cs.dennisc.alice.ast.Expression expression;
+//							if( local instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
+//								edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)local;
+//								expression = new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable );
+//							} else if( local instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
+//								edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant = (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)local;
+//								expression = new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( constant );
+//							} else {
+//								expression = null;
+//							}
+//							if( expression != null ) {
+//								this.addFillInAndPossiblyPartFillIns( blank, expression, local.valueType.getValue(), type );
+//							}
+//						}
+//					}
+////				}
+//			}
+//		}
 	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		return this.previousExpression;
@@ -272,24 +258,25 @@ public abstract class CascadeManager {
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> interfaceType ) {
 		return null;
 	}
-	protected void addFillInsForObjectType( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomStringFillIn() );
-		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
-		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
+	protected void addFillInsForObjectType( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomStringLiteralFillIn.getInstance() );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomDoubleLiteralFillIn.getInstance() );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomIntegerLiteralFillIn.getInstance() );
 		blank.addSeparator();
-		if( blank.getParentFillIn() != null ) {
-			//pass
-		} else {
-			if( previousExpression == null || previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral ) {
-				//pass
-			} else {
-				blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedStringConcatenationFillIn( this.previousExpression ) );
-				blank.addFillIn( new org.alice.ide.cascade.IncompleteStringConcatenationFillIn() );
+//		if( blank.isTop() ) {
+//			//pass
+//		} else {
+//			if( previousExpression == null || previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral ) {
+//				//pass
+//			} else {
+		
+				blank.addFillIn( org.alice.ide.croquet.models.cascade.string.RightOperandOnlyStringConcatinationPreviousExpressionFillIn.getInstance() );
+				blank.addFillIn( org.alice.ide.croquet.models.cascade.string.LeftAndRightOperandStringConcatinationFillIn.getInstance() );
 				blank.addSeparator();
-			}
-		}
+//			}
+//		}
 	}
-	protected void addCustomFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	protected void addCustomFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 	}
 
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getTypeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
@@ -304,19 +291,10 @@ public abstract class CascadeManager {
 		return true;
 	}
 	
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
-			if( this.previousExpression != null ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> prevExpressionType = this.previousExpression.getType();
-				if( prevExpressionType != null && prevExpressionType.isAssignableTo( type ) ) {
-					if( blank.getParentFillIn() != null ) {
-						//pass
-					} else {
-						blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( this.previousExpression, "(current value)" ) );
-						blank.addSeparator();
-					}
-				}
-			}
+			blank.addFillIn( org.alice.ide.croquet.models.cascade.PreviousExpressionFillIn.getInstance() );
+			blank.addSeparator();
 			this.addCustomFillIns( blank, type );
 			type = getTypeFor( type );
 			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) {
@@ -340,38 +318,28 @@ public abstract class CascadeManager {
 				}
 			}
 			if( enumType != null && this.areEnumConstantsDesired( enumType ) ) {
-				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner constantsOwningFillerInner = getExpressionFillerInnerFor( (Class< ? extends Enum >)enumType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
-				constantsOwningFillerInner.addFillIns( blank );
+				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( enumType ).addFillIns( blank );
 			}
 
 			blank.addSeparator();
 			this.addExpressionBonusFillInsForType( blank, type );
 			blank.addSeparator();
 			if( type.isArray() ) {
-				blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomArrayFillIn() );
+				//blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomArrayFillIn() );
 			}
 
-			if( blank.getNonSeparatorFillInCount() > 0 ) {
-				//pass
-//				if( blank.getNonSeparatorFillInCount() > 1 ) {
-//					//pass
-//				} else {
-//					edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = blank.getFirstFillIn();
-//					blank.setSelectedFillIn( fillIn );
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "SINGLETON FILL IN:", fillIn );
-//				}
-			} else {
-				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "sorry.  no fillins found for " + type.getName() + ". canceling." ) );
+			if( blank.isEmpty() ) {
+				blank.addFillIn( org.alice.ide.croquet.models.cascade.NoFillInsFoundCancelFillIn.getInstance() );
 			}
 		} else {
 			//todo:
-			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "value type is <unset>.  you must first set the value type.  canceling." ) );
+			blank.addFillIn( org.alice.ide.croquet.models.cascade.TypeUnsetCancelFillIn.getInstance() );
 		}
 
 	}
 	
 	@Deprecated
-	public void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent, int dropIndex, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {
+	private void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent, int dropIndex, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {
 		this.dropParent = dropParent;
 		this.dropIndex = dropIndex;
 		edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression[] > fillIn = createExpressionsFillIn( types, isArrayLengthDesired );
@@ -389,10 +357,4 @@ public abstract class CascadeManager {
 		throw new RuntimeException( "todo" );
 		//fillIn.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
-//	@Deprecated
-//	public void unsetPreviousExpressionAndDropStatement() {
-//		this.previousExpression = null;
-//		this.dropParent = null;
-//		this.dropIndex = -1;
-//	}
 }

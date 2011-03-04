@@ -51,33 +51,33 @@ public abstract class IngredientFillerInner extends org.alice.ide.cascade.filler
 	}
 	protected abstract Class<?>[] getClses( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender );
 	@Override
-	public final void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		org.alice.apis.stage.LifeStage[] lifeStages = { org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.LifeStage.CHILD }; 
-		for( final org.alice.apis.stage.LifeStage lifeStage : lifeStages ) {
-			for( final org.alice.apis.stage.Gender gender : org.alice.apis.stage.Gender.values() ) {
-				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( gender.name().toLowerCase() + " " + lifeStage.name().toLowerCase() ) {
-					@Override
-					protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-						for( final Class<?> cls : getClses( lifeStage, gender ) ) {
-							blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( cls.getSimpleName() ) {
-								@Override
-								protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-									edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls );
-							 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
-							 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
-							 				IngredientFillerInner.this.addExpressionFillIn( blank, new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
-							 			}
-							 		}
-								}
-								@Override
-								protected javax.swing.JComponent createMenuProxy() {
-									return org.alice.ide.common.TypeComponent.createInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) ).getAwtComponent();
-								}
-							} );
-						}
-					}
-				} );
-			}
-		}
+	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
+//		org.alice.apis.stage.LifeStage[] lifeStages = { org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.LifeStage.CHILD }; 
+//		for( final org.alice.apis.stage.LifeStage lifeStage : lifeStages ) {
+//			for( final org.alice.apis.stage.Gender gender : org.alice.apis.stage.Gender.values() ) {
+//				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( gender.name().toLowerCase() + " " + lifeStage.name().toLowerCase() ) {
+//					@Override
+//					protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+//						for( final Class<?> cls : getClses( lifeStage, gender ) ) {
+//							blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( cls.getSimpleName() ) {
+//								@Override
+//								protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+//									edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls );
+//							 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
+//							 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
+//							 				IngredientFillerInner.this.addExpressionFillIn( blank, new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
+//							 			}
+//							 		}
+//								}
+//								@Override
+//								protected javax.swing.JComponent createMenuProxy() {
+//									return org.alice.ide.common.TypeComponent.createInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) ).getAwtComponent();
+//								}
+//							} );
+//						}
+//					}
+//				} );
+//			}
+//		}
 	}
 }

@@ -50,27 +50,27 @@ public class AudioSourceFillerInner extends org.alice.ide.cascade.fillerinners.I
 		super( org.alice.apis.moveandturn.AudioSource.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		Iterable< org.alice.virtualmachine.Resource > resources = ide.getResources();
-		assert resources != null;
-		synchronized( resources ) {
-			for( org.alice.virtualmachine.Resource resource : resources ) {
-				if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
-					org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
-					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.resources.AudioResource.class );
-					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, audioResource );
-					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
-					edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
-					blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 ) ) ); 
-				}
-			}
-		}
-		blank.addSeparator();
-		blank.addFillIn( new org.alice.stageide.cascade.customfillin.ImportNewAudioSourceFillIn() );
-		if( ide.getCascadeManager().isPreviousExpressionSet() ) {
-			blank.addSeparator();
-			blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomAudioSourceFillIn() );
-		}
+	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
+//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//		Iterable< org.alice.virtualmachine.Resource > resources = ide.getResources();
+//		assert resources != null;
+//		synchronized( resources ) {
+//			for( org.alice.virtualmachine.Resource resource : resources ) {
+//				if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
+//					org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
+//					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.resources.AudioResource.class );
+//					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, audioResource );
+//					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
+//					edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
+//					blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 ) ) ); 
+//				}
+//			}
+//		}
+//		blank.addSeparator();
+//		blank.addFillIn( new org.alice.stageide.cascade.customfillin.ImportNewAudioSourceFillIn() );
+//		if( ide.getCascadeManager().isPreviousExpressionSet() ) {
+//			blank.addSeparator();
+//			blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomAudioSourceFillIn() );
+//		}
 	}
 }

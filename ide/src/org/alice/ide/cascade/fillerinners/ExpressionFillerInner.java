@@ -46,20 +46,21 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionFillerInner {
-	protected static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava RANDOM_UTILITIES_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.random.RandomUtilities.class );
-	protected static final edu.cmu.cs.dennisc.alice.ast.TypeExpression RANDOM_UTILITIES_TYPE_EXPRESSION = org.alice.ide.ast.NodeUtilities.createTypeExpression( RANDOM_UTILITIES_TYPE );
-	protected static void addNodeChildForMethod( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression, String methodName, Class<?>... parameterClses ) {
+//	protected static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava RANDOM_UTILITIES_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.random.RandomUtilities.class );
+//	protected static final edu.cmu.cs.dennisc.alice.ast.TypeExpression RANDOM_UTILITIES_TYPE_EXPRESSION = org.alice.ide.ast.NodeUtilities.createTypeExpression( RANDOM_UTILITIES_TYPE );
+	protected static void addStaticMethodInvocationFillIn( edu.cmu.cs.dennisc.croquet.CascadeBlank blank, edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression, String methodName, Class<?>... parameterClses ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = typeExpression.value.getValue();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
-		org.alice.ide.cascade.IncompleteMethodInvocationFillIn methodInvocationFillIn = new org.alice.ide.cascade.IncompleteMethodInvocationFillIn( typeExpression, method );
-		blank.addFillIn( methodInvocationFillIn );
+//		org.alice.ide.cascade.IncompleteMethodInvocationFillIn methodInvocationFillIn = new org.alice.ide.cascade.IncompleteMethodInvocationFillIn( typeExpression, method );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( method ) );
 	}
-	protected static void addNodeChildForField( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression, Class<?> valueCls, String fieldName ) {
+	protected static void addStaticFieldAccessFillIn( edu.cmu.cs.dennisc.croquet.CascadeBlank blank, edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression, Class<?> valueCls, String fieldName ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = typeExpression.value.getValue();
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( valueCls, fieldName );
 		assert field != null : fieldName;
-		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.FieldAccess >( new edu.cmu.cs.dennisc.alice.ast.FieldAccess( typeExpression, field ) ) );
+//		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.FieldAccess >( new edu.cmu.cs.dennisc.alice.ast.FieldAccess( typeExpression, field ) ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
@@ -79,10 +80,10 @@ public abstract class ExpressionFillerInner {
 		return this.type.isAssignableTo( type );
 	}
 
-	protected void addExpressionFillIn( edu.cmu.cs.dennisc.cascade.Blank blank, Object... args ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstanceForArguments( this.expressionCls, args );
-		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( expression ) ); 
-	}
+//	protected void addNewInstanceFillIn( edu.cmu.cs.dennisc.croquet.CascadingMenuBlank blank, Object... args ) {
+//		edu.cmu.cs.dennisc.alice.ast.Expression expression = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstanceForArguments( this.expressionCls, args );
+//		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( expression ) ); 
+//	}
 	
-	public abstract void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank );
+	public abstract void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank );
 }

@@ -60,6 +60,12 @@ public class StaticFieldAccessFillIn extends ExpressionFillIn< edu.cmu.cs.dennis
 			return rv;
 		}
 	}
+	public static StaticFieldAccessFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type, String fieldName ) {
+		return getInstance( type.findField( fieldName ) );
+	}
+	public static StaticFieldAccessFillIn getInstance( Class<?> cls, String fieldName ) {
+		return getInstance( cls, fieldName );
+	}
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractField value;
 	private StaticFieldAccessFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractField value ) {
 		super( java.util.UUID.fromString( "c0c8bc11-ed5b-4541-8e4a-45579e05b0d2" ) );

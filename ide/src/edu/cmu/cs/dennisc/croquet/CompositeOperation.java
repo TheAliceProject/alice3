@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompositeOperation extends Operation<CompositeOperationContext> {
+public abstract class CompositeOperation extends SingleThreadOperation<CompositeOperationContext> {
 	
 	@Override
 	protected final void perform(CompositeOperationContext context) {
@@ -61,7 +61,7 @@ public abstract class CompositeOperation extends Operation<CompositeOperationCon
 		super( group, id );
 	}
 	@Override
-	public CompositeOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public CompositeOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushCompositeOperationContext( this, e, viewController );
 	}
 	protected abstract java.util.List< Operation<?> > getOperations();

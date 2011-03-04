@@ -46,8 +46,16 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadingMenuBlank< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	public ExpressionBlank( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id ) {
-		super( group, id );
+public abstract class ExpressionBlank<T extends edu.cmu.cs.dennisc.alice.ast.Expression> extends edu.cmu.cs.dennisc.croquet.CascadeBlank< T > {
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
+	public ExpressionBlank( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		super( id );
+		this.type = type;
+		this.addFillIns( this );
 	}
+	public ExpressionBlank( java.util.UUID id, Class<?> cls ) {
+		this( id, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+	}
+	
+	public abstract void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank );
 }
