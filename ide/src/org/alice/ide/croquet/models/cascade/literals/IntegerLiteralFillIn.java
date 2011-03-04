@@ -41,21 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.croquet.models.cascade.literals;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRelationalMenuFillIn extends MenuFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
-	private Class< ? extends Number > cls;
-	public AbstractRelationalMenuFillIn( java.util.UUID id, Class< ? extends Number > cls ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
-		this.cls = cls;
-	}
-	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadingMenuBlank< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > blank ) {
-		for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
-			blank.addFillIn( IncompleteRelationalExpressionFillIn.getInstance( this.cls, operator ) );
+public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.IntegerLiteral > {
+	private static java.util.Map< Integer, IntegerLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static IntegerLiteralFillIn getInstance( int value ) {
+		synchronized( map ) {
+			IntegerLiteralFillIn rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new IntegerLiteralFillIn( value );
+				map.put( value, rv );
+			}
+			return rv;
 		}
+	}
+	private final int value;
+	private IntegerLiteralFillIn( int value ) {
+		super( java.util.UUID.fromString( "db052fcb-b0e3-482a-aad9-13b9a2efc370" ) );
+		this.value = value;
 	}
 }

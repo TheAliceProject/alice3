@@ -47,15 +47,17 @@ package org.alice.ide.croquet.models.ast;
  */
 public class EditTypeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.editorstabbedpane.EditTypePanel> {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice, EditTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized EditTypeOperation getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		EditTypeOperation rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new EditTypeOperation( type );
-			map.put( type, rv );
+	public static EditTypeOperation getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		synchronized( map ) {
+			EditTypeOperation rv = map.get( type );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new EditTypeOperation( type );
+				map.put( type, rv );
+			}
+			return rv;
 		}
-		return rv;
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;

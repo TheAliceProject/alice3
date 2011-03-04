@@ -41,21 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.croquet.models.cascade.literals;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRelationalMenuFillIn extends MenuFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
-	private Class< ? extends Number > cls;
-	public AbstractRelationalMenuFillIn( java.util.UUID id, Class< ? extends Number > cls ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
-		this.cls = cls;
-	}
-	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadingMenuBlank< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > blank ) {
-		for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
-			blank.addFillIn( IncompleteRelationalExpressionFillIn.getInstance( this.cls, operator ) );
+public class StringLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.StringLiteral > {
+	private static java.util.Map< String, StringLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static StringLiteralFillIn getInstance( String value ) {
+		synchronized( map ) {
+			StringLiteralFillIn rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new StringLiteralFillIn( value );
+				map.put( value, rv );
+			}
+			return rv;
 		}
+	}
+	private final String value;
+	private StringLiteralFillIn( String value ) {
+		super( java.util.UUID.fromString( "c0c8bc11-ed5b-4541-8e4a-45579e05b0d2" ) );
+		this.value = value;
 	}
 }

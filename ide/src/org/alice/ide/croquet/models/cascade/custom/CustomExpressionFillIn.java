@@ -41,21 +41,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.croquet.models.cascade.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRelationalMenuFillIn extends MenuFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
-	private Class< ? extends Number > cls;
-	public AbstractRelationalMenuFillIn( java.util.UUID id, Class< ? extends Number > cls ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
-		this.cls = cls;
-	}
-	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadingMenuBlank< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > blank ) {
-		for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
-			blank.addFillIn( IncompleteRelationalExpressionFillIn.getInstance( this.cls, operator ) );
-		}
+public abstract class CustomExpressionFillIn< T extends edu.cmu.cs.dennisc.alice.ast.Expression > extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< T > {
+	private final edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation;
+	public CustomExpressionFillIn( java.util.UUID id, edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation ) {
+		super( id );
+		this.inputDialogOperation = inputDialogOperation;
 	}
 }

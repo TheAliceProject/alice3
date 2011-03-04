@@ -46,16 +46,23 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRelationalMenuFillIn extends MenuFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
-	private Class< ? extends Number > cls;
-	public AbstractRelationalMenuFillIn( java.util.UUID id, Class< ? extends Number > cls ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
-		this.cls = cls;
-	}
-	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadingMenuBlank< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > blank ) {
-		for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
-			blank.addFillIn( IncompleteRelationalExpressionFillIn.getInstance( this.cls, operator ) );
+public class StaticFieldAccessFillIn extends ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, StaticFieldAccessFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static StaticFieldAccessFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField value ) {
+		synchronized( map ) {
+			StaticFieldAccessFillIn rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new StaticFieldAccessFillIn( value );
+				map.put( value, rv );
+			}
+			return rv;
 		}
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractField value;
+	private StaticFieldAccessFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractField value ) {
+		super( java.util.UUID.fromString( "c0c8bc11-ed5b-4541-8e4a-45579e05b0d2" ) );
+		this.value = value;
 	}
 }
