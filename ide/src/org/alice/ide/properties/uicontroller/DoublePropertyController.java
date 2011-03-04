@@ -43,37 +43,14 @@
 
 package org.alice.ide.properties.uicontroller;
 
-import java.util.Locale;
-
 import org.alice.ide.properties.adapter.AbstractDoublePropertyAdapter;
 import org.alice.ide.properties.adapter.PropertyAdapter;
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
 
-public class DoublePropertyController extends AbstractAdapterController<Double>
+public class DoublePropertyController extends LabelBasedPropertyController<Double>
 {
-	private BorderPanel mainPanel;
-	private Label doubleLabel;
-	
-	protected static final String BLANK_STRING = "NO VALUE";
-	
 	public DoublePropertyController(PropertyAdapter<Double, ?> propertyAdapter)
 	{
 		super(propertyAdapter);
-	}
-	
-	@Override
-	protected void initializeComponents() 
-	{
-		this.mainPanel = new BorderPanel();
-		this.doubleLabel = new Label();
-	}
-	
-	@Override
-	public Panel getPanel() 
-	{
-		return this.mainPanel;
 	}
 	
 	@Override
@@ -87,22 +64,11 @@ public class DoublePropertyController extends AbstractAdapterController<Double>
 	{
 		if (value != null)
 		{
-			this.doubleLabel.setText(AbstractDoublePropertyAdapter.format.format(value));
+			this.label.setText(AbstractDoublePropertyAdapter.format.format(value));
 		}
 		else
 		{
-			this.doubleLabel.setText(BLANK_STRING);
-		}
-	}
-	
-	@Override
-	protected void updateUIFromNewAdapter() 
-	{
-		this.mainPanel.removeAllComponents();
-		this.mainPanel.addComponent(this.doubleLabel, BorderPanel.Constraint.CENTER);
-		if (this.propertyAdapter != null)
-		{
-			this.mainPanel.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
+			this.label.setText(BLANK_STRING);
 		}
 	}
 	

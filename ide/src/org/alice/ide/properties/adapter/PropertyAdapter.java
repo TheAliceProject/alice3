@@ -43,6 +43,7 @@
 
 package org.alice.ide.properties.adapter;
 
+import edu.cmu.cs.dennisc.croquet.Button;
 import edu.cmu.cs.dennisc.croquet.Operation;
 
 public interface PropertyAdapter <P, O>
@@ -75,6 +76,8 @@ public interface PropertyAdapter <P, O>
 	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
 	
 	public Operation getEditOperation();
+	
+	public Button createEditButton();
 	
 	public SetValueOperation<P> getSetValueOperation(P value); 
 	

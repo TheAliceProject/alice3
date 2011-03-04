@@ -89,8 +89,6 @@ public class MarkerFieldTile extends LineAxisPanel
 			}
 		}
 		this.textLabel.setForegroundColor( foregroundColor );
-//		this.buttonCameraToMarker.setVisible( isSelected );
-//		this.buttonMarkerToCamera.setVisible( isSelected );
 	}
 	
 	public void setField( FieldDeclaredInAlice field )
@@ -107,17 +105,8 @@ public class MarkerFieldTile extends LineAxisPanel
 			this.textLabel.setForegroundColor(color.getAsAWTColor());
 			this.iconLabel.setIcon(marker.getIcon());
 		}
-//		javax.swing.border.Border border = BorderFactory.createEmptyBorder( 4,6,4,6 );
-//		buttonCameraToMarker = MoveActiveCameraToMarkerActionOperation.getInstanceForField(this.field).createButton();
-//		buttonCameraToMarker.setBorder( border );
-//
-//		buttonMarkerToCamera = MoveMarkerToActiveCameraActionOperation.getInstanceForField(this.field).createButton();
-//		buttonMarkerToCamera.setBorder( border );
-
 		this.addComponent( iconLabel );
 		this.addComponent( this.textLabel );
 		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );
-//		this.addComponent( buttonCameraToMarker );
-//		this.addComponent( buttonMarkerToCamera );
 	}
 }

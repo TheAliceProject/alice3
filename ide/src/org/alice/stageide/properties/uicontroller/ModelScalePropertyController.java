@@ -61,6 +61,7 @@ import org.alice.stageide.properties.LinkScaleButton;
 import org.alice.stageide.utilities.BoundingBoxUtilities;
 
 import edu.cmu.cs.dennisc.croquet.BooleanStateButton;
+import edu.cmu.cs.dennisc.croquet.BoxUtilities;
 import edu.cmu.cs.dennisc.croquet.Button;
 import edu.cmu.cs.dennisc.croquet.FlowPanel;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
@@ -74,7 +75,6 @@ import edu.cmu.cs.dennisc.math.Vector3;
 
 public class ModelScalePropertyController extends AbstractAdapterController<Matrix3x3>
 {
-	private GridBagPanel mainPanel;
 	
 	private ActionListener valueChangeListener;
 	
@@ -108,7 +108,7 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 	@Override
 	protected void initializeComponents() 
 	{
-		this.mainPanel = new GridBagPanel();
+		super.initializeComponents();
 		this.valueChangeListener = new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) 
@@ -122,23 +122,15 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 		this.heightLabel = new Label("Height:");
 		this.depthLabel = new Label("Depth:");
 		
-		this.widthField = new DoubleTextField(4);
+		this.widthField = new DoubleTextField(3);
 		this.widthField.addActionListener(this.valueChangeListener);
 		
-		this.heightField = new DoubleTextField(4);
+		this.heightField = new DoubleTextField(3);
 		this.heightField.addActionListener(this.valueChangeListener);
 		
-		this.depthField = new DoubleTextField(4);
+		this.depthField = new DoubleTextField(3);
 		this.depthField.addActionListener(this.valueChangeListener);
-		
-		FlowPanel uiPanel = new FlowPanel(FlowPanel.Alignment.LEFT);
-		uiPanel.addComponent(this.widthLabel);
-		uiPanel.addComponent(new SwingAdapter(this.widthField));
-		uiPanel.addComponent(this.heightLabel);
-		uiPanel.addComponent(new SwingAdapter(this.heightField));
-		uiPanel.addComponent(this.depthLabel);
-		uiPanel.addComponent(new SwingAdapter(this.depthField));
-
+	
 		this.linkButton = new LinkScaleButton(IsScaleLinkedState.getInstance());
 		
 		this.mainPanel.addComponent( this.widthLabel, new GridBagConstraints( 
@@ -146,7 +138,7 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 			0, //gridY
 			1, //gridWidth
 			1, //gridHeight
-			1.0, //weightX
+			0.0, //weightX
 			0.0, //weightY
 			GridBagConstraints.EAST, //anchor 
 			GridBagConstraints.NONE, //fill
@@ -159,7 +151,7 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 			0, //gridY
 			1, //gridWidth
 			1, //gridHeight
-			1.0, //weightX
+			0.0, //weightX
 			0.0, //weightY
 			GridBagConstraints.WEST, //anchor 
 			GridBagConstraints.NONE, //fill
@@ -168,24 +160,24 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 			0 ) //ipadY
 		);
 		this.mainPanel.addComponent( this.heightLabel, new GridBagConstraints( 
-				0, //gridX
-				1, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-			);
+			0, //gridX
+			1, //gridY
+			1, //gridWidth
+			1, //gridHeight
+			0.0, //weightX
+			0.0, //weightY
+			GridBagConstraints.EAST, //anchor 
+			GridBagConstraints.NONE, //fill
+			new Insets(2,2,2,2), //insets
+			0, //ipadX
+			0 ) //ipadY
+		);
 		this.mainPanel.addComponent( new SwingAdapter(this.heightField), new GridBagConstraints( 
 			1, //gridX
 			1, //gridY
 			1, //gridWidth
 			1, //gridHeight
-			1.0, //weightX
+			0.0, //weightX
 			0.0, //weightY
 			GridBagConstraints.WEST, //anchor 
 			GridBagConstraints.NONE, //fill
@@ -194,24 +186,24 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 			0 ) //ipadY
 		);
 		this.mainPanel.addComponent( this.depthLabel, new GridBagConstraints( 
-				0, //gridX
-				2, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-			);
+			0, //gridX
+			2, //gridY
+			1, //gridWidth
+			1, //gridHeight
+			0.0, //weightX
+			0.0, //weightY
+			GridBagConstraints.EAST, //anchor 
+			GridBagConstraints.NONE, //fill
+			new Insets(2,2,2,2), //insets
+			0, //ipadX
+			0 ) //ipadY
+		);
 		this.mainPanel.addComponent( new SwingAdapter(this.depthField), new GridBagConstraints( 
 			1, //gridX
 			2, //gridY
 			1, //gridWidth
 			1, //gridHeight
-			1.0, //weightX
+			0.0, //weightX
 			0.0, //weightY
 			GridBagConstraints.WEST, //anchor 
 			GridBagConstraints.NONE, //fill
@@ -220,18 +212,31 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 			0 ) //ipadY
 		);
 		this.mainPanel.addComponent( this.linkButton, new GridBagConstraints( 
-				2, //gridX
-				0, //gridY
-				1, //gridWidth
-				3, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
+			2, //gridX
+			0, //gridY
+			1, //gridWidth
+			3, //gridHeight
+			0.0, //weightX
+			0.0, //weightY
+			GridBagConstraints.WEST, //anchor 
+			GridBagConstraints.NONE, //fill
+			new Insets(2,2,2,2), //insets
+			0, //ipadX
+			0 ) //ipadY
 		);
+		this.mainPanel.addComponent( BoxUtilities.createHorizontalGlue(), new GridBagConstraints( 
+            4, //gridX
+            0, //gridY
+            1, //gridWidth
+            3, //gridHeight
+            1.0, //weightX
+            1.0, //weightY
+            GridBagConstraints.CENTER, //anchor 
+            GridBagConstraints.BOTH, //fill
+            new Insets(0,0,0,0), //insets
+            0, //ipadX
+            0 ) //ipadY
+        );
 		
 		
 	}
@@ -261,9 +266,9 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 				0, //gridY
 				1, //gridWidth
 				3, //gridHeight
-				1.0, //weightX
+				0.0, //weightX
 				0.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
+				GridBagConstraints.WEST, //anchor 
 				GridBagConstraints.NONE, //fill
 				new Insets(2,2,2,2), //insets
 				0, //ipadX

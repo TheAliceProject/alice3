@@ -49,40 +49,44 @@ import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 
+import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
+import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
+import org.alice.stageide.croquet.models.sceneditor.PropertyAndMarkerPanelSelectionState;
 import org.alice.stageide.sceneeditor.snap.SnapControlPanel;
 import org.alice.stageide.sceneeditor.snap.SnapState;
-import org.alice.stageide.sceneeditor.viewmanager.SceneObjectMarkerManagerPanel;
-import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
 import org.alice.ide.IDE;
 import org.alice.ide.swing.BasicTreeNodeViewerPanel;
-import org.alice.ide.swing.FieldListCellRenderer;
 import org.alice.interact.handle.HandleSet;
 
 import edu.cmu.cs.dennisc.croquet.ActionOperation;
-import edu.cmu.cs.dennisc.croquet.ComboBox;
+import edu.cmu.cs.dennisc.croquet.BooleanState;
+import edu.cmu.cs.dennisc.croquet.BooleanStateButton;
+
+import edu.cmu.cs.dennisc.croquet.DefaultRadioButtons;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
-import edu.cmu.cs.dennisc.croquet.PageAxisPanel;
+import edu.cmu.cs.dennisc.croquet.JComponent;
+import edu.cmu.cs.dennisc.croquet.Label;
+import edu.cmu.cs.dennisc.croquet.PredeterminedTab;
+import edu.cmu.cs.dennisc.croquet.PushButton;
 import edu.cmu.cs.dennisc.croquet.ScrollPane;
+import edu.cmu.cs.dennisc.croquet.ToolPaletteTabbedPane;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory;
 import edu.cmu.cs.dennisc.lookingglass.opengl.SceneAdapter;
 import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
+import edu.cmu.cs.dennisc.croquet.ListSelectionState.TabCreator;
 
 /**
  * @author Dennis Cosgrove
  */
-class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+class SidePane extends edu.cmu.cs.dennisc.croquet.GridBagPanel {
 	private boolean isExpanded = false;
-	private SceneViewManagerPanel viewManagerPanel = null;
-	private SceneObjectMarkerManagerPanel objectMarkerManagerPanel = null;
 	private SnapControlPanel snapControlPanel = null;
 	private GridBagPanel mainPanel = null;
 	
 	private BasicTreeNodeViewerPanel sceneGraphViewer = null;
 	private JDialog sceneGraphViewDialog = null;
 	private ActionOperation showSceneGraphActionOperation;
-	private SceneObjectPropertyManager propertyManager;
 	
 	public void setSceneGraphRoot()
 	{
@@ -159,86 +163,124 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 	
 	public SidePane(MoveAndTurnSceneEditor sceneEditor) {
+	    
+	    ToolPaletteTabbedPane<PredeterminedTab> tptp = PropertyAndMarkerPanelSelectionState.getInstance().createDefaultToolPaletteTabbedPane();
+	    
 		this.mainPanel = new GridBagPanel();
-		this.viewManagerPanel = new SceneViewManagerPanel(sceneEditor);
-		this.objectMarkerManagerPanel = new SceneObjectMarkerManagerPanel(sceneEditor);
 		this.snapControlPanel = new SnapControlPanel(sceneEditor.getSnapState(), sceneEditor);
-		this.propertyManager = new SceneObjectPropertyManager();
 		
-		edu.cmu.cs.dennisc.croquet.BorderPanel handleControlPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-//		handleControlPanel.setOpaque( false );
-		
+		//Set up the handle components
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
-		handleControlPanel.addComponent( new edu.cmu.cs.dennisc.croquet.Label( resourceBundle.getString("handleStyleTitle"), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), BorderPanel.Constraint.PAGE_START );
-		handleControlPanel.addComponent( org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().createDefaultRadioButtons(), BorderPanel.Constraint.CENTER);
-		handleControlPanel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-
-		ScrollPane markerScrollPane = new ScrollPane(new PageAxisPanel(this.viewManagerPanel, this.objectMarkerManagerPanel), ScrollPane.VerticalScrollbarPolicy.AS_NEEDED, ScrollPane.HorizontalScrollbarPolicy.AS_NEEDED);
-		markerScrollPane.setBorder(null);
-		
-		this.mainPanel.addComponent(this.propertyManager, new GridBagConstraints(
-				0, // gridX
-				0, // gridY
-				1, // gridWidth
-				1, // gridHeight
-				1.0, // weightX
-				1.0, // weightY
-				GridBagConstraints.NORTHWEST, // anchor
-				GridBagConstraints.NONE, // fill
-				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
-				0, // ipadX
-				0) // ipadY
-				);
-		
-		this.mainPanel.addComponent(markerScrollPane, new GridBagConstraints(
-				0, // gridX
-				1, // gridY
-				1, // gridWidth
-				1, // gridHeight
-				1.0, // weightX
-				1.0, // weightY
-				GridBagConstraints.NORTH, // anchor
-				GridBagConstraints.BOTH, // fill
-				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
-				0, // ipadX
-				0) // ipadY
-				);
-
-		this.mainPanel.addComponent(handleControlPanel, new GridBagConstraints(
-				0, // gridX
-				2, // gridY
-				1, // gridWidth
-				1, // gridHeight
-				1.0, // weightX
-				0.0, // weightY
-				GridBagConstraints.NORTH, // anchor
-				GridBagConstraints.HORIZONTAL, // fill
-				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
-				0, // ipadX
-				0) // ipadY
-				);
-		this.mainPanel.addComponent(this.snapControlPanel, new GridBagConstraints(
-				0, // gridX
-				3, // gridY
-				1, // gridWidth
-				1, // gridHeight
-				1.0, // weightX
-				0.0, // weightY
-				GridBagConstraints.NORTH, // anchor
-				GridBagConstraints.HORIZONTAL, // fill
-				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
-				0, // ipadX
-				0) // ipadY
-				);
-		
+		Label handleLabel = new edu.cmu.cs.dennisc.croquet.Label( resourceBundle.getString("handleStyleTitle"), 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD);
+		DefaultRadioButtons<org.alice.stageide.sceneeditor.HandleStyle> handleRadioButtons = new DefaultRadioButtons<HandleStyle>(org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance(), false){
+            @Override 
+            protected BooleanStateButton<?> createBooleanStateButton(
+                    HandleStyle item, BooleanState booleanState)
+            {
+                if (item.getIcon() != null)
+                {
+                    booleanState.setIconForBothTrueAndFalse( item.getIcon() );
+                }
+                if (item.getToolTipText() != null)
+                {
+                    booleanState.setToolTipText(item.getToolTipText());
+                }
+                PushButton b = booleanState.createPushButton();
+                b.setSelectedColor(org.alice.ide.IDE.getSingleton().getTheme().getSelectedColor());
+                b.setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getPrimaryBackgroundColor());
+                return b;
+            }
+        };
+        //Layout the handle panel
+		edu.cmu.cs.dennisc.croquet.GridBagPanel handleControlPanel = new edu.cmu.cs.dennisc.croquet.GridBagPanel();
+		handleControlPanel.addComponent(handleLabel, new GridBagConstraints(
+                0, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                0.25, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.NONE, // fill
+                new Insets(0, 4, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+		handleControlPanel.addComponent( handleRadioButtons, new GridBagConstraints(
+                1, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                .75, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.NONE, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+		//This is to create a line separator between the undo/redo panel and the handle controls
+		//edu.cmu.cs.dennisc.croquet.HorizontalSeparator() doesn't provide good color control
+		handleControlPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, org.alice.ide.IDE.getSingleton().getTheme().getSecondaryBackgroundColor()), 
+		        BorderFactory.createEmptyBorder(4, 0, 0, 0)));
+		//Construct the undo/redo panel
+		edu.cmu.cs.dennisc.croquet.LineAxisPanel undoRedoPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
+                org.alice.ide.croquet.models.history.UndoOperation.getInstance().createButton(), 
+                org.alice.ide.croquet.models.history.RedoOperation.getInstance().createButton(),
+                edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue()
+        );
+		//Layout out the header panel with the undo/redo buttons, the handle controls, and the snap controls
+        GridBagPanel headerPanel = new GridBagPanel();
+        int headerIndex = 0;
+        headerPanel.addComponent(undoRedoPanel, new GridBagConstraints(
+                0, // gridX
+                headerIndex++, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                1.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.CENTER, // anchor
+                GridBagConstraints.NONE, // fill
+                new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+        headerPanel.addComponent(handleControlPanel, new GridBagConstraints(
+                0, // gridX
+                headerIndex++, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                1.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.NORTHWEST, // anchor
+                GridBagConstraints.HORIZONTAL, // fill
+                new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+        headerPanel.addComponent(this.snapControlPanel, new GridBagConstraints(
+                0, // gridX
+                headerIndex++, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                1.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.NORTHWEST, // anchor
+                GridBagConstraints.HORIZONTAL, // fill
+                new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+		//Layout the main body panel		
+		int mainPanelIndex = 0;
 		this.showSceneGraphActionOperation = new ShowSceneGraphViewerActionOperation();
 		this.showLookingglassViewActionOperation = new ShowLookingglassViewerActionOperation();
-		
+		//Add debug components
 		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
 		{
 			this.mainPanel.addComponent(this.showSceneGraphActionOperation.createButton(), new GridBagConstraints(
 					0, // gridX
-					3, // gridY
+					mainPanelIndex++, // gridY
 					1, // gridWidth
 					1, // gridHeight
 					1.0, // weightX
@@ -251,7 +293,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 					);
 			this.mainPanel.addComponent(this.showLookingglassViewActionOperation.createButton(), new GridBagConstraints(
 					0, // gridX
-					4, // gridY
+					mainPanelIndex++, // gridY
 					1, // gridWidth
 					1, // gridHeight
 					1.0, // weightX
@@ -264,21 +306,79 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 					);
 		}
 		
-		this.mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		//Put the header and the main body in this component
+		this.addComponent( headerPanel, new GridBagConstraints(
+                0, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                1.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.NORTHWEST, // anchor
+                GridBagConstraints.BOTH, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
 		
-//		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.addComponent( mainPanel, Constraint.CENTER);
+		TabCreator< PredeterminedTab > tabCreator = new TabCreator< PredeterminedTab >() {
+	        public final java.util.UUID getId(PredeterminedTab item) {
+	            java.util.UUID rv = item.getId();
+	            assert rv != null;
+	            return rv;
+	        }
+	        public final JComponent<?> createMainComponent(PredeterminedTab item) {
+	            return item.getMainComponent();
+	        }
+	        public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.croquet.PredeterminedTab item ) {
+	            item.customizeTitleComponent( booleanState, button );
+	            button.scaleFont(1.2f);
+	            button.setFont(edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( button.getAwtComponent(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
+//	            button.getAwtComponent().revalidate();
+	        }
+	        public final ScrollPane createScrollPane( PredeterminedTab item ) {
+	            return item.createScrollPane();
+	        }
+	        public final boolean isCloseable(edu.cmu.cs.dennisc.croquet.PredeterminedTab item) {
+	            return false;
+	        }
+	    };
+		ToolPaletteTabbedPane<PredeterminedTab> propertyMarkerToolPalette =  new ToolPaletteTabbedPane< PredeterminedTab >( PropertyAndMarkerPanelSelectionState.getInstance(), tabCreator );
 		
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel undoRedoPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
-				org.alice.ide.croquet.models.history.UndoOperation.getInstance().createButton(), 
-				org.alice.ide.croquet.models.history.RedoOperation.getInstance().createButton(),
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue()
-		);
-		this.addComponent( undoRedoPanel, Constraint.PAGE_START );
-	}
-	
-	public SceneObjectPropertyManager getPropertyManager() {
-		return this.propertyManager;
+//		ScrollPane mainScrollPane = new ScrollPane(this.mainPanel, ScrollPane.VerticalScrollbarPolicy.ALWAYS, ScrollPane.HorizontalScrollbarPolicy.NEVER);
+//        mainScrollPane.setBorder(null);
+		this.addComponent( propertyMarkerToolPalette, new GridBagConstraints(
+		        0, // gridX
+                1, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                1.0, // weightX
+                1.0, // weightY
+                GridBagConstraints.NORTHWEST, // anchor
+                GridBagConstraints.BOTH, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+		
+		//Set up colors
+		this.setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getPrimaryBackgroundColor());
+		this.mainPanel.setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getSecondaryBackgroundColor());
+        this.snapControlPanel.setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getPrimaryBackgroundColor());
+        
+        ObjectPropertiesTab.getInstance().getMainComponent().setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getSecondaryBackgroundColor());
+        MarkerPanelTab.getInstance().getMainComponent().setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getSecondaryBackgroundColor());
+        MarkerPanelTab.getInstance().getMainComponent().setSelectedItemColor(org.alice.ide.IDE.getSingleton().getTheme().getSelectedColor());
+        
+        headerPanel.setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getPrimaryBackgroundColor());
+	        
+		Dimension minSize = new Dimension(this.getAwtComponent().getMinimumSize());
+		minSize.width = 300;
+		this.getAwtComponent().setMinimumSize(minSize);
+		
+//		this.propertyManager.setBackgroundColor(Color.GREEN);
+//        this.mainPanel.setBackgroundColor(Color.BLUE);
+//        this.setBackgroundColor(Color.YELLOW);
 	}
 	
 	public ActionOperation getShowSceneGraphViewerActionOperation()
@@ -293,15 +393,6 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public void setExpanded(boolean isExpanded) {
 		this.isExpanded = isExpanded;
 		this.revalidateAndRepaint();
-	}
-
-
-	public SceneViewManagerPanel getViewManager() {
-		return this.viewManagerPanel;
-	}
-	
-	public SceneObjectMarkerManagerPanel getObjectMarkerManager() {
-		return this.objectMarkerManagerPanel;
 	}
 
 	public void setSnapState(SnapState snapState)

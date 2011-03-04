@@ -61,7 +61,6 @@ public class CreateObjectMarkerActionOperation extends AbstractSceneDeclareField
 
 	private CreateObjectMarkerActionOperation() {
 		super( java.util.UUID.fromString( "84196555-4775-4660-a510-b9581ba79633" ) );
-		this.setName( "Create object marker here..." );
 	}
 	
 	@Override
@@ -70,6 +69,7 @@ public class CreateObjectMarkerActionOperation extends AbstractSceneDeclareField
 		return ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).createObjectMarkerField( ownerType );
 	}
 	
+	//TODO: Localize this
 	public void setFieldName(String fieldName)
 	{
 		if (fieldName != null)

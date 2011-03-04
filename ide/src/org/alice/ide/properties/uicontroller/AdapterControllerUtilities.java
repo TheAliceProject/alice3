@@ -45,7 +45,9 @@ package org.alice.ide.properties.uicontroller;
 
 import org.alice.apis.moveandturn.Composite;
 import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.alice.stageide.properties.FieldNameAdapter;
 import org.alice.stageide.properties.uicontroller.CompositePropertyController;
+import org.alice.stageide.properties.uicontroller.FieldNamePropertyController;
 import org.alice.stageide.properties.uicontroller.ModelScalePropertyController;
 
 import edu.cmu.cs.dennisc.math.Matrix3x3;
@@ -61,6 +63,12 @@ public class AdapterControllerUtilities
 		{
 			return new BlankPropertyController(propertyAdapter);
 		}
+		//Check for adapter specific rules first
+		else if (propertyAdapter instanceof FieldNameAdapter)
+		{
+		    return new FieldNamePropertyController(propertyAdapter);
+		}
+		//Now check based on desired type
 		else if (edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom(propertyType))
 		{
 			return new Color4fPropertyController(propertyAdapter);
