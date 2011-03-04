@@ -195,9 +195,9 @@ class SnowScene extends Scene {
 		this.blueCone.move( MoveDirection.LEFT, 1.5 );
 		
 		this.ogre.move( MoveDirection.LEFT, 1.5 );
-		
+		this.susan.turn( TurnDirection.LEFT, 0.25 );
 		this.snow.setAppearance( Ground.Appearance.SNOW );
-		this.camera.getAGoodLookAt( this.susan );
+		this.camera.getAGoodLookAt( this.ogre );
 	}
 	private void performCustomSetup() {
 	}
