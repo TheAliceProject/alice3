@@ -453,9 +453,9 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			InteractionGroup resizeInteraction = new InteractionGroup(HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject);
 			
 			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.DEFAULT, defaultInteraction );
-			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.ROTATION, defaultInteraction );
-			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.TRANSLATION, defaultInteraction );
-			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.RESIZE, defaultInteraction );
+			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.ROTATION, rotationInteraction );
+			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.TRANSLATION, translationInteraction );
+			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.RESIZE, resizeInteraction );
 //			this.interactionSelectionState.addItem(defaultInteraction);
 //			this.interactionSelectionState.addItem(rotationInteraction);
 //			this.interactionSelectionState.addItem(translationInteraction);

@@ -43,6 +43,8 @@
 
 package org.alice.stageide.sceneeditor;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.lang.reflect.Constructor;
@@ -62,9 +64,12 @@ import org.alice.stageide.properties.TransformableTranslationAdapter;
 import org.alice.stageide.properties.TransformableVehicleAdapter;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
+import edu.cmu.cs.dennisc.croquet.BoxUtilities;
+import edu.cmu.cs.dennisc.croquet.Component;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
 import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.croquet.Panel;
+import edu.cmu.cs.dennisc.croquet.ToolPalette;
 
 public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>
 {
@@ -87,13 +92,23 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 	private List<LabelValueControllerPair> activeControllers = new LinkedList<LabelValueControllerPair>();
 	private Label classLabel;
 	private Label classNameLabel;
+	private GridBagPanel morePropertiesPanel;
+	private ToolPalette extraPropertiesPalette;
 	
 	public SceneObjectPropertyManager()
 	{
 		super();
 		this.classLabel = new Label("NO CLASS");
 		this.classNameLabel = createLabel("Class = ");
-		
+		this.morePropertiesPanel = new GridBagPanel();
+		this.extraPropertiesPalette = AreExtraPropertiesShownState.getInstance().createToolPalette(this.morePropertiesPanel);
+	}
+	
+	@Override
+    public void setBackgroundColor( java.awt.Color color )
+	{
+	    super.setBackgroundColor(color);
+	    this.extraPropertiesPalette.setBackgroundColor(color);
 	}
 	
 	private static Class<?>[] PROPERTY_ADAPTER_CLASSES= {
@@ -143,6 +158,41 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 		return new Label(labelText, 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD);
 	}
 	
+	private void addNameAndControllerToPanel(Component< ? > label, Component< ? > controllerPanel, GridBagPanel panel, int index)
+	{
+	    panel.addComponent( label, new GridBagConstraints( 
+            0, //gridX
+            index, //gridY
+            1, //gridWidth
+            1, //gridHeight
+            0.0, //weightX
+            0.0, //weightY
+            GridBagConstraints.EAST, //anchor 
+            GridBagConstraints.NONE, //fill
+            new Insets(2,2,2,2), // insets (top, left, bottom, right)
+            0, //ipadX
+            0 ) //ipadY
+       );
+	    panel.addComponent( controllerPanel, new GridBagConstraints( 
+            1, //gridX
+            index, //gridY 
+            1, //gridWidth
+            1, //gridHeight
+            1.0, //weightX
+            0.0, //weightY
+            GridBagConstraints.WEST, //anchor 
+            GridBagConstraints.HORIZONTAL, //fill
+            new Insets(2,2,2,2), // insets (top, left, bottom, right)
+            0, //ipadX
+            0 ) //ipadY
+       );
+	}
+	
+	private void addPropertyToPanel(LabelValueControllerPair propertyPair, GridBagPanel panel, int index )
+	{
+	    this.addNameAndControllerToPanel(propertyPair.label, propertyPair.controller.getPanel(), panel, index);
+	}
+	
 	public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) 
 	{
 		this.selectedField = null;
@@ -168,51 +218,18 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 		this.activeControllers.clear();
 		
 		this.removeAllComponents();
-		
+		this.morePropertiesPanel.removeAllComponents();
 		
 		
 		List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.PropertyAdapter<?,?>>();
 		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedField));
 		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedObject));
-		
+		LabelValueControllerPair fieldNamePair = null;
 		if (propertyAdapters.size() != 0)
 		{
-			int propertyCount = 0;
-			if (this.selectedField != null)
-			{
-				this.classLabel.setText(this.selectedField.getDesiredValueType().getName());
-			}
-			else
-			{
-				this.classLabel.setText("NO FIELD, NO CLASS");
-			}
-			this.addComponent(this.classNameLabel, new GridBagConstraints( 
-					0, //gridX
-					propertyCount, //gridY
-					1, //gridWidth
-					1, //gridHeight
-					0.0, //weightX
-					0.0, //weightY
-					GridBagConstraints.EAST, //anchor 
-					GridBagConstraints.NONE, //fill
-					new Insets(2,2,2,2), //insets
-					0, //ipadX
-					0 ) //ipadY
-			);
-			this.addComponent( this.classLabel, new GridBagConstraints( 
-					1, //gridX
-					propertyCount, //gridY
-					1, //gridWidth
-					1, //gridHeight
-					0.0, //weightX
-					0.0, //weightY
-					GridBagConstraints.WEST, //anchor 
-					GridBagConstraints.NONE, //fill
-					new Insets(2,2,2,2), //insets
-					0, //ipadX
-					0 ) //ipadY
-			);
-			propertyCount++;
+			int mainPropertyCount = 0;
+			int extraPropertyCount = 0;
+			//Add all the extra properties to the extra panel and find the name property adapter
 			for (org.alice.ide.properties.adapter.PropertyAdapter propertyAdapter : propertyAdapters)
 			{
 				LabelValueControllerPair matchingLabelController = null;
@@ -234,37 +251,69 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 					this.labelControllerList.add(matchingLabelController);
 				}
 				assert matchingLabelController != null;
-				
-				this.addComponent( matchingLabelController.label, new GridBagConstraints( 
-						0, //gridX
-						propertyCount, //gridY
-						1, //gridWidth
-						1, //gridHeight
-						0.0, //weightX
-						0.0, //weightY
-						GridBagConstraints.EAST, //anchor 
-						GridBagConstraints.NONE, //fill
-						new Insets(2,2,2,2), //insets
-						0, //ipadX
-						0 ) //ipadY
-				);
-				this.addComponent( matchingLabelController.controller.getPanel(), new GridBagConstraints( 
-						1, //gridX
-						propertyCount, //gridY
-						1, //gridWidth
-						1, //gridHeight
-						0.0, //weightX
-						0.0, //weightY
-						GridBagConstraints.WEST, //anchor 
-						GridBagConstraints.NONE, //fill
-						new Insets(2,2,2,2), //insets
-						0, //ipadX
-						0 ) //ipadY
-				);
-				this.activeControllers.add(matchingLabelController);
-				propertyCount++;
+				if (propertyAdapter instanceof FieldNameAdapter)
+				{
+				    //Don't add the fieldNameAdapter, just hold onto it so we can add it to the main panel later
+				    fieldNamePair = matchingLabelController;
+				    //TODO: Localize this
+				    fieldNamePair.label.setText("Selected: ");
+				}
+				else
+				{
+				   this.addPropertyToPanel(matchingLabelController, this.morePropertiesPanel, extraPropertyCount);
+				   extraPropertyCount++;
+				}
+                this.activeControllers.add(matchingLabelController);
 			}
+			//Setup the primary properties
+			if (this.selectedField != null)
+            {
+                this.classLabel.setText(this.selectedField.getDesiredValueType().getName());
+            }
+            else
+            {
+                this.classLabel.setText("NO FIELD, NO CLASS");
+            }
+			
+			//Add the object's name
+			if (fieldNamePair != null)
+			{
+			    this.addPropertyToPanel(fieldNamePair, this, mainPropertyCount++);
+			}
+			//Add the object's class
+			this.addNameAndControllerToPanel(this.classNameLabel, this.classLabel, this, mainPropertyCount++);
+			//Lastly, add the extra palette if there are any extra properties
+            if (extraPropertyCount > 0)
+            {
+                this.addComponent( this.extraPropertiesPalette , new GridBagConstraints( 
+                        0, //gridX
+                        mainPropertyCount++, //gridY
+                        2, //gridWidth
+                        1, //gridHeight
+                        1.0, //weightX
+                        0.0, //weightY
+                        GridBagConstraints.WEST, //anchor 
+                        GridBagConstraints.HORIZONTAL, //fill
+                        new Insets(4,0,0,0), // insets (top, left, bottom, right)
+                        0, //ipadX
+                        0 ) //ipadY
+                );
+            }
+            this.addComponent( BoxUtilities.createVerticalGlue() , new GridBagConstraints( 
+                    0, //gridX
+                    mainPropertyCount++, //gridY
+                    2, //gridWidth
+                    1, //gridHeight
+                    1.0, //weightX
+                    1.0, //weightY
+                    GridBagConstraints.CENTER, //anchor 
+                    GridBagConstraints.VERTICAL, //fill
+                    new Insets(0,0,0,0), // insets (top, left, bottom, right)
+                    0, //ipadX
+                    0 ) //ipadY
+            );
 		}
+		this.revalidateAndRepaint();
 	}
 
 }

@@ -44,20 +44,13 @@
 package org.alice.ide.properties.uicontroller;
 
 
-import java.util.Locale;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 import org.alice.ide.properties.adapter.PropertyAdapter;
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
 
-public class BlankPropertyController extends AbstractAdapterController<Object>
+public class BlankPropertyController extends LabelBasedPropertyController<Object>
 {
-	private BorderPanel mainPanel;
-	private Label objectLabel;
-	
-	private static final String BLANK_STRING = "TODO: ";
-	
 	public BlankPropertyController(PropertyAdapter<Object, ?> propertyAdapter)
 	{
 		super(propertyAdapter);
@@ -66,9 +59,21 @@ public class BlankPropertyController extends AbstractAdapterController<Object>
 	@Override
 	protected void initializeComponents() 
 	{
-		this.mainPanel = new BorderPanel();
-		this.objectLabel = new Label(BLANK_STRING);
-		this.mainPanel.addComponent(this.objectLabel, BorderPanel.Constraint.CENTER);
+		super.initializeComponents();
+		this.label.setText(BLANK_STRING);
+		this.mainPanel.addComponent(this.propertyComponent, new GridBagConstraints(
+                0, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                0.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.HORIZONTAL, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
 	}
 	
 	@Override
@@ -82,11 +87,11 @@ public class BlankPropertyController extends AbstractAdapterController<Object>
 	{
 		if (value != null)
 		{
-			objectLabel.setText(BLANK_STRING+value.getClass().getSimpleName());
+			this.label.setText(BLANK_STRING+value.getClass().getSimpleName());
 		}
 		else
 		{
-			objectLabel.setText(BLANK_STRING+"NULL");
+		    this.label.setText(BLANK_STRING+"NULL");
 		}
 	}
 	
@@ -94,11 +99,5 @@ public class BlankPropertyController extends AbstractAdapterController<Object>
 	protected void setValueOnData(Object value) 
 	{
 		//Do Nothing
-	}
-
-	@Override
-	public Panel getPanel() 
-	{
-		return this.mainPanel;
 	}
 }

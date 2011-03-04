@@ -43,104 +43,58 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.croquet.Button;
-import edu.cmu.cs.dennisc.croquet.GridBagPanel;
-import edu.cmu.cs.dennisc.croquet.ScrollPane;
+import edu.cmu.cs.dennisc.croquet.MutableList;
+import edu.cmu.cs.dennisc.croquet.Operation;
 
-public class SceneObjectMarkerManagerPanel extends GridBagPanel {
-	protected Button moveObjectToMarkerButton;
-	protected Button moveMarkerToObjectButton;
-	
-	public SceneObjectMarkerManagerPanel(org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor sceneEditor)
-	{
-		super();
-		edu.cmu.cs.dennisc.croquet.MutableList.Factory<FieldDeclaredInAlice> factory = new edu.cmu.cs.dennisc.croquet.MutableList.Factory<FieldDeclaredInAlice>() {
-			public edu.cmu.cs.dennisc.croquet.Component<?> createLeadingComponent() {
-				return null;
-			}
-			public edu.cmu.cs.dennisc.croquet.Component<?> createMainComponent() {
-				return new MarkerFieldTile();
-			}
-			public edu.cmu.cs.dennisc.croquet.Component<?> createTrailingComponent() {
-				return null;
-			}
-			public void update(edu.cmu.cs.dennisc.croquet.Component<?> leadingComponent, edu.cmu.cs.dennisc.croquet.Component<?> mainComponent, edu.cmu.cs.dennisc.croquet.Component<?> trailingComponent, int index, FieldDeclaredInAlice item) {
-				((MarkerFieldTile)mainComponent).setField(item);
-			}
-			public void updateSelection(edu.cmu.cs.dennisc.croquet.Component<?> leadingComponent, edu.cmu.cs.dennisc.croquet.Component<?> mainComponent, edu.cmu.cs.dennisc.croquet.Component<?> trailingComponent, boolean isSelected) {
-				((MarkerFieldTile)mainComponent).setSelected( isSelected );
-			}
-			public edu.cmu.cs.dennisc.croquet.Operation<?> getAddItemOperation() {
-				return CreateObjectMarkerActionOperation.getInstance();
-			}
-		};
-		
-		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( SceneObjectMarkerManagerPanel.class.getPackage().getName() + ".objectMarkers" );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( resourceBundle.getString( "objectMarkersTitle" ), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), new GridBagConstraints( 
-				0, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.moveObjectToMarkerButton = MoveSelectedObjectToMarkerActionOperation.getInstance().createButton();
-		this.addComponent( this.moveObjectToMarkerButton, new GridBagConstraints( 
-				1, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.moveMarkerToObjectButton = MoveMarkerToSelectedObjectActionOperation.getInstance().createButton();
-		this.addComponent( this.moveMarkerToObjectButton, new GridBagConstraints( 
-				2, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.addComponent(org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState.getInstance().createMutableList( factory ), new GridBagConstraints( 
-				0, //gridX
-				1, //gridY
-				3, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				1.0, //weightY
-				GridBagConstraints.NORTH, //anchor 
-				GridBagConstraints.BOTH, //fill
-				new Insets(0,0,0,0), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-	}
-	
-	public void updateButtons()
-	{
-		this.moveObjectToMarkerButton.setVisible(MoveSelectedObjectToMarkerActionOperation.getInstance().isEnabled());
-		this.moveMarkerToObjectButton.setVisible(MoveMarkerToSelectedObjectActionOperation.getInstance().isEnabled());
-	}
+public class SceneObjectMarkerManagerPanel extends AbstractMarkerManagerPanel {
+
+    public SceneObjectMarkerManagerPanel()
+    {
+        super();
+    }
+    
+    @Override
+    protected MutableList<FieldDeclaredInAlice> createMutableList(edu.cmu.cs.dennisc.croquet.MutableList.Factory<FieldDeclaredInAlice> factory)
+    {
+        return org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState.getInstance().createMutableList( factory );
+    }
+    
+    @Override
+    protected Operation<?> getAddItemOperation()
+    {
+        return CreateObjectMarkerActionOperation.getInstance();
+    }
+    
+    @Override
+    protected String getTitleString()
+    {
+        java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( SceneObjectMarkerManagerPanel.class.getPackage().getName() + ".objectMarkers" );
+        return resourceBundle.getString( "objectMarkersTitle" );
+    }
+    
+    @Override
+    protected Button getMovetoMarkerButton()
+    {
+        return MoveSelectedObjectToMarkerActionOperation.getInstance().createButton();
+    }
+    
+    @Override
+    protected Button getMoveToObjectButton()
+    {
+        return MoveMarkerToSelectedObjectActionOperation.getInstance().createButton();
+    }
+    
+    @Override
+    public void updateButtons()
+    {
+        this.moveToMarkerButton.setVisible(MoveSelectedObjectToMarkerActionOperation.getInstance().isEnabled());
+        this.moveToObjectButton.setVisible(MoveMarkerToSelectedObjectActionOperation.getInstance().isEnabled());
+    }
+    
 	
 	
 }

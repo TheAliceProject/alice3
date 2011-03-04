@@ -559,8 +559,11 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	public List< E > createList() {
 		return new List< E >( this );
 	}
-	public DefaultRadioButtons< E > createDefaultRadioButtons() {
-		return new DefaultRadioButtons< E >( this );
+	public DefaultRadioButtons< E > createVerticalDefaultRadioButtons() {
+		return new DefaultRadioButtons< E >( this, true );
+	}
+	public DefaultRadioButtons< E > createHorizontalDefaultRadioButtons() {
+		return new DefaultRadioButtons< E >( this, false );
 	}
 	public MutableList< E > createMutableList( MutableList.Factory< E > factory ) {
 		return new MutableList< E >( this, factory );

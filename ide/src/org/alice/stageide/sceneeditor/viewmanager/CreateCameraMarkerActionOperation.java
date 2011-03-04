@@ -63,7 +63,12 @@ public class CreateCameraMarkerActionOperation extends AbstractSceneDeclareField
 
 	private CreateCameraMarkerActionOperation() {
 		super( java.util.UUID.fromString( "88fdc53c-596f-4878-ab39-22381982e079" ));
-		this.setName( "Create camera marker here..." );
+	}
+	
+	@Override
+	protected void localize()
+	{
+	    super.localize();
 	}
 	
 	@Override

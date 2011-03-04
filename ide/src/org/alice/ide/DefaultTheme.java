@@ -42,6 +42,8 @@
  */
 package org.alice.ide;
 
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,6 +52,10 @@ public class DefaultTheme implements Theme {
 	private static final java.awt.Color DEFAULT_FUNCTION_COLOR = new java.awt.Color( 0xb0c9a4 );
 	private static final java.awt.Color DEFAULT_CONSTRUCTOR_COLOR = new java.awt.Color( 0xadc0ab );
 	private static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 230, 230, 210 );
+	private static final java.awt.Color DEFAULT_SELECTED_COLOR = new java.awt.Color(255, 255, 179);
+	private static final java.awt.Color DEFAULT_UNSELECTED_COLOR = new java.awt.Color(141, 137, 166);
+	private static final java.awt.Color DEFAULT_PRIMARY_BACKGROUND_COLOR = new java.awt.Color(173, 167, 208);
+	private static final java.awt.Color DEFAULT_SECONDARY_BACKGROUND_COLOR = new java.awt.Color(201, 201, 218);
 
 	public java.awt.Color getProcedureColor() {
 		return DEFAULT_PROCEDURE_COLOR;
@@ -155,4 +161,21 @@ public class DefaultTheme implements Theme {
 			return java.awt.Color.GRAY;
 		}
 	}
+    public Color getSelectedColor()
+    {
+        return DEFAULT_SELECTED_COLOR;
+    }
+    public Color getUnselectedColor()
+    {
+        return DEFAULT_UNSELECTED_COLOR;
+    }
+    public Color getPrimaryBackgroundColor()
+    {
+        return DEFAULT_PRIMARY_BACKGROUND_COLOR;
+    }
+    public Color getSecondaryBackgroundColor()
+    {
+        // TODO Auto-generated method stub
+        return DEFAULT_SECONDARY_BACKGROUND_COLOR;
+    }
 }

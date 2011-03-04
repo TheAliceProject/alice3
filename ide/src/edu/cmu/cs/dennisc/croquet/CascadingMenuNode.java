@@ -50,4 +50,14 @@ public abstract class CascadingMenuNode< T > extends Model {
 	public CascadingMenuNode( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
+	
+	@Override
+	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		//todo?
+		return false;
+	}
+	@Override
+	protected void localize() {
+		//todo
+	}
 }

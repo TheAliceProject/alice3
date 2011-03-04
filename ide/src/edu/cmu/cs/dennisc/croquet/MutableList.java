@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -96,8 +99,14 @@ public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.
 		public Operation<?> getAddItemOperation();
 	}
 	
-	private static java.awt.Color SELECTION_BACKGROUND = new java.awt.Color( 57, 105, 138 );
-	private static class MutableListButton extends BooleanStateButton< javax.swing.AbstractButton > {
+	private static java.awt.Color DEFAULT_SELECTED_BACKGROUND = new java.awt.Color( 57, 105, 138 );
+	private static java.awt.Color DEFAULT_UNSELECTED_BACKGROUND = new java.awt.Color( 214, 217, 223);
+	
+	private java.awt.Color selectedBackgroundColor = DEFAULT_SELECTED_BACKGROUND;
+	private java.awt.Color unselectedBackgroundColor = DEFAULT_UNSELECTED_BACKGROUND; 
+	
+	
+	private class MutableListButton extends BooleanStateButton< javax.swing.AbstractButton > {
 		public MutableListButton( BooleanState booleanState ) {
 			super( booleanState );
 		}
@@ -113,7 +122,7 @@ public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.
 				@Override
 				protected void paintComponent(java.awt.Graphics g) {
 					//super.paintComponent(g);
-					g.setColor( this.getBackground() );
+					g.setColor( MutableList.this.getUnselectedBackgroundColor() );
 					g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 					//g.clearRect( 0, 0, this.getWidth(), this.getHeight() );
 					if( this.isSelected() ) {
@@ -121,10 +130,14 @@ public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.
 //						if( this.getModel().isRollover() ) {
 //							color = SELECTION_ROLLOVER_BACKGROUND;
 //						} else {
-							color = SELECTION_BACKGROUND;
+							color = MutableList.this.getSelectedBackgroundColor();
 //						}
 						g.setColor( color );
-						g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), 4, 4 );
+						if (g instanceof Graphics2D)
+		                {
+		                   ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		                }
+						g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), 8, 8 );
 						if( this.getModel().isRollover() ) {
 							color = java.awt.Color.LIGHT_GRAY;
 						} else {
@@ -224,5 +237,25 @@ public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.
 		button.setVisible( false );
 		this.pageAxisPanel.addComponent( button );
 		return rv;
-	};
+	}
+	
+	public void setSelectedBackgroundColor(java.awt.Color color)
+	{
+	    this.selectedBackgroundColor = color;
+	}
+	
+	public java.awt.Color getSelectedBackgroundColor()
+	{
+	    return this.selectedBackgroundColor;
+	}
+	
+	public void setUnselectedBackgroundColor(java.awt.Color color)
+    {
+        this.unselectedBackgroundColor = color;
+    }
+    
+    public java.awt.Color getUnselectedBackgroundColor()
+    {
+        return this.unselectedBackgroundColor;
+    }
 }

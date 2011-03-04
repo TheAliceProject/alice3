@@ -43,32 +43,15 @@
 
 package org.alice.ide.properties.uicontroller;
 
-import java.awt.Color;
-import java.util.Locale;
 
 import org.alice.ide.properties.adapter.PropertyAdapter;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
 
-public class StringPropertyController extends AbstractAdapterController<String>
+public class StringPropertyController extends LabelBasedPropertyController<String>
 {
-	private BorderPanel mainPanel;
-	private Label stringLabel;
-	
-	private static final String BLANK_STRING = "NO VALUE";
-	
 	public StringPropertyController(PropertyAdapter<String, ?> propertyAdapter)
 	{
 		super(propertyAdapter);
-	}
-	
-	@Override
-	protected void initializeComponents() 
-	{
-		this.mainPanel = new BorderPanel();
-		this.stringLabel = new Label();
 	}
 	
 	@Override
@@ -82,28 +65,11 @@ public class StringPropertyController extends AbstractAdapterController<String>
 	{
 		if (stringValue != null)
 		{
-			this.stringLabel.setText(stringValue);
+		    this.label.setText(stringValue);
 		}
 		else
 		{
-			this.stringLabel.setText(BLANK_STRING);
+		    this.label.setText(BLANK_STRING);
 		}
-	}
-	
-	@Override
-	protected void updateUIFromNewAdapter() 
-	{
-		this.mainPanel.removeAllComponents();
-		this.mainPanel.addComponent(this.stringLabel, BorderPanel.Constraint.CENTER);
-		if (this.propertyAdapter != null)
-		{
-			this.mainPanel.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
-		}
-	}
-	
-	@Override
-	public Panel getPanel() 
-	{
-		return this.mainPanel;
 	}
 }

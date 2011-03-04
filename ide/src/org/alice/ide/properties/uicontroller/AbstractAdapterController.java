@@ -48,12 +48,15 @@ import org.alice.ide.properties.adapter.PropertyAdapter;
 import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.croquet.BorderPanel;
 import edu.cmu.cs.dennisc.croquet.Component;
+import edu.cmu.cs.dennisc.croquet.GridBagPanel;
+import edu.cmu.cs.dennisc.croquet.Label;
 import edu.cmu.cs.dennisc.croquet.Panel;
 import edu.cmu.cs.dennisc.math.Point3;
 
 public abstract class AbstractAdapterController<P> implements PropertyAdapterController<P>
 {
-	
+    protected GridBagPanel mainPanel;
+    
 	protected PropertyAdapter.ValueChangeObserver<P> valueChangeObserver = new PropertyAdapter.ValueChangeObserver<P>()
 	{
 		public void valueChanged(P newValue) 
@@ -72,8 +75,37 @@ public abstract class AbstractAdapterController<P> implements PropertyAdapterCon
 		this.setPropertyAdapter(this.propertyAdapter);
 	}
 	
-	public abstract Panel getPanel();
-
+	public abstract Class<?> getPropertyType();
+	protected abstract void setValueOnUI(P value);
+    
+    protected void setValueOnData(P value)
+    {
+        this.propertyAdapter.setValue(value);
+    }
+    
+    protected void updateUIFromNewAdapter() 
+    {
+        if (this.propertyAdapter != null)
+        {
+            this.setValueOnUI(this.propertyAdapter.getValue());
+        }
+        else
+        {
+            this.setValueOnUI(null);
+        }
+    }
+	
+    protected void initializeComponents()
+    {
+        this.mainPanel = new GridBagPanel();
+    }
+    
+    public Panel getPanel()
+    {
+        return this.mainPanel;
+    }
+    
+    
 	public PropertyAdapter<P, ?> getPropertyAdapter()
 	{
 		return this.propertyAdapter;
@@ -98,26 +130,9 @@ public abstract class AbstractAdapterController<P> implements PropertyAdapterCon
 		
 	}
 	
-	protected void updateUIFromNewAdapter() 
-	{
-		if (this.propertyAdapter != null)
-		{
-			this.setValueOnUI(this.propertyAdapter.getValue());
-		}
-		else
-		{
-			this.setValueOnUI(null);
-		}
-	}
 	
-	protected abstract void initializeComponents();
 	
-	protected abstract void setValueOnUI(P value);
 	
-	protected void setValueOnData(P value)
-	{
-		this.propertyAdapter.setValue(value);
-	}
+	
 
-	public abstract Class<?> getPropertyType();
 }

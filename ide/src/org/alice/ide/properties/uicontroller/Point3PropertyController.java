@@ -43,13 +43,19 @@
 
 package org.alice.ide.properties.uicontroller;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 
 import edu.cmu.cs.dennisc.croquet.BorderPanel;
+import edu.cmu.cs.dennisc.croquet.BoxUtilities;
 import edu.cmu.cs.dennisc.croquet.FlowPanel;
+import edu.cmu.cs.dennisc.croquet.GridBagPanel;
 import edu.cmu.cs.dennisc.croquet.Label;
 import edu.cmu.cs.dennisc.croquet.Panel;
 import edu.cmu.cs.dennisc.croquet.SwingAdapter;
@@ -60,8 +66,6 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 public class Point3PropertyController extends AbstractAdapterController<Point3>
 {	
 	private ActionListener valueChangeListener;
-	
-	private BorderPanel mainPanel;
 	
 	private Label xLabel;
 	private Label yLabel;
@@ -82,7 +86,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 	@Override
 	protected void initializeComponents() 
 	{
-		this.mainPanel = new BorderPanel();
+		super.initializeComponents();
 		
 		this.valueChangeListener = new ActionListener() {
 			
@@ -97,25 +101,140 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 		this.zLabel = new Label(", z:");
 		this.endLabel = new Label(")");
 		
-		this.xField = new DoubleTextField(4);
+		this.xField = new DoubleTextField(3);
+		Dimension d = new Dimension(this.xField.getMinimumSize());
+		d.width = 36;
+		this.xField.setMinimumSize(d);
 		this.xField.addActionListener(this.valueChangeListener);
 		
-		this.yField = new DoubleTextField(4);
+		this.yField = new DoubleTextField(3);
+		this.yField.setMinimumSize(d);
 		this.yField.addActionListener(this.valueChangeListener);
 		
-		this.zField = new DoubleTextField(4);
+		this.zField = new DoubleTextField(3);
+		this.zField.setMinimumSize(d);
 		this.zField.addActionListener(this.valueChangeListener);
 		
-		FlowPanel uiPanel = new FlowPanel(FlowPanel.Alignment.LEFT);
-		uiPanel.addComponent(this.xLabel);
-		uiPanel.addComponent(new SwingAdapter(this.xField));
-		uiPanel.addComponent(this.yLabel);
-		uiPanel.addComponent(new SwingAdapter(this.yField));
-		uiPanel.addComponent(this.zLabel);
-		uiPanel.addComponent(new SwingAdapter(this.zField));
-		uiPanel.addComponent(this.endLabel);
+		GridBagPanel uiPanel = new GridBagPanel();
+		uiPanel.addComponent(this.xLabel, new GridBagConstraints(
+                0, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                0.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.NONE, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+		uiPanel.addComponent(new SwingAdapter(this.xField), new GridBagConstraints(
+                1, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                0.5, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.NONE, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+		uiPanel.addComponent(this.yLabel, new GridBagConstraints(
+                2, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                0.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.NONE, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+		uiPanel.addComponent(new SwingAdapter(this.yField), new GridBagConstraints(
+                3, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                0.5, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.NONE, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+		uiPanel.addComponent(this.zLabel, new GridBagConstraints(
+                4, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                0.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.NONE, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+		uiPanel.addComponent(new SwingAdapter(this.zField), new GridBagConstraints(
+                5, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                0.5, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.NONE, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+		uiPanel.addComponent(this.endLabel, new GridBagConstraints(
+                6, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                0.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.NONE, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
 		
-		this.mainPanel.addComponent(uiPanel, Constraint.CENTER);
+		this.mainPanel.addComponent(uiPanel, new GridBagConstraints(
+                0, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                0.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.NONE, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+		this.mainPanel.addComponent(BoxUtilities.createHorizontalGlue(), new GridBagConstraints(
+                0, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                1.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.HORIZONTAL, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+//		this.mainPanel.addComponent(uiPanel, Constraint.CENTER);
 		
 	}
 	

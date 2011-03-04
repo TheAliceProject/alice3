@@ -45,6 +45,8 @@ package org.alice.ide.properties.adapter;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import edu.cmu.cs.dennisc.croquet.Button;
 import edu.cmu.cs.dennisc.croquet.Operation;
 
 public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P, O> 
@@ -132,6 +134,11 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 	}
 
 	public abstract Operation getEditOperation();
+	
+	public Button createEditButton()
+    {
+        return this.getEditOperation().createButton();
+    }
 	
 	protected abstract void startListening();
 	

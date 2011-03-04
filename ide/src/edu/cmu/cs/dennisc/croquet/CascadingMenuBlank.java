@@ -50,4 +50,7 @@ public abstract class CascadingMenuBlank< T > extends CascadingMenuNode< T > {
 	public CascadingMenuBlank( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
+	public void addFillIn( CascadingMenuFillIn< T > fillIn ) {
+		
+	}
 }

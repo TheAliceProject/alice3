@@ -41,13 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade.literals;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingMenuModel<T> extends Model {
-	public CascadingMenuModel( Group group, java.util.UUID id ) {
-		super( group, id );
+public class StringLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.StringLiteral > {
+	private static java.util.Map< String, StringLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static StringLiteralFillIn getInstance( String value ) {
+		synchronized( map ) {
+			StringLiteralFillIn rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new StringLiteralFillIn( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
+	}
+	private final String value;
+	private StringLiteralFillIn( String value ) {
+		super( java.util.UUID.fromString( "c0c8bc11-ed5b-4541-8e4a-45579e05b0d2" ) );
+		this.value = value;
 	}
 }
