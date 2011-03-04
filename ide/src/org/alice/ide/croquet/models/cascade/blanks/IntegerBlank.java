@@ -56,41 +56,4 @@ public class IntegerBlank extends org.alice.ide.croquet.models.cascade.Expressio
 	private IntegerBlank() {
 		super( java.util.UUID.fromString( "11904cf8-38e3-4688-b09a-f5e437842a50" ), Integer.class );
 	}
-	
-	@Override
-	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
-//		if( blank.isTop() && previousExpression != null ) {
-//			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression ) {
-//				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmeticInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)previousExpression;
-//				final edu.cmu.cs.dennisc.alice.ast.Expression leftOperand = previousArithmeticInfixExpression.leftOperand.getValue();
-//				final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator prevOperator = previousArithmeticInfixExpression.operator.getValue();
-//				final edu.cmu.cs.dennisc.alice.ast.Expression rightOperand = previousArithmeticInfixExpression.rightOperand.getValue();
-//				final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = previousArithmeticInfixExpression.expressionType.getValue();
-				for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
-//					if( operator != prevOperator ) {
-						blank.addFillIn( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
-//					}
-				}
-				blank.addFillIn( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorDivideRemainderMenuFillIn.getInstance() );
-				blank.addSeparator();
-				blank.addFillIn( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToLeftOperandInPreviousArithmeticExpressionFillIn.getInstance() );
-				blank.addFillIn( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToRightOperandInPreviousArithmeticExpressionFillIn.getInstance() );
-				blank.addSeparator();
-//			}
-//		}
-		
-		for( int i=0; i<4; i++ ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn.getInstance( i ) );
-		}
-//		if( blank.isTop() && previousExpression != null ) {
-			blank.addSeparator();
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.RandomMenuFillIn.getInstance() );
-			blank.addSeparator();
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.RealToIntegerMenuFillIn.getInstance() );
-			blank.addSeparator();
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.MathMenuFillIn.getInstance() );
-//		}
-		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomIntegerLiteralFillIn.getInstance() );
-	}
 }

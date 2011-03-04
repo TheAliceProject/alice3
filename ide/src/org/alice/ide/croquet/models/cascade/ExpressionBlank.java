@@ -51,11 +51,10 @@ public abstract class ExpressionBlank<T extends edu.cmu.cs.dennisc.alice.ast.Exp
 	public ExpressionBlank( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( id );
 		this.type = type;
-		this.addFillIns( this );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		ide.getCascadeManager().addFillIns( this, this.type );
 	}
 	public ExpressionBlank( java.util.UUID id, Class<?> cls ) {
 		this( id, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
 	}
-	
-	public abstract void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank );
 }
