@@ -255,7 +255,7 @@ class RagsToRichesStory extends Program {
 			org.alice.apis.stage.FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
 	private final CustomAdult ogre = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Ogre.GREEN );
-    private final CustomPerson generic = new CustomPerson( org.lookingglassandalice.storytelling.resources.monsters.MonsterUtilities.getInstance( "bigBadWolf.a3r" ) ) {};
+    private final CustomPerson generic = new CustomPerson( org.lookingglassandalice.storytelling.resources.monsters.MonsterUtilities.getInstance( "penguin.a3r" ) ) {};
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 	
@@ -264,9 +264,9 @@ class RagsToRichesStory extends Program {
 	public void playOutStory() {
 //		this.setActiveScene( this.desertScene );
 //		this.desertScene.turnBigRocksIntoLittleRocks();
-		this.setActiveScene( this.snowScene );
-		this.snowScene.chillInSkiChalet();
-//	    this.setActiveScene( this.testScene );
+//		this.setActiveScene( this.snowScene );
+//		this.snowScene.chillInSkiChalet();
+	    this.setActiveScene( this.testScene );
 	}
 	public static void main( String[] args ) {
 		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
