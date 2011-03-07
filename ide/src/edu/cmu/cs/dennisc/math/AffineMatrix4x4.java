@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.math;
 
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-
 //todo: rename?
 /**
  * @author Dennis Cosgrove
@@ -52,6 +50,45 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 	public final OrthogonalMatrix3x3 orientation = OrthogonalMatrix3x3.createIdentity();
 	public final Point3 translation = new Point3();
 
+	
+	public static AffineMatrix4x4 createFromColumnMajorArray12( double[] columnMajorArray ) {
+		assert columnMajorArray.length == 12;
+		AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
+		rv.orientation.right.x = columnMajorArray[0];
+		rv.orientation.right.y = columnMajorArray[1];
+		rv.orientation.right.z = columnMajorArray[2];
+		rv.orientation.up.x = columnMajorArray[3];
+		rv.orientation.up.y = columnMajorArray[4];
+		rv.orientation.up.z = columnMajorArray[5];
+		rv.orientation.backward.x = columnMajorArray[6];
+		rv.orientation.backward.y = columnMajorArray[7];
+		rv.orientation.backward.z = columnMajorArray[8];
+		rv.translation.x = columnMajorArray[9];
+		rv.translation.y = columnMajorArray[10];
+		rv.translation.z = columnMajorArray[11];
+		return rv;
+	}
+	public static AffineMatrix4x4 createFromColumnMajorArray16( double[] columnMajorArray ) {
+		assert columnMajorArray.length == 16;
+		AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
+		rv.orientation.right.x = columnMajorArray[0];
+		rv.orientation.right.y = columnMajorArray[1];
+		rv.orientation.right.z = columnMajorArray[2];
+		assert columnMajorArray[3] == 0.0;
+		rv.orientation.up.x = columnMajorArray[4];
+		rv.orientation.up.y = columnMajorArray[5];
+		rv.orientation.up.z = columnMajorArray[6];
+		assert columnMajorArray[7] == 0.0;
+		rv.orientation.backward.x = columnMajorArray[8];
+		rv.orientation.backward.y = columnMajorArray[9];
+		rv.orientation.backward.z = columnMajorArray[10];
+		assert columnMajorArray[11] == 0.0;
+		rv.translation.x = columnMajorArray[12];
+		rv.translation.y = columnMajorArray[13];
+		rv.translation.z = columnMajorArray[14];
+		assert columnMajorArray[15] == 1.0;
+		return rv;
+	}
 	//todo: reduce visibility to private
 	public AffineMatrix4x4() {
 	}
@@ -102,6 +139,26 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		return rv;
 	}
 
+	public double[] getAsColumnMajorArray12( double[] rv ) {
+		assert rv.length == 12;
+		rv[ 0 ] = orientation.right.x;
+		rv[ 1 ] = orientation.right.y;
+		rv[ 2 ] = orientation.right.z;
+		rv[ 3 ] = orientation.up.x;
+		rv[ 4 ] = orientation.up.y;
+		rv[ 5 ] = orientation.up.z;
+		rv[ 6 ] = orientation.backward.x;
+		rv[ 7 ] = orientation.backward.y;
+		rv[ 8 ] = orientation.backward.z;
+		rv[ 9 ] = translation.x;
+		rv[ 10 ] = translation.y;
+		rv[ 11 ] = translation.z;
+		return rv;
+	}
+	public final double[] getAsColumnMajorArray12() {
+		return getAsColumnMajorArray12( new double[ 12 ] );
+	}
+	
 	@Override
 	public boolean isAffine() {
 		return true;
