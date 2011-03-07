@@ -42,6 +42,8 @@
  */
 package org.alice.apis.stage;
 
+import org.alice.apis.moveandturn.VoiceType;
+
 import edu.cmu.cs.dennisc.alice.annotations.*;
 
 /**
@@ -1186,6 +1188,19 @@ public class Adult extends Person {
 	}
 
 
+	@Override
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void speak( String text ) 
+	{
+		if (this.getGender() == Gender.FEMALE)
+		{
+			speak( text, VoiceType.FEMALE );
+		}
+		else
+		{
+			speak( text, VoiceType.MALE );
+		}
+	}
 	
 	
 

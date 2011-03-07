@@ -219,7 +219,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
 //		cameraOrbit.addCondition(rightMouseAndNonInteractive);
 		cameraOrbit.addCondition(middleMouseAndAnything);
-		this.manipulators.add(cameraOrbit);
+		this.manipulators.add(cameraOrbit); 
 		
 		ManipulatorConditionSet cameraTilt = new ManipulatorConditionSet( new CameraTiltDragManipulator() );
 		cameraTilt.addCondition(rightMouseAndNonInteractive);

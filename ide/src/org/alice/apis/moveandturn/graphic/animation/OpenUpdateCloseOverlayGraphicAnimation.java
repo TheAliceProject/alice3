@@ -46,9 +46,9 @@ package org.alice.apis.moveandturn.graphic.animation;
  * @author Dennis Cosgrove
  */
 public abstract class OpenUpdateCloseOverlayGraphicAnimation extends OverlayGraphicAnimation {
-	private double m_openingDuration;
-	private double m_updatingDuration;
-	private double m_closingDuration;
+	protected double m_openingDuration;
+	protected double m_updatingDuration;
+	protected double m_closingDuration;
 
 	protected enum State {
 		OPENNING,
@@ -96,7 +96,8 @@ public abstract class OpenUpdateCloseOverlayGraphicAnimation extends OverlayGrap
 			}
 		}
 		this.updateStateAndPortion(state, portion);
-		return (m_openingDuration + m_updatingDuration + m_closingDuration) - deltaSincePrologue;
+		double toReturn = (m_openingDuration + m_updatingDuration + m_closingDuration) - deltaSincePrologue;
+		return toReturn;
 	}
 	@Override
 	protected void epilogue() {

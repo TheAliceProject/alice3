@@ -43,7 +43,12 @@
 
 package org.alice.apis.moveandturn;
 
+import org.alice.apis.moveandturn.graphic.animation.AudioLimitedBubbleAnimation;
+import org.alice.flite.TextToSpeech;
+import org.alice.virtualmachine.resources.TextToSpeechResource;
+
 import edu.cmu.cs.dennisc.alice.annotations.*;
+import edu.cmu.cs.dennisc.media.jmf.Player;
 
 /**
  * @author Dennis Cosgrove
@@ -348,6 +353,80 @@ public abstract class Transformable extends AbstractTransformable {
 	public void think( String text ) {
 		think( text, DEFAULT_DURATION );
 	}
+	
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void speak( String text, VoiceType voice, final boolean showSpeechBubble, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor, Color bubbleOutlineColor ) {
+		edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble bubble = null;
+		if (showSpeechBubble)
+		{
+			bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble();
+			bubble.text.setValue(text);
+			bubble.font.setValue(font.getAsAWTFont());
+			bubble.textColor.setValue(textColor.getInternal());
+			bubble.fillColor.setValue(bubbleFillColor.getInternal());
+			bubble.outlineColor.setValue(bubbleOutlineColor.getInternal());
+			bubble.originator.setValue( m_originator );
+		}
+		final TextToSpeechResource tts = TextToSpeechResource.valueOf(text, voice.getVoiceString());
+		final AudioLimitedBubbleAnimation bubbleAnimation = (showSpeechBubble)? new AudioLimitedBubbleAnimation(this, .3, .3, bubble, tts) : null;
+		
+		Runnable textToSpeech =  new Runnable() { 
+			public void run() {
+				if (!tts.isLoaded())
+				{
+					tts.loadResource();
+				}
+				edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
+				edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( tts, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_VOLUME, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_START_TIME, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_STOP_TIME  );
+				if (showSpeechBubble)
+				{
+					bubbleAnimation.setDuration(tts.getDuration()+.2);
+				}
+				perform( new edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation( player ) );	
+			}
+		};
+		if (showSpeechBubble)
+		{
+			Runnable[] runnables = new Runnable[ 2 ];
+			runnables[ 0 ] = new Runnable() { 
+				public void run() {
+					perform(bubbleAnimation);
+				}
+			};
+			runnables[ 1 ] = textToSpeech;
+			org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+		}
+		else
+		{
+			textToSpeech.run();
+		}
+	}
+	
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void speak( String text, VoiceType voice, boolean showSpeechBubble, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor ) {
+		speak( text, voice, showSpeechBubble, font, textColor, bubbleFillColor, Color.BLACK );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void speak( String text, VoiceType voice, boolean showSpeechBubble, org.alice.apis.moveandturn.Font font, Color textColor ) {
+		speak( text, voice, showSpeechBubble, font, textColor, Color.WHITE );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void speak( String text, VoiceType voice, boolean showSpeechBubble, org.alice.apis.moveandturn.Font font ) {
+		speak( text, voice, showSpeechBubble, font, Color.BLACK );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void speak( String text, VoiceType voice, boolean showSpeechBubble) {
+		speak( text, voice, showSpeechBubble, DEFAULT_FONT );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void speak( String text, VoiceType voice ) {
+		speak( text, voice, true);
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void speak( String text ) {
+		speak( text, VoiceType.MALE );
+	}
+
 	
 	
 	protected void applyScale( edu.cmu.cs.dennisc.math.Vector3 axis, boolean isScootDesired ) {

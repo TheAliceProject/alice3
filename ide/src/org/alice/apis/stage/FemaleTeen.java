@@ -42,6 +42,11 @@
  */
 package org.alice.apis.stage;
 
+import org.alice.apis.moveandturn.VoiceType;
+
+import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
+import edu.cmu.cs.dennisc.alice.annotations.Visibility;
+
 /**
  * @author Dennis Cosgrove
  */
