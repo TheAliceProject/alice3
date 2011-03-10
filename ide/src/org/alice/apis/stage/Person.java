@@ -509,36 +509,10 @@ public abstract class Person extends Model {
         }
     }
 	
+	@Deprecated
 	private void applyRotationInRadians( org.lookingglassandalice.storytelling.resources.JointId joint, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) 
     {
-//		@Deprecated
-//		public void applyRotationToJointAboutArbitraryAxisInRadians( org.lookingglassandalice.storytelling.resources.JointId joint, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) {
-//			if( axis.isPositiveXAxis() ) {
-//				applyTransformationToJoint( joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4.createRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( angleInRadians ) ) );
-//			} else if( axis.isNegativeXAxis() ) {
-//				applyTransformationToJoint( joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4.createRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( -angleInRadians ) ) );
-//			} else if( axis.isPositiveYAxis() ) {
-//				applyTransformationToJoint( joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4.createRotationAboutYAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( angleInRadians ) ) );
-//			} else if( axis.isNegativeYAxis() ) {
-//				applyTransformationToJoint( joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4.createRotationAboutYAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( -angleInRadians ) ) );
-//			} else if( axis.isPositiveZAxis() ) {
-//				applyTransformationToJoint( joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4.createRotationAboutZAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( angleInRadians ) ) );
-//			} else if( axis.isNegativeZAxis() ) {
-//				applyTransformationToJoint( joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4.createRotationAboutZAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( -angleInRadians ) ) );
-//			} else {
-//				applyTransformationToJoint( joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4.createOrientation( new edu.cmu.cs.dennisc.math.AxisRotation( axis, new edu.cmu.cs.dennisc.math.AngleInRadians( angleInRadians ) ) ) );
-//			}
-//		}
-	//
-//		@Deprecated
-//		private void applyTransformationToJoint( org.lookingglassandalice.storytelling.resources.JointId joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation ) {
-//			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = getLocalTransformationForJoint( joint );
-//			m.setToMultiplication( m, transformation );
-//			setLocalTransformationForJoint( joint, m );
-//		}
-
-		
-	    //this.getNebPerson().applyRotationToJointAboutArbitraryAxisInRadians( joint, axis, angleInRadians);
+	    this.getNebPerson().applyRotationToJointAboutArbitraryAxisInRadians( joint, axis, angleInRadians);
     }
 	
 	private Vector3 getAxisForTurnDirection( TurnDirection direction )
@@ -565,7 +539,7 @@ public abstract class Person extends Model {
     
     @MethodTemplate( visibility=Visibility.PRIME_TIME )
     public void turnJoint( 
-            org.lookingglassandalice.storytelling.resources.JointId joint,
+            org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId joint,
             TurnDirection direction, 
             @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
             Number amount, 
@@ -577,7 +551,7 @@ public abstract class Person extends Model {
     }
     @MethodTemplate( visibility=Visibility.CHAINED )
     public void turnJoint(
-    		org.lookingglassandalice.storytelling.resources.JointId joint,
+    		org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId joint,
             TurnDirection direction, 
             @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
             Number amount,
@@ -588,7 +562,7 @@ public abstract class Person extends Model {
     
     @MethodTemplate( visibility=Visibility.CHAINED )
     public void turnJoint( 
-    		org.lookingglassandalice.storytelling.resources.JointId joint,
+    		org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId joint,
             TurnDirection direction, 
             @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
             Number amount 
@@ -598,7 +572,7 @@ public abstract class Person extends Model {
     
     @MethodTemplate( visibility=Visibility.PRIME_TIME )
     public void rollJoint( 
-    		org.lookingglassandalice.storytelling.resources.JointId joint,
+    		org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId joint,
             RollDirection direction, 
             @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
             Number amount, 
@@ -609,7 +583,7 @@ public abstract class Person extends Model {
     }
     @MethodTemplate( visibility=Visibility.CHAINED )
     public void rollJoint( 
-    		org.lookingglassandalice.storytelling.resources.JointId joint,
+    		org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId joint,
             RollDirection direction, 
             @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
             Number amount, 
@@ -619,7 +593,7 @@ public abstract class Person extends Model {
     }
     @MethodTemplate( visibility=Visibility.CHAINED )
     public void rollJoint( 
-    		org.lookingglassandalice.storytelling.resources.JointId joint,
+    		org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId joint,
             RollDirection direction, 
             @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
             Number amount 
