@@ -860,10 +860,16 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 	
+	private boolean HACK_isDisplayableAlreadyHandled = false;
 	@Override
 	protected void handleDisplayable() {
 		this.initializeIfNecessary();
-		super.handleDisplayable();
+		if( HACK_isDisplayableAlreadyHandled ) {
+			System.err.println( "TODO: investigate is displayed" );
+		} else {
+			super.handleDisplayable();
+			HACK_isDisplayableAlreadyHandled = true;
+		}
 		this.addFieldListening();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );

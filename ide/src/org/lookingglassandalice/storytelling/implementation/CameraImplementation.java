@@ -61,7 +61,7 @@ public class CameraImplementation extends TransformableImplementation {
 		return this.sgSymmetricPerspectiveCamera;
 	}
 	public void getAGoodLookAt( EntityImplementation entityImplementation ) {
-		this.getSgComposite().setTranslationOnly( 2,4,8, entityImplementation.getSgComposite() );
+		this.getSgComposite().setTranslationOnly( 2,4,-8, entityImplementation.getSgComposite() );
 		this.getSgComposite().setAxesOnlyToPointAt( entityImplementation.getSgComposite() );
 	}
 }

@@ -58,49 +58,6 @@ class CustomAdult extends CustomPerson {
 	}
 }
 
-class TestScene extends Scene {
-    private final Sun sun = new Sun();
-    private final Ground ground = new Ground();
-    private final Camera camera;
-    private final CustomPerson generic;
-    public TestScene(  Camera camera, CustomPerson generic ) {
-        this.camera = camera;
-        this.generic = generic;
-    }
-    
-    private void performGeneratedSetup() {
-        // this code is automatically generated
-        // edit performCustomSetup instead
-        this.ground.setVehicle( this );
-        this.sun.setVehicle( this );
-        this.camera.setVehicle( this );
-        this.generic.setVehicle( this );
-       
-        
-        this.ground.setAppearance( Ground.Appearance.GRASS );
-        this.camera.getAGoodLookAt( this.generic );
-    }
-    private void performCustomSetup() {
-    }
-    
-    @Override
-    protected void handleActiveChanged( boolean isActive, int activeCount ) {
-        if( isActive ) {
-            if( activeCount == 1 ) {
-                this.performGeneratedSetup();
-                this.performCustomSetup();
-            } else {
-                this.restoreVehiclesAndVantagePoints();
-            }
-        } else {
-            this.preserveVehiclesAndVantagePoints();
-        }
-    }
-
-    public void testStuff() {
-    }
-}
-
 class DesertScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground desert = new Ground();
@@ -147,9 +104,8 @@ class DesertScene extends Scene {
 	}
 		
 	public void turnBigRocksIntoLittleRocks() {
-//		this.camera.turn( TurnDirection.LEFT, 1.0 );
 		this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
-		this.ogre.getRightShoulder().turn( TurnDirection.FORWARD, 0.25 );
+		this.ogre.getRightElbow().turn( TurnDirection.FORWARD, 0.25 );
 	}
 }
 
@@ -255,18 +211,13 @@ class RagsToRichesStory extends Program {
 			org.alice.apis.stage.FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
 	private final CustomAdult ogre = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Ogre.GREEN );
-    private final CustomPerson generic = new CustomPerson( org.lookingglassandalice.storytelling.resources.monsters.MonsterUtilities.getInstance( "penguin.a3r" ) ) {};
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
-	
-	private final TestScene testScene = new TestScene( camera, generic );
-	
 	public void playOutStory() {
-//		this.setActiveScene( this.desertScene );
-//		this.desertScene.turnBigRocksIntoLittleRocks();
-//		this.setActiveScene( this.snowScene );
-//		this.snowScene.chillInSkiChalet();
-	    this.setActiveScene( this.testScene );
+		this.setActiveScene( this.desertScene );
+		this.desertScene.turnBigRocksIntoLittleRocks();
+		this.setActiveScene( this.snowScene );
+		this.snowScene.chillInSkiChalet();
 	}
 	public static void main( String[] args ) {
 		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
