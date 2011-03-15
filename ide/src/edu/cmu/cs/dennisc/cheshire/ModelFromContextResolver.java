@@ -45,9 +45,9 @@ package edu.cmu.cs.dennisc.cheshire;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ModelFromContextResolver< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > {
-	private edu.cmu.cs.dennisc.croquet.ModelContext< M > modelContext;
-	public ModelFromContextResolver( edu.cmu.cs.dennisc.croquet.ModelContext< M > modelContext ) {
+/*package-private*/ class ModelFromContextResolver< M extends edu.cmu.cs.dennisc.croquet.AbstractModel > implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > {
+	private edu.cmu.cs.dennisc.croquet.AbstractModelContext< M > modelContext;
+	public ModelFromContextResolver( edu.cmu.cs.dennisc.croquet.AbstractModelContext< M > modelContext ) {
 		assert modelContext != null;
 		this.modelContext = modelContext;
 	}

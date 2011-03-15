@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class ContextManager {
-	private static java.util.Stack< ModelContext< ? > > stack;
-	private static java.util.Map< ModelContext< ? >, ModelContext< ? > > mapChildContextPendingParentContext = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Stack< AbstractModelContext< ? > > stack;
+	private static java.util.Map< AbstractModelContext< ? >, AbstractModelContext< ? > > mapChildContextPendingParentContext = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
 		stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 		stack.push( new RootContext() );
@@ -56,28 +56,28 @@ public class ContextManager {
 	public static RootContext getRootContext() {
 		return (RootContext)stack.firstElement();
 	}
-	public static ModelContext< ? > getCurrentContext() {
+	public static AbstractModelContext< ? > getCurrentContext() {
 		return stack.peek();
 	}
 		
-	/*package-private*/ static void popParentContextWhenChildContextIsPopped( ModelContext< ? > parentContext, ModelContext< ? > childContext ) {
+	/*package-private*/ static void popParentContextWhenChildContextIsPopped( AbstractModelContext< ? > parentContext, AbstractModelContext< ? > childContext ) {
 		assert childContext.getParent() == parentContext;
 		mapChildContextPendingParentContext.put( childContext, parentContext );
 	}
 
-	private static PopupMenuOperationContext getPopupMenuOperationContextToPushOnto( PopupMenuOperationContext candidate, ModelContext< ? > childContext ) {
+	private static PopupMenuOperationContext getPopupMenuOperationContextToPushOnto( PopupMenuOperationContext candidate, AbstractModelContext< ? > childContext ) {
 		HistoryNode lastChild = candidate.getLastChild();
 		if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
 			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)lastChild;
-			Model model = menuSelectionEvent.getLastModel();
+			AbstractModel model = menuSelectionEvent.getLastModel();
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( model, childContext.getModel() ) ) {
 				return candidate;
 			}
 		}
 		return null;
 	}
-	private static <C extends ModelContext< ? > > C push( C rv ) {
-		ModelContext< ? > parentContext = getCurrentContext();
+	private static <C extends AbstractModelContext< ? > > C push( C rv ) {
+		AbstractModelContext< ? > parentContext = getCurrentContext();
 		if( parentContext instanceof StringStateContext ) {
 			StringStateContext stringStateContext = (StringStateContext)parentContext;
 			stringStateContext.handlePop();
@@ -138,8 +138,8 @@ public class ContextManager {
 		stack.push( rv );
 		return rv;
 	}
-	/*package-private*/ static ModelContext< ? > popContext() {
-		ModelContext< ? > childContext = stack.peek();
+	/*package-private*/ static AbstractModelContext< ? > popContext() {
+		AbstractModelContext< ? > childContext = stack.peek();
 		if( childContext instanceof RootContext ) {
 			System.err.println( "WARNING: attempting to pop root context" );
 			return null;
@@ -150,10 +150,10 @@ public class ContextManager {
 				stack.pop();
 				childContext = stack.peek();
 			}
-			ModelContext< ? > parentContext = mapChildContextPendingParentContext.get( childContext );
+			AbstractModelContext< ? > parentContext = mapChildContextPendingParentContext.get( childContext );
 			
 			childContext.popping();
-			ModelContext< ? > rv = stack.pop();
+			AbstractModelContext< ? > rv = stack.pop();
 			childContext.popped();
 			if( parentContext != null ) {
 				mapChildContextPendingParentContext.remove( childContext );
@@ -165,7 +165,7 @@ public class ContextManager {
 	}
 
 	/*package-private*/ static void handleDocumentEvent( StringState stringState, java.util.EventObject e, ViewController< ?, ? > viewController, javax.swing.event.DocumentEvent documentEvent, String previousValue, String nextValue ) {
-		ModelContext< ? > topContext = stack.peek();
+		AbstractModelContext< ? > topContext = stack.peek();
 		StringStateContext stringStateContext;
 		if( topContext instanceof StringStateContext ) {
 			stringStateContext = (StringStateContext)topContext;
@@ -201,9 +201,15 @@ public class ContextManager {
 	/*package-private*/ static <T> CascadeOperationContext< T > createAndPushCascadeOperationContext(CascadeOperation< T > cascadeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return push( new CascadeOperationContext<T>(cascadeOperation, e, viewController) );
 	}
+	/*package-private*/ static <T> CascadeBlankContext< T > createCascadeBlankContext(CascadeBlank< T > cascadeBlank ) {
+		return new CascadeBlankContext<T>(cascadeBlank, null, null );
+	}
+	/*package-private*/ static <T> CascadeFillInContext< T > createCascadeFillInContext(CascadeFillIn< T > cascadeFillIn ) {
+		return new CascadeFillInContext<T>(cascadeFillIn, null, null );
+	}
 	
 	/*package-private*/ static <E> ListSelectionStateContext<E> createAndPushItemSelectionStateContext(ListSelectionState<E> itemSelectionState, java.util.EventObject e, ViewController<?, ?> viewController/*, int prevIndex, E prevItem, int nextIndex, E nextItem*/) {
-		ModelContext< ? > currentContext = getCurrentContext();
+		AbstractModelContext< ? > currentContext = getCurrentContext();
 		if( currentContext instanceof ListSelectionStateContext ) {
 			return (ListSelectionStateContext<E>)currentContext;
 		} else {
@@ -306,7 +312,7 @@ public class ContextManager {
 
 						if( jPreviousPopupMenu != jPopupMenu ) {
 							if( jPreviousPopupMenu != null ) {
-								ModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
+								AbstractModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
 								assert popupMenuOperationContext instanceof PopupMenuOperationContext;
 							}
 							
@@ -332,7 +338,7 @@ public class ContextManager {
 							}
 						}
 					}
-					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+					AbstractModelContext< ? > modelContext = ContextManager.getCurrentContext();
 					if( modelContext instanceof PopupMenuOperationContext ) {
 						PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)modelContext;
 						popupMenuOperationContext.handleMenuSelectionChanged( e, models );
@@ -342,10 +348,10 @@ public class ContextManager {
 				} else {
 					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
 					if( menuBarModel != null ) {
-						ModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
+						AbstractModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
 						assert popupMenuOperationContext instanceof PopupMenuOperationContext;
 
-						ModelContext< ? > menuBarContext = ContextManager.popContext();
+						AbstractModelContext< ? > menuBarContext = ContextManager.popContext();
 						assert menuBarContext instanceof MenuBarModelContext;
 					}
 				}
@@ -356,7 +362,7 @@ public class ContextManager {
 						/*MenuBarModelContext childContext =*/ ContextManager.createAndPushMenuBarModelContext( menuBar.getModel(), e, menuBar );
 						assert menuElements.length == 2;
 					} else {
-						ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+						AbstractModelContext< ? > modelContext = ContextManager.getCurrentContext();
 						if( modelContext instanceof PopupMenuOperationContext ) {
 							//pass
 						} else {
@@ -366,7 +372,7 @@ public class ContextManager {
 					}
 				} else {
 					//assert false;
-					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+					AbstractModelContext< ? > modelContext = ContextManager.getCurrentContext();
 					System.err.println( "both prev and current menu selection length 0" );
 					System.err.println( "modelContext: " + modelContext );
 				}
@@ -395,7 +401,7 @@ public class ContextManager {
 //		return application;
 //	}
 	
-	public static MenuBarModelContext createContextFor( java.util.List<Model> path, ModelContext<?> descendantContext ) {
+	public static MenuBarModelContext createContextFor( java.util.List<Model> path, AbstractModelContext<?> descendantContext ) {
 		final int N = path.size();
 		assert N >= 3;
 		MenuBarModel menuBarModel = (MenuBarModel)path.get( 0 );
@@ -418,16 +424,16 @@ public class ContextManager {
 	
 	
 	
-	private static java.util.Map< java.util.UUID, java.util.Set< Model > > mapIdToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Set< Model > lookupModels( java.util.UUID id ) {
+	private static java.util.Map< java.util.UUID, java.util.Set< AbstractModel > > mapIdToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Set< AbstractModel > lookupModels( java.util.UUID id ) {
 		synchronized ( mapIdToModels ) {
 			return mapIdToModels.get( id );
 		}
 	}
 	@Deprecated
-	public static Model findFirstAppropriateModel( java.util.UUID id ) {
-		java.util.Set< Model > models = lookupModels( id );
-		for( Model model : models ) {
+	public static AbstractModel findFirstAppropriateModel( java.util.UUID id ) {
+		java.util.Set< AbstractModel > models = lookupModels( id );
+		for( AbstractModel model : models ) {
 			for( JComponent<?> component : model.getComponents() ) {
 				if( component.getAwtComponent().isShowing() ) {
 					return model;
@@ -442,10 +448,10 @@ public class ContextManager {
 		return null;
 	}
 
-	/*package-private*/ static void registerModel( Model model ) {
+	/*package-private*/ static void registerModel( AbstractModel model ) {
 		java.util.UUID id = model.getId();
 		synchronized ( mapIdToModels ) {
-			java.util.Set< Model > set = mapIdToModels.get( id );
+			java.util.Set< AbstractModel > set = mapIdToModels.get( id );
 			if( set != null ) {
 				//pass
 			} else {
@@ -455,11 +461,11 @@ public class ContextManager {
 			set.add( model );
 		}
 	}
-	/*package-private*/ static void unregisterModel( Model model ) {
+	/*package-private*/ static void unregisterModel( AbstractModel model ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "unregister:", model );
 		java.util.UUID id = model.getId();
 		synchronized ( mapIdToModels ) {
-			java.util.Set< Model > set = mapIdToModels.get( id );
+			java.util.Set< AbstractModel > set = mapIdToModels.get( id );
 			if( set != null ) {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "pre set size:", set.size() );
 				set.remove( model );
@@ -476,9 +482,9 @@ public class ContextManager {
 
 	/*package-private*/ static void localizeAllModels() {
 		synchronized ( mapIdToModels ) {
-			java.util.Collection< java.util.Set< Model > > sets = mapIdToModels.values();
-			for( java.util.Set< Model > set : sets ) {
-				for( Model model : set ) {
+			java.util.Collection< java.util.Set< AbstractModel > > sets = mapIdToModels.values();
+			for( java.util.Set< AbstractModel > set : sets ) {
+				for( AbstractModel model : set ) {
 					model.localize();
 //					for( JComponent<?> component : model.getComponents() ) {
 //					}

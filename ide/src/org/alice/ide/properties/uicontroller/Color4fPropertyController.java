@@ -53,7 +53,7 @@ import org.alice.ide.swing.icons.ColorIcon;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.croquet.BorderPanel;
 import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Model;
+import edu.cmu.cs.dennisc.croquet.AbstractModel;
 import edu.cmu.cs.dennisc.croquet.Panel;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 

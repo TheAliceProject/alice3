@@ -51,8 +51,8 @@ package edu.cmu.cs.dennisc.croquet;
 
 	private static final int ARROW_SIZE = 10;
 	private static final int ARROW_BORDER_HALF_SIZE = 3;
-	private static java.util.List< Model > createModels( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
-		java.util.List< Model > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List< AbstractModel > createModels( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+		java.util.List< AbstractModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.Enumeration< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > enumeration = treeNode.children();
 		if( enumeration != null ) {
 			while( enumeration.hasMoreElements() ) {

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class FillIn< E > extends Node {
-	private edu.cmu.cs.dennisc.croquet.Model model = null;
+	private edu.cmu.cs.dennisc.croquet.AbstractModel model = null;
 	private javax.swing.JComponent menuProxy = null;
 	private boolean wasLast = false; 
 	
@@ -69,7 +69,7 @@ public abstract class FillIn< E > extends Node {
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.croquet.Model getCroquetModel() {
+	public edu.cmu.cs.dennisc.croquet.AbstractModel getCroquetModel() {
 		boolean isLast = this.isLast();
 		if( this.model != null ) {
 			if( this.wasLast == isLast ) {
@@ -157,7 +157,7 @@ public abstract class FillIn< E > extends Node {
 		
 	}
 	
-	private static void setText( edu.cmu.cs.dennisc.croquet.Model model, String text ) {
+	private static void setText( edu.cmu.cs.dennisc.croquet.AbstractModel model, String text ) {
 		if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
 			edu.cmu.cs.dennisc.croquet.MenuModel menuModel = (edu.cmu.cs.dennisc.croquet.MenuModel)model;
 			menuModel.setName( text );
@@ -166,7 +166,7 @@ public abstract class FillIn< E > extends Node {
 			operation.setName( text );
 		}
 	}
-	private static void setIcon( edu.cmu.cs.dennisc.croquet.Model model, javax.swing.Icon icon ) {
+	private static void setIcon( edu.cmu.cs.dennisc.croquet.AbstractModel model, javax.swing.Icon icon ) {
 		if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
 			edu.cmu.cs.dennisc.croquet.MenuModel menuModel = (edu.cmu.cs.dennisc.croquet.MenuModel)model;
 			menuModel.setSmallIcon( icon );

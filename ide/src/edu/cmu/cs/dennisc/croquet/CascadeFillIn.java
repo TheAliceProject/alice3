@@ -46,13 +46,25 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeFillIn< T > extends CascadeNode< T > {
+public abstract class CascadeFillIn< T > extends CascadeNode< T > implements CascadeBlankOwner< T > {
+	private java.util.List< CascadeBlank< T > > blanks = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	public CascadeFillIn( java.util.UUID id ) {
 		super( id );
 	}
-	public boolean isInclusionDesired( CascadeFillInContext context ) {
+	public void addBlank( CascadeBlank< T > blank ) {
+		this.blanks.add( blank );
+	}
+	public CascadeBlank< T >[] getBlanks() {
+		CascadeBlank< T >[] rv = new CascadeBlank[ this.blanks.size() ];
+		this.blanks.toArray( rv );
+		return rv;
+	}
+	public boolean isInclusionDesired( CascadeFillInContext< T > context ) {
 		return true;
 	}
-	public abstract T getTransientValue( CascadeFillInContext context );
-	public abstract T createValue( CascadeFillInContext context );
+	public boolean isAutomaticallySelectedWhenSoleOption() {
+		return true;
+	}
+	public abstract T getTransientValue( CascadeFillInContext< T > context );
+	public abstract T createValue( CascadeFillInContext< T > context );
 }

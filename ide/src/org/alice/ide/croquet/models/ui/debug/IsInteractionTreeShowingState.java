@@ -51,19 +51,19 @@ class HistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMut
 		return this.root;
 	}
 	public boolean isLeaf( Object node ) {
-		return ( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext<?> ) == false;
+		return ( node instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> ) == false;
 	}
 	public int getChildCount(Object parent) {
-		if( parent instanceof edu.cmu.cs.dennisc.croquet.ModelContext<?> ) {
-			edu.cmu.cs.dennisc.croquet.ModelContext<?> modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext<?>)parent;
+		if( parent instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> ) {
+			edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> modelContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext<?>)parent;
 			return modelContext.getChildCount();
 		} else {
 			return 0;
 		}
 	}
 	public edu.cmu.cs.dennisc.croquet.HistoryNode getChild(Object parent, int index) {
-		if( parent instanceof edu.cmu.cs.dennisc.croquet.ModelContext<?> ) {
-			edu.cmu.cs.dennisc.croquet.ModelContext<?> modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext<?>)parent;
+		if( parent instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> ) {
+			edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> modelContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext<?>)parent;
 			edu.cmu.cs.dennisc.croquet.HistoryNode rv = modelContext.getChildAt( index );
 			assert rv != null;
 			return rv;
@@ -72,8 +72,8 @@ class HistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMut
 		}
 	}
 	public int getIndexOfChild(java.lang.Object parent, Object child) {
-		if( parent instanceof edu.cmu.cs.dennisc.croquet.ModelContext<?> ) {
-			edu.cmu.cs.dennisc.croquet.ModelContext<?> modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext<?>)parent;
+		if( parent instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> ) {
+			edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> modelContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext<?>)parent;
 			if( child instanceof edu.cmu.cs.dennisc.croquet.HistoryNode ) {
 				return modelContext.getIndexOfChild( (edu.cmu.cs.dennisc.croquet.HistoryNode)child );
 			} else {
@@ -109,11 +109,11 @@ public class IsInteractionTreeShowingState extends org.alice.ide.croquet.models.
 	public static IsInteractionTreeShowingState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private edu.cmu.cs.dennisc.croquet.ModelContext< ? > context;
+	private edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > context;
 	private IsInteractionTreeShowingState() {
 		this( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
 	}
-	public IsInteractionTreeShowingState( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+	public IsInteractionTreeShowingState( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > context ) {
 		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "3fb1e733-1736-476d-b40c-7729c82f0b21" ), false );
 		this.context = context;
 	}
@@ -141,7 +141,7 @@ public class IsInteractionTreeShowingState extends org.alice.ide.croquet.models.
 		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tree );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
 
-		context.addChildrenObserver( new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
+		context.addChildrenObserver( new edu.cmu.cs.dennisc.croquet.AbstractModelContext.ChildrenObserver() {
 			public void addingChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 			}
 			public void addedChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {

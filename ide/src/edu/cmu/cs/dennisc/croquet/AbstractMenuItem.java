@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMenuItem< J extends javax.swing.AbstractButton, M extends Model > extends AbstractButton< J, M > {
+public abstract class AbstractMenuItem< J extends javax.swing.AbstractButton, M extends AbstractModel > extends AbstractButton< J, M > {
 	public AbstractMenuItem( M model ) {
 		super( model );
 	}

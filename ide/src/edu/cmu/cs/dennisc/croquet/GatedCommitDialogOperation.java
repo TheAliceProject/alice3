@@ -170,7 +170,7 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 			return rv;
 		};
 	};
-	private ModelContext.ChildrenObserver childrenObserver = new ModelContext.ChildrenObserver() {
+	private AbstractModelContext.ChildrenObserver childrenObserver = new AbstractModelContext.ChildrenObserver() {
 		public void addingChild( HistoryNode child ) {
 		}
 		public void addedChild( HistoryNode child ) {

@@ -40,35 +40,78 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+
+package edu.cmu.cs.dennisc.croquet.cascade.imp;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PredeterminedMenuModel extends MenuModel {
-	private AbstractModel[] models;
-	public PredeterminedMenuModel( java.util.UUID individualId, AbstractModel... models ) {
-		super( individualId );
-		this.models = models;
-	}
-	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List< AbstractModel > models ) {
-		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, AbstractModel.class) );
-	}
+public abstract class Node {
+	private Node parent = null;
+	private Node nextSibling = null;
+	protected java.util.List<Node> children = null;
+
+	protected abstract edu.cmu.cs.dennisc.croquet.CascadeNodeContext getContext();
 	
-	public AbstractModel[] getModels() {
-		return this.models;
-	}
-	
-	//todo:
-	@Override
-	/*package-private*/ Menu createMenu() {
-		Menu rv = super.createMenu();
-		MenuItemContainerUtilities.addMenuElements( rv, this.models );
-		return rv;
-	}
-	@Override
-	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
-		MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
-	}
+//	protected void addChild( Node node ) {
+//		if( this.children.size() > 0 ) {
+//			Node prevLast = this.children.get( this.children.size()-1 );
+//			prevLast.nextSibling = node;
+//		}
+//		node.parent = this;
+//		node.nextSibling = null;
+//		this.children.add( node );
+//	}
+//	protected abstract void addPrefixChildren();
+//	protected abstract void cleanUp();
+//	protected abstract void addChildren();
+//	public final java.util.List<Node> getChildren() {
+//		 if( this.children != null ) {
+//			 //pass
+//		 } else {
+//			 this.children = new java.util.LinkedList< Node >();
+//			 this.addPrefixChildren();
+//			 this.addChildren();
+//			 this.cleanUp();
+//		 }
+//		 return this.children;
+//	}
+//	
+//	protected Node getNextSibling() {
+//		return this.nextSibling;
+//	}
+//	protected Node getParent() {
+//		return this.parent;
+//	}
+//	protected void setParent( Node parent ) {
+//		this.parent = parent;
+//	}
+//	protected boolean isLast() {
+//		return false;
+//	}
+//	protected Blank getRootBlank() {
+//		if( this.parent != null ) {
+//			return this.parent.getRootBlank();
+//		} else {
+//			return (Blank)this;
+//		}
+//	}	
+//	protected Blank getNearestBlank() {
+//		return this.parent.getNearestBlank();
+//	}
+//	
+//	protected Blank getNextBlank() {
+//		Blank blank = this.getNearestBlank();
+//		if( blank.getNextSibling() != null ) {
+//			return (Blank)blank.getNextSibling();
+//		} else {
+//			if( this.parent != null ) {
+//				return this.parent.getNextBlank();
+//			} else {
+//				return null;
+//			}
+//		}
+//	}
+//	protected abstract Node getNextNode();
+//	
 }

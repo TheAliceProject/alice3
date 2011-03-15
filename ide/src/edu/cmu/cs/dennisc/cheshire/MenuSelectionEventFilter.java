@@ -49,10 +49,10 @@ package edu.cmu.cs.dennisc.cheshire;
 public enum MenuSelectionEventFilter implements Filter {
 	SINGLETON;
 	
-	private static void stripExtraneousMenuSelectionEvents( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+	private static void stripExtraneousMenuSelectionEvents( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > context ) {
 		for( edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node : context.getChildren() ) {
-			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
-				edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
+			if( node instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? >)node;
 				if( childContext instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
 					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)childContext;
 					
@@ -74,7 +74,7 @@ public enum MenuSelectionEventFilter implements Filter {
 		}
 	}
 	
-	public < M extends edu.cmu.cs.dennisc.croquet.ModelContext< ? > > M filter( M rv ) {
+	public < M extends edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > > M filter( M rv ) {
 		stripExtraneousMenuSelectionEvents( rv );
 		return rv;
 	}

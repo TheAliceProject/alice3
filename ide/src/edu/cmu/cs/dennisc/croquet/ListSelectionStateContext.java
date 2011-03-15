@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ListSelectionStateContext< T > extends ModelContext<ListSelectionState<T>> {
+public class ListSelectionStateContext< T > extends AbstractModelContext<ListSelectionState<T>> {
 	public static class PopupMenuWillBecomeVisibleEvent<T> extends ModelEvent< ListSelectionStateContext< T > > {
 		private javax.swing.event.PopupMenuEvent popupMenuEvent;
 		public PopupMenuWillBecomeVisibleEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

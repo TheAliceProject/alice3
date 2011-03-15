@@ -218,7 +218,7 @@ package edu.cmu.cs.dennisc.tutorial;
 						this.setActiveNote( 3 );
 
 						edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent)child;
-						edu.cmu.cs.dennisc.croquet.ModelContext<?> model = windowOpenedEvent.getParent();
+						edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> model = windowOpenedEvent.getParent();
 						if( model instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> ) {
 							edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)model;
 							edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = inputDialogOperationContext.getModel();
@@ -263,7 +263,7 @@ package edu.cmu.cs.dennisc.tutorial;
 					if( this.isInputDialogNotePresent ) {
 						if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent ) {
 							edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent)child;
-							edu.cmu.cs.dennisc.croquet.ModelContext<?> model = windowOpenedEvent.getParent();
+							edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> model = windowOpenedEvent.getParent();
 							if( model instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> ) {
 								edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)model;
 								edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = inputDialogOperationContext.getModel();
@@ -276,7 +276,7 @@ package edu.cmu.cs.dennisc.tutorial;
 				}
 				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent ) {
 					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent windowClosingEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent)child;
-					edu.cmu.cs.dennisc.croquet.ModelContext<?> c = windowClosingEvent.getParent();
+					edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> c = windowClosingEvent.getParent();
 					while( c != null ) {
 						if( c.getModel() == this.getModel() ) {
 							rv = true;

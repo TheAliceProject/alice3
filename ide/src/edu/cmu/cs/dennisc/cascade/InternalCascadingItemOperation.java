@@ -69,7 +69,7 @@ public class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.A
 	}
 	
 	@Override
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > context, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
 		FillIn< ? > fillIn = this.getFillIn();
 		if( fillIn != null ) {

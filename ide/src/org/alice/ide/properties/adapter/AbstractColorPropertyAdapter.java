@@ -49,7 +49,7 @@ import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.swing.icons.ColorIcon;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.croquet.Model;
+import edu.cmu.cs.dennisc.croquet.AbstractModel;
 import edu.cmu.cs.dennisc.croquet.Operation;
 
 public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, O> 
@@ -119,7 +119,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 					
 					SetColorOperation currentColorOperation = new SetColorOperation(currentColor, currentColorName);
 					
-					java.util.List<Model> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					java.util.List<AbstractModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					models.add(currentColorOperation);
 					models.add(edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR);
 					models.addAll(AbstractColorPropertyAdapter.this.defaultColorOperationModels);

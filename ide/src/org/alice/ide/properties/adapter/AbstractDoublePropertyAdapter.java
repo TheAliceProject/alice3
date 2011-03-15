@@ -49,7 +49,7 @@ import org.alice.ide.properties.adapter.AbstractStringPropertyAdapter.SetStringO
 import org.alice.ide.properties.uicontroller.DoublePropertyController;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.croquet.Model;
+import edu.cmu.cs.dennisc.croquet.AbstractModel;
 import edu.cmu.cs.dennisc.croquet.Operation;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 
@@ -112,7 +112,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 					
 					SetDoubleOperation currentDoubleOperation = new SetDoubleOperation(currentDouble, currentDoubleName);
 					
-					java.util.List<Model> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					java.util.List<AbstractModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					models.add(currentDoubleOperation);
 					models.add(edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR);
 					models.addAll(AbstractDoublePropertyAdapter.this.defaultDoubleOperationModels);

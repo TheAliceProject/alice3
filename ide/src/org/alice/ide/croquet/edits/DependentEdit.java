@@ -77,7 +77,7 @@ public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<
 		return new DependentEditMemento<M>( this );
 	}
 	private org.alice.ide.croquet.models.ResponsibleModel getResponsibleModel() {
-		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = this.getContext();
+		edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > context = this.getContext();
 		if( context != null ) {
 			edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
 			if( model instanceof org.alice.ide.croquet.models.ResponsibleModel ) {

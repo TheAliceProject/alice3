@@ -45,9 +45,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuModel extends Model {
+public abstract class MenuModel extends AbstractModel {
 	private static final Group MENU_GROUP = Group.getInstance( java.util.UUID.fromString( "4ed42b1f-b4ea-4f70-99d1-5bb2c3f11081" ), "MENU_GROUP" );
-	public static final Model SEPARATOR = null;
+	public static final AbstractModel SEPARATOR = null;
 	private Class<?> clsForI18N;
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -72,7 +72,7 @@ public abstract class MenuModel extends Model {
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, getLocalizedAcceleratorKeyStroke( clsForI18N ) );
 	}
 	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialNoteText( AbstractModelContext< ? > modelContext, UserInformation userInformation ) {
 		return this.getName();
 	}
 	private String getName() {

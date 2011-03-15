@@ -55,7 +55,7 @@ public class TutorialStencil extends Stencil {
 	private static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_COMPLETION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "ea5df77d-d74d-4364-9bf5-2df1b2ede0a4" ), "TUTORIAL_COMPLETION_GROUP" );
 
 	private boolean isIgnoring = false;
-	private edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
+	private edu.cmu.cs.dennisc.croquet.AbstractModelContext.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.AbstractModelContext.ChildrenObserver() {
 		public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
 		}
 		public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
@@ -142,7 +142,7 @@ public class TutorialStencil extends Stencil {
 		return new TutorialStencil( edu.cmu.cs.dennisc.cheshire.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP, DefaultScrollingRequiredRenderer.INSTANCE, false, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() ); 
 	}
 	
-	public TutorialStencil( edu.cmu.cs.dennisc.cheshire.MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, boolean isOptimizedForBugRepro, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
+	public TutorialStencil( edu.cmu.cs.dennisc.cheshire.MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, boolean isOptimizedForBugRepro, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > rootContext ) {
 		super( menuPolicy, scrollingRequiredRenderer, getLayeredPane( isOptimizedForBugRepro ) );
 		this.isOptimizedForBugRepro = isOptimizedForBugRepro;
 

@@ -103,7 +103,7 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	private void commitEdit( BooleanStateEdit booleanStateEdit, java.awt.event.ItemEvent e ) {
 		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
 		childContext.commitAndInvokeDo( booleanStateEdit );
-		ModelContext< ? > popContext = ContextManager.popContext();
+		AbstractModelContext< ? > popContext = ContextManager.popContext();
 		assert popContext == childContext;
 	}
 	
@@ -121,12 +121,12 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	}
 	
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext, UserInformation userInformation ) {
 		return getTutorialNoteText( modelContext, userInformation );
 	}
 
 	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialNoteText( AbstractModelContext< ? > modelContext, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
 		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
 		if( successfulCompletionEvent != null ) {

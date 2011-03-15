@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DragAndDropModel extends Model {
+public abstract class DragAndDropModel extends AbstractModel {
 	public static final Group DRAG_GROUP = Group.getInstance( java.util.UUID.fromString( "16f67072-dd57-453c-a812-69f2303bc948" ), "DRAG_GROUP" );
 	public DragAndDropModel( java.util.UUID inividualUUID ) {
 		super( DRAG_GROUP, inividualUUID );
@@ -55,7 +55,7 @@ public abstract class DragAndDropModel extends Model {
 	}
 	
 	@Override
-	public String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialStepTitle( AbstractModelContext< ? > modelContext, UserInformation userInformation ) {
 		return "Drag and Drop...";
 	}
 	public String getTutorialDragNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {

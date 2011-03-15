@@ -266,7 +266,7 @@ public class Factory extends org.alice.ide.common.Factory {
 		).getPopupMenuOperation() );
 		return abstractStatementPane;
 	}
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Model > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractModel > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractModel > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		edu.cmu.cs.dennisc.alice.ast.StatementListProperty property = abstractStatementPane.getOwner();
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
@@ -303,8 +303,8 @@ public class Factory extends org.alice.ide.common.Factory {
 		}
 		return rv;
 	}
-	private java.util.List< edu.cmu.cs.dennisc.croquet.Model > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
-		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Model >(), abstractStatementPane );
+	private java.util.List< edu.cmu.cs.dennisc.croquet.AbstractModel > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.AbstractModel >(), abstractStatementPane );
 	}
 
 }

@@ -194,8 +194,8 @@ public abstract class Blank extends Node {
 		this.addFillIn( new SeparatorFillIn() );
 	}
 	
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > getModels() {
-		java.util.List< edu.cmu.cs.dennisc.croquet.Model > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractModel > getModels() {
+		java.util.List< edu.cmu.cs.dennisc.croquet.AbstractModel > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( Node child : this.getNextNode().getChildren() ) {
 //			if( child instanceof Blank ) {
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "blank", child );

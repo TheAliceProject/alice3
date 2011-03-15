@@ -45,11 +45,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Edit<M extends Model> {
-	private static <M extends Model> ModelContext<M> getContext( java.util.UUID contextId ) {
+public abstract class Edit<M extends AbstractModel> {
+	private static <M extends AbstractModel> AbstractModelContext<M> getContext( java.util.UUID contextId ) {
 		return HistoryNode.lookup( contextId );
 	}
-	private static <M extends Model> M getModel( ModelContext<M> context ) {
+	private static <M extends AbstractModel> M getModel( AbstractModelContext<M> context ) {
 		if( context != null ) {
 			return context.getModel();
 		} else {
@@ -57,7 +57,7 @@ public abstract class Edit<M extends Model> {
 			return null;
 		}
 	}
-	private static <M extends Model> Group getGroup( M model ) {
+	private static <M extends AbstractModel> Group getGroup( M model ) {
 		if( model != null ) {
 			return model.getGroup();
 		} else {
@@ -66,7 +66,7 @@ public abstract class Edit<M extends Model> {
 		}
 	}
 
-	protected static abstract class Memento< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	protected static abstract class Memento< M extends AbstractModel > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 		private java.util.UUID contextId;
 		public Memento( Edit<M> edit ) {
 			this.contextId = edit.contextId;
@@ -74,7 +74,7 @@ public abstract class Edit<M extends Model> {
 		public Memento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			this.decode( binaryDecoder );
 		}
-		public ModelContext<M> getContext() {
+		public AbstractModelContext<M> getContext() {
 			return Edit.getContext( this.contextId );
 		}
 		public M getModel() {
@@ -95,7 +95,7 @@ public abstract class Edit<M extends Model> {
 	
 	
 	private java.util.UUID contextId;
-	private transient ModelContext<M> context;
+	private transient AbstractModelContext<M> context;
 
 	public Edit() {
 	}
@@ -103,7 +103,7 @@ public abstract class Edit<M extends Model> {
 		this.contextId = memento.contextId;
 	}
 	public abstract Memento<M> createMemento();
-	public ModelContext<M> getContext() {
+	public AbstractModelContext<M> getContext() {
 		if( this.context != null ) {
 			//pass
 		} else {
@@ -118,7 +118,7 @@ public abstract class Edit<M extends Model> {
 	public Group getGroup() {
 		return getGroup( this.getModel() );
 	}
-	public void setContext( ModelContext<M> context ) {
+	public void setContext( AbstractModelContext<M> context ) {
 		this.context = context;
 		if( this.context != null ) {
 			this.contextId = context.getId();

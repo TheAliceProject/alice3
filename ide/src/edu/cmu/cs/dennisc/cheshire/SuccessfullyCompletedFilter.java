@@ -48,12 +48,12 @@ package edu.cmu.cs.dennisc.cheshire;
  */
 public enum SuccessfullyCompletedFilter implements Filter {
 	SINGLETON;
-	private static void stripExtraneousContexts( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+	private static void stripExtraneousContexts( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > context ) {
 		java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > childListIterator = context.getChildListIterator();
 		while( childListIterator.hasNext() ) {
 			edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node = childListIterator.next();
-			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
-				edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
+			if( node instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? >)node;
 				if( childContext.isSuccessfullyCompleted() ) {
 					//pass
 				} else {
@@ -67,7 +67,7 @@ public enum SuccessfullyCompletedFilter implements Filter {
 		}
 	}
 
-	public < M extends edu.cmu.cs.dennisc.croquet.ModelContext< ? > > M filter( M rv ) {
+	public < M extends edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > > M filter( M rv ) {
 		stripExtraneousContexts( rv );
 		return rv;
 	}

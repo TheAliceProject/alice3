@@ -136,7 +136,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 			}
 
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >[] getBlanks() {
+			public edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >[] getBlanks() {
 				return this.expressionBlanks;
 			}
 			@Override

@@ -109,7 +109,7 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 	public static class MenuSelectionEvent extends ModelEvent< PopupMenuOperationContext > {
 		private javax.swing.event.ChangeEvent changeEvent;
 		private Model[] models;
-		private CodableResolver< Model >[] modelResolvers;
+		private CodableResolver< ? extends Model >[] modelResolvers;
 
 		public MenuSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
@@ -172,7 +172,7 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 			return (M)rv;
 		}
 		
-		public <M extends Model> M getLastModel() {
+		public <M extends AbstractModel> M getLastModel() {
 			final int N = this.getModelCount();
 			if( N > 0 ) {
 				return this.getModelAt( N-1 );
@@ -185,7 +185,7 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super.decodeInternal( binaryDecoder );
 			this.modelResolvers = binaryDecoder.decodeBinaryEncodableAndDecodableArray( CodableResolver.class );
-			this.models = new Model[ this.modelResolvers.length ];
+			this.models = new AbstractModel[ this.modelResolvers.length ];
 		}
 		@Override
 		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
@@ -199,7 +199,7 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 		@Override
 		protected StringBuilder appendRepr( StringBuilder rv ) {
 			super.appendRepr( rv );
-			for( CodableResolver< Model > modelResolver : this.modelResolvers ) {
+			for( CodableResolver< ? extends Model > modelResolver : this.modelResolvers ) {
 				rv.append( " " );
 				rv.append( modelResolver.getResolved() );
 			}

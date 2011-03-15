@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DragAndDropContext extends ModelContext<DragAndDropModel> {
+public class DragAndDropContext extends AbstractModelContext<DragAndDropModel> {
 	public static abstract class DragAndDropEvent extends ModelEvent< DragAndDropContext > {
 		private java.awt.event.MouseEvent mouseEvent;
 		public DragAndDropEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -382,11 +382,11 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 	
 	private void popContext( OperationContext< ? > childContext ) {
 		System.err.println( "popContext" );
-		ModelContext< ? > currentContext = ContextManager.getCurrentContext();
+		AbstractModelContext< ? > currentContext = ContextManager.getCurrentContext();
 		if( childContext != null && childContext == currentContext ) {
 			ContextManager.popParentContextWhenChildContextIsPopped( this, childContext );
 		} else {
-			ModelContext< ? > modelContext = ContextManager.popContext();
+			AbstractModelContext< ? > modelContext = ContextManager.popContext();
 			if( modelContext == this ) {
 				//pass
 			} else {

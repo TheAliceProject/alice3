@@ -120,7 +120,7 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 	}
 	
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		return "Preview your program.";
 	}
 	@Override

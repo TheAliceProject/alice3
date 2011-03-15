@@ -43,10 +43,163 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+class RtNode<M extends Model, C extends ModelContext< M > > {
+	private M model;
+	private C context;
+	public RtNode( M model, C context ) {
+		this.model = model;
+		this.context = context;
+	}
+	public M getModel() {
+		return this.model;
+	}
+	public C getContext() {
+		return this.context;
+	}
+}
+
+class RtBlank< T > extends RtNode< CascadeBlank< T >, CascadeBlankContext< T > > {
+	private final RtFillIn< T >[] rtFillIns;
+	private RtFillIn< T > rtSelectedFillIn;
+	public RtBlank( CascadeBlank< T > model ) {
+		super( model, ContextManager.createCascadeBlankContext( model ) );
+		java.util.List< RtFillIn< T > > allRtFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		
+		for( CascadeFillIn< T > fillIn : this.getModel().getFillIns() ) {
+			allRtFillIns.add( ( new RtFillIn< T >( fillIn ) ) );
+		}
+		
+		java.util.ListIterator< RtFillIn< T > > listIterator = allRtFillIns.listIterator();
+		while( listIterator.hasNext() ) {
+			RtFillIn< T > rtFillIn = listIterator.next();
+			if( rtFillIn.isInclusionDesired() ) {
+				//pass
+			} else {
+				listIterator.remove();
+			}
+		}
+	
+		this.rtFillIns = (RtFillIn< T >[])edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( (java.util.List)allRtFillIns, RtFillIn.class );
+	}
+	
+	private static <T> boolean isEmptySeparator( RtFillIn< T > rtFillIn ) {
+		 if( rtFillIn.getModel() instanceof SeparatorFillIn ) {
+			 SeparatorFillIn separatorFillIn = (SeparatorFillIn)rtFillIn.getModel();
+			 return separatorFillIn.isEmpty();
+		 } else {
+			 return false;
+		 }
+	}
+	private static <T> void cleanUpSeparators( java.util.List< RtFillIn< T > > rtFillIns ) {
+		 java.util.ListIterator< RtFillIn< T > > listIterator = rtFillIns.listIterator();
+		 boolean isSeparatorAcceptable = false;
+		 while( listIterator.hasNext() ) {
+			 RtFillIn< T > rtFillIn = listIterator.next();
+			 if( isEmptySeparator( rtFillIn ) ) {
+				 if( isSeparatorAcceptable ) {
+					//pass 
+				 } else {
+					 listIterator.remove();
+				 }
+				 isSeparatorAcceptable = false;
+			 } else {
+				 isSeparatorAcceptable = true;
+			 }
+		 }
+		 
+		 //remove separators at the end (should be a maximum of only 1)
+		 final int N = rtFillIns.size();
+		 for( int i=0; i<N; i++ ) {
+			 int index = N-i-1;
+			 if( isEmptySeparator( rtFillIns.get( index ) ) ) {
+				 rtFillIns.remove( index );
+			 } else {
+				 break;
+			 }
+		 }
+	}
+	public boolean isFillInAlreadyDetermined() {
+		return this.rtSelectedFillIn != null;
+	}
+	public T createValue() {
+		if( this.rtSelectedFillIn != null ) {
+			return this.rtSelectedFillIn.createValue();
+		} else {
+			throw new RuntimeException();
+		}
+	}
+}
+
+class RtBlankOwner<T, M extends CascadeBlankOwner< T >, C extends CascadeBlankOwnerContext< M, T > > extends RtNode<M, C> {
+	private RtBlank< T >[] rtBlanks;
+	public RtBlankOwner( M model, C context ) {
+		super( model, context );
+		CascadeBlank< T >[] blanks = model.getBlanks();
+		this.rtBlanks = new RtBlank[ blanks.length ];
+		for( int i=0; i<this.rtBlanks.length; i++ ) {
+			this.rtBlanks[ i ] = new RtBlank< T >( blanks[ i ] );
+		}
+	}
+	protected RtBlank< T >[] getRtBlanks() {
+		return this.rtBlanks;
+	}
+	protected boolean isGoodToGo() {
+		if( this.rtBlanks.length > 0 ) {
+			for( RtBlank< T > rtBlank : this.rtBlanks ) {
+				if( rtBlank.isFillInAlreadyDetermined() ) {
+					//pass
+				} else {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+}
+
+class RtFillIn< T > extends RtBlankOwner< T, CascadeFillIn< T >, CascadeFillInContext< T > > {
+	public RtFillIn( CascadeFillIn< T > model ) {
+		super( model, ContextManager.createCascadeFillInContext( model ) );
+	}
+	public boolean isInclusionDesired() {
+		return this.getModel().isInclusionDesired( this.getContext() );
+	}
+	public T createValue() {
+		return this.getModel().createValue( this.getContext() );
+	}
+}
+
+class RtOperation< T > extends RtBlankOwner< T, CascadeOperation< T >, CascadeOperationContext< T > > {
+	private final Operation.PerformObserver performObserver;
+	public RtOperation( CascadeOperation< T > model, CascadeOperationContext<T> context, Operation.PerformObserver performObserver ) {
+		super( model, context );
+		this.performObserver = performObserver;
+	}
+
+	protected T[] createValues( Class<T> componentType ) {
+		RtBlank< T >[] rtBlanks = this.getRtBlanks();
+		T[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( componentType, rtBlanks.length );
+		for( int i=0; i<rtBlanks.length; i++ ) {
+			rv[ i ] = rtBlanks[ i ].createValue();
+		}
+		return rv;
+	}
+
+	public void perform() {
+		if( this.isGoodToGo() ) {
+			T[] values = this.createValues( this.getModel().getComponentType() );
+			this.getModel().handleCompletion( this.getContext(), performObserver, values );
+		} else {
+			
+		}
+	}
+}
+
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeOperation< T > extends Operation< CascadeOperationContext< T > > {
+public abstract class CascadeOperation< T > extends Operation< CascadeOperationContext< T > > implements CascadeBlankOwner< T > {
 	private final Class<T> componentType;
 	public CascadeOperation( Group group, java.util.UUID id, Class<T> componentType ) {
 		super( group, id );
@@ -55,6 +208,10 @@ public abstract class CascadeOperation< T > extends Operation< CascadeOperationC
 	@Override
 	public CascadeOperationContext< T > createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushCascadeOperationContext( this, e, viewController );
+	}
+	
+	public Class< T > getComponentType() {
+		return this.componentType;
 	}
 	@Override
 	protected void localize() {
@@ -65,10 +222,10 @@ public abstract class CascadeOperation< T > extends Operation< CascadeOperationC
 		return false;
 	}
 	
-	protected abstract CascadeBlank< T >[] getBlanks();
+	public abstract CascadeBlank< T >[] getBlanks();
 	protected abstract Edit< CascadeOperation< T > > createEdit( T[] values );
 	
-	private void handleCompletion( CascadeOperationContext<T> context, PerformObserver performObserver, T[] values ) {
+	/*package-private*/ void handleCompletion( CascadeOperationContext<T> context, PerformObserver performObserver, T[] values ) {
 		try {
 			Edit< CascadeOperation< T > > edit = this.createEdit( values );
 			context.commitAndInvokeDo( edit );
@@ -77,33 +234,9 @@ public abstract class CascadeOperation< T > extends Operation< CascadeOperationC
 		}
 	}
 
-	private boolean isGoodToGo( CascadeOperationContext<T> context ) {
-		CascadeBlank< T >[] blanks = this.getBlanks();
-		if( blanks.length > 0 ) {
-			for( CascadeBlank< T > blank : blanks ) {
-				if( blank.isFillInAlreadyDetermined( context ) ) {
-					//pass
-				} else {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	private T[] getFilledInValues() {
-		CascadeBlank< T >[] blanks = this.getBlanks();
-		T[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( this.componentType, blanks.length );
-		return rv;
-	}
-	
 	@Override
 	protected void perform( CascadeOperationContext<T> context, PerformObserver performObserver ) {
-//		assert ContextManager.getCurrentContext() == context; 
-		if( this.isGoodToGo( context ) ) {
-			this.handleCompletion( context, performObserver, this.getFilledInValues() );
-		} else {
-			
-		}
+		RtOperation< T > rt = new RtOperation< T >( this, context, performObserver );
+		rt.perform();
 	}
 }

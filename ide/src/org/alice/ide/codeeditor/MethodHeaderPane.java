@@ -73,7 +73,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		if( methodDeclaredInAlice.isSignatureLocked.getValue() ) {
 			this.addComponent( nameLabel );
 		} else {
-			class PopupPanel extends edu.cmu.cs.dennisc.croquet.ViewController<javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Model> {
+			class PopupPanel extends edu.cmu.cs.dennisc.croquet.ViewController<javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.AbstractModel> {
 				private edu.cmu.cs.dennisc.croquet.Component<?> centerComponent;
 				public PopupPanel( edu.cmu.cs.dennisc.croquet.Component<?> centerComponent, edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation ) {
 					super( null );

@@ -58,7 +58,7 @@ public class OtherTypesMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 	@Override
 	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		java.util.List< edu.cmu.cs.dennisc.croquet.Model > otherTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< edu.cmu.cs.dennisc.croquet.AbstractModel > otherTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > otherTypes = org.alice.ide.IDE.getSingleton().getSecondarySelectableTypesDeclaredInJava();
 		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava otherType : otherTypes ) {
 			otherTypeModels.add( SelectTypeOperation.getInstance( otherType ) );

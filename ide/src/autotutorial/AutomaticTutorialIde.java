@@ -37,7 +37,7 @@ abstract class PriorInteractionHistoryBasedGuidedInteractionGenerator implements
 	public PriorInteractionHistoryBasedGuidedInteractionGenerator( edu.cmu.cs.dennisc.croquet.RootContext originalRoot ) {
 		this.originalRoot = originalRoot;
 	}
-	protected abstract void filterAndAugment( edu.cmu.cs.dennisc.croquet.ModelContext< ? > originalRoot, edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
+	protected abstract void filterAndAugment( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > originalRoot, edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
 	public edu.cmu.cs.dennisc.croquet.RootContext generate( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		this.filterAndAugment( this.originalRoot, userInformation );
 		return this.originalRoot;
@@ -49,12 +49,12 @@ class AlgPriorInteractionHistoryBasedGuidedInteractionGenerator extends PriorInt
 		super( originalRoot );
 	}
 	@Override
-	protected void filterAndAugment( edu.cmu.cs.dennisc.croquet.ModelContext< ? > originalRoot, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected void filterAndAugment( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > originalRoot, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > listIterator = originalRoot.getChildListIterator();
 		while( listIterator.hasNext() ) {
 			edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node = listIterator.next();
-			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
-				edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
+			if( node instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? >)node;
 				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
 				if( successfulCompletionEvent != null ) {
 					edu.cmu.cs.dennisc.croquet.Edit< ? > edit = successfulCompletionEvent.getEdit();
@@ -128,7 +128,7 @@ class AlgBugReproGuidedInteractionGenerator extends PriorInteractionHistoryBased
 		super( originalRoot );
 	}
 	@Override
-	protected void filterAndAugment( edu.cmu.cs.dennisc.croquet.ModelContext< ? > originalRoot, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected void filterAndAugment( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > originalRoot, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 	}	
 }
 
@@ -163,7 +163,7 @@ class AlgConstructionGuide extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction
 	protected java.util.List< edu.cmu.cs.dennisc.cheshire.RetargetableNote > addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( 
 			java.util.List< edu.cmu.cs.dennisc.cheshire.RetargetableNote > rv,
 			edu.cmu.cs.dennisc.cheshire.ParentContextCriterion parentContextCriterion, 
-			edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext ) {
+			edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext ) {
 		
 		if( IS_MONKEY_WRENCH_DESIRED ) {
 			System.err.println( "addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound: " + modelContext );
@@ -198,7 +198,7 @@ class AlgBugRepro extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction {
 	protected java.util.List< edu.cmu.cs.dennisc.cheshire.RetargetableNote > addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( 
 			java.util.List< edu.cmu.cs.dennisc.cheshire.RetargetableNote > rv,
 			edu.cmu.cs.dennisc.cheshire.ParentContextCriterion parentContextCriterion, 
-			edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext ) {
+			edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext ) {
 		
 		return rv;
 	}
@@ -223,7 +223,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
 		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( false );
 		if( IS_ENCODING ) {
-			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
+			edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			rootContext.EPIC_HACK_clear();
 		}
 	}
@@ -391,7 +391,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		this.preservePreferences();
 //		super.handleQuit( e );
 		if( IS_ENCODING ) {
-			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
+			edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			
 			System.err.println( "todo: remove filtering" );
 			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {

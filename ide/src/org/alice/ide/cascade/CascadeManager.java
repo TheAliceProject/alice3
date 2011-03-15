@@ -328,9 +328,9 @@ public abstract class CascadeManager {
 				//blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomArrayFillIn() );
 			}
 
-			if( blank.isEmpty() ) {
+//			if( blank.isEmpty() ) {
 				blank.addFillIn( org.alice.ide.croquet.models.cascade.NoFillInsFoundCancelFillIn.getInstance() );
-			}
+//			}
 		} else {
 			//todo:
 			blank.addFillIn( org.alice.ide.croquet.models.cascade.TypeUnsetCancelFillIn.getInstance() );

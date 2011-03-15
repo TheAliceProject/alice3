@@ -69,20 +69,20 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 	}
 	
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
 		if( successfulCompletionEvent != null ) {
-			ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
+			AbstractModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
 			return descendantContext.getModel().getTutorialStepTitle( descendantContext, userInformation );
 		} else {
 			return super.getTutorialStepTitle( modelContext, userInformation );
 		}
 	}
 	@Override
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
 		if( successfulCompletionEvent != null ) {
-			ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
+			AbstractModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
 			return descendantContext.getModel().getTutorialNoteText( descendantContext, userInformation );
 		} else {
 			return super.getTutorialNoteText( modelContext, userInformation );
@@ -169,7 +169,7 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 			public void componentResized( java.awt.event.ComponentEvent e ) {
 //				java.awt.Component awtComponent = e.getComponent();
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
-				ModelContext< ? > currentContext = ContextManager.getCurrentContext();
+				AbstractModelContext< ? > currentContext = ContextManager.getCurrentContext();
 				if( currentContext instanceof PopupMenuOperationContext ) {
 					PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)currentContext;
 					popupMenuOperationContext.handleResized( e );

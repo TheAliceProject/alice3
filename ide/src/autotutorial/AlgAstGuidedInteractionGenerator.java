@@ -77,12 +77,12 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 		return rv;
 	}
 	
-	private static edu.cmu.cs.dennisc.croquet.ModelContext< ? > generate( edu.cmu.cs.dennisc.croquet.ModelContext< ? > rv, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement ) {
+	private static edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > generate( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > rv, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement ) {
 		//will get re-targeted later
 		return generate( rv, blockStatement, blockStatement, 0 );
 	}
 	
-	private static edu.cmu.cs.dennisc.croquet.ModelContext< ? > generate( edu.cmu.cs.dennisc.croquet.ModelContext< ? > rv, edu.cmu.cs.dennisc.alice.ast.BlockStatement src, edu.cmu.cs.dennisc.alice.ast.BlockStatement dst, int dstIndex0 ) {
+	private static edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > generate( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > rv, edu.cmu.cs.dennisc.alice.ast.BlockStatement src, edu.cmu.cs.dennisc.alice.ast.BlockStatement dst, int dstIndex0 ) {
 		int dstIndex = dstIndex0; 
 		for( edu.cmu.cs.dennisc.alice.ast.Statement statement : src.statements ) {
 			org.alice.ide.croquet.models.ast.InsertStatementActionOperation insertStatementActionOperation = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( dst, dstIndex, statement );
@@ -152,7 +152,7 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 		return rv;
 	}
 
-	private static <M extends edu.cmu.cs.dennisc.croquet.Model> edu.cmu.cs.dennisc.croquet.ModelContext< M > addEdit( edu.cmu.cs.dennisc.croquet.ModelContext< M > rv, edu.cmu.cs.dennisc.croquet.Edit< M > edit ) {
+	private static <M extends edu.cmu.cs.dennisc.croquet.AbstractModel> edu.cmu.cs.dennisc.croquet.AbstractModelContext< M > addEdit( edu.cmu.cs.dennisc.croquet.AbstractModelContext< M > rv, edu.cmu.cs.dennisc.croquet.Edit< M > edit ) {
 		edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = new edu.cmu.cs.dennisc.croquet.CommitEvent( edit );
 		rv.addChild( commitEvent );
 		edit.setContext( rv );

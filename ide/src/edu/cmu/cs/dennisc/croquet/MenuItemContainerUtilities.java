@@ -68,7 +68,7 @@ public class MenuItemContainerUtilities {
 //		return rv;
 //	}
 	
-	public static MenuItemContainer addMenuElement( MenuItemContainer rv, Model model ) {
+	public static MenuItemContainer addMenuElement( MenuItemContainer rv, AbstractModel model ) {
 		if( model != null ) {
 			if( model instanceof MenuModel ) {
 				MenuModel menuOperation = (MenuModel)model;
@@ -93,14 +93,14 @@ public class MenuItemContainerUtilities {
 		}
 		return rv;
 	}
-	public static MenuItemContainer addMenuElements( MenuItemContainer rv, java.util.List<Model> models ) {
-		for( Model model : models ) {
+	public static MenuItemContainer addMenuElements( MenuItemContainer rv, java.util.List<AbstractModel> models ) {
+		for( AbstractModel model : models ) {
 			addMenuElement( rv, model );
 		}
 		return rv;
 	}
-	public static MenuItemContainer addMenuElements( MenuItemContainer rv, Model[] models ) {
-		for( Model model : models ) {
+	public static MenuItemContainer addMenuElements( MenuItemContainer rv, AbstractModel[] models ) {
+		for( AbstractModel model : models ) {
 			addMenuElement( rv, model );
 		}
 		return rv;

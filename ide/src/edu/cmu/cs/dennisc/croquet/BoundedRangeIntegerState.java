@@ -72,7 +72,7 @@ public final class BoundedRangeIntegerState extends State<Integer> {
 				int nextValue = boundedRangeModel.getValue();
 				boundedRangeIntegerStateContext.commitAndInvokeDo( new BoundedRangeIntegerStateEdit( e, BoundedRangeIntegerState.this.previousValue, nextValue, false ) );
 				BoundedRangeIntegerState.this.previousValue = nextValue;
-				ModelContext< ? > popContext = ContextManager.popContext();
+				AbstractModelContext< ? > popContext = ContextManager.popContext();
 				assert popContext == boundedRangeIntegerStateContext;
 			}
 		}

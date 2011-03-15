@@ -86,12 +86,12 @@ public class RequirementNote extends RetargetableNote /* implements ParentContex
 				}
 				return actualIndex;
 			}
-			public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
+			public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > parentContext ) {
 				boolean rv;
 				int actualIndex = this.calculateActualIndex();
 				edu.cmu.cs.dennisc.croquet.HistoryNode checkNode = RequirementNote.this.nodes.get( actualIndex );
 				if( checkNode != null ) {
-					if( checkNode instanceof edu.cmu.cs.dennisc.croquet.ModelContext ) {
+					if( checkNode instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext ) {
 						rv = checkNode == parentContext;
 					} else {
 						rv = checkNode.getParent() == parentContext;

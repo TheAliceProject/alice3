@@ -51,6 +51,10 @@ public abstract class CancelFillIn extends CascadeFillIn< Object > {
 		super( id );
 	}
 	@Override
+	public boolean isAutomaticallySelectedWhenSoleOption() {
+		return false;
+	}
+	@Override
 	public Object createValue( CascadeFillInContext context ) {
 		//context.cancel();
 		throw new edu.cmu.cs.dennisc.cascade.CancelException( this.getDefaultLocalizedText() );

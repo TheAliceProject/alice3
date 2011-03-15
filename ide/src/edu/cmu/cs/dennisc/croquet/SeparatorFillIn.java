@@ -40,35 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PredeterminedMenuModel extends MenuModel {
-	private AbstractModel[] models;
-	public PredeterminedMenuModel( java.util.UUID individualId, AbstractModel... models ) {
-		super( individualId );
-		this.models = models;
+public class SeparatorFillIn extends CascadeFillIn< Object > {
+	public SeparatorFillIn() {
+		super( java.util.UUID.fromString( "5103f9f4-b85d-4c49-b384-5a9785d1d2ac" ) );
 	}
-	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List< AbstractModel > models ) {
-		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, AbstractModel.class) );
-	}
-	
-	public AbstractModel[] getModels() {
-		return this.models;
-	}
-	
-	//todo:
-	@Override
-	/*package-private*/ Menu createMenu() {
-		Menu rv = super.createMenu();
-		MenuItemContainerUtilities.addMenuElements( rv, this.models );
-		return rv;
+	public boolean isEmpty() {
+		//return separatorFillIn.getName() == null && separatorFillIn.getIcon() == null;
+		return true;
 	}
 	@Override
-	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
-		MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
+	public boolean isAutomaticallySelectedWhenSoleOption() {
+		return false;
+	}
+	@Override
+	public Object createValue( CascadeFillInContext< Object > context ) {
+		throw new AssertionError();
+	}
+	@Override
+	public Object getTransientValue( CascadeFillInContext< Object > context ) {
+		throw new AssertionError();
 	}
 }

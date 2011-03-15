@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
+public abstract class Widget extends ViewController<javax.swing.JPanel,AbstractModel> {
 	protected abstract int getInsetTop();
 	protected abstract int getInsetLeft();
 	protected abstract int getInsetBottom();

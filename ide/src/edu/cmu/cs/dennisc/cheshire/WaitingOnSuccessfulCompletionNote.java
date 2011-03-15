@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.cheshire;
  * @author Dennis Cosgrove
  */
 /*package-private*/ abstract class WaitingOnSuccessfulCompletionNote extends RequirementNote {
-	public WaitingOnSuccessfulCompletionNote( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent, boolean isContextRequirementRequired ) {
+	public WaitingOnSuccessfulCompletionNote( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > context, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent, boolean isContextRequirementRequired ) {
 		edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
 		this.setText( model.getTutorialNoteText( context, GuidedInteraction.getInstance().getUserInformation() ) );
 		if( isContextRequirementRequired ) {
@@ -54,7 +54,7 @@ package edu.cmu.cs.dennisc.cheshire;
 		}
 		this.addRequirement( new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, originalSuccessfulCompletionEvent ) );
 	}
-	public WaitingOnSuccessfulCompletionNote( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent ) {
+	public WaitingOnSuccessfulCompletionNote( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > context, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent ) {
 		this( context, parentContextCriterion, originalSuccessfulCompletionEvent, true );
 	}
 }

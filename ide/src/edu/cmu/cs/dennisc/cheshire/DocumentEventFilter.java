@@ -49,10 +49,10 @@ package edu.cmu.cs.dennisc.cheshire;
 public enum DocumentEventFilter implements Filter {
 	SINGLETON;
 	
-	private static void stripDocumentEvents( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+	private static void stripDocumentEvents( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > context ) {
 		for( edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node : context.getChildren() ) {
-			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
-				edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
+			if( node instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? >)node;
 				if( childContext instanceof edu.cmu.cs.dennisc.croquet.StringStateContext ) {
 					edu.cmu.cs.dennisc.croquet.StringStateContext stringStateContext = (edu.cmu.cs.dennisc.croquet.StringStateContext)childContext;
 					java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > childListIterator = stringStateContext.getChildListIterator();
@@ -68,7 +68,7 @@ public enum DocumentEventFilter implements Filter {
 		}
 	}
 	
-	public < M extends edu.cmu.cs.dennisc.croquet.ModelContext< ? > > M filter( M rv ) {
+	public < M extends edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > > M filter( M rv ) {
 		stripDocumentEvents( rv );
 		return rv;
 	}

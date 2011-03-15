@@ -71,7 +71,7 @@ public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.al
 		}
 	}
 	@Override
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
 		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
 		if( successfulCompletionEvent != null ) {

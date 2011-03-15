@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class MenuSeparatorModel extends Model {
+public final class MenuSeparatorModel extends AbstractModel {
 	private String name;
 	private javax.swing.Icon icon;
 	public MenuSeparatorModel( String name, javax.swing.Icon icon ) {

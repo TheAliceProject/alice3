@@ -64,7 +64,7 @@ public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.Reta
 		return super.getCodableResolver();
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.Model createCroquetModel( FillIn< ? > fillIn, boolean isLast ) {
+	public edu.cmu.cs.dennisc.croquet.AbstractModel createCroquetModel( FillIn< ? > fillIn, boolean isLast ) {
 		if( fillIn instanceof SeparatorFillIn ) {
 			SeparatorFillIn separatorFillIn = (SeparatorFillIn)fillIn;
 			String name = separatorFillIn.getName();

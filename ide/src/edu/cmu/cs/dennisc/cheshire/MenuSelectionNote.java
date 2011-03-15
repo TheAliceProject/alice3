@@ -61,8 +61,8 @@ import edu.cmu.cs.dennisc.tutorial.*;
 			final int N = this.requiredIndex+1;
 			if( menuSelectionEvent.getModelCount() >= N ) {
 				for( int i=0; i<N; i++ ) {
-					edu.cmu.cs.dennisc.croquet.Model orginalModelI = this.originalMenuSelectionEvent.getModelAt( i );
-					edu.cmu.cs.dennisc.croquet.Model replacementModelI = menuSelectionEvent.getModelAt( i );
+					edu.cmu.cs.dennisc.croquet.AbstractModel orginalModelI = this.originalMenuSelectionEvent.getModelAt( i );
+					edu.cmu.cs.dennisc.croquet.AbstractModel replacementModelI = menuSelectionEvent.getModelAt( i );
 					if( orginalModelI == replacementModelI ) {
 						//pass
 					} else {
@@ -172,7 +172,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
  */
 /*package-private*/ class MenuSelectionNote extends RequirementNote {
 	private static String getText( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		edu.cmu.cs.dennisc.croquet.Model modelI = menuSelectionEvent.getModelAt( i );
+		edu.cmu.cs.dennisc.croquet.AbstractModel modelI = menuSelectionEvent.getModelAt( i );
 		StringBuilder sb = new StringBuilder();
 		sb.append( "select <strong><em>" );
 		sb.append( modelI.getTutorialNoteText( menuSelectionEvent.getParent(), userInformation ) );
@@ -185,7 +185,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		return sb.toString();
 	}
 	
-	public static MenuSelectionNote createInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
+	public static MenuSelectionNote createInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext, int index0 ) {
 		MenuSelectionNote rv = new MenuSelectionNote( menuSelectionEvent, i, index0 );
 		if( i == index0 ) {
 			if( index0 == 0 ) {
@@ -215,10 +215,10 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent;
 	private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
 	private int i;
-	private edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext;
+	private edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext;
 
 	private static FirstComponentResolver createComponentResolver( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index ) {
-		return new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index ) );
+		return new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.AbstractModel >( menuSelectionEvent, index ) );
 	}
 	
 	private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, int index0 ) {

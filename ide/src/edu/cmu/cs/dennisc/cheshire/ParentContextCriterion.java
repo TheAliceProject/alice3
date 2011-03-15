@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.cheshire;
  * @author Dennis Cosgrove
  */
 public interface ParentContextCriterion {
-	boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext );
+	boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > parentContext );
 }
