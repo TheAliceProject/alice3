@@ -107,7 +107,8 @@ class RtBlank< T > extends RtNode< CascadeBlank< T >, CascadeBlankContext< T > >
 			 }
 		 }
 		 
-		 //remove separators at the end (should be a maximum of only 1)
+		 //remove separators at the end
+		 //there should be a maximum of only 1 but we loop anyway 
 		 final int N = rtFillIns.size();
 		 for( int i=0; i<N; i++ ) {
 			 int index = N-i-1;
@@ -190,7 +191,7 @@ class RtOperation< T > extends RtBlankOwner< T, CascadeOperation< T >, CascadeOp
 			T[] values = this.createValues( this.getModel().getComponentType() );
 			this.getModel().handleCompletion( this.getContext(), performObserver, values );
 		} else {
-			
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: perform ", this );
 		}
 	}
 }
