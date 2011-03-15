@@ -41,54 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade.blanks;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ComponentBackedIconCascadeFillIn<T> extends CascadeFillIn<T> {
-	private javax.swing.JComponent menuProxy = null;
-	private javax.swing.Icon icon = null;
-	public ComponentBackedIconCascadeFillIn( java.util.UUID id ) {
-		super( id );
-	}
-	protected abstract javax.swing.JComponent createMenuItemIconProxy();
-//	protected javax.swing.JComponent createMenuProxy() {
-//		return new javax.swing.JLabel( "todo: override getMenuProxy" );
-//	}
-	protected javax.swing.JComponent getMenuProxy() {
-		//System.err.println( "todo: cache getMenuProxy()" );
-		//todo
-		if( this.menuProxy != null ) {
+public class EnumBlank<T extends Enum<T>> extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
+	private static java.util.Map< Class<?>, EnumBlank<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized EnumBlank<?> getInstance( Class<?> cls ) {
+		EnumBlank<?> rv = map.get( cls );
+		if( rv != null ) {
 			//pass
 		} else {
-			this.menuProxy = this.createMenuItemIconProxy();
+			rv = new EnumBlank( cls );
+			map.put( cls, rv );
 		}
-		return this.menuProxy;
+		return rv;
 	}
-	@Override
-	public final javax.swing.Icon getMenuItemIcon( CascadeFillInContext< T > context ) {
-		if( this.icon != null ) {
-			//pass
-		} else {
-			javax.swing.JComponent component = this.getMenuProxy();
-			if( component != null ) {
-				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( component );
-				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
-				java.awt.Dimension size = component.getPreferredSize();
-				if( size.width > 0 && size.height > 0 ) {
-					this.icon = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.createIcon( component );
-				} else {
-					this.icon = null;
-				}
-			} else {
-				this.icon = null;
-			}
-		}
-		return this.icon;
-	}
-	@Override
-	public final String getMenuItemText( CascadeFillInContext< T > context ) {
-		return null;
+	private EnumBlank( Class<T> cls ) {
+		super( java.util.UUID.fromString( "b0f67719-3336-4059-8d90-8d1092784434" ), cls );
+//		for( T value : cls.getEnumConstants() ) {
+//			this.addFillIn( EnumConstantFillIn.getInstance( value ) );
+//		}
 	}
 }

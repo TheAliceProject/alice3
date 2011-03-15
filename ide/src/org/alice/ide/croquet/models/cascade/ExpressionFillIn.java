@@ -51,6 +51,10 @@ public abstract class ExpressionFillIn<T extends edu.cmu.cs.dennisc.alice.ast.Ex
 		super( id );
 	}
 	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy() {
+		return new javax.swing.JLabel( "expression" );
+	}
+	@Override
 	public T getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
 		throw new RuntimeException( "todo" );
 	}

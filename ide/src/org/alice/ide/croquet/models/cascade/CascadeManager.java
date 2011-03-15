@@ -41,54 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ComponentBackedIconCascadeFillIn<T> extends CascadeFillIn<T> {
-	private javax.swing.JComponent menuProxy = null;
-	private javax.swing.Icon icon = null;
-	public ComponentBackedIconCascadeFillIn( java.util.UUID id ) {
-		super( id );
+public class CascadeManager {
+	private CascadeManager() {
+		throw new AssertionError();
 	}
-	protected abstract javax.swing.JComponent createMenuItemIconProxy();
-//	protected javax.swing.JComponent createMenuProxy() {
-//		return new javax.swing.JLabel( "todo: override getMenuProxy" );
-//	}
-	protected javax.swing.JComponent getMenuProxy() {
-		//System.err.println( "todo: cache getMenuProxy()" );
-		//todo
-		if( this.menuProxy != null ) {
-			//pass
-		} else {
-			this.menuProxy = this.createMenuItemIconProxy();
-		}
-		return this.menuProxy;
-	}
-	@Override
-	public final javax.swing.Icon getMenuItemIcon( CascadeFillInContext< T > context ) {
-		if( this.icon != null ) {
-			//pass
-		} else {
-			javax.swing.JComponent component = this.getMenuProxy();
-			if( component != null ) {
-				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( component );
-				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
-				java.awt.Dimension size = component.getPreferredSize();
-				if( size.width > 0 && size.height > 0 ) {
-					this.icon = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.createIcon( component );
-				} else {
-					this.icon = null;
-				}
+	public static ExpressionBlank< ? > getBlankForType( Class<?> cls ) {
+		if( Number.class.isAssignableFrom( cls ) ) {
+			if( Integer.class.isAssignableFrom( cls ) ) {
+				return org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
 			} else {
-				this.icon = null;
+				return org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
 			}
+		} else if( Enum.class.isAssignableFrom( cls ) ) {
+			return org.alice.ide.croquet.models.cascade.blanks.EnumBlank.getInstance( cls );
+		} else {
+			return null;
 		}
-		return this.icon;
 	}
-	@Override
-	public final String getMenuItemText( CascadeFillInContext< T > context ) {
-		return null;
+	public static ExpressionBlank< ? > getBlankForType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+		return getBlankForType( type.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
 	}
 }

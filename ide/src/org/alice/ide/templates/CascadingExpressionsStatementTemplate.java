@@ -120,23 +120,26 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 	}
 	
 	protected edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > createCascadeOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types ) {
-		class ExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > {
-			private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type;
-			public ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
-				super( java.util.UUID.fromString( "4bc689cf-3381-43db-a54e-757f67db30e7" ) );
-				this.type = type;
-			}
-		}
+//		class ExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > {
+//			private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type;
+//			public ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+//				super( java.util.UUID.fromString( "4bc689cf-3381-43db-a54e-757f67db30e7" ) );
+//				this.type = type;
+//			}
+//		}
 		
 		class ExpressionCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
-			private final ExpressionBlank[] expressionBlanks;
+			private final org.alice.ide.croquet.models.cascade.ExpressionBlank<?>[] expressionBlanks;
 			public ExpressionCascadeOperation( ) {
 				super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "2ac86fcd-f740-480e-8cfa-06501ab7bac5" ), edu.cmu.cs.dennisc.alice.ast.Expression.class );
-				this.expressionBlanks = new ExpressionBlank[] {};
+				this.expressionBlanks = new org.alice.ide.croquet.models.cascade.ExpressionBlank<?>[ types.length ];
+				for( int i=0; i<types.length; i++ ) {
+					this.expressionBlanks[ i ] = org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( types[ i ] );
+				}
 			}
 
 			@Override
-			public edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >[] getBlanks() {
+			public org.alice.ide.croquet.models.cascade.ExpressionBlank[] getBlanks() {
 				return this.expressionBlanks;
 			}
 			@Override

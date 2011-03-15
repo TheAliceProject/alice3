@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuFillIn< T > extends edu.cmu.cs.dennisc.croquet.ComponentBackedIconCascadeFillIn< T > {
+public abstract class MenuFillIn< T > extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< T > {
 	public MenuFillIn( java.util.UUID id ) {
 		super( id );
 	}

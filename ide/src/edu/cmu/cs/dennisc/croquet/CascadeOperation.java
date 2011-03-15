@@ -285,8 +285,7 @@ class RtFillIn< T > extends RtBlankOwner< T, CascadeFillIn< T >, CascadeFillInCo
 
 	@Override
 	protected RtBlank< ? > getNearestBlank() {
-		RtNode parent = this.getParent();
-		assert parent != null : this;
+		RtNode<?,?> parent = this.getParent();
 		return parent.getNearestBlank();
 	}
 
@@ -408,8 +407,17 @@ class RtOperation< T > extends RtBlankOwner< T, CascadeOperation< T >, CascadeOp
 			} );
 			java.util.EventObject e = this.getContext().getAwtEvent();
 			java.awt.Component invoker = (java.awt.Component)e.getSource();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-			edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu, invoker, 0, invoker.getHeight() ); //e.getComponent(), e.getX(), e.getY()
+			int x;
+			int y;
+			if( e instanceof java.awt.event.MouseEvent ) {
+				java.awt.event.MouseEvent me = (java.awt.event.MouseEvent)e;
+				x = me.getX();
+				y = me.getY();
+			} else {
+				x = 0;
+				y = invoker.getHeight();
+			}
+			edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu, invoker, x, y );
 		}
 	}
 	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {

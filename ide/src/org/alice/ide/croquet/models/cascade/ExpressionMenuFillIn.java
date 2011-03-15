@@ -58,4 +58,12 @@ public abstract class ExpressionMenuFillIn< T extends edu.cmu.cs.dennisc.alice.a
 	public T createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
 		throw new RuntimeException( "todo" );
 	}
+	@Override
+	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {
+		return this.getDefaultLocalizedText();
+	}
+	@Override
+	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {
+		return null;
+	}
 }
