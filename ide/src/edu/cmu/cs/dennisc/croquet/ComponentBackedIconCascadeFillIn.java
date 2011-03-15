@@ -52,17 +52,17 @@ public abstract class ComponentBackedIconCascadeFillIn<T> extends CascadeFillIn<
 	public ComponentBackedIconCascadeFillIn( java.util.UUID id ) {
 		super( id );
 	}
-	protected abstract javax.swing.JComponent createMenuItemIconProxy();
+	protected abstract javax.swing.JComponent createMenuItemIconProxy(CascadeFillInContext< T > context );
 //	protected javax.swing.JComponent createMenuProxy() {
 //		return new javax.swing.JLabel( "todo: override getMenuProxy" );
 //	}
-	protected javax.swing.JComponent getMenuProxy() {
+	protected javax.swing.JComponent getMenuProxy( CascadeFillInContext< T > context ) {
 		//System.err.println( "todo: cache getMenuProxy()" );
 		//todo
 		if( this.menuProxy != null ) {
 			//pass
 		} else {
-			this.menuProxy = this.createMenuItemIconProxy();
+			this.menuProxy = this.createMenuItemIconProxy( context );
 		}
 		return this.menuProxy;
 	}
@@ -71,7 +71,7 @@ public abstract class ComponentBackedIconCascadeFillIn<T> extends CascadeFillIn<
 		if( this.icon != null ) {
 			//pass
 		} else {
-			javax.swing.JComponent component = this.getMenuProxy();
+			javax.swing.JComponent component = this.getMenuProxy( context );
 			if( component != null ) {
 				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( component );
 				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );

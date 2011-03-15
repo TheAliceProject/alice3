@@ -60,9 +60,17 @@ public class StringLiteralFillIn extends org.alice.ide.croquet.models.cascade.Ex
 			return rv;
 		}
 	}
-	private final String value;
+	private final edu.cmu.cs.dennisc.alice.ast.StringLiteral transientValue;
 	private StringLiteralFillIn( String value ) {
 		super( java.util.UUID.fromString( "c0c8bc11-ed5b-4541-8e4a-45579e05b0d2" ) );
-		this.value = value;
+		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.StringLiteral( value );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.StringLiteral getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+		return this.transientValue;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.StringLiteral createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+		return new edu.cmu.cs.dennisc.alice.ast.StringLiteral( this.transientValue.value.getValue() );
 	}
 }

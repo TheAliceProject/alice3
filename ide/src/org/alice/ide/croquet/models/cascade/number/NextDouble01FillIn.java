@@ -53,11 +53,20 @@ public class NextDouble01FillIn extends org.alice.ide.croquet.models.cascade.Exp
 	public static NextDouble01FillIn getInstance() {
 		return SingletonHolder.instance;
 	}
+	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation transientValue;
 	private NextDouble01FillIn() {
 		super( java.util.UUID.fromString( "4d6ae280-3a3b-413b-b73e-437d513e9cc0" ) );
-//		String NEXT_DOUBLE_IN_RANGE_METHOD_NAME = "nextDoubleInRange";
-//		edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = org.alice.ide.ast.NodeUtilities.createMethodInvocation( RANDOM_UTILITIES_TYPE_EXPRESSION, RANDOM_UTILITIES_TYPE.getDeclaredMethod( NEXT_DOUBLE_IN_RANGE_METHOD_NAME, Number.class, Number.class ), new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 ), new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 ) );
-//		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
-		
+		this.transientValue = this.createValue( null );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > context ) {
+		final String NEXT_DOUBLE_IN_RANGE_METHOD_NAME = "nextDoubleInRange";
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava RANDOM_UTILITIES_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.random.RandomUtilities.class );
+		edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression = new edu.cmu.cs.dennisc.alice.ast.TypeExpression( RANDOM_UTILITIES_TYPE );
+		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( typeExpression, RANDOM_UTILITIES_TYPE.getDeclaredMethod( NEXT_DOUBLE_IN_RANGE_METHOD_NAME, Number.class, Number.class ), new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 ), new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 ) );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > context ) {
+		return this.transientValue;
 	}
 }

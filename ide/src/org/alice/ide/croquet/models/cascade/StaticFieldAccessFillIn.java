@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class StaticFieldAccessFillIn extends ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
+public class StaticFieldAccessFillIn extends ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, StaticFieldAccessFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static StaticFieldAccessFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField value ) {
 		synchronized( map ) {
@@ -66,9 +66,20 @@ public class StaticFieldAccessFillIn extends ExpressionFillIn< edu.cmu.cs.dennis
 	public static StaticFieldAccessFillIn getInstance( Class<?> cls, String fieldName ) {
 		return getInstance( cls, fieldName );
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractField value;
-	private StaticFieldAccessFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractField value ) {
+	private final edu.cmu.cs.dennisc.alice.ast.FieldAccess transientValue;
+	private StaticFieldAccessFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "c0c8bc11-ed5b-4541-8e4a-45579e05b0d2" ) );
-		this.value = value;
+		this.transientValue = this.createValue( field );
+	}
+	private edu.cmu.cs.dennisc.alice.ast.FieldAccess createValue( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( field.getDeclaringType() ), field );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.FieldAccess createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.FieldAccess > context ) {
+		return this.createValue( this.transientValue.field.getValue() );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.FieldAccess getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.FieldAccess > context ) {
+		return this.transientValue;
 	}
 }

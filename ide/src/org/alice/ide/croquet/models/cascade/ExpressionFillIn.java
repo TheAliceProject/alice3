@@ -51,15 +51,22 @@ public abstract class ExpressionFillIn<T extends edu.cmu.cs.dennisc.alice.ast.Ex
 		super( id );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy() {
-		return new javax.swing.JLabel( "expression" );
+	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {
+		javax.swing.JComponent rv;
+		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getSingleton().getPreviewFactory();
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.getTransientValue( context );
+		rv = factory.createExpressionPane( expression ).getAwtComponent();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "createMenuItemIconProxy", this );
+		return rv;
 	}
 	@Override
-	public T getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
-		throw new RuntimeException( "todo" );
+	public T getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<T> context ) {
+		return null;
+		//throw new RuntimeException( "todo" );
 	}
 	@Override
-	public T createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
-		throw new RuntimeException( "todo" );
+	public T createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<T> context ) {
+		return null;
+		//throw new RuntimeException( "todo" );
 	}
 }

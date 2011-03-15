@@ -56,9 +56,17 @@ public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 			return falseLiteral;
 		}
 	}
-	private final boolean value;
+	private final edu.cmu.cs.dennisc.alice.ast.BooleanLiteral transientValue;
 	public BooleanLiteralFillIn( boolean value ) {
 		super( java.util.UUID.fromString( "85b65750-aded-4a5f-a41d-d30fa2914115" ) );
-		this.value = value;
+		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( value );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.BooleanLiteral createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.BooleanLiteral > context ) {
+		return new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( this.transientValue.value.getValue() );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.BooleanLiteral getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.BooleanLiteral > context ) {
+		return this.transientValue;
 	}
 }

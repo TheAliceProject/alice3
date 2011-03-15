@@ -60,9 +60,17 @@ public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 			return rv;
 		}
 	}
-	private final int value;
+	private final edu.cmu.cs.dennisc.alice.ast.IntegerLiteral transientValue;
 	private IntegerLiteralFillIn( int value ) {
 		super( java.util.UUID.fromString( "db052fcb-b0e3-482a-aad9-13b9a2efc370" ) );
-		this.value = value;
+		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( value );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.IntegerLiteral getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+		return this.transientValue;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.IntegerLiteral createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+		return new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( this.transientValue.value.getValue() );
 	}
 }
