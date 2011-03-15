@@ -58,6 +58,6 @@ public abstract class CascadeBlank< T > extends CascadeNode< T > {
 		this.fillIns.add( fillIn );
 	}
 	public void addSeparator() {
-		this.fillIns.add( null );
+		this.fillIns.add( SeparatorFillIn.getInstance() );
 	}
 }

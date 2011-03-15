@@ -41,14 +41,53 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuFillIn< T > extends edu.cmu.cs.dennisc.croquet.ComponentBackedIconCascadeFillIn< T > {
-	public MenuFillIn( java.util.UUID id ) {
+public abstract class ComponentBackedIconCascadeFillIn<T> extends CascadeFillIn<T> {
+	private javax.swing.JComponent menuProxy = null;
+	private javax.swing.Icon icon = null;
+	public ComponentBackedIconCascadeFillIn( java.util.UUID id ) {
 		super( id );
 	}
-	protected abstract void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank< T > blank );
+	protected javax.swing.JComponent createMenuProxy() {
+		return new javax.swing.JLabel( "todo: override getMenuProxy" );
+	}
+	protected javax.swing.JComponent getMenuProxy() {
+		//System.err.println( "todo: cache getMenuProxy()" );
+		//todo
+		if( this.menuProxy != null ) {
+			//pass
+		} else {
+			this.menuProxy = this.createMenuProxy();
+		}
+		return this.menuProxy;
+	}
+	@Override
+	public final javax.swing.Icon getMenuItemIcon( CascadeFillInContext< T > context ) {
+		if( this.icon != null ) {
+			//pass
+		} else {
+			javax.swing.JComponent component = this.getMenuProxy();
+			if( component != null ) {
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( component );
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
+				java.awt.Dimension size = component.getPreferredSize();
+				if( size.width > 0 && size.height > 0 ) {
+					this.icon = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.createIcon( component );
+				} else {
+					this.icon = null;
+				}
+			} else {
+				this.icon = null;
+			}
+		}
+		return this.icon;
+	}
+	@Override
+	public final String getMenuItemText( CascadeFillInContext< T > context ) {
+		return null;
+	}
 }

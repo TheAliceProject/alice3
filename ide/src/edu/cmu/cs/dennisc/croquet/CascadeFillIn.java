@@ -65,6 +65,8 @@ public abstract class CascadeFillIn< T > extends CascadeNode< T > implements Cas
 	public boolean isAutomaticallySelectedWhenSoleOption() {
 		return true;
 	}
+	public abstract javax.swing.Icon getMenuItemIcon( CascadeFillInContext< T > context );
+	public abstract String getMenuItemText( CascadeFillInContext< T > context );
 	public abstract T getTransientValue( CascadeFillInContext< T > context );
 	public abstract T createValue( CascadeFillInContext< T > context );
 }

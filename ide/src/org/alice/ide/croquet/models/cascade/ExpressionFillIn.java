@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionFillIn<T extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< T > {
+public abstract class ExpressionFillIn<T extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.croquet.ComponentBackedIconCascadeFillIn< T > {
 	public ExpressionFillIn( java.util.UUID id ) {
 		super( id );
 	}

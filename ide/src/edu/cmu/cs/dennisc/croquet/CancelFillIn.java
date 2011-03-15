@@ -55,6 +55,14 @@ public abstract class CancelFillIn extends CascadeFillIn< Object > {
 		return false;
 	}
 	@Override
+	public javax.swing.Icon getMenuItemIcon( CascadeFillInContext< Object > context ) {
+		return null;
+	}
+	@Override
+	public String getMenuItemText( CascadeFillInContext< Object > context ) {
+		return this.getDefaultLocalizedText();
+	}
+	@Override
 	public Object createValue( CascadeFillInContext context ) {
 		//context.cancel();
 		throw new edu.cmu.cs.dennisc.cascade.CancelException( this.getDefaultLocalizedText() );

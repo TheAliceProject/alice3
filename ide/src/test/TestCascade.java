@@ -61,6 +61,14 @@ class EnumConstantFillIn< T extends Enum< T > > extends edu.cmu.cs.dennisc.croqu
 		this.value = value;
 	}
 	@Override
+	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {
+		return null;
+	}
+	@Override
+	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {
+		return this.value.name();
+	}
+	@Override
 	public T createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {
 		return this.value;
 	}
@@ -97,6 +105,14 @@ class IntegerLiteralFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Int
 		this.value = value;
 	}
 	@Override
+	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
+		return null;
+	}
+	@Override
+	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
+		return Integer.toString( this.value );
+	}
+	@Override
 	public Integer createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
 		return this.value;
 	}
@@ -115,6 +131,14 @@ class CustomIntegerFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Inte
 	}
 	private CustomIntegerFillIn() {
 		super( java.util.UUID.fromString( "abfa96df-32be-4a94-8f5d-030f173b77e9" ) );
+	}
+	@Override
+	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
+		return null;
+	}
+	@Override
+	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
+		return "custom integer...";
 	}
 	@Override
 	public Integer createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
@@ -169,8 +193,11 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< Ob
 	private MyCascadeOperation() {
 		super( null, java.util.UUID.fromString( "2c0ba898-1f06-48ff-bc15-65f6f350484b" ), Object.class );
 		this.blanks = new edu.cmu.cs.dennisc.croquet.CascadeBlank[] {
-			new EnumBlank( ZodiacSigns.class ),
-			IntegerBlank.getInstance()
+				new EnumBlank( ZodiacSigns.class ),
+				IntegerBlank.getInstance(),
+				IntegerBlank.getInstance(),
+				new EnumBlank( ZodiacSigns.class ),
+				IntegerBlank.getInstance()
 		};
 	}
 	@Override
@@ -179,9 +206,25 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< Ob
 		this.setName( "test cascade" );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadeOperation< Object >> createEdit( Object[] values ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( values );
-		return null;
+	protected edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadeOperation< Object >> createEdit( final Object[] values ) {
+		return new edu.cmu.cs.dennisc.croquet.Edit() {
+			@Override
+			public edu.cmu.cs.dennisc.croquet.Edit.Memento createMemento() {
+				return null;
+			}
+			
+			@Override
+			protected void doOrRedoInternal( boolean isDo ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( values );
+			}
+			@Override
+			protected void undoInternal() {
+			}
+			@Override
+			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+				return null;
+			}
+		};
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.CascadeBlank< Object >[] getBlanks() {
