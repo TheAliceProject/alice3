@@ -41,46 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.adapter;
+package org.alice.stageide.sceneeditor.snap;
 
-import edu.cmu.cs.dennisc.croquet.Button;
-import edu.cmu.cs.dennisc.croquet.Operation;
+import edu.cmu.cs.dennisc.croquet.BooleanState;
 
-public interface PropertyAdapter <P, O>
+public class AreSnapDetailsExpandedState extends BooleanState
 {
-	public static interface ValueChangeObserver<P>
-	{
-		public void valueChanged(P newValue);
-	}
-	
-	public String getRepr();
-	
-	public Class<P> getPropertyType();
-	
-	public void setInstance(O instance);
-	
-	public P getValue();
-	
-	public P getValueCopy();
-	
-	public O getInstance();
-	
-	public P getLastSetValue();
-	
-	public void setValue(P value);
-	
-	public void addValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public Operation getEditOperation();
-	
-	public Button createEditButton();
-	
-	public SetValueOperation<P> getSetValueOperation(P value); 
-	
-	public String getUndoRedoDescription(java.util.Locale locale);
-	
+    private static class SingletonHolder {
+        private static AreSnapDetailsExpandedState instance = new AreSnapDetailsExpandedState();
+    }
+    public static AreSnapDetailsExpandedState getInstance() {
+        return SingletonHolder.instance;
+    }
+    private AreSnapDetailsExpandedState() {
+        //TODO: Localize this
+        super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "5a13da16-1b32-4c50-85ae-1b62dc537876" ), false, "Snap details..." );
+    }
 }

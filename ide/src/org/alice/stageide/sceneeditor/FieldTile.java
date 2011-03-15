@@ -42,6 +42,9 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
 import edu.cmu.cs.dennisc.croquet.BooleanState;
 
 /**
@@ -128,6 +131,10 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 			@Override
 			protected void paintComponent(java.awt.Graphics g) {
 				g.setColor( this.getBackground() );
+				if (g instanceof Graphics2D)
+                {
+                   ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                }
 				g.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 8, 8 );
 				super.paintComponent(g);
 			}

@@ -65,6 +65,7 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 				for( TabItemDetails tabItemDetails : getAllItemDetails() ) {
 					tabItemDetails.getRootComponent().setVisible( tabItemDetails == this );
 				}
+				ToolPaletteTabbedPane.this.revalidateAndRepaint();
 			}
 		};
 	};

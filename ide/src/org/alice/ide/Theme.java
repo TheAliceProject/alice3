@@ -57,4 +57,8 @@ public interface Theme {
 	public java.awt.Color getColorFor( edu.cmu.cs.dennisc.alice.ast.Node node );
 	public java.awt.Color getCommentForegroundColor();
 	public java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code );
+	public java.awt.Color getSelectedColor();
+	public java.awt.Color getUnselectedColor();
+	public java.awt.Color getPrimaryBackgroundColor();
+	public java.awt.Color getSecondaryBackgroundColor();
 }

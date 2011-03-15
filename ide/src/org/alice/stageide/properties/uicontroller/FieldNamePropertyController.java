@@ -41,46 +41,84 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.adapter;
+package org.alice.stageide.properties.uicontroller;
 
-import edu.cmu.cs.dennisc.croquet.Button;
-import edu.cmu.cs.dennisc.croquet.Operation;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
 
-public interface PropertyAdapter <P, O>
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+
+import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.alice.ide.properties.uicontroller.BasicPropertyController;
+
+import edu.cmu.cs.dennisc.croquet.Component;
+import edu.cmu.cs.dennisc.croquet.Label;
+
+public class FieldNamePropertyController extends BasicPropertyController<String>
 {
-	public static interface ValueChangeObserver<P>
-	{
-		public void valueChanged(P newValue);
-	}
-	
-	public String getRepr();
-	
-	public Class<P> getPropertyType();
-	
-	public void setInstance(O instance);
-	
-	public P getValue();
-	
-	public P getValueCopy();
-	
-	public O getInstance();
-	
-	public P getLastSetValue();
-	
-	public void setValue(P value);
-	
-	public void addValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public Operation getEditOperation();
-	
-	public Button createEditButton();
-	
-	public SetValueOperation<P> getSetValueOperation(P value); 
-	
-	public String getUndoRedoDescription(java.util.Locale locale);
-	
+
+    private Label label;
+    
+    public FieldNamePropertyController(PropertyAdapter<String, ?> propertyAdapter)
+    {
+        super(propertyAdapter);
+    }
+
+    
+    @Override
+    protected Component<?> createPropertyComponent()
+    {
+        this.label = new Label("", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD)
+        {
+           
+            @Override
+            protected JLabel createAwtComponent()
+            {
+                return new javax.swing.JLabel() {
+                    @Override
+                    protected void paintComponent(java.awt.Graphics g) {
+                        g.setColor( this.getBackground() );
+                        if (g instanceof Graphics2D)
+                        {
+                           ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                        }
+                        g.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 12, 12 );
+                        super.paintComponent(g);
+                    }
+                };
+            }
+        };
+        this.label.setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getSelectedColor());
+        this.label.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+        return this.label;
+    }
+
+    @Override
+    public Class<?> getPropertyType()
+    {
+        return String.class;
+    }
+ 
+    @Override
+    protected void setValueOnUI(String value)
+    {
+        if (value != null)
+        {
+            this.label.getAwtComponent().setText(value);
+        }
+        else
+        {
+            this.label.getAwtComponent().setText(BLANK_STRING);
+        }
+        
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e)
+    {
+        //Do Nothing
+    }
+    
 }

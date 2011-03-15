@@ -131,7 +131,6 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 		return this.popupMenuOperation;
 	}
 	
-	
 	@Override
 	public SetValueOperation<Color4f> getSetValueOperation(Color4f value) 
 	{

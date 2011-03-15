@@ -41,46 +41,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.adapter;
+package org.alice.ide.properties.uicontroller;
 
-import edu.cmu.cs.dennisc.croquet.Button;
-import edu.cmu.cs.dennisc.croquet.Operation;
+import org.alice.ide.properties.adapter.PropertyAdapter;
 
-public interface PropertyAdapter <P, O>
+import edu.cmu.cs.dennisc.croquet.Component;
+import edu.cmu.cs.dennisc.croquet.Label;
+
+public abstract class LabelBasedPropertyController<P> extends BasicPropertyController<P>
 {
-	public static interface ValueChangeObserver<P>
-	{
-		public void valueChanged(P newValue);
-	}
-	
-	public String getRepr();
-	
-	public Class<P> getPropertyType();
-	
-	public void setInstance(O instance);
-	
-	public P getValue();
-	
-	public P getValueCopy();
-	
-	public O getInstance();
-	
-	public P getLastSetValue();
-	
-	public void setValue(P value);
-	
-	public void addValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public Operation getEditOperation();
-	
-	public Button createEditButton();
-	
-	public SetValueOperation<P> getSetValueOperation(P value); 
-	
-	public String getUndoRedoDescription(java.util.Locale locale);
-	
+    protected Label label;
+    
+    public LabelBasedPropertyController(PropertyAdapter<P, ?>  propertyAdapter)
+    {
+        super(propertyAdapter);
+    }
+
+    
+
+    @Override
+    protected void initializeComponents()
+    {
+        super.initializeComponents();
+        this.label = (Label)this.propertyComponent;
+    }
+    
+    @Override
+    protected Component<?> createPropertyComponent()
+    {
+        return new Label();
+    }
+    
+    protected void setTextOnPropertyComponent(String text)
+    {
+        this.label.setText(text);
+    }
+
 }
