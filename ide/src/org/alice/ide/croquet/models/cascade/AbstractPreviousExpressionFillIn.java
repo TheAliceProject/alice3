@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPreviousExpressionFillIn< T extends edu.cmu.cs.dennisc.alice.ast.Expression > extends ExpressionFillIn< T > {
+public abstract class AbstractPreviousExpressionFillIn< F extends edu.cmu.cs.dennisc.alice.ast.Expression > extends ExpressionFillInWithExpressionBlanks< F > {
 	public AbstractPreviousExpressionFillIn( java.util.UUID id ) {
 		super( id );
 	}

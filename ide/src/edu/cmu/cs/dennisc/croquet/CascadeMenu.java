@@ -46,25 +46,25 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeMenu< T > extends CascadeFillIn< T > {
-	private class InternalBlank< T > extends CascadeBlank< T > {
+public abstract class CascadeMenu< FB > extends CascadeFillIn< FB,FB > {
+	private class InternalBlank extends CascadeBlank< FB > {
 		public InternalBlank() {
 			super(java.util.UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
 		}
 	}
 	public CascadeMenu( java.util.UUID id ) {
 		super( id );
-		InternalBlank< T > blank = new InternalBlank< T >();
+		InternalBlank blank = new InternalBlank();
 		this.addChildrenToBlank( blank );
 		this.addBlank( blank );
 	}
-	protected abstract void addChildrenToBlank( CascadeBlank< T > blank );
+	protected abstract void addChildrenToBlank( CascadeBlank<FB> blank );
 	@Override
-	public T getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+	public FB getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<FB,FB> context ) {
 		throw new RuntimeException();
 	}
 	@Override
-	public T createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+	public FB createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<FB,FB> context ) {
 		throw new RuntimeException();
 	}
 }

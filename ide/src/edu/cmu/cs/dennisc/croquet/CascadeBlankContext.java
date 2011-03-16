@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeBlankContext<T> extends CascadeNodeContext< CascadeBlank<T>, T > {
-	/*package-private*/ CascadeBlankContext( CascadeBlank<T> cascadeBlank, java.util.EventObject e, ViewController< ?,? > viewController ) {
+public class CascadeBlankContext<B> extends CascadeNodeContext< CascadeBlank<B> > {
+	/*package-private*/ CascadeBlankContext( CascadeBlank<B> cascadeBlank, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( cascadeBlank, e, viewController );
 	}
-	public CascadeBlankContext( CascadeBlank<T> cascadeBlank ) {
+	public CascadeBlankContext( CascadeBlank<B> cascadeBlank ) {
 		this( cascadeBlank, null, null );
 	}
 	public CascadeBlankContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

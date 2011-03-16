@@ -201,11 +201,11 @@ public class ContextManager {
 	/*package-private*/ static <T> CascadeOperationContext< T > createAndPushCascadeOperationContext(CascadeOperation< T > cascadeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return push( new CascadeOperationContext<T>(cascadeOperation, e, viewController) );
 	}
-	/*package-private*/ static <T> CascadeBlankContext< T > createCascadeBlankContext(CascadeBlank< T > cascadeBlank ) {
-		return new CascadeBlankContext<T>(cascadeBlank, null, null );
+	/*package-private*/ static <B> CascadeBlankContext<B> createCascadeBlankContext(CascadeBlank<B> cascadeBlank ) {
+		return new CascadeBlankContext<B>(cascadeBlank, null, null );
 	}
-	/*package-private*/ static <T> CascadeFillInContext< T > createCascadeFillInContext(CascadeFillIn< T > cascadeFillIn ) {
-		return new CascadeFillInContext<T>(cascadeFillIn, null, null );
+	/*package-private*/ static <F,B> CascadeFillInContext< F,B > createCascadeFillInContext(CascadeFillIn< F,B > cascadeFillIn ) {
+		return new CascadeFillInContext<F,B>(cascadeFillIn, null, null );
 	}
 	
 	/*package-private*/ static <E> ListSelectionStateContext<E> createAndPushItemSelectionStateContext(ListSelectionState<E> itemSelectionState, java.util.EventObject e, ViewController<?, ?> viewController/*, int prevIndex, E prevItem, int nextIndex, E nextItem*/) {

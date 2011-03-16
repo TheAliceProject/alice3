@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.string;
 /**
  * @author Dennis Cosgrove
  */
-public class LeftAndRightOperandStringConcatinationFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
+public class LeftAndRightOperandStringConcatinationFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
 	private static class SingletonHolder {
 		private static LeftAndRightOperandStringConcatinationFillIn instance = new LeftAndRightOperandStringConcatinationFillIn();
 	}

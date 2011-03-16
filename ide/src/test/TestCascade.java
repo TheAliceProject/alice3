@@ -43,7 +43,7 @@
 
 package test;
 
-class EnumConstantFillIn< T extends Enum< T > > extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< T > {
+class EnumConstantFillIn< T extends Enum< T > > extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< T, Void > {
 	private static java.util.Map< Object, EnumConstantFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized < T extends Enum< T > > EnumConstantFillIn<T> getInstance( T value ) {
 		EnumConstantFillIn rv = map.get( value );
@@ -61,19 +61,19 @@ class EnumConstantFillIn< T extends Enum< T > > extends edu.cmu.cs.dennisc.croqu
 		this.value = value;
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {
+	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
 		return null;
 	}
 	@Override
-	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {
+	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
 		return this.value.name();
 	}
 	@Override
-	public T createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {
+	public T createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
 		return this.value;
 	}
 	@Override
-	public T getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {
+	public T getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
 		return this.value;
 	}
 }
@@ -87,7 +87,7 @@ class EnumBlank< T extends Enum< T > > extends edu.cmu.cs.dennisc.croquet.Cascad
 	}
 }
 
-class IntegerLiteralFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Integer > {
+class IntegerLiteralFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Integer, Void > {
 	private static java.util.Map< Integer, IntegerLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized IntegerLiteralFillIn getInstance( Integer value ) {
 		IntegerLiteralFillIn rv = map.get( value );
@@ -105,24 +105,24 @@ class IntegerLiteralFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Int
 		this.value = value;
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
+	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
 		return null;
 	}
 	@Override
-	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
+	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
 		return Integer.toString( this.value );
 	}
 	@Override
-	public Integer createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
+	public Integer createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
 		return this.value;
 	}
 	@Override
-	public Integer getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
+	public Integer getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
 		return this.value;
 	}
 }
 
-class CustomIntegerFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Integer > {
+class CustomIntegerFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Integer, Void > {
 	private static class SingletonHolder {
 		private static CustomIntegerFillIn instance = new CustomIntegerFillIn();
 	}
@@ -133,19 +133,19 @@ class CustomIntegerFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Inte
 		super( java.util.UUID.fromString( "abfa96df-32be-4a94-8f5d-030f173b77e9" ) );
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
+	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
 		return null;
 	}
 	@Override
-	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
+	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
 		return "custom integer...";
 	}
 	@Override
-	public Integer createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
+	public Integer createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
 		return 42;
 	}
 	@Override
-	public Integer getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer > context ) {
+	public Integer getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
 		return null;
 	}
 }
@@ -189,7 +189,7 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< Ob
 	public static MyCascadeOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final edu.cmu.cs.dennisc.croquet.CascadeBlank< Object >[] blanks;
+	private final edu.cmu.cs.dennisc.croquet.CascadeBlank[] blanks;
 	private MyCascadeOperation() {
 		super( null, java.util.UUID.fromString( "2c0ba898-1f06-48ff-bc15-65f6f350484b" ), Object.class );
 		this.blanks = new edu.cmu.cs.dennisc.croquet.CascadeBlank[] {
@@ -227,7 +227,7 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< Ob
 		};
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.CascadeBlank< Object >[] getBlanks() {
+	public edu.cmu.cs.dennisc.croquet.CascadeBlank[] getBlanks() {
 		return this.blanks;
 	}
 }

@@ -46,7 +46,7 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyAdapterFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation > {
+public class KeyAdapterFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.InstanceCreation > {
 	private static class SingletonHolder {
 		private static KeyAdapterFillIn instance = new KeyAdapterFillIn();
 	}

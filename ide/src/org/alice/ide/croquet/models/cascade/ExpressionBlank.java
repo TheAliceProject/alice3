@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionBlank<T extends edu.cmu.cs.dennisc.alice.ast.Expression> extends edu.cmu.cs.dennisc.croquet.CascadeBlank< T > {
+public abstract class ExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank {
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 	public ExpressionBlank( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( id );

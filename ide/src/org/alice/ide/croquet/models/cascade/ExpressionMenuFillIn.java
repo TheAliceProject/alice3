@@ -43,21 +43,19 @@
 
 package org.alice.ide.croquet.models.cascade;
 
-import edu.cmu.cs.dennisc.croquet.CascadeMenu;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionMenuFillIn< T extends edu.cmu.cs.dennisc.alice.ast.Expression > extends CascadeMenu< T > {
+public abstract class ExpressionMenuFillIn< T extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.croquet.CascadeMenu< T > {
 	public ExpressionMenuFillIn( java.util.UUID id ) {
 		super( id );
 	}
 	@Override
-	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {
+	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
 		return this.getDefaultLocalizedText();
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {
+	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
 		return null;
 	}
 }

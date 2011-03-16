@@ -46,7 +46,5 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface CascadeBlankOwnerContext< M extends CascadeBlankOwner< T >, T > extends ModelContext< M > {
-//	public CascadeBlankOwner< T > getBlankOwner();
-//	public void setBlankContexts( CascadeBlankContext< T >[] children );
+public interface CascadeBlankOwnerContext< M extends CascadeBlankOwner > extends ModelContext< M > {
 }

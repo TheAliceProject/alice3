@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.conditional;
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteConditionalInfixExpressionFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression > {
+public class IncompleteConditionalInfixExpressionFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression > {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator, IncompleteConditionalInfixExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static IncompleteConditionalInfixExpressionFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
 		synchronized( map ) {

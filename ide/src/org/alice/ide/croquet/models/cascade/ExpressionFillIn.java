@@ -46,12 +46,12 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionFillIn<T extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.croquet.ComponentBackedIconCascadeFillIn< T > {
+public abstract class ExpressionFillIn< F extends edu.cmu.cs.dennisc.alice.ast.Expression, B > extends edu.cmu.cs.dennisc.croquet.ComponentBackedIconCascadeFillIn< F, B > {
 	public ExpressionFillIn( java.util.UUID id ) {
 		super( id );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F,B > context ) {
 		javax.swing.JComponent rv;
 		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getSingleton().getPreviewFactory();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.getTransientValue( context );
@@ -60,12 +60,12 @@ public abstract class ExpressionFillIn<T extends edu.cmu.cs.dennisc.alice.ast.Ex
 		return rv;
 	}
 	@Override
-	public T getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<T> context ) {
+	public F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context ) {
 		return null;
 		//throw new RuntimeException( "todo" );
 	}
 	@Override
-	public T createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<T> context ) {
+	public F createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context ) {
 		return null;
 		//throw new RuntimeException( "todo" );
 	}

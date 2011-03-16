@@ -46,28 +46,28 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeFillIn< T > extends CascadeNode< T > implements CascadeBlankOwner< T > {
-	private java.util.List< CascadeBlank< T > > blanks = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+public abstract class CascadeFillIn<F,B> extends CascadeNode implements CascadeBlankOwner<B> {
+	private java.util.List< CascadeBlank<B> > blanks = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	public CascadeFillIn( java.util.UUID id ) {
 		super( id );
 	}
-	public void addBlank( CascadeBlank< T > blank ) {
+	public void addBlank( CascadeBlank<B> blank ) {
 		assert blank != null : this;
 		this.blanks.add( blank );
 	}
-	public CascadeBlank< T >[] getBlanks() {
-		CascadeBlank< T >[] rv = new CascadeBlank[ this.blanks.size() ];
+	public CascadeBlank<B>[] getBlanks() {
+		CascadeBlank<B>[] rv = new CascadeBlank[ this.blanks.size() ];
 		this.blanks.toArray( rv );
 		return rv;
 	}
-	public boolean isInclusionDesired( CascadeFillInContext< T > context ) {
+	public boolean isInclusionDesired( CascadeFillInContext context ) {
 		return true;
 	}
 	public boolean isAutomaticallySelectedWhenSoleOption() {
 		return true;
 	}
-	public abstract javax.swing.Icon getMenuItemIcon( CascadeFillInContext< T > context );
-	public abstract String getMenuItemText( CascadeFillInContext< T > context );
-	public abstract T getTransientValue( CascadeFillInContext< T > context );
-	public abstract T createValue( CascadeFillInContext< T > context );
+	public abstract javax.swing.Icon getMenuItemIcon( CascadeFillInContext< F, B > context );
+	public abstract String getMenuItemText( CascadeFillInContext< F, B > context );
+	public abstract F getTransientValue( CascadeFillInContext< F, B > context );
+	public abstract F createValue( CascadeFillInContext< F, B > context );
 }

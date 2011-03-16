@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CancelFillIn extends CascadeFillIn< Object > {
+public abstract class CancelFillIn<F> extends CascadeFillIn< F,Void > {
 	public CancelFillIn( java.util.UUID id ) {
 		super( id );
 	}
@@ -55,20 +55,20 @@ public abstract class CancelFillIn extends CascadeFillIn< Object > {
 		return false;
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( CascadeFillInContext< Object > context ) {
+	public javax.swing.Icon getMenuItemIcon( CascadeFillInContext< F,Void > context ) {
 		return null;
 	}
 	@Override
-	public String getMenuItemText( CascadeFillInContext< Object > context ) {
+	public String getMenuItemText( CascadeFillInContext< F,Void > context ) {
 		return this.getDefaultLocalizedText();
 	}
 	@Override
-	public Object createValue( CascadeFillInContext context ) {
+	public F createValue( CascadeFillInContext context ) {
 		//context.cancel();
 		throw new edu.cmu.cs.dennisc.cascade.CancelException( this.getDefaultLocalizedText() );
 	}
 	@Override
-	public Object getTransientValue( CascadeFillInContext context ) {
+	public F getTransientValue( CascadeFillInContext context ) {
 		return null;
 	}
 }

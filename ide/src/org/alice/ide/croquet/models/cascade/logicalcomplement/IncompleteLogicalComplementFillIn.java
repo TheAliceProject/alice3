@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.logicalcomplement;
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteLogicalComplementFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.LogicalComplement > {
+public class IncompleteLogicalComplementFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.LogicalComplement > {
 	private static class SingletonHolder {
 		private static IncompleteLogicalComplementFillIn instance = new IncompleteLogicalComplementFillIn();
 	}

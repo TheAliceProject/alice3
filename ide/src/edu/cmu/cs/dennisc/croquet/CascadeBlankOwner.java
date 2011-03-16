@@ -46,6 +46,6 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface CascadeBlankOwner<T> extends Model {
-	public CascadeBlank< T >[] getBlanks();
+public interface CascadeBlankOwner<B> extends Model {
+	public CascadeBlank<B>[] getBlanks();
 }

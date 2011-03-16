@@ -46,17 +46,17 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ComponentBackedIconCascadeFillIn<T> extends CascadeFillIn<T> {
+public abstract class ComponentBackedIconCascadeFillIn< F, B > extends CascadeFillIn< F, B > {
 	private javax.swing.JComponent menuProxy = null;
 	private javax.swing.Icon icon = null;
 	public ComponentBackedIconCascadeFillIn( java.util.UUID id ) {
 		super( id );
 	}
-	protected abstract javax.swing.JComponent createMenuItemIconProxy(CascadeFillInContext< T > context );
+	protected abstract javax.swing.JComponent createMenuItemIconProxy(CascadeFillInContext< F, B > context );
 //	protected javax.swing.JComponent createMenuProxy() {
 //		return new javax.swing.JLabel( "todo: override getMenuProxy" );
 //	}
-	protected javax.swing.JComponent getMenuProxy( CascadeFillInContext< T > context ) {
+	protected javax.swing.JComponent getMenuProxy( CascadeFillInContext< F, B > context ) {
 		//System.err.println( "todo: cache getMenuProxy()" );
 		//todo
 		if( this.menuProxy != null ) {
@@ -67,7 +67,7 @@ public abstract class ComponentBackedIconCascadeFillIn<T> extends CascadeFillIn<
 		return this.menuProxy;
 	}
 	@Override
-	public final javax.swing.Icon getMenuItemIcon( CascadeFillInContext< T > context ) {
+	public final javax.swing.Icon getMenuItemIcon( CascadeFillInContext< F, B > context ) {
 		if( this.icon != null ) {
 			//pass
 		} else {
@@ -88,7 +88,7 @@ public abstract class ComponentBackedIconCascadeFillIn<T> extends CascadeFillIn<
 		return this.icon;
 	}
 	@Override
-	public final String getMenuItemText( CascadeFillInContext< T > context ) {
+	public final String getMenuItemText( CascadeFillInContext< F, B > context ) {
 		return null;
 	}
 }

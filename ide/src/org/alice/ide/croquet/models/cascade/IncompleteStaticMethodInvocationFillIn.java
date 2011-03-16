@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteStaticMethodInvocationFillIn extends ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+public class IncompleteStaticMethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, IncompleteStaticMethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static IncompleteStaticMethodInvocationFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		synchronized( map ) {
@@ -71,19 +71,23 @@ public class IncompleteStaticMethodInvocationFillIn extends ExpressionFillIn< ed
 	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation transientValue;
 	private IncompleteStaticMethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ) );
-		this.transientValue = this.createValue( method );
+		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteStaticMethodInvocation( method );
+		//java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = method.getParameters();
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType = parameter.getDesiredValueType();
+			edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank = CascadeManager.getBlankForType( desiredType );
+			//this.addBlank( blank );
+		}
 	}
-	
-	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		return org.alice.ide.ast.NodeUtilities.createIncompleteStaticMethodInvocation( method );
-	}
-	
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > context ) {
+	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+		edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >[] blanks = this.getBlanks();
+		
+		//return null;
 		return this.transientValue;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > context ) {
+	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
 		return this.transientValue;
 	}
 }

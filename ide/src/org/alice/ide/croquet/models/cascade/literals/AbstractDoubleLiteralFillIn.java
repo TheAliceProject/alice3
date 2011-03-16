@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.literals;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDoubleLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
+public abstract class AbstractDoubleLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
 	private final edu.cmu.cs.dennisc.alice.ast.DoubleLiteral transientValue;
 	public AbstractDoubleLiteralFillIn( java.util.UUID id, double value ) {
 		super( id );

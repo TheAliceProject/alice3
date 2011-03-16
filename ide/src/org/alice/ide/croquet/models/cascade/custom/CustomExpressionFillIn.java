@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.custom;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomExpressionFillIn< T extends edu.cmu.cs.dennisc.alice.ast.Expression > extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< T > {
+public abstract class CustomExpressionFillIn< F extends edu.cmu.cs.dennisc.alice.ast.Expression > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< F > {
 	private final edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation;
 	public CustomExpressionFillIn( java.util.UUID id, edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation ) {
 		super( id );

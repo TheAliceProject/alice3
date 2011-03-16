@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.arithmetic;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IncompleteArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
+public abstract class IncompleteArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType;
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType;
 	private final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator;

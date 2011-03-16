@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeNodeContext< M extends CascadeNode<T>, T > extends AbstractModelContext< M > {
+public abstract class CascadeNodeContext< M extends CascadeNode > extends AbstractModelContext< M > {
 	/*package-private*/ CascadeNodeContext( M cascadeNode, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( cascadeNode, e, viewController );
 	}

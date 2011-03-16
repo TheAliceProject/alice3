@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.literals;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.BooleanLiteral > {
+public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.BooleanLiteral > {
 	private static BooleanLiteralFillIn trueLiteral = new BooleanLiteralFillIn( true );
 	private static BooleanLiteralFillIn falseLiteral = new BooleanLiteralFillIn( false );
 	public static BooleanLiteralFillIn getInstance( boolean value ) {
@@ -62,11 +62,11 @@ public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( value );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.BooleanLiteral createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.BooleanLiteral > context ) {
+	public edu.cmu.cs.dennisc.alice.ast.BooleanLiteral createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
 		return new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( this.transientValue.value.getValue() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.BooleanLiteral getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.BooleanLiteral > context ) {
+	public edu.cmu.cs.dennisc.alice.ast.BooleanLiteral getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
 		return this.transientValue;
 	}
 }

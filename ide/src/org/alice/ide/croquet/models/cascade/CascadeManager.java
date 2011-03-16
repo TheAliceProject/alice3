@@ -50,7 +50,7 @@ public class CascadeManager {
 	private CascadeManager() {
 		throw new AssertionError();
 	}
-	public static ExpressionBlank< ? > getBlankForType( Class<?> cls ) {
+	public static ExpressionBlank getBlankForType( Class<?> cls ) {
 		if( Number.class.isAssignableFrom( cls ) ) {
 			if( Integer.class.isAssignableFrom( cls ) ) {
 				return org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
@@ -62,10 +62,11 @@ public class CascadeManager {
 		} else if( String.class.isAssignableFrom( cls ) ) {
 			return org.alice.ide.croquet.models.cascade.blanks.StringBlank.getInstance();
 		} else {
+			assert false : cls;
 			return null;
 		}
 	}
-	public static ExpressionBlank< ? > getBlankForType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+	public static ExpressionBlank getBlankForType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 		return getBlankForType( type.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
 	}
 }

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteRelationalExpressionFillIn extends ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
+public class IncompleteRelationalExpressionFillIn extends ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
 	private static edu.cmu.cs.dennisc.map.MapToMap< Class<?>, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator, IncompleteRelationalExpressionFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static IncompleteRelationalExpressionFillIn getInstance( Class<?> cls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
 		synchronized( mapToMap ) {

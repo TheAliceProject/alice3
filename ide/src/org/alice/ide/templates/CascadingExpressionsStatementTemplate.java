@@ -129,10 +129,10 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 //		}
 		
 		class ExpressionCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
-			private final org.alice.ide.croquet.models.cascade.ExpressionBlank<?>[] expressionBlanks;
+			private final org.alice.ide.croquet.models.cascade.ExpressionBlank[] expressionBlanks;
 			public ExpressionCascadeOperation( ) {
 				super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "2ac86fcd-f740-480e-8cfa-06501ab7bac5" ), edu.cmu.cs.dennisc.alice.ast.Expression.class );
-				this.expressionBlanks = new org.alice.ide.croquet.models.cascade.ExpressionBlank<?>[ types.length ];
+				this.expressionBlanks = new org.alice.ide.croquet.models.cascade.ExpressionBlank[ types.length ];
 				for( int i=0; i<types.length; i++ ) {
 					this.expressionBlanks[ i ] = org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( types[ i ] );
 					assert this.expressionBlanks[ i ] != null : types[ i ];
