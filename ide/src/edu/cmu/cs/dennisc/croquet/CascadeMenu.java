@@ -46,28 +46,25 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeFillIn< T > extends CascadeNode< T > implements CascadeBlankOwner< T > {
-	private java.util.List< CascadeBlank< T > > blanks = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	public CascadeFillIn( java.util.UUID id ) {
+public abstract class CascadeMenu< T > extends CascadeFillIn< T > {
+	private class InternalBlank< T > extends CascadeBlank< T > {
+		public InternalBlank() {
+			super(java.util.UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
+		}
+	}
+	public CascadeMenu( java.util.UUID id ) {
 		super( id );
+		InternalBlank< T > blank = new InternalBlank< T >();
+		this.addChildrenToBlank( blank );
+		this.addBlank( blank );
 	}
-	public void addBlank( CascadeBlank< T > blank ) {
-		assert blank != null : this;
-		this.blanks.add( blank );
+	protected abstract void addChildrenToBlank( CascadeBlank< T > blank );
+	@Override
+	public T getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+		throw new RuntimeException();
 	}
-	public CascadeBlank< T >[] getBlanks() {
-		CascadeBlank< T >[] rv = new CascadeBlank[ this.blanks.size() ];
-		this.blanks.toArray( rv );
-		return rv;
+	@Override
+	public T createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+		throw new RuntimeException();
 	}
-	public boolean isInclusionDesired( CascadeFillInContext< T > context ) {
-		return true;
-	}
-	public boolean isAutomaticallySelectedWhenSoleOption() {
-		return true;
-	}
-	public abstract javax.swing.Icon getMenuItemIcon( CascadeFillInContext< T > context );
-	public abstract String getMenuItemText( CascadeFillInContext< T > context );
-	public abstract T getTransientValue( CascadeFillInContext< T > context );
-	public abstract T createValue( CascadeFillInContext< T > context );
 }

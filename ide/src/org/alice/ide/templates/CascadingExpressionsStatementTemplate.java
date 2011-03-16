@@ -135,6 +135,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 				this.expressionBlanks = new org.alice.ide.croquet.models.cascade.ExpressionBlank<?>[ types.length ];
 				for( int i=0; i<types.length; i++ ) {
 					this.expressionBlanks[ i ] = org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( types[ i ] );
+					assert this.expressionBlanks[ i ] != null : types[ i ];
 				}
 			}
 

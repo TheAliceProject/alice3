@@ -64,7 +64,7 @@ public class StaticFieldAccessFillIn extends ExpressionFillIn< edu.cmu.cs.dennis
 		return getInstance( type.findField( fieldName ) );
 	}
 	public static StaticFieldAccessFillIn getInstance( Class<?> cls, String fieldName ) {
-		return getInstance( cls, fieldName );
+		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), fieldName );
 	}
 	private final edu.cmu.cs.dennisc.alice.ast.FieldAccess transientValue;
 	private StaticFieldAccessFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {

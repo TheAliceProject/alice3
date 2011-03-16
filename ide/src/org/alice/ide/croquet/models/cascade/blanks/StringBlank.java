@@ -41,14 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.croquet.models.cascade.blanks;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuFillIn< T > extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< T > {
-	public MenuFillIn( java.util.UUID id ) {
-		super( id );
+public class StringBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
+	private static class SingletonHolder {
+		private static StringBlank instance = new StringBlank();
 	}
-	protected abstract void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank< T > blank );
+	public static StringBlank getInstance() {
+		return SingletonHolder.instance;
+	}
+	private StringBlank() {
+		super( java.util.UUID.fromString( "9fb0647c-a441-4b53-a994-fa4536e04744" ), String.class );
+	}
 }

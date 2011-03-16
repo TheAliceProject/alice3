@@ -50,6 +50,8 @@ abstract class RtNode<M extends Model, C extends ModelContext< M > > {
 	private RtNode<?,?> nextSibling;
 	
 	public RtNode( M model, C context ) {
+		assert model != null;
+		assert context != null;
 		this.model = model;
 		this.context = context;
 	}
@@ -166,9 +168,16 @@ class RtBlank< T > extends RtNode< CascadeBlank< T >, CascadeBlankContext< T > >
 	public RtBlank( CascadeBlank< T > model ) {
 		super( model, ContextManager.createCascadeBlankContext( model ) );
 		java.util.List< RtFillIn< T > > baseRtFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		
 		for( CascadeFillIn< T > fillIn : this.getModel().getFillIns() ) {
-			baseRtFillIns.add( ( new RtFillIn< T >( fillIn ) ) );
+			assert fillIn != null : this.getModel();
+			RtFillIn<T> rtFillIn;
+			if( fillIn instanceof CascadeMenu ) {
+				CascadeMenu menu = (CascadeMenu)fillIn;
+				rtFillIn = new RtMenu< T >( menu );
+			} else {
+				rtFillIn = new RtFillIn< T >( fillIn );
+			}
+			baseRtFillIns.add( rtFillIn );
 		}
 		
 		java.util.ListIterator< RtFillIn< T > > listIterator = baseRtFillIns.listIterator();
@@ -358,6 +367,17 @@ class RtFillIn< T > extends RtBlankOwner< T, CascadeFillIn< T >, CascadeFillInCo
 			}
 		}
 		return this.menuItem;
+	}
+}
+
+class RtMenu< T > extends RtFillIn<T> {
+	public RtMenu( CascadeMenu< T > model ) {
+		super( model );
+	}
+	@Override
+	public T createValue() {
+		RtBlank< T > child0 = this.getChildren()[ 0 ];
+		return child0.createValue();
 	}
 }
 

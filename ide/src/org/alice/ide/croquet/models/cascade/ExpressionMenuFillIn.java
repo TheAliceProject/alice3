@@ -43,20 +43,14 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.croquet.CascadeMenu;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionMenuFillIn< T extends edu.cmu.cs.dennisc.alice.ast.Expression > extends MenuFillIn< T > {
+public abstract class ExpressionMenuFillIn< T extends edu.cmu.cs.dennisc.alice.ast.Expression > extends CascadeMenu< T > {
 	public ExpressionMenuFillIn( java.util.UUID id ) {
 		super( id );
-	}
-	@Override
-	public T getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
-		throw new RuntimeException( "todo" );
-	}
-	@Override
-	public T createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
-		throw new RuntimeException( "todo" );
 	}
 	@Override
 	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T > context ) {

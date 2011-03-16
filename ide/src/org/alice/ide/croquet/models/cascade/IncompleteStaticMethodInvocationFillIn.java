@@ -52,6 +52,8 @@ public class IncompleteStaticMethodInvocationFillIn extends ExpressionFillIn< ed
 		synchronized( map ) {
 			IncompleteStaticMethodInvocationFillIn rv = map.get( method );
 			if( rv != null ) {
+				//pass
+			} else {
 				rv = new IncompleteStaticMethodInvocationFillIn( method );
 				map.put( method, rv );
 			}
@@ -66,9 +68,22 @@ public class IncompleteStaticMethodInvocationFillIn extends ExpressionFillIn< ed
 	public static IncompleteStaticMethodInvocationFillIn getInstance( Class cls, String methodName, Class<?>... parameterClses ) {
 		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), methodName, parameterClses );
 	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
+	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation transientValue;
 	private IncompleteStaticMethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ) );
-		this.method = method;
+		this.transientValue = this.createValue( method );
+	}
+	
+	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		return org.alice.ide.ast.NodeUtilities.createIncompleteStaticMethodInvocation( method );
+	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > context ) {
+		return this.transientValue;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > context ) {
+		return this.transientValue;
 	}
 }

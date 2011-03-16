@@ -59,6 +59,8 @@ public class CascadeManager {
 			}
 		} else if( Enum.class.isAssignableFrom( cls ) ) {
 			return org.alice.ide.croquet.models.cascade.blanks.EnumBlank.getInstance( cls );
+		} else if( String.class.isAssignableFrom( cls ) ) {
+			return org.alice.ide.croquet.models.cascade.blanks.StringBlank.getInstance();
 		} else {
 			return null;
 		}
