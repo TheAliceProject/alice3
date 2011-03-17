@@ -54,6 +54,7 @@ import java.util.List;
 import org.alice.ide.IDE;
 import org.alice.ide.properties.uicontroller.AdapterControllerUtilities;
 import org.alice.ide.properties.uicontroller.PropertyAdapterController;
+import org.alice.stageide.croquet.models.sceneditor.AreExtraPropertiesShownState;
 import org.alice.stageide.properties.FieldNameAdapter;
 import org.alice.stageide.properties.MarkerColorAdapter;
 import org.alice.stageide.properties.MarkerOpacityAdapter;
