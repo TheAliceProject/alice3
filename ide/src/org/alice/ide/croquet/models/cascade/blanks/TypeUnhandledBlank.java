@@ -41,22 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade.blanks;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeNode extends AbstractModel {
-	public CascadeNode( java.util.UUID id ) {
-		super( Application.CASCADE_GROUP, id );
+public class TypeUnhandledBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
+	private static class SingletonHolder {
+		private static TypeUnhandledBlank instance = new TypeUnhandledBlank();
 	}
-	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		//todo?
-		return false;
+	public static TypeUnhandledBlank getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected void localize() {
-		//todo
+	private TypeUnhandledBlank() {
+		super( java.util.UUID.fromString( "186ea575-21b4-4b34-b292-96efadc6321b" ), Void.class );
 	}
 }

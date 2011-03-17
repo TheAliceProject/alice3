@@ -180,10 +180,10 @@ class RtBlank< B > extends RtNode< CascadeBlank<B>, CascadeBlankContext<B> > {
 		if( this.rtFillIns != null ) {
 			//pass
 		} else {
-			java.util.List< RtFillIn< B,? > > baseRtFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( CascadeFillIn< B,? > fillIn : this.getModel().getFillIns() ) {
+			java.util.List< RtFillIn< ? extends B,? > > baseRtFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( CascadeFillIn< ? extends B,? > fillIn : this.getModel().getFillIns() ) {
 				assert fillIn != null : this.getModel();
-				RtFillIn<B,?> rtFillIn;
+				RtFillIn<? extends B,?> rtFillIn;
 				if( fillIn instanceof CascadeMenu ) {
 					CascadeMenu menu = (CascadeMenu)fillIn;
 					rtFillIn = new RtMenu< B >( menu );
@@ -193,9 +193,9 @@ class RtBlank< B > extends RtNode< CascadeBlank<B>, CascadeBlankContext<B> > {
 				baseRtFillIns.add( rtFillIn );
 			}
 			
-			java.util.ListIterator< RtFillIn< B,? > > listIterator = baseRtFillIns.listIterator();
+			java.util.ListIterator< RtFillIn< ? extends B,? > > listIterator = baseRtFillIns.listIterator();
 			while( listIterator.hasNext() ) {
-				RtFillIn< B,? > rtFillIn = listIterator.next();
+				RtFillIn< ? extends B,? > rtFillIn = listIterator.next();
 				if( rtFillIn.isInclusionDesired() ) {
 					//pass
 				} else {

@@ -56,23 +56,26 @@ public class CascadeManager {
 		throw new AssertionError();
 	}
 	public static ExpressionBlank getBlankForType( Class<?> cls ) {
-		if( Number.class.isAssignableFrom( cls ) ) {
-			if( Integer.class.isAssignableFrom( cls ) ) {
-				return org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
-			} else {
+		if( cls != null ) {
+			if( Number.class.isAssignableFrom( cls ) ) {
+				if( Integer.class.isAssignableFrom( cls ) ) {
+					return org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
+				} else {
+					return org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
+				}
+			} else if( cls == Double.TYPE ) {
 				return org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
+			} else if( cls == Integer.TYPE ) {
+				return org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
+			} else if( Enum.class.isAssignableFrom( cls ) ) {
+				return org.alice.ide.croquet.models.cascade.blanks.EnumBlank.getInstance( cls );
+			} else if( String.class.isAssignableFrom( cls ) ) {
+				return org.alice.ide.croquet.models.cascade.blanks.StringBlank.getInstance();
+			} else {
+				return org.alice.ide.croquet.models.cascade.blanks.TypeUnhandledBlank.getInstance();
 			}
-		} else if( cls == Double.TYPE ) {
-			return org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
-		} else if( cls == Integer.TYPE ) {
-			return org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
-		} else if( Enum.class.isAssignableFrom( cls ) ) {
-			return org.alice.ide.croquet.models.cascade.blanks.EnumBlank.getInstance( cls );
-		} else if( String.class.isAssignableFrom( cls ) ) {
-			return org.alice.ide.croquet.models.cascade.blanks.StringBlank.getInstance();
 		} else {
-			assert false : cls;
-			return null;
+			return org.alice.ide.croquet.models.cascade.blanks.TypeUnsetBlank.getInstance();
 		}
 	}
 	public static ExpressionBlank getBlankForType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {

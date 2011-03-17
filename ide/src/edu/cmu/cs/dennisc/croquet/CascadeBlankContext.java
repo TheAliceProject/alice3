@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeBlankContext<B> extends CascadeNodeContext< CascadeBlank<B> > {
+public class CascadeBlankContext<B> extends AbstractModelContext< CascadeBlank<B> > {
 	private RtBlank<B> rtBlank;
 	/*package-private*/ CascadeBlankContext( CascadeBlank<B> cascadeBlank, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( cascadeBlank, e, viewController );

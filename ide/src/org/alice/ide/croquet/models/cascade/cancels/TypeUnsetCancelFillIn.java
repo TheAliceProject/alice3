@@ -41,34 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade.cancels;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CancelFillIn<F> extends CascadeFillIn< F,Void > {
-	public CancelFillIn( java.util.UUID id ) {
-		super( id );
+public class TypeUnsetCancelFillIn extends org.alice.ide.croquet.models.cascade.cancels.CancelFillIn {
+	private static class SingletonHolder {
+		private static TypeUnsetCancelFillIn instance = new TypeUnsetCancelFillIn();
 	}
-	@Override
-	public boolean isAutomaticallySelectedWhenSoleOption() {
-		return false;
+	public static TypeUnsetCancelFillIn getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	public javax.swing.Icon getMenuItemIcon( CascadeFillInContext< F,Void > context ) {
-		return null;
-	}
-	@Override
-	public String getMenuItemText( CascadeFillInContext< F,Void > context ) {
-		return this.getDefaultLocalizedText();
-	}
-	@Override
-	public F createValue( CascadeFillInContext context ) {
-		//context.cancel();
-		throw new edu.cmu.cs.dennisc.cascade.CancelException( this.getDefaultLocalizedText() );
-	}
-	@Override
-	public F getTransientValue( CascadeFillInContext context ) {
-		return null;
+	private TypeUnsetCancelFillIn() {
+		super( java.util.UUID.fromString( "e51c0ec0-e8d4-4675-b0a1-50cbaa093d8a" ) );
 	}
 }

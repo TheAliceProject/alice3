@@ -41,21 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
-
-import edu.cmu.cs.dennisc.croquet.CancelFillIn;
+package org.alice.ide.croquet.models.cascade.cancels;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NoFillInsFoundCancelFillIn extends CancelFillIn {
-	private static class SingletonHolder {
-		private static NoFillInsFoundCancelFillIn instance = new NoFillInsFoundCancelFillIn();
+/*package-private*/ abstract class CancelFillIn<F> extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< F,Void > {
+	public CancelFillIn( java.util.UUID id ) {
+		super( id );
 	}
-	public static NoFillInsFoundCancelFillIn getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	public boolean isAutomaticallySelectedWhenSoleOption() {
+		return false;
 	}
-	private NoFillInsFoundCancelFillIn() {
-		super( java.util.UUID.fromString( "0ff155c3-6f08-42bb-83d2-59895d7f2cca" ) );
+	@Override
+	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F,Void > context ) {
+		return null;
+	}
+	@Override
+	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F,Void > context ) {
+		return this.getDefaultLocalizedText();
+	}
+	@Override
+	public F createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F,Void > context ) {
+		//context.cancel();
+		throw new edu.cmu.cs.dennisc.cascade.CancelException( this.getDefaultLocalizedText() );
+	}
+	@Override
+	public F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F,Void > context ) {
+		return null;
 	}
 }

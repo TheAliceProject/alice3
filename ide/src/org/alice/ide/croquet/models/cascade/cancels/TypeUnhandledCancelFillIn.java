@@ -41,19 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade.cancels;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeNodeContext< M extends CascadeNode > extends AbstractModelContext< M > {
-	/*package-private*/ CascadeNodeContext( M cascadeNode, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( cascadeNode, e, viewController );
+public class TypeUnhandledCancelFillIn extends org.alice.ide.croquet.models.cascade.cancels.CancelFillIn {
+	private static class SingletonHolder {
+		private static TypeUnhandledCancelFillIn instance = new TypeUnhandledCancelFillIn();
 	}
-	public CascadeNodeContext( M cascadeNode ) {
-		this( cascadeNode, null, null );
+	public static TypeUnhandledCancelFillIn getInstance() {
+		return SingletonHolder.instance;
 	}
-	public CascadeNodeContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	private TypeUnhandledCancelFillIn() {
+		super( java.util.UUID.fromString( "a8bc4d9f-7099-47ac-b071-10c6676a4be3" ) );
 	}
 }
