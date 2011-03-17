@@ -163,42 +163,46 @@ class RtBlank< B > extends RtNode< CascadeBlank<B>, CascadeBlankContext<B> > {
 		 }
 	}
 
-	private final RtFillIn< B,? >[] rtFillIns;
+	private RtFillIn< B,? >[] rtFillIns;
 	private RtFillIn< B,? > rtSelectedFillIn;
 	public RtBlank( CascadeBlank<B> model ) {
 		super( model, ContextManager.createCascadeBlankContext( model ) );
-		java.util.List< RtFillIn< B,? > > baseRtFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		for( CascadeFillIn< B,? > fillIn : this.getModel().getFillIns() ) {
-			assert fillIn != null : this.getModel();
-			RtFillIn<B,?> rtFillIn;
-			if( fillIn instanceof CascadeMenu ) {
-				CascadeMenu menu = (CascadeMenu)fillIn;
-				rtFillIn = new RtMenu< B >( menu );
-			} else {
-				rtFillIn = new RtFillIn( fillIn );
-			}
-			baseRtFillIns.add( rtFillIn );
-		}
-		
-		java.util.ListIterator< RtFillIn< B,? > > listIterator = baseRtFillIns.listIterator();
-		while( listIterator.hasNext() ) {
-			RtFillIn< B,? > rtFillIn = listIterator.next();
-			if( rtFillIn.isInclusionDesired() ) {
-				//pass
-			} else {
-				listIterator.remove();
-			}
-		}
-		
-		//todo
-		cleanUpSeparators( (java.util.List)baseRtFillIns );
-	
-		this.rtFillIns = (RtFillIn< B,? >[])edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( (java.util.List)baseRtFillIns, RtFillIn.class );
-		this.updateParentsAndNextSiblings( this.rtFillIns );
 	}
 	
 	@Override
 	protected RtFillIn< B,? >[] getChildren() {
+		if( this.rtFillIns != null ) {
+			//pass
+		} else {
+			java.util.List< RtFillIn< B,? > > baseRtFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( CascadeFillIn< B,? > fillIn : this.getModel().getFillIns() ) {
+				assert fillIn != null : this.getModel();
+				RtFillIn<B,?> rtFillIn;
+				if( fillIn instanceof CascadeMenu ) {
+					CascadeMenu menu = (CascadeMenu)fillIn;
+					rtFillIn = new RtMenu< B >( menu );
+				} else {
+					rtFillIn = new RtFillIn( fillIn );
+				}
+				baseRtFillIns.add( rtFillIn );
+			}
+			
+			java.util.ListIterator< RtFillIn< B,? > > listIterator = baseRtFillIns.listIterator();
+			while( listIterator.hasNext() ) {
+				RtFillIn< B,? > rtFillIn = listIterator.next();
+				if( rtFillIn.isInclusionDesired() ) {
+					//pass
+				} else {
+					listIterator.remove();
+				}
+			}
+			
+			//todo
+			cleanUpSeparators( (java.util.List)baseRtFillIns );
+		
+			this.rtFillIns = (RtFillIn< B,? >[])edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( (java.util.List)baseRtFillIns, RtFillIn.class );
+			this.updateParentsAndNextSiblings( this.rtFillIns );
+		}
 		return this.rtFillIns;
 	}
 	@Override

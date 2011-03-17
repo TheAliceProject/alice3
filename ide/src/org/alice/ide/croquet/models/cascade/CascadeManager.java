@@ -47,6 +47,11 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class CascadeManager {
+	static {
+		org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
+		org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
+		org.alice.ide.croquet.models.cascade.blanks.StringBlank.getInstance();
+	}
 	private CascadeManager() {
 		throw new AssertionError();
 	}
@@ -57,6 +62,10 @@ public class CascadeManager {
 			} else {
 				return org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
 			}
+		} else if( cls == Double.TYPE ) {
+			return org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
+		} else if( cls == Integer.TYPE ) {
+			return org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
 		} else if( Enum.class.isAssignableFrom( cls ) ) {
 			return org.alice.ide.croquet.models.cascade.blanks.EnumBlank.getInstance( cls );
 		} else if( String.class.isAssignableFrom( cls ) ) {

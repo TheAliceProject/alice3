@@ -46,15 +46,18 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank {
+public abstract class ExpressionBlank< B extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.croquet.CascadeBlank< B > {
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 	public ExpressionBlank( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( id );
 		this.type = type;
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		ide.getCascadeManager().addFillIns( this, this.type );
 	}
 	public ExpressionBlank( java.util.UUID id, Class<?> cls ) {
 		this( id, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+	}
+	@Override
+	protected void addFillIns() {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		ide.getCascadeManager().addFillIns( this, this.type );
 	}
 }

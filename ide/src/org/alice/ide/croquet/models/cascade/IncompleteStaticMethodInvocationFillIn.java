@@ -65,7 +65,7 @@ public class IncompleteStaticMethodInvocationFillIn extends ExpressionFillInWith
 		assert method != null : methodName;
 		return getInstance( method );
 	}
-	public static IncompleteStaticMethodInvocationFillIn getInstance( Class cls, String methodName, Class<?>... parameterClses ) {
+	public static IncompleteStaticMethodInvocationFillIn getInstance( Class<?> cls, String methodName, Class<?>... parameterClses ) {
 		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), methodName, parameterClses );
 	}
 	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation transientValue;
@@ -76,13 +76,13 @@ public class IncompleteStaticMethodInvocationFillIn extends ExpressionFillInWith
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType = parameter.getDesiredValueType();
 			edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank = CascadeManager.getBlankForType( desiredType );
-			//this.addBlank( blank );
+			assert blank != null : desiredType;
+			this.addBlank( blank );
 		}
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
 		edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >[] blanks = this.getBlanks();
-		
 		//return null;
 		return this.transientValue;
 	}

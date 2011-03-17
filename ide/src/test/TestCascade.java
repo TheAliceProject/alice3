@@ -79,9 +79,14 @@ class EnumConstantFillIn< T extends Enum< T > > extends edu.cmu.cs.dennisc.croqu
 }
 
 class EnumBlank< T extends Enum< T > > extends edu.cmu.cs.dennisc.croquet.CascadeBlank< T > {
+	private final Class<T> cls;
 	public EnumBlank( Class<T> cls ) {
 		super( java.util.UUID.fromString( "6598e548-592b-420f-8619-16abcd9bfc99" ) );
-		for( T value : cls.getEnumConstants() ) {
+		this.cls = cls;
+	}
+	@Override
+	protected void addFillIns() {
+		for( T value : this.cls.getEnumConstants() ) {
 			this.addFillIn( EnumConstantFillIn.getInstance( value ) );
 		}
 	}
@@ -159,6 +164,9 @@ class IntegerBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< Integer > {
 	}
 	private IntegerBlank() {
 		super( java.util.UUID.fromString( "7705a77c-b5a9-4955-966d-0350bac1ade9" ) );
+	}
+	@Override
+	protected void addFillIns() {
 		for( Integer value : new int[] { 1, 2, 3, 4, 5 } ) {
 			this.addFillIn( IntegerLiteralFillIn.getInstance( value ) );
 		}

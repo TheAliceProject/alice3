@@ -51,11 +51,14 @@ public abstract class CascadeMenu< FB > extends CascadeFillIn< FB,FB > {
 		public InternalBlank() {
 			super(java.util.UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
 		}
+		@Override
+		protected void addFillIns() {
+			CascadeMenu.this.addChildrenToBlank( this );
+		}
 	}
 	public CascadeMenu( java.util.UUID id ) {
 		super( id );
 		InternalBlank blank = new InternalBlank();
-		this.addChildrenToBlank( blank );
 		this.addBlank( blank );
 	}
 	protected abstract void addChildrenToBlank( CascadeBlank<FB> blank );
