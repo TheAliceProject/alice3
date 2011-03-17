@@ -46,34 +46,5 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank< B > extends AbstractModel {
-	private java.util.List< CascadeBlankOwnee< ? extends B > > ownees;
-	public CascadeBlank( java.util.UUID id ) {
-		super( Application.CASCADE_GROUP, id );
-	}
-	protected abstract void addFillIns();
-	public Iterable< CascadeBlankOwnee< ? extends B > > getOwnees() {
-		if( this.ownees != null ) {
-			//pass
-		} else {
-			this.ownees = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			this.addFillIns();
-		}
-		return this.ownees;
-	}
-	public void addFillIn( CascadeFillIn< ? extends B,? > fillIn ) {
-		assert fillIn != null : this;
-		this.ownees.add( fillIn );
-	}
-	public void addSeparator() {
-		this.ownees.add( CascadeSeparator.getInstance() );
-	}
-	
-	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return false;
-	}
+public interface CascadeBlankOwneeContext< M extends CascadeBlankOwnee > extends ModelContext< M > {
 }

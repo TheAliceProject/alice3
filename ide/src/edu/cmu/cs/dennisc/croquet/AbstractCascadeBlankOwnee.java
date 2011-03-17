@@ -46,38 +46,15 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class SeparatorFillIn extends CascadeFillIn {
-	private static class SingletonHolder {
-		private static SeparatorFillIn instance = new SeparatorFillIn();
-	}
-	public static SeparatorFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
-	private SeparatorFillIn() {
-		super( java.util.UUID.fromString( "5103f9f4-b85d-4c49-b384-5a9785d1d2ac" ) );
-	}
-	public boolean isEmpty() {
-		//return separatorFillIn.getName() == null && separatorFillIn.getIcon() == null;
-		return true;
+public abstract class AbstractCascadeBlankOwnee< F > extends AbstractModel implements CascadeBlankOwnee< F > {
+	public AbstractCascadeBlankOwnee( java.util.UUID id ) {
+		super( Application.CASCADE_GROUP, id );
 	}
 	@Override
-	public boolean isAutomaticallySelectedWhenSoleOption() {
+	protected void localize() {
+	}
+	@Override
+	public boolean isAlreadyInState( Edit< ? > edit ) {
 		return false;
-	}
-	@Override
-	public javax.swing.Icon getMenuItemIcon( CascadeFillInContext context ) {
-		return null;
-	}
-	@Override
-	public String getMenuItemText( CascadeFillInContext context ) {
-		return null;
-	}
-	@Override
-	public Object createValue( CascadeFillInContext context ) {
-		throw new AssertionError();
-	}
-	@Override
-	public Object getTransientValue( CascadeFillInContext context ) {
-		throw new AssertionError();
 	}
 }

@@ -204,8 +204,11 @@ public class ContextManager {
 	/*package-private*/ static <B> CascadeBlankContext<B> createCascadeBlankContext(CascadeBlank<B> cascadeBlank ) {
 		return new CascadeBlankContext<B>(cascadeBlank, null, null );
 	}
-	/*package-private*/ static <F,B> CascadeFillInContext< F,B > createCascadeFillInContext(CascadeFillIn< F,B > cascadeFillIn ) {
+	/*package-private*/ static <F,B> CascadeFillInContext< F,B > createCascadeFillInContext( CascadeFillIn< F,B > cascadeFillIn ) {
 		return new CascadeFillInContext<F,B>(cascadeFillIn, null, null );
+	}
+	/*package-private*/ static <F,B> CascadeSeparatorContext createCascadeSeparatorContext( CascadeSeparator cascadeSeparator ) {
+		return new CascadeSeparatorContext(cascadeSeparator, null, null );
 	}
 	
 	/*package-private*/ static <E> ListSelectionStateContext<E> createAndPushItemSelectionStateContext(ListSelectionState<E> itemSelectionState, java.util.EventObject e, ViewController<?, ?> viewController/*, int prevIndex, E prevItem, int nextIndex, E nextItem*/) {

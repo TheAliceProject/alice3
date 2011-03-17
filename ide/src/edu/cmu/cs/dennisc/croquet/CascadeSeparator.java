@@ -46,34 +46,38 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank< B > extends AbstractModel {
-	private java.util.List< CascadeBlankOwnee< ? extends B > > ownees;
-	public CascadeBlank( java.util.UUID id ) {
-		super( Application.CASCADE_GROUP, id );
+public class CascadeSeparator extends AbstractCascadeBlankOwnee {
+	private static class SingletonHolder {
+		private static CascadeSeparator instance = new CascadeSeparator();
 	}
-	protected abstract void addFillIns();
-	public Iterable< CascadeBlankOwnee< ? extends B > > getOwnees() {
-		if( this.ownees != null ) {
-			//pass
-		} else {
-			this.ownees = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			this.addFillIns();
-		}
-		return this.ownees;
+	public static CascadeSeparator getInstance() {
+		return SingletonHolder.instance;
 	}
-	public void addFillIn( CascadeFillIn< ? extends B,? > fillIn ) {
-		assert fillIn != null : this;
-		this.ownees.add( fillIn );
+	private CascadeSeparator() {
+		super( java.util.UUID.fromString( "5103f9f4-b85d-4c49-b384-5a9785d1d2ac" ) );
 	}
-	public void addSeparator() {
-		this.ownees.add( CascadeSeparator.getInstance() );
+	public boolean isEmpty() {
+		//return separatorFillIn.getName() == null && separatorFillIn.getIcon() == null;
+		return true;
 	}
-	
-	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return false;
-	}
+//	@Override
+//	public boolean isAutomaticallySelectedWhenSoleOption() {
+//		return false;
+//	}
+//	@Override
+//	public javax.swing.Icon getMenuItemIcon( CascadeFillInContext context ) {
+//		return null;
+//	}
+//	@Override
+//	public String getMenuItemText( CascadeFillInContext context ) {
+//		return null;
+//	}
+//	@Override
+//	public Object createValue( CascadeFillInContext context ) {
+//		throw new AssertionError();
+//	}
+//	@Override
+//	public Object getTransientValue( CascadeFillInContext context ) {
+//		throw new AssertionError();
+//	}
 }

@@ -41,77 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet.cascade.imp;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Node {
-	private Node parent = null;
-	private Node nextSibling = null;
-	protected java.util.List<Node> children = null;
-
-	protected abstract edu.cmu.cs.dennisc.croquet.ModelContext< ? > getContext();
-	
-//	protected void addChild( Node node ) {
-//		if( this.children.size() > 0 ) {
-//			Node prevLast = this.children.get( this.children.size()-1 );
-//			prevLast.nextSibling = node;
-//		}
-//		node.parent = this;
-//		node.nextSibling = null;
-//		this.children.add( node );
-//	}
-//	protected abstract void addPrefixChildren();
-//	protected abstract void cleanUp();
-//	protected abstract void addChildren();
-//	public final java.util.List<Node> getChildren() {
-//		 if( this.children != null ) {
-//			 //pass
-//		 } else {
-//			 this.children = new java.util.LinkedList< Node >();
-//			 this.addPrefixChildren();
-//			 this.addChildren();
-//			 this.cleanUp();
-//		 }
-//		 return this.children;
-//	}
-//	
-//	protected Node getNextSibling() {
-//		return this.nextSibling;
-//	}
-//	protected Node getParent() {
-//		return this.parent;
-//	}
-//	protected void setParent( Node parent ) {
-//		this.parent = parent;
-//	}
-//	protected boolean isLast() {
-//		return false;
-//	}
-//	protected Blank getRootBlank() {
-//		if( this.parent != null ) {
-//			return this.parent.getRootBlank();
-//		} else {
-//			return (Blank)this;
-//		}
-//	}	
-//	protected Blank getNearestBlank() {
-//		return this.parent.getNearestBlank();
-//	}
-//	
-//	protected Blank getNextBlank() {
-//		Blank blank = this.getNearestBlank();
-//		if( blank.getNextSibling() != null ) {
-//			return (Blank)blank.getNextSibling();
-//		} else {
-//			if( this.parent != null ) {
-//				return this.parent.getNextBlank();
-//			} else {
-//				return null;
-//			}
-//		}
-//	}
-//	protected abstract Node getNextNode();
-//	
+public class CascadeSeparatorContext extends AbstractModelContext< CascadeSeparator > implements CascadeBlankOwneeContext< CascadeSeparator > {
+	/*package-private*/ CascadeSeparatorContext( CascadeSeparator cascadeSeparator, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( cascadeSeparator, e, viewController );
+	}
+	public CascadeSeparatorContext( CascadeSeparator cascadeSeparator ) {
+		this( cascadeSeparator, null, null );
+	}
+	public CascadeSeparatorContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 }

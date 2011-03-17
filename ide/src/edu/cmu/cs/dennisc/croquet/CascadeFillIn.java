@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeFillIn<F,B> extends AbstractModel implements CascadeBlankOwner<B> {
+public abstract class CascadeFillIn<F,B> extends AbstractCascadeBlankOwnee< F > implements CascadeBlankOwner<B> {
 	private java.util.List< CascadeBlank<B> > blanks = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	public CascadeFillIn( java.util.UUID id ) {
-		super( Application.CASCADE_GROUP, id );
+		super( id );
 	}
 	public void addBlank( CascadeBlank<B> blank ) {
 		assert blank != null : this;
@@ -60,18 +60,11 @@ public abstract class CascadeFillIn<F,B> extends AbstractModel implements Cascad
 		this.blanks.toArray( rv );
 		return rv;
 	}
-	public boolean isInclusionDesired( CascadeFillInContext context ) {
+	public boolean isInclusionDesired( CascadeFillInContext<F,B> context ) {
 		return true;
 	}
 	public boolean isAutomaticallySelectedWhenSoleOption() {
 		return true;
-	}
-	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return false;
 	}
 	public abstract javax.swing.Icon getMenuItemIcon( CascadeFillInContext< F, B > context );
 	public abstract String getMenuItemText( CascadeFillInContext< F, B > context );
