@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class CascadeFillInContext<F,B> extends CascadeNodeContext< CascadeFillIn<F,B> > implements CascadeBlankOwnerContext< CascadeFillIn<F,B> > {
+	private RtFillIn<F,B> rtFillIn;
 	/*package-private*/ CascadeFillInContext( CascadeFillIn<F,B> cascadeFillIn, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( cascadeFillIn, e, viewController );
 	}
@@ -55,5 +56,17 @@ public class CascadeFillInContext<F,B> extends CascadeNodeContext< CascadeFillIn
 	}
 	public CascadeFillInContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+	}
+	/*private-private*/ void setRtFillIn( RtFillIn<F,B> rtFillIn ) {
+		this.rtFillIn = rtFillIn;
+	}	
+	public CascadeBlankContext< B > getBlankContextAt( int i ) {	
+		return this.rtFillIn.getBlankContextAt( i );
+	}
+	public F createValue() {
+		return this.getModel().createValue( this );
+	}
+	public F getTransientValue() {
+		return this.getModel().getTransientValue( this );
 	}
 }

@@ -167,7 +167,13 @@ class RtBlank< B > extends RtNode< CascadeBlank<B>, CascadeBlankContext<B> > {
 	private RtFillIn< B,? > rtSelectedFillIn;
 	public RtBlank( CascadeBlank<B> model ) {
 		super( model, ContextManager.createCascadeBlankContext( model ) );
+		this.getContext().setRtBlank( this );
 	}
+
+	public CascadeFillInContext< B, ? > getSelectedFillInContext() {
+		return this.rtSelectedFillIn.getContext();
+	}
+	
 	
 	@Override
 	protected RtFillIn< B,? >[] getChildren() {
@@ -243,24 +249,28 @@ class RtBlank< B > extends RtNode< CascadeBlank<B>, CascadeBlankContext<B> > {
 	}
 }
 
-abstract class RtBlankOwner<T, M extends CascadeBlankOwner, C extends CascadeBlankOwnerContext< M > > extends RtNode<M, C> {
-	private RtBlank< T >[] rtBlanks;
+abstract class RtBlankOwner<B, M extends CascadeBlankOwner< B >, C extends CascadeBlankOwnerContext< M > > extends RtNode<M, C> {
+	private RtBlank< B >[] rtBlanks;
 	public RtBlankOwner( M model, C context ) {
 		super( model, context );
-		CascadeBlank[] blanks = model.getBlanks();
+		CascadeBlank<B>[] blanks = model.getBlanks();
 		this.rtBlanks = new RtBlank[ blanks.length ];
 		for( int i=0; i<this.rtBlanks.length; i++ ) {
-			this.rtBlanks[ i ] = new RtBlank< T >( blanks[ i ] );
+			this.rtBlanks[ i ] = new RtBlank< B >( blanks[ i ] );
 		}
 		this.updateParentsAndNextSiblings( this.rtBlanks );
 	}
+
+	public CascadeBlankContext< B > getBlankContextAt( int i ) {	
+		return this.rtBlanks[ i ].getContext();
+	}
 	@Override
-	protected RtBlank< T >[] getChildren() {
+	protected RtBlank< B >[] getChildren() {
 		return this.rtBlanks;
 	}
 	protected boolean isGoodToGo() {
 		if( this.rtBlanks.length > 0 ) {
-			for( RtBlank< T > rtBlank : this.rtBlanks ) {
+			for( RtBlank< B > rtBlank : this.rtBlanks ) {
 				if( rtBlank.isFillInAlreadyDetermined() ) {
 					//pass
 				} else {
@@ -281,11 +291,12 @@ abstract class RtBlankOwner<T, M extends CascadeBlankOwner, C extends CascadeBla
 	}
 }
 
-class RtFillIn< F,B > extends RtBlankOwner< F, CascadeFillIn< F,B >, CascadeFillInContext< F,B > > {
+class RtFillIn< F,B > extends RtBlankOwner< B, CascadeFillIn< F,B >, CascadeFillInContext< F,B > > {
 	private javax.swing.JMenuItem menuItem = null;
 	private boolean wasLast = false; 
 	public RtFillIn( CascadeFillIn< F,B > model ) {
 		super( model, ContextManager.createCascadeFillInContext( model ) );
+		this.getContext().setRtFillIn( this );
 	}
 	public boolean isInclusionDesired() {
 		return this.getModel().isInclusionDesired( this.getContext() );
@@ -296,7 +307,6 @@ class RtFillIn< F,B > extends RtBlankOwner< F, CascadeFillIn< F,B >, CascadeFill
 	protected boolean isLast() {
 		return this.getNextNode() == null;
 	}
-
 	@Override
 	protected RtBlank< ? > getNearestBlank() {
 		RtNode<?,?> parent = this.getParent();

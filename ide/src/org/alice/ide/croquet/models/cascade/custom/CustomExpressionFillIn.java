@@ -46,10 +46,22 @@ package org.alice.ide.croquet.models.cascade.custom;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomExpressionFillIn< F extends edu.cmu.cs.dennisc.alice.ast.Expression > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< F > {
+public abstract class CustomExpressionFillIn< F extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.croquet.ComponentBackedIconCascadeFillIn< F, Void > {
 	private final edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation;
 	public CustomExpressionFillIn( java.util.UUID id, edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation ) {
 		super( id );
 		this.inputDialogOperation = inputDialogOperation;
+	}
+	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, Void > context ) {
+		return new javax.swing.JLabel( this.getDefaultLocalizedText() );
+	}
+	@Override
+	public F createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, Void > context ) {
+		return null;
+	}
+	@Override
+	public F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, Void > context ) {
+		return null;
 	}
 }
