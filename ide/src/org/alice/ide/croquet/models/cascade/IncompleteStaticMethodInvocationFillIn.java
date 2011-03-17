@@ -72,7 +72,6 @@ public class IncompleteStaticMethodInvocationFillIn extends ExpressionFillInWith
 	private IncompleteStaticMethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ) );
 		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteStaticMethodInvocation( method );
-		//java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = method.getParameters();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType = parameter.getDesiredValueType();
 			edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank = CascadeManager.getBlankForType( desiredType );
@@ -81,10 +80,8 @@ public class IncompleteStaticMethodInvocationFillIn extends ExpressionFillInWith
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
-		edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >[] blanks = this.getBlanks();
-		//return null;
-		return this.transientValue;
+	protected edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createStaticMethodInvocation( this.transientValue.method.getValue(), expressions );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {

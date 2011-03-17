@@ -50,4 +50,21 @@ public abstract class ExpressionFillInWithExpressionBlanks< F extends edu.cmu.cs
 	public ExpressionFillInWithExpressionBlanks( java.util.UUID id ) {
 		super( id );
 	}
+	private static <F> edu.cmu.cs.dennisc.alice.ast.Expression[] createExpressions( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,edu.cmu.cs.dennisc.alice.ast.Expression> context ) { 
+		return null;
+	}
+	//todo
+	//protected abstract F createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions );
+	protected F createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		return null;
+	}
+	@Override
+	public final F createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
+		return this.createValue( createExpressions( context ) );
+	}
+	@Override
+	public F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+		//todo
+		return null;
+	}
 }

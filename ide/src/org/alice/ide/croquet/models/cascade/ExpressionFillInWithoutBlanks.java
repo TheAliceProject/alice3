@@ -50,4 +50,14 @@ public abstract class ExpressionFillInWithoutBlanks< F extends edu.cmu.cs.dennis
 	public ExpressionFillInWithoutBlanks( java.util.UUID id ) {
 		super( id );
 	}
+	@Override
+	public F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,Void> context ) {
+		return null;
+		//throw new RuntimeException( "todo" );
+	}
+	@Override
+	public F createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,Void> context ) {
+		return null;
+		//throw new RuntimeException( "todo" );
+	}
 }
