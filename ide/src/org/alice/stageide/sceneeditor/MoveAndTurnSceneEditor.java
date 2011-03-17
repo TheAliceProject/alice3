@@ -563,6 +563,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	public AffineMatrix4x4 getGoodPointOfViewInSceneForObject(edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox)
 	{
+	    if (boundingBox.isNaN())
+        {
+            return AffineMatrix4x4.createIdentity();
+        }
+	    
 		AffineMatrix4x4 goodPointOfView = new AffineMatrix4x4();
 		MarkerWithIcon selectedCameraMarker = getActiveCameraMarker();
 		AffineMatrix4x4 cameraTransform = selectedCameraMarker.getSGTransformable().getAbsoluteTransformation();
@@ -643,6 +648,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		{
 			goodPointOfView.translation.y -= boundingBox.getYMinimum();
 		}
+		assert(!goodPointOfView.isNaN());
 		return goodPointOfView;
 	}
 	

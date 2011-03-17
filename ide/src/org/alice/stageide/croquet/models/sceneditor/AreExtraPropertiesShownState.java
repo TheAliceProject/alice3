@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.sceneeditor;
+package org.alice.stageide.croquet.models.sceneditor;
 
 import edu.cmu.cs.dennisc.croquet.BooleanState;
 
