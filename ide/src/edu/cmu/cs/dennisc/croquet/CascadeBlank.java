@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank< B > extends CascadeNode {
+public abstract class CascadeBlank< B > extends AbstractModel {
 	private java.util.List< CascadeFillIn< ? extends B,? > > fillIns;
 	public CascadeBlank( java.util.UUID id ) {
-		super( id );
+		super( Application.CASCADE_GROUP, id );
 	}
 	protected abstract void addFillIns();
 	public Iterable< CascadeFillIn< ? extends B,? > > getFillIns() {
@@ -67,5 +67,13 @@ public abstract class CascadeBlank< B > extends CascadeNode {
 	}
 	public void addSeparator() {
 		this.fillIns.add( SeparatorFillIn.getInstance() );
+	}
+	
+	@Override
+	protected void localize() {
+	}
+	@Override
+	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		return false;
 	}
 }

@@ -51,7 +51,7 @@ public abstract class Node {
 	private Node nextSibling = null;
 	protected java.util.List<Node> children = null;
 
-	protected abstract edu.cmu.cs.dennisc.croquet.CascadeNodeContext getContext();
+	protected abstract edu.cmu.cs.dennisc.croquet.ModelContext< ? > getContext();
 	
 //	protected void addChild( Node node ) {
 //		if( this.children.size() > 0 ) {
