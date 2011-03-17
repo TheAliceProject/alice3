@@ -41,44 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.croquet.models.cascade.blanks;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeManager {
-	static {
-		org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
-		org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
-		org.alice.ide.croquet.models.cascade.blanks.StringBlank.getInstance();
+public class TypeUnhandledBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
+	private static class SingletonHolder {
+		private static TypeUnhandledBlank instance = new TypeUnhandledBlank();
 	}
-	private CascadeManager() {
-		throw new AssertionError();
+	public static TypeUnhandledBlank getInstance() {
+		return SingletonHolder.instance;
 	}
-	public static ExpressionBlank getBlankForType( Class<?> cls ) {
-		if( cls != null ) {
-			if( Number.class.isAssignableFrom( cls ) ) {
-				if( Integer.class.isAssignableFrom( cls ) ) {
-					return org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
-				} else {
-					return org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
-				}
-			} else if( cls == Double.TYPE ) {
-				return org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
-			} else if( cls == Integer.TYPE ) {
-				return org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
-			} else if( Enum.class.isAssignableFrom( cls ) ) {
-				return org.alice.ide.croquet.models.cascade.blanks.EnumBlank.getInstance( cls );
-			} else if( String.class.isAssignableFrom( cls ) ) {
-				return org.alice.ide.croquet.models.cascade.blanks.StringBlank.getInstance();
-			} else {
-				return org.alice.ide.croquet.models.cascade.blanks.TypeUnhandledBlank.getInstance();
-			}
-		} else {
-			return org.alice.ide.croquet.models.cascade.blanks.TypeUnsetBlank.getInstance();
-		}
-	}
-	public static ExpressionBlank getBlankForType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
-		return getBlankForType( type.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
+	private TypeUnhandledBlank() {
+		super( java.util.UUID.fromString( "186ea575-21b4-4b34-b292-96efadc6321b" ), Void.class );
 	}
 }

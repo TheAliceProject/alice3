@@ -41,44 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.croquet.models.cascade.cancels;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeManager {
-	static {
-		org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
-		org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
-		org.alice.ide.croquet.models.cascade.blanks.StringBlank.getInstance();
+/*package-private*/ abstract class CancelFillIn<F> extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< F,Void > {
+	public CancelFillIn( java.util.UUID id ) {
+		super( id );
 	}
-	private CascadeManager() {
-		throw new AssertionError();
+	@Override
+	public boolean isAutomaticallySelectedWhenSoleOption() {
+		return false;
 	}
-	public static ExpressionBlank getBlankForType( Class<?> cls ) {
-		if( cls != null ) {
-			if( Number.class.isAssignableFrom( cls ) ) {
-				if( Integer.class.isAssignableFrom( cls ) ) {
-					return org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
-				} else {
-					return org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
-				}
-			} else if( cls == Double.TYPE ) {
-				return org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
-			} else if( cls == Integer.TYPE ) {
-				return org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
-			} else if( Enum.class.isAssignableFrom( cls ) ) {
-				return org.alice.ide.croquet.models.cascade.blanks.EnumBlank.getInstance( cls );
-			} else if( String.class.isAssignableFrom( cls ) ) {
-				return org.alice.ide.croquet.models.cascade.blanks.StringBlank.getInstance();
-			} else {
-				return org.alice.ide.croquet.models.cascade.blanks.TypeUnhandledBlank.getInstance();
-			}
-		} else {
-			return org.alice.ide.croquet.models.cascade.blanks.TypeUnsetBlank.getInstance();
-		}
+	@Override
+	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F,Void > context ) {
+		return null;
 	}
-	public static ExpressionBlank getBlankForType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
-		return getBlankForType( type.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
+	@Override
+	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F,Void > context ) {
+		return this.getDefaultLocalizedText();
+	}
+	@Override
+	public F createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F,Void > context ) {
+		//context.cancel();
+		throw new edu.cmu.cs.dennisc.cascade.CancelException( this.getDefaultLocalizedText() );
+	}
+	@Override
+	public F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F,Void > context ) {
+		return null;
 	}
 }

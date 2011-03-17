@@ -41,21 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
-
-import edu.cmu.cs.dennisc.croquet.CancelFillIn;
+package org.alice.ide.croquet.models.cascade.cancels;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NoFillInsFoundCancelFillIn extends CancelFillIn {
+public class TypeUnhandledCancelFillIn extends org.alice.ide.croquet.models.cascade.cancels.CancelFillIn {
 	private static class SingletonHolder {
-		private static NoFillInsFoundCancelFillIn instance = new NoFillInsFoundCancelFillIn();
+		private static TypeUnhandledCancelFillIn instance = new TypeUnhandledCancelFillIn();
 	}
-	public static NoFillInsFoundCancelFillIn getInstance() {
+	public static TypeUnhandledCancelFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
-	private NoFillInsFoundCancelFillIn() {
-		super( java.util.UUID.fromString( "0ff155c3-6f08-42bb-83d2-59895d7f2cca" ) );
+	private TypeUnhandledCancelFillIn() {
+		super( java.util.UUID.fromString( "a8bc4d9f-7099-47ac-b071-10c6676a4be3" ) );
 	}
 }
