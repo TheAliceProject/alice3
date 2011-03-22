@@ -58,8 +58,8 @@ public class ExponentCascadeMenu extends org.alice.ide.croquet.models.cascade.Ex
 	}
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "exp", java.lang.Double.TYPE ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "log", java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "exp", java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "log", java.lang.Double.TYPE ) );
 		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( Math.class, "E" ) );
 	}
 }

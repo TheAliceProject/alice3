@@ -59,7 +59,7 @@ public class IncompleteDivideRemainderCascadeMenu extends org.alice.ide.croquet.
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
 		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.IncompleteArithmeticExpressionFillIn.getInstance( operator ) );
+			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.ArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
 	}
 }

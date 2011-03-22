@@ -58,7 +58,7 @@ public class PowerCascadeMenu extends org.alice.ide.croquet.models.cascade.Expre
 	}
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "sqrt", java.lang.Double.TYPE ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "sqrt", java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
 	}
 }

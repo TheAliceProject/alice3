@@ -58,8 +58,8 @@ public class RandomCascadeMenu extends org.alice.ide.croquet.models.cascade.Expr
 	}
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextIntegerFrom0ToNExclusive", Integer.class ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextIntegerFromAToBExclusive", Integer.class, Integer.class ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextIntegerFromAToBInclusive", Integer.class, Integer.class ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextIntegerFrom0ToNExclusive", Integer.class ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextIntegerFromAToBExclusive", Integer.class, Integer.class ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextIntegerFromAToBInclusive", Integer.class, Integer.class ) );
 	}
 }

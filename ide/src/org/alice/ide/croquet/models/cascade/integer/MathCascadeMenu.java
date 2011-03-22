@@ -79,14 +79,14 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.MostlyPredeterminedArithmeticExpressionFillIn.getInstance( operator ) );
 		}
 		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.IncompleteArithmeticExpressionFillIn.getInstance( operator ) );
+			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.ArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
 		blank.addMenu( IncompleteDivideRemainderCascadeMenu.getInstance() );
 
 		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "abs", Integer.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "abs", Integer.TYPE ) );
 		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "min", Integer.TYPE, Integer.TYPE ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "max", Integer.TYPE, Integer.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "min", Integer.TYPE, Integer.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "max", Integer.TYPE, Integer.TYPE ) );
 	}
 }

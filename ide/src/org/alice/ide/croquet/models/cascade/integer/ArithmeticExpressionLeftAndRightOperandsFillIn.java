@@ -41,19 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.string;
+package org.alice.ide.croquet.models.cascade.integer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LeftAndRightOperandStringConcatinationFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
-	private static class SingletonHolder {
-		private static LeftAndRightOperandStringConcatinationFillIn instance = new LeftAndRightOperandStringConcatinationFillIn();
+public class ArithmeticExpressionLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionLeftAndRightOperandsFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, ArithmeticExpressionLeftAndRightOperandsFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ArithmeticExpressionLeftAndRightOperandsFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+		synchronized( map ) {
+			ArithmeticExpressionLeftAndRightOperandsFillIn rv = map.get( operator );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ArithmeticExpressionLeftAndRightOperandsFillIn( operator );
+				map.put( operator, rv );
+			}
+			return rv;
+		}
 	}
-	public static LeftAndRightOperandStringConcatinationFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
-	private LeftAndRightOperandStringConcatinationFillIn() {
-		super( java.util.UUID.fromString( "58068432-cef0-4f9d-bfef-c841ea165172" ) );
+	private ArithmeticExpressionLeftAndRightOperandsFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+		super( java.util.UUID.fromString( "18b9bfcc-4938-435e-b751-51d9fe38524c" ), Integer.class, Integer.class, operator, Integer.class );
 	}
 }

@@ -41,26 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.number;
+package org.alice.ide.croquet.models.cascade.arithmetic;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.IncompleteArithmeticExpressionFillIn {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, IncompleteArithmeticExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static IncompleteArithmeticExpressionFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
-		synchronized( map ) {
-			IncompleteArithmeticExpressionFillIn rv = map.get( operator );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new IncompleteArithmeticExpressionFillIn( operator );
-				map.put( operator, rv );
-			}
-			return rv;
-		}
+public abstract class ArithmeticExpressionLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType;
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType;
+	private final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator;
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType;
+	public ArithmeticExpressionLeftAndRightOperandsFillIn( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
+		super( id );
+		this.expressionType = expressionType;
+		this.leftOperandType = leftOperandType;
+		this.operator = operator;
+		this.rightOperandType = rightOperandType;
 	}
-	private IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "04658765-3fc8-4874-ba9d-789265bb1b47" ), Double.class, Number.class, operator, Number.class );
+	public ArithmeticExpressionLeftAndRightOperandsFillIn( java.util.UUID id, Class<?> resultCls, Class<?> leftOperandCls, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls ) {
+		this( id, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( resultCls ), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( leftOperandCls ), operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( rightOperandCls ) );
 	}
 }

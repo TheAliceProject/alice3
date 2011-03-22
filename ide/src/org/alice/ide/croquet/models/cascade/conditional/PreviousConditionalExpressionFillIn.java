@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.conditional;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousConditionalExpressionFillIn extends org.alice.ide.croquet.models.cascade.AbstractPreviousExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression > {
+public abstract class PreviousConditionalExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithBlanks< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression > {
 	public PreviousConditionalExpressionFillIn( java.util.UUID id ) {
 		super( id );
 	}

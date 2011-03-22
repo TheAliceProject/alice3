@@ -71,11 +71,11 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 
 
 		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextBoolean", Integer.class ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextBoolean", Integer.class ) );
 			
 		blank.addSeparator();
 		blank.addFillIn( org.alice.ide.croquet.models.cascade.logicalcomplement.LogicalComplementOfPreviousExpressionFillIn.getInstance() );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.logicalcomplement.IncompleteLogicalComplementFillIn.getInstance() );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.logicalcomplement.LogicalComplementOperandFillIn.getInstance() );
 		blank.addSeparator();
 
 		for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.values() ) {
@@ -83,7 +83,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		}
 
 		for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.values() ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.conditional.IncompleteConditionalInfixExpressionFillIn.getInstance( operator ) );
+			blank.addFillIn( org.alice.ide.croquet.models.cascade.conditional.ConditionalExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
 		blank.addSeparator();
 		

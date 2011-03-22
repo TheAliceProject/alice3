@@ -53,7 +53,7 @@ public abstract class ExpressionFillerInner {
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 //		org.alice.ide.cascade.IncompleteMethodInvocationFillIn methodInvocationFillIn = new org.alice.ide.cascade.IncompleteMethodInvocationFillIn( typeExpression, method );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( method ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( method ) );
 	}
 	protected static void addStaticFieldAccessFillIn( edu.cmu.cs.dennisc.croquet.CascadeBlank blank, edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression, Class<?> valueCls, String fieldName ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = typeExpression.value.getValue();

@@ -46,15 +46,25 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPreviousExpressionFillIn< F extends edu.cmu.cs.dennisc.alice.ast.Expression > extends ExpressionFillInWithExpressionBlanks< F > {
-	public AbstractPreviousExpressionFillIn( java.util.UUID id ) {
-		super( id );
+public class RelationalExpressionLeftAndRightOperandsFillIn extends ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
+	private static edu.cmu.cs.dennisc.map.MapToMap< Class<?>, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( Class<?> cls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
+		synchronized( mapToMap ) {
+			RelationalExpressionLeftAndRightOperandsFillIn rv = mapToMap.get( cls, operator );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new RelationalExpressionLeftAndRightOperandsFillIn( cls, operator );
+				mapToMap.put( cls, operator, rv );
+			}
+			return rv;
+		}
 	}
-	protected abstract boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
-	
-	@Override
-	public boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
-		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
+	private Class<?> cls;
+	private edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator;
+	private RelationalExpressionLeftAndRightOperandsFillIn( Class<?> cls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
+		super( java.util.UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ) );
+		this.cls = cls;
+		this.operator = operator;
 	}
 }

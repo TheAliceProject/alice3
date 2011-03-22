@@ -41,30 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.croquet.models.cascade.string;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteRelationalExpressionFillIn extends ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
-	private static edu.cmu.cs.dennisc.map.MapToMap< Class<?>, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator, IncompleteRelationalExpressionFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static IncompleteRelationalExpressionFillIn getInstance( Class<?> cls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
-		synchronized( mapToMap ) {
-			IncompleteRelationalExpressionFillIn rv = mapToMap.get( cls, operator );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new IncompleteRelationalExpressionFillIn( cls, operator );
-				mapToMap.put( cls, operator, rv );
-			}
-			return rv;
-		}
+public class StringConcatinationLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
+	private static class SingletonHolder {
+		private static StringConcatinationLeftAndRightOperandsFillIn instance = new StringConcatinationLeftAndRightOperandsFillIn();
 	}
-	private Class<?> cls;
-	private edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator;
-	private IncompleteRelationalExpressionFillIn( Class<?> cls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ) );
-		this.cls = cls;
-		this.operator = operator;
+	public static StringConcatinationLeftAndRightOperandsFillIn getInstance() {
+		return SingletonHolder.instance;
+	}
+	private StringConcatinationLeftAndRightOperandsFillIn() {
+		super( java.util.UUID.fromString( "58068432-cef0-4f9d-bfef-c841ea165172" ) );
 	}
 }

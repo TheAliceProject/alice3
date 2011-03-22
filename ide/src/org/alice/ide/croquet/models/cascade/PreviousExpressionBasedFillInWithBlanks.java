@@ -41,26 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.integer;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.IncompleteArithmeticExpressionFillIn {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, IncompleteArithmeticExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static IncompleteArithmeticExpressionFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
-		synchronized( map ) {
-			IncompleteArithmeticExpressionFillIn rv = map.get( operator );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new IncompleteArithmeticExpressionFillIn( operator );
-				map.put( operator, rv );
-			}
-			return rv;
-		}
+public abstract class PreviousExpressionBasedFillInWithBlanks< F extends edu.cmu.cs.dennisc.alice.ast.Expression > extends ExpressionFillInWithExpressionBlanks< F > {
+	public PreviousExpressionBasedFillInWithBlanks( java.util.UUID id ) {
+		super( id );
 	}
-	private IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "18b9bfcc-4938-435e-b751-51d9fe38524c" ), Integer.class, Integer.class, operator, Integer.class );
+	protected abstract boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
+	
+	@Override
+	public boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
+		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
 	}
 }

@@ -58,8 +58,8 @@ public class RealToIntegerCascadeMenu extends org.alice.ide.croquet.models.casca
 	}
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.integer.IntegerUtilities.class, "toFlooredInteger", Double.class ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.integer.IntegerUtilities.class, "toRoundedInteger", Double.class ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.integer.IntegerUtilities.class, "toCeilingedInteger", Double.class ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( org.alice.integer.IntegerUtilities.class, "toFlooredInteger", Double.class ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( org.alice.integer.IntegerUtilities.class, "toRoundedInteger", Double.class ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( org.alice.integer.IntegerUtilities.class, "toCeilingedInteger", Double.class ) );
 	}
 }

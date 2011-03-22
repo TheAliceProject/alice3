@@ -41,24 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.arithmetic;
+package org.alice.ide.croquet.models.cascade.logicalcomplement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IncompleteArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType;
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType;
-	private final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator;
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType;
-	public IncompleteArithmeticExpressionFillIn( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
-		super( id );
-		this.expressionType = expressionType;
-		this.leftOperandType = leftOperandType;
-		this.operator = operator;
-		this.rightOperandType = rightOperandType;
+public class LogicalComplementOperandFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.LogicalComplement > {
+	private static class SingletonHolder {
+		private static LogicalComplementOperandFillIn instance = new LogicalComplementOperandFillIn();
 	}
-	public IncompleteArithmeticExpressionFillIn( java.util.UUID id, Class<?> resultCls, Class<?> leftOperandCls, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls ) {
-		this( id, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( resultCls ), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( leftOperandCls ), operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( rightOperandCls ) );
+	public static LogicalComplementOperandFillIn getInstance() {
+		return SingletonHolder.instance;
+	}
+	private LogicalComplementOperandFillIn() {
+		super( java.util.UUID.fromString( "f70996fb-fd4e-4114-962b-ca14c33e134b" ) );
 	}
 }

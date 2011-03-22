@@ -270,8 +270,8 @@ public abstract class CascadeManager {
 //				//pass
 //			} else {
 		
-				blank.addFillIn( org.alice.ide.croquet.models.cascade.string.RightOperandOnlyStringConcatinationPreviousExpressionFillIn.getInstance() );
-				blank.addFillIn( org.alice.ide.croquet.models.cascade.string.LeftAndRightOperandStringConcatinationFillIn.getInstance() );
+				blank.addFillIn( org.alice.ide.croquet.models.cascade.string.PreviousStringConcatinationRightOperandOnlyFillIn.getInstance() );
+				blank.addFillIn( org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn.getInstance() );
 				blank.addSeparator();
 //			}
 //		}

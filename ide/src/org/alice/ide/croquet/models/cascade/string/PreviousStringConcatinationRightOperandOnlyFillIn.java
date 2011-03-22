@@ -46,14 +46,14 @@ package org.alice.ide.croquet.models.cascade.string;
 /**
  * @author Dennis Cosgrove
  */
-public class RightOperandOnlyStringConcatinationPreviousExpressionFillIn extends org.alice.ide.croquet.models.cascade.AbstractPreviousExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
+public class PreviousStringConcatinationRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithBlanks< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
 	private static class SingletonHolder {
-		private static RightOperandOnlyStringConcatinationPreviousExpressionFillIn instance = new RightOperandOnlyStringConcatinationPreviousExpressionFillIn();
+		private static PreviousStringConcatinationRightOperandOnlyFillIn instance = new PreviousStringConcatinationRightOperandOnlyFillIn();
 	}
-	public static RightOperandOnlyStringConcatinationPreviousExpressionFillIn getInstance() {
+	public static PreviousStringConcatinationRightOperandOnlyFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
-	private RightOperandOnlyStringConcatinationPreviousExpressionFillIn() {
+	private PreviousStringConcatinationRightOperandOnlyFillIn() {
 		super( java.util.UUID.fromString( "1470e7b1-4f71-4d1b-8f3d-bbd708d64282" ) );
 	}
 	@Override

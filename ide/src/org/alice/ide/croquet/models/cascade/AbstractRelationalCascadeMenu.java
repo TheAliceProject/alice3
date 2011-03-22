@@ -55,7 +55,7 @@ public abstract class AbstractRelationalCascadeMenu extends ExpressionCascadeMen
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
 		for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
-			blank.addFillIn( IncompleteRelationalExpressionFillIn.getInstance( this.cls, operator ) );
+			blank.addFillIn( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.cls, operator ) );
 		}
 	}
 }

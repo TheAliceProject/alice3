@@ -46,22 +46,22 @@ package org.alice.ide.croquet.models.cascade.conditional;
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteConditionalInfixExpressionFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator, IncompleteConditionalInfixExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static IncompleteConditionalInfixExpressionFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
+public class ConditionalExpressionLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator, ConditionalExpressionLeftAndRightOperandsFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ConditionalExpressionLeftAndRightOperandsFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
 		synchronized( map ) {
-			IncompleteConditionalInfixExpressionFillIn rv = map.get( operator );
+			ConditionalExpressionLeftAndRightOperandsFillIn rv = map.get( operator );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new IncompleteConditionalInfixExpressionFillIn( operator );
+				rv = new ConditionalExpressionLeftAndRightOperandsFillIn( operator );
 				map.put( operator, rv );
 			}
 			return rv;
 		}
 	}
 	private final edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator;
-	private IncompleteConditionalInfixExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
+	private ConditionalExpressionLeftAndRightOperandsFillIn( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "f7faea38-4071-4918-bea0-98971ddbd7a7" ) );
 		this.operator = operator;
 	}

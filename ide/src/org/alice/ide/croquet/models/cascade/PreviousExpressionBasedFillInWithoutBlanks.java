@@ -40,22 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade.fillerinners;
+
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringFillerInner extends ExpressionFillerInner {
-	public StringFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), edu.cmu.cs.dennisc.alice.ast.StringLiteral.class );
+public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends edu.cmu.cs.dennisc.alice.ast.Expression > extends ExpressionFillInWithoutBlanks< F > {
+	public PreviousExpressionBasedFillInWithoutBlanks( java.util.UUID id ) {
+		super( id );
 	}
+	protected abstract boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
+	
 	@Override
-	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( "hello" ) );
-		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomStringLiteralFillIn.getInstance() );
-		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.string.PreviousStringConcatinationRightOperandOnlyFillIn.getInstance() );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn.getInstance() );
+	public boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
+		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
 	}
 }

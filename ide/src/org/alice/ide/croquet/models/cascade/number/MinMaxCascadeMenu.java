@@ -58,7 +58,7 @@ public class MinMaxCascadeMenu extends org.alice.ide.croquet.models.cascade.Expr
 	}
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "min", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "max", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "min", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "max", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
 	}
 }

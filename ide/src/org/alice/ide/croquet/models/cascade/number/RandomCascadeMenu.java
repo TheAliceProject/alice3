@@ -59,6 +59,6 @@ public class RandomCascadeMenu extends org.alice.ide.croquet.models.cascade.Expr
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
 		blank.addFillIn( NextDouble01FillIn.getInstance() );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextDoubleInRange", java.lang.Number.class, java.lang.Number.class ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextDoubleInRange", java.lang.Number.class, java.lang.Number.class ) );
 	}
 }

@@ -41,19 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.logicalcomplement;
+package org.alice.ide.croquet.models.cascade.number;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteLogicalComplementFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.LogicalComplement > {
-	private static class SingletonHolder {
-		private static IncompleteLogicalComplementFillIn instance = new IncompleteLogicalComplementFillIn();
+public class ArithmeticExpressionLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionLeftAndRightOperandsFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, ArithmeticExpressionLeftAndRightOperandsFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ArithmeticExpressionLeftAndRightOperandsFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+		synchronized( map ) {
+			ArithmeticExpressionLeftAndRightOperandsFillIn rv = map.get( operator );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ArithmeticExpressionLeftAndRightOperandsFillIn( operator );
+				map.put( operator, rv );
+			}
+			return rv;
+		}
 	}
-	public static IncompleteLogicalComplementFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
-	private IncompleteLogicalComplementFillIn() {
-		super( java.util.UUID.fromString( "f70996fb-fd4e-4114-962b-ca14c33e134b" ) );
+	private ArithmeticExpressionLeftAndRightOperandsFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+		super( java.util.UUID.fromString( "04658765-3fc8-4874-ba9d-789265bb1b47" ), Double.class, Number.class, operator, Number.class );
 	}
 }

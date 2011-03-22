@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviousExpressionFillIn extends AbstractPreviousExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class PreviousExpressionFillIn extends PreviousExpressionBasedFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private static class SingletonHolder {
 		private static PreviousExpressionFillIn instance = new PreviousExpressionFillIn();
 	}

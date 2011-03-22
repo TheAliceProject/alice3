@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.arithmetic;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.AbstractPreviousExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
+public abstract class PreviousArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithBlanks< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
 	public PreviousArithmeticExpressionFillIn( java.util.UUID id ) {
 		super( id );
 	}
