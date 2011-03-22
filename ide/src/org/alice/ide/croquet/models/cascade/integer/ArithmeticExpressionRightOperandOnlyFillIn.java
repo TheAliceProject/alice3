@@ -41,27 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.croquet.models.cascade.integer;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousExpressionBasedFillInWithBlanks< F extends edu.cmu.cs.dennisc.alice.ast.Expression, B > extends ExpressionFillInWithBlanks< F,B > {
-	public PreviousExpressionBasedFillInWithBlanks( java.util.UUID id, Class<B> cls ) {
-		super( id, cls );
+public class ArithmeticExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionRightOperandOnlyFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, ArithmeticExpressionRightOperandOnlyFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ArithmeticExpressionRightOperandOnlyFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+		synchronized( map ) {
+			ArithmeticExpressionRightOperandOnlyFillIn rv = map.get( operator );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ArithmeticExpressionRightOperandOnlyFillIn( operator );
+				map.put( operator, rv );
+			}
+			return rv;
+		}
 	}
-	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-		return org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
-	}
-	protected abstract boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
-	@Override
-	public final boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
-	}
-	protected abstract F createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, B[] expressions);
-	@Override
-	protected final F createValue( B[] expressions ) {
-		return this.createValue( this.getPreviousExpression(), expressions );
+	private ArithmeticExpressionRightOperandOnlyFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+		super( java.util.UUID.fromString( "17a328e0-b763-4375-84f5-0a6a63e94964" ), Number.class, Number.class, operator, Number.class );
 	}
 }

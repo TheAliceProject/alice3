@@ -46,22 +46,21 @@ package org.alice.ide.croquet.models.cascade.number;
 /**
  * @author Dennis Cosgrove
  */
-public class MostlyPredeterminedArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.MostlyPredeterminedArithmeticExpressionFillIn {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, MostlyPredeterminedArithmeticExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static MostlyPredeterminedArithmeticExpressionFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+public class ArithmeticExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionRightOperandOnlyFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, ArithmeticExpressionRightOperandOnlyFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ArithmeticExpressionRightOperandOnlyFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {
-			MostlyPredeterminedArithmeticExpressionFillIn rv = map.get( operator );
+			ArithmeticExpressionRightOperandOnlyFillIn rv = map.get( operator );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new MostlyPredeterminedArithmeticExpressionFillIn( operator );
+				rv = new ArithmeticExpressionRightOperandOnlyFillIn( operator );
 				map.put( operator, rv );
 			}
 			return rv;
 		}
 	}
-	private MostlyPredeterminedArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
-		//todo: right operand type?  expression type?
-		super( java.util.UUID.fromString( "7caac1c5-db6b-4f5a-9d9b-ca22b972e6ef" ), operator );
+	private ArithmeticExpressionRightOperandOnlyFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+		super( java.util.UUID.fromString( "7caac1c5-db6b-4f5a-9d9b-ca22b972e6ef" ), Integer.class, Integer.class, operator, Integer.class );
 	}
 }

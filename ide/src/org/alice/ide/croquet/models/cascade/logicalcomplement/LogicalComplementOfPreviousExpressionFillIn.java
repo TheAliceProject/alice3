@@ -58,6 +58,10 @@ public class LogicalComplementOfPreviousExpressionFillIn extends org.alice.ide.c
 	}
 	@Override
 	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		return true;
+		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.LogicalComplement createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+		return new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( previousExpression );
 	}
 }

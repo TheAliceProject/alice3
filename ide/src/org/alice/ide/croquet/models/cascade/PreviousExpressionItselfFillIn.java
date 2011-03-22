@@ -46,22 +46,31 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousExpressionBasedFillInWithBlanks< F extends edu.cmu.cs.dennisc.alice.ast.Expression, B > extends ExpressionFillInWithBlanks< F,B > {
-	public PreviousExpressionBasedFillInWithBlanks( java.util.UUID id, Class<B> cls ) {
-		super( id, cls );
+public class PreviousExpressionItselfFillIn extends PreviousExpressionBasedFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >, PreviousExpressionItselfFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static PreviousExpressionItselfFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+		synchronized( map ) {
+			PreviousExpressionItselfFillIn rv = map.get( type );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new PreviousExpressionItselfFillIn( type );
+				map.put( type, rv );
+			}
+			return rv;
+		}
 	}
-	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-		return org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type;
+	private PreviousExpressionItselfFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+		super( java.util.UUID.fromString( "a15cbb4f-f955-498a-9291-60bf23007c34" ) );
+		this.type = type;
 	}
-	protected abstract boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
 	@Override
-	public final boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
+	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+		return CascadeManager.isInclusionDesired( context, previousExpression, this.type );
 	}
-	protected abstract F createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, B[] expressions);
 	@Override
-	protected final F createValue( B[] expressions ) {
-		return this.createValue( this.getPreviousExpression(), expressions );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+		return previousExpression;
 	}
 }

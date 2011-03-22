@@ -55,7 +55,7 @@ public class StringFillerInner extends ExpressionFillerInner {
 		blank.addSeparator();
 		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomStringLiteralFillIn.getInstance() );
 		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.string.PreviousStringConcatinationRightOperandOnlyFillIn.getInstance() );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.string.StringConcatinationRightOperandOnlyFillIn.getInstance() );
 		blank.addFillIn( org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn.getInstance() );
 	}
 }

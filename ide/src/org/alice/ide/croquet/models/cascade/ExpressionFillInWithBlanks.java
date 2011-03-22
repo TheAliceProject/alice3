@@ -46,29 +46,30 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviousExpressionFillIn extends PreviousExpressionBasedFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	private static class SingletonHolder {
-		private static PreviousExpressionFillIn instance = new PreviousExpressionFillIn();
+public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.alice.ast.Expression, B > extends ExpressionFillIn< F, B > {
+	private final Class<B> cls;
+	public ExpressionFillInWithBlanks( java.util.UUID id, Class<B> cls ) {
+		super( id );
+		this.cls = cls;
 	}
-	public static PreviousExpressionFillIn getInstance() {
-		return SingletonHolder.instance;
+	private B[] createExpressions( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context ) { 
+		edu.cmu.cs.dennisc.croquet.CascadeBlank< B >[] blanks = this.getBlanks();
+		B[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( this.cls, blanks.length );
+		for( int i=0; i<rv.length; i++ ) {
+			edu.cmu.cs.dennisc.croquet.CascadeBlankContext< B > blankContext = context.getBlankContextAt( i );
+			edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< B,?,?,? > selectedFillInContext = blankContext.getSelectedFillInContext();
+			rv[ i ] = selectedFillInContext.createValue();
+		}
+		return rv;
 	}
-	private PreviousExpressionFillIn() {
-		super( java.util.UUID.fromString( "a15cbb4f-f955-498a-9291-60bf23007c34" ) );
+	protected abstract F createValue( B[] expressions );
+	@Override
+	public final F createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context ) {
+		return this.createValue( createExpressions( context ) );
 	}
 	@Override
-	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-//		if( this.previousExpression != null ) {
-//			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> prevExpressionType = this.previousExpression.getType();
-//			if( prevExpressionType != null && prevExpressionType.isAssignableTo( type ) ) {
-//				if( blank.isTop() ) {
-//					//pass
-//				} else {
-//					blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( this.previousExpression, "(current value)" ) );
-//					blank.addSeparator();
-//				}
-//			}
-//		}
-		return true;
+	public F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B > context ) {
+		//todo
+		return null;
 	}
 }

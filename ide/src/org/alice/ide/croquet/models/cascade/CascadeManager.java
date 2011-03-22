@@ -81,4 +81,23 @@ public class CascadeManager {
 	public static ExpressionBlank getBlankForType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 		return getBlankForType( type.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
 	}
+	
+	public static boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< ?,?,?,? > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType ) {
+//		if( this.previousExpression != null ) {
+//		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> prevExpressionType = this.previousExpression.getType();
+//		if( prevExpressionType != null && prevExpressionType.isAssignableTo( type ) ) {
+//			if( blank.isTop() ) {
+//				//pass
+//			} else {
+//				blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( this.previousExpression, "(current value)" ) );
+//				blank.addSeparator();
+//			}
+//		}
+//	}
+		//this.leftOperandType.isAssignableFrom( previousExpression.getType() )
+		return true;
+	}
+	public static boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< ?,?,?,? > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, Class<?> desiredCls ) {
+		return isInclusionDesired( context, previousExpression, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( desiredCls ) );
+	}
 }

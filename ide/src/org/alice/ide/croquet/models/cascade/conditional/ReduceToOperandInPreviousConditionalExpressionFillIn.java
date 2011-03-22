@@ -46,20 +46,19 @@ package org.alice.ide.croquet.models.cascade.conditional;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousConditionalExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithBlanks< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression > {
-	public PreviousConditionalExpressionFillIn( java.util.UUID id ) {
+public abstract class ReduceToOperandInPreviousConditionalExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	public ReduceToOperandInPreviousConditionalExpressionFillIn( java.util.UUID id ) {
 		super( id );
 	}
-	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression previousConditionalInfixExpression ) {
-		return true;
-	}
 	@Override
-	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
-			edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression previousConditionalInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression)previousExpression;
-			return this.isInclusionDesired( previousConditionalInfixExpression );
-		} else {
-			return false;
-		}
+	protected final boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.Expression, Void > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression;
+	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression getOperand( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression previousConditional );
+	@Override
+	protected final edu.cmu.cs.dennisc.alice.ast.Expression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+		assert previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression;
+		edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression previousConditional = (edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression)previousExpression;
+		return this.getOperand( previousConditional );
 	}
 }

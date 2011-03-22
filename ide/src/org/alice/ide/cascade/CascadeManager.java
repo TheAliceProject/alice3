@@ -270,7 +270,7 @@ public abstract class CascadeManager {
 //				//pass
 //			} else {
 		
-				blank.addFillIn( org.alice.ide.croquet.models.cascade.string.PreviousStringConcatinationRightOperandOnlyFillIn.getInstance() );
+				blank.addFillIn( org.alice.ide.croquet.models.cascade.string.StringConcatinationRightOperandOnlyFillIn.getInstance() );
 				blank.addFillIn( org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn.getInstance() );
 				blank.addSeparator();
 //			}
@@ -293,7 +293,7 @@ public abstract class CascadeManager {
 	
 	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.PreviousExpressionFillIn.getInstance() );
+			blank.addFillIn( org.alice.ide.croquet.models.cascade.PreviousExpressionItselfFillIn.getInstance( type ) );
 			blank.addSeparator();
 			this.addCustomFillIns( blank, type );
 			type = getTypeFor( type );

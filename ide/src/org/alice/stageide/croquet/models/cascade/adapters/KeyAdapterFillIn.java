@@ -50,21 +50,23 @@ public class KeyAdapterFillIn extends org.alice.ide.croquet.models.cascade.Expre
 	private static class SingletonHolder {
 		private static KeyAdapterFillIn instance = new KeyAdapterFillIn();
 	}
+
 	public static KeyAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
 	private KeyAdapterFillIn() {
 		super( java.util.UUID.fromString( "58f52823-5d1d-4de2-ae5f-d62f2f6d5dde" ) );
 	}
-//	edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {
-//			new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.alice.apis.moveandturn.event.KeyEvent.class )
-//	};
-//	edu.cmu.cs.dennisc.alice.ast.BlockStatement body = new edu.cmu.cs.dennisc.alice.ast.BlockStatement();
-//	edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( "keyPressed", Void.TYPE, parameters, body );
-//	method.isSignatureLocked.setValue( true );
-//	edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice type = new edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice();
-//	type.superType.setValue( this.getType() );
-//	type.methods.add( method );
-//	edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor = edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor.get( type );
-//	blank.addFillIn( new edu.cmu.cs.dennisc.cascade.AutoCompleteFillIn( new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor ) ) );
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, Void > context ) {
+		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] { new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.alice.apis.moveandturn.event.KeyEvent.class ) };
+		edu.cmu.cs.dennisc.alice.ast.BlockStatement body = new edu.cmu.cs.dennisc.alice.ast.BlockStatement();
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( "keyPressed", Void.TYPE, parameters, body );
+		method.isSignatureLocked.setValue( true );
+		edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice type = new edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice();
+		type.superType.setValue( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyListener.class ) );
+		type.methods.add( method );
+		edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor = edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor.get( type );
+		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );
+	}
 }

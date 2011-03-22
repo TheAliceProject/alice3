@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.arithmetic;
 /**
  * @author Dennis Cosgrove
  */
-public class ReduceToRightOperandInPreviousArithmeticExpressionFillIn extends PreviousArithmeticExpressionFillIn {
+public class ReduceToRightOperandInPreviousArithmeticExpressionFillIn extends ReduceToOperandInPreviousArithmeticExpressionFillIn {
 	private static class SingletonHolder {
 		private static ReduceToRightOperandInPreviousArithmeticExpressionFillIn instance = new ReduceToRightOperandInPreviousArithmeticExpressionFillIn();
 	}
@@ -55,5 +55,9 @@ public class ReduceToRightOperandInPreviousArithmeticExpressionFillIn extends Pr
 	}
 	private ReduceToRightOperandInPreviousArithmeticExpressionFillIn() {
 		super( java.util.UUID.fromString( "3c5115ea-d67f-4ccb-89b5-c414c87fe3ed" ) );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression getOperand( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmetic ) {
+		return previousArithmetic.rightOperand.getValue();
 	}
 }

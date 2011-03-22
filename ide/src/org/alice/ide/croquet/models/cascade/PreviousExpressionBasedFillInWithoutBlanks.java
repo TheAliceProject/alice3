@@ -50,11 +50,18 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends edu.
 	public PreviousExpressionBasedFillInWithoutBlanks( java.util.UUID id ) {
 		super( id );
 	}
-	protected abstract boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
-	
+	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+		return org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
+	}
+	protected abstract boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,Void> context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
 	@Override
-	public boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
+	public final boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,Void> context ) {
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
+	}
+	protected abstract F createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
+	@Override
+	public final F createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, Void > context ) {
+		return this.createValue( this.getPreviousExpression() );
 	}
 }

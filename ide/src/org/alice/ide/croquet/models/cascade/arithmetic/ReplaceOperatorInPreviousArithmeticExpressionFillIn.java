@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.arithmetic;
 /**
  * @author Dennis Cosgrove
  */
-public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends PreviousArithmeticExpressionFillIn {
+public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, ReplaceOperatorInPreviousArithmeticExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static ReplaceOperatorInPreviousArithmeticExpressionFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {
@@ -64,5 +64,20 @@ public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends Previou
 	private ReplaceOperatorInPreviousArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "7699fe5b-b1bc-4bc2-9632-eace7166bdb6" ) );
 		this.operator = operator;
+	}
+	@Override
+	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression, Void > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+		assert previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
+		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmetic = (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)previousExpression;
+		return new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression(
+				previousArithmetic.leftOperand.getValue(),
+				this.operator,
+				previousArithmetic.rightOperand.getValue(),
+				previousArithmetic.expressionType.getValue()
+		);
 	}
 }

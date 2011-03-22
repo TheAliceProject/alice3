@@ -56,4 +56,9 @@ public class StringConcatinationLeftAndRightOperandsFillIn extends org.alice.ide
 	private StringConcatinationLeftAndRightOperandsFillIn() {
 		super( java.util.UUID.fromString( "58068432-cef0-4f9d-bfef-c841ea165172" ) );
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.StringConcatenation createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		assert expressions.length == 2;
+		return new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( expressions[ 0 ], expressions[ 1 ] );
+	}
 }

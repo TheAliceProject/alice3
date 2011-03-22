@@ -41,27 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.integer;
+package org.alice.ide.croquet.models.cascade.string;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MostlyPredeterminedArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.MostlyPredeterminedArithmeticExpressionFillIn {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, MostlyPredeterminedArithmeticExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static MostlyPredeterminedArithmeticExpressionFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
-		synchronized( map ) {
-			MostlyPredeterminedArithmeticExpressionFillIn rv = map.get( operator );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new MostlyPredeterminedArithmeticExpressionFillIn( operator );
-				map.put( operator, rv );
-			}
-			return rv;
-		}
+public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
+	private static class SingletonHolder {
+		private static StringConcatinationRightOperandOnlyFillIn instance = new StringConcatinationRightOperandOnlyFillIn();
 	}
-	private MostlyPredeterminedArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
-		//todo: right operand type?  expression type?
-		super( java.util.UUID.fromString( "17a328e0-b763-4375-84f5-0a6a63e94964" ), operator );
+	public static StringConcatinationRightOperandOnlyFillIn getInstance() {
+		return SingletonHolder.instance;
+	}
+	private StringConcatinationRightOperandOnlyFillIn() {
+		super( java.util.UUID.fromString( "1470e7b1-4f71-4d1b-8f3d-bbd708d64282" ) );
+	}
+	@Override
+	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral == false;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.StringConcatenation createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		return new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( previousExpression, expressions[ 0 ] );
 	}
 }

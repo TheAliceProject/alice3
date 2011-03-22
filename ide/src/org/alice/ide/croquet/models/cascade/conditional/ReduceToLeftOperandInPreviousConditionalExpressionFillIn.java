@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.conditional;
 /**
  * @author Dennis Cosgrove
  */
-public class ReduceToLeftOperandInPreviousConditionalExpressionFillIn extends PreviousConditionalExpressionFillIn {
+public class ReduceToLeftOperandInPreviousConditionalExpressionFillIn extends ReduceToOperandInPreviousConditionalExpressionFillIn {
 	private static class SingletonHolder {
 		private static ReduceToLeftOperandInPreviousConditionalExpressionFillIn instance = new ReduceToLeftOperandInPreviousConditionalExpressionFillIn();
 	}
@@ -55,5 +55,9 @@ public class ReduceToLeftOperandInPreviousConditionalExpressionFillIn extends Pr
 	}
 	private ReduceToLeftOperandInPreviousConditionalExpressionFillIn() {
 		super( java.util.UUID.fromString( "d569684d-124b-4d01-b497-c78863cbfa89" ) );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression getOperand( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression previousConditional ) {
+		return previousConditional.leftOperand.getValue();
 	}
 }

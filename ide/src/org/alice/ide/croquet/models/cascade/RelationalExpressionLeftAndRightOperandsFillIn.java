@@ -48,23 +48,28 @@ package org.alice.ide.croquet.models.cascade;
  */
 public class RelationalExpressionLeftAndRightOperandsFillIn extends ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
 	private static edu.cmu.cs.dennisc.map.MapToMap< Class<?>, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( Class<?> cls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
+	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( Class<?> operandCls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
 		synchronized( mapToMap ) {
-			RelationalExpressionLeftAndRightOperandsFillIn rv = mapToMap.get( cls, operator );
+			RelationalExpressionLeftAndRightOperandsFillIn rv = mapToMap.get( operandCls, operator );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new RelationalExpressionLeftAndRightOperandsFillIn( cls, operator );
-				mapToMap.put( cls, operator, rv );
+				rv = new RelationalExpressionLeftAndRightOperandsFillIn( operandCls, operator );
+				mapToMap.put( operandCls, operator, rv );
 			}
 			return rv;
 		}
 	}
-	private Class<?> cls;
+	private Class<?> operandCls;
 	private edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator;
-	private RelationalExpressionLeftAndRightOperandsFillIn( Class<?> cls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
+	private RelationalExpressionLeftAndRightOperandsFillIn( Class<?> operandCls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ) );
-		this.cls = cls;
+		this.operandCls = operandCls;
 		this.operator = operator;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		assert expressions.length == 2;
+		return new edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression( expressions[ 0 ], this.operator, expressions[ 1 ], this.operandCls, this.operandCls );
 	}
 }

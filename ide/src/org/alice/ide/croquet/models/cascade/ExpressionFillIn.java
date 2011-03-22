@@ -59,4 +59,9 @@ public abstract class ExpressionFillIn< F extends edu.cmu.cs.dennisc.alice.ast.E
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "createMenuItemIconProxy", this );
 		return rv;
 	}
+	@Override
+	public F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, B > context ) {
+		//todo
+		return null;
+	}
 }

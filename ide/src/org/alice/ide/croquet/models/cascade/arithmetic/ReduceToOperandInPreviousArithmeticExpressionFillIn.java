@@ -41,28 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.conditional;
+package org.alice.ide.croquet.models.cascade.arithmetic;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MostlyPredeterminedConditionalInfixExpressionFillIn extends PreviousConditionalExpressionFillIn {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator, MostlyPredeterminedConditionalInfixExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static MostlyPredeterminedConditionalInfixExpressionFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
-		synchronized( map ) {
-			MostlyPredeterminedConditionalInfixExpressionFillIn rv = map.get( operator );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new MostlyPredeterminedConditionalInfixExpressionFillIn( operator );
-				map.put( operator, rv );
-			}
-			return rv;
-		}
+public abstract class ReduceToOperandInPreviousArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	public ReduceToOperandInPreviousArithmeticExpressionFillIn( java.util.UUID id ) {
+		super( id );
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator;
-	private MostlyPredeterminedConditionalInfixExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "d59dd098-3426-453e-927f-84dbf3687824" ) );
-		this.operator = operator;
+	@Override
+	protected final boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.Expression, Void > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
+	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression getOperand( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmetic );
+	@Override
+	protected final edu.cmu.cs.dennisc.alice.ast.Expression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+		assert previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
+		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmetic = (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)previousExpression;
+		return this.getOperand( previousArithmetic );
 	}
 }

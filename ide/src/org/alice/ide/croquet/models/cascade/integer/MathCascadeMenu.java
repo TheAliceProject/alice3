@@ -76,7 +76,7 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 //			blank.addSeparator();
 //		}
 		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.MostlyPredeterminedArithmeticExpressionFillIn.getInstance( operator ) );
+			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.ArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 		}
 		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
 			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.ArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );

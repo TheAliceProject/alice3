@@ -46,32 +46,8 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionFillInWithExpressionBlanks< F extends edu.cmu.cs.dennisc.alice.ast.Expression > extends ExpressionFillIn< F, edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class ExpressionFillInWithExpressionBlanks< F extends edu.cmu.cs.dennisc.alice.ast.Expression > extends ExpressionFillInWithBlanks< F, edu.cmu.cs.dennisc.alice.ast.Expression > {
 	public ExpressionFillInWithExpressionBlanks( java.util.UUID id ) {
-		super( id );
-	}
-	private <F> edu.cmu.cs.dennisc.alice.ast.Expression[] createExpressions( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,edu.cmu.cs.dennisc.alice.ast.Expression> context ) { 
-		edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >[] blanks = this.getBlanks();
-		edu.cmu.cs.dennisc.alice.ast.Expression[] rv = new edu.cmu.cs.dennisc.alice.ast.Expression[ blanks.length ];
-		for( int i=0; i<rv.length; i++ ) {
-			edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > blankContext = context.getBlankContextAt( i );
-			edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.Expression,?,?,? > selectedFillInContext = blankContext.getSelectedFillInContext();
-			rv[ i ] = selectedFillInContext.createValue();
-		}
-		return rv;
-	}
-	//todo
-//	protected abstract F createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions );
-	protected F createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-		throw new RuntimeException( this.getClass().getName() );
-	}
-	@Override
-	public final F createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
-		return this.createValue( createExpressions( context ) );
-	}
-	@Override
-	public F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
-		//todo
-		return null;
+		super( id, edu.cmu.cs.dennisc.alice.ast.Expression.class );
 	}
 }

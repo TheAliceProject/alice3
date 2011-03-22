@@ -82,7 +82,7 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 //			}
 //		} );
 		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.number.MostlyPredeterminedArithmeticExpressionFillIn.getInstance( operator ) );
+			blank.addFillIn( org.alice.ide.croquet.models.cascade.number.ArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 		}
 		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
 			blank.addFillIn( org.alice.ide.croquet.models.cascade.number.ArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );

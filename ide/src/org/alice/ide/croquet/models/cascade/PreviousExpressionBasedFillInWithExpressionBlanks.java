@@ -41,15 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.arithmetic;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MostlyPredeterminedArithmeticExpressionFillIn extends PreviousArithmeticExpressionFillIn {
-	private final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator;
-	public MostlyPredeterminedArithmeticExpressionFillIn( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
-		super( id );
-		this.operator = operator;
+public abstract class PreviousExpressionBasedFillInWithExpressionBlanks< F extends edu.cmu.cs.dennisc.alice.ast.Expression > extends PreviousExpressionBasedFillInWithBlanks< F,edu.cmu.cs.dennisc.alice.ast.Expression > {
+	public PreviousExpressionBasedFillInWithExpressionBlanks( java.util.UUID id ) {
+		super( id, edu.cmu.cs.dennisc.alice.ast.Expression.class );
 	}
 }

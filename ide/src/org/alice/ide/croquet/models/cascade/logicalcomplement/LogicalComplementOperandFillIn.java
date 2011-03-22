@@ -56,4 +56,9 @@ public class LogicalComplementOperandFillIn extends org.alice.ide.croquet.models
 	private LogicalComplementOperandFillIn() {
 		super( java.util.UUID.fromString( "f70996fb-fd4e-4114-962b-ca14c33e134b" ) );
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.LogicalComplement createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		assert expressions.length == 1;
+		return new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( expressions[ 0 ] );
+	}
 }
