@@ -118,7 +118,15 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 			};
 		}
 	}
-	
+
+	private static org.alice.ide.croquet.models.cascade.ExpressionBlank[] createExpressionBlanks( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types ) {
+		org.alice.ide.croquet.models.cascade.ExpressionBlank[] rv = new org.alice.ide.croquet.models.cascade.ExpressionBlank[ types.length ];
+		for( int i=0; i<types.length; i++ ) {
+			rv[ i ] = org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( types[ i ] );
+			assert rv[ i ] != null : types[ i ];
+		}
+		return rv;
+	}
 	protected edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > createCascadeOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types ) {
 //		class ExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > {
 //			private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type;
@@ -129,20 +137,10 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 //		}
 		
 		class ExpressionCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
-			private final org.alice.ide.croquet.models.cascade.ExpressionBlank[] expressionBlanks;
-			public ExpressionCascadeOperation( ) {
-				super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "2ac86fcd-f740-480e-8cfa-06501ab7bac5" ), edu.cmu.cs.dennisc.alice.ast.Expression.class );
-				this.expressionBlanks = new org.alice.ide.croquet.models.cascade.ExpressionBlank[ types.length ];
-				for( int i=0; i<types.length; i++ ) {
-					this.expressionBlanks[ i ] = org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( types[ i ] );
-					assert this.expressionBlanks[ i ] != null : types[ i ];
-				}
+			public ExpressionCascadeOperation() {
+				super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "2ac86fcd-f740-480e-8cfa-06501ab7bac5" ), edu.cmu.cs.dennisc.alice.ast.Expression.class, createExpressionBlanks( types ) );
 			}
 
-			@Override
-			public org.alice.ide.croquet.models.cascade.ExpressionBlank[] getBlanks() {
-				return this.expressionBlanks;
-			}
 			@Override
 			protected edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
 				edu.cmu.cs.dennisc.alice.ast.Statement statement = CascadingExpressionsStatementTemplate.this.createStatement( values );

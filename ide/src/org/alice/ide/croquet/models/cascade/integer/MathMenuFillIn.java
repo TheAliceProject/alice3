@@ -81,7 +81,7 @@ public class MathMenuFillIn extends org.alice.ide.croquet.models.cascade.Express
 		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
 			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.IncompleteArithmeticExpressionFillIn.getInstance( operator ) );
 		}
-		blank.addFillIn( IncompleteDivideRemainderMenuFillIn.getInstance() );
+		blank.addMenu( IncompleteDivideRemainderMenuFillIn.getInstance() );
 
 		blank.addSeparator();
 		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "abs", Integer.TYPE ) );

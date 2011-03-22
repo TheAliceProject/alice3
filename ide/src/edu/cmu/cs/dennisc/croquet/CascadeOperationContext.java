@@ -46,8 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeOperationContext<T> extends OperationContext< CascadeOperation< T > > implements CascadeBlankOwnerContext< CascadeOperation<T> > {
-	private CascadeBlankContext[] blankContexts;
+public class CascadeOperationContext<T> extends OperationContext< CascadeOperation< T > > {
 	/*package-private*/ CascadeOperationContext( CascadeOperation< T > cascadeOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( cascadeOperation, e, viewController );
 	}

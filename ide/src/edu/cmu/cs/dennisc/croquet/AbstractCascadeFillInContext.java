@@ -46,6 +46,20 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface CascadeBlankOwner<B> extends Model {
-	public CascadeBlank<B>[] getBlanks();
+public class AbstractCascadeFillInContext<F,B,M extends AbstractCascadeFillIn<F,B,M,C>, C extends AbstractCascadeFillInContext<F,B,M,C> > extends AbstractModelContext< M > {
+	/*package-private*/ AbstractCascadeFillInContext( M model, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( model, e, viewController );
+	}
+	public AbstractCascadeFillInContext( M cascadeOperation ) {
+		this( cascadeOperation, null, null );
+	}
+	public AbstractCascadeFillInContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public F createValue() {
+		return this.getModel().createValue( (C)this );
+	}
+	public F getTransientValue() {
+		return this.getModel().getTransientValue( (C)this );
+	}
 }

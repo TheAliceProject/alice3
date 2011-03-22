@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeSeparator extends AbstractCascadeBlankOwnee {
+public class CascadeSeparator extends AbstractCascadeFillIn< Void, Void, CascadeSeparator, CascadeSeparatorContext > {
 	private static class SingletonHolder {
 		private static CascadeSeparator instance = new CascadeSeparator();
 	}
@@ -72,12 +72,24 @@ public class CascadeSeparator extends AbstractCascadeBlankOwnee {
 //	public String getMenuItemText( CascadeFillInContext context ) {
 //		return null;
 //	}
-//	@Override
-//	public Object createValue( CascadeFillInContext context ) {
-//		throw new AssertionError();
-//	}
-//	@Override
-//	public Object getTransientValue( CascadeFillInContext context ) {
-//		throw new AssertionError();
-//	}
+	@Override
+	public CascadeBlank<Void>[] getBlanks() {
+		return null;
+	}
+	@Override
+	public Void createValue( CascadeSeparatorContext context ) {
+		throw new AssertionError();
+	}
+	@Override
+	public Void getTransientValue( CascadeSeparatorContext context ) {
+		throw new AssertionError();
+	}
+	@Override
+	public javax.swing.Icon getMenuItemIcon( CascadeSeparatorContext context ) {
+		return null;
+	}
+	@Override
+	public String getMenuItemText( CascadeSeparatorContext context ) {
+		return null;
+	}
 }

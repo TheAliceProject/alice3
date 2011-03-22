@@ -89,10 +89,10 @@ public class MathMenuFillIn extends org.alice.ide.croquet.models.cascade.Express
 		}
 		
 		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.number.MinMaxMenuFillIn.getInstance() );
-		blank.addFillIn( FloorCeilingMenuFillIn.getInstance() );
-		blank.addFillIn( PowerMenuFillIn.getInstance() );
-		blank.addFillIn( TrigonometryMenuFillIn.getInstance() );
-		blank.addFillIn( ExponentMenuFillIn.getInstance() );
+		blank.addMenu( org.alice.ide.croquet.models.cascade.number.MinMaxMenuFillIn.getInstance() );
+		blank.addMenu( FloorCeilingMenuFillIn.getInstance() );
+		blank.addMenu( PowerMenuFillIn.getInstance() );
+		blank.addMenu( TrigonometryMenuFillIn.getInstance() );
+		blank.addMenu( ExponentMenuFillIn.getInstance() );
 	}
 }

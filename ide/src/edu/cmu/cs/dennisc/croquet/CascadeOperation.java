@@ -43,28 +43,10 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
-interface RtNode< M extends Model, C extends ModelContext< M > > {
-	public M getModel();
-	public C getContext();
-	public RtNode< ?,? >[] getChildren();
-	public void setParent( RtNode<?,?> parent );
-	public void setNextSibling( RtNode<?,?> nextSibling );
-	public RtOperation< ? > getRtOperation();
-	public RtBlank< ? > getNearestBlank();
-	public RtBlank< ? > getNextBlank();
-}
-interface RtBlankOwnee< F, M extends CascadeBlankOwnee< F >, C extends CascadeBlankOwneeContext< M > > extends RtNode< M, C >{
-	public boolean isInclusionDesired();
-	public javax.swing.JComponent getMenuItem();
-}
-
-abstract class RtAbstractNode< M extends Model, C extends ModelContext< M > > implements RtNode< M, C >{
+abstract class RtModel< M extends Model, C extends ModelContext< M > > {
 	private M model;
 	private C context;
-	private RtNode<?,?> parent;
-	private RtNode<?,?> nextSibling;
-	
-	public RtAbstractNode( M model, C context ) {
+	public RtModel( M model, C context ) {
 		assert model != null;
 		assert context != null;
 		this.model = model;
@@ -75,6 +57,15 @@ abstract class RtAbstractNode< M extends Model, C extends ModelContext< M > > im
 	}
 	public C getContext() {
 		return this.context;
+	}
+}
+
+abstract class RtNode< M extends Model, C extends ModelContext< M > > extends RtModel< M,C > {
+	private RtNode<?,?> parent;
+	private RtNode<?,?> nextSibling;
+	
+	public RtNode( M model, C context ) {
+		super( model, context );
 	}
 	protected RtNode< ?, ? > getParent() {
 		return this.parent;
@@ -104,10 +95,11 @@ abstract class RtAbstractNode< M extends Model, C extends ModelContext< M > > im
 		}
 	}
 	
-	public RtOperation< ? > getRtOperation() {
-		return this.parent.getRtOperation();
+	public RtRootFillIn< ? > getRtRootFillIn() {
+		return this.parent.getRtRootFillIn();
 	}
 	
+	protected abstract RtNode[] getChildren();
 	protected abstract RtNode< ?,? > getNextNode();
 	public abstract RtBlank< ? > getNearestBlank();
 	public RtBlank< ? > getNextBlank() {
@@ -127,7 +119,7 @@ abstract class RtAbstractNode< M extends Model, C extends ModelContext< M > > im
 			if( child instanceof RtBlank ) {
 				child = child.getChildren()[ 0 ];
 			}
-			RtBlankOwnee< ?,?,? > rtFillIn = (RtBlankOwnee< ?,?,? >)child;
+			RtAbstractFillIn< ?,?,?,? > rtFillIn = (RtAbstractFillIn< ?,?,?,? >)child;
 			javax.swing.JComponent menuItem = rtFillIn.getMenuItem();
 			if( menuItem != null ) {
 				parent.add( menuItem );
@@ -144,8 +136,8 @@ abstract class RtAbstractNode< M extends Model, C extends ModelContext< M > > im
 	}
 }
 
-class RtBlank< B > extends RtAbstractNode< CascadeBlank<B>, CascadeBlankContext<B> > {
-	private static <F, M extends CascadeBlankOwnee< F >, C extends CascadeBlankOwneeContext< M >> boolean isEmptySeparator( RtBlankOwnee< F,M,C > rtOwnee ) {
+class RtBlank< B > extends RtNode< CascadeBlank<B>, CascadeBlankContext<B> > {
+	private static <F, B, M extends AbstractCascadeFillIn< F,B,M,C >, C extends AbstractCascadeFillInContext< F,B,M,C > > boolean isEmptySeparator( RtAbstractFillIn<F,B,M,C> rtOwnee ) {
 		 if( rtOwnee.getModel() instanceof CascadeSeparator ) {
 			 CascadeSeparator separatorFillIn = (CascadeSeparator)rtOwnee.getModel();
 			 return separatorFillIn.isEmpty();
@@ -153,11 +145,11 @@ class RtBlank< B > extends RtAbstractNode< CascadeBlank<B>, CascadeBlankContext<
 			 return false;
 		 }
 	}
-	private static <F, M extends CascadeBlankOwnee< F >, C extends CascadeBlankOwneeContext< M >> void cleanUpSeparators( java.util.List< RtBlankOwnee< F,M,C > > rtOwnees ) {
-		 java.util.ListIterator< RtBlankOwnee< F,M,C > > listIterator = rtOwnees.listIterator();
+	private static <F, B, M extends AbstractCascadeFillIn< F,B,M,C >, C extends AbstractCascadeFillInContext< F,B,M,C > > void cleanUpSeparators( java.util.List<RtAbstractFillIn<F,B,M,C>> rtOwnees ) {
+		 java.util.ListIterator< RtAbstractFillIn<F,B,M,C> > listIterator = rtOwnees.listIterator();
 		 boolean isSeparatorAcceptable = false;
 		 while( listIterator.hasNext() ) {
-			 RtBlankOwnee< F,M,C > rtOwnee = listIterator.next();
+			 RtAbstractFillIn<F,B,M,C> rtOwnee = listIterator.next();
 			 if( isEmptySeparator( rtOwnee ) ) {
 				 if( isSeparatorAcceptable ) {
 					//pass 
@@ -183,24 +175,25 @@ class RtBlank< B > extends RtAbstractNode< CascadeBlank<B>, CascadeBlankContext<
 		 }
 	}
 
-	private RtBlankOwnee< B,?,? >[] rtOwnees;
-	private RtFillIn< B,? > rtSelectedFillIn;
+	private RtAbstractFillIn[] rtFillIns;
+	private RtAbstractFillIn< B,?,?,? > rtSelectedFillIn;
 	public RtBlank( CascadeBlank<B> model ) {
 		super( model, ContextManager.createCascadeBlankContext( model ) );
 		this.getContext().setRtBlank( this );
 	}
 
-	public CascadeFillInContext< B, ? > getSelectedFillInContext() {
+	public AbstractCascadeFillInContext getSelectedFillInContext() {
 		return this.rtSelectedFillIn.getContext();
 	}
 	
-	public RtBlankOwnee< B,?,? >[] getChildren() {
-		if( this.rtOwnees != null ) {
+	@Override
+	protected RtAbstractFillIn[] getChildren() {
+		if( this.rtFillIns != null ) {
 			//pass
 		} else {
-			java.util.List< RtBlankOwnee< ? extends B,?,? > > baseRtFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( CascadeBlankOwnee< ? extends B > ownee : this.getModel().getOwnees() ) {
-				RtBlankOwnee<? extends B,?,?> rtOwnee;
+			java.util.List< RtAbstractFillIn > baseRtFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( AbstractCascadeFillIn ownee : this.getModel().getOwnees() ) {
+				RtAbstractFillIn rtOwnee;
 				if( ownee instanceof CascadeMenu ) {
 					CascadeMenu menu = (CascadeMenu)ownee;
 					rtOwnee = new RtMenu< B >( menu );
@@ -216,9 +209,9 @@ class RtBlank< B > extends RtAbstractNode< CascadeBlank<B>, CascadeBlankContext<
 				baseRtFillIns.add( rtOwnee );
 			}
 			
-			java.util.ListIterator< RtBlankOwnee< ? extends B,?,? > > listIterator = baseRtFillIns.listIterator();
+			java.util.ListIterator< RtAbstractFillIn > listIterator = baseRtFillIns.listIterator();
 			while( listIterator.hasNext() ) {
-				RtBlankOwnee< ? extends B,?,? > rtOwnee = listIterator.next();
+				RtAbstractFillIn rtOwnee = listIterator.next();
 				if( rtOwnee.isInclusionDesired() ) {
 					//pass
 				} else {
@@ -229,10 +222,10 @@ class RtBlank< B > extends RtAbstractNode< CascadeBlank<B>, CascadeBlankContext<
 			//todo
 			cleanUpSeparators( (java.util.List)baseRtFillIns );
 		
-			this.rtOwnees = (RtBlankOwnee< B,?,? >[])edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( (java.util.List)baseRtFillIns, RtBlankOwnee.class );
-			this.updateParentsAndNextSiblings( this.rtOwnees );
+			this.rtFillIns = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( (java.util.List)baseRtFillIns, RtAbstractFillIn.class );
+			this.updateParentsAndNextSiblings( this.rtFillIns );
 		}
-		return this.rtOwnees;
+		return this.rtFillIns;
 	}
 	@Override
 	protected RtNode< ?, ? > getNextNode() {
@@ -243,7 +236,7 @@ class RtBlank< B > extends RtAbstractNode< CascadeBlank<B>, CascadeBlankContext<
 		return this;
 	}
 	
-	public void setSelectedFillIn( RtFillIn< B,? > fillIn ) {
+	public void setSelectedFillIn( RtAbstractFillIn< B,?,?,? > fillIn ) {
 		this.rtSelectedFillIn = fillIn;
 		RtNode parent = this.getParent();
 		if( parent instanceof RtFillIn<?,?> ) {
@@ -272,12 +265,20 @@ class RtBlank< B > extends RtAbstractNode< CascadeBlank<B>, CascadeBlankContext<
 	}
 }
 
-abstract class RtBlankOwner<B, M extends CascadeBlankOwner< B >, C extends CascadeBlankOwnerContext< M > > extends RtAbstractNode<M, C> {
-	private RtBlank< B >[] rtBlanks;
-	public RtBlankOwner( M model, C context ) {
+abstract class RtAbstractFillIn<F,B, M extends AbstractCascadeFillIn<F,B,M,C>, C extends AbstractCascadeFillInContext<F,B,M,C> > extends RtNode<M, C> {
+	private final RtBlank< B >[] rtBlanks;
+	private javax.swing.JMenuItem menuItem = null;
+	private boolean wasLast = false; 
+	public RtAbstractFillIn( M model, C context ) {
 		super( model, context );
 		CascadeBlank<B>[] blanks = model.getBlanks();
-		this.rtBlanks = new RtBlank[ blanks.length ];
+		final int N;
+		if( blanks != null ) {
+			N = blanks.length;
+		} else {
+			N = 0;
+		}
+		this.rtBlanks = new RtBlank[ N ];
 		for( int i=0; i<this.rtBlanks.length; i++ ) {
 			this.rtBlanks[ i ] = new RtBlank< B >( blanks[ i ] );
 		}
@@ -287,7 +288,13 @@ abstract class RtBlankOwner<B, M extends CascadeBlankOwner< B >, C extends Casca
 	public CascadeBlankContext< B > getBlankContextAt( int i ) {	
 		return this.rtBlanks[ i ].getContext();
 	}
-	public RtBlank< B >[] getChildren() {
+	@Override
+	public RtBlank< ? > getNearestBlank() {
+		RtNode<?,?> parent = this.getParent();
+		return parent.getNearestBlank();
+	}
+	@Override
+	protected RtBlank< B >[] getChildren() {
 		return this.rtBlanks;
 	}
 	protected boolean isGoodToGo() {
@@ -303,6 +310,9 @@ abstract class RtBlankOwner<B, M extends CascadeBlankOwner< B >, C extends Casca
 		return true;
 	}
 
+	public boolean isInclusionDesired() {
+		return this.getModel().isInclusionDesired( this.getContext() );
+	}
 	@Override
 	protected RtNode< ?, ? > getNextNode() {
 		if( this.rtBlanks.length > 0 ) {
@@ -311,33 +321,17 @@ abstract class RtBlankOwner<B, M extends CascadeBlankOwner< B >, C extends Casca
 			return this.getNextBlank();
 		}
 	}
-}
-
-class RtFillIn< F,B > extends RtBlankOwner< B, CascadeFillIn< F,B >, CascadeFillInContext< F,B > > implements RtBlankOwnee< F, CascadeFillIn< F,B >, CascadeFillInContext< F,B > > {
-	private javax.swing.JMenuItem menuItem = null;
-	private boolean wasLast = false; 
-	public RtFillIn( CascadeFillIn< F,B > model ) {
-		super( model, ContextManager.createCascadeFillInContext( model ) );
-		this.getContext().setRtFillIn( this );
-	}
-	public boolean isInclusionDesired() {
-		return this.getModel().isInclusionDesired( this.getContext() );
-	}
 	public F createValue() {
 		return this.getModel().createValue( this.getContext() );
 	}
 	protected boolean isLast() {
 		return this.getNextNode() == null;
 	}
-	@Override
-	public RtBlank< ? > getNearestBlank() {
-		RtNode<?,?> parent = this.getParent();
-		return parent.getNearestBlank();
-	}
-
 	public void select() {
 		//todo
-		getNearestBlank().setSelectedFillIn( (RtFillIn)this );
+		RtBlank nearestBlank = this.getNearestBlank();
+		assert nearestBlank != null : this;
+		nearestBlank.setSelectedFillIn( (RtAbstractFillIn)this );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "select:", this );
 	}
 	public void deselect() {
@@ -351,25 +345,25 @@ class RtFillIn< F,B > extends RtBlankOwner< B, CascadeFillIn< F,B >, CascadeFill
 
 	private java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
-			RtFillIn.this.select();
-			RtFillIn.this.getRtOperation().handleActionPerformed( e );
+			RtAbstractFillIn.this.select();
+			RtAbstractFillIn.this.getRtRootFillIn().handleActionPerformed( e );
 		}
 	};
 	private javax.swing.event.MenuListener menuListener = new javax.swing.event.MenuListener() {
 		public void menuSelected( javax.swing.event.MenuEvent e ) {
-			RtFillIn.this.select();
-			RtFillIn.this.addNextNodeMenuItems( RtFillIn.this.menuItem );
+			RtAbstractFillIn.this.select();
+			RtAbstractFillIn.this.addNextNodeMenuItems( RtAbstractFillIn.this.menuItem );
 		}
 		public void menuDeselected( javax.swing.event.MenuEvent e ) {
-			RtFillIn.this.deselect();
-			RtFillIn.this.getMenu().removeAll();
+			RtAbstractFillIn.this.deselect();
+			RtAbstractFillIn.this.getMenu().removeAll();
 		}
 		public void menuCanceled( javax.swing.event.MenuEvent e ) {
 		}
 	};
 	
 	public javax.swing.JComponent getMenuItem() {
-		CascadeFillIn< F,B > fillIn = this.getModel();
+		AbstractCascadeFillIn< F,B,M,C > fillIn = this.getModel();
 		boolean isLast = this.isLast();
 		if( this.menuItem != null ) {
 			if( this.wasLast == isLast ) {
@@ -404,10 +398,24 @@ class RtFillIn< F,B > extends RtBlankOwner< B, CascadeFillIn< F,B >, CascadeFill
 	}
 }
 
-class RtSeparator extends RtAbstractNode implements RtBlankOwnee {
+class RtFillIn< F,B > extends RtAbstractFillIn< F,B, CascadeFillIn< F,B >, CascadeFillInContext< F,B > > {
+	public RtFillIn( CascadeFillIn< F,B > model ) {
+		super( model, ContextManager.createCascadeFillInContext( model ) );
+		this.getContext().setRtFillIn( this );
+	}
+}
+
+class RtMenu< F > extends RtAbstractFillIn<F,F,CascadeMenu< F >,CascadeMenuContext< F >> {
+	public RtMenu( CascadeMenu< F > model ) {
+		super( model, ContextManager.createCascadeMenuContext( model ) );
+	}
+}
+
+class RtSeparator extends RtAbstractFillIn {
 	public RtSeparator( CascadeSeparator model ) {
 		super( model, ContextManager.createCascadeSeparatorContext( model ) );
 	}
+	@Override
 	public javax.swing.JComponent getMenuItem() {
 		return null;
 	}
@@ -419,61 +427,56 @@ class RtSeparator extends RtAbstractNode implements RtBlankOwnee {
 	protected RtNode getNextNode() {
 		return null;
 	}
-	public RtNode[] getChildren() {
-		return null;
-	}
-	public boolean isInclusionDesired() {
-		return true;
-	}
 }
 
-class RtMenu< FB > extends RtFillIn<FB,FB> {
-	public RtMenu( CascadeMenu< FB > model ) {
+class RtRootFillIn< T > extends RtFillIn< T[], T > { 
+	private final RtOperation<T> rtOperation;
+	public RtRootFillIn( RootFillIn< T > model, RtOperation<T> rtOperation ) {
 		super( model );
+		this.rtOperation = rtOperation;
 	}
 	@Override
-	public FB createValue() {
-		RtBlank< FB > child0 = this.getChildren()[ 0 ];
-		return child0.createValue();
-	}
-}
-
-class RtOperation< T > extends RtBlankOwner< T, CascadeOperation< T >, CascadeOperationContext< T > > {
-	private final Operation.PerformObserver performObserver;
-	public RtOperation( CascadeOperation< T > model, CascadeOperationContext<T> context, Operation.PerformObserver performObserver ) {
-		super( model, context );
-		this.performObserver = performObserver;
-	}
-
-	@Override
-	public RtOperation< ? > getRtOperation() {
+	public RtRootFillIn< ? > getRtRootFillIn() {
 		return this;
 	}
-	
 	@Override
 	public RtBlank< ? > getNearestBlank() {
 		return null;
 	}
-	
+	@Override
+	public void select() {
+	}
+	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
+		this.rtOperation.handleActionPerformed( e );
+	}
+}
+
+class RtOperation<T> extends RtModel< CascadeOperation< T >, CascadeOperationContext< T > > {
+	private Operation.PerformObserver performObserver;
+	private RtRootFillIn< T > rtRootFillIn;
+	public RtOperation( CascadeOperation< T > model, CascadeOperationContext<T> context, Operation.PerformObserver performObserver ) {
+		super( model, context );
+		this.performObserver = performObserver;
+		this.rtRootFillIn = new RtRootFillIn< T >( model.getFillIn(), this );
+	}
 	protected T[] createValues( Class<T> componentType ) {
-		RtBlank< T >[] rtBlanks = this.getChildren();
+		RtBlank< T >[] rtBlanks = this.rtRootFillIn.getChildren();
 		T[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( componentType, rtBlanks.length );
 		for( int i=0; i<rtBlanks.length; i++ ) {
 			rv[ i ] = rtBlanks[ i ].createValue();
 		}
 		return rv;
 	}
-
 	public void perform() {
-		if( this.isGoodToGo() ) {
+		if( this.rtRootFillIn.isGoodToGo() ) {
 			T[] values = this.createValues( this.getModel().getComponentType() );
-			this.getModel().handleCompletion( this.getContext(), performObserver, values );
+			this.getModel().handleCompletion( this.getContext(), this.performObserver, values );
 		} else {
 			final javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
 			//popupMenu.setLightWeightPopupEnabled( false );
 			popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
 				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-					RtOperation.this.addNextNodeMenuItems( popupMenu );
+					RtOperation.this.rtRootFillIn.addNextNodeMenuItems( popupMenu );
 				}
 				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 					popupMenu.removeAll();
@@ -499,7 +502,7 @@ class RtOperation< T > extends RtBlankOwner< T, CascadeOperation< T >, CascadeOp
 	}
 	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
 		CascadeOperation< T > model = this.getModel();
-		RtBlank< T >[] rtBlanks = this.getChildren();
+		RtBlank< T >[] rtBlanks = this.rtRootFillIn.getChildren();
 		T[] values = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( model.getComponentType(), rtBlanks.length );
 		for( int i=0; i<rtBlanks.length; i++ ) {
 			values[ i ] = rtBlanks[ i ].createValue();
@@ -524,21 +527,60 @@ class RtOperation< T > extends RtBlankOwner< T, CascadeOperation< T >, CascadeOp
 	}
 }
 
+class RootFillIn<B> extends CascadeFillIn< B[],B > {
+	private final CascadeOperation<B> operation;
+	private final CascadeBlank<? extends B>[] blanks;
+	public RootFillIn( CascadeOperation<B> operation, CascadeBlank<? extends B>[] blanks ) {
+		super( java.util.UUID.fromString( "146f0cc3-bc25-4f28-9060-b2d15d7f2f65" ) );
+		this.operation = operation;
+		this.blanks = blanks;
+	}
+	public CascadeOperation< B > getOperation() {
+		return this.operation;
+	}
+	@Override
+	public CascadeBlank[] getBlanks() {
+		return this.blanks;
+	}
+	@Override
+	public String getMenuItemText( CascadeFillInContext< B[], B > context ) {
+		return null;
+	}
+	@Override
+	public javax.swing.Icon getMenuItemIcon( CascadeFillInContext< B[], B > context ) {
+		return null;
+	}
+	@Override
+	public B[] createValue( CascadeFillInContext< B[], B > context ) {
+		return null;
+	}
+	@Override
+	public B[] getTransientValue( CascadeFillInContext< B[], B > context ) {
+		return null;
+	}
+}
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeOperation< B > extends Operation< CascadeOperationContext< B > > implements CascadeBlankOwner< B > {
+public abstract class CascadeOperation< B > extends Operation< CascadeOperationContext< B > > {
 	private final Class<B> componentType;
-	public CascadeOperation( Group group, java.util.UUID id, Class<B> componentType ) {
+
+	private final RootFillIn< B > fillIn;
+	public CascadeOperation( Group group, java.util.UUID id, Class<B> componentType, CascadeBlank<? extends B>... blanks ) {
 		super( group, id );
 		this.componentType = componentType;
+		this.fillIn = new RootFillIn< B >( this, blanks );
 	}
 	@Override
 	public CascadeOperationContext< B > createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushCascadeOperationContext( this, e, viewController );
 	}
 	
+	/*package-private*/ RootFillIn< B > getFillIn() {
+		return this.fillIn;
+	}
+		
 	public Class< B > getComponentType() {
 		return this.componentType;
 	}
@@ -551,7 +593,6 @@ public abstract class CascadeOperation< B > extends Operation< CascadeOperationC
 		return false;
 	}
 	
-	public abstract CascadeBlank<B>[] getBlanks();
 	protected abstract Edit< CascadeOperation< B > > createEdit( B[] values );
 	
 	/*package-private*/ void handleCompletion( CascadeOperationContext<B> context, PerformObserver performObserver, B[] values ) {

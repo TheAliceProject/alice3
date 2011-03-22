@@ -50,12 +50,4 @@ public abstract class ExpressionMenuFillIn< T extends edu.cmu.cs.dennisc.alice.a
 	public ExpressionMenuFillIn( java.util.UUID id ) {
 		super( id );
 	}
-	@Override
-	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
-		return this.getDefaultLocalizedText();
-	}
-	@Override
-	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
-		return null;
-	}
 }

@@ -210,6 +210,9 @@ public class ContextManager {
 	/*package-private*/ static <F,B> CascadeSeparatorContext createCascadeSeparatorContext( CascadeSeparator cascadeSeparator ) {
 		return new CascadeSeparatorContext(cascadeSeparator, null, null );
 	}
+	/*package-private*/ static <F,B> CascadeMenuContext createCascadeMenuContext( CascadeMenu cascadeMenu ) {
+		return new CascadeMenuContext(cascadeMenu, null, null );
+	}
 	
 	/*package-private*/ static <E> ListSelectionStateContext<E> createAndPushItemSelectionStateContext(ListSelectionState<E> itemSelectionState, java.util.EventObject e, ViewController<?, ?> viewController/*, int prevIndex, E prevItem, int nextIndex, E nextItem*/) {
 		AbstractModelContext< ? > currentContext = getCurrentContext();

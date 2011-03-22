@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCascadeBlankOwnee< F > extends AbstractModel implements CascadeBlankOwnee< F > {
-	public AbstractCascadeBlankOwnee( java.util.UUID id ) {
+public abstract class AbstractCascadeFillIn< F, B, M extends AbstractCascadeFillIn<F,B,M,C>, C extends AbstractCascadeFillInContext<F,B,M,C> > extends AbstractModel {
+	public AbstractCascadeFillIn( java.util.UUID id ) {
 		super( Application.CASCADE_GROUP, id );
 	}
 	@Override
@@ -57,4 +57,15 @@ public abstract class AbstractCascadeBlankOwnee< F > extends AbstractModel imple
 	public boolean isAlreadyInState( Edit< ? > edit ) {
 		return false;
 	}
+	public boolean isInclusionDesired( C context ) {
+		return true;
+	}
+	public boolean isAutomaticallySelectedWhenSoleOption() {
+		return true;
+	}
+	public abstract CascadeBlank<B>[] getBlanks();
+	public abstract F getTransientValue( C context );
+	public abstract F createValue( C context );
+	public abstract javax.swing.Icon getMenuItemIcon( C context );
+	public abstract String getMenuItemText( C context );
 }

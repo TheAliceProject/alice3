@@ -197,16 +197,14 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< Ob
 	public static MyCascadeOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final edu.cmu.cs.dennisc.croquet.CascadeBlank[] blanks;
 	private MyCascadeOperation() {
-		super( null, java.util.UUID.fromString( "2c0ba898-1f06-48ff-bc15-65f6f350484b" ), Object.class );
-		this.blanks = new edu.cmu.cs.dennisc.croquet.CascadeBlank[] {
+		super( null, java.util.UUID.fromString( "2c0ba898-1f06-48ff-bc15-65f6f350484b" ), Object.class, 
 				new EnumBlank( ZodiacSigns.class ),
 				IntegerBlank.getInstance(),
 				IntegerBlank.getInstance(),
 				new EnumBlank( ZodiacSigns.class ),
 				IntegerBlank.getInstance()
-		};
+		);
 	}
 	@Override
 	protected void localize() {
@@ -233,10 +231,6 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< Ob
 				return null;
 			}
 		};
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.CascadeBlank[] getBlanks() {
-		return this.blanks;
 	}
 }
 

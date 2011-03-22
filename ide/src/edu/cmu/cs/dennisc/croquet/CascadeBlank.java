@@ -47,12 +47,12 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeBlank< B > extends AbstractModel {
-	private java.util.List< CascadeBlankOwnee< ? extends B > > ownees;
+	private java.util.List< AbstractCascadeFillIn< ? extends B,?,?,? > > ownees;
 	public CascadeBlank( java.util.UUID id ) {
 		super( Application.CASCADE_GROUP, id );
 	}
 	protected abstract void addFillIns();
-	public Iterable< CascadeBlankOwnee< ? extends B > > getOwnees() {
+	public Iterable< AbstractCascadeFillIn< ? extends B,?,?,? > > getOwnees() {
 		if( this.ownees != null ) {
 			//pass
 		} else {
@@ -62,11 +62,14 @@ public abstract class CascadeBlank< B > extends AbstractModel {
 		return this.ownees;
 	}
 	public void addFillIn( CascadeFillIn< ? extends B,? > fillIn ) {
-		assert fillIn != null : this;
 		this.ownees.add( fillIn );
 	}
+	public void addMenu( CascadeMenu< ? extends B > menu ) {
+		this.ownees.add( menu );
+	}
 	public void addSeparator() {
-		this.ownees.add( CascadeSeparator.getInstance() );
+		//note: we drop generic information since separators are never selected 
+		this.ownees.add( (AbstractCascadeFillIn< ? extends B,?,?,? >)CascadeSeparator.getInstance() );
 	}
 	
 	@Override

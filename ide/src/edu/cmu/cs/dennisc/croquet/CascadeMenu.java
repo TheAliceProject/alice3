@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeMenu< FB > extends CascadeFillIn< FB,FB > {
+public abstract class CascadeMenu< FB > extends AbstractCascadeFillIn< FB, FB, CascadeMenu<FB>, CascadeMenuContext<FB> > {
 	private class InternalBlank extends CascadeBlank< FB > {
 		public InternalBlank() {
 			super(java.util.UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
@@ -56,18 +56,32 @@ public abstract class CascadeMenu< FB > extends CascadeFillIn< FB,FB > {
 			CascadeMenu.this.addChildrenToBlank( this );
 		}
 	}
+	private final InternalBlank blank = new InternalBlank();
 	public CascadeMenu( java.util.UUID id ) {
 		super( id );
-		InternalBlank blank = new InternalBlank();
-		this.addBlank( blank );
+	}
+	public CascadeBlank< FB > getBlank() {
+		return this.blank;
+	}
+	@Override
+	public CascadeBlank<FB>[] getBlanks() {
+		return new CascadeBlank[] { this.blank };
 	}
 	protected abstract void addChildrenToBlank( CascadeBlank<FB> blank );
 	@Override
-	public FB getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<FB,FB> context ) {
+	public FB getTransientValue( CascadeMenuContext<FB> context ) {
 		throw new RuntimeException();
 	}
 	@Override
-	public FB createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<FB,FB> context ) {
+	public FB createValue( CascadeMenuContext<FB> context ) {
 		throw new RuntimeException();
+	}
+	@Override
+	public javax.swing.Icon getMenuItemIcon( CascadeMenuContext<FB> context ) {
+		return null;
+	}
+	@Override
+	public String getMenuItemText( CascadeMenuContext<FB> context ) {
+		return this.getDefaultLocalizedText();
 	}
 }

@@ -55,7 +55,7 @@ public abstract class ExpressionFillInWithExpressionBlanks< F extends edu.cmu.cs
 		edu.cmu.cs.dennisc.alice.ast.Expression[] rv = new edu.cmu.cs.dennisc.alice.ast.Expression[ blanks.length ];
 		for( int i=0; i<rv.length; i++ ) {
 			edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > blankContext = context.getBlankContextAt( i );
-			edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.Expression, ? > selectedFillInContext = blankContext.getSelectedFillInContext();
+			edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.Expression,?,?,? > selectedFillInContext = blankContext.getSelectedFillInContext();
 			rv[ i ] = selectedFillInContext.createValue();
 		}
 		return rv;

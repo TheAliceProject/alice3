@@ -46,5 +46,14 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface CascadeBlankOwnee< F > extends Model {
+public class CascadeMenuContext<FB> extends AbstractCascadeFillInContext< FB, FB, CascadeMenu<FB>, CascadeMenuContext<FB> > {
+	/*package-private*/ CascadeMenuContext( CascadeMenu<FB> model, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( model, e, viewController );
+	}
+	public CascadeMenuContext( CascadeMenu<FB> model ) {
+		this( model, null, null );
+	}
+	public CascadeMenuContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 }
