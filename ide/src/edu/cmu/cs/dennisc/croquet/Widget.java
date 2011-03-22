@@ -131,8 +131,8 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,AbstractM
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				int x = 0;
 				int y = 0;
-				int width = getWidth();
-				int height = getHeight();
+				int width = this.getWidth();
+				int height = this.getHeight();
 
 				java.awt.Paint prevPaint;
 				prevPaint = g2.getPaint();
@@ -142,7 +142,6 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,AbstractM
 				} finally {
 					g2.setPaint( prevPaint );
 				}
-				Widget.this.paintEpilogue(g2, x, y, width, height);
 				super.paint(g);
 				prevPaint = g2.getPaint();
 				g2.setPaint( Widget.this.getForegroundPaint( x, y, width, height ) );

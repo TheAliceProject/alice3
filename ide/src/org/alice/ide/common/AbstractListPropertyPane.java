@@ -121,6 +121,7 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 			i++;
 		}
 		this.addPostfixComponents();
+		edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( this.getAwtComponent() );
 		this.revalidateAndRepaint();
 	}
 }
