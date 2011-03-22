@@ -54,11 +54,12 @@ public class KeyAdapterFillIn extends org.alice.ide.croquet.models.cascade.Expre
 	public static KeyAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
+	private final edu.cmu.cs.dennisc.alice.ast.InstanceCreation transientValue;
 	private KeyAdapterFillIn() {
 		super( java.util.UUID.fromString( "58f52823-5d1d-4de2-ae5f-d62f2f6d5dde" ) );
+		this.transientValue = this.createValue();
 	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, Void > context ) {
+	private edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue() { 
 		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] { 
 				new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.alice.apis.moveandturn.event.KeyEvent.class ) 
 		};
@@ -70,5 +71,13 @@ public class KeyAdapterFillIn extends org.alice.ide.croquet.models.cascade.Expre
 		type.methods.add( method );
 		edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor = edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor.get( type );
 		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, Void > context ) {
+		return this.createValue();
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > context ) {
+		return this.transientValue;
 	}
 }

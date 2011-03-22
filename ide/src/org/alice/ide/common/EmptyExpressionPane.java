@@ -54,7 +54,8 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 	private EmptyExpression emptyExpression;
 	public EmptyExpressionPane( EmptyExpression emptyExpression ) {
 		this.emptyExpression = emptyExpression;
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " ??? " ) );
+		edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label( " ??? " );
+		this.addComponent( label );
 	}
 	@Override
 	protected java.awt.Paint getEnabledBackgroundPaint( int x, int y, int width, int height ) {

@@ -53,11 +53,12 @@ public class MouseButtonAdapterFillIn extends org.alice.ide.croquet.models.casca
 	public static MouseButtonAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
+	private final edu.cmu.cs.dennisc.alice.ast.InstanceCreation transientValue;
 	private MouseButtonAdapterFillIn() {
 		super( java.util.UUID.fromString( "3c9038a4-bb71-4e03-a33a-d17434b13f89" ) );
+		this.transientValue = this.createValue();
 	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, Void > context ) {
+	private edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue() { 
 		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] { 
 				new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.alice.apis.moveandturn.event.MouseButtonEvent.class ) 
 		};
@@ -69,5 +70,13 @@ public class MouseButtonAdapterFillIn extends org.alice.ide.croquet.models.casca
 		type.methods.add( method );
 		edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor = edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor.get( type );
 		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, Void > context ) {
+		return this.createValue();
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > context ) {
+		return this.transientValue;
 	}
 }

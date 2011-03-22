@@ -64,4 +64,9 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends edu.
 	public final F createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, Void > context ) {
 		return this.createValue( this.getPreviousExpression() );
 	}
+	@Override
+	public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, java.lang.Void > context ) {
+		//todo?
+		return this.createValue( this.getPreviousExpression() );
+	}
 }

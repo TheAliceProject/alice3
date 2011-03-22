@@ -71,6 +71,12 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,AbstractM
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
 		}
 	}
+//	@Override
+//	public void revalidateAndRepaint() {
+//		super.revalidateAndRepaint();
+//		//todo: this line has been added for preview components that do not get added to the interface, but rather are used as the source of an icon
+//		edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( this.getAwtComponent() );
+//	}
 	
 	protected java.awt.Paint getForegroundPaint( int x, int y, int width, int height ) {
 		return this.getForegroundColor();
@@ -108,6 +114,11 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,AbstractM
 			public void removeNotify() {
 				Widget.this.removeNotify();
 				super.removeNotify();
+			}
+			@Override
+			public void invalidate() {
+				Widget.this.invalidate();
+				super.invalidate();
 			}
 			@Override
 			public void doLayout() {
@@ -172,17 +183,20 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,AbstractM
 		return jContains;
 	}
 
-	protected void doLayout() {
+	
+	protected void invalidate() {
+		this.isBorderInitialized = false;
 		this.updateBorderIfNecessary();
-		//super.doLayout();
+	}
+	protected void doLayout() {
+		this.isBorderInitialized = false;
+		this.updateBorderIfNecessary();
 	}
 	
 	protected void addNotify() {
 		this.updateBorderIfNecessary();
-		//super.addNotify();
 	}
 	protected void removeNotify() {
-		//super.removeNotify();
 	}
 	
 	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {

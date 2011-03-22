@@ -41,26 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.integer;
+package org.alice.ide.croquet.models.cascade.number;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArithmeticExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionRightOperandOnlyFillIn {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, ArithmeticExpressionRightOperandOnlyFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ArithmeticExpressionRightOperandOnlyFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+public class NumberArithmeticExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionRightOperandOnlyFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, NumberArithmeticExpressionRightOperandOnlyFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static NumberArithmeticExpressionRightOperandOnlyFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {
-			ArithmeticExpressionRightOperandOnlyFillIn rv = map.get( operator );
+			NumberArithmeticExpressionRightOperandOnlyFillIn rv = map.get( operator );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ArithmeticExpressionRightOperandOnlyFillIn( operator );
+				rv = new NumberArithmeticExpressionRightOperandOnlyFillIn( operator );
 				map.put( operator, rv );
 			}
 			return rv;
 		}
 	}
-	private ArithmeticExpressionRightOperandOnlyFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "17a328e0-b763-4375-84f5-0a6a63e94964" ), Number.class, Number.class, operator, Number.class );
+	private NumberArithmeticExpressionRightOperandOnlyFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+		super( java.util.UUID.fromString( "7caac1c5-db6b-4f5a-9d9b-ca22b972e6ef" ), Integer.class, Integer.class, operator, Integer.class );
 	}
 }

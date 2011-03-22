@@ -183,7 +183,11 @@ class RtBlank< B > extends RtNode< CascadeBlank<B>, CascadeBlankContext<B> > {
 	}
 
 	public AbstractCascadeFillInContext getSelectedFillInContext() {
-		return this.rtSelectedFillIn.getContext();
+		if( this.rtSelectedFillIn != null ) {
+			return this.rtSelectedFillIn.getContext();
+		} else {
+			return null;
+		}
 	}
 	
 	@Override

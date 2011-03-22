@@ -64,4 +64,9 @@ public abstract class PreviousExpressionBasedFillInWithBlanks< F extends edu.cmu
 	protected final F createValue( B[] expressions ) {
 		return this.createValue( this.getPreviousExpression(), expressions );
 	}
+	@Override
+	protected final F getTransientValue( B[] expressions ) {
+		//todo?
+		return this.createValue( this.getPreviousExpression(), expressions );
+	}
 }

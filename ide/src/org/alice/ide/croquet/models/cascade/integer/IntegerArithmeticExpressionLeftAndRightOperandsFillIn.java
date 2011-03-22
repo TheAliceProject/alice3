@@ -41,26 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.number;
+package org.alice.ide.croquet.models.cascade.integer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArithmeticExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionRightOperandOnlyFillIn {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, ArithmeticExpressionRightOperandOnlyFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ArithmeticExpressionRightOperandOnlyFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+public class IntegerArithmeticExpressionLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionLeftAndRightOperandsFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, IntegerArithmeticExpressionLeftAndRightOperandsFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static IntegerArithmeticExpressionLeftAndRightOperandsFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {
-			ArithmeticExpressionRightOperandOnlyFillIn rv = map.get( operator );
+			IntegerArithmeticExpressionLeftAndRightOperandsFillIn rv = map.get( operator );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ArithmeticExpressionRightOperandOnlyFillIn( operator );
+				rv = new IntegerArithmeticExpressionLeftAndRightOperandsFillIn( operator );
 				map.put( operator, rv );
 			}
 			return rv;
 		}
 	}
-	private ArithmeticExpressionRightOperandOnlyFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "7caac1c5-db6b-4f5a-9d9b-ca22b972e6ef" ), Integer.class, Integer.class, operator, Integer.class );
+	private IntegerArithmeticExpressionLeftAndRightOperandsFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+		super( java.util.UUID.fromString( "18b9bfcc-4938-435e-b751-51d9fe38524c" ), Integer.class, Integer.class, operator, Integer.class );
 	}
 }

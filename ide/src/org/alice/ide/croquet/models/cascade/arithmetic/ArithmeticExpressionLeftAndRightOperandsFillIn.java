@@ -47,14 +47,12 @@ package org.alice.ide.croquet.models.cascade.arithmetic;
  * @author Dennis Cosgrove
  */
 public abstract class ArithmeticExpressionLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> resultType;
-	private final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator;
+	private final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression transientValue;
 	public ArithmeticExpressionLeftAndRightOperandsFillIn( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> resultType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
 		super( id );
-		this.resultType = resultType;
-		this.operator = operator;
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( leftOperandType ) );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( rightOperandType ) );
+		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteArithmeticInfixExpression( leftOperandType, operator, rightOperandType, resultType );
 	}
 	public ArithmeticExpressionLeftAndRightOperandsFillIn( java.util.UUID id, Class<?> resultCls, Class<?> leftOperandCls, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls ) {
 		this( id, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( resultCls ), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( leftOperandCls ), operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( rightOperandCls ) );
@@ -62,6 +60,10 @@ public abstract class ArithmeticExpressionLeftAndRightOperandsFillIn extends org
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
 		assert expressions.length == 2;
-		return new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression( expressions[ 0 ], this.operator, expressions[ 1 ], this.resultType );
+		return new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression( expressions[ 0 ], this.transientValue.operator.getValue(), expressions[ 1 ], this.transientValue.expressionType.getValue() );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression getTransientValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		return this.transientValue;
 	}
 }

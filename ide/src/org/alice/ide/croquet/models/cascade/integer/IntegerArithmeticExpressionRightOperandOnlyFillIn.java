@@ -46,21 +46,21 @@ package org.alice.ide.croquet.models.cascade.integer;
 /**
  * @author Dennis Cosgrove
  */
-public class ArithmeticExpressionLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionLeftAndRightOperandsFillIn {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, ArithmeticExpressionLeftAndRightOperandsFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ArithmeticExpressionLeftAndRightOperandsFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+public class IntegerArithmeticExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionRightOperandOnlyFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, IntegerArithmeticExpressionRightOperandOnlyFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static IntegerArithmeticExpressionRightOperandOnlyFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {
-			ArithmeticExpressionLeftAndRightOperandsFillIn rv = map.get( operator );
+			IntegerArithmeticExpressionRightOperandOnlyFillIn rv = map.get( operator );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ArithmeticExpressionLeftAndRightOperandsFillIn( operator );
+				rv = new IntegerArithmeticExpressionRightOperandOnlyFillIn( operator );
 				map.put( operator, rv );
 			}
 			return rv;
 		}
 	}
-	private ArithmeticExpressionLeftAndRightOperandsFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "18b9bfcc-4938-435e-b751-51d9fe38524c" ), Integer.class, Integer.class, operator, Integer.class );
+	private IntegerArithmeticExpressionRightOperandOnlyFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+		super( java.util.UUID.fromString( "17a328e0-b763-4375-84f5-0a6a63e94964" ), Number.class, Number.class, operator, Number.class );
 	}
 }
