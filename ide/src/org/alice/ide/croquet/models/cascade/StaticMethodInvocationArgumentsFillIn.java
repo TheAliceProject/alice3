@@ -73,10 +73,11 @@ public class StaticMethodInvocationArgumentsFillIn extends ExpressionFillInWithE
 		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ) );
 		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteStaticMethodInvocation( method );
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType = parameter.getDesiredValueType();
-			edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank = CascadeManager.getBlankForType( desiredType );
-			assert blank != null : desiredType;
-			this.addBlank( blank );
+//			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType = parameter.getDesiredValueType();
+//			edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank = CascadeManager.getBlankForType( desiredType );
+//			assert blank != null : desiredType;
+//			this.addBlank( blank );
+			this.addBlank( ParameterBlank.getInstance( parameter ) );
 		}
 	}
 	@Override

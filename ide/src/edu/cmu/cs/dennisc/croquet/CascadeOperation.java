@@ -140,7 +140,7 @@ class RtBlank< B > extends RtNode< CascadeBlank<B>, CascadeBlankContext<B> > {
 	private static <F, B, M extends AbstractCascadeFillIn< F,B,M,C >, C extends AbstractCascadeFillInContext< F,B,M,C > > boolean isEmptySeparator( RtAbstractFillIn<F,B,M,C> rtOwnee ) {
 		 if( rtOwnee.getModel() instanceof CascadeSeparator ) {
 			 CascadeSeparator separatorFillIn = (CascadeSeparator)rtOwnee.getModel();
-			 return separatorFillIn.isEmpty();
+			 return separatorFillIn.isSimple();
 		 } else {
 			 return false;
 		 }

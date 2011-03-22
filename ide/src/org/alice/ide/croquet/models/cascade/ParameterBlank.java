@@ -41,46 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank< B > extends AbstractModel {
-	private java.util.List< AbstractCascadeFillIn< ? extends B,?,?,? > > ownees;
-	public CascadeBlank( java.util.UUID id ) {
-		super( Application.CASCADE_GROUP, id );
-	}
-	protected abstract void addFillIns();
-	public Iterable< AbstractCascadeFillIn< ? extends B,?,?,? > > getOwnees() {
-		if( this.ownees != null ) {
+public class ParameterBlank extends ExpressionBlank {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, ParameterBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ParameterBlank getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+		assert parameter != null;
+		ParameterBlank rv = map.get( parameter );
+		if( rv != null ) {
 			//pass
 		} else {
-			this.ownees = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			this.addFillIns();
+			rv = new ParameterBlank( parameter );
+			map.put( parameter, rv );
 		}
-		return this.ownees;
+		return rv;
 	}
-	public void addFillIn( CascadeFillIn< ? extends B,? > fillIn ) {
-		this.ownees.add( fillIn );
-	}
-	public void addMenu( CascadeMenu< ? extends B > menu ) {
-		this.ownees.add( menu );
-	}
-	public void addSeparator() {
-		this.addSeparator( CascadeSimpleSeparator.getInstance() );
-	}
-	//todo: localize
-	public void addSeparator( CascadeSeparator separator ) {
-		//note: we drop generic information since separators are never selected 
-		this.ownees.add( (AbstractCascadeFillIn< ? extends B,?,?,? >)separator );
-	}
-	
-	@Override
-	protected void localize() {
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter;
+	private ParameterBlank( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+		super( java.util.UUID.fromString( "84524eb1-7dbe-4481-8037-005d6402dbf3" ), parameter.getDesiredValueType() );
+		this.parameter = parameter;
 	}
 	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return false;
+	protected void addFillIns() {
+		this.addSeparator( ParameterNameSeparator.getInstance( this.parameter ) );
+		this.addSeparator();
+		super.addFillIns();
 	}
 }

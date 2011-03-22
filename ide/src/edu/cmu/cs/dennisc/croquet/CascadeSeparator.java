@@ -46,36 +46,14 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeSeparator extends AbstractCascadeFillIn< Void, Void, CascadeSeparator, CascadeSeparatorContext > {
-	private static class SingletonHolder {
-		private static CascadeSeparator instance = new CascadeSeparator();
+public abstract class CascadeSeparator extends AbstractCascadeFillIn< Void, Void, CascadeSeparator, CascadeSeparatorContext > {
+	public CascadeSeparator( java.util.UUID id ) {
+		super( id );
 	}
-	public static CascadeSeparator getInstance() {
-		return SingletonHolder.instance;
-	}
-	private CascadeSeparator() {
-		super( java.util.UUID.fromString( "5103f9f4-b85d-4c49-b384-5a9785d1d2ac" ) );
-	}
-	public boolean isEmpty() {
+	public boolean isSimple() {
 		//return separatorFillIn.getName() == null && separatorFillIn.getIcon() == null;
-		return true;
+		return false;
 	}
-//	@Override
-//	public boolean isAutomaticallySelectedWhenSoleOption() {
-//		return false;
-//	}
-//	@Override
-//	public javax.swing.Icon getMenuItemIcon( CascadeFillInContext context ) {
-//		return null;
-//	}
-//	@Override
-//	public String getMenuItemText( CascadeFillInContext context ) {
-//		return null;
-//	}
-	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy(CascadeSeparatorContext context) {
-		return null;
-	};
 	@Override
 	public CascadeBlank<Void>[] getBlanks() {
 		return null;
