@@ -81,11 +81,15 @@ public abstract class CascadeMenu< FB > extends AbstractCascadeFillIn< FB, FB, C
 		return this.getSelectedFillInContext( context ).createValue();
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( CascadeMenuContext<FB> context ) {
-		return null;
+	protected javax.swing.JComponent createMenuItemIconProxy( CascadeMenuContext< FB > context ) {
+		return new javax.swing.JLabel( this.getDefaultLocalizedText() );
 	}
-	@Override
-	public String getMenuItemText( CascadeMenuContext<FB> context ) {
-		return this.getDefaultLocalizedText();
-	}
+//	@Override
+//	public javax.swing.Icon getMenuItemIcon( CascadeMenuContext<FB> context ) {
+//		return null;
+//	}
+//	@Override
+//	public String getMenuItemText( CascadeMenuContext<FB> context ) {
+//		return this.getDefaultLocalizedText();
+//	}
 }

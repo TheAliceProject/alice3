@@ -41,25 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.integer;
+package org.alice.stageide.croquet.models.cascade.keymenus;
+
+import org.alice.apis.moveandturn.Key;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RandomMenuFillIn extends org.alice.ide.croquet.models.cascade.ExpressionMenuFillIn< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+public class LettersNThroughZKeyCascadeMenu extends AbstractKeyCascadeMenu {
 	private static class SingletonHolder {
-		private static RandomMenuFillIn instance = new RandomMenuFillIn();
+		private static LettersNThroughZKeyCascadeMenu instance = new LettersNThroughZKeyCascadeMenu();
 	}
-	public static RandomMenuFillIn getInstance() {
+	public static LettersNThroughZKeyCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private RandomMenuFillIn() {
-		super( java.util.UUID.fromString( "d0b0e182-e766-49ba-8e10-239df62def0a" ) );
+	private LettersNThroughZKeyCascadeMenu() {
+		super( java.util.UUID.fromString( "2401b8d5-8feb-48a9-8f0d-d103c82e6077" ), 
+				Key.N,
+				Key.O,
+				Key.P,
+				Key.Q,
+				Key.R,
+				Key.S,
+				Key.T,
+				Key.U,
+				Key.V,
+				Key.W,
+				Key.X,
+				Key.Y,
+				Key.Z
+		);
 	}
-	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextIntegerFrom0ToNExclusive", Integer.class ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextIntegerFromAToBExclusive", Integer.class, Integer.class ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextIntegerFromAToBInclusive", Integer.class, Integer.class ) );
-	}
+
 }

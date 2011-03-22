@@ -46,19 +46,21 @@ package org.alice.ide.croquet.models.cascade.number;
 /**
  * @author Dennis Cosgrove
  */
-public class PowerMenuFillIn extends org.alice.ide.croquet.models.cascade.ExpressionMenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class FloorCeilingCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private static class SingletonHolder {
-		private static PowerMenuFillIn instance = new PowerMenuFillIn();
+		private static FloorCeilingCascadeMenu instance = new FloorCeilingCascadeMenu();
 	}
-	public static PowerMenuFillIn getInstance() {
+	public static FloorCeilingCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private PowerMenuFillIn() {
-		super( java.util.UUID.fromString( "2d1bbbdb-cf33-406d-98a9-4ba421bfd10e" ) );
+	private FloorCeilingCascadeMenu() {
+		super( java.util.UUID.fromString( "08742482-baf4-4b41-851a-b00e4af231ce" ) );
 	}
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "sqrt", java.lang.Double.TYPE ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "abs", java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "rint", java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "ceil", java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "floor", java.lang.Double.TYPE ) );
 	}
 }

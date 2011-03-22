@@ -78,9 +78,9 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		}
 //		if( isTop && previousExpression != null ) {
 			blank.addSeparator();
-			blank.addMenu( org.alice.ide.croquet.models.cascade.integer.RandomMenuFillIn.getInstance() );
+			blank.addMenu( org.alice.ide.croquet.models.cascade.integer.RandomCascadeMenu.getInstance() );
 			blank.addSeparator();
-			blank.addMenu( org.alice.ide.croquet.models.cascade.number.MathMenuFillIn.getInstance() );
+			blank.addMenu( org.alice.ide.croquet.models.cascade.number.MathCascadeMenu.getInstance() );
 //		}
 		blank.addSeparator();
 		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomDoubleLiteralFillIn.getInstance() );

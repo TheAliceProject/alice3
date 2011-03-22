@@ -46,8 +46,16 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionMenuFillIn< T extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.croquet.CascadeMenu< T > {
-	public ExpressionMenuFillIn( java.util.UUID id ) {
+public abstract class AbstractRelationalCascadeMenu extends ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
+	private Class< ? extends Number > cls;
+	public AbstractRelationalCascadeMenu( java.util.UUID id, Class< ? extends Number > cls ) {
 		super( id );
+		this.cls = cls;
+	}
+	@Override
+	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
+		for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
+			blank.addFillIn( IncompleteRelationalExpressionFillIn.getInstance( this.cls, operator ) );
+		}
 	}
 }

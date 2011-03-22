@@ -53,10 +53,10 @@ public class KeyFillerInner extends org.alice.ide.cascade.fillerinners.Expressio
 	}
 	@Override
 	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
-		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.LettersAThroughMKeyMenuFillIn.getInstance() );
-		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.LettersNThroughZKeyMenuFillIn.getInstance() );
-		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.DigitsKeyMenuFillIn.getInstance() );
-		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.ArrowsKeyMenuFillin.getInstance() );
+		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.LettersAThroughMKeyCascadeMenu.getInstance() );
+		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.LettersNThroughZKeyCascadeMenu.getInstance() );
+		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.DigitsKeyCascadeMenu.getInstance() );
+		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.ArrowsKeyCascadeMenu.getInstance() );
 		blank.addSeparator();
 		blank.addFillIn( org.alice.stageide.croquet.models.cascade.custom.CustomKeyFillIn.getInstance() );
 	}

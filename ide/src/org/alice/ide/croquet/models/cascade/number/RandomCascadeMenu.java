@@ -41,54 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade.number;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ComponentBackedIconCascadeFillIn< F, B > extends CascadeFillIn< F, B > {
-	private javax.swing.JComponent menuProxy = null;
-	private javax.swing.Icon icon = null;
-	public ComponentBackedIconCascadeFillIn( java.util.UUID id ) {
-		super( id );
+public class RandomCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+	private static class SingletonHolder {
+		private static RandomCascadeMenu instance = new RandomCascadeMenu();
 	}
-	protected abstract javax.swing.JComponent createMenuItemIconProxy(CascadeFillInContext< F, B > context );
-//	protected javax.swing.JComponent createMenuProxy() {
-//		return new javax.swing.JLabel( "todo: override getMenuProxy" );
-//	}
-	protected javax.swing.JComponent getMenuProxy( CascadeFillInContext< F, B > context ) {
-		//System.err.println( "todo: cache getMenuProxy()" );
-		//todo
-		if( this.menuProxy != null ) {
-			//pass
-		} else {
-			this.menuProxy = this.createMenuItemIconProxy( context );
-		}
-		return this.menuProxy;
+	public static RandomCascadeMenu getInstance() {
+		return SingletonHolder.instance;
+	}
+	private RandomCascadeMenu() {
+		super( java.util.UUID.fromString( "1cea7986-9a06-4796-a41b-52aacedf3e06" ) );
 	}
 	@Override
-	public final javax.swing.Icon getMenuItemIcon( CascadeFillInContext< F, B > context ) {
-		if( this.icon != null ) {
-			//pass
-		} else {
-			javax.swing.JComponent component = this.getMenuProxy( context );
-			if( component != null ) {
-				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( component );
-				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
-				java.awt.Dimension size = component.getPreferredSize();
-				if( size.width > 0 && size.height > 0 ) {
-					this.icon = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.createIcon( component );
-				} else {
-					this.icon = null;
-				}
-			} else {
-				this.icon = null;
-			}
-		}
-		return this.icon;
-	}
-	@Override
-	public final String getMenuItemText( CascadeFillInContext< F, B > context ) {
-		return null;
+	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
+		blank.addFillIn( NextDouble01FillIn.getInstance() );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextDoubleInRange", java.lang.Number.class, java.lang.Number.class ) );
 	}
 }

@@ -63,6 +63,10 @@ package org.alice.ide.croquet.models.cascade.cancels;
 		return this.getDefaultLocalizedText();
 	}
 	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, Void > context ) {
+		return null;
+	}
+	@Override
 	public F createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F,Void > context ) {
 		//context.cancel();
 		throw new edu.cmu.cs.dennisc.cascade.CancelException( this.getDefaultLocalizedText() );

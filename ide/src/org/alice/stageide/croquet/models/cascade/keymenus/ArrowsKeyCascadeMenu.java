@@ -48,28 +48,19 @@ import org.alice.apis.moveandturn.Key;
 /**
  * @author Dennis Cosgrove
  */
-public class LettersAThroughMKeyMenuFillIn extends AbstractKeyMenuFillIn {
+public class ArrowsKeyCascadeMenu extends AbstractKeyCascadeMenu {
 	private static class SingletonHolder {
-		private static LettersAThroughMKeyMenuFillIn instance = new LettersAThroughMKeyMenuFillIn();
+		private static ArrowsKeyCascadeMenu instance = new ArrowsKeyCascadeMenu();
 	}
-	public static LettersAThroughMKeyMenuFillIn getInstance() {
+	public static ArrowsKeyCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private LettersAThroughMKeyMenuFillIn() {
-		super( java.util.UUID.fromString( "7acafa54-f6ed-4c69-b5fe-b00e68c549a6" ), 
-				Key.A,
-				Key.B,
-				Key.C,
-				Key.D,
-				Key.E,
-				Key.F,
-				Key.G,
-				Key.H,
-				Key.I,
-				Key.J,
-				Key.K,
-				Key.L,
-				Key.M
+	private ArrowsKeyCascadeMenu() {
+		super( java.util.UUID.fromString( "36e94163-93e7-4817-a650-4201ce70c47a" ), 
+				Key.LEFT,
+				Key.UP,
+				Key.RIGHT,
+				Key.DOWN
 		);
 	}
 

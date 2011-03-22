@@ -73,6 +73,10 @@ public class CascadeSeparator extends AbstractCascadeFillIn< Void, Void, Cascade
 //		return null;
 //	}
 	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy(CascadeSeparatorContext context) {
+		return null;
+	};
+	@Override
 	public CascadeBlank<Void>[] getBlanks() {
 		return null;
 	}

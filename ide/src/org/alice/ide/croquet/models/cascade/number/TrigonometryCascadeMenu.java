@@ -41,36 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.cascade.keymenus;
-
-import org.alice.apis.moveandturn.Key;
+package org.alice.ide.croquet.models.cascade.number;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LettersNThroughZKeyMenuFillIn extends AbstractKeyMenuFillIn {
+public class TrigonometryCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private static class SingletonHolder {
-		private static LettersNThroughZKeyMenuFillIn instance = new LettersNThroughZKeyMenuFillIn();
+		private static TrigonometryCascadeMenu instance = new TrigonometryCascadeMenu();
 	}
-	public static LettersNThroughZKeyMenuFillIn getInstance() {
+	public static TrigonometryCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private LettersNThroughZKeyMenuFillIn() {
-		super( java.util.UUID.fromString( "2401b8d5-8feb-48a9-8f0d-d103c82e6077" ), 
-				Key.N,
-				Key.O,
-				Key.P,
-				Key.Q,
-				Key.R,
-				Key.S,
-				Key.T,
-				Key.U,
-				Key.V,
-				Key.W,
-				Key.X,
-				Key.Y,
-				Key.Z
-		);
+	private TrigonometryCascadeMenu() {
+		super( java.util.UUID.fromString( "fb160569-ac57-4fbc-a665-2239411e3f74" ) );
 	}
-
+	@Override
+	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "sin", java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "cos", java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "tan", java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "asin", java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "acos", java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "atan", java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "atan2", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( Math.class, "PI" ) );
+	}
 }

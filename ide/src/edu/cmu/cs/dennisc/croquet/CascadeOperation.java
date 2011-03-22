@@ -543,6 +543,10 @@ class RootFillIn<B> extends CascadeFillIn< B[],B > {
 		return this.blanks;
 	}
 	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( CascadeFillInContext< B[], B > context ) {
+		return null;
+	}
+	@Override
 	public String getMenuItemText( CascadeFillInContext< B[], B > context ) {
 		return null;
 	}

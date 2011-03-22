@@ -41,24 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.number;
+package org.alice.ide.croquet.models.cascade.arithmetic;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RandomMenuFillIn extends org.alice.ide.croquet.models.cascade.ExpressionMenuFillIn< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+public class ReplaceOperatorDivideRemainderCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
 	private static class SingletonHolder {
-		private static RandomMenuFillIn instance = new RandomMenuFillIn();
+		private static ReplaceOperatorDivideRemainderCascadeMenu instance = new ReplaceOperatorDivideRemainderCascadeMenu();
 	}
-	public static RandomMenuFillIn getInstance() {
+	public static ReplaceOperatorDivideRemainderCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private RandomMenuFillIn() {
-		super( java.util.UUID.fromString( "1cea7986-9a06-4796-a41b-52aacedf3e06" ) );
+	private ReplaceOperatorDivideRemainderCascadeMenu() {
+		super( java.util.UUID.fromString( "9a3b8406-e78e-44e7-997c-6584bc8b35f9" ) );
 	}
 	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		blank.addFillIn( NextDouble01FillIn.getInstance() );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextDoubleInRange", java.lang.Number.class, java.lang.Number.class ) );
+	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > blank ) {
+		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
+			blank.addFillIn( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
+		}
 	}
 }

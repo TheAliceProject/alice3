@@ -46,14 +46,8 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class RelationalNumberMenuFillIn extends AbstractRelationalMenuFillIn {
-	private static class SingletonHolder {
-		private static RelationalNumberMenuFillIn instance = new RelationalNumberMenuFillIn();
-	}
-	public static RelationalNumberMenuFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
-	private RelationalNumberMenuFillIn() {
-		super( java.util.UUID.fromString( "5ebbf7e0-ae32-41b1-9655-551013fec7d2" ), Number.class );
+public abstract class ExpressionCascadeMenu< T extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.croquet.CascadeMenu< T > {
+	public ExpressionCascadeMenu( java.util.UUID id ) {
+		super( id );
 	}
 }

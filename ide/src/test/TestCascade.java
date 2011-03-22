@@ -61,6 +61,10 @@ class EnumConstantFillIn< T extends Enum< T > > extends edu.cmu.cs.dennisc.croqu
 		this.value = value;
 	}
 	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
+		return null;
+	}
+	@Override
 	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
 		return null;
 	}
@@ -110,6 +114,10 @@ class IntegerLiteralFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Int
 		this.value = value;
 	}
 	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+		return null;
+	}
+	@Override
 	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
 		return null;
 	}
@@ -136,6 +144,10 @@ class CustomIntegerFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Inte
 	}
 	private CustomIntegerFillIn() {
 		super( java.util.UUID.fromString( "abfa96df-32be-4a94-8f5d-030f173b77e9" ) );
+	}
+	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+		return null;
 	}
 	@Override
 	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {

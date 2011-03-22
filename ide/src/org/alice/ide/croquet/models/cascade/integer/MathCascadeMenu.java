@@ -46,14 +46,14 @@ package org.alice.ide.croquet.models.cascade.integer;
 /**
  * @author Dennis Cosgrove
  */
-public class MathMenuFillIn extends org.alice.ide.croquet.models.cascade.ExpressionMenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private static class SingletonHolder {
-		private static MathMenuFillIn instance = new MathMenuFillIn();
+		private static MathCascadeMenu instance = new MathCascadeMenu();
 	}
-	public static MathMenuFillIn getInstance() {
+	public static MathCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private MathMenuFillIn() {
+	private MathCascadeMenu() {
 		super( java.util.UUID.fromString( "a7c69555-3232-4091-96f6-8f9b6ec2ee3a" ) );
 	}
 	@Override
@@ -81,7 +81,7 @@ public class MathMenuFillIn extends org.alice.ide.croquet.models.cascade.Express
 		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
 			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.IncompleteArithmeticExpressionFillIn.getInstance( operator ) );
 		}
-		blank.addMenu( IncompleteDivideRemainderMenuFillIn.getInstance() );
+		blank.addMenu( IncompleteDivideRemainderCascadeMenu.getInstance() );
 
 		blank.addSeparator();
 		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "abs", Integer.TYPE ) );

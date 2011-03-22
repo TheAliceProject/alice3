@@ -41,24 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.number;
+package org.alice.stageide.croquet.models.cascade.keymenus;
+
+import org.alice.apis.moveandturn.Key;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MinMaxMenuFillIn extends org.alice.ide.croquet.models.cascade.ExpressionMenuFillIn< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+public class LettersAThroughMKeyCascadeMenu extends AbstractKeyCascadeMenu {
 	private static class SingletonHolder {
-		private static MinMaxMenuFillIn instance = new MinMaxMenuFillIn();
+		private static LettersAThroughMKeyCascadeMenu instance = new LettersAThroughMKeyCascadeMenu();
 	}
-	public static MinMaxMenuFillIn getInstance() {
+	public static LettersAThroughMKeyCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private MinMaxMenuFillIn() {
-		super( java.util.UUID.fromString( "602b183c-ab38-43f7-80d1-119a3586d9c1" ) );
+	private LettersAThroughMKeyCascadeMenu() {
+		super( java.util.UUID.fromString( "7acafa54-f6ed-4c69-b5fe-b00e68c549a6" ), 
+				Key.A,
+				Key.B,
+				Key.C,
+				Key.D,
+				Key.E,
+				Key.F,
+				Key.G,
+				Key.H,
+				Key.I,
+				Key.J,
+				Key.K,
+				Key.L,
+				Key.M
+		);
 	}
-	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "min", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "max", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
-	}
+
 }

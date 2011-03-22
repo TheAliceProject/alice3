@@ -41,27 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.cascade.keymenus;
-
-import org.alice.apis.moveandturn.Key;
+package org.alice.ide.croquet.models.cascade.integer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArrowsKeyMenuFillin extends AbstractKeyMenuFillIn {
+public class IncompleteDivideRemainderCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
 	private static class SingletonHolder {
-		private static ArrowsKeyMenuFillin instance = new ArrowsKeyMenuFillin();
+		private static IncompleteDivideRemainderCascadeMenu instance = new IncompleteDivideRemainderCascadeMenu();
 	}
-	public static ArrowsKeyMenuFillin getInstance() {
+	public static IncompleteDivideRemainderCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ArrowsKeyMenuFillin() {
-		super( java.util.UUID.fromString( "36e94163-93e7-4817-a650-4201ce70c47a" ), 
-				Key.LEFT,
-				Key.UP,
-				Key.RIGHT,
-				Key.DOWN
-		);
+	private IncompleteDivideRemainderCascadeMenu() {
+		super( java.util.UUID.fromString( "a0289f52-a603-42a2-8afd-438b88ba54a4" ) );
 	}
-
+	@Override
+	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
+		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
+			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.IncompleteArithmeticExpressionFillIn.getInstance( operator ) );
+		}
+	}
 }

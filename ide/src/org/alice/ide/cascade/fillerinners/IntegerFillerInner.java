@@ -63,7 +63,7 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 						blank.addFillIn( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
 //					}
 				}
-				blank.addMenu( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorDivideRemainderMenuFillIn.getInstance() );
+				blank.addMenu( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorDivideRemainderCascadeMenu.getInstance() );
 				blank.addSeparator();
 				blank.addFillIn( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToLeftOperandInPreviousArithmeticExpressionFillIn.getInstance() );
 				blank.addFillIn( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToRightOperandInPreviousArithmeticExpressionFillIn.getInstance() );
@@ -76,11 +76,11 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		}
 //		if( blank.isTop() && previousExpression != null ) {
 			blank.addSeparator();
-			blank.addMenu( org.alice.ide.croquet.models.cascade.integer.RandomMenuFillIn.getInstance() );
+			blank.addMenu( org.alice.ide.croquet.models.cascade.integer.RandomCascadeMenu.getInstance() );
 			blank.addSeparator();
-			blank.addMenu( org.alice.ide.croquet.models.cascade.integer.RealToIntegerMenuFillIn.getInstance() );
+			blank.addMenu( org.alice.ide.croquet.models.cascade.integer.RealToIntegerCascadeMenu.getInstance() );
 			blank.addSeparator();
-			blank.addMenu( org.alice.ide.croquet.models.cascade.integer.MathMenuFillIn.getInstance() );
+			blank.addMenu( org.alice.ide.croquet.models.cascade.integer.MathCascadeMenu.getInstance() );
 //		}
 		blank.addSeparator();
 		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomIntegerLiteralFillIn.getInstance() );

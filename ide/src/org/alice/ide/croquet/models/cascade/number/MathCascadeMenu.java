@@ -46,14 +46,14 @@ package org.alice.ide.croquet.models.cascade.number;
 /**
  * @author Dennis Cosgrove
  */
-public class MathMenuFillIn extends org.alice.ide.croquet.models.cascade.ExpressionMenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private static class SingletonHolder {
-		private static MathMenuFillIn instance = new MathMenuFillIn();
+		private static MathCascadeMenu instance = new MathCascadeMenu();
 	}
-	public static MathMenuFillIn getInstance() {
+	public static MathCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private MathMenuFillIn() {
+	private MathCascadeMenu() {
 		super( java.util.UUID.fromString( "d6d9501b-2a63-4b72-9ceb-3046ff079ba1" ) );
 	}
 	@Override
@@ -89,10 +89,10 @@ public class MathMenuFillIn extends org.alice.ide.croquet.models.cascade.Express
 		}
 		
 		blank.addSeparator();
-		blank.addMenu( org.alice.ide.croquet.models.cascade.number.MinMaxMenuFillIn.getInstance() );
-		blank.addMenu( FloorCeilingMenuFillIn.getInstance() );
-		blank.addMenu( PowerMenuFillIn.getInstance() );
-		blank.addMenu( TrigonometryMenuFillIn.getInstance() );
-		blank.addMenu( ExponentMenuFillIn.getInstance() );
+		blank.addMenu( org.alice.ide.croquet.models.cascade.number.MinMaxCascadeMenu.getInstance() );
+		blank.addMenu( FloorCeilingCascadeMenu.getInstance() );
+		blank.addMenu( PowerCascadeMenu.getInstance() );
+		blank.addMenu( TrigonometryCascadeMenu.getInstance() );
+		blank.addMenu( ExponentCascadeMenu.getInstance() );
 	}
 }

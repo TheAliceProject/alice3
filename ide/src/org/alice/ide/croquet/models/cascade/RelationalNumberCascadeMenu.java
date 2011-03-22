@@ -41,25 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.number;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExponentMenuFillIn extends org.alice.ide.croquet.models.cascade.ExpressionMenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class RelationalNumberCascadeMenu extends AbstractRelationalCascadeMenu {
 	private static class SingletonHolder {
-		private static ExponentMenuFillIn instance = new ExponentMenuFillIn();
+		private static RelationalNumberCascadeMenu instance = new RelationalNumberCascadeMenu();
 	}
-	public static ExponentMenuFillIn getInstance() {
+	public static RelationalNumberCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ExponentMenuFillIn() {
-		super( java.util.UUID.fromString( "53e6ac46-5f75-4a6e-8149-9161b2e330d1" ) );
-	}
-	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "exp", java.lang.Double.TYPE ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "log", java.lang.Double.TYPE ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( Math.class, "E" ) );
+	private RelationalNumberCascadeMenu() {
+		super( java.util.UUID.fromString( "5ebbf7e0-ae32-41b1-9655-551013fec7d2" ), Number.class );
 	}
 }

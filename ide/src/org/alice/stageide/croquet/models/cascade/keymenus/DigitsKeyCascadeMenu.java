@@ -41,25 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.integer;
+package org.alice.stageide.croquet.models.cascade.keymenus;
+
+import org.alice.apis.moveandturn.Key;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteDivideRemainderMenuFillIn extends org.alice.ide.croquet.models.cascade.ExpressionMenuFillIn< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
+public class DigitsKeyCascadeMenu extends AbstractKeyCascadeMenu {
 	private static class SingletonHolder {
-		private static IncompleteDivideRemainderMenuFillIn instance = new IncompleteDivideRemainderMenuFillIn();
+		private static DigitsKeyCascadeMenu instance = new DigitsKeyCascadeMenu();
 	}
-	public static IncompleteDivideRemainderMenuFillIn getInstance() {
+	public static DigitsKeyCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IncompleteDivideRemainderMenuFillIn() {
-		super( java.util.UUID.fromString( "a0289f52-a603-42a2-8afd-438b88ba54a4" ) );
+	private DigitsKeyCascadeMenu() {
+		super( java.util.UUID.fromString( "e9aff3d5-c300-4275-89f5-4800f0fc25c4" ), 
+				Key.DIGIT_0,
+				Key.DIGIT_1,
+				Key.DIGIT_2,
+				Key.DIGIT_3,
+				Key.DIGIT_4,
+				Key.DIGIT_5,
+				Key.DIGIT_6,
+				Key.DIGIT_7,
+				Key.DIGIT_8,
+				Key.DIGIT_9
+		);
 	}
-	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.IncompleteArithmeticExpressionFillIn.getInstance( operator ) );
-		}
-	}
+
 }

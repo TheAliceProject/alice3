@@ -63,9 +63,51 @@ public abstract class AbstractCascadeFillIn< F, B, M extends AbstractCascadeFill
 	public boolean isAutomaticallySelectedWhenSoleOption() {
 		return true;
 	}
+	
 	public abstract CascadeBlank<B>[] getBlanks();
 	public abstract F getTransientValue( C context );
 	public abstract F createValue( C context );
-	public abstract javax.swing.Icon getMenuItemIcon( C context );
-	public abstract String getMenuItemText( C context );
+
+	private javax.swing.JComponent menuProxy = null;
+	private javax.swing.Icon icon = null;
+	protected abstract javax.swing.JComponent createMenuItemIconProxy( C context );
+//	protected javax.swing.JComponent createMenuProxy() {
+//		return new javax.swing.JLabel( "todo: override getMenuProxy" );
+//	}
+	protected javax.swing.JComponent getMenuProxy( C context ) {
+		//System.err.println( "todo: cache getMenuProxy()" );
+		//todo
+		if( this.menuProxy != null ) {
+			//pass
+		} else {
+			this.menuProxy = this.createMenuItemIconProxy( context );
+		}
+		return this.menuProxy;
+	}
+	public javax.swing.Icon getMenuItemIcon( C context ) {
+		if( this.icon != null ) {
+			//pass
+		} else {
+			javax.swing.JComponent component = this.getMenuProxy( context );
+			if( component != null ) {
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( component );
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.revalidateTree( component );
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
+				java.awt.Dimension size = component.getPreferredSize();
+				if( size.width > 0 && size.height > 0 ) {
+					this.icon = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.createIcon( component );
+				} else {
+					this.icon = null;
+				}
+			} else {
+				this.icon = null;
+			}
+		}
+		return this.icon;
+	}
+	public String getMenuItemText( C context ) {
+		return null;
+	}
+//	public abstract javax.swing.Icon getMenuItemIcon( C context );
+//	public abstract String getMenuItemText( C context );
 }

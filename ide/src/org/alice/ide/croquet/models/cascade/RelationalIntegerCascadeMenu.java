@@ -41,27 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.arithmetic;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ReplaceOperatorDivideRemainderMenuFillIn extends AbstractPreviousArithmeticExpressionMenuFillIn {
+public class RelationalIntegerCascadeMenu extends AbstractRelationalCascadeMenu {
 	private static class SingletonHolder {
-		private static ReplaceOperatorDivideRemainderMenuFillIn instance = new ReplaceOperatorDivideRemainderMenuFillIn();
+		private static RelationalIntegerCascadeMenu instance = new RelationalIntegerCascadeMenu();
 	}
-	public static ReplaceOperatorDivideRemainderMenuFillIn getInstance() {
+	public static RelationalIntegerCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ReplaceOperatorDivideRemainderMenuFillIn() {
-		super( java.util.UUID.fromString( "9a3b8406-e78e-44e7-997c-6584bc8b35f9" ) );
-	}
-	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
-			if( operator != this.getPreviousOperator() ) {
-				blank.addFillIn( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
-			}
-		}
+	private RelationalIntegerCascadeMenu() {
+		super( java.util.UUID.fromString( "d527e85d-de5c-4a0a-a1e6-e51253893779" ), Number.class );
 	}
 }

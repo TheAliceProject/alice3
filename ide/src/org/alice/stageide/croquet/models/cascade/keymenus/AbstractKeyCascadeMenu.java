@@ -46,9 +46,9 @@ package org.alice.stageide.croquet.models.cascade.keymenus;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractKeyMenuFillIn extends org.alice.ide.croquet.models.cascade.ExpressionMenuFillIn< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
+public abstract class AbstractKeyCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
 	private final org.alice.apis.moveandturn.Key[] keys;
-	public AbstractKeyMenuFillIn( java.util.UUID id, org.alice.apis.moveandturn.Key... keys ) {
+	public AbstractKeyCascadeMenu( java.util.UUID id, org.alice.apis.moveandturn.Key... keys ) {
 		super( id );
 		this.keys = keys;
 	}

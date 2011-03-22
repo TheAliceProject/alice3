@@ -41,19 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.croquet.models.cascade.integer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RelationalIntegerMenuFillIn extends AbstractRelationalMenuFillIn {
+public class RealToIntegerCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
 	private static class SingletonHolder {
-		private static RelationalIntegerMenuFillIn instance = new RelationalIntegerMenuFillIn();
+		private static RealToIntegerCascadeMenu instance = new RealToIntegerCascadeMenu();
 	}
-	public static RelationalIntegerMenuFillIn getInstance() {
+	public static RealToIntegerCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private RelationalIntegerMenuFillIn() {
-		super( java.util.UUID.fromString( "d527e85d-de5c-4a0a-a1e6-e51253893779" ), Number.class );
+	private RealToIntegerCascadeMenu() {
+		super( java.util.UUID.fromString( "235cc7aa-0e9c-4f8c-9548-10aff3c095af" ) );
+	}
+	@Override
+	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.integer.IntegerUtilities.class, "toFlooredInteger", Double.class ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.integer.IntegerUtilities.class, "toRoundedInteger", Double.class ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( org.alice.integer.IntegerUtilities.class, "toCeilingedInteger", Double.class ) );
 	}
 }

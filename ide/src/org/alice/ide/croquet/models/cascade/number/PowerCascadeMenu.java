@@ -41,33 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.cascade.keymenus;
-
-import org.alice.apis.moveandturn.Key;
+package org.alice.ide.croquet.models.cascade.number;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DigitsKeyMenuFillIn extends AbstractKeyMenuFillIn {
+public class PowerCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private static class SingletonHolder {
-		private static DigitsKeyMenuFillIn instance = new DigitsKeyMenuFillIn();
+		private static PowerCascadeMenu instance = new PowerCascadeMenu();
 	}
-	public static DigitsKeyMenuFillIn getInstance() {
+	public static PowerCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
-	private DigitsKeyMenuFillIn() {
-		super( java.util.UUID.fromString( "e9aff3d5-c300-4275-89f5-4800f0fc25c4" ), 
-				Key.DIGIT_0,
-				Key.DIGIT_1,
-				Key.DIGIT_2,
-				Key.DIGIT_3,
-				Key.DIGIT_4,
-				Key.DIGIT_5,
-				Key.DIGIT_6,
-				Key.DIGIT_7,
-				Key.DIGIT_8,
-				Key.DIGIT_9
-		);
+	private PowerCascadeMenu() {
+		super( java.util.UUID.fromString( "2d1bbbdb-cf33-406d-98a9-4ba421bfd10e" ) );
 	}
-
+	@Override
+	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "sqrt", java.lang.Double.TYPE ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.IncompleteStaticMethodInvocationFillIn.getInstance( Math.class, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
+	}
 }
