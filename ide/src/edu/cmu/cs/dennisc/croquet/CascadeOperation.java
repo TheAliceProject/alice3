@@ -271,6 +271,7 @@ abstract class RtAbstractFillIn<F,B, M extends AbstractCascadeFillIn<F,B,M,C>, C
 	private boolean wasLast = false; 
 	public RtAbstractFillIn( M model, C context ) {
 		super( model, context );
+		this.getContext().setRtFillIn( this );
 		CascadeBlank<B>[] blanks = model.getBlanks();
 		final int N;
 		if( blanks != null ) {
@@ -401,7 +402,6 @@ abstract class RtAbstractFillIn<F,B, M extends AbstractCascadeFillIn<F,B,M,C>, C
 class RtFillIn< F,B > extends RtAbstractFillIn< F,B, CascadeFillIn< F,B >, CascadeFillInContext< F,B > > {
 	public RtFillIn( CascadeFillIn< F,B > model ) {
 		super( model, ContextManager.createCascadeFillInContext( model ) );
-		this.getContext().setRtFillIn( this );
 	}
 }
 

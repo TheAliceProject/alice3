@@ -68,13 +68,17 @@ public abstract class CascadeMenu< FB > extends AbstractCascadeFillIn< FB, FB, C
 		return new CascadeBlank[] { this.blank };
 	}
 	protected abstract void addChildrenToBlank( CascadeBlank<FB> blank );
+	private edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< FB,FB,?,? > getSelectedFillInContext( CascadeMenuContext<FB> context ) {
+		edu.cmu.cs.dennisc.croquet.CascadeBlankContext< FB > blankContext = context.getBlankContextAt( 0 );
+		return blankContext.getSelectedFillInContext();
+	}
 	@Override
 	public FB getTransientValue( CascadeMenuContext<FB> context ) {
-		throw new RuntimeException();
+		return this.getSelectedFillInContext( context ).getTransientValue();
 	}
 	@Override
 	public FB createValue( CascadeMenuContext<FB> context ) {
-		throw new RuntimeException();
+		return this.getSelectedFillInContext( context ).createValue();
 	}
 	@Override
 	public javax.swing.Icon getMenuItemIcon( CascadeMenuContext<FB> context ) {

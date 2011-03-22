@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class AbstractCascadeFillInContext<F,B,M extends AbstractCascadeFillIn<F,B,M,C>, C extends AbstractCascadeFillInContext<F,B,M,C> > extends AbstractModelContext< M > {
+	private RtAbstractFillIn<F,B,?,?> rtFillIn;
 	/*package-private*/ AbstractCascadeFillInContext( M model, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( model, e, viewController );
 	}
@@ -55,6 +56,12 @@ public class AbstractCascadeFillInContext<F,B,M extends AbstractCascadeFillIn<F,
 	}
 	public AbstractCascadeFillInContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+	}
+	/*private-private*/ void setRtFillIn( RtAbstractFillIn<F,B,?,?> rtFillIn ) {
+		this.rtFillIn = rtFillIn;
+	}	
+	public CascadeBlankContext< B > getBlankContextAt( int i ) {	
+		return this.rtFillIn.getBlankContextAt( i );
 	}
 	public F createValue() {
 		return this.getModel().createValue( (C)this );
