@@ -53,12 +53,19 @@ public class LogicalComplementOperandFillIn extends org.alice.ide.croquet.models
 	public static LogicalComplementOperandFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
+	private final edu.cmu.cs.dennisc.alice.ast.LogicalComplement transientValue;
 	private LogicalComplementOperandFillIn() {
 		super( java.util.UUID.fromString( "f70996fb-fd4e-4114-962b-ca14c33e134b" ) );
+		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Boolean.class ) );
+		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteLogicalComplement();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.LogicalComplement createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
 		assert expressions.length == 1;
 		return new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( expressions[ 0 ] );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.LogicalComplement getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.LogicalComplement, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+		return this.transientValue;
 	}
 }

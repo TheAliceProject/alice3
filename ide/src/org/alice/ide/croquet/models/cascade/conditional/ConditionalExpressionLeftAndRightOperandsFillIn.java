@@ -60,16 +60,20 @@ public class ConditionalExpressionLeftAndRightOperandsFillIn extends org.alice.i
 			return rv;
 		}
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator;
+	private final edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression transientValue;
 	private ConditionalExpressionLeftAndRightOperandsFillIn( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "f7faea38-4071-4918-bea0-98971ddbd7a7" ) );
-		this.operator = operator;
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Boolean.class ) );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Boolean.class ) );
+		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteConditionalInfixExpression( operator );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
 		assert expressions.length == 2;
-		return new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression( expressions[ 0 ], this.operator, expressions[ 1 ] );
+		return new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression( expressions[ 0 ], this.transientValue.operator.getValue(), expressions[ 1 ] );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+		return this.transientValue;
 	}
 }
