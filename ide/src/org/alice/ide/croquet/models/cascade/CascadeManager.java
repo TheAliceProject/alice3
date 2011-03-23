@@ -63,9 +63,12 @@ public class CascadeManager {
 				} else {
 					return org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
 				}
-			} else if( cls == Double.TYPE ) {
+			} else if( cls == Boolean.TYPE || cls == Boolean.class) {
+				//return org.alice.ide.croquet.models.cascade.blanks.BooleanBlank.getInstance();
+				return null;
+			} else if( cls == Double.TYPE || cls == Number.class) {
 				return org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
-			} else if( cls == Integer.TYPE ) {
+			} else if( cls == Integer.TYPE || cls == Integer.class ) {
 				return org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
 			} else if( Enum.class.isAssignableFrom( cls ) ) {
 				return org.alice.ide.croquet.models.cascade.blanks.EnumBlank.getInstance( cls );
@@ -81,6 +84,17 @@ public class CascadeManager {
 	public static ExpressionBlank getBlankForType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 		return getBlankForType( type.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
 	}
+
+	public static ExpressionBlank[] createBlanks( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >... types ) {
+		ExpressionBlank[] rv = new ExpressionBlank[ types.length ];
+		for( int i=0; i<rv.length; i++ ) {
+			rv[ i ] = getBlankForType( types[ i ] );
+		}
+		return rv;
+	}
+	public static org.alice.ide.croquet.models.cascade.ExpressionBlank[] createBlanks( Class<?>... clses ) {
+		return createBlanks( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( clses ) );
+	}
 	
 	public static boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< ?,?,?,? > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType ) {
 //		if( this.previousExpression != null ) {
@@ -95,6 +109,7 @@ public class CascadeManager {
 //		}
 //	}
 		//this.leftOperandType.isAssignableFrom( previousExpression.getType() )
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: isInclusionDesired" );
 		return true;
 	}
 	public static boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< ?,?,?,? > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, Class<?> desiredCls ) {

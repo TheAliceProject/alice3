@@ -50,17 +50,21 @@ public class WhileLoopTemplate extends CascadingUbiquitousStatementClassTemplate
 		super( edu.cmu.cs.dennisc.alice.ast.WhileLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteWhileLoop() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE };
+	protected edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > getInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.croquet.models.cascade.templates.WhileLoopInsertOperation.getInstance( blockStatementIndexPair );
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.WhileLoop rv = org.alice.ide.ast.NodeUtilities.createIncompleteWhileLoop();
-		rv.conditional.setValue( expressions[ 0 ] );
-		return rv;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
-		return org.alice.ide.croquet.models.ast.templates.WhileLoopMenuModel.getInstance( blockStatementIndexPair );
-	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
+//		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE };
+//	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+//		edu.cmu.cs.dennisc.alice.ast.WhileLoop rv = org.alice.ide.ast.NodeUtilities.createIncompleteWhileLoop();
+//		rv.conditional.setValue( expressions[ 0 ] );
+//		return rv;
+//	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
+//		return org.alice.ide.croquet.models.ast.templates.WhileLoopMenuModel.getInstance( blockStatementIndexPair );
+//	}
 }

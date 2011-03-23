@@ -50,28 +50,16 @@ public abstract class CascadeSeparator extends AbstractCascadeFillIn< Void, Void
 	public CascadeSeparator( java.util.UUID id ) {
 		super( id );
 	}
-	public boolean isSimple() {
-		//return separatorFillIn.getName() == null && separatorFillIn.getIcon() == null;
-		return false;
-	}
 	@Override
-	public CascadeBlank<Void>[] getBlanks() {
+	public final CascadeBlank<Void>[] getBlanks() {
 		return null;
 	}
 	@Override
-	public Void createValue( CascadeSeparatorContext context ) {
+	public final Void createValue( CascadeSeparatorContext context ) {
 		throw new AssertionError();
 	}
 	@Override
-	public Void getTransientValue( CascadeSeparatorContext context ) {
+	public final Void getTransientValue( CascadeSeparatorContext context ) {
 		throw new AssertionError();
-	}
-	@Override
-	public javax.swing.Icon getMenuItemIcon( CascadeSeparatorContext context ) {
-		return null;
-	}
-	@Override
-	public String getMenuItemText( CascadeSeparatorContext context ) {
-		return null;
 	}
 }

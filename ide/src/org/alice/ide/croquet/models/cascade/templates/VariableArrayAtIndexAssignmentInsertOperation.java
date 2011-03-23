@@ -41,44 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank< B > extends AbstractModel {
-	private java.util.List< AbstractCascadeFillIn< ? extends B,?,?,? > > ownees;
-	public CascadeBlank( java.util.UUID id ) {
-		super( Application.CASCADE_GROUP, id );
-	}
-	protected abstract void addFillIns();
-	public Iterable< AbstractCascadeFillIn< ? extends B,?,?,? > > getOwnees() {
-		if( this.ownees != null ) {
-			//pass
-		} else {
-			this.ownees = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			this.addFillIns();
-		}
-		return this.ownees;
-	}
-	public void addFillIn( CascadeFillIn< ? extends B,? > fillIn ) {
-		this.ownees.add( fillIn );
-	}
-	public void addMenu( CascadeMenu< ? extends B > menu ) {
-		this.ownees.add( menu );
-	}
-	public void addSeparator() {
-		this.addSeparator( CascadeLineSeparator.getInstance() );
-	}
-	public void addSeparator( CascadeSeparator separator ) {
-		//note: we drop generic information since separators are never selected 
-		this.ownees.add( (AbstractCascadeFillIn< ? extends B,?,?,? >)separator );
+public class VariableArrayAtIndexAssignmentInsertOperation extends ArrayAtIndexAssignmentInsertOperation {
+	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
+	public VariableArrayAtIndexAssignmentInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		super( java.util.UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, variable.getValueType() );
+		this.variable = variable;
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return false;
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable ); 
 	}
 }

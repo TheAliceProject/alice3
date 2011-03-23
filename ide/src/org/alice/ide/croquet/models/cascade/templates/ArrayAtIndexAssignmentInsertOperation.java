@@ -41,44 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank< B > extends AbstractModel {
-	private java.util.List< AbstractCascadeFillIn< ? extends B,?,?,? > > ownees;
-	public CascadeBlank( java.util.UUID id ) {
-		super( Application.CASCADE_GROUP, id );
+public abstract class ArrayAtIndexAssignmentInsertOperation extends StatementInsertOperation {
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > arrayType;
+	public ArrayAtIndexAssignmentInsertOperation( java.util.UUID id,  org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > arrayType ) {
+		super( id, blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, arrayType.getComponentType() ) );
+		this.arrayType = arrayType;
 	}
-	protected abstract void addFillIns();
-	public Iterable< AbstractCascadeFillIn< ? extends B,?,?,? > > getOwnees() {
-		if( this.ownees != null ) {
-			//pass
-		} else {
-			this.ownees = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			this.addFillIns();
-		}
-		return this.ownees;
-	}
-	public void addFillIn( CascadeFillIn< ? extends B,? > fillIn ) {
-		this.ownees.add( fillIn );
-	}
-	public void addMenu( CascadeMenu< ? extends B > menu ) {
-		this.ownees.add( menu );
-	}
-	public void addSeparator() {
-		this.addSeparator( CascadeLineSeparator.getInstance() );
-	}
-	public void addSeparator( CascadeSeparator separator ) {
-		//note: we drop generic information since separators are never selected 
-		this.ownees.add( (AbstractCascadeFillIn< ? extends B,?,?,? >)separator );
-	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression(); 
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return false;
+	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression(
+				this.arrayType.getComponentType(), 
+				new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
+						this.arrayType, 
+						this.createAccessExpression(), 
+						expressions[ 0 ]
+				), 
+				edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, 
+				expressions[ 1 ]
+		);
+		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( assignmentExpression );
 	}
 }

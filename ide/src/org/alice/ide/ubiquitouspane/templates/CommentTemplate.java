@@ -50,17 +50,21 @@ public class CommentTemplate extends CascadingUbiquitousStatementClassTemplate {
 		super( edu.cmu.cs.dennisc.alice.ast.Comment.class, org.alice.ide.ast.NodeUtilities.createComment() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-		return null;
+	protected edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > getInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.croquet.models.cascade.templates.CommentInsertOperation.getInstance( blockStatementIndexPair );
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.Comment rv = org.alice.ide.ast.NodeUtilities.createComment();
-		getIDE().setCommentThatWantsFocus( rv );
-		return rv;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
-		throw new AssertionError();
-	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
+//		return null;
+//	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+//		edu.cmu.cs.dennisc.alice.ast.Comment rv = org.alice.ide.ast.NodeUtilities.createComment();
+//		getIDE().setCommentThatWantsFocus( rv );
+//		return rv;
+//	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
+//		throw new AssertionError();
+//	}
 }

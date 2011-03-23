@@ -67,7 +67,6 @@ public class ParameterBlank extends ExpressionBlank {
 	@Override
 	protected void addFillIns() {
 		this.addSeparator( ParameterNameSeparator.getInstance( this.parameter ) );
-		this.addSeparator();
 		super.addFillIns();
 	}
 }

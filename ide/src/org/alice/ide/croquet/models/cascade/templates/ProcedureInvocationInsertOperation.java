@@ -41,44 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank< B > extends AbstractModel {
-	private java.util.List< AbstractCascadeFillIn< ? extends B,?,?,? > > ownees;
-	public CascadeBlank( java.util.UUID id ) {
-		super( Application.CASCADE_GROUP, id );
-	}
-	protected abstract void addFillIns();
-	public Iterable< AbstractCascadeFillIn< ? extends B,?,?,? > > getOwnees() {
-		if( this.ownees != null ) {
-			//pass
-		} else {
-			this.ownees = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			this.addFillIns();
+public class ProcedureInvocationInsertOperation extends ExpressionStatementInsertOperation {
+	private static org.alice.ide.croquet.models.cascade.ParameterBlank[] createParameterBlanks( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = method.getParameters();
+		org.alice.ide.croquet.models.cascade.ParameterBlank[] rv = new org.alice.ide.croquet.models.cascade.ParameterBlank[ parameters.size() ];
+		for( int i=0; i<rv.length; i++ ) {
+			rv[ i ] = org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( parameters.get( i ) );
 		}
-		return this.ownees;
+		return rv;
 	}
-	public void addFillIn( CascadeFillIn< ? extends B,? > fillIn ) {
-		this.ownees.add( fillIn );
-	}
-	public void addMenu( CascadeMenu< ? extends B > menu ) {
-		this.ownees.add( menu );
-	}
-	public void addSeparator() {
-		this.addSeparator( CascadeLineSeparator.getInstance() );
-	}
-	public void addSeparator( CascadeSeparator separator ) {
-		//note: we drop generic information since separators are never selected 
-		this.ownees.add( (AbstractCascadeFillIn< ? extends B,?,?,? >)separator );
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
+	public ProcedureInvocationInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "d8ea7244-f0eb-4c3a-a9fa-a92182ed221a" ), blockStatementIndexPair, createParameterBlanks( method ) );
+		this.method = method;
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return false;
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( instanceExpression, this.method, expressions );
 	}
 }

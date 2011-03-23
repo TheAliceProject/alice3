@@ -41,27 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.cascade.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeSimpleSeparator extends CascadeSeparator {
-	private static class SingletonHolder {
-		private static CascadeSimpleSeparator instance = new CascadeSimpleSeparator();
-	}
-	public static CascadeSimpleSeparator getInstance() {
-		return SingletonHolder.instance;
-	}
-	private CascadeSimpleSeparator() {
-		super( java.util.UUID.fromString( "5103f9f4-b85d-4c49-b384-5a9785d1d2ac" ) );
+public class VariableAssignmentStatementInsertOperation extends ExpressionStatementInsertOperation {
+	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
+	public VariableAssignmentStatementInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		super( java.util.UUID.fromString( "ae9cd20c-b158-4298-bcee-720810dcbef9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( variable.getValueType() ) );
+		this.variable = variable;
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy(CascadeSeparatorContext context) {
-		return null;
-	}
-	@Override
-	public boolean isSimple() {
-		return true;
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createVariableAssignment( this.variable, expressions[ 0 ] );
 	}
 }

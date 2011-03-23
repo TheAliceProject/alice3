@@ -46,39 +46,18 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank< B > extends AbstractModel {
-	private java.util.List< AbstractCascadeFillIn< ? extends B,?,?,? > > ownees;
-	public CascadeBlank( java.util.UUID id ) {
-		super( Application.CASCADE_GROUP, id );
+public class CascadeLineSeparator extends CascadeSeparator {
+	private static class SingletonHolder {
+		private static CascadeLineSeparator instance = new CascadeLineSeparator();
 	}
-	protected abstract void addFillIns();
-	public Iterable< AbstractCascadeFillIn< ? extends B,?,?,? > > getOwnees() {
-		if( this.ownees != null ) {
-			//pass
-		} else {
-			this.ownees = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			this.addFillIns();
-		}
-		return this.ownees;
+	public static CascadeLineSeparator getInstance() {
+		return SingletonHolder.instance;
 	}
-	public void addFillIn( CascadeFillIn< ? extends B,? > fillIn ) {
-		this.ownees.add( fillIn );
-	}
-	public void addMenu( CascadeMenu< ? extends B > menu ) {
-		this.ownees.add( menu );
-	}
-	public void addSeparator() {
-		this.addSeparator( CascadeLineSeparator.getInstance() );
-	}
-	public void addSeparator( CascadeSeparator separator ) {
-		//note: we drop generic information since separators are never selected 
-		this.ownees.add( (AbstractCascadeFillIn< ? extends B,?,?,? >)separator );
+	private CascadeLineSeparator() {
+		super( java.util.UUID.fromString( "5103f9f4-b85d-4c49-b384-5a9785d1d2ac" ) );
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return false;
+	protected javax.swing.JComponent createMenuItemIconProxy(CascadeSeparatorContext context) {
+		return null;
 	}
 }

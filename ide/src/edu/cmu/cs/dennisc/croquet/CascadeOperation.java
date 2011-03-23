@@ -138,27 +138,22 @@ abstract class RtNode< M extends Model, C extends ModelContext< M > > extends Rt
 
 class RtBlank< B > extends RtNode< CascadeBlank<B>, CascadeBlankContext<B> > {
 	private static <F, B, M extends AbstractCascadeFillIn< F,B,M,C >, C extends AbstractCascadeFillInContext< F,B,M,C > > boolean isEmptySeparator( RtAbstractFillIn<F,B,M,C> rtOwnee ) {
-		 if( rtOwnee.getModel() instanceof CascadeSeparator ) {
-			 CascadeSeparator separatorFillIn = (CascadeSeparator)rtOwnee.getModel();
-			 return separatorFillIn.isSimple();
-		 } else {
-			 return false;
-		 }
+		return rtOwnee instanceof RtSeparator && ((RtSeparator)rtOwnee).getMenuItem() == null;
 	}
 	private static <F, B, M extends AbstractCascadeFillIn< F,B,M,C >, C extends AbstractCascadeFillInContext< F,B,M,C > > void cleanUpSeparators( java.util.List<RtAbstractFillIn<F,B,M,C>> rtOwnees ) {
 		 java.util.ListIterator< RtAbstractFillIn<F,B,M,C> > listIterator = rtOwnees.listIterator();
-		 boolean isSeparatorAcceptable = false;
+		 boolean isLineSeparatorAcceptable = false;
 		 while( listIterator.hasNext() ) {
 			 RtAbstractFillIn<F,B,M,C> rtOwnee = listIterator.next();
 			 if( isEmptySeparator( rtOwnee ) ) {
-				 if( isSeparatorAcceptable ) {
+				 if( isLineSeparatorAcceptable ) {
 					//pass 
 				 } else {
 					 listIterator.remove();
 				 }
-				 isSeparatorAcceptable = false;
+				 isLineSeparatorAcceptable = false;
 			 } else {
-				 isSeparatorAcceptable = true;
+				 isLineSeparatorAcceptable = true;
 			 }
 		 }
 		 
@@ -204,9 +199,12 @@ class RtBlank< B > extends RtNode< CascadeBlank<B>, CascadeBlankContext<B> > {
 				} else if( ownee instanceof CascadeFillIn ) {
 					CascadeFillIn fillIn = (CascadeFillIn)ownee;
 					rtOwnee = new RtFillIn( fillIn );
-				} else if( ownee instanceof CascadeSeparator ) {
-					CascadeSeparator separator = (CascadeSeparator)ownee;
-					rtOwnee = new RtSeparator( separator );
+				} else if( ownee instanceof CascadeLineSeparator ) {
+					CascadeLineSeparator lineSeparator = (CascadeLineSeparator)ownee;
+					rtOwnee = new RtLineSeparator( lineSeparator );
+				} else if( ownee instanceof CascadeLabelSeparator ) {
+					CascadeLabelSeparator labelSeparator = (CascadeLabelSeparator)ownee;
+					rtOwnee = new RtLabelSeparator( labelSeparator );
 				} else {
 					rtOwnee = null;
 				}
@@ -415,21 +413,42 @@ class RtMenu< F > extends RtAbstractFillIn<F,F,CascadeMenu< F >,CascadeMenuConte
 	}
 }
 
-class RtSeparator extends RtAbstractFillIn {
+abstract class RtSeparator extends RtAbstractFillIn< Void, Void, CascadeSeparator, CascadeSeparatorContext > {
 	public RtSeparator( CascadeSeparator model ) {
 		super( model, ContextManager.createCascadeSeparatorContext( model ) );
 	}
 	@Override
-	public javax.swing.JComponent getMenuItem() {
+	public final RtBlank getNearestBlank() {
 		return null;
 	}
 	@Override
-	public RtBlank getNearestBlank() {
+	protected final RtNode getNextNode() {
 		return null;
 	}
 	@Override
-	protected RtNode getNextNode() {
-		return null;
+	public final javax.swing.JComponent getMenuItem() {
+		//todo
+		if( this.getModel().getMenuItemText( null ) != null || this.getModel().getMenuItemIcon( null ) != null ) {
+			return super.getMenuItem();
+		} else {
+			return null;
+		}
+	}
+}
+
+class RtLineSeparator extends RtSeparator {
+	public RtLineSeparator( CascadeLineSeparator model ) {
+		super( model );
+	}
+//	@Override
+//	public javax.swing.JComponent getMenuItem() {
+//		return null;
+//	}
+}
+
+class RtLabelSeparator extends RtSeparator {
+	public RtLabelSeparator( CascadeLabelSeparator model ) {
+		super( model );
 	}
 }
 
@@ -548,14 +567,6 @@ class RootFillIn<B> extends CascadeFillIn< B[],B > {
 	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( CascadeFillInContext< B[], B > context ) {
-		return null;
-	}
-	@Override
-	public String getMenuItemText( CascadeFillInContext< B[], B > context ) {
-		return null;
-	}
-	@Override
-	public javax.swing.Icon getMenuItemIcon( CascadeFillInContext< B[], B > context ) {
 		return null;
 	}
 	@Override

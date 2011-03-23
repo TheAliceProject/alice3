@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public interface Accessible extends Node {
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getValueType();
+	public AbstractType< ?, ?, ? > getValueType();
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
 	public String getValidName( Node context );
 	@Deprecated

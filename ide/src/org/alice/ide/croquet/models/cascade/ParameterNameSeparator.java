@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterNameSeparator extends edu.cmu.cs.dennisc.croquet.CascadeSeparator {
+public class ParameterNameSeparator extends edu.cmu.cs.dennisc.croquet.CascadeLabelSeparator {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, ParameterNameSeparator > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ParameterNameSeparator getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
 		assert parameter != null;
@@ -66,7 +66,7 @@ public class ParameterNameSeparator extends edu.cmu.cs.dennisc.croquet.CascadeSe
 	}
 	
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeSeparatorContext context ) {
-		return new javax.swing.JLabel( this.parameter.getRepr( javax.swing.JComponent.getDefaultLocale() ) );
+	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
+		return this.parameter.getRepr( locale );
 	}
 }

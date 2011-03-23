@@ -49,7 +49,6 @@ package org.alice.ide.memberseditor.templates;
 	public ExpressionStatementTemplate( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropModel ) {
 		super( dragAndDropModel, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
 	
 	private boolean isInitialized = false;
@@ -75,14 +74,14 @@ package org.alice.ide.memberseditor.templates;
 		this.addComponent( getIDE().getTemplatesFactory().createExpressionPane( incompleteExpression ) );
 	}
 
-	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.createExpression( expressions );
-		if( expression != null ) {
-			return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( createExpression( expressions ) );
-		} else {
-			return null;
-		}
-	}
+//	@Override
+//	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+//		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.createExpression( expressions );
+//		if( expression != null ) {
+//			return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( expression );
+//		} else {
+//			return null;
+//		}
+//	}
 	
 }

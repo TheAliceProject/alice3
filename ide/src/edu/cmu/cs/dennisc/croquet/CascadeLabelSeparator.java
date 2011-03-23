@@ -46,39 +46,32 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank< B > extends AbstractModel {
-	private java.util.List< AbstractCascadeFillIn< ? extends B,?,?,? > > ownees;
-	public CascadeBlank( java.util.UUID id ) {
-		super( Application.CASCADE_GROUP, id );
+public abstract class CascadeLabelSeparator extends CascadeSeparator {
+	public CascadeLabelSeparator( java.util.UUID id ) {
+		super( id );
 	}
-	protected abstract void addFillIns();
-	public Iterable< AbstractCascadeFillIn< ? extends B,?,?,? > > getOwnees() {
-		if( this.ownees != null ) {
-			//pass
+	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
+		return this.getDefaultLocalizedText();
+	}
+	@Override
+	protected final javax.swing.JComponent createMenuItemIconProxy(CascadeSeparatorContext context) {
+		String text = this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
+		//todo
+		if( text != null && text.length() > 0 && "null".equals( text )==false ) {
+			javax.swing.JLabel rv = new javax.swing.JLabel();
+			rv.setText( text + ":" );
+			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+			rv.setEnabled( false );
+//			rv.setVerticalTextPosition( javax.swing.JLabel.LEADING );
+//			rv.setSize( new java.awt.Dimension( 300, 200 ) );
+			return rv;
 		} else {
-			this.ownees = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			this.addFillIns();
+			return null;
 		}
-		return this.ownees;
-	}
-	public void addFillIn( CascadeFillIn< ? extends B,? > fillIn ) {
-		this.ownees.add( fillIn );
-	}
-	public void addMenu( CascadeMenu< ? extends B > menu ) {
-		this.ownees.add( menu );
-	}
-	public void addSeparator() {
-		this.addSeparator( CascadeLineSeparator.getInstance() );
-	}
-	public void addSeparator( CascadeSeparator separator ) {
-		//note: we drop generic information since separators are never selected 
-		this.ownees.add( (AbstractCascadeFillIn< ? extends B,?,?,? >)separator );
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return false;
+	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeSeparatorContext context ) {
+		return null;
+//		return this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
 	}
 }
