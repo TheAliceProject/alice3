@@ -365,7 +365,21 @@ abstract class RtAbstractFillIn<F,B, M extends AbstractCascadeFillIn<F,B,M,C>, C
 		}
 	};
 	
-	public javax.swing.JComponent getMenuItem() {
+	protected javax.swing.JMenuItem createMenuItem( AbstractCascadeFillIn< F,B,M,C > fillIn, boolean isLast ) {
+		javax.swing.JMenuItem rv;
+		if( isLast ) {
+			rv = new javax.swing.JMenuItem();
+			rv.addActionListener( this.actionListener );
+		} else {
+			javax.swing.JMenu menu = new javax.swing.JMenu();
+			menu.addMenuListener( this.menuListener );
+			rv = menu;
+		}
+		rv.setText( fillIn.getMenuItemText( this.getContext() ) );
+		rv.setIcon( fillIn.getMenuItemIcon( this.getContext() ) );
+		return rv;
+	}
+	public javax.swing.JMenuItem getMenuItem() {
 		AbstractCascadeFillIn< F,B,M,C > fillIn = this.getModel();
 		boolean isLast = this.isLast();
 		if( this.menuItem != null ) {
@@ -386,16 +400,7 @@ abstract class RtAbstractFillIn<F,B, M extends AbstractCascadeFillIn<F,B,M,C>, C
 		if( this.menuItem != null ) {
 			//pass
 		} else {
-			if( isLast ) {
-				this.menuItem = new javax.swing.JMenuItem();
-				this.menuItem.addActionListener( this.actionListener );
-			} else {
-				javax.swing.JMenu menu = new javax.swing.JMenu();
-				menu.addMenuListener( this.menuListener );
-				this.menuItem = menu;
-			}
-			this.menuItem.setText( fillIn.getMenuItemText( this.getContext() ) );
-			this.menuItem.setIcon( fillIn.getMenuItemIcon( this.getContext() ) );
+			this.menuItem = this.createMenuItem( fillIn, isLast );
 		}
 		return this.menuItem;
 	}
@@ -426,10 +431,11 @@ abstract class RtSeparator extends RtAbstractFillIn< Void, Void, CascadeSeparato
 		return null;
 	}
 	@Override
-	public final javax.swing.JComponent getMenuItem() {
-		//todo
-		if( this.getModel().getMenuItemText( null ) != null || this.getModel().getMenuItemIcon( null ) != null ) {
-			return super.getMenuItem();
+	protected javax.swing.JMenuItem createMenuItem( AbstractCascadeFillIn< Void, Void, CascadeSeparator, CascadeSeparatorContext > fillIn, boolean isLast ) {
+		if( fillIn.getMenuItemText( null ) != null || fillIn.getMenuItemIcon( null ) != null ) {
+			javax.swing.JMenuItem rv = super.createMenuItem( fillIn, isLast );
+			rv.setEnabled( false );
+			return rv;
 		} else {
 			return null;
 		}
