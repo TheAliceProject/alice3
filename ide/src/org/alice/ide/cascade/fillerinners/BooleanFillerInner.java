@@ -71,7 +71,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 
 
 		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextBoolean", Integer.class ) );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextBoolean" ) );
 			
 		blank.addSeparator();
 		blank.addFillIn( org.alice.ide.croquet.models.cascade.logicalcomplement.LogicalComplementOfPreviousExpressionFillIn.getInstance() );

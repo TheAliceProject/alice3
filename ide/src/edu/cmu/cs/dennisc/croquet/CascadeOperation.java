@@ -432,6 +432,7 @@ abstract class RtSeparator extends RtAbstractFillIn< Void, Void, CascadeSeparato
 	}
 	@Override
 	protected javax.swing.JMenuItem createMenuItem( AbstractCascadeFillIn< Void, Void, CascadeSeparator, CascadeSeparatorContext > fillIn, boolean isLast ) {
+		//todo
 		if( fillIn.getMenuItemText( null ) != null || fillIn.getMenuItemIcon( null ) != null ) {
 			javax.swing.JMenuItem rv = super.createMenuItem( fillIn, isLast );
 			rv.setEnabled( false );
