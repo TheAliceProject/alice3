@@ -41,21 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.cancels;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class CancelFillIn<F> extends edu.cmu.cs.dennisc.croquet.CascadeCancel< F > {
-	public CancelFillIn( java.util.UUID id ) {
-		super( id );
+public class CascadeCancelContext<F> extends AbstractCascadeFillInContext< F, Void, CascadeCancel<F>, CascadeCancelContext<F> > {
+	/*package-private*/ CascadeCancelContext( CascadeCancel<F> model, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( model, e, viewController );
 	}
-	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
-		return null;
+	public CascadeCancelContext( CascadeCancel<F> model ) {
+		this( model, null, null );
 	}
-	@Override
-	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
-		return this.getDefaultLocalizedText();
+	public CascadeCancelContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

@@ -41,21 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.cancels;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class CancelFillIn<F> extends edu.cmu.cs.dennisc.croquet.CascadeCancel< F > {
-	public CancelFillIn( java.util.UUID id ) {
+public abstract class CascadeCancel< F > extends AbstractCascadeFillIn< F, Void, CascadeCancel<F>, CascadeCancelContext<F> > {
+	public CascadeCancel( java.util.UUID id ) {
 		super( id );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
+	public edu.cmu.cs.dennisc.croquet.CascadeBlank< Void >[] getBlanks() {
 		return null;
 	}
 	@Override
-	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
-		return this.getDefaultLocalizedText();
+	public final boolean isAutomaticallySelectedWhenSoleOption() {
+		return false;
+	}
+	@Override
+	public final F createValue( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
+		throw new CancelException( this.getMenuItemText( context ) );
+	}
+	@Override
+	public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
+		return null;
 	}
 }
