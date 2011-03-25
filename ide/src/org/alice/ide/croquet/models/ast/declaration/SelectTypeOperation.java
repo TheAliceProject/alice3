@@ -73,7 +73,7 @@ public class SelectTypeOperation extends edu.cmu.cs.dennisc.croquet.ActionOperat
 	@Override
 	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		//typeProperty.setValue( this.type );
-		edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.AbstractDeclarationPane > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.AbstractDeclarationPane >)context.getParent().getParent();
+		edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.AbstractDeclarationPane > inputDialogOperationContext = context.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext.class );
 		org.alice.ide.declarationpanes.AbstractDeclarationPane createDeclarationPane = inputDialogOperationContext.getMainPanel();
 		createDeclarationPane.EPIC_HACK_setComponentType( this.type );
 		context.finish();

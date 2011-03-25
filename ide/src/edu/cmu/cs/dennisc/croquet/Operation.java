@@ -133,7 +133,12 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 			public void handleFinally() {
 				AbstractModelContext< ? > popContext = ContextManager.popContext();
 				if( popContext != null ) {
-					assert popContext == childContext : "actual: " + popContext.getClass() + " expected: " + childContext.getClass();
+					//assert popContext == childContext : "actual: " + popContext.getClass() + " expected: " + childContext.getClass();
+					if( popContext == childContext ) {
+						//pass
+					} else {
+						System.err.println( "actual: " + popContext.getClass() + " expected: " + childContext.getClass() );
+					}
 				} else {
 					System.err.println( "handleFinally popContext==null" );
 				}

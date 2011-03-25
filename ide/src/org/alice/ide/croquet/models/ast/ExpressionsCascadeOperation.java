@@ -41,24 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.templates;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementInsertOperation extends org.alice.ide.croquet.models.ast.ExpressionsCascadeOperation {
-	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
-	public StatementInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
-		super( id, blanks );
-		this.blockStatementIndexPair = blockStatementIndexPair;
-	}
-	public org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
-		return this.blockStatementIndexPair;
-	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement( values );
-		return new org.alice.ide.codeeditor.InsertStatementEdit( this.blockStatementIndexPair.getBlockStatement().statements, this.blockStatementIndexPair.getIndex(), statement );
+public abstract class ExpressionsCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	public ExpressionsCascadeOperation( java.util.UUID id, edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id, edu.cmu.cs.dennisc.alice.ast.Expression.class, blanks );
 	}
 }

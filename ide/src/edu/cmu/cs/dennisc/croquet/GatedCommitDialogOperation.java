@@ -63,7 +63,7 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 			this.dialog = dialog;
 		}
 		protected GatedCommitDialogOperation< ? > getGatedCommitDialogOperation( ActionOperationContext context ) {
-			return (GatedCommitDialogOperation< ? >)context.getParent().getModel();
+			return (GatedCommitDialogOperation< ? >)context.getFirstAncestorAssignableTo( GatedCommitDialogOperationContext.class ).getModel();
 		}
 	}
 

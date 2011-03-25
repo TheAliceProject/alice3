@@ -122,7 +122,9 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		if( this.typePane != null ) {
 			return this.typePane.getValueType();
 		} else {
-			throw new RuntimeException( "override" );
+			//assert false : this.getClass();
+			System.err.println( "todo: getValueType" );
+			return null;
 		}
 	}
 	//todo: reduce to protected

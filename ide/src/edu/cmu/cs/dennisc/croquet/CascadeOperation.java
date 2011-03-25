@@ -652,11 +652,11 @@ public abstract class CascadeOperation<B> extends Operation< CascadeOperationCon
 		return false;
 	}
 
-	protected abstract Edit< CascadeOperation< B > > createEdit( B[] values );
+	protected abstract Edit< ? extends CascadeOperation< B > > createEdit( B[] values );
 
 	/*package-private*/ void handleCompletion( CascadeOperationContext< B > context, PerformObserver performObserver, B[] values ) {
 		try {
-			Edit< CascadeOperation< B > > edit = this.createEdit( values );
+			Edit< ? extends CascadeOperation< B > > edit = this.createEdit( values );
 			context.commitAndInvokeDo( edit );
 		} finally {
 			performObserver.handleFinally();

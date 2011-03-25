@@ -91,7 +91,9 @@ public class CascadeManager {
 		return rv;
 	}
 	public static ExpressionBlank getBlankForType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
-		return getBlankForType( type.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = type.getFirstTypeEncounteredDeclaredInJava();
+		assert typeDeclaredInJava != null : type;
+		return getBlankForType( typeDeclaredInJava.getClassReflectionProxy().getReification() );
 	}
 
 	public static ExpressionBlank[] createBlanks( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >... types ) {

@@ -89,7 +89,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent ) throws edu.cmu.cs.dennisc.cheshire.CancelException {
 		boolean rv = super.isSpecificallyWhatWereLookingFor( retargetableMenuModelInitializationEvent );
 		if( rv ) {
-			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)retargetableMenuModelInitializationEvent.getParent();
+			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = retargetableMenuModelInitializationEvent.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.class );
 			edu.cmu.cs.dennisc.croquet.MenuModel menuModel = popupMenuOperationContext.getModel().getMenuModel();
 			if( menuModel instanceof edu.cmu.cs.dennisc.croquet.RetargetableMenuModel ) {
 				edu.cmu.cs.dennisc.croquet.RetargetableMenuModel retargetableMenuModel = (edu.cmu.cs.dennisc.croquet.RetargetableMenuModel)menuModel;

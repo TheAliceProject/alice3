@@ -41,24 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.templates;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementInsertOperation extends org.alice.ide.croquet.models.ast.ExpressionsCascadeOperation {
-	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
-	public StatementInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
-		super( id, blanks );
-		this.blockStatementIndexPair = blockStatementIndexPair;
+public abstract class GatedCommitDialogOperationContext<M extends GatedCommitDialogOperation> extends AbstractDialogOperationContext<M> {
+	/*package-private*/ GatedCommitDialogOperationContext( M model, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( model, e, viewController );
 	}
-	public org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
-		return this.blockStatementIndexPair;
+	public GatedCommitDialogOperationContext( M model ) {
+		this( model, null, null );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement( values );
-		return new org.alice.ide.codeeditor.InsertStatementEdit( this.blockStatementIndexPair.getBlockStatement().statements, this.blockStatementIndexPair.getIndex(), statement );
+	public GatedCommitDialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

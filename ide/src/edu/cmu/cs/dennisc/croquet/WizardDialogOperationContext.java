@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class WizardDialogOperationContext extends AbstractDialogOperationContext<WizardDialogOperation> {
+public class WizardDialogOperationContext extends GatedCommitDialogOperationContext<WizardDialogOperation> {
 	/*package-private*/ WizardDialogOperationContext( WizardDialogOperation wizardDialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( wizardDialogOperation, e, viewController );
 	}

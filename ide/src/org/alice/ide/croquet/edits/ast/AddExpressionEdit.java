@@ -45,54 +45,57 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class AddExpressionEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.AddExpressionMenuModel > {
-	public static class AddExpressionEditMemento extends Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> {
+public class AddExpressionEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< org.alice.ide.croquet.models.ast.AddExpressionCascadeOperation > {
+	public static class AddExpressionEditMemento extends Memento<org.alice.ide.croquet.models.ast.AddExpressionCascadeOperation> {
+		private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
 		private edu.cmu.cs.dennisc.alice.ast.Expression expression;
 		public AddExpressionEditMemento( AddExpressionEdit edit ) {
 			super( edit );
+			this.expressionListProperty = edit.expressionListProperty;
 			this.expression = edit.expression;
 		}
 		public AddExpressionEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
 		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > createEdit() {
-			return new AddExpressionEdit( this );
-		}
-		@Override
 		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			throw new RuntimeException( "todo" );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: decode expressionListProperty" );
+			this.expression = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).decode( binaryDecoder );
 		}
 		@Override
 		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			throw new RuntimeException( "todo" );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: encode expressionListProperty" );
+			org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).encode( binaryEncoder, this.expression );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.AddExpressionCascadeOperation > createEdit() {
+			return new AddExpressionEdit( this );
 		}
 	}
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
+	private final edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
+	private final edu.cmu.cs.dennisc.alice.ast.Expression expression;
 	private transient int index;
-	public AddExpressionEdit( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public AddExpressionEdit( edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		this.expressionListProperty = expressionListProperty;
 		this.expression = expression;
 	}
 	private AddExpressionEdit( AddExpressionEditMemento memento ) {
 		super( memento );
+		this.expressionListProperty = memento.expressionListProperty;
 		this.expression = memento.expression;
 	}
 	@Override
-	public Memento< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > createMemento() {
+	public Memento< org.alice.ide.croquet.models.ast.AddExpressionCascadeOperation > createMemento() {
 		return new AddExpressionEditMemento( this );
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.AddExpressionMenuModel popupMenuOperation = this.getCascadingRoot();
-		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
-		this.index = expressionListProperty.size();
-		expressionListProperty.add( this.expression );
+		this.index = this.expressionListProperty.size();
+		this.expressionListProperty.add( this.expression );
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.AddExpressionMenuModel popupMenuOperation = this.getCascadingRoot();
-		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
-		expressionListProperty.remove( this.index );
+		this.expressionListProperty.remove( this.index );
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
