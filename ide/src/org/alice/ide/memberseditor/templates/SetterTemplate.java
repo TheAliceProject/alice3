@@ -60,26 +60,8 @@ package org.alice.ide.memberseditor.templates;
 		return org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( this.field );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > getInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		//todo
 		return new org.alice.ide.croquet.models.cascade.templates.SetterInsertOperation( blockStatementIndexPair, this.field );
 	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { this.field.getDesiredValueType() };
-//	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-//		edu.cmu.cs.dennisc.alice.ast.AssignmentExpression rv = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression(
-//			this.field.getValueType(), 
-//			new edu.cmu.cs.dennisc.alice.ast.FieldAccess( getIDE().createInstanceExpression(), this.field ),
-//			edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN,
-//			expressions[ 0 ] 
-//		);
-//		return rv;
-//	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
-//		return org.alice.ide.croquet.models.ast.templates.SetterMenuModel.getInstance( blockStatementIndexPair, this.field );
-//	}
 }

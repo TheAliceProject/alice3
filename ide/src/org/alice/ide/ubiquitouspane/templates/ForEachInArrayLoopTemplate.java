@@ -50,20 +50,7 @@ public class ForEachInArrayLoopTemplate extends CascadingUbiquitousStatementClas
 		super( edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteForEachInArrayLoop() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > getInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.cascade.templates.ForEachInArrayInsertOperation.getInstance( blockStatementIndexPair );
 	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object[].class ) };
-//	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-//		assert expressions.length > 0;
-//		if( expressions[ 0 ] != null ) {
-//			return org.alice.ide.ast.NodeUtilities.createForEachInArrayLoop( expressions[ 0 ] );
-//		} else {
-//			return null;
-//		}
-//	}
 }

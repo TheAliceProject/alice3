@@ -60,8 +60,8 @@ public class LocalNameValidator extends TransientNameValidator {
 	public LocalNameValidator( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
 		super( local, getCode( local ), getBlock( local ) );
 	}
-	public LocalNameValidator( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
-		super( null, getCode( block ), block );
+	public LocalNameValidator( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( null, getCode( blockStatementIndexPair.getBlockStatement() ), blockStatementIndexPair.getBlockStatement() );
 	}
 	
 }

@@ -143,10 +143,4 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 //		org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
 //		return this.createCascadeOperation( dragAndDropContext, blockStatementIndexPair, types );
 //	}
-	protected abstract edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > getInsertOperation( final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair );
-	@Override
-	public final edu.cmu.cs.dennisc.croquet.Operation< ? > createDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
-		org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
-		return this.getInsertOperation( blockStatementIndexPair );
-	}
 }

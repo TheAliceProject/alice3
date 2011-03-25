@@ -50,31 +50,7 @@ public class ReturnStatementTemplate extends CascadingUbiquitousStatementClassTe
 		super( edu.cmu.cs.dennisc.alice.ast.ReturnStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteReturnStatement( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > getInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.cascade.templates.ReturnStatementInsertOperation.getInstance( blockStatementIndexPair );
 	}
-//	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getReturnType() {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = getIDE().getFocusedCode();
-//		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-//			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
-//			if( method.isFunction() ) {
-//				return method.returnType.getValue();
-//			}
-//		}
-//		return null;
-//	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> returnType = this.getReturnType();
-//		if( returnType != null ) {
-//			return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { returnType };
-//		} else {
-//			return null;
-//		}
-//	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-//		edu.cmu.cs.dennisc.alice.ast.ReturnStatement rv = org.alice.ide.ast.NodeUtilities.createReturnStatement( this.getReturnType(), expressions[ 0 ] );
-//		return rv;
-//	}
 }

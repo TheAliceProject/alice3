@@ -59,12 +59,8 @@ public class VariableArrayAssignmentStatementTemplate extends ArrayAssignmentSta
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getTransientComponentType() {
 		return this.variable.valueType.getValue().getComponentType();
 	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-//		return org.alice.ide.ast.NodeUtilities.createVariableArrayAssignmentStatement( this.variable, expressions[ 0 ], expressions[ 1 ] );
-//	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > getInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public edu.cmu.cs.dennisc.croquet.Operation<?> getDropOperation(edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair) {
 		return new org.alice.ide.croquet.models.cascade.templates.VariableArrayAtIndexAssignmentInsertOperation( blockStatementIndexPair, this.variable );
 	}
 }

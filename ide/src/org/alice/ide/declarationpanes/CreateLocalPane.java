@@ -56,9 +56,8 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 		return true;
 	}
 
-	public CreateLocalPane( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
-		super( new org.alice.ide.name.validators.LocalNameValidator( block ) );
-		assert block != null;
+	public CreateLocalPane( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair ) );
 		this.setBackgroundColor( getIDE().getTheme().getLocalColor() );
 	}
 

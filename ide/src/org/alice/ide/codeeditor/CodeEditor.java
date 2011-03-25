@@ -467,7 +467,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 						blockStatement = null;
 						//index = -1;
 					}
-					rv = statementTemplate.createDropOperation( context, blockStatement, index );
+					rv = statementTemplate.getDropOperation( context, blockStatement, index );
 				}
 			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
 				if( this.currentUnder != null ) {

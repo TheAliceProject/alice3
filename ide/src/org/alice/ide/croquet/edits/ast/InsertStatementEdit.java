@@ -102,6 +102,11 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 		this.statement = statement;
 		this.initialExpressions = initialExpressions;
 	}
+	@Deprecated
+	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		//todo
+		this( blockStatement, index, statement, null );
+	}
 	private InsertStatementEdit( InsertStatementEditMemento memento ) {
 		super( memento );
 		this.blockStatement = memento.blockStatement;

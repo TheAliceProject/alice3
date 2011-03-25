@@ -42,8 +42,6 @@
  */
 package org.alice.ide.common;
 
-import org.alice.ide.templates.CascadingExpressionsStatementTemplate;
-
 /**
  * @author Dennis Cosgrove
  */

@@ -50,19 +50,7 @@ public class DoInOrderTemplate extends CascadingUbiquitousStatementClassTemplate
 		super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class, org.alice.ide.ast.NodeUtilities.createDoInOrder() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > getInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.cascade.templates.DoInOrderInsertOperation.getInstance( blockStatementIndexPair );
 	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		return null;
-//	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-//		return org.alice.ide.ast.NodeUtilities.createDoInOrder();
-//	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
-//		throw new AssertionError();
-//	}
 }

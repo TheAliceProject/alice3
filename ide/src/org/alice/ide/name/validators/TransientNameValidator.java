@@ -44,8 +44,8 @@
 package org.alice.ide.name.validators;
 
 public abstract class TransientNameValidator extends NodeNameValidator {
-	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code;
-	private edu.cmu.cs.dennisc.alice.ast.BlockStatement block;
+	private final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code;
+	private final edu.cmu.cs.dennisc.alice.ast.BlockStatement block;
 	public TransientNameValidator( edu.cmu.cs.dennisc.alice.ast.Node node, edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
 		super( node );
 //		assert code != null;
