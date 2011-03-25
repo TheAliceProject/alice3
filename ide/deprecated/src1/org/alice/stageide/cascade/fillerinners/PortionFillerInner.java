@@ -42,35 +42,20 @@
  */
 package org.alice.stageide.cascade.fillerinners;
 
+//todo: extend NumberFillerInner
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceFillerInner extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
-	public AudioSourceFillerInner() {
-		super( org.alice.apis.moveandturn.AudioSource.class );
+public class PortionFillerInner extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
+	public PortionFillerInner() {
+		super( org.alice.apis.moveandturn.Portion.class );
 	}
 	@Override
-	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
-//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-//		Iterable< org.alice.virtualmachine.Resource > resources = ide.getResources();
-//		assert resources != null;
-//		synchronized( resources ) {
-//			for( org.alice.virtualmachine.Resource resource : resources ) {
-//				if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
-//					org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
-//					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.resources.AudioResource.class );
-//					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, audioResource );
-//					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
-//					edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
-//					blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 ) ) ); 
-//				}
-//			}
-//		}
-//		blank.addSeparator();
-//		blank.addFillIn( new org.alice.stageide.cascade.customfillin.ImportNewAudioSourceFillIn() );
-//		if( ide.getCascadeManager().isPreviousExpressionSet() ) {
-//			blank.addSeparator();
-//			blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomAudioSourceFillIn() );
-//		}
+	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+		for( double d : new double[] { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 } ) {
+			blank.addFillIn( org.alice.stageide.croquet.models.cascade.values.PortionValueFillIn.getInstance( d ) ); 
+		}
+		blank.addSeparator();
+		blank.addFillIn( org.alice.stageide.croquet.models.cascade.custom.CustomPortionFillIn.getInstance() );
 	}
 }

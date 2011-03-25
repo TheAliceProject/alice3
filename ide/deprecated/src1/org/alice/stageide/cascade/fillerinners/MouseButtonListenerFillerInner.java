@@ -40,38 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade.fillerinners;
+package org.alice.stageide.cascade.fillerinners;
 
-/**
- * @author Dennis Cosgrove
- */
-public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, ConstantsOwningFillerInner > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ConstantsOwningFillerInner getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		synchronized( map ) {
-			ConstantsOwningFillerInner rv = map.get( type );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ConstantsOwningFillerInner( type );
-				map.put( type, rv );
-			}
-			return rv;
-		}
-	}
-	public static ConstantsOwningFillerInner getInstance( Class<?> cls ) {
-		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
-	}
-	private ConstantsOwningFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+public class MouseButtonListenerFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	public MouseButtonListenerFillerInner() {
+		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonListener.class ), edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class );
 	}
 	@Override
-	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getType();
- 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
- 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
- 	 			blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
- 			}
- 		}
+	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+		blank.addFillIn( org.alice.stageide.croquet.models.cascade.adapters.MouseButtonAdapterFillIn.getInstance() );
 	}
 }

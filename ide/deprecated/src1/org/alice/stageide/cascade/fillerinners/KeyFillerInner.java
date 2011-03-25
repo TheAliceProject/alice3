@@ -42,19 +42,22 @@
  */
 package org.alice.stageide.cascade.fillerinners;
 
+import org.alice.apis.moveandturn.Key;
+
 /**
  * @author Dennis Cosgrove
  */
-public class VolumeLevelFillerInner extends org.alice.ide.cascade.fillerinners.AbstractNumberFillerInner {
-	public VolumeLevelFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.VolumeLevel.class ), edu.cmu.cs.dennisc.alice.ast.DoubleLiteral.class );
+public class KeyFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	public KeyFillerInner() {
+		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Key.class ), edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 	}
 	@Override
-	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
-		for( double d : new double[] { 0.0, 0.25, 0.5, 1.0, 2.0 } ) {
-			blank.addFillIn( org.alice.stageide.croquet.models.cascade.values.VolumeLevelValueFillIn.getInstance( d ) ); 
-		}
+	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.LettersAThroughMKeyCascadeMenu.getInstance() );
+		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.LettersNThroughZKeyCascadeMenu.getInstance() );
+		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.DigitsKeyCascadeMenu.getInstance() );
+		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.ArrowsKeyCascadeMenu.getInstance() );
 		blank.addSeparator();
-		blank.addFillIn( org.alice.stageide.croquet.models.cascade.custom.CustomVolumeLevelFillIn.getInstance() );
+		blank.addFillIn( org.alice.stageide.croquet.models.cascade.custom.CustomKeyFillIn.getInstance() );
 	}
 }

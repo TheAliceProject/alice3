@@ -51,7 +51,7 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.DoubleLiteral.class );
 	}
 	@Override
-	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
+	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
 //		System.err.println( "todo: addFillIns isTop" );
 //		final boolean isTop = false;
 //		if( isTop && previousExpression != null ) {

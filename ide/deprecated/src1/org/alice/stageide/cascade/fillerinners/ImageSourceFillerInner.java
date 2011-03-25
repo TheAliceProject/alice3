@@ -42,22 +42,31 @@
  */
 package org.alice.stageide.cascade.fillerinners;
 
-import org.alice.apis.moveandturn.Key;
-
 /**
  * @author Dennis Cosgrove
  */
-public class KeyFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public KeyFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Key.class ), edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+public class ImageSourceFillerInner extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
+	public ImageSourceFillerInner() {
+		super( org.alice.apis.moveandturn.ImageSource.class );
 	}
 	@Override
-	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
-		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.LettersAThroughMKeyCascadeMenu.getInstance() );
-		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.LettersNThroughZKeyCascadeMenu.getInstance() );
-		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.DigitsKeyCascadeMenu.getInstance() );
-		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.ArrowsKeyCascadeMenu.getInstance() );
-		blank.addSeparator();
-		blank.addFillIn( org.alice.stageide.croquet.models.cascade.custom.CustomKeyFillIn.getInstance() );
+	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//		Iterable< org.alice.virtualmachine.Resource > resources = ide.getResources();
+//		assert resources != null;
+//		synchronized( resources ) {
+//			for( org.alice.virtualmachine.Resource resource : resources ) {
+//				if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
+//					org.alice.virtualmachine.resources.ImageResource imageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
+//					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
+//					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.ImageResource.class, imageResource );
+//					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
+//					edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
+//					blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 ) ) ); 
+//				}
+//			}
+//		}
+//		blank.addSeparator();
+//		blank.addFillIn( new org.alice.stageide.cascade.customfillin.ImportNewImageSourceFillIn() );
 	}
 }

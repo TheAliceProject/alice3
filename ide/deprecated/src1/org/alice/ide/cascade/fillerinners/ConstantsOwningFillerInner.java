@@ -45,17 +45,33 @@ package org.alice.ide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class StringFillerInner extends ExpressionFillerInner {
-	public StringFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), edu.cmu.cs.dennisc.alice.ast.StringLiteral.class );
+public class ConstantsOwningFillerInner extends ExpressionFillerInner {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, ConstantsOwningFillerInner > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ConstantsOwningFillerInner getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		synchronized( map ) {
+			ConstantsOwningFillerInner rv = map.get( type );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ConstantsOwningFillerInner( type );
+				map.put( type, rv );
+			}
+			return rv;
+		}
+	}
+	public static ConstantsOwningFillerInner getInstance( Class<?> cls ) {
+		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+	}
+	private ConstantsOwningFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 	}
 	@Override
-	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( "hello" ) );
-		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomStringLiteralFillIn.getInstance() );
-		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.string.StringConcatinationRightOperandOnlyFillIn.getInstance() );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn.getInstance() );
+	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getType();
+ 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
+ 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
+ 	 			blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
+ 			}
+ 		}
 	}
 }

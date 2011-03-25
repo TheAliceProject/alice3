@@ -42,20 +42,42 @@
  */
 package org.alice.stageide.cascade.fillerinners;
 
-//todo: extend NumberFillerInner
 /**
  * @author Dennis Cosgrove
  */
-public class PortionFillerInner extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
-	public PortionFillerInner() {
-		super( org.alice.apis.moveandturn.Portion.class );
+public abstract class IngredientFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	public IngredientFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 	}
+	protected abstract Class<?>[] getClses( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender );
 	@Override
-	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
-		for( double d : new double[] { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 } ) {
-			blank.addFillIn( org.alice.stageide.croquet.models.cascade.values.PortionValueFillIn.getInstance( d ) ); 
-		}
-		blank.addSeparator();
-		blank.addFillIn( org.alice.stageide.croquet.models.cascade.custom.CustomPortionFillIn.getInstance() );
+	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+//		org.alice.apis.stage.LifeStage[] lifeStages = { org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.LifeStage.CHILD }; 
+//		for( final org.alice.apis.stage.LifeStage lifeStage : lifeStages ) {
+//			for( final org.alice.apis.stage.Gender gender : org.alice.apis.stage.Gender.values() ) {
+//				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( gender.name().toLowerCase() + " " + lifeStage.name().toLowerCase() ) {
+//					@Override
+//					protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+//						for( final Class<?> cls : getClses( lifeStage, gender ) ) {
+//							blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( cls.getSimpleName() ) {
+//								@Override
+//								protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+//									edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls );
+//							 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
+//							 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
+//							 				IngredientFillerInner.this.addExpressionFillIn( blank, new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
+//							 			}
+//							 		}
+//								}
+//								@Override
+//								protected javax.swing.JComponent createMenuProxy() {
+//									return org.alice.ide.common.TypeComponent.createInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) ).getAwtComponent();
+//								}
+//							} );
+//						}
+//					}
+//				} );
+//			}
+//		}
 	}
 }

@@ -40,23 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.cascade.fillerinners;
+package org.alice.ide.cascade.fillerinners;
 
-
-//todo: extend NumberFillerInner
 /**
  * @author Dennis Cosgrove
  */
-public class AngleFillerInner extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
-	public AngleFillerInner() {
-		super( org.alice.apis.moveandturn.AngleInRevolutions.class );
+public class StringFillerInner extends ExpressionFillerInner {
+	public StringFillerInner() {
+		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), edu.cmu.cs.dennisc.alice.ast.StringLiteral.class );
 	}
 	@Override
-	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
-		for( double d : new double[] { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0 } ) {
-			blank.addFillIn( org.alice.stageide.croquet.models.cascade.values.AngleValueFillIn.getInstance( d ) ); 
-		}
+	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( "hello" ) );
 		blank.addSeparator();
-		blank.addFillIn( org.alice.stageide.croquet.models.cascade.custom.CustomAngleFillIn.getInstance() );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomStringLiteralFillIn.getInstance() );
+		blank.addSeparator();
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.string.StringConcatinationRightOperandOnlyFillIn.getInstance() );
+		blank.addFillIn( org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn.getInstance() );
 	}
 }

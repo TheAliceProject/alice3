@@ -258,7 +258,7 @@ public abstract class CascadeManager {
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> interfaceType ) {
 		return null;
 	}
-	protected void addFillInsForObjectType( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
+	protected void addFillInsForObjectType( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
 		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomStringLiteralFillIn.getInstance() );
 		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomDoubleLiteralFillIn.getInstance() );
 		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomIntegerLiteralFillIn.getInstance() );
@@ -291,7 +291,7 @@ public abstract class CascadeManager {
 		return true;
 	}
 	
-	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
 			blank.addFillIn( org.alice.ide.croquet.models.cascade.PreviousExpressionItselfFillIn.getInstance( type ) );
 			blank.addSeparator();

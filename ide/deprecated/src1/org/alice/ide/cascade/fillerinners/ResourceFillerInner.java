@@ -40,14 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.cascade.fillerinners;
+package org.alice.ide.cascade.fillerinners;
 
-public class KeyListenerFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public KeyListenerFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyListener.class ), edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class );
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class ResourceFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	public ResourceFillerInner( Class< ? extends org.alice.virtualmachine.Resource> cls ) {
+		super( cls, edu.cmu.cs.dennisc.alice.ast.ResourceExpression.class );
 	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.ResourceExpression createResourceExpressionIfAppropriate( org.alice.virtualmachine.Resource resource );
+	protected abstract edu.cmu.cs.dennisc.cascade.FillIn< ? > createImportNewResourceFillIn();
 	@Override
-	public void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank ) {
-		blank.addFillIn( org.alice.stageide.croquet.models.cascade.adapters.KeyAdapterFillIn.getInstance() );
+	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//		java.util.Set< org.alice.virtualmachine.Resource > resources = ide.getResources();
+//		if( resources != null && resources.isEmpty() == false ) {
+//			synchronized( resources ) {
+//				for( org.alice.virtualmachine.Resource resource : resources ) {
+//					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = this.createResourceExpressionIfAppropriate( resource );
+//					if( resourceExpression != null ) {
+//						blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( resourceExpression ) ); 
+//					}
+//				}
+//			}
+//			blank.addSeparator();
+//		}
+//		blank.addFillIn( this.createImportNewResourceFillIn() );
 	}
 }

@@ -85,5 +85,5 @@ public abstract class ExpressionFillerInner {
 //		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( expression ) ); 
 //	}
 	
-	public abstract void addFillIns( org.alice.ide.croquet.models.cascade.ExpressionBlank blank );
+	public abstract void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank );
 }
