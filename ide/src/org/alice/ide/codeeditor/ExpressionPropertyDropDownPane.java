@@ -42,8 +42,6 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -114,7 +112,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 //				}
 //			}
 			
-			rv = expressionCreatorPane.createDropOperation( context, this.expressionProperty );
+			rv = expressionCreatorPane.getDropOperation( context, this.expressionProperty );
 		} else {
 			rv = null;
 		}

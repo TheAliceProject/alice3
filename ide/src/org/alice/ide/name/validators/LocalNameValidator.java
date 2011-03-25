@@ -63,5 +63,4 @@ public class LocalNameValidator extends TransientNameValidator {
 	public LocalNameValidator( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( null, getCode( blockStatementIndexPair.getBlockStatement() ), blockStatementIndexPair.getBlockStatement() );
 	}
-	
 }
