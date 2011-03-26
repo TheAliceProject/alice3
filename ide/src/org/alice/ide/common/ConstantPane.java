@@ -51,11 +51,7 @@ public class ConstantPane extends LocalPane< edu.cmu.cs.dennisc.alice.ast.Consta
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.ConstantAccess.class ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-		return this.getTransient().valueType.getValue();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.getTransient() );
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		return org.alice.ide.croquet.models.ast.expression.ConstantAccessOperation.getInstance( this.getTransient(), expressionProperty );
 	}
 }

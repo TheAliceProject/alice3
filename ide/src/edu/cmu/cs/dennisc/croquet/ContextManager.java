@@ -61,7 +61,12 @@ public class ContextManager {
 	}
 		
 	/*package-private*/ static void popParentContextWhenChildContextIsPopped( AbstractModelContext< ? > parentContext, AbstractModelContext< ? > childContext ) {
-		assert childContext.getParent() == parentContext;
+		//assert childContext.getParent() == parentContext;
+		if( childContext.getParent() == parentContext ) {
+			//pass
+		} else {
+			System.err.println( "childContext.getParent() == parentContext" );
+		}
 		mapChildContextPendingParentContext.put( childContext, parentContext );
 	}
 

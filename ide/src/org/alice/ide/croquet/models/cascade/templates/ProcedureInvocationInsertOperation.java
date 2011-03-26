@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade.templates;
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationInsertOperation extends ExpressionStatementInsertOperation {
-	private static org.alice.ide.croquet.models.cascade.ParameterBlank[] createParameterBlanks( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	public static org.alice.ide.croquet.models.cascade.ParameterBlank[] createParameterBlanks( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = method.getParameters();
 		org.alice.ide.croquet.models.cascade.ParameterBlank[] rv = new org.alice.ide.croquet.models.cascade.ParameterBlank[ parameters.size() ];
 		for( int i=0; i<rv.length; i++ ) {

@@ -40,46 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+
+package org.alice.ide.croquet.models.ast.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class AccessArrayAtIndexTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public AccessArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		this.field = field;
-		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
-			this.setPopupMenuOperation( new FieldPopupOperation( fieldInAlice ).getPopupMenuOperation() );
-		}
+public abstract class ArrayAccessOperation extends ExpressionPropertyOperation {
+	public ArrayAccessOperation( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( id, expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( Integer.class ) );
 	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getArrayType();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression();
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
-				field.getValueType(), 
-				org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ), 
-				new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) 
-		);
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-		return field.getValueType().getComponentType();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getBlankExpressionTypes() {
-		return new edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE };
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.ArrayAccess rv = new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
-				field.getValueType(), 
-				org.alice.ide.ast.NodeUtilities.createFieldAccess( 
-						getIDE().createInstanceExpression(), 
-						field 
-				), 
-				expressions[ 0 ]
-		);
-		return rv;
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		return new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( this.getArrayType(), this.createAccessExpression(), expressions[ 0 ] );
 	}
 }

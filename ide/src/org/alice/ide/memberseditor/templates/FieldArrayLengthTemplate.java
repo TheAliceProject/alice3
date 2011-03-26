@@ -40,18 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.memberseditor.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends LocalPane<edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice> {
-	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		super( variable );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
+/*package-private*/ class FieldArrayLengthTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	public FieldArrayLengthTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		this.field = field;
+		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
+			this.setPopupMenuOperation( new FieldPopupOperation( fieldInAlice ).getPopupMenuOperation() );
+		}
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.ArrayLength( org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ) );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE;
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.expression.VariableAccessOperation.getInstance( this.getTransient(), expressionProperty );
+		return org.alice.ide.croquet.models.ast.expression.FieldArrayLengthOperation.getInstance( this.field, expressionProperty );
 	}
 }

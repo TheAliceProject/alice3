@@ -40,18 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.croquet.models.ast.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends LocalPane<edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice> {
-	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		super( variable );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
+public class FieldArrayLengthOperation extends ArrayLengthOperation {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FieldArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized FieldArrayLengthOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		assert field != null;
+		assert expressionProperty != null;
+		FieldArrayLengthOperation rv = map.get( field, expressionProperty );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FieldArrayLengthOperation( field, expressionProperty );
+			map.put( field, expressionProperty, rv );
+		}
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	private FieldArrayLengthOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "52ff6677-3ebe-44ba-8869-b1b2761ead6f" ), expressionProperty );
+		this.field = field;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.expression.VariableAccessOperation.getInstance( this.getTransient(), expressionProperty );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return org.alice.ide.ast.NodeUtilities.createFieldAccess( 
+				org.alice.ide.IDE.getSingleton().createInstanceExpression(), 
+				this.field
+		);
 	}
 }

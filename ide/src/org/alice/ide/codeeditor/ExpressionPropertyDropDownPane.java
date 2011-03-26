@@ -77,7 +77,9 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 //	}
 
 	public edu.cmu.cs.dennisc.croquet.CodableResolver< ExpressionPropertyDropDownPane > getCodableResolver() {
-		throw new RuntimeException( "todo" );
+		//todo:
+		System.err.println( "todo: getCodableResolver" );
+		return null;
 	}
 	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.croquet.DropSite potentialDropSite ) {
 		return this;

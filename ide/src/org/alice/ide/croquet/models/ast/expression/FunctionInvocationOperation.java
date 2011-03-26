@@ -40,18 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.croquet.models.ast.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends LocalPane<edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice> {
-	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		super( variable );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
+public class FunctionInvocationOperation extends ExpressionPropertyOperation {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FunctionInvocationOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized FunctionInvocationOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		assert method != null;
+		assert expressionProperty != null;
+		FunctionInvocationOperation rv = map.get( method, expressionProperty );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FunctionInvocationOperation( method, expressionProperty );
+			map.put( method, expressionProperty, rv );
+		}
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
+	private FunctionInvocationOperation( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "a205ee93-2f1a-4dc0-8aaf-60f1f3310643" ), expressionProperty, org.alice.ide.croquet.models.cascade.templates.ProcedureInvocationInsertOperation.createParameterBlanks( method ) );
+		this.method = method;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.expression.VariableAccessOperation.getInstance( this.getTransient(), expressionProperty );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( org.alice.ide.IDE.getSingleton().createInstanceExpression(), this.method, expressions );
 	}
 }

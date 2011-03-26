@@ -40,18 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.croquet.models.ast.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends LocalPane<edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice> {
-	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		super( variable );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
+public class VariableArrayAccessOperation extends ArrayAccessOperation {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, VariableArrayAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized VariableArrayAccessOperation getInstance( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		assert variable != null;
+		assert expressionProperty != null;
+		VariableArrayAccessOperation rv = map.get( variable, expressionProperty );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new VariableArrayAccessOperation( variable, expressionProperty );
+			map.put( variable, expressionProperty, rv );
+		}
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
+	private VariableArrayAccessOperation( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "93e8c105-e813-4000-ac8c-78a0d2d81d18" ), expressionProperty );
+		this.variable = variable;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.expression.VariableAccessOperation.getInstance( this.getTransient(), expressionProperty );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
+		return this.variable.getValueType();
 	}
 }

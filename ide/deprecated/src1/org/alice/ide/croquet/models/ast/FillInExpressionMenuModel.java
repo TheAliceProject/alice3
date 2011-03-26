@@ -60,7 +60,10 @@ public abstract class FillInExpressionMenuModel extends FillInSingleExpressionMe
 		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = this.getExpressionProperty();
 		return expressionProperty.getExpressionType();
 	}
-	public org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+
+	//note: changed when moved to deprecated source
+	public edu.cmu.cs.dennisc.croquet.Edit createEdit( java.lang.Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+//	public org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		return new org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit( this.getPreviousExpression(), (edu.cmu.cs.dennisc.alice.ast.Expression)value );
 	}
 }

@@ -40,18 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.croquet.models.ast.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends LocalPane<edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice> {
-	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		super( variable );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
+public class ConstantArrayLengthOperation extends ArrayLengthOperation {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ConstantArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ConstantArrayLengthOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		assert constant != null;
+		assert expressionProperty != null;
+		ConstantArrayLengthOperation rv = map.get( constant, expressionProperty );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ConstantArrayLengthOperation( constant, expressionProperty );
+			map.put( constant, expressionProperty, rv );
+		}
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant;
+	private ConstantArrayLengthOperation( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "96bc22e4-9d7c-4ed7-abc2-130a56b0d5b9" ), expressionProperty );
+		this.constant = constant;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.expression.VariableAccessOperation.getInstance( this.getTransient(), expressionProperty );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.constant );
 	}
 }

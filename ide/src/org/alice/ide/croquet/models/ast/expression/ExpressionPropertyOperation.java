@@ -40,34 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+
+package org.alice.ide.croquet.models.ast.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ArrayLengthTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public ArrayLengthTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		this.field = field;
-		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
-			this.setPopupMenuOperation( new FieldPopupOperation( fieldInAlice ).getPopupMenuOperation() );
-		}
+public abstract class ExpressionPropertyOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
+	public ExpressionPropertyOperation( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id, edu.cmu.cs.dennisc.alice.ast.Expression.class, blanks );
+		this.expressionProperty = expressionProperty;
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayLength( org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ) );
+	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
+		return this.expressionProperty;
 	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE;
+	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+		return this.expressionProperty.getValue();
 	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions );
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess();
-		fieldAccess.expression.setValue( getIDE().createInstanceExpression() );
-		fieldAccess.field.setValue( this.field );
-		edu.cmu.cs.dennisc.alice.ast.ArrayLength rv = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( fieldAccess );
-		return rv;
+	protected edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
+		return new org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit( this.getPreviousExpression(), values[ 0 ] );
 	}
 }

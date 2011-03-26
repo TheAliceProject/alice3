@@ -65,7 +65,7 @@ public class GetterTemplate extends org.alice.ide.templates.CascadingExpressions
 		return this.field.getValueType();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createFieldAccess( this.getIDE().createInstanceExpression(), field );
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		return org.alice.ide.croquet.models.ast.expression.FieldAccessOperation.getInstance( this.field, expressionProperty );
 	}
 }

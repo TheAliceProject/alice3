@@ -79,11 +79,7 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-		return this.getTransient().getValueType();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.getTransient() );
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		return org.alice.ide.croquet.models.ast.expression.ParameterAccessOperation.getInstance( this.getTransient(), expressionProperty );
 	}
 }

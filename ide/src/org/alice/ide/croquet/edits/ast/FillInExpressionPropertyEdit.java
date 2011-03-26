@@ -45,8 +45,8 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.FillInExpressionMenuModel > {
-	public static class FillInExpressionPropertyEditMemento extends Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> {
+public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.expression.ExpressionPropertyOperation > {
+	public static class FillInExpressionPropertyEditMemento extends Memento<org.alice.ide.croquet.models.ast.expression.ExpressionPropertyOperation> {
 		private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 		private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 		public FillInExpressionPropertyEditMemento( FillInExpressionPropertyEdit edit ) {
@@ -58,7 +58,7 @@ public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.cascade.Cas
 			super( binaryDecoder );
 		}
 		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > createEdit() {
+		public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.expression.ExpressionPropertyOperation > createEdit() {
 			return new FillInExpressionPropertyEdit( this );
 		}
 		@Override
@@ -77,8 +77,8 @@ public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.cascade.Cas
 		}
 	}
 
-	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
-	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
+	private final edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
+	private final edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 
 	public FillInExpressionPropertyEdit( edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
 		this.prevExpression = prevExpression;
@@ -90,24 +90,21 @@ public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.cascade.Cas
 		this.nextExpression = memento.nextExpression;
 	}
 	@Override
-	public Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> createMemento() {
+	public Memento<org.alice.ide.croquet.models.ast.expression.ExpressionPropertyOperation> createMemento() {
 		return new FillInExpressionPropertyEditMemento( this );
 	}
 
+	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
+		org.alice.ide.croquet.models.ast.expression.ExpressionPropertyOperation expressionPropertyOperation = this.getModel();
+		return expressionPropertyOperation.getExpressionProperty();
+	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.FillInExpressionMenuModel popupMenuOperation = this.getCascadingRoot();
-		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = popupMenuOperation.getExpressionProperty();
-		if( isDo ) {
-			this.prevExpression = popupMenuOperation.getPreviousExpression();
-		}
-		expressionProperty.setValue( this.nextExpression );
+		this.getExpressionProperty().setValue( this.nextExpression );
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.FillInExpressionMenuModel popupMenuOperation = this.getCascadingRoot();
-		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = popupMenuOperation.getExpressionProperty();
-		expressionProperty.setValue( this.prevExpression );
+		this.getExpressionProperty().setValue( this.prevExpression );
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

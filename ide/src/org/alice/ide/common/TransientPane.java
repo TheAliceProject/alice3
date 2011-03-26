@@ -53,4 +53,8 @@ public abstract class TransientPane<N extends edu.cmu.cs.dennisc.alice.ast.Abstr
 	public N getTransient() {
 		return this.trans;
 	}
+	@Override
+	public final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+		return this.getTransient().getValueType();
+	}
 }
