@@ -51,6 +51,6 @@ public class ReturnStatementTemplate extends CascadingUbiquitousStatementClassTe
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.cascade.templates.ReturnStatementInsertOperation.getInstance( blockStatementIndexPair );
+		return org.alice.ide.croquet.models.ast.cascade.statement.ReturnStatementInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

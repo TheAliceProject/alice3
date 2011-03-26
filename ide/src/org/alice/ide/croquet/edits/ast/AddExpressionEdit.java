@@ -45,8 +45,8 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class AddExpressionEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< org.alice.ide.croquet.models.ast.AddExpressionCascadeOperation > {
-	public static class AddExpressionEditMemento extends Memento<org.alice.ide.croquet.models.ast.AddExpressionCascadeOperation> {
+public class AddExpressionEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation > {
+	public static class AddExpressionEditMemento extends Memento<org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation> {
 		private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
 		private edu.cmu.cs.dennisc.alice.ast.Expression expression;
 		public AddExpressionEditMemento( AddExpressionEdit edit ) {
@@ -68,7 +68,7 @@ public class AddExpressionEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit<
 			org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).encode( binaryEncoder, this.expression );
 		}
 		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.AddExpressionCascadeOperation > createEdit() {
+		public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation > createEdit() {
 			return new AddExpressionEdit( this );
 		}
 	}
@@ -85,7 +85,7 @@ public class AddExpressionEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit<
 		this.expression = memento.expression;
 	}
 	@Override
-	public Memento< org.alice.ide.croquet.models.ast.AddExpressionCascadeOperation > createMemento() {
+	public Memento< org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation > createMemento() {
 		return new AddExpressionEditMemento( this );
 	}
 	@Override

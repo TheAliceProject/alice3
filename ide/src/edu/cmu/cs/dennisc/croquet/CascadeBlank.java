@@ -74,6 +74,9 @@ public abstract class CascadeBlank< B > extends AbstractModel {
 		//note: we drop generic information since separators are never selected 
 		this.ownees.add( (AbstractCascadeFillIn< ? extends B,?,?,? >)separator );
 	}
+	public void addCancel( CascadeCancel< ? extends B > cancel ) {
+		this.ownees.add( cancel );
+	}
 	@Override
 	protected void localize() {
 	}

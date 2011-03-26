@@ -82,8 +82,8 @@ public class StressTestTutorial {
 								org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( org.alice.apis.moveandturn.MoveDirection.class, "UP" ),
 								new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 )
 						);
-						return new org.alice.ide.codeeditor.InsertStatementEdit(
-								statementListIndexTrackableShape.getStatementListProperty(),
+						return new org.alice.ide.croquet.edits.ast.InsertStatementEdit(
+								statementListIndexTrackableShape.getBlockStatement(),
 								statementListIndexTrackableShape.getIndex(),
 								statement
 						);
@@ -180,8 +180,8 @@ public class StressTestTutorial {
 					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
 						org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape statementListIndexTrackableShape = (org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape)dropShape;
 						edu.cmu.cs.dennisc.alice.ast.Statement statement = org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( count ) ); 
-						return new org.alice.ide.codeeditor.InsertStatementEdit(
-								statementListIndexTrackableShape.getStatementListProperty(),
+						return new org.alice.ide.croquet.edits.ast.InsertStatementEdit(
+								statementListIndexTrackableShape.getBlockStatement(),
 								statementListIndexTrackableShape.getIndex(),
 								statement
 						);
@@ -225,8 +225,8 @@ public class StressTestTutorial {
 						} else {
 							edu.cmu.cs.dennisc.print.PrintUtilities.println( "createEdit", methodInvocation );
 						}
-						return new org.alice.ide.codeeditor.InsertStatementEdit(
-								statementListIndexTrackableShape.getStatementListProperty(),
+						return new org.alice.ide.croquet.edits.ast.InsertStatementEdit(
+								statementListIndexTrackableShape.getBlockStatement(),
 								statementListIndexTrackableShape.getIndex(),
 								statement
 						);
@@ -258,7 +258,7 @@ public class StressTestTutorial {
 				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				"Select <strong>Other Array...</strong>",
 				"Select <strong>" + requiredTypeName + "</strong>, add <strong>" + desiredFieldNames[ 0 ] + "</strong> and <strong>" + desiredFieldNames[ 1 ] + "</strong>, and press <strong>OK</strong>",
-				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidatorOkButtonDisabler<org.alice.ide.cascade.customfillin.CustomInputPane<?>>() {
+				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidatorOkButtonDisabler< org.alice.ide.croquet.models.custom.CustomInputPane<?> >() {
 					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
@@ -317,8 +317,8 @@ public class StressTestTutorial {
 							return "this should not happen.  you have found a bug.  ask for help.";
 						}
 					}
-					public String getExplanationIfCommitButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.cascade.customfillin.CustomInputPane<?>> context) {
-						org.alice.ide.cascade.customfillin.CustomInputPane<?> customInputPane = context.getMainPanel();
+					public String getExplanationIfCommitButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.croquet.models.custom.CustomInputPane<?>> context) {
+						org.alice.ide.croquet.models.custom.CustomInputPane<?> customInputPane = context.getMainPanel();
 						return this.getExplanationIfOkButtonShouldBeDisabled( customInputPane.getValueChooser() );
 					}
 				}
@@ -489,14 +489,14 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addPopupMenuStep( 
+		tutorial.addCascadeOperationStep( 
 				"More",
 				"Click <b>more...</b>",
 				tutorial.createFirstInvocationMoreResolver( "move" ),
 				"text",
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addPopupMenuStep( 
+		tutorial.addCascadeOperationStep( 
 				"More",
 				"Click <b>more...</b>",
 				tutorial.createLastInvocationMoreResolver( "move" ),
@@ -577,7 +577,7 @@ public class StressTestTutorial {
 				"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addPopupMenuStep( 
+		tutorial.addCascadeOperationStep( 
 				"More",
 				"Click <b>more...</b>",
 				tutorial.createLastInvocationMoreResolver( "move" ),
@@ -793,7 +793,7 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addPopupMenuStep(
+		tutorial.addCascadeOperationStep(
 				"Change Instance", 
 				"change instance to <b>sunLight</b>",
 				tutorial.createFirstInvocationInstanceResolver( "move" ),
@@ -802,7 +802,7 @@ public class StressTestTutorial {
 		);
 		
 
-		tutorial.addPopupMenuStep(
+		tutorial.addCascadeOperationStep(
 				"Change If Condition", 
 				"change if condition to <b>false</b>",
 				tutorial.createFirstIfElseStatementConditionResolver(),
@@ -836,7 +836,7 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addPopupMenuStep(
+		tutorial.addCascadeOperationStep(
 				"Change Argument", 
 				"change threshold argument to <b>1.0</b>",
 				tutorial.createInvocationArgumentResolver( "isWithinThresholdOf", 0, 0 ),

@@ -88,7 +88,7 @@ public class ThisPane extends AccessiblePane {
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.expression.ThisOperation.getInstance( expressionProperty );
+		return org.alice.ide.croquet.models.ast.cascade.expression.ThisOperation.getInstance( expressionProperty );
 	}
 
 	@Override

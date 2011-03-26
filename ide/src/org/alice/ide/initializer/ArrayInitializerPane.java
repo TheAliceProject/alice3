@@ -405,7 +405,7 @@ class MutableList extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 
 public class ArrayInitializerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
     public ArrayInitializerPane( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions ) {
-        org.alice.ide.croquet.models.ast.AddExpressionCascadeOperation addExpressionOperation = new org.alice.ide.croquet.models.ast.AddExpressionCascadeOperation( componentTypeProperty, arrayExpressions );
+        org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation addExpressionOperation = new org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation( componentTypeProperty, arrayExpressions );
         edu.cmu.cs.dennisc.croquet.Button button = addExpressionOperation.createButton();
 
         MutableList mutableList = new MutableList( componentTypeProperty, arrayExpressions, button );

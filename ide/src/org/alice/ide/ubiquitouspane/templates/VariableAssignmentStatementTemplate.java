@@ -65,6 +65,6 @@ public class VariableAssignmentStatementTemplate extends CascadingUbiquitousStat
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation<?> getDropOperation(edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair) {
-		return new org.alice.ide.croquet.models.cascade.templates.VariableAssignmentStatementInsertOperation( blockStatementIndexPair, this.variable );
+		return new org.alice.ide.croquet.models.ast.cascade.statement.VariableAssignmentStatementInsertOperation( blockStatementIndexPair, this.variable );
 	}
 }

@@ -52,6 +52,6 @@ public class VariablePane extends LocalPane<edu.cmu.cs.dennisc.alice.ast.Variabl
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.expression.VariableAccessOperation.getInstance( this.getTransient(), expressionProperty );
+		return org.alice.ide.croquet.models.ast.cascade.expression.VariableAccessOperation.getInstance( this.getTransient(), expressionProperty );
 	}
 }

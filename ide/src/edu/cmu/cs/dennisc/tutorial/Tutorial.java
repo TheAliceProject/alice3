@@ -115,6 +115,13 @@ public class Tutorial {
 		return this.addStep( new PopupMenuStep( title, popupText, new SelfResolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation>( popupMenu ), commitText, completorValidator, completorValidator ) );
 	}
 	
+	public Step addCascadeOperationStep( String title, String text, RuntimeResolver<edu.cmu.cs.dennisc.croquet.CascadeOperation> cascadeOperationResolver, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
+		throw new RuntimeException( "todo" );
+	}
+	public Step addCascadeOperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.CascadeOperation cascadeOperation, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
+		throw new RuntimeException( "todo" );
+	}
+
 	public <E> Step addListSelectionStep( String title, String text, RuntimeResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, RuntimeResolver<? extends E> itemResolver ) {
 		return this.addStep( new ListSelectionStateStep<E>( title, text, itemSelectionStateResolver, itemResolver, Feature.ConnectionPreference.EAST_WEST ) );
 	}

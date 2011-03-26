@@ -71,6 +71,6 @@ package org.alice.ide.memberseditor.templates;
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		//todo
-		return new org.alice.ide.croquet.models.cascade.templates.FieldArrayAtIndexAssignmentInsertOperation( blockStatementIndexPair, this.field );
+		return new org.alice.ide.croquet.models.ast.cascade.statement.FieldArrayAtIndexAssignmentInsertOperation( blockStatementIndexPair, this.field );
 	}
 }

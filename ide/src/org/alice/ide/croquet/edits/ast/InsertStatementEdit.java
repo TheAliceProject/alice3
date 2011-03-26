@@ -42,16 +42,16 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
-public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< edu.cmu.cs.dennisc.croquet.ActionOperation > {
-	public static class InsertStatementEditMemento extends Memento<edu.cmu.cs.dennisc.croquet.ActionOperation> {
+public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > {
+	public static class InsertStatementEditMemento extends Memento<edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> {
 		private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
-		private int index;
+		private int specifiedIndex;
 		private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 		private edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions;
 		public InsertStatementEditMemento( InsertStatementEdit edit ) {
 			super( edit );
 			this.blockStatement = edit.blockStatement;
-			this.index = edit.index;
+			this.specifiedIndex = edit.specifiedIndex;
 			this.statement = edit.statement;
 			this.initialExpressions = edit.initialExpressions;
 		}
@@ -59,7 +59,7 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 			super( binaryDecoder );
 		}
 		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit() {
+		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > createEdit() {
 			return new InsertStatementEdit( this );
 		}
 		@Override
@@ -68,7 +68,7 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 			java.util.UUID blockStatementId = binaryDecoder.decodeId();
 			this.blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, blockStatementId );
-			this.index = binaryDecoder.decodeInt();
+			this.specifiedIndex = binaryDecoder.decodeInt();
 			java.util.UUID statementId = binaryDecoder.decodeId();
 			this.statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, statementId );
 			java.util.UUID[] ids = binaryDecoder.decodeIdArray();
@@ -81,7 +81,7 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 		@Override
 		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			binaryEncoder.encode( this.blockStatement.getUUID() );
-			binaryEncoder.encode( this.index );
+			binaryEncoder.encode( this.specifiedIndex );
 			binaryEncoder.encode( this.statement.getUUID() );
 			final int N = this.initialExpressions.length;
 			java.util.UUID[] ids = new java.util.UUID[ N ];
@@ -92,30 +92,33 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 		}
 	}
 
+	public static final int AT_END = Short.MAX_VALUE;
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
-	private int index;
+	private int specifiedIndex;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	private edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions;
 	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
 		this.blockStatement = blockStatement;
-		this.index = index;
+		this.specifiedIndex = index;
 		this.statement = statement;
 		this.initialExpressions = initialExpressions;
 	}
-	@Deprecated
 	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		//todo
 		this( blockStatement, index, statement, null );
 	}
+	public InsertStatementEdit( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		this( blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex(), statement );
+	}
 	private InsertStatementEdit( InsertStatementEditMemento memento ) {
 		super( memento );
 		this.blockStatement = memento.blockStatement;
-		this.index = memento.index;
+		this.specifiedIndex = memento.specifiedIndex;
 		this.statement = memento.statement;
 		this.initialExpressions = memento.initialExpressions;
 	}
 	@Override
-	public Memento<edu.cmu.cs.dennisc.croquet.ActionOperation> createMemento() {
+	public InsertStatementEditMemento createMemento() {
 		return new InsertStatementEditMemento( this );
 	}
 	
@@ -124,15 +127,20 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 		return this.initialExpressions;
 	}
 	
+	private int getActualIndex() {
+		return Math.min( this.specifiedIndex, this.blockStatement.statements.size() );
+	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		this.blockStatement.statements.add( this.index, this.statement );
+		int actualIndex = this.getActualIndex();
+		this.blockStatement.statements.add( actualIndex, this.statement );
 	}
 
 	@Override
 	protected final void undoInternal() {
-		if( this.blockStatement.statements.get( this.index ) == this.statement ) {
-			this.blockStatement.statements.remove( this.index );
+		int actualIndex = this.getActualIndex();
+		if( this.blockStatement.statements.get( actualIndex ) == this.statement ) {
+			this.blockStatement.statements.remove( actualIndex );
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}
@@ -204,7 +212,7 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 		System.err.println( "todo: replacementExpressions" );
 		edu.cmu.cs.dennisc.alice.ast.Expression[] replacementExpressions = this.initialExpressions;
 		
-		return new InsertStatementEdit( replacementBlockStatement, this.index, replacementStatement, replacementExpressions );
+		return new InsertStatementEdit( replacementBlockStatement, this.specifiedIndex, replacementStatement, replacementExpressions );
 	}
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {

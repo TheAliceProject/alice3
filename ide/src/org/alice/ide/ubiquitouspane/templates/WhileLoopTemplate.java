@@ -51,6 +51,6 @@ public class WhileLoopTemplate extends CascadingUbiquitousStatementClassTemplate
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation<?> getDropOperation(edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair) {
-		return org.alice.ide.croquet.models.cascade.templates.WhileLoopInsertOperation.getInstance( blockStatementIndexPair );
+		return org.alice.ide.croquet.models.ast.cascade.statement.WhileLoopInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

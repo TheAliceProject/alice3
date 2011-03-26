@@ -86,9 +86,9 @@ public class ExerciseRoutineTutorial {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
 					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
-						return new org.alice.ide.codeeditor.InsertStatementEdit(
-								runMethod.body.getValue().statements,
-								org.alice.ide.codeeditor.InsertStatementEdit.AT_END, 
+						return new org.alice.ide.croquet.edits.ast.InsertStatementEdit(
+								runMethod.body.getValue(),
+								org.alice.ide.croquet.edits.ast.InsertStatementEdit.AT_END, 
 								org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( 
 										org.alice.ide.ast.NodeUtilities.createFieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), daughterField ), 
 										sayMethod, 
@@ -179,9 +179,9 @@ public class ExerciseRoutineTutorial {
 //						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 //					}
 //					public edu.cmu.cs.dennisc.croquet.Edit getEdit() {
-//						return new org.alice.ide.codeeditor.InsertStatementEdit(
+//						return new org.alice.ide.croquet.edits.ast.InsertStatementEdit(
 //								runMethod.body.getValue().statements,
-//								org.alice.ide.codeeditor.InsertStatementEdit.AT_END, 
+//								org.alice.ide.croquet.edits.ast.InsertStatementEdit.AT_END, 
 //								org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( 
 //										org.alice.ide.ast.NodeUtilities.createFieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), iceSkaterField ), 
 //										skateMethod, 
@@ -238,9 +238,9 @@ public class ExerciseRoutineTutorial {
 //						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 //					}
 //					public edu.cmu.cs.dennisc.croquet.Edit getEdit() {
-//						return new org.alice.ide.codeeditor.InsertStatementEdit(
+//						return new org.alice.ide.croquet.edits.ast.InsertStatementEdit(
 //								runMethod.body.getValue().statements,
-//								org.alice.ide.codeeditor.InsertStatementEdit.AT_END, 
+//								org.alice.ide.croquet.edits.ast.InsertStatementEdit.AT_END, 
 //								org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( 
 //										org.alice.ide.ast.NodeUtilities.createFieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), iceSkaterField ), 
 //										skateBackwardsMethod, 
@@ -272,9 +272,9 @@ public class ExerciseRoutineTutorial {
 //						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 //					}
 //					public edu.cmu.cs.dennisc.croquet.Edit getEdit() {
-//						return new org.alice.ide.codeeditor.InsertStatementEdit(
+//						return new org.alice.ide.croquet.edits.ast.InsertStatementEdit(
 //								runMethod.body.getValue().statements,
-//								org.alice.ide.codeeditor.InsertStatementEdit.AT_END, 
+//								org.alice.ide.croquet.edits.ast.InsertStatementEdit.AT_END, 
 //								org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( 
 //										org.alice.ide.ast.NodeUtilities.createFieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), iceSkaterField ), 
 //										jumpMethod 

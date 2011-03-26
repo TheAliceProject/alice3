@@ -567,8 +567,11 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			this.boundsAtIndex = boundsAtIndex;
 		}
 		
-		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
+		private edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
 			return this.statementListProperty;
+		}
+		public edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement() {
+			return (edu.cmu.cs.dennisc.alice.ast.BlockStatement)this.statementListProperty.getOwner();
 		}
 		public int getIndex() {
 			return this.index;
@@ -704,7 +707,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		return null;
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.PopupMenuOperation getOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > getOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		java.util.List< ExpressionPropertyDropDownPane > expressionPropertyDropDownPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class );
 		for( final ExpressionPropertyDropDownPane expressionPropertyDropDownPane : expressionPropertyDropDownPanes ) {
 			if( expressionPropertyDropDownPane.getExpressionProperty() == expressionProperty ) {
@@ -713,9 +716,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		}
 		return null;
 	}
-	public edu.cmu.cs.dennisc.croquet.PopupMenuOperation getMoreOperation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+	public org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation getMoreOperation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 		if( methodInvocation != null ) {
-			return org.alice.ide.croquet.models.ast.FillInMoreMenuModel.getInstance( methodInvocation ).getPopupMenuOperation();
+			return org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation.getInstance( methodInvocation );
 //			java.util.List< org.alice.ide.common.ExpressionStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.ExpressionStatementPane.class );
 //			for( org.alice.ide.common.ExpressionStatementPane statementPane : statementPanes ) {
 //				if( statementPane.getStatement() == methodInvocation.getParent() ) {

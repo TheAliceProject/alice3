@@ -42,8 +42,6 @@
  */
 package org.alice.ide.croquet.models.custom;
 
-import org.alice.ide.cascade.customfillin.CustomInputPane;
-
 /**
  * @author Dennis Cosgrove
  */

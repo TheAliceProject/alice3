@@ -72,7 +72,7 @@ package org.alice.ide.memberseditor.templates;
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.expression.FieldAccessOperation.getInstance( this.field, expressionProperty );
+		return org.alice.ide.croquet.models.ast.cascade.expression.FieldAccessOperation.getInstance( this.field, expressionProperty );
 	}
 //	@Override
 //	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {

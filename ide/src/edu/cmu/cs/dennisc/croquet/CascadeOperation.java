@@ -290,6 +290,7 @@ abstract class RtAbstractFillIn<F, B, M extends AbstractCascadeFillIn< F, B, M, 
 		}
 		this.rtBlanks = new RtBlank[ N ];
 		for( int i = 0; i < this.rtBlanks.length; i++ ) {
+			assert blanks[ i ] != null : this;
 			this.rtBlanks[ i ] = new RtBlank< B >( blanks[ i ] );
 		}
 		this.updateParentsAndNextSiblings( this.rtBlanks );
@@ -628,6 +629,10 @@ public abstract class CascadeOperation<B> extends Operation< CascadeOperationCon
 
 	public CascadeOperation( Group group, java.util.UUID id, Class< B > componentType, CascadeBlank< B >[] blanks ) {
 		super( group, id );
+		assert blanks != null;
+		for( int i=0; i<blanks.length; i++ ) {
+			assert blanks[ i ] != null : this;
+		}
 		this.componentType = componentType;
 		this.fillIn = new RootFillIn< B >( this, blanks );
 	}

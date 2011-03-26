@@ -51,6 +51,6 @@ public class DoTogetherTemplate extends CascadingUbiquitousStatementClassTemplat
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.cascade.templates.DoTogetherInsertOperation.getInstance( blockStatementIndexPair );
+		return org.alice.ide.croquet.models.ast.cascade.statement.DoTogetherInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

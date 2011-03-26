@@ -56,4 +56,9 @@ public class TypeUnsetBlank extends org.alice.ide.croquet.models.cascade.Express
 	private TypeUnsetBlank() {
 		super( java.util.UUID.fromString( "e3bc0668-0d5a-455e-b594-d0107794509c" ), Void.class );
 	}
+	@Override
+	protected void addFillIns() {
+		//note: not invoking super
+		this.addCancel( org.alice.ide.croquet.models.cascade.cancels.TypeUnsetCancelFillIn.getInstance() );
+	}
 }

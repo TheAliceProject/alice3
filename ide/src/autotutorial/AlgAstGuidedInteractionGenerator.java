@@ -131,7 +131,12 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 				edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation = null;
 				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = new edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext( popupMenuOperation );
 				java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-				models.add( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP, null ) ); 
+				
+				
+				//todo
+				//models.add( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP, null ) ); 
+				
+				
 				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = new edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent( models );
 				popupMenuOperationContext.addChild( menuSelectionEvent );
 				popupMenuOperationContext.addChild( insertStatementContext );

@@ -93,6 +93,6 @@ package org.alice.ide.memberseditor.templates;
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.expression.FunctionInvocationOperation.getInstance( this.method, expressionProperty );
+		return org.alice.ide.croquet.models.ast.cascade.expression.FunctionInvocationOperation.getInstance( this.method, expressionProperty );
 	}
 }

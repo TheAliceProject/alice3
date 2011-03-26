@@ -47,6 +47,9 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class CancelException extends RuntimeException {
+	public CancelException() {
+		this( null );
+	}
 	public CancelException( String message ) {
 		super( message );
 	}

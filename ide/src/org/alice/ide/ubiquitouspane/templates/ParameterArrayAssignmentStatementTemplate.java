@@ -61,6 +61,6 @@ public class ParameterArrayAssignmentStatementTemplate extends ArrayAssignmentSt
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return new org.alice.ide.croquet.models.cascade.templates.ParameterArrayAtIndexAssignmentInsertOperation( blockStatementIndexPair, this.parameter );
+		return new org.alice.ide.croquet.models.ast.cascade.statement.ParameterArrayAtIndexAssignmentInsertOperation( blockStatementIndexPair, this.parameter );
 	}
 }

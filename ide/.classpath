@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="deprecated/src1"/>
 	<classpathentry kind="src" path="i18n"/>
 	<classpathentry kind="src" path="generated/src"/>
 	<classpathentry kind="lib" path="lib/apple/AppleJavaExtensions.jar"/>

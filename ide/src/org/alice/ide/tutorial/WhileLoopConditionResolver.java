@@ -45,13 +45,13 @@ package org.alice.ide.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class WhileLoopConditionResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> {
+/*package-private*/class WhileLoopConditionResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.CascadeOperation< ? >> {
 	private int index;
 	public WhileLoopConditionResolver(int index) {
 		this.index = index;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.PopupMenuOperation getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+	protected edu.cmu.cs.dennisc.croquet.CascadeOperation<?> getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
 		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();
 		edu.cmu.cs.dennisc.alice.ast.WhileLoop whileLoop = IdeTutorial.getNodeAt(code, edu.cmu.cs.dennisc.alice.ast.WhileLoop.class, this.index);
 		if (whileLoop != null) {
