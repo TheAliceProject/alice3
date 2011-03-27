@@ -46,36 +46,14 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class ReturnStatementInsertOperation extends StatementInsertOperation {
-	private static edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getReturnType( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = blockStatementIndexPair.getBlockStatement().getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
-		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
-			if( method.isFunction() ) {
-				return method.returnType.getValue();
-			}
-		}
-		return null;
+public class ArraySeparator extends edu.cmu.cs.dennisc.croquet.CascadeLabelSeparator {
+	private static class SingletonHolder {
+		private static ArraySeparator instance = new ArraySeparator();
 	}
-
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, ReturnStatementInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ReturnStatementInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		ReturnStatementInsertOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ReturnStatementInsertOperation( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
+	public static ArraySeparator getInstance() {
+		return SingletonHolder.instance;
 	}
-	private ReturnStatementInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "6b1dae07-066f-4250-92e8-db1eacd32801" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( getReturnType( blockStatementIndexPair ) ) );
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createReturnStatement( getReturnType( this.getBlockStatementIndexPair() ), expressions[ 0 ] );
+	private ArraySeparator() {
+		super( java.util.UUID.fromString( "36d952bc-18f3-4391-bd61-77ee403c837f" ) );
 	}
 }

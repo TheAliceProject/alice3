@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class ForEachInArrayInsertOperation extends ExpressionPropertyStatementInsertOperation {
+public class ForEachInArrayInsertOperation extends StatementInsertOperation {
 	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, ForEachInArrayInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ForEachInArrayInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
@@ -60,10 +60,10 @@ public class ForEachInArrayInsertOperation extends ExpressionPropertyStatementIn
 		return rv;
 	}
 	private ForEachInArrayInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "b5764acd-4d2a-4967-a695-beffc7ea19a8" ), blockStatementIndexPair, Object[].class );
+		super( java.util.UUID.fromString( "b5764acd-4d2a-4967-a695-beffc7ea19a8" ), blockStatementIndexPair, ArrayBlank.getInstance() );
 	}
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createConditionalStatement( expressions[ 0 ] );
+		return org.alice.ide.ast.NodeUtilities.createForEachInArrayLoop( expressions[ 0 ] );
 	}
 }

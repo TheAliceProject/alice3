@@ -46,11 +46,14 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionPropertyStatementInsertOperation extends StatementInsertOperation {
-	public ExpressionPropertyStatementInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >... types ) {
-		super( id, blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( types ) );
+public class ConditionSeparator extends edu.cmu.cs.dennisc.croquet.CascadeLabelSeparator {
+	private static class SingletonHolder {
+		private static ConditionSeparator instance = new ConditionSeparator();
 	}
-	public ExpressionPropertyStatementInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, Class<?>... clses ) {
-		this( id, blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( clses ) );
+	public static ConditionSeparator getInstance() {
+		return SingletonHolder.instance;
+	}
+	private ConditionSeparator() {
+		super( java.util.UUID.fromString( "4840415c-cab7-42ee-9e6d-ee159d37dd2f" ) );
 	}
 }

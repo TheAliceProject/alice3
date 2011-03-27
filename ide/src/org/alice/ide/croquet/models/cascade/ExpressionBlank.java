@@ -43,6 +43,8 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.croquet.CascadeLabelSeparator;
+
 /**
  * @author Dennis Cosgrove
  */

@@ -170,6 +170,16 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, CascadeBlankContext< B > > {
 			}
 		}
 	}
+	private static boolean isDevoidOfNonSeparators( java.util.List< RtAbstractFillIn> rtOwnees ) {
+		for( RtAbstractFillIn rtOwnee : rtOwnees ) {
+			if( rtOwnee instanceof RtSeparator ) {
+				//pass
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	private RtAbstractFillIn[] rtFillIns;
 	private RtAbstractFillIn< B, ?, ?, ? > rtSelectedFillIn;
@@ -226,7 +236,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, CascadeBlankContext< B > > {
 			//todo
 			cleanUpSeparators( (java.util.List)baseRtFillIns );
 
-			if( baseRtFillIns.isEmpty() ) {
+			if( isDevoidOfNonSeparators( baseRtFillIns ) ) {
 				baseRtFillIns.add( new RtCancel( UnfilledInCancel.getInstance() ) );
 			}
 
@@ -624,9 +634,7 @@ class RootFillIn<B> extends CascadeFillIn< B[], B > {
  */
 public abstract class CascadeOperation<B> extends Operation< CascadeOperationContext< B > > {
 	private final Class< B > componentType;
-
 	private final RootFillIn< B > fillIn;
-
 	public CascadeOperation( Group group, java.util.UUID id, Class< B > componentType, CascadeBlank< B >[] blanks ) {
 		super( group, id );
 		assert blanks != null;
@@ -647,14 +655,6 @@ public abstract class CascadeOperation<B> extends Operation< CascadeOperationCon
 
 	public Class< B > getComponentType() {
 		return this.componentType;
-	}
-	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean isAlreadyInState( Edit< ? > edit ) {
-		//todo?
-		return false;
 	}
 
 	protected abstract Edit< ? extends CascadeOperation< B > > createEdit( B[] values );

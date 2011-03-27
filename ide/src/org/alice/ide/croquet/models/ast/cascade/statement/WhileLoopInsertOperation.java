@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class WhileLoopInsertOperation extends ExpressionPropertyStatementInsertOperation {
+public class WhileLoopInsertOperation extends StatementInsertOperation {
 	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, WhileLoopInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized WhileLoopInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
@@ -60,7 +60,7 @@ public class WhileLoopInsertOperation extends ExpressionPropertyStatementInsertO
 		return rv;
 	}
 	private WhileLoopInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "e23920c4-97fa-47e8-9307-24153e3d56a6" ), blockStatementIndexPair, Boolean.class );
+		super( java.util.UUID.fromString( "e23920c4-97fa-47e8-9307-24153e3d56a6" ), blockStatementIndexPair, ConditionBlank.getInstance() );
 	}
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {

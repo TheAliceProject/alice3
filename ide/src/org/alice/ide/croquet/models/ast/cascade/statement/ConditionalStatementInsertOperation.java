@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionalStatementInsertOperation extends ExpressionPropertyStatementInsertOperation {
+public class ConditionalStatementInsertOperation extends StatementInsertOperation {
 	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, ConditionalStatementInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ConditionalStatementInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
@@ -60,7 +60,7 @@ public class ConditionalStatementInsertOperation extends ExpressionPropertyState
 		return rv;
 	}
 	private ConditionalStatementInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "52743dfb-d19c-455a-a723-0bd3d59b2326" ), blockStatementIndexPair, Boolean.class );
+		super( java.util.UUID.fromString( "52743dfb-d19c-455a-a723-0bd3d59b2326" ), blockStatementIndexPair, ConditionBlank.getInstance() );
 	}
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
