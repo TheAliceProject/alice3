@@ -57,36 +57,37 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 		super( java.util.UUID.fromString( "a7c69555-3232-4091-96f6-8f9b6ec2ee3a" ) );
 	}
 	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateBlankChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 //		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().createCopyOfPreviousExpression();
 //		final boolean isTop = blank.getParentFillIn() == null;
 //		
 //		if( previousExpression != null ) {
 //			for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
-//				blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Integer.class, Integer.class ) );
+//				rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Integer.class, Integer.class ) );
 //			}
-//			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "divide, remainder" ) {
+//			rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "divide, remainder" ) {
 //				@Override
 //				protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 //					for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
-//						blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Integer.class, Integer.class ) );
+//						rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Integer.class, Integer.class ) );
 //					}
 //				}
 //			} );
 //			blank.addSeparator();
 //		}
 		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
+			rv.add( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 		}
 		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
+			rv.add( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
-		blank.addMenu( IncompleteDivideRemainderCascadeMenu.getInstance() );
+		rv.add( IncompleteDivideRemainderCascadeMenu.getInstance() );
 
-		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "abs", Integer.TYPE ) );
-		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "min", Integer.TYPE, Integer.TYPE ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "max", Integer.TYPE, Integer.TYPE ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "abs", Integer.TYPE ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "min", Integer.TYPE, Integer.TYPE ) );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "max", Integer.TYPE, Integer.TYPE ) );
+		return rv;
 	}
 }

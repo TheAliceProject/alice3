@@ -106,8 +106,9 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		}
 	}
 	@Override
-	protected void addCustomFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		super.addCustomFillIns( blank, type );
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > addCustomFillIns( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv,
+			edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > context, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
+		rv = super.addCustomFillIns( rv, context, type );
 		System.err.println( "TODO: addCustomFillIns handle listeners" );
 //		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 //		if( previousExpression != null ) {
@@ -159,6 +160,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 //				}
 //			}
 //		}
+		return rv;
 	}
 
 	@Override

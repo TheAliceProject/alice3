@@ -203,7 +203,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, CascadeBlankContext< B > > {
 			//pass
 		} else {
 			java.util.List< RtAbstractFillIn > baseRtFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( AbstractCascadeFillIn ownee : this.getModel().getOwnees() ) {
+			for( AbstractCascadeFillIn ownee : this.getModel().getChildren( this.getContext() ) ) {
 				RtAbstractFillIn rtOwnee;
 				if( ownee instanceof CascadeMenu ) {
 					CascadeMenu menu = (CascadeMenu)ownee;

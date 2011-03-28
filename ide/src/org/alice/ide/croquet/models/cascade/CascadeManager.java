@@ -67,13 +67,15 @@ public class CascadeManager {
 		return rv;
 	}
 	public static ExpressionBlank getBlankForType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+		Class<?> cls;
 		if( type != null ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = type.getFirstTypeEncounteredDeclaredInJava();
 			assert typeDeclaredInJava != null : type;
-			return getBlankForType( typeDeclaredInJava.getClassReflectionProxy().getReification() );
+			cls = typeDeclaredInJava.getClassReflectionProxy().getReification();
 		} else {
-			return org.alice.ide.croquet.models.cascade.blanks.TypeUnsetBlank.getInstance();
+			cls = null;
 		}
+		return getBlankForType( cls );
 	}
 
 	public static ExpressionBlank[] createBlanks( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >... types ) {

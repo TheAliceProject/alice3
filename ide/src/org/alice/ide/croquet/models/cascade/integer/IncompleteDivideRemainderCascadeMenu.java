@@ -57,9 +57,10 @@ public class IncompleteDivideRemainderCascadeMenu extends org.alice.ide.croquet.
 		super( java.util.UUID.fromString( "a0289f52-a603-42a2-8afd-438b88ba54a4" ) );
 	}
 	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateBlankChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > context ) {
 		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
+			rv.add( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
+		return rv;
 	}
 }

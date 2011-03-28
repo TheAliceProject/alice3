@@ -47,7 +47,8 @@ public class KeyListenerFillerInner extends org.alice.ide.cascade.fillerinners.E
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyListener.class ), edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
-		blank.addFillIn( org.alice.stageide.croquet.models.cascade.adapters.KeyAdapterFillIn.getInstance() );
+	public java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
+		rv.add( org.alice.stageide.croquet.models.cascade.adapters.KeyAdapterFillIn.getInstance() );
+		return rv;
 	}
 }

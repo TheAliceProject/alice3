@@ -57,9 +57,10 @@ public class ExponentCascadeMenu extends org.alice.ide.croquet.models.cascade.Ex
 		super( java.util.UUID.fromString( "53e6ac46-5f75-4a6e-8149-9161b2e330d1" ) );
 	}
 	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "exp", java.lang.Double.TYPE ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "log", java.lang.Double.TYPE ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( Math.class, "E" ) );
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateBlankChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "exp", java.lang.Double.TYPE ) );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "log", java.lang.Double.TYPE ) );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( Math.class, "E" ) );
+		return rv;
 	}
 }

@@ -52,8 +52,9 @@ public abstract class CascadeMenu< FB > extends AbstractCascadeFillIn< FB, FB, C
 			super(java.util.UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
 		}
 		@Override
-		protected void addFillIns() {
-			CascadeMenu.this.addChildrenToBlank( this );
+		protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< FB > context ) {
+			CascadeMenu.this.updateBlankChildren( rv, context );
+			return rv;
 		}
 	}
 	private final InternalBlank blank = new InternalBlank();
@@ -67,7 +68,8 @@ public abstract class CascadeMenu< FB > extends AbstractCascadeFillIn< FB, FB, C
 	public CascadeBlank<FB>[] getBlanks() {
 		return new CascadeBlank[] { this.blank };
 	}
-	protected abstract void addChildrenToBlank( CascadeBlank<FB> blank );
+	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateBlankChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< FB > context );
+	//protected abstract void addChildrenToBlank( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< FB > context, CascadeBlank<FB> blank );
 	private edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< FB,FB,?,? > getSelectedFillInContext( CascadeMenuContext<FB> context ) {
 		edu.cmu.cs.dennisc.croquet.CascadeBlankContext< FB > blankContext = context.getBlankContextAt( 0 );
 		return blankContext.getSelectedFillInContext();

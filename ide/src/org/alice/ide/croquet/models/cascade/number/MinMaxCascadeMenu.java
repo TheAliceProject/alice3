@@ -57,8 +57,9 @@ public class MinMaxCascadeMenu extends org.alice.ide.croquet.models.cascade.Expr
 		super( java.util.UUID.fromString( "602b183c-ab38-43f7-80d1-119a3586d9c1" ) );
 	}
 	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "min", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "max", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateBlankChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > context ) {
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "min", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "max", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
+		return rv;
 	}
 }

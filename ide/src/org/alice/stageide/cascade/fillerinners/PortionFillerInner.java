@@ -51,11 +51,12 @@ public class PortionFillerInner extends org.alice.ide.cascade.fillerinners.Insta
 		super( org.alice.apis.moveandturn.Portion.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
 		for( double d : new double[] { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 } ) {
-			blank.addFillIn( org.alice.stageide.croquet.models.cascade.values.PortionValueFillIn.getInstance( d ) ); 
+			rv.add( org.alice.stageide.croquet.models.cascade.values.PortionValueFillIn.getInstance( d ) ); 
 		}
-		blank.addSeparator();
-		blank.addFillIn( org.alice.stageide.croquet.models.cascade.custom.CustomPortionFillIn.getInstance() );
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.stageide.croquet.models.cascade.custom.CustomPortionFillIn.getInstance() );
+		return rv;
 	}
 }

@@ -50,56 +50,56 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.BooleanLiteral.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
 
 		// previous conditional
 		for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.values() ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.conditional.ReplaceOperatorInPreviousConditionalExpressionFillIn.getInstance( operator ) );
+			rv.add( org.alice.ide.croquet.models.cascade.conditional.ReplaceOperatorInPreviousConditionalExpressionFillIn.getInstance( operator ) );
 		}
-		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.conditional.ReduceToLeftOperandInPreviousConditionalExpressionFillIn.getInstance() );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.conditional.ReduceToRightOperandInPreviousConditionalExpressionFillIn.getInstance() );
-		blank.addSeparator();
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.ide.croquet.models.cascade.conditional.ReduceToLeftOperandInPreviousConditionalExpressionFillIn.getInstance() );
+		rv.add( org.alice.ide.croquet.models.cascade.conditional.ReduceToRightOperandInPreviousConditionalExpressionFillIn.getInstance() );
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
 
 		// previous logical complement
 
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.logicalcomplement.ReduceToInnerOperandInPreviousLogicalComplementFillIn.getInstance() );
-		blank.addSeparator();
+		rv.add( org.alice.ide.croquet.models.cascade.logicalcomplement.ReduceToInnerOperandInPreviousLogicalComplementFillIn.getInstance() );
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
 
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.literals.BooleanLiteralFillIn.getInstance( true ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.literals.BooleanLiteralFillIn.getInstance( false ) );
+		rv.add( org.alice.ide.croquet.models.cascade.literals.BooleanLiteralFillIn.getInstance( true ) );
+		rv.add( org.alice.ide.croquet.models.cascade.literals.BooleanLiteralFillIn.getInstance( false ) );
 
 
-		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextBoolean" ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextBoolean" ) );
 			
-		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.logicalcomplement.LogicalComplementOfPreviousExpressionFillIn.getInstance() );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.logicalcomplement.LogicalComplementOperandFillIn.getInstance() );
-		blank.addSeparator();
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.ide.croquet.models.cascade.logicalcomplement.LogicalComplementOfPreviousExpressionFillIn.getInstance() );
+		rv.add( org.alice.ide.croquet.models.cascade.logicalcomplement.LogicalComplementOperandFillIn.getInstance() );
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
 
 		for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.values() ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.conditional.ConditionalInfixExpressionRightOperandOnlyFillIn.getInstance( operator ) );
+			rv.add( org.alice.ide.croquet.models.cascade.conditional.ConditionalInfixExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 		}
 
 		for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.values() ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.conditional.ConditionalExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
+			rv.add( org.alice.ide.croquet.models.cascade.conditional.ConditionalExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
-		blank.addSeparator();
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
 		
-//		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (Real Number) { ==, !=, <, <=, >=, > }" ) {
+//		rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (Real Number) { ==, !=, <, <=, >=, > }" ) {
 //			@Override
 //			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
 //				for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
-//					blank.addFillIn( new org.alice.ide.cascade.IncompleteRelationalExpressionFillIn( Number.class, operator ) );
+//					rv.add( new org.alice.ide.cascade.IncompleteRelationalExpressionFillIn( Number.class, operator ) );
 //				}
 //			}
 //		} );
-//		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (Integer) { ==, !=, <, <=, >=, > }" ) {
+//		rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (Integer) { ==, !=, <, <=, >=, > }" ) {
 //			@Override
 //			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
 //				for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
-//					blank.addFillIn( new org.alice.ide.cascade.IncompleteRelationalExpressionFillIn( Integer.class, operator ) );
+//					rv.add( new org.alice.ide.cascade.IncompleteRelationalExpressionFillIn( Integer.class, operator ) );
 //				}
 //			}
 //		} );
@@ -109,15 +109,16 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 //				edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.NOT_EQUALS,
 //		};
 //		for( final edu.cmu.cs.dennisc.pattern.Tuple2< String, Class<?> > tuple : org.alice.ide.IDE.getSingleton().getNameClsPairsForRelationalFillIns() ) {
-//			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (" + tuple.getA() + ") { ==, != }" ) {
+//			rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (" + tuple.getA() + ") { ==, != }" ) {
 //				@Override
 //				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
 //					for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : TRIMMED_RELATIONAL_OPERATORS ) {
-//						blank.addFillIn( new org.alice.ide.cascade.IncompleteRelationalExpressionFillIn( tuple.getB(), operator ) );
+//						rv.add( new org.alice.ide.cascade.IncompleteRelationalExpressionFillIn( tuple.getB(), operator ) );
 //					}
 //				}
 //			} );
 //		}
-//		blank.addSeparator();
+//		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+ 		return rv;
 	}
 }

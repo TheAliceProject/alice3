@@ -51,7 +51,7 @@ public abstract class IngredientFillerInner extends org.alice.ide.cascade.filler
 	}
 	protected abstract Class<?>[] getClses( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender );
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
 //		org.alice.apis.stage.LifeStage[] lifeStages = { org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.LifeStage.CHILD }; 
 //		for( final org.alice.apis.stage.LifeStage lifeStage : lifeStages ) {
 //			for( final org.alice.apis.stage.Gender gender : org.alice.apis.stage.Gender.values() ) {
@@ -79,5 +79,6 @@ public abstract class IngredientFillerInner extends org.alice.ide.cascade.filler
 //				} );
 //			}
 //		}
+		return rv;
 	}
 }

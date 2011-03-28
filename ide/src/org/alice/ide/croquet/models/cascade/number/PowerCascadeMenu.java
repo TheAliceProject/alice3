@@ -57,8 +57,9 @@ public class PowerCascadeMenu extends org.alice.ide.croquet.models.cascade.Expre
 		super( java.util.UUID.fromString( "2d1bbbdb-cf33-406d-98a9-4ba421bfd10e" ) );
 	}
 	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "sqrt", java.lang.Double.TYPE ) );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateBlankChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "sqrt", java.lang.Double.TYPE ) );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
+		return rv;
 	}
 }

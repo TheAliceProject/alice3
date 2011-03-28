@@ -57,8 +57,10 @@ public class ArrayBlank extends org.alice.ide.croquet.models.cascade.ExpressionB
 		super( java.util.UUID.fromString( "afafc379-2254-41c1-9ce5-6515d1b04211" ), Object[].class );
 	}
 	@Override
-	protected void addFillIns() {
-		this.addSeparator( ArraySeparator.getInstance() );
-		super.addFillIns();
+	protected java.util.List<edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> updateChildren(
+			java.util.List<edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> rv,
+			edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
+		rv.add( ArraySeparator.getInstance() );
+		return super.updateChildren(rv, context);
 	}
 }

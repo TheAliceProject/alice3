@@ -52,12 +52,13 @@ public class KeyFillerInner extends org.alice.ide.cascade.fillerinners.Expressio
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Key.class ), edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
-		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.LettersAThroughMKeyCascadeMenu.getInstance() );
-		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.LettersNThroughZKeyCascadeMenu.getInstance() );
-		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.DigitsKeyCascadeMenu.getInstance() );
-		blank.addMenu( org.alice.stageide.croquet.models.cascade.keymenus.ArrowsKeyCascadeMenu.getInstance() );
-		blank.addSeparator();
-		blank.addFillIn( org.alice.stageide.croquet.models.cascade.custom.CustomKeyFillIn.getInstance() );
+	public java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
+		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.LettersAThroughMKeyCascadeMenu.getInstance() );
+		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.LettersNThroughZKeyCascadeMenu.getInstance() );
+		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.DigitsKeyCascadeMenu.getInstance() );
+		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.ArrowsKeyCascadeMenu.getInstance() );
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.stageide.croquet.models.cascade.custom.CustomKeyFillIn.getInstance() );
+		return rv;
 	}
 }

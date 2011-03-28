@@ -50,7 +50,7 @@ public class ImageSourceFillerInner extends org.alice.ide.cascade.fillerinners.I
 		super( org.alice.apis.moveandturn.ImageSource.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
 //		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 //		Iterable< org.alice.virtualmachine.Resource > resources = ide.getResources();
 //		assert resources != null;
@@ -68,5 +68,6 @@ public class ImageSourceFillerInner extends org.alice.ide.cascade.fillerinners.I
 //		}
 //		blank.addSeparator();
 //		blank.addFillIn( new org.alice.stageide.cascade.customfillin.ImportNewImageSourceFillIn() );
+		return rv;
 	}
 }

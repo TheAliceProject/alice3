@@ -57,42 +57,43 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 		super( java.util.UUID.fromString( "d6d9501b-2a63-4b72-9ceb-3046ff079ba1" ) );
 	}
 	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.croquet.CascadeBlank blank ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateBlankChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 //		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-//			blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Double.class, Number.class ) );
+//			rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Double.class, Number.class ) );
 //		}
 //		blank.addSeparator();
 //		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-//			blank.addFillIn( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) );
+//			rv.add( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) );
 //		}
 //		blank.addSeparator();
 //
-//		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "remainder, integer divide" ) {
+//		rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "remainder, integer divide" ) {
 //			@Override
 //			protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 //				if( previousExpression != null ) {
 //					for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : TUCKED_AWAY_DOUBLE_ARITHMETIC_OPERATORS ) {
-//						blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Double.class, Number.class ) );
+//						rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Double.class, Number.class ) );
 //					}
 //					blank.addSeparator();
 //				}
 //				for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : TUCKED_AWAY_DOUBLE_ARITHMETIC_OPERATORS ) {
-//					blank.addFillIn( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) );
+//					rv.add( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) );
 //				}
 //			}
 //		} );
 		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.number.NumberArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
+			rv.add( org.alice.ide.croquet.models.cascade.number.NumberArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 		}
 		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.number.NumberArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
+			rv.add( org.alice.ide.croquet.models.cascade.number.NumberArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
 		
-		blank.addSeparator();
-		blank.addMenu( org.alice.ide.croquet.models.cascade.number.MinMaxCascadeMenu.getInstance() );
-		blank.addMenu( FloorCeilingCascadeMenu.getInstance() );
-		blank.addMenu( PowerCascadeMenu.getInstance() );
-		blank.addMenu( TrigonometryCascadeMenu.getInstance() );
-		blank.addMenu( ExponentCascadeMenu.getInstance() );
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.ide.croquet.models.cascade.number.MinMaxCascadeMenu.getInstance() );
+		rv.add( FloorCeilingCascadeMenu.getInstance() );
+		rv.add( PowerCascadeMenu.getInstance() );
+		rv.add( TrigonometryCascadeMenu.getInstance() );
+		rv.add( ExponentCascadeMenu.getInstance() );
+		return rv;
 	}
 }

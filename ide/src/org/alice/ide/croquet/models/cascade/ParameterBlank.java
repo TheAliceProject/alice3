@@ -65,8 +65,10 @@ public class ParameterBlank extends ExpressionBlank {
 		this.parameter = parameter;
 	}
 	@Override
-	protected void addFillIns() {
-		this.addSeparator( ParameterNameSeparator.getInstance( this.parameter ) );
-		super.addFillIns();
+	protected java.util.List<edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> updateChildren(
+			java.util.List<edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> rv,
+			edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
+		rv.add( ParameterNameSeparator.getInstance( this.parameter ) );
+		return super.updateChildren(rv, context);
 	}
 }

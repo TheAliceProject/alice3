@@ -50,12 +50,13 @@ public class StringFillerInner extends ExpressionFillerInner {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), edu.cmu.cs.dennisc.alice.ast.StringLiteral.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( "hello" ) );
-		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomStringLiteralFillIn.getInstance() );
-		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.string.StringConcatinationRightOperandOnlyFillIn.getInstance() );
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn.getInstance() );
+	public java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
+		rv.add( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( "hello" ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.ide.croquet.models.cascade.custom.CustomStringLiteralFillIn.getInstance() );
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.ide.croquet.models.cascade.string.StringConcatinationRightOperandOnlyFillIn.getInstance() );
+		rv.add( org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn.getInstance() );
+		return rv;
 	}
 }

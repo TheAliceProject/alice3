@@ -56,9 +56,12 @@ public class ConditionBlank extends org.alice.ide.croquet.models.cascade.Express
 	private ConditionBlank() {
 		super( java.util.UUID.fromString( "a5de4626-9fd1-4936-9958-7b85b1637262" ), Boolean.class );
 	}
+	
 	@Override
-	protected void addFillIns() {
-		this.addSeparator( ConditionSeparator.getInstance() );
-		super.addFillIns();
+	protected java.util.List<edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> updateChildren(
+			java.util.List<edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> rv,
+			edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
+		rv.add( ConditionSeparator.getInstance() );
+		return super.updateChildren(rv, context);
 	}
 }

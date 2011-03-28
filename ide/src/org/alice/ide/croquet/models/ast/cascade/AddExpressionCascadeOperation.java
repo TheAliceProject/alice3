@@ -42,8 +42,6 @@
  */
 package org.alice.ide.croquet.models.ast.cascade;
 
-
-
 class AddExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private final edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty;
 	public AddExpressionBlank( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty ) {
@@ -51,9 +49,10 @@ class AddExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cm
 		this.componentTypeProperty = componentTypeProperty;
 	}
 	@Override
-	protected void addFillIns() {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		ide.getCascadeManager().addFillIns( this, this.componentTypeProperty.getValue() );
+		ide.getCascadeManager().updateChildren( rv, context, this.componentTypeProperty.getValue() );
+		return rv;
 	}
 }
 

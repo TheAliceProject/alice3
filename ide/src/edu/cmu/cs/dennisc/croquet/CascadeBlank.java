@@ -51,32 +51,41 @@ public abstract class CascadeBlank< B > extends AbstractModel {
 	public CascadeBlank( java.util.UUID id ) {
 		super( Application.CASCADE_GROUP, id );
 	}
-	protected abstract void addFillIns();
-	public Iterable< AbstractCascadeFillIn< ? extends B,?,?,? > > getOwnees() {
-		if( this.ownees != null ) {
-			//pass
-		} else {
-			this.ownees = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			this.addFillIns();
-		}
-		return this.ownees;
+
+	protected abstract java.util.List< AbstractCascadeFillIn > updateChildren( java.util.List< AbstractCascadeFillIn > rv, CascadeBlankContext<B> context );
+	public final Iterable< AbstractCascadeFillIn > getChildren( CascadeBlankContext<B> context ) {
+		java.util.List< AbstractCascadeFillIn > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.updateChildren( rv, context );
+		return rv;
 	}
-	public void addFillIn( CascadeFillIn< ? extends B,? > fillIn ) {
-		this.ownees.add( fillIn );
-	}
-	public void addMenu( CascadeMenu< ? extends B > menu ) {
-		this.ownees.add( menu );
-	}
-	public void addSeparator() {
-		this.addSeparator( CascadeLineSeparator.getInstance() );
-	}
-	public void addSeparator( CascadeSeparator separator ) {
-		//note: we drop generic information since separators are never selected 
-		this.ownees.add( (AbstractCascadeFillIn< ? extends B,?,?,? >)separator );
-	}
-	public void addCancel( CascadeCancel< ? extends B > cancel ) {
-		this.ownees.add( cancel );
-	}
+	
+//	public Iterable< AbstractCascadeFillIn< ? extends B,?,?,? > > getOwnees() {
+//		if( this.ownees != null ) {
+//			//pass
+//		} else {
+//			this.ownees = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//			this.addFillIns();
+//		}
+//		return this.ownees;
+//	}
+
+//	protected abstract void addFillIns();
+//	public void addFillIn( CascadeFillIn< ? extends B,? > fillIn ) {
+//		this.ownees.add( fillIn );
+//	}
+//	public void addMenu( CascadeMenu< ? extends B > menu ) {
+//		this.ownees.add( menu );
+//	}
+//	public void addSeparator() {
+//		this.addSeparator( CascadeLineSeparator.getInstance() );
+//	}
+//	public void addSeparator( CascadeSeparator separator ) {
+//		//note: we drop generic information since separators are never selected 
+//		this.ownees.add( (AbstractCascadeFillIn< ? extends B,?,?,? >)separator );
+//	}
+//	public void addCancel( CascadeCancel< ? extends B > cancel ) {
+//		this.ownees.add( cancel );
+//	}
 	@Override
 	protected void localize() {
 	}

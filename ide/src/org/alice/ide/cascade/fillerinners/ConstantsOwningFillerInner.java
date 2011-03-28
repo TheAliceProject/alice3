@@ -66,12 +66,13 @@ public class ConstantsOwningFillerInner extends ExpressionFillerInner {
 		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getType();
  		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
  			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
- 	 			blank.addFillIn( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
+ 	 			rv.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
  			}
  		}
+ 		return rv;
 	}
 }

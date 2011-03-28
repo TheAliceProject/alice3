@@ -43,23 +43,23 @@
 
 package org.alice.ide.croquet.models.cascade;
 
-import edu.cmu.cs.dennisc.croquet.CascadeLabelSeparator;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
-	public ExpressionBlank( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type;
+
+	public ExpressionBlank( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
 		super( id );
 		this.type = type;
 	}
-	public ExpressionBlank( java.util.UUID id, Class<?> cls ) {
+	public ExpressionBlank( java.util.UUID id, Class< ? > cls ) {
 		this( id, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
 	}
 	@Override
-	protected void addFillIns() {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		ide.getCascadeManager().addFillIns( this, this.type );
+		ide.getCascadeManager().updateChildren( rv, context, this.type );
+		return rv;
 	}
 }

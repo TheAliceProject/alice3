@@ -50,7 +50,7 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.IntegerLiteral.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank ) {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
 //		if( blank.isTop() && previousExpression != null ) {
 //			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression ) {
 //				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmeticInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)previousExpression;
@@ -60,29 +60,30 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 //				final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = previousArithmeticInfixExpression.expressionType.getValue();
 				for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
 //					if( operator != prevOperator ) {
-						blank.addFillIn( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
+						rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
 //					}
 				}
-				blank.addMenu( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorDivideRemainderCascadeMenu.getInstance() );
-				blank.addSeparator();
-				blank.addFillIn( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToLeftOperandInPreviousArithmeticExpressionFillIn.getInstance() );
-				blank.addFillIn( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToRightOperandInPreviousArithmeticExpressionFillIn.getInstance() );
-				blank.addSeparator();
+				rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorDivideRemainderCascadeMenu.getInstance() );
+				rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+				rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToLeftOperandInPreviousArithmeticExpressionFillIn.getInstance() );
+				rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToRightOperandInPreviousArithmeticExpressionFillIn.getInstance() );
+				rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
 //			}
 //		}
 		
 		for( int i=0; i<4; i++ ) {
-			blank.addFillIn( org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn.getInstance( i ) );
+			rv.add( org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn.getInstance( i ) );
 		}
 //		if( blank.isTop() && previousExpression != null ) {
-			blank.addSeparator();
-			blank.addMenu( org.alice.ide.croquet.models.cascade.integer.RandomCascadeMenu.getInstance() );
-			blank.addSeparator();
-			blank.addMenu( org.alice.ide.croquet.models.cascade.integer.RealToIntegerCascadeMenu.getInstance() );
-			blank.addSeparator();
-			blank.addMenu( org.alice.ide.croquet.models.cascade.integer.MathCascadeMenu.getInstance() );
+			rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+			rv.add( org.alice.ide.croquet.models.cascade.integer.RandomCascadeMenu.getInstance() );
+			rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+			rv.add( org.alice.ide.croquet.models.cascade.integer.RealToIntegerCascadeMenu.getInstance() );
+			rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+			rv.add( org.alice.ide.croquet.models.cascade.integer.MathCascadeMenu.getInstance() );
 //		}
-		blank.addSeparator();
-		blank.addFillIn( org.alice.ide.croquet.models.cascade.custom.CustomIntegerLiteralFillIn.getInstance() );
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.ide.croquet.models.cascade.custom.CustomIntegerLiteralFillIn.getInstance() );
+ 		return rv;
 	}
 }
