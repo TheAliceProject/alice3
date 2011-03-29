@@ -50,7 +50,7 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.IntegerLiteral.class );
 	}
 	@Override
-	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addItems( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 //		if( blank.isTop() && previousExpression != null ) {
 //			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression ) {
 //				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmeticInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)previousExpression;

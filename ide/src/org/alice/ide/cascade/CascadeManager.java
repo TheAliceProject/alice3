@@ -296,6 +296,9 @@ public abstract class CascadeManager {
 	
 	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 		if( type != null ) {
+			edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> parent = context.getParent();
+			boolean isTop = parent instanceof edu.cmu.cs.dennisc.croquet.CascadeOperationContext;
+
 			rv.add( org.alice.ide.croquet.models.cascade.PreviousExpressionItselfFillIn.getInstance( type ) );
 			rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
 			this.addCustomFillIns( rv, context, type );
@@ -305,7 +308,7 @@ public abstract class CascadeManager {
 			} else {
 				for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
 					if( expressionFillerInner.isAssignableTo( type ) ) {
-						expressionFillerInner.updateChildren( rv, context );
+						expressionFillerInner.addItems( rv, isTop, this.previousExpression );
 					}
 				}
 			}
@@ -321,7 +324,7 @@ public abstract class CascadeManager {
 				}
 			}
 			if( enumType != null && this.areEnumConstantsDesired( enumType ) ) {
-				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( enumType ).updateChildren( rv, context );
+				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( enumType ).addItems( rv, isTop, this.previousExpression );
 			}
 
 			rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );

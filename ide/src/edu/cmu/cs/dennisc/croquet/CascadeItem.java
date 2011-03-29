@@ -40,23 +40,77 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.cascade.fillerinners;
 
-//todo: extend NumberFillerInner
+package edu.cmu.cs.dennisc.croquet;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PortionFillerInner extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
-	public PortionFillerInner() {
-		super( org.alice.apis.moveandturn.Portion.class );
+public abstract class CascadeItem< F, C extends CascadeItemContext<F,?,?> > extends AbstractModel {
+	public CascadeItem( java.util.UUID id ) {
+		super( Application.CASCADE_GROUP, id );
 	}
 	@Override
-	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addItems( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-		for( double d : new double[] { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 } ) {
-			rv.add( org.alice.stageide.croquet.models.cascade.values.PortionValueFillIn.getInstance( d ) ); 
-		}
-		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.stageide.croquet.models.cascade.custom.CustomPortionFillIn.getInstance() );
-		return rv;
+	protected void localize() {
 	}
+	@Override
+	public boolean isAlreadyInState( Edit< ? > edit ) {
+		return false;
+	}
+	public boolean isInclusionDesired( C context ) {
+		return true;
+	}
+	public boolean isAutomaticallySelectedWhenSoleOption() {
+		return true;
+	}
+	
+//	public abstract CascadeBlank<B>[] getBlanks();
+	public abstract F getTransientValue( C context );
+	public abstract F createValue( C context );
+
+	private javax.swing.JComponent menuProxy = null;
+	private javax.swing.Icon icon = null;
+	protected abstract javax.swing.JComponent createMenuItemIconProxy( C context );
+//	protected javax.swing.JComponent createMenuProxy() {
+//		return new javax.swing.JLabel( "todo: override getMenuProxy" );
+//	}
+	protected javax.swing.JComponent getMenuProxy( C context ) {
+		//System.err.println( "todo: cache getMenuProxy()" );
+		//todo
+		if( this.menuProxy != null ) {
+			//pass
+		} else {
+			this.menuProxy = this.createMenuItemIconProxy( context );
+		}
+		return this.menuProxy;
+	}
+	public javax.swing.Icon getMenuItemIcon( C context ) {
+		if( this.icon != null ) {
+			//pass
+		} else {
+			javax.swing.JComponent component = this.getMenuProxy( context );
+			if( component != null ) {
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( component );
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
+//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.validateTree( component );
+//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
+//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.revalidateTree( component );
+//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
+				java.awt.Dimension size = component.getPreferredSize();
+				if( size.width > 0 && size.height > 0 ) {
+					this.icon = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.createIcon( component );
+				} else {
+					this.icon = null;
+				}
+			} else {
+				this.icon = null;
+			}
+		}
+		return this.icon;
+	}
+	public String getMenuItemText( C context ) {
+		return null;
+	}
+//	public abstract javax.swing.Icon getMenuItemIcon( C context );
+//	public abstract String getMenuItemText( C context );
 }

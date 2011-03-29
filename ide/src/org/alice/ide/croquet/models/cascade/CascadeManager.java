@@ -47,11 +47,6 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class CascadeManager {
-//	static {
-//		org.alice.ide.croquet.models.cascade.blanks.IntegerBlank.getInstance();
-//		org.alice.ide.croquet.models.cascade.blanks.NumberBlank.getInstance();
-//		org.alice.ide.croquet.models.cascade.blanks.StringBlank.getInstance();
-//	}
 	private CascadeManager() {
 		throw new AssertionError();
 	}

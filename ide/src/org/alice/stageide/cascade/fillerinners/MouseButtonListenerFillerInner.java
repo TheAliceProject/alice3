@@ -47,7 +47,7 @@ public class MouseButtonListenerFillerInner extends org.alice.ide.cascade.filler
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonListener.class ), edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class );
 	}
 	@Override
-	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addItems( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 		rv.add( org.alice.stageide.croquet.models.cascade.adapters.MouseButtonAdapterFillIn.getInstance() );
 		return rv;
 	}

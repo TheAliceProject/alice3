@@ -40,23 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.cascade.fillerinners;
 
-//todo: extend NumberFillerInner
+package edu.cmu.cs.dennisc.croquet;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PortionFillerInner extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
-	public PortionFillerInner() {
-		super( org.alice.apis.moveandturn.Portion.class );
+public class CascadeItemContext<F,M extends CascadeItem<F,C>,C extends CascadeItemContext<F,M,C> > extends AbstractModelContext< M > {
+	/*package-private*/ CascadeItemContext( M model, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( model, e, viewController );
 	}
-	@Override
-	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addItems( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-		for( double d : new double[] { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 } ) {
-			rv.add( org.alice.stageide.croquet.models.cascade.values.PortionValueFillIn.getInstance( d ) ); 
-		}
-		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.stageide.croquet.models.cascade.custom.CustomPortionFillIn.getInstance() );
-		return rv;
+	public CascadeItemContext( M cascadeOperation ) {
+		this( cascadeOperation, null, null );
+	}
+	public CascadeItemContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public F createValue() {
+		return this.getModel().createValue( (C)this );
+	}
+	public F getTransientValue() {
+		return this.getModel().getTransientValue( (C)this );
 	}
 }
