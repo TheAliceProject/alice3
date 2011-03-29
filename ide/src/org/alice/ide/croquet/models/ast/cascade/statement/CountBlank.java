@@ -57,8 +57,8 @@ public class CountBlank extends org.alice.ide.croquet.models.cascade.ExpressionB
 		super( java.util.UUID.fromString( "8dde36e7-5d10-46fa-9539-c52ed6495661" ), Integer.class );
 	}
 	@Override
-	protected java.util.List<edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> updateChildren(
-			java.util.List<edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> rv,
+	protected java.util.List<edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren(
+			java.util.List<edu.cmu.cs.dennisc.croquet.CascadeItem> rv,
 			edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
 		rv.add( CountSeparator.getInstance() );
 		return super.updateChildren(rv, context);

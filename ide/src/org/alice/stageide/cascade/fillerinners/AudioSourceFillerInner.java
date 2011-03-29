@@ -50,7 +50,7 @@ public class AudioSourceFillerInner extends org.alice.ide.cascade.fillerinners.I
 		super( org.alice.apis.moveandturn.AudioSource.class );
 	}
 	@Override
-	public java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
 //		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 //		Iterable< org.alice.virtualmachine.Resource > resources = ide.getResources();
 //		assert resources != null;

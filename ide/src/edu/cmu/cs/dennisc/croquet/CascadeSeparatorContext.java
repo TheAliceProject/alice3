@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeSeparatorContext extends AbstractCascadeFillInContext< Void, CascadeSeparator, CascadeSeparatorContext > {
+public class CascadeSeparatorContext extends CascadeItemContext< Void, CascadeSeparator, CascadeSeparatorContext > {
 	/*package-private*/ CascadeSeparatorContext( CascadeSeparator cascadeSeparator, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( cascadeSeparator, e, viewController );
 	}

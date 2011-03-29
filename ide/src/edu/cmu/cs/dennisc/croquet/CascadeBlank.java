@@ -47,14 +47,14 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeBlank< B > extends AbstractModel {
-	private java.util.List< AbstractCascadeFillIn< ? extends B,? > > ownees;
+	private java.util.List< CascadeItem< ? extends B,? > > ownees;
 	public CascadeBlank( java.util.UUID id ) {
 		super( Application.CASCADE_GROUP, id );
 	}
 
-	protected abstract java.util.List< AbstractCascadeFillIn > updateChildren( java.util.List< AbstractCascadeFillIn > rv, CascadeBlankContext<B> context );
-	public final Iterable< AbstractCascadeFillIn > getChildren( CascadeBlankContext<B> context ) {
-		java.util.List< AbstractCascadeFillIn > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	protected abstract java.util.List< CascadeItem > updateChildren( java.util.List< CascadeItem > rv, CascadeBlankContext<B> context );
+	public final Iterable< CascadeItem > getChildren( CascadeBlankContext<B> context ) {
+		java.util.List< CascadeItem > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.updateChildren( rv, context );
 		return rv;
 	}

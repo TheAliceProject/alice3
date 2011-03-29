@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeCancel< F > extends AbstractCascadeFillIn< F, CascadeCancelContext<F> > {
+public abstract class CascadeCancel< F > extends CascadeItem< F, CascadeCancelContext<F> > {
 	public CascadeCancel( java.util.UUID id ) {
 		super( id );
 	}

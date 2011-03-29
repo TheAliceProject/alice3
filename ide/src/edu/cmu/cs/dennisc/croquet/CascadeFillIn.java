@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeFillIn<F,B> extends AbstractCascadeFillIn< F, CascadeFillInContext< F, B > > {
+public abstract class CascadeFillIn<F,B> extends CascadeItem< F, CascadeFillInContext< F, B > > {
 	private java.util.List< CascadeBlank<B> > blanks = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	public CascadeFillIn( java.util.UUID id ) {
 		super( id );

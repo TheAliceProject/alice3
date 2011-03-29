@@ -58,8 +58,8 @@ public class ConditionBlank extends org.alice.ide.croquet.models.cascade.Express
 	}
 	
 	@Override
-	protected java.util.List<edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> updateChildren(
-			java.util.List<edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> rv,
+	protected java.util.List<edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren(
+			java.util.List<edu.cmu.cs.dennisc.croquet.CascadeItem> rv,
 			edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
 		rv.add( ConditionSeparator.getInstance() );
 		return super.updateChildren(rv, context);

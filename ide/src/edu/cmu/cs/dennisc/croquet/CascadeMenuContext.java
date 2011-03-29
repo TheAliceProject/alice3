@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeMenuContext<FB> extends AbstractCascadeFillInContext< FB, CascadeMenu<FB>, CascadeMenuContext<FB> > {
+public class CascadeMenuContext<FB> extends CascadeItemContext< FB, CascadeMenu<FB>, CascadeMenuContext<FB> > {
 	/*package-private*/ CascadeMenuContext( CascadeMenu<FB> model, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( model, e, viewController );
 	}

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeSeparator extends AbstractCascadeFillIn< Void, CascadeSeparatorContext > {
+public abstract class CascadeSeparator extends CascadeItem< Void, CascadeSeparatorContext > {
 	public CascadeSeparator( java.util.UUID id ) {
 		super( id );
 	}

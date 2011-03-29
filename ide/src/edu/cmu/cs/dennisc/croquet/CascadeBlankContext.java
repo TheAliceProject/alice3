@@ -60,7 +60,7 @@ public class CascadeBlankContext<B> extends AbstractModelContext< CascadeBlank<B
 	/*package-private*/ void setRtBlank( RtBlank< B > rtBlank ) {
 		this.rtBlank = rtBlank;
 	}
-	public AbstractCascadeFillInContext getSelectedFillInContext() {	
+	public CascadeItemContext getSelectedFillInContext() {	
 		return this.rtBlank.getSelectedFillInContext();
 	}
 }

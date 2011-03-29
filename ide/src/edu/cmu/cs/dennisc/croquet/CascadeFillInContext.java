@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInContext<F,B> extends AbstractCascadeFillInContext< F, CascadeFillIn<F,B>, CascadeFillInContext<F,B> > {
+public class CascadeFillInContext<F,B> extends CascadeItemContext< F, CascadeFillIn<F,B>, CascadeFillInContext<F,B> > {
 	/*package-private*/ CascadeFillInContext( CascadeFillIn<F,B> cascadeFillIn, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( cascadeFillIn, e, viewController );
 	}

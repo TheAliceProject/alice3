@@ -99,7 +99,7 @@ class EnumBlank<T extends Enum< T >> extends edu.cmu.cs.dennisc.croquet.CascadeB
 	}
 
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< T > context ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< T > context ) {
 		for( T value : this.cls.getEnumConstants() ) {
 			rv.add( EnumConstantFillIn.getInstance( value ) );
 		}
@@ -207,7 +207,7 @@ class IntegerBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< Integer > {
 	}
 
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn> rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< Integer > context ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< Integer > context ) {
 		for( Integer value : new int[] { 1, 2, 3, 4, 5 } ) {
 			rv.add( IntegerLiteralFillIn.getInstance( value ) );
 		}

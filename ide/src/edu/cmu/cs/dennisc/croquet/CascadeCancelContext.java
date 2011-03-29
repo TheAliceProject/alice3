@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeCancelContext<F> extends AbstractCascadeFillInContext< F, CascadeCancel<F>, CascadeCancelContext<F> > {
+public class CascadeCancelContext<F> extends CascadeItemContext< F, CascadeCancel<F>, CascadeCancelContext<F> > {
 	/*package-private*/ CascadeCancelContext( CascadeCancel<F> model, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( model, e, viewController );
 	}
