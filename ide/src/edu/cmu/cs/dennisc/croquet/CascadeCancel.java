@@ -46,14 +46,14 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeCancel< F > extends AbstractCascadeFillIn< F, Void, CascadeCancel<F>, CascadeCancelContext<F> > {
+public abstract class CascadeCancel< F > extends AbstractCascadeFillIn< F, CascadeCancelContext<F> > {
 	public CascadeCancel( java.util.UUID id ) {
 		super( id );
 	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.CascadeBlank< Void >[] getBlanks() {
-		return null;
-	}
+//	@Override
+//	public edu.cmu.cs.dennisc.croquet.CascadeBlank< Void >[] getBlanks() {
+//		return null;
+//	}
 	@Override
 	public final boolean isAutomaticallySelectedWhenSoleOption() {
 		return false;

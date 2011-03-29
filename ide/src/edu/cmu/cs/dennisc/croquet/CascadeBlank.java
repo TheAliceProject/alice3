@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeBlank< B > extends AbstractModel {
-	private java.util.List< AbstractCascadeFillIn< ? extends B,?,?,? > > ownees;
+	private java.util.List< AbstractCascadeFillIn< ? extends B,? > > ownees;
 	public CascadeBlank( java.util.UUID id ) {
 		super( Application.CASCADE_GROUP, id );
 	}
@@ -59,33 +59,6 @@ public abstract class CascadeBlank< B > extends AbstractModel {
 		return rv;
 	}
 	
-//	public Iterable< AbstractCascadeFillIn< ? extends B,?,?,? > > getOwnees() {
-//		if( this.ownees != null ) {
-//			//pass
-//		} else {
-//			this.ownees = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//			this.addFillIns();
-//		}
-//		return this.ownees;
-//	}
-
-//	protected abstract void addFillIns();
-//	public void addFillIn( CascadeFillIn< ? extends B,? > fillIn ) {
-//		this.ownees.add( fillIn );
-//	}
-//	public void addMenu( CascadeMenu< ? extends B > menu ) {
-//		this.ownees.add( menu );
-//	}
-//	public void addSeparator() {
-//		this.addSeparator( CascadeLineSeparator.getInstance() );
-//	}
-//	public void addSeparator( CascadeSeparator separator ) {
-//		//note: we drop generic information since separators are never selected 
-//		this.ownees.add( (AbstractCascadeFillIn< ? extends B,?,?,? >)separator );
-//	}
-//	public void addCancel( CascadeCancel< ? extends B > cancel ) {
-//		this.ownees.add( cancel );
-//	}
 	@Override
 	protected void localize() {
 	}

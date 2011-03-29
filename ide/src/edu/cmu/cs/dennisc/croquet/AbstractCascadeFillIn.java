@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCascadeFillIn< F, B, M extends AbstractCascadeFillIn<F,B,M,C>, C extends AbstractCascadeFillInContext<F,B,M,C> > extends AbstractModel {
+public abstract class AbstractCascadeFillIn< F, C extends AbstractCascadeFillInContext<F,?,?> > extends AbstractModel {
 	public AbstractCascadeFillIn( java.util.UUID id ) {
 		super( Application.CASCADE_GROUP, id );
 	}
@@ -64,7 +64,7 @@ public abstract class AbstractCascadeFillIn< F, B, M extends AbstractCascadeFill
 		return true;
 	}
 	
-	public abstract CascadeBlank<B>[] getBlanks();
+//	public abstract CascadeBlank<B>[] getBlanks();
 	public abstract F getTransientValue( C context );
 	public abstract F createValue( C context );
 

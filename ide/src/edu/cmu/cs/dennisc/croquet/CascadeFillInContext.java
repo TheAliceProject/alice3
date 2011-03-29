@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInContext<F,B> extends AbstractCascadeFillInContext< F, B, CascadeFillIn<F,B>, CascadeFillInContext<F,B> > {
+public class CascadeFillInContext<F,B> extends AbstractCascadeFillInContext< F, CascadeFillIn<F,B>, CascadeFillInContext<F,B> > {
 	/*package-private*/ CascadeFillInContext( CascadeFillIn<F,B> cascadeFillIn, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( cascadeFillIn, e, viewController );
 	}
@@ -55,5 +55,13 @@ public class CascadeFillInContext<F,B> extends AbstractCascadeFillInContext< F, 
 	}
 	public CascadeFillInContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+	}
+
+	private RtFillIn<F,B> rtFillIn;
+	/*private-private*/ void setRtFillIn( RtFillIn<F,B> rtFillIn ) {
+		this.rtFillIn = rtFillIn;
+	}
+	public CascadeBlankContext< B > getBlankContextAt( int i ) {	
+		return this.rtFillIn.getBlankContextAt( i );
 	}
 }

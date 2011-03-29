@@ -55,13 +55,13 @@ public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.a
 	private enum BlankOperation {
 		CREATE_VALUES() {
 			@Override
-			public Object operate( edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< ?,?,?,? > selectedFillInContext ) {
+			public <F,M extends edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn< F,C >,C extends edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext<F,M,C>> F operate( edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< F,M,C > selectedFillInContext ) {
 				return selectedFillInContext.createValue();
 			}
 		},
 		GET_TRANSIENT_VALUES() {
 			@Override
-			public Object operate( edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< ?,?,?,? > selectedFillInContext ) {
+			public <F,M extends edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn< F,C >,C extends edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext<F,M,C>> F operate( edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< F,M,C > selectedFillInContext ) {
 				if( selectedFillInContext != null ) {
 					return selectedFillInContext.getTransientValue();
 				} else {
@@ -69,14 +69,15 @@ public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.a
 				}
 			}
 		};
-		public abstract Object operate( edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< ?,?,?,? > selectedFillInContext );
+		public abstract <F,M extends edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn< F,C >, C extends edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext<F,M,C> > F operate( edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< F,M,C > selectedFillInContext );
+//		public abstract <F,B,M,C> F operate( edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< ?,?,? > selectedFillInContext );
 	}
 	private B[] runBlanks( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context, BlankOperation blankOperation ) { 
 		edu.cmu.cs.dennisc.croquet.CascadeBlank< B >[] blanks = this.getBlanks();
 		B[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( this.cls, blanks.length );
 		for( int i=0; i<rv.length; i++ ) {
 			edu.cmu.cs.dennisc.croquet.CascadeBlankContext< B > blankContext = context.getBlankContextAt( i );
-			edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< B,?,?,? > selectedFillInContext = blankContext.getSelectedFillInContext();
+			edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< B,?,? > selectedFillInContext = blankContext.getSelectedFillInContext();
 			rv[ i ] = (B)blankOperation.operate( selectedFillInContext );
 		}
 		return rv;
