@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeMenuContext<FB> extends CascadeItemContext< FB, CascadeMenu<FB>, CascadeMenuContext<FB> > {
+public class CascadeMenuContext<FB> extends CascadeBlankOwnerContext< FB, FB, CascadeMenu<FB>, CascadeMenuContext<FB> > {
 	/*package-private*/ CascadeMenuContext( CascadeMenu<FB> model, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( model, e, viewController );
 	}
@@ -55,12 +55,5 @@ public class CascadeMenuContext<FB> extends CascadeItemContext< FB, CascadeMenu<
 	}
 	public CascadeMenuContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	private RtMenu<FB> rtMenu;
-	public void setRtMenu( RtMenu< FB > rtMenu ) {
-		this.rtMenu = rtMenu;
-	}
-	/*package-private*/ CascadeBlankContext< FB > getInternalBlankContext() {
-		return this.rtMenu.getBlankContextAt( 0 );
 	}
 }

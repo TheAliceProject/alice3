@@ -46,20 +46,19 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeCancel< F > extends CascadeItem< F, CascadeCancelContext<F> > {
-	public CascadeCancel( java.util.UUID id ) {
+public abstract class CascadeBlankOwner<F,B,C extends CascadeBlankOwnerContext< F, B, ?, C > > extends CascadeItem< F, C > {
+	private java.util.List< CascadeBlank<B> > blanks = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public CascadeBlankOwner( java.util.UUID id ) {
 		super( id );
 	}
-	@Override
-	public final boolean isAutomaticallySelectedWhenSoleOption() {
-		return false;
+	public void addBlank( CascadeBlank<B> blank ) {
+		assert blank != null : this;
+		this.blanks.add( blank );
 	}
-	@Override
-	public final F createValue( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
-		throw new CancelException( this.getMenuItemText( context ) );
-	}
-	@Override
-	public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
-		return null;
+//	@Override
+	public CascadeBlank<B>[] getBlanks() {
+		CascadeBlank<B>[] rv = new CascadeBlank[ this.blanks.size() ];
+		this.blanks.toArray( rv );
+		return rv;
 	}
 }

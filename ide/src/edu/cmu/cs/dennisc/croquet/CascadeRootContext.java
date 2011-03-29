@@ -46,20 +46,14 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeCancel< F > extends CascadeItem< F, CascadeCancelContext<F> > {
-	public CascadeCancel( java.util.UUID id ) {
-		super( id );
+public class CascadeRootContext<B> extends CascadeBlankOwnerContext< B[], B, CascadeRoot<B>, CascadeRootContext<B> > {
+	/*package-private*/ CascadeRootContext( CascadeRoot<B> model, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( model, e, viewController );
 	}
-	@Override
-	public final boolean isAutomaticallySelectedWhenSoleOption() {
-		return false;
+	public CascadeRootContext( CascadeRoot<B> model ) {
+		this( model, null, null );
 	}
-	@Override
-	public final F createValue( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
-		throw new CancelException( this.getMenuItemText( context ) );
-	}
-	@Override
-	public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
-		return null;
+	public CascadeRootContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

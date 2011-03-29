@@ -46,20 +46,22 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeCancel< F > extends CascadeItem< F, CascadeCancelContext<F> > {
-	public CascadeCancel( java.util.UUID id ) {
-		super( id );
+public class CascadeBlankOwnerContext<F,B,M extends CascadeBlankOwner<F,B,C>, C extends CascadeBlankOwnerContext<F,B,M,C>> extends CascadeItemContext< F, M, C > {
+	/*package-private*/ CascadeBlankOwnerContext( M model, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( model, e, viewController );
 	}
-	@Override
-	public final boolean isAutomaticallySelectedWhenSoleOption() {
-		return false;
+	public CascadeBlankOwnerContext( M model ) {
+		this( model, null, null );
 	}
-	@Override
-	public final F createValue( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
-		throw new CancelException( this.getMenuItemText( context ) );
+	public CascadeBlankOwnerContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
-	@Override
-	public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
-		return null;
+
+	private RtBlankOwner<F,B,M,C> rtBlankOwner;
+	/*private-private*/ void setRtBlankOwner( RtBlankOwner<F,B,M,C> rtBlankOwner ) {
+		this.rtBlankOwner = rtBlankOwner;
+	}
+	public CascadeBlankContext< B > getBlankContextAt( int i ) {	
+		return this.rtBlankOwner.getBlankContextAt( i );
 	}
 }

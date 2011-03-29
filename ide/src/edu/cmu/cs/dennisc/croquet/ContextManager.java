@@ -212,11 +212,14 @@ public class ContextManager {
 	/*package-private*/ static <F,B> CascadeFillInContext< F,B > createCascadeFillInContext( CascadeFillIn< F,B > cascadeFillIn ) {
 		return new CascadeFillInContext<F,B>(cascadeFillIn, null, null );
 	}
-	/*package-private*/ static <F,B> CascadeSeparatorContext createCascadeSeparatorContext( CascadeSeparator cascadeSeparator ) {
-		return new CascadeSeparatorContext(cascadeSeparator, null, null );
+	/*package-private*/ static <F> CascadeRootContext<F> createCascadeRootContext( CascadeRoot<F> cascadeRoot ) {
+		return new CascadeRootContext<F>(cascadeRoot, null, null );
 	}
 	/*package-private*/ static <FB> CascadeMenuContext<FB> createCascadeMenuContext( CascadeMenu<FB> cascadeMenu ) {
 		return new CascadeMenuContext<FB>(cascadeMenu, null, null );
+	}
+	/*package-private*/ static <F,B> CascadeSeparatorContext createCascadeSeparatorContext( CascadeSeparator cascadeSeparator ) {
+		return new CascadeSeparatorContext(cascadeSeparator, null, null );
 	}
 	/*package-private*/ static <F> CascadeCancelContext<F> createCascadeCancelContext( CascadeCancel<F> cascadeCancel ) {
 		return new CascadeCancelContext<F>(cascadeCancel, null, null );

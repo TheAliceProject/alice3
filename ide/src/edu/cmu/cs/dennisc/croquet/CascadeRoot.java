@@ -46,20 +46,28 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeCancel< F > extends CascadeItem< F, CascadeCancelContext<F> > {
-	public CascadeCancel( java.util.UUID id ) {
-		super( id );
+public class CascadeRoot<B> extends CascadeBlankOwner< B[], B, CascadeRootContext< B > > {
+	private final CascadeOperation< B > operation;
+	/*package-private*/ CascadeRoot( CascadeOperation< B > operation ) {
+		super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ) );
+		this.operation = operation;
 	}
 	@Override
-	public final boolean isAutomaticallySelectedWhenSoleOption() {
-		return false;
-	}
-	@Override
-	public final F createValue( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
-		throw new CancelException( this.getMenuItemText( context ) );
-	}
-	@Override
-	public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy(CascadeRootContext<B> context) {
 		return null;
+	}
+	@Override
+	public B[] createValue( CascadeRootContext< B > context ) {
+		//todo
+		//this.operation.getComponentType();
+		//handled elsewhere for now
+		throw new AssertionError();
+	}
+	@Override
+	public B[] getTransientValue( CascadeRootContext< B > context ) {
+		//todo
+		//this.operation.getComponentType();
+		//handled elsewhere for now
+		throw new AssertionError();
 	}
 }

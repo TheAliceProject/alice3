@@ -50,10 +50,6 @@ public abstract class CascadeSeparator extends CascadeItem< Void, CascadeSeparat
 	public CascadeSeparator( java.util.UUID id ) {
 		super( id );
 	}
-//	@Override
-//	public final CascadeBlank<Void>[] getBlanks() {
-//		return null;
-//	}
 	@Override
 	public final Void createValue( CascadeSeparatorContext context ) {
 		throw new AssertionError();
