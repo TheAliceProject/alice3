@@ -298,6 +298,7 @@ public abstract class CascadeManager {
 		if( type != null ) {
 			edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> parent = context.getParent();
 			boolean isRoot = parent instanceof edu.cmu.cs.dennisc.croquet.CascadeRootContext;
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "updateChildren", isRoot, parent, this.previousExpression );
 
 			rv.add( org.alice.ide.croquet.models.cascade.PreviousExpressionItselfFillIn.getInstance( type ) );
 			rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );

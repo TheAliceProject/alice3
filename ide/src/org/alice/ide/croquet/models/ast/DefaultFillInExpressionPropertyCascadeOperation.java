@@ -48,6 +48,11 @@ package org.alice.ide.croquet.models.ast;
 public class DefaultFillInExpressionPropertyCascadeOperation extends org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, DefaultFillInExpressionPropertyCascadeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized DefaultFillInExpressionPropertyCascadeOperation getInstance( edu.cmu.cs.dennisc.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+		if( desiredType != null ) {
+			//pass
+		} else {
+			desiredType = expressionProperty.getExpressionType();
+		}
 		DefaultFillInExpressionPropertyCascadeOperation rv = map.get( expressionProperty );
 		if( rv != null ) {
 			assert rv.getGroup() == group;
