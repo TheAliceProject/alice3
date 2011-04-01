@@ -60,7 +60,7 @@ public class PreferenceManager {
 		}
 	}
 
-	private static String getKey( edu.cmu.cs.dennisc.croquet.AbstractModel model ) {
+	private static String getKey( edu.cmu.cs.dennisc.croquet.Model model ) {
 		return model.getId().toString();
 	}
 	private static <T> T decode( byte[] data, edu.cmu.cs.dennisc.croquet.Codec< T > codec ) {

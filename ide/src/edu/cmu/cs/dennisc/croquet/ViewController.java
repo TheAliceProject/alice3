@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ViewController< J extends javax.swing.JComponent, M extends AbstractModel > extends JComponent< J > {
+public abstract class ViewController< J extends javax.swing.JComponent, M extends Model > extends JComponent< J > {
 	private M model;
 	
 	public ViewController( M model ) {

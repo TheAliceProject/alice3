@@ -381,7 +381,6 @@ public class DragAndDropContext extends AbstractModelContext<DragAndDropModel> {
 	}
 	
 	private void popContext( OperationContext< ? > childContext ) {
-		System.err.println( "popContext" );
 		AbstractModelContext< ? > currentContext = ContextManager.getCurrentContext();
 		if( childContext != null && childContext == currentContext ) {
 			ContextManager.popParentContextWhenChildContextIsPopped( this, childContext );

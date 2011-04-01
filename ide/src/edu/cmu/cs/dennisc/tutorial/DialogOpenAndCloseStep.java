@@ -127,7 +127,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			break;
 		case WAITING_ON_CLOSE:
 			if( child instanceof edu.cmu.cs.dennisc.croquet.ActionOperationContext ) {
-				edu.cmu.cs.dennisc.croquet.AbstractModel model = ((edu.cmu.cs.dennisc.croquet.ActionOperationContext)child).getModel();
+				edu.cmu.cs.dennisc.croquet.Model model = ((edu.cmu.cs.dennisc.croquet.ActionOperationContext)child).getModel();
 				if( model instanceof org.alice.stageide.croquet.models.run.RestartOperation ) {
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "EPIC_HACK IGNORE NEXT CLOSE" );
 					this.EPIC_HACK_isIgnoreWindowClosingEventDesired = true;

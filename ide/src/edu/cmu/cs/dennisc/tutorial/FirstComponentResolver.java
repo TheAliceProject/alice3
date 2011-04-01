@@ -48,12 +48,12 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
  * @author Dennis Cosgrove
  */
 public class FirstComponentResolver implements RuntimeResolver< edu.cmu.cs.dennisc.croquet.Component<?> > {
-	private RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.AbstractModel > modelResolver;
-	public FirstComponentResolver( RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.AbstractModel > modelResolver ) {
+	private RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.Model > modelResolver;
+	public FirstComponentResolver( RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.Model > modelResolver ) {
 		this.modelResolver = modelResolver;
 	}
 	public edu.cmu.cs.dennisc.croquet.Component<?> getResolved() {
-		edu.cmu.cs.dennisc.croquet.AbstractModel model = this.modelResolver.getResolved();
+		edu.cmu.cs.dennisc.croquet.Model model = this.modelResolver.getResolved();
 		if( model != null ) {
 			return model.getFirstComponent();
 		} else {

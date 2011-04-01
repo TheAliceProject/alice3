@@ -45,8 +45,8 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation > {
-	public static class FillInExpressionPropertyEditMemento extends Memento<org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation> {
+public class ExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation > {
+	public static class FillInExpressionPropertyEditMemento extends Memento<org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation> {
 		private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 		private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 		public FillInExpressionPropertyEditMemento( ExpressionPropertyEdit edit ) {
@@ -58,7 +58,7 @@ public class ExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org
 			super( binaryDecoder );
 		}
 		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation > createEdit() {
+		public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation > createEdit() {
 			return new ExpressionPropertyEdit( this );
 		}
 		@Override
@@ -90,12 +90,12 @@ public class ExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org
 		this.nextExpression = memento.nextExpression;
 	}
 	@Override
-	public Memento<org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation> createMemento() {
+	public Memento<org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation> createMemento() {
 		return new FillInExpressionPropertyEditMemento( this );
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
-		org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation expressionPropertyOperation = this.getModel();
+		org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation expressionPropertyOperation = this.getModel();
 		return expressionPropertyOperation.getExpressionProperty();
 	}
 	@Override

@@ -172,7 +172,7 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 			return (M)rv;
 		}
 		
-		public <M extends AbstractModel> M getLastModel() {
+		public <M extends Model> M getLastModel() {
 			final int N = this.getModelCount();
 			if( N > 0 ) {
 				return this.getModelAt( N-1 );
@@ -185,7 +185,7 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super.decodeInternal( binaryDecoder );
 			this.modelResolvers = binaryDecoder.decodeBinaryEncodableAndDecodableArray( CodableResolver.class );
-			this.models = new AbstractModel[ this.modelResolvers.length ];
+			this.models = new Model[ this.modelResolvers.length ];
 		}
 		@Override
 		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {

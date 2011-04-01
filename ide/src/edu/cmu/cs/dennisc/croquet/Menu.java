@@ -46,8 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Menu extends AbstractMenuItem< javax.swing.JMenu, MenuModel > implements MenuItemContainer {
+public class Menu extends AbstractMenuItem< javax.swing.JMenu, Model > implements MenuItemContainer {
 	/*package-private*/ Menu( MenuModel model ) {
+		super( model );
+	}
+	/*package-private*/ Menu( CascadeFillIn< ?,? > model ) {
 		super( model );
 	}
 	public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
@@ -65,17 +68,16 @@ public class Menu extends AbstractMenuItem< javax.swing.JMenu, MenuModel > imple
 	protected javax.swing.JMenu createAwtComponent() {
 		return new javax.swing.JMenu();
 	}
-	
-	public void setText( String text ) {
-		if( text != null ) {
-			this.getAwtComponent().setText( text );
-		} else {
-			//todo
-		}
-	}
-	public void setMnemonic( int mnemonic ) {
-		this.getAwtComponent().setMnemonic( mnemonic );
-	}
+//	public void setText( String text ) {
+//		if( text != null ) {
+//			this.getAwtComponent().setText( text );
+//		} else {
+//			//todo
+//		}
+//	}
+//	public void setMnemonic( int mnemonic ) {
+//		this.getAwtComponent().setMnemonic( mnemonic );
+//	}
 	public void addMenu( Menu menu ) {
 		this.getAwtComponent().add( menu.getAwtComponent() );
 	}

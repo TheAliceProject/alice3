@@ -98,7 +98,7 @@ public abstract class HistoryNode<C extends AbstractModelContext<?>> implements 
 	}
 	public abstract State getState();
 	
-	public AbstractModelContext<?> findContextFor( AbstractModel model ) {
+	public AbstractModelContext<?> findContextFor( Model model ) {
 		if( this.parent != null ) {
 			return this.parent.findContextFor( model );
 		} else {

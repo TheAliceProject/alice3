@@ -46,16 +46,16 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class PredeterminedMenuModel extends MenuModel {
-	private AbstractModel[] models;
-	public PredeterminedMenuModel( java.util.UUID individualId, AbstractModel... models ) {
+	private Model[] models;
+	public PredeterminedMenuModel( java.util.UUID individualId, Model... models ) {
 		super( individualId );
 		this.models = models;
 	}
-	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List< AbstractModel > models ) {
-		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, AbstractModel.class) );
+	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List< Model > models ) {
+		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class) );
 	}
 	
-	public AbstractModel[] getModels() {
+	public Model[] getModels() {
 		return this.models;
 	}
 	

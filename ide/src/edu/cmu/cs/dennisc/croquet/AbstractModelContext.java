@@ -159,7 +159,7 @@ public abstract class AbstractModelContext<M extends Model> extends HistoryNode<
 		this.childrenObservers.remove(childrenObserver);
 	}
 	@Override
-	public AbstractModelContext<?> findContextFor(AbstractModel model) {
+	public AbstractModelContext<?> findContextFor(Model model) {
 		if (this.model == model) {
 			return this;
 		} else {

@@ -55,7 +55,7 @@ import org.alice.ide.properties.adapter.SetValueOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.croquet.AbstractModel;
+import edu.cmu.cs.dennisc.croquet.Model;
 import edu.cmu.cs.dennisc.croquet.Operation;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
@@ -134,7 +134,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) 
 				{
 					edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > possibleFields = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
-					java.util.List<AbstractModel> setVehicleOperations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					java.util.List<Model> setVehicleOperations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					
 					Composite currentVehicle = TransformableVehicleAdapter.this.getValue();
 					if (currentVehicle != null)

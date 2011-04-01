@@ -45,11 +45,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Edit<M extends AbstractModel> {
-	private static <M extends AbstractModel> AbstractModelContext<M> getContext( java.util.UUID contextId ) {
+public abstract class Edit<M extends Model> {
+	private static <M extends Model> AbstractModelContext<M> getContext( java.util.UUID contextId ) {
 		return HistoryNode.lookup( contextId );
 	}
-	private static <M extends AbstractModel> M getModel( AbstractModelContext<M> context ) {
+	private static <M extends Model> M getModel( AbstractModelContext<M> context ) {
 		if( context != null ) {
 			return context.getModel();
 		} else {
@@ -57,7 +57,7 @@ public abstract class Edit<M extends AbstractModel> {
 			return null;
 		}
 	}
-	private static <M extends AbstractModel> Group getGroup( M model ) {
+	private static <M extends Model> Group getGroup( M model ) {
 		if( model != null ) {
 			return model.getGroup();
 		} else {
@@ -66,7 +66,7 @@ public abstract class Edit<M extends AbstractModel> {
 		}
 	}
 
-	protected static abstract class Memento< M extends AbstractModel > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	protected static abstract class Memento< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 		private java.util.UUID contextId;
 		public Memento( Edit<M> edit ) {
 			this.contextId = edit.contextId;

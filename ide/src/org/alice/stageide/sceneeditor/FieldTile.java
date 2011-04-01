@@ -141,7 +141,7 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		};
 	}
 
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractModel > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractModel > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Model > rv ) {
 		if( this.accessible instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.accessible;
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldType = fieldInAlice.getValueType();
@@ -191,8 +191,8 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		}
 		return rv;
 	}
-	private java.util.List< edu.cmu.cs.dennisc.croquet.AbstractModel > createPopupOperations() {
-		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.AbstractModel >() );
+	private java.util.List< edu.cmu.cs.dennisc.croquet.Model > createPopupOperations() {
+		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Model >() );
 	}
 
 	protected java.awt.Color calculateColor() {

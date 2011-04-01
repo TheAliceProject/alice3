@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeItem< F, C extends CascadeItemContext<F,?,?> > extends AbstractModel {
+public abstract class CascadeItem< F, C extends CascadeItemContext<F,?,?> > extends Model {
 	public CascadeItem( java.util.UUID id ) {
 		super( Application.CASCADE_GROUP, id );
 	}

@@ -101,7 +101,7 @@ abstract class RtNode<M extends Model, C extends ModelContext< M >> extends RtMo
 	}
 
 	protected abstract RtNode[] getChildren();
-	protected abstract RtNode< ?, ? > getNextNode();
+	protected abstract RtNode< ? extends Model, ? extends AbstractModelContext< ? > > getNextNode();
 	public abstract RtBlank< ? > getNearestBlank();
 	public RtBlank< ? > getNextBlank() {
 		RtBlank< ? > blank = this.getNearestBlank();
@@ -116,10 +116,13 @@ abstract class RtNode<M extends Model, C extends ModelContext< M >> extends RtMo
 		}
 	}
 	protected void addNextNodeMenuItems( javax.swing.JComponent parent ) {
+//		AbstractModelContext context = this.getNextNode().getContext();
+//		ContextManager.pushContext( context );
 		for( RtNode child : this.getNextNode().getChildren() ) {
-			if( child instanceof RtBlank ) {
-				child = child.getChildren()[ 0 ];
-			}
+			assert child instanceof RtBlank == false;
+//			if( child instanceof RtBlank ) {
+//				child = child.getChildren()[ 0 ];
+//			}
 			RtItem< ?, ?, ?, ? > rtFillIn = (RtItem< ?, ?, ?, ? >)child;
 			javax.swing.JComponent menuItem = rtFillIn.getMenuItem();
 			if( menuItem != null ) {
@@ -134,6 +137,11 @@ abstract class RtNode<M extends Model, C extends ModelContext< M >> extends RtMo
 				}
 			}
 		}
+	}
+	protected void removeAll( javax.swing.JComponent parent ) {
+//		ModelContext context = this.getNextNode().getContext();
+//		assert context == ContextManager.popContext();
+		parent.removeAll();
 	}
 }
 
@@ -249,7 +257,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, CascadeBlankContext< B > > {
 		return this.rtFillIns;
 	}
 	@Override
-	protected RtNode< ?, ? > getNextNode() {
+	protected RtNode< ? extends Model, ? extends AbstractModelContext< ? > > getNextNode() {
 		return this;
 	}
 	@Override
@@ -339,7 +347,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends CascadeItem
 		return this.getModel().isInclusionDesired( this.getContext() );
 	}
 	@Override
-	protected RtNode< ?, ? > getNextNode() {
+	protected RtNode< ? extends Model, ? extends AbstractModelContext< ? > > getNextNode() {
 		if( this.rtBlanks.length > 0 ) {
 			return this.rtBlanks[ 0 ];
 		} else {
@@ -354,14 +362,14 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends CascadeItem
 	}
 	public void select() {
 		//todo
-		RtBlank nearestBlank = this.getNearestBlank();
+		RtBlank<?> nearestBlank = this.getNearestBlank();
 		assert nearestBlank != null : this;
 		nearestBlank.setSelectedFillIn( (RtItem)this );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "select:", this );
+//		ContextManager.pushContext( this.getContext() );
 	}
 	public void deselect() {
-		//todo?
-		//getNearestBlank().setSelectedFillIn( null );
+//		AbstractModelContext< ? > contextFillIn = ContextManager.popContext();
+//		assert contextFillIn == this.getContext() : contextFillIn;
 	}
 
 	private javax.swing.JMenu getMenu() {
@@ -376,12 +384,12 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends CascadeItem
 	};
 	private javax.swing.event.MenuListener menuListener = new javax.swing.event.MenuListener() {
 		public void menuSelected( javax.swing.event.MenuEvent e ) {
+			RtItem.this.addNextNodeMenuItems( RtItem.this.getMenu() );
 			RtItem.this.select();
-			RtItem.this.addNextNodeMenuItems( RtItem.this.menuItem );
 		}
 		public void menuDeselected( javax.swing.event.MenuEvent e ) {
 			RtItem.this.deselect();
-			RtItem.this.getMenu().removeAll();
+			RtItem.this.removeAll( RtItem.this.getMenu() );
 		}
 		public void menuCanceled( javax.swing.event.MenuEvent e ) {
 		}
@@ -537,10 +545,13 @@ class RtOperation<T> extends RtModel< CascadeOperation< T >, CascadeOperationCon
 			//popupMenu.setLightWeightPopupEnabled( false );
 			popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
 				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+					//ContextManager.pushContext( RtOperation.this.rtRoot.getContext() );
 					RtOperation.this.rtRoot.addNextNodeMenuItems( popupMenu );
 				}
 				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-					popupMenu.removeAll();
+					RtOperation.this.rtRoot.removeAll( popupMenu );
+					//AbstractModelContext< ? > context = ContextManager.popContext();
+					//assert RtOperation.this.rtRoot.getContext() == context : context;
 				}
 				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 					RtOperation.this.handleCancel( e );

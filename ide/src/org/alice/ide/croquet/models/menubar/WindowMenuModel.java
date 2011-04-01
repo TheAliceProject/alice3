@@ -52,8 +52,8 @@ public class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMen
 	public static WindowMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
-	private static java.util.List<edu.cmu.cs.dennisc.croquet.AbstractModel> createModels() {
-		java.util.List<edu.cmu.cs.dennisc.croquet.AbstractModel> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List<edu.cmu.cs.dennisc.croquet.Model> createModels() {
+		java.util.List<edu.cmu.cs.dennisc.croquet.Model> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		rv.add( org.alice.ide.croquet.models.history.IsProjectHistoryShowingState.getInstance() );
 		//rv.add( org.alice.ide.croquet.models.history.IsUIHistoryShowingState.getInstance() );
 		rv.add( org.alice.ide.croquet.models.ui.IsMemoryUsageShowingState.getInstance() );
