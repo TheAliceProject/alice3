@@ -50,13 +50,23 @@ public class MenuItem extends AbstractMenuItem< javax.swing.JMenuItem, Model > {
 	/*package-private*/ MenuItem( Operation<?> model ) {
 		super( model );
 	}
-	/*package-private*/ MenuItem( CascadeFillIn<?,?> model ) {
+	/*package-private*/ MenuItem( CascadeItem< ?,? > model ) {
 		super( model );
 	}
 	@Override
 	protected javax.swing.JMenuItem createAwtComponent() {
 		return new javax.swing.JMenuItem();
 	}
+
+	@Override
+	/*package-private*/ void setText( String text ) {
+		this.getAwtComponent().setText( text );
+	}
+	@Override
+	/*package-private*/ void setIcon( javax.swing.Icon icon ) {
+		this.getAwtComponent().setIcon( icon );
+	}
+	
 
 //	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
 //		Application application = Application.getSingleton();

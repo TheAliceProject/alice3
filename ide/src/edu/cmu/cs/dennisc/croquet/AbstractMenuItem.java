@@ -50,4 +50,6 @@ public abstract class AbstractMenuItem< J extends javax.swing.AbstractButton, M 
 	public AbstractMenuItem( M model ) {
 		super( model );
 	}
+	/*package-private*/ abstract void setText( String text );
+	/*package-private*/ abstract void setIcon( javax.swing.Icon icon );
 }

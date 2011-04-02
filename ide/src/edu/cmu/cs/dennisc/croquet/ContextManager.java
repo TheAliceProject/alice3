@@ -70,10 +70,10 @@ public class ContextManager {
 		mapChildContextPendingParentContext.put( childContext, parentContext );
 	}
 
-	private static PopupMenuOperationContext getPopupMenuOperationContextToPushOnto( PopupMenuOperationContext candidate, AbstractModelContext< ? > childContext ) {
+	private static AbstractPopupMenuOperationContext getAbstractPopupMenuOperationContextToPushOnto( AbstractPopupMenuOperationContext candidate, AbstractModelContext< ? > childContext ) {
 		HistoryNode lastChild = candidate.getLastChild();
-		if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
-			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)lastChild;
+		if( lastChild instanceof edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperationContext.MenuSelectionEvent ) {
+			edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperationContext.MenuSelectionEvent)lastChild;
 			Model model = menuSelectionEvent.getLastModel();
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( model, childContext.getModel() ) ) {
 				return candidate;
@@ -92,53 +92,53 @@ public class ContextManager {
 		HistoryNode lastChild = parentContext.getLastChild();
 		MenuBarModelContext menuBarModelContextToPushOnto = null;
 		DragAndDropContext dragAndDropContextToPushOnto = null;
-		PopupMenuOperationContext popupMenuOperationContextToPushOnto = null;
+		AbstractPopupMenuOperationContext popupContextToPushOnto = null;
 		if( lastChild != null ) {
 			HistoryNode.State state = lastChild.getState();
 			if( state == null ) {
 				if( lastChild instanceof MenuBarModelContext ) {
 					MenuBarModelContext menuBarModelContext = (MenuBarModelContext)lastChild; 
 					HistoryNode lastGrandchild = menuBarModelContext.getLastChild();
-					if( lastGrandchild instanceof PopupMenuOperationContext ) {
-						PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)lastGrandchild; 
-						popupMenuOperationContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupMenuOperationContext, rv );
-						if( popupMenuOperationContextToPushOnto != null ) {
+					if( lastGrandchild instanceof AbstractPopupMenuOperationContext ) {
+						AbstractPopupMenuOperationContext popupContext = (AbstractPopupMenuOperationContext)lastGrandchild; 
+						popupContextToPushOnto = getAbstractPopupMenuOperationContextToPushOnto( popupContext, rv );
+						if( popupContextToPushOnto != null ) {
 							menuBarModelContextToPushOnto = menuBarModelContext;
 						}
 					}
 				} else if( lastChild instanceof DragAndDropContext ) {
 					DragAndDropContext dragAndDropContext = (DragAndDropContext)lastChild; 
 					HistoryNode lastGrandchild = dragAndDropContext.getLastChild();
-					if( lastGrandchild instanceof PopupMenuOperationContext ) {
-						PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)lastGrandchild; 
-						popupMenuOperationContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupMenuOperationContext, rv );
-						if( popupMenuOperationContextToPushOnto != null ) {
+					if( lastGrandchild instanceof AbstractPopupMenuOperationContext ) {
+						AbstractPopupMenuOperationContext popupContext = (AbstractPopupMenuOperationContext)lastGrandchild; 
+						popupContextToPushOnto = getAbstractPopupMenuOperationContextToPushOnto( popupContext, rv );
+						if( popupContextToPushOnto != null ) {
 							dragAndDropContextToPushOnto = dragAndDropContext;
 						}
 					}
-				} else if( lastChild instanceof PopupMenuOperationContext ) {
-					PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)lastChild; 
-					popupMenuOperationContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupMenuOperationContext, rv );
+				} else if( lastChild instanceof AbstractPopupMenuOperationContext ) {
+					AbstractPopupMenuOperationContext popupContext = (AbstractPopupMenuOperationContext)lastChild; 
+					popupContextToPushOnto = getAbstractPopupMenuOperationContextToPushOnto( popupContext, rv );
 				}
 
-				if( popupMenuOperationContextToPushOnto != null ) {
-					parentContext = popupMenuOperationContextToPushOnto;
+				if( popupContextToPushOnto != null ) {
+					parentContext = popupContextToPushOnto;
 				}
 			}
 		}
 		parentContext.addChild( rv );
-		if( popupMenuOperationContextToPushOnto != null ) {
+		if( popupContextToPushOnto != null ) {
 			if( menuBarModelContextToPushOnto != null ) {
-				popParentContextWhenChildContextIsPopped( menuBarModelContextToPushOnto, popupMenuOperationContextToPushOnto );
+				popParentContextWhenChildContextIsPopped( menuBarModelContextToPushOnto, popupContextToPushOnto );
 				stack.push( menuBarModelContextToPushOnto );
 			}
 			if( dragAndDropContextToPushOnto != null ) {
-				popParentContextWhenChildContextIsPopped( dragAndDropContextToPushOnto, popupMenuOperationContextToPushOnto );
+				popParentContextWhenChildContextIsPopped( dragAndDropContextToPushOnto, popupContextToPushOnto );
 				stack.push( dragAndDropContextToPushOnto );
 			}
-			popParentContextWhenChildContextIsPopped( popupMenuOperationContextToPushOnto, rv );
-			stack.push( popupMenuOperationContextToPushOnto );
-			parentContext = popupMenuOperationContextToPushOnto;
+			popParentContextWhenChildContextIsPopped( popupContextToPushOnto, rv );
+			stack.push( popupContextToPushOnto );
+			parentContext = popupContextToPushOnto;
 		}
 		stack.push( rv );
 		return rv;
@@ -329,12 +329,12 @@ public class ContextManager {
 
 						if( jPreviousPopupMenu != jPopupMenu ) {
 							if( jPreviousPopupMenu != null ) {
-								AbstractModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
-								assert popupMenuOperationContext instanceof PopupMenuOperationContext;
+								AbstractModelContext< ? > popupContext = ContextManager.popContext();
+								assert popupContext instanceof AbstractPopupMenuOperationContext;
 							}
 							
 							if( menuModel instanceof MenuModel ) {
-								/*PopupMenuOperationContext popupMenuOperationContext =*/ ContextManager.createAndPushPopupMenuOperationContext( ((MenuModel)menuModel).getPopupMenuOperation(), e, null );
+								/*AbstractPopupMenuOperationContext popupContext =*/ ContextManager.createAndPushPopupMenuOperationContext( ((MenuModel)menuModel).getPopupMenuOperation(), e, null );
 							} else {
 								System.err.println( "handleMenuSelectionStateChanged: " + menuModel );
 							}
@@ -359,17 +359,17 @@ public class ContextManager {
 						}
 					}
 					AbstractModelContext< ? > modelContext = ContextManager.getCurrentContext();
-					if( modelContext instanceof PopupMenuOperationContext ) {
-						PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)modelContext;
-						popupMenuOperationContext.handleMenuSelectionChanged( e, models );
+					if( modelContext instanceof AbstractPopupMenuOperationContext ) {
+						AbstractPopupMenuOperationContext popupContext = (AbstractPopupMenuOperationContext)modelContext;
+						popupContext.handleMenuSelectionChanged( e, models );
 					} else {
 						System.err.println( "WARNING: handleMenuSelectionStateChanged not PopupMenuOperationContext " + modelContext );
 					}
 				} else {
 					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
 					if( menuBarModel != null ) {
-						AbstractModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
-						assert popupMenuOperationContext instanceof PopupMenuOperationContext;
+						AbstractModelContext< ? > popupContext = ContextManager.popContext();
+						assert popupContext instanceof PopupMenuOperationContext;
 
 						AbstractModelContext< ? > menuBarContext = ContextManager.popContext();
 						assert menuBarContext instanceof MenuBarModelContext;
@@ -428,10 +428,10 @@ public class ContextManager {
 		MenuModel menuModel = (MenuModel)path.get( 1 );
 		PopupMenuOperation popupMenuOperation = menuModel.getPopupMenuOperation();
 		MenuBarModelContext rv = new MenuBarModelContext(menuBarModel, null, null);
-		PopupMenuOperationContext popupMenuOperationContext = new PopupMenuOperationContext( popupMenuOperation, null, null );
-		rv.addChild( popupMenuOperationContext );
-		popupMenuOperationContext.handleMenuSelectionChanged( null, path );
-		popupMenuOperationContext.addChild( descendantContext );
+		PopupMenuOperationContext popupContext = new PopupMenuOperationContext( popupMenuOperation, null, null );
+		rv.addChild( popupContext );
+		popupContext.handleMenuSelectionChanged( null, path );
+		popupContext.addChild( descendantContext );
 		return rv;
 	}
 	

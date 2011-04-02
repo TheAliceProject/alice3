@@ -40,19 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenuOperationContext extends AbstractPopupMenuOperationContext<PopupMenuOperation> {
-	/*package-private*/ PopupMenuOperationContext( PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( popupMenuOperation, e, viewController );
-	}
-	public PopupMenuOperationContext( PopupMenuOperation popupMenuOperation ) {
-		this( popupMenuOperation, null, null );
-	}
-	public PopupMenuOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+public abstract class AbstractPopupMenuOperation<C extends AbstractPopupMenuOperationContext<?>> extends Operation<C> {
+	public AbstractPopupMenuOperation( Group group, java.util.UUID id ) {
+		super( group, id );
 	}
 }

@@ -50,7 +50,7 @@ public class Menu extends AbstractMenuItem< javax.swing.JMenu, Model > implement
 	/*package-private*/ Menu( MenuModel model ) {
 		super( model );
 	}
-	/*package-private*/ Menu( CascadeFillIn< ?,? > model ) {
+	/*package-private*/ Menu( CascadeItem< ?,? > model ) {
 		super( model );
 	}
 	public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
@@ -68,6 +68,16 @@ public class Menu extends AbstractMenuItem< javax.swing.JMenu, Model > implement
 	protected javax.swing.JMenu createAwtComponent() {
 		return new javax.swing.JMenu();
 	}
+	
+	@Override
+	/*package-private*/ void setText( String text ) {
+		this.getAwtComponent().setText( text );
+	}
+	@Override
+	/*package-private*/ void setIcon( javax.swing.Icon icon ) {
+		this.getAwtComponent().setIcon( icon );
+	}
+	
 //	public void setText( String text ) {
 //		if( text != null ) {
 //			this.getAwtComponent().setText( text );

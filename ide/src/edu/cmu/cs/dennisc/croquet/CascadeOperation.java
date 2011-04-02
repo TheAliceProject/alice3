@@ -115,33 +115,24 @@ abstract class RtNode<M extends Model, C extends ModelContext< M >> extends RtMo
 			}
 		}
 	}
-	protected void addNextNodeMenuItems( javax.swing.JComponent parent ) {
-//		AbstractModelContext context = this.getNextNode().getContext();
-//		ContextManager.pushContext( context );
+	protected void addNextNodeMenuItems( MenuItemContainer parent ) {
 		for( RtNode child : this.getNextNode().getChildren() ) {
 			assert child instanceof RtBlank == false;
-//			if( child instanceof RtBlank ) {
-//				child = child.getChildren()[ 0 ];
-//			}
 			RtItem< ?, ?, ?, ? > rtFillIn = (RtItem< ?, ?, ?, ? >)child;
-			javax.swing.JComponent menuItem = rtFillIn.getMenuItem();
+			AbstractMenuItem menuItem = rtFillIn.getMenuItem();
 			if( menuItem != null ) {
-				parent.add( menuItem );
-			} else {
-				if( parent instanceof javax.swing.JMenu ) {
-					javax.swing.JMenu menu = (javax.swing.JMenu)parent;
-					menu.addSeparator();
-				} else if( parent instanceof javax.swing.JPopupMenu ) {
-					javax.swing.JPopupMenu popupMenu = (javax.swing.JPopupMenu)parent;
-					popupMenu.addSeparator();
+				if( menuItem instanceof Menu ) {
+					parent.addMenu( (Menu)menuItem );
+				} else {
+					parent.addMenuItem( (MenuItem)menuItem );
 				}
+			} else {
+				parent.addSeparator();
 			}
 		}
 	}
-	protected void removeAll( javax.swing.JComponent parent ) {
-//		ModelContext context = this.getNextNode().getContext();
-//		assert context == ContextManager.popContext();
-		parent.removeAll();
+	protected void removeAll( MenuItemContainer parent ) {
+		parent.removeAllMenuItems();
 	}
 }
 
@@ -265,8 +256,8 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, CascadeBlankContext< B > > {
 		return this;
 	}
 
-	public void setSelectedFillIn( RtItem< B, ?, ?, ? > fillIn ) {
-		this.rtSelectedFillIn = fillIn;
+	public void setSelectedFillIn( RtItem< B, ?, ?, ? > item ) {
+		this.rtSelectedFillIn = item;
 		RtNode parent = this.getParent();
 		if( parent instanceof RtFillIn< ?, ? > ) {
 			RtFillIn< ?, ? > parentFillIn = (RtFillIn< ?, ? >)parent;
@@ -296,7 +287,8 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, CascadeBlankContext< B > > {
 
 abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends CascadeItemContext< F, M, C > > extends RtNode< M, C > {
 	private final RtBlank< B >[] rtBlanks;
-	private javax.swing.JMenuItem menuItem = null;
+//	private javax.swing.JMenuItem menuItem = null;
+	private AbstractMenuItem menuItem = null;
 	private boolean wasLast = false;
 
 	public RtItem( M model, C context ) {
@@ -371,11 +363,6 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends CascadeItem
 //		AbstractModelContext< ? > contextFillIn = ContextManager.popContext();
 //		assert contextFillIn == this.getContext() : contextFillIn;
 	}
-
-	private javax.swing.JMenu getMenu() {
-		return (javax.swing.JMenu)this.getMenuItem();
-	}
-
 	private java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			RtItem.this.select();
@@ -384,43 +371,43 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends CascadeItem
 	};
 	private javax.swing.event.MenuListener menuListener = new javax.swing.event.MenuListener() {
 		public void menuSelected( javax.swing.event.MenuEvent e ) {
-			RtItem.this.addNextNodeMenuItems( RtItem.this.getMenu() );
+			RtItem.this.addNextNodeMenuItems( (Menu)RtItem.this.getMenuItem() );
 			RtItem.this.select();
 		}
 		public void menuDeselected( javax.swing.event.MenuEvent e ) {
 			RtItem.this.deselect();
-			RtItem.this.removeAll( RtItem.this.getMenu() );
+			RtItem.this.removeAll( (Menu)RtItem.this.getMenuItem() );
 		}
 		public void menuCanceled( javax.swing.event.MenuEvent e ) {
 		}
 	};
 
-	protected javax.swing.JMenuItem createMenuItem( CascadeItem< F, C > fillIn, boolean isLast ) {
-		javax.swing.JMenuItem rv;
+	protected AbstractMenuItem createMenuItem( CascadeItem< F, C > item, boolean isLast ) {
+		AbstractMenuItem rv;
 		if( isLast ) {
-			rv = new javax.swing.JMenuItem();
-			rv.addActionListener( this.actionListener );
+			MenuItem menuItem = new MenuItem( item );
+			menuItem.getAwtComponent().addActionListener( this.actionListener );
+			rv = menuItem;
 		} else {
-			javax.swing.JMenu menu = new javax.swing.JMenu();
-			menu.addMenuListener( this.menuListener );
+			Menu menu = new Menu( item );
+			menu.getAwtComponent().addMenuListener( this.menuListener );
 			rv = menu;
 		}
-		rv.setText( fillIn.getMenuItemText( this.getContext() ) );
-		rv.setIcon( fillIn.getMenuItemIcon( this.getContext() ) );
+		rv.setText( item.getMenuItemText( this.getContext() ) );
+		rv.setIcon( item.getMenuItemIcon( this.getContext() ) );
 		return rv;
 	}
-	public javax.swing.JMenuItem getMenuItem() {
-		CascadeItem< F, C > fillIn = this.getModel();
+	public AbstractMenuItem getMenuItem() {
+		CascadeItem< F, C > item = this.getModel();
 		boolean isLast = this.isLast();
 		if( this.menuItem != null ) {
 			if( this.wasLast == isLast ) {
 				//pass
 			} else {
-				if( this.menuItem instanceof javax.swing.JMenu ) {
-					javax.swing.JMenu menu = (javax.swing.JMenu)this.menuItem;
-					menu.removeMenuListener( this.menuListener );
+				if( this.menuItem instanceof Menu ) {
+					((Menu)this.menuItem).getAwtComponent().removeMenuListener( this.menuListener );
 				} else {
-					this.menuItem.removeActionListener( this.actionListener );
+					((MenuItem)this.menuItem).getAwtComponent().removeActionListener( this.actionListener );
 				}
 				this.menuItem = null;
 			}
@@ -430,7 +417,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends CascadeItem
 		if( this.menuItem != null ) {
 			//pass
 		} else {
-			this.menuItem = this.createMenuItem( fillIn, isLast );
+			this.menuItem = this.createMenuItem( item, isLast );
 		}
 		return this.menuItem;
 	}
@@ -475,10 +462,10 @@ class RtSeparator extends RtItem< Void, Void, CascadeSeparator, CascadeSeparator
 		return null;
 	}
 	@Override
-	protected javax.swing.JMenuItem createMenuItem( CascadeItem< Void, CascadeSeparatorContext > fillIn, boolean isLast ) {
+	protected AbstractMenuItem createMenuItem( CascadeItem< Void, CascadeSeparatorContext > item, boolean isLast ) {
 		//todo
-		if( fillIn.getMenuItemText( null ) != null || fillIn.getMenuItemIcon( null ) != null ) {
-			javax.swing.JMenuItem rv = super.createMenuItem( fillIn, isLast );
+		if( item.getMenuItemText( null ) != null || item.getMenuItemIcon( null ) != null ) {
+			AbstractMenuItem rv = super.createMenuItem( item, isLast );
 			rv.setEnabled( false );
 			return rv;
 		} else {
@@ -541,7 +528,7 @@ class RtOperation<T> extends RtModel< CascadeOperation< T >, CascadeOperationCon
 			T[] values = this.createValues( this.getModel().getComponentType() );
 			this.getModel().handleCompletion( this.getContext(), this.performObserver, values );
 		} else {
-			final javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
+			final PopupMenu popupMenu = new PopupMenu( this.getModel() );
 			//popupMenu.setLightWeightPopupEnabled( false );
 			popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
 				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
@@ -557,6 +544,8 @@ class RtOperation<T> extends RtModel< CascadeOperation< T >, CascadeOperationCon
 					RtOperation.this.handleCancel( e );
 				}
 			} );
+			//todo:
+			//ViewController< ?, ? > invoker = this.getContext().getViewController();
 			java.util.EventObject e = this.getContext().getAwtEvent();
 			java.awt.Component invoker = (java.awt.Component)e.getSource();
 			int x;
@@ -569,7 +558,7 @@ class RtOperation<T> extends RtModel< CascadeOperation< T >, CascadeOperationCon
 				x = 0;
 				y = invoker.getHeight();
 			}
-			edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu, invoker, x, y );
+			edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), invoker, x, y );
 		}
 	}
 	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
@@ -664,7 +653,7 @@ class UnfilledInCancel<F> extends CascadeCancel< F > {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeOperation<B> extends Operation< CascadeOperationContext< B > > {
+public abstract class CascadeOperation<B> extends AbstractPopupMenuOperation< CascadeOperationContext< B > > {
 	private final Class< B > componentType;
 	private final CascadeRoot< B > root;
 	public CascadeOperation( Group group, java.util.UUID id, Class< B > componentType, CascadeBlank< B >[] blanks ) {
