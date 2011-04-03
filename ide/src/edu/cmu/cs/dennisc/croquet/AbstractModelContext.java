@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractModelContext<M extends Model> extends HistoryNode< AbstractModelContext > implements ModelContext< M > {
+public abstract class AbstractModelContext<M extends Model> extends HistoryNode< AbstractModelContext > {
 	public interface CommitObserver {
 		public void committing(Edit edit);
 		public void committed(Edit edit);
