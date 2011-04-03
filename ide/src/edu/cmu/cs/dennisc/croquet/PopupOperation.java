@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupMenuOperation<C extends PopupMenuOperationContext<?>> extends Operation<C> {
-	public PopupMenuOperation( Group group, java.util.UUID id ) {
+public abstract class PopupOperation<C extends PopupOperationContext<?>> extends Operation<C> {
+	public PopupOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
 }

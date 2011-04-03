@@ -88,20 +88,20 @@ public abstract class MenuModel extends Model {
 		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
 	
-	private StandardPopupMenuOperation popupMenuOperation;
-	public synchronized StandardPopupMenuOperation getPopupMenuOperation() {
+	private StandardPopupOperation popupMenuOperation;
+	public synchronized StandardPopupOperation getPopupMenuOperation() {
 		if( this.popupMenuOperation != null ) {
 			//pass
 		} else {
-			this.popupMenuOperation = new StandardPopupMenuOperation( this );
+			this.popupMenuOperation = new StandardPopupOperation( this );
 		}
 		return this.popupMenuOperation;
 	}
 	
 	
-	protected void handlePopupMenuPrologue( PopupMenu popupMenu, StandardPopupMenuOperationContext context ) {
+	protected void handlePopupMenuPrologue( PopupMenu popupMenu, StandardPopupOperationContext context ) {
 	}
-	protected void handlePopupMenuEpilogue( PopupMenu popupMenu, StandardPopupMenuOperationContext context ) {
+	protected void handlePopupMenuEpilogue( PopupMenu popupMenu, StandardPopupOperationContext context ) {
 	}
 	
 //	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {

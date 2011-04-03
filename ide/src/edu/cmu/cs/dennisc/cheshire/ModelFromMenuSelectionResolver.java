@@ -48,9 +48,9 @@ import edu.cmu.cs.dennisc.tutorial.*;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class ModelFromMenuSelectionResolver< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > {
-	private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent;
+	private edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent;
 	private int index;
-	public ModelFromMenuSelectionResolver( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index ) {
+	public ModelFromMenuSelectionResolver( edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent, int index ) {
 		this.menuSelectionEvent = menuSelectionEvent;
 		this.index = index;
 	}

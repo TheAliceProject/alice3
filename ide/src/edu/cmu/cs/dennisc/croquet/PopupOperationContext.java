@@ -46,15 +46,15 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupMenuOperationContext< M extends PopupMenuOperation<?> > extends OperationContext<M> {
-	/*package-private*/ PopupMenuOperationContext( M model, java.util.EventObject e, ViewController< ?,? > viewController ) {
+public abstract class PopupOperationContext< M extends PopupOperation<?> > extends OperationContext<M> {
+	/*package-private*/ PopupOperationContext( M model, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( model, e, viewController );
 	}
-	public PopupMenuOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public PopupOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	
-	public static class RetargetableMenuModelInitializationEvent extends ModelEvent< StandardPopupMenuOperationContext > {
+	public static class RetargetableMenuModelInitializationEvent extends ModelEvent< StandardPopupOperationContext > {
 		private RetargetingData retargetingData;
 		public RetargetableMenuModelInitializationEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
@@ -87,7 +87,7 @@ public abstract class PopupMenuOperationContext< M extends PopupMenuOperation<?>
 		}
 	}
 
-	public static class MenuResizedEvent extends ModelEvent< StandardPopupMenuOperationContext > {
+	public static class MenuResizedEvent extends ModelEvent< StandardPopupOperationContext > {
 		private java.awt.event.ComponentEvent componentEvent;
 		public MenuResizedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
@@ -104,7 +104,7 @@ public abstract class PopupMenuOperationContext< M extends PopupMenuOperation<?>
 		}
 	}
 	
-	public static class MenuSelectionEvent extends ModelEvent< StandardPopupMenuOperationContext > {
+	public static class MenuSelectionEvent extends ModelEvent< StandardPopupOperationContext > {
 		private javax.swing.event.ChangeEvent changeEvent;
 		private Model[] models;
 		private CodableResolver< ? extends Model >[] modelResolvers;

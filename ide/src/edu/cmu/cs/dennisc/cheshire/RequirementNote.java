@@ -148,8 +148,8 @@ public class RequirementNote extends RetargetableNote /* implements ParentContex
 					this.setLocation( dialog.getWidth()+100, dialog.getHeight()/2, dialog );
 				}
 			}
-		} else if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuResizedEvent ) {
-			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuResizedEvent menuResizedEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuResizedEvent)child;
+		} else if( child instanceof edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuResizedEvent ) {
+			edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuResizedEvent menuResizedEvent = (edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuResizedEvent)child;
 			java.awt.event.ComponentEvent e = menuResizedEvent.getComponentEvent();
 			if( e != null ) {
 				java.awt.Component awtComponent = e.getComponent();

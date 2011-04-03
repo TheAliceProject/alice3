@@ -47,14 +47,14 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class StatementAssignableToPopupMenuResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation> {
+/*package-private*/ class StatementAssignableToPopupMenuResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.StandardPopupOperation> {
 	private Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls;
 	private int index;
 	public StatementAssignableToPopupMenuResolver(Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls, int index) {
 		this.cls = cls;
 		this.index = index;
 	}
-	public edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation getResolved() {
+	public edu.cmu.cs.dennisc.croquet.StandardPopupOperation getResolved() {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getCodeEditorInFocus();
 		if (codeEditor != null) {
 			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();

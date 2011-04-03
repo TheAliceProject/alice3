@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadePopupOperationContext<T> extends PopupMenuOperationContext< CascadePopupOperation< T > > {
+public class CascadePopupOperationContext<T> extends PopupOperationContext< CascadePopupOperation< T > > {
 	/*package-private*/ CascadePopupOperationContext( CascadePopupOperation< T > model, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( model, e, viewController );
 	}

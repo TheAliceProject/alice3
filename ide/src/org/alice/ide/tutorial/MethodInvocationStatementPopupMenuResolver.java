@@ -47,14 +47,14 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class MethodInvocationStatementPopupMenuResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation> {
+/*package-private*/class MethodInvocationStatementPopupMenuResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.StandardPopupOperation> {
 	private RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
 	private int index;
 	public MethodInvocationStatementPopupMenuResolver(RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int index) {
 		this.methodResolver = methodResolver;
 		this.index = index;
 	}
-	public edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation getResolved() {
+	public edu.cmu.cs.dennisc.croquet.StandardPopupOperation getResolved() {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getCodeEditorInFocus();
 		if (codeEditor != null) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();

@@ -128,8 +128,8 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 			dragAndDropContext.addChild( droppedEvent );
 			
 			if( statement instanceof edu.cmu.cs.dennisc.alice.ast.CountLoop ) {
-				edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation popupMenuOperation = null;
-				edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext popupMenuOperationContext = new edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext( popupMenuOperation );
+				edu.cmu.cs.dennisc.croquet.CascadePopupOperation popupMenuOperation = null;
+				edu.cmu.cs.dennisc.croquet.CascadePopupOperationContext popupMenuOperationContext = new edu.cmu.cs.dennisc.croquet.CascadePopupOperationContext( popupMenuOperation );
 				java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 				
 				
@@ -137,7 +137,7 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 				//models.add( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP, null ) ); 
 				
 				
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = new edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent( models );
+				edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent = new edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent( models );
 				popupMenuOperationContext.addChild( menuSelectionEvent );
 				popupMenuOperationContext.addChild( insertStatementContext );
 				dragAndDropContext.addChild( popupMenuOperationContext );

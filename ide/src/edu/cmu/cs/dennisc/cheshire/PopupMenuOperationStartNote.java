@@ -47,13 +47,13 @@ import edu.cmu.cs.dennisc.tutorial.*;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class PopupMenuOperationStartNote extends RequirementNote {
-	public static PopupMenuOperationStartNote createInstance( edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext popupMenuOperationContext, ParentContextCriterion parentContextCriterion ) {
+	public static PopupMenuOperationStartNote createInstance( edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext popupMenuOperationContext, ParentContextCriterion parentContextCriterion ) {
 		PopupMenuOperationStartNote rv = new PopupMenuOperationStartNote( popupMenuOperationContext, parentContextCriterion );
-		rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext.class ) );
+		rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext.class ) );
 		return rv;
 	}
-	private PopupMenuOperationStartNote( edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext popupMenuOperationContext, ParentContextCriterion parentContextCriterion ) {
-		edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation popupMenuOperation = popupMenuOperationContext.getModel();
+	private PopupMenuOperationStartNote( edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext popupMenuOperationContext, ParentContextCriterion parentContextCriterion ) {
+		edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation = popupMenuOperationContext.getModel();
 		this.setText( popupMenuOperation.getTutorialStartNoteText( popupMenuOperationContext, GuidedInteraction.getInstance().getUserInformation() ) );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( popupMenuOperationContext );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );

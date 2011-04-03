@@ -658,7 +658,7 @@ class UnfilledInCancel<F> extends CascadeCancel< F > {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadePopupOperation<B> extends PopupMenuOperation< CascadePopupOperationContext< B > > {
+public abstract class CascadePopupOperation<B> extends PopupOperation< CascadePopupOperationContext< B > > {
 	private final Class< B > componentType;
 	private final CascadeRoot< B > root;
 	public CascadePopupOperation( Group group, java.util.UUID id, Class< B > componentType, CascadeBlank< B >[] blanks ) {
@@ -673,7 +673,7 @@ public abstract class CascadePopupOperation<B> extends PopupMenuOperation< Casca
 	}
 	@Override
 	public CascadePopupOperationContext< B > createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushCascadeOperationContext( this, e, viewController );
+		return ContextManager.createAndPushCascadePopupOperationContext( this, e, viewController );
 	}
 
 	/*package-private*/CascadeRoot< B > getRoot() {

@@ -425,13 +425,13 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 //		return this.createInvocationResolver(methodResolver, Short.MAX_VALUE);
 //	}
 
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation > createStatementAssignableToPopupMenuResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.StandardPopupOperation > createStatementAssignableToPopupMenuResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
 		return new StatementAssignableToPopupMenuResolver( cls, index );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation > createFirstStatementAssignableToPopupMenuResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.StandardPopupOperation > createFirstStatementAssignableToPopupMenuResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		return this.createStatementAssignableToPopupMenuResolver( cls, 0 );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation > createLastStatementAssignableToPopupMenuResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.StandardPopupOperation > createLastStatementAssignableToPopupMenuResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		return this.createStatementAssignableToPopupMenuResolver( cls, Short.MAX_VALUE );
 	}
 
@@ -445,13 +445,13 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.createStatementAssignableToResolver( cls, Short.MAX_VALUE );
 	}
 
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation > createInvocationPopupMenuResolver( String methodName, int index ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.StandardPopupOperation > createInvocationPopupMenuResolver( String methodName, int index ) {
 		return new MethodInvocationStatementPopupMenuResolver(this.createCurrentCodeMethodResolver(methodName), index);
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation > createFirstInvocationPopupMenuResolver( String methodName ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.StandardPopupOperation > createFirstInvocationPopupMenuResolver( String methodName ) {
 		return this.createInvocationPopupMenuResolver(methodName, 0);
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation > createLastInvocationPopupMenuResolver( String methodName ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.StandardPopupOperation > createLastInvocationPopupMenuResolver( String methodName ) {
 		return this.createInvocationPopupMenuResolver(methodName, Short.MAX_VALUE);
 	}
 	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropModel > createInvocationResolver( String methodName, int index ) {
@@ -684,7 +684,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			public Result checkValidity(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation, edu.cmu.cs.dennisc.croquet.Edit edit) {
 				return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 			}
-			public Result checkValidity(edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation popupMenuOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
+			public Result checkValidity(edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
 				return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 			}
 			public Result checkValidity(edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
@@ -696,7 +696,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation) {
 				return createToDoEdit();
 			}
-			public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation popupMenuOperation) {
+			public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation) {
 				return createToDoEdit();
 			}
 			public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape) {

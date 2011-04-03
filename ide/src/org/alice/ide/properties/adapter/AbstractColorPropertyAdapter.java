@@ -74,7 +74,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 		}
 	}
 	
-	private edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation popupMenuOperation;
+	private edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation;
 	protected java.util.List< SetColorOperation > defaultColorOperationModels;
 	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
 	
@@ -99,7 +99,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 			}
 			this.popupMenuOperation = new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "9aa93f57-87cc-412b-b166-beb73bcd1fe8" ) ) {
 				@Override
-				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext context ) {
+				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) {
 					super.handlePopupMenuPrologue( popupMenu, context );
 					
 					Color4f currentColor = AbstractColorPropertyAdapter.this.getValue();

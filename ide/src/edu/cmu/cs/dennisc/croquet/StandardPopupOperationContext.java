@@ -45,14 +45,14 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class StandardPopupMenuOperationContext extends PopupMenuOperationContext<StandardPopupMenuOperation> {
-	/*package-private*/ StandardPopupMenuOperationContext( StandardPopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+public class StandardPopupOperationContext extends PopupOperationContext<StandardPopupOperation> {
+	/*package-private*/ StandardPopupOperationContext( StandardPopupOperation popupMenuOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( popupMenuOperation, e, viewController );
 	}
-	public StandardPopupMenuOperationContext( StandardPopupMenuOperation popupMenuOperation ) {
+	public StandardPopupOperationContext( StandardPopupOperation popupMenuOperation ) {
 		this( popupMenuOperation, null, null );
 	}
-	public StandardPopupMenuOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public StandardPopupOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 }

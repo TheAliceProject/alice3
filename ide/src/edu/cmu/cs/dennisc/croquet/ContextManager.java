@@ -70,10 +70,10 @@ public class ContextManager {
 		mapChildContextPendingParentContext.put( childContext, parentContext );
 	}
 
-	private static PopupMenuOperationContext getPopupMenuOperationContextToPushOnto( PopupMenuOperationContext candidate, ModelContext< ? > childContext ) {
+	private static PopupOperationContext getPopupMenuOperationContextToPushOnto( PopupOperationContext candidate, ModelContext< ? > childContext ) {
 		HistoryNode lastChild = candidate.getLastChild();
-		if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
-			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)lastChild;
+		if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent ) {
+			edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent)lastChild;
 			Model model = menuSelectionEvent.getLastModel();
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( model, childContext.getModel() ) ) {
 				return candidate;
@@ -92,15 +92,15 @@ public class ContextManager {
 		HistoryNode lastChild = parentContext.getLastChild();
 		MenuBarModelContext menuBarModelContextToPushOnto = null;
 		DragAndDropContext dragAndDropContextToPushOnto = null;
-		PopupMenuOperationContext popupContextToPushOnto = null;
+		PopupOperationContext popupContextToPushOnto = null;
 		if( lastChild != null ) {
 			HistoryNode.State state = lastChild.getState();
 			if( state == null ) {
 				if( lastChild instanceof MenuBarModelContext ) {
 					MenuBarModelContext menuBarModelContext = (MenuBarModelContext)lastChild; 
 					HistoryNode lastGrandchild = menuBarModelContext.getLastChild();
-					if( lastGrandchild instanceof PopupMenuOperationContext ) {
-						PopupMenuOperationContext popupContext = (PopupMenuOperationContext)lastGrandchild; 
+					if( lastGrandchild instanceof PopupOperationContext ) {
+						PopupOperationContext popupContext = (PopupOperationContext)lastGrandchild; 
 						popupContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupContext, rv );
 						if( popupContextToPushOnto != null ) {
 							menuBarModelContextToPushOnto = menuBarModelContext;
@@ -109,15 +109,15 @@ public class ContextManager {
 				} else if( lastChild instanceof DragAndDropContext ) {
 					DragAndDropContext dragAndDropContext = (DragAndDropContext)lastChild; 
 					HistoryNode lastGrandchild = dragAndDropContext.getLastChild();
-					if( lastGrandchild instanceof PopupMenuOperationContext ) {
-						PopupMenuOperationContext popupContext = (PopupMenuOperationContext)lastGrandchild; 
+					if( lastGrandchild instanceof PopupOperationContext ) {
+						PopupOperationContext popupContext = (PopupOperationContext)lastGrandchild; 
 						popupContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupContext, rv );
 						if( popupContextToPushOnto != null ) {
 							dragAndDropContextToPushOnto = dragAndDropContext;
 						}
 					}
-				} else if( lastChild instanceof PopupMenuOperationContext ) {
-					PopupMenuOperationContext popupContext = (PopupMenuOperationContext)lastChild; 
+				} else if( lastChild instanceof PopupOperationContext ) {
+					PopupOperationContext popupContext = (PopupOperationContext)lastChild; 
 					popupContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupContext, rv );
 				}
 
@@ -200,10 +200,10 @@ public class ContextManager {
 		return pushContext( new WizardDialogOperationContext(wizardDialogOperation, e, viewController) );
 	}
 	
-	/*package-private*/ static StandardPopupMenuOperationContext createAndPushPopupMenuOperationContext(StandardPopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		return pushContext( new StandardPopupMenuOperationContext(popupMenuOperation, e, viewController) );
+	/*package-private*/ static StandardPopupOperationContext createAndPushStandardPopupOperationContext(StandardPopupOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		return pushContext( new StandardPopupOperationContext(popupMenuOperation, e, viewController) );
 	}
-	/*package-private*/ static <T> CascadePopupOperationContext< T > createAndPushCascadeOperationContext(CascadePopupOperation< T > cascadeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+	/*package-private*/ static <T> CascadePopupOperationContext< T > createAndPushCascadePopupOperationContext(CascadePopupOperation< T > cascadeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return pushContext( new CascadePopupOperationContext<T>(cascadeOperation, e, viewController) );
 	}
 	/*package-private*/ static <B> CascadeBlankContext<B> createCascadeBlankContext(CascadeBlank<B> cascadeBlank ) {
@@ -330,11 +330,11 @@ public class ContextManager {
 						if( jPreviousPopupMenu != jPopupMenu ) {
 							if( jPreviousPopupMenu != null ) {
 								ModelContext< ? > popupContext = ContextManager.popContext();
-								assert popupContext instanceof PopupMenuOperationContext;
+								assert popupContext instanceof PopupOperationContext;
 							}
 							
 							if( menuModel instanceof MenuModel ) {
-								/*AbstractPopupMenuOperationContext popupContext =*/ ContextManager.createAndPushPopupMenuOperationContext( ((MenuModel)menuModel).getPopupMenuOperation(), e, null );
+								/*AbstractPopupMenuOperationContext popupContext =*/ ContextManager.createAndPushStandardPopupOperationContext( ((MenuModel)menuModel).getPopupMenuOperation(), e, null );
 							} else {
 								System.err.println( "handleMenuSelectionStateChanged: " + menuModel );
 							}
@@ -359,8 +359,8 @@ public class ContextManager {
 						}
 					}
 					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-					if( modelContext instanceof PopupMenuOperationContext ) {
-						PopupMenuOperationContext popupContext = (PopupMenuOperationContext)modelContext;
+					if( modelContext instanceof PopupOperationContext ) {
+						PopupOperationContext popupContext = (PopupOperationContext)modelContext;
 						popupContext.handleMenuSelectionChanged( e, models );
 					} else {
 						System.err.println( "WARNING: handleMenuSelectionStateChanged not PopupMenuOperationContext " + modelContext );
@@ -369,7 +369,7 @@ public class ContextManager {
 					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
 					if( menuBarModel != null ) {
 						ModelContext< ? > popupContext = ContextManager.popContext();
-						assert popupContext instanceof StandardPopupMenuOperationContext;
+						assert popupContext instanceof StandardPopupOperationContext;
 
 						ModelContext< ? > menuBarContext = ContextManager.popContext();
 						assert menuBarContext instanceof MenuBarModelContext;
@@ -383,7 +383,7 @@ public class ContextManager {
 						assert menuElements.length == 2;
 					} else {
 						ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-						if( modelContext instanceof StandardPopupMenuOperationContext ) {
+						if( modelContext instanceof StandardPopupOperationContext ) {
 							//pass
 						} else {
 							System.err.println( "combo box? " + menuElements.length + " " + java.util.Arrays.toString( menuElements ) );
@@ -426,9 +426,9 @@ public class ContextManager {
 		assert N >= 3;
 		MenuBarModel menuBarModel = (MenuBarModel)path.get( 0 );
 		MenuModel menuModel = (MenuModel)path.get( 1 );
-		StandardPopupMenuOperation popupMenuOperation = menuModel.getPopupMenuOperation();
+		StandardPopupOperation popupMenuOperation = menuModel.getPopupMenuOperation();
 		MenuBarModelContext rv = new MenuBarModelContext(menuBarModel, null, null);
-		StandardPopupMenuOperationContext popupContext = new StandardPopupMenuOperationContext( popupMenuOperation, null, null );
+		StandardPopupOperationContext popupContext = new StandardPopupOperationContext( popupMenuOperation, null, null );
 		rv.addChild( popupContext );
 		popupContext.handleMenuSelectionChanged( null, path );
 		popupContext.addChild( descendantContext );

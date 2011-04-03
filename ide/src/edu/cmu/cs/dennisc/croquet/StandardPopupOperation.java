@@ -45,10 +45,10 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class StandardPopupMenuOperation extends PopupMenuOperation<StandardPopupMenuOperationContext> {
+public final class StandardPopupOperation extends PopupOperation<StandardPopupOperationContext> {
 	private static final Group STANDARD_POPUP_MENU_GROUP = Group.getInstance( java.util.UUID.fromString( "4fe7cbeb-627f-4965-a2d3-f4bf42796c59" ), "STANDARD_POPUP_MENU_GROUP" );
 	private MenuModel menuModel;
-	/*package-private*/ StandardPopupMenuOperation( MenuModel menuModel ) {
+	/*package-private*/ StandardPopupOperation( MenuModel menuModel ) {
 		super( STANDARD_POPUP_MENU_GROUP, java.util.UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
 		this.menuModel = menuModel;
 	}
@@ -64,8 +64,8 @@ public final class StandardPopupMenuOperation extends PopupMenuOperation<Standar
 	}
 	
 	@Override
-	public StandardPopupMenuOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushPopupMenuOperationContext( this, e, viewController );
+	public StandardPopupOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return ContextManager.createAndPushStandardPopupOperationContext( this, e, viewController );
 	}
 	
 	@Override
@@ -89,16 +89,16 @@ public final class StandardPopupMenuOperation extends PopupMenuOperation<Standar
 		}
 	}
 	
-	public static class PopupMenuOperationResolver implements CodableResolver< StandardPopupMenuOperation > {
-		private StandardPopupMenuOperation popupMenuOperation;
+	public static class PopupMenuOperationResolver implements CodableResolver< StandardPopupOperation > {
+		private StandardPopupOperation popupMenuOperation;
 		
-		public PopupMenuOperationResolver( StandardPopupMenuOperation popupMenuOperation ) {
+		public PopupMenuOperationResolver( StandardPopupOperation popupMenuOperation ) {
 			this.popupMenuOperation = popupMenuOperation;
 		}
 		public PopupMenuOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			this.decode( binaryDecoder );
 		}
-		public edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation getResolved() {
+		public edu.cmu.cs.dennisc.croquet.StandardPopupOperation getResolved() {
 			return this.popupMenuOperation;
 		}
 		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -112,13 +112,13 @@ public final class StandardPopupMenuOperation extends PopupMenuOperation<Standar
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CodableResolver< StandardPopupMenuOperation > createCodableResolver() {
+	protected edu.cmu.cs.dennisc.croquet.CodableResolver< StandardPopupOperation > createCodableResolver() {
 		return new PopupMenuOperationResolver( this );
 	}
 	
 	
 	@Override
-	protected final void perform( final StandardPopupMenuOperationContext context, final Operation.PerformObserver performObserver ) {
+	protected final void perform( final StandardPopupOperationContext context, final Operation.PerformObserver performObserver ) {
 		//note: do not call super
 		final PopupMenu popupMenu = new PopupMenu( this ) {
 			@Override
@@ -126,12 +126,12 @@ public final class StandardPopupMenuOperation extends PopupMenuOperation<Standar
 				//todo: investigate
 				super.handleDisplayable();
 				//PopupMenuOperation.this.menuModel.addPopupMenuListener( this );
-				StandardPopupMenuOperation.this.addComponent( this );
+				StandardPopupOperation.this.addComponent( this );
 			}
 			@Override
 			protected void handleUndisplayable() {
-				StandardPopupMenuOperation.this.removeComponent( this );
-				StandardPopupMenuOperation.this.menuModel.removePopupMenuListener( this );
+				StandardPopupOperation.this.removeComponent( this );
+				StandardPopupOperation.this.menuModel.removePopupMenuListener( this );
 				super.handleUndisplayable();
 			}
 		};
@@ -148,7 +148,7 @@ public final class StandardPopupMenuOperation extends PopupMenuOperation<Standar
 					context.cancel();
 					this.cancelEvent = null;
 				}
-				StandardPopupMenuOperation.this.menuModel.handlePopupMenuEpilogue( popupMenu, context );
+				StandardPopupOperation.this.menuModel.handlePopupMenuEpilogue( popupMenu, context );
 				
 				performObserver.handleFinally();
 			}
@@ -170,8 +170,8 @@ public final class StandardPopupMenuOperation extends PopupMenuOperation<Standar
 //				java.awt.Component awtComponent = e.getComponent();
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 				ModelContext< ? > currentContext = ContextManager.getCurrentContext();
-				if( currentContext instanceof StandardPopupMenuOperationContext ) {
-					StandardPopupMenuOperationContext popupMenuOperationContext = (StandardPopupMenuOperationContext)currentContext;
+				if( currentContext instanceof StandardPopupOperationContext ) {
+					StandardPopupOperationContext popupMenuOperationContext = (StandardPopupOperationContext)currentContext;
 					popupMenuOperationContext.handleResized( e );
 				}
 			}

@@ -75,7 +75,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		} else {
 			class PopupPanel extends edu.cmu.cs.dennisc.croquet.ViewController<javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Model> {
 				private edu.cmu.cs.dennisc.croquet.Component<?> centerComponent;
-				public PopupPanel( edu.cmu.cs.dennisc.croquet.Component<?> centerComponent, edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation popupMenuOperation ) {
+				public PopupPanel( edu.cmu.cs.dennisc.croquet.Component<?> centerComponent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation ) {
 					super( null );
 					this.centerComponent = centerComponent;
 					this.setPopupMenuOperation( popupMenuOperation );

@@ -46,16 +46,16 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class IsMenuSelectionEventOf extends IsChildOfAndInstanceOf< edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent > {
-	private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
+/*package-private*/ class IsMenuSelectionEventOf extends IsChildOfAndInstanceOf< edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent > {
+	private edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
 	private int requiredIndex;
-	public IsMenuSelectionEventOf( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent, int requiredIndex ) {
-		super( parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent.class );
+	public IsMenuSelectionEventOf( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent originalMenuSelectionEvent, int requiredIndex ) {
+		super( parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent.class );
 		this.originalMenuSelectionEvent = originalMenuSelectionEvent;
 		this.requiredIndex = requiredIndex;
 	}
 	@Override
-	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent ) throws CancelException {
+	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent ) throws CancelException {
 		boolean rv = super.isSpecificallyWhatWereLookingFor( menuSelectionEvent );
 		if( rv ) {
 			final int N = this.requiredIndex+1;
@@ -79,17 +79,17 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	}
 }
 
-/*package-private*/ class IsRetargetableMenuModelInitializationEventOf extends IsChildOfAndInstanceOf< edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent > {
-	private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent;
-	public IsRetargetableMenuModelInitializationEventOf( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent ) {
-		super( parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent.class );
+/*package-private*/ class IsRetargetableMenuModelInitializationEventOf extends IsChildOfAndInstanceOf< edu.cmu.cs.dennisc.croquet.PopupOperationContext.RetargetableMenuModelInitializationEvent > {
+	private edu.cmu.cs.dennisc.croquet.PopupOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent;
+	public IsRetargetableMenuModelInitializationEventOf( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent ) {
+		super( parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupOperationContext.RetargetableMenuModelInitializationEvent.class );
 		this.originalRetargetableMenuModelInitializationEvent = originalRetargetableMenuModelInitializationEvent;
 	}
 	@Override
-	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent ) throws edu.cmu.cs.dennisc.cheshire.CancelException {
+	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.PopupOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent ) throws edu.cmu.cs.dennisc.cheshire.CancelException {
 		boolean rv = super.isSpecificallyWhatWereLookingFor( retargetableMenuModelInitializationEvent );
 		if( rv ) {
-			edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext popupMenuOperationContext = retargetableMenuModelInitializationEvent.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext.class );
+			edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext popupMenuOperationContext = retargetableMenuModelInitializationEvent.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext.class );
 			edu.cmu.cs.dennisc.croquet.MenuModel menuModel = popupMenuOperationContext.getModel().getMenuModel();
 			if( menuModel instanceof edu.cmu.cs.dennisc.croquet.RetargetableMenuModel ) {
 				edu.cmu.cs.dennisc.croquet.RetargetableMenuModel retargetableMenuModel = (edu.cmu.cs.dennisc.croquet.RetargetableMenuModel)menuModel;
@@ -171,7 +171,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class MenuSelectionNote extends RequirementNote {
-	private static String getText( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	private static String getText( edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		edu.cmu.cs.dennisc.croquet.Model modelI = menuSelectionEvent.getModelAt( i );
 		StringBuilder sb = new StringBuilder();
 		sb.append( "select <strong><em>" );
@@ -185,19 +185,19 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		return sb.toString();
 	}
 	
-	public static MenuSelectionNote createInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
+	public static MenuSelectionNote createInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent, edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
 		MenuSelectionNote rv = new MenuSelectionNote( menuSelectionEvent, i, index0 );
 		if( i == index0 ) {
 			if( index0 == 0 ) {
 				if( modelContext != null ) {
-					rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext.class ) );
+					rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext.class ) );
 					parentContextCriterion = rv.getAcceptedContextAt( index0 );
 				} else {
 					//pass
 				}
 			} else {
 				rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.MenuBarModelContext.class ) );
-				rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext.class ) );
+				rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext.class ) );
 				parentContextCriterion = rv.getAcceptedContextAt( index0 );
 			}
 		}
@@ -212,16 +212,16 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	}
 	
 	
-	private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent;
-	private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
+	private edu.cmu.cs.dennisc.croquet.PopupOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent;
+	private edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
 	private int i;
 	private edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext;
 
-	private static FirstComponentResolver createComponentResolver( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index ) {
+	private static FirstComponentResolver createComponentResolver( edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent, int index ) {
 		return new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index ) );
 	}
 	
-	private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, int index0 ) {
+	private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent, int i, int index0 ) {
 		this.setText( getText( menuSelectionEvent, i, GuidedInteraction.getInstance().getUserInformation() ) );
 //		this.originalRetargetableMenuModelInitializationEvent = retargetableMenuModelInitializationEvent;
 //		this.originalMenuSelectionEvent = menuSelectionEvent;

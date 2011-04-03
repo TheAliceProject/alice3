@@ -45,10 +45,10 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class PopupMenuStep extends AuthoredWaitingStep<edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation> {
+/*package-private*/ class PopupMenuStep extends AuthoredWaitingStep<edu.cmu.cs.dennisc.croquet.StandardPopupOperation> {
 	private PopupMenuOperationCompletor completor;
 	private PopupMenuOperationValidator validator;
-	public PopupMenuStep( String title, String popupText, final edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation> popupMenuOperationResolver, String commitText, PopupMenuOperationCompletor completor, PopupMenuOperationValidator validator ) {
+	public PopupMenuStep( String title, String popupText, final edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.StandardPopupOperation> popupMenuOperationResolver, String commitText, PopupMenuOperationCompletor completor, PopupMenuOperationValidator validator ) {
 		super( title, popupText, new Hole( new FirstComponentResolver( popupMenuOperationResolver ), Feature.ConnectionPreference.EAST_WEST ), popupMenuOperationResolver );
 		this.completor = completor;
 		this.validator = validator;
@@ -101,8 +101,8 @@ package edu.cmu.cs.dennisc.tutorial;
 		} else {
 			switch( state ) {
 			case WAITING_ON_POPUP:
-				if( child instanceof edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext ) {
-					edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext)child;
+				if( child instanceof edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext ) {
+					edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext)child;
 					if( popupMenuOperationContext.getModel() == this.getModel() ) {
 						this.setActiveNote( 1 );
 					}

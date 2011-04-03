@@ -64,7 +64,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 	}
 	
 	public static java.text.NumberFormat format = new java.text.DecimalFormat( "0.0" );
-	protected edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation popupMenuOperation;
+	protected edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation;
 	protected java.util.List< SetDoubleOperation > defaultDoubleOperationModels;
 	
 	public AbstractDoublePropertyAdapter(String repr, O instance )
@@ -104,7 +104,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 				
 			this.popupMenuOperation = new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "66435390-e900-44c7-b440-0789c31e5a7a" ) ) {
 				@Override
-				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext context ) {
+				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) {
 					super.handlePopupMenuPrologue( popupMenu, context );
 					
 					Double currentDouble = AbstractDoublePropertyAdapter.this.getValue();
