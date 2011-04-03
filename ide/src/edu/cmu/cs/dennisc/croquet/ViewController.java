@@ -66,14 +66,14 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 //		this.isPopupMenuOperationLimitedToRightMouseButton = isPopupMenuOperationLimitedToRightMouseButton;
 //	}
 	
-	private PopupMenuOperation popupMenuOperation;
-	public final PopupMenuOperation getPopupMenuOperation() {
+	private StandardPopupMenuOperation popupMenuOperation;
+	public final StandardPopupMenuOperation getPopupMenuOperation() {
 		if( this.popupMenuOperation != null ) {
 			this.popupMenuOperation.setFirstComponentHint( this );
 		}
 		return this.popupMenuOperation;
 	}
-	public final void setPopupMenuOperation( PopupMenuOperation popupMenuOperation ) {
+	public final void setPopupMenuOperation( StandardPopupMenuOperation popupMenuOperation ) {
 		if( this.getAwtComponent().getParent() == null ) {
 			//pass
 		} else {

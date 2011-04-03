@@ -72,8 +72,8 @@ public class Page extends Step implements WaitingStep {
 			edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = (edu.cmu.cs.dennisc.croquet.MenuBarModelContext)node;
 			if( menuBarModelContext.getState() != null ) {
 				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = menuBarModelContext.getLastChild();
-				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
-					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)lastChild;
+				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext ) {
+					edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext)lastChild;
 					appendNotes( rv, parentContextCriterion/*IsAnyMenuBarModelContextCriterion.SINGLETON*/, popupMenuOperationContext );
 				}
 			}
@@ -105,8 +105,8 @@ public class Page extends Step implements WaitingStep {
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.OperationContext ) {
 			edu.cmu.cs.dennisc.croquet.OperationContext<?> operationContext = (edu.cmu.cs.dennisc.croquet.OperationContext<?>)node;
-			if( node instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)node;
+			if( node instanceof edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext ) {
+				edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext)node;
 				int POPUP_CONTEXT_CHILD_COUNT = popupMenuOperationContext.getChildCount();
 				if( POPUP_CONTEXT_CHILD_COUNT > 1 ) {
 					edu.cmu.cs.dennisc.croquet.HistoryNode<?> firstChild = popupMenuOperationContext.getChildAt( 0 );

@@ -89,7 +89,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent ) throws edu.cmu.cs.dennisc.cheshire.CancelException {
 		boolean rv = super.isSpecificallyWhatWereLookingFor( retargetableMenuModelInitializationEvent );
 		if( rv ) {
-			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = retargetableMenuModelInitializationEvent.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.class );
+			edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext popupMenuOperationContext = retargetableMenuModelInitializationEvent.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext.class );
 			edu.cmu.cs.dennisc.croquet.MenuModel menuModel = popupMenuOperationContext.getModel().getMenuModel();
 			if( menuModel instanceof edu.cmu.cs.dennisc.croquet.RetargetableMenuModel ) {
 				edu.cmu.cs.dennisc.croquet.RetargetableMenuModel retargetableMenuModel = (edu.cmu.cs.dennisc.croquet.RetargetableMenuModel)menuModel;
@@ -190,14 +190,14 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		if( i == index0 ) {
 			if( index0 == 0 ) {
 				if( modelContext != null ) {
-					rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.class ) );
+					rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext.class ) );
 					parentContextCriterion = rv.getAcceptedContextAt( index0 );
 				} else {
 					//pass
 				}
 			} else {
 				rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.MenuBarModelContext.class ) );
-				rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.class ) );
+				rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext.class ) );
 				parentContextCriterion = rv.getAcceptedContextAt( index0 );
 			}
 		}

@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class PopupMenu extends ViewController< javax.swing.JPopupMenu, Operation< ? > > implements MenuItemContainer {
-	/*package-private*/ PopupMenu( PopupMenuOperation model ) {
+	/*package-private*/ PopupMenu( StandardPopupMenuOperation model ) {
 		super( model );
 	}
 	/*package-private*/ PopupMenu( CascadeOperation< ? > model ) {

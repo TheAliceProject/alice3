@@ -128,8 +128,8 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 			dragAndDropContext.addChild( droppedEvent );
 			
 			if( statement instanceof edu.cmu.cs.dennisc.alice.ast.CountLoop ) {
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation = null;
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = new edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext( popupMenuOperation );
+				edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation popupMenuOperation = null;
+				edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext popupMenuOperationContext = new edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext( popupMenuOperation );
 				java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 				
 				

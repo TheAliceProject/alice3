@@ -200,8 +200,8 @@ public class ContextManager {
 		return pushContext( new WizardDialogOperationContext(wizardDialogOperation, e, viewController) );
 	}
 	
-	/*package-private*/ static PopupMenuOperationContext createAndPushPopupMenuOperationContext(PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		return pushContext( new PopupMenuOperationContext(popupMenuOperation, e, viewController) );
+	/*package-private*/ static StandardPopupMenuOperationContext createAndPushPopupMenuOperationContext(StandardPopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		return pushContext( new StandardPopupMenuOperationContext(popupMenuOperation, e, viewController) );
 	}
 	/*package-private*/ static <T> CascadeOperationContext< T > createAndPushCascadeOperationContext(CascadeOperation< T > cascadeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return pushContext( new CascadeOperationContext<T>(cascadeOperation, e, viewController) );
@@ -369,7 +369,7 @@ public class ContextManager {
 					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
 					if( menuBarModel != null ) {
 						AbstractModelContext< ? > popupContext = ContextManager.popContext();
-						assert popupContext instanceof PopupMenuOperationContext;
+						assert popupContext instanceof StandardPopupMenuOperationContext;
 
 						AbstractModelContext< ? > menuBarContext = ContextManager.popContext();
 						assert menuBarContext instanceof MenuBarModelContext;
@@ -383,7 +383,7 @@ public class ContextManager {
 						assert menuElements.length == 2;
 					} else {
 						AbstractModelContext< ? > modelContext = ContextManager.getCurrentContext();
-						if( modelContext instanceof PopupMenuOperationContext ) {
+						if( modelContext instanceof StandardPopupMenuOperationContext ) {
 							//pass
 						} else {
 							System.err.println( "combo box? " + menuElements.length + " " + java.util.Arrays.toString( menuElements ) );
@@ -426,9 +426,9 @@ public class ContextManager {
 		assert N >= 3;
 		MenuBarModel menuBarModel = (MenuBarModel)path.get( 0 );
 		MenuModel menuModel = (MenuModel)path.get( 1 );
-		PopupMenuOperation popupMenuOperation = menuModel.getPopupMenuOperation();
+		StandardPopupMenuOperation popupMenuOperation = menuModel.getPopupMenuOperation();
 		MenuBarModelContext rv = new MenuBarModelContext(menuBarModel, null, null);
-		PopupMenuOperationContext popupContext = new PopupMenuOperationContext( popupMenuOperation, null, null );
+		StandardPopupMenuOperationContext popupContext = new StandardPopupMenuOperationContext( popupMenuOperation, null, null );
 		rv.addChild( popupContext );
 		popupContext.handleMenuSelectionChanged( null, path );
 		popupContext.addChild( descendantContext );

@@ -53,8 +53,8 @@ public enum MenuSelectionEventFilter implements Filter {
 		for( edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node : context.getChildren() ) {
 			if( node instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > ) {
 				edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? >)node;
-				if( childContext instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
-					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)childContext;
+				if( childContext instanceof edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext ) {
+					edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext)childContext;
 					
 					java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > childListIterator = popupMenuOperationContext.getChildListIterator();
 					while( childListIterator.hasNext() ) {

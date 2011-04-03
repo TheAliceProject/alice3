@@ -50,7 +50,7 @@ public abstract class RetargetableMenuModel extends MenuModel {
 		super( individualId );
 	}
 	@Override
-	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
 		context.handleRetargetableMenuModelInitialization( this.getRetargetableData() );
 	}

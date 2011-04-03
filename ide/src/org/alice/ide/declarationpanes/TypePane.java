@@ -80,7 +80,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	}
 	
-	private edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation = org.alice.ide.croquet.models.ast.declaration.TypeMenuModel.getInstance().getPopupMenuOperation();
+	private edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation popupMenuOperation = org.alice.ide.croquet.models.ast.declaration.TypeMenuModel.getInstance().getPopupMenuOperation();
 	
 	private class TypeDropDownPane extends org.alice.ide.common.AbstractDropDownPane {
 		private edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label();

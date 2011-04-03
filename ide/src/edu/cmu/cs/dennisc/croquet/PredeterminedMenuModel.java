@@ -67,7 +67,7 @@ public class PredeterminedMenuModel extends MenuModel {
 		return rv;
 	}
 	@Override
-	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperationContext context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
 		MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
 	}

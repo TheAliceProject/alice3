@@ -54,7 +54,7 @@ public abstract class AbstractPopupMenuOperationContext< M extends AbstractPopup
 		super( binaryDecoder );
 	}
 	
-	public static class RetargetableMenuModelInitializationEvent extends ModelEvent< PopupMenuOperationContext > {
+	public static class RetargetableMenuModelInitializationEvent extends ModelEvent< StandardPopupMenuOperationContext > {
 		private RetargetingData retargetingData;
 		public RetargetableMenuModelInitializationEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
@@ -87,7 +87,7 @@ public abstract class AbstractPopupMenuOperationContext< M extends AbstractPopup
 		}
 	}
 
-	public static class MenuResizedEvent extends ModelEvent< PopupMenuOperationContext > {
+	public static class MenuResizedEvent extends ModelEvent< StandardPopupMenuOperationContext > {
 		private java.awt.event.ComponentEvent componentEvent;
 		public MenuResizedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
@@ -104,7 +104,7 @@ public abstract class AbstractPopupMenuOperationContext< M extends AbstractPopup
 		}
 	}
 	
-	public static class MenuSelectionEvent extends ModelEvent< PopupMenuOperationContext > {
+	public static class MenuSelectionEvent extends ModelEvent< StandardPopupMenuOperationContext > {
 		private javax.swing.event.ChangeEvent changeEvent;
 		private Model[] models;
 		private CodableResolver< ? extends Model >[] modelResolvers;

@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 public interface PopupMenuOperationCompletor extends Completor {
-	public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit( edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation );
+	public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit( edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation popupMenuOperation );
 }
