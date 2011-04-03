@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class StandardPopupMenuOperationContext extends AbstractPopupMenuOperationContext<StandardPopupMenuOperation> {
+public class StandardPopupMenuOperationContext extends PopupMenuOperationContext<StandardPopupMenuOperation> {
 	/*package-private*/ StandardPopupMenuOperationContext( StandardPopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( popupMenuOperation, e, viewController );
 	}

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class StandardPopupMenuOperation extends AbstractPopupMenuOperation<StandardPopupMenuOperationContext> {
+public final class StandardPopupMenuOperation extends PopupMenuOperation<StandardPopupMenuOperationContext> {
 	private static final Group STANDARD_POPUP_MENU_GROUP = Group.getInstance( java.util.UUID.fromString( "4fe7cbeb-627f-4965-a2d3-f4bf42796c59" ), "STANDARD_POPUP_MENU_GROUP" );
 	private MenuModel menuModel;
 	/*package-private*/ StandardPopupMenuOperation( MenuModel menuModel ) {

@@ -46,8 +46,14 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPopupMenuOperation<C extends AbstractPopupMenuOperationContext<?>> extends Operation<C> {
-	public AbstractPopupMenuOperation( Group group, java.util.UUID id ) {
-		super( group, id );
+public class CascadePopupOperationContext<T> extends PopupMenuOperationContext< CascadePopupOperation< T > > {
+	/*package-private*/ CascadePopupOperationContext( CascadePopupOperation< T > model, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( model, e, viewController );
+	}
+	public CascadePopupOperationContext( CascadePopupOperation< T > model ) {
+		this( model, null, null );
+	}
+	public CascadePopupOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

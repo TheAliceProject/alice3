@@ -50,7 +50,7 @@ public class PopupMenu extends ViewController< javax.swing.JPopupMenu, Operation
 	/*package-private*/ PopupMenu( StandardPopupMenuOperation model ) {
 		super( model );
 	}
-	/*package-private*/ PopupMenu( CascadeOperation< ? > model ) {
+	/*package-private*/ PopupMenu( CascadePopupOperation< ? > model ) {
 		super( model );
 	}
 	public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {

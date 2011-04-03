@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class CascadeRoot<B> extends CascadeBlankOwner< B[], B, CascadeRootContext< B > > {
-	private final CascadeOperation< B > operation;
-	/*package-private*/ CascadeRoot( CascadeOperation< B > operation ) {
+	private final CascadePopupOperation< B > operation;
+	/*package-private*/ CascadeRoot( CascadePopupOperation< B > operation ) {
 		super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ) );
 		this.operation = operation;
 	}

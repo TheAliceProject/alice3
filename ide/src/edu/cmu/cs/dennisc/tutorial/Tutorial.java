@@ -115,10 +115,10 @@ public class Tutorial {
 		return this.addStep( new PopupMenuStep( title, popupText, new SelfResolver<edu.cmu.cs.dennisc.croquet.StandardPopupMenuOperation>( popupMenu ), commitText, completorValidator, completorValidator ) );
 	}
 	
-	public Step addCascadeOperationStep( String title, String text, RuntimeResolver<edu.cmu.cs.dennisc.croquet.CascadeOperation> cascadeOperationResolver, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
+	public Step addCascadeOperationStep( String title, String text, RuntimeResolver<edu.cmu.cs.dennisc.croquet.CascadePopupOperation> cascadeOperationResolver, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
 		throw new RuntimeException( "todo" );
 	}
-	public Step addCascadeOperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.CascadeOperation cascadeOperation, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
+	public Step addCascadeOperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.CascadePopupOperation cascadeOperation, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
 		throw new RuntimeException( "todo" );
 	}
 

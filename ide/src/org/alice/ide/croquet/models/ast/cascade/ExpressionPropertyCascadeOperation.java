@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionPropertyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class ExpressionPropertyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 	public ExpressionPropertyCascadeOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
 		super( group, id, edu.cmu.cs.dennisc.alice.ast.Expression.class, blanks );
@@ -60,7 +60,7 @@ public abstract class ExpressionPropertyCascadeOperation extends edu.cmu.cs.denn
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions );
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
+	protected final edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
 		return new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( this.getPreviousExpression(), values[ 0 ] );
 	}
 }

@@ -45,13 +45,13 @@ package org.alice.ide.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class CountLoopCountResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.CascadeOperation< ? > > {
+/*package-private*/class CountLoopCountResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.CascadePopupOperation< ? > > {
 	private int index;
 	public CountLoopCountResolver(int index) {
 		this.index = index;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CascadeOperation< ? > getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+	protected edu.cmu.cs.dennisc.croquet.CascadePopupOperation< ? > getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
 		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();
 		edu.cmu.cs.dennisc.alice.ast.CountLoop countLoop = IdeTutorial.getNodeAt(code, edu.cmu.cs.dennisc.alice.ast.CountLoop.class, this.index);
 		if (countLoop != null) {

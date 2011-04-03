@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPopupMenuOperationContext< M extends AbstractPopupMenuOperation<?> > extends OperationContext<M> {
-	/*package-private*/ AbstractPopupMenuOperationContext( M model, java.util.EventObject e, ViewController< ?,? > viewController ) {
+public abstract class PopupMenuOperationContext< M extends PopupMenuOperation<?> > extends OperationContext<M> {
+	/*package-private*/ PopupMenuOperationContext( M model, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( model, e, viewController );
 	}
-	public AbstractPopupMenuOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public PopupMenuOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	

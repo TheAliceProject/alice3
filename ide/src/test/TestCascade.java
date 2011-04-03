@@ -221,7 +221,7 @@ enum ZodiacSigns {
 	ARIES, TAURUS, GEMINI, CANCER, LEO, VIRGO, LIBRA, SCORPIO, SAGITARIUS, CAPRICORN, AQUARIUS, PISCES
 }
 
-class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< Object > {
+class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupOperation< Object > {
 	private static class SingletonHolder {
 		private static MyCascadeOperation instance = new MyCascadeOperation();
 	}
@@ -242,7 +242,7 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< Ob
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadeOperation< Object >> createEdit( final Object[] values ) {
+	protected edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< Object >> createEdit( final Object[] values ) {
 		return new edu.cmu.cs.dennisc.croquet.Edit() {
 			@Override
 			public edu.cmu.cs.dennisc.croquet.Edit.Memento createMemento() {

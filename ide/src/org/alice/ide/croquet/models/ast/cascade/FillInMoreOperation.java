@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class FillInMoreOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, FillInMoreOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized FillInMoreOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 		FillInMoreOperation rv = map.get( methodInvocation );
@@ -129,7 +129,7 @@ public class FillInMoreOperation extends edu.cmu.cs.dennisc.croquet.CascadeOpera
 //		return lastParameter.getDesiredValueType();
 //	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
+	protected edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
 		return new org.alice.ide.croquet.edits.ast.FillInMoreEdit( values[ 0 ] );
 	}
 }

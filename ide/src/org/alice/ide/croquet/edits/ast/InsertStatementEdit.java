@@ -42,8 +42,8 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
-public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > {
-	public static class InsertStatementEditMemento extends Memento<edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> {
+public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > {
+	public static class InsertStatementEditMemento extends Memento<edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> {
 		private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 		private int specifiedIndex;
 		private edu.cmu.cs.dennisc.alice.ast.Statement statement;
@@ -59,7 +59,7 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 			super( binaryDecoder );
 		}
 		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > createEdit() {
+		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > createEdit() {
 			return new InsertStatementEdit( this );
 		}
 		@Override

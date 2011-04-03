@@ -65,7 +65,7 @@ public class FillInExpressionListPropertyMenuModel extends ExpressionsCascadeOpe
 		return this.expressionListProperty.get( this.index );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
+	protected edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
 		return new org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit( this.getPreviousExpression(), values[ 0 ] );
 	}
 }

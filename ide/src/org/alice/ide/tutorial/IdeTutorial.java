@@ -358,33 +358,33 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		};
 	}
 	
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation > createIfElseStatementConditionResolver( int index ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation > createIfElseStatementConditionResolver( int index ) {
 		return new IfElseStatementConditionResolver( index );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation > createFirstIfElseStatementConditionResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation > createFirstIfElseStatementConditionResolver() {
 		return this.createIfElseStatementConditionResolver(0);
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation > createLastIfElseStatementConditionResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation > createLastIfElseStatementConditionResolver() {
 		return this.createIfElseStatementConditionResolver(Short.MAX_VALUE);
 	}
 
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation< ? > > createWhileLoopConditionResolver( int index ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< ? > > createWhileLoopConditionResolver( int index ) {
 		return new WhileLoopConditionResolver( index );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation< ? > > createFirstWhileLoopConditionResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< ? > > createFirstWhileLoopConditionResolver() {
 		return this.createWhileLoopConditionResolver(0);
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation< ? > > createLastWhileLoopConditionResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< ? > > createLastWhileLoopConditionResolver() {
 		return this.createWhileLoopConditionResolver(Short.MAX_VALUE);
 	}
 
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation< ? > > createCountLoopCountResolver( int index ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< ? > > createCountLoopCountResolver( int index ) {
 		return new CountLoopCountResolver( index );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation< ? > > createFirstCountLoopCountResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< ? > > createFirstCountLoopCountResolver() {
 		return this.createCountLoopCountResolver(0);
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation< ? > > createLastCountLoopCountResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< ? > > createLastCountLoopCountResolver() {
 		return this.createCountLoopCountResolver(Short.MAX_VALUE);
 	}
 
@@ -476,26 +476,26 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 //	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createLastInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
 //		return this.createInvocationInstanceResolver( methodResolver, Short.MAX_VALUE );
 //	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation > createInvocationArgumentResolver( String methodName, int invocationIndex, int argumentIndex ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation > createInvocationArgumentResolver( String methodName, int invocationIndex, int argumentIndex ) {
 		return new InvocationArgumentResolver( this.createCurrentCodeMethodResolver(methodName), invocationIndex, argumentIndex );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation > createInvocationInstanceResolver( String methodName, int invocationIndex ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation > createInvocationInstanceResolver( String methodName, int invocationIndex ) {
 		return new InvocationInstanceResolver( this.createCurrentCodeMethodResolver(methodName), invocationIndex );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation > createFirstInvocationInstanceResolver( String methodName ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation > createFirstInvocationInstanceResolver( String methodName ) {
 		return this.createInvocationInstanceResolver( methodName, 0 );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation > createLastInvocationInstanceResolver(String methodName ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation > createLastInvocationInstanceResolver(String methodName ) {
 		return this.createInvocationInstanceResolver( methodName, Short.MAX_VALUE );
 	}
 
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation > createInvocationMoreResolver( String methodName, int invocationIndex ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation > createInvocationMoreResolver( String methodName, int invocationIndex ) {
 		return new InvocationMoreResolver( this.createCurrentCodeMethodResolver(methodName), invocationIndex );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation > createFirstInvocationMoreResolver( String methodName ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation > createFirstInvocationMoreResolver( String methodName ) {
 		return this.createInvocationMoreResolver( methodName, 0 );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadeOperation > createLastInvocationMoreResolver(String methodName ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.CascadePopupOperation > createLastInvocationMoreResolver(String methodName ) {
 		return this.createInvocationMoreResolver( methodName, Short.MAX_VALUE );
 	}
 	

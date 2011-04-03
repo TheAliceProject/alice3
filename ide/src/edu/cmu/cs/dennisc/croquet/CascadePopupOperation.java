@@ -506,11 +506,11 @@ class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, CascadeRootConte
 	}
 }
 
-class RtOperation<T> extends RtModel< CascadeOperation< T >, CascadeOperationContext< T > > {
+class RtOperation<T> extends RtModel< CascadePopupOperation< T >, CascadePopupOperationContext< T > > {
 	private Operation.PerformObserver performObserver;
 	private RtRoot< T > rtRoot;
 
-	public RtOperation( CascadeOperation< T > model, CascadeOperationContext< T > context, Operation.PerformObserver performObserver ) {
+	public RtOperation( CascadePopupOperation< T > model, CascadePopupOperationContext< T > context, Operation.PerformObserver performObserver ) {
 		super( model, context );
 		this.performObserver = performObserver;
 		this.rtRoot = new RtRoot< T >( model.getRoot(), this );
@@ -562,7 +562,7 @@ class RtOperation<T> extends RtModel< CascadeOperation< T >, CascadeOperationCon
 		}
 	}
 	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-		CascadeOperation< T > model = this.getModel();
+		CascadePopupOperation< T > model = this.getModel();
 		RtBlank< T >[] rtBlanks = this.rtRoot.getChildren();
 		T[] values = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( model.getComponentType(), rtBlanks.length );
 		boolean isReadyForCompletion;
@@ -653,10 +653,10 @@ class UnfilledInCancel<F> extends CascadeCancel< F > {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeOperation<B> extends AbstractPopupMenuOperation< CascadeOperationContext< B > > {
+public abstract class CascadePopupOperation<B> extends PopupMenuOperation< CascadePopupOperationContext< B > > {
 	private final Class< B > componentType;
 	private final CascadeRoot< B > root;
-	public CascadeOperation( Group group, java.util.UUID id, Class< B > componentType, CascadeBlank< B >[] blanks ) {
+	public CascadePopupOperation( Group group, java.util.UUID id, Class< B > componentType, CascadeBlank< B >[] blanks ) {
 		super( group, id );
 		this.componentType = componentType;
 		this.root = new CascadeRoot< B >( this );
@@ -667,7 +667,7 @@ public abstract class CascadeOperation<B> extends AbstractPopupMenuOperation< Ca
 		}
 	}
 	@Override
-	public CascadeOperationContext< B > createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public CascadePopupOperationContext< B > createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushCascadeOperationContext( this, e, viewController );
 	}
 
@@ -679,17 +679,17 @@ public abstract class CascadeOperation<B> extends AbstractPopupMenuOperation< Ca
 		return this.componentType;
 	}
 
-	protected abstract Edit< ? extends CascadeOperation< B > > createEdit( B[] values );
+	protected abstract Edit< ? extends CascadePopupOperation< B > > createEdit( B[] values );
 
-	/*package-private*/ void handleCompletion( CascadeOperationContext< B > context, PerformObserver performObserver, B[] values ) {
+	/*package-private*/ void handleCompletion( CascadePopupOperationContext< B > context, PerformObserver performObserver, B[] values ) {
 		try {
-			Edit< ? extends CascadeOperation< B > > edit = this.createEdit( values );
+			Edit< ? extends CascadePopupOperation< B > > edit = this.createEdit( values );
 			context.commitAndInvokeDo( edit );
 		} finally {
 			performObserver.handleFinally();
 		}
 	}
-	/*package-private*/ void handleCancel( CascadeOperationContext< B > context, PerformObserver performObserver ) {
+	/*package-private*/ void handleCancel( CascadePopupOperationContext< B > context, PerformObserver performObserver ) {
 		try {
 			context.cancel();
 		} finally {
@@ -698,7 +698,7 @@ public abstract class CascadeOperation<B> extends AbstractPopupMenuOperation< Ca
 	}
 
 	@Override
-	protected void perform( CascadeOperationContext< B > context, PerformObserver performObserver ) {
+	protected void perform( CascadePopupOperationContext< B > context, PerformObserver performObserver ) {
 		RtOperation< B > rt = new RtOperation< B >( this, context, performObserver );
 		rt.perform();
 	}
