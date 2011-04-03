@@ -223,8 +223,12 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
 		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( false );
 		if( IS_ENCODING ) {
-			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
-			rootContext.EPIC_HACK_clear();
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
+					rootContext.EPIC_HACK_clear();
+				}
+			} );
 		}
 	}
 

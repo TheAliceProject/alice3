@@ -60,4 +60,8 @@ public abstract class AbstractDoubleLiteralFillIn extends org.alice.ide.croquet.
 	public edu.cmu.cs.dennisc.alice.ast.DoubleLiteral createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
 		return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( this.transientValue.value.getValue() );
 	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.DoubleStaticGetInstanceKeyedResolver createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.DoubleStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
+	}
 }

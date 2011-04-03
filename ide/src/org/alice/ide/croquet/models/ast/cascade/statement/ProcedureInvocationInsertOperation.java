@@ -47,8 +47,19 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationInsertOperation extends ExpressionStatementInsertOperation {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.codeeditor.BlockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod, ProcedureInvocationInsertOperation > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ProcedureInvocationInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		ProcedureInvocationInsertOperation rv = mapToMap.get( blockStatementIndexPair, method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ProcedureInvocationInsertOperation( blockStatementIndexPair, method );
+			mapToMap.put( blockStatementIndexPair, method, rv );
+		}
+		return rv;
+	}
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	public ProcedureInvocationInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private ProcedureInvocationInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "d8ea7244-f0eb-4c3a-a9fa-a92182ed221a" ), blockStatementIndexPair, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
 		this.method = method;
 	}

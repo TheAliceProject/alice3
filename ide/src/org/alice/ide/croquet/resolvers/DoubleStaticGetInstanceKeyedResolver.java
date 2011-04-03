@@ -41,36 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterNameSeparator extends edu.cmu.cs.dennisc.croquet.CascadeLabelSeparator {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, ParameterNameSeparator > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ParameterNameSeparator getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
-		assert parameter != null;
-		ParameterNameSeparator rv = map.get( parameter );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterNameSeparator( parameter );
-			map.put( parameter, rv );
-		}
-		return rv;
+public class DoubleStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver<T> {
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { Double.TYPE };
+	private double value;
+	public DoubleStaticGetInstanceKeyedResolver( T instance, double value ) {
+		super( instance );
+		this.value = value;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter;
-	private ParameterNameSeparator( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
-		super( java.util.UUID.fromString( "39d27239-d4c8-4c98-9194-fdafc189da72" ) );
-		this.parameter = parameter;
-	}
-	
-	@Override
-	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
-		return this.parameter.getRepr( locale );
+	public DoubleStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterNameSeparator > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterNameSeparator >( this, this.parameter, edu.cmu.cs.dennisc.alice.ast.AbstractParameter.class );
+	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return PARAMETER_TYPES;
+	}
+	@Override
+	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		double value = binaryDecoder.decodeDouble();
+		return new Object[] { value };
+	}
+	@Override
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.value );
 	}
 }

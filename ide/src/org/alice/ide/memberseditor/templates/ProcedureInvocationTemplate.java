@@ -90,7 +90,6 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		//todo
-		return new org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation( blockStatementIndexPair, this.method );
+		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation.getInstance( blockStatementIndexPair, this.method );
 	}
 }

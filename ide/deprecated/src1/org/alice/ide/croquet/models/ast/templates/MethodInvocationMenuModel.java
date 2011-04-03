@@ -48,7 +48,6 @@ package org.alice.ide.croquet.models.ast.templates;
  */
 public class MethodInvocationMenuModel extends InsertExpressionStatementFillInExpressionsMenuModel {
 	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.codeeditor.BlockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod, MethodInvocationMenuModel > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-
 	public static synchronized MethodInvocationMenuModel getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		MethodInvocationMenuModel rv = mapToMap.get( blockStatementIndexPair, method );
 		if( rv != null ) {
