@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.croquet;
 //todo: rename
 public interface PendResolver< E extends Edit, F > {
 	public E createEdit();
-	public E initialize( E rv, AbstractModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<F> taskObserver );
+	public E initialize( E rv, ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<F> taskObserver );
 	public E handleCompletion( E rv, F e );
 	public void handleCancelation();
 }

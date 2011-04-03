@@ -502,7 +502,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	protected void commitEdit( ListSelectionStateEdit< E > listSelectionStateEdit, java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
 		childContext.commitAndInvokeDo( listSelectionStateEdit );
-		AbstractModelContext< ? > popContext = ContextManager.popContext();
+		ModelContext< ? > popContext = ContextManager.popContext();
 		assert popContext == childContext;
 	}
 
@@ -515,11 +515,11 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, UserInformation userInformation ) {
 		return getTutorialNoteText( modelContext, userInformation );
 	}
 	@Override
-	public String getTutorialNoteText( AbstractModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
 		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
 		if( successfulCompletionEvent != null ) {

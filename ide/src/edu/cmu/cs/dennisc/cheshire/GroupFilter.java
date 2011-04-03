@@ -72,16 +72,16 @@ public enum GroupFilter implements Filter {
 	public void addGroup( edu.cmu.cs.dennisc.croquet.Group group, SuccessfulCompletionPolicy successfulCompletionPolicy ) {
 		map.put( group, successfulCompletionPolicy );
 	}
-	public < M extends edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > > M filter( M rv ) {
+	public < M extends edu.cmu.cs.dennisc.croquet.ModelContext< ? > > M filter( M rv ) {
 		java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > childListIterator = rv.getChildListIterator();
 		while( childListIterator.hasNext() ) {
 			edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node = childListIterator.next();
 			boolean isToBeRemoved = true;
-			if( node instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > ) {
-				edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? >)node;
+			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
 				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = childContext.getSuccessfulCompletionEvent();
 				if( successfulCompletionEvent != null ) {
-					edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > parentContext = successfulCompletionEvent.getParent();
+					edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext = successfulCompletionEvent.getParent();
 					edu.cmu.cs.dennisc.croquet.Model model = parentContext.getModel();
 					edu.cmu.cs.dennisc.croquet.Group group = model.getGroup();
 					SuccessfulCompletionPolicy successfulCompletionPolicy = map.get( group );

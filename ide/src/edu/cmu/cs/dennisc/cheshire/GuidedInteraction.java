@@ -91,8 +91,8 @@ public abstract class GuidedInteraction {
 		final int N = sourceContext.getChildCount();
 		for( int i=0; i<N; i++ ) {
 			edu.cmu.cs.dennisc.croquet.HistoryNode node = sourceContext.getChildAt( i );
-			if( node instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > ) {
-				edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > context = (edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? >)node;
+			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
 				if( context.isSuccessfullyCompleted() ) {
 					this.stencil.addStep( new Page( context ) );
 				}
@@ -105,7 +105,7 @@ public abstract class GuidedInteraction {
 		}
 	}
 
-	protected abstract java.util.List< RetargetableNote > addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( java.util.List< RetargetableNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext );
+	protected abstract java.util.List< RetargetableNote > addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( java.util.List< RetargetableNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext );
 	/*package-private*/ AutomaticTutorialStencil getStencil() {
 		return this.stencil;
 	}

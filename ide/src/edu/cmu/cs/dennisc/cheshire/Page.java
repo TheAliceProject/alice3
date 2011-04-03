@@ -82,8 +82,8 @@ public class Page extends Step implements WaitingStep {
 			int DND_CONTEXT_CHILD_COUNT = dragAndDropContext.getChildCount();
 			if( DND_CONTEXT_CHILD_COUNT > 0 ) {
 				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = dragAndDropContext.getChildAt( DND_CONTEXT_CHILD_COUNT-1 );
-				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > ) {
-					edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > childModelContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? >)lastChild;
+				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+					edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;
 					edu.cmu.cs.dennisc.croquet.HistoryNode lastGrandchild = childModelContext.getLastChild();
 					DragNote dragNote = DragNote.createInstance( dragAndDropContext, parentContextCriterion );
 					DropNote dropNote;
@@ -117,10 +117,10 @@ public class Page extends Step implements WaitingStep {
 						retargetableMenuModelInitializationEvent = null;
 					}
 					edu.cmu.cs.dennisc.croquet.HistoryNode<?> lastChild = popupMenuOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-1 );
-					if( lastChild instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > ) {
+					if( lastChild instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 						ParentContextCriterion menuSelectionParentContextCriterion = parentContextCriterion;
 						ParentContextCriterion modelContextParentContextCriterion = null;
-						edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? >)lastChild;
+						edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;
 						edu.cmu.cs.dennisc.croquet.HistoryNode<?> secondToLastChild = popupMenuOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-2 );
 						if( secondToLastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
 							edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)secondToLastChild;
@@ -140,7 +140,7 @@ public class Page extends Step implements WaitingStep {
 									index0 = 0;
 								}
 								for( int i=index0; i<N; i++ ) {
-									edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > childContext;
+									edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext;
 									if( i == N-1 ) {
 										childContext = modelContext;
 									} else {
@@ -309,8 +309,8 @@ public class Page extends Step implements WaitingStep {
 	private java.util.List< RetargetableNote > notes;
 	private java.util.List< RetargetableNote > createNotes() {
 		java.util.List< RetargetableNote > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		if( this.node instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > ) {
-			edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? >)this.node;
+		if( this.node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+			edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)this.node;
 			edu.cmu.cs.dennisc.croquet.Model model = modelContext.getModel();
 			edu.cmu.cs.dennisc.croquet.Component< ? > component = model.getFirstComponent( true );
 			if( component instanceof edu.cmu.cs.dennisc.croquet.MenuItem ) {
@@ -385,15 +385,15 @@ public class Page extends Step implements WaitingStep {
 	}
 	@Override
 	public boolean isAutoAdvanceDesired() {
-		return this.node instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? >;
+		return this.node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? >;
 	}
 	public boolean isAlreadyInTheDesiredState() {
-		if( this.node instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > ) {
-			edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? >)this.node;
+		if( this.node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+			edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)this.node;
 			edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
 			if( successfulCompletionEvent != null ) {
 				edu.cmu.cs.dennisc.croquet.Edit< ? > edit = successfulCompletionEvent.getEdit();
-				edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > parent = successfulCompletionEvent.getParent();
+				edu.cmu.cs.dennisc.croquet.ModelContext< ? > parent = successfulCompletionEvent.getParent();
 				edu.cmu.cs.dennisc.croquet.Model model = modelContext.getModel();
 				return model.isAlreadyInState( edit );
 			} else {
@@ -455,8 +455,8 @@ public class Page extends Step implements WaitingStep {
 	}
 	@Override
 	protected void complete() {
-		if( this.node instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > ) {
-			edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? >)this.node;
+		if( this.node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+			edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)this.node;
 			edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
 			edu.cmu.cs.dennisc.croquet.Edit<?> originalEdit = successfulCompletionEvent.getEdit();
 			if( originalEdit != null ) {

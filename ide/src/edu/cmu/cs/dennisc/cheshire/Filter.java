@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.cheshire;
  * @author Dennis Cosgrove
  */
 public interface Filter {
-	< M extends edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > > M filter( M rv );
+	< M extends edu.cmu.cs.dennisc.croquet.ModelContext< ? > > M filter( M rv );
 }

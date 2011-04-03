@@ -49,8 +49,8 @@ package edu.cmu.cs.dennisc.cheshire;
 public enum RepeatedStateEditsFilter implements Filter {
 	SINGLETON;
 	private static edu.cmu.cs.dennisc.croquet.StateEdit<?, ?> getStateEdit( edu.cmu.cs.dennisc.croquet.HistoryNode<?> node ) {
-		if( node instanceof edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> ) {
-			edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> context = (edu.cmu.cs.dennisc.croquet.AbstractModelContext<?>)node;
+		if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext<?> ) {
+			edu.cmu.cs.dennisc.croquet.ModelContext<?> context = (edu.cmu.cs.dennisc.croquet.ModelContext<?>)node;
 			edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = context.getSuccessfulCompletionEvent();
 			if( successfulCompletionEvent != null ) {
 				return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( successfulCompletionEvent.getEdit(), edu.cmu.cs.dennisc.croquet.StateEdit.class );
@@ -61,7 +61,7 @@ public enum RepeatedStateEditsFilter implements Filter {
 			return null;
 		}
 	}
-	private static void stripRepeatedStateEdits( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > context ) {
+	private static void stripRepeatedStateEdits( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
 		java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > childListIterator = context.getChildListIterator();
 		while( childListIterator.hasNext() ) {
 			edu.cmu.cs.dennisc.croquet.HistoryNode< ? > child = childListIterator.next();
@@ -80,7 +80,7 @@ public enum RepeatedStateEditsFilter implements Filter {
 		}
 	}
 
-	public < M extends edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > > M filter( M rv ) {
+	public < M extends edu.cmu.cs.dennisc.croquet.ModelContext< ? > > M filter( M rv ) {
 		stripRepeatedStateEdits( rv );
 		return rv;
 	}

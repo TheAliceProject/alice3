@@ -55,7 +55,7 @@ public abstract class DragAndDropModel extends Model {
 	}
 	
 	@Override
-	public String getTutorialStepTitle( AbstractModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
 		return "Drag and Drop...";
 	}
 	public String getTutorialDragNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {

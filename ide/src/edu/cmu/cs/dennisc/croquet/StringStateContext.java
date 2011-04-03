@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class StringStateContext extends AbstractModelContext<StringState> {
+public class StringStateContext extends ModelContext<StringState> {
 	public static abstract class DocumentEvent extends ModelEvent<StringStateContext> {
 		private javax.swing.event.DocumentEvent documentEvent;
 		public DocumentEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

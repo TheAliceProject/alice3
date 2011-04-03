@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class ModelEvent<C extends AbstractModelContext<?>> extends Event<C> {
+/*package-private*/abstract class ModelEvent<C extends ModelContext<?>> extends Event<C> {
 	/*package-private*/ ModelEvent() {
 	}
 	public ModelEvent(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {

@@ -101,7 +101,7 @@ abstract class RtNode<M extends Model, C extends ModelContext< M >> extends RtMo
 	}
 
 	protected abstract RtNode[] getChildren();
-	protected abstract RtNode< ? extends Model, ? extends AbstractModelContext< ? > > getNextNode();
+	protected abstract RtNode< ? extends Model, ? extends ModelContext< ? > > getNextNode();
 	public abstract RtBlank< ? > getNearestBlank();
 	public RtBlank< ? > getNextBlank() {
 		RtBlank< ? > blank = this.getNearestBlank();
@@ -248,7 +248,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, CascadeBlankContext< B > > {
 		return this.rtFillIns;
 	}
 	@Override
-	protected RtNode< ? extends Model, ? extends AbstractModelContext< ? > > getNextNode() {
+	protected RtNode< ? extends Model, ? extends ModelContext< ? > > getNextNode() {
 		return this;
 	}
 	@Override
@@ -339,7 +339,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends CascadeItem
 		return this.getModel().isInclusionDesired( this.getContext() );
 	}
 	@Override
-	protected RtNode< ? extends Model, ? extends AbstractModelContext< ? > > getNextNode() {
+	protected RtNode< ? extends Model, ? extends ModelContext< ? > > getNextNode() {
 		if( this.rtBlanks.length > 0 ) {
 			return this.rtBlanks[ 0 ];
 		} else {

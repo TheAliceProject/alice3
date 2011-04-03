@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractModelContext<M extends Model> extends HistoryNode< AbstractModelContext > {
+public abstract class ModelContext<M extends Model> extends HistoryNode< ModelContext > {
 	public interface CommitObserver {
 		public void committing(Edit edit);
 		public void committed(Edit edit);
@@ -61,7 +61,7 @@ public abstract class AbstractModelContext<M extends Model> extends HistoryNode<
 	private CodableResolver< M > modelResolver;
 	private java.util.EventObject awtEvent;
 	private ViewController<?, ?> viewController;
-	/*package-private*/ AbstractModelContext(M model, java.util.EventObject awtEvent, ViewController<?, ?> viewController) {
+	/*package-private*/ ModelContext(M model, java.util.EventObject awtEvent, ViewController<?, ?> viewController) {
 		this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.model = model;
 		if( this.model != null ) {
@@ -72,7 +72,7 @@ public abstract class AbstractModelContext<M extends Model> extends HistoryNode<
 		this.awtEvent = awtEvent;
 		this.viewController = viewController;
 	}
-	/*package-private*/ AbstractModelContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	/*package-private*/ ModelContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	public void EPIC_HACK_clear() {
@@ -159,7 +159,7 @@ public abstract class AbstractModelContext<M extends Model> extends HistoryNode<
 		this.childrenObservers.remove(childrenObserver);
 	}
 	@Override
-	public AbstractModelContext<?> findContextFor(Model model) {
+	public ModelContext<?> findContextFor(Model model) {
 		if (this.model == model) {
 			return this;
 		} else {
@@ -214,7 +214,7 @@ public abstract class AbstractModelContext<M extends Model> extends HistoryNode<
 				commitObserver.committing(edit);
 			}
 		}
-		AbstractModelContext<?> parent = this.getParent();
+		ModelContext<?> parent = this.getParent();
 		if (parent != null) {
 			parent.fireCommitting(edit);
 		}
@@ -225,7 +225,7 @@ public abstract class AbstractModelContext<M extends Model> extends HistoryNode<
 				commitObserver.committed(edit);
 			}
 		}
-		AbstractModelContext<?> parent = this.getParent();
+		ModelContext<?> parent = this.getParent();
 		if (parent != null) {
 			parent.fireCommitted(edit);
 		}
@@ -237,7 +237,7 @@ public abstract class AbstractModelContext<M extends Model> extends HistoryNode<
 				childObserver.addingChild(child);
 			}
 		}
-		AbstractModelContext<?> parent = this.getParent();
+		ModelContext<?> parent = this.getParent();
 		if (parent != null) {
 			parent.fireAddingChild(child);
 		}
@@ -248,7 +248,7 @@ public abstract class AbstractModelContext<M extends Model> extends HistoryNode<
 				childObserver.addedChild(child);
 			}
 		}
-		AbstractModelContext<?> parent = this.getParent();
+		ModelContext<?> parent = this.getParent();
 		if (parent != null) {
 			parent.fireAddedChild(child);
 		}
@@ -298,8 +298,8 @@ public abstract class AbstractModelContext<M extends Model> extends HistoryNode<
 		HistoryNode< ? > lastChild = this.getLastChild();
 		if( lastChild instanceof SuccessfulCompletionEvent ) {
 			return (SuccessfulCompletionEvent)lastChild;
-		} else if( lastChild instanceof AbstractModelContext< ? > ) {
-			return ((AbstractModelContext< ? >)lastChild).getSuccessfulCompletionEvent();
+		} else if( lastChild instanceof ModelContext< ? > ) {
+			return ((ModelContext< ? >)lastChild).getSuccessfulCompletionEvent();
 		} else {
 			return null;
 		}

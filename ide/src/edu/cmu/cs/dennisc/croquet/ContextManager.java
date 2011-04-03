@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class ContextManager {
-	private static java.util.Stack< AbstractModelContext< ? > > stack;
-	private static java.util.Map< AbstractModelContext< ? >, AbstractModelContext< ? > > mapChildContextPendingParentContext = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Stack< ModelContext< ? > > stack;
+	private static java.util.Map< ModelContext< ? >, ModelContext< ? > > mapChildContextPendingParentContext = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
 		stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 		stack.push( new RootContext() );
@@ -56,11 +56,11 @@ public class ContextManager {
 	public static RootContext getRootContext() {
 		return (RootContext)stack.firstElement();
 	}
-	public static AbstractModelContext< ? > getCurrentContext() {
+	public static ModelContext< ? > getCurrentContext() {
 		return stack.peek();
 	}
 		
-	/*package-private*/ static void popParentContextWhenChildContextIsPopped( AbstractModelContext< ? > parentContext, AbstractModelContext< ? > childContext ) {
+	/*package-private*/ static void popParentContextWhenChildContextIsPopped( ModelContext< ? > parentContext, ModelContext< ? > childContext ) {
 		//assert childContext.getParent() == parentContext;
 		if( childContext.getParent() == parentContext ) {
 			//pass
@@ -70,7 +70,7 @@ public class ContextManager {
 		mapChildContextPendingParentContext.put( childContext, parentContext );
 	}
 
-	private static PopupMenuOperationContext getPopupMenuOperationContextToPushOnto( PopupMenuOperationContext candidate, AbstractModelContext< ? > childContext ) {
+	private static PopupMenuOperationContext getPopupMenuOperationContextToPushOnto( PopupMenuOperationContext candidate, ModelContext< ? > childContext ) {
 		HistoryNode lastChild = candidate.getLastChild();
 		if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
 			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)lastChild;
@@ -81,8 +81,8 @@ public class ContextManager {
 		}
 		return null;
 	}
-	/*package-private*/ static <C extends AbstractModelContext< ? > > C pushContext( C rv ) {
-		AbstractModelContext< ? > parentContext = getCurrentContext();
+	/*package-private*/ static <C extends ModelContext< ? > > C pushContext( C rv ) {
+		ModelContext< ? > parentContext = getCurrentContext();
 		if( parentContext instanceof StringStateContext ) {
 			StringStateContext stringStateContext = (StringStateContext)parentContext;
 			stringStateContext.handlePop();
@@ -143,8 +143,8 @@ public class ContextManager {
 		stack.push( rv );
 		return rv;
 	}
-	/*package-private*/ static AbstractModelContext< ? > popContext() {
-		AbstractModelContext< ? > childContext = stack.peek();
+	/*package-private*/ static ModelContext< ? > popContext() {
+		ModelContext< ? > childContext = stack.peek();
 		if( childContext instanceof RootContext ) {
 			System.err.println( "WARNING: attempting to pop root context" );
 			return null;
@@ -155,10 +155,10 @@ public class ContextManager {
 				stack.pop();
 				childContext = stack.peek();
 			}
-			AbstractModelContext< ? > parentContext = mapChildContextPendingParentContext.get( childContext );
+			ModelContext< ? > parentContext = mapChildContextPendingParentContext.get( childContext );
 			
 			childContext.popping();
-			AbstractModelContext< ? > rv = stack.pop();
+			ModelContext< ? > rv = stack.pop();
 			childContext.popped();
 			if( parentContext != null ) {
 				mapChildContextPendingParentContext.remove( childContext );
@@ -170,7 +170,7 @@ public class ContextManager {
 	}
 
 	/*package-private*/ static void handleDocumentEvent( StringState stringState, java.util.EventObject e, ViewController< ?, ? > viewController, javax.swing.event.DocumentEvent documentEvent, String previousValue, String nextValue ) {
-		AbstractModelContext< ? > topContext = stack.peek();
+		ModelContext< ? > topContext = stack.peek();
 		StringStateContext stringStateContext;
 		if( topContext instanceof StringStateContext ) {
 			stringStateContext = (StringStateContext)topContext;
@@ -226,7 +226,7 @@ public class ContextManager {
 	}
 	
 	/*package-private*/ static <E> ListSelectionStateContext<E> createAndPushItemSelectionStateContext(ListSelectionState<E> itemSelectionState, java.util.EventObject e, ViewController<?, ?> viewController/*, int prevIndex, E prevItem, int nextIndex, E nextItem*/) {
-		AbstractModelContext< ? > currentContext = getCurrentContext();
+		ModelContext< ? > currentContext = getCurrentContext();
 		if( currentContext instanceof ListSelectionStateContext ) {
 			return (ListSelectionStateContext<E>)currentContext;
 		} else {
@@ -329,7 +329,7 @@ public class ContextManager {
 
 						if( jPreviousPopupMenu != jPopupMenu ) {
 							if( jPreviousPopupMenu != null ) {
-								AbstractModelContext< ? > popupContext = ContextManager.popContext();
+								ModelContext< ? > popupContext = ContextManager.popContext();
 								assert popupContext instanceof PopupMenuOperationContext;
 							}
 							
@@ -358,7 +358,7 @@ public class ContextManager {
 							}
 						}
 					}
-					AbstractModelContext< ? > modelContext = ContextManager.getCurrentContext();
+					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
 					if( modelContext instanceof PopupMenuOperationContext ) {
 						PopupMenuOperationContext popupContext = (PopupMenuOperationContext)modelContext;
 						popupContext.handleMenuSelectionChanged( e, models );
@@ -368,10 +368,10 @@ public class ContextManager {
 				} else {
 					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
 					if( menuBarModel != null ) {
-						AbstractModelContext< ? > popupContext = ContextManager.popContext();
+						ModelContext< ? > popupContext = ContextManager.popContext();
 						assert popupContext instanceof StandardPopupMenuOperationContext;
 
-						AbstractModelContext< ? > menuBarContext = ContextManager.popContext();
+						ModelContext< ? > menuBarContext = ContextManager.popContext();
 						assert menuBarContext instanceof MenuBarModelContext;
 					}
 				}
@@ -382,7 +382,7 @@ public class ContextManager {
 						/*MenuBarModelContext childContext =*/ ContextManager.createAndPushMenuBarModelContext( menuBar.getModel(), e, menuBar );
 						assert menuElements.length == 2;
 					} else {
-						AbstractModelContext< ? > modelContext = ContextManager.getCurrentContext();
+						ModelContext< ? > modelContext = ContextManager.getCurrentContext();
 						if( modelContext instanceof StandardPopupMenuOperationContext ) {
 							//pass
 						} else {
@@ -392,7 +392,7 @@ public class ContextManager {
 					}
 				} else {
 					//assert false;
-					AbstractModelContext< ? > modelContext = ContextManager.getCurrentContext();
+					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
 					System.err.println( "both prev and current menu selection length 0" );
 					System.err.println( "modelContext: " + modelContext );
 				}
@@ -421,7 +421,7 @@ public class ContextManager {
 //		return application;
 //	}
 	
-	public static MenuBarModelContext createContextFor( java.util.List<Model> path, AbstractModelContext<?> descendantContext ) {
+	public static MenuBarModelContext createContextFor( java.util.List<Model> path, ModelContext<?> descendantContext ) {
 		final int N = path.size();
 		assert N >= 3;
 		MenuBarModel menuBarModel = (MenuBarModel)path.get( 0 );

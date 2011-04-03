@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.cheshire;
  */
 enum IsAnyMenuBarModelContextCriterion implements ParentContextCriterion {
 	IS_PARENT_ANY_MENU_BAR_CONTEXT;
-	public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > parentContext ) {
+	public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
 		return parentContext instanceof edu.cmu.cs.dennisc.croquet.MenuBarModelContext;
 	}
 }

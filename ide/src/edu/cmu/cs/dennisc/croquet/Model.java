@@ -366,7 +366,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 		}
 		return rv;
 	}
-	public String getTutorialStepTitle( AbstractModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "title: " );
 		sb.append( this );
@@ -375,7 +375,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 		}
 		return sb.toString();
 	}
-	public String getTutorialNoteText( AbstractModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this );
 		if( modelContext != null ) {

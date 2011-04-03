@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.history;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 
 public class HistoryManager {
-	private static edu.cmu.cs.dennisc.croquet.AbstractModelContext.CommitObserver commitObserver = new edu.cmu.cs.dennisc.croquet.AbstractModelContext.CommitObserver() {
+	private static edu.cmu.cs.dennisc.croquet.ModelContext.CommitObserver commitObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.CommitObserver() {
 		public void committing(edu.cmu.cs.dennisc.croquet.Edit edit) {
 		}
 		public void committed(edu.cmu.cs.dennisc.croquet.Edit edit) {

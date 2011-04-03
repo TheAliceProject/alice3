@@ -296,7 +296,7 @@ public abstract class CascadeManager {
 	
 	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 		if( type != null ) {
-			edu.cmu.cs.dennisc.croquet.AbstractModelContext<?> parent = context.getParent();
+			edu.cmu.cs.dennisc.croquet.ModelContext<?> parent = context.getParent();
 			boolean isRoot = parent instanceof edu.cmu.cs.dennisc.croquet.CascadeRootContext;
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "updateChildren", isRoot, parent, this.previousExpression );
 

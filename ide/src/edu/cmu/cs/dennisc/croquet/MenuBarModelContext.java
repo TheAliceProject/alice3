@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBarModelContext extends AbstractModelContext<MenuBarModel> {
+public class MenuBarModelContext extends ModelContext<MenuBarModel> {
 	/*package-private*/ MenuBarModelContext( MenuBarModel menuBarModel, javax.swing.event.ChangeEvent e, ViewController< ?,? > viewController ) {
 		super( menuBarModel, e, viewController );
 	}

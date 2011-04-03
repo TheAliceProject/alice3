@@ -54,7 +54,7 @@ public abstract class TemplateDragModel extends org.alice.ide.croquet.models.Cod
 	protected abstract String getTutorialStepDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
 	
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.AbstractModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Drag and Drop " );
 		sb.append( "<strong>" );
