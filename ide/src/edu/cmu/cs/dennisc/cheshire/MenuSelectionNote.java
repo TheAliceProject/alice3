@@ -229,7 +229,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 //		this.i = i;
 //
 		boolean isBelowStencil = GuidedInteraction.getInstance().getStencil().getMenuPolicy().isBelowStencil();
-		boolean isInMenuBar = index0 == 1;
+//		boolean isInMenuBar = index0 == 1;
 		if( isBelowStencil ) {
 			for( int j=index0; j<=i; j++ ) {
 				this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, j ), Feature.ConnectionPreference.EAST_WEST, j==i, true, false ) );

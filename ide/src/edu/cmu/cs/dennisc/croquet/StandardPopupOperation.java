@@ -197,40 +197,4 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 			popupMenu.showAtLocation( component, pt.x, pt.y );
 		}
 	}
-
- 	private static class ArrowIcon extends AbstractArrowIcon {
-		public ArrowIcon( int size ) {
-			super( size );
-		}
-		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-			java.awt.geom.GeneralPath path = this.createPath(x, y, Heading.SOUTH);
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			java.awt.Paint fillPaint;
-			if( button.getModel().isPressed() ) {
-				fillPaint = java.awt.Color.BLACK;
-			} else {
-				if( button.getModel().isRollover() ) {
-					fillPaint = java.awt.Color.GRAY;
-				} else {
-					fillPaint = java.awt.Color.DARK_GRAY;
-				}
-			}
-			g2.setPaint( fillPaint );
-			g2.fill( path );
-		}
-	}
-	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 14 ); 
-	
-	@Override
-	public edu.cmu.cs.dennisc.croquet.Button createButton() {
-		if( this.getSmallIcon() != null ) {
-			//pass
-		} else {
-			this.setSmallIcon( ARROW_ICON );
-		}
-		edu.cmu.cs.dennisc.croquet.Button rv = super.createButton();
-		rv.getAwtComponent().setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
-		return rv;
-	}
 }
