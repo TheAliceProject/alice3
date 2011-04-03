@@ -119,12 +119,14 @@ abstract class RtNode<M extends Model, C extends ModelContext< M >> extends RtMo
 		for( RtNode child : this.getNextNode().getChildren() ) {
 			assert child instanceof RtBlank == false;
 			RtItem< ?, ?, ?, ? > rtFillIn = (RtItem< ?, ?, ?, ? >)child;
-			AbstractMenuItem menuItem = rtFillIn.getMenuItem();
+			ViewController<?,?> menuItem = rtFillIn.getMenuItem();
 			if( menuItem != null ) {
 				if( menuItem instanceof Menu ) {
 					parent.addMenu( (Menu)menuItem );
+				} else if( menuItem instanceof CascadeMenuItem ){
+					parent.addCascadeMenuItem( (CascadeMenuItem)menuItem );
 				} else {
-					parent.addMenuItem( (MenuItem)menuItem );
+					assert false : menuItem;
 				}
 			} else {
 				parent.addSeparator();
@@ -288,7 +290,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, CascadeBlankContext< B > > {
 abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends CascadeItemContext< F, M, C > > extends RtNode< M, C > {
 	private final RtBlank< B >[] rtBlanks;
 //	private javax.swing.JMenuItem menuItem = null;
-	private AbstractMenuItem menuItem = null;
+	private ViewController<?,?> menuItem = null;
 	private boolean wasLast = false;
 
 	public RtItem( M model, C context ) {
@@ -382,22 +384,25 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends CascadeItem
 		}
 	};
 
-	protected AbstractMenuItem createMenuItem( CascadeItem< F, C > item, boolean isLast ) {
-		AbstractMenuItem rv;
+	protected ViewController<?,?> createMenuItem( CascadeItem< F, C > item, boolean isLast ) {
+		ViewController<?,?> rv;
+		javax.swing.JMenuItem jMenuItem;
 		if( isLast ) {
-			MenuItem menuItem = new MenuItem( item );
+			CascadeMenuItem menuItem = new CascadeMenuItem( item );
 			menuItem.getAwtComponent().addActionListener( this.actionListener );
+			jMenuItem = menuItem.getAwtComponent();
 			rv = menuItem;
 		} else {
 			Menu menu = new Menu( item );
 			menu.getAwtComponent().addMenuListener( this.menuListener );
+			jMenuItem = menu.getAwtComponent();
 			rv = menu;
 		}
-		rv.setText( item.getMenuItemText( this.getContext() ) );
-		rv.setIcon( item.getMenuItemIcon( this.getContext() ) );
+		jMenuItem.setText( item.getMenuItemText( this.getContext() ) );
+		jMenuItem.setIcon( item.getMenuItemIcon( this.getContext() ) );
 		return rv;
 	}
-	public AbstractMenuItem getMenuItem() {
+	public ViewController<?,?> getMenuItem() {
 		CascadeItem< F, C > item = this.getModel();
 		boolean isLast = this.isLast();
 		if( this.menuItem != null ) {
@@ -406,8 +411,8 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends CascadeItem
 			} else {
 				if( this.menuItem instanceof Menu ) {
 					((Menu)this.menuItem).getAwtComponent().removeMenuListener( this.menuListener );
-				} else {
-					((MenuItem)this.menuItem).getAwtComponent().removeActionListener( this.actionListener );
+				} else if( this.menuItem instanceof CascadeMenuItem ) {
+					((CascadeMenuItem)this.menuItem).getAwtComponent().removeActionListener( this.actionListener );
 				}
 				this.menuItem = null;
 			}
@@ -462,10 +467,10 @@ class RtSeparator extends RtItem< Void, Void, CascadeSeparator, CascadeSeparator
 		return null;
 	}
 	@Override
-	protected AbstractMenuItem createMenuItem( CascadeItem< Void, CascadeSeparatorContext > item, boolean isLast ) {
+	protected ViewController<?,?> createMenuItem( CascadeItem< Void, CascadeSeparatorContext > item, boolean isLast ) {
 		//todo
 		if( item.getMenuItemText( null ) != null || item.getMenuItemIcon( null ) != null ) {
-			AbstractMenuItem rv = super.createMenuItem( item, isLast );
+			ViewController<?,?> rv = super.createMenuItem( item, isLast );
 			rv.setEnabled( false );
 			return rv;
 		} else {

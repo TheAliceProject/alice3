@@ -46,10 +46,12 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMenuItem< J extends javax.swing.AbstractButton, M extends Model > extends AbstractButton< J, M > {
-	public AbstractMenuItem( M model ) {
+public class CascadeMenuItem extends AbstractButton< javax.swing.JMenuItem, CascadeItem< ?,? > > {
+	/*package-private*/ CascadeMenuItem( CascadeItem< ?,? > model ) {
 		super( model );
 	}
-	/*package-private*/ abstract void setText( String text );
-	/*package-private*/ abstract void setIcon( javax.swing.Icon icon );
+	@Override
+	protected javax.swing.JMenuItem createAwtComponent() {
+		return new javax.swing.JMenuItem();
+	}
 }

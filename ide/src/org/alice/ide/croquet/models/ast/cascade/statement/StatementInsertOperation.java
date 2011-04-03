@@ -59,6 +59,6 @@ public abstract class StatementInsertOperation extends org.alice.ide.croquet.mod
 	@Override
 	protected org.alice.ide.croquet.edits.ast.InsertStatementEdit createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement( values );
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( this.blockStatementIndexPair, statement );
+		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( this.blockStatementIndexPair, statement, values );
 	}
 }

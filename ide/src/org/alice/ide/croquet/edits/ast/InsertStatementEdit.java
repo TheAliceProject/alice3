@@ -97,19 +97,21 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 	private int specifiedIndex;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	private edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions;
-	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
+	private InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
 		this.blockStatement = blockStatement;
 		this.specifiedIndex = index;
 		this.statement = statement;
 		this.initialExpressions = initialExpressions;
 	}
+	public InsertStatementEdit( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
+		this( blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex(), statement, initialExpressions );
+	}
+
+	//todo
 	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		//todo
-		this( blockStatement, index, statement, null );
+		this( blockStatement, index, statement, new edu.cmu.cs.dennisc.alice.ast.Expression[] {} );
 	}
-	public InsertStatementEdit( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		this( blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex(), statement );
-	}
+
 	private InsertStatementEdit( InsertStatementEditMemento memento ) {
 		super( memento );
 		this.blockStatement = memento.blockStatement;

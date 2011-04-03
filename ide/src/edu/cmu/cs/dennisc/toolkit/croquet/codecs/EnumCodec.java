@@ -60,14 +60,14 @@ public class EnumCodec< T extends Enum< T > > implements edu.cmu.cs.dennisc.croq
 	private EnumCodec( Class<T> valueCls ) {
 		this.valueCls = valueCls;
 	}
-	public java.lang.Class< T > getValueClass() {
+	public Class< T > getValueClass() {
 		return this.valueCls;
 	}
 	public final T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
+		return binaryDecoder.decodeEnum();
 	}
 	public final void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T t) {
-		throw new RuntimeException( "todo" );
+		binaryEncoder.encode( t );
 	}
 	public final StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
 		rv.append( value );
