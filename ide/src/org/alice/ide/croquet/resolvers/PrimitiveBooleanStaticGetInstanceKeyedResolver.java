@@ -41,40 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.literals;
+package org.alice.ide.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.IntegerLiteral > {
-	private static java.util.Map< Integer, IntegerLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static IntegerLiteralFillIn getInstance( int value ) {
-		synchronized( map ) {
-			IntegerLiteralFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new IntegerLiteralFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
+public class PrimitiveBooleanStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver<T> {
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { Boolean.TYPE };
+	private boolean value;
+	public PrimitiveBooleanStaticGetInstanceKeyedResolver( T instance, boolean value ) {
+		super( instance );
+		this.value = value;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.IntegerLiteral transientValue;
-	private IntegerLiteralFillIn( int value ) {
-		super( java.util.UUID.fromString( "db052fcb-b0e3-482a-aad9-13b9a2efc370" ) );
-		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( value );
+	public PrimitiveBooleanStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.IntegerLiteral getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
-		return this.transientValue;
+	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return PARAMETER_TYPES;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.IntegerLiteral createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
-		return new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( this.transientValue.value.getValue() );
+	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		boolean value = binaryDecoder.decodeBoolean();
+		return new Object[] { value };
+	}
+	@Override
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.value );
 	}
 }

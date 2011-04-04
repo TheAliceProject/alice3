@@ -65,7 +65,7 @@ public abstract class AbstractDoubleLiteralFillIn extends org.alice.ide.croquet.
 		return Double.toString( this.transientValue.value.getValue() );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.DoubleStaticGetInstanceKeyedResolver createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.DoubleStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
+	protected org.alice.ide.croquet.resolvers.PrimitiveDoubleStaticGetInstanceKeyedResolver createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.PrimitiveDoubleStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
 	}
 }

@@ -46,14 +46,14 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver<T> {
+public class PrimitiveDoubleStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver<T> {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { Double.TYPE };
 	private double value;
-	public DoubleStaticGetInstanceKeyedResolver( T instance, double value ) {
+	public PrimitiveDoubleStaticGetInstanceKeyedResolver( T instance, double value ) {
 		super( instance );
 		this.value = value;
 	}
-	public DoubleStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public PrimitiveDoubleStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	@Override

@@ -69,4 +69,8 @@ public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 	public edu.cmu.cs.dennisc.alice.ast.BooleanLiteral getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
 		return this.transientValue;
 	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.PrimitiveBooleanStaticGetInstanceKeyedResolver createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.PrimitiveBooleanStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
+	}
 }
