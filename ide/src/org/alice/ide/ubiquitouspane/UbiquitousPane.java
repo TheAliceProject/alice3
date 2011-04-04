@@ -44,6 +44,8 @@ package org.alice.ide.ubiquitouspane;
 
 import org.alice.ide.ubiquitouspane.templates.*;
 
+import edu.cmu.cs.dennisc.croquet.Component;
+
 class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	private ReturnStatementTemplate re = new ReturnStatementTemplate();
 	public void refresh() {
@@ -130,10 +132,23 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPane
 //	}
 //}
 
+class WrappedFlowView extends edu.cmu.cs.dennisc.croquet.View {
+	public WrappedFlowView( edu.cmu.cs.dennisc.croquet.CompositeModel model ) {
+		super( model );
+	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new wrap.WrappedFlowLayout( wrap.WrappedFlowLayout.LEADING );
+	}
+	public void addComponent( Component<?> component ) {
+		this.internalAddComponent( component );
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
-public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.WrappedFlowPanel {
+public class UbiquitousPane extends WrappedFlowView {
 	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
 //	private LoopTemplate loopTemplate = new LoopTemplate();
 	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();
@@ -156,7 +171,7 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.WrappedFlowPanel 
 	};
 
 	public UbiquitousPane() {
-		super( Alignment.LEADING );
+		super( org.alice.ide.croquet.models.templates.BlockTemplateComposite.getInstance() );
 		final int PAD = 6;
 		this.addComponent( this.doInOrderTemplate );
 		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );

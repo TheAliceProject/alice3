@@ -41,20 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class View extends Panel {
-	private CompositeModel model;
-	public View( CompositeModel model ) {
-		this.model = model;
-		if( this.model != null ) {
-			this.model.initializeIfNecessary();
-		}
+public class BlockTemplateComposite extends TemplateComposite {
+	private static class SingletonHolder {
+		private static BlockTemplateComposite instance = new BlockTemplateComposite();
 	}
-	public CompositeModel getModel() {
-		return model;
+	public static BlockTemplateComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private BlockTemplateComposite() {
+		super( java.util.UUID.fromString( "5b70a0e5-b26b-402b-99cb-453edf84b3e5" ) );
 	}
 }

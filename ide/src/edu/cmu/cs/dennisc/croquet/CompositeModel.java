@@ -46,15 +46,17 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class View extends Panel {
-	private CompositeModel model;
-	public View( CompositeModel model ) {
-		this.model = model;
-		if( this.model != null ) {
-			this.model.initializeIfNecessary();
-		}
+public abstract class CompositeModel extends Model {
+	public CompositeModel( Group group, java.util.UUID id ) {
+		super( group, id );
 	}
-	public CompositeModel getModel() {
-		return model;
+	@Override
+	protected void localize() {
+		//todo
+	}
+	@Override
+	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		//todo?
+		return false;
 	}
 }

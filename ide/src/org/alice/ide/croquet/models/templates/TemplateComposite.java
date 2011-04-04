@@ -41,20 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class View extends Panel {
-	private CompositeModel model;
-	public View( CompositeModel model ) {
-		this.model = model;
-		if( this.model != null ) {
-			this.model.initializeIfNecessary();
-		}
-	}
-	public CompositeModel getModel() {
-		return model;
+public abstract class TemplateComposite extends edu.cmu.cs.dennisc.croquet.CompositeModel {
+	public TemplateComposite( java.util.UUID id ) {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, id );
 	}
 }
