@@ -87,7 +87,7 @@ public class Page extends Step implements WaitingStep {
 					edu.cmu.cs.dennisc.croquet.HistoryNode lastGrandchild = childModelContext.getLastChild();
 					DragNote dragNote = DragNote.createInstance( dragAndDropContext, parentContextCriterion );
 					DropNote dropNote;
-					boolean isCommit = lastGrandchild instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent;
+					boolean isCommit = lastGrandchild instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent && childModelContext instanceof edu.cmu.cs.dennisc.croquet.CascadePopupOperationContext == false;
 					if( isCommit ) {
 						edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = (edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent)lastGrandchild;
 						dropNote = DropNote.createCommitInstance( dragNote.getLastAcceptedContext(), dragAndDropContext, childModelContext, successfulCompletionEvent );
@@ -103,6 +103,9 @@ public class Page extends Step implements WaitingStep {
 					}
 				}
 			}
+//		} else if( node instanceof edu.cmu.cs.dennisc.croquet.CascadeItemContext< ?,?,? > ) {
+//			edu.cmu.cs.dennisc.croquet.CascadeItemContext< ?,?,? > cascadeItemContext = (edu.cmu.cs.dennisc.croquet.CascadeItemContext< ?,?,? >)node;
+//			rv.add( CascadeItemNote.createInstance( cascadeItemContext, parentContextCriterion ) );
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.OperationContext ) {
 			edu.cmu.cs.dennisc.croquet.OperationContext<?> operationContext = (edu.cmu.cs.dennisc.croquet.OperationContext<?>)node;
 			if( node instanceof edu.cmu.cs.dennisc.croquet.PopupOperationContext ) {

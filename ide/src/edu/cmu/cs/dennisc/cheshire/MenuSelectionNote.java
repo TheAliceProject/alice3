@@ -102,70 +102,6 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		return rv;
 	}
 }
-//if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
-//	edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)child;
-//	for( int i=0; i<NOTE_COUNT; i++ ) {
-//		RetargetableNote historyNote = this.notes.get( i );
-//		if( historyNote instanceof MenuSelectionNote ) {
-//			MenuSelectionNote menuSelectionNote = (MenuSelectionNote)historyNote;
-//			if( menuSelectionNote.isAtLeastWhatWeveBeenWaitingFor( menuSelectionEvent ) ) {
-//				//pass
-//			} else {
-//				this.setActiveNote( i );
-//				break;
-//			}
-//		}
-//	}
-//} else {
-
-//public boolean isAtLeastWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent ) {
-//	final int N = this.i+1;
-//	if( menuSelectionEvent.getModelCount() >= N ) {
-//		for( int i=0; i<N; i++ ) {
-//			edu.cmu.cs.dennisc.croquet.Model orginalModelI = this.originalMenuSelectionEvent.getModelAt( i );
-//			edu.cmu.cs.dennisc.croquet.Model replacementModelI = menuSelectionEvent.getModelAt( i );
-//			if( orginalModelI == replacementModelI ) {
-//				//pass
-//			} else {
-//				return false;
-//			}
-//		}
-//		return true;
-//	} else {
-//		return false;
-//	}
-//}
-////
-//@Override
-//public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-//	if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent ) {
-//		if( this.originalRetargetableMenuModelInitializationEvent != null ) {
-//			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent)child;
-//			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)retargetableMenuModelInitializationEvent.getParent();
-//			edu.cmu.cs.dennisc.croquet.MenuModel menuModel = popupMenuOperationContext.getModel().getMenuModel();
-//			if( menuModel instanceof edu.cmu.cs.dennisc.croquet.RetargetableMenuModel ) {
-//				edu.cmu.cs.dennisc.croquet.RetargetableMenuModel retargetableMenuModel = (edu.cmu.cs.dennisc.croquet.RetargetableMenuModel)menuModel;
-//				edu.cmu.cs.dennisc.croquet.RetargetingData originalRetargetingData = this.originalRetargetableMenuModelInitializationEvent.getRetargetingData();
-//				edu.cmu.cs.dennisc.croquet.Retargeter retargeter = AutomaticTutorial.getInstance().getRetargeter();
-//				originalRetargetingData.addKeyValuePairs( retargeter, retargetableMenuModel.getRetargetableData() );
-//				AutomaticTutorial.getInstance().retargetOriginalContext( retargeter );
-//			}
-//		}
-//	} else if ( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
-//		edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)child;
-//		final int N = this.i;
-//		if( menuSelectionEvent.getModelCount() == N ) {
-//			return this.isAtLeastWhatWeveBeenWaitingFor( menuSelectionEvent );
-//		}
-//	} else {
-//		if( this.originalMenuSelectionEvent.getModelCount() == this.i+1 ) {
-//			if( child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
-//				return true;
-//			}
-//		}
-//	}
-//	return false;
-//}
 
 /**
  * @author Dennis Cosgrove
@@ -190,14 +126,14 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		if( i == index0 ) {
 			if( index0 == 0 ) {
 				if( modelContext != null ) {
-					rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext.class ) );
+					rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupOperationContext.class ) );
 					parentContextCriterion = rv.getAcceptedContextAt( index0 );
 				} else {
 					//pass
 				}
 			} else {
 				rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.MenuBarModelContext.class ) );
-				rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext.class ) );
+				rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.PopupOperationContext.class ) );
 				parentContextCriterion = rv.getAcceptedContextAt( index0 );
 			}
 		}
@@ -210,24 +146,12 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		}
 		return rv;
 	}
-	
-	
-	private edu.cmu.cs.dennisc.croquet.PopupOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent;
-	private edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
-	private int i;
-	private edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext;
-
 	private static FirstComponentResolver createComponentResolver( edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent, int index ) {
 		return new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index ) );
 	}
 	
 	private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent, int i, int index0 ) {
 		this.setText( getText( menuSelectionEvent, i, GuidedInteraction.getInstance().getUserInformation() ) );
-//		this.originalRetargetableMenuModelInitializationEvent = retargetableMenuModelInitializationEvent;
-//		this.originalMenuSelectionEvent = menuSelectionEvent;
-//		this.modelContext = modelContext;
-//		this.i = i;
-//
 		boolean isBelowStencil = GuidedInteraction.getInstance().getStencil().getMenuPolicy().isBelowStencil();
 //		boolean isInMenuBar = index0 == 1;
 		if( isBelowStencil ) {

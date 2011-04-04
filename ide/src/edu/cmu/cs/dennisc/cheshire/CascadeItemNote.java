@@ -41,28 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.cheshire;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeMenuItem extends AbstractButton< javax.swing.JMenuItem, CascadeItem< ?,? > > {
-	/*package-private*/ CascadeMenuItem( CascadeItem< ?,? > model ) {
-		super( model );
+public class CascadeItemNote extends RequirementNote {
+	public static CascadeItemNote createInstance( edu.cmu.cs.dennisc.croquet.CascadeItemContext cascadeItemContext, ParentContextCriterion parentContextCriterion ) {
+		return new CascadeItemNote();
 	}
-	@Override
-	protected javax.swing.JMenuItem createAwtComponent() {
-		return new javax.swing.JMenuItem();
+	private CascadeItemNote( ProgressRequirement... requirements ) {
+		super( requirements );
+		this.setText( "hello" );
 	}
-	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
-		this.getModel().addComponent( this );
-	}
-	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		this.getModel().removeComponent( this );
-		super.handleRemovedFrom( parent );
-	}
-
 }

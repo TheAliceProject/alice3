@@ -691,6 +691,7 @@ public abstract class CascadePopupOperation<B> extends PopupOperation< CascadePo
 			Edit< ? extends CascadePopupOperation< B > > edit = this.createEdit( values );
 			context.commitAndInvokeDo( edit );
 		} finally {
+//			ContextManager.popContext();
 			performObserver.handleFinally();
 		}
 	}
@@ -698,6 +699,7 @@ public abstract class CascadePopupOperation<B> extends PopupOperation< CascadePo
 		try {
 			context.cancel();
 		} finally {
+//			ContextManager.popContext();
 			performObserver.handleFinally();
 		}
 	}
@@ -705,6 +707,7 @@ public abstract class CascadePopupOperation<B> extends PopupOperation< CascadePo
 	@Override
 	protected void perform( CascadePopupOperationContext< B > context, PerformObserver performObserver ) {
 		RtOperation< B > rt = new RtOperation< B >( this, context, performObserver );
+//		ContextManager.pushContext( ContextManager.createCascadeRootContext( this.root ) );
 		rt.perform();
 	}
 }
