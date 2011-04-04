@@ -132,23 +132,10 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPane
 //	}
 //}
 
-class WrappedFlowView extends edu.cmu.cs.dennisc.croquet.View {
-	public WrappedFlowView( edu.cmu.cs.dennisc.croquet.Composite model ) {
-		super( model );
-	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new wrap.WrappedFlowLayout( wrap.WrappedFlowLayout.LEADING );
-	}
-	public void addComponent( Component<?> component ) {
-		this.internalAddComponent( component );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public class UbiquitousPane extends WrappedFlowView {
+public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.View {
 	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
 //	private LoopTemplate loopTemplate = new LoopTemplate();
 	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();
@@ -174,27 +161,50 @@ public class UbiquitousPane extends WrappedFlowView {
 		super( org.alice.ide.croquet.models.templates.BlockTemplateComposite.getInstance() );
 		final int PAD = 6;
 		this.addComponent( this.doInOrderTemplate );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );
+		this.addSliver();
 //		this.addComponent( this.loopTemplate );
 
 		this.addComponent( this.countLoopTemplate );
 		this.addComponent( this.whileLoopTemplate );
 		this.addComponent( this.forEachInArrayLoopTemplate );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );
+		this.addSliver();
 		this.addComponent( this.conditionalStatementTemplate );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );
+		this.addSliver();
 		this.addComponent( this.doTogetherTemplate );
 		this.addComponent( this.eachInArrayTogetherTemplate );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );
+		this.addSliver();
 		this.addComponent( this.doInThreadTemplate );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );
+		this.addSliver();
 		this.addComponent( this.declareLocalTemplate );
 		this.addComponent( this.transientStatementsWrapper );
 		this.addComponent( this.returnStatementWrapper );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );
+		this.addSliver();
 		this.addComponent( this.commentTemplate );
 		
 		this.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+	}
+	
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		if( false ) {
+			return new wrap.WrappedFlowLayout( wrap.WrappedFlowLayout.LEADING );
+		} else {
+			return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
+		}
+	}
+	public void addComponent( Component<?> component ) {
+		this.internalAddComponent( component );
+	}
+
+	private static final int PAD = 6;
+	private void addSliver() {
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > sliver;
+		if( this.getAwtComponent().getLayout() instanceof wrap.WrappedFlowLayout ) {
+			sliver = edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD );
+		} else {
+			sliver = edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( PAD );
+		}
+		this.addComponent( sliver );
 	}
 	
 	@Override
