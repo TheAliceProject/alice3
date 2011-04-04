@@ -46,17 +46,22 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompositeModel extends Model {
-	public CompositeModel( Group group, java.util.UUID id ) {
-		super( group, id );
+public abstract class Composite {
+	private final java.util.UUID id;
+	private final java.util.List< View > views = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public Composite( java.util.UUID id ) {
+		this.id = id;
+		ContextManager.registerComposite( this );
 	}
-	@Override
-	protected void localize() {
-		//todo
+	public java.util.UUID getId() {
+		return this.id;
 	}
-	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		//todo?
-		return false;
+	protected abstract boolean contains( Model model );
+	
+	/*package-private*/ void handleAdded( View view ) {
+		this.views.add( view );
+	}
+	/*package-private*/ void handleRemoved( View view ) {
+		this.views.remove( view );
 	}
 }

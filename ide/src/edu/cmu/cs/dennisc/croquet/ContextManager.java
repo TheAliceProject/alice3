@@ -468,6 +468,17 @@ public class ContextManager {
 		return null;
 	}
 
+	private static java.util.List< Composite > composites = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	/*package-private*/ static void registerComposite( Composite composite ) {
+		composites.add( composite );
+	}
+	/*package-private*/ static void unregisterComposite( Composite composite ) {
+		composites.remove( composite );
+	}
+	public Iterable< Composite > getComposites() {
+		return composites;
+	}
+	
 	/*package-private*/ static void registerModel( Model model ) {
 		java.util.UUID id = model.getId();
 		synchronized ( mapIdToModels ) {

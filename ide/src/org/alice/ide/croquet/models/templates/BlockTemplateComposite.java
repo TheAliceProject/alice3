@@ -56,4 +56,9 @@ public class BlockTemplateComposite extends TemplateComposite {
 	private BlockTemplateComposite() {
 		super( java.util.UUID.fromString( "5b70a0e5-b26b-402b-99cb-453edf84b3e5" ) );
 	}
+	@Override
+	protected boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
+		System.err.println( "todo" );
+		return model instanceof org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertOperation;
+	}
 }

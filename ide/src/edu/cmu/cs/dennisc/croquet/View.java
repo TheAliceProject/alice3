@@ -47,14 +47,21 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class View extends Panel {
-	private CompositeModel model;
-	public View( CompositeModel model ) {
+	private Composite model;
+	public View( Composite model ) {
 		this.model = model;
-		if( this.model != null ) {
-			this.model.initializeIfNecessary();
-		}
 	}
-	public CompositeModel getModel() {
+	public Composite getModel() {
 		return model;
+	}
+	@Override
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		this.model.handleAdded( this );
+	}
+	@Override
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		this.model.handleRemoved( this );
+		super.handleRemovedFrom( parent );
 	}
 }

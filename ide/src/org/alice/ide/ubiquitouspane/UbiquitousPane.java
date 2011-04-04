@@ -133,7 +133,7 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPane
 //}
 
 class WrappedFlowView extends edu.cmu.cs.dennisc.croquet.View {
-	public WrappedFlowView( edu.cmu.cs.dennisc.croquet.CompositeModel model ) {
+	public WrappedFlowView( edu.cmu.cs.dennisc.croquet.Composite model ) {
 		super( model );
 	}
 	@Override

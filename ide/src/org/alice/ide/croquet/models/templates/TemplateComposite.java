@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.templates;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateComposite extends edu.cmu.cs.dennisc.croquet.CompositeModel {
+public abstract class TemplateComposite extends edu.cmu.cs.dennisc.croquet.Composite {
 	public TemplateComposite( java.util.UUID id ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, id );
+		super( id );
 	}
 }
