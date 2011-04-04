@@ -184,8 +184,8 @@ public class ContextManager {
 	/*package-private*/ static ActionOperationContext createAndPushActionOperationContext(ActionOperation actionOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return pushContext( new ActionOperationContext(actionOperation, e, viewController) );
 	}
-	/*package-private*/ static CompositeOperationContext createAndPushCompositeOperationContext(CompositeOperation compositeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		return pushContext( new CompositeOperationContext(compositeOperation, e, viewController) );
+	/*package-private*/ static SerialOperationContext createAndPushSerialOperationContext(SerialOperation compositeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		return pushContext( new SerialOperationContext(compositeOperation, e, viewController) );
 	}
 	/*package-private*/ static DialogOperationContext createAndPushDialogOperationContext(DialogOperation dialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return pushContext( new DialogOperationContext(dialogOperation, e, viewController) );

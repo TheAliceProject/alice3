@@ -45,10 +45,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompositeOperation extends SingleThreadOperation<CompositeOperationContext> {
-	
+public abstract class SerialOperation extends SingleThreadOperation<SerialOperationContext> {
 	@Override
-	protected final void perform(CompositeOperationContext context) {
+	protected final void perform(SerialOperationContext context) {
 		for( Operation<?> operation : this.getOperations() ) {
 			//todo?
 			operation.handleFire(context.getAwtEvent(), context.getViewController());
@@ -57,12 +56,12 @@ public abstract class CompositeOperation extends SingleThreadOperation<Composite
 			}
 		}
 	}
-	public CompositeOperation( Group group, java.util.UUID id ) {
+	public SerialOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
 	@Override
-	public CompositeOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushCompositeOperationContext( this, e, viewController );
+	public SerialOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return ContextManager.createAndPushSerialOperationContext( this, e, viewController );
 	}
 	protected abstract java.util.List< Operation<?> > getOperations();
 }
