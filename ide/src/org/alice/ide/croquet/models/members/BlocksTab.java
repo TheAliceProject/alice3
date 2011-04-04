@@ -40,36 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.croquet.models.members;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.PredeterminedTabSelectionState {
+public class BlocksTab extends MemberTab {
 	private static class SingletonHolder {
-		private static MembersTabSelectionState instance = new MembersTabSelectionState();
+		private static BlocksTab instance = new BlocksTab();
 	}
-	public static MembersTabSelectionState getInstance() {
+	public static BlocksTab getInstance() {
 		return SingletonHolder.instance;
 	}
-	
-	private MembersTabSelectionState() {
-		super( 
-				org.alice.ide.IDE.UI_STATE_GROUP, 
-				java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ), 
-				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( edu.cmu.cs.dennisc.croquet.PredeterminedTab.class ), 
-				0,
-				ProceduresTab.getInstance(), FunctionsTab.getInstance(), FieldsTab.getInstance()
-		);
+	private BlocksTab() {
+		super( java.util.UUID.fromString( "e4aa30f0-bbfc-44c0-a931-fc3f83df2407" ) );
 	}
 	@Override
-	protected void localize() {
-		super.localize();
-		ProceduresTab proceduresTab = ProceduresTab.getInstance();
-		proceduresTab.setTitleText( this.getLocalizedText( "procedures" ) );
-		FunctionsTab functionsTab = FunctionsTab.getInstance();
-		functionsTab.setTitleText( this.getLocalizedText( "functions" ) );
-		FieldsTab fieldsTab = FieldsTab.getInstance();
-		fieldsTab.setTitleText( this.getLocalizedText( "fields" ) );
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.ubiquitouspane.UbiquitousPane();
+		rv.setBackgroundColor( java.awt.Color.ORANGE.darker() );
+		return rv;
 	}
 }

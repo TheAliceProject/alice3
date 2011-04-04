@@ -154,13 +154,14 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.View {
 			UbiquitousPane.this.refresh();
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isAlwaysAvailableObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isAlwaysShowingBlocksObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 		public void changing( boolean nextValue ) {
 		}
 		public void changed( boolean nextValue ) {
 			UbiquitousPane.this.removeAllComponents();
 			UbiquitousPane.this.getAwtComponent().setLayout( UbiquitousPane.this.createLayoutManager( UbiquitousPane.this.getAwtComponent() ) );
 			UbiquitousPane.this.addComponents();
+			UbiquitousPane.this.revalidateAndRepaint();
 		}
 	};
 
@@ -220,11 +221,11 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.View {
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( this.selectionObserver );
-		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueObserver( this.isAlwaysAvailableObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueObserver( this.isAlwaysShowingBlocksObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().removeValueObserver( this.isAlwaysAvailableObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().removeValueObserver( this.isAlwaysShowingBlocksObserver );
 		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().removeValueObserver( this.selectionObserver );
 		super.handleUndisplayable();
 	}
