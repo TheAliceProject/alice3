@@ -57,7 +57,9 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 	}
 	@Override
 	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton<?,BooleanState> button, ScrollPane scrollPane, final JComponent<?> mainComponent ) {
-		scrollPane.setVisible( false );
+		if( scrollPane != null ) {
+			scrollPane.setVisible( false );
+		}
 		return new TabItemDetails( item, button, id, scrollPane, mainComponent ) {
 			@Override
 			public void setSelected(boolean isSelected) {

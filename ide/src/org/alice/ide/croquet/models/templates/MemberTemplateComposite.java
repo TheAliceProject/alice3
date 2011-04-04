@@ -46,14 +46,53 @@ package org.alice.ide.croquet.models.templates;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateComposite extends edu.cmu.cs.dennisc.croquet.Composite {
-	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
-//		button.getAwtComponent().setIcon( ICON );
-//		button.getAwtComponent().setText( this.getClass().getName() );
-//		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );
-
-		button.scaleFont( 1.5f );
-		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+public abstract class MemberTemplateComposite extends TemplateComposite {
+	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
+		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
+			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type; 
+			if( accessible != null ) {
+				type = accessible.getValueType();
+			} else {
+				type = null;
+			}
+			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( type );
+		}
+		public int getIconHeight() {
+			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
+			if( icon != null ) {
+				return icon.getIconHeight();
+			} else {
+				return 0;
+			}
+		}
+		public int getIconWidth() {
+			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
+			if( icon != null ) {
+				return icon.getIconWidth();
+			} else {
+				return 0;
+			}
+		}
+		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
+			if( icon != null ) {
+				icon.paintIcon(c, g, x, y);
+			}
+		}
 	}
-	public abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent();
+	
+	private static javax.swing.Icon ICON = new IndirectCurrentAccessibleTypeIcon();
+	@Override
+	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
+		super.customizeTitleComponent( booleanState, button );
+		//booleanState.setIconForBothTrueAndFalse( ICON );
+		button.getAwtComponent().setIcon( ICON );
+		booleanState.setTextForBothTrueAndFalse( this.getClass().getSimpleName() );
+	}
+	@Override
+	protected boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
+		System.err.println( "todo contains TemplateComposite" );
+		return false;
+	}
 }

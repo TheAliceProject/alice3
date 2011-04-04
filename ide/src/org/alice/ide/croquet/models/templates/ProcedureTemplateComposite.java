@@ -46,14 +46,17 @@ package org.alice.ide.croquet.models.templates;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateComposite extends edu.cmu.cs.dennisc.croquet.Composite {
-	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
-//		button.getAwtComponent().setIcon( ICON );
-//		button.getAwtComponent().setText( this.getClass().getName() );
-//		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );
-
-		button.scaleFont( 1.5f );
-		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+public class ProcedureTemplateComposite extends MemberTemplateComposite {
+	private static class SingletonHolder {
+		private static ProcedureTemplateComposite instance = new ProcedureTemplateComposite();
 	}
-	public abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent();
+	public static ProcedureTemplateComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private ProcedureTemplateComposite() {
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+		return new org.alice.ide.memberseditor.ProceduresContentPanel();
+	}
 }

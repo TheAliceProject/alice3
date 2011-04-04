@@ -54,11 +54,31 @@ public class BlockTemplateComposite extends TemplateComposite {
 		return SingletonHolder.instance;
 	}
 	private BlockTemplateComposite() {
-		super( java.util.UUID.fromString( "5b70a0e5-b26b-402b-99cb-453edf84b3e5" ) );
 	}
 	@Override
 	protected boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
-		System.err.println( "todo" );
+		System.err.println( "todo contains BlockTemplateComposite" );
 		return model instanceof org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertOperation;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.ubiquitouspane.UbiquitousPane();
+		rv.setBackgroundColor( java.awt.Color.ORANGE.darker() );
+		return rv;
+	}
+	@Override
+	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
+		super.customizeTitleComponent( booleanState, button );
+		button.getAwtComponent().setIcon( new javax.swing.Icon() {
+			public int getIconHeight() {
+				return 24;
+			}
+			public int getIconWidth() {
+				return 0;//32;
+			}
+			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+			}
+		} );
+		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );
 	}
 }

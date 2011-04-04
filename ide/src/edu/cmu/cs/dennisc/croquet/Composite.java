@@ -47,14 +47,9 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Composite {
-	private final java.util.UUID id;
 	private final java.util.List< View > views = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public Composite( java.util.UUID id ) {
-		this.id = id;
+	public Composite() {
 		ContextManager.registerComposite( this );
-	}
-	public java.util.UUID getId() {
-		return this.id;
 	}
 	protected abstract boolean contains( Model model );
 	

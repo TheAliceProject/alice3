@@ -73,3 +73,4 @@ public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.Predete
 		fieldsTab.setTitleText( this.getLocalizedText( "fields" ) );
 	}
 }
+

@@ -41,25 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.members;
+package org.alice.ide.croquet.models.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BlocksTab extends MemberTab {
+public class FieldTemplateComposite extends MemberTemplateComposite {
 	private static class SingletonHolder {
-		private static BlocksTab instance = new BlocksTab();
+		private static FieldTemplateComposite instance = new FieldTemplateComposite();
 	}
-	public static BlocksTab getInstance() {
+	public static FieldTemplateComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private BlocksTab() {
-		super( java.util.UUID.fromString( "e4aa30f0-bbfc-44c0-a931-fc3f83df2407" ) );
+	private FieldTemplateComposite() {
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
-		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.ubiquitouspane.UbiquitousPane();
-		rv.setBackgroundColor( java.awt.Color.ORANGE.darker() );
-		return rv;
+	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+		return new org.alice.ide.memberseditor.FieldsContentPanel();
 	}
 }

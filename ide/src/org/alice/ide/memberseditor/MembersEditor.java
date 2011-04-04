@@ -238,7 +238,8 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 		org.alice.ide.croquet.models.members.MembersTabSelectionState membersTabSelectionState = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance();
 		edu.cmu.cs.dennisc.croquet.FolderTabbedPane< ? > tabbedPane3 = membersTabSelectionState.createDefaultFolderTabbedPane();
-		tabbedPane3.scaleFont( 1.5f );
+
+		
 //		if( tabbedPane3 instanceof edu.cmu.cs.dennisc.croquet.ToolPaletteTabbedPane ) {
 //			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 //			membersTabSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.croquet.PredeterminedTab >() {
@@ -250,16 +251,15 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //				}
 //			} );
 //		} else {
-//			this.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+			this.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 //		}
-		
 
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane4 = org.alice.ide.croquet.models.templates.TemplatesTabSelectionState.getInstance().createDefaultToolPaletteTabbedPane();
-		//tabbedPane4.scaleFont( 1.5f );
-		//tabbedPane4.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.ULTRABOLD );
+		edu.cmu.cs.dennisc.croquet.ToolPaletteTabbedPane< ? > tabbedPane4 = org.alice.ide.croquet.models.templates.TemplatesTabSelectionState.getInstance().createToolPaletteTabbedPane();
+		tabbedPane4.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 		
 		this.keys.put( true, this.cardPanel.createKey( tabbedPane3, org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance().getId() ) );
 		this.keys.put( false, this.cardPanel.createKey( tabbedPane4, org.alice.ide.croquet.models.templates.TemplatesTabSelectionState.getInstance().getId() ) );
+
 		for( edu.cmu.cs.dennisc.croquet.CardPanel.Key key : this.keys.values() ) {
 			this.cardPanel.addComponent( key );
 		}
