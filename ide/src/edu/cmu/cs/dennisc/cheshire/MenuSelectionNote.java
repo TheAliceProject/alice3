@@ -121,7 +121,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		return sb.toString();
 	}
 	
-	public static MenuSelectionNote createInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent, edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
+	public static MenuSelectionNote createInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent, edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0, boolean isEditAtTopLevel ) {
 		MenuSelectionNote rv = new MenuSelectionNote( menuSelectionEvent, i, index0 );
 		if( i == index0 ) {
 			if( index0 == 0 ) {
@@ -141,8 +141,12 @@ import edu.cmu.cs.dennisc.tutorial.*;
 			rv.addRequirement( new IsRetargetableMenuModelInitializationEventOf( parentContextCriterion, originalRetargetableMenuModelInitializationEvent ) );
 		}
 		rv.addRequirement( new IsMenuSelectionEventOf( parentContextCriterion, menuSelectionEvent, i ) );
-		if( modelContext != null ) {
-			rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, modelContext.getClass() ) );
+		if( isEditAtTopLevel ) {
+			//pass
+		} else {
+			if( modelContext != null ) {
+				rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, modelContext.getClass() ) );
+			}
 		}
 		return rv;
 	}
