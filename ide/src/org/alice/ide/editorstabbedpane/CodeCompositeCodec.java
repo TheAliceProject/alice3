@@ -70,7 +70,7 @@ public enum CodeCompositeCodec implements edu.cmu.cs.dennisc.croquet.Codec< Code
 		}
 	}
 	public StringBuilder appendRepresentation(StringBuilder rv, CodeComposite value, java.util.Locale locale) {
-		rv.append( value );
+		rv.append( value.getCode().getName() );
 		return rv;
 	}
 }
