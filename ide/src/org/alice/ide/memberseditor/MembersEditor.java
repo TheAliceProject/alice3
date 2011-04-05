@@ -235,44 +235,42 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		//instancePanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
 
 		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
-
-		org.alice.ide.croquet.models.members.MembersTabSelectionState membersTabSelectionState = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance();
-		edu.cmu.cs.dennisc.croquet.FolderTabbedPane< ? > tabbedPane3 = membersTabSelectionState.createDefaultFolderTabbedPane();
-
-		
-//		if( tabbedPane3 instanceof edu.cmu.cs.dennisc.croquet.ToolPaletteTabbedPane ) {
-//			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
-//			membersTabSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.croquet.PredeterminedTab >() {
-//				public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
-//					if( nextValue != null ) {
-//						MembersEditor.this.setBackgroundColor( nextValue.getMainComponent().getBackgroundColor() );
-//					}
-//					MembersEditor.this.repaint();
-//				}
-//			} );
-//		} else {
-			this.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-//		}
-
-		edu.cmu.cs.dennisc.croquet.ToolPaletteTabbedPane< ? > tabbedPane4 = org.alice.ide.croquet.models.templates.TemplatesTabSelectionState.getInstance().createToolPaletteTabbedPane();
-		tabbedPane4.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
-		
-		this.keys.put( true, this.cardPanel.createKey( tabbedPane3, org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance().getId() ) );
-		this.keys.put( false, this.cardPanel.createKey( tabbedPane4, org.alice.ide.croquet.models.templates.TemplatesTabSelectionState.getInstance().getId() ) );
-
-		for( edu.cmu.cs.dennisc.croquet.CardPanel.Key key : this.keys.values() ) {
-			this.cardPanel.addComponent( key );
-		}
 		this.addComponent( cardPanel, Constraint.CENTER );
 	}
 	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isAlwaysAvailableObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 		public void changing( boolean nextValue ) {
 		}
 		public void changed( boolean nextValue ) {
-			MembersEditor.this.cardPanel.show( MembersEditor.this.keys.get( nextValue ) );
+			MembersEditor.this.cardPanel.show( MembersEditor.this.getKey( nextValue ) );
 		}
 	};
 	
+	private edu.cmu.cs.dennisc.croquet.CardPanel.Key getKey( boolean isAlwaysShowingBlocks ) {
+		edu.cmu.cs.dennisc.croquet.CardPanel.Key rv = this.keys.get( isAlwaysShowingBlocks );
+		if( rv != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane;
+			if( isAlwaysShowingBlocks ) {
+				tabbedPane = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance().createDefaultFolderTabbedPane();
+			} else {
+				tabbedPane = org.alice.ide.croquet.models.templates.TemplatesTabSelectionState.getInstance().createToolPaletteTabbedPane();
+				tabbedPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
+////			membersTabSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.croquet.PredeterminedTab >() {
+////				public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
+////					if( nextValue != null ) {
+////						MembersEditor.this.setBackgroundColor( nextValue.getMainComponent().getBackgroundColor() );
+////					}
+////					MembersEditor.this.repaint();
+////				}
+////			} );
+			}
+			rv = this.cardPanel.createKey( tabbedPane, tabbedPane.getModel().getId() );
+			this.cardPanel.addComponent( rv );
+			this.keys.put( isAlwaysShowingBlocks, rv );
+		}
+		return rv;
+	}
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
