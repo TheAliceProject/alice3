@@ -225,8 +225,12 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		if( IS_ENCODING ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
-					rootContext.EPIC_HACK_clear();
+					javax.swing.SwingUtilities.invokeLater( new Runnable() {
+						public void run() {
+							edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
+							rootContext.EPIC_HACK_clear();
+						}
+					} );
 				}
 			} );
 		}
@@ -435,7 +439,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			IS_BASED_ON_INTERACTION_AST = Boolean.parseBoolean( args[ 7 ] );
 			IS_OPTIMIZED_FOR_BUG_REPRO = Boolean.parseBoolean( args[ 8 ] );
 		}
-		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( IS_ENCODING );
+		//org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( IS_ENCODING );
 		final AutomaticTutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( AutomaticTutorialIde.class, null, args, false );
 		if( IS_ENCODING ) {
 			ide.getFrame().setVisible( true );

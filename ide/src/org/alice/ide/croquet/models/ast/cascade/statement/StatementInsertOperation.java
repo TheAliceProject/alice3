@@ -61,4 +61,9 @@ public abstract class StatementInsertOperation extends org.alice.ide.croquet.mod
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement( values );
 		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( this.blockStatementIndexPair, statement, values );
 	}
+
+	@Override
+	protected <M extends edu.cmu.cs.dennisc.croquet.Model> edu.cmu.cs.dennisc.croquet.CodableResolver< M > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
+	}
 }
