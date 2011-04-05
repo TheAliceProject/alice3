@@ -134,7 +134,7 @@ package org.alice.ide.croquet.models.templates;
 //	}
 //}
 
-public class TemplatesTabSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState< TemplateComposite > {
+public class TemplatesTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSelectionState< TemplateComposite > {
 	private static class SingletonHolder {
 		private static TemplatesTabSelectionState instance = new TemplatesTabSelectionState();
 	}

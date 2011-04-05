@@ -41,61 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.editorstabbedpane;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, AbstractTabbedPane.TabItemDetails> {
-	public ToolPaletteTabbedPane( ListSelectionState<E> model, TabSelectionState.TabCreator< E > tabCreator ) {
-		super( model, tabCreator );
+public enum CodeCompositeCodec implements edu.cmu.cs.dennisc.croquet.Codec< CodeComposite > {
+	SINGLETON;
+	public Class< CodeComposite > getValueClass() {
+		return CodeComposite.class;
 	}
-
-	@Override
-	protected AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
-		return new ToolPaletteTitle( booleanState );
-	}
-	@Override
-	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton<?,BooleanState> button, ScrollPane scrollPane, final JComponent<?> mainComponent ) {
-		if( scrollPane != null ) {
-			scrollPane.setVisible( false );
+	public CodeComposite decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
+		if( valueIsNotNull ) {
+			java.util.UUID id = binaryDecoder.decodeId();
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			edu.cmu.cs.dennisc.alice.ast.AbstractCode code = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id );
+			return CodeComposite.getInstance( code );
+		} else {
+			return null;
 		}
-		return new TabItemDetails( item, button, id, scrollPane, mainComponent ) {
-			@Override
-			public void setSelected(boolean isSelected) {
-				super.setSelected(isSelected);
-				for( TabItemDetails tabItemDetails : getAllItemDetails() ) {
-					tabItemDetails.getRootComponent().setVisible( tabItemDetails == this );
-				}
-				ToolPaletteTabbedPane.this.revalidateAndRepaint();
-			}
-		};
-	};
-	
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.GridBagLayout();
 	}
-
-	@Override
-	protected void removeAllDetails() {
-		this.internalRemoveAllComponents();
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, CodeComposite value ) {
+		boolean valueIsNotNull = value != null;
+		binaryEncoder.encode( valueIsNotNull );
+		if( valueIsNotNull ) {
+			binaryEncoder.encode( value.getCode().getUUID() );
+		}
 	}
-	@Override
-	protected void addPrologue(int count) {
-	}
-	@Override
-	protected void addItem( AbstractTabbedPane.TabItemDetails itemDetails) {
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gbc.weightx = 1.0f;
-		gbc.weighty = 0.0f;
-		this.internalAddComponent( itemDetails.getButton(), gbc );
-		gbc.weighty = 1.0f;
-		this.internalAddComponent( itemDetails.getRootComponent(), gbc );
-	}
-	@Override
-	protected void addEpilogue() {
+	public StringBuilder appendRepresentation(StringBuilder rv, CodeComposite value, java.util.Locale locale) {
+		rv.append( value );
+		return rv;
 	}
 }

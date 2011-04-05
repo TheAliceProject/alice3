@@ -365,7 +365,7 @@ public class StressTestTutorial {
 				"Select Run", 
 				"Select run tab.", 
 				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance(),
-				tutorial.createCodeResolver( "scene", "run" )
+				tutorial.createCodeCompositeResolver( "scene", "run" )
 		);
 
 		tutorial.addSpotlightStepForModel( 
@@ -553,7 +553,7 @@ public class StressTestTutorial {
 				"Select Run", 
 				"Select run tab.", 
 				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance(),
-				tutorial.createCodeResolver( "scene", "run" )
+				tutorial.createCodeCompositeResolver( "scene", "run" )
 		);
 
 		tutorial.addDragAndDropStep( 
@@ -909,14 +909,14 @@ public class StressTestTutorial {
 				"Note Hop Tab", 
 				"Note the folder tab.", 
 				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance(),
-				tutorial.createCurrentCodeResolver()
+				tutorial.createCurrentCodeCompositeResolver()
 		);
 
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Properies Tab", 
 				"Note the area to implement hop.", 
 				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance(),
-				tutorial.createCurrentCodeResolver()
+				tutorial.createCurrentCodeCompositeResolver()
 		);
 
 		

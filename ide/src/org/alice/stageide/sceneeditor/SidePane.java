@@ -74,7 +74,7 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory;
 import edu.cmu.cs.dennisc.lookingglass.opengl.SceneAdapter;
 import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.croquet.ListSelectionState.TabCreator;
+import edu.cmu.cs.dennisc.croquet.TabSelectionState.TabCreator;
 
 /**
  * @author Dennis Cosgrove

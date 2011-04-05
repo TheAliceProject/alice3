@@ -569,22 +569,6 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		return new MutableList< E >( this, factory );
 	}
 
-	public interface TabCreator<E> {
-		public java.util.UUID getId( E item );
-		public void customizeTitleComponent( BooleanState booleanState, AbstractButton< ?, BooleanState > button, E item );
-		public JComponent< ? > createMainComponent( E item );
-		public ScrollPane createScrollPane( E item );
-		public boolean isCloseable( E item );
-	}
-
-	public FolderTabbedPane< E > createFolderTabbedPane( TabCreator< E > tabCreator ) {
-		return new FolderTabbedPane< E >( this, tabCreator );
-	};
-	public ToolPaletteTabbedPane< E > createToolPaletteTabbedPane( TabCreator< E > tabCreator ) {
-		return new ToolPaletteTabbedPane< E >( this, tabCreator );
-	};
-
-
 	public TrackableShape getTrackableShapeFor( E item ) {
 		ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( ItemSelectable.class );
 		if( itemSelectable != null ) {

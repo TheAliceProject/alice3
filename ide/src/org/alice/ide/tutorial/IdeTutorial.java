@@ -289,9 +289,16 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		};
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > createCodeResolver( final String fieldName, final String methodName) {
-		return new RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
-			public edu.cmu.cs.dennisc.alice.ast.AbstractCode getResolved() {
+	public RuntimeResolver< org.alice.ide.editorstabbedpane.CodeComposite > createCurrentCodeCompositeResolver() {
+		return new RuntimeResolver< org.alice.ide.editorstabbedpane.CodeComposite >() {
+			public org.alice.ide.editorstabbedpane.CodeComposite getResolved() {
+				return org.alice.ide.editorstabbedpane.CodeComposite.getInstance( ide.getFocusedCode() );
+			}
+		};
+	}
+	public RuntimeResolver< org.alice.ide.editorstabbedpane.CodeComposite > createCodeCompositeResolver( final String fieldName, final String methodName) {
+		return new RuntimeResolver< org.alice.ide.editorstabbedpane.CodeComposite >() {
+			public org.alice.ide.editorstabbedpane.CodeComposite getResolved() {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField foundField = null;
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
 				if( sceneField.getName().equalsIgnoreCase( fieldName ) ) {
@@ -306,7 +313,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 					}
 				}
 				if( foundField != null ) {
-					return findShortestMethod( foundField, methodName );
+					return org.alice.ide.editorstabbedpane.CodeComposite.getInstance( findShortestMethod( foundField, methodName ) );
 				} else {
 					return null;
 				}

@@ -41,61 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.editorstabbedpane;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, AbstractTabbedPane.TabItemDetails> {
-	public ToolPaletteTabbedPane( ListSelectionState<E> model, TabSelectionState.TabCreator< E > tabCreator ) {
-		super( model, tabCreator );
-	}
-
-	@Override
-	protected AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
-		return new ToolPaletteTitle( booleanState );
-	}
-	@Override
-	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton<?,BooleanState> button, ScrollPane scrollPane, final JComponent<?> mainComponent ) {
-		if( scrollPane != null ) {
-			scrollPane.setVisible( false );
+public class CodeComposite extends edu.cmu.cs.dennisc.croquet.Composite {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, CodeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CodeComposite getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		CodeComposite rv = map.get( code );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new CodeComposite( code );
+			map.put( code, rv );
 		}
-		return new TabItemDetails( item, button, id, scrollPane, mainComponent ) {
-			@Override
-			public void setSelected(boolean isSelected) {
-				super.setSelected(isSelected);
-				for( TabItemDetails tabItemDetails : getAllItemDetails() ) {
-					tabItemDetails.getRootComponent().setVisible( tabItemDetails == this );
-				}
-				ToolPaletteTabbedPane.this.revalidateAndRepaint();
-			}
-		};
-	};
-	
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.GridBagLayout();
+		return rv;
 	}
 
-	@Override
-	protected void removeAllDetails() {
-		this.internalRemoveAllComponents();
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
+	public CodeComposite( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		this.code = code;
+	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
+		return this.code;
 	}
 	@Override
-	protected void addPrologue(int count) {
-	}
-	@Override
-	protected void addItem( AbstractTabbedPane.TabItemDetails itemDetails) {
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gbc.weightx = 1.0f;
-		gbc.weighty = 0.0f;
-		this.internalAddComponent( itemDetails.getButton(), gbc );
-		gbc.weighty = 1.0f;
-		this.internalAddComponent( itemDetails.getRootComponent(), gbc );
-	}
-	@Override
-	protected void addEpilogue() {
+	protected boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
+		System.err.println( "todo: CodeComposite contains" );
+		return false;
 	}
 }

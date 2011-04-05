@@ -104,8 +104,8 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 
 						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice invokedFromMethod = dst.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 						
-						edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< edu.cmu.cs.dennisc.alice.ast.AbstractCode > listSelectionStateContext = new edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< edu.cmu.cs.dennisc.alice.ast.AbstractCode >( org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance() );
-						edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< edu.cmu.cs.dennisc.alice.ast.AbstractCode > edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< edu.cmu.cs.dennisc.alice.ast.AbstractCode >( methodInAlice, invokedFromMethod );
+						edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< org.alice.ide.editorstabbedpane.CodeComposite > listSelectionStateContext = new edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< org.alice.ide.editorstabbedpane.CodeComposite >( org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance() );
+						edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< org.alice.ide.editorstabbedpane.CodeComposite > edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< org.alice.ide.editorstabbedpane.CodeComposite >( org.alice.ide.editorstabbedpane.CodeComposite.getInstance( methodInAlice ), org.alice.ide.editorstabbedpane.CodeComposite.getInstance( invokedFromMethod ) );
 						addEdit( listSelectionStateContext, edit );
 						rv.addChild( listSelectionStateContext );
 					}

@@ -141,8 +141,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		} );
 
-		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
-			public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue ) {
+		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
+			public void changed( org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
 				refreshAccessibles();
 			}
 		} );
@@ -998,7 +998,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().getValue() ) {
 			return this.getPerformEditorGeneratedSetUpMethod();
 		} else {
-			return org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getSelectedItem();
+			org.alice.ide.editorstabbedpane.CodeComposite item = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getSelectedItem();
+			return item != null ? item.getCode() : null;
 		}
 	}
 	public void setFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode ) {
