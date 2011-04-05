@@ -91,7 +91,7 @@ public abstract class MemberTemplateComposite extends TemplateComposite {
 		booleanState.setTextForBothTrueAndFalse( this.getClass().getSimpleName() );
 	}
 	@Override
-	protected boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
+	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
 		System.err.println( "todo contains TemplateComposite" );
 		return false;
 	}

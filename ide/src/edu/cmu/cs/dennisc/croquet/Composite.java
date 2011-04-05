@@ -51,7 +51,7 @@ public abstract class Composite {
 	public Composite() {
 		ContextManager.registerComposite( this );
 	}
-	protected abstract boolean contains( Model model );
+	public abstract boolean contains( Model model );
 	
 	/*package-private*/ void handleAdded( View view ) {
 		this.views.add( view );

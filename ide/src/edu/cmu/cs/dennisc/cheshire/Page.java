@@ -371,7 +371,20 @@ public class Page extends Step implements WaitingStep {
 						if( descendantComponent != null && descendantComponent.getAwtComponent().isShowing() ) {
 							//pass
 						} else {
-							GuidedInteraction.getInstance().addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, modelContext );
+							boolean isApplicationInterventionRequired = true;
+							for( edu.cmu.cs.dennisc.croquet.TabSelectionState< edu.cmu.cs.dennisc.croquet.Composite > tabSelectionState : edu.cmu.cs.dennisc.croquet.ContextManager.getRegisteredModels( edu.cmu.cs.dennisc.croquet.TabSelectionState.class ) ) {
+								for( edu.cmu.cs.dennisc.croquet.Composite item : tabSelectionState ) {
+									if( item.contains( model ) ) {
+										isApplicationInterventionRequired = false;
+										edu.cmu.cs.dennisc.croquet.ListSelectionStateContext context = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( tabSelectionState, item );
+										edu.cmu.cs.dennisc.cheshire.ListSelectionStateSimpleNote listSelectionStateNote =  edu.cmu.cs.dennisc.cheshire.ListSelectionStateSimpleNote.createInstance( context, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, context.getSuccessfulCompletionEvent() );
+										rv.add( listSelectionStateNote );
+									}
+								}
+							}
+							if( isApplicationInterventionRequired ) {
+								GuidedInteraction.getInstance().addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, modelContext );
+							}
 						}
 						appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, successfulCompletionEvent.getParent() );
 					}

@@ -363,10 +363,6 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 					System.err.println( "TODO: addKeyValuePair recursive retarget" );
 					this.addKeyValuePair( ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)key).body.getValue(), ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)value).body.getValue() );
 				}
-//				if( key instanceof edu.cmu.cs.dennisc.alice.ast.AbstractCode ) {
-//					System.err.println( "TODO: addKeyValuePair AbstractCode" );
-//					this.addKeyValuePair( org.alice.ide.editorstabbedpane.CodeComposite.getInstance( (edu.cmu.cs.dennisc.alice.ast.AbstractCode)key ), org.alice.ide.editorstabbedpane.CodeComposite.getInstance( (edu.cmu.cs.dennisc.alice.ast.AbstractCode)value ) );
-//				}
 			}
 			public <N> N retarget(N original) {
 				if( original instanceof org.alice.ide.editorstabbedpane.CodeComposite ) {
@@ -448,7 +444,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			IS_BASED_ON_INTERACTION_AST = Boolean.parseBoolean( args[ 7 ] );
 			IS_OPTIMIZED_FOR_BUG_REPRO = Boolean.parseBoolean( args[ 8 ] );
 		}
-		//org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( IS_ENCODING );
+		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( IS_ENCODING );
 		final AutomaticTutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( AutomaticTutorialIde.class, null, args, false );
 		if( IS_ENCODING ) {
 			ide.getFrame().setVisible( true );

@@ -53,12 +53,26 @@ public class BlockTemplateComposite extends TemplateComposite {
 	public static BlockTemplateComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+//	private final java.util.List< Class<?> > clses = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private BlockTemplateComposite() {
+//		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertOperation.class );
+//		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.WhileLoopInsertOperation.class );
+//		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.DoInOrderInsertOperation.class );
+//		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.DoTogetherInsertOperation.class );
+		//todo
 	}
 	@Override
-	protected boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
-		System.err.println( "todo contains BlockTemplateComposite" );
-		return model instanceof org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertOperation;
+	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
+		if( model instanceof org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel ) {
+			//org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel statementClassTemplateDragModel = (org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel)model;
+			return true;
+//			for( Class<?> cls : this.clses ) {
+//				if( cls.isAssignableFrom( model.getClass() ) ) {
+//					return true;
+//				}
+//			}
+		}
+		return false;
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {

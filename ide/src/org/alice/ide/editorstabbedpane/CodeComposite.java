@@ -68,7 +68,7 @@ public class CodeComposite extends edu.cmu.cs.dennisc.croquet.Composite {
 		return this.code;
 	}
 	@Override
-	protected boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
+	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
 		System.err.println( "todo: CodeComposite contains" );
 		return false;
 	}

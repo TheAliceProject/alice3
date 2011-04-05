@@ -107,7 +107,7 @@ public abstract class PredeterminedTab extends Composite {
 		return rv;
 	}
 	@Override
-	protected boolean contains( Model model ) {
+	public boolean contains( Model model ) {
 		System.err.println( "todo: PredeterminedTab contains" );
 		return false;
 	}

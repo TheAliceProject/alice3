@@ -509,7 +509,18 @@ public class ContextManager {
 			}
 		}
 	}
-	
+
+	public static <M extends Model> Iterable<M> getRegisteredModels( Class<M> cls ) {
+		java.util.List< M > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( java.util.Set< Model > set : mapIdToModels.values() ) {
+			for( Model model : set ) {
+				if( cls.isAssignableFrom( model.getClass() ) ) {
+					rv.add( cls.cast( model ) );
+				}
+			}
+		}
+		return rv;
+	}
 
 	/*package-private*/ static void localizeAllModels() {
 		synchronized ( mapIdToModels ) {
