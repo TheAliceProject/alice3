@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.numberpad;
 /**
  * @author Dennis Cosgrove
  */
-public class FloatModel extends NumberModel {
+public class FloatModel extends NumberModel<edu.cmu.cs.dennisc.alice.ast.FloatLiteral> {
 	private static class SingletonHolder {
 		private static FloatModel instance = new FloatModel();
 	}
@@ -60,7 +60,7 @@ public class FloatModel extends NumberModel {
 		return true;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s ) {
+	protected edu.cmu.cs.dennisc.alice.ast.FloatLiteral valueOf( String s ) {
 		float f = Float.parseFloat( s );
 		if( Float.isNaN( f ) ) {
 			return null;

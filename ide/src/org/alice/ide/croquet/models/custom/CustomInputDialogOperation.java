@@ -56,6 +56,9 @@ public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.al
 	public void EPIC_HACK_setChooserTypeDescription( String typeDescription ) {
 		this.customInputPane.getValueChooser().setTypeDescription( typeDescription );
 	}
+	public E getActualInputValue() {
+		return this.customInputPane.getActualInputValue();
+	}
 	@Override
 	protected CustomInputPane< E > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {
 		return this.customInputPane;

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomIntegerLiteralFillIn extends CustomExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.IntegerLiteral >{
+public class CustomIntegerLiteralFillIn extends CustomExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >{
 	private static class SingletonHolder {
 		private static CustomIntegerLiteralFillIn instance = new CustomIntegerLiteralFillIn();
 	}

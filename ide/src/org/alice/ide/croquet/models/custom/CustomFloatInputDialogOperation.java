@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomFloatInputDialogOperation extends CustomInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class CustomFloatInputDialogOperation extends CustomInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.FloatLiteral > {
 	private static class SingletonHolder {
 		private static CustomFloatInputDialogOperation instance = new CustomFloatInputDialogOperation();
 	}

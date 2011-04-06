@@ -45,9 +45,9 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractNumberChooser extends ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	private org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
-	public AbstractNumberChooser( org.alice.ide.croquet.models.numberpad.NumberModel numberModel ) {
+abstract class AbstractNumberChooser<N extends edu.cmu.cs.dennisc.alice.ast.Expression> extends ValueChooser< N > {
+	private org.alice.ide.croquet.models.numberpad.NumberModel<N> numberModel;
+	public AbstractNumberChooser( org.alice.ide.croquet.models.numberpad.NumberModel<N> numberModel ) {
 		this.numberModel = numberModel;
 	}
 	@Override
@@ -55,7 +55,7 @@ abstract class AbstractNumberChooser extends ValueChooser< edu.cmu.cs.dennisc.al
 		return this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
+	public N getValue() {
 		return this.numberModel.getExpressionValue();
 	}
 	@Override
