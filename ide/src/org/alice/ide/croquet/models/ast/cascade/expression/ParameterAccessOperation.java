@@ -43,12 +43,10 @@
 
 package org.alice.ide.croquet.models.ast.cascade.expression;
 
-import org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation;
-
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterAccessOperation extends ProjectExpressionPropertyCascadeOperation {
+public class ParameterAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation {
 	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ParameterAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static synchronized ParameterAccessOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		assert parameter != null;

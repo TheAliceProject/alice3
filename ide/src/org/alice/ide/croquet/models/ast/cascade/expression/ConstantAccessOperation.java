@@ -43,12 +43,10 @@
 
 package org.alice.ide.croquet.models.ast.cascade.expression;
 
-import org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation;
-
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantAccessOperation extends ProjectExpressionPropertyCascadeOperation {
+public class ConstantAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation {
 	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ConstantAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static synchronized ConstantAccessOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		assert constant != null;

@@ -53,8 +53,13 @@ public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.cro
 	public static StringConcatinationRightOperandOnlyFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
+	private final edu.cmu.cs.dennisc.alice.ast.StringConcatenation transientValue;
 	private StringConcatinationRightOperandOnlyFillIn() {
 		super( java.util.UUID.fromString( "1470e7b1-4f71-4d1b-8f3d-bbd708d64282" ) );
+		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( 
+				new org.alice.ide.ast.PreviousValueExpression( Object.class ),
+				new org.alice.ide.ast.EmptyExpression( Object.class )
+		);
 	}
 	@Override
 	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
@@ -63,5 +68,9 @@ public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.cro
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.StringConcatenation createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
 		return new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( previousExpression, expressions[ 0 ] );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.StringConcatenation getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.StringConcatenation, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+		return this.transientValue;
 	}
 }

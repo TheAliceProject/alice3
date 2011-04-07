@@ -41,26 +41,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.integer;
+package org.alice.ide.croquet.models.cascade.conditional;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerArithmeticExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionRightOperandOnlyFillIn {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, IntegerArithmeticExpressionRightOperandOnlyFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static IntegerArithmeticExpressionRightOperandOnlyFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+public class ConditionalExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator, ConditionalExpressionRightOperandOnlyFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ConditionalExpressionRightOperandOnlyFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
 		synchronized( map ) {
-			IntegerArithmeticExpressionRightOperandOnlyFillIn rv = map.get( operator );
+			ConditionalExpressionRightOperandOnlyFillIn rv = map.get( operator );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new IntegerArithmeticExpressionRightOperandOnlyFillIn( operator );
+				rv = new ConditionalExpressionRightOperandOnlyFillIn( operator );
 				map.put( operator, rv );
 			}
 			return rv;
 		}
 	}
-	private IntegerArithmeticExpressionRightOperandOnlyFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "17a328e0-b763-4375-84f5-0a6a63e94964" ), Integer.class, Integer.class, operator, Integer.class );
+	private final edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression transientValue;
+	private ConditionalExpressionRightOperandOnlyFillIn( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
+		super( java.util.UUID.fromString( "d59dd098-3426-453e-927f-84dbf3687824" ) );
+		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Boolean.class ) );
+		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression(
+				new org.alice.ide.ast.PreviousValueExpression( Boolean.class ),
+				operator,
+				new org.alice.ide.ast.EmptyExpression( Boolean.class )
+		);
+	}
+	@Override
+	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression, edu.cmu.cs.dennisc.alice.ast.Expression > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		assert expressions.length == 1;
+		return new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression( previousExpression, this.transientValue.operator.getValue(), expressions[ 0 ] );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+		return this.transientValue;
 	}
 }

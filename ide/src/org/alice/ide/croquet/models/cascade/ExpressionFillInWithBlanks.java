@@ -70,7 +70,6 @@ public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.a
 			}
 		};
 		public abstract <F,M extends edu.cmu.cs.dennisc.croquet.CascadeItem< F,C >, C extends edu.cmu.cs.dennisc.croquet.CascadeItemContext<F,M,C> > F operate( edu.cmu.cs.dennisc.croquet.CascadeItemContext< F,M,C > selectedFillInContext );
-//		public abstract <F,B,M,C> F operate( edu.cmu.cs.dennisc.croquet.AbstractCascadeFillInContext< ?,?,? > selectedFillInContext );
 	}
 	private B[] runBlanks( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context, BlankOperation blankOperation ) { 
 		edu.cmu.cs.dennisc.croquet.CascadeBlank< B >[] blanks = this.getBlanks();
@@ -79,6 +78,17 @@ public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.a
 			edu.cmu.cs.dennisc.croquet.CascadeBlankContext< B > blankContext = context.getBlankContextAt( i );
 			edu.cmu.cs.dennisc.croquet.CascadeItemContext< B,?,? > selectedFillInContext = blankContext.getSelectedFillInContext();
 			rv[ i ] = (B)blankOperation.operate( selectedFillInContext );
+//			if( rv[ i ] == null ) {
+//				if( this.cls == edu.cmu.cs.dennisc.alice.ast.Expression.class ) {
+//					edu.cmu.cs.dennisc.croquet.CascadeBlank< B > blank = blankContext.getModel();
+//					if( blank instanceof ExpressionBlank ) {
+//						ExpressionBlank expressionBlank = (ExpressionBlank)blank;
+//						//todo:
+//						//this cast is very, very wrong
+//						rv[ i ] = (B)new org.alice.ide.ast.EmptyExpression( expressionBlank.getValueType() );
+//					}
+//				}
+//			}
 		}
 		return rv;
 	}
@@ -87,9 +97,9 @@ public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.a
 	public final F createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context ) {
 		return this.createValue( runBlanks( context, BlankOperation.CREATE_VALUES ) );
 	}
-	protected abstract F getTransientValue( B[] expressions );
-	@Override
-	public F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, B > context ) {
-		return this.getTransientValue( runBlanks( context, BlankOperation.GET_TRANSIENT_VALUES ) );
-	}
+//	protected abstract F getTransientValue( B[] expressions );
+//	@Override
+//	public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, B > context ) {
+//		return this.getTransientValue( runBlanks( context, BlankOperation.GET_TRANSIENT_VALUES ) );
+//	}
 }

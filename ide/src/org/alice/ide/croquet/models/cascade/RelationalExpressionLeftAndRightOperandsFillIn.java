@@ -60,16 +60,18 @@ public class RelationalExpressionLeftAndRightOperandsFillIn extends ExpressionFi
 			return rv;
 		}
 	}
-	private Class<?> operandCls;
-	private edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator;
+	private final edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression transientValue;
 	private RelationalExpressionLeftAndRightOperandsFillIn( Class<?> operandCls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ) );
-		this.operandCls = operandCls;
-		this.operator = operator;
+		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteRelationalInfixExpression( operandCls, operator, operandCls );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
 		assert expressions.length == 2;
-		return new edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression( expressions[ 0 ], this.operator, expressions[ 1 ], this.operandCls, this.operandCls );
+		return new edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression( expressions[ 0 ], this.transientValue.operator.getValue(), expressions[ 1 ], this.transientValue.leftOperandType.getValue(), this.transientValue.rightOperandType.getValue() );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+		return this.transientValue;
 	}
 }

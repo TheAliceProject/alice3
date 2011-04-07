@@ -61,6 +61,6 @@ public class NumberArithmeticExpressionRightOperandOnlyFillIn extends org.alice.
 		}
 	}
 	private NumberArithmeticExpressionRightOperandOnlyFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "7caac1c5-db6b-4f5a-9d9b-ca22b972e6ef" ), Integer.class, Integer.class, operator, Integer.class );
+		super( java.util.UUID.fromString( "7caac1c5-db6b-4f5a-9d9b-ca22b972e6ef" ), Double.class, Number.class, operator, Number.class );
 	}
 }

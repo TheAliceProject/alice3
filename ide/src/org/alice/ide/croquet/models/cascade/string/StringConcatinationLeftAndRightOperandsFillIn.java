@@ -53,12 +53,21 @@ public class StringConcatinationLeftAndRightOperandsFillIn extends org.alice.ide
 	public static StringConcatinationLeftAndRightOperandsFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
+
+	private final edu.cmu.cs.dennisc.alice.ast.StringConcatenation transientValue;
 	private StringConcatinationLeftAndRightOperandsFillIn() {
 		super( java.util.UUID.fromString( "58068432-cef0-4f9d-bfef-c841ea165172" ) );
+		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Object.class ) );
+		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Object.class ) );
+		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteStringConcatenation();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.StringConcatenation createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
 		assert expressions.length == 2;
 		return new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( expressions[ 0 ], expressions[ 1 ] );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.StringConcatenation getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.StringConcatenation, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+		return this.transientValue;
 	}
 }

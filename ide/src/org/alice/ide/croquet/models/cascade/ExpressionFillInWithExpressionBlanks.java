@@ -50,8 +50,4 @@ public abstract class ExpressionFillInWithExpressionBlanks< F extends edu.cmu.cs
 	public ExpressionFillInWithExpressionBlanks( java.util.UUID id ) {
 		super( id, edu.cmu.cs.dennisc.alice.ast.Expression.class );
 	}
-	@Override
-	protected F getTransientValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-		return null;
-	}
 }

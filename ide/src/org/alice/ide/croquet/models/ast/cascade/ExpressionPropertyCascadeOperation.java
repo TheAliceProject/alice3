@@ -58,6 +58,27 @@ public abstract class ExpressionPropertyCascadeOperation extends edu.cmu.cs.denn
 	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		return this.expressionProperty.getValue();
 	}
+	protected org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.expressionProperty.getOwner();
+		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
+			edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)owner;
+			edu.cmu.cs.dennisc.alice.ast.Statement statement = node.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
+			if( statement != null ) {
+				edu.cmu.cs.dennisc.alice.ast.Node parent = statement.getParent();
+				if( parent instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
+					edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)parent;
+					int index = blockStatement.statements.indexOf( statement );
+					return new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
+				}
+			}
+		}
+		return null;
+	}
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.CascadePopupOperationContext< edu.cmu.cs.dennisc.alice.ast.Expression > context, edu.cmu.cs.dennisc.croquet.Operation.PerformObserver performObserver ) {
+		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementIndexPair() );
+		super.perform( context, performObserver );
+	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions );
 	@Override
 	protected final edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {

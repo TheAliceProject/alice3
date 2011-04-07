@@ -40,39 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.cascade.conditional;
+package org.alice.ide.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionalInfixExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator, ConditionalInfixExpressionRightOperandOnlyFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ConditionalInfixExpressionRightOperandOnlyFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
-		synchronized( map ) {
-			ConditionalInfixExpressionRightOperandOnlyFillIn rv = map.get( operator );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ConditionalInfixExpressionRightOperandOnlyFillIn( operator );
-				map.put( operator, rv );
-			}
-			return rv;
-		}
-	}
-	private final edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator;
-	private ConditionalInfixExpressionRightOperandOnlyFillIn( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "d59dd098-3426-453e-927f-84dbf3687824" ) );
-		this.operator = operator;
-		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Boolean.class ) );
+public class PreviousValueExpressionPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	private final org.alice.ide.ast.PreviousValueExpression expression;
+	private final Factory factory;
+	public PreviousValueExpressionPane( org.alice.ide.ast.PreviousValueExpression expression, Factory factory ) {
+		this.expression = expression;
+		this.factory = factory;
 	}
 	@Override
-	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression, edu.cmu.cs.dennisc.alice.ast.Expression > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > component = this.factory.createExpressionPane( previousExpression );
+		component.getAwtComponent().doLayout();
+		this.addComponent( component, Constraint.CENTER );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-		assert expressions.length == 1;
-		return new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression( previousExpression, this.operator, expressions[ 0 ] );
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		this.forgetAndRemoveAllComponents();
+		super.handleRemovedFrom( parent );
 	}
 }

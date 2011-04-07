@@ -419,6 +419,8 @@ public abstract class Factory {
 				
 			} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
 				rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
+			} else if( expression instanceof org.alice.ide.ast.PreviousValueExpression ) {
+				rv = new PreviousValueExpressionPane( (org.alice.ide.ast.PreviousValueExpression)expression, this );
 			} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
 				rv = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {

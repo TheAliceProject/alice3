@@ -87,7 +87,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 
 		if( isTop && prevExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
 			for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.values() ) {
-				rv.add( org.alice.ide.croquet.models.cascade.conditional.ConditionalInfixExpressionRightOperandOnlyFillIn.getInstance( operator ) );
+				rv.add( org.alice.ide.croquet.models.cascade.conditional.ConditionalExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 			}
 	
 			for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.values() ) {

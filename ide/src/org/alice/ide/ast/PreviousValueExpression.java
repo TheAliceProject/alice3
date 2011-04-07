@@ -40,28 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousExpressionBasedFillInWithBlanks< F extends edu.cmu.cs.dennisc.alice.ast.Expression, B > extends ExpressionFillInWithBlanks< F,B > {
-	public PreviousExpressionBasedFillInWithBlanks( java.util.UUID id, Class<B> cls ) {
-		super( id, cls );
+public class PreviousValueExpression extends edu.cmu.cs.dennisc.alice.ast.Expression {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
+	public PreviousValueExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		this.type = type;
 	}
-	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-		return org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
+	public PreviousValueExpression( Class<?> cls ) {
+		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
 	}
-	protected abstract boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
 	@Override
-	public final boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getType() {
+		return this.type;
 	}
-	protected abstract F createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, B[] expressions);
-	@Override
-	protected final F createValue( B[] expressions ) {
-		return this.createValue( this.getPreviousExpression(), expressions );
-	}
+//	@Override
+//	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getType() {
+//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
+//		if( previousExpression != null ) {
+//			return previousExpression.getType();
+//		} else {
+//			return null;
+//		}
+//	}
 }
