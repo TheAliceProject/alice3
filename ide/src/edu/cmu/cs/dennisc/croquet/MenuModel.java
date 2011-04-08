@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuModel extends Model {
+public abstract class MenuModel extends PrepModel {
 	private static final Group MENU_GROUP = Group.getInstance( java.util.UUID.fromString( "4ed42b1f-b4ea-4f70-99d1-5bb2c3f11081" ), "MENU_GROUP" );
 	public static final Model SEPARATOR = null;
 	private Class<?> clsForI18N;

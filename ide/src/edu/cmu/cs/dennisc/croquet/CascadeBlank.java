@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank< B > extends Model {
+public abstract class CascadeBlank< B > extends PrepModel {
 	private java.util.List< CascadeItem< ? extends B,? > > ownees;
 	public CascadeBlank( java.util.UUID id ) {
 		super( Application.CASCADE_GROUP, id );

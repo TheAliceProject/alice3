@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class BoundedRangeIntegerStateContext extends ModelContext<BoundedRangeIntegerState> {
+public class BoundedRangeIntegerStateContext extends StateContext<BoundedRangeIntegerState> {
 	public static class BoundedRangeIntegerStateEvent extends ModelEvent<BoundedRangeIntegerStateContext> {
 		private javax.swing.event.ChangeEvent changeEvent;
 		private BoundedRangeIntegerStateEvent( javax.swing.event.ChangeEvent changeEvent ) {

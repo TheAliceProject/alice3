@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeItemContext<F,M extends CascadeItem<F,C>,C extends CascadeItemContext<F,M,C> > extends ModelContext< M > {
+public class CascadeItemContext<F,M extends CascadeItem<F,C>,C extends CascadeItemContext<F,M,C> > extends PrepContext< M > {
 	/*package-private*/ CascadeItemContext( M model, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( model, e, viewController );
 	}

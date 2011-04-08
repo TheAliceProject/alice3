@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuModelContext extends ModelContext<MenuModel> {
+public class MenuModelContext extends PrepContext<MenuModel> {
 	/*package-private*/ MenuModelContext( MenuModel menuModel, java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		super( menuModel, e, viewController );
 	}

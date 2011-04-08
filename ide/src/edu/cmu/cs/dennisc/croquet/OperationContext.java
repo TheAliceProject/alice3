@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationContext<M extends Operation<?>> extends ModelContext<M> {
+public abstract class OperationContext<M extends Operation<?>> extends CompletionContext<M> {
 	/*package-private*/ OperationContext( M operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( operation, e, viewController );
 	}

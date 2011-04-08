@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EditSource extends Model {
-	public EditSource( Group group, java.util.UUID id ) {
+public abstract class CompletionModel extends Model {
+	public CompletionModel( Group group, java.util.UUID id ) {
 		super(group, id);
 	}
 }

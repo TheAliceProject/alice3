@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DragAndDropContext extends ModelContext<DragAndDropModel> {
+public class DragAndDropContext extends PrepContext<DragAndDropModel> {
 	public static abstract class DragAndDropEvent extends ModelEvent< DragAndDropContext > {
 		private java.awt.event.MouseEvent mouseEvent;
 		public DragAndDropEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
