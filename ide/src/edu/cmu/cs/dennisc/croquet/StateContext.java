@@ -40,14 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.cheshire;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-enum IsRootContextCriterion implements ParentContextCriterion {
-	IS_PARENT_ROOT_CONTEXT;
-	public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
-		return edu.cmu.cs.dennisc.croquet.TransactionManager.getRootContext() == parentContext;
+public abstract class StateContext<M extends State<?>> extends CompletionContext<M> {
+	/*package-private*/ StateContext( M operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( operation, e, viewController );
+	}
+	/*package-private*/ StateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

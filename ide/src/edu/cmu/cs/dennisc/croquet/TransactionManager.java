@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ContextManager {
+public class TransactionManager {
 	private static java.util.Stack< ModelContext< ? > > stack;
 	private static java.util.Map< ModelContext< ? >, ModelContext< ? > > mapChildContextPendingParentContext = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
@@ -329,12 +329,12 @@ public class ContextManager {
 
 						if( jPreviousPopupMenu != jPopupMenu ) {
 							if( jPreviousPopupMenu != null ) {
-								ModelContext< ? > popupContext = ContextManager.popContext();
+								ModelContext< ? > popupContext = TransactionManager.popContext();
 								assert popupContext instanceof PopupOperationContext;
 							}
 							
 							if( menuModel instanceof MenuModel ) {
-								/*AbstractPopupMenuOperationContext popupContext =*/ ContextManager.createAndPushStandardPopupOperationContext( ((MenuModel)menuModel).getPopupMenuOperation(), e, null );
+								/*AbstractPopupMenuOperationContext popupContext =*/ TransactionManager.createAndPushStandardPopupOperationContext( ((MenuModel)menuModel).getPopupMenuOperation(), e, null );
 							} else {
 								System.err.println( "handleMenuSelectionStateChanged: " + menuModel );
 							}
@@ -358,7 +358,7 @@ public class ContextManager {
 							}
 						}
 					}
-					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+					ModelContext< ? > modelContext = TransactionManager.getCurrentContext();
 					if( modelContext instanceof PopupOperationContext ) {
 						PopupOperationContext popupContext = (PopupOperationContext)modelContext;
 						popupContext.handleMenuSelectionChanged( e, models );
@@ -368,10 +368,10 @@ public class ContextManager {
 				} else {
 					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
 					if( menuBarModel != null ) {
-						ModelContext< ? > popupContext = ContextManager.popContext();
+						ModelContext< ? > popupContext = TransactionManager.popContext();
 						assert popupContext instanceof StandardPopupOperationContext;
 
-						ModelContext< ? > menuBarContext = ContextManager.popContext();
+						ModelContext< ? > menuBarContext = TransactionManager.popContext();
 						assert menuBarContext instanceof MenuBarModelContext;
 					}
 				}
@@ -379,10 +379,10 @@ public class ContextManager {
 				if( menuElements.length > 0 ) {
 					MenuBar menuBar = getMenuBarOrigin( menuElements );
 					if( menuBar != null ) {
-						/*MenuBarModelContext childContext =*/ ContextManager.createAndPushMenuBarModelContext( menuBar.getModel(), e, menuBar );
+						/*MenuBarModelContext childContext =*/ TransactionManager.createAndPushMenuBarModelContext( menuBar.getModel(), e, menuBar );
 						assert menuElements.length == 2;
 					} else {
-						ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+						ModelContext< ? > modelContext = TransactionManager.getCurrentContext();
 						if( modelContext instanceof StandardPopupOperationContext ) {
 							//pass
 						} else {
@@ -392,7 +392,7 @@ public class ContextManager {
 					}
 				} else {
 					//assert false;
-					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+					ModelContext< ? > modelContext = TransactionManager.getCurrentContext();
 					System.err.println( "both prev and current menu selection length 0" );
 					System.err.println( "modelContext: " + modelContext );
 				}

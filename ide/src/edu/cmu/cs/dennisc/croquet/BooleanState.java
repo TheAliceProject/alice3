@@ -72,7 +72,7 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	};
 	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 		public void itemStateChanged(java.awt.event.ItemEvent e) {
-			if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
+			if( TransactionManager.isInTheMidstOfUndoOrRedo() ) {
 				//pass
 			} else {
 				if( BooleanState.this.isContextCommitDesired() ) {
@@ -101,9 +101,9 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	}
 	
 	private void commitEdit( BooleanStateEdit booleanStateEdit, java.awt.event.ItemEvent e ) {
-		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
+		BooleanStateContext childContext = TransactionManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
 		childContext.commitAndInvokeDo( booleanStateEdit );
-		ModelContext< ? > popContext = ContextManager.popContext();
+		ModelContext< ? > popContext = TransactionManager.popContext();
 		assert popContext == childContext;
 	}
 	

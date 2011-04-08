@@ -381,11 +381,11 @@ public class DragAndDropContext extends PrepContext<DragAndDropModel> {
 	}
 	
 	private void popContext( OperationContext< ? > childContext ) {
-		ModelContext< ? > currentContext = ContextManager.getCurrentContext();
+		ModelContext< ? > currentContext = TransactionManager.getCurrentContext();
 		if( childContext != null && childContext == currentContext ) {
-			ContextManager.popParentContextWhenChildContextIsPopped( this, childContext );
+			TransactionManager.popParentContextWhenChildContextIsPopped( this, childContext );
 		} else {
-			ModelContext< ? > modelContext = ContextManager.popContext();
+			ModelContext< ? > modelContext = TransactionManager.popContext();
 			if( modelContext == this ) {
 				//pass
 			} else {

@@ -40,14 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.cheshire;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-enum IsRootContextCriterion implements ParentContextCriterion {
-	IS_PARENT_ROOT_CONTEXT;
-	public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
-		return edu.cmu.cs.dennisc.croquet.TransactionManager.getRootContext() == parentContext;
+public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private ModelContext< ? > tree;
+	public Transaction( ModelContext<?> tree ) {
+		this.tree = tree;
+	}
+	/*package-private*/ Transaction( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.decode( binaryDecoder );
+	}
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.tree = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.tree );
 	}
 }

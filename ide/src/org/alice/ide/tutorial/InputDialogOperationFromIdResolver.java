@@ -61,6 +61,6 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 //				}
 //			}
 //		}
-		return (edu.cmu.cs.dennisc.croquet.InputDialogOperation)edu.cmu.cs.dennisc.croquet.ContextManager.findFirstAppropriateModel( this.id );
+		return (edu.cmu.cs.dennisc.croquet.InputDialogOperation)edu.cmu.cs.dennisc.croquet.TransactionManager.findFirstAppropriateModel( this.id );
 	}
 }

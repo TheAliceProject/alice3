@@ -186,7 +186,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, CascadeBlankContext< B > > {
 	private RtItem< B, ?, ?, ? > rtSelectedFillIn;
 
 	public RtBlank( CascadeBlank< B > model ) {
-		super( model, ContextManager.createCascadeBlankContext( model ) );
+		super( model, TransactionManager.createCascadeBlankContext( model ) );
 		this.getContext().setRtBlank( this );
 	}
 
@@ -440,19 +440,19 @@ abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner< F, B, C >, C exte
 }
 class RtFillIn<F, B> extends RtBlankOwner< F, B, CascadeFillIn< F, B >, CascadeFillInContext< F, B > > {
 	public RtFillIn( CascadeFillIn< F, B > model ) {
-		super( model, ContextManager.createCascadeFillInContext( model ) );
+		super( model, TransactionManager.createCascadeFillInContext( model ) );
 	}
 }
 
 class RtMenu<FB> extends RtBlankOwner< FB, FB, CascadeMenu< FB >, CascadeMenuContext< FB >> {
 	public RtMenu( CascadeMenu< FB > model ) {
-		super( model, ContextManager.createCascadeMenuContext( model ) );
+		super( model, TransactionManager.createCascadeMenuContext( model ) );
 	}
 }
 
 class RtSeparator extends RtItem< Void, Void, CascadeSeparator, CascadeSeparatorContext > {
 	public RtSeparator( CascadeSeparator model ) {
-		super( model, ContextManager.createCascadeSeparatorContext( model ) );
+		super( model, TransactionManager.createCascadeSeparatorContext( model ) );
 	}
 	@Override
 	protected CascadeBlank<Void>[] getModelBlanks() {
@@ -481,7 +481,7 @@ class RtSeparator extends RtItem< Void, Void, CascadeSeparator, CascadeSeparator
 
 class RtCancel<F> extends RtItem< F, Void, CascadeCancel< F >, CascadeCancelContext< F > > {
 	public RtCancel( CascadeCancel< F > model ) {
-		super( model, ContextManager.createCascadeCancelContext( model ) );
+		super( model, TransactionManager.createCascadeCancelContext( model ) );
 	}
 	@Override
 	protected CascadeBlank<Void>[] getModelBlanks() {
@@ -492,7 +492,7 @@ class RtCancel<F> extends RtItem< F, Void, CascadeCancel< F >, CascadeCancelCont
 class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, CascadeRootContext< T > > {
 	private final RtOperation< T > rtOperation;
 	public RtRoot( CascadeRoot< T > model, RtOperation< T > rtOperation ) {
-		super( model, ContextManager.createCascadeRootContext( model ) );
+		super( model, TransactionManager.createCascadeRootContext( model ) );
 		this.rtOperation = rtOperation;
 	}
 	@Override
@@ -673,7 +673,7 @@ public abstract class CascadePopupOperation<B> extends PopupOperation< CascadePo
 	}
 	@Override
 	public CascadePopupOperationContext< B > createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushCascadePopupOperationContext( this, e, viewController );
+		return TransactionManager.createAndPushCascadePopupOperationContext( this, e, viewController );
 	}
 
 	/*package-private*/CascadeRoot< B > getRoot() {

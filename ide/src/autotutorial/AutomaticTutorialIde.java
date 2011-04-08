@@ -168,7 +168,7 @@ class AlgConstructionGuide extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction
 		if( IS_MONKEY_WRENCH_DESIRED ) {
 			System.err.println( "addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound: " + modelContext );
 			org.alice.ide.croquet.models.ui.AccessibleListSelectionState accessibleListSelectionState = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
-			edu.cmu.cs.dennisc.croquet.ListSelectionStateContext context = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( accessibleListSelectionState, accessibleListSelectionState.getItemAt( accessibleListSelectionState.getItemCount()-1 ) );
+			edu.cmu.cs.dennisc.croquet.ListSelectionStateContext context = edu.cmu.cs.dennisc.croquet.TransactionManager.createContextFor( accessibleListSelectionState, accessibleListSelectionState.getItemAt( accessibleListSelectionState.getItemCount()-1 ) );
 			edu.cmu.cs.dennisc.cheshire.ListSelectionStateStartNote listSelectionStateStartNote =  edu.cmu.cs.dennisc.cheshire.ListSelectionStateStartNote.createInstance( context, parentContextCriterion, context.getSuccessfulCompletionEvent() );
 			rv.add( listSelectionStateStartNote );
 			rv.add( edu.cmu.cs.dennisc.cheshire.ListSelectionStateFinishNote.createInstance( context, listSelectionStateStartNote.getAcceptedContextAt( 0 ), context.getSuccessfulCompletionEvent() ) );
@@ -227,7 +227,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 				public void run() {
 					javax.swing.SwingUtilities.invokeLater( new Runnable() {
 						public void run() {
-							edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
+							edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.TransactionManager.getRootContext();
 							rootContext.EPIC_HACK_clear();
 						}
 					} );
@@ -404,7 +404,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		this.preservePreferences();
 //		super.handleQuit( e );
 		if( IS_ENCODING ) {
-			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
+			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.TransactionManager.getRootContext();
 			
 			System.err.println( "todo: remove filtering" );
 			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {

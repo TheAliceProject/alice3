@@ -58,9 +58,9 @@ public final class BoundedRangeIntegerState extends State<Integer> {
 		public void stateChanged(javax.swing.event.ChangeEvent e) {
 			BoundedRangeIntegerStateContext boundedRangeIntegerStateContext;
 			if( this.previousValueIsAdjusting ) {
-				boundedRangeIntegerStateContext = (BoundedRangeIntegerStateContext)ContextManager.getCurrentContext();
+				boundedRangeIntegerStateContext = (BoundedRangeIntegerStateContext)TransactionManager.getCurrentContext();
 			} else {
-				boundedRangeIntegerStateContext = ContextManager.createAndPushBoundedRangeIntegerStateContext( BoundedRangeIntegerState.this );
+				boundedRangeIntegerStateContext = TransactionManager.createAndPushBoundedRangeIntegerStateContext( BoundedRangeIntegerState.this );
 			}
 			this.previousValueIsAdjusting = boundedRangeModel.getValueIsAdjusting();
 			boundedRangeIntegerStateContext.handleStateChanged( e );
@@ -72,7 +72,7 @@ public final class BoundedRangeIntegerState extends State<Integer> {
 				int nextValue = boundedRangeModel.getValue();
 				boundedRangeIntegerStateContext.commitAndInvokeDo( new BoundedRangeIntegerStateEdit( e, BoundedRangeIntegerState.this.previousValue, nextValue, false ) );
 				BoundedRangeIntegerState.this.previousValue = nextValue;
-				ModelContext< ? > popContext = ContextManager.popContext();
+				ModelContext< ? > popContext = TransactionManager.popContext();
 				assert popContext == boundedRangeIntegerStateContext;
 			}
 		}

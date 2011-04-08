@@ -80,13 +80,13 @@ public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
 
 	private javax.swing.event.PopupMenuListener popupMenuListener = new javax.swing.event.PopupMenuListener() {
 		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-			ContextManager.addListSelectionPopupMenuWillBecomeVisible( ComboBox.this.getModel(), e, ComboBox.this );
+			TransactionManager.addListSelectionPopupMenuWillBecomeVisible( ComboBox.this.getModel(), e, ComboBox.this );
 		}
 		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-			ContextManager.addListSelectionPopupMenuWillBecomeInvisible( ComboBox.this.getModel(), e, ComboBox.this );
+			TransactionManager.addListSelectionPopupMenuWillBecomeInvisible( ComboBox.this.getModel(), e, ComboBox.this );
 		}
 		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-			ContextManager.addListSelectionPopupMenuCanceled( ComboBox.this.getModel(), e, ComboBox.this );
+			TransactionManager.addListSelectionPopupMenuCanceled( ComboBox.this.getModel(), e, ComboBox.this );
 		}
 	};
 	@Override

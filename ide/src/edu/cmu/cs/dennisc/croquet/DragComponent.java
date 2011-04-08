@@ -210,7 +210,7 @@ public abstract class DragComponent extends Control {
 		layeredPane.add( this.dragProxy, new Integer( 1 ) );
 		layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
 
-		this.dragAndDropContext = ContextManager.createAndPushDragAndDropContext( this.dragModel, this.getLeftButtonPressedEvent(), e, this );
+		this.dragAndDropContext = TransactionManager.createAndPushDragAndDropContext( this.dragModel, this.getLeftButtonPressedEvent(), e, this );
 		this.dragModel.handleDragStarted( this.dragAndDropContext );
 	}
 	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {

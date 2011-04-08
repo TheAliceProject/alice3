@@ -51,6 +51,6 @@ public abstract class ActionOperation extends SingleThreadOperation<ActionOperat
 	}
 	@Override
 	public ActionOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushActionOperationContext( this, e, viewController );
+		return TransactionManager.createAndPushActionOperationContext( this, e, viewController );
 	}
 }
