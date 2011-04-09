@@ -92,7 +92,7 @@ public class StringState extends State<String> {
 		private void handleUpdate( javax.swing.event.DocumentEvent e ) {
 			try {
 				String nextValue = document.getText( 0, document.getLength() );
-				TransactionManager.handleDocumentEvent( StringState.this, null, null, e, StringState.this.previousValue, nextValue );
+				ContextManager.handleDocumentEvent( StringState.this, null, null, e, StringState.this.previousValue, nextValue );
 				fireValueChanged( nextValue );
 			} catch( javax.swing.text.BadLocationException ble ) {
 				throw new RuntimeException( ble );

@@ -46,17 +46,24 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private ModelContext< ? > tree;
+	private final java.util.List< Step<?> > steps = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final ModelContext< ? > tree;
 	public Transaction( ModelContext<?> tree ) {
 		this.tree = tree;
 	}
 	/*package-private*/ Transaction( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.decode( binaryDecoder );
+		this.tree = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.tree = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		throw new AssertionError();
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.tree );
+	}
+	public void addStep( Step< ? > step ) {
+		this.steps.add( step );
+	}
+	public void removeStep( Step< ? > step ) {
+		this.steps.remove( step );
 	}
 }

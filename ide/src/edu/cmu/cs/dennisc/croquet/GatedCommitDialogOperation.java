@@ -227,7 +227,7 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 		rv.addComponent( new HorizontalSeparator(), gbc );
 		rv.addComponent( controlPanel, gbc );
 
-		TransactionManager.getRootContext().addChildrenObserver( this.childrenObserver );
+		ContextManager.getRootContext().addChildrenObserver( this.childrenObserver );
 		this.updateExplanation( context );
 
 		this.getCompleteOperation().setDialog( dialog );
@@ -238,7 +238,7 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 	@Override
 	protected final void releaseContentPane( C context, Dialog dialog, Container< ? > contentPane ) {
 		if( contentPane != null ) {
-			TransactionManager.getRootContext().removeChildrenObserver( this.childrenObserver );
+			ContextManager.getRootContext().removeChildrenObserver( this.childrenObserver );
 			this.release( context, dialog, this.isCompleted );
 		} else {
 			context.cancel();

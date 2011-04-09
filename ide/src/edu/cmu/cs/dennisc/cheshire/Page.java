@@ -342,7 +342,7 @@ public class Page extends Step implements WaitingStep {
 	
 				java.util.List< edu.cmu.cs.dennisc.croquet.Model > list = huntFor( descendantModel );
 				if( list != null ) {
-					edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = edu.cmu.cs.dennisc.croquet.TransactionManager.createContextFor( list, modelContext );
+					edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( list, modelContext );
 					appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, menuBarModelContext );
 				} else {
 					//todo?
@@ -359,7 +359,7 @@ public class Page extends Step implements WaitingStep {
 	
 						java.util.List< edu.cmu.cs.dennisc.croquet.Model > list = huntFor( descendantModel );
 						if( list != null ) {
-							edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = edu.cmu.cs.dennisc.croquet.TransactionManager.createContextFor( list, modelContext );
+							edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( list, modelContext );
 							appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, menuBarModelContext );
 						} else {
 							//todo?
@@ -372,11 +372,11 @@ public class Page extends Step implements WaitingStep {
 							//pass
 						} else {
 							boolean isApplicationInterventionRequired = true;
-							for( edu.cmu.cs.dennisc.croquet.TabSelectionState< edu.cmu.cs.dennisc.croquet.Composite > tabSelectionState : edu.cmu.cs.dennisc.croquet.TransactionManager.getRegisteredModels( edu.cmu.cs.dennisc.croquet.TabSelectionState.class ) ) {
+							for( edu.cmu.cs.dennisc.croquet.TabSelectionState< edu.cmu.cs.dennisc.croquet.Composite > tabSelectionState : edu.cmu.cs.dennisc.croquet.Manager.getRegisteredModels( edu.cmu.cs.dennisc.croquet.TabSelectionState.class ) ) {
 								for( edu.cmu.cs.dennisc.croquet.Composite item : tabSelectionState ) {
 									if( item.contains( model ) ) {
 										isApplicationInterventionRequired = false;
-										edu.cmu.cs.dennisc.croquet.ListSelectionStateContext context = edu.cmu.cs.dennisc.croquet.TransactionManager.createContextFor( tabSelectionState, item );
+										edu.cmu.cs.dennisc.croquet.ListSelectionStateContext context = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( tabSelectionState, item );
 										edu.cmu.cs.dennisc.cheshire.ListSelectionStateSimpleNote listSelectionStateNote =  edu.cmu.cs.dennisc.cheshire.ListSelectionStateSimpleNote.createInstance( context, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, context.getSuccessfulCompletionEvent() );
 										rv.add( listSelectionStateNote );
 									}

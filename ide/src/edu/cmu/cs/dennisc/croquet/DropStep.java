@@ -45,23 +45,14 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SerialOperation extends SingleThreadOperation<SerialOperationContext> {
-	@Override
-	protected final void perform(SerialOperationContext context) {
-		for( Operation<?> operation : this.getOperations() ) {
-			//todo?
-			operation.handleFire(context.getAwtEvent(), context.getViewController());
-			if( context.isCanceled() ) {
-				break;
-			}
-		}
+public class DropStep extends Step< CompletionModel > {
+	private final CodableResolver< DropReceptor > dropReceptorResolver;
+	public DropStep( CompletionModel model, DropReceptor dropReceptor ) {
+		super( model );
+		this.dropReceptorResolver = dropReceptor.getCodableResolver();
 	}
-	public SerialOperation( Group group, java.util.UUID id ) {
-		super( group, id );
+	public DropStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+		this.dropReceptorResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
-	@Override
-	public SerialOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushSerialOperationContext( this, e, viewController );
-	}
-	protected abstract java.util.List< Operation<?> > getOperations();
 }

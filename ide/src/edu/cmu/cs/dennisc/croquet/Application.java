@@ -62,7 +62,7 @@ public abstract class Application {
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
-		TransactionManager.startListeningToMenuSelection();
+		ContextManager.startListeningToMenuSelection();
 	}
 
 	protected abstract Component< ? > createContentPane();
@@ -135,7 +135,7 @@ public abstract class Application {
 				java.util.Locale.setDefault( locale );
 				javax.swing.JComponent.setDefaultLocale( locale );
 				
-				TransactionManager.localizeAllModels();
+				Manager.localizeAllModels();
 				
 				try {
 					javax.swing.UIManager.setLookAndFeel( javax.swing.UIManager.getLookAndFeel() );

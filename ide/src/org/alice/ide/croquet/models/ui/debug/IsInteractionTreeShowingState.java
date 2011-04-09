@@ -111,7 +111,7 @@ public class IsInteractionTreeShowingState extends org.alice.ide.croquet.models.
 	}
 	private edu.cmu.cs.dennisc.croquet.ModelContext< ? > context;
 	private IsInteractionTreeShowingState() {
-		this( edu.cmu.cs.dennisc.croquet.TransactionManager.getRootContext() );
+		this( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
 	}
 	public IsInteractionTreeShowingState( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
 		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "3fb1e733-1736-476d-b40c-7729c82f0b21" ), true );

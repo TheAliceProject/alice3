@@ -65,7 +65,7 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 	
 	@Override
 	public StandardPopupOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return TransactionManager.createAndPushStandardPopupOperationContext( this, e, viewController );
+		return ContextManager.createAndPushStandardPopupOperationContext( this, e, viewController );
 	}
 	
 	@Override
@@ -169,7 +169,7 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 			public void componentResized( java.awt.event.ComponentEvent e ) {
 //				java.awt.Component awtComponent = e.getComponent();
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
-				ModelContext< ? > currentContext = TransactionManager.getCurrentContext();
+				ModelContext< ? > currentContext = ContextManager.getCurrentContext();
 				if( currentContext instanceof StandardPopupOperationContext ) {
 					StandardPopupOperationContext popupMenuOperationContext = (StandardPopupOperationContext)currentContext;
 					popupMenuOperationContext.handleResized( e );

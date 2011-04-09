@@ -45,23 +45,34 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SerialOperation extends SingleThreadOperation<SerialOperationContext> {
-	@Override
-	protected final void perform(SerialOperationContext context) {
-		for( Operation<?> operation : this.getOperations() ) {
-			//todo?
-			operation.handleFire(context.getAwtEvent(), context.getViewController());
-			if( context.isCanceled() ) {
-				break;
-			}
-		}
+public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private final java.util.List< Transaction > transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public void addTransaction( Transaction transaction ) {
+		this.transactions.add( transaction );
 	}
-	public SerialOperation( Group group, java.util.UUID id ) {
-		super( group, id );
+	public void removeTransaction( Transaction transaction ) {
+		this.transactions.add( transaction );
 	}
-	@Override
-	public SerialOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushSerialOperationContext( this, e, viewController );
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.transactions.clear();
+		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.transactions, binaryDecoder.decodeBinaryEncodableAndDecodableArray( Transaction.class ) );
 	}
-	protected abstract java.util.List< Operation<?> > getOperations();
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.transactions, Transaction.class ) );
+	}
+	
+	
+	private Transaction getActiveTransaction() {
+		return null;
+	}
+	private void addStep( Step< ? > step ) {
+		Transaction transaction = this.getActiveTransaction();
+		transaction.addStep( step );
+	}
+	public void addDragStep( DragAndDropModel model ) {
+		this.addStep( new DragStep( model ) ); 
+	}
+	public void addDropStep( CompletionModel model, DropReceptor dropReceptor ) {
+		this.addStep( new DropStep( model, dropReceptor ) );
+	}
 }

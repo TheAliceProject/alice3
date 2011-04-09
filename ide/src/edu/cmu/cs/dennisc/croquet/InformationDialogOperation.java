@@ -51,6 +51,6 @@ public abstract class InformationDialogOperation<J extends Component<?>> extends
 	}
 	@Override
 	public InformationDialogOperationContext<J> createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return TransactionManager.createAndPushInformationDialogOperationContext( this, e, viewController );
+		return ContextManager.createAndPushInformationDialogOperationContext( this, e, viewController );
 	}
 }

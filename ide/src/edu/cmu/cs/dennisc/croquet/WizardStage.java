@@ -45,23 +45,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SerialOperation extends SingleThreadOperation<SerialOperationContext> {
-	@Override
-	protected final void perform(SerialOperationContext context) {
-		for( Operation<?> operation : this.getOperations() ) {
-			//todo?
-			operation.handleFire(context.getAwtEvent(), context.getViewController());
-			if( context.isCanceled() ) {
-				break;
-			}
-		}
-	}
-	public SerialOperation( Group group, java.util.UUID id ) {
-		super( group, id );
-	}
-	@Override
-	public SerialOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushSerialOperationContext( this, e, viewController );
-	}
-	protected abstract java.util.List< Operation<?> > getOperations();
+public interface WizardStage {
+	public String getTitle();
+	public Component< ? > getComponent();
+	public String getExplanationIfProcedeButtonShouldBeDisabled();
+	public boolean isFinishPotentiallyEnabled();
 }

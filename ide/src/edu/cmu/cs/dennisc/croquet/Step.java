@@ -45,9 +45,21 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface WizardStep {
-	public String getTitle();
-	public Component< ? > getComponent();
-	public String getExplanationIfProcedeButtonShouldBeDisabled();
-	public boolean isFinishPotentiallyEnabled();
+public abstract class Step< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private final CodableResolver< M > modelResolver; 
+	public Step( M model ) {
+		this.modelResolver = model.getCodableResolver();
+	}
+	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	}
+	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		throw new AssertionError();
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.modelResolver );
+	}
+	public M getModel() {
+		return this.modelResolver.getResolved();
+	}
 }

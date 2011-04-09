@@ -48,6 +48,6 @@ package edu.cmu.cs.dennisc.cheshire;
 enum IsRootContextCriterion implements ParentContextCriterion {
 	IS_PARENT_ROOT_CONTEXT;
 	public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
-		return edu.cmu.cs.dennisc.croquet.TransactionManager.getRootContext() == parentContext;
+		return edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() == parentContext;
 	}
 }

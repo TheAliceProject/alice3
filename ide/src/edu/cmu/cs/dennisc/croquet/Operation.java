@@ -79,7 +79,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 			try {
 				childContext.commitAndInvokeDo( replacementEdit );
 			} finally {
-				ModelContext< ? > popContext = TransactionManager.popContext();
+				ModelContext< ? > popContext = ContextManager.popContext();
 				assert popContext == childContext : popContext.getClass() + " " + childContext.getClass();
 			}
 		} else {
@@ -131,7 +131,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		final C childContext = this.createAndPushContext( e, viewController );
 		this.perform( childContext, new PerformObserver() {
 			public void handleFinally() {
-				ModelContext< ? > popContext = TransactionManager.popContext();
+				ModelContext< ? > popContext = ContextManager.popContext();
 				if( popContext != null ) {
 					//assert popContext == childContext : "actual: " + popContext.getClass() + " expected: " + childContext.getClass();
 					if( popContext == childContext ) {

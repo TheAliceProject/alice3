@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.croquet;
 public abstract class Composite {
 	private final java.util.List< View > views = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public Composite() {
-		TransactionManager.registerComposite( this );
+		Manager.registerComposite( this );
 	}
 	public abstract boolean contains( Model model );
 	

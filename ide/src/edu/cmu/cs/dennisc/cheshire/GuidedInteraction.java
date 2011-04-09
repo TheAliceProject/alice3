@@ -59,7 +59,7 @@ public abstract class GuidedInteraction {
 
 	/*package-private*/ class AutomaticTutorialStencil extends TutorialStencil {
 		public AutomaticTutorialStencil( MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, boolean isOptimizedForBugRepro, edu.cmu.cs.dennisc.croquet.Group[] groups ) {
-			super( menuPolicy, stepAccessPolicy, scrollingRequiredRenderer, isOptimizedForBugRepro, groups, edu.cmu.cs.dennisc.croquet.TransactionManager.getRootContext() );
+			super( menuPolicy, stepAccessPolicy, scrollingRequiredRenderer, isOptimizedForBugRepro, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
 		}
 	}
 	

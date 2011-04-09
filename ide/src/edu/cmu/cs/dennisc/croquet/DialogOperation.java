@@ -51,7 +51,7 @@ public abstract class DialogOperation extends AbstractDialogOperation<DialogOper
 	}
 	@Override
 	public DialogOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return TransactionManager.createAndPushDialogOperationContext( this, e, viewController );
+		return ContextManager.createAndPushDialogOperationContext( this, e, viewController );
 	}
 	
 	public String getTutorialCloseNoteText( DialogOperationContext dialogOperationContext, UserInformation userInformation ) {

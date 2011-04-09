@@ -223,7 +223,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 	private java.util.List< JComponent<?> > components = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	protected void addComponent( JComponent<?> component ) {
 		if( this.components.size() == 0 ) {
-			TransactionManager.registerModel( this );
+			Manager.registerModel( this );
 		}
 		synchronized( this.components ) {
 			this.components.add( component );
@@ -236,7 +236,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 			this.components.remove( component );
 		}
 		if( this.components.size() == 0 ) {
-			TransactionManager.unregisterModel( this );
+			Manager.unregisterModel( this );
 		} else {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "removeComponent", this.components.size(), this );
 		}

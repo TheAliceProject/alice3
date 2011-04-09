@@ -223,7 +223,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			} else {
 				this.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.listSelectionModel.getValueIsAdjusting() );
 
-				if( TransactionManager.isInTheMidstOfUndoOrRedo() ) {
+				if( Manager.isInTheMidstOfUndoOrRedo() ) {
 					//pass
 				} else {
 					this.commitEdit( new ListSelectionStateEdit< E >( this.mostRecentEvent, this.prevAtomicSelectedValue, nextSelectedValue ), this.mostRecentEvent, this.mostRecentViewController );
@@ -500,9 +500,9 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 	
 	protected void commitEdit( ListSelectionStateEdit< E > listSelectionStateEdit, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		ListSelectionStateContext< E > childContext = TransactionManager.createAndPushItemSelectionStateContext( this, e, viewController );
+		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
 		childContext.commitAndInvokeDo( listSelectionStateEdit );
-		ModelContext< ? > popContext = TransactionManager.popContext();
+		ModelContext< ? > popContext = ContextManager.popContext();
 		assert popContext == childContext;
 	}
 

@@ -151,11 +151,11 @@ public abstract class Edit<M extends Model> {
 				throw new javax.swing.undo.CannotRedoException();
 			}
 		}
-		TransactionManager.pushUndoOrRedo();
+		Manager.pushUndoOrRedo();
 		try {
 			this.doOrRedoInternal( isDo );
 		} finally {
-			TransactionManager.popUndoOrRedo();
+			Manager.popUndoOrRedo();
 		}
 	}
 	public final void undo() {
@@ -164,11 +164,11 @@ public abstract class Edit<M extends Model> {
 		} else {
 			throw new javax.swing.undo.CannotRedoException();
 		}
-		TransactionManager.pushUndoOrRedo();
+		Manager.pushUndoOrRedo();
 		try {
 			this.undoInternal();
 		} finally {
-			TransactionManager.popUndoOrRedo();
+			Manager.popUndoOrRedo();
 		}
 	}
 

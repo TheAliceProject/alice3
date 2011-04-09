@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionManager {
+public class ContextManager {
 	private static java.util.Stack< ModelContext< ? > > stack;
 	private static java.util.Map< ModelContext< ? >, ModelContext< ? > > mapChildContextPendingParentContext = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
@@ -329,12 +329,12 @@ public class TransactionManager {
 
 						if( jPreviousPopupMenu != jPopupMenu ) {
 							if( jPreviousPopupMenu != null ) {
-								ModelContext< ? > popupContext = TransactionManager.popContext();
+								ModelContext< ? > popupContext = ContextManager.popContext();
 								assert popupContext instanceof PopupOperationContext;
 							}
 							
 							if( menuModel instanceof MenuModel ) {
-								/*AbstractPopupMenuOperationContext popupContext =*/ TransactionManager.createAndPushStandardPopupOperationContext( ((MenuModel)menuModel).getPopupMenuOperation(), e, null );
+								/*AbstractPopupMenuOperationContext popupContext =*/ ContextManager.createAndPushStandardPopupOperationContext( ((MenuModel)menuModel).getPopupMenuOperation(), e, null );
 							} else {
 								System.err.println( "handleMenuSelectionStateChanged: " + menuModel );
 							}
@@ -358,7 +358,7 @@ public class TransactionManager {
 							}
 						}
 					}
-					ModelContext< ? > modelContext = TransactionManager.getCurrentContext();
+					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
 					if( modelContext instanceof PopupOperationContext ) {
 						PopupOperationContext popupContext = (PopupOperationContext)modelContext;
 						popupContext.handleMenuSelectionChanged( e, models );
@@ -368,10 +368,10 @@ public class TransactionManager {
 				} else {
 					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
 					if( menuBarModel != null ) {
-						ModelContext< ? > popupContext = TransactionManager.popContext();
+						ModelContext< ? > popupContext = ContextManager.popContext();
 						assert popupContext instanceof StandardPopupOperationContext;
 
-						ModelContext< ? > menuBarContext = TransactionManager.popContext();
+						ModelContext< ? > menuBarContext = ContextManager.popContext();
 						assert menuBarContext instanceof MenuBarModelContext;
 					}
 				}
@@ -379,10 +379,10 @@ public class TransactionManager {
 				if( menuElements.length > 0 ) {
 					MenuBar menuBar = getMenuBarOrigin( menuElements );
 					if( menuBar != null ) {
-						/*MenuBarModelContext childContext =*/ TransactionManager.createAndPushMenuBarModelContext( menuBar.getModel(), e, menuBar );
+						/*MenuBarModelContext childContext =*/ ContextManager.createAndPushMenuBarModelContext( menuBar.getModel(), e, menuBar );
 						assert menuElements.length == 2;
 					} else {
-						ModelContext< ? > modelContext = TransactionManager.getCurrentContext();
+						ModelContext< ? > modelContext = ContextManager.getCurrentContext();
 						if( modelContext instanceof StandardPopupOperationContext ) {
 							//pass
 						} else {
@@ -392,7 +392,7 @@ public class TransactionManager {
 					}
 				} else {
 					//assert false;
-					ModelContext< ? > modelContext = TransactionManager.getCurrentContext();
+					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
 					System.err.println( "both prev and current menu selection length 0" );
 					System.err.println( "modelContext: " + modelContext );
 				}
@@ -440,109 +440,5 @@ public class TransactionManager {
 		CommitEvent commitEvent = new CommitEvent( new ListSelectionStateEdit< E >( null, listSelectionState.getValue(), nextValue ) );
 		rv.addChild( commitEvent );
 		return rv;
-	}
-	
-	
-	
-	private static java.util.Map< java.util.UUID, java.util.Set< Model > > mapIdToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Set< Model > lookupModels( java.util.UUID id ) {
-		synchronized ( mapIdToModels ) {
-			return mapIdToModels.get( id );
-		}
-	}
-	@Deprecated
-	public static Model findFirstAppropriateModel( java.util.UUID id ) {
-		java.util.Set< Model > models = lookupModels( id );
-		for( Model model : models ) {
-			for( JComponent<?> component : model.getComponents() ) {
-				if( component.getAwtComponent().isShowing() ) {
-					return model;
-				}
-			}
-			for( JComponent<?> component : model.getComponents() ) {
-				if( component.getAwtComponent().isVisible() ) {
-					return model;
-				}
-			}
-		}
-		return null;
-	}
-
-	private static java.util.List< Composite > composites = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	/*package-private*/ static void registerComposite( Composite composite ) {
-		composites.add( composite );
-	}
-	/*package-private*/ static void unregisterComposite( Composite composite ) {
-		composites.remove( composite );
-	}
-	public Iterable< Composite > getComposites() {
-		return composites;
-	}
-	
-	/*package-private*/ static void registerModel( Model model ) {
-		java.util.UUID id = model.getId();
-		synchronized ( mapIdToModels ) {
-			java.util.Set< Model > set = mapIdToModels.get( id );
-			if( set != null ) {
-				//pass
-			} else {
-				set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-				mapIdToModels.put( id, set );
-			}
-			set.add( model );
-		}
-	}
-	/*package-private*/ static void unregisterModel( Model model ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "unregister:", model );
-		java.util.UUID id = model.getId();
-		synchronized ( mapIdToModels ) {
-			java.util.Set< Model > set = mapIdToModels.get( id );
-			if( set != null ) {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "pre set size:", set.size() );
-				set.remove( model );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "post set size:", set.size() );
-				if( set.size() == 0 ) {
-					mapIdToModels.remove( id );
-				}
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate unregister" );
-			}
-		}
-	}
-
-	public static <M extends Model> Iterable<M> getRegisteredModels( Class<M> cls ) {
-		java.util.List< M > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		for( java.util.Set< Model > set : mapIdToModels.values() ) {
-			for( Model model : set ) {
-				if( cls.isAssignableFrom( model.getClass() ) ) {
-					rv.add( cls.cast( model ) );
-				}
-			}
-		}
-		return rv;
-	}
-
-	/*package-private*/ static void localizeAllModels() {
-		synchronized ( mapIdToModels ) {
-			java.util.Collection< java.util.Set< Model > > sets = mapIdToModels.values();
-			for( java.util.Set< Model > set : sets ) {
-				for( Model model : set ) {
-					model.localize();
-//					for( JComponent<?> component : model.getComponents() ) {
-//					}
-				}
-			}
-		}
-	}
-	
-	private static int isUndoOrRedoCount = 0;
-	public static boolean isInTheMidstOfUndoOrRedo() {
-		return isUndoOrRedoCount > 0;
-	}
-	public static void pushUndoOrRedo() {
-		isUndoOrRedoCount ++;
-	}
-	public static void popUndoOrRedo() {
-		isUndoOrRedoCount --;
 	}
 }
