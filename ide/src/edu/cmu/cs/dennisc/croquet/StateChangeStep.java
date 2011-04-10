@@ -45,9 +45,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class StateChangeStep< M extends State<?> > extends CompletionStep< M > {
-	public StateChangeStep( M model ) {
-		super( model );
+public abstract class StateChangeStep< M extends State<?> > extends CompletionStep< M > {
+	public StateChangeStep( Transaction parent, M model, StateEdit< M, ? > edit ) {
+		super( parent, model, edit );
 	}
 	public StateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

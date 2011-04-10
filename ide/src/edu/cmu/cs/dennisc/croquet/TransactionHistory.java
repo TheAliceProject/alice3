@@ -46,33 +46,59 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private final java.util.List< Transaction > transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public void addTransaction( Transaction transaction ) {
-		this.transactions.add( transaction );
+	private final java.util.List< Transaction > transactions;
+	public TransactionHistory() {
+		this.transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	}
-	public void removeTransaction( Transaction transaction ) {
-		this.transactions.add( transaction );
+	public TransactionHistory( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( binaryDecoder.decodeBinaryEncodableAndDecodableArray( Transaction.class ) );
+		for( Transaction transaction : this.transactions ) {
+			transaction.setParent( this );
+		}
 	}
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.transactions.clear();
-		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.transactions, binaryDecoder.decodeBinaryEncodableAndDecodableArray( Transaction.class ) );
+		throw new AssertionError();
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.transactions, Transaction.class ) );
 	}
+
+//	public void addTransaction( Transaction transaction ) {
+//		this.transactions.add( transaction );
+//	}
+//	public void removeTransaction( Transaction transaction ) {
+//		this.transactions.add( transaction );
+//	}
+	public java.util.ListIterator< Transaction > getTransactions() {
+		return this.transactions.listIterator();
+	}
+	public int getIndexOfTransaction( Transaction transaction ) {
+		return this.transactions.indexOf( transaction );
+	}	
+	public Transaction getTransactionAt( int i ) {
+		return this.transactions.get( i );
+	}
+	public int getTransactionCount() {
+		return this.transactions.size();
+	}
 	
-	
-	private Transaction getActiveTransaction() {
-		return null;
+	private Transaction getLastTransaction() {
+		final int N = this.transactions.size();
+		if( N > 0 ) {
+			return this.transactions.get( N-1 );
+		} else {
+			return null;
+		}
 	}
-	private void addStep( Step< ? > step ) {
-		Transaction transaction = this.getActiveTransaction();
-		transaction.addStep( step );
-	}
-	public void addDragStep( DragAndDropModel model ) {
-		this.addStep( new DragStep( model ) ); 
-	}
-	public void addDropStep( CompletionModel model, DropReceptor dropReceptor ) {
-		this.addStep( new DropStep( model, dropReceptor ) );
+	public Transaction getActiveTransaction() {
+		Transaction lastTransaction = this.getLastTransaction();
+		Transaction rv;
+		if( lastTransaction != null && lastTransaction.isActive() ) {
+			rv = lastTransaction;
+		} else {
+			rv = new Transaction( this );
+			this.transactions.add( rv );
+		}
+		return rv;
 	}
 }

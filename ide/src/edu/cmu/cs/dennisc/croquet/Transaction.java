@@ -46,24 +46,80 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private final java.util.List< Step<?> > steps = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final ModelContext< ? > tree;
-	public Transaction( ModelContext<?> tree ) {
-		this.tree = tree;
+	private TransactionHistory parent;
+	private final java.util.List< PrepStep<?> > prepSteps;
+	private CompletionStep<?> completionStep;
+	/*package-private*/ Transaction( TransactionHistory parent ) {
+		this.setParent( parent );
+		this.prepSteps = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		this.completionStep = null;
 	}
-	/*package-private*/ Transaction( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.tree = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	public Transaction( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.prepSteps = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( (PrepStep<?>[])binaryDecoder.decodeBinaryEncodableAndDecodableArray( PrepStep.class ) );
+		for( PrepStep< ? > prepStep : this.prepSteps ) {
+			prepStep.setParent( this );
+		}
+		this.completionStep = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		this.completionStep.setParent( this );
+	}
+	public TransactionHistory getParent() {
+		return this.parent;
+	}
+	/*package-private*/ void setParent( TransactionHistory parent ) {
+		this.parent = parent;
 	}
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new AssertionError();
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.tree );
+		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
+		binaryEncoder.encode( this.completionStep );
 	}
-	public void addStep( Step< ? > step ) {
-		this.steps.add( step );
+
+	public void addDragStep( DragAndDropModel model ) {
+		this.addPrepStep( new DragStep( this, model ) ); 
 	}
-	public void removeStep( Step< ? > step ) {
-		this.steps.remove( step );
+	public void addDropStep( CompletionModel model, Edit< CompletionModel > edit, DropReceptor dropReceptor ) {
+		this.setCompletionStep( new DropStep( this, model, edit, dropReceptor ) );
+	}
+	public void addBooleanStateChangeStep( BooleanState model, BooleanStateEdit edit ) {
+		this.setCompletionStep( new BooleanStateChangeStep( this, model, edit ) );
+	}
+
+	public java.util.ListIterator< PrepStep<?> > getPrepSteps() {
+		return this.prepSteps.listIterator();
+	}
+	public int getIndexOfPrepStep( PrepStep<?> prepStep ) {
+		return this.prepSteps.indexOf( prepStep );
+	}	
+	public PrepStep<?> getPrepStepAt( int i ) {
+		return this.prepSteps.get( i );
+	}
+	public int getPrepStepCount() {
+		return this.prepSteps.size();
+	}
+
+	private void addPrepStep( PrepStep< ? > step ) {
+		TransactionManager.fireAddingStep( step );
+		this.prepSteps.add( step );
+		TransactionManager.fireAddedStep( step );
+	}
+//	public void removePrepStep( PrepStep< ? > step ) {
+//		this.prepSteps.remove( step );
+//	}
+	public CompletionStep< ? > getCompletionStep() {
+		return this.completionStep;
+	}
+	private void setCompletionStep( CompletionStep<?> step ) {
+		TransactionManager.fireAddingStep( step );
+		this.completionStep = step;
+		TransactionManager.fireAddedStep( step );
+	}
+	public boolean isActive() {
+		if( this.completionStep != null ) {
+			return this.completionStep.isActive();
+		} else {
+			return true;
+		}
 	}
 }

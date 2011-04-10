@@ -45,40 +45,56 @@ package org.alice.ide.croquet.models.ui.debug;
 /**
  * @author Dennis Cosgrove
  */
-class HistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< edu.cmu.cs.dennisc.croquet.HistoryNode > {
-	private edu.cmu.cs.dennisc.croquet.HistoryNode root;
-	public HistoryTreeModel( edu.cmu.cs.dennisc.croquet.HistoryNode root ) {
+class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< Object > {
+	private edu.cmu.cs.dennisc.croquet.TransactionHistory root;
+
+	public TransactionTreeModel( edu.cmu.cs.dennisc.croquet.TransactionHistory root ) {
 		this.root = root;
 	}
-	public edu.cmu.cs.dennisc.croquet.HistoryNode getRoot() {
+	public edu.cmu.cs.dennisc.croquet.TransactionHistory getRoot() {
 		return this.root;
 	}
 	public boolean isLeaf( Object node ) {
-		return ( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext<?> ) == false;
+		return node instanceof edu.cmu.cs.dennisc.croquet.Step< ? >;
 	}
-	public int getChildCount(Object parent) {
-		if( parent instanceof edu.cmu.cs.dennisc.croquet.ModelContext<?> ) {
-			edu.cmu.cs.dennisc.croquet.ModelContext<?> modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext<?>)parent;
-			return modelContext.getChildCount();
+	public int getChildCount( Object parent ) {
+		if( parent instanceof edu.cmu.cs.dennisc.croquet.TransactionHistory ) {
+			edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory = (edu.cmu.cs.dennisc.croquet.TransactionHistory)parent;
+			return transactionHistory.getTransactionCount();
+		} else if( parent instanceof edu.cmu.cs.dennisc.croquet.Transaction ) {
+			edu.cmu.cs.dennisc.croquet.Transaction transaction = (edu.cmu.cs.dennisc.croquet.Transaction)parent;
+			return transaction.getPrepStepCount()+1;
 		} else {
 			return 0;
 		}
 	}
-	public edu.cmu.cs.dennisc.croquet.HistoryNode getChild(Object parent, int index) {
-		if( parent instanceof edu.cmu.cs.dennisc.croquet.ModelContext<?> ) {
-			edu.cmu.cs.dennisc.croquet.ModelContext<?> modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext<?>)parent;
-			edu.cmu.cs.dennisc.croquet.HistoryNode rv = modelContext.getChildAt( index );
-			assert rv != null;
-			return rv;
+	public Object getChild( Object parent, int index ) {
+		if( parent instanceof edu.cmu.cs.dennisc.croquet.TransactionHistory ) {
+			edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory = (edu.cmu.cs.dennisc.croquet.TransactionHistory)parent;
+			return transactionHistory.getTransactionAt( index );
+		} else if( parent instanceof edu.cmu.cs.dennisc.croquet.Transaction ) {
+			edu.cmu.cs.dennisc.croquet.Transaction transaction = (edu.cmu.cs.dennisc.croquet.Transaction)parent;
+			if( index < transaction.getPrepStepCount() ) {
+				return transaction.getPrepStepAt( index );
+			} else {
+				return transaction.getCompletionStep();
+			}
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
 	}
-	public int getIndexOfChild(java.lang.Object parent, Object child) {
-		if( parent instanceof edu.cmu.cs.dennisc.croquet.ModelContext<?> ) {
-			edu.cmu.cs.dennisc.croquet.ModelContext<?> modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext<?>)parent;
-			if( child instanceof edu.cmu.cs.dennisc.croquet.HistoryNode ) {
-				return modelContext.getIndexOfChild( (edu.cmu.cs.dennisc.croquet.HistoryNode)child );
+	public int getIndexOfChild( Object parent, Object child ) {
+		if( parent instanceof edu.cmu.cs.dennisc.croquet.TransactionHistory ) {
+			edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory = (edu.cmu.cs.dennisc.croquet.TransactionHistory)parent;
+			if( child instanceof edu.cmu.cs.dennisc.croquet.Transaction ) {
+				return transactionHistory.getIndexOfTransaction( (edu.cmu.cs.dennisc.croquet.Transaction)child );
+			} else {
+				return -1;
+			}
+		} else if( parent instanceof edu.cmu.cs.dennisc.croquet.Transaction ) {
+			edu.cmu.cs.dennisc.croquet.Transaction transaction = (edu.cmu.cs.dennisc.croquet.Transaction)parent;
+			if( child instanceof edu.cmu.cs.dennisc.croquet.PrepStep< ? > ) {
+				return transaction.getIndexOfPrepStep( (edu.cmu.cs.dennisc.croquet.PrepStep< ? >)child );
 			} else {
 				return -1;
 			}
@@ -86,17 +102,25 @@ class HistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMut
 			throw new IndexOutOfBoundsException();
 		}
 	}
+
 	
-	private java.util.List< edu.cmu.cs.dennisc.croquet.HistoryNode > updatePath( java.util.List< edu.cmu.cs.dennisc.croquet.HistoryNode > rv, edu.cmu.cs.dennisc.croquet.HistoryNode node ) {
-		edu.cmu.cs.dennisc.croquet.HistoryNode parent = node.getParent();
+	private java.util.List< Object > updatePath( java.util.List< Object > rv, Object node ) {
+		Object parent;
+		if( node instanceof edu.cmu.cs.dennisc.croquet.Transaction ) {
+			parent = ((edu.cmu.cs.dennisc.croquet.Transaction)node).getParent();
+		} else if( node instanceof edu.cmu.cs.dennisc.croquet.Step ) {
+			parent = ((edu.cmu.cs.dennisc.croquet.Step)node).getParent();
+		} else {
+			parent = null;
+		}
 		if( parent != null ) {
 			updatePath( rv, parent );
 		}
 		rv.add( node );
 		return rv;
 	}
-	public javax.swing.tree.TreePath getTreePath( edu.cmu.cs.dennisc.croquet.HistoryNode node ) {
-		java.util.List< edu.cmu.cs.dennisc.croquet.HistoryNode > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public javax.swing.tree.TreePath getTreePath( Object node ) {
+		java.util.List< Object > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		updatePath( list, node );
 		return new javax.swing.tree.TreePath( list.toArray() );
 	}
@@ -105,49 +129,43 @@ class HistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMut
 /**
  * @author Dennis Cosgrove
  */
-public class IsInteractionTreeShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
+public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
 	private static class SingletonHolder {
-		private static IsInteractionTreeShowingState instance = new IsInteractionTreeShowingState();
+		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState();
 	}
-	public static IsInteractionTreeShowingState getInstance() {
+	public static IsTransactionHistoryShowingState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private edu.cmu.cs.dennisc.croquet.ModelContext< ? > context;
-	private IsInteractionTreeShowingState() {
-		this( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
-	}
-	public IsInteractionTreeShowingState( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
-		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "3fb1e733-1736-476d-b40c-7729c82f0b21" ), false );
-		this.context = context;
+	public IsTransactionHistoryShowingState() {
+		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), true );
 	}
 	@Override
 	protected void localize() {
 		super.localize();
-		this.setTextForBothTrueAndFalse( "Interaction Tree" );
+		this.setTextForBothTrueAndFalse( "Transaction Tree" );
 	}
 	@Override
 	protected javax.swing.JFrame createFrame() {
 		javax.swing.JFrame rv = super.createFrame();
-		rv.setLocation( -1211, -11 );
-		rv.setSize( 1222, 1566 );
+		rv.setLocation( -1240, +40 );
+		rv.setSize( 800, 600 );
 		return rv;
 	}
 	@Override
 	protected java.awt.Component createPane() {
-		final HistoryTreeModel treeModel = new HistoryTreeModel( this.context );
+		final TransactionTreeModel treeModel = new TransactionTreeModel( edu.cmu.cs.dennisc.croquet.TransactionManager.getRootTransactionHistory() );
 		final javax.swing.JTree tree = new javax.swing.JTree( treeModel );
-		
-		for( int i=0; i<tree.getRowCount(); i++ ) {
+
+		for( int i = 0; i < tree.getRowCount(); i++ ) {
 			tree.expandRow( i );
 		}
-		tree.setRootVisible( false );
+		tree.setRootVisible( true );
 		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tree );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
-
-		context.addChildrenObserver( new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
-			public void addingChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+		edu.cmu.cs.dennisc.croquet.TransactionManager.addStepObserver( new edu.cmu.cs.dennisc.croquet.TransactionManager.StepObserver() {
+			public void addingStep( edu.cmu.cs.dennisc.croquet.Step< ? > step ) {
 			}
-			public void addedChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+			public void addedStep( edu.cmu.cs.dennisc.croquet.Step< ? > step ) {
 				javax.swing.SwingUtilities.invokeLater( new Runnable() {
 					public void run() {
 						treeModel.reload();

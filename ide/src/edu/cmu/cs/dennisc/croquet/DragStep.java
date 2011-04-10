@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class DragStep extends PrepStep< DragAndDropModel > {
-	public DragStep( DragAndDropModel model ) {
-		super( model );
+	public DragStep( Transaction parent, DragAndDropModel model ) {
+		super( parent, model );
 	}
 	public DragStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

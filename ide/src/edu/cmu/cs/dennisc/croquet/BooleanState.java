@@ -105,6 +105,7 @@ public /*final*/ class BooleanState extends State<Boolean> {
 		childContext.commitAndInvokeDo( booleanStateEdit );
 		ModelContext< ? > popContext = ContextManager.popContext();
 		assert popContext == childContext;
+		TransactionManager.getActiveTransaction().addBooleanStateChangeStep( this, booleanStateEdit );
 	}
 	
 	@Override

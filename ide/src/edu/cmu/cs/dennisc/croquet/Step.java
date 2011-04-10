@@ -46,8 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Step< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private Transaction parent;
 	private final CodableResolver< M > modelResolver; 
-	public Step( M model ) {
+	public Step( Transaction parent, M model ) {
+		this.setParent( parent );
 		this.modelResolver = model.getCodableResolver();
 	}
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -61,5 +63,11 @@ public abstract class Step< M extends Model > implements edu.cmu.cs.dennisc.code
 	}
 	public M getModel() {
 		return this.modelResolver.getResolved();
+	}
+	public Transaction getParent() {
+		return this.parent;
+	}
+	/*package-private*/ void setParent( Transaction parent ) {
+		this.parent = parent;
 	}
 }

@@ -40,25 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
-
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalTestingMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static InternalTestingMenuModel instance = new InternalTestingMenuModel();
+public class TransactionManager {
+	public static interface StepObserver {
+		public void addingStep(Step<?> step);
+		public void addedStep(Step<?> step);
 	}
-	public static InternalTestingMenuModel getInstance() {
-		return SingletonHolder.instance;
+	private static java.util.List<StepObserver> stepObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private static java.util.Stack< TransactionHistory > stack;
+	static {
+		stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+		stack.push( new TransactionHistory() );
 	}
-	private InternalTestingMenuModel() {
-		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
-				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance(),
-				org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance(),
-				org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance()
-		);
+	private TransactionManager() {
+		throw new AssertionError();
+	}
+	public static TransactionHistory getRootTransactionHistory() {
+		return stack.firstElement();
+	}
+	public static TransactionHistory getActiveTransactionHistory() {
+		return stack.peek();
+	}
+	
+	public static void addStepObserver( StepObserver stepObserver ) {
+		stepObservers.add( stepObserver );
+	}
+	public static void removeStepObserver( StepObserver stepObserver ) {
+		stepObservers.remove( stepObserver );
+	}
+	
+	public static Transaction getActiveTransaction() {
+		return getActiveTransactionHistory().getActiveTransaction();
+	}
+	/*package-private*/ static void fireAddingStep( Step<?> step ) {
+		for( StepObserver stepObserver : stepObservers ) {
+			stepObserver.addingStep( step );
+		}
+	}
+	/*package-private*/ static void fireAddedStep( Step<?> step ) {
+		for( StepObserver stepObserver : stepObservers ) {
+			stepObserver.addedStep( step );
+		}
 	}
 }

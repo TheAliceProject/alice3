@@ -40,25 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
-
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalTestingMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static InternalTestingMenuModel instance = new InternalTestingMenuModel();
+public class BooleanStateChangeStep extends StateChangeStep< BooleanState >{
+	public BooleanStateChangeStep( Transaction parent, BooleanState model, BooleanStateEdit edit ) {
+		super( parent, model, edit );
 	}
-	public static InternalTestingMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private InternalTestingMenuModel() {
-		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
-				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance(),
-				org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance(),
-				org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance()
-		);
+	public BooleanStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

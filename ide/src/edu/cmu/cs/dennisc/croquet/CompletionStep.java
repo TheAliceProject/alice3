@@ -46,10 +46,23 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CompletionStep< M extends CompletionModel > extends Step< M > {
-	public CompletionStep( M model ) {
-		super( model );
+	private final Edit<M> edit;
+	public CompletionStep( Transaction parent, M model, Edit<M> edit ) {
+		super( parent, model );
+		this.edit = edit;
 	}
 	public CompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+		Edit.Memento< M > memento = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		this.edit = memento.createEdit();
+	}
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.edit.createMemento() );
+	}
+//	public abstract boolean isActive();
+	public boolean isActive() {
+		return false;
 	}
 }

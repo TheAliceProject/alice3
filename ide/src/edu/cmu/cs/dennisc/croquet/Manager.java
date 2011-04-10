@@ -46,21 +46,6 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class Manager {
-	private static java.util.Stack< TransactionHistory > stack;
-	static {
-		stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-		stack.push( new TransactionHistory() );
-	}
-	private Manager() {
-		throw new AssertionError();
-	}
-	public static TransactionHistory getRootTransactionHistory() {
-		return stack.firstElement();
-	}
-	public static TransactionHistory getCurrentTransactionHistory() {
-		return stack.peek();
-	}
-	
 	private static java.util.Map< java.util.UUID, java.util.Set< Model > > mapIdToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static java.util.Set< Model > lookupModels( java.util.UUID id ) {
 		synchronized ( mapIdToModels ) {

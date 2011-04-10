@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class PrepStep<M extends PrepModel> extends Step< M > {
-	public PrepStep( M model ) {
-		super( model );
+	public PrepStep( Transaction parent, M model ) {
+		super( parent, model );
 	}
 	public PrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

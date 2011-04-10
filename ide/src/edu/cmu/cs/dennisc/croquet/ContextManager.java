@@ -255,10 +255,9 @@ public class ContextManager {
 	/*package-private*/ static MenuModelContext createAndPushMenuModelContext(MenuModel menuModel, MenuItemContainer menuItemContainer) {
 		return pushContext( new MenuModelContext(menuModel, null, menuItemContainer.getViewController() ) );
 	}
-	/*package-private*/ static DragAndDropContext createAndPushDragAndDropContext(DragAndDropModel dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource) {
-		return pushContext( new DragAndDropContext(dragAndDropOperation, originalMouseEvent, latestMouseEvent, dragSource) );
+	/*package-private*/ static DragAndDropContext createAndPushDragAndDropContext(DragAndDropModel model, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource) {
+		return pushContext( new DragAndDropContext(model, originalMouseEvent, latestMouseEvent, dragSource) );
 	}
-	
 		
 	private static javax.swing.JMenuBar getJMenuBarOrigin( javax.swing.MenuElement[] menuElements ) { 
 		if( menuElements.length > 0 ) {
