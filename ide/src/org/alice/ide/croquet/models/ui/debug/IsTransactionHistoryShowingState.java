@@ -159,7 +159,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 		for( int i = 0; i < tree.getRowCount(); i++ ) {
 			tree.expandRow( i );
 		}
-		tree.setRootVisible( true );
+		tree.setRootVisible( false );
 		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tree );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
 		edu.cmu.cs.dennisc.croquet.TransactionManager.addStepObserver( new edu.cmu.cs.dennisc.croquet.TransactionManager.StepObserver() {

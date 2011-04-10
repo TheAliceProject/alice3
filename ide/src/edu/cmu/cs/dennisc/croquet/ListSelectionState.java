@@ -504,6 +504,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		childContext.commitAndInvokeDo( listSelectionStateEdit );
 		ModelContext< ? > popContext = ContextManager.popContext();
 		assert popContext == childContext;
+		TransactionManager.getActiveTransaction().addListSelectionStateChangeStep( this, listSelectionStateEdit );
 	}
 
 	@Override
