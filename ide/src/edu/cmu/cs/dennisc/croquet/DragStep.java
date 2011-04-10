@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DragStep extends Step< DragAndDropModel > {
+public class DragStep extends PrepStep< DragAndDropModel > {
 	public DragStep( DragAndDropModel model ) {
 		super( model );
 	}

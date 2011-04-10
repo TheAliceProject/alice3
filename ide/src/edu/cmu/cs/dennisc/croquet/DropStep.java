@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DropStep extends Step< CompletionModel > {
+public class DropStep extends CompletionStep< CompletionModel > {
 	private final CodableResolver< DropReceptor > dropReceptorResolver;
 	public DropStep( CompletionModel model, DropReceptor dropReceptor ) {
 		super( model );
@@ -54,5 +54,10 @@ public class DropStep extends Step< CompletionModel > {
 	public DropStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.dropReceptorResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	}
+	@Override
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+		super.encode(binaryEncoder);
+		binaryEncoder.encode( this.dropReceptorResolver );
 	}
 }
