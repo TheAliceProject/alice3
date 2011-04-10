@@ -233,14 +233,15 @@ public class ContextManager {
 			return pushContext( new ListSelectionStateContext<E>( itemSelectionState, e, viewController /*, prevIndex, prevItem, nextIndex, nextItem*/ ) );
 		}
 	}
-	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeVisible( ListSelectionState<E> itemSelectionState, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
-		ListSelectionStateContext<E> listSelectionStateContext = createAndPushItemSelectionStateContext( itemSelectionState, e, itemSelectable );
+	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeVisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+		ListSelectionStateContext<E> listSelectionStateContext = createAndPushItemSelectionStateContext( model, e, itemSelectable );
 		listSelectionStateContext.handlePopupMenuWillBecomeVisibleEvent( e );
-		
+		TransactionManager.getActiveTransaction().addListSelectionPrepStep( model );
 	}
-	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeInvisible( ListSelectionState<E> itemSelectionState, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeInvisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
 	}
-	/*package-private*/ static <E> void addListSelectionPopupMenuCanceled( ListSelectionState<E> itemSelectionState, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+	/*package-private*/ static <E> void addListSelectionPopupMenuCanceled( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+		TransactionManager.getActiveTransaction().addCancelStep( model );
 	}
 
 	/*package-private*/ static BoundedRangeIntegerStateContext createAndPushBoundedRangeIntegerStateContext(BoundedRangeIntegerState boundedRangeIntegerState) {

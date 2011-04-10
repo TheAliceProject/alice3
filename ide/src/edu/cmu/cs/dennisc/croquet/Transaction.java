@@ -88,6 +88,13 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	public <E> void addListSelectionStateChangeStep( ListSelectionState< E > model, ListSelectionStateEdit< E > edit ) {
 		this.setCompletionStep( new ListSelectionStateChangeStep<E>( this, model, edit ) );
 	}
+	public <E> void addListSelectionPrepStep( ListSelectionState< E > model ) {
+		//this.addPrepStep( new ListSelectionStatePrepStep<E>( this, model ) );
+	}
+	public <E> void addCancelStep( ListSelectionState< E > model ) {
+		//this.addPrepStep( new ListSelectionStatePrepStep<E>( this, model ) );
+	}
+	
 	
 	public java.util.ListIterator< PrepStep<?> > getPrepSteps() {
 		return this.prepSteps.listIterator();

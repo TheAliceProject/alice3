@@ -47,7 +47,6 @@ package org.alice.ide.croquet.models.ui.debug;
  */
 class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< Object > {
 	private edu.cmu.cs.dennisc.croquet.TransactionHistory root;
-
 	public TransactionTreeModel( edu.cmu.cs.dennisc.croquet.TransactionHistory root ) {
 		this.root = root;
 	}
@@ -131,13 +130,20 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
  */
 public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
 	private static class SingletonHolder {
-		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState();
+		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState( edu.cmu.cs.dennisc.croquet.TransactionManager.getRootTransactionHistory() );
 	}
 	public static IsTransactionHistoryShowingState getInstance() {
 		return SingletonHolder.instance;
 	}
-	public IsTransactionHistoryShowingState() {
+
+	public static IsTransactionHistoryShowingState createInstance( edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory ) {
+		return new IsTransactionHistoryShowingState( transactionHistory );
+	}
+	
+	private final edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory;
+	private IsTransactionHistoryShowingState( edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory ) {
 		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), true );
+		this.transactionHistory = transactionHistory;
 	}
 	@Override
 	protected void localize() {
@@ -153,7 +159,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 	}
 	@Override
 	protected java.awt.Component createPane() {
-		final TransactionTreeModel treeModel = new TransactionTreeModel( edu.cmu.cs.dennisc.croquet.TransactionManager.getRootTransactionHistory() );
+		final TransactionTreeModel treeModel = new TransactionTreeModel( this.transactionHistory );
 		final javax.swing.JTree tree = new javax.swing.JTree( treeModel );
 
 		for( int i = 0; i < tree.getRowCount(); i++ ) {
