@@ -46,23 +46,60 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CompletionStep< M extends CompletionModel > extends Step< M > {
-	private final Edit<M> edit;
-	public CompletionStep( Transaction parent, M model, Edit<M> edit ) {
+	private TransactionHistory transactionHistory;
+	private Edit<M> edit;
+	private boolean isSuccessfullyCompleted;
+	private boolean isActive = true;
+	public CompletionStep( Transaction parent, M model ) {
 		super( parent, model );
-		this.edit = edit;
 	}
 	public CompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+		this.isActive = binaryDecoder.decodeBoolean();
+		this.isSuccessfullyCompleted = binaryDecoder.decodeBoolean();
 		Edit.Memento< M > memento = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.edit = memento.createEdit();
+		this.transactionHistory = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.isActive );
+		binaryEncoder.encode( this.isSuccessfullyCompleted );
 		binaryEncoder.encode( this.edit.createMemento() );
+		binaryEncoder.encode( this.transactionHistory );
 	}
-//	public abstract boolean isActive();
+	public TransactionHistory getTransactionHistory() {
+		return this.transactionHistory;
+	}
+	public TransactionHistory createAndPushTransactionHistory() {
+		assert this.transactionHistory == null;
+		this.transactionHistory = new TransactionHistory();
+		TransactionManager.pushTransactionHistory( this.transactionHistory );
+		return this.transactionHistory;
+	}
+	//	public abstract boolean isActive();
 	public boolean isActive() {
-		return false;
+		return this.isActive;
+	}
+	
+	private void deactivate() {
+		this.isActive = false;
+	}
+	
+	public void commit( Edit<M> edit ) {
+		this.isSuccessfullyCompleted = true;
+		this.edit = edit;
+		this.deactivate();
+	}
+	public void finish() {
+		this.isSuccessfullyCompleted = true;
+		this.edit = null;
+		this.deactivate();
+	}
+	public void cancel() {
+		this.isSuccessfullyCompleted = false;
+		this.edit = null;
+		this.deactivate();
 	}
 }

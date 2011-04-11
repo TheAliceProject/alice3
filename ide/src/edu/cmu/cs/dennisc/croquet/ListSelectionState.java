@@ -510,11 +510,11 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 	
 	protected void commitEdit( ListSelectionStateEdit< E > listSelectionStateEdit, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		TransactionManager.getActiveTransaction().addListSelectionStateChangeStep( this );
 		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
 		childContext.commitAndInvokeDo( listSelectionStateEdit );
 		ModelContext< ? > popContext = ContextManager.popContext();
 		assert popContext == childContext;
-		TransactionManager.getActiveTransaction().addListSelectionStateChangeStep( this, listSelectionStateEdit );
 	}
 
 	@Override

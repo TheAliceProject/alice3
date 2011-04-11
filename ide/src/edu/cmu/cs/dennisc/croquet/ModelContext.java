@@ -334,7 +334,7 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 	public void finish() {
 		this.addChild(new FinishEvent());
 	}
-	public void commitAndInvokeDo(Edit edit) {
+	public void commitAndInvokeDo(Edit<M> edit) {
 		assert edit != null;
 		edit.setContext(this);
 		this.fireCommitting(edit);

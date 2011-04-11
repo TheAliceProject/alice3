@@ -82,7 +82,7 @@ public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncoda
 		return this.transactions.size();
 	}
 	
-	private Transaction getLastTransaction() {
+	/*package-private*/ Transaction getLastTransaction() {
 		final int N = this.transactions.size();
 		if( N > 0 ) {
 			return this.transactions.get( N-1 );

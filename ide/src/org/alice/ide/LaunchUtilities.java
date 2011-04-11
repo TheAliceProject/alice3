@@ -195,8 +195,9 @@ public class LaunchUtilities {
 		preLaunch( splashScreen );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				CreateIdeOperation createIdeOperation = CreateIdeOperation.getInstance( cls );
-				createIdeOperation.fire();
+//				CreateIdeOperation createIdeOperation = CreateIdeOperation.getInstance( cls );
+//				createIdeOperation.fire();
+				IDE ide = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
 				Runnable runnable = createRunnable( splashScreen, args, true );
 				runnable.run();
 			}

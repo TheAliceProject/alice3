@@ -182,6 +182,7 @@ public class ContextManager {
 
 	
 	/*package-private*/ static ActionOperationContext createAndPushActionOperationContext(ActionOperation actionOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		TransactionManager.getActiveTransaction().addActionOperationStep( actionOperation );
 		return pushContext( new ActionOperationContext(actionOperation, e, viewController) );
 	}
 	/*package-private*/ static SerialOperationContext createAndPushSerialOperationContext(SerialOperation compositeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
@@ -194,6 +195,7 @@ public class ContextManager {
 		return pushContext( new InformationDialogOperationContext<J>(informationDialogOperation, e, viewController) );
 	}
 	/*package-private*/ static <J extends JComponent< ? >> InputDialogOperationContext<J> createAndPushInputDialogOperationContext(InputDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		TransactionManager.getActiveTransaction().addInputDialogOperationStep( inputDialogOperation );
 		return pushContext( new InputDialogOperationContext<J>(inputDialogOperation, e, viewController) );
 	}
 	/*package-private*/ static WizardDialogOperationContext createAndPushWizardDialogOperationContext(WizardDialogOperation wizardDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {

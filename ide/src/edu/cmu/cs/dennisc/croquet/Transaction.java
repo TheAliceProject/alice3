@@ -79,14 +79,20 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	public void addDragStep( DragAndDropModel model ) {
 		this.addPrepStep( new DragStep( this, model ) ); 
 	}
-	public void addDropStep( CompletionModel model, Edit< CompletionModel > edit, DropReceptor dropReceptor ) {
-		this.setCompletionStep( new DropStep( this, model, edit, dropReceptor ) );
+	public void addActionOperationStep( ActionOperation model ) {
+		this.setCompletionStep( new ActionOperationStep( this, model ) ); 
 	}
-	public void addBooleanStateChangeStep( BooleanState model, BooleanStateEdit edit ) {
-		this.setCompletionStep( new BooleanStateChangeStep( this, model, edit ) );
+	public <J extends JComponent< ? >> void addInputDialogOperationStep( InputDialogOperation< J > model ) {
+		this.setCompletionStep( new InputDialogOperationStep<J>( this, model ) ); 
 	}
-	public <E> void addListSelectionStateChangeStep( ListSelectionState< E > model, ListSelectionStateEdit< E > edit ) {
-		this.setCompletionStep( new ListSelectionStateChangeStep<E>( this, model, edit ) );
+	public void addDropStep( CompletionModel model, DropReceptor dropReceptor ) {
+		this.setCompletionStep( new DropStep( this, model, dropReceptor ) );
+	}
+	public void addBooleanStateChangeStep( BooleanState model ) {
+		this.setCompletionStep( new BooleanStateChangeStep( this, model ) );
+	}
+	public <E> void addListSelectionStateChangeStep( ListSelectionState< E > model ) {
+		this.setCompletionStep( new ListSelectionStateChangeStep<E>( this, model ) );
 	}
 	public <E> void addListSelectionPrepStep( ListSelectionStatePrepModel< E > model ) {
 		this.addPrepStep( new ListSelectionStatePrepStep<E>( this, model ) );
@@ -111,7 +117,12 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 
 	private void addPrepStep( PrepStep< ? > step ) {
 		TransactionManager.fireAddingStep( step );
-		this.prepSteps.add( step );
+		if( this.completionStep != null ) {
+			TransactionHistory transactionHistory = this.completionStep.createAndPushTransactionHistory();
+			transactionHistory.getActiveTransaction().addPrepStep( step );
+		} else {
+			this.prepSteps.add( step );
+		}
 		TransactionManager.fireAddedStep( step );
 	}
 //	public void removePrepStep( PrepStep< ? > step ) {
@@ -122,7 +133,12 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	}
 	private void setCompletionStep( CompletionStep<?> step ) {
 		TransactionManager.fireAddingStep( step );
-		this.completionStep = step;
+		if( this.completionStep != null ) {
+			TransactionHistory transactionHistory = this.completionStep.createAndPushTransactionHistory();
+			transactionHistory.getActiveTransaction().setCompletionStep( step );
+		} else {
+			this.completionStep = step;
+		}
 		TransactionManager.fireAddedStep( step );
 	}
 	public boolean isActive() {

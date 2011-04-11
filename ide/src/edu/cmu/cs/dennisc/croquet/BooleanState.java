@@ -101,11 +101,11 @@ public class BooleanState extends State<Boolean> {
 	}
 	
 	private void commitEdit( BooleanStateEdit booleanStateEdit, java.awt.event.ItemEvent e ) {
+		TransactionManager.getActiveTransaction().addBooleanStateChangeStep( this );
 		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
 		childContext.commitAndInvokeDo( booleanStateEdit );
 		ModelContext< ? > popContext = ContextManager.popContext();
 		assert popContext == childContext;
-		TransactionManager.getActiveTransaction().addBooleanStateChangeStep( this, booleanStateEdit );
 	}
 	
 	@Override

@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public class DropStep extends CompletionStep< CompletionModel > {
 	private final CodableResolver< DropReceptor > dropReceptorResolver;
-	public DropStep( Transaction parent, CompletionModel model, Edit< CompletionModel > edit, DropReceptor dropReceptor ) {
-		super( parent, model, edit );
+	public DropStep( Transaction parent, CompletionModel model, DropReceptor dropReceptor ) {
+		super( parent, model );
 		this.dropReceptorResolver = dropReceptor.getCodableResolver();
 	}
 	public DropStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

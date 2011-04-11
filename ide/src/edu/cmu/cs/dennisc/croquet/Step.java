@@ -70,4 +70,14 @@ public abstract class Step< M extends Model > implements edu.cmu.cs.dennisc.code
 	/*package-private*/ void setParent( Transaction parent ) {
 		this.parent = parent;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		sb.append( this.getModel() );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }

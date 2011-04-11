@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class ListSelectionStateChangeStep<E> extends StateChangeStep< ListSelectionState< E > >{
-	public ListSelectionStateChangeStep( Transaction parent, ListSelectionState< E > model, ListSelectionStateEdit< E > edit ) {
-		super( parent, model, edit );
+	public ListSelectionStateChangeStep( Transaction parent, ListSelectionState< E > model ) {
+		super( parent, model );
 	}
 	public ListSelectionStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

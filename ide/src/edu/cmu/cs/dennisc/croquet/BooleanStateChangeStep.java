@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class BooleanStateChangeStep extends StateChangeStep< BooleanState >{
-	public BooleanStateChangeStep( Transaction parent, BooleanState model, BooleanStateEdit edit ) {
-		super( parent, model, edit );
+	public BooleanStateChangeStep( Transaction parent, BooleanState model ) {
+		super( parent, model );
 	}
 	public BooleanStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

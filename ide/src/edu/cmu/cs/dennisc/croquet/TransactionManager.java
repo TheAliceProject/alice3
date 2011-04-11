@@ -66,6 +66,13 @@ public class TransactionManager {
 		return stack.peek();
 	}
 	
+	public static void pushTransactionHistory( TransactionHistory transactionHistory ) {
+		stack.push( transactionHistory );
+	}
+	public static TransactionHistory popTransactionHistory() {
+		return stack.pop();
+	}
+	
 	public static void addStepObserver( StepObserver stepObserver ) {
 		stepObservers.add( stepObserver );
 	}

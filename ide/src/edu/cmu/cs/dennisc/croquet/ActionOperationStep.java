@@ -45,73 +45,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CompletionContext<M extends CompletionModel> extends ModelContext<M> {
-	/*package-private*/ CompletionContext( M operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( operation, e, viewController );
+public class ActionOperationStep extends CompletionStep< ActionOperation >{
+	public ActionOperationStep( Transaction parent, ActionOperation model ) {
+		super( parent, model );
 	}
-	/*package-private*/ CompletionContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public ActionOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	private void transactionFinish() {
-//		TransactionHistory transactionHistory = TransactionManager.getActiveTransactionHistory();
-//		Transaction transaction = transactionHistory.getLastTransaction();
-//		CompletionStep< ? > completionStep = transaction.getCompletionStep();
-//		if( completionStep != null && completionStep.isActive() ) {
-//			completionStep.finish();
-//		} else {
-//			if( transactionHistory != null ) {
-//				TransactionHistory pop = TransactionManager.popTransactionHistory();
-//				assert pop == transactionHistory;
-//				this.transactionFinish();
-//			}
-//		}
-	}
-
-	@Override
-	public void finish() {
-		super.finish();
-		this.transactionFinish();
-	}
-	
-	private void transactionCommit( Edit edit ) {
-		TransactionHistory transactionHistory = TransactionManager.getActiveTransactionHistory();
-		Transaction transaction = transactionHistory.getLastTransaction();
-		CompletionStep< ? > completionStep = transaction.getCompletionStep();
-		if( completionStep != null && completionStep.isActive() ) {
-			completionStep.commit( edit );
-		} else {
-			if( transactionHistory != null ) {
-				TransactionHistory pop = TransactionManager.popTransactionHistory();
-				assert pop == transactionHistory;
-				this.transactionCommit( edit );
-			}
-		}
-	}
-	
-	@Override
-	public void commitAndInvokeDo(Edit edit) {
-		super.commitAndInvokeDo( edit );
-		this.transactionCommit( edit );
-	}
-	@Override
-	public void cancel() {
-		super.cancel();
-		Transaction transaction = TransactionManager.getActiveTransaction();
-		CompletionStep< ? > completionStep = transaction.getCompletionStep();
-		if( completionStep != null ) {
-			completionStep.cancel();
-		} else {
-			System.err.println( "cancel completionStep == null" );
-		}
-	}
-	
-	public Edit< ? > getEdit() {
-		for( HistoryNode historyNode : this.getChildren() ) {
-			if( historyNode instanceof CommitEvent ) {
-				CommitEvent commitEvent = (CommitEvent)historyNode;
-				return commitEvent.getEdit();
-			}
-		}
-		return null;
 	}
 }

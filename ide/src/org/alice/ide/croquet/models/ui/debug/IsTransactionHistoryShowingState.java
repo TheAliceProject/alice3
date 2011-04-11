@@ -54,7 +54,7 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 		return this.root;
 	}
 	public boolean isLeaf( Object node ) {
-		return node instanceof edu.cmu.cs.dennisc.croquet.Step< ? >;
+		return node instanceof edu.cmu.cs.dennisc.croquet.PrepStep< ? >;
 	}
 	public int getChildCount( Object parent ) {
 		if( parent instanceof edu.cmu.cs.dennisc.croquet.TransactionHistory ) {
@@ -64,6 +64,9 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 			edu.cmu.cs.dennisc.croquet.Transaction transaction = (edu.cmu.cs.dennisc.croquet.Transaction)parent;
 			edu.cmu.cs.dennisc.croquet.CompletionStep< ? > completionStep = transaction.getCompletionStep();
 			return transaction.getPrepStepCount()+(completionStep!=null?1:0);
+		} else if( parent instanceof edu.cmu.cs.dennisc.croquet.CompletionStep< ? > ) {
+			edu.cmu.cs.dennisc.croquet.CompletionStep< ? > completionStep = (edu.cmu.cs.dennisc.croquet.CompletionStep< ? >)parent;
+			return completionStep.getTransactionHistory() != null ? 1 : 0;
 		} else {
 			return 0;
 		}
@@ -79,6 +82,10 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 			} else {
 				return transaction.getCompletionStep();
 			}
+		} else if( parent instanceof edu.cmu.cs.dennisc.croquet.CompletionStep< ? > ) {
+			assert index == 0;
+			edu.cmu.cs.dennisc.croquet.CompletionStep< ? > completionStep = (edu.cmu.cs.dennisc.croquet.CompletionStep< ? >)parent;
+			return completionStep.getTransactionHistory();
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
@@ -98,6 +105,10 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 			} else {
 				return -1;
 			}
+		} else if( parent instanceof edu.cmu.cs.dennisc.croquet.CompletionStep< ? > ) {
+			edu.cmu.cs.dennisc.croquet.CompletionStep< ? > completionStep = (edu.cmu.cs.dennisc.croquet.CompletionStep< ? >)parent;
+			assert child == completionStep.getTransactionHistory();
+			return 0;
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
