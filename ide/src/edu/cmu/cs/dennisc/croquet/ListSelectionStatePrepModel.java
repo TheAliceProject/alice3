@@ -88,4 +88,7 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 	protected ListSelectionStatePrepModelResolver createCodableResolver() {
 		return new ListSelectionStatePrepModelResolver( this );
 	}
+	public ComboBox< E > createComboBox() {
+		return new ComboBox< E >( this.getListSelectionState() );
+	}
 }

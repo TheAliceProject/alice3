@@ -564,9 +564,6 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		return sb.toString();
 	}
 
-	public ComboBox< E > createComboBox() {
-		return new ComboBox< E >( this );
-	}
 	public List< E > createList() {
 		return new List< E >( this );
 	}
