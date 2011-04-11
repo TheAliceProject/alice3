@@ -45,11 +45,47 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ListSelectionStatePrepStep<E> extends PrepStep< ListSelectionStatePrepModel< E > > {
-	public ListSelectionStatePrepStep( Transaction parent, ListSelectionStatePrepModel< E > model ) {
-		super( parent, model );
+public class ListSelectionStatePrepModel<E> extends PrepModel {
+	private static final Group LIST_SELECTION_STATE_PREP_MODEL_GROUP = Group.getInstance( java.util.UUID.fromString( "de535ef7-d377-44ff-8ee0-87706815c69c" ), "LIST_SELECTION_STATE_PREP_MODEL_GROUP" );
+	private ListSelectionState< E > listSelectionState;
+	/*package-private*/ ListSelectionStatePrepModel( ListSelectionState< E > listSelectionState ) {
+		super( LIST_SELECTION_STATE_PREP_MODEL_GROUP, java.util.UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
+		this.listSelectionState = listSelectionState;
 	}
-	public ListSelectionStatePrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	@Override
+	protected void localize() {
+	}
+	public ListSelectionState< E > getListSelectionState() {
+		return this.listSelectionState;
+	}
+	@Override
+	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		return this.listSelectionState.isAlreadyInState( edit );
+	}
+	public static class ListSelectionStatePrepModelResolver<E> implements CodableResolver< ListSelectionStatePrepModel< E > > {
+		private ListSelectionStatePrepModel< E > model;
+		
+		public ListSelectionStatePrepModelResolver( ListSelectionStatePrepModel< E > model ) {
+			this.model = model;
+		}
+		public ListSelectionStatePrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			this.decode( binaryDecoder );
+		}
+		public edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > getResolved() {
+			return this.model;
+		}
+		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			CodableResolver<ListSelectionState< E >> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			ListSelectionState< E > listSelectionState = resolver.getResolved();
+			this.model = listSelectionState.getPrepModel();
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			CodableResolver<ListSelectionState< E >> resolver = this.model.listSelectionState.getCodableResolver();
+			binaryEncoder.encode( resolver );
+		}
+	}
+	@Override
+	protected ListSelectionStatePrepModelResolver createCodableResolver() {
+		return new ListSelectionStatePrepModelResolver( this );
 	}
 }

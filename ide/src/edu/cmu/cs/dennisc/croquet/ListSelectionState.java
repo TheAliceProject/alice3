@@ -283,6 +283,16 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	protected void localize() {
 	}
 
+	private ListSelectionStatePrepModel< E > prepModel;
+	public synchronized ListSelectionStatePrepModel< E > getPrepModel() {
+		if( this.prepModel != null ) {
+			//pass
+		} else {
+			this.prepModel = new ListSelectionStatePrepModel< E >( this );
+		}
+		return this.prepModel;
+	}
+
 	public void addValueObserver( ValueObserver< E > valueObserver ) {
 		this.valueObservers.add( valueObserver );
 	}

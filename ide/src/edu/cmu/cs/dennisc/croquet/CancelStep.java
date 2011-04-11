@@ -45,11 +45,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ListSelectionStatePrepStep<E> extends PrepStep< ListSelectionStatePrepModel< E > > {
-	public ListSelectionStatePrepStep( Transaction parent, ListSelectionStatePrepModel< E > model ) {
-		super( parent, model );
+public class CancelStep extends CompletionStep< CompletionModel > {
+	public CancelStep( Transaction parent, CompletionModel model ) {
+		super( parent, model, null );
 	}
-	public ListSelectionStatePrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public CancelStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 }

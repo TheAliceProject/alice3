@@ -236,7 +236,7 @@ public class ContextManager {
 	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeVisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
 		ListSelectionStateContext<E> listSelectionStateContext = createAndPushItemSelectionStateContext( model, e, itemSelectable );
 		listSelectionStateContext.handlePopupMenuWillBecomeVisibleEvent( e );
-		TransactionManager.getActiveTransaction().addListSelectionPrepStep( model );
+		TransactionManager.getActiveTransaction().addListSelectionPrepStep( model.getPrepModel() );
 	}
 	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeInvisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
 	}
