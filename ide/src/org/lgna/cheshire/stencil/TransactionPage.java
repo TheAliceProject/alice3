@@ -40,51 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.cheshire.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private Transaction parent;
-	private final CodableResolver< M > modelResolver; 
-	public Step( Transaction parent, M model ) {
-		this.setParent( parent );
-		this.modelResolver = model.getCodableResolver();
-	}
-	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		throw new AssertionError();
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.modelResolver );
-	}
-	public M getModel() {
-		return this.modelResolver.getResolved();
-	}
-	public Transaction getParent() {
-		return this.parent;
-	}
-	/*package-private*/ void setParent( Transaction parent ) {
-		this.parent = parent;
-	}
-
-	public void retarget( Retargeter retargeter ) {
-		if( this.modelResolver instanceof RetargetableResolver<?> ) {
-			RetargetableResolver<?> retargetableResolver = (RetargetableResolver<?>)this.modelResolver;
-			retargetableResolver.retarget( retargeter );
+public class TransactionPage extends org.lgna.cheshire.TransactionChapter implements org.lgna.stencil.Page {
+	private static java.util.Map< edu.cmu.cs.dennisc.croquet.Transaction, TransactionPage > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized TransactionPage getInstance( edu.cmu.cs.dennisc.croquet.Transaction transaction ) {
+		TransactionPage rv = map.get( transaction );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new TransactionPage( transaction );
+			map.put( transaction, rv );
 		}
+		return rv;
 	}
-	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.getModel() );
-		sb.append( "]" );
-		return sb.toString();
+	private TransactionPage( edu.cmu.cs.dennisc.croquet.Transaction transaction ) {
+		super( transaction );
+	}
+	public Iterable< org.lgna.stencil.Note > getNotes() {
+		return null;
+	}
+	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+		return false;
+	}
+	public boolean isStencilRenderingDesired() {
+		return true;
+	}
+	public boolean isAlreadyInTheDesiredState() {
+		return false;
+	}
+	public edu.cmu.cs.dennisc.croquet.JComponent< ? > getCard() {
+		return null;
 	}
 }

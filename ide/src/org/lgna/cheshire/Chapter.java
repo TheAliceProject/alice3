@@ -40,51 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.cheshire;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private Transaction parent;
-	private final CodableResolver< M > modelResolver; 
-	public Step( Transaction parent, M model ) {
-		this.setParent( parent );
-		this.modelResolver = model.getCodableResolver();
+public abstract class Chapter {
+	private java.util.UUID id = java.util.UUID.randomUUID();
+	private int[] historyIndices = null;
+	private edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability;
+	public java.util.UUID getId() {
+		return id;
 	}
-	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	/*package-private*/ int[] getHistoryIndices() {
+		return this.historyIndices;
 	}
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		throw new AssertionError();
+	/*package-private*/ void setHistoryIndices( int[] historyIndices ) {
+		this.historyIndices = historyIndices;
 	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.modelResolver );
+	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability() {
+		return this.replacementAcceptability;
 	}
-	public M getModel() {
-		return this.modelResolver.getResolved();
-	}
-	public Transaction getParent() {
-		return this.parent;
-	}
-	/*package-private*/ void setParent( Transaction parent ) {
-		this.parent = parent;
-	}
-
-	public void retarget( Retargeter retargeter ) {
-		if( this.modelResolver instanceof RetargetableResolver<?> ) {
-			RetargetableResolver<?> retargetableResolver = (RetargetableResolver<?>)this.modelResolver;
-			retargetableResolver.retarget( retargeter );
-		}
+	public void setReplacementAcceptability( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability ) {
+		this.replacementAcceptability = replacementAcceptability;
 	}
 	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.getModel() );
-		sb.append( "]" );
-		return sb.toString();
-	}
+	public abstract void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ); 
+
+	public abstract void reset(); 
+	public abstract void complete(); 
 }

@@ -40,51 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.cheshire.stencil;
+
+import org.lgna.stencil.Feature;
+import org.lgna.stencil.Feature.Connection;
+import org.lgna.stencil.Feature.ConnectionPreference;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private Transaction parent;
-	private final CodableResolver< M > modelResolver; 
-	public Step( Transaction parent, M model ) {
-		this.setParent( parent );
-		this.modelResolver = model.getCodableResolver();
+public class DialogCloseButtonFeature extends Feature {
+	public DialogCloseButtonFeature(edu.cmu.cs.dennisc.croquet.RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> trackableShapeResolver) {
+		super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
 	}
-	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		throw new AssertionError();
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.modelResolver );
-	}
-	public M getModel() {
-		return this.modelResolver.getResolved();
-	}
-	public Transaction getParent() {
-		return this.parent;
-	}
-	/*package-private*/ void setParent( Transaction parent ) {
-		this.parent = parent;
-	}
-
-	public void retarget( Retargeter retargeter ) {
-		if( this.modelResolver instanceof RetargetableResolver<?> ) {
-			RetargetableResolver<?> retargetableResolver = (RetargetableResolver<?>)this.modelResolver;
-			retargetableResolver.retarget( retargeter );
-		}
-	}
-	
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.getModel() );
-		sb.append( "]" );
-		return sb.toString();
+	protected boolean isPathRenderingDesired() {
+		return true;
+	}
+	@Override
+	public boolean isPotentiallyScrollable() {
+		return false;
+	}
+	@Override
+	protected java.awt.Insets getBoundsInsets() {
+		return null;
+	}
+	@Override
+	protected java.awt.Insets getContainsInsets() {
+		return null;
+	}
+	@Override
+	protected java.awt.Insets getPaintInsets() {
+		return null;
+	}
+	@Override
+	public java.awt.geom.Area getAreaToSubstractForPaint(edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy) {
+		return null;
+	}
+	@Override
+	public java.awt.geom.Area getAreaToSubstractForContains(edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy) {
+		return null;
+	}
+	@Override
+	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection) {
 	}
 }

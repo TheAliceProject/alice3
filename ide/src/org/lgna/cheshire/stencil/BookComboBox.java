@@ -40,51 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.cheshire.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private Transaction parent;
-	private final CodableResolver< M > modelResolver; 
-	public Step( Transaction parent, M model ) {
-		this.setParent( parent );
-		this.modelResolver = model.getCodableResolver();
+public class BookComboBox extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComboBox > {
+	private BookComboBoxModel comboBoxModel;
+	private boolean isLightWeightPopupEnabled;
+	public BookComboBox( BookComboBoxModel comboBoxModel, boolean isLightWeightPopupEnabled ) {
+		this.comboBoxModel = comboBoxModel;
+		this.isLightWeightPopupEnabled = isLightWeightPopupEnabled;
 	}
-	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		throw new AssertionError();
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.modelResolver );
-	}
-	public M getModel() {
-		return this.modelResolver.getResolved();
-	}
-	public Transaction getParent() {
-		return this.parent;
-	}
-	/*package-private*/ void setParent( Transaction parent ) {
-		this.parent = parent;
-	}
-
-	public void retarget( Retargeter retargeter ) {
-		if( this.modelResolver instanceof RetargetableResolver<?> ) {
-			RetargetableResolver<?> retargetableResolver = (RetargetableResolver<?>)this.modelResolver;
-			retargetableResolver.retarget( retargeter );
-		}
-	}
-	
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.getModel() );
-		sb.append( "]" );
-		return sb.toString();
+	protected javax.swing.JComboBox createAwtComponent() {
+		javax.swing.JComboBox rv = new javax.swing.JComboBox( this.comboBoxModel );
+		//todo: find a better way
+		//warning monumentally brittle code below
+		rv.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+				javax.swing.JComboBox box = (javax.swing.JComboBox)e.getSource();
+				javax.accessibility.Accessible accessible = box.getUI().getAccessibleChild( box, 0 );
+				if( accessible instanceof javax.swing.JPopupMenu ) {
+					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)accessible;
+					java.awt.Component component = jPopupMenu.getComponent( 0 );
+					if( component instanceof javax.swing.JScrollPane ) {
+						javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)component;
+						java.awt.Dimension size = scrollPane.getPreferredSize();
+
+						javax.swing.JViewport viewport = scrollPane.getViewport();
+						java.awt.Component view = viewport.getView();
+						java.awt.Dimension viewportSize = view.getPreferredSize();
+						size.width = viewportSize.width;
+						scrollPane.setPreferredSize( size );
+						scrollPane.setMaximumSize( size );
+					}
+				}
+			}
+			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+			}
+			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+			}
+		} );
+
+		rv.setMaximumRowCount( 20 );
+		if( this.isLightWeightPopupEnabled ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.javax.swing.PopupFactoryUtilities.forceHeavyWeightPopups( rv );
+		}
+		ChapterCellRenderer stepCellRenderer = new ChapterCellRenderer( this.comboBoxModel.getTransactionsModel(), Presentation.CONTROL_COLOR );
+		rv.setRenderer( stepCellRenderer );
+		return rv;
 	}
-}
+};

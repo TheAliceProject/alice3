@@ -40,51 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.cheshire.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private Transaction parent;
-	private final CodableResolver< M > modelResolver; 
-	public Step( Transaction parent, M model ) {
-		this.setParent( parent );
-		this.modelResolver = model.getCodableResolver();
-	}
-	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		throw new AssertionError();
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.modelResolver );
-	}
-	public M getModel() {
-		return this.modelResolver.getResolved();
-	}
-	public Transaction getParent() {
-		return this.parent;
-	}
-	/*package-private*/ void setParent( Transaction parent ) {
-		this.parent = parent;
-	}
-
-	public void retarget( Retargeter retargeter ) {
-		if( this.modelResolver instanceof RetargetableResolver<?> ) {
-			RetargetableResolver<?> retargetableResolver = (RetargetableResolver<?>)this.modelResolver;
-			retargetableResolver.retarget( retargeter );
-		}
+public class BookList extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JList > {
+	private BookComboBoxModel comboBoxModel;
+	public BookList( BookComboBoxModel comboBoxModel ) {
+		this.comboBoxModel = comboBoxModel;
 	}
 	
+	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+			comboBoxModel.setSelectedItem( getAwtComponent().getSelectedValue() );
+		}
+	};
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.getModel() );
-		sb.append( "]" );
-		return sb.toString();
+	protected javax.swing.JList createAwtComponent() {
+		javax.swing.JList rv = new javax.swing.JList( this.comboBoxModel );
+		ChapterCellRenderer cellRenderer = new ChapterCellRenderer( this.comboBoxModel.getTransactionsModel(), Presentation.CONTROL_COLOR );
+		rv.setCellRenderer( cellRenderer );
+		return rv;
 	}
-}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getAwtComponent().addListSelectionListener( this.listSelectionListener );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		this.getAwtComponent().removeListSelectionListener( this.listSelectionListener );
+		super.handleUndisplayable();
+	}
+};

@@ -40,51 +40,68 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.cheshire;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private Transaction parent;
-	private final CodableResolver< M > modelResolver; 
-	public Step( Transaction parent, M model ) {
-		this.setParent( parent );
-		this.modelResolver = model.getCodableResolver();
+public enum SoundCache {
+	//SUCCESS( javax.swing.plaf.metal.MetalLookAndFeel.class, "sounds/OptionPaneInformation.wav", false ),
+	SUCCESS( null, null, false ),
+	FAILURE( javax.swing.plaf.metal.MetalLookAndFeel.class, "sounds/OptionPaneError.wav", true );
+	private Class<?> cls;
+	private String resourceName;
+	private boolean isAttempted = false;
+	private javax.sound.sampled.Clip clip;
+	private boolean isBeepDesiredAsFallback;
+	
+	private static int ignoreCount = 0;
+	private static boolean isEnabled = true;
+	SoundCache( Class<?> cls, String resourceName, boolean isBeepDesiredAsFallback ) {
+		this.cls = cls;
+		this.resourceName = resourceName;
+		this.isBeepDesiredAsFallback = isBeepDesiredAsFallback;
 	}
-	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	public static void pushIgnoreStartRequests() {
+		ignoreCount ++;
 	}
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		throw new AssertionError();
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.modelResolver );
-	}
-	public M getModel() {
-		return this.modelResolver.getResolved();
-	}
-	public Transaction getParent() {
-		return this.parent;
-	}
-	/*package-private*/ void setParent( Transaction parent ) {
-		this.parent = parent;
-	}
-
-	public void retarget( Retargeter retargeter ) {
-		if( this.modelResolver instanceof RetargetableResolver<?> ) {
-			RetargetableResolver<?> retargetableResolver = (RetargetableResolver<?>)this.modelResolver;
-			retargetableResolver.retarget( retargeter );
-		}
+	public static void popIgnoreStartRequests() {
+		ignoreCount --;
 	}
 	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.getModel() );
-		sb.append( "]" );
-		return sb.toString();
+	public static void setEnabled( boolean isEnabled ) {
+		SoundCache.isEnabled = isEnabled;
+	}
+	public static boolean isEnabled() {
+		return SoundCache.isEnabled;
+	}
+	
+	public synchronized void startIfNotAlreadyActive() {
+		if( SoundCache.isEnabled && SoundCache.ignoreCount == 0 ) {
+			if( this.cls != null && this.resourceName != null ) {
+				if( this.isAttempted ) {
+					//pass
+				} else {
+					this.isAttempted = true;
+					try {
+						this.clip = edu.cmu.cs.dennisc.javax.sound.SoundUtilities.createOpenedClip( this.cls, this.resourceName );
+					} catch( Exception e ) {
+						e.printStackTrace();
+					}
+				}
+				if( this.clip != null ) {
+					if( this.clip.isActive() ) {
+						//pass
+					} else {
+						this.clip.setFramePosition( 0 );
+						this.clip.start();
+					}
+				} else {
+					if( this.isBeepDesiredAsFallback ) {
+						java.awt.Toolkit.getDefaultToolkit().beep();
+					}
+				}
+			}
+		}
 	}
 }

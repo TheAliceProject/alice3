@@ -60,4 +60,12 @@ public class DropStep extends CompletionStep< CompletionModel > {
 		super.encode(binaryEncoder);
 		binaryEncoder.encode( this.dropReceptorResolver );
 	}
+	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		super.retarget( retargeter );
+		if( this.dropReceptorResolver instanceof RetargetableResolver<?> ) {
+			RetargetableResolver<?> retargetableResolver = (RetargetableResolver<?>)this.dropReceptorResolver;
+			retargetableResolver.retarget( retargeter );
+		}
+	}
 }

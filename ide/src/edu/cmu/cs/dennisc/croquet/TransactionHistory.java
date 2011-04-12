@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, Iterable< Transaction > {
 	private final java.util.List< Transaction > transactions;
 	public TransactionHistory() {
 		this.transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
@@ -62,14 +62,26 @@ public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncoda
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.transactions, Transaction.class ) );
 	}
+	public void retarget( Retargeter retargeter ) {
+		for( Transaction transaction : this.transactions ) {
+			transaction.retarget( retargeter );
+		}
+	}
 
-//	public void addTransaction( Transaction transaction ) {
-//		this.transactions.add( transaction );
-//	}
-//	public void removeTransaction( Transaction transaction ) {
-//		this.transactions.add( transaction );
-//	}
-	public java.util.ListIterator< Transaction > getTransactions() {
+	public void addTransaction( Transaction transaction ) {
+		this.transactions.add( transaction );
+	}
+	public void addTransaction( int index, Transaction transaction ) {
+		this.transactions.add( index, transaction );
+	}
+	public void removeTransaction( Transaction transaction ) {
+		this.transactions.add( transaction );
+	}
+
+	public java.util.Iterator< Transaction > iterator() {
+		return this.transactions.iterator();
+	}
+	public java.util.ListIterator< Transaction > getListIterator() {
 		return this.transactions.listIterator();
 	}
 	public int getIndexOfTransaction( Transaction transaction ) {
