@@ -96,9 +96,6 @@ public abstract class Presentation {
 		}
 		public void selectionChanged( Book source, int fromIndex, int toIndex ) {
 			Chapter chapter = source.getChapterAt( toIndex );
-//			if( transaction != null ) {
-//				transaction.setStencilRenderingDesired( toIndex%2 == 0 );
-//			}
 			Presentation.this.handleChapterChanged( chapter );
 		}
 	};

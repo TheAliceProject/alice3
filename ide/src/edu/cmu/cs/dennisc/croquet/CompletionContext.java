@@ -104,14 +104,4 @@ public class CompletionContext<M extends CompletionModel> extends ModelContext<M
 			System.err.println( "cancel completionStep == null" );
 		}
 	}
-	
-	public Edit< ? > getEdit() {
-		for( HistoryNode historyNode : this.getChildren() ) {
-			if( historyNode instanceof CommitEvent ) {
-				CommitEvent commitEvent = (CommitEvent)historyNode;
-				return commitEvent.getEdit();
-			}
-		}
-		return null;
-	}
 }

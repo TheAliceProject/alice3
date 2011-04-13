@@ -45,7 +45,7 @@ package org.lgna.cheshire;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TransactionChapter extends Chapter {
+public class TransactionChapter extends Chapter {
 	private final edu.cmu.cs.dennisc.croquet.Transaction transaction;
 	public TransactionChapter( edu.cmu.cs.dennisc.croquet.Transaction transaction ) {
 		this.transaction = transaction;

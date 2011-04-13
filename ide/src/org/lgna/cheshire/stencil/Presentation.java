@@ -70,6 +70,11 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 	private final edu.cmu.cs.dennisc.croquet.BooleanState isPaintingStencil = new PresentationBooleanState( java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stencil" );
 	private final edu.cmu.cs.dennisc.croquet.BooleanState isPlayingSounds = new PresentationBooleanState( java.util.UUID.fromString( "4d8ac630-0679-415a-882f-780c7cb014ef" ), true, "play sounds" );
 
+	@Override
+	protected org.lgna.cheshire.Chapter createChapter(edu.cmu.cs.dennisc.croquet.Transaction transaction) {
+		return new org.lgna.cheshire.TransactionChapter( transaction );
+	}
+	
 	//	public edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
 	//		return this.nextOperation;
 	//	}
@@ -215,8 +220,15 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 	private final BookComboBoxModel transactionsComboBoxModel;
 	private final Stencil stencil;
 
-	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory,
-			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess, org.lgna.stencil.MenuPolicy menuPolicy, org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, boolean isOptimizedForBugRepro ) {
+	public Presentation( 
+			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
+			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
+			edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory,
+			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess, 
+			org.lgna.stencil.MenuPolicy menuPolicy, 
+			org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, 
+			boolean isOptimizedForBugRepro 
+	) {
 		super( userInformation, transactionAccessPolicy, originalTransactionHistory, groupsTrackedForRandomAccess );
 		this.transactionsComboBoxModel = new BookComboBoxModel( this.getBook() );
 		this.stencil = new Stencil( menuPolicy, scrollingRequiredRenderer, isOptimizedForBugRepro );
