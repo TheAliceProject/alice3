@@ -47,14 +47,6 @@ package uist.tutorial;
  */
 public class Presentation extends org.lgna.cheshire.stencil.Presentation {
 	private static boolean IS_MONKEY_WRENCH_DESIRED = false;
-//	edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
-//	org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
-//	edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory,
-//	edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess, 
-//	org.lgna.stencil.MenuPolicy menuPolicy, 
-//	org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, 
-//	boolean isOptimizedForBugRepro 
-
 	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory, org.lgna.cheshire.Filterer filterer, boolean isOptimizedForBugRepro ) {
 		super( 
 			userInformation,

@@ -90,6 +90,7 @@ package org.lgna.cheshire.stencil;
 			}
 			sb.append("<html>");
 			sb.append("<em>");
+			//sb.append("Chapter ");
 			sb.append(i + 1);
 			sb.append(": ");
 			sb.append("</em>");
