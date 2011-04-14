@@ -55,7 +55,7 @@ public class Presentation extends org.lgna.cheshire.stencil.Presentation {
 //	org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, 
 //	boolean isOptimizedForBugRepro 
 
-	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory, boolean isOptimizedForBugRepro ) {
+	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory, org.lgna.cheshire.Filterer filterer, boolean isOptimizedForBugRepro ) {
 		super( 
 			userInformation,
 			
@@ -63,6 +63,7 @@ public class Presentation extends org.lgna.cheshire.stencil.Presentation {
 			org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS,
 
 			originalTransactionHistory, 
+			filterer,
 			
 			new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
 			
@@ -74,6 +75,7 @@ public class Presentation extends org.lgna.cheshire.stencil.Presentation {
 			isOptimizedForBugRepro
 		);
 
+		
 		if( IS_MONKEY_WRENCH_DESIRED ) {
 			final int N = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getItemCount();
 			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem( org.alice.ide.IDE.getSingleton().getSceneField() );

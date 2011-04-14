@@ -102,10 +102,10 @@ public abstract class Presentation {
 
 	private final edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
-	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory, Filterer filterer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
 		this.userInformation = userInformation;
 		this.book = this.generateDraft( accessPolicy, originalTransactionHistory );
-		
+		filterer.filter( this.book.listIterator(), userInformation );
 		final int N = groupsTrackedForRandomAccess.length;
 		this.historyManagers = new edu.cmu.cs.dennisc.history.HistoryManager[ N+1 ];
 		for( int i=0; i<N; i++ ) {

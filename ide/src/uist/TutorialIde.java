@@ -42,6 +42,8 @@
  */
 package uist;
 
+import org.lgna.cheshire.Filterer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -63,6 +65,13 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		super.loadProjectFrom( uri );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
 		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( false );
+		if( IS_ENCODING ) {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					edu.cmu.cs.dennisc.croquet.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
+				}
+			} );
+		}
 	}
 
 	private edu.cmu.cs.dennisc.alice.Project getOriginalProject() {
@@ -184,8 +193,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //			}			
 		}
 		
-		java.util.List< org.lgna.cheshire.Chapter > chapters = ChapterGenerator.INSTANCE.generate( this.originalTransactionHistory ); 
-		filterer.filter( chapters.listIterator(), UserInformation.INSTANCE );
+//		java.util.List< org.lgna.cheshire.Chapter > chapters = ChapterGenerator.INSTANCE.generate( this.originalTransactionHistory ); 
+//		filterer.filter( chapters.listIterator(), UserInformation.INSTANCE );
 		this.retarget();
 		
 		
@@ -197,7 +206,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //			guidedInteraction = new uist.tutorial.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory );
 //		}
 //		guidedInteraction.setOriginalRoot( this.originalContext );
-		final org.lgna.cheshire.stencil.Presentation presentation = new uist.tutorial.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, IS_OPTIMIZED_FOR_BUG_REPRO );
+		final org.lgna.cheshire.stencil.Presentation presentation = new uist.tutorial.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, filterer, IS_OPTIMIZED_FOR_BUG_REPRO );
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );
 
@@ -207,7 +216,6 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				//org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance().setValue( true );
-				
 				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState isInteractionTreeShowingState = org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.createInstance( originalTransactionHistory );
 				isInteractionTreeShowingState.setValue( true );
 				if( IS_OPTIMIZED_FOR_BUG_REPRO ) {

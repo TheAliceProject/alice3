@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package uist;
+package org.lgna.cheshire;
 
 /**
  * @author Dennis Cosgrove

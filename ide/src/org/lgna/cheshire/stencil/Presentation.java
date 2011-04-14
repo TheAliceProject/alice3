@@ -224,12 +224,13 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
 			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
 			edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory,
+			org.lgna.cheshire.Filterer filterer,
 			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess, 
 			org.lgna.stencil.MenuPolicy menuPolicy, 
 			org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, 
 			boolean isOptimizedForBugRepro 
 	) {
-		super( userInformation, transactionAccessPolicy, originalTransactionHistory, groupsTrackedForRandomAccess );
+		super( userInformation, transactionAccessPolicy, originalTransactionHistory, filterer, groupsTrackedForRandomAccess );
 		this.transactionsComboBoxModel = new BookComboBoxModel( this.getBook() );
 		this.stencil = new Stencil( menuPolicy, scrollingRequiredRenderer, isOptimizedForBugRepro );
 		this.isInterceptingEvents.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {

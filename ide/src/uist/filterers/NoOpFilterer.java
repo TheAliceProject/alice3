@@ -46,7 +46,7 @@ package uist.filterers;
 /**
  * @author Dennis Cosgrove
  */
-public enum NoOpFilterer implements uist.Filterer {
+public enum NoOpFilterer implements org.lgna.cheshire.Filterer {
 	INSTANCE;
 	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 	}

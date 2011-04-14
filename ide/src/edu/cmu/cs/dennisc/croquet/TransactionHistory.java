@@ -62,6 +62,13 @@ public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncoda
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.transactions, Transaction.class ) );
 	}
+	
+	@Deprecated
+	public void EPIC_HACK_clear() {
+		this.transactions.clear();
+	}
+	
+	
 	public void retarget( Retargeter retargeter ) {
 		for( Transaction transaction : this.transactions ) {
 			transaction.retarget( retargeter );
@@ -81,7 +88,7 @@ public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncoda
 	public java.util.Iterator< Transaction > iterator() {
 		return this.transactions.iterator();
 	}
-	public java.util.ListIterator< Transaction > getListIterator() {
+	public java.util.ListIterator< Transaction > listIterator() {
 		return this.transactions.listIterator();
 	}
 	public int getIndexOfTransaction( Transaction transaction ) {

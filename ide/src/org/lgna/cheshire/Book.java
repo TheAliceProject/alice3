@@ -51,7 +51,7 @@ public class Book {
 		public void selectionChanged( Book source, int fromIndex, int toIndex );
 	}
 
-	private final java.util.List< Chapter > chapters = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< Chapter > chapters = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int selectedIndex = -1;
 	private int furthestCompletedIndex = -1;
 	private ChapterAccessPolicy accessPolicy = ChapterAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_CHAPTER;
@@ -74,6 +74,10 @@ public class Book {
 	}
 	public boolean isIndexAccessible( int nextIndex ) {
 		return this.accessPolicy.isIndexAccessible( nextIndex, this.furthestCompletedIndex );
+	}
+	
+	public java.util.ListIterator< Chapter > listIterator() {
+		return this.chapters.listIterator();
 	}
 	public Chapter getChapterAt( int index ) {
 		return this.chapters.get( index );

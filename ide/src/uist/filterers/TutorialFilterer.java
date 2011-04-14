@@ -46,7 +46,7 @@ package uist.filterers;
 /**
  * @author Dennis Cosgrove
  */
-public class TutorialFilterer implements uist.Filterer {
+public class TutorialFilterer implements org.lgna.cheshire.Filterer {
 	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		while( chapterIterator.hasNext() ) {
 			org.lgna.cheshire.Chapter chapter = chapterIterator.next();
