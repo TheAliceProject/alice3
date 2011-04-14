@@ -40,19 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package uist.generators;
+package uist.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AstGenerator implements uist.GuidedInteractionGenerator {
+public class TransactionHistoryGenerator {
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement src;
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement dst;
 	private int dstIndex0;
-	public AstGenerator( edu.cmu.cs.dennisc.alice.ast.BlockStatement src, edu.cmu.cs.dennisc.alice.ast.BlockStatement dst, int dstIndex0 ) {
+	public TransactionHistoryGenerator( edu.cmu.cs.dennisc.alice.ast.BlockStatement src, edu.cmu.cs.dennisc.alice.ast.BlockStatement dst, int dstIndex0 ) {
 		this.src = src;
 		this.dst = dst;
 		this.dstIndex0 = dstIndex0;
+	}
+	public edu.cmu.cs.dennisc.croquet.TransactionHistory generate() {
+		throw new RuntimeException( "todo" );
 	}
 	public edu.cmu.cs.dennisc.croquet.RootContext generate( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		edu.cmu.cs.dennisc.croquet.RootContext rv = new edu.cmu.cs.dennisc.croquet.RootContext();
@@ -182,7 +185,7 @@ public class AstGenerator implements uist.GuidedInteractionGenerator {
 				org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 3 ) )
 		);
 		
-		AstGenerator generator = new AstGenerator( src, dst, 1 );
+		TransactionHistoryGenerator generator = new TransactionHistoryGenerator( src, dst, 1 );
 		edu.cmu.cs.dennisc.croquet.RootContext rootContext = generator.generate( null );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( rootContext );
 	}

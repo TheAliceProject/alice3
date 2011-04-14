@@ -40,29 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.cheshire;
+package uist;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionChapter extends Chapter {
-	private final edu.cmu.cs.dennisc.croquet.Transaction transaction;
-	public TransactionChapter( edu.cmu.cs.dennisc.croquet.Transaction transaction ) {
-		this.transaction = transaction;
-	}
-	public edu.cmu.cs.dennisc.croquet.Transaction getTransaction() {
-		return this.transaction;
-	}
-	@Override
-	public final void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		this.transaction.retarget( retargeter );
-	}
-	@Override
-	public void reset() {
-		System.err.println( "reset" );
-	}
-	@Override
-	public void complete() {
-		System.err.println( "complete" );
+public enum ChapterGenerator {
+	INSTANCE;
+	public java.util.List< org.lgna.cheshire.Chapter > generate( edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory ) {
+		java.util.List< org.lgna.cheshire.Chapter > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( edu.cmu.cs.dennisc.croquet.Transaction transaction : transactionHistory ) {
+			rv.add( new org.lgna.cheshire.TransactionChapter( transaction ) );
+		}
+		return rv;
 	}
 }

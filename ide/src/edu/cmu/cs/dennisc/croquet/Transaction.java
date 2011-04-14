@@ -62,6 +62,14 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		this.completionStep = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.completionStep.setParent( this );
 	}
+
+	public Edit< ? > getEdit() {
+		if( this.completionStep != null ) {
+			return this.completionStep.getEdit();
+		} else {
+			return null;
+		}
+	}
 	public void retarget( Retargeter retargeter ) {
 		for( PrepStep< ? > prepStep : this.prepSteps ) {
 			prepStep.retarget( retargeter );

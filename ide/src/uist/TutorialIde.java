@@ -54,7 +54,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	private static final String AST_MIMIC_PATH = "/astMimic1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
 	
-	private boolean isPostProjectLive = false;
+	private boolean isOriginalProjectLive = false;
 	private edu.cmu.cs.dennisc.alice.Project originalProject;
 	private edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory;
 	
@@ -63,30 +63,27 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		super.loadProjectFrom( uri );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
 		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( false );
-		if( IS_ENCODING ) {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
-					javax.swing.SwingUtilities.invokeLater( new Runnable() {
-						public void run() {
-							edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
-							rootContext.EPIC_HACK_clear();
-						}
-					} );
-				}
-			} );
-		}
+	}
+
+	private edu.cmu.cs.dennisc.alice.Project getOriginalProject() {
+		return this.originalProject;
+	}
+	private edu.cmu.cs.dennisc.alice.Project getReplacementProject() {
+		return super.getProject();
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.alice.Project getProject() {
-		if( this.isPostProjectLive ) {
-			return this.originalProject;
+		if( this.isOriginalProjectLive ) {
+			return this.getOriginalProject();
 		} else {
-			return super.getProject();
+			return this.getReplacementProject();
 		}
 	}
+	
 
 	private void retarget() {
+		//note: we leverage the fact that the uuids are identical for much of the initial states of the two projects
 		class AstDecodingRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
 			private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapIdToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 			public void addAllToReplacementMap( edu.cmu.cs.dennisc.alice.Project project ) {
@@ -121,12 +118,12 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			}
 		};
 
-		edu.cmu.cs.dennisc.alice.Project replacementProject = this.getProject();
+		edu.cmu.cs.dennisc.alice.Project replacementProject = this.getReplacementProject();
 		AstDecodingRetargeter astDecodingRetargeter = new AstDecodingRetargeter();
 		astDecodingRetargeter.addAllToReplacementMap( replacementProject );
 
 		if( IS_WIZARD_OF_OZ_HASTINGS_DESIRED ) {
-			WizardOfHastings.castPart( astDecodingRetargeter, this.originalProject, "guppy", replacementProject, "car" );
+			WizardOfHastings.castPart( astDecodingRetargeter, this.getOriginalProject(), "guppy", replacementProject, "car" );
 		}
 		this.originalTransactionHistory.retarget( astDecodingRetargeter );
 	}
@@ -139,16 +136,29 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		//final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( this, 0 );
 		this.originalProject = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( POST_PROJECT_PATH );
 
-		GuidedInteractionGenerator generator;
 		if( IS_BASED_ON_INTERACTION_AST ) {
-			//this.isPostProjectLive = true;
-			//generator = new AlgFromAbstractSyntaxTreeGuidedInteractionGenerator( this.originalProject, "scene", "guppy" );
-			generator = new uist.generators.AstGenerator( getRunBody( this.originalProject ), getRunBody( this.getProject() ), 0 );
-			//this.isPostProjectLive = false;
+			uist.ast.TransactionHistoryGenerator transactionHistoryGenerator = new uist.ast.TransactionHistoryGenerator( getRunBody( this.getOriginalProject() ), getRunBody( this.getReplacementProject() ), 0 );
+			this.originalTransactionHistory = transactionHistoryGenerator.generate();
+			//encode and decode
+			this.isOriginalProjectLive = true;
+			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( this.originalTransactionHistory, AST_MIMIC_PATH );
+			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( AST_MIMIC_PATH, edu.cmu.cs.dennisc.croquet.TransactionHistory.class );
+			this.isOriginalProjectLive = false;
+
 		} else {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
-			this.isPostProjectLive = true;
+			this.isOriginalProjectLive = true;
 			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, edu.cmu.cs.dennisc.croquet.TransactionHistory.class );
+			this.isOriginalProjectLive = false;
+			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
+		}
+
+		Filterer filterer;
+		if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
+			//do not filter
+			filterer = uist.filterers.NoOpFilterer.INSTANCE;
+		} else {
+			filterer = new uist.filterers.TutorialFilterer();
 //			final boolean IS_INFORMATION_GROUP_INCLUDED = false;
 //			edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.alice.Project.GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
 //			edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
@@ -166,24 +176,16 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
 //				this.originalContext = filter.filter( this.originalContext );
 //			}
-			this.isPostProjectLive = false;
-			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
-
+			
 //			if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
 //				generator = new uist.generators.NoOpGenerator( this.originalContext );
 //			} else {
 //				generator = new uist.generators.PriorInteractionHistoryGenerator( this.originalContext );
 //			}			
 		}
-
-//		this.originalContext = generator.generate( UserInformation.INSTANCE );
-
-		if( IS_BASED_ON_INTERACTION_AST ) {
-			this.isPostProjectLive = true;
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( this.originalTransactionHistory, AST_MIMIC_PATH );
-			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( AST_MIMIC_PATH, edu.cmu.cs.dennisc.croquet.TransactionHistory.class );
-			this.isPostProjectLive = false;
-		}
+		
+		java.util.List< org.lgna.cheshire.Chapter > chapters = ChapterGenerator.INSTANCE.generate( this.originalTransactionHistory ); 
+		filterer.filter( chapters.listIterator(), UserInformation.INSTANCE );
 		this.retarget();
 		
 		
@@ -195,30 +197,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //			guidedInteraction = new uist.tutorial.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory );
 //		}
 //		guidedInteraction.setOriginalRoot( this.originalContext );
-		final org.lgna.cheshire.stencil.Presentation presentation = new uist.tutorial.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory );
-		
-		class AstLiveRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
-			private java.util.Map< Object, Object > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-			public void addKeyValuePair( Object key, Object value ) {
-				this.map.put( key, value );
-				if( key instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
-					System.err.println( "TODO: addKeyValuePair recursive retarget" );
-					this.addKeyValuePair( ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)key).body.getValue(), ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)value).body.getValue() );
-				}
-			}
-			public <N> N retarget(N original) {
-				if( original instanceof org.alice.ide.editorstabbedpane.CodeComposite ) {
-					original = (N)org.alice.ide.editorstabbedpane.CodeComposite.getInstance( retarget( ((org.alice.ide.editorstabbedpane.CodeComposite)original).getCode() ) );
-				}
-				N rv = (N)map.get( original );
-				if( rv != null ) {
-					//pass
-				} else {
-					rv = original;
-				}
-				return rv;
-			}
-		};
+		final org.lgna.cheshire.stencil.Presentation presentation = new uist.tutorial.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, IS_OPTIMIZED_FOR_BUG_REPRO );
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );
 
@@ -246,18 +225,16 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		this.preservePreferences();
 //		super.handleQuit( e );
 		if( IS_ENCODING ) {
-			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
-			
-			System.err.println( "todo: remove filtering" );
-			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
-					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
-			};
-			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
-				rootContext = filter.filter( rootContext );
-			}
+//			System.err.println( "todo: remove filtering" );
+//			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
+//					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
+//			};
+//			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
+//				rootContext = filter.filter( rootContext );
+//			}
 
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( rootContext, UI_HISTORY_PATH );
+			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( edu.cmu.cs.dennisc.croquet.TransactionManager.getRootTransactionHistory(), UI_HISTORY_PATH );
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 
 			try {

@@ -40,16 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package uist.generators;
+
+package uist.handlers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NoOpGenerator extends uist.PriorInteractionHistoryBasedGuidedInteractionGenerator {
-	public NoOpGenerator( edu.cmu.cs.dennisc.croquet.RootContext originalRoot ) {
-		super( originalRoot );
+public class LgnaHandler implements uist.Handler {
+	public edu.cmu.cs.dennisc.croquet.Transaction createTransactionToGetIntoABetterStateWhenNoViewControllerCanBeFound( edu.cmu.cs.dennisc.croquet.Transaction transaction ) {
+		return null;
 	}
-	@Override
-	protected void filterAndAugment( edu.cmu.cs.dennisc.croquet.ModelContext< ? > originalRoot, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-	}	
 }

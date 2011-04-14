@@ -40,41 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package uist.generators;
+
+package uist;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PriorInteractionHistoryGenerator extends uist.PriorInteractionHistoryBasedGuidedInteractionGenerator {
-	public PriorInteractionHistoryGenerator( edu.cmu.cs.dennisc.croquet.RootContext originalRoot ) {
-		super( originalRoot );
-	}
-	@Override
-	protected void filterAndAugment( edu.cmu.cs.dennisc.croquet.ModelContext< ? > originalRoot, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > listIterator = originalRoot.getChildListIterator();
-		while( listIterator.hasNext() ) {
-			edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node = listIterator.next();
-			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
-				edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
-				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-				if( successfulCompletionEvent != null ) {
-					edu.cmu.cs.dennisc.croquet.Edit< ? > edit = successfulCompletionEvent.getEdit();
-					if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
-						org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
-						edu.cmu.cs.dennisc.alice.ast.Statement statement = insertStatementEdit.getStatement();
-						if( userInformation instanceof uist.UserInformation ) {
-							edu.cmu.cs.dennisc.cheshire.Message message = ((uist.UserInformation)userInformation).createMessageIfUnfamiliarWithProgrammingConstruct( statement.getClass() );
-							if( message != null ) {
-								listIterator.previous();
-								listIterator.add( message );
-								listIterator.next();
-							}
-						}
-					}
-				}
-			}
-		}
-		//originalRoot.addChild( 0, new edu.cmu.cs.dennisc.cheshire.Message( "title", "text" ) );
-		originalRoot.addChild( new edu.cmu.cs.dennisc.cheshire.Message( "Finished", "<strong>Congratulations.</strong><br>You have completed the guided interaction." ) );
-	}
+public interface Filterer {
+	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
 }

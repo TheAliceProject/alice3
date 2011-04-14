@@ -55,7 +55,7 @@ public class Presentation extends org.lgna.cheshire.stencil.Presentation {
 //	org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, 
 //	boolean isOptimizedForBugRepro 
 
-	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory ) {
+	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory, boolean isOptimizedForBugRepro ) {
 		super( 
 			userInformation,
 			
@@ -71,7 +71,7 @@ public class Presentation extends org.lgna.cheshire.stencil.Presentation {
 			org.lgna.stencil.MenuPolicy.BELOW_STENCIL,
 			
 			org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
-			false
+			isOptimizedForBugRepro
 		);
 
 		if( IS_MONKEY_WRENCH_DESIRED ) {

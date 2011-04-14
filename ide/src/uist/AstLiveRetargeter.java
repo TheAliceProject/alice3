@@ -40,29 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.cheshire;
+
+package uist;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionChapter extends Chapter {
-	private final edu.cmu.cs.dennisc.croquet.Transaction transaction;
-	public TransactionChapter( edu.cmu.cs.dennisc.croquet.Transaction transaction ) {
-		this.transaction = transaction;
+/*package-private*/ class AstLiveRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
+	private java.util.Map< Object, Object > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public void addKeyValuePair( Object key, Object value ) {
+		this.map.put( key, value );
+		if( key instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
+			System.err.println( "TODO: addKeyValuePair recursive retarget" );
+			this.addKeyValuePair( ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)key).body.getValue(), ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)value).body.getValue() );
+		}
 	}
-	public edu.cmu.cs.dennisc.croquet.Transaction getTransaction() {
-		return this.transaction;
+	public <N> N retarget(N original) {
+		if( original instanceof org.alice.ide.editorstabbedpane.CodeComposite ) {
+			original = (N)org.alice.ide.editorstabbedpane.CodeComposite.getInstance( retarget( ((org.alice.ide.editorstabbedpane.CodeComposite)original).getCode() ) );
+		}
+		N rv = (N)map.get( original );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = original;
+		}
+		return rv;
 	}
-	@Override
-	public final void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		this.transaction.retarget( retargeter );
-	}
-	@Override
-	public void reset() {
-		System.err.println( "reset" );
-	}
-	@Override
-	public void complete() {
-		System.err.println( "complete" );
-	}
-}
+};

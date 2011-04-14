@@ -273,6 +273,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 
 	public ListSelectionState( Group group, java.util.UUID id, Codec< E > codec, int selectionIndex ) {
 		super( group, id );
+		assert codec != null;
 		this.codec = codec;
 		this.index = selectionIndex;
 	}

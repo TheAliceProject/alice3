@@ -40,11 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package uist;
+
+package uist.filterers;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface GuidedInteractionGenerator {
-	public edu.cmu.cs.dennisc.croquet.RootContext generate( edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
+public class TutorialFilterer implements uist.Filterer {
+	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		while( chapterIterator.hasNext() ) {
+			org.lgna.cheshire.Chapter chapter = chapterIterator.next();
+			if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
+				org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
+				edu.cmu.cs.dennisc.croquet.Transaction transaction = transactionChapter.getTransaction();
+				edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
+				if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
+					org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
+					edu.cmu.cs.dennisc.alice.ast.Statement statement = insertStatementEdit.getStatement();
+					if( userInformation instanceof uist.UserInformation ) {
+						org.lgna.cheshire.MessageChapter messageChapter = ((uist.UserInformation)userInformation).createMessageChapterIfUnfamiliarWithProgrammingConstruct( statement.getClass() );
+						if( messageChapter != null ) {
+							chapterIterator.previous();
+							chapterIterator.add( messageChapter );
+							chapterIterator.next();
+						}
+					}
+				}
+			}
+		}
+		chapterIterator.add( new org.lgna.cheshire.MessageChapter( "Finished", "<strong>Congratulations.</strong><br>You have completed the guided interaction." ) );
+	}
 }

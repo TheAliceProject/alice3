@@ -82,7 +82,10 @@ public abstract class CompletionStep< M extends CompletionModel > extends Step< 
 	public boolean isActive() {
 		return this.isActive;
 	}
-	
+	public Edit< ? > getEdit() {
+		return this.edit;
+	}
+
 	private void deactivate() {
 		this.isActive = false;
 	}

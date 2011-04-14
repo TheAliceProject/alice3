@@ -40,19 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package uist;
+
+package org.lgna.cheshire;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PriorInteractionHistoryBasedGuidedInteractionGenerator implements GuidedInteractionGenerator {
-	private edu.cmu.cs.dennisc.croquet.RootContext originalRoot;
-	public PriorInteractionHistoryBasedGuidedInteractionGenerator( edu.cmu.cs.dennisc.croquet.RootContext originalRoot ) {
-		this.originalRoot = originalRoot;
+public class MessageChapter extends Chapter {
+	private final String title;
+	private final String text;
+	public MessageChapter( String title, String text ) {
+		this.title = title;
+		this.text = text;
 	}
-	protected abstract void filterAndAugment( edu.cmu.cs.dennisc.croquet.ModelContext< ? > originalRoot, edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
-	public edu.cmu.cs.dennisc.croquet.RootContext generate( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		this.filterAndAugment( this.originalRoot, userInformation );
-		return this.originalRoot;
+	public String getTitle() {
+		return this.title;
+	}
+	public String getText() {
+		return this.text;
+	}
+	@Override
+	public void complete() {
+	}
+	@Override
+	public void reset() {
+	}
+	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 	}
 }

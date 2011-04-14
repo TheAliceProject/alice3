@@ -50,9 +50,9 @@ public enum UserInformation implements edu.cmu.cs.dennisc.croquet.UserInformatio
 	public java.util.Locale getLocale() {
 		return java.util.Locale.getDefault();
 	}
-	public edu.cmu.cs.dennisc.cheshire.Message createMessageIfUnfamiliarWithProgrammingConstruct( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls ) {
+	public org.lgna.cheshire.MessageChapter createMessageChapterIfUnfamiliarWithProgrammingConstruct( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls ) {
 		if( statementCls == edu.cmu.cs.dennisc.alice.ast.CountLoop.class ) {
-			return new edu.cmu.cs.dennisc.cheshire.Message( "New Concept: Count Loop", "<strong>New Concept: Count Loop</strong><br>Count Loops are useful for perfoming the same action multiple times." );
+			return new org.lgna.cheshire.MessageChapter( "New Concept: Count Loop", "<strong>New Concept: Count Loop</strong><br>Count Loops are useful for perfoming the same action multiple times." );
 		} else {
 			return null;
 		}
