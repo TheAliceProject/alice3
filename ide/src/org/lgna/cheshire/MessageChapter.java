@@ -53,6 +53,7 @@ public class MessageChapter extends Chapter {
 		this.title = title;
 		this.text = text;
 	}
+	@Override
 	public String getTitle() {
 		return this.title;
 	}

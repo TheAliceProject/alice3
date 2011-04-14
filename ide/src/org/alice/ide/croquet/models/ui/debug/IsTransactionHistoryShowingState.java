@@ -154,7 +154,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 	
 	private final edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory;
 	private IsTransactionHistoryShowingState( edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory ) {
-		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), true );
+		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), false );
 		this.transactionHistory = transactionHistory;
 	}
 	@Override

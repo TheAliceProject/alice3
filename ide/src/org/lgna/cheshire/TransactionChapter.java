@@ -65,4 +65,9 @@ public class TransactionChapter extends Chapter {
 	public void complete() {
 		System.err.println( "complete" );
 	}
+	
+	@Override
+	public String getTitle() {
+		return this.transaction.getTitle();
+	}
 }

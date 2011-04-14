@@ -90,11 +90,10 @@ package org.lgna.cheshire.stencil;
 			}
 			sb.append("<html>");
 			sb.append("<em>");
-			sb.append("Transaction ");
 			sb.append(i + 1);
 			sb.append(": ");
 			sb.append("</em>");
-			sb.append(value);
+			sb.append(value.getTitle());
 			sb.append("</html>");
 			replacementAcceptability = value.getReplacementAcceptability();
 		} else {

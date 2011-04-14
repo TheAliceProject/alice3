@@ -40,28 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.cheshire.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionPage extends org.lgna.cheshire.TransactionChapter implements org.lgna.stencil.Page {
-	private static java.util.Map< edu.cmu.cs.dennisc.croquet.Transaction, TransactionPage > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized TransactionPage getInstance( edu.cmu.cs.dennisc.croquet.Transaction transaction ) {
-		TransactionPage rv = map.get( transaction );
+public class ChapterPage implements org.lgna.stencil.Page {
+	private static java.util.Map< org.lgna.cheshire.Chapter, ChapterPage > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ChapterPage getInstance( org.lgna.cheshire.Chapter chapter ) {
+		ChapterPage rv = map.get( chapter );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new TransactionPage( transaction );
-			map.put( transaction, rv );
+			rv = new ChapterPage( chapter );
+			map.put( chapter, rv );
 		}
 		return rv;
 	}
-	private TransactionPage( edu.cmu.cs.dennisc.croquet.Transaction transaction ) {
-		super( transaction );
+	private final org.lgna.cheshire.Chapter chapter;
+	private final java.util.List< org.lgna.stencil.Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final edu.cmu.cs.dennisc.croquet.JComponent< ? > card = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+	public ChapterPage( org.lgna.cheshire.Chapter chapter ) {
+		this.chapter = chapter;
+		if( chapter instanceof org.lgna.cheshire.MessageChapter ) {
+			org.lgna.cheshire.MessageChapter messageChapter = (org.lgna.cheshire.MessageChapter)chapter;
+			this.notes.add( new org.lgna.stencil.Note( messageChapter.getText() ) );
+		}
 	}
 	public Iterable< org.lgna.stencil.Note > getNotes() {
-		return null;
+		return this.notes;
 	}
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
 		return false;
@@ -73,6 +81,6 @@ public class TransactionPage extends org.lgna.cheshire.TransactionChapter implem
 		return false;
 	}
 	public edu.cmu.cs.dennisc.croquet.JComponent< ? > getCard() {
-		return null;
+		return this.card;
 	}
 }

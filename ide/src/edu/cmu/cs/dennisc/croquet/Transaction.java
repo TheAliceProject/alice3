@@ -63,6 +63,14 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		this.completionStep.setParent( this );
 	}
 
+	public String getTitle() {
+		Edit< ? > edit = this.getEdit();
+		if( edit != null ) {
+			return edit.getPresentation( java.util.Locale.getDefault() );
+		} else {
+			return null;
+		}
+	}
 	public Edit< ? > getEdit() {
 		if( this.completionStep != null ) {
 			return this.completionStep.getEdit();

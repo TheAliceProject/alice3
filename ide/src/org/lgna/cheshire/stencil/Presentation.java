@@ -145,7 +145,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 
 		@Override
 		protected org.lgna.stencil.Page getCurrentPage() {
-			return (org.lgna.stencil.Page)Presentation.this.getBook().getSelectedChapter();
+			return ChapterPage.getInstance( Presentation.this.getBook().getSelectedChapter() );
 		}
 		@Override
 		protected boolean isPaintingStencilEnabled() {
@@ -261,21 +261,20 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 	}
 	@Override
 	protected void handleChapterChanged( org.lgna.cheshire.Chapter chapter ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleChapterChanged", chapter );
 		super.handleChapterChanged( chapter );
-		if( chapter != null && ((org.lgna.stencil.Page)chapter).isStencilRenderingDesired() ) {
-			this.stencil.setCursor( java.awt.dnd.DragSource.DefaultMoveNoDrop );
-		} else {
-			this.stencil.setCursor( java.awt.Cursor.getDefaultCursor() );
-		}
+		java.awt.Cursor cursor = java.awt.Cursor.getDefaultCursor();
 		if( chapter != null ) {
+			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
+			if( chapterPage.isStencilRenderingDesired() ) {
+				cursor = java.awt.dnd.DragSource.DefaultMoveNoDrop;
+			}
 			chapter.reset();
 			java.util.UUID transactionId = chapter.getId();
 			edu.cmu.cs.dennisc.croquet.CardPanel.Key key = this.stencil.cardPanel.getKey( transactionId );
 			if( key != null ) {
 				// pass
 			} else {
-				key = this.stencil.cardPanel.createKey( ((TransactionPage)chapter).getCard(), transactionId );
+				key = this.stencil.cardPanel.createKey( chapterPage.getCard(), transactionId );
 				this.stencil.cardPanel.addComponent( key );
 			}
 			this.stencil.cardPanel.show( key );
@@ -284,14 +283,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			int selectedIndex = this.getBook().getSelectedIndex();
 
 			//				boolean isAutoAdvanceDesired = false;
-			boolean isWaiting;
-			if( chapter instanceof TransactionPage ) {
-				isWaiting = ((TransactionPage)chapter).isAlreadyInTheDesiredState() == false;
-				//					isAutoAdvanceDesired = isWaiting == false && waitingStep.isAutoAdvanceDesriedWhenAlreadyInTheDesiredState();
-			} else {
-				isWaiting = false;
-			}
-
+			boolean isWaiting = chapterPage.isAlreadyInTheDesiredState() == false;
 			if( this.stencil.isOptimizedForBugRepro ) {
 				//pass
 			} else {
@@ -302,7 +294,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			this.stencil.requestFocus();
 			this.stencil.revalidateAndRepaint();
 		}
-
+		this.stencil.setCursor( cursor );
 	}
 //	@Override
 //	protected edu.cmu.cs.dennisc.croquet.Step< ? > getCurrentStep() {
