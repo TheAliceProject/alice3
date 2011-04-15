@@ -53,6 +53,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_BASED_ON_INTERACTION_AST;
 	private static boolean IS_OPTIMIZED_FOR_BUG_REPRO;
 	private static final String TRANSACTION_HISTORY_PATH = "/transactionHistory.bin";
+	//note: we encode and decode the root context temporarily while models (ListSelectionState (Edit) ) still rely on context (for things like getCodec()) 
 	private static final String CONTEXT_PATH = "/context.bin";
 	private static final String AST_MIMIC_PATH = "/astMimic1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
