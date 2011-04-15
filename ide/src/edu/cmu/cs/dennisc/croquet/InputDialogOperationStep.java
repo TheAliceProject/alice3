@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class InputDialogOperationStep<J extends JComponent< ? >> extends CompletionStep< InputDialogOperation< ? > > {
+public class InputDialogOperationStep<J extends JComponent< ? >> extends AbstractDialogOperationStep< InputDialogOperation< ? > > {
 	public InputDialogOperationStep( Transaction parent, InputDialogOperation< ? > model ) {
 		super( parent, model );
 	}

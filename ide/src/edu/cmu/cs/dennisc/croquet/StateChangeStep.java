@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class StateChangeStep< M extends State<?> > extends CompletionStep< M > {
 	public StateChangeStep( Transaction parent, M model ) {
-		super( parent, model );
+		super( parent, model, null );
 	}
 	public StateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

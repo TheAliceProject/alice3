@@ -46,19 +46,27 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CompletionStep< M extends CompletionModel > extends Step< M > {
-	private TransactionHistory transactionHistory;
+	private final TransactionHistory transactionHistory;
 	private Edit<M> edit;
 	private boolean isSuccessfullyCompleted;
 	private boolean isActive = true;
-	public CompletionStep( Transaction parent, M model ) {
+	public CompletionStep( Transaction parent, M model, TransactionHistory transactionHistory ) {
 		super( parent, model );
+		this.transactionHistory = transactionHistory;
+		if( this.transactionHistory != null ) {
+			TransactionManager.pushTransactionHistory( this.transactionHistory );
+		}
 	}
 	public CompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.isActive = binaryDecoder.decodeBoolean();
 		this.isSuccessfullyCompleted = binaryDecoder.decodeBoolean();
 		Edit.Memento< M > memento = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.edit = memento.createEdit();
+		if( memento != null ) {
+			this.edit = memento.createEdit();
+		} else {
+			this.edit = null;
+		}
 		this.transactionHistory = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 	@Override
@@ -66,18 +74,24 @@ public abstract class CompletionStep< M extends CompletionModel > extends Step< 
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.isActive );
 		binaryEncoder.encode( this.isSuccessfullyCompleted );
-		binaryEncoder.encode( this.edit.createMemento() );
+		edu.cmu.cs.dennisc.croquet.Edit.Memento<M> memento;
+		if( this.edit != null ) {
+			memento = this.edit.createMemento();
+		} else {
+			memento = null;
+		}
+		binaryEncoder.encode( memento );
 		binaryEncoder.encode( this.transactionHistory );
 	}
 	public TransactionHistory getTransactionHistory() {
 		return this.transactionHistory;
 	}
-	public TransactionHistory createAndPushTransactionHistory() {
-		assert this.transactionHistory == null;
-		this.transactionHistory = new TransactionHistory();
-		TransactionManager.pushTransactionHistory( this.transactionHistory );
-		return this.transactionHistory;
-	}
+//	public TransactionHistory createAndPushTransactionHistory() {
+//		assert this.transactionHistory == null;
+//		this.transactionHistory = new TransactionHistory();
+//		TransactionManager.pushTransactionHistory( this.transactionHistory );
+//		return this.transactionHistory;
+//	}
 	//	public abstract boolean isActive();
 	public boolean isActive() {
 		return this.isActive;
@@ -87,6 +101,9 @@ public abstract class CompletionStep< M extends CompletionModel > extends Step< 
 	}
 
 	private void deactivate() {
+		if( this.transactionHistory != null ) {
+			
+		}
 		this.isActive = false;
 	}
 	

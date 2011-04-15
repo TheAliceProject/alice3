@@ -78,6 +78,10 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 			return null;
 		}
 	}
+	public void commit( Edit edit ) {
+		assert this.completionStep != null;
+		this.completionStep.commit( edit );
+	}
 	public void retarget( Retargeter retargeter ) {
 		for( PrepStep< ? > prepStep : this.prepSteps ) {
 			prepStep.retarget( retargeter );
@@ -140,12 +144,12 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 
 	private void addPrepStep( PrepStep< ? > step ) {
 		TransactionManager.fireAddingStep( step );
-		if( this.completionStep != null ) {
-			TransactionHistory transactionHistory = this.completionStep.createAndPushTransactionHistory();
-			transactionHistory.getActiveTransaction().addPrepStep( step );
-		} else {
+//		if( this.completionStep != null ) {
+//			TransactionHistory transactionHistory = this.completionStep.createAndPushTransactionHistory();
+//			transactionHistory.getActiveTransaction().addPrepStep( step );
+//		} else {
 			this.prepSteps.add( step );
-		}
+//		}
 		TransactionManager.fireAddedStep( step );
 	}
 //	public void removePrepStep( PrepStep< ? > step ) {
@@ -156,12 +160,12 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	}
 	private void setCompletionStep( CompletionStep<?> step ) {
 		TransactionManager.fireAddingStep( step );
-		if( this.completionStep != null ) {
-			TransactionHistory transactionHistory = this.completionStep.createAndPushTransactionHistory();
-			transactionHistory.getActiveTransaction().setCompletionStep( step );
-		} else {
+//		if( this.completionStep != null ) {
+//			TransactionHistory transactionHistory = this.completionStep.createAndPushTransactionHistory();
+//			transactionHistory.getActiveTransaction().setCompletionStep( step );
+//		} else {
 			this.completionStep = step;
-		}
+//		}
 		TransactionManager.fireAddedStep( step );
 	}
 	public boolean isActive() {

@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public class CancelStep extends CompletionStep< CompletionModel > {
 	public CancelStep( Transaction parent, CompletionModel model ) {
-		super( parent, model );
+		super( parent, model, null );
 	}
 	public CancelStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

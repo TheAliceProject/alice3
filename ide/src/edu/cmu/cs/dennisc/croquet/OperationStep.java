@@ -40,32 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropStep extends CompletionStep< CompletionModel > {
-	private final CodableResolver< DropReceptor > dropReceptorResolver;
-	public DropStep( Transaction parent, CompletionModel model, DropReceptor dropReceptor ) {
-		super( parent, model, null );
-		this.dropReceptorResolver = dropReceptor.getCodableResolver();
+public abstract class OperationStep< M extends Operation > extends CompletionStep< M >{
+	public OperationStep( Transaction parent, M model, TransactionHistory transactionHistory ) {
+		super( parent, model, transactionHistory );
 	}
-	public DropStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public OperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-		this.dropReceptorResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
-	@Override
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		super.encode(binaryEncoder);
-		binaryEncoder.encode( this.dropReceptorResolver );
-	}
-	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		if( this.dropReceptorResolver instanceof RetargetableResolver<?> ) {
-			RetargetableResolver<?> retargetableResolver = (RetargetableResolver<?>)this.dropReceptorResolver;
-			retargetableResolver.retarget( retargeter );
-		}
 	}
 }

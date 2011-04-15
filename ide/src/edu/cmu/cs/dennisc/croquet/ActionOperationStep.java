@@ -45,9 +45,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ActionOperationStep extends CompletionStep< ActionOperation >{
+public class ActionOperationStep extends SingleThreadOperationStep< ActionOperation >{
 	public ActionOperationStep( Transaction parent, ActionOperation model ) {
-		super( parent, model );
+		super( parent, model, null );
 	}
 	public ActionOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

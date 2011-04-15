@@ -73,25 +73,12 @@ public class CompletionContext<M extends CompletionModel> extends ModelContext<M
 		this.transactionFinish();
 	}
 	
-	private void transactionCommit( Edit edit ) {
-		TransactionHistory transactionHistory = TransactionManager.getActiveTransactionHistory();
-		Transaction transaction = transactionHistory.getLastTransaction();
-		CompletionStep< ? > completionStep = transaction.getCompletionStep();
-		if( completionStep != null && completionStep.isActive() ) {
-			completionStep.commit( edit );
-		} else {
-			if( transactionHistory != null ) {
-				TransactionHistory pop = TransactionManager.popTransactionHistory();
-				assert pop == transactionHistory;
-				this.transactionCommit( edit );
-			}
-		}
-	}
-	
 	@Override
 	public void commitAndInvokeDo(Edit edit) {
 		super.commitAndInvokeDo( edit );
-		this.transactionCommit( edit );
+		TransactionHistory transactionHistory = TransactionManager.getActiveTransactionHistory();
+		Transaction transaction = transactionHistory.getLastTransaction();
+		transaction.commit( edit );
 	}
 	@Override
 	public void cancel() {
