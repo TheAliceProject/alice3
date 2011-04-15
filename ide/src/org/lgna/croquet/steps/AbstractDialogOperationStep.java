@@ -41,12 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDialogOperationStep< M extends AbstractDialogOperation > extends SingleThreadOperationStep< M > {
+public abstract class AbstractDialogOperationStep< M extends edu.cmu.cs.dennisc.croquet.AbstractDialogOperation< ? > > extends SingleThreadOperationStep< M > {
 	public AbstractDialogOperationStep( Transaction parent, M model ) {
 		super( parent, model, new TransactionHistory() );
 	}

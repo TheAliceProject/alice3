@@ -46,11 +46,11 @@ package org.lgna.cheshire;
  * @author Dennis Cosgrove
  */
 public class TransactionChapter extends Chapter {
-	private final edu.cmu.cs.dennisc.croquet.Transaction transaction;
-	public TransactionChapter( edu.cmu.cs.dennisc.croquet.Transaction transaction ) {
+	private final org.lgna.croquet.steps.Transaction transaction;
+	public TransactionChapter( org.lgna.croquet.steps.Transaction transaction ) {
 		this.transaction = transaction;
 	}
-	public edu.cmu.cs.dennisc.croquet.Transaction getTransaction() {
+	public org.lgna.croquet.steps.Transaction getTransaction() {
 		return this.transaction;
 	}
 	@Override

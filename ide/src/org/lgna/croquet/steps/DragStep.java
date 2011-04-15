@@ -40,16 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InputDialogOperationStep<J extends JComponent< ? >> extends AbstractDialogOperationStep< InputDialogOperation< ? > > {
-	public InputDialogOperationStep( Transaction parent, InputDialogOperation< ? > model ) {
+public class DragStep extends PrepStep< edu.cmu.cs.dennisc.croquet.DragAndDropModel > {
+	public static DragStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.DragAndDropModel model ) {
+		return new DragStep( parent, model );
+	}
+	private DragStep( Transaction parent, edu.cmu.cs.dennisc.croquet.DragAndDropModel model ) {
 		super( parent, model );
 	}
-	public InputDialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public DragStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 }

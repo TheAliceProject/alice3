@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.steps.TransactionManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -182,7 +184,7 @@ public class ContextManager {
 
 	
 	/*package-private*/ static ActionOperationContext createAndPushActionOperationContext(ActionOperation actionOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		TransactionManager.getActiveTransaction().addActionOperationStep( actionOperation );
+		TransactionManager.addActionOperationStep( actionOperation );
 		return pushContext( new ActionOperationContext(actionOperation, e, viewController) );
 	}
 	/*package-private*/ static SerialOperationContext createAndPushSerialOperationContext(SerialOperation compositeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
@@ -195,7 +197,7 @@ public class ContextManager {
 		return pushContext( new InformationDialogOperationContext<J>(informationDialogOperation, e, viewController) );
 	}
 	/*package-private*/ static <J extends JComponent< ? >> InputDialogOperationContext<J> createAndPushInputDialogOperationContext(InputDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		TransactionManager.getActiveTransaction().addInputDialogOperationStep( inputDialogOperation );
+		TransactionManager.addInputDialogOperationStep( inputDialogOperation );
 		return pushContext( new InputDialogOperationContext<J>(inputDialogOperation, e, viewController) );
 	}
 	/*package-private*/ static WizardDialogOperationContext createAndPushWizardDialogOperationContext(WizardDialogOperation wizardDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
@@ -238,12 +240,12 @@ public class ContextManager {
 	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeVisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
 		ListSelectionStateContext<E> listSelectionStateContext = createAndPushItemSelectionStateContext( model, e, itemSelectable );
 		listSelectionStateContext.handlePopupMenuWillBecomeVisibleEvent( e );
-		TransactionManager.getActiveTransaction().addListSelectionPrepStep( model.getPrepModel() );
+		TransactionManager.addListSelectionPrepStep( model.getPrepModel() );
 	}
 	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeInvisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
 	}
 	/*package-private*/ static <E> void addListSelectionPopupMenuCanceled( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
-		TransactionManager.getActiveTransaction().addCancelStep( model );
+		TransactionManager.cancel( model );
 	}
 
 	/*package-private*/ static BoundedRangeIntegerStateContext createAndPushBoundedRangeIntegerStateContext(BoundedRangeIntegerState boundedRangeIntegerState) {

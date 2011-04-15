@@ -54,7 +54,7 @@ public class TransactionHistoryGenerator {
 		this.dst = dst;
 		this.dstIndex0 = dstIndex0;
 	}
-	public edu.cmu.cs.dennisc.croquet.TransactionHistory generate() {
+	public org.lgna.croquet.steps.TransactionHistory generate() {
 		throw new RuntimeException( "todo" );
 	}
 	public edu.cmu.cs.dennisc.croquet.RootContext generate( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {

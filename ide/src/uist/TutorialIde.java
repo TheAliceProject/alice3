@@ -58,7 +58,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	
 	private boolean isOriginalProjectLive = false;
 	private edu.cmu.cs.dennisc.alice.Project originalProject;
-	private edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory;
+	private org.lgna.croquet.steps.TransactionHistory originalTransactionHistory;
 	
 	@Override
 	public void loadProjectFrom( java.net.URI uri ) {
@@ -69,7 +69,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					edu.cmu.cs.dennisc.croquet.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
+					org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
 				}
 			} );
 		}
@@ -152,13 +152,13 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			//encode and decode
 			this.isOriginalProjectLive = true;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( this.originalTransactionHistory, AST_MIMIC_PATH );
-			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( AST_MIMIC_PATH, edu.cmu.cs.dennisc.croquet.TransactionHistory.class );
+			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( AST_MIMIC_PATH, org.lgna.croquet.steps.TransactionHistory.class );
 			this.isOriginalProjectLive = false;
 
 		} else {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			this.isOriginalProjectLive = true;
-			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, edu.cmu.cs.dennisc.croquet.TransactionHistory.class );
+			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, org.lgna.croquet.steps.TransactionHistory.class );
 			this.isOriginalProjectLive = false;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 		}
@@ -243,7 +243,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //			}
 
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( edu.cmu.cs.dennisc.croquet.TransactionManager.getRootTransactionHistory(), UI_HISTORY_PATH );
+			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory(), UI_HISTORY_PATH );
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 
 			try {

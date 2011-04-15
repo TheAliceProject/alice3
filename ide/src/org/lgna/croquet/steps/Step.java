@@ -40,17 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleThreadOperationStep< M extends SingleThreadOperation > extends CompletionStep< M >{
-	public SingleThreadOperationStep( Transaction parent, M model, TransactionHistory transactionHistory ) {
-		super( parent, model, transactionHistory );
+public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private Transaction parent;
+	private final edu.cmu.cs.dennisc.croquet.CodableResolver< M > modelResolver; 
+	public Step( Transaction parent, M model ) {
+		this.setParent( parent );
+		this.modelResolver = model.getCodableResolver();
 	}
-	public SingleThreadOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	}
+	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		throw new AssertionError();
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.modelResolver );
+	}
+	public M getModel() {
+		return this.modelResolver.getResolved();
+	}
+	public Transaction getParent() {
+		return this.parent;
+	}
+	/*package-private*/ void setParent( Transaction parent ) {
+		this.parent = parent;
+	}
+
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		if( this.modelResolver instanceof edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> ) {
+			edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> retargetableResolver = (edu.cmu.cs.dennisc.croquet.RetargetableResolver<?>)this.modelResolver;
+			retargetableResolver.retarget( retargeter );
+		}
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		sb.append( this.getModel() );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

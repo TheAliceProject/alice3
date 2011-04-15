@@ -46,67 +46,67 @@ package org.alice.ide.croquet.models.ui.debug;
  * @author Dennis Cosgrove
  */
 class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< Object > {
-	private edu.cmu.cs.dennisc.croquet.TransactionHistory root;
-	public TransactionTreeModel( edu.cmu.cs.dennisc.croquet.TransactionHistory root ) {
+	private org.lgna.croquet.steps.TransactionHistory root;
+	public TransactionTreeModel( org.lgna.croquet.steps.TransactionHistory root ) {
 		this.root = root;
 	}
-	public edu.cmu.cs.dennisc.croquet.TransactionHistory getRoot() {
+	public org.lgna.croquet.steps.TransactionHistory getRoot() {
 		return this.root;
 	}
 	public boolean isLeaf( Object node ) {
-		return node instanceof edu.cmu.cs.dennisc.croquet.PrepStep< ? >;
+		return node instanceof org.lgna.croquet.steps.PrepStep< ? >;
 	}
 	public int getChildCount( Object parent ) {
-		if( parent instanceof edu.cmu.cs.dennisc.croquet.TransactionHistory ) {
-			edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory = (edu.cmu.cs.dennisc.croquet.TransactionHistory)parent;
+		if( parent instanceof org.lgna.croquet.steps.TransactionHistory ) {
+			org.lgna.croquet.steps.TransactionHistory transactionHistory = (org.lgna.croquet.steps.TransactionHistory)parent;
 			return transactionHistory.getTransactionCount();
-		} else if( parent instanceof edu.cmu.cs.dennisc.croquet.Transaction ) {
-			edu.cmu.cs.dennisc.croquet.Transaction transaction = (edu.cmu.cs.dennisc.croquet.Transaction)parent;
-			edu.cmu.cs.dennisc.croquet.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+		} else if( parent instanceof org.lgna.croquet.steps.Transaction ) {
+			org.lgna.croquet.steps.Transaction transaction = (org.lgna.croquet.steps.Transaction)parent;
+			org.lgna.croquet.steps.CompletionStep< ? > completionStep = transaction.getCompletionStep();
 			return transaction.getPrepStepCount()+(completionStep!=null?1:0);
-		} else if( parent instanceof edu.cmu.cs.dennisc.croquet.CompletionStep< ? > ) {
-			edu.cmu.cs.dennisc.croquet.CompletionStep< ? > completionStep = (edu.cmu.cs.dennisc.croquet.CompletionStep< ? >)parent;
+		} else if( parent instanceof org.lgna.croquet.steps.CompletionStep< ? > ) {
+			org.lgna.croquet.steps.CompletionStep< ? > completionStep = (org.lgna.croquet.steps.CompletionStep< ? >)parent;
 			return completionStep.getTransactionHistory() != null ? 1 : 0;
 		} else {
 			return 0;
 		}
 	}
 	public Object getChild( Object parent, int index ) {
-		if( parent instanceof edu.cmu.cs.dennisc.croquet.TransactionHistory ) {
-			edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory = (edu.cmu.cs.dennisc.croquet.TransactionHistory)parent;
+		if( parent instanceof org.lgna.croquet.steps.TransactionHistory ) {
+			org.lgna.croquet.steps.TransactionHistory transactionHistory = (org.lgna.croquet.steps.TransactionHistory)parent;
 			return transactionHistory.getTransactionAt( index );
-		} else if( parent instanceof edu.cmu.cs.dennisc.croquet.Transaction ) {
-			edu.cmu.cs.dennisc.croquet.Transaction transaction = (edu.cmu.cs.dennisc.croquet.Transaction)parent;
+		} else if( parent instanceof org.lgna.croquet.steps.Transaction ) {
+			org.lgna.croquet.steps.Transaction transaction = (org.lgna.croquet.steps.Transaction)parent;
 			if( index < transaction.getPrepStepCount() ) {
 				return transaction.getPrepStepAt( index );
 			} else {
 				return transaction.getCompletionStep();
 			}
-		} else if( parent instanceof edu.cmu.cs.dennisc.croquet.CompletionStep< ? > ) {
+		} else if( parent instanceof org.lgna.croquet.steps.CompletionStep< ? > ) {
 			assert index == 0;
-			edu.cmu.cs.dennisc.croquet.CompletionStep< ? > completionStep = (edu.cmu.cs.dennisc.croquet.CompletionStep< ? >)parent;
+			org.lgna.croquet.steps.CompletionStep< ? > completionStep = (org.lgna.croquet.steps.CompletionStep< ? >)parent;
 			return completionStep.getTransactionHistory();
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
 	}
 	public int getIndexOfChild( Object parent, Object child ) {
-		if( parent instanceof edu.cmu.cs.dennisc.croquet.TransactionHistory ) {
-			edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory = (edu.cmu.cs.dennisc.croquet.TransactionHistory)parent;
-			if( child instanceof edu.cmu.cs.dennisc.croquet.Transaction ) {
-				return transactionHistory.getIndexOfTransaction( (edu.cmu.cs.dennisc.croquet.Transaction)child );
+		if( parent instanceof org.lgna.croquet.steps.TransactionHistory ) {
+			org.lgna.croquet.steps.TransactionHistory transactionHistory = (org.lgna.croquet.steps.TransactionHistory)parent;
+			if( child instanceof org.lgna.croquet.steps.Transaction ) {
+				return transactionHistory.getIndexOfTransaction( (org.lgna.croquet.steps.Transaction)child );
 			} else {
 				return -1;
 			}
-		} else if( parent instanceof edu.cmu.cs.dennisc.croquet.Transaction ) {
-			edu.cmu.cs.dennisc.croquet.Transaction transaction = (edu.cmu.cs.dennisc.croquet.Transaction)parent;
-			if( child instanceof edu.cmu.cs.dennisc.croquet.PrepStep< ? > ) {
-				return transaction.getIndexOfPrepStep( (edu.cmu.cs.dennisc.croquet.PrepStep< ? >)child );
+		} else if( parent instanceof org.lgna.croquet.steps.Transaction ) {
+			org.lgna.croquet.steps.Transaction transaction = (org.lgna.croquet.steps.Transaction)parent;
+			if( child instanceof org.lgna.croquet.steps.PrepStep< ? > ) {
+				return transaction.getIndexOfPrepStep( (org.lgna.croquet.steps.PrepStep< ? >)child );
 			} else {
 				return -1;
 			}
-		} else if( parent instanceof edu.cmu.cs.dennisc.croquet.CompletionStep< ? > ) {
-			edu.cmu.cs.dennisc.croquet.CompletionStep< ? > completionStep = (edu.cmu.cs.dennisc.croquet.CompletionStep< ? >)parent;
+		} else if( parent instanceof org.lgna.croquet.steps.CompletionStep< ? > ) {
+			org.lgna.croquet.steps.CompletionStep< ? > completionStep = (org.lgna.croquet.steps.CompletionStep< ? >)parent;
 			assert child == completionStep.getTransactionHistory();
 			return 0;
 		} else {
@@ -117,10 +117,10 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 	
 	private java.util.List< Object > updatePath( java.util.List< Object > rv, Object node ) {
 		Object parent;
-		if( node instanceof edu.cmu.cs.dennisc.croquet.Transaction ) {
-			parent = ((edu.cmu.cs.dennisc.croquet.Transaction)node).getParent();
-		} else if( node instanceof edu.cmu.cs.dennisc.croquet.Step ) {
-			parent = ((edu.cmu.cs.dennisc.croquet.Step)node).getParent();
+		if( node instanceof org.lgna.croquet.steps.Transaction ) {
+			parent = ((org.lgna.croquet.steps.Transaction)node).getParent();
+		} else if( node instanceof org.lgna.croquet.steps.Step ) {
+			parent = ((org.lgna.croquet.steps.Step)node).getParent();
 		} else {
 			parent = null;
 		}
@@ -142,18 +142,18 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
  */
 public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
 	private static class SingletonHolder {
-		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState( edu.cmu.cs.dennisc.croquet.TransactionManager.getRootTransactionHistory() );
+		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory() );
 	}
 	public static IsTransactionHistoryShowingState getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	public static IsTransactionHistoryShowingState createInstance( edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory ) {
+	public static IsTransactionHistoryShowingState createInstance( org.lgna.croquet.steps.TransactionHistory transactionHistory ) {
 		return new IsTransactionHistoryShowingState( transactionHistory );
 	}
 	
-	private final edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory;
-	private IsTransactionHistoryShowingState( edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory ) {
+	private final org.lgna.croquet.steps.TransactionHistory transactionHistory;
+	private IsTransactionHistoryShowingState( org.lgna.croquet.steps.TransactionHistory transactionHistory ) {
 		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), false );
 		this.transactionHistory = transactionHistory;
 	}
@@ -180,10 +180,10 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 		tree.setRootVisible( false );
 		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tree );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
-		edu.cmu.cs.dennisc.croquet.TransactionManager.addStepObserver( new edu.cmu.cs.dennisc.croquet.TransactionManager.StepObserver() {
-			public void addingStep( edu.cmu.cs.dennisc.croquet.Step< ? > step ) {
+		org.lgna.croquet.steps.TransactionManager.addStepObserver( new org.lgna.croquet.steps.TransactionManager.StepObserver() {
+			public void addingStep( org.lgna.croquet.steps.Step< ? > step ) {
 			}
-			public void addedStep( edu.cmu.cs.dennisc.croquet.Step< ? > step ) {
+			public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
 				javax.swing.SwingUtilities.invokeLater( new Runnable() {
 					public void run() {
 						treeModel.reload();

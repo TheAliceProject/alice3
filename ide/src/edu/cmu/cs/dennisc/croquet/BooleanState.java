@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.steps.TransactionManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -101,7 +103,7 @@ public class BooleanState extends State<Boolean> {
 	}
 	
 	private void commitEdit( BooleanStateEdit booleanStateEdit, java.awt.event.ItemEvent e ) {
-		TransactionManager.getActiveTransaction().addBooleanStateChangeStep( this );
+		TransactionManager.addBooleanStateChangeStep( this );
 		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
 		childContext.commitAndInvokeDo( booleanStateEdit );
 		ModelContext< ? > popContext = ContextManager.popContext();

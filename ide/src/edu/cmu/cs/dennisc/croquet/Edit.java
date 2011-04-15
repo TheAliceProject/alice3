@@ -66,7 +66,7 @@ public abstract class Edit<M extends Model> {
 		}
 	}
 
-	protected static abstract class Memento< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public static abstract class Memento< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 		private java.util.UUID contextId;
 		public Memento( Edit<M> edit ) {
 			this.contextId = edit.contextId;

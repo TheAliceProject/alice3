@@ -84,10 +84,10 @@ public abstract class Presentation {
 //		}
 //	};
 
-	private edu.cmu.cs.dennisc.croquet.TransactionManager.StepObserver stepObserver = new edu.cmu.cs.dennisc.croquet.TransactionManager.StepObserver() {
-		public void addingStep(edu.cmu.cs.dennisc.croquet.Step<?> step) {
+	private org.lgna.croquet.steps.TransactionManager.StepObserver stepObserver = new org.lgna.croquet.steps.TransactionManager.StepObserver() {
+		public void addingStep(org.lgna.croquet.steps.Step<?> step) {
 		}
-		public void addedStep( edu.cmu.cs.dennisc.croquet.Step< ? > step ) {
+		public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
 		}
 	};
 	
@@ -102,7 +102,7 @@ public abstract class Presentation {
 
 	private final edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
-	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory, Filterer filterer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, Filterer filterer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
 		this.userInformation = userInformation;
 		this.book = this.generateDraft( accessPolicy, originalTransactionHistory );
 		filterer.filter( this.book.listIterator(), userInformation );
@@ -113,7 +113,7 @@ public abstract class Presentation {
 		}
 		this.historyManagers[ N ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( COMPLETION_GROUP );
 
-		edu.cmu.cs.dennisc.croquet.TransactionManager.addStepObserver( this.stepObserver );
+		org.lgna.croquet.steps.TransactionManager.addStepObserver( this.stepObserver );
 	}
 	
 	protected void startListening() {
@@ -123,11 +123,11 @@ public abstract class Presentation {
 		this.getBook().removeSelectionObserver( this.selectionObserver );
 	}
 
-	protected abstract Chapter createChapter( edu.cmu.cs.dennisc.croquet.Transaction transaction );
-	private Book generateDraft( ChapterAccessPolicy accessPolicy, edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory ) {
+	protected abstract Chapter createChapter( org.lgna.croquet.steps.Transaction transaction );
+	private Book generateDraft( ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory transactionHistory ) {
 		Book rv = new Book();
 		rv.setAccessPolicy( accessPolicy );
-		for( edu.cmu.cs.dennisc.croquet.Transaction transaction : transactionHistory ) {
+		for( org.lgna.croquet.steps.Transaction transaction : transactionHistory ) {
 			rv.addChapter( this.createChapter( transaction ) );
 		}
 		return rv;
@@ -236,7 +236,7 @@ public abstract class Presentation {
 		this.book.retargetForward( this.retargeter );
 	}
 	
-	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.Transaction > addTransactionsToGetIntoTheRightStateWhenNoViewControllerCanBeFound( java.util.List< edu.cmu.cs.dennisc.croquet.Transaction > rv );
+	protected abstract java.util.List< org.lgna.croquet.steps.Transaction > addTransactionsToGetIntoTheRightStateWhenNoViewControllerCanBeFound( java.util.List< org.lgna.croquet.steps.Transaction > rv );
 	public void setSelectedIndex( int index ) {
 		this.book.setSelectedIndex( index );
 	}

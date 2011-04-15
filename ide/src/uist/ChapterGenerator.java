@@ -47,9 +47,9 @@ package uist;
  */
 public enum ChapterGenerator {
 	INSTANCE;
-	public java.util.List< org.lgna.cheshire.Chapter > generate( edu.cmu.cs.dennisc.croquet.TransactionHistory transactionHistory ) {
+	public java.util.List< org.lgna.cheshire.Chapter > generate( org.lgna.croquet.steps.TransactionHistory transactionHistory ) {
 		java.util.List< org.lgna.cheshire.Chapter > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		for( edu.cmu.cs.dennisc.croquet.Transaction transaction : transactionHistory ) {
+		for( org.lgna.croquet.steps.Transaction transaction : transactionHistory ) {
 			rv.add( new org.lgna.cheshire.TransactionChapter( transaction ) );
 		}
 		return rv;

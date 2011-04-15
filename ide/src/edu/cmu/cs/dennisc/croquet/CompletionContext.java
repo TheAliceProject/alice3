@@ -76,19 +76,20 @@ public class CompletionContext<M extends CompletionModel> extends ModelContext<M
 	@Override
 	public void commitAndInvokeDo(Edit edit) {
 		super.commitAndInvokeDo( edit );
-		TransactionHistory transactionHistory = TransactionManager.getActiveTransactionHistory();
-		Transaction transaction = transactionHistory.getLastTransaction();
-		transaction.commit( edit );
+		org.lgna.croquet.steps.TransactionManager.commit( edit );
+//		TransactionHistory transactionHistory = TransactionManager.getActiveTransactionHistory();
+//		Transaction transaction = transactionHistory.getLastTransaction();
+//		transaction.commit( edit );
 	}
 	@Override
 	public void cancel() {
 		super.cancel();
-		Transaction transaction = TransactionManager.getActiveTransaction();
-		CompletionStep< ? > completionStep = transaction.getCompletionStep();
-		if( completionStep != null ) {
-			completionStep.cancel();
-		} else {
-			System.err.println( "cancel completionStep == null" );
-		}
+//		Transaction transaction = TransactionManager.getActiveTransaction();
+//		CompletionStep< ? > completionStep = transaction.getCompletionStep();
+//		if( completionStep != null ) {
+//			completionStep.cancel();
+//		} else {
+//			System.err.println( "cancel completionStep == null" );
+//		}
 	}
 }

@@ -40,7 +40,9 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.croquet.steps;
+
+import edu.cmu.cs.dennisc.croquet.Retargeter;
 
 /**
  * @author Dennis Cosgrove

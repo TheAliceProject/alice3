@@ -52,7 +52,7 @@ public class TutorialFilterer implements org.lgna.cheshire.Filterer {
 			org.lgna.cheshire.Chapter chapter = chapterIterator.next();
 			if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
 				org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
-				edu.cmu.cs.dennisc.croquet.Transaction transaction = transactionChapter.getTransaction();
+				org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
 				edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
 				if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
 					org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;

@@ -40,17 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DialogOperationStep extends AbstractDialogOperationStep< DialogOperation > {
-	public DialogOperationStep( Transaction parent, DialogOperation model ) {
-		super( parent, model );
+public abstract class StateChangeStep< M extends edu.cmu.cs.dennisc.croquet.State<?> > extends CompletionStep< M > {
+	public StateChangeStep( Transaction parent, M model ) {
+		super( parent, model, null );
 	}
-	public DialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public StateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 }

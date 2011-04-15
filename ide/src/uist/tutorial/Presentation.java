@@ -47,7 +47,7 @@ package uist.tutorial;
  */
 public class Presentation extends org.lgna.cheshire.stencil.Presentation {
 	private static boolean IS_MONKEY_WRENCH_DESIRED = false;
-	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory, org.lgna.cheshire.Filterer filterer, boolean isOptimizedForBugRepro ) {
+	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, org.lgna.cheshire.Filterer filterer, boolean isOptimizedForBugRepro ) {
 		super( 
 			userInformation,
 			
@@ -75,7 +75,7 @@ public class Presentation extends org.lgna.cheshire.stencil.Presentation {
 		}
 	}
 	@Override
-	protected java.util.List<edu.cmu.cs.dennisc.croquet.Transaction> addTransactionsToGetIntoTheRightStateWhenNoViewControllerCanBeFound(java.util.List<edu.cmu.cs.dennisc.croquet.Transaction> rv) {
+	protected java.util.List<org.lgna.croquet.steps.Transaction> addTransactionsToGetIntoTheRightStateWhenNoViewControllerCanBeFound(java.util.List<org.lgna.croquet.steps.Transaction> rv) {
 //		if( IS_MONKEY_WRENCH_DESIRED ) {
 //			System.err.println( "addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound: " + modelContext );
 //			org.alice.ide.croquet.models.ui.AccessibleListSelectionState accessibleListSelectionState = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();

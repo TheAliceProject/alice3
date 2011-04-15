@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.steps.TransactionManager;
+
 /*package-private*/ class ComboBoxModel<E> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	private final ListSelectionState< E > listSelectionState;
 	public ComboBoxModel( ListSelectionState< E > listSelectionState ) {
@@ -511,7 +513,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 	
 	protected void commitEdit( ListSelectionStateEdit< E > listSelectionStateEdit, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		TransactionManager.getActiveTransaction().addListSelectionStateChangeStep( this );
+		TransactionManager.addListSelectionStateChangeStep( this );
 		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
 		childContext.commitAndInvokeDo( listSelectionStateEdit );
 		ModelContext< ? > popContext = ContextManager.popContext();

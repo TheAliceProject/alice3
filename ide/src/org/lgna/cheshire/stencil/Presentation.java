@@ -71,7 +71,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 	private final edu.cmu.cs.dennisc.croquet.BooleanState isPlayingSounds = new PresentationBooleanState( java.util.UUID.fromString( "4d8ac630-0679-415a-882f-780c7cb014ef" ), true, "play sounds" );
 
 	@Override
-	protected org.lgna.cheshire.Chapter createChapter(edu.cmu.cs.dennisc.croquet.Transaction transaction) {
+	protected org.lgna.cheshire.Chapter createChapter(org.lgna.croquet.steps.Transaction transaction) {
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
 	
@@ -223,7 +223,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 	public Presentation( 
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
 			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
-			edu.cmu.cs.dennisc.croquet.TransactionHistory originalTransactionHistory,
+			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
 			org.lgna.cheshire.Filterer filterer,
 			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess, 
 			org.lgna.stencil.MenuPolicy menuPolicy, 

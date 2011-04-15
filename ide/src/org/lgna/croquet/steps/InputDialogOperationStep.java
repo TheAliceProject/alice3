@@ -40,86 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompletionStep< M extends CompletionModel > extends Step< M > {
-	private final TransactionHistory transactionHistory;
-	private Edit<M> edit;
-	private boolean isSuccessfullyCompleted;
-	private boolean isActive = true;
-	public CompletionStep( Transaction parent, M model, TransactionHistory transactionHistory ) {
+public class InputDialogOperationStep<J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> extends AbstractDialogOperationStep< edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > > {
+	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InputDialogOperationStep<J> createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > model ) {
+		return new InputDialogOperationStep<J>( parent, model );
+	}
+	private InputDialogOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > model ) {
 		super( parent, model );
-		this.transactionHistory = transactionHistory;
-		if( this.transactionHistory != null ) {
-			TransactionManager.pushTransactionHistory( this.transactionHistory );
-		}
 	}
-	public CompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public InputDialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-		this.isActive = binaryDecoder.decodeBoolean();
-		this.isSuccessfullyCompleted = binaryDecoder.decodeBoolean();
-		Edit.Memento< M > memento = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		if( memento != null ) {
-			this.edit = memento.createEdit();
-		} else {
-			this.edit = null;
-		}
-		this.transactionHistory = binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.isActive );
-		binaryEncoder.encode( this.isSuccessfullyCompleted );
-		edu.cmu.cs.dennisc.croquet.Edit.Memento<M> memento;
-		if( this.edit != null ) {
-			memento = this.edit.createMemento();
-		} else {
-			memento = null;
-		}
-		binaryEncoder.encode( memento );
-		binaryEncoder.encode( this.transactionHistory );
-	}
-	public TransactionHistory getTransactionHistory() {
-		return this.transactionHistory;
-	}
-//	public TransactionHistory createAndPushTransactionHistory() {
-//		assert this.transactionHistory == null;
-//		this.transactionHistory = new TransactionHistory();
-//		TransactionManager.pushTransactionHistory( this.transactionHistory );
-//		return this.transactionHistory;
-//	}
-	//	public abstract boolean isActive();
-	public boolean isActive() {
-		return this.isActive;
-	}
-	public Edit< ? > getEdit() {
-		return this.edit;
-	}
-
-	private void deactivate() {
-		if( this.transactionHistory != null ) {
-			
-		}
-		this.isActive = false;
-	}
-	
-	public void commit( Edit<M> edit ) {
-		this.isSuccessfullyCompleted = true;
-		this.edit = edit;
-		this.deactivate();
-	}
-	public void finish() {
-		this.isSuccessfullyCompleted = true;
-		this.edit = null;
-		this.deactivate();
-	}
-	public void cancel() {
-		this.isSuccessfullyCompleted = false;
-		this.edit = null;
-		this.deactivate();
 	}
 }

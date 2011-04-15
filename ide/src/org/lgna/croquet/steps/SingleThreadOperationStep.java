@@ -40,57 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionManager {
-	public static interface StepObserver {
-		public void addingStep(Step<?> step);
-		public void addedStep(Step<?> step);
+public abstract class SingleThreadOperationStep< M extends edu.cmu.cs.dennisc.croquet.SingleThreadOperation<?> > extends CompletionStep< M >{
+	public SingleThreadOperationStep( Transaction parent, M model, TransactionHistory transactionHistory ) {
+		super( parent, model, transactionHistory );
 	}
-	private static java.util.List<StepObserver> stepObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private static java.util.Stack< TransactionHistory > stack;
-	static {
-		stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-		stack.push( new TransactionHistory() );
-	}
-	private TransactionManager() {
-		throw new AssertionError();
-	}
-	public static TransactionHistory getRootTransactionHistory() {
-		return stack.firstElement();
-	}
-	public static TransactionHistory getActiveTransactionHistory() {
-		return stack.peek();
-	}
-	
-	public static void pushTransactionHistory( TransactionHistory transactionHistory ) {
-		stack.push( transactionHistory );
-	}
-	public static TransactionHistory popTransactionHistory() {
-		return stack.pop();
-	}
-	
-	public static void addStepObserver( StepObserver stepObserver ) {
-		stepObservers.add( stepObserver );
-	}
-	public static void removeStepObserver( StepObserver stepObserver ) {
-		stepObservers.remove( stepObserver );
-	}
-	
-	public static Transaction getActiveTransaction() {
-		return getActiveTransactionHistory().getActiveTransaction();
-	}
-	/*package-private*/ static void fireAddingStep( Step<?> step ) {
-		for( StepObserver stepObserver : stepObservers ) {
-			stepObserver.addingStep( step );
-		}
-	}
-	/*package-private*/ static void fireAddedStep( Step<?> step ) {
-		for( StepObserver stepObserver : stepObservers ) {
-			stepObserver.addedStep( step );
-		}
+	public SingleThreadOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

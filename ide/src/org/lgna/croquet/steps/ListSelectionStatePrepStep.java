@@ -40,16 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ListSelectionStateChangeStep<E> extends StateChangeStep< ListSelectionState< E > >{
-	public ListSelectionStateChangeStep( Transaction parent, ListSelectionState< E > model ) {
+public class ListSelectionStatePrepStep<E> extends PrepStep< edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > > {
+	public static <E> ListSelectionStatePrepStep<E> createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel<E> model ) {
+		return new ListSelectionStatePrepStep<E>( parent, model );
+	}
+	private ListSelectionStatePrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > model ) {
 		super( parent, model );
 	}
-	public ListSelectionStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public ListSelectionStatePrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 }
