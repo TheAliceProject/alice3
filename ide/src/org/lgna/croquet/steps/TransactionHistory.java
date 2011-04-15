@@ -48,6 +48,7 @@ import edu.cmu.cs.dennisc.croquet.Retargeter;
  * @author Dennis Cosgrove
  */
 public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, Iterable< Transaction > {
+	private CompletionStep< ? > parent;
 	private final java.util.List< Transaction > transactions;
 	public TransactionHistory() {
 		this.transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
@@ -65,6 +66,13 @@ public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncoda
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.transactions, Transaction.class ) );
 	}
 	
+	public CompletionStep< ? > getParent() {
+		return this.parent;
+	}
+	/*package-private*/ void setParent( CompletionStep< ? > parent ) {
+		this.parent = parent;
+	}
+
 	@Deprecated
 	public void EPIC_HACK_clear() {
 		this.transactions.clear();

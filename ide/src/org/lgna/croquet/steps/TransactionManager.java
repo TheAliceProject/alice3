@@ -123,8 +123,15 @@ public class TransactionManager {
 //	}
 	
 	public static void commit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		Transaction transaction = getActiveTransactionHistory().getLastTransaction();
-		transaction.popTransactionHistoryIfNecessary();
+		TransactionHistory transactionHistory = getActiveTransactionHistory();
+		CompletionStep< ? > completionStep = transactionHistory.getParent();
+		if( completionStep != null ) {
+			if( completionStep.getModel() == edit.getModel() ) {
+				completionStep.popTransactionHistoryIfNecessary();
+				transactionHistory = getActiveTransactionHistory();
+			}
+		}
+		transactionHistory.getLastTransaction().commit( edit );
 	}
 	public static void finish( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
 	}

@@ -55,6 +55,7 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 		parent.setCompletionStep( this );
 		this.transactionHistory = transactionHistory;
 		if( this.transactionHistory != null ) {
+			this.transactionHistory.setParent( this );
 			TransactionManager.pushTransactionHistory( this.transactionHistory );
 		}
 	}
@@ -69,6 +70,9 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 			this.edit = null;
 		}
 		this.transactionHistory = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		if( this.transactionHistory != null ) {
+			this.transactionHistory.setParent( this );
+		}
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
