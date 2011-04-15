@@ -52,7 +52,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
 	private static boolean IS_BASED_ON_INTERACTION_AST;
 	private static boolean IS_OPTIMIZED_FOR_BUG_REPRO;
-	private static final String UI_HISTORY_PATH = "/autoTutorial1.bin";
+	private static final String TRANSACTION_HISTORY_PATH = "/transactionHistory.bin";
+	private static final String CONTEXT_PATH = "/context.bin";
 	private static final String AST_MIMIC_PATH = "/astMimic1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
 	
@@ -70,6 +71,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
 					org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
+					edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext().EPIC_HACK_clear();
 				}
 			} );
 		}
@@ -158,7 +160,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		} else {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			this.isOriginalProjectLive = true;
-			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, org.lgna.croquet.steps.TransactionHistory.class );
+			edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( CONTEXT_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
+			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( TRANSACTION_HISTORY_PATH, org.lgna.croquet.steps.TransactionHistory.class );
 			this.isOriginalProjectLive = false;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 		}
@@ -243,7 +246,19 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //			}
 
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory(), UI_HISTORY_PATH );
+			
+			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory(), TRANSACTION_HISTORY_PATH );
+			
+			edu.cmu.cs.dennisc.croquet.RootContext rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
+			System.err.println( "todo: remove filtering" );
+			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
+					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
+			};
+			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
+				rootContext = filter.filter( rootContext );
+			}
+			
+			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext(), CONTEXT_PATH );
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 
 			try {

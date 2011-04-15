@@ -75,6 +75,7 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 	/*package-private*/ ModelContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+	@Deprecated
 	public void EPIC_HACK_clear() {
 		this.children.clear();
 	}
