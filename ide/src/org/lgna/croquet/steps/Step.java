@@ -50,7 +50,12 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 	private final edu.cmu.cs.dennisc.croquet.CodableResolver< M > modelResolver; 
 	public Step( Transaction parent, M model ) {
 		this.setParent( parent );
-		this.modelResolver = model.getCodableResolver();
+		//this.modelResolver = model != null ? model.getCodableResolver() : null;
+		if( model != null ) {
+			this.modelResolver = model.getCodableResolver();
+		} else {
+			this.modelResolver = null;
+		}
 	}
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
@@ -62,7 +67,7 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 		binaryEncoder.encode( this.modelResolver );
 	}
 	public M getModel() {
-		return this.modelResolver.getResolved();
+		return this.modelResolver != null ? this.modelResolver.getResolved() : null;
 	}
 	public Transaction getParent() {
 		return this.parent;

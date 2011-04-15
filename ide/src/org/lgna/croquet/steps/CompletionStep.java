@@ -97,13 +97,6 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 			assert pop == this.transactionHistory;
 		}
 	}
-	
-//	public TransactionHistory createAndPushTransactionHistory() {
-//		assert this.transactionHistory == null;
-//		this.transactionHistory = new TransactionHistory();
-//		TransactionManager.pushTransactionHistory( this.transactionHistory );
-//		return this.transactionHistory;
-//	}
 	//	public abstract boolean isActive();
 	public boolean isActive() {
 		return this.isActive;
@@ -112,26 +105,19 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 		return this.edit;
 	}
 
-	private void deactivate() {
-		if( this.transactionHistory != null ) {
-			
-		}
-		this.isActive = false;
-	}
-	
 	public void commit( edu.cmu.cs.dennisc.croquet.Edit<M> edit ) {
 		this.isSuccessfullyCompleted = true;
 		this.edit = edit;
-		this.deactivate();
+		this.isActive = false;
 	}
 	public void finish() {
 		this.isSuccessfullyCompleted = true;
 		this.edit = null;
-		this.deactivate();
+		this.isActive = false;
 	}
 	public void cancel() {
 		this.isSuccessfullyCompleted = false;
 		this.edit = null;
-		this.deactivate();
+		this.isActive = false;
 	}
 }

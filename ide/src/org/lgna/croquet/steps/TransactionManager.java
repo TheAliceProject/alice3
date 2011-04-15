@@ -63,7 +63,7 @@ public class TransactionManager {
 	public static TransactionHistory getRootTransactionHistory() {
 		return stack.firstElement();
 	}
-	public static TransactionHistory getActiveTransactionHistory() {
+	private static TransactionHistory getActiveTransactionHistory() {
 		return stack.peek();
 	}
 	
@@ -81,8 +81,11 @@ public class TransactionManager {
 		stepObservers.remove( stepObserver );
 	}
 	
-	public static Transaction getActiveTransaction() {
+	private static Transaction getActiveTransaction() {
 		return getActiveTransactionHistory().getActiveTransaction();
+	}
+	private static Transaction getLastTransaction() {
+		return getActiveTransactionHistory().getLastTransaction();
 	}
 	/*package-private*/ static void fireAddingStep( Step<?> step ) {
 		for( StepObserver stepObserver : stepObservers ) {
@@ -116,25 +119,29 @@ public class TransactionManager {
 	public static <E> void addListSelectionPrepStep( edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > model ) {
 		ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model ); 
 	}
+	public static <E> void addCancelPrepStep() {
+		CancelPrepStep.createAndAddToTransaction( getActiveTransaction() ); 
+	}
 
-//	public static <E> void addCancelStep( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
-//		CancelStep.createAndAddToTransaction( getActiveTransaction(), model ); 
-//		this.setCompletionStep( new CancelStep( this, model ) );
-//	}
-	
-	public static void commit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	private static void popTransactionHistoryIfNecessary( edu.cmu.cs.dennisc.croquet.Model model ) {
 		TransactionHistory transactionHistory = getActiveTransactionHistory();
 		CompletionStep< ? > completionStep = transactionHistory.getParent();
 		if( completionStep != null ) {
-			if( completionStep.getModel() == edit.getModel() ) {
+			if( completionStep.getModel() == model ) {
 				completionStep.popTransactionHistoryIfNecessary();
-				transactionHistory = getActiveTransactionHistory();
 			}
 		}
-		transactionHistory.getLastTransaction().commit( edit );
+	}
+	public static void commit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		popTransactionHistoryIfNecessary( edit.getModel() );
+		getLastTransaction().commit( edit );
 	}
 	public static void finish( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
+		popTransactionHistoryIfNecessary( model );
+		getLastTransaction().finish();
 	}
 	public static void cancel( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
+		popTransactionHistoryIfNecessary( model );
+		getLastTransaction().cancel();
 	}
 }

@@ -45,11 +45,18 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class CancelStep extends CompletionStep< edu.cmu.cs.dennisc.croquet.CompletionModel > {
-	public CancelStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
-		super( parent, model, null );
+public class CancelPrepStep extends CompletionStep {
+	public static CancelPrepStep createAndAddToTransaction( Transaction parent ) {
+		return new CancelPrepStep( parent );
 	}
-	public CancelStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	private CancelPrepStep( Transaction parent ) {
+		super( parent, null, null );
+	}
+	public CancelPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+	}
+	@Override
+	public boolean isActive() {
+		return false;
 	}
 }
