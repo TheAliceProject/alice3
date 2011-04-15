@@ -87,6 +87,13 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 	public TransactionHistory getTransactionHistory() {
 		return this.transactionHistory;
 	}
+	/*package-private*/ void popTransactionHistoryIfNecessary() {
+		if( this.transactionHistory != null ) {
+			TransactionHistory pop = TransactionManager.popTransactionHistory();
+			assert pop == this.transactionHistory;
+		}
+	}
+	
 //	public TransactionHistory createAndPushTransactionHistory() {
 //		assert this.transactionHistory == null;
 //		this.transactionHistory = new TransactionHistory();

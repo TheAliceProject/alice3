@@ -63,6 +63,9 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		this.completionStep.setParent( this );
 	}
 
+	/*package-private*/ void popTransactionHistoryIfNecessary() {
+		this.completionStep.popTransactionHistoryIfNecessary();
+	}
 	public String getTitle() {
 		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = this.getEdit();
 		if( edit != null ) {

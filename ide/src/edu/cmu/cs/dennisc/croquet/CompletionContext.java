@@ -52,44 +52,20 @@ public class CompletionContext<M extends CompletionModel> extends ModelContext<M
 	/*package-private*/ CompletionContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	private void transactionFinish() {
-//		TransactionHistory transactionHistory = TransactionManager.getActiveTransactionHistory();
-//		Transaction transaction = transactionHistory.getLastTransaction();
-//		CompletionStep< ? > completionStep = transaction.getCompletionStep();
-//		if( completionStep != null && completionStep.isActive() ) {
-//			completionStep.finish();
-//		} else {
-//			if( transactionHistory != null ) {
-//				TransactionHistory pop = TransactionManager.popTransactionHistory();
-//				assert pop == transactionHistory;
-//				this.transactionFinish();
-//			}
-//		}
-	}
-
 	@Override
 	public void finish() {
 		super.finish();
-		this.transactionFinish();
+		org.lgna.croquet.steps.TransactionManager.finish( this.getModel() );
 	}
 	
 	@Override
 	public void commitAndInvokeDo(Edit edit) {
 		super.commitAndInvokeDo( edit );
 		org.lgna.croquet.steps.TransactionManager.commit( edit );
-//		TransactionHistory transactionHistory = TransactionManager.getActiveTransactionHistory();
-//		Transaction transaction = transactionHistory.getLastTransaction();
-//		transaction.commit( edit );
 	}
 	@Override
 	public void cancel() {
 		super.cancel();
-//		Transaction transaction = TransactionManager.getActiveTransaction();
-//		CompletionStep< ? > completionStep = transaction.getCompletionStep();
-//		if( completionStep != null ) {
-//			completionStep.cancel();
-//		} else {
-//			System.err.println( "cancel completionStep == null" );
-//		}
+		org.lgna.croquet.steps.TransactionManager.cancel( this.getModel() );
 	}
 }
