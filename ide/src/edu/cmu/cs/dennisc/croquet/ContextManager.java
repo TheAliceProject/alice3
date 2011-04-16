@@ -191,6 +191,7 @@ public class ContextManager {
 		return pushContext( new SerialOperationContext(compositeOperation, e, viewController) );
 	}
 	/*package-private*/ static DialogOperationContext createAndPushDialogOperationContext(DialogOperation dialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		TransactionManager.addDialogOperationStep( dialogOperation );
 		return pushContext( new DialogOperationContext(dialogOperation, e, viewController) );
 	}
 	/*package-private*/ static <J extends Component<?>> InformationDialogOperationContext<J> createAndPushInformationDialogOperationContext(InformationDialogOperation<J> informationDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
@@ -205,9 +206,11 @@ public class ContextManager {
 	}
 	
 	/*package-private*/ static StandardPopupOperationContext createAndPushStandardPopupOperationContext(StandardPopupOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		TransactionManager.addStandardPopupOperationStep( popupMenuOperation );
 		return pushContext( new StandardPopupOperationContext(popupMenuOperation, e, viewController) );
 	}
 	/*package-private*/ static <T> CascadePopupOperationContext< T > createAndPushCascadePopupOperationContext(CascadePopupOperation< T > cascadeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		TransactionManager.addCascadePopupOperationStep( cascadeOperation );
 		return pushContext( new CascadePopupOperationContext<T>(cascadeOperation, e, viewController) );
 	}
 	/*package-private*/ static <B> CascadeBlankContext<B> createCascadeBlankContext(CascadeBlank<B> cascadeBlank ) {
@@ -366,6 +369,7 @@ public class ContextManager {
 					if( modelContext instanceof PopupOperationContext ) {
 						PopupOperationContext popupContext = (PopupOperationContext)modelContext;
 						popupContext.handleMenuSelectionChanged( e, models );
+						TransactionManager.handleMenuSelectionChanged( models );
 					} else {
 						System.err.println( "WARNING: handleMenuSelectionStateChanged not PopupMenuOperationContext " + modelContext );
 					}

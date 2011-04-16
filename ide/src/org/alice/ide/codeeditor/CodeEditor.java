@@ -75,6 +75,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		this.setBackgroundColor( color );
 	}
 
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return "Drop...";
+	}
 	public edu.cmu.cs.dennisc.croquet.CodableResolver< CodeEditor > getCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<CodeEditor>( this, this.code, edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
 	}

@@ -63,6 +63,13 @@ public class DropStep extends CompletionStep< edu.cmu.cs.dennisc.croquet.Complet
 		super.encode(binaryEncoder);
 		binaryEncoder.encode( this.dropReceptorResolver );
 	}
+	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor() {
+		return this.dropReceptorResolver.getResolved();
+	}
+	@Override
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return this.getDropReceptor().getTutorialNoteText( this.getModel(), edit, userInformation );
+	}
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );

@@ -45,7 +45,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > extends edu.cmu.cs.dennisc.java.lang.AbstractObjectWithRevealingToString implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	private Transaction parent;
 	private final edu.cmu.cs.dennisc.croquet.CodableResolver< M > modelResolver; 
 	public Step( Transaction parent, M model ) {
@@ -59,6 +59,9 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 	}
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	}
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return this.getModel().getTutorialNoteText( null, edit, userInformation );
 	}
 	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		throw new AssertionError();
@@ -84,12 +87,11 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 	}
 	
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.getModel() );
-		sb.append( "]" );
-		return sb.toString();
+	protected StringBuffer updateRepr( StringBuffer rv ) {
+		rv.append( this.getClass().getSimpleName() );
+		rv.append( "[" );
+		rv.append( this.getModel() );
+		rv.append( "]" );
+		return rv;
 	}
 }

@@ -128,13 +128,9 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	}
 
 	/*package-private*/ void addPrepStep( PrepStep< ? > step ) {
+		//assert this.completionStep == null;
 		TransactionManager.fireAddingStep( step );
-//		if( this.completionStep != null ) {
-//			TransactionHistory transactionHistory = this.completionStep.createAndPushTransactionHistory();
-//			transactionHistory.getActiveTransaction().addPrepStep( step );
-//		} else {
-			this.prepSteps.add( step );
-//		}
+		this.prepSteps.add( step );
 		TransactionManager.fireAddedStep( step );
 	}
 //	public void removePrepStep( PrepStep< ? > step ) {
@@ -144,13 +140,9 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		return this.completionStep;
 	}
 	/*package-private*/ void setCompletionStep( CompletionStep<?> step ) {
+		//assert this.completionStep != null;
 		TransactionManager.fireAddingStep( step );
-//		if( this.completionStep != null ) {
-//			TransactionHistory transactionHistory = this.completionStep.createAndPushTransactionHistory();
-//			transactionHistory.getActiveTransaction().setCompletionStep( step );
-//		} else {
-			this.completionStep = step;
-//		}
+		this.completionStep = step;
 		TransactionManager.fireAddedStep( step );
 	}
 	public boolean isActive() {

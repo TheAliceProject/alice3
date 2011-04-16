@@ -40,45 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DragAndDropModel extends PrepModel {
-	public static final Group DRAG_GROUP = Group.getInstance( java.util.UUID.fromString( "16f67072-dd57-453c-a812-69f2303bc948" ), "DRAG_GROUP" );
-	public DragAndDropModel( java.util.UUID inividualUUID ) {
-		super( DRAG_GROUP, inividualUUID );
+public class CascadePopupOperationStep<T> extends OperationStep< edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> >{
+	public static <T> CascadePopupOperationStep<T> createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model ) {
+		return new CascadePopupOperationStep<T>( parent, model );
 	}
-	@Override
-	protected void localize() {
+	private CascadePopupOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model ) {
+		super( parent, model, null );
 	}
-	
-	@Override
-	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		return "Drag and Drop...";
+	public CascadePopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
-	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		return "Drag...";
-	}
-	@Deprecated
-	public String getTutorialDragNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {
-		return "Drag...";
-	}
-	@Deprecated
-	public String getTutorialDropNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {
-		return "Drop...";
-	}
-
-	@Override
-	public boolean isAlreadyInState( Edit< ? > edit ) {
-		return false;
-	}
-	
-	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
-	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragEnteredDropReceptor( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragExitedDropReceptor( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragStopped( DragAndDropContext dragAndDropContext );
 }

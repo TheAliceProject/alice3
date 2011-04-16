@@ -76,6 +76,10 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 //		return rv;	
 //	}
 
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return "Drop...";
+	}
+	
 	public edu.cmu.cs.dennisc.croquet.CodableResolver< ExpressionPropertyDropDownPane > getCodableResolver() {
 		//todo:
 		System.err.println( "todo: getCodableResolver" );

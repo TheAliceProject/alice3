@@ -40,45 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DragAndDropModel extends PrepModel {
-	public static final Group DRAG_GROUP = Group.getInstance( java.util.UUID.fromString( "16f67072-dd57-453c-a812-69f2303bc948" ), "DRAG_GROUP" );
-	public DragAndDropModel( java.util.UUID inividualUUID ) {
-		super( DRAG_GROUP, inividualUUID );
+public abstract class PopupOperationStep< M extends edu.cmu.cs.dennisc.croquet.PopupOperation<?> > extends OperationStep< M > {
+	public PopupOperationStep( Transaction parent, M model ) {
+		super( parent, model, null );
 	}
-	@Override
-	protected void localize() {
+	public PopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
-	
-	@Override
-	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		return "Drag and Drop...";
-	}
-	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		return "Drag...";
-	}
-	@Deprecated
-	public String getTutorialDragNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {
-		return "Drag...";
-	}
-	@Deprecated
-	public String getTutorialDropNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {
-		return "Drop...";
-	}
-
-	@Override
-	public boolean isAlreadyInState( Edit< ? > edit ) {
-		return false;
-	}
-	
-	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
-	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragEnteredDropReceptor( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragExitedDropReceptor( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragStopped( DragAndDropContext dragAndDropContext );
 }
