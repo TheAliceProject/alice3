@@ -65,22 +65,275 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		this.chapter = chapter;
 		if( chapter instanceof org.lgna.cheshire.MessageChapter ) {
 			org.lgna.cheshire.MessageChapter messageChapter = (org.lgna.cheshire.MessageChapter)chapter;
-			this.notes.add( new org.lgna.stencil.Note( messageChapter.getText() ) );
+			this.notes.add( new Note( messageChapter.getText() ) );
+		} else if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
+			org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
+			org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
+			edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
+			for( org.lgna.croquet.steps.PrepStep< ? > step : transaction.getPrepSteps() ) {
+				this.notes.add( new Note( step.getModel().getTutorialNoteText( null, edit, null ) ) );
+			}
+			org.lgna.croquet.steps.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+			this.notes.add( new Note( completionStep.getModel().getTutorialNoteText( null, edit, null ) ) );
 		}
-	}
-	public Iterable< org.lgna.stencil.Note > getNotes() {
-		return this.notes;
-	}
-	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
-		return false;
-	}
-	public boolean isStencilRenderingDesired() {
-		return true;
 	}
 	public boolean isAlreadyInTheDesiredState() {
 		return false;
 	}
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > getCard() {
-		return this.card;
+
+
+	public Iterable< org.lgna.stencil.Note > getNotes() {
+		return this.notes;
+	}
+
+	private static final boolean IS_STENCIL_RENDERING_DESIRED_BY_DEFAULT = true;
+	/*package-private*/ static final boolean IS_NOTE_OVERLAPPING_DESIRED = true;
+	private class PageLayoutManager implements java.awt.LayoutManager {
+		private java.util.Set<java.awt.Component> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet(); 
+		public void addLayoutComponent( java.lang.String name, java.awt.Component comp ) {
+		}
+		public void removeLayoutComponent( java.awt.Component comp ) {
+		}
+		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
+			return parent.getMinimumSize();
+		}
+		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+			return parent.getPreferredSize();
+		}
+		public void layoutContainer( java.awt.Container parent ) {
+			java.awt.Point prevLocation = null;
+			java.awt.Dimension prevSize = null;
+			java.awt.Dimension parentSize = parent.getSize();
+			for( java.awt.Component awtComponent : parent.getComponents() ) {
+				java.awt.Dimension childSize = awtComponent.getPreferredSize();
+				awtComponent.setSize( childSize );
+				if( set.contains( awtComponent ) ) {
+					//pass
+				} else {
+					java.awt.Point p;
+					if( prevLocation != null ) {
+						if( IS_NOTE_OVERLAPPING_DESIRED ) {
+							p = new java.awt.Point( prevLocation.x + 48, prevLocation.y - 33 );
+						} else {
+							p = new java.awt.Point( prevLocation.x + prevSize.width - 64, prevLocation.y - 33 );
+						}
+					} else {
+						if (awtComponent instanceof org.lgna.stencil.Note.JNote) {
+							if( ChapterPage.this.layoutHint != null ) {
+								p = ChapterPage.this.layoutHint;
+								if( p.x < 0 ) {
+									p.x = parentSize.width - childSize.width + p.x;
+								}
+								if( p.y < 0 ) {
+									p.y = parentSize.height - childSize.height + p.y;
+								}
+							} else {
+								p = new java.awt.Point( ChapterPage.this.calculateLocationOfFirstNote() );
+							}
+						} else {
+							p = new java.awt.Point( 10, 10 );
+						}
+					}
+					
+					if( parentSize.width > 0 && parentSize.height > 0 ) {
+						final int BORDER = 32;
+						p.x = Math.max( p.x, BORDER );
+						p.x = Math.min( p.x, parentSize.width-childSize.width-BORDER );
+						p.y = Math.max( p.y, BORDER );
+						p.y = Math.min( p.y, parentSize.height-childSize.height-BORDER );
+					}
+					
+					awtComponent.setLocation( p );
+
+					set.add( awtComponent );
+				}
+				prevLocation = awtComponent.getLocation();
+				prevSize = awtComponent.getSize();
+			}
+		}
+	}
+	private class PagePanel extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
+		@Override
+		protected javax.swing.JPanel createAwtComponent() {
+			javax.swing.JPanel rv = new javax.swing.JPanel() {
+				private boolean isSortingDesired = false;
+				private java.util.ArrayList<java.awt.Component> sortedComponents = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+				private boolean isActiveNote( java.awt.Component component ) {
+					boolean rv;
+					if( component instanceof org.lgna.stencil.Note.JNote ) {
+						org.lgna.stencil.Note.JNote jNote = (org.lgna.stencil.Note.JNote)component;
+						rv = jNote.isActive();
+					} else {
+						rv = false;
+					}
+					return rv;
+				}
+				private void updateSortedComponents() {
+					java.awt.Component[] components = this.getComponents();
+					this.sortedComponents.ensureCapacity( components.length );
+					this.sortedComponents.clear();
+					for( java.awt.Component component : components ) {
+						if( this.isActiveNote(component) ) {
+							this.sortedComponents.add( component );
+						} else {
+							//pass 
+						}
+					}
+					for( java.awt.Component component : components ) {
+						if( this.isActiveNote(component) ) {
+							//pass 
+						} else {
+							this.sortedComponents.add( component );
+						}
+					}
+					assert this.sortedComponents.size()==components.length;
+				}
+				@Override
+				public java.awt.Component getComponent(int index) {
+					if( this.isSortingDesired ) {
+						return this.sortedComponents.get( index );
+					} else {
+						return super.getComponent( index );
+					}
+				}
+				@Override
+				protected void paintChildren(java.awt.Graphics g) {
+					//todo: use setComponentZOrder?
+					if( this.getComponentCount() > 1 ) {
+						this.updateSortedComponents();
+						this.isSortingDesired = true;
+					}
+					try {
+						super.paintChildren(g);
+					} finally {
+						this.isSortingDesired = false;
+					}
+				}
+			};
+			rv.setLayout( new PageLayoutManager() );
+			rv.setOpaque( false );
+			return rv;
+		}
+//		@Override
+//		protected void handleDisplayabilityChanged( java.awt.event.HierarchyEvent e ) {
+//			super.handleDisplayabilityChanged( e );
+//			if( this.getComponentCount() == 0 ) {
+//				for( Note note : Page.this.getNotes() ) {
+//					this.internalAddComponent( note );
+//				}
+//			}
+//		}
+		@Override
+		protected void handleDisplayable() {
+			for( org.lgna.stencil.Note note : ChapterPage.this.getNotes() ) {
+				this.internalAddComponent( note );
+			}
+			super.handleDisplayable();
+		}
+		@Override
+		protected void handleUndisplayable() {
+			this.internalRemoveAllComponents();
+			super.handleUndisplayable();
+		}
+	}
+
+	private java.util.UUID id = java.util.UUID.randomUUID();
+	private PagePanel stepPanel = new PagePanel();
+	private java.awt.Point layoutHint = null;
+	
+	private int[] historyIndices = null;
+	private boolean isStencilRenderingDesired = IS_STENCIL_RENDERING_DESIRED_BY_DEFAULT;
+	
+
+	protected int getIndexOfFirstActiveNote() { 
+		final int N = this.notes.size();
+		for( int i=0; i<N; i++ ) {
+			org.lgna.stencil.Note note = this.notes.get( i );
+			if( note.isActive() ) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	protected void setActiveNote( int activeIndex ) {
+		final int N = this.notes.size();
+		for( int i=0; i<N; i++ ) {
+			this.notes.get( i ).setActive( i==activeIndex );
+		}
+	}
+	
+	protected java.awt.Point calculateLocationForNoteAt( edu.cmu.cs.dennisc.croquet.Container< ? > container, int index ) {
+		return this.notes.get( 0 ).calculateLocation( container );
+	}
+
+//	public abstract edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability();
+//
+//	public org.lgna.stencil.Note getNoteAt( int index ) {
+//		return this.getNotes().get( index );
+//	}
+//	public int getNoteCount() {
+//		return this.getNotes().size();
+//	}
+
+	protected java.awt.Point calculateLocationOfFirstNote( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
+		return this.calculateLocationForNoteAt( container, 0 );
+	}
+
+	private java.awt.Point calculateLocationOfFirstNote() {
+		return this.calculateLocationOfFirstNote( this.stepPanel );
+	}
+
+	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+		return true;
+	}
+	public void resetStencilRenderingDesiredToDefault() {
+		this.isStencilRenderingDesired = IS_STENCIL_RENDERING_DESIRED_BY_DEFAULT;
+	}
+	public boolean isStencilRenderingDesired() {
+		return this.isStencilRenderingDesired;
+	}
+	public void setStencilRenderingDesired( boolean isStencilRenderingDesired ) {
+		this.isStencilRenderingDesired = isStencilRenderingDesired;
+	}
+	
+	
+	/*package-private*/ int[] getHistoryIndices() {
+		return this.historyIndices;
+	}
+	/*package-private*/ void setHistoryIndices( int[] historyIndices ) {
+		this.historyIndices = historyIndices;
+	}
+	
+	public java.util.UUID getId() {
+		return this.id;
+	}
+	
+	public java.awt.Point getLayoutHint() {
+		return this.layoutHint;
+	}
+	public void setLayoutHint(java.awt.Point layoutHint) {
+		this.layoutHint = layoutHint;
+	}
+	public final void setLayoutHint( int x, int y ) {
+		this.setLayoutHint( new java.awt.Point( x, y ) );
+	}
+	
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getCard() {
+		return this.stepPanel;
+	}
+	public boolean isAutoAdvanceDesired() {
+		return false;
+	}
+
+	public void reset() {
+		java.awt.LayoutManager layoutManager = this.stepPanel.getAwtComponent().getLayout();
+		if( layoutManager instanceof PageLayoutManager ) {
+			PageLayoutManager stepLayoutManager = (PageLayoutManager)layoutManager;
+			stepLayoutManager.set.clear();
+			this.stepPanel.revalidateAndRepaint();
+		}
+		for( org.lgna.stencil.Note note : this.getNotes() ) {
+			note.reset();
+		}
 	}
 }

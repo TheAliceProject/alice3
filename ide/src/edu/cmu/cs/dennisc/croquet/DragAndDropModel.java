@@ -55,7 +55,7 @@ public abstract class DragAndDropModel extends PrepModel {
 	}
 	
 	@Override
-	public String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		return "Drag and Drop...";
 	}
 	public String getTutorialDragNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {

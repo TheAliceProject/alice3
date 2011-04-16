@@ -69,7 +69,7 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 	}
 	
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
 		if( successfulCompletionEvent != null ) {
 			ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
@@ -79,7 +79,7 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 		}
 	}
 	@Override
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
 		if( successfulCompletionEvent != null ) {
 			ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
@@ -98,7 +98,7 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 		public PopupMenuOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			this.decode( binaryDecoder );
 		}
-		public edu.cmu.cs.dennisc.croquet.StandardPopupOperation getResolved() {
+		public StandardPopupOperation getResolved() {
 			return this.popupMenuOperation;
 		}
 		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -112,7 +112,7 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CodableResolver< StandardPopupOperation > createCodableResolver() {
+	protected CodableResolver< StandardPopupOperation > createCodableResolver() {
 		return new PopupMenuOperationResolver( this );
 	}
 	

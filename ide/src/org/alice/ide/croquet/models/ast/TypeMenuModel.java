@@ -67,7 +67,7 @@ public class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 	}
 	
 	@Override
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		return this.type.getName();
 	}
 	@Override

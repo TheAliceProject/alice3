@@ -529,15 +529,14 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, UserInformation userInformation ) {
-		return getTutorialNoteText( modelContext, userInformation );
+	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		return getTutorialNoteText( modelContext, edit, userInformation );
 	}
 	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
-		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-		if( successfulCompletionEvent != null ) {
-			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)successfulCompletionEvent.getEdit();
+		if( edit instanceof ListSelectionStateEdit ) {
+			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
 			sb.append( "Select " );
 			sb.append( "<strong>" );
 			this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
@@ -546,6 +545,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		return sb.toString();
 	}
 
+	@Deprecated
 	public String getTutorialNoteStartText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "First press on " );
@@ -558,6 +558,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		sb.append( "</strong>." );
 		return sb.toString();
 	}
+	@Deprecated
 	public String getTutorialNoteFinishText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Select " );

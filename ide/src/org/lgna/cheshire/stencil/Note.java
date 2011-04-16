@@ -41,57 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast;
+package org.lgna.cheshire.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateDragModel extends org.alice.ide.croquet.models.CodeDragModel {
-	public TemplateDragModel( java.util.UUID id ) {
-		super( id );
-	}
-	
-	protected abstract String getTutorialStepDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
-	
-	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Drag and Drop " );
-		sb.append( "<strong>" );
-		sb.append( this.getTutorialStepDescription( userInformation ) );
-		sb.append( "</strong>" );
-		
-		if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
-			org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
-			edu.cmu.cs.dennisc.alice.ast.Expression[] originalExpressions = insertStatementEdit.getInitialExpressions();
-			String prefix = " ";
-			for( edu.cmu.cs.dennisc.alice.ast.Expression expression : originalExpressions ) {
-				sb.append( prefix );
-				edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( sb, expression, userInformation.getLocale() );
-				prefix = ", ";
-			}
-		}
-		return sb.toString();
+public class Note extends org.lgna.stencil.Note {
+	public Note( String text ) {
+		super( text );
 	}
 	@Override
-	public String getTutorialDragNoteText( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Drag the " );
-		sb.append( "<strong>" );
-		sb.append( this.getTutorialStepDescription( userInformation ) );
-		sb.append( "</strong>" );
-		sb.append( " tile..." );
-		return sb.toString();
+	protected edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
+		return Presentation.getInstance().getNextOperation();
 	}
-	@Override
-	public String getTutorialDropNoteText( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Drag the " );
-		sb.append( "<strong>" );
-		sb.append( this.getTutorialStepDescription( userInformation ) );
-		sb.append( "</strong>" );
-		sb.append( " tile here..." );
-		return sb.toString();
-	}
-	
 }

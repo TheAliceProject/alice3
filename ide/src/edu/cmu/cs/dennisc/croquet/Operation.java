@@ -64,7 +64,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	}
 
 	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		return "<strong>" + this.getName() + "</strong>";
 	}
 	

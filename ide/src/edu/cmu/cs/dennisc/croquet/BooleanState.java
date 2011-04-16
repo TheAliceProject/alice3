@@ -124,16 +124,15 @@ public class BooleanState extends State<Boolean> {
 	}
 	
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		return getTutorialNoteText( modelContext, userInformation );
 	}
 
 	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
-		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-		if( successfulCompletionEvent != null ) {
-			BooleanStateEdit booleanStateEdit = (BooleanStateEdit)successfulCompletionEvent.getEdit();
+		if( edit instanceof BooleanStateEdit ) {
+			BooleanStateEdit booleanStateEdit = (BooleanStateEdit)edit;
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
 				if( booleanStateEdit.getNextValue() ) {
 					sb.append( "Select " );

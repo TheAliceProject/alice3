@@ -72,7 +72,7 @@ public abstract class MenuModel extends PrepModel {
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, getLocalizedAcceleratorKeyStroke( clsForI18N ) );
 	}
 	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		return this.getName();
 	}
 	private String getName() {

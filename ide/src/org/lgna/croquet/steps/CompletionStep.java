@@ -88,6 +88,18 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 		binaryEncoder.encode( memento );
 		binaryEncoder.encode( this.transactionHistory );
 	}
+	
+	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		super.retarget( retargeter );
+		if( this.transactionHistory != null ) {
+			this.transactionHistory.retarget( retargeter );
+		}
+		if( this.edit != null ) {
+			this.edit.retarget( retargeter );
+		}
+	}
+
 	public TransactionHistory getTransactionHistory() {
 		return this.transactionHistory;
 	}

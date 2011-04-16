@@ -142,7 +142,7 @@ public abstract class Feature {
 		return this.trackableShapeResolver;
 	}
 	private edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape;
-	/*package-private*/ void updateTrackableShapeIfNecessary() {
+	public void updateTrackableShapeIfNecessary() {
 		edu.cmu.cs.dennisc.croquet.TrackableShape nextTrackableShape = this.trackableShapeResolver.getResolved();
 		if( nextTrackableShape != this.trackableShape ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "trackableShape change" );
@@ -157,10 +157,10 @@ public abstract class Feature {
 			}
 		}
 	}
-	/*package-private*/ void bind() {
+	public void bind() {
 		this.updateTrackableShapeIfNecessary();
 	}
-	/*package-private*/ void unbind() {
+	public void unbind() {
 		this.trackableShape = null;
 	}
 	protected edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape() {
@@ -268,7 +268,7 @@ public abstract class Feature {
 		}
 		return actualConnection;
 	}
-	/*package-private*/ java.awt.Point calculateNoteLocation( edu.cmu.cs.dennisc.croquet.Container< ? > container, edu.cmu.cs.dennisc.croquet.Component< ? > note ) {
+	public java.awt.Point calculateNoteLocation( edu.cmu.cs.dennisc.croquet.Container< ? > container, edu.cmu.cs.dennisc.croquet.Component< ? > note ) {
 		java.awt.Rectangle containerBounds = container.getLocalBounds();
 		java.awt.Rectangle noteBounds = note.getBounds( container );
 		

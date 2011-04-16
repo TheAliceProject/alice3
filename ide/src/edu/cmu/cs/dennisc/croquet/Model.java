@@ -366,7 +366,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 		}
 		return rv;
 	}
-	public String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "title: " );
 		sb.append( this );
@@ -375,13 +375,29 @@ public abstract class Model implements RuntimeResolver< Model > {
 		}
 		return sb.toString();
 	}
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this );
 		if( modelContext != null ) {
 			appendSuccessfulCompletionEventText( sb, modelContext.getSuccessfulCompletionEvent() );
 		}
 		return sb.toString();
+	}
+	@Deprecated
+	private static final Edit< ? > getEdit( ModelContext<?> modelContext ) {
+		if( modelContext != null ) {
+			return modelContext.getEdit();
+		} else {
+			return null;
+		}
+	}
+	@Deprecated
+	public final String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		return this.getTutorialStepTitle( modelContext, getEdit( modelContext ), userInformation );
+	}
+	@Deprecated
+	public final String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		return this.getTutorialNoteText( modelContext, getEdit( modelContext ), userInformation );
 	}
 	public abstract boolean isAlreadyInState( Edit< ? > edit );
 	

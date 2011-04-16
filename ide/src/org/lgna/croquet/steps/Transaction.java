@@ -114,8 +114,8 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		binaryEncoder.encode( this.completionStep );
 	}
 
-	public java.util.ListIterator< PrepStep<?> > getPrepSteps() {
-		return this.prepSteps.listIterator();
+	public Iterable< PrepStep<?> > getPrepSteps() {
+		return this.prepSteps;
 	}
 	public int getIndexOfPrepStep( PrepStep<?> prepStep ) {
 		return this.prepSteps.indexOf( prepStep );

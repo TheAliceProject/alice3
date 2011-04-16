@@ -49,6 +49,11 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 	/*package-private*/static edu.cmu.cs.dennisc.croquet.Group IMPLEMENTATION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "e582737d-b56b-4105-93d2-581853e193e2" ), "IMPLEMENTATION_GROUP" );
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
+	private static Presentation instance;
+	public static Presentation getInstance() {
+		return instance;
+	}
+	
 	public static javax.swing.JLayeredPane getLayeredPane( boolean isOptimizedForBugRepro ) {
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		javax.swing.JFrame frame = application.getFrame().getAwtComponent();
@@ -231,6 +236,8 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			boolean isOptimizedForBugRepro 
 	) {
 		super( userInformation, transactionAccessPolicy, originalTransactionHistory, filterer, groupsTrackedForRandomAccess );
+		assert instance == null;
+		instance = this;
 		this.transactionsComboBoxModel = new BookComboBoxModel( this.getBook() );
 		this.stencil = new Stencil( menuPolicy, scrollingRequiredRenderer, isOptimizedForBugRepro );
 		this.isInterceptingEvents.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
@@ -258,6 +265,9 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 				org.lgna.cheshire.SoundCache.setEnabled( nextValue );
 			}
 		} );
+	}
+	/*package-private*/ edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
+		return this.nextOperation;
 	}
 	@Override
 	protected void handleChapterChanged( org.lgna.cheshire.Chapter chapter ) {

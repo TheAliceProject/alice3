@@ -45,8 +45,8 @@ package org.lgna.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComponent > {
-	/*package-private*/ class JNote extends javax.swing.JPanel {
+public abstract class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComponent > {
+	public class JNote extends javax.swing.JPanel {
 		public boolean isActive() {
 			return Note.this.isActive();
 		}
@@ -57,46 +57,28 @@ public class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JCo
 	
 	private static int X_PAD = 16;
 	private static int Y_PAD = 16;
-	private Stencil stencil;
-	private java.util.List< Feature > features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private String text;
+	private final java.util.List< Feature > features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final String text;
 	private String label = null;
 	
-	public Note() {
-		this( null );
-	}
 	public Note( String text ) {
-//		assert text != null;
 		this.text = text;
 	}
-
-//	private String getText() {
-//		return this.text;
-//	}
-	protected void setText( String text ) {
-		this.text = text;
-	}
-
+	
+	protected abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation();
 	public String getLabel() {
 		return this.label;
 	}
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	public Stencil getStencil() {
-		return this.stencil;
-	}
-	public void setStencil(Stencil stencil) {
-		this.stencil = stencil;
-	}
-	
 	protected void addFeature( Feature feature ) {
 		this.features.add( feature );
 	}
 	public java.util.List< Feature > getFeatures() {
 		return this.features;
 	}
-	/*package-private*/ java.awt.Point calculateLocation( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
+	public java.awt.Point calculateLocation( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
 		java.awt.Point rv = new java.awt.Point( 20, 20 );
 		if( this.features.size() > 0 ) {
 			Feature feature = this.features.get( 0 );
@@ -263,9 +245,11 @@ public class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JCo
 		
 		//rv.setBackground( BASE_COLOR );
 		edu.cmu.cs.dennisc.croquet.BorderPanel southPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		edu.cmu.cs.dennisc.croquet.Hyperlink hyperlink = getStencil().getNextOperation().createHyperlink();
+
+		edu.cmu.cs.dennisc.croquet.Hyperlink hyperlink = getNextOperation().createHyperlink();
 		hyperlink.scaleFont( 1.4f );
 		southPanel.addComponent( hyperlink, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
+
 		rv.add( southPanel.getAwtComponent(), java.awt.BorderLayout.SOUTH );
 		final int X_BORDER_PAD = 16;
 		final int Y_BORDER_PAD = 12;
@@ -289,7 +273,7 @@ public class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JCo
 		private java.awt.Point ptPressed;
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 			if( e.getClickCount() == 2 ) {
-				getStencil().getNextOperation().fire(e);
+				getNextOperation().fire(e);
 			}
 		}
 

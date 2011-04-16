@@ -61,7 +61,7 @@ public abstract class AbstractDoubleLiteralFillIn extends org.alice.ide.croquet.
 		return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( this.transientValue.value.getValue() );
 	}
 	@Override
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		return Double.toString( this.transientValue.value.getValue() );
 	}
 	@Override

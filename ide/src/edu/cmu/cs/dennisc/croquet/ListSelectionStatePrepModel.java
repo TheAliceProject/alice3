@@ -47,9 +47,10 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public class ListSelectionStatePrepModel<E> extends PrepModel {
 	private static final Group LIST_SELECTION_STATE_PREP_MODEL_GROUP = Group.getInstance( java.util.UUID.fromString( "de535ef7-d377-44ff-8ee0-87706815c69c" ), "LIST_SELECTION_STATE_PREP_MODEL_GROUP" );
-	private ListSelectionState< E > listSelectionState;
+	private final ListSelectionState< E > listSelectionState;
 	/*package-private*/ ListSelectionStatePrepModel( ListSelectionState< E > listSelectionState ) {
 		super( LIST_SELECTION_STATE_PREP_MODEL_GROUP, java.util.UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
+		assert listSelectionState != null;
 		this.listSelectionState = listSelectionState;
 	}
 	@Override
@@ -91,4 +92,19 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 	public ComboBox< E > createComboBox() {
 		return new ComboBox< E >( this.getListSelectionState() );
 	}
+	@Override
+	public String getTutorialNoteText(edu.cmu.cs.dennisc.croquet.ModelContext<?> modelContext, edu.cmu.cs.dennisc.croquet.Edit<?> edit, UserInformation userInformation) {
+		ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
+		StringBuilder sb = new StringBuilder();
+		sb.append( "First press on " );
+		sb.append( "<strong>" );
+		this.getListSelectionState().getCodec().appendRepresentation( sb, listSelectionStateEdit.getPreviousValue(), java.util.Locale.getDefault() );
+		sb.append( "</strong>" );
+		sb.append( " in order to change it to " );
+		sb.append( "<strong>" );
+		this.getListSelectionState().getCodec().appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+		sb.append( "</strong>." );
+		return sb.toString();
+	}
+
 }
