@@ -45,7 +45,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > extends edu.cmu.cs.dennisc.java.lang.AbstractObjectWithRevealingToString implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	private Transaction parent;
 	private final edu.cmu.cs.dennisc.croquet.CodableResolver< M > modelResolver; 
 	public Step( Transaction parent, M model ) {
@@ -86,12 +86,20 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > extends
 		}
 	}
 	
-	@Override
-	protected StringBuffer updateRepr( StringBuffer rv ) {
+	protected StringBuilder updateRepr( StringBuilder rv ) {
 		rv.append( this.getClass().getSimpleName() );
 		rv.append( "[" );
 		rv.append( this.getModel() );
 		rv.append( "]" );
 		return rv;
+	}
+	@Override
+	public final String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[" );
+		updateRepr( sb );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }
