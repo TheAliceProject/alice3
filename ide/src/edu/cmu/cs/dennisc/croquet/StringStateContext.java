@@ -156,7 +156,7 @@ public class StringStateContext extends StateContext<StringState> {
 		this.nextValue = nextValue;
 	}
 	/*package-private*/ void handlePop() {
-		//org.lgna.croquet.steps.TransactionManager.addStringStateChangeStep( this.getModel() );
+		org.lgna.croquet.steps.TransactionManager.addStringStateChangeStep( this.getModel() );
 		this.commitAndInvokeDo( new StringStateEdit( this.previousValue, this.nextValue ) );
 	}
 	

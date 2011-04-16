@@ -136,9 +136,10 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 	@Override
 	protected StringBuilder updateRepr( StringBuilder rv ) {
 		rv = super.updateRepr( rv );
-		rv.append( "edit[" );
+		rv.append( ";edit=" );
 		rv.append( this.edit );
-		rv.append( "]" );
+		rv.append( ";isActive=" );
+		rv.append( this.isActive );
 		return rv;
 	}
 }

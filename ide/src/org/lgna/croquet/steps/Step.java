@@ -87,16 +87,13 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 	}
 	
 	protected StringBuilder updateRepr( StringBuilder rv ) {
-		rv.append( this.getClass().getSimpleName() );
-		rv.append( "[" );
-		rv.append( this.getModel() );
-		rv.append( "]" );
+		rv.append( this.getModel().getClass().getName() );
 		return rv;
 	}
 	@Override
 	public final String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
+		sb.append( this.getClass().getSimpleName() );
 		sb.append( "[" );
 		updateRepr( sb );
 		sb.append( "]" );
