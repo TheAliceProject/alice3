@@ -83,7 +83,7 @@ public class ContextManager {
 		}
 		return null;
 	}
-	/*package-private*/ static <C extends ModelContext< ? > > C pushContext( C rv ) {
+	private static ModelContext< ? > prePushContextForPossibleStringStateCleanUp() {
 		ModelContext< ? > parentContext = getCurrentContext();
 		if( parentContext instanceof StringStateContext ) {
 			StringStateContext stringStateContext = (StringStateContext)parentContext;
@@ -91,6 +91,10 @@ public class ContextManager {
 			stack.pop();
 			parentContext = stack.peek();
 		}
+		return parentContext;
+	}	
+	/*package-private*/ static <C extends ModelContext< ? > > C pushContext( C rv ) {
+		ModelContext< ? > parentContext = prePushContextForPossibleStringStateCleanUp();
 		HistoryNode lastChild = parentContext.getLastChild();
 		MenuBarModelContext menuBarModelContextToPushOnto = null;
 		DragAndDropContext dragAndDropContextToPushOnto = null;
@@ -178,12 +182,14 @@ public class ContextManager {
 			stringStateContext = (StringStateContext)topContext;
 		} else {
 			stringStateContext = pushContext( new StringStateContext( stringState, e, viewController, previousValue ) );
+			org.lgna.croquet.steps.TransactionManager.addStringStateChangeStep( stringState );
 		}
 		stringStateContext.handleDocumentEvent( documentEvent, nextValue );
 	}
 
 	
 	/*package-private*/ static ActionOperationContext createAndPushActionOperationContext(ActionOperation actionOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		prePushContextForPossibleStringStateCleanUp();
 		TransactionManager.addActionOperationStep( actionOperation );
 		return pushContext( new ActionOperationContext(actionOperation, e, viewController) );
 	}
@@ -191,6 +197,7 @@ public class ContextManager {
 		return pushContext( new SerialOperationContext(compositeOperation, e, viewController) );
 	}
 	/*package-private*/ static DialogOperationContext createAndPushDialogOperationContext(DialogOperation dialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		prePushContextForPossibleStringStateCleanUp();
 		TransactionManager.addDialogOperationStep( dialogOperation );
 		return pushContext( new DialogOperationContext(dialogOperation, e, viewController) );
 	}
@@ -198,6 +205,7 @@ public class ContextManager {
 		return pushContext( new InformationDialogOperationContext<J>(informationDialogOperation, e, viewController) );
 	}
 	/*package-private*/ static <J extends JComponent< ? >> InputDialogOperationContext<J> createAndPushInputDialogOperationContext(InputDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		prePushContextForPossibleStringStateCleanUp();
 		TransactionManager.addInputDialogOperationStep( inputDialogOperation );
 		return pushContext( new InputDialogOperationContext<J>(inputDialogOperation, e, viewController) );
 	}
@@ -206,10 +214,12 @@ public class ContextManager {
 	}
 	
 	/*package-private*/ static StandardPopupOperationContext createAndPushStandardPopupOperationContext(StandardPopupOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		prePushContextForPossibleStringStateCleanUp();
 		TransactionManager.addStandardPopupOperationStep( popupMenuOperation );
 		return pushContext( new StandardPopupOperationContext(popupMenuOperation, e, viewController) );
 	}
 	/*package-private*/ static <T> CascadePopupOperationContext< T > createAndPushCascadePopupOperationContext(CascadePopupOperation< T > cascadeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		prePushContextForPossibleStringStateCleanUp();
 		TransactionManager.addCascadePopupOperationStep( cascadeOperation );
 		return pushContext( new CascadePopupOperationContext<T>(cascadeOperation, e, viewController) );
 	}

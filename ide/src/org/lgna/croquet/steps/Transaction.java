@@ -137,7 +137,7 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		return this.completionStep;
 	}
 	/*package-private*/ void setCompletionStep( CompletionStep<?> step ) {
-		//assert this.completionStep != null;
+		assert this.completionStep == null : this.completionStep;
 		TransactionManager.fireAddingStep( step );
 		this.completionStep = step;
 		TransactionManager.fireAddedStep( step );

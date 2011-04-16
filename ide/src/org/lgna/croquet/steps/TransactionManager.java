@@ -102,9 +102,6 @@ public class TransactionManager {
 		}
 	}
 	
-//	public static void addMenuModelStep( edu.cmu.cs.dennisc.croquet.MenuModel model ) {
-//		MenuModelStep.createAndAddToTransaction( getActiveTransaction(), model ); 
-//	}
 	public static DragStep addDragStep( edu.cmu.cs.dennisc.croquet.DragAndDropModel model ) {
 		return DragStep.createAndAddToTransaction( getActiveTransaction(), model ); 
 	}
@@ -112,12 +109,16 @@ public class TransactionManager {
 		return DropStep.createAndAddToTransaction( getActiveTransaction(), model, dropReceptor ); 
 	}
 	public static ActionOperationStep addActionOperationStep( edu.cmu.cs.dennisc.croquet.ActionOperation model ) {
-		return ActionOperationStep.createAndAddToTransaction( getActiveTransaction(), model ); 
+		Transaction transaction = getActiveTransaction();
+		addMenuPrepStepsIfNecessary( transaction );
+		return ActionOperationStep.createAndAddToTransaction( transaction, model ); 
 	}
 	public static DialogOperationStep addDialogOperationStep( edu.cmu.cs.dennisc.croquet.DialogOperation model ) {
-		return DialogOperationStep.createAndAddToTransaction( getActiveTransaction(), model ); 
+		Transaction transaction = getActiveTransaction();
+		addMenuPrepStepsIfNecessary( transaction );
+		return DialogOperationStep.createAndAddToTransaction( transaction, model ); 
 	}
-	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InputDialogOperationStep addInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperation< J > model ) {
+	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InputDialogOperationStep<J> addInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperation< J > model ) {
 		Transaction transaction = getActiveTransaction();
 		addMenuPrepStepsIfNecessary( transaction );
 		return InputDialogOperationStep.createAndAddToTransaction( transaction, model ); 
@@ -127,7 +128,7 @@ public class TransactionManager {
 		stepsAwaitngFinish.add( rv );
 		return rv;
 	}
-	public static <T> CascadePopupOperationStep addCascadePopupOperationStep( edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model ) {
+	public static <T> CascadePopupOperationStep<T> addCascadePopupOperationStep( edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model ) {
 		return CascadePopupOperationStep.createAndAddToTransaction( getActiveTransaction(), model ); 
 	}
 	public static BooleanStateChangeStep addBooleanStateChangeStep( edu.cmu.cs.dennisc.croquet.BooleanState model ) {
