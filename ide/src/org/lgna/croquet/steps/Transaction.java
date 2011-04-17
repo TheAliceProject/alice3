@@ -71,6 +71,26 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 			return null;
 		}
 	}
+	
+	private class PendingDrop {
+		private final edu.cmu.cs.dennisc.croquet.CompletionModel completionModel;
+		private final edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor;
+		public PendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {
+			this.completionModel = completionModel;
+			this.dropReceptor = dropReceptor;
+		}
+		public void reifyPrepStep() {
+			DropPrepStep.createAndAddToTransaction( Transaction.this, this.completionModel, this.dropReceptor );
+		}
+		public void reifyCompletionStep() {
+			DropCompletionStep.createAndAddToTransaction( Transaction.this, this.completionModel, this.dropReceptor );
+		}
+	}
+	private PendingDrop pendingDrop;
+	public void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {
+		this.pendingDrop = new PendingDrop( completionModel, dropReceptor );
+	}
+	
 	public edu.cmu.cs.dennisc.croquet.Edit< ? > getEdit() {
 		if( this.completionStep != null ) {
 			return this.completionStep.getEdit();
@@ -78,15 +98,27 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 			return null;
 		}
 	}
+	private void reifyDropCompletionStepIfNecessary() {
+		if( this.completionStep != null ) {
+			//pass
+		} else {
+			assert pendingDrop != null;
+			pendingDrop.reifyCompletionStep();
+			
+		}
+	}
 	public void commit( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+		this.reifyDropCompletionStepIfNecessary();
 		assert this.completionStep != null;
 		this.completionStep.commit( edit );
 	}
 	public void finish() {
+		this.reifyDropCompletionStepIfNecessary();
 		assert this.completionStep != null;
 		this.completionStep.finish();
 	}
 	public void cancel() {
+		this.reifyDropCompletionStepIfNecessary();
 		assert this.completionStep != null;
 		this.completionStep.cancel();
 	}
@@ -124,11 +156,41 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		return this.prepSteps.size();
 	}
 
+	private void addStep( Step<?> step ) {
+		assert step != null;
+		if( pendingDrop != null ) {
+			if( step instanceof PrepStep< ? > ) {
+				if( step instanceof DropPrepStep ) {
+					//pass
+				} else {
+					pendingDrop.reifyPrepStep();
+				}
+			} else if( step instanceof CompletionStep< ? > ) {
+				if( step instanceof DropCompletionStep ) {
+					//pass
+				} else {
+					assert step.getModel() == pendingDrop.completionModel;
+					step = null;
+				}
+			} else {
+				assert false : step;
+			}
+		}
+		if( step != null ) {
+			TransactionManager.fireAddingStep( step );
+			if( step instanceof PrepStep< ? > ) {
+				this.prepSteps.add( (PrepStep< ? >)step );
+			} else if( step instanceof CompletionStep< ? > ) {
+				this.completionStep = (CompletionStep< ? >)step;
+			} else {
+				assert false : step;
+			}
+			TransactionManager.fireAddedStep( step );
+		}
+	}
+	
 	/*package-private*/ void addPrepStep( PrepStep< ? > step ) {
-		//assert this.completionStep == null;
-		TransactionManager.fireAddingStep( step );
-		this.prepSteps.add( step );
-		TransactionManager.fireAddedStep( step );
+		this.addStep( step );
 	}
 //	public void removePrepStep( PrepStep< ? > step ) {
 //		this.prepSteps.remove( step );
@@ -137,10 +199,8 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		return this.completionStep;
 	}
 	/*package-private*/ void setCompletionStep( CompletionStep<?> step ) {
-		assert this.completionStep == null : this.completionStep;
-		TransactionManager.fireAddingStep( step );
-		this.completionStep = step;
-		TransactionManager.fireAddedStep( step );
+		assert this.completionStep == null : this.completionStep + " " + step;
+		this.addStep( step );
 	}
 	public boolean isActive() {
 		if( this.completionStep != null ) {

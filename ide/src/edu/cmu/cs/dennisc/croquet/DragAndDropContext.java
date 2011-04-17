@@ -401,7 +401,7 @@ public class DragAndDropContext extends PrepContext<DragAndDropModel> {
 			this.setLatestMouseEvent( e );
 			if( this.currentDropReceptor != null ) {
 				Operation<?> operation = this.currentDropReceptor.dragDropped( this );
-				org.lgna.croquet.steps.TransactionManager.addDropStep( operation, this.currentDropReceptor );
+				org.lgna.croquet.steps.TransactionManager.pendDrop( operation, this.currentDropReceptor );
 				if( operation != null ) {
 					this.addChild( new DroppedEvent( e, this.currentDropReceptor ) );
 					JComponent<?> component = this.currentDropReceptor.getViewController();

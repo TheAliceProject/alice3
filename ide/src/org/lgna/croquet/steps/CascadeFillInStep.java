@@ -40,42 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropStep extends CompletionStep< edu.cmu.cs.dennisc.croquet.CompletionModel > {
-	public static DropStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {
-		return new DropStep( parent, model, dropReceptor );
+public class CascadeFillInStep<F,B> extends PrepStep< edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > > {
+	public static < F, B > CascadeFillInStep< F, B > createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > model ) {
+		return new CascadeFillInStep< F, B >( parent, model );
 	}
-	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.DropReceptor > dropReceptorResolver;
-	private DropStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {
-		super( parent, model, null );
-		this.dropReceptorResolver = dropReceptor.getCodableResolver();
+	private CascadeFillInStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > model ) {
+		super( parent, model );
 	}
-	public DropStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public CascadeFillInStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-		this.dropReceptorResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
-	@Override
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		super.encode(binaryEncoder);
-		binaryEncoder.encode( this.dropReceptorResolver );
-	}
-	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor() {
-		return this.dropReceptorResolver.getResolved();
-	}
-	@Override
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		return this.getDropReceptor().getTutorialNoteText( this.getModel(), edit, userInformation );
-	}
-	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		if( this.dropReceptorResolver instanceof edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> ) {
-			edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> retargetableResolver = (edu.cmu.cs.dennisc.croquet.RetargetableResolver<?>)this.dropReceptorResolver;
-			retargetableResolver.retarget( retargeter );
-		}
 	}
 }

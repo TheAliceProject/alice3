@@ -369,8 +369,10 @@ public class ContextManager {
 						} else if( menuElementI instanceof javax.swing.JMenuItem ) {
 							javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
 							Component< ? > component = Component.lookup( jMenuItem );
+							//edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleMenuSelectionStateChanged", i, component.getClass() );
 							if( component instanceof ViewController< ?, ? > ) {
 								ViewController< ?, ? > viewController = (ViewController< ?, ? >)component;
+								//edu.cmu.cs.dennisc.print.PrintUtilities.println( "viewController", i, viewController.getModel() );
 								models.add( viewController.getModel() );
 							}
 						}
@@ -379,10 +381,10 @@ public class ContextManager {
 					if( modelContext instanceof PopupOperationContext ) {
 						PopupOperationContext popupContext = (PopupOperationContext)modelContext;
 						popupContext.handleMenuSelectionChanged( e, models );
-						TransactionManager.handleMenuSelectionChanged( models );
 					} else {
 						System.err.println( "WARNING: handleMenuSelectionStateChanged not PopupMenuOperationContext " + modelContext );
 					}
+					TransactionManager.handleMenuSelectionChanged( models );
 				} else {
 					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
 					if( menuBarModel != null ) {

@@ -45,61 +45,37 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private Transaction parent;
-	private final edu.cmu.cs.dennisc.croquet.CodableResolver< M > modelResolver; 
-	public Step( Transaction parent, M model ) {
-		this.setParent( parent );
-		//this.modelResolver = model != null ? model.getCodableResolver() : null;
-		if( model != null ) {
-			this.modelResolver = model.getCodableResolver();
-		} else {
-			this.modelResolver = null;
-		}
+public class DropCompletionStep extends CompletionStep< edu.cmu.cs.dennisc.croquet.CompletionModel > {
+	public static DropCompletionStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {
+		return new DropCompletionStep( parent, model, dropReceptor );
 	}
-	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.DropReceptor > dropReceptorResolver;
+	private DropCompletionStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {
+		super( parent, model, null );
+		this.dropReceptorResolver = dropReceptor.getCodableResolver();
 	}
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		return this.getModel().getTutorialNoteText( null, edit, userInformation );
-	}
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		throw new AssertionError();
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.modelResolver );
-	}
-	public M getModel() {
-		return this.modelResolver != null ? this.modelResolver.getResolved() : null;
-	}
-	public Transaction getParent() {
-		return this.parent;
-	}
-	/*package-private*/ void setParent( Transaction parent ) {
-		this.parent = parent;
-	}
-
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		if( this.modelResolver instanceof edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> ) {
-			edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> retargetableResolver = (edu.cmu.cs.dennisc.croquet.RetargetableResolver<?>)this.modelResolver;
-			retargetableResolver.retarget( retargeter );
-		}
-	}
-	
-	protected StringBuilder updateRepr( StringBuilder rv ) {
-		edu.cmu.cs.dennisc.croquet.Model model = this.getModel();
-		if( model != null ) {
-			rv.append( this.getModel().getClass().getName() );
-		}
-		return rv;
+	public DropCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+		this.dropReceptorResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 	@Override
-	public final String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		updateRepr( sb );
-		sb.append( "]" );
-		return sb.toString();
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+		super.encode(binaryEncoder);
+		binaryEncoder.encode( this.dropReceptorResolver );
+	}
+	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor() {
+		return this.dropReceptorResolver.getResolved();
+	}
+	@Override
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return this.getDropReceptor().getTutorialNoteText( this.getModel(), edit, userInformation );
+	}
+	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		super.retarget( retargeter );
+		if( this.dropReceptorResolver instanceof edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> ) {
+			edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> retargetableResolver = (edu.cmu.cs.dennisc.croquet.RetargetableResolver<?>)this.dropReceptorResolver;
+			retargetableResolver.retarget( retargeter );
+		}
 	}
 }

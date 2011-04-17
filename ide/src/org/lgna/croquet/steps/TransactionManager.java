@@ -90,8 +90,8 @@ public class TransactionManager {
 		return getActiveTransactionHistory().getLastTransaction();
 	}
 
-	
 	/*package-private*/ static void fireAddingStep( Step<?> step ) {
+//		reifyDropIfNecessary( step );
 		for( StepObserver stepObserver : stepObservers ) {
 			stepObserver.addingStep( step );
 		}
@@ -105,9 +105,6 @@ public class TransactionManager {
 	public static DragStep addDragStep( edu.cmu.cs.dennisc.croquet.DragAndDropModel model ) {
 		return DragStep.createAndAddToTransaction( getActiveTransaction(), model ); 
 	}
-	public static DropStep addDropStep( edu.cmu.cs.dennisc.croquet.CompletionModel model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {
-		return DropStep.createAndAddToTransaction( getActiveTransaction(), model, dropReceptor ); 
-	}
 	public static ActionOperationStep addActionOperationStep( edu.cmu.cs.dennisc.croquet.ActionOperation model ) {
 		Transaction transaction = getActiveTransaction();
 		addMenuPrepStepsIfNecessary( transaction );
@@ -116,12 +113,12 @@ public class TransactionManager {
 	public static DialogOperationStep addDialogOperationStep( edu.cmu.cs.dennisc.croquet.DialogOperation model ) {
 		Transaction transaction = getActiveTransaction();
 		addMenuPrepStepsIfNecessary( transaction );
-		return DialogOperationStep.createAndAddToTransaction( transaction, model ); 
+		return DialogOperationStep.createAndAddToTransaction( transaction, model );
 	}
 	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InputDialogOperationStep<J> addInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperation< J > model ) {
 		Transaction transaction = getActiveTransaction();
 		addMenuPrepStepsIfNecessary( transaction );
-		return InputDialogOperationStep.createAndAddToTransaction( transaction, model ); 
+		return InputDialogOperationStep.createAndAddToTransaction( transaction, model );
 	}
 	public static StandardPopupOperationStep addStandardPopupOperationStep( edu.cmu.cs.dennisc.croquet.StandardPopupOperation model ) {
 		StandardPopupOperationStep rv = StandardPopupOperationStep.createAndAddToTransaction( getActiveTransaction(), model ); 
@@ -129,10 +126,10 @@ public class TransactionManager {
 		return rv;
 	}
 	public static <T> CascadePopupOperationStep<T> addCascadePopupOperationStep( edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model ) {
-		return CascadePopupOperationStep.createAndAddToTransaction( getActiveTransaction(), model ); 
+		return CascadePopupOperationStep.createAndAddToTransaction( getActiveTransaction(), model );
 	}
 	public static BooleanStateChangeStep addBooleanStateChangeStep( edu.cmu.cs.dennisc.croquet.BooleanState model ) {
-		return BooleanStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model ); 
+		return BooleanStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model );
 	}
 	public static StringStateChangeStep addStringStateChangeStep( edu.cmu.cs.dennisc.croquet.StringState model ) {
 		return StringStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model ); 
@@ -147,6 +144,10 @@ public class TransactionManager {
 		return CancelPrepStep.createAndAddToTransaction( getActiveTransaction() ); 
 	}
 
+	public static void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {
+		getLastTransaction().pendDrop( completionModel, dropReceptor );
+	}
+
 	private static void popCompletionStepTransactionHistoryIfNecessary( edu.cmu.cs.dennisc.croquet.Model model ) {
 		TransactionHistory transactionHistory = getActiveTransactionHistory();
 		CompletionStep< ? > completionStep = transactionHistory.getParent();
@@ -156,6 +157,7 @@ public class TransactionManager {
 			}
 		}
 	}
+
 	private static void finishPendingTransactionIfNecessary() {
 		TransactionHistory activeTransactionHistory = getActiveTransactionHistory();
 		CompletionStep< ? > completionStep = activeTransactionHistory.getParent();
@@ -166,19 +168,24 @@ public class TransactionManager {
 			}
 		}
 	}
-	
 	private static java.util.List< Model > lastMenuSelection; 
 	public static void handleMenuSelectionChanged( java.util.List< Model > models ) {
 		lastMenuSelection = models;
 	}
 
-	public static void addMenuPrepStepsIfNecessary( Transaction transaction ) {
+	private static void addMenuPrepStepsIfNecessary( Transaction transaction ) {
 		if( lastMenuSelection != null && lastMenuSelection.size() > 0 ) {
 			for( Model model : lastMenuSelection ) {
 				if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
 					MenuModelStep.createAndAddToTransaction( transaction, (edu.cmu.cs.dennisc.croquet.MenuModel)model );
+				} else if( model instanceof edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? > ) {
+					CascadeFillInStep.createAndAddToTransaction( transaction, (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model );
+				} else if( model instanceof edu.cmu.cs.dennisc.croquet.MenuBarModel ) {
+					//pass
+				} else if( model instanceof edu.cmu.cs.dennisc.croquet.CompletionModel ) {
+					//pass
 				} else {
-					System.err.println( "addMenuPrepStepsIfNecessary: " + model );
+					assert false : model;
 				}
 			}
 			lastMenuSelection = null;
@@ -186,16 +193,19 @@ public class TransactionManager {
 	}
 
 	public static void commit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		addMenuPrepStepsIfNecessary( getLastTransaction() );
 		popCompletionStepTransactionHistoryIfNecessary( edit.getModel() );
 		getLastTransaction().commit( edit );
 		finishPendingTransactionIfNecessary();
 	}
 	public static void finish( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
+		addMenuPrepStepsIfNecessary( getLastTransaction() );
 		popCompletionStepTransactionHistoryIfNecessary( model );
 		getLastTransaction().finish();
 		finishPendingTransactionIfNecessary();
 	}
 	public static void cancel( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
+		addMenuPrepStepsIfNecessary( getLastTransaction() );
 		popCompletionStepTransactionHistoryIfNecessary( model );
 		getLastTransaction().cancel();
 		finishPendingTransactionIfNecessary();
