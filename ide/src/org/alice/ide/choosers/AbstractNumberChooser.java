@@ -99,8 +99,8 @@ abstract class AbstractNumberChooser<N extends edu.cmu.cs.dennisc.alice.ast.Expr
 		}
 		gridBagPanel.addComponent( plusMinusOperation.createButton(), gbc );
 
-		edu.cmu.cs.dennisc.croquet.TextField view = this.numberModel.createTextField();
-		view.selectAll();
+		edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JTextField > view = this.numberModel.createTextField();
+		view.getAwtComponent().selectAll();
 
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel lineAxisPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
 				view, 
