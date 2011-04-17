@@ -169,8 +169,9 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 				if( step instanceof DropCompletionStep ) {
 					//pass
 				} else {
-					assert step.getModel() == pendingDrop.completionModel;
-					step = null;
+					if( step.getModel() == pendingDrop.completionModel ) {
+						step = null;
+					}
 				}
 			} else {
 				assert false : step;
