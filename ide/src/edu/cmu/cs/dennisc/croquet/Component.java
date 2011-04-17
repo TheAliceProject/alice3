@@ -559,6 +559,6 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 
 	@Override
 	public String toString() {
-		return this.getAwtComponent().getClass().toString();
+		return this.getClass().getName() + "[]";
 	}
 }
