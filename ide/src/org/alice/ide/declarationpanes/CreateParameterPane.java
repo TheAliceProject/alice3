@@ -79,14 +79,14 @@ public abstract class CreateParameterPane extends CreateDeclarationPane<edu.cmu.
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
-		return new org.alice.ide.codeeditor.TypedParameterPane( null, this.getActualInputValue() );
+		return new org.alice.ide.codeeditor.TypedParameterPane( null, this.getInputValue() );
 	}
 	@Override
 	public String getDialogTitle() {
 		return "Declare Parameter";
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getActualInputValue() {
+	public edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getInputValue() {
 		return new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( this.getDeclarationName(), this.getValueType() );
 	}
 }

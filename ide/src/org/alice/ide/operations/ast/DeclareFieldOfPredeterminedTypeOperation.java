@@ -71,7 +71,7 @@ public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGallery
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateFieldFromGalleryPane> context ) {
 		//dialog title: "Create New Instance"
-		return this.createFieldPane.getActualInputValue();
+		return this.createFieldPane.getInputValue();
 	}
 	@Override
 	protected boolean isInstanceValid() {

@@ -40,51 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.custom;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<E,CustomInputPane< E >> {
-	private CustomInputPane< E > customInputPane;
-	
-	public CustomInputDialogOperation( java.util.UUID id, org.alice.ide.choosers.ValueChooser< E > chooser ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, id );
-		this.customInputPane = new CustomInputPane< E >( chooser );
-	}
-	
-	public void EPIC_HACK_setChooserTypeDescription( String typeDescription ) {
-		this.customInputPane.getValueChooser().setTypeDescription( typeDescription );
-	}
-	public E getActualInputValue() {
-		return this.customInputPane.getInputValue();
+public class CascadeInputDialogOperationFillIn<F,J extends CascadeInputDialogPanel< F > > extends CascadeFillIn< F, Void > {
+	private final CascadeInputDialogOperation< F,J > inputDialogOperation;
+	public CascadeInputDialogOperationFillIn( CascadeInputDialogOperation< F,J > inputDialogOperation ) {
+		super( java.util.UUID.fromString( "f2c75b9f-aa0d-487c-a161-46cb23ff3e76" ) );
+		this.inputDialogOperation = inputDialogOperation;
 	}
 	@Override
-	protected CustomInputPane< E > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {
-		return this.customInputPane;
+	protected javax.swing.JComponent createMenuItemIconProxy( CascadeFillInContext< F, Void > context ) {
+		return new javax.swing.JLabel( this.inputDialogOperation.getName() );
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context, boolean isOk) {
-		if( isOk ) {
-			context.finish();
-		} else {
-			context.cancel();
-		}
+	public F createValue( CascadeFillInContext< F, Void > context ) {
+		InputDialogOperationContext< J > inputDialogContext = this.inputDialogOperation.fire();
+		J panel = inputDialogContext.getMainPanel();
+		return panel.getInputValue();
 	}
 	@Override
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-		if( successfulCompletionEvent != null ) {
-			//org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
-			sb.append( "1) Enter " );
-			sb.append( "<strong>" );
-			sb.append( "fill_in_expression_value_here" );
-			sb.append( "</strong>" );
-			sb.append( "<br>" );
-			sb.append( "2) Press <strong>OK</strong>." );
-		}
-		return sb.toString();
+	public F getTransientValue( CascadeFillInContext< F, Void > context ) {
+		return null;
 	}
-	
 }

@@ -70,11 +70,11 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
-		return new org.alice.ide.codeeditor.MethodHeaderPane( this.getActualInputValue(), null, true, this.declaringType );
+		return new org.alice.ide.codeeditor.MethodHeaderPane( this.getInputValue(), null, true, this.declaringType );
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {
+	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getInputValue() {
 		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getDeclarationName(), this.getValueType(), new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
 	}
 }

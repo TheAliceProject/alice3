@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareLocalOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateLocalPane> {
+public class DeclareLocalOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement,org.alice.ide.declarationpanes.CreateLocalPane> {
 	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
 	public DeclareLocalOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
@@ -59,7 +59,7 @@ public class DeclareLocalOperation extends org.alice.ide.croquet.models.InputDia
 	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateLocalPane> context, boolean isOk) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.CreateLocalPane createLocalPane = context.getMainPanel();
-			edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = createLocalPane.getActualInputValue();
+			edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = createLocalPane.getInputValue();
 			context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( this.blockStatementIndexPair.getBlockStatement(), this.blockStatementIndexPair.getIndex(), localDeclarationStatement ) );
 		} else {
 			context.cancel();

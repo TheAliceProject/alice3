@@ -40,51 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.custom;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<E,CustomInputPane< E >> {
-	private CustomInputPane< E > customInputPane;
-	
-	public CustomInputDialogOperation( java.util.UUID id, org.alice.ide.choosers.ValueChooser< E > chooser ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, id );
-		this.customInputPane = new CustomInputPane< E >( chooser );
+public abstract class CascadeInputDialogOperation< F, J extends CascadeInputDialogPanel< F > > extends InputDialogOperation< J > {
+	public CascadeInputDialogOperation(Group group, java.util.UUID individualId, boolean isCancelDesired ) {
+		super( group, individualId, isCancelDesired );
 	}
-	
-	public void EPIC_HACK_setChooserTypeDescription( String typeDescription ) {
-		this.customInputPane.getValueChooser().setTypeDescription( typeDescription );
+	public CascadeInputDialogOperation(Group group, java.util.UUID individualId) {
+		super( group, individualId );
 	}
-	public E getActualInputValue() {
-		return this.customInputPane.getInputValue();
-	}
-	@Override
-	protected CustomInputPane< E > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {
-		return this.customInputPane;
-	}
-	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context, boolean isOk) {
-		if( isOk ) {
-			context.finish();
+	private CascadeInputDialogOperationFillIn<F,J> cascadeFillIn;
+	public synchronized CascadeInputDialogOperationFillIn<F,J> getFillIn() {
+		if( this.cascadeFillIn != null ) {
+			//pass
 		} else {
-			context.cancel();
+			this.cascadeFillIn = new CascadeInputDialogOperationFillIn<F,J>( this );
 		}
+		return this.cascadeFillIn;
 	}
-	@Override
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-		if( successfulCompletionEvent != null ) {
-			//org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
-			sb.append( "1) Enter " );
-			sb.append( "<strong>" );
-			sb.append( "fill_in_expression_value_here" );
-			sb.append( "</strong>" );
-			sb.append( "<br>" );
-			sb.append( "2) Press <strong>OK</strong>." );
-		}
-		return sb.toString();
-	}
-	
 }

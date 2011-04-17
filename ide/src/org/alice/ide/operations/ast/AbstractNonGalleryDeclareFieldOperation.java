@@ -47,7 +47,7 @@ package org.alice.ide.operations.ast;
  */
 //todo: remove
 @Deprecated
-abstract class AbstractNonGalleryDeclareFieldOperation<J extends org.alice.ide.preview.PanelWithPreview> extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation<J> {
+abstract class AbstractNonGalleryDeclareFieldOperation<J extends org.alice.ide.preview.PanelWithPreview<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice>> extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation<J> {
 	public AbstractNonGalleryDeclareFieldOperation( java.util.UUID individualId ) {
 		super( individualId );
 	}

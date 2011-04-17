@@ -225,8 +225,11 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.addComponent( BoxUtilities.createHorizontalGlue() );
 		rv.addComponent( okButton );
+		
+		//todo: use isCancelDesired?
 		rv.addComponent( BoxUtilities.createHorizontalSliver( 4 ) );
 		rv.addComponent( this.getCancelOperation().createButton() );
+
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 		dialog.setDefaultButton( okButton );
 		return rv;

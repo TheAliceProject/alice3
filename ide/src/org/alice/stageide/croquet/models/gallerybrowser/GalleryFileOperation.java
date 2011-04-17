@@ -85,7 +85,7 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation<o
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = context.getMainPanel();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getActualInputValue();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();
 		if (field != null) {
 			Object fieldObject = createFieldFromGalleryPane.createInstanceInJava();
 			

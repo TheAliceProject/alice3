@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.preview.PanelWithPreview {
+public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.preview.PanelWithPreview< E > {
 	private org.alice.ide.choosers.ValueChooser< E > chooser;
 	public CustomInputPane( org.alice.ide.choosers.ValueChooser< E > chooser ) {
 		this.chooser = chooser;
@@ -61,13 +61,13 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression;
 		try {
-			expression = this.getActualInputValue();
+			expression = this.getInputValue();
 		} catch( RuntimeException re ) {
 			//re.printStackTrace();
 			expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
 		}
 		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		rv.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( expression ), Constraint.LINE_START );
+		rv.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( expression ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START );
 		return rv;
 	}
 	@Override
@@ -82,7 +82,8 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 	public final String getDialogTitle() {
 		return this.chooser.getTitleDefault();
 	}
-	protected E getActualInputValue() {
+	@Override
+	public E getInputValue() {
 		return this.chooser.getValue();
 	}
 }

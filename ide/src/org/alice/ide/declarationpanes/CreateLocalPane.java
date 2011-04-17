@@ -63,7 +63,7 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
-		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = this.getActualInputValue();
+		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = this.getInputValue();
 		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( localDeclarationStatement );
 //		pane.setLeftButtonPressOperation( null );
 //		pane.setDragAndDropOperation( null );
@@ -81,7 +81,7 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getActualInputValue() {
+	public edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getInputValue() {
 		String name = this.getDeclarationName();
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getValueType();
 		boolean isFinal = this.isReassignable() == false;

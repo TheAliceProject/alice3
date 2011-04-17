@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclareMethodOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> {
+public abstract class DeclareMethodOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
 	public DeclareMethodOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
@@ -106,7 +106,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Edit< ? > EPIC_HACK_createEdit( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context ) {
 		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
-		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getActualInputValue();
+		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getInputValue();
 		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( declaringType, method );
 	}
 
@@ -120,7 +120,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context, boolean isOk) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
-			final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getActualInputValue();
+			final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getInputValue();
 			if( method != null ) {
 				final org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 				final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = ide.getFocusedCode();

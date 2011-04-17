@@ -121,7 +121,7 @@ public class CreateBillboardOperation extends AbstractGalleryDeclareFieldOperati
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.moveandturn.Billboard > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromBillboardPane > context ) {
 		CreateFieldFromBillboardPane createFieldFromBillboardPane = context.getMainPanel();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromBillboardPane.getActualInputValue();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromBillboardPane.getInputValue();
 		if( field != null ) {
 			//ide.getSceneEditor().handleFieldCreation( declaringType, field, person );
 			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, createFieldFromBillboardPane.getBillboard() );

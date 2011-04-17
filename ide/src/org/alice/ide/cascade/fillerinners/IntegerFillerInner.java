@@ -80,7 +80,8 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 			rv.add( org.alice.ide.croquet.models.cascade.integer.MathCascadeMenu.getInstance() );
 		}
 		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.ide.croquet.models.cascade.custom.CustomIntegerLiteralFillIn.getInstance() );
+		//rv.add( org.alice.ide.croquet.models.cascade.custom.CustomIntegerLiteralFillIn.getInstance() );
+		rv.add( org.alice.ide.croquet.models.custom.CustomIntegerInputDialogOperation.getInstance().getFillIn() );
  		return rv;
 	}
 }
