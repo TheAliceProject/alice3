@@ -52,6 +52,33 @@ public class CascadeInputDialogOperationFillIn<F,J extends CascadeInputDialogPan
 		super( java.util.UUID.fromString( "f2c75b9f-aa0d-487c-a161-46cb23ff3e76" ) );
 		this.inputDialogOperation = inputDialogOperation;
 	}
+	public static class CascadeInputDialogOperationFillInResolver<F,J extends CascadeInputDialogPanel< F >> implements CodableResolver< CascadeInputDialogOperationFillIn<F,J> > {
+		private CascadeInputDialogOperationFillIn<F,J> model;
+		
+		public CascadeInputDialogOperationFillInResolver( CascadeInputDialogOperationFillIn<F,J> model ) {
+			this.model = model;
+		}
+		public CascadeInputDialogOperationFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			this.decode( binaryDecoder );
+		}
+		public edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn<F,J> getResolved() {
+			return this.model;
+		}
+		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			CodableResolver<CascadeInputDialogOperation<F,J>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			CascadeInputDialogOperation<F,J> inputDialogOperation = resolver.getResolved();
+			this.model = inputDialogOperation.getFillIn();
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			CodableResolver<CascadeInputDialogOperation<F,J>> resolver = this.model.inputDialogOperation.getCodableResolver();
+			binaryEncoder.encode( resolver );
+		}
+	}
+	@Override
+	protected CascadeInputDialogOperationFillInResolver createCodableResolver() {
+		return new CascadeInputDialogOperationFillInResolver( this );
+	}
+	
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( CascadeFillInContext< F, Void > context ) {
 		return new javax.swing.JLabel( this.inputDialogOperation.getName() );
