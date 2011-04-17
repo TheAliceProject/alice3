@@ -71,11 +71,14 @@ public class ChapterPage implements org.lgna.stencil.Page {
 			org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
 			edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation = Presentation.getInstance().getUserInformation();
-			for( org.lgna.croquet.steps.PrepStep< ? > step : transaction.getPrepSteps() ) {
+			for( org.lgna.croquet.steps.Step< ? > step : transaction.getChildSteps() ) {
 				this.notes.add( new Note( step.getTutorialNoteText( edit, userInformation ) ) );
 			}
-			org.lgna.croquet.steps.CompletionStep< ? > completionStep = transaction.getCompletionStep();
-			this.notes.add( new Note( completionStep.getTutorialNoteText( edit, userInformation ) ) );
+//			for( org.lgna.croquet.steps.PrepStep< ? > step : transaction.getPrepSteps() ) {
+//				this.notes.add( new Note( step.getTutorialNoteText( edit, userInformation ) ) );
+//			}
+//			org.lgna.croquet.steps.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+//			this.notes.add( new Note( completionStep.getTutorialNoteText( edit, userInformation ) ) );
 		}
 	}
 	public boolean isAlreadyInTheDesiredState() {

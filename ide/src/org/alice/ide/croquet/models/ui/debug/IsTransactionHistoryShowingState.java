@@ -63,7 +63,7 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 		} else if( parent instanceof org.lgna.croquet.steps.Transaction ) {
 			org.lgna.croquet.steps.Transaction transaction = (org.lgna.croquet.steps.Transaction)parent;
 			org.lgna.croquet.steps.CompletionStep< ? > completionStep = transaction.getCompletionStep();
-			return transaction.getPrepStepCount()+(completionStep!=null?1:0);
+			return transaction.getChildStepCount();
 		} else if( parent instanceof org.lgna.croquet.steps.CompletionStep< ? > ) {
 			org.lgna.croquet.steps.CompletionStep< ? > completionStep = (org.lgna.croquet.steps.CompletionStep< ? >)parent;
 			return completionStep.getTransactionHistory() != null ? 1 : 0;
@@ -77,11 +77,7 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 			return transactionHistory.getTransactionAt( index );
 		} else if( parent instanceof org.lgna.croquet.steps.Transaction ) {
 			org.lgna.croquet.steps.Transaction transaction = (org.lgna.croquet.steps.Transaction)parent;
-			if( index < transaction.getPrepStepCount() ) {
-				return transaction.getPrepStepAt( index );
-			} else {
-				return transaction.getCompletionStep();
-			}
+			return transaction.getChildStepAt( index );
 		} else if( parent instanceof org.lgna.croquet.steps.CompletionStep< ? > ) {
 			assert index == 0;
 			org.lgna.croquet.steps.CompletionStep< ? > completionStep = (org.lgna.croquet.steps.CompletionStep< ? >)parent;

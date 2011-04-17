@@ -46,6 +46,53 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private static class DescendantStepIterator implements java.util.Iterator< Step<?> > {
+		private final java.util.List< Transaction > transactions = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private int transactionIndex;
+		private int stepIndex;
+		public DescendantStepIterator( Transaction transaction, boolean isRecusionDesired ) {
+			this.addTransactionAndTransactionDescendants( transaction, isRecusionDesired );
+		}
+		private void addTransactionAndTransactionDescendants( Transaction transaction, boolean isRecusionDesired ) {
+			if( transaction.getChildStepCount() > 0 ) {
+				this.transactions.add( transaction );
+			}
+			if( isRecusionDesired ) {
+				CompletionStep< ? > completionStep = transaction.getCompletionStep();
+				if( completionStep != null ) {
+					TransactionHistory transactionHistory = completionStep.getTransactionHistory();
+					if( transactionHistory != null ) {
+						for( Transaction child : transactionHistory ) {
+							this.addTransactionAndTransactionDescendants( child, isRecusionDesired );
+						}
+					}
+				}
+			}
+		}
+		public boolean hasNext() {
+			return this.transactionIndex < this.transactions.size();
+		}
+		public Step< ? > next() {
+			if( this.transactionIndex < this.transactions.size() ) {
+				Step< ? > rv;
+				Transaction transaction = this.transactions.get( transactionIndex );
+				rv = transaction.getChildStepAt( stepIndex );
+				stepIndex++;
+				if( stepIndex < transaction.getChildStepCount() ) {
+					//pass
+				} else {
+					stepIndex = 0;
+					transactionIndex++;
+				}
+				return rv;
+			} else {
+				throw new java.util.NoSuchElementException();
+			}
+		}
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+	}
 	private TransactionHistory parent;
 	private final java.util.List< PrepStep<?> > prepSteps;
 	private CompletionStep<?> completionStep;
@@ -63,6 +110,28 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		this.completionStep.setParent( this );
 	}
 
+	public java.util.Iterator<Step<?>> childStepIterator() {
+		return new DescendantStepIterator( this, false );
+	}
+	public java.util.Iterator<Step<?>> descendantStepIterator() {
+		return new DescendantStepIterator( this, true );
+	}
+	public Iterable<Step<?>> getChildSteps() {
+		return new Iterable< Step<?> >() {
+			public java.util.Iterator< org.lgna.croquet.steps.Step< ? >> iterator() {
+				return Transaction.this.childStepIterator();
+			}
+		};
+	}
+	public Iterable<Step<?>> getDescendantSteps() {
+		return new Iterable< Step<?> >() {
+			public java.util.Iterator< org.lgna.croquet.steps.Step< ? >> iterator() {
+				return Transaction.this.descendantStepIterator();
+			}
+		};
+	}
+	
+	
 	public String getTitle() {
 		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = this.getEdit();
 		if( edit != null ) {
@@ -143,6 +212,17 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		binaryEncoder.encode( this.completionStep );
 	}
 
+	public int getChildStepCount() {
+		return this.getPrepStepCount() + ( this.completionStep != null ? 1 : 0 );
+	}
+	public Step<?> getChildStepAt( int index ) {
+		if( index == this.getPrepStepCount() ) {
+			return this.getCompletionStep();
+		} else {
+			return this.getPrepStepAt( index );
+		}
+	}
+	
 	public Iterable< PrepStep<?> > getPrepSteps() {
 		return this.prepSteps;
 	}
