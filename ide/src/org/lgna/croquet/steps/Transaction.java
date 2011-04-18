@@ -150,8 +150,20 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 			this.dropReceptor = dropReceptor;
 			this.dropSite = dropSite;
 		}
+		private boolean isDropPrepStepAlreadyAdded() {
+			for( PrepStep< ? > prepStep : Transaction.this.getPrepSteps() ) {
+				if( prepStep instanceof DropPrepStep ) {
+					return true;
+				}
+			}
+			return false;
+		}
 		public void reifyPrepStep() {
-			DropPrepStep.createAndAddToTransaction( Transaction.this, this.completionModel, this.dropReceptor, this.dropSite );
+			if( this.isDropPrepStepAlreadyAdded() ) {
+				//pass
+			} else {
+				DropPrepStep.createAndAddToTransaction( Transaction.this, this.completionModel, this.dropReceptor, this.dropSite );
+			}
 		}
 		public void reifyCompletionStep() {
 			DropCompletionStep.createAndAddToTransaction( Transaction.this, this.completionModel, this.dropReceptor, this.dropSite );
