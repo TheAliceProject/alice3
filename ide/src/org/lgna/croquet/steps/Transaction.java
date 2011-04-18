@@ -144,20 +144,22 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	private class PendingDrop {
 		private final edu.cmu.cs.dennisc.croquet.CompletionModel completionModel;
 		private final edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor;
-		public PendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {
+		private final edu.cmu.cs.dennisc.croquet.DropSite dropSite;
+		public PendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 			this.completionModel = completionModel;
 			this.dropReceptor = dropReceptor;
+			this.dropSite = dropSite;
 		}
 		public void reifyPrepStep() {
-			DropPrepStep.createAndAddToTransaction( Transaction.this, this.completionModel, this.dropReceptor );
+			DropPrepStep.createAndAddToTransaction( Transaction.this, this.completionModel, this.dropReceptor, this.dropSite );
 		}
 		public void reifyCompletionStep() {
-			DropCompletionStep.createAndAddToTransaction( Transaction.this, this.completionModel, this.dropReceptor );
+			DropCompletionStep.createAndAddToTransaction( Transaction.this, this.completionModel, this.dropReceptor, this.dropSite );
 		}
 	}
 	private PendingDrop pendingDrop;
-	public void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {
-		this.pendingDrop = new PendingDrop( completionModel, dropReceptor );
+	public void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		this.pendingDrop = new PendingDrop( completionModel, dropReceptor, dropSite );
 	}
 	
 	public edu.cmu.cs.dennisc.croquet.Edit< ? > getEdit() {

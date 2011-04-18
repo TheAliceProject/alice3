@@ -46,22 +46,26 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public class DropCompletionStep extends CompletionStep< edu.cmu.cs.dennisc.croquet.CompletionModel > {
-	public static DropCompletionStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {
-		return new DropCompletionStep( parent, model, dropReceptor );
+	public static DropCompletionStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		return new DropCompletionStep( parent, model, dropReceptor, dropSite );
 	}
 	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.DropReceptor > dropReceptorResolver;
-	private DropCompletionStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {
+	private final edu.cmu.cs.dennisc.croquet.DropSite dropSite;
+	private DropCompletionStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 		super( parent, model, null );
 		this.dropReceptorResolver = dropReceptor.getCodableResolver();
+		this.dropSite = dropSite;
 	}
 	public DropCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.dropReceptorResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		this.dropSite = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 	@Override
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 		super.encode(binaryEncoder);
 		binaryEncoder.encode( this.dropReceptorResolver );
+		binaryEncoder.encode( this.dropSite );
 	}
 	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor() {
 		return this.dropReceptorResolver.getResolved();

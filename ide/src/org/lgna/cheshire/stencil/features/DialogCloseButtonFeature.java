@@ -40,15 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.cheshire.stencil.features;
 
-package org.lgna.cheshire.stencil.stepnotes;
+import org.lgna.stencil.Feature;
+import org.lgna.stencil.Feature.Connection;
+import org.lgna.stencil.Feature.ConnectionPreference;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class DragNote extends PrepNote< org.lgna.croquet.steps.DragStep > {
-	public DragNote( org.lgna.croquet.steps.DragStep step ) {
-		super( step );
-		this.addFeature( new org.lgna.stencil.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+public class DialogCloseButtonFeature extends Feature {
+	public DialogCloseButtonFeature(edu.cmu.cs.dennisc.croquet.RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> trackableShapeResolver) {
+		super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
+	}
+	@Override
+	protected boolean isPathRenderingDesired() {
+		return true;
+	}
+	@Override
+	public boolean isPotentiallyScrollable() {
+		return false;
+	}
+	@Override
+	protected java.awt.Insets getBoundsInsets() {
+		return null;
+	}
+	@Override
+	protected java.awt.Insets getContainsInsets() {
+		return null;
+	}
+	@Override
+	protected java.awt.Insets getPaintInsets() {
+		return null;
+	}
+	@Override
+	public java.awt.geom.Area getAreaToSubstractForPaint(edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy) {
+		return null;
+	}
+	@Override
+	public java.awt.geom.Area getAreaToSubstractForContains(edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy) {
+		return null;
+	}
+	@Override
+	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection) {
 	}
 }

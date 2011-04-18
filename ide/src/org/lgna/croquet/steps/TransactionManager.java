@@ -144,8 +144,8 @@ public class TransactionManager {
 		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction() ); 
 	}
 
-	public static void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {
-		getLastTransaction().pendDrop( completionModel, dropReceptor );
+	public static void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		getLastTransaction().pendDrop( completionModel, dropReceptor, dropSite );
 	}
 
 	private static void popCompletionStepTransactionHistoryIfNecessary( edu.cmu.cs.dennisc.croquet.Model model ) {

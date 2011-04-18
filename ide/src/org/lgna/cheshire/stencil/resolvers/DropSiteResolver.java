@@ -40,41 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.cheshire.stencil;
 
-import org.lgna.stencil.Feature;
-import org.lgna.stencil.Feature.Connection;
-import org.lgna.stencil.Feature.ConnectionPreference;
-
+package org.lgna.cheshire.stencil.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InputDialogCommitFeature extends Feature {
-	public InputDialogCommitFeature(edu.cmu.cs.dennisc.croquet.RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> trackableShapeResolver) {
-		super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
+public class DropSiteResolver implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
+	private final org.lgna.croquet.steps.DropPrepStep step;
+	public DropSiteResolver( org.lgna.croquet.steps.DropPrepStep step ) {
+		this.step = step;
 	}
-	@Override
-	protected boolean isPathRenderingDesired() {
-		return true;
-	}
-	@Override
-	public boolean isPotentiallyScrollable() {
-		return false;
-	}
-	@Override
-	protected java.awt.Insets getBoundsInsets() {
-		return null;
-	}
-	@Override
-	protected java.awt.Insets getContainsInsets() {
-		return null;
-	}
-	@Override
-	protected java.awt.Insets getPaintInsets() {
-		return null;
-	}
-	@Override
-	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection) {
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+		return this.step.getDropReceptor().getTrackableShape( this.step.getDropSite() );
 	}
 }
