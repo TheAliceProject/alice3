@@ -40,7 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.stencil;
+package org.lgna.cheshire.stencil.features;
+
+import org.lgna.stencil.Feature;
+import org.lgna.stencil.Feature.Connection;
+import org.lgna.stencil.Feature.ConnectionPreference;
 
 /**
  * @author Dennis Cosgrove

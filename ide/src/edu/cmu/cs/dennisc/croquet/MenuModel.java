@@ -61,6 +61,11 @@ public abstract class MenuModel extends PrepModel {
 		this( individualId, null );
 	}
 	@Override
+	public Iterable< ? extends Model > getChildren() {
+		return null;
+	}
+	
+	@Override
 	protected void localize() {
 		if( clsForI18N != null ) {
 			//pass

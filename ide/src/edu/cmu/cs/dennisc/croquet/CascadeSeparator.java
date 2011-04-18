@@ -58,4 +58,8 @@ public abstract class CascadeSeparator extends CascadeItem< Void, CascadeSeparat
 	public final Void getTransientValue( CascadeSeparatorContext context ) {
 		throw new AssertionError();
 	}
+	@Override
+	public Iterable< ? extends Model > getChildren() {
+		return java.util.Collections.emptyList();
+	}
 }

@@ -49,4 +49,13 @@ public abstract class PrepModel extends Model {
 	public PrepModel( Group group, java.util.UUID id ) {
 		super(group, id);
 	}
+	public abstract Iterable< ? extends Model > getChildren();
+	public boolean isChild( Model model ) {
+		for( Model child : this.getChildren() ) {
+			if( child == model ) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

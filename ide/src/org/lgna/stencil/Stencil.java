@@ -46,8 +46,8 @@ package org.lgna.stencil;
  * @author Dennis Cosgrove
  */
 public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
-	/*package-private*/ static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
-	/*package-private*/ static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
+	public static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
+	public static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
 	private static java.awt.Paint stencilPaint = null;
 	private static java.awt.Paint getStencilPaint() {
 		if( Stencil.stencilPaint != null ) {

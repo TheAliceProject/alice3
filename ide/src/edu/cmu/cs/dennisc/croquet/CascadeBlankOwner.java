@@ -61,4 +61,8 @@ public abstract class CascadeBlankOwner<F,B,C extends CascadeBlankOwnerContext< 
 		this.blanks.toArray( rv );
 		return rv;
 	}
+	@Override
+	public Iterable< CascadeBlank<B> > getChildren() {
+		return this.blanks;
+	}
 }

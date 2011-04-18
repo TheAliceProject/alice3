@@ -54,6 +54,10 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 		this.listSelectionState = listSelectionState;
 	}
 	@Override
+	public Iterable< ? extends edu.cmu.cs.dennisc.croquet.Model > getChildren() {
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.listSelectionState );
+	}
+	@Override
 	protected void localize() {
 	}
 	public ListSelectionState< E > getListSelectionState() {
@@ -106,5 +110,4 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 		sb.append( "</strong>." );
 		return sb.toString();
 	}
-
 }

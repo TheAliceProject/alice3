@@ -76,6 +76,16 @@ public abstract class DragAndDropModel extends PrepModel {
 		return false;
 	}
 	
+	@Override
+	public Iterable< ? extends Model > getChildren() {
+		return java.util.Collections.emptyList();
+	}
+	@Override
+	public boolean isChild( edu.cmu.cs.dennisc.croquet.Model model ) {
+		//todo
+		return true;
+	}
+	
 	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
 	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );
 	public abstract void handleDragEnteredDropReceptor( DragAndDropContext dragAndDropContext );

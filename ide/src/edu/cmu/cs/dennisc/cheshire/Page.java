@@ -318,7 +318,7 @@ public class Page extends Step implements WaitingStep {
 	private java.util.List< edu.cmu.cs.dennisc.croquet.Model > huntFor( edu.cmu.cs.dennisc.croquet.Model model ) {
 		edu.cmu.cs.dennisc.croquet.MenuBarModel menuBarModel = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getMenuBarModel();
 		java.util.List< edu.cmu.cs.dennisc.croquet.Model > rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-		for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : menuBarModel.getMenuModels() ) {
+		for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : menuBarModel.getChildren() ) {
 			edu.cmu.cs.dennisc.croquet.Model found = huntFor( rv, menuModel, model );
 			if( found != null ) {
 				rv.add( 0, menuModel );

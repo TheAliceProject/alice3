@@ -62,4 +62,8 @@ public abstract class CascadeCancel< F > extends CascadeItem< F, CascadeCancelCo
 	public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
 		return null;
 	}
+	@Override
+	public Iterable< ? extends Model > getChildren() {
+		return java.util.Collections.emptyList();
+	}
 }

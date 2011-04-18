@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public class MenuBarModel extends PrepModel {
 	public static final Group MENU_BAR_MODEL_GROUP = Group.getInstance( java.util.UUID.fromString( "7d9cd79e-6011-4174-94d4-d67647211481" ), "MENU_BAR_MODEL_GROUP" );
-	private java.util.concurrent.CopyOnWriteArrayList< MenuModel > menuModels = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private java.util.List< MenuModel > menuModels = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public MenuBarModel( java.util.UUID id ) {
 		super( MENU_BAR_MODEL_GROUP, id );
 	}
@@ -62,7 +62,8 @@ public class MenuBarModel extends PrepModel {
 	public void removeMenuModel( MenuModel menuModel ) {
 		this.menuModels.remove( menuModel );
 	}
-	public java.util.concurrent.CopyOnWriteArrayList< MenuModel > getMenuModels() {
+	@Override
+	public Iterable< MenuModel > getChildren() {
 		return this.menuModels;
 	}
 
@@ -93,7 +94,7 @@ public class MenuBarModel extends PrepModel {
 //				this.mapMenuBarToListener.remove( menuBar );
 			}
 		};
-		for( MenuModel menuModel : this.getMenuModels() ) {
+		for( MenuModel menuModel : this.getChildren() ) {
 			rv.addMenu( menuModel.createMenu() );
 		}
 		return rv;

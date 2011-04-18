@@ -40,12 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.stencil;
+package org.lgna.cheshire.stencil.features;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class Frame extends Feature {
+/*package-private*/ class Frame extends org.lgna.stencil.Feature {
 	private enum Paint {
 		SINGLETON;
 		private java.awt.Paint internal;
@@ -55,10 +55,10 @@ package org.lgna.stencil;
 			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
 			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			java.awt.Color c = Stencil.STENCIL_BASE_COLOR;
+			java.awt.Color c = org.lgna.stencil.Stencil.STENCIL_BASE_COLOR;
 			g2.setColor( new java.awt.Color( c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()/4 ) );
 			g2.fillRect( 0, 0, width, height );
-			g2.setColor( Stencil.STENCIL_LINE_COLOR );
+			g2.setColor( org.lgna.stencil.Stencil.STENCIL_LINE_COLOR );
 			int y = 0;
 			g2.drawLine( 0, y, width, y );
 			g2.dispose();

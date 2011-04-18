@@ -49,7 +49,7 @@ package org.lgna.cheshire.stencil.stepnotes;
 public class DropPrepNote extends PrepNote< org.lgna.croquet.steps.DropPrepStep > {
 	public DropPrepNote( org.lgna.croquet.steps.DropPrepStep step ) {
 		super( step );
-		this.addFeature( new org.lgna.stencil.Hole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
 	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
