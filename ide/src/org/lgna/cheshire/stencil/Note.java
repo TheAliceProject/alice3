@@ -46,10 +46,7 @@ package org.lgna.cheshire.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public class Note extends org.lgna.stencil.Note {
-	public Note( String text ) {
-		super( text );
-	}
+public abstract class Note extends org.lgna.stencil.Note {
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
 		return Presentation.getInstance().getNextOperation();

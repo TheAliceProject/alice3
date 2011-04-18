@@ -41,39 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.editorstabbedpane;
-
+package org.lgna.cheshire.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CodeComposite extends edu.cmu.cs.dennisc.croquet.Composite {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, CodeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CodeComposite getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		CodeComposite rv = map.get( code );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new CodeComposite( code );
-			map.put( code, rv );
-		}
-		return rv;
-	}
-
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
-	public CodeComposite( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		this.code = code;
-	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
-		return this.code;
+public class MessageNote extends Note {
+	private final String text;
+	public MessageNote( String text ) {
+		this.text = text;
 	}
 	@Override
-	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
-		System.err.println( "todo: CodeComposite contains" );
-		return false;
-	}
-	@Override
-	public String toString() {
-		return this.code.getName();
+	protected String getText() {
+		return this.text;
 	}
 }

@@ -68,7 +68,12 @@ public class DropCompletionStep extends CompletionStep< edu.cmu.cs.dennisc.croqu
 	}
 	@Override
 	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		return this.getDropReceptor().getTutorialNoteText( this.getModel(), edit, userInformation );
+		for( PrepStep< ? > prepStep : this.getParent().getPrepSteps() ) {
+			if( prepStep instanceof DropPrepStep ) {
+				return this.getModel().getTutorialNoteText( null, edit, userInformation );
+			}
+		}
+		return this.getDropReceptor().getTutorialNoteText( null, edit, userInformation );
 	}
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {

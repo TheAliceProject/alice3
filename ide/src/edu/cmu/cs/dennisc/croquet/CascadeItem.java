@@ -111,6 +111,19 @@ public abstract class CascadeItem< F, C extends CascadeItemContext<F,?,?> > exte
 	public String getMenuItemText( C context ) {
 		return null;
 	}
+	
+	protected String getTutorialItemText() {
+		return this.getDefaultLocalizedText();
+	}
+	
+	@Override
+	public final String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Select <strong>" );
+		sb.append( this.getTutorialItemText() );
+		sb.append( "</strong>." );
+		return sb.toString();
+	}
 //	public abstract javax.swing.Icon getMenuItemIcon( C context );
 //	public abstract String getMenuItemText( C context );
 }

@@ -78,10 +78,17 @@ public class CascadeInputDialogOperationFillIn<F,J extends CascadeInputDialogPan
 	protected CascadeInputDialogOperationFillInResolver createCodableResolver() {
 		return new CascadeInputDialogOperationFillInResolver( this );
 	}
-	
+//	@Override
+//	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+//		return this.inputDialogOperation.getTutorialNoteText( modelContext, edit, userInformation );
+//	}
+	@Override
+	protected String getTutorialItemText() {
+		return this.inputDialogOperation.getName();
+	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( CascadeFillInContext< F, Void > context ) {
-		return new javax.swing.JLabel( this.inputDialogOperation.getName() );
+		return new javax.swing.JLabel( this.getTutorialItemText() );
 	}
 	@Override
 	public F createValue( CascadeFillInContext< F, Void > context ) {

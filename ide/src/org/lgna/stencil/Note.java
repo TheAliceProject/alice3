@@ -58,13 +58,10 @@ public abstract class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.
 	private static int X_PAD = 16;
 	private static int Y_PAD = 16;
 	private final java.util.List< Feature > features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final String text;
 	private String label = null;
 	
-	public Note( String text ) {
-		this.text = text;
-	}
-	
+
+	protected abstract String getText();
 	protected abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation();
 	public String getLabel() {
 		return this.label;
@@ -85,9 +82,11 @@ public abstract class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.
 			rv = feature.calculateNoteLocation( container, this );
 		} else {
 			rv.x = (container.getWidth()-this.getWidth())/2;
-			rv.y = 64;
+			rv.y = 320;
 		}
-		if( this.text.contains( "resize" ) ) {
+
+		System.err.println( "todo: remove text calculateLocation special case" );
+		if( this.getText().contains( "resize" ) ) {
 			rv.y = 700;
 		}
 		return rv;
@@ -141,24 +140,25 @@ public abstract class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.
 		textComponent.setOpaque( false );
 		textComponent.setEditable( false );
 		
+		String text = this.getText();
 		//does not appear to be necessary
 		final String PREFIX = "<html>";
 		final String POSTFIX = "</html>";
 		StringBuilder sb = new StringBuilder();
-		if( this.text.startsWith( PREFIX ) ) {
+		if( text.startsWith( PREFIX ) ) {
 			//pass
 		} else {
 			sb.append( PREFIX );
 		}
-		sb.append( this.text );
-		if( this.text.endsWith( POSTFIX ) ) {
+		sb.append( text );
+		if( text.endsWith( POSTFIX ) ) {
 			//pass
 		} else {
 			sb.append( POSTFIX );
 		}
 		textComponent.setText( sb.toString() );
 
-		//this.textPane.setEnabled( false );
+		//textPane.setEnabled( false );
 
 		JNote rv = new JNote() {
 			@Override
