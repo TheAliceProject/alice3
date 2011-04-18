@@ -51,6 +51,7 @@ public class TransactionManager {
 		public void addedStep( Step<?> step );
 		public void pendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
 		public void pendedDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
+		public void selectedMenuItems( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models );
 	}
 	private static final java.util.List<Observer> observers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private static final java.util.Stack< TransactionHistory > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
@@ -99,6 +100,22 @@ public class TransactionManager {
 			observer.addedStep( step );
 		}
 	}
+	private static void firePendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		for( Observer observer : observers ) {
+			observer.pendingDrop( completionModel, dropReceptor, dropSite );
+		}
+	}
+	private static void firePendedDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		for( Observer observer : observers ) {
+			observer.pendedDrop( completionModel, dropReceptor, dropSite );
+		}
+	}
+	private static void fireSelectedMenuItems( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
+		for( Observer observer : observers ) {
+			observer.selectedMenuItems( models );
+		}
+	}
+	
 	
 	public static DragStep addDragStep( edu.cmu.cs.dennisc.croquet.DragAndDropModel model ) {
 		return DragStep.createAndAddToTransaction( getActiveTransaction(), model ); 
@@ -143,7 +160,9 @@ public class TransactionManager {
 	}
 
 	public static void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		firePendingDrop( completionModel, dropReceptor, dropSite );
 		getLastTransaction().pendDrop( completionModel, dropReceptor, dropSite );
+		firePendedDrop( completionModel, dropReceptor, dropSite );
 	}
 
 	private static void popCompletionStepTransactionHistoryIfNecessary( edu.cmu.cs.dennisc.croquet.Model model ) {
@@ -169,6 +188,7 @@ public class TransactionManager {
 	private static java.util.List< edu.cmu.cs.dennisc.croquet.Model > lastMenuSelection; 
 	public static void handleMenuSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
 		lastMenuSelection = models;
+		fireSelectedMenuItems( models );		
 	}
 
 	private static void addMenuPrepStepsIfNecessary( Transaction transaction ) {

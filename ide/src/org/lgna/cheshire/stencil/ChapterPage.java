@@ -271,14 +271,14 @@ public class ChapterPage implements org.lgna.stencil.Page {
 	public boolean isAutoAdvanceDesired() {
 		return this.chapter.isAutoAdvanceDesired();
 	}
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.steps.Step< ? > step ) {
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
 		final int NOTE_COUNT = this.notes.size();
 		int activeNoteIndex = this.getIndexOfFirstActiveNote();
 		activeNoteIndex = Math.max( activeNoteIndex, 0 );
 		if( activeNoteIndex < NOTE_COUNT ) {
 			Note activeNote = this.notes.get( activeNoteIndex );
 			try {
-				if( activeNote.isWhatWeveBeenWaitingFor( step ) ) {
+				if( activeNote.isWhatWeveBeenWaitingFor( event ) ) {
 					activeNoteIndex ++;
 					if( activeNoteIndex == NOTE_COUNT ) {
 						return true;

@@ -52,11 +52,12 @@ public class DropPrepStep extends PrepStep< edu.cmu.cs.dennisc.croquet.PrepModel
 	}
 	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.CompletionModel > completionModelResolver;
 	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.DropReceptor > dropReceptorResolver;
-	private final edu.cmu.cs.dennisc.croquet.DropSite dropSite;
+	private edu.cmu.cs.dennisc.croquet.DropSite dropSite;
 	private DropPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 		super( parent, null );
 		this.completionModelResolver = completionModel.getCodableResolver();
 		this.dropReceptorResolver = dropReceptor.getCodableResolver();
+		assert this.dropReceptorResolver != null;
 		this.dropSite = dropSite;
 	}
 	public DropPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -91,6 +92,10 @@ public class DropPrepStep extends PrepStep< edu.cmu.cs.dennisc.croquet.PrepModel
 		if( this.dropReceptorResolver instanceof edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> ) {
 			edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> retargetableResolver = (edu.cmu.cs.dennisc.croquet.RetargetableResolver<?>)this.dropReceptorResolver;
 			retargetableResolver.retarget( retargeter );
+		}
+		if( this.dropSite instanceof edu.cmu.cs.dennisc.croquet.RetargetableDropSite ) {
+			edu.cmu.cs.dennisc.croquet.RetargetableDropSite retargetableDropSite = (edu.cmu.cs.dennisc.croquet.RetargetableDropSite)this.dropSite;
+			this.dropSite = retargetableDropSite.createReplacement( retargeter );
 		}
 	}
 	@Override

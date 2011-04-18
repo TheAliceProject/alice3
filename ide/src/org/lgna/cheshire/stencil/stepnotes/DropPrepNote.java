@@ -51,4 +51,13 @@ public class DropPrepNote extends PrepNote< org.lgna.croquet.steps.DropPrepStep 
 		super( step );
 		this.addFeature( new org.lgna.stencil.Hole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
 	}
+	@Override
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
+		if( event instanceof org.lgna.cheshire.events.DropPendedEvent ) {
+			org.lgna.cheshire.events.DropPendedEvent dropPendedEvent = (org.lgna.cheshire.events.DropPendedEvent)event;
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

@@ -59,9 +59,9 @@ public class Presentation extends org.lgna.cheshire.stencil.Presentation {
 			
 			new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
 			
-//			edu.cmu.cs.dennisc.cheshire.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
-//			edu.cmu.cs.dennisc.cheshire.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
-			org.lgna.stencil.MenuPolicy.BELOW_STENCIL,
+//			org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
+			org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
+//			org.lgna.stencil.MenuPolicy.BELOW_STENCIL,
 			
 			org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
 			isOptimizedForBugRepro
@@ -80,15 +80,15 @@ public class Presentation extends org.lgna.cheshire.stencil.Presentation {
 //			System.err.println( "addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound: " + modelContext );
 //			org.alice.ide.croquet.models.ui.AccessibleListSelectionState accessibleListSelectionState = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
 //			edu.cmu.cs.dennisc.croquet.ListSelectionStateContext context = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( accessibleListSelectionState, accessibleListSelectionState.getItemAt( accessibleListSelectionState.getItemCount()-1 ) );
-//			edu.cmu.cs.dennisc.cheshire.ListSelectionStateStartNote listSelectionStateStartNote =  edu.cmu.cs.dennisc.cheshire.ListSelectionStateStartNote.createInstance( context, parentContextCriterion, context.getSuccessfulCompletionEvent() );
+//			org.lgna.stencil.ListSelectionStateStartNote listSelectionStateStartNote =  org.lgna.stencil.ListSelectionStateStartNote.createInstance( context, parentContextCriterion, context.getSuccessfulCompletionEvent() );
 //			rv.add( listSelectionStateStartNote );
-//			rv.add( edu.cmu.cs.dennisc.cheshire.ListSelectionStateFinishNote.createInstance( context, listSelectionStateStartNote.getAcceptedContextAt( 0 ), context.getSuccessfulCompletionEvent() ) );
+//			rv.add( org.lgna.stencil.ListSelectionStateFinishNote.createInstance( context, listSelectionStateStartNote.getAcceptedContextAt( 0 ), context.getSuccessfulCompletionEvent() ) );
 //		}
 //		
 ////		if( IS_MONKEY_WRENCH_DESIRED ) {
 ////			org.alice.ide.croquet.models.members.MembersTabSelectionState membersTabSelectionState = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance();
 ////			edu.cmu.cs.dennisc.croquet.ListSelectionStateContext context = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( membersTabSelectionState, membersTabSelectionState.getItemAt( 1 ) );
-////			rv.add( edu.cmu.cs.dennisc.cheshire.ListSelectionStateSimpleNote.createInstance( context, parentContextCriterion, context.getSuccessfulCompletionEvent() ) );
+////			rv.add( org.lgna.stencil.ListSelectionStateSimpleNote.createInstance( context, parentContextCriterion, context.getSuccessfulCompletionEvent() ) );
 ////		}
 		return null;
 	}

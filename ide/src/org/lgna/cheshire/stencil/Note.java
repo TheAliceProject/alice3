@@ -51,5 +51,5 @@ public abstract class Note extends org.lgna.stencil.Note {
 	protected edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
 		return Presentation.getInstance().getNextOperation();
 	}
-	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.steps.Step< ? > step );
+	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event );
 }

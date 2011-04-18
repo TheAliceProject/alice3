@@ -226,38 +226,6 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 	private final Stencil stencil;
 
 	private boolean isIgnoring = false;
-	private final org.lgna.croquet.steps.TransactionManager.Observer observer = new org.lgna.croquet.steps.TransactionManager.Observer() {
-		public void addingStep( org.lgna.croquet.steps.Step< ? > step ) {
-		}
-		public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
-			if( isIgnoring ) {
-				//pass
-			} else {
-				org.lgna.cheshire.Book book = getBook();
-				org.lgna.cheshire.Chapter chapter = book.getSelectedChapter();
-				ChapterPage chapterPage = ChapterPage.getInstance( chapter );
-				if( chapterPage.isWhatWeveBeenWaitingFor( step ) ) {
-					nextOperation.setEnabled( true );
-					if( chapterPage.isAutoAdvanceDesired() ) {
-						javax.swing.SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								isIgnoring = true;
-								try {
-									nextOperation.fire();
-								} finally {
-									isIgnoring = false;
-								}
-							}
-						} );
-					}
-				}
-			}
-		}
-		public void pendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
-		}
-		public void pendedDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
-		}
-	};
 	public Presentation( 
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
 			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
@@ -298,11 +266,34 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 				org.lgna.cheshire.SoundCache.setEnabled( nextValue );
 			}
 		} );
-		
-		org.lgna.croquet.steps.TransactionManager.addObserver( this.observer );
 	}
 	/*package-private*/ edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
 		return this.nextOperation;
+	}
+	@Override
+	protected void handleEvent( org.lgna.cheshire.events.Event event ) {
+		if( isIgnoring ) {
+			//pass
+		} else {
+			org.lgna.cheshire.Book book = getBook();
+			org.lgna.cheshire.Chapter chapter = book.getSelectedChapter();
+			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
+			if( chapterPage.isWhatWeveBeenWaitingFor( event ) ) {
+				nextOperation.setEnabled( true );
+				if( chapterPage.isAutoAdvanceDesired() ) {
+					javax.swing.SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							isIgnoring = true;
+							try {
+								nextOperation.fire();
+							} finally {
+								isIgnoring = false;
+							}
+						}
+					} );
+				}
+			}
+		}
 	}
 	@Override
 	protected void handleChapterChanged( org.lgna.cheshire.Chapter chapter ) {

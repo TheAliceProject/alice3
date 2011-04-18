@@ -41,33 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.cheshire.events;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Note<S extends org.lgna.croquet.steps.Step<?>> extends org.lgna.cheshire.stencil.Note {
-	private final S step;
-	public Note( S step ) {
-		this.step = step;
-	}
-	public S getStep() {
-		return this.step;
-	}
-	@Override
-	protected String getText() {
-		org.lgna.croquet.steps.Transaction transaction = this.step.getParent();
-		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
-		edu.cmu.cs.dennisc.croquet.UserInformation userInformation = org.lgna.cheshire.stencil.Presentation.getInstance().getUserInformation();
-		return this.step.getTutorialNoteText( edit, userInformation );
-	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
-		if( event instanceof org.lgna.cheshire.events.StepAddedEvent ) {
-			org.lgna.cheshire.events.StepAddedEvent stepAddedEvent = (org.lgna.cheshire.events.StepAddedEvent)event;
-			return this.step.getModel() == stepAddedEvent.getStep().getModel();
-		} else {
-			return false;
-		}
-	}
+public interface Event {
+
 }

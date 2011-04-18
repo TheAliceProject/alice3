@@ -56,7 +56,7 @@ public class MessageNote extends Note {
 		return this.text;
 	}
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.steps.Step< ? > step ) {
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
 		return false;
 	}
 }

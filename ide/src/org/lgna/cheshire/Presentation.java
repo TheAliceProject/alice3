@@ -52,38 +52,23 @@ public abstract class Presentation {
 	private final Book book;
 	private boolean isResultOfNextOperation = false;
 
-	
-//	private boolean isIgnoring = false;
-//	private edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
-//		public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
-//		}
-//		public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
-//			if( isIgnoring ) {
-//				//pass
-//			} else {
-//				edu.cmu.cs.dennisc.croquet.Step< ? > transaction = transactionsModel.getSelectedStep();
-//				if (transaction instanceof WaitingStep) {
-//					WaitingStep waitingStep = (WaitingStep) transaction;
-//					if( waitingStep.isWhatWeveBeenWaitingFor( child ) ) {
-//						nextOperation.setEnabled( true );
-//						if( transaction.isAutoAdvanceDesired() ) {
-//							javax.swing.SwingUtilities.invokeLater(new Runnable() {
-//								public void run() {
-//									isIgnoring = true;
-//									try {
-//										nextOperation.fire();
-//									} finally {
-//										isIgnoring = false;
-//									}
-//								}
-//							} );
-//						}
-//					}
-//				}
-//			}
-//		}
-//	};
+	private final org.lgna.croquet.steps.TransactionManager.Observer observer = new org.lgna.croquet.steps.TransactionManager.Observer() {
+		public void addingStep( org.lgna.croquet.steps.Step< ? > step ) {
+		}
+		public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
+			Presentation.this.handleEvent( new org.lgna.cheshire.events.StepAddedEvent( step ) );
+		}
+		public void pendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		}
+		public void pendedDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+			Presentation.this.handleEvent( new org.lgna.cheshire.events.DropPendedEvent( completionModel, dropReceptor, dropSite ) );
+		}
+		public void selectedMenuItems( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
+			Presentation.this.handleEvent( new org.lgna.cheshire.events.MenuSelectionChangedEvent( models ) );
+		}
+	};
 
+	protected abstract void handleEvent( org.lgna.cheshire.events.Event event );
 	private org.lgna.cheshire.Book.SelectionObserver selectionObserver = new org.lgna.cheshire.Book.SelectionObserver() {
 		public void selectionChanging( Book source, int fromIndex, int toIndex ) {
 		}
@@ -105,6 +90,7 @@ public abstract class Presentation {
 			this.historyManagers[ i ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupsTrackedForRandomAccess[ i ] );
 		}
 		this.historyManagers[ N ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( COMPLETION_GROUP );
+		org.lgna.croquet.steps.TransactionManager.addObserver( this.observer );
 	}
 	
 	protected void startListening() {
