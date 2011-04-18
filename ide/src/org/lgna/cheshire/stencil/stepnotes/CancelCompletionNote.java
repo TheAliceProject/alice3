@@ -41,16 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.steps;
+package org.lgna.cheshire.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupOperationStep< M extends edu.cmu.cs.dennisc.croquet.PopupOperation<?> > extends OperationStep< M > {
-	public PopupOperationStep( Transaction parent, M model, TransactionHistory transactionHistory ) {
-		super( parent, model, transactionHistory );
-	}
-	public PopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+public class CancelCompletionNote extends CompletionNote< org.lgna.croquet.steps.CancelCompletionStep > {
+	public CancelCompletionNote( org.lgna.croquet.steps.CancelCompletionStep step ) {
+		super( step );
 	}
 }

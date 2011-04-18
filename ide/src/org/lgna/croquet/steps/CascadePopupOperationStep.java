@@ -46,7 +46,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadePopupOperationStep<T> extends OperationStep< edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> >{
+public class CascadePopupOperationStep<T> extends PopupOperationStep< edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> >{
 	public static <T> CascadePopupOperationStep<T> createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model ) {
 		return new CascadePopupOperationStep<T>( parent, model );
 	}

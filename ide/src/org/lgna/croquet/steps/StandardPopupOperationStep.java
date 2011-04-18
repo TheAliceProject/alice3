@@ -46,7 +46,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class StandardPopupOperationStep extends OperationStep< edu.cmu.cs.dennisc.croquet.StandardPopupOperation >{
+public class StandardPopupOperationStep extends PopupOperationStep< edu.cmu.cs.dennisc.croquet.StandardPopupOperation >{
 	public static StandardPopupOperationStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation model ) {
 		return new StandardPopupOperationStep( parent, model );
 	}

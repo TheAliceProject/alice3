@@ -70,7 +70,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 			org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
 			org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
 			for( org.lgna.croquet.steps.Step< ? > step : transaction.getChildSteps() ) {
-				this.notes.add( new org.lgna.cheshire.stencil.stepnotes.StepNote( step ) );
+				this.notes.add( org.lgna.cheshire.stencil.stepnotes.StepNoteFactory.createNote( step ) );
 			}
 		}
 	}

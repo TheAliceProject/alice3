@@ -140,8 +140,8 @@ public class TransactionManager {
 	public static <E> ListSelectionStatePrepStep<E> addListSelectionPrepStep( edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > model ) {
 		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model ); 
 	}
-	public static <E> CancelPrepStep addCancelPrepStep() {
-		return CancelPrepStep.createAndAddToTransaction( getActiveTransaction() ); 
+	public static <E> CancelCompletionStep addCancelCompletionStep() {
+		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction() ); 
 	}
 
 	public static void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor ) {

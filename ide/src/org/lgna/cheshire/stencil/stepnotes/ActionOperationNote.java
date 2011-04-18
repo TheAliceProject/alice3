@@ -40,23 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.steps;
+
+package org.lgna.cheshire.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CancelPrepStep extends CompletionStep {
-	public static CancelPrepStep createAndAddToTransaction( Transaction parent ) {
-		return new CancelPrepStep( parent );
-	}
-	private CancelPrepStep( Transaction parent ) {
-		super( parent, null, null );
-	}
-	public CancelPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	@Override
-	public boolean isActive() {
-		return false;
+public class ActionOperationNote extends SingleThreadOperationNote< org.lgna.croquet.steps.ActionOperationStep > {
+	public ActionOperationNote( org.lgna.croquet.steps.ActionOperationStep step ) {
+		super( step );
 	}
 }

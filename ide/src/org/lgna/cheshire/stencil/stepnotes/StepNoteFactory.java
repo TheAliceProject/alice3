@@ -41,16 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.steps;
+package org.lgna.cheshire.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupOperationStep< M extends edu.cmu.cs.dennisc.croquet.PopupOperation<?> > extends OperationStep< M > {
-	public PopupOperationStep( Transaction parent, M model, TransactionHistory transactionHistory ) {
-		super( parent, model, transactionHistory );
+public class StepNoteFactory {
+	private static final String PACKAGE_NAME = StepNoteFactory.class.getPackage().getName();
+	private StepNoteFactory() {
+		throw new AssertionError();
 	}
-	public PopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public static Note<?> createNote( org.lgna.croquet.steps.Step< ? > step ) {
+		Class<?> stepCls = step.getClass();
+		String stepClsName = stepCls.getSimpleName();
+		String noteClsName = PACKAGE_NAME + "." + stepClsName.substring( 0, stepClsName.length()-4 ) + "Note";
+		try {
+			Class<? extends Note<?>> noteCls = (Class<? extends Note<?>>)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( noteClsName );
+			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( noteCls, new Class<?>[] { stepCls }, step );
+		} catch( ClassNotFoundException cnfe ) {
+			throw new RuntimeException( noteClsName, cnfe );
+		}
 	}
 }

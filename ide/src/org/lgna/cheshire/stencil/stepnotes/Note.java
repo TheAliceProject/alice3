@@ -41,16 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.steps;
+package org.lgna.cheshire.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupOperationStep< M extends edu.cmu.cs.dennisc.croquet.PopupOperation<?> > extends OperationStep< M > {
-	public PopupOperationStep( Transaction parent, M model, TransactionHistory transactionHistory ) {
-		super( parent, model, transactionHistory );
+public abstract class Note<S extends org.lgna.croquet.steps.Step<?>> extends org.lgna.cheshire.stencil.Note {
+	private final S step;
+	public Note( S step ) {
+		this.step = step;
 	}
-	public PopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public S getStep() {
+		return this.step;
 	}
+	@Override
+	protected String getText() {
+		org.lgna.croquet.steps.Transaction transaction = this.step.getParent();
+		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
+		edu.cmu.cs.dennisc.croquet.UserInformation userInformation = org.lgna.cheshire.stencil.Presentation.getInstance().getUserInformation();
+		return this.step.getTutorialNoteText( edit, userInformation );
+	}
+	
 }

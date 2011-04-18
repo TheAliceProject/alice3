@@ -40,17 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupOperationStep< M extends edu.cmu.cs.dennisc.croquet.PopupOperation<?> > extends OperationStep< M > {
-	public PopupOperationStep( Transaction parent, M model, TransactionHistory transactionHistory ) {
-		super( parent, model, transactionHistory );
+public class CancelCompletionStep extends CompletionStep {
+	public static CancelCompletionStep createAndAddToTransaction( Transaction parent ) {
+		return new CancelCompletionStep( parent );
 	}
-	public PopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	private CancelCompletionStep( Transaction parent ) {
+		super( parent, null, null );
+	}
+	public CancelCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+	}
+	@Override
+	public boolean isActive() {
+		return false;
 	}
 }

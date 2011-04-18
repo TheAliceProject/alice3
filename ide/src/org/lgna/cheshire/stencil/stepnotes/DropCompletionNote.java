@@ -46,16 +46,8 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class StepNote extends org.lgna.cheshire.stencil.Note {
-	private final org.lgna.croquet.steps.Step<?> step;
-	public StepNote( org.lgna.croquet.steps.Step<?> step ) {
-		this.step = step;
-	}
-	@Override
-	protected String getText() {
-		org.lgna.croquet.steps.Transaction transaction = this.step.getParent();
-		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
-		edu.cmu.cs.dennisc.croquet.UserInformation userInformation = org.lgna.cheshire.stencil.Presentation.getInstance().getUserInformation();
-		return this.step.getTutorialNoteText( edit, userInformation );
+public class DropCompletionNote extends CompletionNote< org.lgna.croquet.steps.DropCompletionStep > {
+	public DropCompletionNote( org.lgna.croquet.steps.DropCompletionStep step ) {
+		super( step );
 	}
 }

@@ -63,5 +63,5 @@ public abstract class SerialOperation extends SingleThreadOperation<SerialOperat
 	public SerialOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushSerialOperationContext( this, e, viewController );
 	}
-	protected abstract java.util.List< Operation<?> > getOperations();
+	protected abstract java.util.List< SingleThreadOperation<?> > getOperations();
 }
