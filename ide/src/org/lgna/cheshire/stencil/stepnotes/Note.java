@@ -61,5 +61,9 @@ public abstract class Note<S extends org.lgna.croquet.steps.Step<?>> extends org
 		edu.cmu.cs.dennisc.croquet.UserInformation userInformation = org.lgna.cheshire.stencil.Presentation.getInstance().getUserInformation();
 		return this.step.getTutorialNoteText( edit, userInformation );
 	}
-	
+	@Override
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.steps.Step< ? > step ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", step );
+		return true;
+	}
 }

@@ -49,6 +49,7 @@ public class TransactionChapter extends Chapter {
 	private final org.lgna.croquet.steps.Transaction transaction;
 	public TransactionChapter( org.lgna.croquet.steps.Transaction transaction ) {
 		this.transaction = transaction;
+		this.reset();
 	}
 	public org.lgna.croquet.steps.Transaction getTransaction() {
 		return this.transaction;
@@ -69,5 +70,23 @@ public class TransactionChapter extends Chapter {
 	@Override
 	public String getTitle() {
 		return this.transaction.getTitle();
+	}
+	
+	@Override
+	public boolean isAutoAdvanceDesired() {
+		return true;
+	}
+	
+	@Override
+	public boolean isAlreadyInTheDesiredState() {
+		org.lgna.croquet.steps.Transaction transaction = this.getTransaction();
+		org.lgna.croquet.steps.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+		edu.cmu.cs.dennisc.croquet.Model model = completionStep.getModel();
+		if( model != null ) {
+			edu.cmu.cs.dennisc.croquet.Edit< ? > edit = completionStep.getEdit();
+			return model.isAlreadyInState( edit );
+		} else {
+			return false;
+		}
 	}
 }

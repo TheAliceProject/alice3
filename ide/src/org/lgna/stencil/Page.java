@@ -48,7 +48,7 @@ package org.lgna.stencil;
 public interface Page {
 	/*package-private*/ static final boolean IS_NOTE_OVERLAPPING_DESIRED = true;
 
-	public Iterable<Note> getNotes();
+	public Iterable< ? extends org.lgna.stencil.Note > getNotes();
 	public boolean isStencilRenderingDesired();
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e );
 }

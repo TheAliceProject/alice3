@@ -42,18 +42,17 @@
  */
 package org.lgna.croquet.steps;
 
-import edu.cmu.cs.dennisc.croquet.Model;
-
-
 /**
  * @author Dennis Cosgrove
  */
 public class TransactionManager {
-	public static interface StepObserver {
-		public void addingStep(Step<?> step);
-		public void addedStep(Step<?> step);
+	public static interface Observer {
+		public void addingStep( Step<?> step );
+		public void addedStep( Step<?> step );
+		public void pendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
+		public void pendedDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
 	}
-	private static final java.util.List<StepObserver> stepObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private static final java.util.List<Observer> observers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private static final java.util.Stack< TransactionHistory > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private static final java.util.Set< CompletionStep<?> > stepsAwaitngFinish = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 	static {
@@ -76,11 +75,11 @@ public class TransactionManager {
 		return stack.pop();
 	}
 	
-	public static void addStepObserver( StepObserver stepObserver ) {
-		stepObservers.add( stepObserver );
+	public static void addObserver( Observer observer ) {
+		observers.add( observer );
 	}
-	public static void removeStepObserver( StepObserver stepObserver ) {
-		stepObservers.remove( stepObserver );
+	public static void removeObserver( Observer observer ) {
+		observers.remove( observer );
 	}
 	
 	private static Transaction getActiveTransaction() {
@@ -91,14 +90,13 @@ public class TransactionManager {
 	}
 
 	/*package-private*/ static void fireAddingStep( Step<?> step ) {
-//		reifyDropIfNecessary( step );
-		for( StepObserver stepObserver : stepObservers ) {
-			stepObserver.addingStep( step );
+		for( Observer observer : observers ) {
+			observer.addingStep( step );
 		}
 	}
 	/*package-private*/ static void fireAddedStep( Step<?> step ) {
-		for( StepObserver stepObserver : stepObservers ) {
-			stepObserver.addedStep( step );
+		for( Observer observer : observers ) {
+			observer.addedStep( step );
 		}
 	}
 	
@@ -168,14 +166,14 @@ public class TransactionManager {
 			}
 		}
 	}
-	private static java.util.List< Model > lastMenuSelection; 
-	public static void handleMenuSelectionChanged( java.util.List< Model > models ) {
+	private static java.util.List< edu.cmu.cs.dennisc.croquet.Model > lastMenuSelection; 
+	public static void handleMenuSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
 		lastMenuSelection = models;
 	}
 
 	private static void addMenuPrepStepsIfNecessary( Transaction transaction ) {
 		if( lastMenuSelection != null && lastMenuSelection.size() > 0 ) {
-			for( Model model : lastMenuSelection ) {
+			for( edu.cmu.cs.dennisc.croquet.Model model : lastMenuSelection ) {
 				if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
 					MenuModelStep.createAndAddToTransaction( transaction, (edu.cmu.cs.dennisc.croquet.MenuModel)model );
 				} else if( model instanceof edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? > ) {

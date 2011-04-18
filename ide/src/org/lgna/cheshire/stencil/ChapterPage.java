@@ -59,7 +59,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		return rv;
 	}
 	private final org.lgna.cheshire.Chapter chapter;
-	private final java.util.List< org.lgna.stencil.Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final edu.cmu.cs.dennisc.croquet.JComponent< ? > card = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 	public ChapterPage( org.lgna.cheshire.Chapter chapter ) {
 		this.chapter = chapter;
@@ -73,13 +73,18 @@ public class ChapterPage implements org.lgna.stencil.Page {
 				this.notes.add( org.lgna.cheshire.stencil.stepnotes.StepNoteFactory.createNote( step ) );
 			}
 		}
+		if( this.notes.size() > 1 ) {
+			final int N = this.notes.size();
+			for( int i=0; i<N; i++ ) {
+				this.notes.get( i ).setLabel( Integer.toString( i+1 ) );
+			}
+		}
+		this.reset();
 	}
-	public boolean isAlreadyInTheDesiredState() {
-		return false;
+	public org.lgna.cheshire.Chapter getChapter() {
+		return this.chapter;
 	}
-
-
-	public Iterable< org.lgna.stencil.Note > getNotes() {
+	public Iterable< ? extends org.lgna.stencil.Note > getNotes() {
 		return this.notes;
 	}
 
@@ -110,7 +115,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 					java.awt.Point p;
 					if( prevLocation != null ) {
 						if( IS_NOTE_OVERLAPPING_DESIRED ) {
-							p = new java.awt.Point( prevLocation.x + 48, prevLocation.y - 33 );
+							p = new java.awt.Point( prevLocation.x + 64, prevLocation.y - 33 );
 						} else {
 							p = new java.awt.Point( prevLocation.x + prevSize.width - 64, prevLocation.y - 33 );
 						}
@@ -263,6 +268,33 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		return this.notes.get( 0 ).calculateLocation( container );
 	}
 
+	public boolean isAutoAdvanceDesired() {
+		return this.chapter.isAutoAdvanceDesired();
+	}
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.steps.Step< ? > step ) {
+		final int NOTE_COUNT = this.notes.size();
+		int activeNoteIndex = this.getIndexOfFirstActiveNote();
+		activeNoteIndex = Math.max( activeNoteIndex, 0 );
+		if( activeNoteIndex < NOTE_COUNT ) {
+			Note activeNote = this.notes.get( activeNoteIndex );
+			try {
+				if( activeNote.isWhatWeveBeenWaitingFor( step ) ) {
+					activeNoteIndex ++;
+					if( activeNoteIndex == NOTE_COUNT ) {
+						return true;
+					} else {
+						this.setActiveNote( activeNoteIndex );
+					}
+				}
+			} catch( edu.cmu.cs.dennisc.croquet.CancelException ce ) {
+				//this.reset();
+				org.lgna.cheshire.stencil.Presentation.getInstance().restoreHistoryIndicesDueToCancel();
+				this.reset();
+			}
+		}
+		return false;
+	}
+	
 //	public abstract edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability();
 //
 //	public org.lgna.stencil.Note getNoteAt( int index ) {
@@ -318,9 +350,6 @@ public class ChapterPage implements org.lgna.stencil.Page {
 	public edu.cmu.cs.dennisc.croquet.Component< ? > getCard() {
 		return this.stepPanel;
 	}
-	public boolean isAutoAdvanceDesired() {
-		return false;
-	}
 
 	public void reset() {
 		java.awt.LayoutManager layoutManager = this.stepPanel.getAwtComponent().getLayout();
@@ -332,5 +361,6 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		for( org.lgna.stencil.Note note : this.getNotes() ) {
 			note.reset();
 		}
+		this.setActiveNote( 0 );
 	}
 }

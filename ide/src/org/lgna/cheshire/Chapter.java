@@ -64,6 +64,9 @@ public abstract class Chapter {
 	public void setReplacementAcceptability( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability ) {
 		this.replacementAcceptability = replacementAcceptability;
 	}
+
+	public abstract boolean isAutoAdvanceDesired();
+	public abstract boolean isAlreadyInTheDesiredState();
 	
 	public abstract void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ); 
 

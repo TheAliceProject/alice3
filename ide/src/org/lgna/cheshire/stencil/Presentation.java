@@ -105,7 +105,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 
 				edu.cmu.cs.dennisc.croquet.BorderPanel controlPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 				controlPanel.addComponent( prevNextPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
-				controlPanel.addComponent( new BookList( transactionsComboBoxModel ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+				controlPanel.addComponent( new BookList( bookComboBoxModel ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 
 				this.internalAddComponent( controlPanel, java.awt.BorderLayout.LINE_START );
 
@@ -113,7 +113,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 				edu.cmu.cs.dennisc.croquet.BorderPanel controlsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 				edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel( edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0 );
 				controlPanel.addComponent( Presentation.this.prevOperation.createButton() );
-				controlPanel.addComponent( new BookComboBox( Presentation.this.transactionsComboBoxModel, this.isAbovePopupMenus() == false ) );
+				controlPanel.addComponent( new BookComboBox( Presentation.this.bookComboBoxModel, this.isAbovePopupMenus() == false ) );
 				controlPanel.addComponent( Presentation.this.nextOperation.createButton() );
 				controlsPanel.addComponent( controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 				Presentation.this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
@@ -222,9 +222,42 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 		}
 	}
 
-	private final BookComboBoxModel transactionsComboBoxModel;
+	private final BookComboBoxModel bookComboBoxModel;
 	private final Stencil stencil;
 
+	private boolean isIgnoring = false;
+	private final org.lgna.croquet.steps.TransactionManager.Observer observer = new org.lgna.croquet.steps.TransactionManager.Observer() {
+		public void addingStep( org.lgna.croquet.steps.Step< ? > step ) {
+		}
+		public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
+			if( isIgnoring ) {
+				//pass
+			} else {
+				org.lgna.cheshire.Book book = getBook();
+				org.lgna.cheshire.Chapter chapter = book.getSelectedChapter();
+				ChapterPage chapterPage = ChapterPage.getInstance( chapter );
+				if( chapterPage.isWhatWeveBeenWaitingFor( step ) ) {
+					nextOperation.setEnabled( true );
+					if( chapterPage.isAutoAdvanceDesired() ) {
+						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								isIgnoring = true;
+								try {
+									nextOperation.fire();
+								} finally {
+									isIgnoring = false;
+								}
+							}
+						} );
+					}
+				}
+			}
+		}
+		public void pendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		}
+		public void pendedDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		}
+	};
 	public Presentation( 
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
 			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
@@ -238,7 +271,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 		super( userInformation, transactionAccessPolicy, originalTransactionHistory, filterer, groupsTrackedForRandomAccess );
 		assert instance == null;
 		instance = this;
-		this.transactionsComboBoxModel = new BookComboBoxModel( this.getBook() );
+		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
 		this.stencil = new Stencil( menuPolicy, scrollingRequiredRenderer, isOptimizedForBugRepro );
 		this.isInterceptingEvents.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 			public void changing( boolean nextValue ) {
@@ -265,6 +298,8 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 				org.lgna.cheshire.SoundCache.setEnabled( nextValue );
 			}
 		} );
+		
+		org.lgna.croquet.steps.TransactionManager.addObserver( this.observer );
 	}
 	/*package-private*/ edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
 		return this.nextOperation;
@@ -293,7 +328,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			int selectedIndex = this.getBook().getSelectedIndex();
 
 			//				boolean isAutoAdvanceDesired = false;
-			boolean isWaiting = chapterPage.isAlreadyInTheDesiredState() == false;
+			boolean isWaiting = chapterPage.getChapter().isAlreadyInTheDesiredState() == false;
 			if( this.stencil.isOptimizedForBugRepro ) {
 				//pass
 			} else {

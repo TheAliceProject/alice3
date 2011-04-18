@@ -69,4 +69,12 @@ public class MessageChapter extends Chapter {
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 	}
+	@Override
+	public boolean isAutoAdvanceDesired() {
+		return false;
+	}
+	@Override
+	public boolean isAlreadyInTheDesiredState() {
+		return true;
+	}
 }

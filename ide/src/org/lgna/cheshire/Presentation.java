@@ -84,13 +84,6 @@ public abstract class Presentation {
 //		}
 //	};
 
-	private org.lgna.croquet.steps.TransactionManager.StepObserver stepObserver = new org.lgna.croquet.steps.TransactionManager.StepObserver() {
-		public void addingStep(org.lgna.croquet.steps.Step<?> step) {
-		}
-		public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
-		}
-	};
-	
 	private org.lgna.cheshire.Book.SelectionObserver selectionObserver = new org.lgna.cheshire.Book.SelectionObserver() {
 		public void selectionChanging( Book source, int fromIndex, int toIndex ) {
 		}
@@ -112,8 +105,6 @@ public abstract class Presentation {
 			this.historyManagers[ i ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupsTrackedForRandomAccess[ i ] );
 		}
 		this.historyManagers[ N ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( COMPLETION_GROUP );
-
-		org.lgna.croquet.steps.TransactionManager.addStepObserver( this.stepObserver );
 	}
 	
 	protected void startListening() {

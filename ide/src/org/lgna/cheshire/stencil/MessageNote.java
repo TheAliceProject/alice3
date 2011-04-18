@@ -55,4 +55,8 @@ public class MessageNote extends Note {
 	protected String getText() {
 		return this.text;
 	}
+	@Override
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.steps.Step< ? > step ) {
+		return false;
+	}
 }
