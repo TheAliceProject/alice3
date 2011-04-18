@@ -52,14 +52,16 @@ public class DragNote extends PrepNote< org.lgna.croquet.steps.DragStep > {
 		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
 
 		org.lgna.croquet.steps.Transaction transaction = step.getParent();
-		org.lgna.cheshire.stencil.resolvers.DropSiteResolver dropSiteResolver = null;
-		for( org.lgna.croquet.steps.Step< ? > siblingStep : transaction.getPrepSteps() ) {
-			if( siblingStep instanceof org.lgna.croquet.steps.DropPrepStep ) {
-				org.lgna.croquet.steps.DropPrepStep dropPrepStep = (org.lgna.croquet.steps.DropPrepStep)siblingStep;
-				dropSiteResolver = new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( dropPrepStep );
+		org.lgna.croquet.steps.DropStep dropStep = null;
+		for( org.lgna.croquet.steps.Step< ? > siblingStep : transaction.getChildSteps() ) {
+			if( siblingStep instanceof org.lgna.croquet.steps.DropStep ) {
+				dropStep = (org.lgna.croquet.steps.DropStep)siblingStep;
+				break;
 			}
 		}
-		assert dropSiteResolver != null : step;
-		this.addFeature( new org.lgna.cheshire.stencil.features.DropPreviewHole( dropSiteResolver, org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH ) );
+		//assert dropStep != null : step;
+		if( dropStep != null ) {
+			this.addFeature( new org.lgna.cheshire.stencil.features.DropPreviewHole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( dropStep ), org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH ) );
+		}
 	}
 }

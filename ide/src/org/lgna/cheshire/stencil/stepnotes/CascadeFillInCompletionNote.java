@@ -46,8 +46,8 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInNote extends PrepNote< org.lgna.croquet.steps.CascadeFillInStep< ?, ? > > {
-	public CascadeFillInNote( org.lgna.croquet.steps.CascadeFillInStep< ?, ? > step ) {
+public class CascadeFillInCompletionNote extends CompletionNote< org.lgna.croquet.steps.CascadeFillInCompletionStep< ?, ? > > {
+	public CascadeFillInCompletionNote( org.lgna.croquet.steps.CascadeFillInCompletionStep< ?, ? > step ) {
 		super( step );
 	}
 	@Override

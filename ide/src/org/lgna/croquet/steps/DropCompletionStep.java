@@ -45,12 +45,12 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class DropCompletionStep extends CompletionStep< edu.cmu.cs.dennisc.croquet.CompletionModel > {
+public class DropCompletionStep extends CompletionStep< edu.cmu.cs.dennisc.croquet.CompletionModel > implements DropStep {
 	public static DropCompletionStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 		return new DropCompletionStep( parent, model, dropReceptor, dropSite );
 	}
 	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.DropReceptor > dropReceptorResolver;
-	private final edu.cmu.cs.dennisc.croquet.DropSite dropSite;
+	private edu.cmu.cs.dennisc.croquet.DropSite dropSite;
 	private DropCompletionStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 		super( parent, model, null );
 		this.dropReceptorResolver = dropReceptor.getCodableResolver();
@@ -70,6 +70,9 @@ public class DropCompletionStep extends CompletionStep< edu.cmu.cs.dennisc.croqu
 	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor() {
 		return this.dropReceptorResolver.getResolved();
 	}
+	public edu.cmu.cs.dennisc.croquet.DropSite getDropSite() {
+		return this.dropSite;
+	}
 	@Override
 	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		for( PrepStep< ? > prepStep : this.getParent().getPrepSteps() ) {
@@ -85,6 +88,10 @@ public class DropCompletionStep extends CompletionStep< edu.cmu.cs.dennisc.croqu
 		if( this.dropReceptorResolver instanceof edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> ) {
 			edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> retargetableResolver = (edu.cmu.cs.dennisc.croquet.RetargetableResolver<?>)this.dropReceptorResolver;
 			retargetableResolver.retarget( retargeter );
+		}
+		if( this.dropSite instanceof edu.cmu.cs.dennisc.croquet.RetargetableDropSite ) {
+			edu.cmu.cs.dennisc.croquet.RetargetableDropSite retargetableDropSite = (edu.cmu.cs.dennisc.croquet.RetargetableDropSite)this.dropSite;
+			this.dropSite = retargetableDropSite.createReplacement( retargeter );
 		}
 	}
 }

@@ -41,17 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.resolvers;
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropSiteResolver implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
-	private final org.lgna.croquet.steps.DropStep step;
-	public DropSiteResolver( org.lgna.croquet.steps.DropStep step ) {
-		this.step = step;
+public class CascadeFillInCompletionStep<F,B> extends CompletionStep< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > > {
+	public static < F, B > CascadeFillInCompletionStep< F, B > createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > fillIn ) {
+		edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > model = parent.getPendingCascadePopupOperation();
+		return new CascadeFillInCompletionStep< F, B >( parent, model, fillIn );
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
-		return this.step.getDropReceptor().getTrackableShape( this.step.getDropSite() );
+	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > > fillInResolver; 
+	private CascadeFillInCompletionStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > model, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > fillIn ) {
+		super( parent, model, null );
+		this.fillInResolver = fillIn.getCodableResolver();
+	}
+	public CascadeFillInCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+		this.fillInResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	}
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.fillInResolver );
+	}
+	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		super.retarget( retargeter );
+		if( this.fillInResolver instanceof edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> ) {
+			edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> retargetableResolver = (edu.cmu.cs.dennisc.croquet.RetargetableResolver<?>)this.fillInResolver;
+			retargetableResolver.retarget( retargeter );
+		}
 	}
 }

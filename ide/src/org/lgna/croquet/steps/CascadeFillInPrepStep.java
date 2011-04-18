@@ -41,17 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.resolvers;
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropSiteResolver implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
-	private final org.lgna.croquet.steps.DropStep step;
-	public DropSiteResolver( org.lgna.croquet.steps.DropStep step ) {
-		this.step = step;
+public class CascadeFillInPrepStep<F,B> extends PrepStep< edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > > {
+	public static < F, B > CascadeFillInPrepStep< F, B > createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > model ) {
+		return new CascadeFillInPrepStep< F, B >( parent, model );
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
-		return this.step.getDropReceptor().getTrackableShape( this.step.getDropSite() );
+	private CascadeFillInPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > model ) {
+		super( parent, model );
+	}
+	public CascadeFillInPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

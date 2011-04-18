@@ -130,8 +130,7 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 			}
 		};
 	}
-	
-	
+
 	public String getTitle() {
 		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = this.getEdit();
 		if( edit != null ) {
@@ -168,6 +167,10 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		public void reifyCompletionStep() {
 			DropCompletionStep.createAndAddToTransaction( Transaction.this, this.completionModel, this.dropReceptor, this.dropSite );
 		}
+	}
+	
+	/*package-private*/ <F> edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > getPendingCascadePopupOperation() {
+		return (edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F >)this.pendingDrop.completionModel;
 	}
 	private PendingDrop pendingDrop;
 	public void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {

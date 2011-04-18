@@ -46,7 +46,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class DropPrepStep extends PrepStep< edu.cmu.cs.dennisc.croquet.PrepModel > {
+public class DropPrepStep extends PrepStep< edu.cmu.cs.dennisc.croquet.PrepModel > implements DropStep {
 	public static DropPrepStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 		return new DropPrepStep( parent, completionModel, dropReceptor, dropSite );
 	}

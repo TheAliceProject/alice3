@@ -55,4 +55,13 @@ public class DropPendedEvent implements Event {
 		this.dropReceptor = dropReceptor;
 		this.dropSite = dropSite;
 	}
+	public edu.cmu.cs.dennisc.croquet.CompletionModel getCompletionModel() {
+		return this.completionModel;
+	}
+	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor() {
+		return this.dropReceptor;
+	}
+	public edu.cmu.cs.dennisc.croquet.DropSite getDropSite() {
+		return this.dropSite;
+	}
 }

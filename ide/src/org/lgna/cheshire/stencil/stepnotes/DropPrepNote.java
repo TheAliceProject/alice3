@@ -55,7 +55,7 @@ public class DropPrepNote extends PrepNote< org.lgna.croquet.steps.DropPrepStep 
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
 		if( event instanceof org.lgna.cheshire.events.DropPendedEvent ) {
 			org.lgna.cheshire.events.DropPendedEvent dropPendedEvent = (org.lgna.cheshire.events.DropPendedEvent)event;
-			return true;
+			return dropPendedEvent.getDropSite().equals( getStep().getDropSite() );
 		} else {
 			return false;
 		}

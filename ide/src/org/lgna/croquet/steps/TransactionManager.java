@@ -55,7 +55,7 @@ public class TransactionManager {
 	}
 	private static final java.util.List<Observer> observers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private static final java.util.Stack< TransactionHistory > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	private static final java.util.Set< CompletionStep<?> > stepsAwaitngFinish = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+	private static final java.util.Set< CompletionStep<?> > stepsAwaitingFinish = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 	static {
 		stack.push( new TransactionHistory() );
 	}
@@ -137,7 +137,7 @@ public class TransactionManager {
 	}
 	public static StandardPopupOperationStep addStandardPopupOperationStep( edu.cmu.cs.dennisc.croquet.StandardPopupOperation model ) {
 		StandardPopupOperationStep rv = StandardPopupOperationStep.createAndAddToTransaction( getActiveTransaction(), model ); 
-		stepsAwaitngFinish.add( rv );
+		stepsAwaitingFinish.add( rv );
 		return rv;
 	}
 	public static <T> CascadePopupOperationStep<T> addCascadePopupOperationStep( edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model ) {
@@ -179,9 +179,9 @@ public class TransactionManager {
 		TransactionHistory activeTransactionHistory = getActiveTransactionHistory();
 		CompletionStep< ? > completionStep = activeTransactionHistory.getParent();
 		if( completionStep != null && completionStep.isActive() ) {
-			if( stepsAwaitngFinish.contains( completionStep ) ) {
+			if( stepsAwaitingFinish.contains( completionStep ) ) {
 				finish( completionStep.getModel() );
-				stepsAwaitngFinish.remove( completionStep );
+				stepsAwaitingFinish.remove( completionStep );
 			}
 		}
 	}
@@ -193,11 +193,18 @@ public class TransactionManager {
 
 	private static void addMenuPrepStepsIfNecessary( Transaction transaction ) {
 		if( lastMenuSelection != null && lastMenuSelection.size() > 0 ) {
-			for( edu.cmu.cs.dennisc.croquet.Model model : lastMenuSelection ) {
+			final int N = lastMenuSelection.size();
+			for( int i=0; i<N; i++ ) {
+				edu.cmu.cs.dennisc.croquet.Model model = lastMenuSelection.get( i );
 				if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
 					MenuModelStep.createAndAddToTransaction( transaction, (edu.cmu.cs.dennisc.croquet.MenuModel)model );
 				} else if( model instanceof edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? > ) {
-					CascadeFillInStep.createAndAddToTransaction( transaction, (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model );
+					edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? > fillIn = (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model;
+					if( i < N-1 ) {
+						CascadeFillInPrepStep.createAndAddToTransaction( transaction, (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model );
+					} else {
+						CascadeFillInCompletionStep.createAndAddToTransaction( transaction, fillIn );
+					}
 				} else if( model instanceof edu.cmu.cs.dennisc.croquet.MenuBarModel ) {
 					//pass
 				} else if( model instanceof edu.cmu.cs.dennisc.croquet.CompletionModel ) {
