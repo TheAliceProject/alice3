@@ -89,6 +89,10 @@ public class DropPrepStep extends PrepStep< edu.cmu.cs.dennisc.croquet.PrepModel
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
+		if( this.completionModelResolver instanceof edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> ) {
+			edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> retargetableResolver = (edu.cmu.cs.dennisc.croquet.RetargetableResolver<?>)this.completionModelResolver;
+			retargetableResolver.retarget( retargeter );
+		}
 		if( this.dropReceptorResolver instanceof edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> ) {
 			edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> retargetableResolver = (edu.cmu.cs.dennisc.croquet.RetargetableResolver<?>)this.dropReceptorResolver;
 			retargetableResolver.retarget( retargeter );

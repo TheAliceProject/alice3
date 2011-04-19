@@ -86,6 +86,11 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< edu.
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, this.transientValue.field.getValue(), edu.cmu.cs.dennisc.alice.ast.AbstractField.class );
 	}
+	
+	@Override
+	protected String getTutorialItemText() {
+		return this.transientValue.field.getValue().getName();
+	}
 //	@Override
 //	protected org.alice.ide.croquet.resolvers.FieldStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createCodableResolver() {
 //		return new org.alice.ide.croquet.resolvers.FieldStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, this.transientValue.field.getValue() );
