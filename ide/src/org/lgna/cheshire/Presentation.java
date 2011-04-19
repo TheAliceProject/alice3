@@ -58,20 +58,23 @@ public abstract class Presentation {
 		public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.StepAddedEvent( step ) );
 		}
-		public void comittingEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		public void editComitting( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		}
-		public void committedEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		public void editComitted( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.EditCommittedEvent( edit ) );
 		}
-		public void pendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		public void dropPending( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 		}
-		public void pendedDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		public void dropPended( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.DropPendedEvent( completionModel, dropReceptor, dropSite ) );
 		}
-		public void resizedPopupMenu(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+		public void popupMenuResized(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.PopupMenuResizedEvent( popupMenu ) );
 		}
-		public void selectedMenuItems( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
+		public void dialogOpened(edu.cmu.cs.dennisc.croquet.Dialog dialog) {
+			Presentation.this.handleEvent( new org.lgna.cheshire.events.DialogOpenedEvent( dialog ) );
+		}
+		public void menuItemsSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.MenuSelectionChangedEvent( models ) );
 		}
 	};

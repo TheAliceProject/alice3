@@ -555,7 +555,7 @@ class RtOperation<T> extends RtModel< CascadePopupOperation< T >, CascadePopupOp
 				public void componentMoved( java.awt.event.ComponentEvent e ) {
 				}
 				public void componentResized( java.awt.event.ComponentEvent e ) {
-					org.lgna.croquet.steps.TransactionManager.fireResizedPopupMenu( popupMenu );
+					org.lgna.croquet.steps.TransactionManager.firePopupMenuResized( popupMenu );
 				}
 				public void componentHidden( java.awt.event.ComponentEvent e ) {
 				}

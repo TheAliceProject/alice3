@@ -41,13 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.cheshire.events;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DialogOperationNote extends AbstractDialogOperationNote< org.lgna.croquet.steps.PlainDialogOperationStep > {
-	public DialogOperationNote( org.lgna.croquet.steps.PlainDialogOperationStep step ) {
-		super( step );
+public class DialogOpenedEvent implements Event {
+	private final edu.cmu.cs.dennisc.croquet.Dialog dialog;
+	public DialogOpenedEvent( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+		this.dialog = dialog;
+	}
+	public edu.cmu.cs.dennisc.croquet.Dialog getDialog() {
+		return this.dialog;
 	}
 }

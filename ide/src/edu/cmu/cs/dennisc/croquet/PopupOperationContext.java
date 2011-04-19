@@ -212,7 +212,7 @@ public abstract class PopupOperationContext< M extends PopupOperation<?> > exten
 		this.addChild( new MenuSelectionEvent( e, models ) );
 	}
 	/*package-private*/ void handleResized( java.awt.event.ComponentEvent e ) {
-		org.lgna.croquet.steps.TransactionManager.fireResizedPopupMenu( (PopupMenu)Component.lookup( e.getComponent() ) );
+		org.lgna.croquet.steps.TransactionManager.firePopupMenuResized( (PopupMenu)Component.lookup( e.getComponent() ) );
 		this.addChild( new MenuResizedEvent( e ) );
 	}
 }

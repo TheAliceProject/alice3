@@ -100,6 +100,7 @@ public abstract class DialogOperation< C extends DialogOperationContext<?> > ext
 		dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DO_NOTHING );
 		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
+				org.lgna.croquet.steps.TransactionManager.fireDialogOpened( dialog );
 				context.handleWindowOpened( e );
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {

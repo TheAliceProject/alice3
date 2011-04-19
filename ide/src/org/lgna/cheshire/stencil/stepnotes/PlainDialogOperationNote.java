@@ -41,37 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil;
+package org.lgna.cheshire.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Note extends org.lgna.stencil.Note {
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
-		return Presentation.getInstance().getNextOperation();
-	}
-	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event );
-	private void moveOutOfTheWayIfNecessary( edu.cmu.cs.dennisc.croquet.ScreenElement screenElement ) {
-		java.awt.Rectangle screenElementLocalBounds = screenElement.getLocalBounds();
-		java.awt.Rectangle bounds = this.getBounds( screenElement );
-		if( bounds.intersects( screenElementLocalBounds ) ) {
-			this.setLocation( (int)screenElementLocalBounds.getWidth()+100, (int)screenElementLocalBounds.getHeight()/2, screenElement );
-		}
-	}
-	public void adjustIfNecessary( org.lgna.cheshire.events.Event event ) {
-		edu.cmu.cs.dennisc.croquet.ScreenElement screenElement;
-		if( event instanceof org.lgna.cheshire.events.PopupMenuResizedEvent ) {
-			org.lgna.cheshire.events.PopupMenuResizedEvent menuResizedEvent = (org.lgna.cheshire.events.PopupMenuResizedEvent)event;
-			screenElement = menuResizedEvent.getPopupMenu();
-		} else if( event instanceof org.lgna.cheshire.events.DialogOpenedEvent ) {
-			org.lgna.cheshire.events.DialogOpenedEvent dialogOpenedEvent = (org.lgna.cheshire.events.DialogOpenedEvent)event;
-			screenElement = dialogOpenedEvent.getDialog();
-		} else {
-			screenElement = null;
-		}
-		if( screenElement != null ) {
-			this.moveOutOfTheWayIfNecessary( screenElement );
-		}
+public class PlainDialogOperationNote extends AbstractDialogOperationNote< org.lgna.croquet.steps.PlainDialogOperationStep > {
+	public PlainDialogOperationNote( org.lgna.croquet.steps.PlainDialogOperationStep step ) {
+		super( step );
 	}
 }

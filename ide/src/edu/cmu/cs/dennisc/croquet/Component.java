@@ -411,12 +411,13 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		return this.getAwtComponent().getLocationOnScreen();
 	}
 
-	public java.awt.Rectangle getLocalBounds() {
-		return javax.swing.SwingUtilities.getLocalBounds( this.getAwtComponent() );
+	public java.awt.Rectangle getVisibleRectangle() {
+		return this.getBounds();
 	}
-	public java.awt.Rectangle getBounds() {
-		return this.getAwtComponent().getBounds();
+	public final java.awt.Rectangle getVisibleRectangle( ScreenElement asSeenBy ) {
+		return this.convertRectangle( this.getVisibleRectangle(), asSeenBy );
 	}
+
 	public java.awt.Rectangle getBounds( ScreenElement asSeenBy ) {
 		Container< ? > parent = this.getParent();
 		if( parent != null ) {
@@ -425,14 +426,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 			return null;
 		}
 	}
-
-	public java.awt.Rectangle getVisibleRectangle() {
-		return this.getBounds();
-	}
-	public final java.awt.Rectangle getVisibleRectangle( ScreenElement asSeenBy ) {
-		return this.convertRectangle( this.getVisibleRectangle(), asSeenBy );
-	}
-
+	
 	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		java.awt.Rectangle rv = this.getBounds( asSeenBy );
 		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( rv, insets );

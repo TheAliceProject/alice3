@@ -66,4 +66,11 @@ public abstract class ScreenElement implements TrackableShape, RuntimeResolver< 
 	public final void removeHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
 		this.getAwtComponent().removeHierarchyBoundsListener( listener );
 	}
+
+	public java.awt.Rectangle getLocalBounds() {
+		return javax.swing.SwingUtilities.getLocalBounds( this.getAwtComponent() );
+	}
+	public java.awt.Rectangle getBounds() {
+		return this.getAwtComponent().getBounds();
+	}
 }

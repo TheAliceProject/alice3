@@ -219,18 +219,22 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 			public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
 				this.reload();
 			}
-			public void comittingEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+			public void editComitting( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 			}
-			public void committedEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-				this.reload();
+			public void editComitted( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+				tree.repaint();
 			}
-			public void pendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+			public void dropPending( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 			}
-			public void pendedDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+			public void dropPended( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 			}
-			public void resizedPopupMenu( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+			public void dialogOpened( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
 			}
-			public void selectedMenuItems( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
+			public void popupMenuResized( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+			}
+			public void showedDialog( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+			}
+			public void menuItemsSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
 			}
 		} );
 		return scrollPane;

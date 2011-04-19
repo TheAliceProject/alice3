@@ -138,12 +138,12 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		this.window.setSize( width, height );
 	}
 	
-	public java.awt.Rectangle getBounds() {
-		return this.window.getBounds();
-	}
-	public java.awt.Rectangle getLocalBounds() {
-		return new java.awt.Rectangle( 0, 0, this.getWidth(), this.getHeight() );
-	}
+//	public java.awt.Rectangle getBounds() {
+//		return this.window.getBounds();
+//	}
+//	public java.awt.Rectangle getLocalBounds() {
+//		return new java.awt.Rectangle( 0, 0, this.getWidth(), this.getHeight() );
+//	}
 	public java.awt.Rectangle getBounds( ScreenElement asSeenBy ) {
 		java.awt.Point pt = this.getLocation( asSeenBy );
 		if( pt != null ) {
