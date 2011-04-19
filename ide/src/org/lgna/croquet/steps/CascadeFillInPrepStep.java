@@ -46,7 +46,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInPrepStep<F,B> extends PrepStep< edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > > {
+public class CascadeFillInPrepStep<F,B> extends PrepStep< edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > > implements CascadeFillInStep< F,B > {
 	public static < F, B > CascadeFillInPrepStep< F, B > createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > model ) {
 		return new CascadeFillInPrepStep< F, B >( parent, model );
 	}
@@ -55,5 +55,8 @@ public class CascadeFillInPrepStep<F,B> extends PrepStep< edu.cmu.cs.dennisc.cro
 	}
 	public CascadeFillInPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+	}
+	public edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > getCascadeFillIn() {
+		return this.getModel();
 	}
 }

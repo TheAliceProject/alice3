@@ -46,7 +46,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInCompletionStep<F,B> extends CompletionStep< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > > {
+public class CascadeFillInCompletionStep<F,B> extends CompletionStep< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > > implements CascadeFillInStep< F,B > {
 	public static < F, B > CascadeFillInCompletionStep< F, B > createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > model, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > fillIn ) {
 		return new CascadeFillInCompletionStep< F, B >( parent, model, fillIn );
 	}
@@ -58,6 +58,9 @@ public class CascadeFillInCompletionStep<F,B> extends CompletionStep< edu.cmu.cs
 	public CascadeFillInCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.fillInResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	}
+	public edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > getCascadeFillIn() {
+		return this.fillInResolver.getResolved();
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {

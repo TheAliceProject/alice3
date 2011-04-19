@@ -41,27 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DragNote extends PrepNote< org.lgna.croquet.steps.DragStep > {
-	public DragNote( org.lgna.croquet.steps.DragStep step ) {
-		super( step );
-		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
-
-		org.lgna.croquet.steps.Transaction transaction = step.getParent();
-		org.lgna.croquet.steps.DropStep dropStep = null;
-		for( org.lgna.croquet.steps.Step< ? > siblingStep : transaction.getChildSteps() ) {
-			if( siblingStep instanceof org.lgna.croquet.steps.DropStep ) {
-				dropStep = (org.lgna.croquet.steps.DropStep)siblingStep;
-				break;
-			}
-		}
-		//assert dropStep != null : step;
-		if( dropStep != null ) {
-			this.addFeature( DropNoteUtilities.createPreviewHole( dropStep ) );
-		}
-	}
+public interface CascadeFillInStep< F,B > {
+	public edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > getCascadeFillIn();
 }

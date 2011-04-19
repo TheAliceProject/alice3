@@ -49,15 +49,10 @@ package org.lgna.cheshire.stencil.stepnotes;
 public class DropPrepNote extends PrepNote< org.lgna.croquet.steps.DropPrepStep > {
 	public DropPrepNote( org.lgna.croquet.steps.DropPrepStep step ) {
 		super( step );
-		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+		this.addFeature( DropNoteUtilities.createHole( step ) );
 	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
-		if( event instanceof org.lgna.cheshire.events.DropPendedEvent ) {
-			org.lgna.cheshire.events.DropPendedEvent dropPendedEvent = (org.lgna.cheshire.events.DropPendedEvent)event;
-			return dropPendedEvent.getDropSite().equals( getStep().getDropSite() );
-		} else {
-			return false;
-		}
+		return DropNoteUtilities.isWhatWeveBeenWaitingFor( this.getStep(), event );
 	}
 }

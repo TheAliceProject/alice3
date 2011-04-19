@@ -46,22 +46,22 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class DragNote extends PrepNote< org.lgna.croquet.steps.DragStep > {
-	public DragNote( org.lgna.croquet.steps.DragStep step ) {
-		super( step );
-		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
-
-		org.lgna.croquet.steps.Transaction transaction = step.getParent();
-		org.lgna.croquet.steps.DropStep dropStep = null;
-		for( org.lgna.croquet.steps.Step< ? > siblingStep : transaction.getChildSteps() ) {
-			if( siblingStep instanceof org.lgna.croquet.steps.DropStep ) {
-				dropStep = (org.lgna.croquet.steps.DropStep)siblingStep;
-				break;
+public class CascadeFillInNoteUtilities {
+	private CascadeFillInNoteUtilities() {
+		throw new AssertionError();
+	}
+	public static boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.steps.CascadeFillInStep<?,?> step, org.lgna.cheshire.events.Event event ) {
+		if( event instanceof org.lgna.cheshire.events.MenuSelectionChangedEvent ) {
+			org.lgna.cheshire.events.MenuSelectionChangedEvent menuSelectionChangedEvent = (org.lgna.cheshire.events.MenuSelectionChangedEvent)event;
+			java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = menuSelectionChangedEvent.getModels();
+			final int N = models.size();
+			if( N > 0 ) {
+				return models.get( N-1 ) == step.getCascadeFillIn();
+			} else {
+				return false;
 			}
-		}
-		//assert dropStep != null : step;
-		if( dropStep != null ) {
-			this.addFeature( DropNoteUtilities.createPreviewHole( dropStep ) );
+		} else {
+			return false;
 		}
 	}
 }

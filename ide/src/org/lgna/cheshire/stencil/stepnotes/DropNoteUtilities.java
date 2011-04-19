@@ -46,22 +46,22 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class DragNote extends PrepNote< org.lgna.croquet.steps.DragStep > {
-	public DragNote( org.lgna.croquet.steps.DragStep step ) {
-		super( step );
-		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
-
-		org.lgna.croquet.steps.Transaction transaction = step.getParent();
-		org.lgna.croquet.steps.DropStep dropStep = null;
-		for( org.lgna.croquet.steps.Step< ? > siblingStep : transaction.getChildSteps() ) {
-			if( siblingStep instanceof org.lgna.croquet.steps.DropStep ) {
-				dropStep = (org.lgna.croquet.steps.DropStep)siblingStep;
-				break;
-			}
+public class DropNoteUtilities {
+	private DropNoteUtilities() {
+		throw new AssertionError();
+	}
+	public static boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.steps.DropStep dropStep, org.lgna.cheshire.events.Event event ) {
+		if( event instanceof org.lgna.cheshire.events.DropPendedEvent ) {
+			org.lgna.cheshire.events.DropPendedEvent dropPendedEvent = (org.lgna.cheshire.events.DropPendedEvent)event;
+			return dropPendedEvent.getDropSite().equals( dropStep.getDropSite() );
+		} else {
+			return false;
 		}
-		//assert dropStep != null : step;
-		if( dropStep != null ) {
-			this.addFeature( DropNoteUtilities.createPreviewHole( dropStep ) );
-		}
+	}
+	public static org.lgna.stencil.Feature createHole( org.lgna.croquet.steps.DropStep dropStep ) {
+		return new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( dropStep ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST );
+	}
+	public static org.lgna.stencil.Feature createPreviewHole( org.lgna.croquet.steps.DropStep dropStep ) {
+		return new org.lgna.cheshire.stencil.features.DropPreviewHole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( dropStep ), null );
 	}
 }
