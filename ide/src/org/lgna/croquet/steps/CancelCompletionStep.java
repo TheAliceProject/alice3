@@ -56,7 +56,7 @@ public class CancelCompletionStep extends CompletionStep {
 		super( binaryDecoder );
 	}
 	@Override
-	public boolean isActive() {
+	public boolean isPending() {
 		return false;
 	}
 }

@@ -153,6 +153,32 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 	}
 }
 
+class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer< Object > {
+	@Override
+	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		if( value instanceof org.lgna.croquet.steps.Transaction ) {
+			org.lgna.croquet.steps.Transaction transaction = (org.lgna.croquet.steps.Transaction)value;
+			int i = transaction.getParent().getIndexOfTransaction( transaction );
+			rv.setText( "transaction["+i+"]" );
+			rv.setIcon( null );
+		} else if( value instanceof org.lgna.croquet.steps.CompletionStep< ? > ) {
+			org.lgna.croquet.steps.CompletionStep< ? > completionStep = (org.lgna.croquet.steps.CompletionStep< ? >)value;
+			String name;
+			if( completionStep.isPending() ) {
+				name = "pending";
+			} else {
+				if( completionStep.isSuccessfullyCompleted() ) {
+					name = "completed";
+				} else {
+					name = "canceled";
+				}
+			}
+			rv.setIcon( new javax.swing.ImageIcon( TransactionHistoryCellRenderer.class.getResource( "images/" + name + ".png" ) ) );
+		}
+		return rv;
+	}	
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -190,6 +216,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 		final TransactionTreeModel treeModel = new TransactionTreeModel( this.transactionHistory );
 		final javax.swing.JTree tree = new javax.swing.JTree( treeModel );
 
+		tree.setCellRenderer( new TransactionHistoryCellRenderer() );
 		for( int i = 0; i < tree.getRowCount(); i++ ) {
 			tree.expandRow( i );
 		}

@@ -49,7 +49,7 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 	private final TransactionHistory transactionHistory;
 	private edu.cmu.cs.dennisc.croquet.Edit<M> edit;
 	private boolean isSuccessfullyCompleted;
-	private boolean isActive = true;
+	private boolean isPending = true;
 	public CompletionStep( Transaction parent, M model, TransactionHistory transactionHistory ) {
 		super( parent, model );
 		parent.setCompletionStep( this );
@@ -61,7 +61,7 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 	}
 	public CompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-		this.isActive = binaryDecoder.decodeBoolean();
+		this.isPending = binaryDecoder.decodeBoolean();
 		this.isSuccessfullyCompleted = binaryDecoder.decodeBoolean();
 		edu.cmu.cs.dennisc.croquet.Edit.Memento< M > memento = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		if( memento != null ) {
@@ -77,7 +77,7 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.isActive );
+		binaryEncoder.encode( this.isPending );
 		binaryEncoder.encode( this.isSuccessfullyCompleted );
 		edu.cmu.cs.dennisc.croquet.Edit.Memento<M> memento;
 		if( this.edit != null ) {
@@ -109,9 +109,11 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 			assert pop == this.transactionHistory;
 		}
 	}
-	//	public abstract boolean isActive();
-	public boolean isActive() {
-		return this.isActive;
+	public boolean isPending() {
+		return this.isPending;
+	}
+	public boolean isSuccessfullyCompleted() {
+		return this.isSuccessfullyCompleted;
 	}
 	public edu.cmu.cs.dennisc.croquet.Edit< ? > getEdit() {
 		return this.edit;
@@ -120,17 +122,17 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 	public void commit( edu.cmu.cs.dennisc.croquet.Edit<M> edit ) {
 		this.isSuccessfullyCompleted = true;
 		this.edit = edit;
-		this.isActive = false;
+		this.isPending = false;
 	}
 	public void finish() {
 		this.isSuccessfullyCompleted = true;
 		this.edit = null;
-		this.isActive = false;
+		this.isPending = false;
 	}
 	public void cancel() {
 		this.isSuccessfullyCompleted = false;
 		this.edit = null;
-		this.isActive = false;
+		this.isPending = false;
 	}
 
 	@Override

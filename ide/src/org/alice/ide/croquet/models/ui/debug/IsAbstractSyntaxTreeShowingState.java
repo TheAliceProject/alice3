@@ -106,7 +106,7 @@ class ASTModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTree
 
 class ASTCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer< Object > {
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+	protected javax.swing.JLabel updateListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 		StringBuilder sb = new StringBuilder();
 		if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractNode ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractNode node = (edu.cmu.cs.dennisc.alice.ast.AbstractNode)value;
