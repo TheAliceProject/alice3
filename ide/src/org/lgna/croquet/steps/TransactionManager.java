@@ -54,6 +54,7 @@ public class TransactionManager {
 		public void pendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
 		public void pendedDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
 		public void selectedMenuItems( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models );
+		public void resizedPopupMenu( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu );
 	}
 	private static final java.util.List<Observer> observers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private static final java.util.Stack< TransactionHistory > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
@@ -102,6 +103,14 @@ public class TransactionManager {
 			observer.addedStep( step );
 		}
 	}
+	
+	//todo: reduce accessibility
+	public static void fireResizedPopupMenu( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+		for( Observer observer : observers ) {
+			observer.resizedPopupMenu( popupMenu );
+		}
+	}
+	
 	private static void fireCommittingEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		for( Observer observer : observers ) {
 			observer.comittingEdit( edit );

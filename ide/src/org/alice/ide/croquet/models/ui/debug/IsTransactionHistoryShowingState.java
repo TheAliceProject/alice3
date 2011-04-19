@@ -228,6 +228,8 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 			}
 			public void pendedDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 			}
+			public void resizedPopupMenu( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+			}
 			public void selectedMenuItems( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
 			}
 		} );

@@ -257,6 +257,14 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		}
 		return -1;
 	}
+	private Note getFirstActiveNote() {
+		for( Note note : this.notes ) {
+			if( note.isActive() ) {
+				return note;
+			}
+		}
+		return null;
+	}
 	protected void setActiveNote( int activeIndex ) {
 		final int N = this.notes.size();
 		for( int i=0; i<N; i++ ) {
@@ -268,6 +276,19 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		return this.notes.get( 0 ).calculateLocation( container );
 	}
 
+	public void adjustIfNecessary( org.lgna.cheshire.events.Event event ) {
+//		Note note = this.getFirstActiveNote();
+//		if( note != null ) {
+//			note.adjustIfNecessary( event );
+//		}
+		int activeNoteIndex = this.getIndexOfFirstActiveNote();
+		if( activeNoteIndex != -1 ) {
+			final int N = this.notes.size();
+			for( int i=activeNoteIndex; i<N; i++ ) {
+				this.notes.get( i ).adjustIfNecessary( event );
+			}
+		}
+	}
 	public boolean isAutoAdvanceDesired() {
 		return this.chapter.isAutoAdvanceDesired();
 	}

@@ -549,6 +549,18 @@ class RtOperation<T> extends RtModel< CascadePopupOperation< T >, CascadePopupOp
 					RtOperation.this.handleCancel( e );
 				}
 			} );
+			popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
+				public void componentShown( java.awt.event.ComponentEvent e ) {
+				}
+				public void componentMoved( java.awt.event.ComponentEvent e ) {
+				}
+				public void componentResized( java.awt.event.ComponentEvent e ) {
+					org.lgna.croquet.steps.TransactionManager.fireResizedPopupMenu( popupMenu );
+				}
+				public void componentHidden( java.awt.event.ComponentEvent e ) {
+				}
+			} );
+			
 			//todo:
 			//ViewController< ?, ? > invoker = this.getContext().getViewController();
 			java.util.EventObject e = this.getContext().getAwtEvent();

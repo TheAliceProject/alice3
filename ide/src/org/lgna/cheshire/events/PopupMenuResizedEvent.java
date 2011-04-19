@@ -41,34 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil;
+package org.lgna.cheshire.events;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Note extends org.lgna.stencil.Note {
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
-		return Presentation.getInstance().getNextOperation();
+public class PopupMenuResizedEvent implements Event {
+	private final edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu;
+	public PopupMenuResizedEvent( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+		this.popupMenu = popupMenu;
 	}
-	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event );
-	private void moveOutOfTheWayIfNecessary( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
-		java.awt.Rectangle componentLocalBounds = component.getLocalBounds();
-		java.awt.Rectangle bounds = this.getBounds( component );
-		if( bounds.intersects( componentLocalBounds ) ) {
-			this.setLocation( component.getWidth()+100, component.getHeight()/2, component );
-		}
-	}
-	public void adjustIfNecessary( org.lgna.cheshire.events.Event event ) {
-		edu.cmu.cs.dennisc.croquet.Component< ? > component;
-		if( event instanceof org.lgna.cheshire.events.PopupMenuResizedEvent ) {
-			org.lgna.cheshire.events.PopupMenuResizedEvent menuResizedEvent = (org.lgna.cheshire.events.PopupMenuResizedEvent)event;
-			component = menuResizedEvent.getPopupMenu();
-		} else {
-			component = null;
-		}
-		if( component != null ) {
-			this.moveOutOfTheWayIfNecessary( component );
-		}
+	public edu.cmu.cs.dennisc.croquet.PopupMenu getPopupMenu() {
+		return this.popupMenu;
 	}
 }

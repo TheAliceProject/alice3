@@ -278,6 +278,8 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			org.lgna.cheshire.Book book = getBook();
 			org.lgna.cheshire.Chapter chapter = book.getSelectedChapter();
 			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
+			chapterPage.adjustIfNecessary( event );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleEvent", event );
 			if( chapterPage.isWhatWeveBeenWaitingFor( event ) ) {
 				nextOperation.setEnabled( true );
 				if( chapterPage.isAutoAdvanceDesired() ) {
