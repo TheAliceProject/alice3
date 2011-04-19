@@ -41,13 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StandardPopupOperationNote extends PopupOperationNote< org.lgna.croquet.steps.StandardPopupOperationStep > {
-	public StandardPopupOperationNote( org.lgna.croquet.steps.StandardPopupOperationStep step ) {
-		super( step );
+public class StandardPopupOperationPrepStep extends PrepStep {
+	public static StandardPopupOperationPrepStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation model ) {
+		return new StandardPopupOperationPrepStep( parent, model );
+	}
+	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.StandardPopupOperation > standardPopupOperationResolver; 
+	private StandardPopupOperationPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation standardPopupOperation ) {
+		super( parent, null );
+		this.standardPopupOperationResolver = standardPopupOperation.getCodableResolver();
+	}
+	public StandardPopupOperationPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+		this.standardPopupOperationResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	}
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.standardPopupOperationResolver );
+	}
+	public edu.cmu.cs.dennisc.croquet.StandardPopupOperation getStandardPopupOperation() {
+		return this.standardPopupOperationResolver.getResolved();
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Model getModelForTutorialNoteText() {
+		return this.getStandardPopupOperation();
 	}
 }

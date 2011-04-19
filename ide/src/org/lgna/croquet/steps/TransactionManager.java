@@ -132,10 +132,8 @@ public class TransactionManager {
 		Transaction transaction = getActiveTransaction();
 		return InputDialogOperationStep.createAndAddToTransaction( transaction, model );
 	}
-	public static StandardPopupOperationStep addStandardPopupOperationStep( edu.cmu.cs.dennisc.croquet.StandardPopupOperation model ) {
-		StandardPopupOperationStep rv = StandardPopupOperationStep.createAndAddToTransaction( getActiveTransaction(), model ); 
-		stepsAwaitingFinish.add( rv );
-		return rv;
+	public static StandardPopupOperationPrepStep addStandardPopupOperationPrepStep( edu.cmu.cs.dennisc.croquet.StandardPopupOperation standardPopupOperation ) {
+		return StandardPopupOperationPrepStep.createAndAddToTransaction( getActiveTransaction(), standardPopupOperation );
 	}
 	public static <T> CascadePopupOperationStep<T> addCascadePopupOperationStep( edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model ) {
 		return CascadePopupOperationStep.createAndAddToTransaction( getActiveTransaction(), model );

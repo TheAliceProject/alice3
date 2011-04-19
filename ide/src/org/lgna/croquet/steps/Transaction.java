@@ -301,7 +301,7 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 
 	private void addStep( Step<?> step ) {
 		assert step != null;
-		if( step instanceof PopupOperationStep< ? > ) {
+		if( step instanceof CascadePopupOperationStep< ? > ) {
 			step = null;
 		} else {
 			step = this.pendingSteps.reify( step, true );

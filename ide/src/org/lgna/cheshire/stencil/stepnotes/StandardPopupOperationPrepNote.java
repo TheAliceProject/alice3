@@ -41,19 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.steps;
+package org.lgna.cheshire.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StandardPopupOperationStep extends PopupOperationStep< edu.cmu.cs.dennisc.croquet.StandardPopupOperation >{
-	public static StandardPopupOperationStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation model ) {
-		return new StandardPopupOperationStep( parent, model );
-	}
-	private StandardPopupOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation model ) {
-		super( parent, model, new TransactionHistory() );
-	}
-	public StandardPopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+public class StandardPopupOperationPrepNote extends PrepNote< org.lgna.croquet.steps.StandardPopupOperationPrepStep > {
+	public StandardPopupOperationPrepNote( final org.lgna.croquet.steps.StandardPopupOperationPrepStep step ) {
+		super( step );
+		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ) {
+			@Override
+			protected edu.cmu.cs.dennisc.croquet.Model getModel() {
+				return step.getStandardPopupOperation();
+			}
+		}, org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
 	}
 }

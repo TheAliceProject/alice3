@@ -51,8 +51,11 @@ public class ModelFirstComponentResolver implements edu.cmu.cs.dennisc.croquet.R
 	public ModelFirstComponentResolver( org.lgna.croquet.steps.Step< ? > step ) {
 		this.step = step;
 	}
+	protected edu.cmu.cs.dennisc.croquet.Model getModel() {
+		return this.step.getModel();
+	}
 	public edu.cmu.cs.dennisc.croquet.Component<?> getResolved() {
-		edu.cmu.cs.dennisc.croquet.Model model = this.step.getModel();
+		edu.cmu.cs.dennisc.croquet.Model model = this.getModel();
 		if( model != null ) {
 			return model.getFirstComponent();
 		} else {
