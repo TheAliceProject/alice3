@@ -65,6 +65,7 @@ public abstract class Note<S extends org.lgna.croquet.steps.Step<?>> extends org
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
 		if( event instanceof org.lgna.cheshire.events.StepAddedEvent ) {
 			org.lgna.cheshire.events.StepAddedEvent stepAddedEvent = (org.lgna.cheshire.events.StepAddedEvent)event;
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.step.getModel() == stepAddedEvent.getStep().getModel(), this.step.getModel(), stepAddedEvent.getStep().getModel() );
 			return this.step.getModel() == stepAddedEvent.getStep().getModel();
 		} else {
 			return false;

@@ -56,7 +56,6 @@ public abstract class ExpressionFillIn< F extends edu.cmu.cs.dennisc.alice.ast.E
 		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getSingleton().getPreviewFactory();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.getTransientValue( context );
 		rv = factory.createExpressionPane( expression ).getAwtComponent();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "createMenuItemIconProxy", this );
 		return rv;
 	}
 }

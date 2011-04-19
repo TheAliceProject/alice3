@@ -60,8 +60,11 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
+	protected edu.cmu.cs.dennisc.croquet.Model getModelForTutorialNoteText() {
+		return this.getModel();
+	}
 	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		return this.getModel().getTutorialNoteText( null, edit, userInformation );
+		return this.getModelForTutorialNoteText().getTutorialNoteText( null, edit, userInformation );
 	}
 	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		throw new AssertionError();

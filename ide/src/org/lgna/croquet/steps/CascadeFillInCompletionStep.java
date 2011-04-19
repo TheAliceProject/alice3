@@ -59,13 +59,17 @@ public class CascadeFillInCompletionStep<F,B> extends CompletionStep< edu.cmu.cs
 		super( binaryDecoder );
 		this.fillInResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
-	public edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > getCascadeFillIn() {
-		return this.fillInResolver.getResolved();
-	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.fillInResolver );
+	}
+	public edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > getCascadeFillIn() {
+		return this.fillInResolver.getResolved();
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Model getModelForTutorialNoteText() {
+		return this.getCascadeFillIn();
 	}
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
