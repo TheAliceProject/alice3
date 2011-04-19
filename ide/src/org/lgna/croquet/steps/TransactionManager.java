@@ -49,13 +49,15 @@ public class TransactionManager {
 	public static interface Observer {
 		public void addingStep( Step<?> step );
 		public void addedStep( Step<?> step );
+		public void comittingEdit( edu.cmu.cs.dennisc.croquet.Edit<?> edit );
+		public void committedEdit( edu.cmu.cs.dennisc.croquet.Edit<?> edit );
 		public void pendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
 		public void pendedDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
 		public void selectedMenuItems( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models );
 	}
 	private static final java.util.List<Observer> observers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private static final java.util.Stack< TransactionHistory > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	private static final java.util.Set< CompletionStep<?> > stepsAwaitingFinish = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+//	private static final java.util.Set< CompletionStep<?> > stepsAwaitingFinish = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 	static {
 		stack.push( new TransactionHistory() );
 	}
@@ -98,6 +100,16 @@ public class TransactionManager {
 	/*package-private*/ static void fireAddedStep( Step<?> step ) {
 		for( Observer observer : observers ) {
 			observer.addedStep( step );
+		}
+	}
+	private static void fireCommittingEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		for( Observer observer : observers ) {
+			observer.comittingEdit( edit );
+		}
+	}
+	private static void fireCommittedEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		for( Observer observer : observers ) {
+			observer.comittingEdit( edit );
 		}
 	}
 	private static void firePendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
@@ -165,16 +177,16 @@ public class TransactionManager {
 		}
 	}
 
-	private static void finishPendingTransactionIfNecessary() {
-		TransactionHistory activeTransactionHistory = getActiveTransactionHistory();
-		CompletionStep< ? > completionStep = activeTransactionHistory.getParent();
-		if( completionStep != null && completionStep.isActive() ) {
-			if( stepsAwaitingFinish.contains( completionStep ) ) {
-				finish( completionStep.getModel() );
-				stepsAwaitingFinish.remove( completionStep );
-			}
-		}
-	}
+//	private static void finishPendingTransactionIfNecessary() {
+//		TransactionHistory activeTransactionHistory = getActiveTransactionHistory();
+//		CompletionStep< ? > completionStep = activeTransactionHistory.getParent();
+//		if( completionStep != null && completionStep.isActive() ) {
+//			if( stepsAwaitingFinish.contains( completionStep ) ) {
+//				finish( completionStep.getModel() );
+//				stepsAwaitingFinish.remove( completionStep );
+//			}
+//		}
+//	}
 
 	public static void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 		firePendingDrop( completionModel, dropReceptor, dropSite );
@@ -189,17 +201,19 @@ public class TransactionManager {
 
 	public static void commit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		popCompletionStepTransactionHistoryIfNecessary( edit.getModel() );
+		fireCommittingEdit( edit );
 		getLastTransaction().commit( edit );
-		finishPendingTransactionIfNecessary();
+		fireCommittedEdit( edit );
+//		finishPendingTransactionIfNecessary();
 	}
 	public static void finish( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
 		popCompletionStepTransactionHistoryIfNecessary( model );
 		getLastTransaction().finish();
-		finishPendingTransactionIfNecessary();
+//		finishPendingTransactionIfNecessary();
 	}
 	public static void cancel( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
 		popCompletionStepTransactionHistoryIfNecessary( model );
 		getLastTransaction().cancel();
-		finishPendingTransactionIfNecessary();
+//		finishPendingTransactionIfNecessary();
 	}
 }

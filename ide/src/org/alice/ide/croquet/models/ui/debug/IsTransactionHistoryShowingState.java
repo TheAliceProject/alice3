@@ -177,9 +177,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tree );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
 		org.lgna.croquet.steps.TransactionManager.addObserver( new org.lgna.croquet.steps.TransactionManager.Observer() {
-			public void addingStep( org.lgna.croquet.steps.Step< ? > step ) {
-			}
-			public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
+			private void reload() {
 				javax.swing.SwingUtilities.invokeLater( new Runnable() {
 					public void run() {
 						treeModel.reload();
@@ -195,6 +193,16 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 						scrollPane.getHorizontalScrollBar().setValue( 0 );
 					}
 				} );
+			}
+			public void addingStep( org.lgna.croquet.steps.Step< ? > step ) {
+			}
+			public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
+				this.reload();
+			}
+			public void comittingEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+			}
+			public void committedEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+				this.reload();
 			}
 			public void pendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 			}

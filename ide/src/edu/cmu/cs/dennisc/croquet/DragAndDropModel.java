@@ -55,12 +55,14 @@ public abstract class DragAndDropModel extends PrepModel {
 	}
 	
 	@Override
-	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		return "Drag and Drop...";
+	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( "Drag and Drop..." );
+		return rv;
 	}
 	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		return "Drag...";
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( "Drag..." );
+		return rv;
 	}
 	@Deprecated
 	public String getTutorialDragNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {

@@ -63,19 +63,18 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 	protected abstract StringBuilder appendTutorialFinishNoteText( StringBuilder rv, org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
 
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
+	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
 		if( successfulCompletionEvent != null ) {
 			org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
 			assert declareMethodEdit != null;
 			assert declareMethodEdit.getMethod() != null;
-			sb.append( "Declare " );
-			sb.append( this.getMethodDescription( userInformation ) );
-			sb.append( " named " );
-			sb.append( declareMethodEdit.getMethod().getName() );
+			rv.append( "Declare " );
+			rv.append( this.getMethodDescription( userInformation ) );
+			rv.append( " named " );
+			rv.append( declareMethodEdit.getMethod().getName() );
 		}
-		return sb.toString();
+		return rv;
 	}
 	
 	@Override

@@ -58,6 +58,11 @@ public abstract class Presentation {
 		public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.StepAddedEvent( step ) );
 		}
+		public void comittingEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		}
+		public void committedEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+			Presentation.this.handleEvent( new org.lgna.cheshire.events.EditCommittedEvent( edit ) );
+		}
 		public void pendingDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 		}
 		public void pendedDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {

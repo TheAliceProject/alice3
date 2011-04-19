@@ -120,12 +120,14 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 	}
 	
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		return "Preview your program.";
+	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		rv.append( "Preview your program." );
+		return rv;
 	}
 	@Override
-	public String getTutorialCloseNoteText( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		return "Press the <strong>Close</strong> button when you have finished previewing the program.";
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		rv.append( "Press the <strong>Close</strong> button when you have finished previewing the program." );
+		return rv;
 	}
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = null;

@@ -117,12 +117,11 @@ public abstract class CascadeItem< F, C extends CascadeItemContext<F,?,?> > exte
 	}
 	
 	@Override
-	public final String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Select <strong>" );
-		sb.append( this.getTutorialItemText() );
-		sb.append( "</strong>." );
-		return sb.toString();
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( "Select <strong>" );
+		rv.append( this.getTutorialItemText() );
+		rv.append( "</strong>." );
+		return rv;
 	}
 //	public abstract javax.swing.Icon getMenuItemIcon( C context );
 //	public abstract String getMenuItemText( C context );

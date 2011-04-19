@@ -63,9 +63,15 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		return "Press " + this.getTutorialNoteText( operationContext, userInformation );
 	}
 
+	protected String getTutorialNoteName() {
+		return this.getName();
+	}
 	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		return "<strong>" + this.getName() + "</strong>";
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( "Click <strong>" );
+		rv.append( this.getTutorialNoteName() );
+		rv.append( "</strong>" );
+		return rv;
 	}
 	
 	protected Edit< ? > createTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {

@@ -529,20 +529,19 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 
 	@Override
-	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		return getTutorialNoteText( modelContext, edit, userInformation );
+	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		return updateTutorialStepText( rv, modelContext, edit, userInformation );
 	}
 	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		if( edit instanceof ListSelectionStateEdit ) {
 			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
-			sb.append( "Select " );
-			sb.append( "<strong>" );
-			this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-			sb.append( "</strong>." );
+			rv.append( "Select " );
+			rv.append( "<strong>" );
+			this.codec.appendRepresentation( rv, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+			rv.append( "</strong>." );
 		}
-		return sb.toString();
+		return rv;
 	}
 
 	@Deprecated

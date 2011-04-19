@@ -40,51 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.custom;
+
+package org.lgna.cheshire.events;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<E,CustomInputPane< E >> {
-	private CustomInputPane< E > customInputPane;
-	
-	public CustomInputDialogOperation( java.util.UUID id, org.alice.ide.choosers.ValueChooser< E > chooser ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, id );
-		this.customInputPane = new CustomInputPane< E >( chooser );
+public class EditCommittedEvent implements Event {
+	private final edu.cmu.cs.dennisc.croquet.Edit< ? > edit;
+	public EditCommittedEvent( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		this.edit = edit;
 	}
-	
-	public void EPIC_HACK_setChooserTypeDescription( String typeDescription ) {
-		this.customInputPane.getValueChooser().setTypeDescription( typeDescription );
-	}
-	public E getActualInputValue() {
-		return this.customInputPane.getInputValue();
-	}
-	@Override
-	protected CustomInputPane< E > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {
-		return this.customInputPane;
-	}
-	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context, boolean isOk) {
-		if( isOk ) {
-			context.finish();
-		} else {
-			context.cancel();
-		}
-	}
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-//		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-//		if( successfulCompletionEvent != null ) {
-		if( edit != null ) {
-			//org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
-			rv.append( "1) Enter " );
-			rv.append( "<strong>" );
-			rv.append( "fill_in_expression_value_here" );
-			rv.append( "</strong>" );
-			rv.append( "<br>" );
-			rv.append( "2) Press <strong>OK</strong>." );
-		}
-		return rv;
-	}
-	
 }

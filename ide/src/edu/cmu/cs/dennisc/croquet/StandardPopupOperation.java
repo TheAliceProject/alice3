@@ -68,26 +68,26 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 		return ContextManager.createAndPushStandardPopupOperationContext( this, e, viewController );
 	}
 	
-	@Override
-	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		SuccessfulCompletionEvent successfulCompletionEvent = modelContext != null ? modelContext.getSuccessfulCompletionEvent() : null;
-		if( successfulCompletionEvent != null ) {
-			ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
-			return descendantContext.getModel().getTutorialStepTitle( descendantContext, userInformation );
-		} else {
-			return super.getTutorialStepTitle( modelContext, edit, userInformation );
-		}
-	}
-	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		SuccessfulCompletionEvent successfulCompletionEvent = modelContext != null ? modelContext.getSuccessfulCompletionEvent() : null;
-		if( successfulCompletionEvent != null ) {
-			ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
-			return descendantContext.getModel().getTutorialNoteText( descendantContext, userInformation );
-		} else {
-			return super.getTutorialNoteText( modelContext, edit, userInformation );
-		}
-	}
+//	@Override
+//	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+//		SuccessfulCompletionEvent successfulCompletionEvent = modelContext != null ? modelContext.getSuccessfulCompletionEvent() : null;
+//		if( successfulCompletionEvent != null ) {
+//			ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
+//			return descendantContext.getModel().getTutorialStepTitle( descendantContext, userInformation );
+//		} else {
+//			return super.getTutorialStepTitle( modelContext, edit, userInformation );
+//		}
+//	}
+//	@Override
+//	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+//		SuccessfulCompletionEvent successfulCompletionEvent = modelContext != null ? modelContext.getSuccessfulCompletionEvent() : null;
+//		if( successfulCompletionEvent != null ) {
+//			ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
+//			return descendantContext.getModel().getTutorialNoteText( descendantContext, userInformation );
+//		} else {
+//			return super.getTutorialNoteText( modelContext, edit, userInformation );
+//		}
+//	}
 	
 	public static class PopupMenuOperationResolver implements CodableResolver< StandardPopupOperation > {
 		private StandardPopupOperation popupMenuOperation;

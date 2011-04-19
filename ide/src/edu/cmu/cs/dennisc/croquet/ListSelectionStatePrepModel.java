@@ -97,17 +97,16 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 		return new ComboBox< E >( this.getListSelectionState() );
 	}
 	@Override
-	public String getTutorialNoteText(edu.cmu.cs.dennisc.croquet.ModelContext<?> modelContext, edu.cmu.cs.dennisc.croquet.Edit<?> edit, UserInformation userInformation) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext<?> modelContext, edu.cmu.cs.dennisc.croquet.Edit<?> edit, UserInformation userInformation) {
 		ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
-		StringBuilder sb = new StringBuilder();
-		sb.append( "First press on " );
-		sb.append( "<strong>" );
-		this.getListSelectionState().getCodec().appendRepresentation( sb, listSelectionStateEdit.getPreviousValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>" );
-		sb.append( " in order to change it to " );
-		sb.append( "<strong>" );
-		this.getListSelectionState().getCodec().appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>." );
-		return sb.toString();
+		rv.append( "First press on " );
+		rv.append( "<strong>" );
+		this.getListSelectionState().getCodec().appendRepresentation( rv, listSelectionStateEdit.getPreviousValue(), java.util.Locale.getDefault() );
+		rv.append( "</strong>" );
+		rv.append( " in order to change it to " );
+		rv.append( "<strong>" );
+		this.getListSelectionState().getCodec().appendRepresentation( rv, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+		rv.append( "</strong>." );
+		return rv;
 	}
 }

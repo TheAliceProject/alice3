@@ -124,36 +124,36 @@ public class BooleanState extends State<Boolean> {
 	}
 	
 	@Override
-	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		return getTutorialNoteText( modelContext, userInformation );
+	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( getTutorialNoteText( modelContext, userInformation ) );
+		return rv;
 	}
 
 	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		if( edit instanceof BooleanStateEdit ) {
 			BooleanStateEdit booleanStateEdit = (BooleanStateEdit)edit;
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
 				if( booleanStateEdit.getNextValue() ) {
-					sb.append( "Select " );
+					rv.append( "Select " );
 				} else {
-					sb.append( "Unselect " );
+					rv.append( "Unselect " );
 				}
-				sb.append( "<strong>" );
-				sb.append( this.getTrueText() );
-				sb.append( "</strong>" );
+				rv.append( "<strong>" );
+				rv.append( this.getTrueText() );
+				rv.append( "</strong>" );
 			} else {
-				sb.append( "Press " );
-				sb.append( "<strong>" );
+				rv.append( "Press " );
+				rv.append( "<strong>" );
 				if( booleanStateEdit.getNextValue() ) {
-					sb.append( this.falseText );
+					rv.append( this.falseText );
 				} else {
-					sb.append( this.trueText );
+					rv.append( this.trueText );
 				}
-				sb.append( "</strong>" );
+				rv.append( "</strong>" );
 			}
 		}
-		return sb.toString();
+		return rv;
 	}
 	
 	@Override

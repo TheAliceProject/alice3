@@ -366,21 +366,34 @@ public abstract class Model implements RuntimeResolver< Model > {
 		}
 		return rv;
 	}
-	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "title: " );
-		sb.append( this );
+	
+	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( "title: " );
+		rv.append( this );
 		if( modelContext != null ) {
-			appendSuccessfulCompletionEventText( sb, modelContext.getSuccessfulCompletionEvent() );
+			appendSuccessfulCompletionEventText( rv, modelContext.getSuccessfulCompletionEvent() );
 		}
+		return rv;
+	}
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( "title: " );
+		rv.append( this );
+		if( modelContext != null ) {
+			appendSuccessfulCompletionEventText( rv, modelContext.getSuccessfulCompletionEvent() );
+		}
+		return rv;
+	}
+
+	public final String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		this.initializeIfNecessary();
+		StringBuilder sb = new StringBuilder();
+		updateTutorialStepTitle( sb, modelContext, edit, userInformation );
 		return sb.toString();
 	}
-	public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+	public final String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		this.initializeIfNecessary();
 		StringBuilder sb = new StringBuilder();
-		sb.append( this );
-		if( modelContext != null ) {
-			appendSuccessfulCompletionEventText( sb, modelContext.getSuccessfulCompletionEvent() );
-		}
+		updateTutorialStepText( sb, modelContext, edit, userInformation );
 		return sb.toString();
 	}
 	@Deprecated
