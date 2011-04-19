@@ -122,17 +122,14 @@ public class TransactionManager {
 	}
 	public static ActionOperationStep addActionOperationStep( edu.cmu.cs.dennisc.croquet.ActionOperation model ) {
 		Transaction transaction = getActiveTransaction();
-		addMenuPrepStepsIfNecessary( transaction );
 		return ActionOperationStep.createAndAddToTransaction( transaction, model ); 
 	}
 	public static DialogOperationStep addDialogOperationStep( edu.cmu.cs.dennisc.croquet.DialogOperation model ) {
 		Transaction transaction = getActiveTransaction();
-		addMenuPrepStepsIfNecessary( transaction );
 		return DialogOperationStep.createAndAddToTransaction( transaction, model );
 	}
 	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InputDialogOperationStep<J> addInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperation< J > model ) {
 		Transaction transaction = getActiveTransaction();
-		addMenuPrepStepsIfNecessary( transaction );
 		return InputDialogOperationStep.createAndAddToTransaction( transaction, model );
 	}
 	public static StandardPopupOperationStep addStandardPopupOperationStep( edu.cmu.cs.dennisc.croquet.StandardPopupOperation model ) {
@@ -159,11 +156,6 @@ public class TransactionManager {
 		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction() ); 
 	}
 
-	public static void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
-		firePendingDrop( completionModel, dropReceptor, dropSite );
-		getLastTransaction().pendDrop( completionModel, dropReceptor, dropSite );
-		firePendedDrop( completionModel, dropReceptor, dropSite );
-	}
 
 	private static void popCompletionStepTransactionHistoryIfNecessary( edu.cmu.cs.dennisc.croquet.Model model ) {
 		TransactionHistory transactionHistory = getActiveTransactionHistory();
@@ -185,52 +177,29 @@ public class TransactionManager {
 			}
 		}
 	}
-	private static java.util.List< edu.cmu.cs.dennisc.croquet.Model > lastMenuSelection; 
-	public static void handleMenuSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
-		lastMenuSelection = models;
-		fireSelectedMenuItems( models );		
-	}
 
-	private static void addMenuPrepStepsIfNecessary( Transaction transaction ) {
-		if( lastMenuSelection != null && lastMenuSelection.size() > 0 ) {
-			final int N = lastMenuSelection.size();
-			for( int i=0; i<N; i++ ) {
-				edu.cmu.cs.dennisc.croquet.Model model = lastMenuSelection.get( i );
-				if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
-					MenuModelStep.createAndAddToTransaction( transaction, (edu.cmu.cs.dennisc.croquet.MenuModel)model );
-				} else if( model instanceof edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? > ) {
-					edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? > fillIn = (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model;
-					if( i < N-1 ) {
-						CascadeFillInPrepStep.createAndAddToTransaction( transaction, (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model );
-					} else {
-						CascadeFillInCompletionStep.createAndAddToTransaction( transaction, fillIn );
-					}
-				} else if( model instanceof edu.cmu.cs.dennisc.croquet.MenuBarModel ) {
-					//pass
-				} else if( model instanceof edu.cmu.cs.dennisc.croquet.CompletionModel ) {
-					//pass
-				} else {
-					assert false : model;
-				}
-			}
-			lastMenuSelection = null;
-		}
+	public static void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		firePendingDrop( completionModel, dropReceptor, dropSite );
+		getLastTransaction().pendDrop( completionModel, dropReceptor, dropSite );
+		firePendedDrop( completionModel, dropReceptor, dropSite );
+	}
+	
+	public static void handleMenuSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
+		getActiveTransaction().pendMenuSelection( models );
+		fireSelectedMenuItems( models );
 	}
 
 	public static void commit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		addMenuPrepStepsIfNecessary( getLastTransaction() );
 		popCompletionStepTransactionHistoryIfNecessary( edit.getModel() );
 		getLastTransaction().commit( edit );
 		finishPendingTransactionIfNecessary();
 	}
 	public static void finish( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
-		addMenuPrepStepsIfNecessary( getLastTransaction() );
 		popCompletionStepTransactionHistoryIfNecessary( model );
 		getLastTransaction().finish();
 		finishPendingTransactionIfNecessary();
 	}
 	public static void cancel( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
-		addMenuPrepStepsIfNecessary( getLastTransaction() );
 		popCompletionStepTransactionHistoryIfNecessary( model );
 		getLastTransaction().cancel();
 		finishPendingTransactionIfNecessary();
