@@ -66,7 +66,13 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 			return transaction.getChildStepCount();
 		} else if( parent instanceof org.lgna.croquet.steps.CompletionStep< ? > ) {
 			org.lgna.croquet.steps.CompletionStep< ? > completionStep = (org.lgna.croquet.steps.CompletionStep< ? >)parent;
-			return completionStep.getTransactionHistory() != null ? 1 : 0;
+			//return completionStep.getTransactionHistory() != null ? 1 : 0;
+			org.lgna.croquet.steps.TransactionHistory transactionHistory = completionStep.getTransactionHistory();
+			if( transactionHistory != null ) {
+				return transactionHistory.getTransactionCount();
+			} else {
+				return 0;
+			}
 		} else {
 			return 0;
 		}
@@ -79,9 +85,15 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 			org.lgna.croquet.steps.Transaction transaction = (org.lgna.croquet.steps.Transaction)parent;
 			return transaction.getChildStepAt( index );
 		} else if( parent instanceof org.lgna.croquet.steps.CompletionStep< ? > ) {
-			assert index == 0;
 			org.lgna.croquet.steps.CompletionStep< ? > completionStep = (org.lgna.croquet.steps.CompletionStep< ? >)parent;
-			return completionStep.getTransactionHistory();
+			org.lgna.croquet.steps.TransactionHistory transactionHistory = completionStep.getTransactionHistory();
+			if( transactionHistory != null ) {
+				return transactionHistory.getTransactionAt( index );
+			} else {
+				return null;
+			}
+//			assert index == 0;
+//			return completionStep.getTransactionHistory();
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
@@ -103,8 +115,10 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 			}
 		} else if( parent instanceof org.lgna.croquet.steps.CompletionStep< ? > ) {
 			org.lgna.croquet.steps.CompletionStep< ? > completionStep = (org.lgna.croquet.steps.CompletionStep< ? >)parent;
-			assert child == completionStep.getTransactionHistory();
-			return 0;
+			org.lgna.croquet.steps.TransactionHistory transactionHistory = completionStep.getTransactionHistory();
+			return transactionHistory.getIndexOfTransaction( (org.lgna.croquet.steps.Transaction)child );
+//			assert child == completionStep.getTransactionHistory();
+//			return 0;
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
@@ -115,6 +129,12 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 		Object parent;
 		if( node instanceof org.lgna.croquet.steps.Transaction ) {
 			parent = ((org.lgna.croquet.steps.Transaction)node).getParent();
+			if( parent instanceof org.lgna.croquet.steps.TransactionHistory ) {
+				org.lgna.croquet.steps.TransactionHistory transactionHistory = (org.lgna.croquet.steps.TransactionHistory)parent;
+				if( transactionHistory.getParent() != null ) {
+					parent = transactionHistory; 
+				}
+			}
 		} else if( node instanceof org.lgna.croquet.steps.Step ) {
 			parent = ((org.lgna.croquet.steps.Step)node).getParent();
 		} else {
