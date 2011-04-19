@@ -45,14 +45,16 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DialogOperationContext extends AbstractDialogOperationContext<DialogOperation> {
-	/*package-private*/ DialogOperationContext( DialogOperation dialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( dialogOperation, e, viewController );
+public abstract class PlainDialogOperation extends AbstractDialogOperation<PlainDialogOperationContext> {
+	public PlainDialogOperation(Group group, java.util.UUID id) {
+		super(group, id);
 	}
-	public DialogOperationContext( DialogOperation dialogOperation ) {
-		this( dialogOperation, null, null );
+	@Override
+	public PlainDialogOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return ContextManager.createAndPushDialogOperationContext( this, e, viewController );
 	}
-	public DialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	
+	public String getTutorialCloseNoteText( PlainDialogOperationContext dialogOperationContext, UserInformation userInformation ) {
+		return "When finished press the <strong>Close</strong> button.";
 	}
 }

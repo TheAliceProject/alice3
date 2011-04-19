@@ -94,11 +94,11 @@ public class Tutorial {
 		return this.addStep( new BooleanStateStep( title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.BooleanState>( booleanState ), desiredValue ) );
 	}
 
-	public Step addDialogOpenAndCloseStep( String title, String openText, String closeText, RuntimeResolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
+	public Step addDialogOpenAndCloseStep( String title, String openText, String closeText, RuntimeResolver<edu.cmu.cs.dennisc.croquet.PlainDialogOperation> dialogOperationResolver ) {
 		return this.addStep( new DialogOpenAndCloseStep( title, openText, closeText, dialogOperationResolver ) );
 	}
-	public Step addDialogOpenAndCloseStep( String title, String openText, String closeText, edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation ) {
-		return this.addStep( new DialogOpenAndCloseStep( title, openText, closeText, new SelfResolver<edu.cmu.cs.dennisc.croquet.DialogOperation>( dialogOperation ) ) );
+	public Step addDialogOpenAndCloseStep( String title, String openText, String closeText, edu.cmu.cs.dennisc.croquet.PlainDialogOperation dialogOperation ) {
+		return this.addStep( new DialogOpenAndCloseStep( title, openText, closeText, new SelfResolver<edu.cmu.cs.dennisc.croquet.PlainDialogOperation>( dialogOperation ) ) );
 	}
 
 	public Step addInputDialogOpenAndCommitStep( String title, String openText, String commitText, RuntimeResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, InputDialogOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {

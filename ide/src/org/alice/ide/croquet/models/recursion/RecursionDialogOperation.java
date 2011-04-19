@@ -153,7 +153,7 @@ class RecursionPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 /**
  * @author Dennis Cosgrove
  */
-public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
+public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperation {
 	private static class SingletonHolder {
 		private static RecursionDialogOperation instance = new RecursionDialogOperation();
 	}
@@ -164,7 +164,7 @@ public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.DialogO
 		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "a5e1ded2-18c7-4ae5-8676-e6deca5650fe" ) );
 	}
 	@Override
-	protected RecursionPanel createContentPane(edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog) {
+	protected RecursionPanel createContentPane(edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog) {
 		String explanationA = "<html>Recursion is disabled by default because otherwise many users unwittingly and mistakenly make recursive calls.<p><p>Recursion is a powerful tool in computer science.  It is not to be feared.  It simply needs to be understood.<p><p>For more information on recursion, please see:</html>";
 		String explanationB = "Hopefully, this button makes sense to you:  ";
 		return new RecursionPanel( explanationA, explanationB );
@@ -180,7 +180,7 @@ public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.DialogO
 	}
 	
 	@Override
-	protected void tweakDialog(edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.DialogOperationContext context ) {
+	protected void tweakDialog(edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context ) {
 		super.tweakDialog(dialog, context);
 		int depth = getDepth( context, 1 );
 		int offset = (depth-5)*24;
@@ -190,7 +190,7 @@ public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.DialogO
 		dialog.setLocation( p );
 	}
 	@Override
-	protected void releaseContentPane(edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container<?> contentPane) {
+	protected void releaseContentPane(edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container<?> contentPane) {
 	}
 	@Override
 	protected java.awt.Dimension getDesiredDialogSize(edu.cmu.cs.dennisc.croquet.Dialog dialog) {

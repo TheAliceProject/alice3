@@ -167,8 +167,8 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 		edu.cmu.cs.dennisc.croquet.DragAndDropContext rv = new edu.cmu.cs.dennisc.croquet.DragAndDropContext( dragAndDropModel );
 		return rv;
 	}
-	private static edu.cmu.cs.dennisc.croquet.DialogOperationContext createDialogOperationContext( edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation ) {
-		edu.cmu.cs.dennisc.croquet.DialogOperationContext rv = new edu.cmu.cs.dennisc.croquet.DialogOperationContext( dialogOperation );
+	private static edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext createDialogOperationContext( edu.cmu.cs.dennisc.croquet.PlainDialogOperation dialogOperation ) {
+		edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext rv = new edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext( dialogOperation );
 		edu.cmu.cs.dennisc.croquet.FinishEvent finishEvent = new edu.cmu.cs.dennisc.croquet.FinishEvent();
 		rv.addChild( finishEvent );
 		return rv;

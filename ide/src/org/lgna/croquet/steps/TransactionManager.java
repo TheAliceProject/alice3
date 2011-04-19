@@ -145,7 +145,7 @@ public class TransactionManager {
 		Transaction transaction = getActiveTransaction();
 		return ActionOperationStep.createAndAddToTransaction( transaction, model ); 
 	}
-	public static DialogOperationStep addDialogOperationStep( edu.cmu.cs.dennisc.croquet.DialogOperation model ) {
+	public static DialogOperationStep addDialogOperationStep( edu.cmu.cs.dennisc.croquet.PlainDialogOperation model ) {
 		Transaction transaction = getActiveTransaction();
 		return DialogOperationStep.createAndAddToTransaction( transaction, model );
 	}

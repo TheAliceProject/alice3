@@ -132,8 +132,8 @@ package edu.cmu.cs.dennisc.tutorial;
 		} else {
 			switch( state ) {
 			case WAITING_ON_OPEN:
-				if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
-					edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent)child;
+				if( child instanceof edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext.WindowOpenedEvent ) {
+					edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext.WindowOpenedEvent)child;
 					if( windowOpenedEvent.getParent().getModel() == this.getModel() ) {
 						this.setActiveNote( 1 );
 						

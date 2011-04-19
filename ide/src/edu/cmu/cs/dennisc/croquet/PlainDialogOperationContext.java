@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -39,24 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.cheshire;
-
-import edu.cmu.cs.dennisc.tutorial.*;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogOperationStartNote extends AbstractDialogOperationStartNote {
-	public static DialogOperationStartNote createInstance( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, ParentContextCriterion parentContextCriterion ) {
-		return new DialogOperationStartNote( context, parentContextCriterion ); 
+public class PlainDialogOperationContext extends AbstractDialogOperationContext<PlainDialogOperation> {
+	/*package-private*/ PlainDialogOperationContext( PlainDialogOperation dialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( dialogOperation, e, viewController );
 	}
-	
-	private DialogOperationStartNote( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, ParentContextCriterion parentContextCriterion ) {
-		super( context, parentContextCriterion );
-		edu.cmu.cs.dennisc.croquet.AbstractDialogOperation< ? > operation = context.getModel();
-		this.setText( operation.getTutorialStartNoteText( context, GuidedInteraction.getInstance().getUserInformation() ) );
-		ModelFromContextResolver modelResolver = new ModelFromContextResolver( context );
-		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
-		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
+	public PlainDialogOperationContext( PlainDialogOperation dialogOperation ) {
+		this( dialogOperation, null, null );
+	}
+	public PlainDialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

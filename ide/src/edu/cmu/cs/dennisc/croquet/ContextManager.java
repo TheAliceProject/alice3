@@ -196,10 +196,10 @@ public class ContextManager {
 	/*package-private*/ static SerialOperationContext createAndPushSerialOperationContext(SerialOperation compositeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return pushContext( new SerialOperationContext(compositeOperation, e, viewController) );
 	}
-	/*package-private*/ static DialogOperationContext createAndPushDialogOperationContext(DialogOperation dialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+	/*package-private*/ static PlainDialogOperationContext createAndPushDialogOperationContext(PlainDialogOperation dialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		prePushContextForPossibleStringStateCleanUp();
 		TransactionManager.addDialogOperationStep( dialogOperation );
-		return pushContext( new DialogOperationContext(dialogOperation, e, viewController) );
+		return pushContext( new PlainDialogOperationContext(dialogOperation, e, viewController) );
 	}
 	/*package-private*/ static <J extends Component<?>> InformationDialogOperationContext<J> createAndPushInformationDialogOperationContext(InformationDialogOperation<J> informationDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return pushContext( new InformationDialogOperationContext<J>(informationDialogOperation, e, viewController) );

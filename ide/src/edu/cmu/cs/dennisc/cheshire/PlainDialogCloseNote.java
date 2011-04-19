@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +39,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.cheshire;
+
+import edu.cmu.cs.dennisc.tutorial.DialogCloseButtonFeature;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogOperation extends AbstractDialogOperation<DialogOperationContext> {
-	public DialogOperation(Group group, java.util.UUID id) {
-		super(group, id);
+/*package-private*/ class PlainDialogCloseNote extends RequirementNote {
+	public static PlainDialogCloseNote createInstance( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext dialogOperationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
+		return new PlainDialogCloseNote( 
+				dialogOperationContext, 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext.WindowClosingEvent.class ), 
+				new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, successfulCompletionEvent )
+		);
 	}
-	@Override
-	public DialogOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushDialogOperationContext( this, e, viewController );
-	}
-	
-	public String getTutorialCloseNoteText( DialogOperationContext dialogOperationContext, UserInformation userInformation ) {
-		return "When finished press the <strong>Close</strong> button.";
+	private PlainDialogCloseNote( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext dialogOperationContext, ProgressRequirement... requirements ) {
+		super( requirements );
+		edu.cmu.cs.dennisc.croquet.PlainDialogOperation dialogOperation = dialogOperationContext.getModel();
+		this.setText( dialogOperation.getTutorialCloseNoteText( dialogOperationContext, GuidedInteraction.getInstance().getUserInformation() ) );
+		final ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.PlainDialogOperation > dialogOperationResolver = new ModelFromContextResolver( dialogOperationContext );
+		this.addFeature( new DialogCloseButtonFeature( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
+			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+				edu.cmu.cs.dennisc.croquet.PlainDialogOperation dialogOperation = dialogOperationResolver.getResolved();
+				if( dialogOperation != null ) {
+					edu.cmu.cs.dennisc.croquet.Dialog activeDialog = dialogOperation.getActiveDialog();
+					if( activeDialog != null ) {
+						return activeDialog.getCloseButtonTrackableShape();
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			}
+		} ) );
 	}
 }

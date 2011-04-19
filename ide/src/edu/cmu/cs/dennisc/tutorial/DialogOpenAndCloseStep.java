@@ -45,14 +45,14 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogOpenAndCloseStep extends AuthoredWaitingStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
-	public DialogOpenAndCloseStep( String title, String openText, String closeText, final edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
+/*package-private*/ class DialogOpenAndCloseStep extends AuthoredWaitingStep<edu.cmu.cs.dennisc.croquet.PlainDialogOperation> {
+	public DialogOpenAndCloseStep( String title, String openText, String closeText, final edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.PlainDialogOperation> dialogOperationResolver ) {
 		super( title, openText, new Hole( new FirstComponentResolver( dialogOperationResolver ), Feature.ConnectionPreference.EAST_WEST ), dialogOperationResolver );
 
 		Note closeNote = new Note( closeText );
 		closeNote.addFeature( new DialogCloseButtonFeature( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
 			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
-				edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation = dialogOperationResolver.getResolved();
+				edu.cmu.cs.dennisc.croquet.PlainDialogOperation dialogOperation = dialogOperationResolver.getResolved();
 				if( dialogOperation != null ) {
 					edu.cmu.cs.dennisc.croquet.Dialog activeDialog = dialogOperation.getActiveDialog();
 					if( activeDialog != null ) {
@@ -107,8 +107,8 @@ package edu.cmu.cs.dennisc.tutorial;
 		State state = this.getState();
 		switch( state ) {
 		case WAITING_ON_OPEN:
-			if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
-				edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent)child;
+			if( child instanceof edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext.WindowOpenedEvent ) {
+				edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext.WindowOpenedEvent)child;
 				if( windowOpenedEvent.getParent().getModel() == this.getModel() ) {
 					this.setActiveNote( 1 );
 					
@@ -132,11 +132,11 @@ package edu.cmu.cs.dennisc.tutorial;
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "EPIC_HACK IGNORE NEXT CLOSE" );
 					this.EPIC_HACK_isIgnoreWindowClosingEventDesired = true;
 				}
-			} else if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosingEvent ) {
+			} else if( child instanceof edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext.WindowClosingEvent ) {
 				if( EPIC_HACK_isIgnoreWindowClosingEventDesired ) {
 					EPIC_HACK_isIgnoreWindowClosingEventDesired = false;
 				} else {
-					edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosingEvent windowClosingEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosingEvent)child;
+					edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext.WindowClosingEvent windowClosingEvent = (edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext.WindowClosingEvent)child;
 					rv = windowClosingEvent.getParent().getModel() == this.getModel();
 				}
 			}

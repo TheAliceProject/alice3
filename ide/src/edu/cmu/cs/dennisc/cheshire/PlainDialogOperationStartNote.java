@@ -41,38 +41,22 @@
  */
 package edu.cmu.cs.dennisc.cheshire;
 
-import edu.cmu.cs.dennisc.tutorial.DialogCloseButtonFeature;
+import edu.cmu.cs.dennisc.tutorial.*;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogCloseNote extends RequirementNote {
-	public static DialogCloseNote createInstance( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
-		return new DialogCloseNote( 
-				dialogOperationContext, 
-				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosingEvent.class ), 
-				new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, successfulCompletionEvent )
-		);
+/*package-private*/ class PlainDialogOperationStartNote extends AbstractDialogOperationStartNote {
+	public static PlainDialogOperationStartNote createInstance( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, ParentContextCriterion parentContextCriterion ) {
+		return new PlainDialogOperationStartNote( context, parentContextCriterion ); 
 	}
-	private DialogCloseNote( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, ProgressRequirement... requirements ) {
-		super( requirements );
-		edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation = dialogOperationContext.getModel();
-		this.setText( dialogOperation.getTutorialCloseNoteText( dialogOperationContext, GuidedInteraction.getInstance().getUserInformation() ) );
-		final ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.DialogOperation > dialogOperationResolver = new ModelFromContextResolver( dialogOperationContext );
-		this.addFeature( new DialogCloseButtonFeature( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
-			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
-				edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation = dialogOperationResolver.getResolved();
-				if( dialogOperation != null ) {
-					edu.cmu.cs.dennisc.croquet.Dialog activeDialog = dialogOperation.getActiveDialog();
-					if( activeDialog != null ) {
-						return activeDialog.getCloseButtonTrackableShape();
-					} else {
-						return null;
-					}
-				} else {
-					return null;
-				}
-			}
-		} ) );
+	
+	private PlainDialogOperationStartNote( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, ParentContextCriterion parentContextCriterion ) {
+		super( context, parentContextCriterion );
+		edu.cmu.cs.dennisc.croquet.AbstractDialogOperation< ? > operation = context.getModel();
+		this.setText( operation.getTutorialStartNoteText( context, GuidedInteraction.getInstance().getUserInformation() ) );
+		ModelFromContextResolver modelResolver = new ModelFromContextResolver( context );
+		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
 	}
 }
