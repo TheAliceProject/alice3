@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedCommitDialogOperationContext<M extends GatedCommitDialogOperation> extends AbstractDialogOperationContext<M> {
+public abstract class GatedCommitDialogOperationContext<M extends GatedCommitDialogOperation> extends DialogOperationContext<M> {
 	/*package-private*/ GatedCommitDialogOperationContext( M model, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( model, e, viewController );
 	}

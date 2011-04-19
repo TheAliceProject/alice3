@@ -45,8 +45,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class AbstractDialogOperationContext<M extends AbstractDialogOperation<?>> extends SingleThreadOperationContext<M> {
-	public static abstract class WindowEvent extends ModelEvent< AbstractDialogOperationContext > {
+public class DialogOperationContext<M extends DialogOperation<?>> extends SingleThreadOperationContext<M> {
+	public static abstract class WindowEvent extends ModelEvent< DialogOperationContext > {
 		private java.awt.event.WindowEvent windowEvent;
 		public WindowEvent() {
 		}
@@ -85,10 +85,10 @@ public class AbstractDialogOperationContext<M extends AbstractDialogOperation<?>
 //		}
 //	}
 
-	/*package-private*/ AbstractDialogOperationContext( M operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+	/*package-private*/ DialogOperationContext( M operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( operation, e, viewController );
 	}
-	/*package-private*/ AbstractDialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	/*package-private*/ DialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	public void handleWindowOpened( java.awt.event.WindowEvent e ) {

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class PlainDialogOperationContext extends AbstractDialogOperationContext<PlainDialogOperation> {
+public class PlainDialogOperationContext extends DialogOperationContext<PlainDialogOperation> {
 	/*package-private*/ PlainDialogOperationContext( PlainDialogOperation dialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( dialogOperation, e, viewController );
 	}

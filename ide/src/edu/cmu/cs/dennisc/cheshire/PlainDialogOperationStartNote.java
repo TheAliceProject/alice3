@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	
 	private PlainDialogOperationStartNote( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, ParentContextCriterion parentContextCriterion ) {
 		super( context, parentContextCriterion );
-		edu.cmu.cs.dennisc.croquet.AbstractDialogOperation< ? > operation = context.getModel();
+		edu.cmu.cs.dennisc.croquet.DialogOperation< ? > operation = context.getModel();
 		this.setText( operation.getTutorialStartNoteText( context, GuidedInteraction.getInstance().getUserInformation() ) );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( context );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );

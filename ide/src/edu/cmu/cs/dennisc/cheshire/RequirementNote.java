@@ -137,9 +137,9 @@ public class RequirementNote extends RetargetableNote /* implements ParentContex
 	
 	@Override
 	public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) throws CancelException {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent ) {
-			edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent)child;
-			edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?> dialogOperationContext = windowOpenedEvent.getParent();
+		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
+			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent)child;
+			edu.cmu.cs.dennisc.croquet.DialogOperationContext<?> dialogOperationContext = windowOpenedEvent.getParent();
 			edu.cmu.cs.dennisc.croquet.Dialog dialog = dialogOperationContext.getModel().getActiveDialog();
 			if( dialog != null ) {
 				java.awt.Rectangle dialogLocalBounds = dialog.getLocalBounds();

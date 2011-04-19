@@ -46,11 +46,14 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDialogOperationStep< M extends edu.cmu.cs.dennisc.croquet.AbstractDialogOperation< ? > > extends SingleThreadOperationStep< M > {
-	public AbstractDialogOperationStep( Transaction parent, M model ) {
-		super( parent, model, new TransactionHistory() );
+public class PlainDialogOperationStep extends DialogOperationStep< edu.cmu.cs.dennisc.croquet.PlainDialogOperation > {
+	public static PlainDialogOperationStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.PlainDialogOperation model ) {
+		return new PlainDialogOperationStep( parent, model );
 	}
-	public AbstractDialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	private PlainDialogOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.PlainDialogOperation model ) {
+		super( parent, model );
+	}
+	public PlainDialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 }

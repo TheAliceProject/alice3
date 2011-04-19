@@ -45,7 +45,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class InputDialogOperationStep<J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> extends AbstractDialogOperationStep< edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > > {
+public class InputDialogOperationStep<J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> extends DialogOperationStep< edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > > {
 	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InputDialogOperationStep<J> createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > model ) {
 		return new InputDialogOperationStep<J>( parent, model );
 	}

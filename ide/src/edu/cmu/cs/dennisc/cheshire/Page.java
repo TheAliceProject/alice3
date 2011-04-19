@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
  */
 public class Page extends Step implements WaitingStep {
 	private static RequirementNote createBonusOperationNote( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext ) {
-		if( operationContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
+		if( operationContext instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext ){
 			if( operationContext instanceof edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext ) {
 				edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext dialogOperationContext = (edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext)operationContext;
 				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = operationContext.getSuccessfulCompletionEvent();
@@ -215,8 +215,8 @@ public class Page extends Step implements WaitingStep {
 			} else {
 				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = operationContext.getSuccessfulCompletionEvent();
 				if( successfulCompletionEvent != null ) {
-					if( operationContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
-						edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext abstractDialogOperationContext = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext)operationContext;
+					if( operationContext instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext ){
+						edu.cmu.cs.dennisc.croquet.DialogOperationContext abstractDialogOperationContext = (edu.cmu.cs.dennisc.croquet.DialogOperationContext)operationContext;
 						AbstractDialogOperationStartNote startNote;
 						if( abstractDialogOperationContext instanceof edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext ) {
 							startNote = PlainDialogOperationStartNote.createInstance( ((edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext)abstractDialogOperationContext), parentContextCriterion );

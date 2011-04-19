@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.cheshire;
 	public static ForwardingFromActionOperationToInputDialogOperationNote createInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.ActionOperationContext actionOperationContext, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent actionCompletionEvent, edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent inputDialogCompletionEvent ) {
 		ForwardingFromActionOperationToInputDialogOperationNote rv = new ForwardingFromActionOperationToInputDialogOperationNote( parentContextCriterion, actionOperationContext, actionCompletionEvent, inputDialogOperationContext, inputDialogCompletionEvent );
 		rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.InputDialogOperationContext.class ) );
-		rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent.class ) );
+		rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent.class ) );
 		//rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent.class ) );
 		rv.addRequirement( new IsAcceptableSuccessfulCompletionOf( rv.getAcceptedContextAt( 0 ), inputDialogCompletionEvent ) );
 		rv.addRequirement( new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, actionCompletionEvent ) );

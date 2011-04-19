@@ -45,8 +45,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDialogOperation< C extends AbstractDialogOperationContext<?> > extends SingleThreadOperation<C> {
-	public AbstractDialogOperation(Group group, java.util.UUID id) {
+public abstract class DialogOperation< C extends DialogOperationContext<?> > extends SingleThreadOperation<C> {
+	public DialogOperation(Group group, java.util.UUID id) {
 		super(group, id);
 	}
 	protected java.awt.Point getDesiredDialogLocation( Dialog dialog ) {
@@ -103,7 +103,7 @@ public abstract class AbstractDialogOperation< C extends AbstractDialogOperation
 				context.handleWindowOpened( e );
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
-				if( AbstractDialogOperation.this.isWindowClosingEnabled( e ) ) {
+				if( DialogOperation.this.isWindowClosingEnabled( e ) ) {
 					dialog.setVisible( false );
 					context.handleWindowClosing( e );
 				}
