@@ -258,7 +258,7 @@ public class ContextManager {
 	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeInvisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
 	}
 	/*package-private*/ static <E> void addListSelectionPopupMenuCanceled( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
-		TransactionManager.addCancelCompletionStep();
+		TransactionManager.addCancelCompletionStep( model );
 	}
 
 	/*package-private*/ static BoundedRangeIntegerStateContext createAndPushBoundedRangeIntegerStateContext(BoundedRangeIntegerState boundedRangeIntegerState) {

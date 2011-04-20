@@ -61,7 +61,7 @@ public class MessageChapter extends Chapter {
 		return this.text;
 	}
 	@Override
-	public void complete() {
+	public void complete( edu.cmu.cs.dennisc.croquet.Group completionGroup ) {
 	}
 	@Override
 	public void reset() {

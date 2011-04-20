@@ -46,14 +46,18 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public class CancelCompletionStep extends CompletionStep {
-	public static CancelCompletionStep createAndAddToTransaction( Transaction parent ) {
-		return new CancelCompletionStep( parent );
+	public static CancelCompletionStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel completionModel ) {
+		return new CancelCompletionStep( parent, completionModel );
 	}
-	private CancelCompletionStep( Transaction parent ) {
-		super( parent, null, null );
+	private CancelCompletionStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel completionModel ) {
+		super( parent, completionModel, null );
 	}
 	public CancelCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+	}
+	@Override
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return "Cancel";
 	}
 	@Override
 	public boolean isPending() {

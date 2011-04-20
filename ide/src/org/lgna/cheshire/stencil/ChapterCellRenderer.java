@@ -120,7 +120,7 @@ package org.lgna.cheshire.stencil;
 							}
 							if( isSelected ) {
 								StringBuilder sbToolTip = new StringBuilder();
-								sbToolTip.append( replacementAcceptability.getDeviationSeverity().getRepr( edu.cmu.cs.dennisc.cheshire.GuidedInteraction.getInstance().getUserInformation() ) );
+								sbToolTip.append( replacementAcceptability.getDeviationSeverity().getRepr( Presentation.getInstance().getUserInformation() ) );
 								sbToolTip.append( ": " );
 								sbToolTip.append( replacementAcceptability.getDeviationDescription() );
 								toolTipText = sbToolTip.toString();

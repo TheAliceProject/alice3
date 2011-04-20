@@ -64,7 +64,12 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 		return this.getModel();
 	}
 	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		return this.getModelForTutorialNoteText().getTutorialNoteText( null, edit, userInformation );
+		edu.cmu.cs.dennisc.croquet.Model model = this.getModelForTutorialNoteText();
+		if( model != null ) {
+			return model.getTutorialNoteText( null, edit, userInformation );
+		} else {
+			return null;
+		}
 	}
 	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		throw new AssertionError();

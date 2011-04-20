@@ -348,9 +348,9 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			if( this.index < this.getItemCount() ) {
 				return this.getItemAt( index );
 			} else {
-				throw new IndexOutOfBoundsException( this.index + " " + this.getItemCount() + " " + this );
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: item selection out of bounds" );
-//				return null;
+//				throw new IndexOutOfBoundsException( this.index + " " + this.getItemCount() + " " + this );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: item selection out of bounds" );
+				return null;
 			}
 		} else {
 			return null;

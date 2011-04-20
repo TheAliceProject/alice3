@@ -395,7 +395,7 @@ public class DragAndDropContext extends PrepContext<DragAndDropModel> {
 	}
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( this.isCanceled() ) {
-			org.lgna.croquet.steps.TransactionManager.addCancelCompletionStep();
+			org.lgna.croquet.steps.TransactionManager.addCancelCompletionStep( null );
 		} else {
 			OperationContext< ? > childContext = null;
 			this.setLatestMouseEvent( e );

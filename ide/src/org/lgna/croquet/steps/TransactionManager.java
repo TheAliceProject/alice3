@@ -176,8 +176,8 @@ public class TransactionManager {
 	public static <E> ListSelectionStatePrepStep<E> addListSelectionPrepStep( edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > model ) {
 		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model ); 
 	}
-	public static <E> CancelCompletionStep addCancelCompletionStep() {
-		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction() ); 
+	public static <E> CancelCompletionStep addCancelCompletionStep( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
+		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction(), model ); 
 	}
 
 

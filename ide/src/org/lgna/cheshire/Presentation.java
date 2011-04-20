@@ -147,23 +147,6 @@ public abstract class Presentation {
 		}
 	}
 
-	/*package-private*/ static void complete( final edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		if( edit != null ) {
-			 edu.cmu.cs.dennisc.croquet.ActionOperation bogusCompletionOperation = new edu.cmu.cs.dennisc.croquet.ActionOperation( COMPLETION_GROUP, java.util.UUID.fromString( "d4b1cb3b-f642-4c90-be92-e27d616f6922" ) ) {
-				@Override
-				protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: context edit type" );
-					context.commitAndInvokeDo( edit );
-				}
-			};
-			bogusCompletionOperation.fire();
-//			edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getCurrentContext();
-//			edu.cmu.cs.dennisc.croquet.ActionOperationContext rv = new edu.cmu.cs.dennisc.croquet.ActionOperationContext( parentContext, bogusCompletionOperation, null, null );
-//			rv.commitAndInvokeDo( edit );
-		}
-	}
-
-	
 	public void restoreHistoryIndicesDueToCancel() {
 		this.restoreHistoryIndices( this.book.getSelectedIndex() );
 	}
@@ -190,7 +173,7 @@ public abstract class Presentation {
 							//pass
 						} else {
 							Chapter iChapter = this.book.getChapterAt( i );
-							iChapter.complete();
+							iChapter.complete( COMPLETION_GROUP );
 						}
 					}
 					i++;

@@ -142,12 +142,13 @@ public class Book {
 			edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = transaction.getEdit();
 			edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate, userInformation );
 			if( replacementAcceptability.isAcceptable() ) {
+				transactionChapter.setReplacementAcceptability( replacementAcceptability );
 				edu.cmu.cs.dennisc.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.Presentation.getInstance().getRetargeter();
 				originalEdit.addKeyValuePairs( retargeter, replacementCandidate );
 				this.retargetForward( retargeter );
-			} else {
-				//todo: reset
 			}
+		} else {
+			assert chapter == null : chapter;
 		}
 	}
 

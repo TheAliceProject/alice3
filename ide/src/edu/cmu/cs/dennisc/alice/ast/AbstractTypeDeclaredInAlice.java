@@ -50,7 +50,7 @@ public abstract class AbstractTypeDeclaredInAlice<C extends AbstractConstructor>
 	protected class Adapter<E extends AbstractMember> implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > {
 		private void handleAdd( E member ) {
 			assert member instanceof MemberDeclaredInAlice;
-			assert member.getDeclaringType() == null;
+			assert member.getDeclaringType() == null : member.getDeclaringType();
 			MemberDeclaredInAlice memberDeclaredInAlice = (MemberDeclaredInAlice)member;
 			memberDeclaredInAlice.setDeclaringType( AbstractTypeDeclaredInAlice.this );
 		}

@@ -71,7 +71,7 @@ public abstract class Chapter {
 	public abstract void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ); 
 
 	public abstract void reset(); 
-	public abstract void complete();
+	public abstract void complete( edu.cmu.cs.dennisc.croquet.Group completionGroup );
 	
 	public abstract String getTitle();
 }
