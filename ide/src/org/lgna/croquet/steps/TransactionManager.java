@@ -49,8 +49,8 @@ public class TransactionManager {
 	public static interface Observer {
 		public void addingStep( Step<?> step );
 		public void addedStep( Step<?> step );
-		public void editComitting( edu.cmu.cs.dennisc.croquet.Edit<?> edit );
-		public void editComitted( edu.cmu.cs.dennisc.croquet.Edit<?> edit );
+		public void editCommitting( edu.cmu.cs.dennisc.croquet.Edit<?> edit );
+		public void editCommitted( edu.cmu.cs.dennisc.croquet.Edit<?> edit );
 		public void dropPending( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
 		public void dropPended( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
 		public void menuItemsSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models );
@@ -118,12 +118,12 @@ public class TransactionManager {
 	}
 	private static void fireEditCommitting( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		for( Observer observer : observers ) {
-			observer.editComitting( edit );
+			observer.editCommitting( edit );
 		}
 	}
 	private static void fireEditCommitted( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		for( Observer observer : observers ) {
-			observer.editComitted( edit );
+			observer.editCommitted( edit );
 		}
 	}
 	private static void fireDropPending( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {

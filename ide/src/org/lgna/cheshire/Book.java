@@ -134,6 +134,23 @@ public class Book {
 		}
 	}
 
+	/*package-private*/ void handleEditCommitted( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		Chapter chapter = this.getSelectedChapter();
+		if( chapter instanceof TransactionChapter ) {
+			TransactionChapter transactionChapter = (TransactionChapter)chapter;
+			org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
+			edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = transaction.getEdit();
+			edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate, userInformation );
+			if( replacementAcceptability.isAcceptable() ) {
+				edu.cmu.cs.dennisc.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.Presentation.getInstance().getRetargeter();
+				originalEdit.addKeyValuePairs( retargeter, replacementCandidate );
+				this.retargetForward( retargeter );
+			} else {
+				//todo: reset
+			}
+		}
+	}
+
 	private void retarget( int fromIndex, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		final int N = this.getChapterCount();
 		for( int i = this.selectedIndex + 1; i < N; i++ ) {

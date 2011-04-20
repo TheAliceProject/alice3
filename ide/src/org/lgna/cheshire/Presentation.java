@@ -58,9 +58,10 @@ public abstract class Presentation {
 		public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.StepAddedEvent( step ) );
 		}
-		public void editComitting( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		public void editCommitting( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		}
-		public void editComitted( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		public void editCommitted( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+			Presentation.this.handleEditCommitted( edit );
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.EditCommittedEvent( edit ) );
 		}
 		public void dropPending( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
@@ -79,6 +80,9 @@ public abstract class Presentation {
 		}
 	};
 
+	private void handleEditCommitted( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		this.book.handleEditCommitted( edit, this.userInformation );
+	}
 	protected abstract void handleEvent( org.lgna.cheshire.events.Event event );
 	private org.lgna.cheshire.Book.SelectionObserver selectionObserver = new org.lgna.cheshire.Book.SelectionObserver() {
 		public void selectionChanging( Book source, int fromIndex, int toIndex ) {
