@@ -80,11 +80,7 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 		this.frame.addWindowListener( new java.awt.event.WindowListener() {
 
 			public void windowOpened( java.awt.event.WindowEvent e ) {
-				javax.swing.SwingUtilities.invokeLater( new Runnable() {
-					public void run() {
-						Presentation.this.startListening();
-					}
-				} );
+				Presentation.this.startListening();
 			}
 
 			public void windowClosing( java.awt.event.WindowEvent e ) {
