@@ -139,9 +139,9 @@ public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionStat
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "select " );
-		rv.append( this.prevValue );
+		this.getModel().getCodec().appendRepresentation( rv, this.prevValue, locale );
 		rv.append( " ===> " );
-		rv.append( this.nextValue );
+		this.getModel().getCodec().appendRepresentation( rv, this.nextValue, locale );
 		return rv;
 	}
 }

@@ -140,12 +140,16 @@ public class Book {
 			TransactionChapter transactionChapter = (TransactionChapter)chapter;
 			org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
 			edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = transaction.getEdit();
-			edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate, userInformation );
-			if( replacementAcceptability.isAcceptable() ) {
-				transactionChapter.setReplacementAcceptability( replacementAcceptability );
-				edu.cmu.cs.dennisc.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.Presentation.getInstance().getRetargeter();
-				originalEdit.addKeyValuePairs( retargeter, replacementCandidate );
-				this.retargetForward( retargeter );
+			if( originalEdit != null ) {
+				edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate, userInformation );
+				if( replacementAcceptability.isAcceptable() ) {
+					transactionChapter.setReplacementAcceptability( replacementAcceptability );
+					edu.cmu.cs.dennisc.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.Presentation.getInstance().getRetargeter();
+					originalEdit.addKeyValuePairs( retargeter, replacementCandidate );
+					this.retargetForward( retargeter );
+				}
+			} else {
+				System.err.println( "originalEdit is null.  original canceled?" );
 			}
 		} else {
 			assert chapter == null : chapter;

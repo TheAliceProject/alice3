@@ -63,4 +63,8 @@ public class CancelCompletionStep extends CompletionStep {
 	public boolean isPending() {
 		return false;
 	}
+	@Override
+	public boolean isSuccessfullyCompleted() {
+		return false;
+	}
 }

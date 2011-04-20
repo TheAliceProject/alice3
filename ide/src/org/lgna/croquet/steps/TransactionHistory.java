@@ -122,7 +122,7 @@ public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncoda
 	public Transaction getActiveTransaction() {
 		Transaction lastTransaction = this.getLastTransaction();
 		Transaction rv;
-		if( lastTransaction != null && lastTransaction.isActive() ) {
+		if( lastTransaction != null && lastTransaction.isPending() ) {
 			rv = lastTransaction;
 		} else {
 			rv = new Transaction( this );

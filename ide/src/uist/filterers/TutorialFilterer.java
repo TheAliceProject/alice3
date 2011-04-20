@@ -53,18 +53,22 @@ public class TutorialFilterer implements org.lgna.cheshire.Filterer {
 			if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
 				org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
 				org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
-				edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
-				if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
-					org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
-					edu.cmu.cs.dennisc.alice.ast.Statement statement = insertStatementEdit.getStatement();
-					if( userInformation instanceof uist.UserInformation ) {
-						org.lgna.cheshire.MessageChapter messageChapter = ((uist.UserInformation)userInformation).createMessageChapterIfUnfamiliarWithProgrammingConstruct( statement.getClass() );
-						if( messageChapter != null ) {
-							chapterIterator.previous();
-							chapterIterator.add( messageChapter );
-							chapterIterator.next();
+				if( transaction.isSuccessfullyCompleted() ) {
+					edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
+					if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
+						org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
+						edu.cmu.cs.dennisc.alice.ast.Statement statement = insertStatementEdit.getStatement();
+						if( userInformation instanceof uist.UserInformation ) {
+							org.lgna.cheshire.MessageChapter messageChapter = ((uist.UserInformation)userInformation).createMessageChapterIfUnfamiliarWithProgrammingConstruct( statement.getClass() );
+							if( messageChapter != null ) {
+								chapterIterator.previous();
+								chapterIterator.add( messageChapter );
+								chapterIterator.next();
+							}
 						}
 					}
+				} else {
+					chapterIterator.remove();
 				}
 			}
 		}
