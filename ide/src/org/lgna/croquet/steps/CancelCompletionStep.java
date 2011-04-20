@@ -51,6 +51,7 @@ public class CancelCompletionStep extends CompletionStep {
 	}
 	private CancelCompletionStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel completionModel ) {
 		super( parent, completionModel, null );
+		TransactionManager.fireTransactionCanceled( parent );
 	}
 	public CancelCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

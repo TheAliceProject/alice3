@@ -151,6 +151,8 @@ public class Book {
 			} else {
 				System.err.println( "originalEdit is null.  original canceled?" );
 			}
+		} else if ( chapter instanceof MessageChapter ) {
+			assert replacementCandidate == null : replacementCandidate;
 		} else {
 			assert chapter == null : chapter;
 		}

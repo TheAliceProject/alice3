@@ -56,6 +56,7 @@ public class TransactionManager {
 		public void menuItemsSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models );
 		public void popupMenuResized( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu );
 		public void dialogOpened( edu.cmu.cs.dennisc.croquet.Dialog dialog );
+		public void transactionCanceled( Transaction transaction );
 	}
 	private static final java.util.List<Observer> observers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private static final java.util.Stack< TransactionHistory > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
@@ -105,6 +106,12 @@ public class TransactionManager {
 		}
 	}
 	
+	//todo: reduce accessibility
+	public static void fireTransactionCanceled( Transaction transaction ) {
+		for( Observer observer : observers ) {
+			observer.transactionCanceled( transaction );
+		}
+	}
 	//todo: reduce accessibility
 	public static void firePopupMenuResized( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
 		for( Observer observer : observers ) {

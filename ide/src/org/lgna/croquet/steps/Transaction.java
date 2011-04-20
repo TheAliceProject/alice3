@@ -251,8 +251,12 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	}
 	public void cancel() {
 		this.pendingSteps.reify( null, false );
-		assert this.completionStep != null;
-		this.completionStep.cancel();
+		if( this.completionStep != null ) {
+			this.completionStep.cancel();
+			TransactionManager.fireTransactionCanceled( this );
+		} else {
+			CancelCompletionStep.createAndAddToTransaction( this, null );
+		}
 	}
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		for( PrepStep< ? > prepStep : this.prepSteps ) {

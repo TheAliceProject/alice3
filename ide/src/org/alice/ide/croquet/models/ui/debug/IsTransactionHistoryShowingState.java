@@ -259,9 +259,9 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 			}
 			public void popupMenuResized( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
 			}
-			public void showedDialog( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
-			}
 			public void menuItemsSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
+			}
+			public void transactionCanceled(org.lgna.croquet.steps.Transaction transaction) {
 			}
 		} );
 		return scrollPane;

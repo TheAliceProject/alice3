@@ -40,28 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.steps;
+package org.lgna.cheshire.stencil.resolvers;
+
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ListSelectionStateChangeStep<E> extends StateChangeStep< edu.cmu.cs.dennisc.croquet.ListSelectionState< E > >{
-	public static <E> ListSelectionStateChangeStep<E> createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> model ) {
-		return new ListSelectionStateChangeStep<E>( parent, model );
+public class ItemSelectionStateItemResolver<E> implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.TrackableShape> {
+	private final org.lgna.croquet.steps.ListSelectionStateChangeStep< E > step;
+	public ItemSelectionStateItemResolver( org.lgna.croquet.steps.ListSelectionStateChangeStep< E > step ) {
+		this.step = step;
 	}
-	private ListSelectionStateChangeStep( Transaction parent, edu.cmu.cs.dennisc.croquet.ListSelectionState< E > model ) {
-		super( parent, model );
-	}
-	public ListSelectionStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public E getItem() {
-		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = this.getEdit();
-		if( edit instanceof edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit ) {
-			edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit = (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E>)edit;
-			return listSelectionStateEdit.getNextValue();
+
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+		edu.cmu.cs.dennisc.croquet.ListSelectionState<E> model = this.step.getModel();
+		if (model != null) {
+			E item = this.step.getItem();
+			return model.getTrackableShapeFor(item);
 		} else {
-			//todo: throw Exception?
 			return null;
 		}
 	}

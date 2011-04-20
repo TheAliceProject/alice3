@@ -64,9 +64,6 @@ public class MessageChapter extends Chapter {
 	public void complete( edu.cmu.cs.dennisc.croquet.Group completionGroup ) {
 	}
 	@Override
-	public void reset() {
-	}
-	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 	}
 	@Override

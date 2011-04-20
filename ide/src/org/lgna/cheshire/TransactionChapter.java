@@ -49,7 +49,6 @@ public class TransactionChapter extends Chapter {
 	private final org.lgna.croquet.steps.Transaction transaction;
 	public TransactionChapter( org.lgna.croquet.steps.Transaction transaction ) {
 		this.transaction = transaction;
-		this.reset();
 	}
 	public org.lgna.croquet.steps.Transaction getTransaction() {
 		return this.transaction;
@@ -59,27 +58,15 @@ public class TransactionChapter extends Chapter {
 		this.transaction.retarget( retargeter );
 	}
 	@Override
-	public void reset() {
-		System.err.println( "reset" );
-	}
-	@Override
 	public void complete( edu.cmu.cs.dennisc.croquet.Group completionGroup ) {
 		final edu.cmu.cs.dennisc.croquet.Edit<?> originalEdit = this.transaction.getEdit();
 		if( originalEdit != null ) {
-			 edu.cmu.cs.dennisc.croquet.ActionOperation bogusCompletionOperation = new edu.cmu.cs.dennisc.croquet.ActionOperation( completionGroup, java.util.UUID.fromString( "d4b1cb3b-f642-4c90-be92-e27d616f6922" ) ) {
-				@Override
-				protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: context edit type" );
-					context.commitAndInvokeDo( originalEdit );
-				}
-			};
-			bogusCompletionOperation.fire();
-//			
-//			edu.cmu.cs.dennisc.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.Presentation.getInstance().getRetargeter();
-//			edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( originalEdit, retargeter );
-//			if( replacementEdit != null ) {
-//				org.lgna.cheshire.stencil.Presentation.getInstance().retargetForward();
-//			}
+			edu.cmu.cs.dennisc.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.Presentation.getInstance().getRetargeter();
+			edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( originalEdit, retargeter );
+			if( replacementEdit != null ) {
+				//todo
+				org.lgna.cheshire.stencil.Presentation.getInstance().retargetAll( retargeter );
+			}
 		}
 //		for( RetargetableNote note : this.notes ) {
 //			note.complete();

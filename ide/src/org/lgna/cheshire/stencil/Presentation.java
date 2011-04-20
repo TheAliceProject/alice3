@@ -271,6 +271,15 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 		return this.nextOperation;
 	}
 	@Override
+	protected void handleTransactionCanceled( org.lgna.croquet.steps.Transaction transaction ) {
+		Presentation.getInstance().restoreHistoryIndicesDueToCancel();
+		org.lgna.cheshire.Chapter chapter = this.getBook().getSelectedChapter();
+		if( chapter != null ) {
+			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
+			chapterPage.reset();
+		}
+	}
+	@Override
 	protected void handleEvent( org.lgna.cheshire.events.Event event ) {
 		if( isIgnoring ) {
 			//pass
@@ -279,7 +288,6 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			org.lgna.cheshire.Chapter chapter = book.getSelectedChapter();
 			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
 			chapterPage.adjustIfNecessary( event );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleEvent", event );
 			if( chapterPage.isWhatWeveBeenWaitingFor( event ) ) {
 				nextOperation.setEnabled( true );
 				if( chapterPage.isAutoAdvanceDesired() ) {
@@ -306,7 +314,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			if( chapterPage.isStencilRenderingDesired() ) {
 				cursor = java.awt.dnd.DragSource.DefaultMoveNoDrop;
 			}
-			chapter.reset();
+			chapterPage.reset();
 			java.util.UUID transactionId = chapter.getId();
 			edu.cmu.cs.dennisc.croquet.CardPanel.Key key = this.stencil.cardPanel.getKey( transactionId );
 			if( key != null ) {
