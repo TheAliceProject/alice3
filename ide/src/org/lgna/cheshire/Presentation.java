@@ -48,6 +48,11 @@ package org.lgna.cheshire;
 public abstract class Presentation {
 	private static edu.cmu.cs.dennisc.croquet.Group COMPLETION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "d2f09b36-fb08-425d-825c-0075284e095b" ), "COMPLETION_GROUP" );
 
+	private static Presentation instance;
+	public static Presentation getInstance() {
+		return instance;
+	}
+
 	private final edu.cmu.cs.dennisc.croquet.UserInformation userInformation;
 	private final Book book;
 	private boolean isResultOfNextOperation = false;
@@ -100,6 +105,10 @@ public abstract class Presentation {
 	private final edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
 	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, Filterer filterer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
+		
+		assert instance == null;
+		instance = this;
+
 		this.userInformation = userInformation;
 		this.book = this.generateDraft( accessPolicy, originalTransactionHistory );
 		filterer.filter( this.book.listIterator(), userInformation );

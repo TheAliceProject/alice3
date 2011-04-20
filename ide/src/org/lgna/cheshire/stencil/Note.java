@@ -49,7 +49,7 @@ package org.lgna.cheshire.stencil;
 public abstract class Note extends org.lgna.stencil.Note {
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
-		return Presentation.getInstance().getNextOperation();
+		return NextStepOperation.getInstance();
 	}
 	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event );
 	private void moveOutOfTheWayIfNecessary( edu.cmu.cs.dennisc.croquet.ScreenElement screenElement ) {

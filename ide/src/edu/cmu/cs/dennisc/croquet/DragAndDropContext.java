@@ -446,4 +446,9 @@ public class DragAndDropContext extends PrepContext<DragAndDropModel> {
 		this.getDragSource().hideDragProxy();
 		this.getDragSource().hideDropProxyIfNecessary();
 	}
+	
+	@Deprecated
+	public void cancel() {
+		org.lgna.croquet.steps.TransactionManager.addCancelCompletionStep( null );
+	}
 }

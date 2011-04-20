@@ -49,10 +49,10 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 	/*package-private*/static edu.cmu.cs.dennisc.croquet.Group IMPLEMENTATION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "e582737d-b56b-4105-93d2-581853e193e2" ), "IMPLEMENTATION_GROUP" );
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
-	private static Presentation instance;
-	public static Presentation getInstance() {
-		return instance;
-	}
+//	private static Presentation instance;
+//	public static Presentation getInstance() {
+//		return instance;
+//	}
 	
 	public static javax.swing.JLayeredPane getLayeredPane( boolean isOptimizedForBugRepro ) {
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
@@ -69,7 +69,6 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 		return layeredPane;
 	}
 
-	private final edu.cmu.cs.dennisc.croquet.Operation< ? > nextOperation = new NextStepOperation( this );
 	private final edu.cmu.cs.dennisc.croquet.Operation< ? > prevOperation = new PrevStepOperation( this );
 	private final edu.cmu.cs.dennisc.croquet.BooleanState isInterceptingEvents = new PresentationBooleanState( java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), true, "intercept events" );
 	private final edu.cmu.cs.dennisc.croquet.BooleanState isPaintingStencil = new PresentationBooleanState( java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stencil" );
@@ -101,7 +100,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			if( this.isOptimizedForBugRepro ) {
 				edu.cmu.cs.dennisc.croquet.LineAxisPanel prevNextPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
 				prevNextPanel.addComponent( Presentation.this.prevOperation.createButton() );
-				prevNextPanel.addComponent( Presentation.this.nextOperation.createButton() );
+				prevNextPanel.addComponent( NextStepOperation.getInstance().createButton() );
 
 				edu.cmu.cs.dennisc.croquet.BorderPanel controlPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 				controlPanel.addComponent( prevNextPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
@@ -114,7 +113,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 				edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel( edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0 );
 				controlPanel.addComponent( Presentation.this.prevOperation.createButton() );
 				controlPanel.addComponent( new BookComboBox( Presentation.this.bookComboBoxModel, this.isAbovePopupMenus() == false ) );
-				controlPanel.addComponent( Presentation.this.nextOperation.createButton() );
+				controlPanel.addComponent( NextStepOperation.getInstance().createButton() );
 				controlsPanel.addComponent( controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 				Presentation.this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
 
@@ -164,7 +163,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 				case java.awt.event.KeyEvent.VK_SPACE:
 				case java.awt.event.KeyEvent.VK_RIGHT:
 				case java.awt.event.KeyEvent.VK_DOWN:
-					nextOperation.fire( e );
+					NextStepOperation.getInstance().fire( e );
 					break;
 				case java.awt.event.KeyEvent.VK_BACK_SPACE:
 				case java.awt.event.KeyEvent.VK_LEFT:
@@ -218,7 +217,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 		
 		@Override
 		public edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
-			return Presentation.this.nextOperation;
+			return NextStepOperation.getInstance();
 		}
 	}
 
@@ -237,8 +236,6 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			boolean isOptimizedForBugRepro 
 	) {
 		super( userInformation, transactionAccessPolicy, originalTransactionHistory, filterer, groupsTrackedForRandomAccess );
-		assert instance == null;
-		instance = this;
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
 		this.stencil = new Stencil( menuPolicy, scrollingRequiredRenderer, isOptimizedForBugRepro );
 		this.isInterceptingEvents.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
@@ -267,9 +264,6 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			}
 		} );
 	}
-	/*package-private*/ edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
-		return this.nextOperation;
-	}
 	@Override
 	protected void handleTransactionCanceled( org.lgna.croquet.steps.Transaction transaction ) {
 		this.restoreHistoryIndicesDueToCancel();
@@ -289,13 +283,13 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
 			chapterPage.adjustIfNecessary( event );
 			if( chapterPage.isWhatWeveBeenWaitingFor( event ) ) {
-				nextOperation.setEnabled( true );
+				NextStepOperation.getInstance().setEnabled( true );
 				if( chapterPage.isAutoAdvanceDesired() ) {
 					javax.swing.SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							Presentation.this.isIgnoringEvents = true;
 							try {
-								nextOperation.fire();
+								NextStepOperation.getInstance().fire();
 							} finally {
 								Presentation.this.isIgnoringEvents = false;
 							}
@@ -333,7 +327,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			if( this.stencil.isOptimizedForBugRepro ) {
 				//pass
 			} else {
-				this.nextOperation.setEnabled( 0 <= selectedIndex && selectedIndex < this.getBook().getChapterCount() - 1 && isWaiting == false );
+				NextStepOperation.getInstance().setEnabled( 0 <= selectedIndex && selectedIndex < this.getBook().getChapterCount() - 1 && isWaiting == false );
 			}
 			this.prevOperation.setEnabled( 1 <= selectedIndex );
 

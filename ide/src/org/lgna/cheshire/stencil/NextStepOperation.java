@@ -42,20 +42,22 @@
  */
 package org.lgna.cheshire.stencil;
 
-import org.lgna.cheshire.Presentation;
-
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/class NextStepOperation extends PresentationOperation {
-	private final Presentation presentation;
-	public NextStepOperation( Presentation presentation ) {
+	private static class SingletonHolder {
+		private static NextStepOperation instance = new NextStepOperation();
+	}
+	public static NextStepOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private NextStepOperation() {
 		super( java.util.UUID.fromString( "114060ef-1231-433b-9084-48faa024d1ba" ), "Next \u2192" );
-		this.presentation = presentation;
 	}
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		this.presentation.incrementSelectedIndex();
+		Presentation.getInstance().incrementSelectedIndex();
 		context.finish();
 	}
 }

@@ -398,8 +398,8 @@ public abstract class Model implements RuntimeResolver< Model > {
 	}
 	@Deprecated
 	private static final Edit< ? > getEdit( ModelContext<?> modelContext ) {
-		if( modelContext != null ) {
-			return modelContext.getEdit();
+		if( modelContext instanceof CompletionContext< ? >) {
+			return ((CompletionContext< ? >)modelContext).getEdit();
 		} else {
 			return null;
 		}

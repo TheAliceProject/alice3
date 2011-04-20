@@ -66,6 +66,7 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 		edu.cmu.cs.dennisc.croquet.Edit.Memento< M > memento = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		if( memento != null ) {
 			this.edit = memento.createEdit();
+			this.edit.setCompletionStep( this );
 		} else {
 			this.edit = null;
 		}
@@ -122,6 +123,7 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 	public void commit( edu.cmu.cs.dennisc.croquet.Edit<M> edit ) {
 		this.isSuccessfullyCompleted = true;
 		this.edit = edit;
+		this.edit.setCompletionStep( this );
 		this.isPending = false;
 	}
 	public void finish() {

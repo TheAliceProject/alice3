@@ -332,30 +332,6 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 		this.fireAddedChild(child);
 	}
 	
-	public void finish() {
-		this.addChild(new FinishEvent());
-	}
-	public void commitAndInvokeDo(Edit<M> edit) {
-		assert edit != null;
-		edit.setContext(this);
-		this.fireCommitting(edit);
-		edit.doOrRedo(true);
-		this.fireCommitted(edit);
-		this.addChild(new CommitEvent(edit));
-	}
-	public void cancel() {
-		this.addChild(new CancelEvent());
-	}
-	
-	public Edit< ? > getEdit() {
-		for( HistoryNode historyNode : this.getChildren() ) {
-			if( historyNode instanceof CommitEvent ) {
-				CommitEvent commitEvent = (CommitEvent)historyNode;
-				return commitEvent.getEdit();
-			}
-		}
-		return null;
-	}
 
 	@Override
 	public String getTutorialStepTitle( UserInformation userInformation ) {

@@ -46,8 +46,14 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+//	private static final java.util.Map< java.util.UUID, Step > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+//	public static <S extends Step> S lookup( java.util.UUID id ) {
+//		return (S)map.get( id );
+//	}
+//	
 	private Transaction parent;
-	private final edu.cmu.cs.dennisc.croquet.CodableResolver< M > modelResolver; 
+	private final edu.cmu.cs.dennisc.croquet.CodableResolver< M > modelResolver;
+//	private final java.util.UUID id;
 	public Step( Transaction parent, M model ) {
 		this.setParent( parent );
 		//this.modelResolver = model != null ? model.getCodableResolver() : null;
@@ -56,10 +62,16 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 		} else {
 			this.modelResolver = null;
 		}
+//		this.id = java.util.UUID.randomUUID();
+//		map.put( this.id, this );
 	}
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+//		this.id = binaryDecoder.decodeId();
 	}
+//	public java.util.UUID getId() {
+//		return this.id;
+//	}
 	protected edu.cmu.cs.dennisc.croquet.Model getModelForTutorialNoteText() {
 		return this.getModel();
 	}
@@ -76,6 +88,7 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.modelResolver );
+//		binaryEncoder.encode( this.id );
 	}
 	public M getModel() {
 		return this.modelResolver != null ? this.modelResolver.getResolved() : null;

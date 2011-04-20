@@ -52,20 +52,47 @@ public class CompletionContext<M extends CompletionModel> extends ModelContext<M
 	/*package-private*/ CompletionContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	@Override
 	public void finish() {
-		super.finish();
+		this.addChild(new FinishEvent());
 		org.lgna.croquet.steps.TransactionManager.finish( this.getModel() );
 	}
-	
-	@Override
 	public void commitAndInvokeDo(Edit edit) {
-		super.commitAndInvokeDo( edit );
+		assert edit != null;
+		edit.setContext(this);
+		this.fireCommitting(edit);
+		edit.doOrRedo(true);
+		this.fireCommitted(edit);
+		this.addChild(new CommitEvent(edit));
 		org.lgna.croquet.steps.TransactionManager.commit( edit );
 	}
-	@Override
 	public void cancel() {
-		super.cancel();
+		this.addChild(new CancelEvent());
 		org.lgna.croquet.steps.TransactionManager.cancel( this.getModel() );
 	}
+	public Edit< ? > getEdit() {
+		for( HistoryNode historyNode : this.getChildren() ) {
+			if( historyNode instanceof CommitEvent ) {
+				CommitEvent commitEvent = (CommitEvent)historyNode;
+				return commitEvent.getEdit();
+			}
+		}
+		return null;
+	}
+
+//	@Override
+//	public void finish() {
+//		super.finish();
+//		org.lgna.croquet.steps.TransactionManager.finish( this.getModel() );
+//	}
+//	
+//	@Override
+//	public void commitAndInvokeDo(Edit edit) {
+//		super.commitAndInvokeDo( edit );
+//		org.lgna.croquet.steps.TransactionManager.commit( edit );
+//	}
+//	@Override
+//	public void cancel() {
+//		super.cancel();
+//		org.lgna.croquet.steps.TransactionManager.cancel( this.getModel() );
+//	}
 }

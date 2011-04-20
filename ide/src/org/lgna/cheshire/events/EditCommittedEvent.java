@@ -51,4 +51,7 @@ public class EditCommittedEvent implements Event {
 	public EditCommittedEvent( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		this.edit = edit;
 	}
+	public edu.cmu.cs.dennisc.croquet.Edit< ? > getEdit() {
+		return this.edit;
+	}
 }

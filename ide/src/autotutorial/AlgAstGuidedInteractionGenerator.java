@@ -157,7 +157,7 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 		return rv;
 	}
 
-	private static <M extends edu.cmu.cs.dennisc.croquet.Model> edu.cmu.cs.dennisc.croquet.ModelContext< M > addEdit( edu.cmu.cs.dennisc.croquet.ModelContext< M > rv, edu.cmu.cs.dennisc.croquet.Edit< M > edit ) {
+	private static <M extends edu.cmu.cs.dennisc.croquet.CompletionModel> edu.cmu.cs.dennisc.croquet.CompletionContext< M > addEdit( edu.cmu.cs.dennisc.croquet.CompletionContext< M > rv, edu.cmu.cs.dennisc.croquet.Edit< M > edit ) {
 		edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = new edu.cmu.cs.dennisc.croquet.CommitEvent( edit );
 		rv.addChild( commitEvent );
 		edit.setContext( rv );

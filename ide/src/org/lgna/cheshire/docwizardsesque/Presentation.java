@@ -60,6 +60,7 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 	}
 
 	private final edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
+	private final javax.swing.JTree jTree;
 	private final BookTreeModel bookTreeModel;
 	public Presentation( 
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
@@ -76,6 +77,37 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 		this.frame.setLocation( 1400, 0 );
 		this.frame.setSize( 240, 800 );
 		
+		this.frame.addWindowListener( new java.awt.event.WindowListener() {
+
+			public void windowOpened( java.awt.event.WindowEvent e ) {
+				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					public void run() {
+						Presentation.this.startListening();
+					}
+				} );
+			}
+
+			public void windowClosing( java.awt.event.WindowEvent e ) {
+			}
+
+			public void windowClosed( java.awt.event.WindowEvent e ) {
+				Presentation.this.stopListening();
+			}
+
+			public void windowIconified( java.awt.event.WindowEvent e ) {
+			}
+
+			public void windowDeiconified( java.awt.event.WindowEvent e ) {
+			}
+
+			public void windowActivated( java.awt.event.WindowEvent e ) {
+			}
+
+			public void windowDeactivated( java.awt.event.WindowEvent e ) {
+			}
+			
+		} );
+		
 		edu.cmu.cs.dennisc.croquet.BorderPanel contentPanel = this.frame.getContentPanel();
 		
 		edu.cmu.cs.dennisc.croquet.FlowPanel flowPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel();
@@ -85,21 +117,32 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 		contentPanel.addComponent( flowPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
 
 		this.bookTreeModel = new BookTreeModel( this.getBook() );
-		javax.swing.JTree jTree = new javax.swing.JTree( this.bookTreeModel );
+		this.jTree = new javax.swing.JTree( this.bookTreeModel );
 		for( int i = 0; i < jTree.getRowCount(); i++ ) {
-			jTree.expandRow( i );
+			this.jTree.expandRow( i );
 		}
-		jTree.setCellRenderer( new BookTreeCellRenderer() );
-		jTree.setRootVisible( false );
+		this.jTree.setSelectionRow( 0 );
+		this.jTree.setCellRenderer( new BookTreeCellRenderer() );
+		this.jTree.setRootVisible( false );
 		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( new edu.cmu.cs.dennisc.croquet.SwingAdapter( jTree ) );
 		contentPanel.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-//		contentPanel.getAwtComponent().add( new javax.swing.JScrollPane( jTree ), java.awt.BorderLayout.CENTER );
 	}
 	@Override
 	protected void handleTransactionCanceled( org.lgna.croquet.steps.Transaction transaction ) {
 		this.restoreHistoryIndicesDueToCancel();
 	}
 	private boolean isIgnoringEvents;
+	
+	private final void handlePotentialReplacementEdit( org.lgna.cheshire.TransactionChapter transactionChapter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidateEdit ) {
+		edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = transactionChapter.getTransaction().getEdit();
+		edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidateEdit, this.getUserInformation() );
+		if( replacementAcceptability.isAcceptable() ) {
+			transactionChapter.setReplacementAcceptability( replacementAcceptability );
+			this.incrementSelectedIndex();
+		} else {
+			edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "you have strayed off course" );
+		}
+	}
 	@Override
 	protected void handleEvent( org.lgna.cheshire.events.Event event ) {
 		if( isIgnoringEvents ) {
@@ -107,28 +150,28 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 		} else {
 			org.lgna.cheshire.Book book = getBook();
 			org.lgna.cheshire.Chapter chapter = book.getSelectedChapter();
-//			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
-//			chapterPage.adjustIfNecessary( event );
-//			if( chapterPage.isWhatWeveBeenWaitingFor( event ) ) {
-//				nextOperation.setEnabled( true );
-//				if( chapterPage.isAutoAdvanceDesired() ) {
-//					javax.swing.SwingUtilities.invokeLater(new Runnable() {
-//						public void run() {
-//							isIgnoring = true;
-//							try {
-//								nextOperation.fire();
-//							} finally {
-//								isIgnoringEvents = false;
-//							}
-//						}
-//					} );
-//				}
-//			}
+			if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
+				org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
+				if( event instanceof org.lgna.cheshire.events.EditCommittedEvent ) {
+					org.lgna.cheshire.events.EditCommittedEvent editCommittedEvent = (org.lgna.cheshire.events.EditCommittedEvent)event;
+					edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidateEdit = editCommittedEvent.getEdit();
+					org.lgna.croquet.steps.CompletionStep< ? > completionStep = replacementCandidateEdit.getCompletionStep();
+					org.lgna.croquet.steps.Transaction transaction = completionStep.getParent();
+					org.lgna.croquet.steps.TransactionHistory transactionHistory = transaction.getParent();
+					if( transactionHistory.getParent() != null ) {
+						//pass
+					} else {
+						this.handlePotentialReplacementEdit( transactionChapter, replacementCandidateEdit );
+					}
+				}
+			}
 		}
 	}
 	@Override
 	protected void handleChapterChanged( org.lgna.cheshire.Chapter chapter ) {
 		super.handleChapterChanged( chapter );
+		javax.swing.tree.TreePath treePath = new javax.swing.tree.TreePath( new Object[] { this.getBook(), chapter } );
+		this.jTree.setSelectionPath( treePath );
 	}
 	
 	@Override
