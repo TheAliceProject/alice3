@@ -41,29 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.cheshire.docwizardsesque;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropNoteUtilities {
-	private DropNoteUtilities() {
-		throw new AssertionError();
-	}
-	public static boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.steps.DropStep dropStep, org.lgna.cheshire.events.Event event ) {
-		if( event instanceof org.lgna.cheshire.events.DropPendedEvent ) {
-			org.lgna.cheshire.events.DropPendedEvent dropPendedEvent = (org.lgna.cheshire.events.DropPendedEvent)event;
-			return dropPendedEvent.getDropSite().equals( dropStep.getDropSite() );
-		} else {
-			return false;
+public class BookTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer< Object > {
+	@Override
+	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		if( value instanceof org.lgna.cheshire.TransactionChapter ) {
+			org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)value;
+			org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
+			int i = transaction.getParent().getIndexOfTransaction( transaction );
+			rv.setText( "<html>[" + i + "] <strong>" + transactionChapter.getTitle() + "</strong></html>");
+			rv.setIcon( null );
+		} else if( value instanceof org.lgna.croquet.steps.Step< ? > ) {
+			org.lgna.croquet.steps.Step< ? > step = (org.lgna.croquet.steps.Step< ? >)value;
+			edu.cmu.cs.dennisc.croquet.Edit< ? > edit = step.getParent().getEdit();
+			rv.setText( "<html>" + step.getTutorialNoteText( edit, null ) + "</html>" );
+//			if( step instanceof org.lgna.croquet.steps.CompletionStep< ? > ) {
+//				org.lgna.croquet.steps.CompletionStep< ? > completionStep = (org.lgna.croquet.steps.CompletionStep< ? >)step;
+//				String name;
+//				if( completionStep.isPending() ) {
+//					name = "pending";
+//				} else {
+//					if( completionStep.isSuccessfullyCompleted() ) {
+//						name = "completed";
+//					} else {
+//						name = "canceled";
+//					}
+//				}
+//				rv.setIcon( new javax.swing.ImageIcon( org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.class.getResource( "images/" + name + ".png" ) ) );
+//			}
 		}
-	}
-	public static org.lgna.stencil.Feature createHole( org.lgna.croquet.steps.DropStep dropStep ) {
-		org.lgna.cheshire.stencil.features.Hole rv = new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( dropStep ), org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH );
-		rv.setHeightConstraint( 64 );
-		return rv;			
-	}
-	public static org.lgna.stencil.Feature createPreviewHole( org.lgna.croquet.steps.DropStep dropStep ) {
-		return new org.lgna.cheshire.stencil.features.DropPreviewHole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( dropStep ), null );
+		return rv;
 	}
 }

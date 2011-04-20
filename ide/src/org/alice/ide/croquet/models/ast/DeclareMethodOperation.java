@@ -64,16 +64,16 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 
 	@Override
 	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-		if( successfulCompletionEvent != null ) {
-			org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
+//		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+//		if( successfulCompletionEvent != null ) {
+			org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
 			assert declareMethodEdit != null;
 			assert declareMethodEdit.getMethod() != null;
 			rv.append( "Declare " );
 			rv.append( this.getMethodDescription( userInformation ) );
 			rv.append( " named " );
 			rv.append( declareMethodEdit.getMethod().getName() );
-		}
+//		}
 		return rv;
 	}
 	

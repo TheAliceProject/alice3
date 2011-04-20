@@ -289,6 +289,19 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 			return this.getPrepStepAt( index );
 		}
 	}
+	public int getIndexOfChildStep( Step<?> step ) {
+		if( step instanceof PrepStep< ? > ) {
+			PrepStep< ? > prepStep = (PrepStep< ? >)step;
+			return this.getIndexOfPrepStep( prepStep );
+		} else {
+			if( step == this.completionStep ) {
+				return this.prepSteps.size();
+			} else {
+				return -1;
+			}
+		}
+	}	
+	
 	
 	public Iterable< PrepStep<?> > getPrepSteps() {
 		return this.prepSteps;

@@ -41,29 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.cheshire.docwizardsesque;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropNoteUtilities {
-	private DropNoteUtilities() {
-		throw new AssertionError();
+public class DoSingleStepOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+	private static class SingletonHolder {
+		private static DoSingleStepOperation instance = new DoSingleStepOperation();
 	}
-	public static boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.steps.DropStep dropStep, org.lgna.cheshire.events.Event event ) {
-		if( event instanceof org.lgna.cheshire.events.DropPendedEvent ) {
-			org.lgna.cheshire.events.DropPendedEvent dropPendedEvent = (org.lgna.cheshire.events.DropPendedEvent)event;
-			return dropPendedEvent.getDropSite().equals( dropStep.getDropSite() );
-		} else {
-			return false;
-		}
+	public static DoSingleStepOperation getInstance() {
+		return SingletonHolder.instance;
 	}
-	public static org.lgna.stencil.Feature createHole( org.lgna.croquet.steps.DropStep dropStep ) {
-		org.lgna.cheshire.stencil.features.Hole rv = new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( dropStep ), org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH );
-		rv.setHeightConstraint( 64 );
-		return rv;			
+	private DoSingleStepOperation() {
+		super( Presentation.IMPLEMENTATION_GROUP, java.util.UUID.fromString( "28eb190f-b082-4329-b54d-62a3e2d9bd7a" ) );
 	}
-	public static org.lgna.stencil.Feature createPreviewHole( org.lgna.croquet.steps.DropStep dropStep ) {
-		return new org.lgna.cheshire.stencil.features.DropPreviewHole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( dropStep ), null );
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 	}
 }

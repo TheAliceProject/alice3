@@ -225,7 +225,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 	private final BookComboBoxModel bookComboBoxModel;
 	private final Stencil stencil;
 
-	private boolean isIgnoring = false;
+	private boolean isIgnoringEvents = false;
 	public Presentation( 
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
 			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
@@ -272,7 +272,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 	}
 	@Override
 	protected void handleTransactionCanceled( org.lgna.croquet.steps.Transaction transaction ) {
-		Presentation.getInstance().restoreHistoryIndicesDueToCancel();
+		this.restoreHistoryIndicesDueToCancel();
 		org.lgna.cheshire.Chapter chapter = this.getBook().getSelectedChapter();
 		if( chapter != null ) {
 			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
@@ -281,7 +281,7 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 	}
 	@Override
 	protected void handleEvent( org.lgna.cheshire.events.Event event ) {
-		if( isIgnoring ) {
+		if( this.isIgnoringEvents ) {
 			//pass
 		} else {
 			org.lgna.cheshire.Book book = getBook();
@@ -293,11 +293,11 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 				if( chapterPage.isAutoAdvanceDesired() ) {
 					javax.swing.SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							isIgnoring = true;
+							Presentation.this.isIgnoringEvents = true;
 							try {
 								nextOperation.fire();
 							} finally {
-								isIgnoring = false;
+								Presentation.this.isIgnoringEvents = false;
 							}
 						}
 					} );
