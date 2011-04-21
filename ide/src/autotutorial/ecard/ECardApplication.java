@@ -13,6 +13,7 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 	protected ECardPanel cardPanel;
 	
 	protected ECardApplication() {
+		singleton = this;
 	}
 
 	private static ECardApplication singleton;
@@ -20,10 +21,10 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		if (singleton == null) {
 			singleton = new ECardApplication();
 		}
-
 		return ECardApplication.singleton;
 	}
-
+	
+	
 	public void initialize(Boolean useRibbon) {
 		this.useRibbon = useRibbon;
 

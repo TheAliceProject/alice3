@@ -51,10 +51,11 @@ public enum UserInformation implements edu.cmu.cs.dennisc.croquet.UserInformatio
 		return java.util.Locale.getDefault();
 	}
 	public org.lgna.cheshire.MessageChapter createMessageChapterIfUnfamiliarWithProgrammingConstruct( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls ) {
-		if( statementCls == edu.cmu.cs.dennisc.alice.ast.CountLoop.class ) {
-			return new org.lgna.cheshire.MessageChapter( "New Concept: Count Loop", "<strong>New Concept: Count Loop</strong><br>Count Loops are useful for perfoming the same action multiple times." );
-		} else {
-			return null;
-		}
+		return null;
+//		if( statementCls == edu.cmu.cs.dennisc.alice.ast.CountLoop.class ) {
+//			return new org.lgna.cheshire.MessageChapter( "New Concept: Count Loop", "<strong>New Concept: Count Loop</strong><br>Count Loops are useful for perfoming the same action multiple times." );
+//		} else {
+//			return null;
+//		}
 	}
 }

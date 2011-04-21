@@ -63,8 +63,15 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 300, 0, 0 ) );
 		} else {
 			final int PAD = 4;
-			frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD + 32, PAD, 0, PAD ) );
-			((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, PAD, PAD, PAD ) );
+			javax.swing.JMenuBar jMenuBar = frame.getJMenuBar();
+			int y;
+			if( jMenuBar != null ) {
+				jMenuBar.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD + 32, PAD, 0, PAD ) );
+				y = 0;
+			} else {
+				y = PAD + 32;
+			}
+			((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder( y, PAD, PAD, PAD ) );
 		}
 		return layeredPane;
 	}
