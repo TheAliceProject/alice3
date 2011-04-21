@@ -46,7 +46,7 @@ package org.lgna.cheshire;
  * @author Dennis Cosgrove
  */
 public abstract class Presentation {
-	private static edu.cmu.cs.dennisc.croquet.Group COMPLETION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "d2f09b36-fb08-425d-825c-0075284e095b" ), "COMPLETION_GROUP" );
+	public static edu.cmu.cs.dennisc.croquet.Group COMPLETION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "d2f09b36-fb08-425d-825c-0075284e095b" ), "COMPLETION_GROUP" );
 
 	private static Presentation instance;
 	public static Presentation getInstance() {

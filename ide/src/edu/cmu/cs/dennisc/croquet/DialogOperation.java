@@ -84,6 +84,9 @@ public abstract class DialogOperation< C extends DialogOperationContext<?> > ext
 		return true;
 	}
 	
+	protected void handleClosing() {
+	}
+	
 	@Override
 	protected final void perform( final C context ) {
 		ViewController<?,?> viewController = context.getViewController();
@@ -146,6 +149,7 @@ public abstract class DialogOperation< C extends DialogOperationContext<?> > ext
 				this.activeDialog = dialog;
 				try {
 					dialog.setVisible( true );
+					this.handleClosing();
 					this.releaseContentPane( context, dialog, contentPane );
 					dialog.removeWindowListener( windowListener );
 					dialog.getAwtComponent().dispose();

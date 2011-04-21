@@ -49,12 +49,20 @@ public abstract class PlainDialogOperation extends DialogOperation<PlainDialogOp
 	public PlainDialogOperation(Group group, java.util.UUID id) {
 		super(group, id);
 	}
+	private PlainDialogCloseOperation closeOperation = new PlainDialogCloseOperation( this );
+	public synchronized PlainDialogCloseOperation getCloseOperation() {
+		return this.closeOperation;
+	}
 	@Override
 	public PlainDialogOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushDialogOperationContext( this, e, viewController );
 	}
-	
 	public String getTutorialCloseNoteText( PlainDialogOperationContext dialogOperationContext, UserInformation userInformation ) {
 		return "When finished press the <strong>Close</strong> button.";
+	}
+	@Override
+	protected void handleClosing() {
+		this.closeOperation.fire();
+		super.handleClosing();
 	}
 }

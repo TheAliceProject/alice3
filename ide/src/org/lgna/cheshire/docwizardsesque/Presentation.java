@@ -54,11 +54,6 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 	protected org.lgna.cheshire.Chapter createChapter(org.lgna.croquet.steps.Transaction transaction) {
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
-	private static Presentation instance;
-	public static Presentation getInstance() {
-		return instance;
-	}
-
 	private final edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
 	private final javax.swing.JTree jTree;
 	private final BookTreeModel bookTreeModel;
@@ -69,9 +64,6 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess
 	) {
 		super( userInformation, org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, filterer, groupsTrackedForRandomAccess );
-		
-		assert instance == null;
-		instance = this;
 		
 		this.frame.setTitle( "DocWizardsesque" );
 		this.frame.setLocation( 1400, 0 );
@@ -131,12 +123,17 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 	
 	private final void handlePotentialReplacementEdit( org.lgna.cheshire.TransactionChapter transactionChapter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidateEdit ) {
 		edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = transactionChapter.getTransaction().getEdit();
-		edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidateEdit, this.getUserInformation() );
-		if( replacementAcceptability.isAcceptable() ) {
-			transactionChapter.setReplacementAcceptability( replacementAcceptability );
-			this.incrementSelectedIndex();
+		edu.cmu.cs.dennisc.croquet.Group group = replacementCandidateEdit.getGroup();
+		if( group == Presentation.IMPLEMENTATION_GROUP || group == org.lgna.cheshire.Presentation.COMPLETION_GROUP ) {
+			//pass
 		} else {
-			edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "you have strayed off course" );
+			edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidateEdit, this.getUserInformation() );
+			if( replacementAcceptability.isAcceptable() ) {
+				transactionChapter.setReplacementAcceptability( replacementAcceptability );
+				this.incrementSelectedIndex();
+			} else {
+				edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "you have strayed off course" );
+			}
 		}
 	}
 	@Override
@@ -157,7 +154,12 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 					if( transactionHistory.getParent() != null ) {
 						//pass
 					} else {
-						this.handlePotentialReplacementEdit( transactionChapter, replacementCandidateEdit );
+						try { 
+							isIgnoringEvents = true;
+							this.handlePotentialReplacementEdit( transactionChapter, replacementCandidateEdit );
+						} finally {
+							isIgnoringEvents = false;
+						}
 					}
 				}
 			}

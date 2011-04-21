@@ -201,6 +201,11 @@ public class ContextManager {
 		TransactionManager.addDialogOperationStep( dialogOperation );
 		return pushContext( new PlainDialogOperationContext(dialogOperation, e, viewController) );
 	}
+	/*package-private*/ static PlainDialogCloseOperationContext createAndPushPlainDialogCloseOperationContext(PlainDialogCloseOperation dialogCloseOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		prePushContextForPossibleStringStateCleanUp();
+		TransactionManager.addPlainDialogCloseOperationStep( dialogCloseOperation );
+		return pushContext( new PlainDialogCloseOperationContext(dialogCloseOperation, e, viewController) );
+	}
 	/*package-private*/ static <J extends Component<?>> InformationDialogOperationContext<J> createAndPushInformationDialogOperationContext(InformationDialogOperation<J> informationDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return pushContext( new InformationDialogOperationContext<J>(informationDialogOperation, e, viewController) );
 	}
@@ -212,7 +217,6 @@ public class ContextManager {
 	/*package-private*/ static WizardDialogOperationContext createAndPushWizardDialogOperationContext(WizardDialogOperation wizardDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return pushContext( new WizardDialogOperationContext(wizardDialogOperation, e, viewController) );
 	}
-	
 	/*package-private*/ static StandardPopupOperationContext createAndPushStandardPopupOperationContext(StandardPopupOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		prePushContextForPossibleStringStateCleanUp();
 		TransactionManager.addStandardPopupOperationPrepStep( popupMenuOperation );

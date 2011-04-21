@@ -161,6 +161,10 @@ public class TransactionManager {
 		Transaction transaction = getActiveTransaction();
 		return PlainDialogOperationStep.createAndAddToTransaction( transaction, model );
 	}
+	public static PlainDialogCloseOperationStep addPlainDialogCloseOperationStep( edu.cmu.cs.dennisc.croquet.PlainDialogCloseOperation model ) {
+		Transaction transaction = getActiveTransaction();
+		return PlainDialogCloseOperationStep.createAndAddToTransaction( transaction, model );
+	}
 	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InputDialogOperationStep<J> addInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperation< J > model ) {
 		Transaction transaction = getActiveTransaction();
 		return InputDialogOperationStep.createAndAddToTransaction( transaction, model );

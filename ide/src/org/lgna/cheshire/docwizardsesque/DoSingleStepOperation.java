@@ -58,5 +58,10 @@ public class DoSingleStepOperation extends edu.cmu.cs.dennisc.croquet.ActionOper
 	}
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		org.lgna.cheshire.Chapter chapter = Presentation.getInstance().getBook().getSelectedChapter();
+		if( chapter != null ) {
+			chapter.complete( org.lgna.cheshire.Presentation.COMPLETION_GROUP );
+		}
+//		Presentation.getInstance().incrementSelectedIndex();
 	}
 }

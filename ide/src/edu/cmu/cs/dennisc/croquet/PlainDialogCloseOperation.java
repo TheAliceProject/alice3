@@ -41,14 +41,51 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationNote< S extends org.lgna.croquet.steps.OperationStep<?> > extends CompletionNote< S > {
-	public OperationNote( S step ) {
-		super( step );
-		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+public class PlainDialogCloseOperation extends SingleThreadOperation< PlainDialogCloseOperationContext > {
+	private static final Group DIALOG_CLOSE_OPERATION_GROUP = Group.getInstance( java.util.UUID.fromString( "e9b1fda4-6668-4d23-980d-ab1610ffd2d0" ), "DIALOG_CLOSE_OPERATION_GROUP" );
+	private final PlainDialogOperation plainDialogOperation;
+	/*package-private*/ PlainDialogCloseOperation( PlainDialogOperation plainDialogOperation ) {
+		super( DIALOG_CLOSE_OPERATION_GROUP, java.util.UUID.fromString( "2a116435-9536-4590-8294-c4050ea65a4e" ) );
+		assert plainDialogOperation != null;
+		this.plainDialogOperation = plainDialogOperation;
+	}
+	public static class PlainDialogCloseOperationResolver implements CodableResolver< PlainDialogCloseOperation > {
+		private PlainDialogCloseOperation model;
+		
+		public PlainDialogCloseOperationResolver( PlainDialogCloseOperation model ) {
+			this.model = model;
+		}
+		public PlainDialogCloseOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			this.decode( binaryDecoder );
+		}
+		public PlainDialogCloseOperation getResolved() {
+			return this.model;
+		}
+		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			CodableResolver<PlainDialogOperation> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			PlainDialogOperation plainDialogOperation = resolver.getResolved();
+			this.model = plainDialogOperation.getCloseOperation();
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			CodableResolver<PlainDialogOperation> resolver = this.model.plainDialogOperation.getCodableResolver();
+			binaryEncoder.encode( resolver );
+		}
+	}
+	@Override
+	protected PlainDialogCloseOperationResolver createCodableResolver() {
+		return new PlainDialogCloseOperationResolver( this );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.PlainDialogCloseOperationContext createAndPushContext( java.util.EventObject e, edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > viewController ) {
+		return ContextManager.createAndPushPlainDialogCloseOperationContext( this, e, viewController );
+	}
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.PlainDialogCloseOperationContext context ) {
+		context.finish();
 	}
 }

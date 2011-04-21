@@ -211,8 +211,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //			guidedInteraction = new uist.tutorial.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory );
 //		}
 //		guidedInteraction.setOriginalRoot( this.originalContext );
-		//final org.lgna.cheshire.stencil.Presentation presentation = new uist.tutorial.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, filterer, IS_OPTIMIZED_FOR_BUG_REPRO );
-		final org.lgna.cheshire.docwizardsesque.Presentation presentation = new org.lgna.cheshire.docwizardsesque.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+		final org.lgna.cheshire.stencil.Presentation presentation = new uist.tutorial.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, filterer, IS_OPTIMIZED_FOR_BUG_REPRO );
+		//final org.lgna.cheshire.docwizardsesque.Presentation presentation = new org.lgna.cheshire.docwizardsesque.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
 		
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );

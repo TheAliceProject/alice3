@@ -41,14 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationNote< S extends org.lgna.croquet.steps.OperationStep<?> > extends CompletionNote< S > {
-	public OperationNote( S step ) {
-		super( step );
-		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+public class PlainDialogCloseOperationStep extends OperationStep< edu.cmu.cs.dennisc.croquet.PlainDialogCloseOperation > {
+	public static PlainDialogCloseOperationStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.PlainDialogCloseOperation model ) {
+		return new PlainDialogCloseOperationStep( parent, model );
+	}
+	private PlainDialogCloseOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.PlainDialogCloseOperation model ) {
+		super( parent, model, null );
+	}
+	public PlainDialogCloseOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

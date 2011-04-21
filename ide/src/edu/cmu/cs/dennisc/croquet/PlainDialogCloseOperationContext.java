@@ -41,14 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationNote< S extends org.lgna.croquet.steps.OperationStep<?> > extends CompletionNote< S > {
-	public OperationNote( S step ) {
-		super( step );
-		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+public class PlainDialogCloseOperationContext extends SingleThreadOperationContext<PlainDialogCloseOperation> {
+	/*package-private*/ PlainDialogCloseOperationContext( PlainDialogCloseOperation model, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( model, e, viewController );
+	}
+	public PlainDialogCloseOperationContext( PlainDialogCloseOperation actionOperation ) {
+		this( actionOperation, null, null );
+	}
+	public PlainDialogCloseOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }
