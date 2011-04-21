@@ -54,6 +54,7 @@ public abstract class Presentation {
 	}
 
 	private final edu.cmu.cs.dennisc.croquet.UserInformation userInformation;
+	private final Recoverer recoverer;
 	private final Book book;
 	private boolean isResultOfNextOperation = false;
 
@@ -90,12 +91,13 @@ public abstract class Presentation {
 
 	private final edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
-	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, Filterer filterer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, Filterer filterer, Recoverer recoverer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
 		
 		assert instance == null;
 		instance = this;
 
 		this.userInformation = userInformation;
+		this.recoverer = recoverer;
 		this.book = this.generateDraft( accessPolicy, originalTransactionHistory );
 		filterer.filter( this.book.listIterator(), userInformation );
 		final int N = groupsTrackedForRandomAccess.length;
@@ -225,7 +227,6 @@ public abstract class Presentation {
 		this.book.retargetForward( this.retargeter );
 	}
 	
-	protected abstract java.util.List< org.lgna.croquet.steps.Transaction > addTransactionsToGetIntoTheRightStateWhenNoViewControllerCanBeFound( java.util.List< org.lgna.croquet.steps.Transaction > rv );
 	public void setSelectedIndex( int index ) {
 		this.book.setSelectedIndex( index );
 	}

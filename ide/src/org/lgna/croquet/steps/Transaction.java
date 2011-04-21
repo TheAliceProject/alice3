@@ -96,7 +96,7 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	private TransactionHistory parent;
 	private final java.util.List< PrepStep<?> > prepSteps;
 	private CompletionStep<?> completionStep;
-	/*package-private*/ Transaction( TransactionHistory parent ) {
+	public Transaction( TransactionHistory parent ) {
 		this.setParent( parent );
 		this.prepSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.completionStep = null;

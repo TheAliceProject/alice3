@@ -45,7 +45,7 @@ package org.lgna.cheshire.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Presentation extends org.lgna.cheshire.Presentation {
+public class Presentation extends org.lgna.cheshire.Presentation {
 	/*package-private*/static edu.cmu.cs.dennisc.croquet.Group IMPLEMENTATION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "e582737d-b56b-4105-93d2-581853e193e2" ), "IMPLEMENTATION_GROUP" );
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
@@ -230,12 +230,13 @@ public abstract class Presentation extends org.lgna.cheshire.Presentation {
 			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
 			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
 			org.lgna.cheshire.Filterer filterer,
+			org.lgna.cheshire.Recoverer recoverer,
 			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess, 
 			org.lgna.stencil.MenuPolicy menuPolicy, 
 			org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, 
 			boolean isOptimizedForBugRepro 
 	) {
-		super( userInformation, transactionAccessPolicy, originalTransactionHistory, filterer, groupsTrackedForRandomAccess );
+		super( userInformation, transactionAccessPolicy, originalTransactionHistory, filterer, recoverer, groupsTrackedForRandomAccess );
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
 		this.stencil = new Stencil( menuPolicy, scrollingRequiredRenderer, isOptimizedForBugRepro );
 		this.isInterceptingEvents.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {

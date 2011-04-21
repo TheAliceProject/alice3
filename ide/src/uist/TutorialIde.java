@@ -211,8 +211,28 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //			guidedInteraction = new uist.tutorial.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory );
 //		}
 //		guidedInteraction.setOriginalRoot( this.originalContext );
-		final org.lgna.cheshire.stencil.Presentation presentation = new uist.tutorial.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, filterer, IS_OPTIMIZED_FOR_BUG_REPRO );
-		//final org.lgna.cheshire.docwizardsesque.Presentation presentation = new org.lgna.cheshire.docwizardsesque.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+		Recoverer recoverer = new Recoverer();
+		
+		final org.lgna.cheshire.stencil.Presentation presentation = new org.lgna.cheshire.stencil.Presentation( 
+				UserInformation.INSTANCE, 
+				
+				//edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP,
+				org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS,
+
+				this.originalTransactionHistory, 
+				filterer,
+				recoverer,
+				
+				new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
+				
+//				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
+				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
+//				org.lgna.stencil.MenuPolicy.BELOW_STENCIL,
+				
+				org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
+				IS_OPTIMIZED_FOR_BUG_REPRO 
+		);
+		//final org.lgna.cheshire.docwizardsesque.Presentation presentation = new org.lgna.cheshire.docwizardsesque.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
 		
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );

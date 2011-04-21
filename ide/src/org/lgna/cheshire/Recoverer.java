@@ -40,28 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package uist.bugrepro;
+
+package org.lgna.cheshire;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Presentation extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction {
-	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		super( 
-			userInformation,
-			edu.cmu.cs.dennisc.cheshire.MenuPolicy.BELOW_STENCIL,
-			edu.cmu.cs.dennisc.cheshire.StepAccessPolicy.ALLOW_ACCESS_TO_ALL_STEPS,
-			edu.cmu.cs.dennisc.tutorial.DefaultScrollingRequiredRenderer.INSTANCE,
-			true,
-			new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP }
-		);
-	}
-	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.cheshire.RetargetableNote > addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( 
-			java.util.List< edu.cmu.cs.dennisc.cheshire.RetargetableNote > rv,
-			edu.cmu.cs.dennisc.cheshire.ParentContextCriterion parentContextCriterion, 
-			edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext ) {
-		
-		return rv;
-	}
+public interface Recoverer {
+	public org.lgna.croquet.steps.Transaction createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( org.lgna.croquet.steps.Transaction transaction );
 }

@@ -61,9 +61,10 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
 			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
 			org.lgna.cheshire.Filterer filterer,
+			org.lgna.cheshire.Recoverer recoverer,
 			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess
 	) {
-		super( userInformation, org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, filterer, groupsTrackedForRandomAccess );
+		super( userInformation, org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, filterer, recoverer, groupsTrackedForRandomAccess );
 		
 		this.frame.setTitle( "DocWizardsesque" );
 		this.frame.setLocation( 1400, 0 );
@@ -170,11 +171,6 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 		super.handleChapterChanged( chapter );
 		javax.swing.tree.TreePath treePath = new javax.swing.tree.TreePath( new Object[] { this.getBook(), chapter } );
 		this.jTree.setSelectionPath( treePath );
-	}
-	
-	@Override
-	protected java.util.List< org.lgna.croquet.steps.Transaction > addTransactionsToGetIntoTheRightStateWhenNoViewControllerCanBeFound( java.util.List< org.lgna.croquet.steps.Transaction > rv ) {
-		return null;
 	}
 	
 	public void setVisible( boolean isVisible ) {
