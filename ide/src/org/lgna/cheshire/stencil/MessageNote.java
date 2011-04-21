@@ -59,4 +59,8 @@ public class MessageNote extends Note {
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
 		return false;
 	}
+	@Override
+	public boolean isGoodToGo() {
+		return true;
+	}
 }

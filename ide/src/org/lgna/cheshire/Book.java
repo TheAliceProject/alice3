@@ -85,6 +85,10 @@ public class Book {
 	public int getChapterCount() {
 		return this.chapters.size();
 	}
+	
+	public void addChapter( int index, Chapter chapter ) {
+		this.chapters.add( index, chapter );
+	}
 
 	public int getSelectedIndex() {
 		return this.selectedIndex;
@@ -144,7 +148,7 @@ public class Book {
 				edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate, userInformation );
 				if( replacementAcceptability.isAcceptable() ) {
 					transactionChapter.setReplacementAcceptability( replacementAcceptability );
-					edu.cmu.cs.dennisc.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.Presentation.getInstance().getRetargeter();
+					edu.cmu.cs.dennisc.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getRetargeter();
 					originalEdit.addKeyValuePairs( retargeter, replacementCandidate );
 					this.retargetForward( retargeter );
 				}

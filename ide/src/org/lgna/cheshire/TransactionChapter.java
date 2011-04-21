@@ -61,11 +61,11 @@ public class TransactionChapter extends Chapter {
 	public void complete( edu.cmu.cs.dennisc.croquet.Group completionGroup ) {
 		final edu.cmu.cs.dennisc.croquet.Edit<?> originalEdit = this.transaction.getEdit();
 		if( originalEdit != null ) {
-			edu.cmu.cs.dennisc.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.Presentation.getInstance().getRetargeter();
+			edu.cmu.cs.dennisc.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getRetargeter();
 			edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( originalEdit, retargeter );
 			if( replacementEdit != null ) {
 				//todo
-				org.lgna.cheshire.stencil.Presentation.getInstance().retargetAll( retargeter );
+				org.lgna.cheshire.stencil.StencilsPresentation.getInstance().retargetAll( retargeter );
 			}
 		}
 //		for( RetargetableNote note : this.notes ) {

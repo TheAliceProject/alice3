@@ -131,6 +131,9 @@ public abstract class Presentation {
 		this.getBook().removeSelectionObserver( this.selectionObserver );
 	}
 
+	public Recoverer getRecoverer() {
+		return this.recoverer;
+	}
 	protected abstract Chapter createChapter( org.lgna.croquet.steps.Transaction transaction );
 	private Book generateDraft( ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory transactionHistory ) {
 		Book rv = new Book();

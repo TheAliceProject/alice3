@@ -45,7 +45,7 @@ package org.lgna.cheshire.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public class Presentation extends org.lgna.cheshire.Presentation {
+public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 	/*package-private*/static edu.cmu.cs.dennisc.croquet.Group IMPLEMENTATION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "e582737d-b56b-4105-93d2-581853e193e2" ), "IMPLEMENTATION_GROUP" );
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
@@ -99,7 +99,7 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 			this.isOptimizedForBugRepro = isOptimizedForBugRepro;
 			if( this.isOptimizedForBugRepro ) {
 				edu.cmu.cs.dennisc.croquet.LineAxisPanel prevNextPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
-				prevNextPanel.addComponent( Presentation.this.prevOperation.createButton() );
+				prevNextPanel.addComponent( StencilsPresentation.this.prevOperation.createButton() );
 				prevNextPanel.addComponent( NextStepOperation.getInstance().createButton() );
 
 				edu.cmu.cs.dennisc.croquet.BorderPanel controlPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
@@ -111,17 +111,17 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 			} else {
 				edu.cmu.cs.dennisc.croquet.BorderPanel controlsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 				edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel( edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0 );
-				controlPanel.addComponent( Presentation.this.prevOperation.createButton() );
-				controlPanel.addComponent( new BookComboBox( Presentation.this.bookComboBoxModel, this.isAbovePopupMenus() == false ) );
+				controlPanel.addComponent( StencilsPresentation.this.prevOperation.createButton() );
+				controlPanel.addComponent( new BookComboBox( StencilsPresentation.this.bookComboBoxModel, this.isAbovePopupMenus() == false ) );
 				controlPanel.addComponent( NextStepOperation.getInstance().createButton() );
 				controlsPanel.addComponent( controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-				Presentation.this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
+				StencilsPresentation.this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
 
-				edu.cmu.cs.dennisc.croquet.CheckBox isPlayingSoundsCheckBox = Presentation.this.isPlayingSounds.createCheckBox();
+				edu.cmu.cs.dennisc.croquet.CheckBox isPlayingSoundsCheckBox = StencilsPresentation.this.isPlayingSounds.createCheckBox();
 				isPlayingSoundsCheckBox.getAwtComponent().setOpaque( false );
-				edu.cmu.cs.dennisc.croquet.CheckBox isInterceptingEventsCheckBox = Presentation.this.isInterceptingEvents.createCheckBox();
+				edu.cmu.cs.dennisc.croquet.CheckBox isInterceptingEventsCheckBox = StencilsPresentation.this.isInterceptingEvents.createCheckBox();
 				isInterceptingEventsCheckBox.getAwtComponent().setOpaque( false );
-				edu.cmu.cs.dennisc.croquet.CheckBox isPaintingStencilCheckBox = Presentation.this.isPaintingStencil.createCheckBox();
+				edu.cmu.cs.dennisc.croquet.CheckBox isPaintingStencilCheckBox = StencilsPresentation.this.isPaintingStencil.createCheckBox();
 				isPaintingStencilCheckBox.getAwtComponent().setOpaque( false );
 
 				edu.cmu.cs.dennisc.croquet.FlowPanel westPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel( edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0 );
@@ -149,11 +149,11 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 
 		@Override
 		protected org.lgna.stencil.Page getCurrentPage() {
-			return ChapterPage.getInstance( Presentation.this.getBook().getSelectedChapter() );
+			return ChapterPage.getInstance( StencilsPresentation.this.getBook().getSelectedChapter() );
 		}
 		@Override
 		protected boolean isPaintingStencilEnabled() {
-			return Presentation.this.isPaintingStencil.getValue();
+			return StencilsPresentation.this.isPaintingStencil.getValue();
 		}
 
 		private java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {
@@ -201,8 +201,8 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 		@Override
 		protected void handleDisplayable() {
 			super.handleDisplayable();
-			Presentation.this.startListening();
-			Presentation.this.handleChapterChanged( Presentation.this.getBook().getSelectedChapter() );
+			StencilsPresentation.this.startListening();
+			StencilsPresentation.this.handleChapterChanged( StencilsPresentation.this.getBook().getSelectedChapter() );
 			this.addKeyListener( this.keyListener );
 			this.addMouseListener( this.mouseListener );
 		}
@@ -211,7 +211,7 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 		protected void handleUndisplayable() {
 			this.removeMouseListener( this.mouseListener );
 			this.removeKeyListener( this.keyListener );
-			Presentation.this.stopListening();
+			StencilsPresentation.this.stopListening();
 			super.handleUndisplayable();
 		}
 		
@@ -225,7 +225,7 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 	private final Stencil stencil;
 
 	private boolean isIgnoringEvents = false;
-	public Presentation( 
+	public StencilsPresentation( 
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
 			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
 			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
@@ -243,7 +243,7 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 			public void changing( boolean nextValue ) {
 			}
 			public void changed( boolean nextValue ) {
-				Presentation.this.stencil.setEventInterceptEnabled( nextValue );
+				StencilsPresentation.this.stencil.setEventInterceptEnabled( nextValue );
 			}
 		} );
 
@@ -251,9 +251,9 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 			public void changing( boolean nextValue ) {
 			}
 			public void changed( boolean nextValue ) {
-				Presentation.this.stencil.revalidateAndRepaint();
-				Presentation.this.isInterceptingEvents.setValue( nextValue );
-				Presentation.this.isInterceptingEvents.setEnabled( nextValue );
+				StencilsPresentation.this.stencil.revalidateAndRepaint();
+				StencilsPresentation.this.isInterceptingEvents.setValue( nextValue );
+				StencilsPresentation.this.isInterceptingEvents.setEnabled( nextValue );
 			}
 		} );
 
@@ -288,11 +288,11 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 				if( chapterPage.isAutoAdvanceDesired() ) {
 					javax.swing.SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							Presentation.this.isIgnoringEvents = true;
+							StencilsPresentation.this.isIgnoringEvents = true;
 							try {
 								NextStepOperation.getInstance().fire();
 							} finally {
-								Presentation.this.isIgnoringEvents = false;
+								StencilsPresentation.this.isIgnoringEvents = false;
 							}
 						}
 					} );
@@ -306,34 +306,45 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 		java.awt.Cursor cursor = java.awt.Cursor.getDefaultCursor();
 		if( chapter != null ) {
 			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
-			if( chapterPage.isStencilRenderingDesired() ) {
-				cursor = java.awt.dnd.DragSource.DefaultMoveNoDrop;
-			}
-			chapterPage.reset();
-			java.util.UUID transactionId = chapter.getId();
-			edu.cmu.cs.dennisc.croquet.CardPanel.Key key = this.stencil.cardPanel.getKey( transactionId );
-			if( key != null ) {
-				// pass
+			if( chapterPage.isGoodToGo() ) {
+				if( chapterPage.isStencilRenderingDesired() ) {
+					cursor = java.awt.dnd.DragSource.DefaultMoveNoDrop;
+				}
+				chapterPage.reset();
+				java.util.UUID transactionId = chapter.getId();
+				edu.cmu.cs.dennisc.croquet.CardPanel.Key key = this.stencil.cardPanel.getKey( transactionId );
+				if( key != null ) {
+					// pass
+				} else {
+					key = this.stencil.cardPanel.createKey( chapterPage.getCard(), transactionId );
+					this.stencil.cardPanel.addComponent( key );
+				}
+				this.stencil.cardPanel.show( key );
+				this.stencil.revalidateAndRepaint();
+
+				int selectedIndex = this.getBook().getSelectedIndex();
+
+				//				boolean isAutoAdvanceDesired = false;
+				boolean isWaiting = chapterPage.getChapter().isAlreadyInTheDesiredState() == false;
+				if( this.stencil.isOptimizedForBugRepro ) {
+					//pass
+				} else {
+					NextStepOperation.getInstance().setEnabled( 0 <= selectedIndex && selectedIndex < this.getBook().getChapterCount() - 1 && isWaiting == false );
+				}
+				this.prevOperation.setEnabled( 1 <= selectedIndex );
+
+				this.stencil.requestFocus();
+				this.stencil.revalidateAndRepaint();
 			} else {
-				key = this.stencil.cardPanel.createKey( chapterPage.getCard(), transactionId );
-				this.stencil.cardPanel.addComponent( key );
+				org.lgna.croquet.steps.Transaction recoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction() );
+				if( recoveryTransaction != null ) {
+					org.lgna.cheshire.Chapter recoveryChapter = new org.lgna.cheshire.TransactionChapter( recoveryTransaction );
+					this.getBook().addChapter( this.getBook().getSelectedIndex(), recoveryChapter );
+					this.handleChapterChanged( recoveryChapter );
+				} else {
+					edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "unable to recover" );
+				}
 			}
-			this.stencil.cardPanel.show( key );
-			this.stencil.revalidateAndRepaint();
-
-			int selectedIndex = this.getBook().getSelectedIndex();
-
-			//				boolean isAutoAdvanceDesired = false;
-			boolean isWaiting = chapterPage.getChapter().isAlreadyInTheDesiredState() == false;
-			if( this.stencil.isOptimizedForBugRepro ) {
-				//pass
-			} else {
-				NextStepOperation.getInstance().setEnabled( 0 <= selectedIndex && selectedIndex < this.getBook().getChapterCount() - 1 && isWaiting == false );
-			}
-			this.prevOperation.setEnabled( 1 <= selectedIndex );
-
-			this.stencil.requestFocus();
-			this.stencil.revalidateAndRepaint();
 		}
 		this.stencil.setCursor( cursor );
 	}

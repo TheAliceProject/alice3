@@ -89,7 +89,7 @@ public class BookComboBox extends edu.cmu.cs.dennisc.croquet.JComponent< javax.s
 		} else {
 			edu.cmu.cs.dennisc.javax.swing.PopupFactoryUtilities.forceHeavyWeightPopups( rv );
 		}
-		ChapterCellRenderer stepCellRenderer = new ChapterCellRenderer( this.comboBoxModel.getTransactionsModel(), Presentation.CONTROL_COLOR );
+		ChapterCellRenderer stepCellRenderer = new ChapterCellRenderer( this.comboBoxModel.getTransactionsModel(), StencilsPresentation.CONTROL_COLOR );
 		rv.setRenderer( stepCellRenderer );
 		return rv;
 	}

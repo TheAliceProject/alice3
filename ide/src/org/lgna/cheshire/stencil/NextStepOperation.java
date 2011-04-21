@@ -57,7 +57,7 @@ package org.lgna.cheshire.stencil;
 	}
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		Presentation.getInstance().incrementSelectedIndex();
+		StencilsPresentation.getInstance().incrementSelectedIndex();
 		context.finish();
 	}
 }

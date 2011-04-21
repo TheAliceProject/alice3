@@ -46,7 +46,7 @@ package org.lgna.cheshire.docwizardsesque;
 /**
  * @author Dennis Cosgrove
  */
-public class Presentation extends org.lgna.cheshire.Presentation {
+public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation {
 	/*package-private*/static edu.cmu.cs.dennisc.croquet.Group IMPLEMENTATION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "90e2f36f-512c-41e4-8e7b-61e10c95cee6" ), "IMPLEMENTATION_GROUP" );
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
@@ -57,7 +57,7 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 	private final edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
 	private final javax.swing.JTree jTree;
 	private final BookTreeModel bookTreeModel;
-	public Presentation( 
+	public DocWizardsesquePresentation( 
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
 			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
 			org.lgna.cheshire.Filterer filterer,
@@ -73,14 +73,14 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 		this.frame.addWindowListener( new java.awt.event.WindowListener() {
 
 			public void windowOpened( java.awt.event.WindowEvent e ) {
-				Presentation.this.startListening();
+				DocWizardsesquePresentation.this.startListening();
 			}
 
 			public void windowClosing( java.awt.event.WindowEvent e ) {
 			}
 
 			public void windowClosed( java.awt.event.WindowEvent e ) {
-				Presentation.this.stopListening();
+				DocWizardsesquePresentation.this.stopListening();
 			}
 
 			public void windowIconified( java.awt.event.WindowEvent e ) {
@@ -125,7 +125,7 @@ public class Presentation extends org.lgna.cheshire.Presentation {
 	private final void handlePotentialReplacementEdit( org.lgna.cheshire.TransactionChapter transactionChapter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidateEdit ) {
 		edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = transactionChapter.getTransaction().getEdit();
 		edu.cmu.cs.dennisc.croquet.Group group = replacementCandidateEdit.getGroup();
-		if( group == Presentation.IMPLEMENTATION_GROUP || group == org.lgna.cheshire.Presentation.COMPLETION_GROUP ) {
+		if( group == DocWizardsesquePresentation.IMPLEMENTATION_GROUP || group == org.lgna.cheshire.Presentation.COMPLETION_GROUP ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidateEdit, this.getUserInformation() );

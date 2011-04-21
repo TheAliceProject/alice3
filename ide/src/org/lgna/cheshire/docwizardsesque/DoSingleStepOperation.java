@@ -54,11 +54,11 @@ public class DoSingleStepOperation extends edu.cmu.cs.dennisc.croquet.ActionOper
 		return SingletonHolder.instance;
 	}
 	private DoSingleStepOperation() {
-		super( Presentation.IMPLEMENTATION_GROUP, java.util.UUID.fromString( "28eb190f-b082-4329-b54d-62a3e2d9bd7a" ) );
+		super( DocWizardsesquePresentation.IMPLEMENTATION_GROUP, java.util.UUID.fromString( "28eb190f-b082-4329-b54d-62a3e2d9bd7a" ) );
 	}
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		org.lgna.cheshire.Chapter chapter = Presentation.getInstance().getBook().getSelectedChapter();
+		org.lgna.cheshire.Chapter chapter = DocWizardsesquePresentation.getInstance().getBook().getSelectedChapter();
 		if( chapter != null ) {
 			chapter.complete( org.lgna.cheshire.Presentation.COMPLETION_GROUP );
 		}

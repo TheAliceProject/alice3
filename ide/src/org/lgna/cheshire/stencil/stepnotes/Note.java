@@ -58,7 +58,7 @@ public abstract class Note<S extends org.lgna.croquet.steps.Step<?>> extends org
 	protected String getText() {
 		org.lgna.croquet.steps.Transaction transaction = this.step.getParent();
 		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
-		edu.cmu.cs.dennisc.croquet.UserInformation userInformation = org.lgna.cheshire.stencil.Presentation.getInstance().getUserInformation();
+		edu.cmu.cs.dennisc.croquet.UserInformation userInformation = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getUserInformation();
 		return this.step.getTutorialNoteText( edit, userInformation );
 	}
 	@Override

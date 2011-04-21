@@ -88,6 +88,10 @@ public abstract class Feature {
 		this.trackableShapeResolver = trackableShapeResolver;
 		this.connectionPreference = connectionPreference;
 	}
+	
+	public boolean isGoodToGo() {
+		return this.trackableShapeResolver.getResolved() != null;
+	}	
 	protected abstract boolean isPathRenderingDesired();
 	
 	public java.awt.Rectangle getBoundsForRepaint( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
@@ -233,29 +237,31 @@ public abstract class Feature {
 				java.awt.Rectangle containerBounds = container.getLocalBounds();
 				java.awt.Rectangle noteBounds = note.getBounds( container );
 				java.awt.Rectangle featureComponentBounds = shape.getBounds();
-				final int x = featureComponentBounds.x - noteBounds.x;
-				final int y = featureComponentBounds.y - noteBounds.y;
+				if( noteBounds != null && featureComponentBounds != null ) {
+					final int x = featureComponentBounds.x - noteBounds.x;
+					final int y = featureComponentBounds.y - noteBounds.y;
 
-				Feature.ConnectionPreference connectionPreference = this.getConnectionPreference();
-				if( connectionPreference == Feature.ConnectionPreference.EAST_WEST ) {
-					if( x >= 32 ) {
-						actualConnection = Feature.Connection.WEST;
-					} else {
-						if( x <= ( containerBounds.width - noteBounds.width - 32 ) ) {
-							actualConnection = Feature.Connection.EAST;
+					Feature.ConnectionPreference connectionPreference = this.getConnectionPreference();
+					if( connectionPreference == Feature.ConnectionPreference.EAST_WEST ) {
+						if( x >= 32 ) {
+							actualConnection = Feature.Connection.WEST;
+						} else {
+							if( x <= ( containerBounds.width - noteBounds.width - 32 ) ) {
+								actualConnection = Feature.Connection.EAST;
+							}
 						}
 					}
-				}
-				if( actualConnection != null ) {
-					//pass
-				} else {
-					if( y >= 32 ) {
-						actualConnection = Feature.Connection.NORTH;
+					if( actualConnection != null ) {
+						//pass
 					} else {
-						if( y <= ( containerBounds.height - noteBounds.height - 32 ) ) {
-							actualConnection = Feature.Connection.SOUTH;
+						if( y >= 32 ) {
+							actualConnection = Feature.Connection.NORTH;
 						} else {
-							actualConnection = Connection.WEST;
+							if( y <= ( containerBounds.height - noteBounds.height - 32 ) ) {
+								actualConnection = Feature.Connection.SOUTH;
+							} else {
+								actualConnection = Connection.WEST;
+							}
 						}
 					}
 				}

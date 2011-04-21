@@ -59,7 +59,7 @@ public class BookList extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing
 	@Override
 	protected javax.swing.JList createAwtComponent() {
 		javax.swing.JList rv = new javax.swing.JList( this.comboBoxModel );
-		ChapterCellRenderer cellRenderer = new ChapterCellRenderer( this.comboBoxModel.getTransactionsModel(), Presentation.CONTROL_COLOR );
+		ChapterCellRenderer cellRenderer = new ChapterCellRenderer( this.comboBoxModel.getTransactionsModel(), StencilsPresentation.CONTROL_COLOR );
 		rv.setCellRenderer( cellRenderer );
 		return rv;
 	}

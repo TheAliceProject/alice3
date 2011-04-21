@@ -309,7 +309,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 				}
 			} catch( edu.cmu.cs.dennisc.croquet.CancelException ce ) {
 				//this.reset();
-				org.lgna.cheshire.stencil.Presentation.getInstance().restoreHistoryIndicesDueToCancel();
+				org.lgna.cheshire.stencil.StencilsPresentation.getInstance().restoreHistoryIndicesDueToCancel();
 				this.reset();
 			}
 		}
@@ -346,6 +346,15 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		this.isStencilRenderingDesired = isStencilRenderingDesired;
 	}
 	
+	public boolean isGoodToGo() {
+		if( this.notes.size() > 0 ) {
+			Note note0 = this.notes.get( 0 );
+			return note0.isGoodToGo();
+		} else {
+			//todo?
+			return true;
+		}
+	}
 	
 	/*package-private*/ int[] getHistoryIndices() {
 		return this.historyIndices;

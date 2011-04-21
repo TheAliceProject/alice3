@@ -47,14 +47,14 @@ package org.lgna.cheshire.stencil;
  */
 /*package-private*/abstract class PresentationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 	public PresentationOperation( java.util.UUID individualId, String name ) {
-		super( Presentation.IMPLEMENTATION_GROUP, individualId );
+		super( StencilsPresentation.IMPLEMENTATION_GROUP, individualId );
 		this.setName( name );
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Button createButton() {
 		edu.cmu.cs.dennisc.croquet.Button rv = super.createButton();
-		rv.setBackgroundColor( Presentation.CONTROL_COLOR );
+		rv.setBackgroundColor( StencilsPresentation.CONTROL_COLOR );
 		return rv;
 	}
 }

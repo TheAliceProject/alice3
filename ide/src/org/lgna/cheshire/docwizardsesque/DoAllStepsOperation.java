@@ -54,7 +54,7 @@ public class DoAllStepsOperation extends edu.cmu.cs.dennisc.croquet.ActionOperat
 		return SingletonHolder.instance;
 	}
 	private DoAllStepsOperation() {
-		super( Presentation.IMPLEMENTATION_GROUP, java.util.UUID.fromString( "406d915c-6b5a-421b-91c6-780205d52b95" ) );
+		super( DocWizardsesquePresentation.IMPLEMENTATION_GROUP, java.util.UUID.fromString( "406d915c-6b5a-421b-91c6-780205d52b95" ) );
 	}
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {

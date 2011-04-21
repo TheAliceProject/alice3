@@ -51,6 +51,16 @@ public abstract class Note extends org.lgna.stencil.Note {
 	protected edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
 		return NextStepOperation.getInstance();
 	}
+	public boolean isGoodToGo() {
+		for( org.lgna.stencil.Feature feature : this.getFeatures() ) {
+			if( feature.isGoodToGo() ) {
+				//pass
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
 	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event );
 	private void moveOutOfTheWayIfNecessary( edu.cmu.cs.dennisc.croquet.ScreenElement screenElement ) {
 		java.awt.Rectangle screenElementLocalBounds = screenElement.getLocalBounds();

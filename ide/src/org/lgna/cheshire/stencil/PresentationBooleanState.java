@@ -47,7 +47,7 @@ package org.lgna.cheshire.stencil;
  */
 public class PresentationBooleanState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	public PresentationBooleanState( java.util.UUID id, boolean initialState, String trueAndFalseText ) {
-		super( Presentation.IMPLEMENTATION_GROUP, id, initialState );
+		super( StencilsPresentation.IMPLEMENTATION_GROUP, id, initialState );
 		this.setTextForBothTrueAndFalse( trueAndFalseText );
 	}
 }
