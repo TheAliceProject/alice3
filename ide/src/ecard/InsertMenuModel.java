@@ -8,8 +8,6 @@ public class InsertMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMen
 		return SingletonHolder.instance;
 	}
 	private InsertMenuModel() {
-		super( java.util.UUID.fromString( "cedd529a-38e1-498f-b998-416d98e38c3b" ), 
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR
-		);
+		super( java.util.UUID.fromString( "cedd529a-38e1-498f-b998-416d98e38c3b" ) );
 	}
 }

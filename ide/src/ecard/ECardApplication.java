@@ -21,6 +21,17 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		// TODO Auto-generated method stub
 		super.initialize(args);
 
+		try {
+			// We like nimbus?
+			//javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			// We like the current platform?
+			javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Best size for screen shots
+		getFrame().setSize(800, 600);
 		getFrame().setMenuBarModel( MenuBarModel.getInstance() );
 	}
 
@@ -53,8 +64,7 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 	}
 	@Override
 	protected void handleQuit(java.util.EventObject e) {
-		// TODO Auto-generated method stub
-
+		System.exit(0);
 	}
 
 }
