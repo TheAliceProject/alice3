@@ -50,4 +50,7 @@ public class CancelCompletionNote extends CompletionNote< org.lgna.croquet.steps
 	public CancelCompletionNote( org.lgna.croquet.steps.CancelCompletionStep step ) {
 		super( step );
 	}
+	@Override
+	protected void addFeatures( org.lgna.croquet.steps.CancelCompletionStep step ) {
+	}
 }

@@ -49,8 +49,12 @@ package org.lgna.cheshire.stencil.stepnotes;
 public class DropCompletionNote extends CompletionNote< org.lgna.croquet.steps.DropCompletionStep > {
 	public DropCompletionNote( org.lgna.croquet.steps.DropCompletionStep step ) {
 		super( step );
+	}
+	@Override
+	protected void addFeatures(org.lgna.croquet.steps.DropCompletionStep step) {
 		this.addFeature( DropNoteUtilities.createHole( step ) );
 	}
+	
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
 		return DropNoteUtilities.isWhatWeveBeenWaitingFor( this.getStep(), event );

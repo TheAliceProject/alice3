@@ -49,6 +49,10 @@ package org.lgna.cheshire.stencil.stepnotes;
 public class MenuModelNote extends PrepNote< org.lgna.croquet.steps.MenuModelStep > {
 	public MenuModelNote( org.lgna.croquet.steps.MenuModelStep step ) {
 		super( step );
+	}
+	
+	@Override
+	protected void addFeatures( org.lgna.croquet.steps.MenuModelStep step ) {
 		this.addFeature( new org.lgna.cheshire.stencil.features.MenuHole( 
 				new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), 
 				org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH,

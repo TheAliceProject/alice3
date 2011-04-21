@@ -90,7 +90,12 @@ public abstract class Feature {
 	}
 	
 	public boolean isGoodToGo() {
-		return this.trackableShapeResolver.getResolved() != null;
+		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.trackableShapeResolver.getResolved();
+		if( trackableShape != null ) {
+			return true;
+		} else {
+			return false;
+		}
 	}	
 	protected abstract boolean isPathRenderingDesired();
 	

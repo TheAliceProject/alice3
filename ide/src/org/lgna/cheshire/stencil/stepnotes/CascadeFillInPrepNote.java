@@ -51,6 +51,9 @@ public class CascadeFillInPrepNote extends PrepNote< org.lgna.croquet.steps.Casc
 		super( step );
 	}
 	@Override
+	protected void addFeatures( org.lgna.croquet.steps.CascadeFillInPrepStep< ?, ? > step ) {
+	}
+	@Override
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
 		return CascadeFillInNoteUtilities.isWhatWeveBeenWaitingFor( this.getStep(), event );
 	}

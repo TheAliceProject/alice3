@@ -42,17 +42,26 @@
  */
 package org.lgna.cheshire.stencil.features;
 
-import org.lgna.stencil.Feature;
-import org.lgna.stencil.Feature.Connection;
-import org.lgna.stencil.Feature.ConnectionPreference;
-
-
 /**
  * @author Dennis Cosgrove
  */
-public class DialogCloseButtonFeature extends Feature {
-	public DialogCloseButtonFeature(edu.cmu.cs.dennisc.croquet.RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> trackableShapeResolver) {
-		super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
+public class DialogCloseButtonFeature extends org.lgna.stencil.Feature {
+	public DialogCloseButtonFeature( final org.lgna.croquet.steps.PlainDialogCloseOperationStep step ) {
+		super( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
+			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+				edu.cmu.cs.dennisc.croquet.PlainDialogOperation dialogOperation = step.getModel().getPlainDialogOperation();
+				if( dialogOperation != null ) {
+					edu.cmu.cs.dennisc.croquet.Dialog activeDialog = dialogOperation.getActiveDialog();
+					if( activeDialog != null ) {
+						return activeDialog.getCloseButtonTrackableShape();
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			}
+		}, org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST );
 	}
 	@Override
 	protected boolean isPathRenderingDesired() {

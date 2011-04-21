@@ -47,8 +47,11 @@ package org.lgna.cheshire.stencil.stepnotes;
  * @author Dennis Cosgrove
  */
 public class StandardPopupOperationPrepNote extends PrepNote< org.lgna.croquet.steps.StandardPopupOperationPrepStep > {
-	public StandardPopupOperationPrepNote( final org.lgna.croquet.steps.StandardPopupOperationPrepStep step ) {
+	public StandardPopupOperationPrepNote( org.lgna.croquet.steps.StandardPopupOperationPrepStep step ) {
 		super( step );
+	}
+	@Override
+	protected void addFeatures( final org.lgna.croquet.steps.StandardPopupOperationPrepStep step ) {
 		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ) {
 			@Override
 			protected edu.cmu.cs.dennisc.croquet.Model getModel() {

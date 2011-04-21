@@ -50,4 +50,10 @@ public class PlainDialogCloseOperationNote extends OperationNote< org.lgna.croqu
 	public PlainDialogCloseOperationNote( org.lgna.croquet.steps.PlainDialogCloseOperationStep step ) {
 		super( step );
 	}
+	@Override
+	protected void addFeatures( org.lgna.croquet.steps.PlainDialogCloseOperationStep step ) {
+		//note: do not call super
+		//super.addFeatures( step );
+		this.addFeature( new org.lgna.cheshire.stencil.features.DialogCloseButtonFeature( step ) );
+	}
 }

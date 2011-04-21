@@ -82,6 +82,9 @@ public class PlainDialogCloseOperation extends SingleThreadOperation< PlainDialo
 		return rv;
 	}
 	
+	public PlainDialogOperation getPlainDialogOperation() {
+		return this.plainDialogOperation;
+	}
 	@Override
 	protected PlainDialogCloseOperationResolver createCodableResolver() {
 		return new PlainDialogCloseOperationResolver( this );

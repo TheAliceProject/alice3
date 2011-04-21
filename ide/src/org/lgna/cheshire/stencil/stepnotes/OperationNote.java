@@ -49,6 +49,9 @@ package org.lgna.cheshire.stencil.stepnotes;
 public abstract class OperationNote< S extends org.lgna.croquet.steps.OperationStep<?> > extends CompletionNote< S > {
 	public OperationNote( S step ) {
 		super( step );
+	}
+	@Override
+	protected void addFeatures(S step) {
 		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
 	}
 }

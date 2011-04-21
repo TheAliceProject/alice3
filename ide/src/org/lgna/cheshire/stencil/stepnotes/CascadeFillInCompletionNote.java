@@ -50,6 +50,9 @@ public class CascadeFillInCompletionNote extends CompletionNote< org.lgna.croque
 	public CascadeFillInCompletionNote( org.lgna.croquet.steps.CascadeFillInCompletionStep< ?, ? > step ) {
 		super( step );
 	}
+	@Override
+	protected void addFeatures( org.lgna.croquet.steps.CascadeFillInCompletionStep< ?, ? > step ) {
+	}
 //	@Override
 //	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
 //		return CascadeFillInNoteUtilities.isWhatWeveBeenWaitingFor( this.getStep(), event );

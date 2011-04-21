@@ -219,7 +219,12 @@ public class ContextManager {
 	}
 	/*package-private*/ static StandardPopupOperationContext createAndPushStandardPopupOperationContext(StandardPopupOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		prePushContextForPossibleStringStateCleanUp();
-		TransactionManager.addStandardPopupOperationPrepStep( popupMenuOperation );
+		ModelContext< ? > currentContext = getCurrentContext();
+		if( currentContext instanceof MenuBarModelContext ) {
+			//pass
+		} else {
+			TransactionManager.addStandardPopupOperationPrepStep( popupMenuOperation );
+		}
 		return pushContext( new StandardPopupOperationContext(popupMenuOperation, e, viewController) );
 	}
 	/*package-private*/ static <T> CascadePopupOperationContext< T > createAndPushCascadePopupOperationContext(CascadePopupOperation< T > cascadeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {

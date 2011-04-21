@@ -50,4 +50,8 @@ public abstract class StateChangeNote< S extends org.lgna.croquet.steps.StateCha
 	public StateChangeNote( S step ) {
 		super( step );
 	}
+	@Override
+	protected void addFeatures(S step) {
+		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+	}
 }

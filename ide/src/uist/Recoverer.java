@@ -47,7 +47,7 @@ package uist;
  * @author Dennis Cosgrove
  */
 public class Recoverer implements org.lgna.cheshire.Recoverer {
-	private static boolean IS_MONKEY_WRENCH_DESIRED = true;
+	private static boolean IS_MONKEY_WRENCH_DESIRED = false;
 
 	public Recoverer() {
 		if( IS_MONKEY_WRENCH_DESIRED ) {

@@ -50,7 +50,9 @@ public abstract class Note<S extends org.lgna.croquet.steps.Step<?>> extends org
 	private final S step;
 	public Note( S step ) {
 		this.step = step;
+		this.addFeatures( this.step );
 	}
+	protected abstract void addFeatures( S step );
 	public S getStep() {
 		return this.step;
 	}

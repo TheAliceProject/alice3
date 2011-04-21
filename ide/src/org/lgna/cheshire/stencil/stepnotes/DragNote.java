@@ -49,6 +49,9 @@ package org.lgna.cheshire.stencil.stepnotes;
 public class DragNote extends PrepNote< org.lgna.croquet.steps.DragStep > {
 	public DragNote( org.lgna.croquet.steps.DragStep step ) {
 		super( step );
+	}
+	@Override
+	protected void addFeatures( org.lgna.croquet.steps.DragStep step ) {
 		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
 
 		org.lgna.croquet.steps.Transaction transaction = step.getParent();

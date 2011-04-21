@@ -49,6 +49,9 @@ package org.lgna.cheshire.stencil.stepnotes;
 public class ListSelectionStatePrepNote extends PrepNote< org.lgna.croquet.steps.ListSelectionStatePrepStep<?> > {
 	public ListSelectionStatePrepNote( org.lgna.croquet.steps.ListSelectionStatePrepStep<?> step ) {
 		super( step );
+	}
+	@Override
+	protected void addFeatures( org.lgna.croquet.steps.ListSelectionStatePrepStep< ? > step ) {
 		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
 	}
 }
