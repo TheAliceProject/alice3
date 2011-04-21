@@ -57,7 +57,7 @@ public class AngleFillerInner extends org.alice.ide.cascade.fillerinners.Instanc
 			rv.add( org.alice.stageide.croquet.models.cascade.values.AngleValueFillIn.getInstance( d ) ); 
 		}
 		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.stageide.croquet.models.cascade.custom.CustomAngleFillIn.getInstance() );
+		rv.add( org.alice.stageide.croquet.models.custom.CustomAngleInputDialogOperation.getInstance().getFillIn() );
 		return rv;
 	}
 }

@@ -56,7 +56,7 @@ public class PortionFillerInner extends org.alice.ide.cascade.fillerinners.Insta
 			rv.add( org.alice.stageide.croquet.models.cascade.values.PortionValueFillIn.getInstance( d ) ); 
 		}
 		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.stageide.croquet.models.cascade.custom.CustomPortionFillIn.getInstance() );
+		rv.add( org.alice.stageide.croquet.models.custom.CustomPortionInputDialogOperation.getInstance().getFillIn() );
 		return rv;
 	}
 }

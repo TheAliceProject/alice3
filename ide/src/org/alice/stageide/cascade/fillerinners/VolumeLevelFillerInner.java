@@ -55,7 +55,7 @@ public class VolumeLevelFillerInner extends org.alice.ide.cascade.fillerinners.A
 			rv.add( org.alice.stageide.croquet.models.cascade.values.VolumeLevelValueFillIn.getInstance( d ) ); 
 		}
 		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.stageide.croquet.models.cascade.custom.CustomVolumeLevelFillIn.getInstance() );
+		rv.add( org.alice.stageide.croquet.models.custom.CustomVolumeLevelInputDialogOperation.getInstance().getFillIn() );
 		return rv;
 	}
 }
