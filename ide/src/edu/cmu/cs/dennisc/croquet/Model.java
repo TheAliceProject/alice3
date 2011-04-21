@@ -408,10 +408,11 @@ public abstract class Model implements RuntimeResolver< Model > {
 		StringBuilder sb = new StringBuilder();
 		updateTutorialStepText( sb, edit, userInformation );
 		if( sb.length() == 0 ) {
-			sb.append( "TODO: " );
-			sb.append( this );
-			sb.append( "; " );
-			sb.append( edit );
+			this.updateTutorialStepText( sb, null, edit, userInformation );
+//			sb.append( "TODO: " );
+//			sb.append( this );
+//			sb.append( "; " );
+//			sb.append( edit );
 		}
 		return sb.toString();
 	}

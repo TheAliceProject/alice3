@@ -59,4 +59,8 @@ public class FunctionTemplateComposite extends MemberTemplateComposite {
 	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
 		return new org.alice.ide.memberseditor.FunctionsContentPanel();
 	}
+	@Override
+	protected String getTextForTabTitle() {
+		return "Questions";
+	}
 }

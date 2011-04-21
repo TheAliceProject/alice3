@@ -63,6 +63,17 @@ public class ChapterPage implements org.lgna.stencil.Page {
 	private final edu.cmu.cs.dennisc.croquet.JComponent< ? > card = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 	public ChapterPage( org.lgna.cheshire.Chapter chapter ) {
 		this.chapter = chapter;
+		this.refreshNotes();
+	}
+	public org.lgna.cheshire.Chapter getChapter() {
+		return this.chapter;
+	}
+	public Iterable< ? extends org.lgna.stencil.Note > getNotes() {
+		return this.notes;
+	}
+	
+	public void refreshNotes() {
+		this.notes.clear();
 		if( chapter instanceof org.lgna.cheshire.MessageChapter ) {
 			org.lgna.cheshire.MessageChapter messageChapter = (org.lgna.cheshire.MessageChapter)chapter;
 			this.notes.add( new MessageNote( messageChapter.getText() ) );
@@ -80,12 +91,6 @@ public class ChapterPage implements org.lgna.stencil.Page {
 			}
 		}
 		this.reset();
-	}
-	public org.lgna.cheshire.Chapter getChapter() {
-		return this.chapter;
-	}
-	public Iterable< ? extends org.lgna.stencil.Note > getNotes() {
-		return this.notes;
 	}
 
 	private static final boolean IS_STENCIL_RENDERING_DESIRED_BY_DEFAULT = true;

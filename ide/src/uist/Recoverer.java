@@ -47,17 +47,15 @@ package uist;
  * @author Dennis Cosgrove
  */
 public class Recoverer implements org.lgna.cheshire.Recoverer {
-	private static boolean IS_MONKEY_WRENCH_DESIRED = false;
-
 	public Recoverer() {
-		if( IS_MONKEY_WRENCH_DESIRED ) {
+		if( TutorialIde.IS_MONKEY_WRENCH_DESIRED ) {
 			final int N = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getItemCount();
 			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem( org.alice.ide.IDE.getSingleton().getSceneField() );
 			//org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedIndex( N-2 );
 		}
 	}
 	public org.lgna.croquet.steps.Transaction createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( org.lgna.croquet.steps.Transaction transaction ) {
-		if( IS_MONKEY_WRENCH_DESIRED ) {
+		if( TutorialIde.IS_MONKEY_WRENCH_DESIRED ) {
 			System.err.println( "createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound: " + transaction );
 			org.alice.ide.croquet.models.ui.AccessibleListSelectionState accessibleListSelectionState = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
 			org.lgna.croquet.steps.Transaction rv = new org.lgna.croquet.steps.Transaction( transaction.getParent() );

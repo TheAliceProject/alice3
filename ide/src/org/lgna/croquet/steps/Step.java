@@ -78,7 +78,7 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		edu.cmu.cs.dennisc.croquet.Model model = this.getModelForTutorialNoteText();
 		if( model != null ) {
-			return model.getTutorialNoteText( null, edit, userInformation );
+			return model.getTutorialNoteText( edit, userInformation );
 		} else {
 			return null;
 		}

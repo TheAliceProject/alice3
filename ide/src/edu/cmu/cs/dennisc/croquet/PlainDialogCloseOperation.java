@@ -81,6 +81,7 @@ public class PlainDialogCloseOperation extends SingleThreadOperation< PlainDialo
 		rv.append( "Press the <strong>Close</strong> button when you are ready." );
 		return rv;
 	}
+
 	
 	public PlainDialogOperation getPlainDialogOperation() {
 		return this.plainDialogOperation;

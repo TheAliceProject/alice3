@@ -42,12 +42,12 @@
  */
 package uist;
 
-import org.lgna.cheshire.Filterer;
-
 /**
  * @author Dennis Cosgrove
  */
 public class TutorialIde extends org.alice.stageide.StageIDE {
+	/*package-private*/ static boolean IS_MONKEY_WRENCH_DESIRED = true;
+
 	private static boolean IS_ENCODING;
 	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
 	private static boolean IS_BASED_ON_INTERACTION_AST;
@@ -65,8 +65,6 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	@Override
 	public void loadProjectFrom( java.net.URI uri ) {
 		super.loadProjectFrom( uri );
-		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( true );
 		if( IS_ENCODING ) {
 			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
@@ -167,7 +165,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 		}
 
-		Filterer filterer;
+		org.lgna.cheshire.Filterer filterer;
 		if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
 			//do not filter
 			filterer = uist.filterers.NoOpFilterer.INSTANCE;
@@ -310,8 +308,12 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			IS_BASED_ON_INTERACTION_AST = Boolean.parseBoolean( args[ 7 ] );
 			IS_OPTIMIZED_FOR_BUG_REPRO = Boolean.parseBoolean( args[ 8 ] );
 		}
-		//org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( IS_ENCODING );
-		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( true );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
+		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( true );
+
+		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( IS_ENCODING );
+		//org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( false );
+		//org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( true );
 		final TutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( TutorialIde.class, null, args, false );
 		if( IS_ENCODING ) {
 			ide.getFrame().setVisible( true );

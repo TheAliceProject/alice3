@@ -59,4 +59,8 @@ public class ProcedureTemplateComposite extends MemberTemplateComposite {
 	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
 		return new org.alice.ide.memberseditor.ProceduresContentPanel();
 	}
+	@Override
+	protected String getTextForTabTitle() {
+		return "Actions";
+	}
 }

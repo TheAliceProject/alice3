@@ -83,12 +83,13 @@ public abstract class MemberTemplateComposite extends TemplateComposite {
 	}
 	
 	private static javax.swing.Icon ICON = new IndirectCurrentAccessibleTypeIcon();
+	protected abstract String getTextForTabTitle();
 	@Override
 	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
 		super.customizeTitleComponent( booleanState, button );
 		//booleanState.setIconForBothTrueAndFalse( ICON );
 		button.getAwtComponent().setIcon( ICON );
-		booleanState.setTextForBothTrueAndFalse( this.getClass().getSimpleName() );
+		booleanState.setTextForBothTrueAndFalse( this.getTextForTabTitle() );
 	}
 	@Override
 	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {

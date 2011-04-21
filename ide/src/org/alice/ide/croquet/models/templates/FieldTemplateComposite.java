@@ -59,4 +59,8 @@ public class FieldTemplateComposite extends MemberTemplateComposite {
 	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
 		return new org.alice.ide.memberseditor.FieldsContentPanel();
 	}
+	@Override
+	protected String getTextForTabTitle() {
+		return "Properties";
+	}
 }
