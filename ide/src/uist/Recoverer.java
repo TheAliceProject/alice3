@@ -61,8 +61,9 @@ public class Recoverer implements org.lgna.cheshire.Recoverer {
 			org.lgna.croquet.steps.Transaction rv = new org.lgna.croquet.steps.Transaction( transaction.getParent() );
 			org.lgna.croquet.steps.ListSelectionStatePrepStep.createAndAddToTransaction( rv, accessibleListSelectionState.getPrepModel() );
 			org.lgna.croquet.steps.ListSelectionStateChangeStep completionStep = org.lgna.croquet.steps.ListSelectionStateChangeStep.createAndAddToTransaction( rv, accessibleListSelectionState );
-//			edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit( accessibleListSelectionState.getValue(), null );
-//			completionStep.commit( edit );
+			edu.cmu.cs.dennisc.alice.ast.Accessible[] data = accessibleListSelectionState.toArray();
+			edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit( accessibleListSelectionState.getValue(), data[ data.length-1 ] );
+			completionStep.commit( edit );
 			return rv;
 		} else {
 			return null;

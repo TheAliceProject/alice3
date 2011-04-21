@@ -49,6 +49,9 @@ package org.lgna.cheshire.stencil.stepnotes;
 public class ListSelectionStateChangeNote extends StateChangeNote< org.lgna.croquet.steps.ListSelectionStateChangeStep<?> > {
 	public ListSelectionStateChangeNote( org.lgna.croquet.steps.ListSelectionStateChangeStep<?> step ) {
 		super( step );
+	}
+	@Override
+	protected void addFeatures( org.lgna.croquet.steps.ListSelectionStateChangeStep< ? > step ) {
 		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ItemSelectionStateItemResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
 	}
 }

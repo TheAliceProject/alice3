@@ -50,4 +50,8 @@ public class StringStateChangeNote extends StateChangeNote< org.lgna.croquet.ste
 	public StringStateChangeNote( org.lgna.croquet.steps.StringStateChangeStep step ) {
 		super( step );
 	}
+	@Override
+	protected void addFeatures(org.lgna.croquet.steps.StringStateChangeStep step) {
+		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+	}
 }

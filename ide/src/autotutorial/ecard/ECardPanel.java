@@ -32,6 +32,7 @@ class ECardPanel extends javax.swing.JPanel {
 		repaint();
 	}
 
+	@Override
 	public void paintComponent(java.awt.Graphics g) {
 		g.drawImage(image, 0, 0, null);
 	}

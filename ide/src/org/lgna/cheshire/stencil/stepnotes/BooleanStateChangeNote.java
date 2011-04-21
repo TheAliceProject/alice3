@@ -50,4 +50,8 @@ public class BooleanStateChangeNote extends StateChangeNote< org.lgna.croquet.st
 	public BooleanStateChangeNote( org.lgna.croquet.steps.BooleanStateChangeStep step ) {
 		super( step );
 	}
+	@Override
+	protected void addFeatures(org.lgna.croquet.steps.BooleanStateChangeStep step) {
+		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+	}
 }
