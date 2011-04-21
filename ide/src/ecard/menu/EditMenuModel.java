@@ -1,4 +1,4 @@
-package ecard;
+package ecard.menu;
 
 public class EditMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
 	private static class SingletonHolder {

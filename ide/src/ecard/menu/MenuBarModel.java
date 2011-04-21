@@ -1,4 +1,4 @@
-package ecard;
+package ecard.menu;
 
 public class MenuBarModel extends edu.cmu.cs.dennisc.croquet.MenuBarModel {
 	private static class SingletonHolder {
