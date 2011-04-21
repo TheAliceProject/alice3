@@ -1,11 +1,15 @@
 package ecard;
 
+import java.awt.Image;
+
 import ecard.menu.MenuBarModel;
 
 public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 	public static final edu.cmu.cs.dennisc.croquet.Group HISTORY_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
 	public static final edu.cmu.cs.dennisc.croquet.Group URI_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
 
+	protected Boolean useRibbon = false;
+	
 	protected ECardApplication() {
 	}
 
@@ -19,7 +23,8 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 	}
 
 	public void initialize(Boolean useRibbon) {
-		// TODO Auto-generated method stub
+		this.useRibbon = useRibbon;
+		
 		super.initialize(null);
 
 		try {
@@ -30,12 +35,15 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		Image icon = java.awt.Toolkit.getDefaultToolkit().getImage( ECardApplication.class.getResource( "resources/e-card-icon.png" ));
+		getFrame().getAwtComponent().setIconImage(icon);
 
 		// Best size for screen shots
 		getFrame().setSize(800, 600);
 		
 		if (useRibbon) {
-			
+			create2007Interface();
 		} else {
 			create2003Interface();
 		}
@@ -46,11 +54,22 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		
 		// TODO add false toolbar
 	}
+	
+	protected void create2007Interface() {
+	}
 
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> createContentPane() {
 		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		//rv.addComponent( this.root, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		
+		if (this.useRibbon) {
+			// Create Ribbon
+			// TODO
+		} else {
+			// Create Toolbar
+			// TODO
+		}
 
 		return rv;
 	}
