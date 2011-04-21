@@ -74,13 +74,16 @@ public class CascadeInputDialogOperationFillIn<F,J extends CascadeInputDialogPan
 			binaryEncoder.encode( resolver );
 		}
 	}
+	public CascadeInputDialogOperation< F, J > getInputDialogOperation() {
+		return this.inputDialogOperation;
+	}
 	@Override
 	protected CascadeInputDialogOperationFillInResolver createCodableResolver() {
 		return new CascadeInputDialogOperationFillInResolver( this );
 	}
 	@Override
 	protected String getTutorialItemText() {
-		return this.inputDialogOperation.getName();
+		return this.inputDialogOperation.getDefaultLocalizedText();
 	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( CascadeFillInContext< F, Void > context ) {

@@ -83,7 +83,7 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 			rv.add( org.alice.ide.croquet.models.cascade.number.MathCascadeMenu.getInstance() );
 //		}
 		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.ide.croquet.models.cascade.custom.CustomDoubleLiteralFillIn.getInstance() );
+		rv.add( org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn() );
 		return rv;
 	}
 }
