@@ -24,8 +24,6 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 
 	public void initialize(Boolean useRibbon) {
 		this.useRibbon = useRibbon;
-		
-		super.initialize(null);
 
 		try {
 			// We like nimbus?
@@ -38,26 +36,11 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		
 		Image icon = java.awt.Toolkit.getDefaultToolkit().getImage( ECardApplication.class.getResource( "resources/e-card-icon.png" ));
 		getFrame().getAwtComponent().setIconImage(icon);
+		
+		super.initialize(null);
 
 		// Best size for screen shots
 		getFrame().setSize(800, 600);
-		
-		if (useRibbon) {
-			create2007Interface();
-		} else {
-			create2003Interface();
-		}
-	}
-	
-	protected void create2003Interface() {
-		System.out.println("2003");
-		getFrame().setMenuBarModel( MenuBarModel.getInstance() );
-		
-		// TODO add false toolbar
-	}
-	
-	protected void create2007Interface() {
-		System.out.println("2007");
 	}
 
 	@Override
@@ -66,11 +49,11 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		//rv.addComponent( this.root, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		
 		if (this.useRibbon) {
-			// Create Ribbon
-			// TODO
+			rv.addComponent( ecard.ribbon.ECardRibbonModel.getInstance().createDefaultFolderTabbedPane(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		} else {
-			// Create Toolbar
-			// TODO
+			getFrame().setMenuBarModel( MenuBarModel.getInstance() );
+			
+			// TODO add false toolbar
 		}
 
 		return rv;
