@@ -8,10 +8,6 @@ public class ThoughtBubbleEffectModel extends edu.cmu.cs.dennisc.croquet.ActionO
 		return SingletonHolder.instance;
 	}
 	
-	public enum State {
-		EMPTY, PHOTO, THOUGHT_BUBBLE_PHOTO
-	}
-	
 	private ThoughtBubbleEffectModel() {
 		super( null, java.util.UUID.fromString( "73fa6653-073e-4ab0-91ab-3148678b5226" ) );
 		//this.setSmallIcon( new javax.swing.ImageIcon( RedoOperation.class.getResource( "images/undo.png" ) ) );

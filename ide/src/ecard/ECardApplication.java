@@ -3,12 +3,14 @@ package ecard;
 import java.awt.Image;
 
 import ecard.menu.MenuBarModel;
+import edu.cmu.cs.dennisc.croquet.ScrollPane;
 
 public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 	public static final edu.cmu.cs.dennisc.croquet.Group HISTORY_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
 	public static final edu.cmu.cs.dennisc.croquet.Group URI_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
 
 	protected Boolean useRibbon = false;
+	protected ECardPanel cardPanel;
 	
 	protected ECardApplication() {
 	}
@@ -46,7 +48,11 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> createContentPane() {
 		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		//rv.addComponent( this.root, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		
+		this.cardPanel = new ECardPanel(ECardPanel.CardState.PHOTO);
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setViewportView(new edu.cmu.cs.dennisc.croquet.SwingAdapter(cardPanel));
+		rv.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		
 		if (this.useRibbon) {
 			rv.addComponent( ecard.ribbon.ECardRibbonModel.getInstance().createDefaultFolderTabbedPane(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
