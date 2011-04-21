@@ -16,11 +16,11 @@ class ECardPanel extends javax.swing.JPanel {
 	protected void setImage(CardState state) {
 		this.state = state;
 		if (state == CardState.EMPTY) {
-			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/card-empty.png")).getImage();
+			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/e-card-empty.png")).getImage();
 		} else if (state == CardState.PHOTO) {
-			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/card-photo.png")).getImage();
+			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/e-card-photo.png")).getImage();
 		} else if (state == CardState.BUBBLE_PHOTO) {
-			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/card-bubble-photo.png")).getImage();
+			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/e-card-photo-bubble.png")).getImage();
 		}
 
 		java.awt.Dimension size = new java.awt.Dimension(image.getWidth(null), image.getHeight(null));
@@ -29,6 +29,7 @@ class ECardPanel extends javax.swing.JPanel {
 		setMaximumSize(size);
 		setSize(size);
 		setLayout(null);
+		repaint();
 	}
 
 	public void paintComponent(java.awt.Graphics g) {

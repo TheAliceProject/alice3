@@ -14,6 +14,6 @@ public class ThoughtBubbleEffectModel extends edu.cmu.cs.dennisc.croquet.ActionO
 	}
 	@Override
 	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		// TODO Auto-generated method stub
+		ECardApplication.getSingleton().getCardPanel().setImage(ECardPanel.CardState.BUBBLE_PHOTO);
 	}
 }

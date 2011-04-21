@@ -44,6 +44,10 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		// Best size for screen shots
 		getFrame().setSize(800, 600);
 	}
+	
+	public ECardPanel getCardPanel() {
+		return this.cardPanel;
+	}
 
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> createContentPane() {
@@ -53,6 +57,9 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.setViewportView(new edu.cmu.cs.dennisc.croquet.SwingAdapter(cardPanel));
 		rv.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		
+		// TODO: Set scroll pane vertical to got to bottom
+		// TODO: Set scroll pane horizontal to center.
 		
 		if (this.useRibbon) {
 			rv.addComponent( ecard.ribbon.ECardRibbonModel.getInstance().createDefaultFolderTabbedPane(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
