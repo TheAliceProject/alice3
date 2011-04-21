@@ -249,6 +249,22 @@ public abstract class Presentation {
 		return null;
 	}
 	
+	
+	protected org.lgna.croquet.steps.Transaction createTabSelectionRecoveryTransactionIfAppropriate( org.lgna.croquet.steps.Transaction transaction ) {
+		edu.cmu.cs.dennisc.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
+		for( edu.cmu.cs.dennisc.croquet.TabSelectionState< edu.cmu.cs.dennisc.croquet.Composite > tabSelectionState : edu.cmu.cs.dennisc.croquet.Manager.getRegisteredModels( edu.cmu.cs.dennisc.croquet.TabSelectionState.class ) ) {
+			for( edu.cmu.cs.dennisc.croquet.Composite item : tabSelectionState ) {
+				if( item.contains( model ) ) {
+					org.lgna.croquet.steps.Transaction rv = new org.lgna.croquet.steps.Transaction( transaction.getParent() );
+					org.lgna.croquet.steps.CompletionStep< ? > completionStep = org.lgna.croquet.steps.ListSelectionStateChangeStep.createAndAddToTransaction( rv, tabSelectionState );
+					edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit( tabSelectionState.getValue(), item );
+					completionStep.commit( edit );
+					return rv;
+				}
+			}
+		}
+		return null;
+	}
 	private edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
 	public edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
 		return this.retargeter;

@@ -352,19 +352,29 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 							this.handleChapterChanged( chapter );
 						}
 					} else {
-						org.lgna.croquet.steps.Transaction recoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( transaction );
-						if( recoveryTransaction != null ) {
-							org.lgna.cheshire.Chapter recoveryChapter = new org.lgna.cheshire.TransactionChapter( recoveryTransaction );
-							this.getBook().addChapter( this.getBook().getSelectedIndex(), recoveryChapter );
-							this.handleChapterChanged( recoveryChapter );
+						org.lgna.croquet.steps.Transaction tabSelectionRecoveryTransaction = this.createTabSelectionRecoveryTransactionIfAppropriate( transaction );
+						if( tabSelectionRecoveryTransaction != null ) {
+							this.insertRecoveryTransactionChapter( tabSelectionRecoveryTransaction );
 						} else {
-							edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "unable to recover" );
+							org.lgna.croquet.steps.Transaction applicationRecoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( transaction );
+							if( applicationRecoveryTransaction != null ) {
+								this.insertRecoveryTransactionChapter( applicationRecoveryTransaction );
+							} else {
+								edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "unable to recover" );
+							}
 						}
 					}
 				}
 			}
 		}
 	}
+	
+	private void insertRecoveryTransactionChapter( org.lgna.croquet.steps.Transaction recoveryTransaction ) {
+		org.lgna.cheshire.Chapter recoveryChapter = new org.lgna.cheshire.TransactionChapter( recoveryTransaction );
+		this.getBook().addChapter( this.getBook().getSelectedIndex(), recoveryChapter );
+		this.handleChapterChanged( recoveryChapter );
+	}
+	
 //	@Override
 //	protected edu.cmu.cs.dennisc.croquet.Step< ? > getCurrentStep() {
 //		return this.transactionsModel.getSelectedStep();

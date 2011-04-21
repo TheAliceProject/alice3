@@ -63,7 +63,7 @@ public class BlockTemplateComposite extends TemplateComposite {
 	}
 	@Override
 	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
-		if( model instanceof org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel ) {
+		if( model instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation ) {
 			//org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel statementClassTemplateDragModel = (org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel)model;
 			return true;
 //			for( Class<?> cls : this.clses ) {

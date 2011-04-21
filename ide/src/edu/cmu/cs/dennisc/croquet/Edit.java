@@ -120,7 +120,11 @@ public abstract class Edit<M extends CompletionModel> {
 		return this.context;
 	}
 	public M getModel() {
-		return getModel( this.getContext() );
+		if( this.completionStep != null ) {
+			return this.completionStep.getModel();
+		} else {
+			return getModel( this.getContext() );
+		}
 	}
 	public Group getGroup() {
 		return getGroup( this.getModel() );
