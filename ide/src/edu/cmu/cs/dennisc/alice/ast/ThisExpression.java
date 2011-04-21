@@ -59,4 +59,10 @@ public class ThisExpression extends Expression {
 //		//todo
 //		return TypeDeclaredInJava.OBJECT_TYPE;
 	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+		rv.append( "this" );
+		return rv;
+	}
+	
 }

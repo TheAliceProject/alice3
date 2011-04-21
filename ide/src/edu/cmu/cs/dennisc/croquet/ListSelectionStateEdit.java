@@ -137,6 +137,12 @@ public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionStat
 		this.getModel().setSelectedItem( this.prevValue );
 	}
 	@Override
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, UserInformation userInformation ) {
+		rv.append( "select " );
+		this.getModel().getCodec().appendRepresentation( rv, this.nextValue, userInformation.getLocale() );
+		return rv;
+	}
+	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "select " );
 		this.getModel().getCodec().appendRepresentation( rv, this.prevValue, locale );

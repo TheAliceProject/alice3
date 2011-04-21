@@ -114,7 +114,17 @@ public class MethodInvocation extends Expression {
 	
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+//		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
+//		rv.append( "." );
 		NodeUtilities.safeAppendRepr( rv, this.method.getValue(), locale );
+		rv.append( "(" );
+		String separator = "";
+		for( Argument argument : this.arguments ) {
+			rv.append( separator );
+			NodeUtilities.safeAppendRepr( rv, argument.expression.getValue(), locale );
+			separator = ", ";
+		}
+		rv.append( ")" );
 		return rv;
 	}
 	

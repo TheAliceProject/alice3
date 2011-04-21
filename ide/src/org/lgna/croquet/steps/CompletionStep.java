@@ -137,6 +137,9 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 		this.isPending = false;
 	}
 
+	public String getTutorialTransactionTitle( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return this.getModel().getTutorialTransactionTitle( this.edit, userInformation );
+	}
 	@Override
 	protected StringBuilder updateRepr( StringBuilder rv ) {
 		rv = super.updateRepr( rv );

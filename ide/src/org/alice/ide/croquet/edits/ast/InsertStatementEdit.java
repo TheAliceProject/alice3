@@ -206,6 +206,14 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 		}
 	}
 	
+	@Override
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		rv.append( "insert " );
+		rv.append( this.statement.getRepr( userInformation.getLocale() ) );
+		return rv;
+	}
+
+	
 	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.alice.ast.Statement replacementStatement ) {
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacementStatement );
@@ -221,6 +229,14 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 		super.retarget( retargeter );
 		this.blockStatement = retargeter.retarget( this.blockStatement );
 		this.statement = retargeter.retarget( this.statement );
+		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
+			edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement;
+			edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
+			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
+				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+				methodInvocation.method.setValue( retargeter.retarget( methodInvocation.method.getValue() ) );
+			}
+		}
 	}
 	@Override
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {

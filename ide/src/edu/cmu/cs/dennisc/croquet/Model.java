@@ -376,7 +376,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 		return rv;
 	}
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		rv.append( "title: " );
+		rv.append( "text: " );
 		rv.append( this );
 		if( modelContext != null ) {
 			appendSuccessfulCompletionEventText( rv, modelContext.getSuccessfulCompletionEvent() );
@@ -384,18 +384,38 @@ public abstract class Model implements RuntimeResolver< Model > {
 		return rv;
 	}
 
+	@Deprecated
 	public final String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		this.initializeIfNecessary();
 		StringBuilder sb = new StringBuilder();
 		updateTutorialStepTitle( sb, modelContext, edit, userInformation );
 		return sb.toString();
 	}
+	@Deprecated
 	public final String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 		this.initializeIfNecessary();
 		StringBuilder sb = new StringBuilder();
 		updateTutorialStepText( sb, modelContext, edit, userInformation );
 		return sb.toString();
 	}
+	
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, Edit< ? > edit, UserInformation userInformation ) {
+		return rv;
+	}
+
+	public final String getTutorialNoteText( Edit<?> edit, UserInformation userInformation ) {
+		this.initializeIfNecessary();
+		StringBuilder sb = new StringBuilder();
+		updateTutorialStepText( sb, edit, userInformation );
+		if( sb.length() == 0 ) {
+			sb.append( "TODO: " );
+			sb.append( this );
+			sb.append( "; " );
+			sb.append( edit );
+		}
+		return sb.toString();
+	}
+	
 	@Deprecated
 	private static final Edit< ? > getEdit( ModelContext<?> modelContext ) {
 		if( modelContext instanceof CompletionContext< ? >) {

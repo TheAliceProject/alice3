@@ -77,6 +77,12 @@ public class PlainDialogCloseOperation extends SingleThreadOperation< PlainDialo
 		}
 	}
 	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( "Press the <strong>Close</strong> button when you are ready." );
+		return rv;
+	}
+	
+	@Override
 	protected PlainDialogCloseOperationResolver createCodableResolver() {
 		return new PlainDialogCloseOperationResolver( this );
 	}

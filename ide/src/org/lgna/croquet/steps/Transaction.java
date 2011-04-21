@@ -132,9 +132,8 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	}
 
 	public String getTitle() {
-		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = this.getEdit();
-		if( edit != null ) {
-			return edit.getPresentation( java.util.Locale.getDefault() );
+		if( this.completionStep != null ) {
+			return this.completionStep.getTutorialTransactionTitle( org.lgna.cheshire.Presentation.getInstance().getUserInformation() );
 		} else {
 			return null;
 		}

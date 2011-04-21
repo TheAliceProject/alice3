@@ -191,6 +191,10 @@ public abstract class Edit<M extends CompletionModel> {
 		}
 	}
 
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, UserInformation userInformation ) {
+		return rv;
+	}
+
 	protected abstract StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale );
 	public final String getPresentation( java.util.Locale locale ) {
 		StringBuilder sb = new StringBuilder();

@@ -50,4 +50,23 @@ public abstract class CompletionModel extends Model {
 	public CompletionModel( Group group, java.util.UUID id ) {
 		super(group, id);
 	}
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, Edit< ? > edit, UserInformation userInformation ) {
+		if( edit != null ) {
+			edit.updateTutorialTransactionTitle( rv, userInformation );
+		}
+		return rv;
+	}
+	public final String getTutorialTransactionTitle( Edit<?> edit, UserInformation userInformation ) {
+		this.initializeIfNecessary();
+		StringBuilder sb = new StringBuilder();
+		updateTutorialTransactionTitle( sb, edit, userInformation );
+		if( sb.length() == 0 ) {
+			sb.append( "TODO: " );
+			sb.append( this );
+			sb.append( "; " );
+			sb.append( edit );
+		}
+		return sb.toString();
+	}
+	
 }

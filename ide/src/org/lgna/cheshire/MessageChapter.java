@@ -55,7 +55,7 @@ public class MessageChapter extends Chapter {
 	}
 	@Override
 	public String getTitle() {
-		return this.title;
+		return "<em>" + this.title + "</em>";
 	}
 	public String getText() {
 		return this.text;
