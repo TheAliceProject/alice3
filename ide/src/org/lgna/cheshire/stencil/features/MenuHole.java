@@ -45,7 +45,7 @@ package org.lgna.cheshire.stencil.features;
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class MenuHole extends Hole {
+public class MenuHole extends Hole {
 	private boolean isPathRenderingDesired;
 	private boolean isHoleRenderingDesired;
 	private boolean isCheckMarkRenderingDesired;
@@ -83,8 +83,7 @@ package org.lgna.cheshire.stencil.features;
 		} else {
 			return null;
 		}
-	}
-	
+	}	
 	
 	private static java.awt.Shape createCheckMark( int size ) {
 		float x0 = 0.0f * size;

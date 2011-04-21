@@ -70,10 +70,14 @@ public abstract class Note<S extends org.lgna.croquet.steps.Step<?>> extends org
 			} else {
 				//todo
 				if( stepAddedEvent.getStep().getModel() != null ) {
-					if( this.getStep().getModel().getClass() == stepAddedEvent.getStep().getModel().getClass() ) {;
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.getStep().getModel() == stepAddedEvent.getStep().getModel(), this.getStep().getModel(), stepAddedEvent.getStep().getModel() );
-						return true;
-					} else {
+					try {
+						if( this.getStep().getModel().getClass() == stepAddedEvent.getStep().getModel().getClass() ) {;
+							edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.getStep().getModel() == stepAddedEvent.getStep().getModel(), this.getStep().getModel(), stepAddedEvent.getStep().getModel() );
+							return true;
+						} else {
+							return false;
+						}
+					} catch( NullPointerException npe ) {
 						return false;
 					}
 				} else {

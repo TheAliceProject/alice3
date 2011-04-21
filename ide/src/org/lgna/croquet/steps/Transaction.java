@@ -109,7 +109,6 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		this.completionStep = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.completionStep.setParent( this );
 	}
-	
 	public java.util.ListIterator< PrepStep< ? > > prepStepListIterator() {
 		return this.prepSteps.listIterator();
 	}
@@ -321,6 +320,9 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	}	
 	
 	
+	public void removeAllPrepSteps() {
+		this.prepSteps.clear();
+	}
 	public Iterable< PrepStep<?> > getPrepSteps() {
 		return this.prepSteps;
 	}

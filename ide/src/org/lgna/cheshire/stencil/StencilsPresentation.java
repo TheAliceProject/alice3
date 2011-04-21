@@ -303,10 +303,10 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 	@Override
 	protected void handleChapterChanged( org.lgna.cheshire.Chapter chapter ) {
 		super.handleChapterChanged( chapter );
-		java.awt.Cursor cursor = java.awt.Cursor.getDefaultCursor();
 		if( chapter != null ) {
 			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
 			if( chapterPage.isGoodToGo() ) {
+				java.awt.Cursor cursor = java.awt.Cursor.getDefaultCursor();
 				if( chapterPage.isStencilRenderingDesired() ) {
 					cursor = java.awt.dnd.DragSource.DefaultMoveNoDrop;
 				}
@@ -335,18 +335,35 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 
 				this.stencil.requestFocus();
 				this.stencil.revalidateAndRepaint();
+				this.stencil.setCursor( cursor );
 			} else {
-				org.lgna.croquet.steps.Transaction recoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction() );
-				if( recoveryTransaction != null ) {
-					org.lgna.cheshire.Chapter recoveryChapter = new org.lgna.cheshire.TransactionChapter( recoveryTransaction );
-					this.getBook().addChapter( this.getBook().getSelectedIndex(), recoveryChapter );
-					this.handleChapterChanged( recoveryChapter );
+				org.lgna.croquet.steps.Transaction transaction = ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction();
+				transaction.removeAllPrepSteps();
+				if( chapterPage.isGoodToGo() ) {
+					this.handleChapterChanged( chapter );
 				} else {
-					edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "unable to recover" );
+					java.util.List< edu.cmu.cs.dennisc.croquet.MenuModel > menuModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
+					if( menuModels != null ) {
+						edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "found in menus" );
+						for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : menuModels ) {
+							org.lgna.croquet.steps.MenuModelStep.createAndAddToTransaction( transaction, menuModel );
+						}
+						if( chapterPage.isGoodToGo() ) {
+							this.handleChapterChanged( chapter );
+						}
+					} else {
+						org.lgna.croquet.steps.Transaction recoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( transaction );
+						if( recoveryTransaction != null ) {
+							org.lgna.cheshire.Chapter recoveryChapter = new org.lgna.cheshire.TransactionChapter( recoveryTransaction );
+							this.getBook().addChapter( this.getBook().getSelectedIndex(), recoveryChapter );
+							this.handleChapterChanged( recoveryChapter );
+						} else {
+							edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "unable to recover" );
+						}
+					}
 				}
 			}
 		}
-		this.stencil.setCursor( cursor );
 	}
 //	@Override
 //	protected edu.cmu.cs.dennisc.croquet.Step< ? > getCurrentStep() {

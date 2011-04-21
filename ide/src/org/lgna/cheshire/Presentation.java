@@ -215,6 +215,40 @@ public abstract class Presentation {
 		return this.book;
 	}
 	
+	private edu.cmu.cs.dennisc.croquet.CompletionModel huntForInMenus( java.util.List< edu.cmu.cs.dennisc.croquet.MenuModel > list, edu.cmu.cs.dennisc.croquet.MenuModel menuModel, edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
+		if( menuModel instanceof edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel ) {
+			edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel defaultMenuModel = (edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel)menuModel;
+			for( edu.cmu.cs.dennisc.croquet.Model child : defaultMenuModel.getModels() ) {
+				if( child instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
+					edu.cmu.cs.dennisc.croquet.MenuModel childMenuModel = (edu.cmu.cs.dennisc.croquet.MenuModel)child;
+					edu.cmu.cs.dennisc.croquet.CompletionModel rv = this.huntForInMenus( list, childMenuModel, model );
+					if( rv != null ) {
+						list.add( 0, childMenuModel );
+					}
+					return rv;
+				}
+				if( child == model ) {
+					//list.add( 0, model );
+					return model;
+				}
+			}
+		}
+		return null;
+	}
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.MenuModel > huntForInMenus( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
+		edu.cmu.cs.dennisc.croquet.MenuBarModel menuBarModel = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getMenuBarModel();
+		java.util.List< edu.cmu.cs.dennisc.croquet.MenuModel > rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+		for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : menuBarModel.getChildren() ) {
+			edu.cmu.cs.dennisc.croquet.Model found = this.huntForInMenus( rv, menuModel, model );
+			if( found != null ) {
+				rv.add( 0, menuModel );
+				//rv.add( 0, menuBarModel );
+				return rv;
+			}
+		}
+		return null;
+	}
+	
 	private edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
 	public edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
 		return this.retargeter;
