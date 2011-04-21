@@ -237,13 +237,15 @@ public abstract class Presentation {
 	}
 	protected java.util.List< edu.cmu.cs.dennisc.croquet.MenuModel > huntForInMenus( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
 		edu.cmu.cs.dennisc.croquet.MenuBarModel menuBarModel = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getMenuBarModel();
-		java.util.List< edu.cmu.cs.dennisc.croquet.MenuModel > rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-		for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : menuBarModel.getChildren() ) {
-			edu.cmu.cs.dennisc.croquet.Model found = this.huntForInMenus( rv, menuModel, model );
-			if( found != null ) {
-				rv.add( 0, menuModel );
-				//rv.add( 0, menuBarModel );
-				return rv;
+		if( menuBarModel != null ) {
+			java.util.List< edu.cmu.cs.dennisc.croquet.MenuModel > rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+			for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : menuBarModel.getChildren() ) {
+				edu.cmu.cs.dennisc.croquet.Model found = this.huntForInMenus( rv, menuModel, model );
+				if( found != null ) {
+					rv.add( 0, menuModel );
+					//rv.add( 0, menuBarModel );
+					return rv;
+				}
 			}
 		}
 		return null;
