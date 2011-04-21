@@ -12,6 +12,6 @@ public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.Predet
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
-		return new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
+		return ecard.ThoughtBubbleEffectModel.getInstance().createButton();
 	}
 }
