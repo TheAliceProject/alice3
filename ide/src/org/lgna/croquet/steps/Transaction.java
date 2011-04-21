@@ -200,17 +200,17 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 //									rv = null;
 //								}
 
-								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
-									edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn cascadeInputDialogOperationFillIn = (edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn)fillIn;
-									rv = InputDialogOperationStep.createAndAddToTransaction( Transaction.this, cascadeInputDialogOperationFillIn.getInputDialogOperation() );
-								} else {
+//								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
+//									edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn cascadeInputDialogOperationFillIn = (edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn)fillIn;
+//									rv = InputDialogOperationStep.createAndAddToTransaction( Transaction.this, cascadeInputDialogOperationFillIn.getInputDialogOperation() );
+//								} else {
 									if( i < N-1 || isLastPrep ) {
 										CascadeFillInPrepStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model );
 									} else {
 										CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadePopupOperation)this.dropCompletionModel, fillIn );
 										rv = null;
 									}
-								}
+//								}
 							} else if( model instanceof edu.cmu.cs.dennisc.croquet.MenuBarModel ) {
 								//pass
 							} else if( model instanceof edu.cmu.cs.dennisc.croquet.CompletionModel ) {

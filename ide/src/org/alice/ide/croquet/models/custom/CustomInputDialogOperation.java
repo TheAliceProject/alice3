@@ -71,20 +71,19 @@ public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.al
 			context.cancel();
 		}
 	}
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-//		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-//		if( successfulCompletionEvent != null ) {
-		if( edit != null ) {
-			//org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
-			rv.append( "1) Enter " );
-			rv.append( "<strong>" );
-			rv.append( "fill_in_expression_value_here" );
-			rv.append( "</strong>" );
-			rv.append( "<br>" );
-			rv.append( "2) Press <strong>OK</strong>." );
-		}
-		return rv;
-	}
-	
+//	@Override
+//	protected StringBuilder updateTutorialStepText( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+////		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+////		if( successfulCompletionEvent != null ) {
+//		if( edit != null ) {
+//			//org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
+//			rv.append( "1) Enter " );
+//			rv.append( "<strong>" );
+//			rv.append( "fill_in_expression_value_here" );
+//			rv.append( "</strong>" );
+//			rv.append( "<br>" );
+//			rv.append( "2) Press <strong>OK</strong>." );
+//		}
+//		return rv;
+//	}
 }
