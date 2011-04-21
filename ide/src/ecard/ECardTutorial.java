@@ -8,12 +8,14 @@ public class ECardTutorial {
 	public static void main(final String[] args) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				Boolean useRibbon = false;
+				if (args.length == 1 && args[0].equalsIgnoreCase("-ribbon")) {
+					useRibbon = true;
+				}
+
 				ECardApplication app = ECardApplication.getSingleton();
-				app.initialize( false );
+				app.initialize( useRibbon );
 				app.getFrame().setVisible(true);
-//				ECardMainFrame thisClass = new ECardMainFrame();
-//				thisClass.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//				thisClass.setVisible(true);
 			}
 		});
 	}

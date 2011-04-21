@@ -50,12 +50,14 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 	}
 	
 	protected void create2003Interface() {
+		System.out.println("2003");
 		getFrame().setMenuBarModel( MenuBarModel.getInstance() );
 		
 		// TODO add false toolbar
 	}
 	
 	protected void create2007Interface() {
+		System.out.println("2007");
 	}
 
 	@Override
