@@ -48,22 +48,37 @@ package uist.filterers;
  */
 public class TutorialFilterer implements org.lgna.cheshire.Filterer {
 	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		java.util.Set< Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> > introducedStatementClses = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		while( chapterIterator.hasNext() ) {
 			org.lgna.cheshire.Chapter chapter = chapterIterator.next();
 			if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
 				org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
 				org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
 				if( transaction.isSuccessfullyCompleted() ) {
+					java.util.ListIterator< org.lgna.croquet.steps.PrepStep< ? > > prepStepListIterator = transaction.prepStepListIterator();
+					while( prepStepListIterator.hasNext() ) {
+						org.lgna.croquet.steps.PrepStep< ? > prepStep = prepStepListIterator.next();
+						edu.cmu.cs.dennisc.croquet.PrepModel prepModel = prepStep.getModel();
+						if( prepModel instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
+							prepStepListIterator.remove();
+						}
+					}
 					edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
 					if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
 						org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
 						edu.cmu.cs.dennisc.alice.ast.Statement statement = insertStatementEdit.getStatement();
 						if( userInformation instanceof uist.UserInformation ) {
-							org.lgna.cheshire.MessageChapter messageChapter = ((uist.UserInformation)userInformation).createMessageChapterIfUnfamiliarWithProgrammingConstruct( statement.getClass() );
-							if( messageChapter != null ) {
-								chapterIterator.previous();
-								chapterIterator.add( messageChapter );
-								chapterIterator.next();
+							Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> statementCls = statement.getClass();
+							if( introducedStatementClses.contains( statementCls ) ) {
+								//pass
+							} else {
+								org.lgna.cheshire.MessageChapter messageChapter = ((uist.UserInformation)userInformation).createMessageChapterIfUnfamiliarWithProgrammingConstruct( statementCls );
+								if( messageChapter != null ) {
+									chapterIterator.previous();
+									chapterIterator.add( messageChapter );
+									chapterIterator.next();
+									introducedStatementClses.add( statementCls );
+								}
 							}
 						}
 					}

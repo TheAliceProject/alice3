@@ -88,20 +88,6 @@ public abstract class Presentation {
 		}
 	};
 
-	private void handleEditCommitted( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		this.book.handleEditCommitted( edit, this.userInformation );
-	}
-	protected abstract void handleTransactionCanceled( org.lgna.croquet.steps.Transaction transaction );
-	protected abstract void handleEvent( org.lgna.cheshire.events.Event event );
-	private org.lgna.cheshire.Book.SelectionObserver selectionObserver = new org.lgna.cheshire.Book.SelectionObserver() {
-		public void selectionChanging( Book source, int fromIndex, int toIndex ) {
-		}
-		public void selectionChanged( Book source, int fromIndex, int toIndex ) {
-			Chapter chapter = source.getChapterAt( toIndex );
-			Presentation.this.handleChapterChanged( chapter );
-		}
-	};
-
 	private final edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
 	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, Filterer filterer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
@@ -120,6 +106,21 @@ public abstract class Presentation {
 		this.historyManagers[ N ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( COMPLETION_GROUP );
 		org.lgna.croquet.steps.TransactionManager.addObserver( this.observer );
 	}
+
+	private void handleEditCommitted( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		this.book.handleEditCommitted( edit, this.userInformation );
+	}
+	protected abstract void handleTransactionCanceled( org.lgna.croquet.steps.Transaction transaction );
+	protected abstract void handleEvent( org.lgna.cheshire.events.Event event );
+	private org.lgna.cheshire.Book.SelectionObserver selectionObserver = new org.lgna.cheshire.Book.SelectionObserver() {
+		public void selectionChanging( Book source, int fromIndex, int toIndex ) {
+		}
+		public void selectionChanged( Book source, int fromIndex, int toIndex ) {
+			Chapter chapter = source.getChapterAt( toIndex );
+			Presentation.this.handleChapterChanged( chapter );
+		}
+	};
+
 	
 	protected void startListening() {
 		this.getBook().addSelectionObserver( this.selectionObserver );

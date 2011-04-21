@@ -65,6 +65,11 @@ public class Collections {
 		rv.addAll( other );
 		return rv;
 	}
+	public static <E> java.util.ArrayList<E> newLinkedList( E... array ) {
+		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
+		CollectionUtilities.set( rv, array );
+		return rv;
+	}
 	public static <E> java.util.ArrayList<E> newArrayList() {
 		return new java.util.ArrayList< E >();
 	}

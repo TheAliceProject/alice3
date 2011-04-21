@@ -98,16 +98,20 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	private CompletionStep<?> completionStep;
 	/*package-private*/ Transaction( TransactionHistory parent ) {
 		this.setParent( parent );
-		this.prepSteps = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		this.prepSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.completionStep = null;
 	}
 	public Transaction( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.prepSteps = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( (PrepStep<?>[])binaryDecoder.decodeBinaryEncodableAndDecodableArray( PrepStep.class ) );
+		this.prepSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( (PrepStep<?>[])binaryDecoder.decodeBinaryEncodableAndDecodableArray( PrepStep.class ) );
 		for( PrepStep< ? > prepStep : this.prepSteps ) {
 			prepStep.setParent( this );
 		}
 		this.completionStep = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.completionStep.setParent( this );
+	}
+	
+	public java.util.ListIterator< PrepStep< ? > > prepStepListIterator() {
+		return this.prepSteps.listIterator();
 	}
 
 	public java.util.Iterator<Step<?>> childStepIterator() {
