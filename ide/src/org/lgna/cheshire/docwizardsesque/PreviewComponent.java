@@ -68,6 +68,10 @@ public class PreviewComponent extends edu.cmu.cs.dennisc.croquet.JComponent< jav
 						if( model != null ) {
 							edu.cmu.cs.dennisc.croquet.Component< ? > component = model.getFirstComponent();
 							if( component != null ) {
+								if( component instanceof edu.cmu.cs.dennisc.croquet.FolderTabbedPane ) {
+									edu.cmu.cs.dennisc.croquet.FolderTabbedPane folderTabbedPane = (edu.cmu.cs.dennisc.croquet.FolderTabbedPane)component;
+									component = ((edu.cmu.cs.dennisc.croquet.JComponent)((edu.cmu.cs.dennisc.croquet.JComponent)folderTabbedPane.getComponent( 0 )).getComponent( 0 )).getComponent( 0 );
+								}
 								java.awt.Dimension size = component.getAwtComponent().getSize();
 								java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 								java.awt.Paint paint = g2.getPaint();

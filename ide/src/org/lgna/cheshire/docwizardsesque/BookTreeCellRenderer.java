@@ -43,8 +43,6 @@
 
 package org.lgna.cheshire.docwizardsesque;
 
-import org.lgna.cheshire.stencil.StencilsPresentation;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -73,8 +71,8 @@ public class BookTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rendere
 	private static final javax.swing.Icon PERFECT_MATCH_ICON = new javax.swing.ImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/perfectMatch.png" ) );
 	private static final javax.swing.Icon SHOULD_BE_FINE_ICON = new javax.swing.ImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/shouldBeFine.png" ) );
 	private static final javax.swing.Icon DEVIATION_ICON = new javax.swing.ImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/deviation.png" ) );
-	private static final java.awt.Font TRANSACTION_FONT = new java.awt.Font( null, java.awt.Font.BOLD, 18 ); 
-	private static final java.awt.Font STEP_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 14 ); 
+	private static final java.awt.Font TRANSACTION_FONT = new java.awt.Font( null, java.awt.Font.BOLD, 16 ); 
+	private static final java.awt.Font STEP_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 12 ); 
 	@Override
 	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
 		if( value instanceof org.lgna.cheshire.TransactionChapter ) {
