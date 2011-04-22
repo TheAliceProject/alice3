@@ -68,6 +68,7 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 
 		this.cardPanel = new ECardPanel(ECardPanel.CardState.PHOTO);
+//		this.cardPanel = new ECardPanel(ECardPanel.CardState.EMPTY);
 		rv.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter(this.cardPanel), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 
 		if (this.isRibbonBased()) {

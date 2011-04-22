@@ -51,6 +51,7 @@ public class BookComboBox extends edu.cmu.cs.dennisc.croquet.JComponent< javax.s
 	public BookComboBox( BookComboBoxModel comboBoxModel, boolean isLightWeightPopupEnabled ) {
 		this.comboBoxModel = comboBoxModel;
 		this.isLightWeightPopupEnabled = isLightWeightPopupEnabled;
+		this.setMinimumPreferredWidth( 320 );
 	}
 	@Override
 	protected javax.swing.JComboBox createAwtComponent() {

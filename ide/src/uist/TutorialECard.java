@@ -147,10 +147,10 @@ public class TutorialECard extends autotutorial.ecard.ECardApplication {
 			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.IS_SIDE_DOCKING_DESIRED = true;
 			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
 		}
-		final TutorialECard app = new TutorialECard();
-		app.initialize( args );
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				final TutorialECard app = new TutorialECard();
+				app.initialize( args );
 				if( IS_ENCODING ) {
 					app.getFrame().setVisible(true);
 					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 500 );

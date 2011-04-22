@@ -386,6 +386,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		org.lgna.cheshire.Chapter recoveryChapter = new org.lgna.cheshire.TransactionChapter( recoveryTransaction );
 		this.getBook().addChapter( this.getBook().getSelectedIndex(), recoveryChapter );
 		this.handleChapterChanged( recoveryChapter );
+		this.stencil.revalidateAndRepaint();
 	}
 	
 //	@Override

@@ -219,7 +219,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 	
 	private final org.lgna.croquet.steps.TransactionHistory transactionHistory;
 	private IsTransactionHistoryShowingState( org.lgna.croquet.steps.TransactionHistory transactionHistory ) {
-		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), true );
+		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), false );
 		this.transactionHistory = transactionHistory;
 	}
 	@Override
@@ -231,7 +231,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 	protected javax.swing.JFrame createFrame() {
 		javax.swing.JFrame rv = super.createFrame();
 		rv.setTitle( "Transaction History" );
-		final int SCREEN_INDEX = 1;
+		final int SCREEN_INDEX = 0;
 		rv.setBounds( edu.cmu.cs.dennisc.java.awt.GraphicsDeviceUtilities.getScreenDeviceDefaultConfigurationBounds( SCREEN_INDEX ) );
 		return rv;
 	}

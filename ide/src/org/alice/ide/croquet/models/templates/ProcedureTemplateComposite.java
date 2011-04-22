@@ -65,6 +65,10 @@ public class ProcedureTemplateComposite extends MemberTemplateComposite {
 	}
 	@Override
 	protected String getTextForTabTitle() {
+		return this.toString();
+	}
+	@Override
+	public String toString() {
 		return "Actions";
 	}
 }
