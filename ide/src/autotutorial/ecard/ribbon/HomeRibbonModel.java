@@ -21,24 +21,29 @@ public class HomeRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel rv = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
+		gbc.fill = java.awt.GridBagConstraints.BOTH;
+		gbc.weightx = 0.0;
+		edu.cmu.cs.dennisc.croquet.GridBagPanel rv = new edu.cmu.cs.dennisc.croquet.GridBagPanel();
 		rv.setBackgroundColor(java.awt.SystemColor.control);
+		rv.setBorder( BorderFactory.createEmptyBorder( 4,2,4,2 ) );
 
 		edu.cmu.cs.dennisc.croquet.Button button;
 		javax.swing.JButton jButton;
 
-		LineAxisPanel panel = new LineAxisPanel();
-		panel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		rv.addComponent(panel);
+//		LineAxisPanel panel = new LineAxisPanel();
+//		panel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+//		rv.addComponent(panel);
 
 		jButton = new javax.swing.JButton("Paste");
 		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-paste.png") ));
-		panel.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton));
+		rv.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton), gbc);
 		
-		edu.cmu.cs.dennisc.croquet.PageAxisPanel panel2 = new PageAxisPanel();
-		panel.addComponent(panel2);
+		edu.cmu.cs.dennisc.croquet.GridPanel panel2 = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane();
+		rv.addComponent(panel2, gbc);
 		
 		jButton = new JButton("Copy");
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-copy.png") ));
@@ -48,19 +53,20 @@ public class HomeRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-cut.png") ));
 		panel2.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton));
 		
-		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 6 ) );
-		panel = new LineAxisPanel();
-		panel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		rv.addComponent(panel);
+		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 6 ), gbc );
+
+//		panel = new LineAxisPanel();
+//		panel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+//		rv.addComponent(panel);
 		
 		button = autotutorial.ecard.DeletePictureModel.getInstance().createButton();
 		jButton = button.getAwtComponent();
 		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		panel.addComponent(button);
+		rv.addComponent(button, gbc);
 		
-		panel2 = new PageAxisPanel();
-		panel.addComponent(panel2);
+		panel2 = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane();
+		rv.addComponent(panel2, gbc);
 		
 		jButton = new JButton("Select All");
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-select-all.png") ));
@@ -70,7 +76,8 @@ public class HomeRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-find.png") ));
 		panel2.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton));
 		
-		
+		gbc.weightx = 1.0;
+		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue(), gbc  );
 		return rv;
 	}
 }
