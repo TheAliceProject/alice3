@@ -30,51 +30,75 @@ public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.Predet
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel rv = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
+		gbc.fill = java.awt.GridBagConstraints.BOTH;
+//		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
+		gbc.weightx = 0.0;
+		edu.cmu.cs.dennisc.croquet.GridBagPanel rv = new edu.cmu.cs.dennisc.croquet.GridBagPanel();
 		rv.setBackgroundColor(java.awt.SystemColor.window);
-
+		rv.setBorder( BorderFactory.createEmptyBorder( 4,2,4,2 ) );
+		
 		edu.cmu.cs.dennisc.croquet.Button button;
 		javax.swing.JButton jButton;
 
-		LineAxisPanel rotatePanel = new LineAxisPanel();
-		rotatePanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		rv.addComponent(rotatePanel);
+//		LineAxisPanel rotatePanel = new LineAxisPanel();
+//		rotatePanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+//		rv.addComponent(rotatePanel, gbc );
+//		rotatePanel.setBorder( null );
 
 		button = autotutorial.ecard.menu.RotateBackwardModel.getInstance().createButton();
 		jButton = button.getAwtComponent();
-		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+//		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
+//		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/rotate-counter-clockwise.png") ));
-		rotatePanel.addComponent(button);
+		rv.addComponent( button, gbc );
+//		rotatePanel.addComponent(button);
 
 		button = autotutorial.ecard.menu.RotateForwardModel.getInstance().createButton();
 		jButton = button.getAwtComponent();
-		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+//		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
+//		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/rotate-clockwise.png") ));
-		rotatePanel.addComponent(button);
+		rv.addComponent( button, gbc );
+//		rotatePanel.addComponent(button);
 
-		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 6 ) );
-		PageAxisPanel effectsPanel = new PageAxisPanel();
+
+		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 6 ), gbc  );
+		edu.cmu.cs.dennisc.croquet.GridPanel effectsPanel = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane();
 		effectsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		rv.addComponent(effectsPanel);
+		rv.addComponent(effectsPanel, gbc );
 
-		effectsPanel.addComponent(autotutorial.ecard.menu.EllipseModel.getInstance().createButton());
-		effectsPanel.addComponent(autotutorial.ecard.menu.RoundedCornersModel.getInstance().createButton());
-		effectsPanel.addComponent(autotutorial.ecard.ThoughtBubbleEffectModel.getInstance().createButton());
+		button = autotutorial.ecard.menu.EllipseModel.getInstance().createButton();
+		button.setHorizontalAlignment( edu.cmu.cs.dennisc.croquet.HorizontalAlignment.LEADING );
+		effectsPanel.addComponent(button);
+
+		button = autotutorial.ecard.menu.RoundedCornersModel.getInstance().createButton();
+		button.setHorizontalAlignment( edu.cmu.cs.dennisc.croquet.HorizontalAlignment.LEADING );
+		effectsPanel.addComponent(button);
+
+		button = autotutorial.ecard.ThoughtBubbleEffectModel.getInstance().createButton();
+		button.setHorizontalAlignment( edu.cmu.cs.dennisc.croquet.HorizontalAlignment.LEADING );
+		effectsPanel.addComponent(button);
+		effectsPanel.setBorder( null );
 		
-		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 6 ) );
-		LineAxisPanel shadowPanel = new LineAxisPanel();
-		shadowPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		rv.addComponent(shadowPanel);
+		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 6 ), gbc  );
+//		LineAxisPanel shadowPanel = new LineAxisPanel();
+//		shadowPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+//		rv.addComponent(shadowPanel, gbc );
+//		shadowPanel.setBorder( null );
 
 		button = autotutorial.ecard.menu.DropShadowModel.getInstance().createButton();
 		jButton = button.getAwtComponent();
-		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+//		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
+//		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/drop-shadow.png") ));
-		shadowPanel.addComponent(button);
+//		shadowPanel.addComponent(button);
+		rv.addComponent( button, gbc );
 
+//		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gbc.weightx = 1.0;
+		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue(), gbc  );
 		return rv;
 	}
 	@Override
