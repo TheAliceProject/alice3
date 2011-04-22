@@ -51,6 +51,11 @@ public class GraphicsUtilities {
 		g2.setRenderingHint( key, value );
 		
 	}
+	public static void drawCenteredImage( java.awt.Graphics g, java.awt.Image image, java.awt.Component component ) {
+		int x = (component.getWidth() - image.getWidth( component ) ) / 2;
+		int y = (component.getHeight() - image.getHeight( component ) ) / 2;
+		g.drawImage( image, x, y, component );
+	}
 	public static void drawCenteredText( java.awt.Graphics g, String s, int x, int y, int width, int height ) {
 		if( s != null ) {
 			java.awt.FontMetrics fm = g.getFontMetrics();
