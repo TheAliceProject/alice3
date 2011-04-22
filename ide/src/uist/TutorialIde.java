@@ -46,7 +46,7 @@ package uist;
  * @author Dennis Cosgrove
  */
 public class TutorialIde extends org.alice.stageide.StageIDE {
-	/*package-private*/ static boolean IS_MONKEY_WRENCH_DESIRED = false;
+	/*package-private*/ static boolean IS_MONKEY_WRENCH_DESIRED;
 
 	private static boolean IS_ENCODING;
 	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
@@ -303,18 +303,22 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		IS_ENCODING = Boolean.parseBoolean( args[ 5 ] );
 		ROOT_PATH = args[ 6 ];
 		if( IS_ENCODING ) {
+			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.IS_SIDE_DOCKING_DESIRED = true;
 			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = false;
+			IS_MONKEY_WRENCH_DESIRED = false;
 			IS_BASED_ON_INTERACTION_AST = false;
 			IS_OPTIMIZED_FOR_BUG_REPRO = false;
 		} else {
 			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = Boolean.parseBoolean( args[ 7 ] );
-			IS_BASED_ON_INTERACTION_AST = Boolean.parseBoolean( args[ 8 ] );
-			IS_OPTIMIZED_FOR_BUG_REPRO = Boolean.parseBoolean( args[ 9 ] );
+			IS_MONKEY_WRENCH_DESIRED = Boolean.parseBoolean( args[ 8 ] );
+			IS_BASED_ON_INTERACTION_AST = Boolean.parseBoolean( args[ 9 ] );
+			IS_OPTIMIZED_FOR_BUG_REPRO = Boolean.parseBoolean( args[ 10 ] );
 		}
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
+		org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.IS_RUN_BUTTON_DESIRED = IS_MONKEY_WRENCH_DESIRED == false;
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING || IS_MONKEY_WRENCH_DESIRED == false );
 		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( true );
 
-		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( IS_ENCODING );
+		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( IS_ENCODING || IS_MONKEY_WRENCH_DESIRED == false );
 		//org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( false );
 		//org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( true );
 		final TutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( TutorialIde.class, null, args, false );

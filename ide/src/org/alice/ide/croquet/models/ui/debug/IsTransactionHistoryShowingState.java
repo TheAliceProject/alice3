@@ -195,13 +195,13 @@ class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rend
  * @author Dennis Cosgrove
  */
 public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
-	private static final boolean IS_RECORDING_VIDEO = true;
+	public static boolean IS_SIDE_DOCKING_DESIRED = false;
 	private static class SingletonHolder {
 		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory() ) {
 			@Override
 			protected javax.swing.JFrame createFrame() {
 				javax.swing.JFrame rv = super.createFrame();
-				if( IS_RECORDING_VIDEO ) {
+				if( IS_SIDE_DOCKING_DESIRED ) {
 					rv.setLocation( 1000, 0 );
 					rv.setSize( 280, 820 );
 				}
@@ -230,6 +230,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 	@Override
 	protected javax.swing.JFrame createFrame() {
 		javax.swing.JFrame rv = super.createFrame();
+		rv.setTitle( "Transaction History" );
 		final int SCREEN_INDEX = 1;
 		rv.setBounds( edu.cmu.cs.dennisc.java.awt.GraphicsDeviceUtilities.getScreenDeviceDefaultConfigurationBounds( SCREEN_INDEX ) );
 		return rv;
@@ -253,7 +254,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 						treeModel.reload();
 						int childCount = treeModel.getChildCount( treeModel.getRoot() );
 						for( int i=0; i<tree.getRowCount(); i++ ) {
-							if( IS_RECORDING_VIDEO==false && i<childCount-1 ) {
+							if( IS_SIDE_DOCKING_DESIRED==false && i<childCount-1 ) {
 								tree.collapseRow( i );
 							} else {
 								tree.expandRow( i );

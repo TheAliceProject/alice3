@@ -58,7 +58,7 @@ public class MenuBarModel extends edu.cmu.cs.dennisc.croquet.MenuBarModel {
 		this.addMenuModel( org.alice.ide.croquet.models.menubar.FileMenuModel.getInstance() );
 		this.addMenuModel( org.alice.ide.croquet.models.menubar.EditMenuModel.getInstance() );
 		this.addMenuModel( org.alice.ide.croquet.models.menubar.ProjectMenuModel.getInstance() );
-		this.addMenuModel( org.alice.ide.croquet.models.menubar.RunMenuModel.getInstance() );
+		//this.addMenuModel( org.alice.ide.croquet.models.menubar.RunMenuModel.getInstance() );
 		this.addMenuModel( org.alice.ide.croquet.models.menubar.WindowMenuModel.getInstance() );
 		this.addMenuModel( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
 	}
