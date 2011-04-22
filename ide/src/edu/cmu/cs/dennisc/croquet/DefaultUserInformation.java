@@ -41,26 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropCompletionNote extends CompletionNote< org.lgna.croquet.steps.DropCompletionStep > {
-	public DropCompletionNote( org.lgna.croquet.steps.DropCompletionStep step ) {
-		super( step );
-	}
-	@Override
-	protected void addFeatures(org.lgna.croquet.steps.DropCompletionStep step) {
-		this.addFeature( DropNoteUtilities.createHole( step ) );
-	}
-	
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
-		return DropNoteUtilities.isWhatWeveBeenWaitingFor( this.getStep(), event );
-	}
-	@Override
-	public boolean isGoodToGo() {
-		return false;
+public enum DefaultUserInformation implements UserInformation {
+	SINGLETON;
+	public java.util.Locale getLocale() {
+		return javax.swing.JComponent.getDefaultLocale();
 	}
 }

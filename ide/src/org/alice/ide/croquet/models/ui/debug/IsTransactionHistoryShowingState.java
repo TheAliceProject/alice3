@@ -159,7 +159,19 @@ class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rend
 		if( value instanceof org.lgna.croquet.steps.Transaction ) {
 			org.lgna.croquet.steps.Transaction transaction = (org.lgna.croquet.steps.Transaction)value;
 			int i = transaction.getParent().getIndexOfTransaction( transaction );
-			rv.setText( "transaction["+i+"]" );
+			StringBuilder sb = new StringBuilder();
+			sb.append( "<html>" );
+			sb.append( "transaction[" );
+			sb.append( i );
+			sb.append( "] " );
+			String title = transaction.getTitle( edu.cmu.cs.dennisc.croquet.DefaultUserInformation.SINGLETON );
+			if( title != null ) {
+				sb.append( "<strong>" );
+				sb.append( title );
+				sb.append( "</strong>" );
+			}
+			sb.append( "</html>" );
+			rv.setText( sb.toString() );
 			rv.setIcon( null );
 		} else if( value instanceof org.lgna.croquet.steps.CompletionStep< ? > ) {
 			org.lgna.croquet.steps.CompletionStep< ? > completionStep = (org.lgna.croquet.steps.CompletionStep< ? >)value;
@@ -183,8 +195,19 @@ class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rend
  * @author Dennis Cosgrove
  */
 public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
+	private static final boolean IS_RECORDING_VIDEO = true;
 	private static class SingletonHolder {
-		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory() );
+		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory() ) {
+			@Override
+			protected javax.swing.JFrame createFrame() {
+				javax.swing.JFrame rv = super.createFrame();
+				if( IS_RECORDING_VIDEO ) {
+					rv.setLocation( 1000, 0 );
+					rv.setSize( 280, 820 );
+				}
+				return rv;
+			}
+		};
 	}
 	public static IsTransactionHistoryShowingState getInstance() {
 		return SingletonHolder.instance;
@@ -230,7 +253,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 						treeModel.reload();
 						int childCount = treeModel.getChildCount( treeModel.getRoot() );
 						for( int i=0; i<tree.getRowCount(); i++ ) {
-							if( i<childCount-1 ) {
+							if( IS_RECORDING_VIDEO==false && i<childCount-1 ) {
 								tree.collapseRow( i );
 							} else {
 								tree.expandRow( i );

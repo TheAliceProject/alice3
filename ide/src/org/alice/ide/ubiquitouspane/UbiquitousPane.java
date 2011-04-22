@@ -181,14 +181,14 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.View {
 		this.addSliver();
 		this.addComponent( this.doTogetherTemplate );
 		this.addComponent( this.eachInArrayTogetherTemplate );
-		this.addSliver();
-		this.addComponent( this.doInThreadTemplate );
+//		this.addSliver();
+//		this.addComponent( this.doInThreadTemplate );
 		this.addSliver();
 		this.addComponent( this.declareLocalTemplate );
 		this.addComponent( this.transientStatementsWrapper );
 		this.addComponent( this.returnStatementWrapper );
-		this.addSliver();
-		this.addComponent( this.commentTemplate );
+//		this.addSliver();
+//		this.addComponent( this.commentTemplate );
 	}
 	
 	private boolean isHorizontal() {

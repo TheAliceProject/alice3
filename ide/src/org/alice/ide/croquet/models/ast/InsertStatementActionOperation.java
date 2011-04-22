@@ -100,15 +100,41 @@ public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.A
 		return originalEdit;
 	}
 
+//	private static edu.cmu.cs.dennisc.alice.ast.MethodInvocation getMethodInvocation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
+//			edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement;
+//			edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
+//			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
+//				return (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+//			}
+//		}
+//		return null;
+//	}
+//	private static edu.cmu.cs.dennisc.alice.ast.AbstractMethod getMethod( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//		edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = getMethodInvocation( statement );
+//		if( methodInvocation != null ) {
+//			return methodInvocation.method.getValue();
+//		}
+//		return null;
+//	}
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>)edit;
 		InsertStatementActionOperation replacement = replacementEdit.getModel();
 		retargeter.addKeyValuePair( this.blockStatement, replacement.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacement.statement );
+//		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = getMethod( this.statement );
+//		if( method != null ) {
+//			retargeter.addKeyValuePair( method, getMethod( replacement.statement ) );
+//		}
 	}
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		this.blockStatement = retargeter.retarget( this.blockStatement );
-		this.statement = retargeter.retarget( this.statement );
+		edu.cmu.cs.dennisc.alice.ast.Statement originalStatement = this.statement;
+		this.statement = retargeter.retarget( originalStatement );
+//		edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = getMethodInvocation( this.statement );
+//		if( methodInvocation != null ) {
+//			methodInvocation.method.setValue( retargeter.retarget( getMethod( originalStatement ) ) );
+//		}
 	}
 	
 	

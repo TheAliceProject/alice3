@@ -46,7 +46,7 @@ package uist;
  * @author Dennis Cosgrove
  */
 public class TutorialIde extends org.alice.stageide.StageIDE {
-	/*package-private*/ static boolean IS_MONKEY_WRENCH_DESIRED = true;
+	/*package-private*/ static boolean IS_MONKEY_WRENCH_DESIRED = false;
 
 	private static boolean IS_ENCODING;
 	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
@@ -232,7 +232,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 				org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
 				IS_OPTIMIZED_FOR_BUG_REPRO 
 		);
-		//final org.lgna.cheshire.docwizardsesque.Presentation presentation = new org.lgna.cheshire.docwizardsesque.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+//		final org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
 		
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );

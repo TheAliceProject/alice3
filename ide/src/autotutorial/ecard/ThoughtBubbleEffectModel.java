@@ -1,7 +1,5 @@
 package autotutorial.ecard;
 
-import javax.swing.ImageIcon;
-
 public class ThoughtBubbleEffectModel extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static ThoughtBubbleEffectModel instance = new ThoughtBubbleEffectModel();
@@ -12,11 +10,16 @@ public class ThoughtBubbleEffectModel extends edu.cmu.cs.dennisc.croquet.ActionO
 	
 	private ThoughtBubbleEffectModel() {
 		super( null, java.util.UUID.fromString( "73fa6653-073e-4ab0-91ab-3148678b5226" ) );
-		this.setSmallIcon( new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/menu/thought-bubble.png") ) );
+		this.setSmallIcon( new javax.swing.ImageIcon(getClass().getResource("/autotutorial/ecard/resources/menu/thought-bubble.png") ) );
 	}
 	@Override
 	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		ECardApplication.getSingleton().getCardPanel().setImage(ECardPanel.CardState.BUBBLE_PHOTO);
 		context.finish();
+	}
+	@Override
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		rv.append( "Select " + this.getDefaultLocalizedText() );
+		return rv;
 	}
 }

@@ -61,12 +61,14 @@ public abstract class CompletionModel extends Model {
 		StringBuilder sb = new StringBuilder();
 		updateTutorialTransactionTitle( sb, edit, userInformation );
 		if( sb.length() == 0 ) {
-			sb.append( "TODO: " );
-			sb.append( this );
-			sb.append( "; " );
-			sb.append( edit );
+//			sb.append( "TODO: " );
+//			sb.append( this );
+//			sb.append( "; " );
+//			sb.append( edit );
+			return null;
+		} else {
+			return sb.toString();
 		}
-		return sb.toString();
 	}
 	
 }
