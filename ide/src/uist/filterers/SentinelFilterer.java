@@ -46,8 +46,12 @@ package uist.filterers;
 /**
  * @author Dennis Cosgrove
  */
-public enum NoOpFilterer implements org.lgna.cheshire.Filterer {
+public enum SentinelFilterer implements org.lgna.cheshire.Filterer {
 	INSTANCE;
 	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		while( chapterIterator.hasNext() ) {
+			chapterIterator.next();
+		}
+		chapterIterator.add( new org.lgna.cheshire.MessageChapter( "Finished", "You have completed the guided interaction." ) );
 	}
 }

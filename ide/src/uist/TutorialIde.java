@@ -172,7 +172,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		org.lgna.cheshire.Filterer filterer;
 		if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
 			//do not filter
-			filterer = uist.filterers.NoOpFilterer.INSTANCE;
+			filterer = uist.filterers.SentinelFilterer.INSTANCE;
 		} else {
 			filterer = new uist.filterers.TutorialFilterer();
 		}
@@ -201,7 +201,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					IS_OPTIMIZED_FOR_BUG_REPRO 
 			);
 		} else {
-			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.SentinelFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
 		}
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );
