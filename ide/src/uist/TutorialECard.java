@@ -94,7 +94,13 @@ public class TutorialECard extends autotutorial.ecard.ECardApplication {
 		presentation.setRetargeter( astLiveRetargeter );
 
 		presentation.setVisible( true );
-		this.getFrame().setVisible( true );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );
+				TutorialECard.this.getFrame().setVisible( true );
+			}
+		} );
+		
 		
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
@@ -135,10 +141,10 @@ public class TutorialECard extends autotutorial.ecard.ECardApplication {
 
 	public static void main( final String[] args ) throws Exception {
 		ROOT_PATH = args[ 5 ];
+		final TutorialECard app = new TutorialECard();
+		app.initialize( args );
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				TutorialECard app = new TutorialECard();
-				app.initialize( args );
 				IS_ENCODING = app.isRibbonBased() == false;
 				if( IS_ENCODING ) {
 					app.getFrame().setVisible(true);

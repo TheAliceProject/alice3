@@ -92,7 +92,7 @@ public abstract class Feature {
 	public boolean isGoodToGo() {
 		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.trackableShapeResolver.getResolved();
 		if( trackableShape != null ) {
-			return true;
+			return trackableShape.isInView();
 		} else {
 			return false;
 		}
