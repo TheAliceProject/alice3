@@ -141,13 +141,20 @@ public class TutorialECard extends autotutorial.ecard.ECardApplication {
 
 	public static void main( final String[] args ) throws Exception {
 		ROOT_PATH = args[ 5 ];
+		IS_ENCODING = "2003".equals( args[ 4 ] );
+		if( IS_ENCODING ) {
+			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.IS_SIDE_DOCKING_DESIRED = true;
+			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
+		}
 		final TutorialECard app = new TutorialECard();
 		app.initialize( args );
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				IS_ENCODING = app.isRibbonBased() == false;
 				if( IS_ENCODING ) {
 					app.getFrame().setVisible(true);
+					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 500 );
+					org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
+					edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext().EPIC_HACK_clear();
 				} else {
 					app.createAndShowTutorial();
 				}

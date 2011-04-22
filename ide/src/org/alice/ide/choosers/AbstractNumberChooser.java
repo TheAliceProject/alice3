@@ -70,32 +70,32 @@ abstract class AbstractNumberChooser<N extends edu.cmu.cs.dennisc.alice.ast.Expr
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.weightx = 1.0;
-		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.Numeral7Operation.getInstance( this.numberModel ).createButton(), gbc );
-		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.Numeral8Operation.getInstance( this.numberModel ).createButton(), gbc );
+		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( this.numberModel, (short)7 ).createButton(), gbc );
+		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( this.numberModel, (short)8 ).createButton(), gbc );
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.Numeral9Operation.getInstance( this.numberModel ).createButton(), gbc );
+		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( this.numberModel, (short)9 ).createButton(), gbc );
 
 		gbc.weightx = 0.0;
 		gbc.gridwidth = 1;
-		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.Numeral4Operation.getInstance( this.numberModel ).createButton(), gbc );
-		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.Numeral5Operation.getInstance( this.numberModel ).createButton(), gbc );
+		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( this.numberModel, (short)4 ).createButton(), gbc );
+		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( this.numberModel, (short)5 ).createButton(), gbc );
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.Numeral6Operation.getInstance( this.numberModel ).createButton(), gbc );
+		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( this.numberModel, (short)6 ).createButton(), gbc );
 
 		gbc.gridwidth = 1;
-		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.Numeral1Operation.getInstance( this.numberModel ).createButton(), gbc );
-		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.Numeral2Operation.getInstance( this.numberModel ).createButton(), gbc );
+		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( this.numberModel, (short)1 ).createButton(), gbc );
+		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( this.numberModel, (short)2 ).createButton(), gbc );
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.Numeral3Operation.getInstance( this.numberModel ).createButton(), gbc );
+		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( this.numberModel, (short)3 ).createButton(), gbc );
 
 		
 		if( this.numberModel.isDecimalPointSupported() ) {
 			gbc.gridwidth = 1;
-			gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.Numeral0Operation.getInstance( this.numberModel ).createButton(), gbc );
+			gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( this.numberModel, (short)0 ).createButton(), gbc );
 			gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.DecimalPointOperation.getInstance( this.numberModel ).createButton(), gbc );
 		} else {
 			gbc.gridwidth = 2;
-			gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.Numeral0Operation.getInstance( this.numberModel ).createButton(), gbc );
+			gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( this.numberModel, (short)0 ).createButton(), gbc );
 		}
 		gridBagPanel.addComponent( plusMinusOperation.createButton(), gbc );
 

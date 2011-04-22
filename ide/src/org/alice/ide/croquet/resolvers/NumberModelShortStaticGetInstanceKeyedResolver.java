@@ -40,25 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.numberpad;
+
+package org.alice.ide.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Numeral5Operation extends NumeralOperation {
-	private static java.util.Map< NumberModel, Numeral5Operation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized Numeral5Operation getInstance( NumberModel numberModel ) {
-		Numeral5Operation rv = map.get( numberModel );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new Numeral5Operation( numberModel );
-			map.put( numberModel, rv );
-		}
-		return rv;
+public class NumberModelShortStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T > {
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.croquet.models.numberpad.NumberModel.class, Short.TYPE };
+	private org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
+	private short numeral;
+	public NumberModelShortStaticGetInstanceKeyedResolver( T instance, org.alice.ide.croquet.models.numberpad.NumberModel numberModel, short numeral ) {
+		super( instance );
+		this.numberModel = numberModel;
+		this.numeral = numeral;
+	}
+	public NumberModelShortStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 
-	private Numeral5Operation( NumberModel numberModel ) {
-		super( java.util.UUID.fromString( "051f7654-c6a5-4543-8190-4fef3f1cf2b5" ), numberModel, (short)5 );
+	@Override
+	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return PARAMETER_TYPES;
+	}
+	@Override
+	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		final String METHOD_NAME = "getInstance";
+		String clsName = binaryDecoder.decodeString();
+		short numeral = binaryDecoder.decodeShort();
+		try {
+			Class< ? > cls = edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( clsName );
+			java.lang.reflect.Method mthd = cls.getMethod( METHOD_NAME );
+			Object instance = mthd.invoke( null );
+			return new Object[] { instance, numeral };
+		} catch( ClassNotFoundException cnfe ) {
+			throw new RuntimeException( clsName, cnfe );
+		} catch( NoSuchMethodException nsme ) {
+			throw new RuntimeException( clsName + " " + METHOD_NAME, nsme );
+		} catch( java.lang.IllegalAccessException iae ) {
+			throw new RuntimeException( clsName + " " + METHOD_NAME, iae );
+		} catch( java.lang.reflect.InvocationTargetException ite ) {
+			throw new RuntimeException( clsName + " " + METHOD_NAME, ite );
+		}
+	}
+	@Override
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		Class<?> cls = this.numberModel.getClass();
+		binaryEncoder.encode( cls.getName() );
+		binaryEncoder.encode( this.numeral );
 	}
 }

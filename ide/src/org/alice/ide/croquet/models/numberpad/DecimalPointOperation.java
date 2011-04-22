@@ -63,6 +63,10 @@ public class DecimalPointOperation extends NumberPadOperation {
 		this.setName( "." );
 	}
 	@Override
+	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation >( this, this.numberModel );
+	}
+	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		this.numberModel.appendDecimalPoint();
 		context.finish();

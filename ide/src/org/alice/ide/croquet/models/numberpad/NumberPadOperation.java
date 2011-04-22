@@ -51,9 +51,4 @@ public abstract class NumberPadOperation extends edu.cmu.cs.dennisc.croquet.Acti
 		super( NumberModel.NUMBER_PAD_GROUP, individualId );
 		this.numberModel = numberModel;
 	}
-	
-	@Override
-	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation >( this, this.numberModel );
-	}
 }

@@ -64,6 +64,10 @@ public class PlusMinusOperation extends NumberPadOperation {
 		this.setName( "\u00B1" );
 	}
 	@Override
+	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation >( this, this.numberModel );
+	}
+	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		this.numberModel.negate();
 		context.finish();
