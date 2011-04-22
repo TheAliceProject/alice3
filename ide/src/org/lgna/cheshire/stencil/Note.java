@@ -63,14 +63,17 @@ public abstract class Note extends org.lgna.stencil.Note {
 		return rv;
 	}
 	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event );
-	private void moveOutOfTheWayIfNecessary( edu.cmu.cs.dennisc.croquet.ScreenElement screenElement ) {
+	private boolean moveOutOfTheWayIfNecessary( edu.cmu.cs.dennisc.croquet.ScreenElement screenElement ) {
 		java.awt.Rectangle screenElementLocalBounds = screenElement.getLocalBounds();
 		java.awt.Rectangle bounds = this.getBounds( screenElement );
 		if( bounds.intersects( screenElementLocalBounds ) ) {
-			this.setLocation( (int)screenElementLocalBounds.getWidth()+100, (int)screenElementLocalBounds.getHeight()/2, screenElement );
+			this.setLocation( (int)screenElementLocalBounds.getWidth()+32, (int)screenElementLocalBounds.getHeight()/2, screenElement );
+			return true;
+		} else {
+			return false;
 		}
 	}
-	public void adjustIfNecessary( org.lgna.cheshire.events.Event event ) {
+	public boolean moveOutOfTheWayIfNecessary( org.lgna.cheshire.events.Event event ) {
 		edu.cmu.cs.dennisc.croquet.ScreenElement screenElement;
 		if( event instanceof org.lgna.cheshire.events.PopupMenuResizedEvent ) {
 			org.lgna.cheshire.events.PopupMenuResizedEvent menuResizedEvent = (org.lgna.cheshire.events.PopupMenuResizedEvent)event;
@@ -82,7 +85,9 @@ public abstract class Note extends org.lgna.stencil.Note {
 			screenElement = null;
 		}
 		if( screenElement != null ) {
-			this.moveOutOfTheWayIfNecessary( screenElement );
+			return this.moveOutOfTheWayIfNecessary( screenElement );
+		} else {
+			return false;
 		}
 	}
 }

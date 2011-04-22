@@ -86,8 +86,8 @@ public abstract class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.
 		}
 
 		System.err.println( "todo: remove text calculateLocation special case" );
-		if( this.getText().contains( "resize" ) ) {
-			rv.y = 700;
+		if( this.getText().contains( "Drag..." ) ) {
+			rv.y = 400;
 		}
 		return rv;
 	}

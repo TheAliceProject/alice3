@@ -311,10 +311,10 @@ public abstract class Feature {
 				if( actualConnection != null ) {
 					rv.y = yFeatureComponentCenter;
 					if( yFeatureComponentCenter < yCardCenter ) {
-						rv.y += 100;
+						rv.y += 128;
 					} else {
 						rv.y -= noteBounds.height;
-						rv.y -= 100;
+						rv.y -= 32;
 					}
 				} else {
 					rv.y = getYForNorthLayout( noteBounds, featureComponentBounds );

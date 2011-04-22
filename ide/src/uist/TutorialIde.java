@@ -192,8 +192,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					
 					new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
 					
-//					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
-					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
+					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
+//					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
 //					org.lgna.stencil.MenuPolicy.BELOW_STENCIL,
 					
 					org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,

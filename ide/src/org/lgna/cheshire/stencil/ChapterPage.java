@@ -290,7 +290,16 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		if( activeNoteIndex != -1 ) {
 			final int N = this.notes.size();
 			for( int i=activeNoteIndex; i<N; i++ ) {
-				this.notes.get( i ).adjustIfNecessary( event );
+				Note iNote = this.notes.get( i );
+				boolean isMoved = iNote.moveOutOfTheWayIfNecessary( event );
+				if( isMoved ) {
+					for( int j=i+1; j<N; j++ ) {
+						java.awt.Point prevLocation = this.notes.get( j-1 ).getAwtComponent().getLocation();
+						Note jNote = this.notes.get( j );
+						jNote.setLocation( prevLocation.x+48, prevLocation.y-33 );
+					}
+					break;
+				}
 			}
 		}
 	}
