@@ -60,6 +60,8 @@ public class UndoOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 	}
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		DocWizardsesquePresentation docWizardsesquePresentation = (DocWizardsesquePresentation)org.lgna.cheshire.Presentation.getInstance();
+		docWizardsesquePresentation.getBackOnTrack();
 		context.finish();
 	}
 }

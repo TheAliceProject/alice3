@@ -192,6 +192,9 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		this.previewComponent.repaint();
 	}
 	
+	/*package-private*/ void getBackOnTrack() {
+		this.cardPanel.show( this.previewKey );
+	}
 	@Override
 	public void setVisible( boolean isVisible ) {
 		this.frame.setVisible( isVisible );
