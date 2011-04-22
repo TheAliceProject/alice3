@@ -66,7 +66,9 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		rv.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter(this.cardPanel), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 
 		if (this.isRibbonBased()) {
-			rv.addComponent( autotutorial.ecard.ribbon.ECardRibbonModel.getInstance().createDefaultFolderTabbedPane(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+			edu.cmu.cs.dennisc.croquet.FolderTabbedPane< ? > folderTabbedPane = autotutorial.ecard.ribbon.ECardRibbonModel.getInstance().createDefaultFolderTabbedPane();
+			folderTabbedPane.setBackgroundColor( java.awt.Color.MAGENTA );
+			rv.addComponent( folderTabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		} else {
 			getFrame().setMenuBarModel( autotutorial.ecard.menu.MenuBarModel.getInstance() );
 
