@@ -16,7 +16,7 @@ class ECardPanel extends javax.swing.JPanel {
 	protected void setImage(CardState state) {
 		this.state = state;
 		if (state == CardState.EMPTY) {
-			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/e-card-empty.png")).getImage();
+			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/e-card.png")).getImage();
 		} else if (state == CardState.PHOTO) {
 			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/e-card-photo-" + ECardApplication.getSingleton().getYear() + ".png")).getImage();
 		} else if (state == CardState.BUBBLE_PHOTO) {
