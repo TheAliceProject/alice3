@@ -76,6 +76,7 @@ public class TutorialECard extends autotutorial.ecard.ECardApplication {
 				org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS,
 
 				this.originalTransactionHistory, 
+				MigrationManager.INSTANCE, 
 				filterer,
 				recoverer,
 				

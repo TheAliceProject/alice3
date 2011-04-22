@@ -90,6 +90,10 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 		binaryEncoder.encode( this.transactionHistory );
 	}
 	
+	public boolean isValid() {
+		return this.getModel() != null && ( this.edit == null || this.edit.isValid() );
+	}
+
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );

@@ -91,11 +91,13 @@ public abstract class Presentation {
 
 	private final edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
-	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, Filterer filterer, Recoverer recoverer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, org.lgna.croquet.steps.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
 		
 		assert instance == null;
 		instance = this;
 
+		this.validate( originalTransactionHistory );
+		
 		this.userInformation = userInformation;
 		this.recoverer = recoverer;
 		this.book = this.generateDraft( accessPolicy, originalTransactionHistory );
@@ -215,6 +217,17 @@ public abstract class Presentation {
 		return this.book;
 	}
 	
+	protected void validate( org.lgna.croquet.steps.TransactionHistory transactionHistory ) {
+		java.util.ListIterator< org.lgna.croquet.steps.Transaction > transactionListIterator = transactionHistory.listIterator();
+		while( transactionListIterator.hasNext() ) {
+			org.lgna.croquet.steps.Transaction transaction = transactionListIterator.next();
+			if( transaction.isValid() ) {
+				//pass
+			} else {
+				
+			}
+		}
+	}
 	private edu.cmu.cs.dennisc.croquet.CompletionModel huntForInMenus( java.util.List< edu.cmu.cs.dennisc.croquet.MenuModel > list, edu.cmu.cs.dennisc.croquet.MenuModel menuModel, edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
 		if( menuModel instanceof edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel ) {
 			edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel defaultMenuModel = (edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel)menuModel;

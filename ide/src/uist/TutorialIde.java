@@ -187,6 +187,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS,
 
 					this.originalTransactionHistory, 
+					MigrationManager.INSTANCE, 
 					filterer,
 					recoverer,
 					
@@ -200,7 +201,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					IS_OPTIMIZED_FOR_BUG_REPRO 
 			);
 		} else {
-			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
 		}
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );

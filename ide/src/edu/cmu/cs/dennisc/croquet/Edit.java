@@ -119,6 +119,9 @@ public abstract class Edit<M extends CompletionModel> {
 		assert this.context != null;
 		return this.context;
 	}
+	public boolean isValid() {
+		return true;
+	}
 	public M getModel() {
 		if( this.completionStep != null ) {
 			return this.completionStep.getModel();

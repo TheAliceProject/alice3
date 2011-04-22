@@ -236,6 +236,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
 			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
 			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
+			org.lgna.croquet.steps.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
 			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess, 
@@ -243,7 +244,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, 
 			boolean isOptimizedForBugRepro 
 	) {
-		super( userInformation, transactionAccessPolicy, originalTransactionHistory, filterer, recoverer, groupsTrackedForRandomAccess );
+		super( userInformation, transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess );
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
 		this.stencil = new Stencil( menuPolicy, scrollingRequiredRenderer, isOptimizedForBugRepro );
 		this.isInterceptingEvents.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {

@@ -65,11 +65,12 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 	public DocWizardsesquePresentation( 
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
 			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
+			org.lgna.croquet.steps.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
 			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess
 	) {
-		super( userInformation, org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, filterer, recoverer, groupsTrackedForRandomAccess );
+		super( userInformation, org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess );
 		
 		this.frame.setTitle( "DocWizardsesque" );
 		this.frame.setLocation( 0, 0 );
