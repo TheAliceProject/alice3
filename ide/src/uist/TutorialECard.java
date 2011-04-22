@@ -48,16 +48,17 @@ package uist;
  */
 public class TutorialECard extends autotutorial.ecard.ECardApplication {
 	private static boolean IS_ENCODING;
-	private static final String TRANSACTION_HISTORY_PATH = "/ecardTransactionHistory.bin";
+	private static String ROOT_PATH;
+	private static final String TRANSACTION_HISTORY_SUB_PATH = "/transactionHistory.bin";
 	//note: we encode and decode the root context temporarily while models (ListSelectionState (Edit) ) still rely on context (for things like getCodec()) 
-	private static final String CONTEXT_PATH = "/ecardContext.bin";
+	private static final String CONTEXT_SUB_PATH = "/context.bin";
 	
 	private org.lgna.croquet.steps.TransactionHistory originalTransactionHistory;
 
 	private void createAndShowTutorial() {
 		edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
-		edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( CONTEXT_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
-		this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( TRANSACTION_HISTORY_PATH, org.lgna.croquet.steps.TransactionHistory.class );
+		edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH + CONTEXT_SUB_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
+		this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH + TRANSACTION_HISTORY_SUB_PATH, org.lgna.croquet.steps.TransactionHistory.class );
 		edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 
 		org.lgna.cheshire.Filterer filterer = new uist.filterers.TutorialFilterer();
@@ -115,7 +116,7 @@ public class TutorialECard extends autotutorial.ecard.ECardApplication {
 		if( IS_ENCODING ) {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory(), TRANSACTION_HISTORY_PATH );
+			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory(), ROOT_PATH + TRANSACTION_HISTORY_SUB_PATH );
 			
 			edu.cmu.cs.dennisc.croquet.RootContext rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			System.err.println( "todo: remove filtering" );
@@ -126,13 +127,14 @@ public class TutorialECard extends autotutorial.ecard.ECardApplication {
 				rootContext = filter.filter( rootContext );
 			}
 			
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext(), CONTEXT_PATH );
+			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext(), ROOT_PATH + CONTEXT_SUB_PATH );
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 		}
 		System.exit( 0 );
 	}
 
 	public static void main( final String[] args ) throws Exception {
+		ROOT_PATH = args[ 5 ];
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				TutorialECard app = new TutorialECard();
