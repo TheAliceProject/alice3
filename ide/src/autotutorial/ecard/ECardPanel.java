@@ -1,6 +1,6 @@
 package autotutorial.ecard;
 
-class ECardPanel extends javax.swing.JPanel {
+class ECardPanel extends javax.swing.JComponent {
 
 	public enum CardState {
 		EMPTY, PHOTO, BUBBLE_PHOTO
@@ -13,6 +13,14 @@ class ECardPanel extends javax.swing.JPanel {
 		setImage(state);
 	}
 
+	@Override
+	public java.awt.Dimension getPreferredSize() {
+		if( this.image != null ) {
+			return new java.awt.Dimension( this.image.getWidth( this ), this.image.getWidth( this ) );
+		} else {
+			return new java.awt.Dimension( 400, 300 );
+		}
+	}
 	protected void setImage(CardState state) {
 		this.state = state;
 		if (state == CardState.EMPTY) {
@@ -22,14 +30,8 @@ class ECardPanel extends javax.swing.JPanel {
 		} else if (state == CardState.BUBBLE_PHOTO) {
 			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/e-card-photo-bubble-" + ECardApplication.getSingleton().getYear() + ".png")).getImage();
 		}
-
-		java.awt.Dimension size = new java.awt.Dimension(image.getWidth(null), image.getHeight(null));
-		setPreferredSize(size);
-		setMinimumSize(size);
-		setMaximumSize(size);
-		setSize(size);
-		setLayout(null);
-		repaint();
+		this.revalidate();
+		this.repaint();
 	}
 
 	@Override
