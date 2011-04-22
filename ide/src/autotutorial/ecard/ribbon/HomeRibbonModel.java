@@ -22,7 +22,7 @@ public class HomeRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel rv = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
-		rv.setBackgroundColor(java.awt.SystemColor.window);
+		rv.setBackgroundColor(java.awt.SystemColor.control);
 
 		edu.cmu.cs.dennisc.croquet.Button button;
 		javax.swing.JButton jButton;
