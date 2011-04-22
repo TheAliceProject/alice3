@@ -145,7 +145,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		this.offTrackKey = cardPanel.createKey( this.offTrackPanel, java.util.UUID.randomUUID() );
 		cardPanel.addComponent( this.previewKey );
 		cardPanel.addComponent( this.offTrackKey );
-		cardPanel.setMinimumPreferredHeight( 48 );
+		cardPanel.setMinimumPreferredHeight( 50 );
 		cardPanel.show( this.previewKey );
 		
 		edu.cmu.cs.dennisc.croquet.VerticalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.VerticalSplitPane(flowPanel, this.cardPanel );
@@ -187,6 +187,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 	}
 	@Override
 	protected void handleEvent( org.lgna.cheshire.events.Event event ) {
+		this.jTree.repaint();
 		this.previewComponent.repaint();
 		if( isIgnoringEvents ) {
 			//pass

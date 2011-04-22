@@ -76,16 +76,18 @@ public class PreviewComponent extends edu.cmu.cs.dennisc.croquet.JComponent< jav
 								java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 								java.awt.Paint paint = g2.getPaint();
 								java.awt.Stroke stroke = g2.getStroke();
-								final int INSET = 2;
-								g2.translate( INSET, INSET );
+								final int INSET = 0;
+								int x = INSET - component.getX();
+								int y = INSET - component.getY();
+								g2.translate( +x, +y );
 								try {
-									component.getAwtComponent().printAll( g );
+									component.getAwtComponent().getParent().printAll( g );
 									g2.setPaint( java.awt.Color.RED );
 									g2.setStroke( STROKE );
 									g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-									g2.drawOval( 0, 0, size.width, size.height );
 								} finally {
-									g2.translate( -INSET, -INSET );
+									g2.translate( -x, -y );
+									g2.drawOval( 0, 0, size.width+INSET*2, size.height+INSET*2 );
 									g2.setPaint( paint );
 									g2.setStroke( stroke );
 								}
