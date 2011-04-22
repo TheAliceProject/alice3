@@ -34,6 +34,7 @@ class ECardPanel extends javax.swing.JPanel {
 
 	@Override
 	public void paintComponent(java.awt.Graphics g) {
+		super.paintComponent( g );
 		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredImage( g, image, this );
 	}
 }
