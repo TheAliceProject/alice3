@@ -264,7 +264,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 
 	@Override
 	protected StringBuffer updateTitle( StringBuffer rv ) {
-		rv.append( "AnonymizedForPeerReview" );
+		rv.append( "" );
 		return rv;
 	}
 
