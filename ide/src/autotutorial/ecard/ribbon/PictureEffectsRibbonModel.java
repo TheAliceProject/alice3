@@ -2,6 +2,7 @@ package autotutorial.ecard.ribbon;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 	private static class SingletonHolder {
@@ -43,16 +44,16 @@ public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.Predet
 
 		button = autotutorial.ecard.menu.RotateBackwardModel.getInstance().createButton();
 		jButton = button.getAwtComponent();
-//		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
-//		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/rotate-counter-clockwise.png") ));
 		rv.addComponent( button, gbc );
 //		rotatePanel.addComponent(button);
 
 		button = autotutorial.ecard.menu.RotateForwardModel.getInstance().createButton();
 		jButton = button.getAwtComponent();
-//		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
-//		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/rotate-clockwise.png") ));
 		rv.addComponent( button, gbc );
 //		rotatePanel.addComponent(button);
@@ -84,8 +85,8 @@ public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.Predet
 
 		button = autotutorial.ecard.menu.DropShadowModel.getInstance().createButton();
 		jButton = button.getAwtComponent();
-//		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
-//		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/drop-shadow.png") ));
 //		shadowPanel.addComponent(button);
 		rv.addComponent( button, gbc );
