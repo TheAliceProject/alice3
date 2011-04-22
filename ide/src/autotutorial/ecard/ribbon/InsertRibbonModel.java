@@ -12,6 +12,8 @@ public class InsertRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedT
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
-		return new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
+		edu.cmu.cs.dennisc.croquet.PageAxisPanel rv = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
+		rv.setBackgroundColor(java.awt.SystemColor.window);
+		return rv;
 	}
 }
