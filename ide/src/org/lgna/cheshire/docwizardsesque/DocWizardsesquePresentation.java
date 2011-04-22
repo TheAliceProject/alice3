@@ -213,9 +213,20 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 					}
 				} else if( event instanceof org.lgna.cheshire.events.FinishedEvent ) {
 					org.lgna.cheshire.events.FinishedEvent finishEvent = (org.lgna.cheshire.events.FinishedEvent)event;
-					if( transactionChapter.getTransaction().getCompletionStep().getModel() == finishEvent.getCompletionModel() ) {
-						transactionChapter.setReplacementAcceptability( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH );
-						this.incrementSelectedIndex();
+					org.lgna.croquet.steps.Transaction transaction = finishEvent.getTransaction();
+					org.lgna.croquet.steps.TransactionHistory transactionHistory = transaction.getParent();
+					if( transactionHistory.getParent() != null ) {
+						//pass
+					} else {
+						if( transaction.getCompletionStep().getModel() == org.alice.stageide.croquet.models.run.RunOperation.getInstance() ) {
+							transactionChapter.setReplacementAcceptability( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH );
+							try { 
+								isIgnoringEvents = true;
+								this.incrementSelectedIndex();
+							} finally {
+								isIgnoringEvents = false;
+							}
+						}
 					}
 				}
 			}

@@ -70,10 +70,10 @@ public abstract class Presentation {
 			Presentation.this.handleEditCommitted( edit );
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.EditCommittedEvent( edit ) );
 		}
-		public void finishing(edu.cmu.cs.dennisc.croquet.CompletionModel completionModel) {
+		public void finishing(org.lgna.croquet.steps.Transaction transaction) {
 		}
-		public void finished( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel ) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.FinishedEvent( completionModel ) );
+		public void finished(org.lgna.croquet.steps.Transaction transaction) {
+			Presentation.this.handleEvent( new org.lgna.cheshire.events.FinishedEvent( transaction ) );
 		}
 		public void transactionCanceled( org.lgna.croquet.steps.Transaction transaction ) {
 			Presentation.this.handleTransactionCanceled( transaction );
