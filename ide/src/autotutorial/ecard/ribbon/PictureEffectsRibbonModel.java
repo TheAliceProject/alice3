@@ -36,9 +36,9 @@ public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.Predet
 //		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
 		gbc.weightx = 0.0;
 		edu.cmu.cs.dennisc.croquet.GridBagPanel rv = new edu.cmu.cs.dennisc.croquet.GridBagPanel();
-		rv.setBackgroundColor(java.awt.SystemColor.window);
 		rv.setBorder( BorderFactory.createEmptyBorder( 4,2,4,2 ) );
-		
+		rv.setBackgroundColor(java.awt.SystemColor.control);
+
 		edu.cmu.cs.dennisc.croquet.Button button;
 		javax.swing.JButton jButton;
 
