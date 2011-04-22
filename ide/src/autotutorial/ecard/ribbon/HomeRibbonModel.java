@@ -1,5 +1,14 @@
 package autotutorial.ecard.ribbon;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
+
+import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
+import edu.cmu.cs.dennisc.croquet.PageAxisPanel;
+
 public class HomeRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 	private static class SingletonHolder {
 		private static HomeRibbonModel instance = new HomeRibbonModel();
@@ -12,6 +21,55 @@ public class HomeRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
-		return new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
+		edu.cmu.cs.dennisc.croquet.LineAxisPanel rv = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+
+		edu.cmu.cs.dennisc.croquet.Button button;
+		javax.swing.JButton jButton;
+
+		LineAxisPanel panel = new LineAxisPanel();
+		panel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		rv.addComponent(panel);
+
+		jButton = new javax.swing.JButton("Paste");
+		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-paste.png") ));
+		panel.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton));
+		
+		edu.cmu.cs.dennisc.croquet.PageAxisPanel panel2 = new PageAxisPanel();
+		panel.addComponent(panel2);
+		
+		jButton = new JButton("Copy");
+		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-copy.png") ));
+		panel2.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton));
+		
+		jButton = new JButton("Cut");
+		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-cut.png") ));
+		panel2.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton));
+		
+		panel = new LineAxisPanel();
+		panel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		rv.addComponent(panel);
+		
+		button = autotutorial.ecard.DeletePictureModel.getInstance().createButton();
+		jButton = button.getAwtComponent();
+		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-delete.png") ));
+		panel.addComponent(button);
+		
+		panel2 = new PageAxisPanel();
+		panel.addComponent(panel2);
+		
+		jButton = new JButton("Select All");
+		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-select-all.png") ));
+		panel2.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton));
+		
+		jButton = new JButton("Find");
+		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-find.png") ));
+		panel2.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton));
+		
+		
+		return rv;
 	}
 }
