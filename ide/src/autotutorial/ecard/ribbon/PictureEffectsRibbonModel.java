@@ -2,11 +2,6 @@ package autotutorial.ecard.ribbon;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
-import javax.swing.border.EtchedBorder;
-
-import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
-import edu.cmu.cs.dennisc.croquet.PageAxisPanel;
 
 public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 	private static class SingletonHolder {
@@ -65,7 +60,7 @@ public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.Predet
 
 		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 6 ), gbc  );
 		edu.cmu.cs.dennisc.croquet.GridPanel effectsPanel = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane();
-		effectsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+//		effectsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		rv.addComponent(effectsPanel, gbc );
 
 		button = autotutorial.ecard.menu.EllipseModel.getInstance().createButton();

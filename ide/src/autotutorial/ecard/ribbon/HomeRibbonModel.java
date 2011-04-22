@@ -4,10 +4,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
-import javax.swing.border.EtchedBorder;
-
-import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
-import edu.cmu.cs.dennisc.croquet.PageAxisPanel;
 
 public class HomeRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 	private static class SingletonHolder {
@@ -47,10 +43,13 @@ public class HomeRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab
 		
 		jButton = new JButton("Copy");
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-copy.png") ));
+		jButton.setHorizontalAlignment( SwingConstants.LEADING );
+		
 		panel2.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton));
 		
 		jButton = new JButton("Cut");
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-cut.png") ));
+		jButton.setHorizontalAlignment( SwingConstants.LEADING );
 		panel2.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton));
 		
 		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 6 ), gbc );
@@ -70,10 +69,12 @@ public class HomeRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab
 		
 		jButton = new JButton("Select All");
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-select-all.png") ));
+		jButton.setHorizontalAlignment( SwingConstants.LEADING );
 		panel2.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton));
 		
 		jButton = new JButton("Find");
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-find.png") ));
+		jButton.setHorizontalAlignment( SwingConstants.LEADING );
 		panel2.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton));
 		
 		gbc.weightx = 1.0;
