@@ -51,6 +51,8 @@ public class TransactionManager {
 		public void addedStep( Step<?> step );
 		public void editCommitting( edu.cmu.cs.dennisc.croquet.Edit<?> edit );
 		public void editCommitted( edu.cmu.cs.dennisc.croquet.Edit<?> edit );
+		public void finishing( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel );
+		public void finished( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel );
 		public void dropPending( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
 		public void dropPended( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
 		public void menuItemsSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models );
@@ -131,6 +133,16 @@ public class TransactionManager {
 	private static void fireEditCommitted( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		for( Observer observer : observers ) {
 			observer.editCommitted( edit );
+		}
+	}
+	private static void fireFinishing( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel ) {
+		for( Observer observer : observers ) {
+			observer.finishing( completionModel );
+		}
+	}
+	private static void fireFinished( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel ) {
+		for( Observer observer : observers ) {
+			observer.finished( completionModel );
 		}
 	}
 	private static void fireDropPending( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
@@ -233,7 +245,9 @@ public class TransactionManager {
 	}
 	public static void finish( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
 		popCompletionStepTransactionHistoryIfNecessary( model );
+		fireFinishing( model );
 		getLastTransaction().finish();
+		fireFinished( model );
 //		finishPendingTransactionIfNecessary();
 	}
 	public static void cancel( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {

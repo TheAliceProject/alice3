@@ -173,7 +173,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 	private final void handlePotentialReplacementEdit( org.lgna.cheshire.TransactionChapter transactionChapter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidateEdit ) {
 		edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = transactionChapter.getTransaction().getEdit();
 		edu.cmu.cs.dennisc.croquet.Group group = replacementCandidateEdit.getGroup();
-		if( group == DocWizardsesquePresentation.IMPLEMENTATION_GROUP || group == org.lgna.cheshire.Presentation.COMPLETION_GROUP ) {
+		if( group == DocWizardsesquePresentation.IMPLEMENTATION_GROUP ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidateEdit, this.getUserInformation() );
@@ -211,6 +211,12 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 							isIgnoringEvents = false;
 						}
 					}
+				} else if( event instanceof org.lgna.cheshire.events.FinishedEvent ) {
+					org.lgna.cheshire.events.FinishedEvent finishEvent = (org.lgna.cheshire.events.FinishedEvent)event;
+					if( transactionChapter.getTransaction().getCompletionStep().getModel() == finishEvent.getCompletionModel() ) {
+						transactionChapter.setReplacementAcceptability( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH );
+						this.incrementSelectedIndex();
+					}
 				}
 			}
 		}
@@ -220,14 +226,17 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		super.handleChapterChanged( chapter );
 		javax.swing.tree.TreePath treePath = new javax.swing.tree.TreePath( new Object[] { this.getBook(), chapter } );
 		this.jTree.setSelectionPath( treePath );
+		this.jTree.scrollPathToVisible( treePath );
 		this.previewComponent.repaint();
 	}
 	
 	/*package-private*/ void getBackOnTrack() {
+		this.restoreHistoryIndicesDueToCancel();
 		this.cardPanel.show( this.previewKey );
 	}
 	@Override
 	public void setVisible( boolean isVisible ) {
 		this.frame.setVisible( isVisible );
+		
 	}
 }

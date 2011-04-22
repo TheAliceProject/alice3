@@ -382,7 +382,7 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		return this.completionStep;
 	}
 	/*package-private*/ void setCompletionStep( CompletionStep<?> step ) {
-		assert this.completionStep == null : this.completionStep + " " + step;
+		//assert this.completionStep == null : this.completionStep + " " + step;
 		this.addStep( step );
 	}
 	public boolean isPending() {

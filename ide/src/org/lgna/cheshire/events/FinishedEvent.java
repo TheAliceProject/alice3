@@ -41,26 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.docwizardsesque;
+package org.lgna.cheshire.events;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoSingleStepOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	private static class SingletonHolder {
-		private static DoSingleStepOperation instance = new DoSingleStepOperation();
+public class FinishedEvent implements Event {
+	private final edu.cmu.cs.dennisc.croquet.CompletionModel completionModel;
+	public FinishedEvent( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel ) {
+		this.completionModel = completionModel;
 	}
-	public static DoSingleStepOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private DoSingleStepOperation() {
-		super( DocWizardsesquePresentation.IMPLEMENTATION_GROUP, java.util.UUID.fromString( "28eb190f-b082-4329-b54d-62a3e2d9bd7a" ) );
-	}
-	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		org.lgna.cheshire.Book book = DocWizardsesquePresentation.getInstance().getBook();
-		int i = book.getSelectedIndex();
-		book.setSelectedIndex( Math.min( i+1, book.getChapterCount()-1 ) );
-		context.finish();
+	public edu.cmu.cs.dennisc.croquet.CompletionModel getCompletionModel() {
+		return this.completionModel;
 	}
 }

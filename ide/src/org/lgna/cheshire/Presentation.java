@@ -70,6 +70,11 @@ public abstract class Presentation {
 			Presentation.this.handleEditCommitted( edit );
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.EditCommittedEvent( edit ) );
 		}
+		public void finishing(edu.cmu.cs.dennisc.croquet.CompletionModel completionModel) {
+		}
+		public void finished( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel ) {
+			Presentation.this.handleEvent( new org.lgna.cheshire.events.FinishedEvent( completionModel ) );
+		}
 		public void transactionCanceled( org.lgna.croquet.steps.Transaction transaction ) {
 			Presentation.this.handleTransactionCanceled( transaction );
 		}
