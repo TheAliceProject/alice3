@@ -401,6 +401,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 //		}
 //		this.transactionsModel.setSelectedIndex( index );
 //	}
+	@Override
 	public void setVisible( boolean isVisible ) {
 		if( isVisible ) {
 			this.stencil.addToLayeredPane();

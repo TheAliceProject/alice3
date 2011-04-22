@@ -52,6 +52,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
 	private static boolean IS_BASED_ON_INTERACTION_AST;
 	private static boolean IS_OPTIMIZED_FOR_BUG_REPRO;
+
+	private static boolean IS_STENCILS;
 	
 	private static String ROOT_PATH;
 	private static final String TRANSACTION_HISTORY_PATH = "/transactionHistory.bin";
@@ -173,67 +175,33 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			filterer = uist.filterers.NoOpFilterer.INSTANCE;
 		} else {
 			filterer = new uist.filterers.TutorialFilterer();
-//			final boolean IS_INFORMATION_GROUP_INCLUDED = false;
-//			edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.alice.Project.GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
-//			edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
-//			edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( org.alice.ide.IDE.RUN_GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
-//			if( IS_INFORMATION_GROUP_INCLUDED || IS_OPTIMIZED_FOR_BUG_REPRO ) {
-//				edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.INFORMATION_GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
-//			}
-//			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
-//					edu.cmu.cs.dennisc.cheshire.SuccessfullyCompletedFilter.SINGLETON,
-//					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
-//					edu.cmu.cs.dennisc.cheshire.DocumentEventFilter.SINGLETON,
-//					edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON,
-//					edu.cmu.cs.dennisc.cheshire.RepeatedStateEditsFilter.SINGLETON,
-//			};
-//			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
-//				this.originalContext = filter.filter( this.originalContext );
-//			}
-			
-//			if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
-//				generator = new uist.generators.NoOpGenerator( this.originalContext );
-//			} else {
-//				generator = new uist.generators.PriorInteractionHistoryGenerator( this.originalContext );
-//			}			
 		}
-		
-//		java.util.List< org.lgna.cheshire.Chapter > chapters = ChapterGenerator.INSTANCE.generate( this.originalTransactionHistory ); 
-//		filterer.filter( chapters.listIterator(), UserInformation.INSTANCE );
 		this.retarget();
-		
-		
-		
-//		final edu.cmu.cs.dennisc.cheshire.GuidedInteraction guidedInteraction;
-//		if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
-//			guidedInteraction = new uist.bugrepro.Presentation( UserInformation.INSTANCE );
-//		} else {
-//			guidedInteraction = new uist.tutorial.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory );
-//		}
-//		guidedInteraction.setOriginalRoot( this.originalContext );
 		Recoverer recoverer = new Recoverer();
-		
-		final org.lgna.cheshire.stencil.StencilsPresentation presentation = new org.lgna.cheshire.stencil.StencilsPresentation( 
-				UserInformation.INSTANCE, 
-				
-				//edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP,
-				org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS,
+		final org.lgna.cheshire.Presentation presentation;
+		if( IS_STENCILS ) {
+			presentation = new org.lgna.cheshire.stencil.StencilsPresentation( 
+					UserInformation.INSTANCE, 
+					
+					//edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP,
+					org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS,
 
-				this.originalTransactionHistory, 
-				filterer,
-				recoverer,
-				
-				new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
-				
-//				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
-				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
-//				org.lgna.stencil.MenuPolicy.BELOW_STENCIL,
-				
-				org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
-				IS_OPTIMIZED_FOR_BUG_REPRO 
-		);
-//		final org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
-		
+					this.originalTransactionHistory, 
+					filterer,
+					recoverer,
+					
+					new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
+					
+//					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
+					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
+//					org.lgna.stencil.MenuPolicy.BELOW_STENCIL,
+					
+					org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
+					IS_OPTIMIZED_FOR_BUG_REPRO 
+			);
+		} else {
+			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+		}
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );
 
@@ -306,13 +274,15 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.IS_SIDE_DOCKING_DESIRED = true;
 			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = false;
 			IS_MONKEY_WRENCH_DESIRED = false;
+			IS_STENCILS = false;
 			IS_BASED_ON_INTERACTION_AST = false;
 			IS_OPTIMIZED_FOR_BUG_REPRO = false;
 		} else {
 			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = Boolean.parseBoolean( args[ 7 ] );
 			IS_MONKEY_WRENCH_DESIRED = Boolean.parseBoolean( args[ 8 ] );
-			IS_BASED_ON_INTERACTION_AST = Boolean.parseBoolean( args[ 9 ] );
-			IS_OPTIMIZED_FOR_BUG_REPRO = Boolean.parseBoolean( args[ 10 ] );
+			IS_STENCILS  = Boolean.parseBoolean( args[ 9 ] );
+			IS_BASED_ON_INTERACTION_AST = Boolean.parseBoolean( args[ 10 ] );
+			IS_OPTIMIZED_FOR_BUG_REPRO = Boolean.parseBoolean( args[ 11 ] );
 		}
 		org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.IS_RUN_BUTTON_DESIRED = IS_MONKEY_WRENCH_DESIRED == false;
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING || IS_MONKEY_WRENCH_DESIRED == false );

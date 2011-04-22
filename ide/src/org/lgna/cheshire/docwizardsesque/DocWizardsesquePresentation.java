@@ -55,6 +55,11 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
 	private final edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
+	private final PreviewComponent previewComponent = new PreviewComponent();
+	private final OffTrackPanel offTrackPanel = new OffTrackPanel();
+	private final edu.cmu.cs.dennisc.croquet.CardPanel cardPanel = new edu.cmu.cs.dennisc.croquet.CardPanel();
+	private final edu.cmu.cs.dennisc.croquet.CardPanel.Key previewKey;
+	private final edu.cmu.cs.dennisc.croquet.CardPanel.Key offTrackKey;
 	private final javax.swing.JTree jTree;
 	private final BookTreeModel bookTreeModel;
 	public DocWizardsesquePresentation( 
@@ -67,8 +72,8 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		super( userInformation, org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, filterer, recoverer, groupsTrackedForRandomAccess );
 		
 		this.frame.setTitle( "DocWizardsesque" );
-		this.frame.setLocation( 1400, 0 );
-		this.frame.setSize( 240, 800 );
+		this.frame.setLocation( 0, 0 );
+		this.frame.setSize( 280, 720 );
 		
 		this.frame.addWindowListener( new java.awt.event.WindowListener() {
 
@@ -103,17 +108,29 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		flowPanel.addComponent( DoSingleStepOperation.getInstance().createButton() );
 		flowPanel.addComponent( DoAllStepsOperation.getInstance().createButton() );
 
-		contentPanel.addComponent( flowPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
-
+		edu.cmu.cs.dennisc.croquet.Label previewLabel = new edu.cmu.cs.dennisc.croquet.Label( "start with:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		edu.cmu.cs.dennisc.croquet.PageAxisPanel previewPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel( previewLabel, this.previewComponent );
+		
+		this.previewKey = cardPanel.createKey( previewPanel, java.util.UUID.randomUUID() ); 
+		this.offTrackKey = cardPanel.createKey( this.offTrackPanel, java.util.UUID.randomUUID() );
+		cardPanel.addComponent( this.previewKey );
+		cardPanel.addComponent( this.offTrackKey );
+		cardPanel.setMinimumPreferredHeight( 48 );
+		cardPanel.show( this.previewKey );
+		
+		edu.cmu.cs.dennisc.croquet.VerticalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.VerticalSplitPane(flowPanel, this.cardPanel );
+		
 		this.bookTreeModel = new BookTreeModel( this.getBook() );
 		this.jTree = new javax.swing.JTree( this.bookTreeModel );
 		for( int i = 0; i < jTree.getRowCount(); i++ ) {
 			this.jTree.expandRow( i );
 		}
+		this.jTree.setShowsRootHandles( false );
 		this.jTree.setSelectionRow( 0 );
 		this.jTree.setCellRenderer( new BookTreeCellRenderer() );
 		this.jTree.setRootVisible( false );
 		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( new edu.cmu.cs.dennisc.croquet.SwingAdapter( jTree ) );
+		contentPanel.addComponent( splitPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
 		contentPanel.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 	}
 	@Override
@@ -133,12 +150,13 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 				transactionChapter.setReplacementAcceptability( replacementAcceptability );
 				this.incrementSelectedIndex();
 			} else {
-				edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "you have strayed off course" );
+				this.cardPanel.show( this.offTrackKey );
 			}
 		}
 	}
 	@Override
 	protected void handleEvent( org.lgna.cheshire.events.Event event ) {
+		this.previewComponent.repaint();
 		if( isIgnoringEvents ) {
 			//pass
 		} else {
@@ -171,8 +189,10 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		super.handleChapterChanged( chapter );
 		javax.swing.tree.TreePath treePath = new javax.swing.tree.TreePath( new Object[] { this.getBook(), chapter } );
 		this.jTree.setSelectionPath( treePath );
+		this.previewComponent.repaint();
 	}
 	
+	@Override
 	public void setVisible( boolean isVisible ) {
 		this.frame.setVisible( isVisible );
 	}

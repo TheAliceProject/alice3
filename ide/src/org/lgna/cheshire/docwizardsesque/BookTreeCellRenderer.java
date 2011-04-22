@@ -43,36 +43,83 @@
 
 package org.lgna.cheshire.docwizardsesque;
 
+import org.lgna.cheshire.stencil.StencilsPresentation;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BookTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer< Object > {
+	private static javax.swing.Icon BLANK_ICON = new javax.swing.Icon() {
+		public int getIconWidth() {
+			return 32;
+		}
+		public int getIconHeight() {
+			return 32;
+		}
+		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		}
+	};
+	private static javax.swing.Icon STEP_ICON = new javax.swing.Icon() {
+		public int getIconWidth() {
+			return 32;
+		}
+		public int getIconHeight() {
+			return 0;
+		}
+		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		}
+	};
+	private static final javax.swing.Icon CURRENT_ICON = new javax.swing.ImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/current.png" ) );
+	private static final javax.swing.Icon PERFECT_MATCH_ICON = new javax.swing.ImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/perfectMatch.png" ) );
+	private static final javax.swing.Icon SHOULD_BE_FINE_ICON = new javax.swing.ImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/shouldBeFine.png" ) );
+	private static final javax.swing.Icon DEVIATION_ICON = new javax.swing.ImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/deviation.png" ) );
+	private static final java.awt.Font TRANSACTION_FONT = new java.awt.Font( null, java.awt.Font.BOLD, 18 ); 
+	private static final java.awt.Font STEP_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 14 ); 
 	@Override
-	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
 		if( value instanceof org.lgna.cheshire.TransactionChapter ) {
 			org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)value;
-			org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
-			int i = transaction.getParent().getIndexOfTransaction( transaction );
-			rv.setText( "<html>[" + i + "] <strong>" + transactionChapter.getTitle() + "</strong></html>");
-			rv.setIcon( null );
+			rv.setText( "<html><strong>" + transactionChapter.getTitle() + "</strong></html>");
+			
+			javax.swing.Icon icon;
+			if( isSelected ) { //index == this.book.getSelectedIndex() ) {
+				icon = CURRENT_ICON;
+			} else {
+				icon = BLANK_ICON;
+			}
+			edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = transactionChapter.getReplacementAcceptability();
+			if( replacementAcceptability != null ) {
+				if( isSelected ) {
+					StringBuilder sbToolTip = new StringBuilder();
+					sbToolTip.append( replacementAcceptability.getDeviationSeverity().getRepr( StencilsPresentation.getInstance().getUserInformation() ) );
+					sbToolTip.append( ": " );
+					sbToolTip.append( replacementAcceptability.getDeviationDescription() );
+					String toolTipText = sbToolTip.toString();
+					tree.setToolTipText( toolTipText );
+				}
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( replacementAcceptability );
+				if( replacementAcceptability == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH || replacementAcceptability == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK ) {
+					icon = PERFECT_MATCH_ICON;
+				} else {
+					if( replacementAcceptability.isDeviation() ) {
+						if( replacementAcceptability.getDeviationSeverity() == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE ) {
+							icon = SHOULD_BE_FINE_ICON;
+						} else {
+							icon = DEVIATION_ICON;
+						}
+					} else {
+						icon = null;
+					}
+				}
+			}
+			rv.setIcon( icon );
+			rv.setFont( TRANSACTION_FONT );
 		} else if( value instanceof org.lgna.croquet.steps.Step< ? > ) {
 			org.lgna.croquet.steps.Step< ? > step = (org.lgna.croquet.steps.Step< ? >)value;
 			edu.cmu.cs.dennisc.croquet.Edit< ? > edit = step.getParent().getEdit();
 			rv.setText( "<html>" + step.getTutorialNoteText( edit, null ) + "</html>" );
-//			if( step instanceof org.lgna.croquet.steps.CompletionStep< ? > ) {
-//				org.lgna.croquet.steps.CompletionStep< ? > completionStep = (org.lgna.croquet.steps.CompletionStep< ? >)step;
-//				String name;
-//				if( completionStep.isPending() ) {
-//					name = "pending";
-//				} else {
-//					if( completionStep.isSuccessfullyCompleted() ) {
-//						name = "completed";
-//					} else {
-//						name = "canceled";
-//					}
-//				}
-//				rv.setIcon( new javax.swing.ImageIcon( org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.class.getResource( "images/" + name + ".png" ) ) );
-//			}
+			rv.setFont( STEP_FONT );
+			rv.setIcon( STEP_ICON );
 		}
 		return rv;
 	}

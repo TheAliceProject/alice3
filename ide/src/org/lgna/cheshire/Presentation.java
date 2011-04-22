@@ -301,4 +301,6 @@ public abstract class Presentation {
 	public void decrementSelectedIndex() {
 		this.book.decrementSelectedIndex();
 	}
+	
+	public abstract void setVisible( boolean isVisible );
 }

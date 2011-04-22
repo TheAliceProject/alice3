@@ -56,10 +56,10 @@ package org.lgna.cheshire.stencil;
 		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		}
 	};
-	private static javax.swing.Icon CURRENT_ICON = new javax.swing.ImageIcon( ChapterCellRenderer.class.getResource( "images/current.png" ) );
-	private static javax.swing.Icon PERFECT_MATCH_ICON = new javax.swing.ImageIcon( ChapterCellRenderer.class.getResource( "images/perfectMatch.png" ) );
-	private static javax.swing.Icon SHOULD_BE_FINE_ICON = new javax.swing.ImageIcon( ChapterCellRenderer.class.getResource( "images/shouldBeFine.png" ) );
-	private static javax.swing.Icon DEVIATION_ICON = new javax.swing.ImageIcon( ChapterCellRenderer.class.getResource( "images/deviation.png" ) );
+	private static final javax.swing.Icon CURRENT_ICON = new javax.swing.ImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/current.png" ) );
+	private static final javax.swing.Icon PERFECT_MATCH_ICON = new javax.swing.ImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/perfectMatch.png" ) );
+	private static final javax.swing.Icon SHOULD_BE_FINE_ICON = new javax.swing.ImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/shouldBeFine.png" ) );
+	private static final javax.swing.Icon DEVIATION_ICON = new javax.swing.ImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/deviation.png" ) );
 	private org.lgna.cheshire.Book book;
 	private java.awt.Color background;
 	private java.awt.Color disabledBackground;
