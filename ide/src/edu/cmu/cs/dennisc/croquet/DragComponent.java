@@ -217,6 +217,7 @@ public abstract class DragComponent extends Control {
 
 		this.dragAndDropContext = ContextManager.createAndPushDragAndDropContext( this.dragModel, this.getLeftButtonPressedEvent(), e, this );
 		this.dragModel.handleDragStarted( this.dragAndDropContext );
+		this.showDragProxy();
 	}
 	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {
 		if( Application.getSingleton().isDragInProgress() ) {
