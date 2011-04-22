@@ -52,8 +52,10 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
 	private static boolean IS_BASED_ON_INTERACTION_AST;
 	private static boolean IS_OPTIMIZED_FOR_BUG_REPRO;
+	
+	private static String ROOT_PATH;
 	private static final String TRANSACTION_HISTORY_PATH = "/transactionHistory.bin";
-	//note: we encode and decode the root context temporarily while models (ListSelectionState (Edit) ) still rely on context (for things like getCodec()) 
+	//note: we encode and decode the root context temporarily while models (ListSelectionState (Edit) ) still rely on context (for things like getCodec())
 	private static final String CONTEXT_PATH = "/context.bin";
 	private static final String AST_MIMIC_PATH = "/astMimic1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
@@ -145,22 +147,22 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	}
 	private void createAndShowTutorial() {
 		//final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( this, 0 );
-		this.originalProject = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( POST_PROJECT_PATH );
+		this.originalProject = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( ROOT_PATH+POST_PROJECT_PATH );
 
 		if( IS_BASED_ON_INTERACTION_AST ) {
 			uist.ast.TransactionHistoryGenerator transactionHistoryGenerator = new uist.ast.TransactionHistoryGenerator( getRunBody( this.getOriginalProject() ), getRunBody( this.getReplacementProject() ), 0 );
 			this.originalTransactionHistory = transactionHistoryGenerator.generate();
 			//encode and decode
 			this.isOriginalProjectLive = true;
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( this.originalTransactionHistory, AST_MIMIC_PATH );
-			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( AST_MIMIC_PATH, org.lgna.croquet.steps.TransactionHistory.class );
+			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( this.originalTransactionHistory, ROOT_PATH+AST_MIMIC_PATH );
+			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH+AST_MIMIC_PATH, org.lgna.croquet.steps.TransactionHistory.class );
 			this.isOriginalProjectLive = false;
 
 		} else {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			this.isOriginalProjectLive = true;
-			edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( CONTEXT_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
-			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( TRANSACTION_HISTORY_PATH, org.lgna.croquet.steps.TransactionHistory.class );
+			edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH+CONTEXT_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
+			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH+TRANSACTION_HISTORY_PATH, org.lgna.croquet.steps.TransactionHistory.class );
 			this.isOriginalProjectLive = false;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 		}
@@ -268,7 +270,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory(), TRANSACTION_HISTORY_PATH );
+			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory(), ROOT_PATH+TRANSACTION_HISTORY_PATH );
 			
 			edu.cmu.cs.dennisc.croquet.RootContext rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			System.err.println( "todo: remove filtering" );
@@ -279,11 +281,11 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 				rootContext = filter.filter( rootContext );
 			}
 			
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext(), CONTEXT_PATH );
+			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext(), ROOT_PATH+CONTEXT_PATH );
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 
 			try {
-				edu.cmu.cs.dennisc.alice.project.ProjectUtilities.writeProject( POST_PROJECT_PATH, this.getProject() );
+				edu.cmu.cs.dennisc.alice.project.ProjectUtilities.writeProject( ROOT_PATH+POST_PROJECT_PATH, this.getProject() );
 			} catch( java.io.IOException ioe ) {
 				throw new RuntimeException( ioe );
 			}
@@ -299,14 +301,15 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 
 	public static void main( String[] args ) throws Exception {
 		IS_ENCODING = Boolean.parseBoolean( args[ 5 ] );
+		ROOT_PATH = args[ 6 ];
 		if( IS_ENCODING ) {
 			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = false;
 			IS_BASED_ON_INTERACTION_AST = false;
 			IS_OPTIMIZED_FOR_BUG_REPRO = false;
 		} else {
-			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = Boolean.parseBoolean( args[ 6 ] );
-			IS_BASED_ON_INTERACTION_AST = Boolean.parseBoolean( args[ 7 ] );
-			IS_OPTIMIZED_FOR_BUG_REPRO = Boolean.parseBoolean( args[ 8 ] );
+			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = Boolean.parseBoolean( args[ 7 ] );
+			IS_BASED_ON_INTERACTION_AST = Boolean.parseBoolean( args[ 8 ] );
+			IS_OPTIMIZED_FOR_BUG_REPRO = Boolean.parseBoolean( args[ 9 ] );
 		}
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
 		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( true );
