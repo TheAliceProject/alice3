@@ -1,9 +1,7 @@
 package autotutorial.ecard;
 
-import java.awt.Image;
-
-import autotutorial.ecard.menu.MenuBarModel;
-import edu.cmu.cs.dennisc.croquet.ScrollPane;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 	public static final edu.cmu.cs.dennisc.croquet.Group HISTORY_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
@@ -11,7 +9,7 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 
 	protected String year = "2003";
 	protected ECardPanel cardPanel;
-	
+
 	protected ECardApplication() {
 		singleton = this;
 	}
@@ -23,7 +21,7 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		}
 		return ECardApplication.singleton;
 	}
-	
+
 	@Override
 	public void initialize( String args[] ) {
 		int x = Integer.parseInt( args[ 0 ] );
@@ -40,19 +38,16 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		Image icon = java.awt.Toolkit.getDefaultToolkit().getImage( ECardApplication.class.getResource( "resources/e-card-icon.png" ));
-		getFrame().getAwtComponent().setIconImage(icon);
-		
-		//super.initialize(null);
 
-		// Best size for screen shots
+		java.awt.Image icon = java.awt.Toolkit.getDefaultToolkit().getImage( ECardApplication.class.getResource( "resources/e-card-icon.png" ));
+		getFrame().getAwtComponent().setIconImage(icon);
+
 		getFrame().setSize( x, y );
 		getFrame().setSize( width, height );
 
 		super.initialize( args );
 	}
-	
+
 	public ECardPanel getCardPanel() {
 		return this.cardPanel;
 	}
@@ -66,22 +61,72 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> createContentPane() {
 		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		
+
 		this.cardPanel = new ECardPanel(ECardPanel.CardState.PHOTO);
-		ScrollPane scrollPane = new ScrollPane();
-		scrollPane.setViewportView(new edu.cmu.cs.dennisc.croquet.SwingAdapter(cardPanel));
-		rv.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-//		rv.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.cardPanel ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-		
-		// TODO: Set scroll pane vertical to got to bottom
-		// TODO: Set scroll pane horizontal to center.
-		
+		rv.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter(this.cardPanel), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+
 		if (this.isRibbonBased()) {
 			rv.addComponent( autotutorial.ecard.ribbon.ECardRibbonModel.getInstance().createDefaultFolderTabbedPane(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		} else {
-			getFrame().setMenuBarModel( MenuBarModel.getInstance() );
-			
-			// TODO add false toolbar
+			getFrame().setMenuBarModel( autotutorial.ecard.menu.MenuBarModel.getInstance() );
+
+			// Make mock toolbar
+			javax.swing.JToolBar toolbar = new javax.swing.JToolBar();
+			toolbar.setFloatable(false);
+			toolbar.setRollover(true);
+
+			JButton newButton = new JButton();
+			newButton.setFocusable(false);
+			newButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/document-new.png")));
+			toolbar.add(newButton);
+
+			JButton openButton = new JButton();
+			openButton.setFocusable(false);
+			openButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/document-open.png")));
+			toolbar.add(openButton);
+
+			JButton saveButton = new JButton();
+			saveButton.setFocusable(false);
+			saveButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/document-save.png")));
+			toolbar.add(saveButton);
+
+			toolbar.addSeparator();
+
+			JButton printButton = new JButton();
+			printButton.setFocusable(false);
+			printButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/document-print.png")));
+			toolbar.add(printButton);
+
+			toolbar.addSeparator();
+
+			JButton undoButton = new JButton();
+			undoButton.setFocusable(false);
+			undoButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/edit-undo.png")));
+			toolbar.add(undoButton);
+
+			JButton redoButton = new JButton();
+			redoButton.setFocusable(false);
+			redoButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/edit-redo.png")));
+			toolbar.add(redoButton);
+
+			toolbar.addSeparator();
+
+			JButton copyButton = new JButton();
+			copyButton.setFocusable(false);
+			copyButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/edit-copy.png")));
+			toolbar.add(copyButton);	
+
+			JButton cutButton = new JButton();
+			cutButton.setFocusable(false);
+			cutButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/edit-cut.png")));
+			toolbar.add(cutButton);	
+
+			JButton pasteButton = new JButton();
+			pasteButton.setFocusable(false);
+			pasteButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/edit-paste.png")));
+			toolbar.add(pasteButton);		
+
+			rv.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(toolbar) , edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		}
 
 		return rv;
