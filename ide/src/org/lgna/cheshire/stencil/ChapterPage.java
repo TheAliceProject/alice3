@@ -357,7 +357,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 			return note0.isGoodToGo();
 		} else {
 			//todo?
-			return true;
+			return false;
 		}
 	}
 	

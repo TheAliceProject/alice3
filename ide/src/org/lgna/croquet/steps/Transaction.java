@@ -323,6 +323,13 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	public void removeAllPrepSteps() {
 		this.prepSteps.clear();
 	}
+	public org.lgna.croquet.steps.PrepStep< ? >[] getPrepStepsAsArray() {
+		org.lgna.croquet.steps.PrepStep<?>[] rv = new org.lgna.croquet.steps.PrepStep[ this.prepSteps.size() ];
+		return this.prepSteps.toArray( rv );
+	}
+	public void setPrepSteps( org.lgna.croquet.steps.PrepStep< ? >... prepSteps ) {
+		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( this.prepSteps, prepSteps );
+	}
 	public Iterable< PrepStep<?> > getPrepSteps() {
 		return this.prepSteps;
 	}

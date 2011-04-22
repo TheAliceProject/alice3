@@ -346,6 +346,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				this.stencil.setCursor( cursor );
 			} else {
 				org.lgna.croquet.steps.Transaction transaction = ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction();
+				org.lgna.croquet.steps.PrepStep< ? >[] prepSteps = transaction.getPrepStepsAsArray();
 				transaction.removeAllPrepSteps();
 				chapterPage.refreshNotes();
 				if( chapterPage.isGoodToGo() ) {
@@ -353,7 +354,6 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				} else {
 					java.util.List< edu.cmu.cs.dennisc.croquet.MenuModel > menuModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
 					if( menuModels != null ) {
-						edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "found in menus" );
 						for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : menuModels ) {
 							org.lgna.croquet.steps.MenuModelStep.createAndAddToTransaction( transaction, menuModel );
 						}
@@ -362,6 +362,8 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 							this.handleChapterChanged( chapter );
 						}
 					} else {
+						transaction.setPrepSteps( prepSteps );
+						chapterPage.refreshNotes();
 						org.lgna.croquet.steps.Transaction tabSelectionRecoveryTransaction = this.createTabSelectionRecoveryTransactionIfAppropriate( transaction );
 						if( tabSelectionRecoveryTransaction != null ) {
 							this.insertRecoveryTransactionChapter( tabSelectionRecoveryTransaction );

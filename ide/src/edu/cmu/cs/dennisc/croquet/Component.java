@@ -437,9 +437,13 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	}
 
 	public boolean isInView() {
-		java.awt.Rectangle visibleRect = this.getVisibleRectangle();
-		java.awt.Dimension size = this.getAwtComponent().getSize();
-		return visibleRect.width == size.width || visibleRect.height == size.height;
+		if( this.isVisible() ) { //&& this.getAwtComponent().isShowing() && this.getAwtComponent().isDisplayable() && this.getAwtComponent().isValid() ) {
+			java.awt.Rectangle visibleRect = this.getVisibleRectangle();
+			java.awt.Dimension size = this.getAwtComponent().getSize();
+			return visibleRect.width == size.width || visibleRect.height == size.height;
+		} else {
+			return false;
+		}
 	}
 
 	public <E extends Container< ? >> E getFirstAncestorAssignableTo( Class< E > cls ) {

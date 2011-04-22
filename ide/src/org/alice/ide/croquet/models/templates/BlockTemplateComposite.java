@@ -53,24 +53,18 @@ public class BlockTemplateComposite extends TemplateComposite {
 	public static BlockTemplateComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-//	private final java.util.List< Class<?> > clses = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.Set< Class<?> > clses = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 	private BlockTemplateComposite() {
-//		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertOperation.class );
-//		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.WhileLoopInsertOperation.class );
-//		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.DoInOrderInsertOperation.class );
-//		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.DoTogetherInsertOperation.class );
+		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertOperation.class );
+		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.WhileLoopInsertOperation.class );
+		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.DoInOrderInsertOperation.class );
+		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.DoTogetherInsertOperation.class );
 		//todo
 	}
 	@Override
 	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
-		if( model instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation ) {
-			//org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel statementClassTemplateDragModel = (org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel)model;
+		if( clses.contains( model.getClass() ) ) {
 			return true;
-//			for( Class<?> cls : this.clses ) {
-//				if( cls.isAssignableFrom( model.getClass() ) ) {
-//					return true;
-//				}
-//			}
 		}
 		return false;
 	}
@@ -93,6 +87,10 @@ public class BlockTemplateComposite extends TemplateComposite {
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 			}
 		} );
-		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );
+		booleanState.setTextForBothTrueAndFalse( this.toString() );
+	}
+	@Override
+	public String toString() {
+		return "Action Ordering Boxes";
 	}
 }

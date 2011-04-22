@@ -52,14 +52,15 @@ public abstract class Note extends org.lgna.stencil.Note {
 		return NextStepOperation.getInstance();
 	}
 	public boolean isGoodToGo() {
+		boolean rv = false;
 		for( org.lgna.stencil.Feature feature : this.getFeatures() ) {
 			if( feature.isGoodToGo() ) {
-				//pass
+				rv = true;
 			} else {
 				return false;
 			}
 		}
-		return true;
+		return rv;
 	}
 	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event );
 	private void moveOutOfTheWayIfNecessary( edu.cmu.cs.dennisc.croquet.ScreenElement screenElement ) {
