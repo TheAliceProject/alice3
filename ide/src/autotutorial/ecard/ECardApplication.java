@@ -35,10 +35,10 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 				// Ofice 2007
 				javax.swing.UIManager.setLookAndFeel(new org.jvnet.substance.skin.SubstanceOfficeBlue2007LookAndFeel());
 			} else {
-			// We like nimbus?
-			//javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-			// We like the current platform?
-			javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+				// We like nimbus?
+				//javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+				// We like the current platform?
+				javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,9 +133,9 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 			pasteButton.setFocusable(false);
 			pasteButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/edit-paste.png")));
 			toolbar.add(pasteButton);	
-			
+
 			//toolbar.addSeparator();
-			
+
 			//JButton deleteJButton = DeletePictureModel.getInstance().createButton().getAwtComponent();
 			//deleteJButton.setFocusable(false);
 			//toolbar.add(deleteJButton);	
