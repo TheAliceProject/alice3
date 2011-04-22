@@ -48,6 +48,7 @@ public class HomeRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab
 		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-cut.png") ));
 		panel2.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(jButton));
 		
+		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 6 ) );
 		panel = new LineAxisPanel();
 		panel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		rv.addComponent(panel);
