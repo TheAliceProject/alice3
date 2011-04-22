@@ -72,6 +72,7 @@ public class DropPreviewHole extends org.lgna.cheshire.stencil.features.Hole {
 
 	public DropPreviewHole( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
 		super( trackableShapeResolver, connectionPreference );
+		this.setHeightConstraint( 64 );
 	}
 	@Override
 	protected boolean isPathRenderingDesired() {
