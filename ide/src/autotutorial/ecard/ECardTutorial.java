@@ -14,7 +14,7 @@ public class ECardTutorial {
 				}
 
 				ECardApplication app = ECardApplication.getSingleton();
-				app.initialize( useRibbon );
+				app.initialize( args );
 				app.getFrame().setVisible(true);
 			}
 		});

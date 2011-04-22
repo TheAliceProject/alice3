@@ -113,14 +113,6 @@ public class TutorialECard extends autotutorial.ecard.ECardApplication {
 	protected void handleQuit( java.util.EventObject e ) {
 //		super.handleQuit( e );
 		if( IS_ENCODING ) {
-//			System.err.println( "todo: remove filtering" );
-//			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
-//					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
-//			};
-//			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
-//				rootContext = filter.filter( rootContext );
-//			}
-
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			
 			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory(), TRANSACTION_HISTORY_PATH );
@@ -140,13 +132,12 @@ public class TutorialECard extends autotutorial.ecard.ECardApplication {
 		System.exit( 0 );
 	}
 
-	public static void main( String[] args ) throws Exception {
-		IS_ENCODING = Boolean.parseBoolean( args[ 5 ] );
+	public static void main( final String[] args ) throws Exception {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				Boolean useRibbon = IS_ENCODING == false;
 				TutorialECard app = new TutorialECard();
-				app.initialize( useRibbon );
+				app.initialize( args );
+				IS_ENCODING = app.isRibbonBased() == false;
 				if( IS_ENCODING ) {
 					app.getFrame().setVisible(true);
 				} else {

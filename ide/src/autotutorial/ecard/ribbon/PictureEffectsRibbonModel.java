@@ -34,6 +34,12 @@ public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.Predet
 	}
 	@Override
 	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
-		return edu.cmu.cs.dennisc.java.util.Collections.newHashSet( this.operations ).contains( model );
+		for( edu.cmu.cs.dennisc.croquet.Operation< ? > operation : this.operations ) {
+			if( operation == model ) {
+				return true;
+			}
+		}
+		return false;
+//		return edu.cmu.cs.dennisc.java.util.Collections.newHashSet( this.operations ).contains( model );
 	}
 }
