@@ -47,11 +47,11 @@ package org.lgna.cheshire.events;
  * @author Dennis Cosgrove
  */
 public class FinishedEvent implements Event {
-	private final edu.cmu.cs.dennisc.croquet.CompletionModel completionModel;
-	public FinishedEvent( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel ) {
-		this.completionModel = completionModel;
+	private final org.lgna.croquet.steps.Transaction transaction;
+	public FinishedEvent( org.lgna.croquet.steps.Transaction transaction ) {
+		this.transaction = transaction;
 	}
-	public edu.cmu.cs.dennisc.croquet.CompletionModel getCompletionModel() {
-		return this.completionModel;
+	public org.lgna.croquet.steps.Transaction getTransaction() {
+		return this.transaction;
 	}
 }
