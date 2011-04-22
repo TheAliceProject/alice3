@@ -32,7 +32,7 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 
 		try {
 			if (isRibbonBased()) {
-				// Ofice 2007
+				// Office 2007
 				javax.swing.UIManager.setLookAndFeel(new org.jvnet.substance.skin.SubstanceOfficeBlue2007LookAndFeel());
 			} else {
 				// We like nimbus?

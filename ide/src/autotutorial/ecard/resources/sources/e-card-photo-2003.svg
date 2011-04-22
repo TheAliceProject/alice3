@@ -10,12 +10,15 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="800"
-   height="600"
+   width="1440"
+   height="900"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.1 r9760"
-   sodipodi:docname="e-card.svg">
+   sodipodi:docname="e-card.svg"
+   inkscape:export-filename="/home/harmsk/Documents/LookingGlass/workspace/ide/src/autotutorial/ecard/resources/sources/e-card.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4">
     <linearGradient
@@ -52,14 +55,16 @@
        y1="236.56302"
        x2="778.4397"
        y2="654.15167"
-       gradientUnits="userSpaceOnUse" />
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.8,0,0,1.5,0,153.90063)" />
     <filter
        id="filter3789"
        inkscape:label="Drop shadow"
        width="1.5"
        height="1.5"
-       x="-.25"
-       y="-.25">
+       x="-0.25"
+       y="-0.25"
+       color-interpolation-filters="sRGB">
       <feGaussianBlur
          id="feGaussianBlur3791"
          in="SourceAlpha"
@@ -89,6 +94,15 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3805"
+       id="linearGradient3811"
+       x1="367.77994"
+       y1="816.22516"
+       x2="433.02612"
+       y2="816.22516"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3805"
        id="linearGradient3006"
        gradientUnits="userSpaceOnUse"
        x1="367.77994"
@@ -103,9 +117,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.985"
-     inkscape:cx="400"
-     inkscape:cy="300"
+     inkscape:zoom="0.66458333"
+     inkscape:cx="720"
+     inkscape:cy="450"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -134,18 +148,17 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-452.36218)">
+     transform="translate(0,-152.36218)">
     <rect
-       style="fill:url(#linearGradient3777);fill-opacity:1.0;stroke:none;stroke-width:2.85299993000000018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:url(#linearGradient3777);fill-opacity:1;stroke:none"
        id="rect3001"
-       width="800"
-       height="600"
+       width="1440"
+       height="900"
        x="0"
-       y="-1.0256411"
-       transform="translate(0,452.36218)" />
+       y="152.36218" />
     <g
        id="g3002"
-       transform="translate(0,-63.862963)">
+       transform="translate(320,-213.86296)">
       <rect
          y="592.875"
          x="96.557373"
@@ -161,7 +174,7 @@
          style="fill:none;stroke:#616161;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:2, 4;stroke-dashoffset:0" />
     </g>
     <g
-       transform="translate(1.2516449,-44.084733)"
+       transform="translate(320.50602,-192.91777)"
        id="g3116">
       <image
          width="264.59018"
