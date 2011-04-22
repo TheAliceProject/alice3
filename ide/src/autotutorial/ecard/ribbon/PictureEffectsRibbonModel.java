@@ -31,6 +31,7 @@ public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.Predet
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel rv = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+		rv.setBackgroundColor(java.awt.SystemColor.window);
 
 		edu.cmu.cs.dennisc.croquet.Button button;
 		javax.swing.JButton jButton;

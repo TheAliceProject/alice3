@@ -94,6 +94,7 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 
 			JButton printButton = new JButton();
 			printButton.setFocusable(false);
+			//printButton.setText("Print");
 			printButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/document-print.png")));
 			toolbar.add(printButton);
 
@@ -124,7 +125,13 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 			JButton pasteButton = new JButton();
 			pasteButton.setFocusable(false);
 			pasteButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/edit-paste.png")));
-			toolbar.add(pasteButton);		
+			toolbar.add(pasteButton);	
+			
+			//toolbar.addSeparator();
+			
+			//JButton deleteJButton = DeletePictureModel.getInstance().createButton().getAwtComponent();
+			//deleteJButton.setFocusable(false);
+			//toolbar.add(deleteJButton);	
 
 			rv.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(toolbar) , edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		}

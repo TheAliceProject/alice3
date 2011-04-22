@@ -22,6 +22,7 @@ public class HomeRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel rv = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+		rv.setBackgroundColor(java.awt.SystemColor.window);
 
 		edu.cmu.cs.dennisc.croquet.Button button;
 		javax.swing.JButton jButton;
@@ -55,7 +56,6 @@ public class HomeRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab
 		jButton = button.getAwtComponent();
 		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-delete.png") ));
 		panel.addComponent(button);
 		
 		panel2 = new PageAxisPanel();
