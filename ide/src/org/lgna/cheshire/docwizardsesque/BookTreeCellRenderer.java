@@ -89,14 +89,6 @@ public class BookTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rendere
 			}
 			edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = transactionChapter.getReplacementAcceptability();
 			if( replacementAcceptability != null ) {
-				if( isSelected ) {
-					StringBuilder sbToolTip = new StringBuilder();
-					sbToolTip.append( replacementAcceptability.getDeviationSeverity().getRepr( StencilsPresentation.getInstance().getUserInformation() ) );
-					sbToolTip.append( ": " );
-					sbToolTip.append( replacementAcceptability.getDeviationDescription() );
-					String toolTipText = sbToolTip.toString();
-					tree.setToolTipText( toolTipText );
-				}
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( replacementAcceptability );
 				if( replacementAcceptability == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH || replacementAcceptability == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK ) {
 					icon = PERFECT_MATCH_ICON;

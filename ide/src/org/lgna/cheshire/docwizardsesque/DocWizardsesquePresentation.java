@@ -43,6 +43,8 @@
 
 package org.lgna.cheshire.docwizardsesque;
 
+import org.lgna.cheshire.stencil.StencilsPresentation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -62,6 +64,33 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 	private final edu.cmu.cs.dennisc.croquet.CardPanel.Key offTrackKey;
 	private final javax.swing.JTree jTree;
 	private final BookTreeModel bookTreeModel;
+	private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
+		public void mouseMoved( java.awt.event.MouseEvent e ) {
+			javax.swing.tree.TreePath treePath = jTree.getPathForLocation( e.getX(), e.getY() );
+			if( treePath != null ) {
+				Object[] path = treePath.getPath();
+				if( path.length > 1 ) {
+					if( path[ 1 ] instanceof org.lgna.cheshire.TransactionChapter  ) {
+						org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)path[ 1 ];
+						edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = transactionChapter.getReplacementAcceptability();
+						if( replacementAcceptability != null ) {
+							if( replacementAcceptability.isAcceptable() ) {
+								if( replacementAcceptability.isDeviation() ) {
+									StringBuilder sbToolTip = new StringBuilder();
+									sbToolTip.append( replacementAcceptability.getDeviationSeverity().getRepr( StencilsPresentation.getInstance().getUserInformation() ) );
+									sbToolTip.append( ": " );
+									sbToolTip.append( replacementAcceptability.getDeviationDescription() );
+									jTree.setToolTipText( sbToolTip.toString() );
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		public void mouseDragged( java.awt.event.MouseEvent e ) {
+		}
+	};
 	public DocWizardsesquePresentation( 
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
 			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
@@ -130,6 +159,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		this.jTree.setSelectionRow( 0 );
 		this.jTree.setCellRenderer( new BookTreeCellRenderer() );
 		this.jTree.setRootVisible( false );
+		this.jTree.addMouseMotionListener( this.mouseMotionListener );
 		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( new edu.cmu.cs.dennisc.croquet.SwingAdapter( jTree ) );
 		contentPanel.addComponent( splitPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
 		contentPanel.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
