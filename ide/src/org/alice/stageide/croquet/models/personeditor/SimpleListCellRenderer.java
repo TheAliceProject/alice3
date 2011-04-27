@@ -40,7 +40,10 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.croquet.models.personeditor;
+
+import org.alice.stageide.personeditor.PersonEditor;
+
 
 /**
  * @author Dennis Cosgrove
@@ -60,9 +63,9 @@ enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
 	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 		this.label.setText( value.toString() );
 		if( isSelected ) {
-			this.label.setBackground( PersonEditor.SELECTED_COLOR );
+			this.label.setBackground( PersonInfo.SELECTED_COLOR );
 		} else {
-			this.label.setBackground( PersonEditor.UNSELECTED_COLOR );
+			this.label.setBackground( PersonInfo.UNSELECTED_COLOR );
 		}
 		return this.pane;
 	}

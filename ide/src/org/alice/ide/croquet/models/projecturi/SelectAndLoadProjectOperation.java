@@ -54,8 +54,7 @@ public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.c
 	protected abstract boolean isNew();
 	@Override
 	protected String getInternalExplanation(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context) {
-		assert this.selectProjectToOpenPanel != null;
-		if( this.selectProjectToOpenPanel.getSelectedURI() != null ) {
+		if( org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedURI() != null ) {
 			return super.getInternalExplanation(context);
 		} else {
 			return "must select project to open.";
@@ -69,15 +68,15 @@ public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.c
 		} else {
 			this.selectProjectToOpenPanel = new org.alice.ide.openprojectpane.SelectProjectToOpenPanel();
 		}
-		this.selectProjectToOpenPanel.selectAppropriateTab( this.isNew() );
-		this.selectProjectToOpenPanel.refresh();
+		org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().selectAppropriateTab( this.isNew() );
+		org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().refresh();
 		return this.selectProjectToOpenPanel;
 	}
 	@Override
 	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context, boolean isOk) {
 		if( isOk ) {
 			//org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel = context.getMainPanel();
-			java.net.URI uri = this.selectProjectToOpenPanel.getSelectedURI();
+			java.net.URI uri = org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedURI();
 			if (uri != null) {
 				org.alice.ide.ProjectApplication.getSingleton().loadProjectFrom( uri );
 				context.finish();

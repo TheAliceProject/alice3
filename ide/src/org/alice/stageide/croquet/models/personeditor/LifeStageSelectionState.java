@@ -40,13 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.croquet.models.personeditor;
+
+
 
 /**
  * @author Dennis Cosgrove
  */
-class LifeStageSelectionState extends AbstractListSelectionState< org.alice.apis.stage.LifeStage > {
-	public LifeStageSelectionState() {
+public class LifeStageSelectionState extends AbstractListSelectionState< org.alice.apis.stage.LifeStage > {
+	private static class SingletonHolder {
+		private static LifeStageSelectionState instance = new LifeStageSelectionState();
+	}
+	public static LifeStageSelectionState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private LifeStageSelectionState() {
 		super( java.util.UUID.fromString( "ee61b76d-b154-4e45-a07c-fb2eac906895" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.apis.stage.LifeStage.class ), org.alice.apis.stage.LifeStage.CHILD, org.alice.apis.stage.LifeStage.ADULT );
 	}
 	@Override

@@ -40,44 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.choosers;
+package org.alice.stageide.croquet.models.personeditor;
 
 
 
 /**
  * @author Dennis Cosgrove
  */
-public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
-	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { org.alice.stageide.croquet.models.custom.PortionState.getInstance().createSlider() };
-	public PortionChooser() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression != null ) {
-			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-				edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
-				double dValue = doubleLiteral.value.getValue();
-				int iValue = (int)(dValue*100.0);
-				org.alice.stageide.croquet.models.custom.PortionState.getInstance().setValue( iValue );
-			}
-		}
+public class BaseEyeColorSelectionState extends AbstractListSelectionState<org.alice.apis.stage.BaseEyeColor> {
+	private static class SingletonHolder {
+		private static BaseEyeColorSelectionState instance = new BaseEyeColorSelectionState();
+	}
+	public static BaseEyeColorSelectionState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private BaseEyeColorSelectionState() {
+		super(java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.apis.stage.BaseEyeColor.class ), org.alice.apis.stage.BaseEyeColor.values() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
-		return this.components;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.DoubleLiteral getValue() {
-		double value = org.alice.stageide.croquet.models.custom.PortionState.getInstance().getValue() / 100.0;
-		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
-//		final boolean IS_LITERAL_DESIRED = true;
-//		if( IS_LITERAL_DESIRED ) {
-			return doubleLiteral;
-//		} else {
-//			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.Portion.class, new Class<?>[] { Number.class }, doubleLiteral );
-//		}
-	}
-	@Override
-	public String getExplanationIfOkButtonShouldBeDisabled() {
-		return null;
+	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseEyeColor> createList() {
+		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseEyeColor> rv = super.createList();
+		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
+		return rv;
 	}
 }
-

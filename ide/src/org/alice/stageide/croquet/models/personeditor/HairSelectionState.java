@@ -40,19 +40,60 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.croquet.models.personeditor;
+
+
 
 /**
  * @author Dennis Cosgrove
  */
-class BaseSkinToneSelectionState extends AbstractListSelectionState< org.alice.apis.stage.BaseSkinTone > {
-	public BaseSkinToneSelectionState() {
-		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.apis.stage.BaseSkinTone.class ), org.alice.apis.stage.BaseSkinTone.values() );
+public class HairSelectionState extends AbstractListSelectionState<org.alice.apis.stage.Hair> {
+	private static class SingletonHolder {
+		private static HairSelectionState instance = new HairSelectionState();
+	}
+	public static HairSelectionState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private HairSelectionState() {
+		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.apis.stage.Hair >(){
+			public Class< org.alice.apis.stage.Hair > getValueClass() {
+				return org.alice.apis.stage.Hair.class;
+			}
+			public org.alice.apis.stage.Hair decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+				throw new RuntimeException( "todo" );
+			}
+			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.apis.stage.Hair t ) {
+				throw new RuntimeException( "todo" );
+			}
+			public StringBuilder appendRepresentation( StringBuilder rv, org.alice.apis.stage.Hair value, java.util.Locale locale ) {
+				rv.append( value );
+				return rv;
+			}
+		} );
+	}
+	public void handleCataclysmicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, final String hairColor ) {
+		this.setListData( -1, 
+				edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
+						edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
+								org.alice.apis.stage.HairManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
+								new edu.cmu.cs.dennisc.pattern.Criterion< org.alice.apis.stage.Hair >() {
+									public boolean accept( org.alice.apis.stage.Hair hair ) {
+										return hair.toString().equals( hairColor );
+									}
+								} 
+						),
+						org.alice.apis.stage.Hair.class
+				) 
+		);
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> rv = super.createList();
-		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
+	protected int getVisibleRowCount() {
+		return -1;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Hair> createList() {
+		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Hair> rv = super.createList();
+		rv.setCellRenderer( new HairListCellRenderer() );
 		return rv;
 	}
 }

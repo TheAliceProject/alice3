@@ -40,44 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.choosers;
+package org.alice.stageide.croquet.models.personeditor;
 
-
+import org.alice.stageide.personeditor.PersonEditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
-	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { org.alice.stageide.croquet.models.custom.PortionState.getInstance().createSlider() };
-	public PortionChooser() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression != null ) {
-			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-				edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
-				double dValue = doubleLiteral.value.getValue();
-				int iValue = (int)(dValue*100.0);
-				org.alice.stageide.croquet.models.custom.PortionState.getInstance().setValue( iValue );
+public class RandomPersonActionOperation extends org.alice.ide.operations.ActionOperation {
+	private static class SingletonHolder {
+		private static RandomPersonActionOperation instance = new RandomPersonActionOperation();
+	}
+	public static RandomPersonActionOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private RandomPersonActionOperation() {
+		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "9ea00a57-0ea7-4c53-ac53-1e07220e76b9" ) );
+		this.setName( "Generate Random Selection" );
+	}
+	@Override
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		final PersonInfo prevState = org.alice.stageide.personeditor.PersonEditor.getInstance().getPersonInfo();
+		final PersonInfo nextState = org.alice.stageide.croquet.models.personeditor.PersonInfo.createRandom();
+		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			@Override
+			protected final void doOrRedoInternal( boolean isDo ) {
+				org.alice.stageide.personeditor.PersonEditor.getInstance().setPersonInfo( nextState );
 			}
-		}
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
-		return this.components;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.DoubleLiteral getValue() {
-		double value = org.alice.stageide.croquet.models.custom.PortionState.getInstance().getValue() / 100.0;
-		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
-//		final boolean IS_LITERAL_DESIRED = true;
-//		if( IS_LITERAL_DESIRED ) {
-			return doubleLiteral;
-//		} else {
-//			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.Portion.class, new Class<?>[] { Number.class }, doubleLiteral );
-//		}
-	}
-	@Override
-	public String getExplanationIfOkButtonShouldBeDisabled() {
-		return null;
+			@Override
+			protected final void undoInternal() {
+				org.alice.stageide.personeditor.PersonEditor.getInstance().setPersonInfo( prevState );
+			}
+			@Override
+			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+				rv.append( "randomize person" );
+				return rv;
+			}
+		} );
 	}
 }
-

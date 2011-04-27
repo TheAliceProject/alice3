@@ -40,19 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+
+package org.alice.stageide.croquet.models.personeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-class GenderSelectionState extends AbstractListSelectionState< org.alice.apis.stage.Gender > {
-	public GenderSelectionState() {
-		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.apis.stage.Gender.class ), org.alice.apis.stage.Gender.values() );
+public class SetFitnessToInShapeOperation extends SetFitnessOperation {
+	private static class SingletonHolder {
+		private static SetFitnessToInShapeOperation instance = new SetFitnessToInShapeOperation();
 	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> rv = super.createList();
-		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
-		return rv;
+	public static SetFitnessToInShapeOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SetFitnessToInShapeOperation() {
+		super( FitnessModel.getInstance().getMaximum(), "in shape" );
 	}
 }

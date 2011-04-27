@@ -53,14 +53,14 @@ public class CreatePersonOperation extends PersonOperation {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: CreatePersonOperation( group )" );
 	}
 	@Override
-	protected org.alice.stageide.personeditor.PersonInfo getInitialPersonInfo() {
-		return org.alice.stageide.personeditor.PersonInfo.createRandom();
+	protected org.alice.stageide.croquet.models.personeditor.PersonInfo getInitialPersonInfo() {
+		return org.alice.stageide.croquet.models.personeditor.PersonInfo.createRandom();
 	}
 	@Override
 	protected void epilogue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context, boolean isOk ) {
 		if( isOk ) {
 			org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
-			org.alice.stageide.personeditor.PersonInfo personInfo = personEditor.getPersonInfo();
+			org.alice.stageide.croquet.models.personeditor.PersonInfo personInfo = personEditor.getPersonInfo();
 			this.person = personInfo.createPerson();
 			context.finish();
 		} else {

@@ -40,44 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.choosers;
+package org.alice.stageide.croquet.models.personeditor;
 
 
 
 /**
  * @author Dennis Cosgrove
  */
-public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
-	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { org.alice.stageide.croquet.models.custom.PortionState.getInstance().createSlider() };
-	public PortionChooser() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression != null ) {
-			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-				edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
-				double dValue = doubleLiteral.value.getValue();
-				int iValue = (int)(dValue*100.0);
-				org.alice.stageide.croquet.models.custom.PortionState.getInstance().setValue( iValue );
-			}
-		}
+public class HairColorSelectionState extends AbstractListSelectionState< String > {
+	private static final String[] INCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND", "GREY" };
+	private static final String[] EXCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND" };
+	private static class SingletonHolder {
+		private static HairColorSelectionState instance = new HairColorSelectionState();
 	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
-		return this.components;
+	public static HairColorSelectionState getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.DoubleLiteral getValue() {
-		double value = org.alice.stageide.croquet.models.custom.PortionState.getInstance().getValue() / 100.0;
-		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
-//		final boolean IS_LITERAL_DESIRED = true;
-//		if( IS_LITERAL_DESIRED ) {
-			return doubleLiteral;
+	private HairColorSelectionState() {
+		super( java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), org.alice.ide.croquet.codecs.StringCodec.SINGLETON, EXCLUDE_GREY );
+	}
+	public void handleCataclysmicChange( org.alice.apis.stage.LifeStage lifeStage ) {
+//		if( lifeStage == org.alice.apis.stage.LifeStage.ADULT ) {
+//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND", "GREY" );
 //		} else {
-//			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.Portion.class, new Class<?>[] { Number.class }, doubleLiteral );
+//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND" );
 //		}
 	}
 	@Override
-	public String getExplanationIfOkButtonShouldBeDisabled() {
-		return null;
+	public edu.cmu.cs.dennisc.croquet.List<String> createList() {
+		edu.cmu.cs.dennisc.croquet.List<String> rv = super.createList();
+		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
+		return rv;
 	}
 }
-

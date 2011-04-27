@@ -40,14 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+
+package org.alice.stageide.croquet.models.personeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-class FullBodyOutfitListCellRenderer extends IngredientListCellRenderer {
-	@Override
-	protected String getSubPath() {
-		return "fullbodyoutfit_pictures";
+public class SetFitnessToOutOfShapeOperation extends SetFitnessOperation {
+	private static class SingletonHolder {
+		private static SetFitnessToOutOfShapeOperation instance = new SetFitnessToOutOfShapeOperation();
+	}
+	public static SetFitnessToOutOfShapeOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SetFitnessToOutOfShapeOperation() {
+		super( FitnessModel.getInstance().getMinimum(), "out of shape" );
 	}
 }

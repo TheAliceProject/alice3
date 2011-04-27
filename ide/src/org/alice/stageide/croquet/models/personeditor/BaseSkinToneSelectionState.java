@@ -40,14 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.croquet.models.personeditor;
+
+
 
 /**
  * @author Dennis Cosgrove
  */
-class HairListCellRenderer extends IngredientListCellRenderer {
+public class BaseSkinToneSelectionState extends AbstractListSelectionState< org.alice.apis.stage.BaseSkinTone > {
+	private static class SingletonHolder {
+		private static BaseSkinToneSelectionState instance = new BaseSkinToneSelectionState();
+	}
+	public static BaseSkinToneSelectionState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private BaseSkinToneSelectionState() {
+		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.apis.stage.BaseSkinTone.class ), org.alice.apis.stage.BaseSkinTone.values() );
+	}
 	@Override
-	protected String getSubPath() {
-		return "hair_pictures";
+	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> createList() {
+		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> rv = super.createList();
+		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
+		return rv;
 	}
 }

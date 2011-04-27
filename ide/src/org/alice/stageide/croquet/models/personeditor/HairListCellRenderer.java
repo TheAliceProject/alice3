@@ -40,25 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.croquet.models.personeditor;
+
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractListSelectionState<E> extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState< E > {
-	public AbstractListSelectionState( java.util.UUID individualId, edu.cmu.cs.dennisc.croquet.Codec< E > codec, E... elements ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, codec, -1, elements );
-	}
-	protected int getVisibleRowCount() {
-		return 1;
-	}
+class HairListCellRenderer extends IngredientListCellRenderer {
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<E> createList() {
-		edu.cmu.cs.dennisc.croquet.List<E> rv = super.createList();
-		rv.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
-		rv.setVisibleRowCount( this.getVisibleRowCount() );
-		rv.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-		//rv.getAwtComponent().setOpaque( false );
-		return rv;
-	}	
+	protected String getSubPath() {
+		return "hair_pictures";
+	}
 }

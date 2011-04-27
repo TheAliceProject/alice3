@@ -40,44 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.choosers;
 
-
+package org.alice.stageide.croquet.models.personeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
-	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { org.alice.stageide.croquet.models.custom.PortionState.getInstance().createSlider() };
-	public PortionChooser() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression != null ) {
-			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-				edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
-				double dValue = doubleLiteral.value.getValue();
-				int iValue = (int)(dValue*100.0);
-				org.alice.stageide.croquet.models.custom.PortionState.getInstance().setValue( iValue );
-			}
-		}
+public class FitnessModel extends edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState {
+	private static class SingletonHolder {
+		private static FitnessModel instance = new FitnessModel();
 	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
-		return this.components;
+	public static FitnessModel getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.DoubleLiteral getValue() {
-		double value = org.alice.stageide.croquet.models.custom.PortionState.getInstance().getValue() / 100.0;
-		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
-//		final boolean IS_LITERAL_DESIRED = true;
-//		if( IS_LITERAL_DESIRED ) {
-			return doubleLiteral;
-//		} else {
-//			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.Portion.class, new Class<?>[] { Number.class }, doubleLiteral );
-//		}
-	}
-	@Override
-	public String getExplanationIfOkButtonShouldBeDisabled() {
-		return null;
+	private FitnessModel() {
+		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ), 0, 50, 100 );
 	}
 }
-

@@ -488,12 +488,14 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 			} else {
 				type = null;
 			}
-			final boolean IS_ICON_DESIRED = false;
-			if( IS_ICON_DESIRED ) {
-				TypeRootMenuModel.getInstance().getPopupMenuOperation().setName( "class:" );
-				TypeRootMenuModel.getInstance().getPopupMenuOperation().setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
-			} else {
-				TypeRootMenuModel.getInstance().getPopupMenuOperation().setName( "class: " + type.getName() );
+			if( type != null ) {
+				final boolean IS_ICON_DESIRED = false;
+				if( IS_ICON_DESIRED ) {
+					TypeRootMenuModel.getInstance().getPopupMenuOperation().setName( "class:" );
+					TypeRootMenuModel.getInstance().getPopupMenuOperation().setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
+				} else {
+					TypeRootMenuModel.getInstance().getPopupMenuOperation().setName( "class: " + type.getName() );
+				}
 			}
 			this.revalidateAndRepaint();
 		}

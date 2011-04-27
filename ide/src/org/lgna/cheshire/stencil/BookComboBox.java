@@ -51,11 +51,15 @@ public class BookComboBox extends edu.cmu.cs.dennisc.croquet.JComponent< javax.s
 	public BookComboBox( BookComboBoxModel comboBoxModel, boolean isLightWeightPopupEnabled ) {
 		this.comboBoxModel = comboBoxModel;
 		this.isLightWeightPopupEnabled = isLightWeightPopupEnabled;
-		this.setMinimumPreferredWidth( 320 );
 	}
 	@Override
 	protected javax.swing.JComboBox createAwtComponent() {
-		javax.swing.JComboBox rv = new javax.swing.JComboBox( this.comboBoxModel );
+		javax.swing.JComboBox rv = new javax.swing.JComboBox( this.comboBoxModel ) {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+			}
+		};
 		//todo: find a better way
 		//warning monumentally brittle code below
 		rv.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {

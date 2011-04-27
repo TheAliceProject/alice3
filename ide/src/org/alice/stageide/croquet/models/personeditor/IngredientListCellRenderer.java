@@ -40,47 +40,74 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.croquet.models.personeditor;
+
+import org.alice.stageide.personeditor.PersonEditor;
+import org.alice.stageide.personeditor.PersonViewer;
+
 
 /**
  * @author Dennis Cosgrove
  */
-class FullBodyOutfitSelectionState extends AbstractListSelectionState<org.alice.apis.stage.FullBodyOutfit> {
-	public FullBodyOutfitSelectionState() {
-		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.apis.stage.FullBodyOutfit >(){
-			public Class< org.alice.apis.stage.FullBodyOutfit > getValueClass() {
-				return org.alice.apis.stage.FullBodyOutfit.class;
-			}
-			public org.alice.apis.stage.FullBodyOutfit decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-				throw new RuntimeException( "todo" );
-			}
-			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.apis.stage.FullBodyOutfit t ) {
-				throw new RuntimeException( "todo" );
-			}
-			public StringBuilder appendRepresentation( StringBuilder rv, org.alice.apis.stage.FullBodyOutfit value, java.util.Locale locale ) {
-				rv.append( value );
-				return rv;
-			}
-		} );
+abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< E > {
+	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
+	protected abstract String getSubPath();
+	private java.net.URL getIngredientResourceName( org.alice.apis.stage.SkinTone skinTone, String clsName, String enumConstantName ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "images/" );
+		sb.append( this.getSubPath() );
+		sb.append( "/" );
+		sb.append( skinTone );
+		sb.append( "/" );
+		sb.append( clsName );
+		sb.append( "." );
+		sb.append( enumConstantName );
+		sb.append( ".png" );
+		java.net.URL rv = IngredientListCellRenderer.class.getResource( sb.toString() );
+		assert rv != null : sb;
+		return rv;
 	}
-	
-	/*package-private*/ void handleCataclysmicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
-		this.setListData( -1, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
-				edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-						org.alice.apis.stage.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
-						null 
-				),
-				org.alice.apis.stage.FullBodyOutfit.class
-		) );
+
+	private org.alice.apis.stage.BaseSkinTone getBaseSkinTone() {
+		org.alice.apis.stage.Person person = PersonViewer.getSingleton().getPerson();
+		if( person != null ) {
+			org.alice.apis.stage.SkinTone skinTone = person.getSkinTone();
+			if( skinTone instanceof org.alice.apis.stage.BaseSkinTone ) {
+				return (org.alice.apis.stage.BaseSkinTone)skinTone;
+			}
+		}
+		return org.alice.apis.stage.BaseSkinTone.DARK;
 	}
+
 	@Override
-	protected int getVisibleRowCount() {
-		return -1;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> rv = super.createList();
-		rv.setCellRenderer( new FullBodyOutfitListCellRenderer() );
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E value, int index, boolean isSelected, boolean cellHasFocus ) {
+		assert rv != null;
+		if( value != null ) {
+			String clsName = value.getClass().getSimpleName();
+			String enumConstantName = value.toString();
+			
+			org.alice.apis.stage.SkinTone baseSkinTone = this.getBaseSkinTone();
+
+			java.net.URL urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
+			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
+			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
+
+			rv.setOpaque( isSelected );
+			if( isSelected ) {
+				rv.setBackground( PersonInfo.SELECTED_COLOR );
+			}
+			
+			javax.swing.Icon icon = new javax.swing.ImageIcon( urlForIcon );
+			if( icon != null ) {
+				rv.setIcon( icon );
+				rv.setText( "" );
+			} else {
+				rv.setText( "image not found" );
+			}
+			rv.setBorder( this.border );
+		} else {
+			rv.setText( "null" );
+		}
 		return rv;
 	}
 }

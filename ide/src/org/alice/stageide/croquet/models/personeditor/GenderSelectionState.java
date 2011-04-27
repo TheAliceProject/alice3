@@ -40,70 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.croquet.models.personeditor;
+
+
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< E > {
-	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
-	protected abstract String getSubPath();
-	private java.net.URL getIngredientResourceName( org.alice.apis.stage.SkinTone skinTone, String clsName, String enumConstantName ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "images/" );
-		sb.append( this.getSubPath() );
-		sb.append( "/" );
-		sb.append( skinTone );
-		sb.append( "/" );
-		sb.append( clsName );
-		sb.append( "." );
-		sb.append( enumConstantName );
-		sb.append( ".png" );
-		java.net.URL rv = IngredientListCellRenderer.class.getResource( sb.toString() );
-		assert rv != null : sb;
-		return rv;
+public class GenderSelectionState extends AbstractListSelectionState< org.alice.apis.stage.Gender > {
+	private static class SingletonHolder {
+		private static GenderSelectionState instance = new GenderSelectionState();
 	}
-
-	private org.alice.apis.stage.BaseSkinTone getBaseSkinTone() {
-		org.alice.apis.stage.Person person = PersonViewer.getSingleton().getPerson();
-		if( person != null ) {
-			org.alice.apis.stage.SkinTone skinTone = person.getSkinTone();
-			if( skinTone instanceof org.alice.apis.stage.BaseSkinTone ) {
-				return (org.alice.apis.stage.BaseSkinTone)skinTone;
-			}
-		}
-		return org.alice.apis.stage.BaseSkinTone.DARK;
+	public static GenderSelectionState getInstance() {
+		return SingletonHolder.instance;
 	}
-
+	private GenderSelectionState() {
+		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.apis.stage.Gender.class ), org.alice.apis.stage.Gender.values() );
+	}
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E value, int index, boolean isSelected, boolean cellHasFocus ) {
-		assert rv != null;
-		if( value != null ) {
-			String clsName = value.getClass().getSimpleName();
-			String enumConstantName = value.toString();
-			
-			org.alice.apis.stage.SkinTone baseSkinTone = this.getBaseSkinTone();
-
-			java.net.URL urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
-			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
-			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
-
-			rv.setOpaque( isSelected );
-			if( isSelected ) {
-				rv.setBackground( PersonEditor.SELECTED_COLOR );
-			}
-			
-			javax.swing.Icon icon = new javax.swing.ImageIcon( urlForIcon );
-			if( icon != null ) {
-				rv.setIcon( icon );
-				rv.setText( "" );
-			} else {
-				rv.setText( "image not found" );
-			}
-			rv.setBorder( this.border );
-		} else {
-			rv.setText( "null" );
-		}
+	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> createList() {
+		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> rv = super.createList();
+		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}
 }

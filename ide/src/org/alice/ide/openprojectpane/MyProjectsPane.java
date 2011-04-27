@@ -46,7 +46,7 @@ package org.alice.ide.openprojectpane;
 /**
  * @author Dennis Cosgrove
  */
-class MyProjectsPane extends DirectoryListContentPanel {
+public class MyProjectsPane extends DirectoryListContentPanel {
 	@Override
 	public java.io.File getDirectory() {
 		return org.alice.ide.ProjectApplication.getSingleton().getMyProjectsDirectory();

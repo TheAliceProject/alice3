@@ -40,36 +40,55 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.croquet.models.personeditor;
+
+
 
 /**
  * @author Dennis Cosgrove
  */
-class RandomPersonActionOperation extends org.alice.ide.operations.ActionOperation {
-	private PersonEditor personEditor;
-	public RandomPersonActionOperation( PersonEditor personEditor ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "9ea00a57-0ea7-4c53-ac53-1e07220e76b9" ) );
-		this.personEditor = personEditor;
-		this.setName( "Generate Random Selection" );
+public class FullBodyOutfitSelectionState extends AbstractListSelectionState<org.alice.apis.stage.FullBodyOutfit> {
+	private static class SingletonHolder {
+		private static FullBodyOutfitSelectionState instance = new FullBodyOutfitSelectionState();
 	}
-	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		final PersonInfo prevState = this.personEditor.getPersonInfo();
-		final PersonInfo nextState = PersonInfo.createRandom();
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
-			@Override
-			protected final void doOrRedoInternal( boolean isDo ) {
-				RandomPersonActionOperation.this.personEditor.setPersonInfo( nextState );
+	public static FullBodyOutfitSelectionState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private FullBodyOutfitSelectionState() {
+		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.apis.stage.FullBodyOutfit >(){
+			public Class< org.alice.apis.stage.FullBodyOutfit > getValueClass() {
+				return org.alice.apis.stage.FullBodyOutfit.class;
 			}
-			@Override
-			protected final void undoInternal() {
-				RandomPersonActionOperation.this.personEditor.setPersonInfo( prevState );
+			public org.alice.apis.stage.FullBodyOutfit decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+				throw new RuntimeException( "todo" );
 			}
-			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-				rv.append( "randomize person" );
+			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.apis.stage.FullBodyOutfit t ) {
+				throw new RuntimeException( "todo" );
+			}
+			public StringBuilder appendRepresentation( StringBuilder rv, org.alice.apis.stage.FullBodyOutfit value, java.util.Locale locale ) {
+				rv.append( value );
 				return rv;
 			}
 		} );
+	}
+	
+	public void handleCataclysmicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
+		this.setListData( -1, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
+				edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
+						org.alice.apis.stage.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
+						null 
+				),
+				org.alice.apis.stage.FullBodyOutfit.class
+		) );
+	}
+	@Override
+	protected int getVisibleRowCount() {
+		return -1;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> createList() {
+		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> rv = super.createList();
+		rv.setCellRenderer( new FullBodyOutfitListCellRenderer() );
+		return rv;
 	}
 }

@@ -40,19 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-class BaseEyeColorSelectionState extends AbstractListSelectionState<org.alice.apis.stage.BaseEyeColor> {
-	public BaseEyeColorSelectionState() {
-		super(java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.apis.stage.BaseEyeColor.class ), org.alice.apis.stage.BaseEyeColor.values() );
+public abstract class PredeterminedTabCodec< T extends PredeterminedTab > implements Codec< T > {
+	private final Class<T> cls;
+	public PredeterminedTabCodec(Class<T> cls) {
+		this.cls = cls;
 	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseEyeColor> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseEyeColor> rv = super.createList();
-		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
+	public Class< T > getValueClass() {
+		return this.cls;
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
+		binaryEncoder.encode( value.getId() );
+	}
+	protected abstract T lookUp( java.util.UUID id );
+	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		java.util.UUID id = binaryDecoder.decodeId();
+		return this.lookUp( id );
+	}
+	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
+		rv.append( value.getTitleText() );
 		return rv;
 	}
 }

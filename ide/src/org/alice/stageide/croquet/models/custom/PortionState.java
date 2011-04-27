@@ -40,52 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+
+package org.alice.stageide.croquet.models.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-class HairSelectionState extends AbstractListSelectionState<org.alice.apis.stage.Hair> {
-	public HairSelectionState() {
-		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.apis.stage.Hair >(){
-			public Class< org.alice.apis.stage.Hair > getValueClass() {
-				return org.alice.apis.stage.Hair.class;
-			}
-			public org.alice.apis.stage.Hair decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-				throw new RuntimeException( "todo" );
-			}
-			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.apis.stage.Hair t ) {
-				throw new RuntimeException( "todo" );
-			}
-			public StringBuilder appendRepresentation( StringBuilder rv, org.alice.apis.stage.Hair value, java.util.Locale locale ) {
-				rv.append( value );
-				return rv;
-			}
-		} );
+public class PortionState extends edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState {
+	private static class SingletonHolder {
+		private static PortionState instance = new PortionState();
 	}
-	/*package-private*/ void handleCataclysmicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, final String hairColor ) {
-		this.setListData( -1, 
-				edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
-						edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-								org.alice.apis.stage.HairManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
-								new edu.cmu.cs.dennisc.pattern.Criterion< org.alice.apis.stage.Hair >() {
-									public boolean accept( org.alice.apis.stage.Hair hair ) {
-										return hair.toString().equals( hairColor );
-									}
-								} 
-						),
-						org.alice.apis.stage.Hair.class
-				) 
+	public static PortionState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private PortionState() {
+		super(
+				edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP,
+				java.util.UUID.fromString( "4c5552d0-d5c3-4f01-94b5-4920bd4be6fc" ),
+				0, 
+				100,
+				100
 		);
-	}
-	@Override
-	protected int getVisibleRowCount() {
-		return -1;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Hair> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Hair> rv = super.createList();
-		rv.setCellRenderer( new HairListCellRenderer() );
-		return rv;
 	}
 }
