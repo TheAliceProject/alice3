@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
-	public ComboBox( ListSelectionState<E> model ) {
+public class ComboBox<E> extends ItemSelectable< javax.swing.JComboBox, E > {
+	public ComboBox( ListSelectionState< E > model ) {
 		super( model );
 		this.setSwingComboBoxModel( model.getComboBoxModel() );
 	}
@@ -89,6 +89,7 @@ public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
 			ContextManager.addListSelectionPopupMenuCanceled( ComboBox.this.getModel(), e, ComboBox.this );
 		}
 	};
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
@@ -101,7 +102,7 @@ public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
 		this.getAwtComponent().removePopupMenuListener( this.popupMenuListener );
 		super.handleUndisplayable();
 	}
-	
+
 	public javax.swing.ListCellRenderer getRenderer() {
 		return this.getAwtComponent().getRenderer();
 	}
@@ -115,93 +116,105 @@ public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
 		this.getAwtComponent().setMaximumRowCount( maximumRowCount );
 	}
 
-	@Override
-	/*package-private*/ TrackableShape getTrackableShapeFor( final E item ) {
-		if( this.getAwtComponent().isPopupVisible() ) {
-			javax.swing.JComboBox box = this.getAwtComponent();
-			javax.accessibility.Accessible accessible = box.getUI().getAccessibleChild( box, 0 );
-			if( accessible instanceof javax.swing.JPopupMenu ) {
-				javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)accessible;
-				java.awt.Component component = jPopupMenu.getComponent( 0 );
-				if( component instanceof javax.swing.JScrollPane ) {
-					final javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)component;
-					javax.swing.JViewport viewport = scrollPane.getViewport();
-					final java.awt.Component view = viewport.getView();
-					return new TrackableShape() {
-						public edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
-							//todo
-							return null;
-						}
-						public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
-							java.awt.Rectangle rv = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertRectangle( view.getParent(), view.getBounds(), asSeenBy.getAwtComponent() );
-							ListSelectionState<E> listSelectionState = ComboBox.this.getModel();
-							final int N = listSelectionState.getItemCount();
-							int index = listSelectionState.indexOf( item );
-							if( index != -1 ) {
-								int offsetY = 0;
-								int height = rv.height;
-//								if( view instanceof javax.swing.JComponent ) {
-//									javax.swing.JComponent jView = (javax.swing.JComponent)view;
-//									javax.swing.border.Border border = scrollPane.getBorder();
-//									java.awt.Insets viewInsets = border.getBorderInsets( scrollPane );
-//									java.awt.Insets viewInsets = scrollPane.getInsets();
-//								
-//									if( viewInsets != null ) {
-//										offsetY = viewInsets.top;
-//										height = rv.height - viewInsets.top - viewInsets.bottom;
-//									}
-//								}
-//								javax.swing.ListCellRenderer listCellRenderer = ComboBox.this.getAwtComponent().getRenderer();
-//								if( listCellRenderer instanceof javax.swing.JComponent ) {
-//									edu.cmu.cs.dennisc.print.PrintUtilities.println( ((javax.swing.JComponent)listCellRenderer).getInsets() );
-//								}
-								double heightPerCell = height/(double)N;
-								rv.y += offsetY;
-								rv.y += (int)(heightPerCell*index);
-								rv.height = (int)heightPerCell;
-								
-								
-								
-								
-								//todo
-								rv.y += 3;
-								rv.height -= 6;
-								
-								
-								
-							}
-							edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( rv, insets );
-							return rv;
-						}
-						public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
-							return getShape( asSeenBy, insets );
-						}
-						public boolean isInView() {
-							return view.isShowing();
-						}
-						public final void addComponentListener(java.awt.event.ComponentListener listener) {
-						}
-						public final void removeComponentListener(java.awt.event.ComponentListener listener) {
-						}
-						public final void addHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
-						}
-						public final void removeHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
-						}
-					};
-//					return Component.lookup( view );
+	private class ItemInPopupTrackableShape implements TrackableShape {
+		private final E item;
+
+		public ItemInPopupTrackableShape( E item ) {
+			this.item = item;
+		}
+		private java.awt.Component getView() {
+			javax.swing.JComboBox jComboBox = ComboBox.this.getAwtComponent();
+			if( jComboBox.isPopupVisible() ) {
+				javax.accessibility.Accessible accessible = jComboBox.getUI().getAccessibleChild( jComboBox, 0 );
+				if( accessible instanceof javax.swing.JPopupMenu ) {
+					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)accessible;
+					java.awt.Component component = jPopupMenu.getComponent( 0 );
+					if( component instanceof javax.swing.JScrollPane ) {
+						javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)component;
+						javax.swing.JViewport viewport = scrollPane.getViewport();
+						return viewport.getView();
+					} 
 				}
 			}
+			return null;
 		}
-		return this;
+		public edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
+			//todo
+			return null;
+		}
+		public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
+			java.awt.Component view = this.getView();
+			if( view != null ) {
+				java.awt.Rectangle rv = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertRectangle( view.getParent(), view.getBounds(), asSeenBy.getAwtComponent() );
+				ListSelectionState< E > listSelectionState = ComboBox.this.getModel();
+				final int N = listSelectionState.getItemCount();
+				int index = listSelectionState.indexOf( item );
+				if( index != -1 ) {
+					int offsetY = 0;
+					int height = rv.height;
+					//									if( view instanceof javax.swing.JComponent ) {
+					//										javax.swing.JComponent jView = (javax.swing.JComponent)view;
+					//										javax.swing.border.Border border = scrollPane.getBorder();
+					//										java.awt.Insets viewInsets = border.getBorderInsets( scrollPane );
+					//										java.awt.Insets viewInsets = scrollPane.getInsets();
+					//									
+					//										if( viewInsets != null ) {
+					//											offsetY = viewInsets.top;
+					//											height = rv.height - viewInsets.top - viewInsets.bottom;
+					//										}
+					//									}
+					//									javax.swing.ListCellRenderer listCellRenderer = ComboBox.this.getAwtComponent().getRenderer();
+					//									if( listCellRenderer instanceof javax.swing.JComponent ) {
+					//										edu.cmu.cs.dennisc.print.PrintUtilities.println( ((javax.swing.JComponent)listCellRenderer).getInsets() );
+					//									}
+					double heightPerCell = height / (double)N;
+					rv.y += offsetY;
+					rv.y += (int)(heightPerCell * index);
+					rv.height = (int)heightPerCell;
+
+					//todo
+					rv.y += 3;
+					rv.height -= 6;
+
+				}
+				edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( rv, insets );
+				return rv;
+			}
+			return null;
+		}
+		public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
+			return getShape( asSeenBy, insets );
+		}
+		public boolean isInView() {
+			java.awt.Component view = this.getView();
+			if( view != null ) {
+				return view.isShowing();
+			} else {
+				return false;
+			}
+		}
+		public void addComponentListener( java.awt.event.ComponentListener listener ) {
+		}
+		public void removeComponentListener( java.awt.event.ComponentListener listener ) {
+		}
+		public void addHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
+		}
+		public void removeHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
+		}
 	}
-	/*package-private*/ void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
+
+	@Override
+	/*package-private*/TrackableShape getTrackableShapeFor( E item ) {
+		return new ItemInPopupTrackableShape( item );
+	}
+	/*package-private*/void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
 		this.getAwtComponent().setModel( model );
 	}
-	
-	/*package-private*/ void addItemListener(java.awt.event.ItemListener itemListener) {
+
+	/*package-private*/void addItemListener( java.awt.event.ItemListener itemListener ) {
 		this.getAwtComponent().addItemListener( itemListener );
 	}
-	/*package-private*/ void removeItemListener(java.awt.event.ItemListener itemListener) {
+	/*package-private*/void removeItemListener( java.awt.event.ItemListener itemListener ) {
 		this.getAwtComponent().removeItemListener( itemListener );
 	}
 }

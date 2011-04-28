@@ -49,26 +49,20 @@ public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<java
 	public static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
 	public static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
 	private static java.awt.Paint stencilPaint = null;
-	private static java.awt.Paint getStencilPaint() {
-		if( Stencil.stencilPaint != null ) {
-			//pass
-		} else {
-			int width = 8;
-			int height = 8;
-			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_OFF );
-			g2.setColor( STENCIL_BASE_COLOR );
-			g2.fillRect( 0, 0, width, height );
-			g2.setColor( STENCIL_LINE_COLOR );
-			g2.drawLine( 0, height, width, 0 );
-			g2.fillRect( 0, 0, 1, 1 );
-			g2.dispose();
-			Stencil.stencilPaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
-		}
-		return Stencil.stencilPaint;
+	static {
+		int width = 8;
+		int height = 8;
+		java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_OFF );
+		g2.setColor( STENCIL_BASE_COLOR );
+		g2.fillRect( 0, 0, width, height );
+		g2.setColor( STENCIL_LINE_COLOR );
+		g2.drawLine( 0, height, width, 0 );
+		g2.fillRect( 0, 0, 1, 1 );
+		g2.dispose();
+		stencilPaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
 	}
-
 	private java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
 		public void componentResized( java.awt.event.ComponentEvent e ) {
 			Stencil.this.getAwtComponent().setBounds( e.getComponent().getBounds() );
@@ -82,17 +76,13 @@ public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<java
 		}
 	};
 
-	private ScrollingRequiredRenderer scrollingRequiredRenderer;
-	private MenuPolicy menuPolicy;
-	private javax.swing.JLayeredPane layeredPane;
-	public Stencil( MenuPolicy menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, javax.swing.JLayeredPane layeredPane ) {
-		this.menuPolicy = menuPolicy;
-		this.scrollingRequiredRenderer = scrollingRequiredRenderer;
+	private final javax.swing.JLayeredPane layeredPane;
+	private final MenuPolicy menuPolicy;
+	private final ScrollingRequiredRenderer scrollingRequiredRenderer;
+	public Stencil( javax.swing.JLayeredPane layeredPane, ScrollingRequiredRenderer scrollingRequiredRenderer, MenuPolicy menuPolicy ) {
 		this.layeredPane = layeredPane;
-	}
-	
-	public boolean isAbovePopupMenus() {
-		return true;
+		this.scrollingRequiredRenderer = scrollingRequiredRenderer;
+		this.menuPolicy = menuPolicy;
 	}
 	
 	public MenuPolicy getMenuPolicy() {
@@ -313,7 +303,7 @@ public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<java
 									}
 								}
 							}
-							g2.setPaint(getStencilPaint());
+							g2.setPaint( stencilPaint );
 							g2.fill(area);
 						}
 					}

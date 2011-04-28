@@ -47,6 +47,18 @@ package org.lgna.cheshire.stencil;
  * @author Dennis Cosgrove
  */
 public abstract class Note extends org.lgna.stencil.Note {
+	protected static boolean isMouseEventInterceptedInAllCasesEvenPopups( java.awt.event.MouseEvent e ) {
+		int id = e.getID();
+		switch( id ) {
+		case java.awt.event.MouseEvent.MOUSE_PRESSED:
+		case java.awt.event.MouseEvent.MOUSE_RELEASED:
+		case java.awt.event.MouseEvent.MOUSE_CLICKED:
+		case java.awt.event.MouseEvent.MOUSE_DRAGGED:
+			return true;
+		default:
+			return false;
+		}
+	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
 		return NextStepOperation.getInstance();
@@ -55,13 +67,20 @@ public abstract class Note extends org.lgna.stencil.Note {
 		boolean rv = false;
 		for( org.lgna.stencil.Feature feature : this.getFeatures() ) {
 			if( feature.isGoodToGo() ) {
+				//at least one feature
 				rv = true;
 			} else {
-				return false;
+				rv = false;
+				break;
 			}
 		}
 		return rv;
 	}
+	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+//		return true;
+		return isMouseEventInterceptedInAllCasesEvenPopups( e );
+	}
+	
 	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event );
 	private boolean moveOutOfTheWayIfNecessary( edu.cmu.cs.dennisc.croquet.ScreenElement screenElement ) {
 		java.awt.Rectangle screenElementLocalBounds = screenElement.getLocalBounds();

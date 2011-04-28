@@ -82,12 +82,11 @@ public class TutorialECard extends autotutorial.ecard.ECardApplication {
 				
 				new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
 				
-//				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
-				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
-//				org.lgna.stencil.MenuPolicy.BELOW_STENCIL,
-				
 				org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
-				IS_OPTIMIZED_FOR_BUG_REPRO 
+
+//				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK
+				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK
+//				org.lgna.stencil.MenuPolicy.BELOW_STENCIL
 		);
 		//final org.lgna.cheshire.docwizardsesque.Presentation presentation = new org.lgna.cheshire.docwizardsesque.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
 		

@@ -348,7 +348,12 @@ public class ChapterPage implements org.lgna.stencil.Page {
 	}
 
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
-		return true;
+		Note note = this.getFirstActiveNote();
+		if( note != null ) {
+			return note.isEventInterceptable( e );
+		} else {
+			return true;
+		}
 	}
 	public void resetStencilRenderingDesiredToDefault() {
 		this.isStencilRenderingDesired = IS_STENCIL_RENDERING_DESIRED_BY_DEFAULT;

@@ -231,7 +231,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 	protected javax.swing.JFrame createFrame() {
 		javax.swing.JFrame rv = super.createFrame();
 		rv.setTitle( "Transaction History" );
-		final int SCREEN_INDEX = 0;
+		final int SCREEN_INDEX = 1;
 		rv.setBounds( edu.cmu.cs.dennisc.java.awt.GraphicsDeviceUtilities.getScreenDeviceDefaultConfigurationBounds( SCREEN_INDEX ) );
 		return rv;
 	}

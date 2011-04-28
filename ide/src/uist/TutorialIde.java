@@ -51,7 +51,6 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_ENCODING;
 	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
 	private static boolean IS_BASED_ON_INTERACTION_AST;
-	private static boolean IS_OPTIMIZED_FOR_BUG_REPRO;
 
 	private static boolean IS_STENCILS;
 	
@@ -169,13 +168,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 		}
 
-		org.lgna.cheshire.Filterer filterer;
-		if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
-			//do not filter
-			filterer = uist.filterers.FinishFilterer.INSTANCE;
-		} else {
-			filterer = new uist.filterers.TutorialFilterer();
-		}
+		org.lgna.cheshire.Filterer filterer = new uist.filterers.TutorialFilterer();
 		this.retarget();
 		Recoverer recoverer = new Recoverer();
 		final org.lgna.cheshire.Presentation presentation;
@@ -193,12 +186,11 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					
 					new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
 					
-					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
-//					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
-//					org.lgna.stencil.MenuPolicy.BELOW_STENCIL,
-					
 					org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
-					IS_OPTIMIZED_FOR_BUG_REPRO 
+
+//					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK
+//					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK
+					org.lgna.stencil.MenuPolicy.BELOW_STENCIL
 			);
 		} else {
 			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.FinishFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
@@ -214,11 +206,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 				//org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance().setValue( true );
 				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState isInteractionTreeShowingState = org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.createInstance( originalTransactionHistory );
 				isInteractionTreeShowingState.setValue( true );
-				if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
-					presentation.setSelectedIndex( -1 );
-				} else {
-					presentation.setSelectedIndex( 0 );
-				}
+				presentation.setSelectedIndex( 0 );
 			}
 		} );
 
@@ -277,13 +265,11 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			IS_MONKEY_WRENCH_DESIRED = false;
 			IS_STENCILS = false;
 			IS_BASED_ON_INTERACTION_AST = false;
-			IS_OPTIMIZED_FOR_BUG_REPRO = false;
 		} else {
 			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = Boolean.parseBoolean( args[ 7 ] );
 			IS_MONKEY_WRENCH_DESIRED = Boolean.parseBoolean( args[ 8 ] );
 			IS_STENCILS  = Boolean.parseBoolean( args[ 9 ] );
 			IS_BASED_ON_INTERACTION_AST = Boolean.parseBoolean( args[ 10 ] );
-			IS_OPTIMIZED_FOR_BUG_REPRO = Boolean.parseBoolean( args[ 11 ] );
 		}
 		org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.IS_RUN_BUTTON_DESIRED = IS_MONKEY_WRENCH_DESIRED == false;
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING || IS_MONKEY_WRENCH_DESIRED == false );

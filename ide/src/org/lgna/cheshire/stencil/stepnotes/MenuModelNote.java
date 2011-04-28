@@ -76,4 +76,8 @@ public class MenuModelNote extends PrepNote< org.lgna.croquet.steps.MenuModelSte
 			return false;
 		}
 	}
+	@Override
+	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+		return isMouseEventInterceptedInAllCasesEvenPopups( e );
+	}
 }

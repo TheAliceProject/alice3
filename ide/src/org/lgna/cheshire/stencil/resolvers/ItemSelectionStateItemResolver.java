@@ -57,7 +57,9 @@ public class ItemSelectionStateItemResolver<E> implements RuntimeResolver<edu.cm
 		edu.cmu.cs.dennisc.croquet.ListSelectionState<E> model = this.step.getModel();
 		if (model != null) {
 			E item = this.step.getItem();
-			return model.getTrackableShapeFor(item);
+			edu.cmu.cs.dennisc.croquet.TrackableShape rv = model.getTrackableShapeFor(item);
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "ItemSelectionStateItemResolver", rv );
+			return rv;
 		} else {
 			return null;
 		}

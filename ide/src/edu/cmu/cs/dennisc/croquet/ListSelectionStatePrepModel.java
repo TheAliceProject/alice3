@@ -46,6 +46,25 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class ListSelectionStatePrepModel<E> extends PrepModel {
+	public static class ListSelectionStatePrepModelResolver<E> implements CodableResolver< ListSelectionStatePrepModel< E > > {
+		private final ListSelectionStatePrepModel< E > model;
+		public ListSelectionStatePrepModelResolver( ListSelectionStatePrepModel< E > model ) {
+			this.model = model;
+		}
+		public ListSelectionStatePrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			CodableResolver<ListSelectionState< E >> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			ListSelectionState< E > listSelectionState = resolver.getResolved();
+			this.model = listSelectionState.getPrepModel();
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			CodableResolver<ListSelectionState< E >> resolver = this.model.listSelectionState.getCodableResolver();
+			binaryEncoder.encode( resolver );
+		}
+		public edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > getResolved() {
+			return this.model;
+		}
+	}
+
 	private static final Group LIST_SELECTION_STATE_PREP_MODEL_GROUP = Group.getInstance( java.util.UUID.fromString( "de535ef7-d377-44ff-8ee0-87706815c69c" ), "LIST_SELECTION_STATE_PREP_MODEL_GROUP" );
 	private final ListSelectionState< E > listSelectionState;
 	/*package-private*/ ListSelectionStatePrepModel( ListSelectionState< E > listSelectionState ) {
@@ -67,27 +86,9 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		return this.listSelectionState.isAlreadyInState( edit );
 	}
-	public static class ListSelectionStatePrepModelResolver<E> implements CodableResolver< ListSelectionStatePrepModel< E > > {
-		private final ListSelectionStatePrepModel< E > model;
-		public ListSelectionStatePrepModelResolver( ListSelectionStatePrepModel< E > model ) {
-			this.model = model;
-		}
-		public ListSelectionStatePrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			CodableResolver<ListSelectionState< E >> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			ListSelectionState< E > listSelectionState = resolver.getResolved();
-			this.model = listSelectionState.getPrepModel();
-		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			CodableResolver<ListSelectionState< E >> resolver = this.model.listSelectionState.getCodableResolver();
-			binaryEncoder.encode( resolver );
-		}
-		public edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > getResolved() {
-			return this.model;
-		}
-	}
 	@Override
-	protected ListSelectionStatePrepModelResolver createCodableResolver() {
-		return new ListSelectionStatePrepModelResolver( this );
+	protected ListSelectionStatePrepModelResolver<E> createCodableResolver() {
+		return new ListSelectionStatePrepModelResolver<E>( this );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.JComponent< ? > getFirstComponent() {
