@@ -65,15 +65,15 @@ public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionStat
 		protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 			ListSelectionState< E > listSelectionState = this.getModel();
 			Codec<E> codec = listSelectionState.getCodec();
-			this.prevValue = codec.decode( binaryDecoder );
-			this.nextValue = codec.decode( binaryDecoder );
+			this.prevValue = codec.decodeValue( binaryDecoder );
+			this.nextValue = codec.decodeValue( binaryDecoder );
 		}
 		@Override
 		protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 			ListSelectionState< E > listSelectionState = this.getModel();
 			Codec<E> codec = listSelectionState.getCodec();
-			codec.encode( binaryEncoder, this.prevValue );
-			codec.encode( binaryEncoder, this.nextValue );
+			codec.encodeValue( binaryEncoder, this.prevValue );
+			codec.encodeValue( binaryEncoder, this.nextValue );
 		}
 	}
 

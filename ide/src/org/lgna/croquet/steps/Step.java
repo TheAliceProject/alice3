@@ -83,9 +83,6 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 			return null;
 		}
 	}
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		throw new AssertionError();
-	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.modelResolver );
 //		binaryEncoder.encode( this.id );

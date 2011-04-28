@@ -90,18 +90,11 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 //	}
 	
 	public static class PopupMenuOperationResolver implements CodableResolver< StandardPopupOperation > {
-		private StandardPopupOperation popupMenuOperation;
-		
+		private final StandardPopupOperation popupMenuOperation;
 		public PopupMenuOperationResolver( StandardPopupOperation popupMenuOperation ) {
 			this.popupMenuOperation = popupMenuOperation;
 		}
 		public PopupMenuOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.decode( binaryDecoder );
-		}
-		public StandardPopupOperation getResolved() {
-			return this.popupMenuOperation;
-		}
-		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			CodableResolver<MenuModel> menuModelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 			MenuModel menuModel = menuModelResolver.getResolved();
 			this.popupMenuOperation = menuModel.getPopupMenuOperation();
@@ -109,6 +102,9 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			CodableResolver<MenuModel> menuModelResolver = this.popupMenuOperation.menuModel.getCodableResolver();
 			binaryEncoder.encode( menuModelResolver );
+		}
+		public StandardPopupOperation getResolved() {
+			return this.popupMenuOperation;
 		}
 	}
 	@Override

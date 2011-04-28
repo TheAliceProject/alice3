@@ -53,12 +53,12 @@ public class BarycentricCoordinatesf implements edu.cmu.cs.dennisc.codec.BinaryE
 	public BarycentricCoordinatesf( java.awt.Point p0, java.awt.Point p1, java.awt.Point p2, java.awt.Point p ) {
 		set( p0, p1, p2, p );
 	}
-	
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		t0 = binaryDecoder.decodeFloat();
-		t1 = binaryDecoder.decodeFloat();
-		t2 = binaryDecoder.decodeFloat();
+	public BarycentricCoordinatesf( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.t0 = binaryDecoder.decodeFloat();
+		this.t1 = binaryDecoder.decodeFloat();
+		this.t2 = binaryDecoder.decodeFloat();
 	}
+	
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 		binaryEncoder.encode( t0 );
 		binaryEncoder.encode( t1 );
@@ -78,9 +78,9 @@ public class BarycentricCoordinatesf implements edu.cmu.cs.dennisc.codec.BinaryE
 	}
 	
 	private void set( float a, float b, float c, float d, float e, float f, float g, float h, float i ) {
-		t0 = ( b*(f+i) - c*(e+h) ) / ( a*(e+h) - b*(d+g) );
-		t1 = ( a*(f+i) - c*(d+g) ) / ( b*(d+g) - a*(e+h) );
-		t2 = 1 - ( t0 + t1 );
+		this.t0 = ( b*(f+i) - c*(e+h) ) / ( a*(e+h) - b*(d+g) );
+		this.t1 = ( a*(f+i) - c*(d+g) ) / ( b*(d+g) - a*(e+h) );
+		this.t2 = 1 - ( t0 + t1 );
 	}
 	
 

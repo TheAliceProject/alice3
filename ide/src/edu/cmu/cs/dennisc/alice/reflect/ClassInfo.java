@@ -42,14 +42,12 @@
  */
 package edu.cmu.cs.dennisc.alice.reflect;
 
-import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
 public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private transient boolean isGetClassForNamAlreadyAttempted = false;
-	private String clsName;
+	private transient boolean isGetClassForNameAlreadyAttempted = false;
+	private final String clsName;
 	private transient Class<?> cls;
 
 	private java.util.List< ConstructorInfo > constructorInfos = new java.util.LinkedList< ConstructorInfo >();
@@ -69,7 +67,9 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		this.clsName = clsName;
 	}
 	public ClassInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		decode( binaryDecoder );
+		this.clsName = binaryDecoder.decodeString();
+		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( this.constructorInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( ConstructorInfo.class ) );
+		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( this.methodInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( MethodInfo.class ) );
 	}
 	
 	public String getClsName() {
@@ -81,21 +81,16 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.constructorInfos, ConstructorInfo.class ) );
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.methodInfos, MethodInfo.class ) );
 	}
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.clsName = binaryDecoder.decodeString();
-		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( this.constructorInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( ConstructorInfo.class ) );
-		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( this.methodInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( MethodInfo.class ) );
-	}
 	protected Class<?> getCls() {
-		if( this.isGetClassForNamAlreadyAttempted ) {
+		if( this.isGetClassForNameAlreadyAttempted ) {
 			//pass
 		} else {
-			this.isGetClassForNamAlreadyAttempted = true;
+			this.isGetClassForNameAlreadyAttempted = true;
 //			if( this.cls != null ) {
 //				//pass
 //			} else {
 				try {
-					this.cls = ReflectionUtilities.getClassForName( this.clsName );
+					this.cls = Class.forName( this.clsName );
 					assert this.cls != null : this.clsName;
 				} catch( Throwable t ) {
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( t, this.clsName );

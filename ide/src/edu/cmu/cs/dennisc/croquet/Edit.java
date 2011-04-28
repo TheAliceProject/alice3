@@ -74,7 +74,16 @@ public abstract class Edit<M extends CompletionModel> {
 //			this.stepId = edit.stepId;
 		}
 		public Memento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.decode( binaryDecoder );
+			this.contextId = binaryDecoder.decodeId();
+//			this.stepId = binaryDecoder.decodeId();
+			this.decodeInternal(binaryDecoder);
+		}
+		protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+		protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
+		public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			binaryEncoder.encode( this.contextId );
+//			binaryEncoder.encode( this.stepId );
+			this.encodeInternal(binaryEncoder);
 		}
 		public CompletionContext<M> getContext() {
 			return Edit.getContext( this.contextId );
@@ -83,18 +92,6 @@ public abstract class Edit<M extends CompletionModel> {
 			return Edit.getModel( this.getContext() );
 		}
 		public abstract Edit< M > createEdit();
-		protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
-		protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
-		public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.contextId = binaryDecoder.decodeId();
-//			this.stepId = binaryDecoder.decodeId();
-			this.decodeInternal(binaryDecoder);
-		}
-		public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			binaryEncoder.encode( this.contextId );
-//			binaryEncoder.encode( this.stepId );
-			this.encodeInternal(binaryEncoder);
-		}
 	};
 	
 	

@@ -47,24 +47,13 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public final class BlockStatementIndexPair implements edu.cmu.cs.dennisc.croquet.RetargetableDropSite {
-	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
-	private int index;
-	public BlockStatementIndexPair( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.decode( binaryDecoder );
-	}
+	private final edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
+	private final int index;
 	public BlockStatementIndexPair( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
 		this.blockStatement = blockStatement;
 		this.index = index;
 	}
-	
-	public edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement() {
-		return this.blockStatement;
-	}
-	public int getIndex() {
-		return this.index;
-	}
-
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public BlockStatementIndexPair( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 		java.util.UUID id = binaryDecoder.decodeId();
@@ -74,6 +63,13 @@ public final class BlockStatementIndexPair implements edu.cmu.cs.dennisc.croquet
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.blockStatement.getUUID() );
 		binaryEncoder.encode( this.index );
+	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement() {
+		return this.blockStatement;
+	}
+	public int getIndex() {
+		return this.index;
 	}
 	
 	public BlockStatementIndexPair createReplacement( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {

@@ -63,7 +63,7 @@ public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements e
 	public Class< T > getValueClass() {
 		return this.valueCls;
 	}
-	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
 			java.util.UUID id = binaryDecoder.decodeId();
@@ -73,7 +73,7 @@ public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements e
 			return null;
 		}
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value) {
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {

@@ -59,9 +59,6 @@ public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncoda
 			transaction.setParent( this );
 		}
 	}
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new AssertionError();
-	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.transactions, Transaction.class ) );
 	}

@@ -42,24 +42,19 @@
  */
 package edu.cmu.cs.dennisc.alice.reflect;
 
-import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class MemberInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private ClassInfo declaringClassInfo;
+	private final ClassInfo declaringClassInfo;
 	public MemberInfo( ClassInfo declaringClassInfo ) {
 		this.declaringClassInfo = declaringClassInfo;
 	}
 	public MemberInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		decode( binaryDecoder );
+		this.declaringClassInfo = ClassInfo.forName( binaryDecoder.decodeString() );
 	}
 	protected Class<?> getDeclaringCls() {
 		return this.declaringClassInfo.getCls();
-	}
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.declaringClassInfo = ClassInfo.forName( binaryDecoder.decodeString() );
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.declaringClassInfo.getClsName() );

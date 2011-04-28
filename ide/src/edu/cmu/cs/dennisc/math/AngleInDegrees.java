@@ -55,15 +55,6 @@ public class AngleInDegrees implements Angle {
 	public AngleInDegrees(Angle other) {
 		set(other);
 	}
-
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		m_degrees = binaryDecoder.decodeDouble();
-	}
-
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		binaryEncoder.encode(m_degrees);
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Angle) {

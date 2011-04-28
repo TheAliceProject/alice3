@@ -59,10 +59,10 @@ public class FullBodyOutfitSelectionState extends AbstractListSelectionState<org
 			public Class< org.alice.apis.stage.FullBodyOutfit > getValueClass() {
 				return org.alice.apis.stage.FullBodyOutfit.class;
 			}
-			public org.alice.apis.stage.FullBodyOutfit decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			public org.alice.apis.stage.FullBodyOutfit decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}
-			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.apis.stage.FullBodyOutfit t ) {
+			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.apis.stage.FullBodyOutfit t ) {
 				throw new RuntimeException( "todo" );
 			}
 			public StringBuilder appendRepresentation( StringBuilder rv, org.alice.apis.stage.FullBodyOutfit value, java.util.Locale locale ) {

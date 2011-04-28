@@ -620,12 +620,6 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			this.listSelectionMenuModel = listSelectionMenuModel;
 		}
 		public ListSelectionMenuModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.decode( binaryDecoder );
-		}
-		public ListSelectionMenuModel< E > getResolved() {
-			return this.listSelectionMenuModel;
-		}
-		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			CodableResolver< ListSelectionState< E >> listSelectionStateResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 			ListSelectionState< E > listSelectionState = listSelectionStateResolver.getResolved();
 			this.listSelectionMenuModel = listSelectionState.getMenuModel();
@@ -633,6 +627,9 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			CodableResolver< ListSelectionState< E >> listSelectionStateResolver = this.listSelectionMenuModel.listSelectionState.getCodableResolver();
 			binaryEncoder.encode( listSelectionStateResolver );
+		}
+		public ListSelectionMenuModel< E > getResolved() {
+			return this.listSelectionMenuModel;
 		}
 	}
 

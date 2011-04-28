@@ -61,12 +61,6 @@ public class PlainDialogCloseOperation extends SingleThreadOperation< PlainDialo
 			this.model = model;
 		}
 		public PlainDialogCloseOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.decode( binaryDecoder );
-		}
-		public PlainDialogCloseOperation getResolved() {
-			return this.model;
-		}
-		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			CodableResolver<PlainDialogOperation> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 			PlainDialogOperation plainDialogOperation = resolver.getResolved();
 			this.model = plainDialogOperation.getCloseOperation();
@@ -74,6 +68,9 @@ public class PlainDialogCloseOperation extends SingleThreadOperation< PlainDialo
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			CodableResolver<PlainDialogOperation> resolver = this.model.plainDialogOperation.getCodableResolver();
 			binaryEncoder.encode( resolver );
+		}
+		public PlainDialogCloseOperation getResolved() {
+			return this.model;
 		}
 	}
 	@Override

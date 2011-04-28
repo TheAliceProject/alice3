@@ -50,6 +50,9 @@ public class DialogOperationContext<M extends DialogOperation<?>> extends Single
 		private java.awt.event.WindowEvent windowEvent;
 		public WindowEvent() {
 		}
+		public WindowEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
 		/*package-private*/ WindowEvent( java.awt.event.WindowEvent windowEvent ) {
 			this.windowEvent = windowEvent;
 		}
@@ -65,6 +68,9 @@ public class DialogOperationContext<M extends DialogOperation<?>> extends Single
 	public static class WindowOpenedEvent extends WindowEvent {
 		public WindowOpenedEvent() {
 		}
+		public WindowOpenedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
 		/*package-private*/ WindowOpenedEvent( java.awt.event.WindowEvent e ) {
 			super( e );
 		}
@@ -72,6 +78,9 @@ public class DialogOperationContext<M extends DialogOperation<?>> extends Single
 
 	public static class WindowClosingEvent extends WindowEvent {
 		public WindowClosingEvent() {
+		}
+		public WindowClosingEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
 		}
 		/*package-private*/ WindowClosingEvent( java.awt.event.WindowEvent e ) {
 			super( e );

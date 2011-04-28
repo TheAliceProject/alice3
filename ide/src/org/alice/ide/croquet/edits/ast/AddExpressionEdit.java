@@ -60,12 +60,12 @@ public class AddExpressionEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit<
 		@Override
 		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: decode expressionListProperty" );
-			this.expression = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).decode( binaryDecoder );
+			this.expression = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).decodeValue( binaryDecoder );
 		}
 		@Override
 		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: encode expressionListProperty" );
-			org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).encode( binaryEncoder, this.expression );
+			org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).encodeValue( binaryEncoder, this.expression );
 		}
 		@Override
 		public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation > createEdit() {

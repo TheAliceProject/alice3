@@ -58,7 +58,20 @@ public class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.BinaryEncod
 		this.u = u;
 		this.v = v;
 	}
+	public TextureCoordinate2f(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		this.u = binaryDecoder.decodeFloat();
+		this.v = binaryDecoder.decodeFloat();
+	}
 	
+	@Deprecated
+	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		this.u = binaryDecoder.decodeFloat();
+		this.v = binaryDecoder.decodeFloat();
+	}
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+		binaryEncoder.encode( u );
+		binaryEncoder.encode( v );
+	}
 	//todo
 	public static TextureCoordinate2f createNaN() {
 		return new TextureCoordinate2f( Float.NaN, Float.NaN );
@@ -67,14 +80,6 @@ public class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.BinaryEncod
 	public void set( TextureCoordinate2f other ) {
 		this.u = other.u;
 		this.v = other.v;
-	}
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		u = binaryDecoder.decodeFloat();
-		v = binaryDecoder.decodeFloat();
-	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		binaryEncoder.encode( u );
-		binaryEncoder.encode( v );
 	}
 	public void set( float u, float v ) {
 		this.u = u;

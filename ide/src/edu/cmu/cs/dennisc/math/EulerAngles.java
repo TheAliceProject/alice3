@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class EulerAngles implements Orientation, edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public class EulerAngles implements Orientation {
 	private enum CardinalRotation {
 		PITCH, YAW, ROLL
 	}
@@ -216,18 +216,18 @@ public class EulerAngles implements Orientation, edu.cmu.cs.dennisc.codec.Binary
 		return rv;
 	}
 	
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		yaw.decode( binaryDecoder );
-		pitch.decode( binaryDecoder );
-		roll.decode( binaryDecoder );
-		order = binaryDecoder.decodeEnum(/* Order.class */);
-	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		yaw.encode( binaryEncoder );
-		pitch.encode( binaryEncoder );
-		roll.encode( binaryEncoder );
-		binaryEncoder.encode( order );
-	}
+//	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+//		yaw.decode( binaryDecoder );
+//		pitch.decode( binaryDecoder );
+//		roll.decode( binaryDecoder );
+//		order = binaryDecoder.decodeEnum(/* Order.class */);
+//	}
+//	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+//		yaw.encode( binaryEncoder );
+//		pitch.encode( binaryEncoder );
+//		roll.encode( binaryEncoder );
+//		binaryEncoder.encode( order );
+//	}
 
 	//NaN
 	public static EulerAngles setReturnValueToNaN( EulerAngles rv ) {

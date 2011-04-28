@@ -51,7 +51,7 @@ public enum CodeCompositeCodec implements edu.cmu.cs.dennisc.croquet.Codec< Code
 	public Class< CodeComposite > getValueClass() {
 		return CodeComposite.class;
 	}
-	public CodeComposite decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public CodeComposite decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
 			java.util.UUID id = binaryDecoder.decodeId();
@@ -62,7 +62,7 @@ public enum CodeCompositeCodec implements edu.cmu.cs.dennisc.croquet.Codec< Code
 			return null;
 		}
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, CodeComposite value ) {
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, CodeComposite value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {

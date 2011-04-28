@@ -84,16 +84,7 @@ public class TutorialStencil extends Stencil {
 			}
 		}
 	};
-	
-//	private edu.cmu.cs.dennisc.croquet.ListSelectionState<Step> stepSelectionState = new edu.cmu.cs.dennisc.croquet.ListSelectionState<Step>( TUTORIAL_GROUP, java.util.UUID.fromString( "ad05a285-8b5e-416f-98aa-1c4e6910fa5d" ), new edu.cmu.cs.dennisc.croquet.Codec<Step>() {
-//		public edu.cmu.cs.dennisc.tutorial.Step decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-//			throw new RuntimeException( "todo" );
-//		}
-//		public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.tutorial.Step t) {
-//			throw new RuntimeException( "todo" );
-//		}
-//	} );
-	
+		
 	private StepsModel stepsModel = new StepsModel();
 	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel( stepsModel );
 	

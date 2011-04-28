@@ -54,11 +54,11 @@ public abstract class PredeterminedTabCodec< T extends PredeterminedTab > implem
 	public Class< T > getValueClass() {
 		return this.cls;
 	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
 		binaryEncoder.encode( value.getId() );
 	}
 	protected abstract T lookUp( java.util.UUID id );
-	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		java.util.UUID id = binaryDecoder.decodeId();
 		return this.lookUp( id );
 	}

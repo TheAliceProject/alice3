@@ -46,6 +46,7 @@ package org.alice.apis.moveandturn;
  * @author Dennis Cosgrove
  */
 public class PointOfView implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	//todo: should be immutable
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal = new edu.cmu.cs.dennisc.math.AffineMatrix4x4();
 	public PointOfView() {
 		this.internal.setIdentity();
@@ -57,15 +58,13 @@ public class PointOfView implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		orientation.get( this.internal.orientation );
 		position.get( this.internal.translation );
 	}
-	
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInternal() {
-		return this.internal;
-	}
-	
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+	public PointOfView(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		this.internal.decode( binaryDecoder );
 	}
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 		this.internal.encode( binaryEncoder );
+	}
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInternal() {
+		return this.internal;
 	}
 }

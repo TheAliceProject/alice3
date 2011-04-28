@@ -53,21 +53,18 @@ public class CascadeInputDialogOperationFillIn<F,J extends CascadeInputDialogPan
 		this.inputDialogOperation = inputDialogOperation;
 	}
 	public static class CascadeInputDialogOperationFillInResolver<F,J extends CascadeInputDialogPanel< F >> implements CodableResolver< CascadeInputDialogOperationFillIn<F,J> > {
-		private CascadeInputDialogOperationFillIn<F,J> model;
+		private final CascadeInputDialogOperationFillIn<F,J> model;
 		
 		public CascadeInputDialogOperationFillInResolver( CascadeInputDialogOperationFillIn<F,J> model ) {
 			this.model = model;
 		}
 		public CascadeInputDialogOperationFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.decode( binaryDecoder );
-		}
-		public edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn<F,J> getResolved() {
-			return this.model;
-		}
-		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			CodableResolver<CascadeInputDialogOperation<F,J>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 			CascadeInputDialogOperation<F,J> inputDialogOperation = resolver.getResolved();
 			this.model = inputDialogOperation.getFillIn();
+		}
+		public edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn<F,J> getResolved() {
+			return this.model;
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			CodableResolver<CascadeInputDialogOperation<F,J>> resolver = this.model.inputDialogOperation.getCodableResolver();

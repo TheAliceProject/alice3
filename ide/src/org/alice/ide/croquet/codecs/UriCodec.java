@@ -51,7 +51,7 @@ public enum UriCodec implements edu.cmu.cs.dennisc.croquet.Codec< java.net.URI >
 	public Class<java.net.URI> getValueClass() {
 		return java.net.URI.class;
 	}
-	public java.net.URI decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+	public java.net.URI decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			String path = binaryDecoder.decodeString();
@@ -60,7 +60,7 @@ public enum UriCodec implements edu.cmu.cs.dennisc.croquet.Codec< java.net.URI >
 			return null;
 		}
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.net.URI value) {
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.net.URI value) {
 		if( value != null ) {
 			binaryEncoder.encode( true );
 			binaryEncoder.encode( value.toString() );

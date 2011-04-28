@@ -148,10 +148,10 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 				public Class<Card> getValueClass() {
 					return Card.class;
 				}
-				public Card decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+				public Card decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 					throw new RuntimeException( "todo" );
 				}
-				public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Card card ) {
+				public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Card card ) {
 					throw new RuntimeException( "todo" );
 				}
 				public StringBuilder appendRepresentation( StringBuilder rv, Card value, java.util.Locale locale ) {

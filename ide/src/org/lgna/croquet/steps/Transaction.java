@@ -297,9 +297,6 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	/*package-private*/ void setParent( TransactionHistory parent ) {
 		this.parent = parent;
 	}
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new AssertionError();
-	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
 		binaryEncoder.encode( this.completionStep );

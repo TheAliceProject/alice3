@@ -50,10 +50,10 @@ public enum StringCodec implements edu.cmu.cs.dennisc.croquet.Codec< String > {
 	public Class< String > getValueClass() {
 		return String.class;
 	}
-	public String decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public String decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeString();
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
 		binaryEncoder.encode( value );
 	}
 	public StringBuilder appendRepresentation(StringBuilder rv, String value, java.util.Locale locale) {

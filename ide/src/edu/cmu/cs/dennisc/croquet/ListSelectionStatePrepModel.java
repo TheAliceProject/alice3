@@ -68,18 +68,11 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 		return this.listSelectionState.isAlreadyInState( edit );
 	}
 	public static class ListSelectionStatePrepModelResolver<E> implements CodableResolver< ListSelectionStatePrepModel< E > > {
-		private ListSelectionStatePrepModel< E > model;
-		
+		private final ListSelectionStatePrepModel< E > model;
 		public ListSelectionStatePrepModelResolver( ListSelectionStatePrepModel< E > model ) {
 			this.model = model;
 		}
 		public ListSelectionStatePrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.decode( binaryDecoder );
-		}
-		public edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > getResolved() {
-			return this.model;
-		}
-		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			CodableResolver<ListSelectionState< E >> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 			ListSelectionState< E > listSelectionState = resolver.getResolved();
 			this.model = listSelectionState.getPrepModel();
@@ -87,6 +80,9 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			CodableResolver<ListSelectionState< E >> resolver = this.model.listSelectionState.getCodableResolver();
 			binaryEncoder.encode( resolver );
+		}
+		public edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > getResolved() {
+			return this.model;
 		}
 	}
 	@Override

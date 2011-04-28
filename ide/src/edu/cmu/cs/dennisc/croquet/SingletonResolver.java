@@ -46,17 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class SingletonResolver<T> implements CodableResolver< T > {
-	private T instance;
+	private final T instance;
 	public SingletonResolver( T instance ) {
 		this.instance = instance;
 	}
 	public SingletonResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.decode( binaryDecoder );
-	}
-	public T getResolved() {
-		return this.instance;
-	}
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		String clsName = binaryDecoder.decodeString();
 		try {
 			Class<T> cls = (Class<T>)Class.forName( clsName );
@@ -80,5 +74,8 @@ public final class SingletonResolver<T> implements CodableResolver< T > {
 		Class<T> cls = (Class<T>)this.instance.getClass();
 		String clsName = cls.getName();
 		binaryEncoder.encode( clsName );
+	}
+	public T getResolved() {
+		return this.instance;
 	}
 }

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class AxisRotation implements Orientation, edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public class AxisRotation implements Orientation {
 	public final Vector3 axis = Vector3.createNaN();
 	public final Angle angle = new AngleInRadians( Double.NaN );
 	private AxisRotation() {
@@ -105,14 +105,14 @@ public class AxisRotation implements Orientation, edu.cmu.cs.dennisc.codec.Binar
 		return rv;
 	}
 	
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		axis.decode( binaryDecoder );
-		angle.decode( binaryDecoder );
-	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		axis.encode( binaryEncoder );
-		angle.encode( binaryEncoder );
-	}
+//	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+//		axis.decode( binaryDecoder );
+//		angle.decode( binaryDecoder );
+//	}
+//	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+//		axis.encode( binaryEncoder );
+//		angle.encode( binaryEncoder );
+//	}
 	
 	public static AxisRotation createXAxisRotation( Angle angle ) {
 		return new AxisRotation( Vector3.accessPositiveXAxis(), angle );
