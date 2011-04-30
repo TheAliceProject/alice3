@@ -246,6 +246,16 @@ public class BooleanState extends State<Boolean> {
 		this.action.putValue(javax.swing.Action.SMALL_ICON, icon);
 	}
 	
+	private BooleanStateMenuItemPrepModel menuPrepModel;
+	public synchronized BooleanStateMenuItemPrepModel getMenuItemPrepModel() {
+		if( this.menuPrepModel != null ) {
+			//pass
+		} else {
+			this.menuPrepModel = new BooleanStateMenuItemPrepModel( this );
+		}
+		return this.menuPrepModel;
+	}
+
 	public RadioButton createRadioButton() {
 		return new RadioButton( this );
 	}
@@ -255,9 +265,9 @@ public class BooleanState extends State<Boolean> {
 	public PushButton createPushButton() {
 		return new PushButton( this );
 	}
-	public CheckBoxMenuItem createCheckBoxMenuItem() {
-		return new CheckBoxMenuItem( this );
-	}
+//	public CheckBoxMenuItem createCheckBoxMenuItem() {
+//		return new CheckBoxMenuItem( this );
+//	}
 	public ToolPalette createToolPalette( Component<?> component ) {
 		ToolPaletteTitle title = new ToolPaletteTitle( this );
 		return new ToolPalette(title, component);

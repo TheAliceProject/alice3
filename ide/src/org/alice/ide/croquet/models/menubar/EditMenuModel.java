@@ -54,12 +54,12 @@ public class EditMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuM
 	}
 	private EditMenuModel() {
 		super( java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ), 
-				org.alice.ide.croquet.models.history.UndoOperation.getInstance(), 
-				org.alice.ide.croquet.models.history.RedoOperation.getInstance(), 
+				org.alice.ide.croquet.models.history.UndoOperation.getInstance().getMenuItemPrepModel(), 
+				org.alice.ide.croquet.models.history.RedoOperation.getInstance().getMenuItemPrepModel(), 
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.clipboard.CutOperation.getInstance(),
-				org.alice.ide.croquet.models.clipboard.CopyOperation.getInstance(), 
-				org.alice.ide.croquet.models.clipboard.PasteOperation.getInstance() 
+				org.alice.ide.croquet.models.clipboard.CutOperation.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.clipboard.CopyOperation.getInstance().getMenuItemPrepModel(), 
+				org.alice.ide.croquet.models.clipboard.PasteOperation.getInstance() .getMenuItemPrepModel()
 		);
 	}
 }

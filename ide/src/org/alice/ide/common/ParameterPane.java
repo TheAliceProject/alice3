@@ -61,16 +61,16 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 				@Override
 				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) {
 					super.handlePopupMenuPrologue( popupMenu, context );
-					java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-					models.add( org.alice.ide.croquet.models.ast.rename.RenameParameterOperation.getInstance( parameter ) );
+					java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					models.add( org.alice.ide.croquet.models.ast.rename.RenameParameterOperation.getInstance( parameter ).getMenuItemPrepModel() );
 					if( forwardShiftCodeParameterOperation.isIndexAppropriate() ) {
-						models.add( forwardShiftCodeParameterOperation );
+						models.add( forwardShiftCodeParameterOperation.getMenuItemPrepModel() );
 					}
 					if( backwardShiftCodeParameterOperation.isIndexAppropriate() ) {
-						models.add( backwardShiftCodeParameterOperation );
+						models.add( backwardShiftCodeParameterOperation.getMenuItemPrepModel() );
 					}
 					models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
-					models.add( deleteParameterOperation );
+					models.add( deleteParameterOperation.getMenuItemPrepModel() );
 					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
 			}.getPopupMenuOperation() );

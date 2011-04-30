@@ -154,7 +154,6 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	}
 	protected abstract void perform( C context, PerformObserver performObserver );
 
-
 	public String getName() {
 		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
 	}
@@ -197,6 +196,16 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		return false;
 	}
 
+	private OperationMenuItemPrepModel menuPrepModel;
+	public synchronized OperationMenuItemPrepModel getMenuItemPrepModel() {
+		if( this.menuPrepModel != null ) {
+			//pass
+		} else {
+			this.menuPrepModel = new OperationMenuItemPrepModel( this );
+		}
+		return this.menuPrepModel;
+	}
+
 	/*package-private*/ void addButton(OperationButton<?,?> button) {
 		this.addComponent(button);
 		button.setAction( Operation.this.action );
@@ -222,7 +231,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	public Hyperlink createHyperlink() {
 		return new Hyperlink( this );
 	}
-	public MenuItem createMenuItem() {
-		return new MenuItem( this );
-	}
+//	public MenuItem createMenuItem() {
+//		return new MenuItem( this );
+//	}
 }

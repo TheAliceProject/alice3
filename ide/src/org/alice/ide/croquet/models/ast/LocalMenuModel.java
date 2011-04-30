@@ -60,7 +60,7 @@ public class LocalMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenu
 
 	private LocalMenuModel( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
 		super( java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
-				org.alice.ide.croquet.models.ast.rename.RenameLocalOperation.getInstance( local ) 
+				org.alice.ide.croquet.models.ast.rename.RenameLocalOperation.getInstance( local ).getMenuItemPrepModel()
 		);
 	}
 }

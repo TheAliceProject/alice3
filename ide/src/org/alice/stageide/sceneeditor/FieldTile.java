@@ -141,21 +141,21 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		};
 	}
 
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Model > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > rv ) {
 		if( this.accessible instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.accessible;
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldType = fieldInAlice.getValueType();
-			rv.add( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( fieldInAlice ) );
+			rv.add( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( fieldInAlice ).getMenuItemPrepModel() );
 			if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
 				if( fieldType.isAssignableTo( org.alice.apis.moveandturn.AbstractCamera.class ) ) {
 					//pass
 				} else {
-					rv.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( fieldInAlice ) );
-					rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( fieldInAlice ) );
+					rv.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( fieldInAlice ).getMenuItemPrepModel() );
+					rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( fieldInAlice ).getMenuItemPrepModel() );
 				}
 			}
 			if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Model.class ) ) {
-				rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( fieldInAlice ) );
+				rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( fieldInAlice ).getMenuItemPrepModel() );
 				
 //				edu.cmu.cs.dennisc.croquet.Operation< ? > placeOperation = new org.alice.ide.croquet.models.ast.FillInExpressionsPopupMenuOperation( java.util.UUID.fromString( "2c49d08c-2baf-40c6-b8d5-74d5f9db567b" ) ) {
 //					public edu.cmu.cs.dennisc.cascade.CascadingEdit< ? > createEdit( java.lang.Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
@@ -186,13 +186,13 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 //				rv.add( placeOperation );
 			}
 			if( fieldType.isAssignableTo( org.alice.apis.stage.Person.class ) ) {
-				rv.add( org.alice.stageide.croquet.models.gallerybrowser.EditPersonOperation.getInstance( fieldInAlice ) );
+				rv.add( org.alice.stageide.croquet.models.gallerybrowser.EditPersonOperation.getInstance( fieldInAlice ).getMenuItemPrepModel() );
 			}
 		}
 		return rv;
 	}
-	private java.util.List< edu.cmu.cs.dennisc.croquet.Model > createPopupOperations() {
-		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Model >() );
+	private java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > createPopupOperations() {
+		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel >() );
 	}
 
 	protected java.awt.Color calculateColor() {

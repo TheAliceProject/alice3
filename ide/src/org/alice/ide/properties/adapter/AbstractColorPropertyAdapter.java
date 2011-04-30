@@ -119,10 +119,12 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 					
 					SetColorOperation currentColorOperation = new SetColorOperation(currentColor, currentColorName);
 					
-					java.util.List<Model> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-					models.add(currentColorOperation);
+					java.util.List<edu.cmu.cs.dennisc.croquet.MenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					models.add(currentColorOperation.getMenuItemPrepModel());
 					models.add(edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR);
-					models.addAll(AbstractColorPropertyAdapter.this.defaultColorOperationModels);
+					for( SetColorOperation operation : AbstractColorPropertyAdapter.this.defaultColorOperationModels ) {
+						models.add(operation.getMenuItemPrepModel());
+					}
 					
 					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}

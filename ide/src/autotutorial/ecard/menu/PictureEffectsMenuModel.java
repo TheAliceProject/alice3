@@ -9,14 +9,14 @@ public class PictureEffectsMenuModel extends edu.cmu.cs.dennisc.croquet.Predeter
 	}
 	private PictureEffectsMenuModel() {
 		super( java.util.UUID.fromString( "c7d44cca-5fa8-48a6-8904-20c0ee16b38b" ), 
-				DropShadowModel.getInstance(),
+				DropShadowModel.getInstance().getMenuItemPrepModel(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				RoundedCornersModel.getInstance(),
-				autotutorial.ecard.ThoughtBubbleEffectModel.getInstance(),
-				EllipseModel.getInstance(),
+				RoundedCornersModel.getInstance().getMenuItemPrepModel(),
+				autotutorial.ecard.ThoughtBubbleEffectModel.getInstance().getMenuItemPrepModel(),
+				EllipseModel.getInstance().getMenuItemPrepModel(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				RotateForwardModel.getInstance(),
-				RotateBackwardModel.getInstance()
+				RotateForwardModel.getInstance().getMenuItemPrepModel(),
+				RotateBackwardModel.getInstance().getMenuItemPrepModel()
 		);
 	}
 }

@@ -134,12 +134,12 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) 
 				{
 					edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > possibleFields = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
-					java.util.List<Model> setVehicleOperations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					java.util.List<edu.cmu.cs.dennisc.croquet.MenuItemPrepModel> setVehicleOperations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					
 					Composite currentVehicle = TransformableVehicleAdapter.this.getValue();
 					if (currentVehicle != null)
 					{
-						setVehicleOperations.add(new SetVehicleOperation(currentVehicle, TransformableVehicleAdapter.getNameForVehicle(currentVehicle)+TransformableVehicleAdapter.this.getCurrentValueLabelString()));
+						setVehicleOperations.add(new SetVehicleOperation(currentVehicle, TransformableVehicleAdapter.getNameForVehicle(currentVehicle)+TransformableVehicleAdapter.this.getCurrentValueLabelString()).getMenuItemPrepModel());
 						setVehicleOperations.add(edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR);
 					}
 					
@@ -167,7 +167,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 							}
 							if (canBeVehicle)
 							{
-								setVehicleOperations.add(new SetVehicleOperation(objectInJava, TransformableVehicleAdapter.getNameForVehicle(objectInJava)));
+								setVehicleOperations.add(new SetVehicleOperation(objectInJava, TransformableVehicleAdapter.getNameForVehicle(objectInJava)).getMenuItemPrepModel());
 							}
 						}
 					}

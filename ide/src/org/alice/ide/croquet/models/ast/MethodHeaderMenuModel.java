@@ -60,7 +60,7 @@ public class MethodHeaderMenuModel extends edu.cmu.cs.dennisc.croquet.Predetermi
 
 	private MethodHeaderMenuModel( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( method ) 
+				org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( method ).getMenuItemPrepModel()
 		);
 	}
 }

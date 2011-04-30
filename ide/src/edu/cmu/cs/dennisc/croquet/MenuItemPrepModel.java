@@ -40,33 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
 
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static PreferencesMenuModel instance = new PreferencesMenuModel();
+public abstract class MenuItemPrepModel extends PrepModel {
+	private static final Group MENU_ITEM_GROUP = Group.getInstance( java.util.UUID.fromString( "4ed42b1f-b4ea-4f70-99d1-5bb2c3f11081" ), "MENU_ITEM_GROUP" );
+	public MenuItemPrepModel( java.util.UUID id ) {
+		super(MENU_ITEM_GROUP, id);
 	}
-	public static PreferencesMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private PreferencesMenuModel() {
-		super( java.util.UUID.fromString( "e8f8a5b3-83be-4519-8956-3ef2b9546e23" ),
-				org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getMenuModel(),
-				org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().getMenuModel(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getMenuItemPrepModel(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.recursion.RecursionDialogOperation.getInstance().getMenuItemPrepModel(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				GalleryMenuModel.getInstance()
-		);
-	}
+	public abstract MenuItemContainer createMenuItemAndAddTo( MenuItemContainer rv );
 }

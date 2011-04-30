@@ -45,6 +45,7 @@ package org.alice.ide.properties.adapter;
 
 import java.util.Locale;
 
+import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter.SetColorOperation;
 import org.alice.ide.properties.adapter.AbstractStringPropertyAdapter.SetStringOperation;
 import org.alice.ide.properties.uicontroller.DoublePropertyController;
 
@@ -112,11 +113,12 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 					
 					SetDoubleOperation currentDoubleOperation = new SetDoubleOperation(currentDouble, currentDoubleName);
 					
-					java.util.List<Model> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-					models.add(currentDoubleOperation);
+					java.util.List<edu.cmu.cs.dennisc.croquet.MenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					models.add(currentDoubleOperation.getMenuItemPrepModel());
 					models.add(edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR);
-					models.addAll(AbstractDoublePropertyAdapter.this.defaultDoubleOperationModels);
-					
+					for( SetDoubleOperation operation : AbstractDoublePropertyAdapter.this.defaultDoubleOperationModels ) {
+						models.add(operation.getMenuItemPrepModel());
+					}
 					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
 			}.getPopupMenuOperation();

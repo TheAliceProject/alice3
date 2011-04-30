@@ -58,10 +58,10 @@ public class MyTypesMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMe
 	@Override
 	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		java.util.List< edu.cmu.cs.dennisc.croquet.Model > myTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > myTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > aliceTypes = org.alice.ide.IDE.getSingleton().getTypesDeclaredInAlice();
 		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice aliceType : aliceTypes ) {
-			myTypeModels.add( SelectTypeOperation.getInstance( aliceType ) );
+			myTypeModels.add( SelectTypeOperation.getInstance( aliceType ).getMenuItemPrepModel() );
 		}
 		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, myTypeModels );
 	}

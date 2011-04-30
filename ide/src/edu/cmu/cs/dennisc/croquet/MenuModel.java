@@ -45,23 +45,22 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuModel extends PrepModel {
-	private static final Group MENU_GROUP = Group.getInstance( java.util.UUID.fromString( "4ed42b1f-b4ea-4f70-99d1-5bb2c3f11081" ), "MENU_GROUP" );
-	public static final Model SEPARATOR = null;
+public abstract class MenuModel extends MenuItemPrepModel {
+	public static final MenuItemPrepModel SEPARATOR = null;
 	private Class<?> clsForI18N;
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
 		}
 	};
 	public MenuModel( java.util.UUID individualId, Class<?> clsForI18N ) {
-		super( MENU_GROUP, individualId );
+		super( individualId );
 		this.clsForI18N = clsForI18N;
 	}
 	public MenuModel( java.util.UUID individualId ) {
 		this( individualId, null );
 	}
 	@Override
-	public Iterable< ? extends Model > getChildren() {
+	public Iterable< ? extends MenuItemPrepModel > getChildren() {
 		return null;
 	}
 	
@@ -213,4 +212,10 @@ public abstract class MenuModel extends PrepModel {
 		};
 		return rv;
 	};
+	
+	@Override
+	public MenuItemContainer createMenuItemAndAddTo( MenuItemContainer rv ) {
+		rv.addMenu( this.createMenu() );
+		return rv;
+	}
 }

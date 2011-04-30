@@ -60,7 +60,7 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 			CodableResolver<ListSelectionState< E >> resolver = this.model.listSelectionState.getCodableResolver();
 			binaryEncoder.encode( resolver );
 		}
-		public edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > getResolved() {
+		public ListSelectionStatePrepModel< E > getResolved() {
 			return this.model;
 		}
 	}
@@ -73,7 +73,7 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 		this.listSelectionState = listSelectionState;
 	}
 	@Override
-	public Iterable< ? extends edu.cmu.cs.dennisc.croquet.Model > getChildren() {
+	public Iterable< ? extends Model > getChildren() {
 		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.listSelectionState );
 	}
 	@Override
@@ -83,7 +83,7 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 		return this.listSelectionState;
 	}
 	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	public boolean isAlreadyInState( Edit< ? > edit ) {
 		return this.listSelectionState.isAlreadyInState( edit );
 	}
 	@Override
@@ -91,14 +91,14 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 		return new ListSelectionStatePrepModelResolver<E>( this );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > getFirstComponent() {
+	public JComponent< ? > getFirstComponent() {
 		return this.listSelectionState.getFirstComponent();
 	}
 	public ComboBox< E > createComboBox() {
 		return new ComboBox< E >( this.getListSelectionState() );
 	}
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext<?> modelContext, edu.cmu.cs.dennisc.croquet.Edit<?> edit, UserInformation userInformation) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext<?> modelContext, Edit<?> edit, UserInformation userInformation) {
 		if( edit != null ) {
 			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
 			rv.append( "First press on " );

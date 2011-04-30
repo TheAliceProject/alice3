@@ -58,9 +58,9 @@ public class GalleryMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMe
 //todo:
 //				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptingUserForFieldNamesState.getInstance(),
 //				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance(),
-				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance(),
-				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance()
+				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getMenuItemPrepModel(),
+				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getMenuItemPrepModel(),
+				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getMenuItemPrepModel()
 		);
 	}
 }

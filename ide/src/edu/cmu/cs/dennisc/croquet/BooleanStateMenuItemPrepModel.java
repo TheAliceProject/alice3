@@ -40,33 +40,65 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
 
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static PreferencesMenuModel instance = new PreferencesMenuModel();
+public class BooleanStateMenuItemPrepModel extends MenuItemPrepModel {
+	public static class BooleanStateMenuPrepModelResolver<E> implements CodableResolver< BooleanStateMenuItemPrepModel > {
+		private final BooleanStateMenuItemPrepModel model;
+		public BooleanStateMenuPrepModelResolver( BooleanStateMenuItemPrepModel model ) {
+			this.model = model;
+		}
+		public BooleanStateMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			CodableResolver<BooleanState> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			BooleanState booleanState = resolver.getResolved();
+			this.model = booleanState.getMenuItemPrepModel();
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			CodableResolver<BooleanState> resolver = this.model.booleanState.getCodableResolver();
+			binaryEncoder.encode( resolver );
+		}
+		public BooleanStateMenuItemPrepModel getResolved() {
+			return this.model;
+		}
 	}
-	public static PreferencesMenuModel getInstance() {
-		return SingletonHolder.instance;
+	private final BooleanState booleanState;
+	/*package-private*/ BooleanStateMenuItemPrepModel( BooleanState booleanState ) {
+		super( java.util.UUID.fromString( "a6d47082-8859-4b7c-b654-37e928aa67ed" ) );
+		assert booleanState != null;
+		this.booleanState = booleanState;
 	}
-	private PreferencesMenuModel() {
-		super( java.util.UUID.fromString( "e8f8a5b3-83be-4519-8956-3ef2b9546e23" ),
-				org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getMenuModel(),
-				org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().getMenuModel(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getMenuItemPrepModel(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.recursion.RecursionDialogOperation.getInstance().getMenuItemPrepModel(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				GalleryMenuModel.getInstance()
-		);
+	@Override
+	public Iterable< ? extends Model > getChildren() {
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.booleanState );
+	}
+	@Override
+	protected void localize() {
+	}
+	public BooleanState getBooleanState() {
+		return this.booleanState;
+	}
+	@Override
+	public boolean isAlreadyInState( Edit< ? > edit ) {
+		return this.booleanState.isAlreadyInState( edit );
+	}
+	@Override
+	protected BooleanStateMenuPrepModelResolver createCodableResolver() {
+		return new BooleanStateMenuPrepModelResolver( this );
+	}
+	@Override
+	public JComponent< ? > getFirstComponent() {
+		return this.booleanState.getFirstComponent();
+	}
+	private CheckBoxMenuItem createCheckBoxMenuItem() {
+		return new CheckBoxMenuItem( this.getBooleanState() );
+	}
+	@Override
+	public MenuItemContainer createMenuItemAndAddTo( MenuItemContainer rv ) {
+		rv.addCheckBoxMenuItem( this.createCheckBoxMenuItem() );
+		return rv;
 	}
 }

@@ -40,33 +40,66 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
 
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static PreferencesMenuModel instance = new PreferencesMenuModel();
+public class OperationMenuItemPrepModel extends MenuItemPrepModel {
+	public static class OperationMenuPrepModelResolver<E> implements CodableResolver< OperationMenuItemPrepModel > {
+		private final OperationMenuItemPrepModel model;
+		public OperationMenuPrepModelResolver( OperationMenuItemPrepModel model ) {
+			this.model = model;
+		}
+		public OperationMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			CodableResolver<Operation<?>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			Operation<?> operation = resolver.getResolved();
+			this.model = operation.getMenuItemPrepModel();
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			CodableResolver<Operation<?>> resolver = this.model.operation.getCodableResolver();
+			binaryEncoder.encode( resolver );
+		}
+		public OperationMenuItemPrepModel getResolved() {
+			return this.model;
+		}
 	}
-	public static PreferencesMenuModel getInstance() {
-		return SingletonHolder.instance;
+	
+	private final Operation<?> operation;
+	/*package-private*/ OperationMenuItemPrepModel( Operation<?> operation ) {
+		super( java.util.UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
+		assert operation != null;
+		this.operation = operation;
 	}
-	private PreferencesMenuModel() {
-		super( java.util.UUID.fromString( "e8f8a5b3-83be-4519-8956-3ef2b9546e23" ),
-				org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getMenuModel(),
-				org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().getMenuModel(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getMenuItemPrepModel(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.recursion.RecursionDialogOperation.getInstance().getMenuItemPrepModel(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				GalleryMenuModel.getInstance()
-		);
+	@Override
+	public Iterable< ? extends Model > getChildren() {
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.operation );
+	}
+	@Override
+	protected void localize() {
+	}
+	public Operation<?> getOperation() {
+		return this.operation;
+	}
+	@Override
+	public boolean isAlreadyInState( Edit< ? > edit ) {
+		return this.operation.isAlreadyInState( edit );
+	}
+	@Override
+	protected OperationMenuPrepModelResolver createCodableResolver() {
+		return new OperationMenuPrepModelResolver( this );
+	}
+	@Override
+	public JComponent< ? > getFirstComponent() {
+		return this.operation.getFirstComponent();
+	}
+	private MenuItem createMenuItem() {
+		return new MenuItem( this.getOperation() );
+	}
+	@Override
+	public MenuItemContainer createMenuItemAndAddTo( MenuItemContainer rv ) {
+		rv.addMenuItem( this.createMenuItem() );
+		return rv;
 	}
 }

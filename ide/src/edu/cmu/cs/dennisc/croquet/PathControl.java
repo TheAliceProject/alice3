@@ -51,18 +51,18 @@ package edu.cmu.cs.dennisc.croquet;
 
 	private static final int ARROW_SIZE = 10;
 	private static final int ARROW_BORDER_HALF_SIZE = 3;
-	private static java.util.List< Model > createModels( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
-		java.util.List< Model > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List< MenuItemPrepModel > createModels( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+		java.util.List< MenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.Enumeration< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > enumeration = treeNode.children();
 		if( enumeration != null ) {
 			while( enumeration.hasMoreElements() ) {
 				edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> child = enumeration.nextElement();
 				if( child.getAllowsChildren() ) {
-					list.add( SelectDirectoryActionOperation.getInstance(treeSelectionState, child, initializer ) );
+					list.add( SelectDirectoryActionOperation.getInstance(treeSelectionState, child, initializer ).getMenuItemPrepModel() );
 				} else {
 					Operation<?> leafOperation = initializer.getOperationForLeaf( child );
 					if( leafOperation != null ) {
-						list.add( leafOperation );
+						list.add( leafOperation.getMenuItemPrepModel() );
 					}
 				}
 			}
