@@ -184,16 +184,18 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 				java.lang.reflect.Constructor< E > cnstrctr = CodecUtilities.getPublicDecodeConstructor( clsName );			
 				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
 			} catch( NoSuchMethodException nsme ) {
-//				try {
-//					Class<E> cls = (Class<E>)Class.forName( clsName );
-//					java.lang.reflect.Constructor< E > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls );
-//					E rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+				try {
+					Class<E> cls = (Class<E>)Class.forName( clsName );
+					java.lang.reflect.Constructor< E > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls );
+					java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, "decode", BinaryDecoder.class );
+					E rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+					edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( rv, mthd, this );
 //					rv.decode( this );
-//					return rv;
-//				} catch( ClassNotFoundException cnfe ) {
-//					throw new RuntimeException( cnfe );
-//				}
-				throw new RuntimeException( nsme );
+					return rv;
+				} catch( ClassNotFoundException cnfe ) {
+					throw new RuntimeException( cnfe );
+				}
+//				throw new RuntimeException( nsme );
 			} catch( ClassNotFoundException cnfe ) {
 				throw new RuntimeException( cnfe );
 			}

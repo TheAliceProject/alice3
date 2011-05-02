@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public interface Orientation {
+public interface Orientation extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public void setNaN();
 	public boolean isNaN();
 	public void setIdentity();

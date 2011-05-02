@@ -68,6 +68,16 @@ public class AxisRotation implements Orientation {
 	public AxisRotation( ForwardAndUpGuide other ) {
 		setValue( other );
 	}
+
+	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		axis.decode( binaryDecoder );
+		angle.decode( binaryDecoder );
+	}
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+		axis.encode( binaryEncoder );
+		angle.encode( binaryEncoder );
+	}
+	
 	public OrthogonalMatrix3x3 createOrthogonalMatrix3x3() {
 		return new OrthogonalMatrix3x3( this );
 	}

@@ -53,6 +53,12 @@ public class AngleInRevolutions implements Angle {
 	public AngleInRevolutions( Angle other ) {
 		set( other );
 	}
+	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		m_revolutions = binaryDecoder.decodeDouble();
+	}
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+		binaryEncoder.encode( m_revolutions );
+	}
 	@Override
 	public boolean equals( Object obj ) {
 		if( obj instanceof Angle ) {

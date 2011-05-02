@@ -46,6 +46,14 @@ package org.alice.apis.moveandturn;
  * @author Dennis Cosgrove
  */
 public abstract class Angle extends Number implements edu.cmu.cs.dennisc.math.Angle {
+	@Deprecated
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new AssertionError();
+	}
+	@Deprecated
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		throw new AssertionError();
+	}
 	@Override
 	public double doubleValue() {
 		return this.getAsRevolutions();

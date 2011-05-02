@@ -46,12 +46,11 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	protected Point3 m_minimum = new Point3();
-	protected Point3 m_maximum = new Point3();
+public final class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private final Point3 minimum = Point3.createNaN();
+	private final Point3 maximum = Point3.createNaN();
 
 	public AxisAlignedBox() {
-		setNaN();
 	}
 	public AxisAlignedBox( Point3 minimum, Point3 maximum ) {
 		setMinimum( minimum );
@@ -66,12 +65,12 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	}
 	
 	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		m_minimum.decode( binaryDecoder );
-		m_maximum.decode( binaryDecoder );
+		this.minimum.decode( binaryDecoder );
+		this.maximum.decode( binaryDecoder );
 	}
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		m_minimum.encode( binaryEncoder );
-		m_maximum.encode( binaryEncoder );
+		this.minimum.encode( binaryEncoder );
+		this.maximum.encode( binaryEncoder );
 	}
 	
 	@Override
@@ -80,7 +79,7 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 			return true;
 		if( o != null && o instanceof AxisAlignedBox ) {
 			AxisAlignedBox box = (AxisAlignedBox)o;
-			return m_minimum.equals( box.m_minimum ) && m_maximum.equals( box.m_maximum );
+			return this.minimum.equals( box.minimum ) && this.maximum.equals( box.maximum );
 		} else {
 			return false;
 		}
@@ -88,34 +87,34 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	@Override
 	public int hashCode() {
 		int rv = 17;
-		if( this.m_minimum != null ) {
-			rv = 37*rv + this.m_minimum.hashCode();
+		if( this.minimum != null ) {
+			rv = 37*rv + this.minimum.hashCode();
 		}
-		if( this.m_maximum != null ) {
-			rv = 37*rv + this.m_maximum.hashCode();
+		if( this.maximum != null ) {
+			rv = 37*rv + this.maximum.hashCode();
 		}
 		return rv;
 	}
 
 	public void set( AxisAlignedBox other ) {
 		if( other != null ) {
-			m_minimum.set( other.m_minimum );
-			m_maximum.set( other.m_maximum );
+			this.minimum.set( other.minimum );
+			this.maximum.set( other.maximum );
 		} else {
 			setNaN();
 		}
 	}
 
 	public boolean isNaN() {
-		return m_minimum.isNaN() || m_maximum.isNaN();
+		return this.minimum.isNaN() || this.maximum.isNaN();
 	}
 	public void setNaN() {
-		m_minimum.set( Double.NaN, Double.NaN, Double.NaN );
-		m_maximum.set( Double.NaN, Double.NaN, Double.NaN );
+		this.minimum.set( Double.NaN, Double.NaN, Double.NaN );
+		this.maximum.set( Double.NaN, Double.NaN, Double.NaN );
 	}
 	
 	public Point3 getMinimum( Point3 rv ) {
-		rv.set( m_minimum );
+		rv.set( this.minimum );
 		return rv;
 	}
 	public Point3 getMinimum() {
@@ -123,17 +122,17 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	}
 	public void setMinimum( Point3 minimum ) {
 		if( minimum == null ) {
-			m_minimum.set( Double.NaN, Double.NaN, Double.NaN );
+			this.minimum.set( Double.NaN, Double.NaN, Double.NaN );
 		} else {
-			m_minimum.set( minimum );
+			this.minimum.set( minimum );
 		}
 	}
 	public void setMinimum( double x, double y, double z ) {
-		m_minimum.set( x, y, z );
+		this.minimum.set( x, y, z );
 	}
 
 	public Point3 getMaximum( Point3 rv ) {
-		rv.set( m_maximum );
+		rv.set( this.maximum );
 		return rv;
 	}
 	public Point3 getMaximum() {
@@ -141,54 +140,54 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	}
 	public void setMaximum( Point3 maximum ) {
 		if( maximum == null ) {
-			m_maximum.set( Double.NaN, Double.NaN, Double.NaN );
+			this.maximum.set( Double.NaN, Double.NaN, Double.NaN );
 		} else {
-			m_maximum.set( maximum );
+			this.maximum.set( maximum );
 		}
 	}
 	public void setMaximum( double x, double y, double z ) {
-		m_maximum.set( x, y, z );
+		this.maximum.set( x, y, z );
 	}
 
 	public double getXMinimum() {
-		return m_minimum.x;
+		return this.minimum.x;
 	}
 	public void setXMinimum( double v ) {
-		m_minimum.x = v;
+		this.minimum.x = v;
 	}
 	public double getYMinimum() {
-		return m_minimum.y;
+		return this.minimum.y;
 	}
 	public void setYMinimum( double v ) {
-		m_minimum.y = v;
+		this.minimum.y = v;
 	}
 	public double getZMinimum() {
-		return m_minimum.z;
+		return this.minimum.z;
 	}
 	public void setZMinimum( double v ) {
-		m_minimum.z = v;
+		this.minimum.z = v;
 	}
 	public double getXMaximum() {
-		return m_maximum.x;
+		return this.maximum.x;
 	}
 	public void setXMaximum( double v ) {
-		m_maximum.x = v;
+		this.maximum.x = v;
 	}
 	public double getYMaximum() {
-		return m_maximum.y;
+		return this.maximum.y;
 	}
 	public void setYMaximum( double v ) {
-		m_maximum.y = v;
+		this.maximum.y = v;
 	}
 	public double getZMaximum() {
-		return m_maximum.z;
+		return this.maximum.z;
 	}
 	public void setZMaximum( double v ) {
-		m_maximum.z = v;
+		this.maximum.z = v;
 	}
 
 	public Point3 getCenter( Point3 rv ) {
-		rv.set( (m_minimum.x + m_maximum.x) / 2, (m_minimum.y + m_maximum.y) / 2, (m_minimum.z + m_maximum.z) / 2 );
+		rv.set( (this.minimum.x + this.maximum.x) / 2, (this.minimum.y + this.maximum.y) / 2, (this.minimum.z + this.maximum.z) / 2 );
 		return rv;
 	}
 	public Point3 getCenter() {
@@ -196,7 +195,7 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	}
 
 	public Point3 getCenterOfFrontFace( Point3 rv ) {
-		rv.set( (m_minimum.x + m_maximum.x) / 2, (m_minimum.y + m_maximum.y) / 2, (m_minimum.z) );
+		rv.set( (this.minimum.x + this.maximum.x) / 2, (this.minimum.y + this.maximum.y) / 2, (this.minimum.z) );
 		return rv;
 	}
 	public Point3 getCenterOfFrontFace() {
@@ -204,7 +203,7 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	}
 
 	public Point3 getCenterOfBackFace( Point3 rv ) {
-		rv.set( (m_minimum.x + m_maximum.x) / 2, (m_minimum.y + m_maximum.y) / 2, (m_maximum.z) );
+		rv.set( (this.minimum.x + this.maximum.x) / 2, (this.minimum.y + this.maximum.y) / 2, (this.maximum.z) );
 		return rv;
 	}
 	public Point3 getCenterOfBackFace() {
@@ -212,7 +211,7 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	}
 
 	public Point3 getCenterOfLeftFace( Point3 rv ) {
-		rv.set( (m_minimum.x), (m_minimum.y + m_maximum.y) / 2, (m_minimum.z + m_maximum.z) / 2 );
+		rv.set( (this.minimum.x), (this.minimum.y + this.maximum.y) / 2, (this.minimum.z + this.maximum.z) / 2 );
 		return rv;
 	}
 	public Point3 getCenterOfLeftFace() {
@@ -220,7 +219,7 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	}
 
 	public Point3 getCenterOfRightFace( Point3 rv ) {
-		rv.set( (m_maximum.x), (m_minimum.y + m_maximum.y) / 2, (m_minimum.z + m_maximum.z) / 2 );
+		rv.set( (this.maximum.x), (this.minimum.y + this.maximum.y) / 2, (this.minimum.z + this.maximum.z) / 2 );
 		return rv;
 	}
 	public Point3 getCenterOfRightFace() {
@@ -228,7 +227,7 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	}
 
 	public Point3 getCenterOfTopFace( Point3 rv ) {
-		rv.set( (m_minimum.x + m_maximum.x) / 2, (m_maximum.y), (m_minimum.z + m_maximum.z) / 2 );
+		rv.set( (this.minimum.x + this.maximum.x) / 2, (this.maximum.y), (this.minimum.z + this.maximum.z) / 2 );
 		return rv;
 	}
 	public Point3 getCenterOfTopFace() {
@@ -236,7 +235,7 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	}
 
 	public Point3 getCenterOfBottomFace( Point3 rv ) {
-		rv.set( (m_minimum.x + m_maximum.x) / 2, (m_minimum.y), (m_minimum.z + m_maximum.z) / 2 );
+		rv.set( (this.minimum.x + this.maximum.x) / 2, (this.minimum.y), (this.minimum.z + this.maximum.z) / 2 );
 		return rv;
 	}
 	public Point3 getCenterOfBottomFace() {
@@ -244,13 +243,13 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	}
 
 	public double getWidth() {
-		return m_maximum.x - m_minimum.x;
+		return this.maximum.x - this.minimum.x;
 	}
 	public double getHeight() {
-		return m_maximum.y - m_minimum.y;
+		return this.maximum.y - this.minimum.y;
 	}
 	public double getDepth() {
-		return m_maximum.z - m_minimum.z;
+		return this.maximum.z - this.minimum.z;
 	}
 
 	public double getVolume() {
@@ -258,24 +257,24 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	}
 
 	public void union( Point3 p ) {
-	    if( m_minimum.isNaN() ) {
-	        m_minimum.set( p );
+	    if( this.minimum.isNaN() ) {
+	        this.minimum.set( p );
 	    }
 	    else
 	    {
-    		m_minimum.x = Math.min( m_minimum.x, p.x );
-    		m_minimum.y = Math.min( m_minimum.y, p.y );
-    		m_minimum.z = Math.min( m_minimum.z, p.z );
+    		this.minimum.x = Math.min( this.minimum.x, p.x );
+    		this.minimum.y = Math.min( this.minimum.y, p.y );
+    		this.minimum.z = Math.min( this.minimum.z, p.z );
 	    }
-	    if ( m_maximum.isNaN() )
+	    if ( this.maximum.isNaN() )
 	    {
-	        m_maximum.set( p );
+	        this.maximum.set( p );
 	    }
 	    else
 	    {
-    		m_maximum.x = Math.max( m_maximum.x, p.x );
-    		m_maximum.y = Math.max( m_maximum.y, p.y );
-    		m_maximum.z = Math.max( m_maximum.z, p.z );
+    		this.maximum.x = Math.max( this.maximum.x, p.x );
+    		this.maximum.y = Math.max( this.maximum.y, p.y );
+    		this.maximum.z = Math.max( this.maximum.z, p.z );
 	    }
 	}
 	public void union( AxisAlignedBox other ) {
@@ -290,26 +289,26 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 			if( other.isNaN() ) {
 				//pass
 			} else {
-				m_minimum.x = Math.min( m_minimum.x, other.m_minimum.x );
-				m_minimum.y = Math.min( m_minimum.y, other.m_minimum.y );
-				m_minimum.z = Math.min( m_minimum.z, other.m_minimum.z );
-				m_maximum.x = Math.max( m_maximum.x, other.m_maximum.x );
-				m_maximum.y = Math.max( m_maximum.y, other.m_maximum.y );
-				m_maximum.z = Math.max( m_maximum.z, other.m_maximum.z );
+				this.minimum.x = Math.min( this.minimum.x, other.minimum.x );
+				this.minimum.y = Math.min( this.minimum.y, other.minimum.y );
+				this.minimum.z = Math.min( this.minimum.z, other.minimum.z );
+				this.maximum.x = Math.max( this.maximum.x, other.maximum.x );
+				this.maximum.y = Math.max( this.maximum.y, other.maximum.y );
+				this.maximum.z = Math.max( this.maximum.z, other.maximum.z );
 			}
 		}
 	}
 
 	public Hexahedron getHexahedron( Hexahedron rv ) {
 		Point3[] points = { 
-				new Point3( m_minimum.x, m_minimum.y, m_minimum.z ), 
-				new Point3( m_maximum.x, m_minimum.y, m_minimum.z ), 
-				new Point3( m_minimum.x, m_maximum.y, m_minimum.z ),
-				new Point3( m_maximum.x, m_maximum.y, m_minimum.z ), 
-				new Point3( m_minimum.x, m_minimum.y, m_maximum.z ), 
-				new Point3( m_maximum.x, m_minimum.y, m_maximum.z ), 
-				new Point3( m_minimum.x, m_maximum.y, m_maximum.z ), 
-				new Point3( m_maximum.x, m_maximum.y, m_maximum.z ) 
+				new Point3( this.minimum.x, this.minimum.y, this.minimum.z ), 
+				new Point3( this.maximum.x, this.minimum.y, this.minimum.z ), 
+				new Point3( this.minimum.x, this.maximum.y, this.minimum.z ),
+				new Point3( this.maximum.x, this.maximum.y, this.minimum.z ), 
+				new Point3( this.minimum.x, this.minimum.y, this.maximum.z ), 
+				new Point3( this.maximum.x, this.minimum.y, this.maximum.z ), 
+				new Point3( this.minimum.x, this.maximum.y, this.maximum.z ), 
+				new Point3( this.maximum.x, this.maximum.y, this.maximum.z ) 
 		};
 		Vector3[] normals = { 
 				new Vector3( +1, 0, 0 ), 
@@ -327,30 +326,30 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	}
 	
 	public void translate( Vector3 v ) {
-		m_minimum.add( v );
-		m_maximum.add( v );
+		this.minimum.add( v );
+		this.maximum.add( v );
 	}
 	public void scale( Matrix3x3 m ) {
 		//		todo?
-		//		m.transform( m_minimum );
-		//		m.transform( m_maximum );
+		//		m.transform( this.minimum );
+		//		m.transform( this.maximum );
 
 		double xScale = Tuple3.calculateMagnitude( m.right.x, m.right.y, m.right.z );
 		double yScale = Tuple3.calculateMagnitude( m.up.x, m.up.y, m.up.z );
 		double zScale = Tuple3.calculateMagnitude( m.backward.x, m.backward.y, m.backward.z );
 
-		m_minimum.x *= xScale;
-		m_maximum.x *= xScale;
+		this.minimum.x *= xScale;
+		this.maximum.x *= xScale;
 
-		m_minimum.y *= yScale;
-		m_maximum.y *= yScale;
+		this.minimum.y *= yScale;
+		this.maximum.y *= yScale;
 
-		m_minimum.z *= zScale;
-		m_maximum.z *= zScale;
+		this.minimum.z *= zScale;
+		this.maximum.z *= zScale;
 	}
 
 	@Override
 	public String toString() {
-		return AxisAlignedBox.class.getName() + "[minimum=" + m_minimum + ",maximum=" + m_maximum + "]";
+		return AxisAlignedBox.class.getName() + "[minimum=" + this.minimum + ",maximum=" + this.maximum + "]";
 	}
 }
