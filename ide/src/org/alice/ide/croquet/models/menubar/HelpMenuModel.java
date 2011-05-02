@@ -54,22 +54,22 @@ public class HelpMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuM
 	}
 	private HelpMenuModel() {
 		super( java.util.UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), 
-				org.alice.ide.croquet.models.help.HelpOperation.getInstance(),
+				org.alice.ide.croquet.models.help.HelpOperation.getInstance().getMenuItemPrepModel(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.help.ReportBugOperation.getInstance(), 
-				org.alice.ide.croquet.models.help.SuggestImprovementOperation.getInstance(), 
-				org.alice.ide.croquet.models.help.RequestNewFeatureOperation.getInstance(), 
+				org.alice.ide.croquet.models.help.ReportBugOperation.getInstance().getMenuItemPrepModel(), 
+				org.alice.ide.croquet.models.help.SuggestImprovementOperation.getInstance().getMenuItemPrepModel(), 
+				org.alice.ide.croquet.models.help.RequestNewFeatureOperation.getInstance().getMenuItemPrepModel(), 
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.help.ShowWarningOperation.getInstance(), 
-				org.alice.ide.croquet.models.help.ShowSystemPropertiesOperation.getInstance(), 
-				org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation.getInstance(),
+				org.alice.ide.croquet.models.help.ShowWarningOperation.getInstance().getMenuItemPrepModel(), 
+				org.alice.ide.croquet.models.help.ShowSystemPropertiesOperation.getInstance().getMenuItemPrepModel(), 
+				org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation.getInstance().getMenuItemPrepModel(),
 		//			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 		//				//pass
 		//			} else {
 //						helpOperations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 //						helpOperations.add( this.getAboutOperation() );
 		//			}
-				org.alice.ide.IDE.getSingleton().getAboutOperation()
+				org.alice.ide.IDE.getSingleton().getAboutOperation().getMenuItemPrepModel()
 		);
 	}
 }

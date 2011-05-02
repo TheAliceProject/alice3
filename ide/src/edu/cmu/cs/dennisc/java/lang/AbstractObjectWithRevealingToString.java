@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.java.lang;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractObjectWithRevealingToString {
-	protected abstract StringBuffer updateRepr( StringBuffer rv ); 
+	protected abstract StringBuilder updateRepr( StringBuilder rv ); 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append( this.getClass().getName() );
 		sb.append( "[" );
 		updateRepr( sb );

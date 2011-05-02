@@ -65,15 +65,15 @@ public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionStat
 		protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 			ListSelectionState< E > listSelectionState = this.getModel();
 			Codec<E> codec = listSelectionState.getCodec();
-			this.prevValue = codec.decode( binaryDecoder );
-			this.nextValue = codec.decode( binaryDecoder );
+			this.prevValue = codec.decodeValue( binaryDecoder );
+			this.nextValue = codec.decodeValue( binaryDecoder );
 		}
 		@Override
 		protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 			ListSelectionState< E > listSelectionState = this.getModel();
 			Codec<E> codec = listSelectionState.getCodec();
-			codec.encode( binaryEncoder, this.prevValue );
-			codec.encode( binaryEncoder, this.nextValue );
+			codec.encodeValue( binaryEncoder, this.prevValue );
+			codec.encodeValue( binaryEncoder, this.nextValue );
 		}
 	}
 
@@ -137,11 +137,17 @@ public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionStat
 		this.getModel().setSelectedItem( this.prevValue );
 	}
 	@Override
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, UserInformation userInformation ) {
+		rv.append( "select " );
+		this.getModel().getCodec().appendRepresentation( rv, this.nextValue, userInformation.getLocale() );
+		return rv;
+	}
+	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "select " );
-		rv.append( this.prevValue );
+		this.getModel().getCodec().appendRepresentation( rv, this.prevValue, locale );
 		rv.append( " ===> " );
-		rv.append( this.nextValue );
+		this.getModel().getCodec().appendRepresentation( rv, this.nextValue, locale );
 		return rv;
 	}
 }

@@ -60,8 +60,8 @@ public abstract class Factory {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
 		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
-			org.alice.ide.croquet.models.ast.FillInArgumentPopupMenuOperation model = org.alice.ide.croquet.models.ast.FillInArgumentPopupMenuOperation.getInstance( argument );
-			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model.getPopupMenuOperation(), prefixPane, rv, expressionProperty );
+			org.alice.ide.croquet.models.ast.cascade.FillInArgumentOperation model = org.alice.ide.croquet.models.ast.cascade.FillInArgumentOperation.getInstance( argument );
+			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty );
 			rv = expressionPropertyDropDownPane;
 		}
 		return rv;
@@ -419,6 +419,8 @@ public abstract class Factory {
 				
 			} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
 				rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
+			} else if( expression instanceof org.alice.ide.ast.PreviousValueExpression ) {
+				rv = new PreviousValueExpressionPane( (org.alice.ide.ast.PreviousValueExpression)expression, this );
 			} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
 				rv = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {

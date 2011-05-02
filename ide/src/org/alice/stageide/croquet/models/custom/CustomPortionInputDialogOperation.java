@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomPortionInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class CustomPortionInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
 	private static class SingletonHolder {
 		private static CustomPortionInputDialogOperation instance = new CustomPortionInputDialogOperation();
 	}

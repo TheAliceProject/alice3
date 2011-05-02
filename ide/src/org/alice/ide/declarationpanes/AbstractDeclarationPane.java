@@ -45,7 +45,7 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.PanelWithPreview {
+public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.PanelWithPreview< T > {
 	private org.alice.ide.initializer.BogusNode bogusNode;
 	private edu.cmu.cs.dennisc.croquet.BooleanState isReassignableStateOperation;
 	private TypePane typePane;
@@ -122,7 +122,9 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		if( this.typePane != null ) {
 			return this.typePane.getValueType();
 		} else {
-			throw new RuntimeException( "override" );
+			//assert false : this.getClass();
+			System.err.println( "todo: getValueType" );
+			return null;
 		}
 	}
 	//todo: reduce to protected
@@ -316,5 +318,4 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 			return true;
 		}
 	}
-	public abstract T getActualInputValue();
 }

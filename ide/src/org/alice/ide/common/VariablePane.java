@@ -51,11 +51,7 @@ public class VariablePane extends LocalPane<edu.cmu.cs.dennisc.alice.ast.Variabl
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-		return this.getTransient().valueType.getValue();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.getTransient() );
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		return org.alice.ide.croquet.models.ast.cascade.expression.VariableAccessOperation.getInstance( this.getTransient(), expressionProperty );
 	}
 }

@@ -55,9 +55,10 @@ public class InternalTestingMenuModel extends edu.cmu.cs.dennisc.croquet.Predete
 	}
 	private InternalTestingMenuModel() {
 		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
-				org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance(),
-				org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance()
+				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel()
 		);
 	}
 }

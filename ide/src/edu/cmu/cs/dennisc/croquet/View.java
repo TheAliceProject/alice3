@@ -46,14 +46,22 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class View extends JComponent< javax.swing.JPanel > {
-	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel();
-		rv.setLayout( new java.awt.BorderLayout() );
-		return rv;
+public abstract class View extends Panel {
+	private Composite model;
+	public View( Composite model ) {
+		this.model = model;
 	}
-	public void setView( Component<?> view ) {
-		this.getAwtComponent().add( view.getAwtComponent() );
+	public Composite getModel() {
+		return model;
+	}
+	@Override
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		this.model.handleAdded( this );
+	}
+	@Override
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		this.model.handleRemoved( this );
+		super.handleRemovedFrom( parent );
 	}
 }

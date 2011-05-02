@@ -46,6 +46,6 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public interface ReferenceableBinaryEncodableAndDecodable {
-	void decode( BinaryDecoder binaryDecoder, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map );
-	void encode( BinaryEncoder binaryEncoder, java.util.Map< ReferenceableBinaryEncodableAndDecodable, Integer > map );
+	public void decode( BinaryDecoder binaryDecoder, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map );
+	public void encode( BinaryEncoder binaryEncoder, java.util.Map< ReferenceableBinaryEncodableAndDecodable, Integer > map );
 }

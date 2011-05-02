@@ -223,8 +223,16 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
 		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( false );
 		if( IS_ENCODING ) {
-			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
-			rootContext.EPIC_HACK_clear();
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					javax.swing.SwingUtilities.invokeLater( new Runnable() {
+						public void run() {
+							edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
+							rootContext.EPIC_HACK_clear();
+						}
+					} );
+				}
+			} );
 		}
 	}
 
@@ -264,6 +272,8 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 					} else {
 						return value;
 					}
+				} else if( value instanceof org.alice.ide.editorstabbedpane.CodeComposite ) {
+					return (N)org.alice.ide.editorstabbedpane.CodeComposite.getInstance( retarget( ((org.alice.ide.editorstabbedpane.CodeComposite)value).getCode() ) );
 				} else {
 					return value;
 				}
@@ -350,11 +360,14 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			public void addKeyValuePair( Object key, Object value ) {
 				this.map.put( key, value );
 				if( key instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
-					System.err.println( "TODO: recursive retarget" );
+					System.err.println( "TODO: addKeyValuePair recursive retarget" );
 					this.addKeyValuePair( ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)key).body.getValue(), ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)value).body.getValue() );
 				}
 			}
 			public <N> N retarget(N original) {
+				if( original instanceof org.alice.ide.editorstabbedpane.CodeComposite ) {
+					original = (N)org.alice.ide.editorstabbedpane.CodeComposite.getInstance( retarget( ((org.alice.ide.editorstabbedpane.CodeComposite)original).getCode() ) );
+				}
 				N rv = (N)map.get( original );
 				if( rv != null ) {
 					//pass
@@ -416,7 +429,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 
 	@Override
 	protected StringBuffer updateTitle( StringBuffer rv ) {
-		rv.append( "AnonymizedForPeerReview" );
+		rv.append( "" );
 		return rv;
 	}
 
@@ -431,7 +444,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			IS_BASED_ON_INTERACTION_AST = Boolean.parseBoolean( args[ 7 ] );
 			IS_OPTIMIZED_FOR_BUG_REPRO = Boolean.parseBoolean( args[ 8 ] );
 		}
-		org.alice.ide.memberseditor.MembersEditor.IS_FOLDER_TABBED_PANE_DESIRED = IS_ENCODING;
+		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( IS_ENCODING );
 		final AutomaticTutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( AutomaticTutorialIde.class, null, args, false );
 		if( IS_ENCODING ) {
 			ide.getFrame().setVisible( true );

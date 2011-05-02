@@ -42,6 +42,8 @@
  */
 package org.alice.ide;
 
+import org.alice.ide.ubiquitouspane.UbiquitousPane;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -76,6 +78,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return IDE.singleton;
 	}
 
+	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isAlwaysShowingBlocksObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+		public void changing( boolean nextValue ) {
+		}
+		public void changed( boolean nextValue ) {
+			if( nextValue ) {
+				IDE.this.right.addComponent( IDE.this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+			} else {
+				IDE.this.right.removeComponent( IDE.this.ubiquitousPane );
+			}
+			IDE.this.right.revalidateAndRepaint();
+		}
+	};
+
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -104,10 +119,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.right.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
 		this.left.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
 
-		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
+		//this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
 		this.right.addComponent( tabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		//this.right.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "hello" ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 
+		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addAndInvokeValueObserver( this.isAlwaysShowingBlocksObserver );
 		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addAndInvokeValueObserver( this.accessibleSelectionObserver );
 
 		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
@@ -126,8 +142,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		} );
 
-		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
-			public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue ) {
+		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
+			public void changed( org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
 				refreshAccessibles();
 			}
 		} );
@@ -983,7 +999,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().getValue() ) {
 			return this.getPerformEditorGeneratedSetUpMethod();
 		} else {
-			return org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getSelectedItem();
+			org.alice.ide.editorstabbedpane.CodeComposite item = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getSelectedItem();
+			return item != null ? item.getCode() : null;
 		}
 	}
 	public void setFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode ) {

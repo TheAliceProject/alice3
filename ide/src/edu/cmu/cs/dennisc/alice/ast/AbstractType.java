@@ -199,6 +199,23 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 	
 	public abstract AbstractType<?,?,?> getArrayType();
 	
+	public AbstractField findField( AbstractType<?,?,?> valueType, String name ) {
+		AbstractField rv = null;
+		AbstractType<?,?,?> type = this;
+		while( type != null ) {
+			AbstractField field = type.getDeclaredField( valueType, name );
+			if( field != null ) {
+				rv = field;
+				break;
+			}
+			type = type.getSuperType();
+		}
+		return rv;
+	}
+	public AbstractField findField( String name ) {
+		return findField( null, name );
+	}
+	
 	public AbstractMethod findMethod( String name, AbstractType<?,?,?>... parameterTypes ) {
 		AbstractMethod rv = null;
 		AbstractType<?,?,?> type = this;

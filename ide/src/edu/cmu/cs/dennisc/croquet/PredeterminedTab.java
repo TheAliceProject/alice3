@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PredeterminedTab {
+public abstract class PredeterminedTab extends Composite {
 	private java.util.UUID id;
 	private String titleText;
 	private javax.swing.Icon titleIcon;
@@ -105,6 +105,11 @@ public abstract class PredeterminedTab {
 		ScrollPane rv = new ScrollPane();
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		return rv;
+	}
+	@Override
+	public boolean contains( Model model ) {
+		System.err.println( "todo: PredeterminedTab contains" );
+		return false;
 	}
 	@Override
 	public String toString() {

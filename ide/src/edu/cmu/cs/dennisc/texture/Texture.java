@@ -49,6 +49,10 @@ package edu.cmu.cs.dennisc.texture;
 public abstract class Texture extends edu.cmu.cs.dennisc.pattern.AbstractElement implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, edu.cmu.cs.dennisc.image.ImageGenerator {
 	private java.util.Vector< edu.cmu.cs.dennisc.texture.event.TextureListener > m_textureListeners = new java.util.Vector< edu.cmu.cs.dennisc.texture.event.TextureListener >();
 
+	public Texture() {
+	}
+	public Texture( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
 	public boolean isValid() {
 		return getWidth() > 0 && getHeight() > 0;
 	}

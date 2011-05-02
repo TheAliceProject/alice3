@@ -46,20 +46,33 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-	public ConstantsOwningFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, ConstantsOwningFillerInner > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ConstantsOwningFillerInner getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		synchronized( map ) {
+			ConstantsOwningFillerInner rv = map.get( type );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ConstantsOwningFillerInner( type );
+				map.put( type, rv );
+			}
+			return rv;
+		}
+	}
+	public static ConstantsOwningFillerInner getInstance( Class<?> cls ) {
+		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+	}
+	private ConstantsOwningFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 	}
-	public ConstantsOwningFillerInner( Class<?> cls ) {
-		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
-	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addItems( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getType();
  		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
  			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
- 	 			//this.addExpressionFillIn( blank, new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
- 	 			blank.addFillIn( new StaticFieldAccessFillIn( field ) );
+ 	 			rv.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
  			}
  		}
+ 		return rv;
 	}
 }

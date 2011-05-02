@@ -204,18 +204,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	private ObjectMarker selectedObjectMarker = null;
 
 	protected java.util.Map< org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup > mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	
-//	protected ListSelectionState<InteractionGroup> interactionSelectionState = new ListSelectionState< InteractionGroup >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "639f27a5-896d-454b-af00-8527cbdf551c" ), new edu.cmu.cs.dennisc.croquet.Codec< InteractionGroup >() {
-//		public org.alice.interact.InteractionGroup decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-//			throw new RuntimeException( "todo" );
-//		}
-//		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.interact.InteractionGroup interactionGroup ) {
-//			
-//		}
-//		public StringBuilder appendRepresentation(StringBuilder rv, InteractionGroup value, Locale locale) {
-//			throw new RuntimeException( "todo" );
-//		}
-//	} );
+
 	private List< SelectionListener > selectionListeners = new java.util.LinkedList< SelectionListener >(); 
 	public void addPropertyListener( SelectionListener selectionListener ) {
 		synchronized( this.selectionListeners ) {

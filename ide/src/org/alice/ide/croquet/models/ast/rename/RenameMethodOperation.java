@@ -58,7 +58,6 @@ public class RenameMethodOperation extends RenameDeclarationOperation< edu.cmu.c
 		}
 		return rv;
 	}
-
 	private RenameMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		super( java.util.UUID.fromString( "98b443d0-c7d3-4ff8-ba1b-b16d2695c618" ), method, new org.alice.ide.name.validators.MethodNameValidator( method ) );
 	}

@@ -46,5 +46,5 @@ package org.alice.ide.openprojectpane;
 /**
  * @author Dennis Cosgrove
  */
-class TutorialPane extends ComingSoonTabContentPanel {
+public class TutorialPane extends ComingSoonTabContentPanel {
 }

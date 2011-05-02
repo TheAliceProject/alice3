@@ -87,7 +87,7 @@ public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOpera
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.stage.Person > createFieldAndInstance(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< CreateFieldFromPersonPane > context ) {
 		CreateFieldFromPersonPane createFieldFromPersonPane = context.getMainPanel();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.getActualInputValue();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.getInputValue();
 		if( field != null ) {
 			//ide.getSceneEditor().handleFieldCreation( declaringType, field, person );
 			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, createFieldFromPersonPane.getPerson() );

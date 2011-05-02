@@ -54,9 +54,9 @@ public class PrintMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenu
 	}
 	private PrintMenuModel() {
 		super( java.util.UUID.fromString( "115844c7-064f-4070-b9c2-3e503a43e271" ), 
-						org.alice.ide.croquet.models.print.PrintAllOperation.getInstance(),
-						org.alice.ide.croquet.models.print.PrintCurrentCodeOperation.getInstance(),
-						org.alice.ide.croquet.models.print.PrintSceneEditorOperation.getInstance()
+						org.alice.ide.croquet.models.print.PrintAllOperation.getInstance().getMenuItemPrepModel(),
+						org.alice.ide.croquet.models.print.PrintCurrentCodeOperation.getInstance().getMenuItemPrepModel(),
+						org.alice.ide.croquet.models.print.PrintSceneEditorOperation.getInstance().getMenuItemPrepModel()
 		);
 	}
 }

@@ -241,7 +241,7 @@ class Cycle< E > {
 /**
  * @author Dennis Cosgrove
  */
-public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
+public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSelectionState<CodeComposite> {
 	private static class SingletonHolder {
 		private static EditorsTabSelectionState instance = new EditorsTabSelectionState();
 	}
@@ -249,21 +249,21 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 		return SingletonHolder.instance;
 	}
 	private EditorsTabSelectionState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "846ef10d-b22b-44a7-8fdd-a6b5d459948d" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class ) );
+		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "846ef10d-b22b-44a7-8fdd-a6b5d459948d" ), CodeCompositeCodec.SINGLETON );
 //		this.addSelectionObserver( this.selectionObserver );
 		org.alice.ide.IDE.getSingleton().addProjectObserver( this.projectObserver );
 //		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
 	}
 	private static final boolean IS_RUN_BUTTON_DESIRED = false;
-	private class EditorTabCreator implements TabCreator< edu.cmu.cs.dennisc.alice.ast.AbstractCode > {
-		public java.util.UUID getId( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			return code.getUUID();
+	private class EditorTabCreator implements TabCreator< CodeComposite > {
+		public java.util.UUID getId( CodeComposite item ) {
+			return item.getCode().getUUID();
 		}
-		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane( CodeComposite item ) {
 			return null;
 		}
-		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			return org.alice.ide.codeeditor.CodeEditor.getInstance( code );
+		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( CodeComposite item ) {
+			return org.alice.ide.codeeditor.CodeEditor.getInstance( item.getCode() );
 		}
 		
 		private boolean isEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
@@ -272,11 +272,12 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 			}
 			return false;
 		}
-		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, final edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			booleanState.setTextForBothTrueAndFalse( getMenuText( code ) );
-			button.getAwtComponent().setIcon( getMenuSmallIcon( code ) );
+		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, final edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, CodeComposite item ) {
+			booleanState.setTextForBothTrueAndFalse( getMenuText( item ) );
+			button.getAwtComponent().setIcon( getMenuSmallIcon( item ) );
 			button.scaleFont( 1.5f );
 			
+			edu.cmu.cs.dennisc.alice.ast.AbstractCode code = item.getCode();
 			if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 				final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
 				methodDeclaredInAlice.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
@@ -299,20 +300,21 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 				}
 			}
 		}
-//		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createInnerTitleComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+//		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createInnerTitleComponent( CodeComposite item ) {
 //			edu.cmu.cs.dennisc.croquet.Label rv = new edu.cmu.cs.dennisc.croquet.Label( code.getName() );
 //			rv.scaleFont( 1.5f );
 //			return rv;
 //		}
-		public boolean isCloseable(edu.cmu.cs.dennisc.alice.ast.AbstractCode code) {
-			return isEntryPoint(code) == false;
+		public boolean isCloseable(CodeComposite item) {
+			return isEntryPoint(item.getCode()) == false;
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.FolderTabbedPane<edu.cmu.cs.dennisc.alice.ast.AbstractCode> singleton;
+	private edu.cmu.cs.dennisc.croquet.FolderTabbedPane<CodeComposite> singleton;
 //	private DeclarationsDropDown declarationsDropDown = new DeclarationsDropDown();
 
 	@Override
-	protected String getMenuText(edu.cmu.cs.dennisc.alice.ast.AbstractCode code) {
+	protected String getMenuText(CodeComposite codeComposite) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = codeComposite.getCode();
 		if( code != null ) {
 			return code.getName();
 		} else {
@@ -321,7 +323,8 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 	}
 	
 	@Override
-	protected javax.swing.Icon getMenuSmallIcon(edu.cmu.cs.dennisc.alice.ast.AbstractCode code) {
+	protected javax.swing.Icon getMenuSmallIcon(CodeComposite codeComposite) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = codeComposite.getCode();
 		if( code != null ) {
 			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( code.getDeclaringType() );
 		} else {
@@ -330,12 +333,12 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeFor(edu.cmu.cs.dennisc.alice.ast.AbstractCode item) {
-		final edu.cmu.cs.dennisc.croquet.TrackableShape rv = super.getTrackableShapeFor(item);
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeFor(CodeComposite codeComposite) {
+		final edu.cmu.cs.dennisc.croquet.TrackableShape rv = super.getTrackableShapeFor(codeComposite);
 		if( IS_RUN_BUTTON_DESIRED ) {
 			if( rv instanceof edu.cmu.cs.dennisc.croquet.JComponent<?> ) {
 				edu.cmu.cs.dennisc.croquet.JComponent<?> component = (edu.cmu.cs.dennisc.croquet.JComponent<?>)rv;
-				if( "run".equals( item.getName() ) ) {
+				if( "run".equals( codeComposite.getCode().getName() ) ) {
 					edu.cmu.cs.dennisc.croquet.Button button = null;
 					for( edu.cmu.cs.dennisc.croquet.Component<?> child : component.getComponents() ) {
 						if( child instanceof edu.cmu.cs.dennisc.croquet.Button ) {
@@ -454,8 +457,8 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 			this.setBorder( new AttentionGrabbingBorder( button.getAwtComponent() ) );
 			//button.setBorder( new AttentionGrabbingBorder( button.getAwtComponent() ) );
 		}
-		private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode>() {
-			public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue) {
+		private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<CodeComposite> selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<CodeComposite>() {
+			public void changed(CodeComposite nextValue) {
 				DropDownPanel.this.updateOperation( nextValue );
 			}
 		};
@@ -478,21 +481,28 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 			org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().removeValueObserver( this.selectionObserver );
 			super.handleUndisplayable();
 		}
-		private void updateOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		private void updateOperation( CodeComposite item ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
-			if( code != null ) {
-				type = code.getDeclaringType();
+			if( item != null ) {
+				type = item.getCode().getDeclaringType();
 			} else {
 				type = null;
 			}
-			TypeRootMenuModel.getInstance().getPopupMenuOperation().setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
-			TypeRootMenuModel.getInstance().getPopupMenuOperation().setName( "class:" );
+			if( type != null ) {
+				final boolean IS_ICON_DESIRED = false;
+				if( IS_ICON_DESIRED ) {
+					TypeRootMenuModel.getInstance().getPopupMenuOperation().setName( "class:" );
+					TypeRootMenuModel.getInstance().getPopupMenuOperation().setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
+				} else {
+					TypeRootMenuModel.getInstance().getPopupMenuOperation().setName( "class: " + type.getName() );
+				}
+			}
 			this.revalidateAndRepaint();
 		}
 	}
 	private EditorTabCreator editorTabCreator = new EditorTabCreator();
 	private DropDownPanel dropDownPanel = new DropDownPanel();
-	public edu.cmu.cs.dennisc.croquet.FolderTabbedPane<edu.cmu.cs.dennisc.alice.ast.AbstractCode> createEditorsFolderTabbedPane() {
+	public edu.cmu.cs.dennisc.croquet.FolderTabbedPane<CodeComposite> createEditorsFolderTabbedPane() {
 		assert this.singleton == null;
 		this.singleton = this.createFolderTabbedPane( this.editorTabCreator );
 		this.singleton.setHeaderLeadingComponent( this.dropDownPanel );
@@ -538,11 +548,11 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 //		}
 //	}
 	private void removeDeadCode() {
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractCode code : this.toArray() ) {
-			if( code.getDeclaringType() != null ) {
+		for( CodeComposite item : this.toArray() ) {
+			if( item.getCode().getDeclaringType() != null ) {
 				//pass
 			} else {
-				this.removeItem( code );
+				this.removeItem( item );
 			}
 		}
 	}
@@ -572,9 +582,9 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 	}
 
 	@Override
-	protected void handleItemAdded( edu.cmu.cs.dennisc.alice.ast.AbstractCode item ) {
+	protected void handleItemAdded( CodeComposite item ) {
 		super.handleItemAdded( item );
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> declaringType = item.getDeclaringType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> declaringType = item.getCode().getDeclaringType();
 		if (declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
 			if( this.typeSet.contains( typeInAlice ) ) {
@@ -601,10 +611,11 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 	@Deprecated
 	public void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
 		if( code != null ) {
-			if( this.containsItem( code ) ) {
+			CodeComposite item = CodeComposite.getInstance( code );
+			if( this.containsItem( item ) ) {
 				//pass
 			} else {
-				this.addItem( code );
+				this.addItem( item );
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> declaringType = code.getDeclaringType();
 				if( declaringType != null ) {
 					if (declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) {
@@ -615,7 +626,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: declaringType==null" );
 				}
 			}
-			this.setSelectedItem( code );
+			this.setSelectedItem( item );
 //			for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
 //				edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getClass() );
@@ -708,9 +719,9 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.Default
 		}
 	};
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getSelectedItem();
-		if( code != null ) {
-			return (org.alice.ide.codeeditor.CodeEditor)this.getMainComponentFor( code );
+		CodeComposite item = this.getSelectedItem();
+		if( item != null ) {
+			return (org.alice.ide.codeeditor.CodeEditor)this.getMainComponentFor( item );
 		} else {
 			return null;
 		}

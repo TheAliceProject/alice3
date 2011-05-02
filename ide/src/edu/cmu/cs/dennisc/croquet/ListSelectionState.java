@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.steps.TransactionManager;
+
 /*package-private*/ class ComboBoxModel<E> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	private final ListSelectionState< E > listSelectionState;
 	public ComboBoxModel( ListSelectionState< E > listSelectionState ) {
@@ -223,7 +225,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			} else {
 				this.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.listSelectionModel.getValueIsAdjusting() );
 
-				if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
+				if( Manager.isInTheMidstOfUndoOrRedo() ) {
 					//pass
 				} else {
 					this.commitEdit( new ListSelectionStateEdit< E >( this.mostRecentEvent, this.prevAtomicSelectedValue, nextSelectedValue ), this.mostRecentEvent, this.mostRecentViewController );
@@ -273,6 +275,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 
 	public ListSelectionState( Group group, java.util.UUID id, Codec< E > codec, int selectionIndex ) {
 		super( group, id );
+		assert codec != null;
 		this.codec = codec;
 		this.index = selectionIndex;
 	}
@@ -281,6 +284,16 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 	@Override
 	protected void localize() {
+	}
+
+	private ListSelectionStatePrepModel< E > prepModel;
+	public synchronized ListSelectionStatePrepModel< E > getPrepModel() {
+		if( this.prepModel != null ) {
+			//pass
+		} else {
+			this.prepModel = new ListSelectionStatePrepModel< E >( this );
+		}
+		return this.prepModel;
 	}
 
 	public void addValueObserver( ValueObserver< E > valueObserver ) {
@@ -335,9 +348,9 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			if( this.index < this.getItemCount() ) {
 				return this.getItemAt( index );
 			} else {
-				throw new IndexOutOfBoundsException( this.index + " " + this.getItemCount() + " " + this );
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: item selection out of bounds" );
-//				return null;
+//				throw new IndexOutOfBoundsException( this.index + " " + this.getItemCount() + " " + this );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: item selection out of bounds" );
+				return null;
 			}
 		} else {
 			return null;
@@ -500,6 +513,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 	
 	protected void commitEdit( ListSelectionStateEdit< E > listSelectionStateEdit, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		TransactionManager.addListSelectionStateChangeStep( this );
 		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
 		childContext.commitAndInvokeDo( listSelectionStateEdit );
 		ModelContext< ? > popContext = ContextManager.popContext();
@@ -515,23 +529,22 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, UserInformation userInformation ) {
-		return getTutorialNoteText( modelContext, userInformation );
+	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		return updateTutorialStepText( rv, modelContext, edit, userInformation );
 	}
 	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-		if( successfulCompletionEvent != null ) {
-			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)successfulCompletionEvent.getEdit();
-			sb.append( "Select " );
-			sb.append( "<strong>" );
-			this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-			sb.append( "</strong>." );
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		if( edit instanceof ListSelectionStateEdit ) {
+			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
+			rv.append( "Select " );
+			rv.append( "<strong>" );
+			this.codec.appendRepresentation( rv, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+			rv.append( "</strong>." );
 		}
-		return sb.toString();
+		return rv;
 	}
 
+	@Deprecated
 	public String getTutorialNoteStartText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "First press on " );
@@ -544,6 +557,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		sb.append( "</strong>." );
 		return sb.toString();
 	}
+	@Deprecated
 	public String getTutorialNoteFinishText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Select " );
@@ -553,9 +567,6 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		return sb.toString();
 	}
 
-	public ComboBox< E > createComboBox() {
-		return new ComboBox< E >( this );
-	}
 	public List< E > createList() {
 		return new List< E >( this );
 	}
@@ -568,22 +579,6 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	public MutableList< E > createMutableList( MutableList.Factory< E > factory ) {
 		return new MutableList< E >( this, factory );
 	}
-
-	public interface TabCreator<E> {
-		public java.util.UUID getId( E item );
-		public void customizeTitleComponent( BooleanState booleanState, AbstractButton< ?, BooleanState > button, E item );
-		public JComponent< ? > createMainComponent( E item );
-		public ScrollPane createScrollPane( E item );
-		public boolean isCloseable( E item );
-	}
-
-	public FolderTabbedPane< E > createFolderTabbedPane( TabCreator< E > tabCreator ) {
-		return new FolderTabbedPane< E >( this, tabCreator );
-	};
-	public ToolPaletteTabbedPane< E > createToolPaletteTabbedPane( TabCreator< E > tabCreator ) {
-		return new ToolPaletteTabbedPane< E >( this, tabCreator );
-	};
-
 
 	public TrackableShape getTrackableShapeFor( E item ) {
 		ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( ItemSelectable.class );
@@ -625,12 +620,6 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			this.listSelectionMenuModel = listSelectionMenuModel;
 		}
 		public ListSelectionMenuModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.decode( binaryDecoder );
-		}
-		public ListSelectionMenuModel< E > getResolved() {
-			return this.listSelectionMenuModel;
-		}
-		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			CodableResolver< ListSelectionState< E >> listSelectionStateResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 			ListSelectionState< E > listSelectionState = listSelectionStateResolver.getResolved();
 			this.listSelectionMenuModel = listSelectionState.getMenuModel();
@@ -638,6 +627,9 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			CodableResolver< ListSelectionState< E >> listSelectionStateResolver = this.listSelectionMenuModel.listSelectionState.getCodableResolver();
 			binaryEncoder.encode( listSelectionStateResolver );
+		}
+		public ListSelectionMenuModel< E > getResolved() {
+			return this.listSelectionMenuModel;
 		}
 	}
 

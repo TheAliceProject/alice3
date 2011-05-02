@@ -64,4 +64,6 @@ public interface DropReceptor {
 	
 	
 	public void dragStopped( DragAndDropContext dragAndDropContext );
+	
+	public String getTutorialNoteText( CompletionModel completionModel, Edit< ? > edit, UserInformation userInformation );
 }

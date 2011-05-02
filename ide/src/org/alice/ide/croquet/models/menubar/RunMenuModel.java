@@ -54,7 +54,7 @@ public class RunMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuMo
 	}
 	private RunMenuModel() {
 		super( java.util.UUID.fromString( "e441d150-d53b-4bc1-9dbf-a61843a53a34" ),
-				org.alice.ide.IDE.getSingleton().getRunOperation()
+				org.alice.ide.IDE.getSingleton().getRunOperation().getMenuItemPrepModel()
 		);
 	}
 }

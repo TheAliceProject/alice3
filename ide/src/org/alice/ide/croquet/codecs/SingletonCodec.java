@@ -63,7 +63,7 @@ public class SingletonCodec< T > implements edu.cmu.cs.dennisc.croquet.Codec< T 
 	public Class< T > getValueClass() {
 		return this.valueCls;
 	}
-	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			String clsName = binaryDecoder.decodeString();
@@ -78,7 +78,7 @@ public class SingletonCodec< T > implements edu.cmu.cs.dennisc.croquet.Codec< T 
 			return null;
 		}
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
 		//Thread.dumpStack();
 		if( value != null ) {
 			System.err.println( "SingletonCodec encode: " + value.getClass().getName() );

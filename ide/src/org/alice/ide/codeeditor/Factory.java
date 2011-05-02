@@ -246,8 +246,8 @@ public class Factory extends org.alice.ide.common.Factory {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
 		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
-			org.alice.ide.croquet.models.ast.DefaultFillInExpressionPropertyPopupMenuOperation model = org.alice.ide.croquet.models.ast.DefaultFillInExpressionPropertyPopupMenuOperation.getInstance( group, expressionProperty, desiredValueType );
-			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model.getPopupMenuOperation(), prefixPane, rv, expressionProperty );
+			org.alice.ide.croquet.models.ast.DefaultFillInExpressionPropertyCascadeOperation model = org.alice.ide.croquet.models.ast.DefaultFillInExpressionPropertyCascadeOperation.getInstance( group, expressionProperty, desiredValueType );
+			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty );
 			rv = expressionPropertyDropDownPane;
 		}
 		return rv;
@@ -266,13 +266,13 @@ public class Factory extends org.alice.ide.common.Factory {
 		).getPopupMenuOperation() );
 		return abstractStatementPane;
 	}
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Model > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		edu.cmu.cs.dennisc.alice.ast.StatementListProperty property = abstractStatementPane.getOwner();
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
 			//pass
 		} else {
-			rv.add( new StatementEnabledStateOperation( statement ) );
+			rv.add( new StatementEnabledStateOperation( statement ).getMenuItemPrepModel() );
 		}
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
 			edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement;
@@ -281,21 +281,21 @@ public class Factory extends org.alice.ide.common.Factory {
 				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
 				if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-					rv.add( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( method ) );
+					rv.add( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( method ).getMenuItemPrepModel() );
 				}
 			}
 		}
 		rv.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
-		rv.add( new DeleteStatementActionOperation( property, statement ) );
+		rv.add( new DeleteStatementActionOperation( property, statement ).getMenuItemPrepModel() );
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody = (edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)statement;
-			rv.add( new DissolveStatementActionOperation( property, abstractStatementWithBody ) );
+			rv.add( new DissolveStatementActionOperation( property, abstractStatementWithBody ).getMenuItemPrepModel() );
 			if( abstractStatementWithBody instanceof edu.cmu.cs.dennisc.alice.ast.DoInOrder ) {
 				edu.cmu.cs.dennisc.alice.ast.DoInOrder doInOrder = (edu.cmu.cs.dennisc.alice.ast.DoInOrder)abstractStatementWithBody;
-				rv.add( new ConvertDoInOrderToDoTogetherActionOperation( property, doInOrder ) );
+				rv.add( new ConvertDoInOrderToDoTogetherActionOperation( property, doInOrder ).getMenuItemPrepModel() );
 			} else if( abstractStatementWithBody instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether ) {
 				edu.cmu.cs.dennisc.alice.ast.DoTogether doTogether = (edu.cmu.cs.dennisc.alice.ast.DoTogether)abstractStatementWithBody;
-				rv.add( new ConvertDoTogetherToDoInOrderActionOperation( property, doTogether ) );
+				rv.add( new ConvertDoTogetherToDoInOrderActionOperation( property, doTogether ).getMenuItemPrepModel() );
 			}
 		} else if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ) {
 			edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = (edu.cmu.cs.dennisc.alice.ast.ConditionalStatement)statement;
@@ -303,8 +303,8 @@ public class Factory extends org.alice.ide.common.Factory {
 		}
 		return rv;
 	}
-	private java.util.List< edu.cmu.cs.dennisc.croquet.Model > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
-		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Model >(), abstractStatementPane );
+	private java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel >(), abstractStatementPane );
 	}
 
 }

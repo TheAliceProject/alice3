@@ -45,7 +45,7 @@ package org.alice.ide.preview;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public abstract class PanelWithPreview< F > extends edu.cmu.cs.dennisc.croquet.CascadeInputDialogPanel< F > {
 	class PreviewPane extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
 		public void refresh() {
 			this.internalForgetAndRemoveAllComponents();
@@ -90,13 +90,20 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 		final int PAD = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
 	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.BorderLayout();
+	}
+	public void addComponent( edu.cmu.cs.dennisc.croquet.Component< ? > component, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint constraint ) {
+		this.internalAddComponent( component, constraint.getInternal() );
+	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent();
 	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent();
 	private void initializeIfNecessary() {
 		if( this.previewPane != null ) {
 			//pass
 		} else {
-			this.addComponent( this.createMainComponent(), Constraint.CENTER );
+			this.addComponent( this.createMainComponent(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 
 			if( this.isPreviewDesired() ) {
 				this.previewPane = new PreviewPane();
@@ -111,7 +118,7 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 						new edu.cmu.cs.dennisc.croquet.HorizontalSeparator(),
 						edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 )
 				);
-				this.addComponent( northPanel, Constraint.PAGE_START );
+				this.addComponent( northPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
 			}
 		}
 	}

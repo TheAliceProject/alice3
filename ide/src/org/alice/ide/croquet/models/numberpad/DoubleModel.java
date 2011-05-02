@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.numberpad;
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleModel extends NumberModel {
+public class DoubleModel extends NumberModel<edu.cmu.cs.dennisc.alice.ast.DoubleLiteral> {
 	private static class SingletonHolder {
 		private static DoubleModel instance = new DoubleModel();
 	}
@@ -60,7 +60,7 @@ public class DoubleModel extends NumberModel {
 		return true;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s ) {
+	protected edu.cmu.cs.dennisc.alice.ast.DoubleLiteral valueOf( String s ) {
 		double d = Double.parseDouble( s );
 		if( Double.isNaN( d ) ) {
 			return null;

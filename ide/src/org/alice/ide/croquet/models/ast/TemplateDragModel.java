@@ -54,28 +54,23 @@ public abstract class TemplateDragModel extends org.alice.ide.croquet.models.Cod
 	protected abstract String getTutorialStepDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
 	
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Drag and Drop " );
-		sb.append( "<strong>" );
-		sb.append( this.getTutorialStepDescription( userInformation ) );
-		sb.append( "</strong>" );
+	protected StringBuilder updateTutorialStepTitle( java.lang.StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		rv.append( "Drag and Drop " );
+		rv.append( "<strong>" );
+		rv.append( this.getTutorialStepDescription( userInformation ) );
+		rv.append( "</strong>" );
 		
-		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-		if( successfulCompletionEvent != null ) {
-			edu.cmu.cs.dennisc.croquet.Edit< ? > edit = successfulCompletionEvent.getEdit();
-			if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
-				org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
-				edu.cmu.cs.dennisc.alice.ast.Expression[] originalExpressions = insertStatementEdit.getInitialExpressions();
-				String prefix = " ";
-				for( edu.cmu.cs.dennisc.alice.ast.Expression expression : originalExpressions ) {
-					sb.append( prefix );
-					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( sb, expression, userInformation.getLocale() );
-					prefix = ", ";
-				}
+		if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
+			org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
+			edu.cmu.cs.dennisc.alice.ast.Expression[] originalExpressions = insertStatementEdit.getInitialExpressions();
+			String prefix = " ";
+			for( edu.cmu.cs.dennisc.alice.ast.Expression expression : originalExpressions ) {
+				rv.append( prefix );
+				edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, expression, userInformation.getLocale() );
+				prefix = ", ";
 			}
 		}
-		return sb.toString();
+		return rv;
 	}
 	@Override
 	public String getTutorialDragNoteText( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {

@@ -52,75 +52,13 @@ public class KeyFillerInner extends org.alice.ide.cascade.fillerinners.Expressio
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Key.class ), edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		Key[] lettersAM = {
-				Key.A,
-				Key.B,
-				Key.C,
-				Key.D,
-				Key.E,
-				Key.F,
-				Key.G,
-				Key.H,
-				Key.I,
-				Key.J,
-				Key.K,
-				Key.L,
-				Key.M,
-		};
-		Key[] lettersNZ = {
-				Key.N,
-				Key.O,
-				Key.P,
-				Key.Q,
-				Key.R,
-				Key.S,
-				Key.T,
-				Key.U,
-				Key.V,
-				Key.W,
-				Key.X,
-				Key.Y,
-				Key.Z,
-		};
-		Key[] digits = {
-				Key.DIGIT_0,
-				Key.DIGIT_1,
-				Key.DIGIT_2,
-				Key.DIGIT_3,
-				Key.DIGIT_4,
-				Key.DIGIT_5,
-				Key.DIGIT_6,
-				Key.DIGIT_7,
-				Key.DIGIT_8,
-				Key.DIGIT_9,
-		};
-
-		Key[] arrows = {
-				Key.LEFT,
-				Key.UP,
-				Key.RIGHT,
-				Key.DOWN,
-		};
-		
-		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getType();
-		String[] names = { "letters (A-M)", "letters (N-Z)", "digits (0-9)", "arrows" };
-		Key[][] keySets = new Key[][] { lettersAM, lettersNZ, digits, arrows };
-		final int N = names.length;
-		for( int i=0; i<N; i++ ) {
-			final Key[] keys = keySets[ i ];
-			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( names[ i ] ) {
-				@Override
-				protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-					for( Key key : keys ) {
-			 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( type, key.name() );
-			 			assert field.isPublicAccess() && field.isStatic() && field.isFinal();
-			 			KeyFillerInner.this.addExpressionFillIn( blank, new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
-			 		}
-				}
-			} );
-		}
-		blank.addSeparator();
-		blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomKeyFillIn() );
+	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addItems( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
+		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.LettersAThroughMKeyCascadeMenu.getInstance() );
+		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.LettersNThroughZKeyCascadeMenu.getInstance() );
+		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.DigitsKeyCascadeMenu.getInstance() );
+		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.ArrowsKeyCascadeMenu.getInstance() );
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.stageide.croquet.models.custom.CustomKeyInputDialogOperation.getInstance().getFillIn() );
+		return rv;
 	}
 }

@@ -46,43 +46,6 @@ package org.alice.ide.croquet.models.members;
  * @author Dennis Cosgrove
  */
 public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.PredeterminedTabSelectionState {
-	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
-		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
-			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
-			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type; 
-			if( accessible != null ) {
-				type = accessible.getValueType();
-			} else {
-				type = null;
-			}
-			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( type );
-		}
-		public int getIconHeight() {
-			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-			if( icon != null ) {
-				return icon.getIconHeight();
-			} else {
-				return 0;
-			}
-		}
-		public int getIconWidth() {
-			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-			if( icon != null ) {
-				return icon.getIconWidth();
-			} else {
-				return 0;
-			}
-		}
-		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-			if( icon != null ) {
-				icon.paintIcon(c, g, x, y);
-			}
-		}
-	}
-	
-	private static javax.swing.Icon ICON = org.alice.ide.memberseditor.MembersEditor.IS_FOLDER_TABBED_PANE_DESIRED ? null : new IndirectCurrentAccessibleTypeIcon();
-
 	private static class SingletonHolder {
 		private static MembersTabSelectionState instance = new MembersTabSelectionState();
 	}
@@ -103,13 +66,11 @@ public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.Predete
 	protected void localize() {
 		super.localize();
 		ProceduresTab proceduresTab = ProceduresTab.getInstance();
-		proceduresTab.setTitleIcon( ICON );
 		proceduresTab.setTitleText( this.getLocalizedText( "procedures" ) );
 		FunctionsTab functionsTab = FunctionsTab.getInstance();
-		functionsTab.setTitleIcon( ICON );
 		functionsTab.setTitleText( this.getLocalizedText( "functions" ) );
 		FieldsTab fieldsTab = FieldsTab.getInstance();
-		fieldsTab.setTitleIcon( ICON );
 		fieldsTab.setTitleText( this.getLocalizedText( "fields" ) );
 	}
 }
+

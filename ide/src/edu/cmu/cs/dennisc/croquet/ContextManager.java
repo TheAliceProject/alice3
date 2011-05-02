@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.steps.TransactionManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,14 +63,19 @@ public class ContextManager {
 	}
 		
 	/*package-private*/ static void popParentContextWhenChildContextIsPopped( ModelContext< ? > parentContext, ModelContext< ? > childContext ) {
-		assert childContext.getParent() == parentContext;
+		//assert childContext.getParent() == parentContext;
+		if( childContext.getParent() == parentContext ) {
+			//pass
+		} else {
+			System.err.println( "childContext.getParent() == parentContext" );
+		}
 		mapChildContextPendingParentContext.put( childContext, parentContext );
 	}
 
-	private static PopupMenuOperationContext getPopupMenuOperationContextToPushOnto( PopupMenuOperationContext candidate, ModelContext< ? > childContext ) {
+	private static PopupOperationContext getPopupMenuOperationContextToPushOnto( PopupOperationContext candidate, ModelContext< ? > childContext ) {
 		HistoryNode lastChild = candidate.getLastChild();
-		if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
-			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)lastChild;
+		if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent ) {
+			edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent)lastChild;
 			Model model = menuSelectionEvent.getLastModel();
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( model, childContext.getModel() ) ) {
 				return candidate;
@@ -76,7 +83,7 @@ public class ContextManager {
 		}
 		return null;
 	}
-	private static <C extends ModelContext< ? > > C push( C rv ) {
+	private static ModelContext< ? > prePushContextForPossibleStringStateCleanUp() {
 		ModelContext< ? > parentContext = getCurrentContext();
 		if( parentContext instanceof StringStateContext ) {
 			StringStateContext stringStateContext = (StringStateContext)parentContext;
@@ -84,56 +91,60 @@ public class ContextManager {
 			stack.pop();
 			parentContext = stack.peek();
 		}
+		return parentContext;
+	}	
+	/*package-private*/ static <C extends ModelContext< ? > > C pushContext( C rv ) {
+		ModelContext< ? > parentContext = prePushContextForPossibleStringStateCleanUp();
 		HistoryNode lastChild = parentContext.getLastChild();
 		MenuBarModelContext menuBarModelContextToPushOnto = null;
 		DragAndDropContext dragAndDropContextToPushOnto = null;
-		PopupMenuOperationContext popupMenuOperationContextToPushOnto = null;
+		PopupOperationContext popupContextToPushOnto = null;
 		if( lastChild != null ) {
 			HistoryNode.State state = lastChild.getState();
 			if( state == null ) {
 				if( lastChild instanceof MenuBarModelContext ) {
 					MenuBarModelContext menuBarModelContext = (MenuBarModelContext)lastChild; 
 					HistoryNode lastGrandchild = menuBarModelContext.getLastChild();
-					if( lastGrandchild instanceof PopupMenuOperationContext ) {
-						PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)lastGrandchild; 
-						popupMenuOperationContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupMenuOperationContext, rv );
-						if( popupMenuOperationContextToPushOnto != null ) {
+					if( lastGrandchild instanceof PopupOperationContext ) {
+						PopupOperationContext popupContext = (PopupOperationContext)lastGrandchild; 
+						popupContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupContext, rv );
+						if( popupContextToPushOnto != null ) {
 							menuBarModelContextToPushOnto = menuBarModelContext;
 						}
 					}
 				} else if( lastChild instanceof DragAndDropContext ) {
 					DragAndDropContext dragAndDropContext = (DragAndDropContext)lastChild; 
 					HistoryNode lastGrandchild = dragAndDropContext.getLastChild();
-					if( lastGrandchild instanceof PopupMenuOperationContext ) {
-						PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)lastGrandchild; 
-						popupMenuOperationContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupMenuOperationContext, rv );
-						if( popupMenuOperationContextToPushOnto != null ) {
+					if( lastGrandchild instanceof PopupOperationContext ) {
+						PopupOperationContext popupContext = (PopupOperationContext)lastGrandchild; 
+						popupContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupContext, rv );
+						if( popupContextToPushOnto != null ) {
 							dragAndDropContextToPushOnto = dragAndDropContext;
 						}
 					}
-				} else if( lastChild instanceof PopupMenuOperationContext ) {
-					PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)lastChild; 
-					popupMenuOperationContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupMenuOperationContext, rv );
+				} else if( lastChild instanceof PopupOperationContext ) {
+					PopupOperationContext popupContext = (PopupOperationContext)lastChild; 
+					popupContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupContext, rv );
 				}
 
-				if( popupMenuOperationContextToPushOnto != null ) {
-					parentContext = popupMenuOperationContextToPushOnto;
+				if( popupContextToPushOnto != null ) {
+					parentContext = popupContextToPushOnto;
 				}
 			}
 		}
 		parentContext.addChild( rv );
-		if( popupMenuOperationContextToPushOnto != null ) {
+		if( popupContextToPushOnto != null ) {
 			if( menuBarModelContextToPushOnto != null ) {
-				popParentContextWhenChildContextIsPopped( menuBarModelContextToPushOnto, popupMenuOperationContextToPushOnto );
+				popParentContextWhenChildContextIsPopped( menuBarModelContextToPushOnto, popupContextToPushOnto );
 				stack.push( menuBarModelContextToPushOnto );
 			}
 			if( dragAndDropContextToPushOnto != null ) {
-				popParentContextWhenChildContextIsPopped( dragAndDropContextToPushOnto, popupMenuOperationContextToPushOnto );
+				popParentContextWhenChildContextIsPopped( dragAndDropContextToPushOnto, popupContextToPushOnto );
 				stack.push( dragAndDropContextToPushOnto );
 			}
-			popParentContextWhenChildContextIsPopped( popupMenuOperationContextToPushOnto, rv );
-			stack.push( popupMenuOperationContextToPushOnto );
-			parentContext = popupMenuOperationContextToPushOnto;
+			popParentContextWhenChildContextIsPopped( popupContextToPushOnto, rv );
+			stack.push( popupContextToPushOnto );
+			parentContext = popupContextToPushOnto;
 		}
 		stack.push( rv );
 		return rv;
@@ -170,68 +181,110 @@ public class ContextManager {
 		if( topContext instanceof StringStateContext ) {
 			stringStateContext = (StringStateContext)topContext;
 		} else {
-			stringStateContext = push( new StringStateContext( stringState, e, viewController, previousValue ) );
+			stringStateContext = pushContext( new StringStateContext( stringState, e, viewController, previousValue ) );
+			org.lgna.croquet.steps.TransactionManager.addStringStateChangeStep( stringState );
 		}
 		stringStateContext.handleDocumentEvent( documentEvent, nextValue );
 	}
 
 	
 	/*package-private*/ static ActionOperationContext createAndPushActionOperationContext(ActionOperation actionOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		return push( new ActionOperationContext(actionOperation, e, viewController) );
+		prePushContextForPossibleStringStateCleanUp();
+		TransactionManager.addActionOperationStep( actionOperation );
+		return pushContext( new ActionOperationContext(actionOperation, e, viewController) );
 	}
-	/*package-private*/ static CompositeOperationContext createAndPushCompositeOperationContext(CompositeOperation compositeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		return push( new CompositeOperationContext(compositeOperation, e, viewController) );
+	/*package-private*/ static SerialOperationContext createAndPushSerialOperationContext(SerialOperation compositeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		return pushContext( new SerialOperationContext(compositeOperation, e, viewController) );
 	}
-	/*package-private*/ static DialogOperationContext createAndPushDialogOperationContext(DialogOperation dialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		return push( new DialogOperationContext(dialogOperation, e, viewController) );
+	/*package-private*/ static PlainDialogOperationContext createAndPushDialogOperationContext(PlainDialogOperation dialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		prePushContextForPossibleStringStateCleanUp();
+		TransactionManager.addDialogOperationStep( dialogOperation );
+		return pushContext( new PlainDialogOperationContext(dialogOperation, e, viewController) );
+	}
+	/*package-private*/ static PlainDialogCloseOperationContext createAndPushPlainDialogCloseOperationContext(PlainDialogCloseOperation dialogCloseOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		prePushContextForPossibleStringStateCleanUp();
+		TransactionManager.addPlainDialogCloseOperationStep( dialogCloseOperation );
+		return pushContext( new PlainDialogCloseOperationContext(dialogCloseOperation, e, viewController) );
 	}
 	/*package-private*/ static <J extends Component<?>> InformationDialogOperationContext<J> createAndPushInformationDialogOperationContext(InformationDialogOperation<J> informationDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		return push( new InformationDialogOperationContext<J>(informationDialogOperation, e, viewController) );
+		return pushContext( new InformationDialogOperationContext<J>(informationDialogOperation, e, viewController) );
 	}
 	/*package-private*/ static <J extends JComponent< ? >> InputDialogOperationContext<J> createAndPushInputDialogOperationContext(InputDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		return push( new InputDialogOperationContext<J>(inputDialogOperation, e, viewController) );
+		prePushContextForPossibleStringStateCleanUp();
+		TransactionManager.addInputDialogOperationStep( inputDialogOperation );
+		return pushContext( new InputDialogOperationContext<J>(inputDialogOperation, e, viewController) );
 	}
 	/*package-private*/ static WizardDialogOperationContext createAndPushWizardDialogOperationContext(WizardDialogOperation wizardDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		return push( new WizardDialogOperationContext(wizardDialogOperation, e, viewController) );
+		return pushContext( new WizardDialogOperationContext(wizardDialogOperation, e, viewController) );
+	}
+	/*package-private*/ static StandardPopupOperationContext createAndPushStandardPopupOperationContext(StandardPopupOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		prePushContextForPossibleStringStateCleanUp();
+		ModelContext< ? > currentContext = getCurrentContext();
+		if( currentContext instanceof MenuBarModelContext ) {
+			//pass
+		} else {
+			TransactionManager.addStandardPopupOperationPrepStep( popupMenuOperation );
+		}
+		return pushContext( new StandardPopupOperationContext(popupMenuOperation, e, viewController) );
+	}
+	/*package-private*/ static <T> CascadePopupOperationContext< T > createAndPushCascadePopupOperationContext(CascadePopupOperation< T > cascadeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		prePushContextForPossibleStringStateCleanUp();
+		TransactionManager.addCascadePopupOperationStep( cascadeOperation );
+		return pushContext( new CascadePopupOperationContext<T>(cascadeOperation, e, viewController) );
+	}
+	/*package-private*/ static <B> CascadeBlankContext<B> createCascadeBlankContext(CascadeBlank<B> cascadeBlank ) {
+		return new CascadeBlankContext<B>(cascadeBlank, null, null );
+	}
+	/*package-private*/ static <F,B> CascadeFillInContext< F,B > createCascadeFillInContext( CascadeFillIn< F,B > cascadeFillIn ) {
+		return new CascadeFillInContext<F,B>(cascadeFillIn, null, null );
+	}
+	/*package-private*/ static <F> CascadeRootContext<F> createCascadeRootContext( CascadeRoot<F> cascadeRoot ) {
+		return new CascadeRootContext<F>(cascadeRoot, null, null );
+	}
+	/*package-private*/ static <FB> CascadeMenuContext<FB> createCascadeMenuContext( CascadeMenu<FB> cascadeMenu ) {
+		return new CascadeMenuContext<FB>(cascadeMenu, null, null );
+	}
+	/*package-private*/ static <F,B> CascadeSeparatorContext createCascadeSeparatorContext( CascadeSeparator cascadeSeparator ) {
+		return new CascadeSeparatorContext(cascadeSeparator, null, null );
+	}
+	/*package-private*/ static <F> CascadeCancelContext<F> createCascadeCancelContext( CascadeCancel<F> cascadeCancel ) {
+		return new CascadeCancelContext<F>(cascadeCancel, null, null );
 	}
 	
-	/*package-private*/ static PopupMenuOperationContext createAndPushPopupMenuOperationContext(PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		return push( new PopupMenuOperationContext(popupMenuOperation, e, viewController) );
-	}
 	/*package-private*/ static <E> ListSelectionStateContext<E> createAndPushItemSelectionStateContext(ListSelectionState<E> itemSelectionState, java.util.EventObject e, ViewController<?, ?> viewController/*, int prevIndex, E prevItem, int nextIndex, E nextItem*/) {
 		ModelContext< ? > currentContext = getCurrentContext();
 		if( currentContext instanceof ListSelectionStateContext ) {
 			return (ListSelectionStateContext<E>)currentContext;
 		} else {
-			return push( new ListSelectionStateContext<E>( itemSelectionState, e, viewController /*, prevIndex, prevItem, nextIndex, nextItem*/ ) );
+			return pushContext( new ListSelectionStateContext<E>( itemSelectionState, e, viewController /*, prevIndex, prevItem, nextIndex, nextItem*/ ) );
 		}
 	}
-	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeVisible( ListSelectionState<E> itemSelectionState, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
-		ListSelectionStateContext<E> listSelectionStateContext = createAndPushItemSelectionStateContext( itemSelectionState, e, itemSelectable );
+	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeVisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+		ListSelectionStateContext<E> listSelectionStateContext = createAndPushItemSelectionStateContext( model, e, itemSelectable );
 		listSelectionStateContext.handlePopupMenuWillBecomeVisibleEvent( e );
-		
+		TransactionManager.addListSelectionPrepStep( model.getPrepModel() );
 	}
-	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeInvisible( ListSelectionState<E> itemSelectionState, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeInvisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
 	}
-	/*package-private*/ static <E> void addListSelectionPopupMenuCanceled( ListSelectionState<E> itemSelectionState, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+	/*package-private*/ static <E> void addListSelectionPopupMenuCanceled( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+		TransactionManager.addCancelCompletionStep( model );
 	}
 
 	/*package-private*/ static BoundedRangeIntegerStateContext createAndPushBoundedRangeIntegerStateContext(BoundedRangeIntegerState boundedRangeIntegerState) {
-		return push( new BoundedRangeIntegerStateContext(boundedRangeIntegerState, null, null) );
+		return pushContext( new BoundedRangeIntegerStateContext(boundedRangeIntegerState, null, null) );
 	}
 	/*package-private*/ static BooleanStateContext createAndPushBooleanStateContext(BooleanState booleanState, java.awt.event.ItemEvent e, ViewController<?, ?> viewController) {
-		return push( new BooleanStateContext( booleanState, e, viewController ) );
+		return pushContext( new BooleanStateContext( booleanState, e, viewController ) );
 	}
 	/*package-private*/ static MenuBarModelContext createAndPushMenuBarModelContext(MenuBarModel menuBarModel, javax.swing.event.ChangeEvent e, MenuBar menuBar) {
-		return push( new MenuBarModelContext(menuBarModel, e, menuBar) );
+		return pushContext( new MenuBarModelContext(menuBarModel, e, menuBar) );
 	}
 	/*package-private*/ static MenuModelContext createAndPushMenuModelContext(MenuModel menuModel, MenuItemContainer menuItemContainer) {
-		return push( new MenuModelContext(menuModel, null, menuItemContainer.getViewController() ) );
+		return pushContext( new MenuModelContext(menuModel, null, menuItemContainer.getViewController() ) );
 	}
-	/*package-private*/ static DragAndDropContext createAndPushDragAndDropContext(DragAndDropModel dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource) {
-		return push( new DragAndDropContext(dragAndDropOperation, originalMouseEvent, latestMouseEvent, dragSource) );
+	/*package-private*/ static DragAndDropContext createAndPushDragAndDropContext(DragAndDropModel model, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource) {
+		return pushContext( new DragAndDropContext(model, originalMouseEvent, latestMouseEvent, dragSource) );
 	}
-	
 		
 	private static javax.swing.JMenuBar getJMenuBarOrigin( javax.swing.MenuElement[] menuElements ) { 
 		if( menuElements.length > 0 ) {
@@ -296,19 +349,22 @@ public class ContextManager {
 						Menu menu = (Menu)Component.lookup( jMenu );
 						assert menu != null;
 
-						MenuModel menuModel = menu.getModel();
+						Model menuModel = menu.getModel();
 						assert menuModel != null;
 						models.add( menuModel );
 
 						if( jPreviousPopupMenu != jPopupMenu ) {
 							if( jPreviousPopupMenu != null ) {
-								ModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
-								assert popupMenuOperationContext instanceof PopupMenuOperationContext;
+								ModelContext< ? > popupContext = ContextManager.popContext();
+								assert popupContext instanceof PopupOperationContext;
 							}
 							
+							if( menuModel instanceof MenuModel ) {
+								/*AbstractPopupMenuOperationContext popupContext =*/ ContextManager.createAndPushStandardPopupOperationContext( ((MenuModel)menuModel).getPopupMenuOperation(), e, null );
+							} else {
+								System.err.println( "handleMenuSelectionStateChanged: " + menuModel );
+							}
 							
-							
-							/*PopupMenuOperationContext popupMenuOperationContext =*/ ContextManager.createAndPushPopupMenuOperationContext( menuModel.getPopupMenuOperation(), e, null );
 						}
 						i0 = 3;
 					} else {
@@ -322,24 +378,27 @@ public class ContextManager {
 						} else if( menuElementI instanceof javax.swing.JMenuItem ) {
 							javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
 							Component< ? > component = Component.lookup( jMenuItem );
+							//edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleMenuSelectionStateChanged", i, component.getClass() );
 							if( component instanceof ViewController< ?, ? > ) {
 								ViewController< ?, ? > viewController = (ViewController< ?, ? >)component;
+								//edu.cmu.cs.dennisc.print.PrintUtilities.println( "viewController", i, viewController.getModel() );
 								models.add( viewController.getModel() );
 							}
 						}
 					}
 					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-					if( modelContext instanceof PopupMenuOperationContext ) {
-						PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)modelContext;
-						popupMenuOperationContext.handleMenuSelectionChanged( e, models );
+					if( modelContext instanceof PopupOperationContext ) {
+						PopupOperationContext popupContext = (PopupOperationContext)modelContext;
+						popupContext.handleMenuSelectionChanged( e, models );
 					} else {
 						System.err.println( "WARNING: handleMenuSelectionStateChanged not PopupMenuOperationContext " + modelContext );
 					}
+					TransactionManager.handleMenuSelectionChanged( models );
 				} else {
 					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
 					if( menuBarModel != null ) {
-						ModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
-						assert popupMenuOperationContext instanceof PopupMenuOperationContext;
+						ModelContext< ? > popupContext = ContextManager.popContext();
+						assert popupContext instanceof StandardPopupOperationContext;
 
 						ModelContext< ? > menuBarContext = ContextManager.popContext();
 						assert menuBarContext instanceof MenuBarModelContext;
@@ -353,7 +412,7 @@ public class ContextManager {
 						assert menuElements.length == 2;
 					} else {
 						ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-						if( modelContext instanceof PopupMenuOperationContext ) {
+						if( modelContext instanceof StandardPopupOperationContext ) {
 							//pass
 						} else {
 							System.err.println( "combo box? " + menuElements.length + " " + java.util.Arrays.toString( menuElements ) );
@@ -396,12 +455,12 @@ public class ContextManager {
 		assert N >= 3;
 		MenuBarModel menuBarModel = (MenuBarModel)path.get( 0 );
 		MenuModel menuModel = (MenuModel)path.get( 1 );
-		PopupMenuOperation popupMenuOperation = menuModel.getPopupMenuOperation();
+		StandardPopupOperation popupMenuOperation = menuModel.getPopupMenuOperation();
 		MenuBarModelContext rv = new MenuBarModelContext(menuBarModel, null, null);
-		PopupMenuOperationContext popupMenuOperationContext = new PopupMenuOperationContext( popupMenuOperation, null, null );
-		rv.addChild( popupMenuOperationContext );
-		popupMenuOperationContext.handleMenuSelectionChanged( null, path );
-		popupMenuOperationContext.addChild( descendantContext );
+		StandardPopupOperationContext popupContext = new StandardPopupOperationContext( popupMenuOperation, null, null );
+		rv.addChild( popupContext );
+		popupContext.handleMenuSelectionChanged( null, path );
+		popupContext.addChild( descendantContext );
 		return rv;
 	}
 	
@@ -410,87 +469,5 @@ public class ContextManager {
 		CommitEvent commitEvent = new CommitEvent( new ListSelectionStateEdit< E >( null, listSelectionState.getValue(), nextValue ) );
 		rv.addChild( commitEvent );
 		return rv;
-	}
-	
-	
-	
-	private static java.util.Map< java.util.UUID, java.util.Set< Model > > mapIdToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Set< Model > lookupModels( java.util.UUID id ) {
-		synchronized ( mapIdToModels ) {
-			return mapIdToModels.get( id );
-		}
-	}
-	@Deprecated
-	public static Model findFirstAppropriateModel( java.util.UUID id ) {
-		java.util.Set< Model > models = lookupModels( id );
-		for( Model model : models ) {
-			for( JComponent<?> component : model.getComponents() ) {
-				if( component.getAwtComponent().isShowing() ) {
-					return model;
-				}
-			}
-			for( JComponent<?> component : model.getComponents() ) {
-				if( component.getAwtComponent().isVisible() ) {
-					return model;
-				}
-			}
-		}
-		return null;
-	}
-
-	/*package-private*/ static void registerModel( Model model ) {
-		java.util.UUID id = model.getId();
-		synchronized ( mapIdToModels ) {
-			java.util.Set< Model > set = mapIdToModels.get( id );
-			if( set != null ) {
-				//pass
-			} else {
-				set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-				mapIdToModels.put( id, set );
-			}
-			set.add( model );
-		}
-	}
-	/*package-private*/ static void unregisterModel( Model model ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "unregister:", model );
-		java.util.UUID id = model.getId();
-		synchronized ( mapIdToModels ) {
-			java.util.Set< Model > set = mapIdToModels.get( id );
-			if( set != null ) {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "pre set size:", set.size() );
-				set.remove( model );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "post set size:", set.size() );
-				if( set.size() == 0 ) {
-					mapIdToModels.remove( id );
-				}
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate unregister" );
-			}
-		}
-	}
-	
-
-	/*package-private*/ static void localizeAllModels() {
-		synchronized ( mapIdToModels ) {
-			java.util.Collection< java.util.Set< Model > > sets = mapIdToModels.values();
-			for( java.util.Set< Model > set : sets ) {
-				for( Model model : set ) {
-					model.localize();
-//					for( JComponent<?> component : model.getComponents() ) {
-//					}
-				}
-			}
-		}
-	}
-	
-	private static int isUndoOrRedoCount = 0;
-	public static boolean isInTheMidstOfUndoOrRedo() {
-		return isUndoOrRedoCount > 0;
-	}
-	public static void pushUndoOrRedo() {
-		isUndoOrRedoCount ++;
-	}
-	public static void popUndoOrRedo() {
-		isUndoOrRedoCount --;
 	}
 }

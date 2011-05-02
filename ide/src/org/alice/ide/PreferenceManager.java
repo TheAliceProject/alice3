@@ -66,12 +66,12 @@ public class PreferenceManager {
 	private static <T> T decode( byte[] data, edu.cmu.cs.dennisc.croquet.Codec< T > codec ) {
 		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
 		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
-		return codec.decode( decoder );
+		return codec.decodeValue( decoder );
 	}
 	private static <T> byte[] encode( T value, edu.cmu.cs.dennisc.croquet.Codec< T > codec ) throws java.io.IOException {
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
 		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
-		codec.encode( encoder, value );
+		codec.encodeValue( encoder, value );
 		encoder.flush();
 		return baos.toByteArray();
 	}

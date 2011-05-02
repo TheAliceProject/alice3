@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public interface Angle extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public interface Angle {
 	public boolean isNaN();
 	public void setNaN();
 	public double getAsRadians();

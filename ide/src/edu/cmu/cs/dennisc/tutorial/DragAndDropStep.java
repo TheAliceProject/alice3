@@ -214,10 +214,10 @@ package edu.cmu.cs.dennisc.tutorial;
 				break;
 			case WAITING_ON_POPUP_MENU_COMMIT:
 				if( this.isInputDialogNotePresent ) {
-					if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent ) {
+					if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
 						this.setActiveNote( 3 );
 
-						edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent)child;
+						edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent)child;
 						edu.cmu.cs.dennisc.croquet.ModelContext<?> model = windowOpenedEvent.getParent();
 						if( model instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> ) {
 							edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)model;
@@ -261,8 +261,8 @@ package edu.cmu.cs.dennisc.tutorial;
 					//pass
 				} else {
 					if( this.isInputDialogNotePresent ) {
-						if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent ) {
-							edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent)child;
+						if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
+							edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent)child;
 							edu.cmu.cs.dennisc.croquet.ModelContext<?> model = windowOpenedEvent.getParent();
 							if( model instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> ) {
 								edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)model;
@@ -274,8 +274,8 @@ package edu.cmu.cs.dennisc.tutorial;
 						}
 					}
 				}
-				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent ) {
-					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent windowClosingEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent)child;
+				if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosingEvent ) {
+					edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosingEvent windowClosingEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosingEvent)child;
 					edu.cmu.cs.dennisc.croquet.ModelContext<?> c = windowClosingEvent.getParent();
 					while( c != null ) {
 						if( c.getModel() == this.getModel() ) {

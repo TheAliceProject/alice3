@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, AbstractTabbedPane.TabItemDetails> {
-	public ToolPaletteTabbedPane( ListSelectionState<E> model, ListSelectionState.TabCreator< E > tabCreator ) {
+	public ToolPaletteTabbedPane( ListSelectionState<E> model, TabSelectionState.TabCreator< E > tabCreator ) {
 		super( model, tabCreator );
 	}
 
@@ -56,8 +56,10 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 		return new ToolPaletteTitle( booleanState );
 	}
 	@Override
-	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton<?,BooleanState> button, ScrollPane scrollPane, JComponent<?> mainComponent ) {
-		scrollPane.setVisible( false );
+	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton<?,BooleanState> button, ScrollPane scrollPane, final JComponent<?> mainComponent ) {
+		if( scrollPane != null ) {
+			scrollPane.setVisible( false );
+		}
 		return new TabItemDetails( item, button, id, scrollPane, mainComponent ) {
 			@Override
 			public void setSelected(boolean isSelected) {

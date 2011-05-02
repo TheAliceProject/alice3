@@ -75,6 +75,7 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 	/*package-private*/ ModelContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+	@Deprecated
 	public void EPIC_HACK_clear() {
 		this.children.clear();
 	}
@@ -331,34 +332,10 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 		this.fireAddedChild(child);
 	}
 	
-	public void finish() {
-		this.addChild(new FinishEvent());
-	}
-	public void commitAndInvokeDo(Edit edit) {
-		assert edit != null;
-		edit.setContext(this);
-		this.fireCommitting(edit);
-		edit.doOrRedo(true);
-		this.fireCommitted(edit);
-		this.addChild(new CommitEvent(edit));
-	}
-	public void cancel() {
-		this.addChild(new CancelEvent());
-	}
-	
-	public Edit< ? > getEdit() {
-		for( HistoryNode historyNode : this.getChildren() ) {
-			if( historyNode instanceof CommitEvent ) {
-				CommitEvent commitEvent = (CommitEvent)historyNode;
-				return commitEvent.getEdit();
-			}
-		}
-		return null;
-	}
 
 	@Override
 	public String getTutorialStepTitle( UserInformation userInformation ) {
-		edu.cmu.cs.dennisc.croquet.Model model = this.getModel();
+		Model model = this.getModel();
 		return model.getTutorialStepTitle( this, userInformation );
 	}
 	@Override

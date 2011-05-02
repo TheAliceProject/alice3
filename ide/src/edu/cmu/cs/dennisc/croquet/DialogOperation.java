@@ -45,16 +45,122 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogOperation extends AbstractDialogOperation<DialogOperationContext> {
+public abstract class DialogOperation< C extends DialogOperationContext<?> > extends SingleThreadOperation<C> {
 	public DialogOperation(Group group, java.util.UUID id) {
 		super(group, id);
 	}
-	@Override
-	public DialogOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushDialogOperationContext( this, e, viewController );
+	protected java.awt.Point getDesiredDialogLocation( Dialog dialog ) {
+		return null;
+	}
+	protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
+		return null;
+	}
+	protected void tweakDialog( Dialog dialog, C context ) {
 	}
 	
-	public String getTutorialCloseNoteText( DialogOperationContext dialogOperationContext, UserInformation userInformation ) {
-		return "When finished press the <strong>Close</strong> button.";
+	private Dialog activeDialog;
+	public Dialog getActiveDialog() {
+		return this.activeDialog;
+	}
+	
+	protected abstract Container<?> createContentPane(C context, Dialog dialog);
+	protected abstract void releaseContentPane(C context, Dialog dialog, Container<?> contentPane );
+	protected void handleFinally( C context, Dialog dialog, Container<?> contentPane ) {
+	}
+	
+	protected String getDialogTitle(C context) {
+		String rv = this.getName();
+		if( rv != null ) {
+			rv = rv.replaceAll( "<[a-z]*>", "" );
+			rv = rv.replaceAll( "</[a-z]*>", "" );
+			if( rv.endsWith( "..." ) ) {
+				rv = rv.substring( 0, rv.length()-3 );
+			}
+		}
+		return rv;
+	}
+	
+	protected boolean isWindowClosingEnabled( java.awt.event.WindowEvent e ) {
+		return true;
+	}
+	
+	protected void handleClosing() {
+	}
+	
+	@Override
+	protected final void perform( final C context ) {
+		ViewController<?,?> viewController = context.getViewController();
+		Component<?> owner;
+		if( viewController != null ) {
+			owner = viewController;
+		} else {
+			owner = Application.getSingleton().getFrame().getContentPanel();
+		}
+		final Dialog dialog = new Dialog( owner );
+//		dialog.getAwtComponent().setUndecorated( true );
+//		dialog.getRootPane().setWindowDecorationStyle(javax.swing.JRootPane.PLAIN_DIALOG);
+
+		dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DO_NOTHING );
+		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
+			public void windowOpened( java.awt.event.WindowEvent e ) {
+				org.lgna.croquet.steps.TransactionManager.fireDialogOpened( dialog );
+				context.handleWindowOpened( e );
+			}
+			public void windowClosing( java.awt.event.WindowEvent e ) {
+				if( DialogOperation.this.isWindowClosingEnabled( e ) ) {
+					dialog.setVisible( false );
+					context.handleWindowClosing( e );
+				}
+			}
+			public void windowClosed( java.awt.event.WindowEvent e ) {
+			}
+			public void windowActivated( java.awt.event.WindowEvent e ) {
+			}
+			public void windowDeactivated( java.awt.event.WindowEvent e ) {
+			}
+			public void windowDeiconified( java.awt.event.WindowEvent e ) {
+			}
+			public void windowIconified( java.awt.event.WindowEvent e ) {
+			}
+		};
+		dialog.addWindowListener( windowListener );
+
+		
+		Container<?> contentPane = this.createContentPane(context, dialog);
+		
+		try {
+			if( contentPane != null ) {
+				dialog.getAwtComponent().setContentPane( contentPane.getAwtComponent() );
+				java.awt.Dimension size = this.getDesiredDialogSize( dialog );
+				if( size != null ) {
+					dialog.getAwtComponent().setSize( size );
+				} else {
+					dialog.pack();
+				}
+				java.awt.Point location = this.getDesiredDialogLocation( dialog );
+				if( location != null ) {
+					dialog.setLocation( location );
+				} else {
+					edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getSingleton().getFrame().getAwtComponent() ); 
+				}
+				this.tweakDialog( dialog, context );
+				
+				dialog.setTitle( this.getDialogTitle(context) );
+				this.activeDialog = dialog;
+				try {
+					dialog.setVisible( true );
+					this.handleClosing();
+					this.releaseContentPane( context, dialog, contentPane );
+					dialog.removeWindowListener( windowListener );
+					dialog.getAwtComponent().dispose();
+				} finally {
+					this.activeDialog = null;
+				}
+			} else {
+				this.releaseContentPane( context, dialog, contentPane );
+			}
+		} finally {
+			this.handleFinally( context, dialog, contentPane );
+		}
 	}
 }

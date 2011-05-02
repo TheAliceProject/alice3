@@ -277,6 +277,9 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 		this.leftOperandType.setValue( leftOperandType );
 		this.rightOperandType.setValue( rightOperandType );
 	}
+	public RelationalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, Class<?> leftOperandCls, Class<?> rightOperandCls ) {
+		this( leftOperand, operator, rightOperand, TypeDeclaredInJava.get( leftOperandCls ), TypeDeclaredInJava.get( rightOperandCls ) );
+	}
 	@Override
 	protected AbstractType<?,?,?> getLeftOperandType() {
 		return this.leftOperandType.getValue();

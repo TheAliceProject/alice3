@@ -364,7 +364,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		return EPIC_HACK_getRunDialogOperation();
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.DialogOperation EPIC_HACK_getRunDialogOperation() {
+	public edu.cmu.cs.dennisc.croquet.PlainDialogOperation EPIC_HACK_getRunDialogOperation() {
 		return org.alice.stageide.croquet.models.run.RunOperation.getInstance();
 	}
 	

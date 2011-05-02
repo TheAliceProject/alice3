@@ -45,15 +45,15 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationContext< ? >> extends AbstractDialogOperation< C > {
+abstract class GatedCommitDialogOperation<C extends DialogOperationContext< ? >> extends DialogOperation< C > {
 	private static final String NULL_EXPLANATION = "good to go";
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "35b47d9d-d17b-4862-ac22-5ece4e317242" ), "DIALOG_IMPLEMENTATION_GROUP" );
 	protected static final Group ENCLOSING_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_DIALOG_GROUP" );
 
-	private static abstract class DialogOperation extends ActionOperation {
+	private static abstract class InternalDialogOperation extends ActionOperation {
 		private Dialog dialog;
 
-		public DialogOperation( java.util.UUID id ) {
+		public InternalDialogOperation( java.util.UUID id ) {
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
 		}
 		public Dialog getDialog() {
@@ -63,11 +63,11 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 			this.dialog = dialog;
 		}
 		protected GatedCommitDialogOperation< ? > getGatedCommitDialogOperation( ActionOperationContext context ) {
-			return (GatedCommitDialogOperation< ? >)context.getParent().getModel();
+			return (GatedCommitDialogOperation< ? >)context.getFirstAncestorAssignableTo( GatedCommitDialogOperationContext.class ).getModel();
 		}
 	}
 
-	protected static abstract class CompleteOperation extends DialogOperation {
+	protected static abstract class CompleteOperation extends InternalDialogOperation {
 		public CompleteOperation( java.util.UUID id ) {
 			super( id );
 		}
@@ -79,7 +79,7 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 		}
 	}
 
-	protected static class CancelOperation extends DialogOperation {
+	protected static class CancelOperation extends InternalDialogOperation {
 		private static class SingletonHolder {
 			private static CancelOperation instance = new CancelOperation();
 		}

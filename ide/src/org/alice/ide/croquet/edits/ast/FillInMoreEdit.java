@@ -45,8 +45,8 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.FillInMoreMenuModel > {
-	public static class FillInMoreEditMemento extends Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> {
+public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation > {
+	public static class FillInMoreEditMemento extends Memento<org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation> {
 		private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
 		public FillInMoreEditMemento( FillInMoreEdit edit ) {
 			super( edit );
@@ -56,7 +56,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< or
 			super( binaryDecoder );
 		}
 		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > createEdit() {
+		public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation > createEdit() {
 			return new FillInMoreEdit( this );
 		}
 		@Override
@@ -82,15 +82,15 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< or
 		this.argumentExpression = memento.argumentExpression;
 	}
 	@Override
-	public Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> createMemento() {
+	public Memento<org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation> createMemento() {
 		return new FillInMoreEditMemento( this );
 	}
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.FillInMoreMenuModel popupMenuOperation = this.getCascadingRoot();
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = popupMenuOperation.getPrevMethodInvocation();
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
+		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = this.getModel();
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 
 		edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = prevMethodInvocation.expression.getValue();
 		//prevMethodInvocation.expression.setValue( null );
@@ -102,15 +102,14 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< or
 			nextMethodInvocation.arguments.get( i ).expression.setValue( expressionI );
 		}
 		nextMethodInvocation.arguments.get( N ).expression.setValue( this.argumentExpression );
-		popupMenuOperation.getExpressionStatement().expression.setValue( nextMethodInvocation );
+		model.getExpressionStatement().expression.setValue( nextMethodInvocation );
 //		this.getModel().updateToolTipText();
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.FillInMoreMenuModel popupMenuOperation = this.getCascadingRoot();
-
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = popupMenuOperation.getPrevMethodInvocation();
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
+		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = this.getModel();
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 		
 		edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = nextMethodInvocation.expression.getValue();
 		nextMethodInvocation.expression.setValue( null );
@@ -123,15 +122,15 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< or
 		}
 		//nextMethodInvocation.arguments.get( N ).expression.setValue( null );
 
-		popupMenuOperation.getExpressionStatement().expression.setValue( prevMethodInvocation );
+		model.getExpressionStatement().expression.setValue( prevMethodInvocation );
 		
 
 //		this.getModel().updateToolTipText();
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		org.alice.ide.croquet.models.ast.FillInMoreMenuModel popupMenuOperation = this.getCascadingRoot();
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
+		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = this.getModel();
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
 			rv.append( "more: " );
 			edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, nextMethodInvocation.method.getValue(), locale );

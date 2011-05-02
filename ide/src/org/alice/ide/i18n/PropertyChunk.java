@@ -73,7 +73,7 @@ public class PropertyChunk extends Chunk {
 //		rv = zoot.ZLabel.acquire( "should never happen" );
 //	}
 	@Override
-	protected StringBuffer updateRepr( StringBuffer rv ) {
+	protected StringBuilder updateRepr( StringBuilder rv ) {
 		rv.append( "propertyName=" );
 		rv.append( this.propertyName );
 		return rv;

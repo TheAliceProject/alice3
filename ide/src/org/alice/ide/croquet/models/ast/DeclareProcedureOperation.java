@@ -59,7 +59,6 @@ public class DeclareProcedureOperation extends DeclareMethodOperation {
 	}
 	private DeclareProcedureOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 		super( java.util.UUID.fromString( "dcaee920-08ea-4b03-85d1-f2df5f73bfb4" ), type );
-		this.setName( "Declare Procedure..." );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareProcedureOperation > createCodableResolver() {

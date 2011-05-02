@@ -89,25 +89,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 		return org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( this.method );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
-		return org.alice.ide.ast.NodeUtilities.getDesiredParameterValueTypes( this.method );
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation.getInstance( blockStatementIndexPair, this.method );
 	}
-	
-	@Override
-	protected String getTitleAt( int index ) {
-		return this.method.getParameters().get( index ).getName();
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method );
-		org.alice.ide.ast.NodeUtilities.completeMethodInvocation( rv, expressions );
-		return rv;
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
-		return org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel.getInstance( blockStatementIndexPair, this.method );
-	}
-	
 }

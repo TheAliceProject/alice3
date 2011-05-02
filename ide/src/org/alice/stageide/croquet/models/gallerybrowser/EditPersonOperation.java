@@ -70,16 +70,16 @@ public class EditPersonOperation extends PersonOperation {
 		return this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.field, org.alice.apis.stage.Person.class );
 	}
 	@Override
-	protected org.alice.stageide.personeditor.PersonInfo getInitialPersonInfo() {
+	protected org.alice.stageide.croquet.models.personeditor.PersonInfo getInitialPersonInfo() {
 		final org.alice.apis.stage.Person person = this.getSceneEditorPerson();
-		return org.alice.stageide.personeditor.PersonInfo.createFromPerson( person );
+		return org.alice.stageide.croquet.models.personeditor.PersonInfo.createFromPerson( person );
 	}
 	@Override
 	protected void epilogue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context, boolean isOk ) {
 		final org.alice.apis.stage.Person person = this.getSceneEditorPerson();
 		final org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
-		final org.alice.stageide.personeditor.PersonInfo prevPersonInfo = this.getInitialPersonInfo();
-		final org.alice.stageide.personeditor.PersonInfo nextPersonInfo = personEditor.getPersonInfo();
+		final org.alice.stageide.croquet.models.personeditor.PersonInfo prevPersonInfo = this.getInitialPersonInfo();
+		final org.alice.stageide.croquet.models.personeditor.PersonInfo nextPersonInfo = personEditor.getPersonInfo();
 		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {

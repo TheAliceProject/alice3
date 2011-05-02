@@ -69,23 +69,8 @@ package org.alice.ide.memberseditor.templates;
 		);
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, this.field.getDesiredValueType().getComponentType() };
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.AssignmentExpression rv = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression(
-				field.getValueType().getComponentType(), 
-				new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
-						field.getValueType(), 
-						org.alice.ide.ast.NodeUtilities.createFieldAccess( 
-								getIDE().createInstanceExpression(), 
-								field ), 
-						expressions[ 0 ]
-				), 
-				edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, 
-				expressions[ 1 ]
-		);
-		return rv;
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		//todo
+		return new org.alice.ide.croquet.models.ast.cascade.statement.FieldArrayAtIndexAssignmentInsertOperation( blockStatementIndexPair, this.field );
 	}
 }

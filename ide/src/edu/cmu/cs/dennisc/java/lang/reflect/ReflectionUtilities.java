@@ -123,7 +123,7 @@ public final class ReflectionUtilities {
 	public static Object newInstance( String className ) {
 		return newInstance( getClassForName( className ) );
 	}
-	public static Object newArrayInstance( Class< ? > componentType, int length ) {
+	private static Object newArrayInstance( Class< ? > componentType, int length ) {
 		try {
 			return java.lang.reflect.Array.newInstance( componentType, length );
 		} catch( NegativeArraySizeException nase ) {
@@ -132,6 +132,9 @@ public final class ReflectionUtilities {
 	}
 	public static Object newArrayInstance( String componentTypeName, int length ) {
 		return newArrayInstance( getClassForName( componentTypeName ), length );
+	}
+	public static <T> T[] newTypedArrayInstance( Class< T > componentType, int length ) {
+		return (T[])newArrayInstance( componentType, length );
 	}
 
 	public static java.lang.reflect.Field getField( Class< ? > cls, String name ) {

@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 
 public interface PopupMenuOperationValidator extends Validator {
-	public Result checkValidity( edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit );
+	public Result checkValidity( edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit );
 }

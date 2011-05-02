@@ -49,12 +49,12 @@ import edu.cmu.cs.dennisc.tutorial.*;
  */
 public class Page extends Step implements WaitingStep {
 	private static RequirementNote createBonusOperationNote( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext ) {
-		if( operationContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
-			if( operationContext instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext ) {
-				edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext = (edu.cmu.cs.dennisc.croquet.DialogOperationContext)operationContext;
+		if( operationContext instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext ){
+			if( operationContext instanceof edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext ) {
+				edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext dialogOperationContext = (edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext)operationContext;
 				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = operationContext.getSuccessfulCompletionEvent();
 				if( successfulCompletionEvent != null ) {
-					return DialogCloseNote.createInstance( dialogOperationContext, parentContextCriterion, successfulCompletionEvent );
+					return PlainDialogCloseNote.createInstance( dialogOperationContext, parentContextCriterion, successfulCompletionEvent );
 				}
 			} else if( operationContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
 				edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)operationContext;
@@ -72,9 +72,9 @@ public class Page extends Step implements WaitingStep {
 			edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = (edu.cmu.cs.dennisc.croquet.MenuBarModelContext)node;
 			if( menuBarModelContext.getState() != null ) {
 				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = menuBarModelContext.getLastChild();
-				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
-					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)lastChild;
-					appendNotes( rv, parentContextCriterion/*IsAnyMenuBarModelContextCriterion.SINGLETON*/, popupMenuOperationContext );
+				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupOperationContext ) {
+					edu.cmu.cs.dennisc.croquet.PopupOperationContext popupOperationContext = (edu.cmu.cs.dennisc.croquet.PopupOperationContext)lastChild;
+					appendNotes( rv, parentContextCriterion/*IsAnyMenuBarModelContextCriterion.SINGLETON*/, popupOperationContext );
 				}
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
@@ -87,7 +87,7 @@ public class Page extends Step implements WaitingStep {
 					edu.cmu.cs.dennisc.croquet.HistoryNode lastGrandchild = childModelContext.getLastChild();
 					DragNote dragNote = DragNote.createInstance( dragAndDropContext, parentContextCriterion );
 					DropNote dropNote;
-					boolean isCommit = lastGrandchild instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent;
+					boolean isCommit = lastGrandchild instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent && childModelContext instanceof edu.cmu.cs.dennisc.croquet.CascadePopupOperationContext == false;
 					if( isCommit ) {
 						edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = (edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent)lastGrandchild;
 						dropNote = DropNote.createCommitInstance( dragNote.getLastAcceptedContext(), dragAndDropContext, childModelContext, successfulCompletionEvent );
@@ -105,25 +105,37 @@ public class Page extends Step implements WaitingStep {
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.OperationContext ) {
 			edu.cmu.cs.dennisc.croquet.OperationContext<?> operationContext = (edu.cmu.cs.dennisc.croquet.OperationContext<?>)node;
-			if( node instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)node;
-				int POPUP_CONTEXT_CHILD_COUNT = popupMenuOperationContext.getChildCount();
+			if( node instanceof edu.cmu.cs.dennisc.croquet.PopupOperationContext ) {
+				edu.cmu.cs.dennisc.croquet.PopupOperationContext popupOperationContext = (edu.cmu.cs.dennisc.croquet.PopupOperationContext)node;
+				int POPUP_CONTEXT_CHILD_COUNT = popupOperationContext.getChildCount();
 				if( POPUP_CONTEXT_CHILD_COUNT > 1 ) {
-					edu.cmu.cs.dennisc.croquet.HistoryNode<?> firstChild = popupMenuOperationContext.getChildAt( 0 );
-					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent;
-					if( firstChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent ) {
-						retargetableMenuModelInitializationEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent)firstChild;
+					edu.cmu.cs.dennisc.croquet.HistoryNode<?> firstChild = popupOperationContext.getChildAt( 0 );
+					edu.cmu.cs.dennisc.croquet.PopupOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent;
+					if( firstChild instanceof edu.cmu.cs.dennisc.croquet.PopupOperationContext.RetargetableMenuModelInitializationEvent ) {
+						retargetableMenuModelInitializationEvent = (edu.cmu.cs.dennisc.croquet.PopupOperationContext.RetargetableMenuModelInitializationEvent)firstChild;
 					} else {
 						retargetableMenuModelInitializationEvent = null;
 					}
-					edu.cmu.cs.dennisc.croquet.HistoryNode<?> lastChild = popupMenuOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-1 );
-					if( lastChild instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+
+					edu.cmu.cs.dennisc.croquet.HistoryNode<?> lastChild = popupOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-1 );
+					edu.cmu.cs.dennisc.croquet.HistoryNode<?> secondToLastChild = popupOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-2 );
+					edu.cmu.cs.dennisc.croquet.ModelContext< ? > menuSelectionParentContext = null;
+					
+					boolean isEditAtTopLevel = popupOperationContext instanceof edu.cmu.cs.dennisc.croquet.CascadePopupOperationContext< ? >;
+					if( isEditAtTopLevel ) {
+						if( secondToLastChild instanceof edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent ) {
+							menuSelectionParentContext = popupOperationContext;
+						}
+					} else {
+						if( lastChild instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+							menuSelectionParentContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;
+						}
+					}
+					if( menuSelectionParentContext != null ) {
 						ParentContextCriterion menuSelectionParentContextCriterion = parentContextCriterion;
 						ParentContextCriterion modelContextParentContextCriterion = null;
-						edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;
-						edu.cmu.cs.dennisc.croquet.HistoryNode<?> secondToLastChild = popupMenuOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-2 );
-						if( secondToLastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
-							edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)secondToLastChild;
+						if( secondToLastChild instanceof edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent ) {
+							edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent)secondToLastChild;
 							final int N = menuSelectionEvent.getModelCount();
 							if( N > 0 ) {
 								int index0;
@@ -133,7 +145,7 @@ public class Page extends Step implements WaitingStep {
 									if( node.getParent() instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
 										//pass
 									} else {
-										PopupMenuOperationStartNote popupMenuOperationStartNote = PopupMenuOperationStartNote.createInstance( popupMenuOperationContext, parentContextCriterion );
+										PopupMenuOperationStartNote popupMenuOperationStartNote = PopupMenuOperationStartNote.createInstance( popupOperationContext, parentContextCriterion );
 										rv.add( popupMenuOperationStartNote );
 										menuSelectionParentContextCriterion = popupMenuOperationStartNote.getLastAcceptedContext();
 									}
@@ -142,11 +154,11 @@ public class Page extends Step implements WaitingStep {
 								for( int i=index0; i<N; i++ ) {
 									edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext;
 									if( i == N-1 ) {
-										childContext = modelContext;
+										childContext = menuSelectionParentContext;
 									} else {
 										childContext = null;
 									}
-									MenuSelectionNote note = MenuSelectionNote.createInstance( menuSelectionParentContextCriterion, retargetableMenuModelInitializationEvent, menuSelectionEvent, i, childContext, index0 );
+									MenuSelectionNote note = MenuSelectionNote.createInstance( menuSelectionParentContextCriterion, retargetableMenuModelInitializationEvent, menuSelectionEvent, i, childContext, index0, isEditAtTopLevel );
 									rv.add( note );
 									if( i==index0 ) {
 										menuSelectionParentContextCriterion = note.getAcceptedContextAt( index0 );
@@ -158,32 +170,43 @@ public class Page extends Step implements WaitingStep {
 								}
 							}
 						}
-						if( modelContext instanceof edu.cmu.cs.dennisc.croquet.OperationContext< ? > ) {
-							edu.cmu.cs.dennisc.croquet.OperationContext< ? > childOperationContext = (edu.cmu.cs.dennisc.croquet.OperationContext< ? >)modelContext;
-							edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = childOperationContext.getSuccessfulCompletionEvent();
+						if( popupOperationContext instanceof edu.cmu.cs.dennisc.croquet.CascadePopupOperationContext< ? > ) {
+							edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = popupOperationContext.getSuccessfulCompletionEvent();
 							if( successfulCompletionEvent != null ) {
-								if( childOperationContext instanceof edu.cmu.cs.dennisc.croquet.ActionOperationContext ) {
-									edu.cmu.cs.dennisc.croquet.ActionOperationContext actionOperationContext = (edu.cmu.cs.dennisc.croquet.ActionOperationContext)childOperationContext;
-									if( actionOperationContext.getChildCount() > 1 ) {
-										edu.cmu.cs.dennisc.croquet.HistoryNode<?> possibleInputDialogOperationContext = actionOperationContext.getChildAt( 0 );
-										if( possibleInputDialogOperationContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
-											edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)possibleInputDialogOperationContext;
-											edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent inputDialogCompletionEvent = inputDialogOperationContext.getSuccessfulCompletionEvent();
-											if( inputDialogCompletionEvent != null ) {
-												rv.add( ForwardingFromActionOperationToInputDialogOperationNote.createInstance( modelContextParentContextCriterion, actionOperationContext, successfulCompletionEvent, inputDialogOperationContext, inputDialogCompletionEvent ) );
-											}
-										}
-									}
-								} else {
-									RetargetableNote bonusNote = createBonusOperationNote( modelContextParentContextCriterion, childOperationContext );
-									if( bonusNote != null ) {
-										rv.add( bonusNote );
-									}
-								}
 								RetargetableNote lastNote = rv.get( rv.size()-1 );
 								if( lastNote instanceof RequirementNote ) {
 									RequirementNote requirementNote = (RequirementNote)lastNote;
 									requirementNote.addRequirement( new IsAcceptableSuccessfulCompletionOf( requirementNote.getAcceptedContextAt( -2 ), successfulCompletionEvent ) );
+								}
+							}
+						} else {
+							if( lastChild instanceof edu.cmu.cs.dennisc.croquet.OperationContext< ? > ) {
+								edu.cmu.cs.dennisc.croquet.OperationContext< ? > childOperationContext = (edu.cmu.cs.dennisc.croquet.OperationContext< ? >)lastChild;
+								edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = childOperationContext.getSuccessfulCompletionEvent();
+								if( successfulCompletionEvent != null ) {
+									if( childOperationContext instanceof edu.cmu.cs.dennisc.croquet.ActionOperationContext ) {
+										edu.cmu.cs.dennisc.croquet.ActionOperationContext actionOperationContext = (edu.cmu.cs.dennisc.croquet.ActionOperationContext)childOperationContext;
+										if( actionOperationContext.getChildCount() > 1 ) {
+											edu.cmu.cs.dennisc.croquet.HistoryNode<?> possibleInputDialogOperationContext = actionOperationContext.getChildAt( 0 );
+											if( possibleInputDialogOperationContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
+												edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)possibleInputDialogOperationContext;
+												edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent inputDialogCompletionEvent = inputDialogOperationContext.getSuccessfulCompletionEvent();
+												if( inputDialogCompletionEvent != null ) {
+													rv.add( ForwardingFromActionOperationToInputDialogOperationNote.createInstance( modelContextParentContextCriterion, actionOperationContext, successfulCompletionEvent, inputDialogOperationContext, inputDialogCompletionEvent ) );
+												}
+											}
+										}
+									} else {
+										RetargetableNote bonusNote = createBonusOperationNote( modelContextParentContextCriterion, childOperationContext );
+										if( bonusNote != null ) {
+											rv.add( bonusNote );
+										}
+									}
+									RetargetableNote lastNote = rv.get( rv.size()-1 );
+									if( lastNote instanceof RequirementNote ) {
+										RequirementNote requirementNote = (RequirementNote)lastNote;
+										requirementNote.addRequirement( new IsAcceptableSuccessfulCompletionOf( requirementNote.getAcceptedContextAt( -2 ), successfulCompletionEvent ) );
+									}
 								}
 							}
 						}
@@ -192,11 +215,11 @@ public class Page extends Step implements WaitingStep {
 			} else {
 				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = operationContext.getSuccessfulCompletionEvent();
 				if( successfulCompletionEvent != null ) {
-					if( operationContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
-						edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext abstractDialogOperationContext = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext)operationContext;
+					if( operationContext instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext ){
+						edu.cmu.cs.dennisc.croquet.DialogOperationContext abstractDialogOperationContext = (edu.cmu.cs.dennisc.croquet.DialogOperationContext)operationContext;
 						AbstractDialogOperationStartNote startNote;
-						if( abstractDialogOperationContext instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext ) {
-							startNote = DialogOperationStartNote.createInstance( ((edu.cmu.cs.dennisc.croquet.DialogOperationContext)abstractDialogOperationContext), parentContextCriterion );
+						if( abstractDialogOperationContext instanceof edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext ) {
+							startNote = PlainDialogOperationStartNote.createInstance( ((edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext)abstractDialogOperationContext), parentContextCriterion );
 						} else if( abstractDialogOperationContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
 							startNote = InputDialogOperationStartNote.createInstance( ((edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)abstractDialogOperationContext), parentContextCriterion );
 						} else {
@@ -295,7 +318,7 @@ public class Page extends Step implements WaitingStep {
 	private java.util.List< edu.cmu.cs.dennisc.croquet.Model > huntFor( edu.cmu.cs.dennisc.croquet.Model model ) {
 		edu.cmu.cs.dennisc.croquet.MenuBarModel menuBarModel = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getMenuBarModel();
 		java.util.List< edu.cmu.cs.dennisc.croquet.Model > rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-		for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : menuBarModel.getMenuModels() ) {
+		for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : menuBarModel.getChildren() ) {
 			edu.cmu.cs.dennisc.croquet.Model found = huntFor( rv, menuModel, model );
 			if( found != null ) {
 				rv.add( 0, menuModel );
@@ -348,7 +371,20 @@ public class Page extends Step implements WaitingStep {
 						if( descendantComponent != null && descendantComponent.getAwtComponent().isShowing() ) {
 							//pass
 						} else {
-							GuidedInteraction.getInstance().addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, modelContext );
+							boolean isApplicationInterventionRequired = true;
+							for( edu.cmu.cs.dennisc.croquet.TabSelectionState< edu.cmu.cs.dennisc.croquet.Composite > tabSelectionState : edu.cmu.cs.dennisc.croquet.Manager.getRegisteredModels( edu.cmu.cs.dennisc.croquet.TabSelectionState.class ) ) {
+								for( edu.cmu.cs.dennisc.croquet.Composite item : tabSelectionState ) {
+									if( item.contains( model ) ) {
+										isApplicationInterventionRequired = false;
+										edu.cmu.cs.dennisc.croquet.ListSelectionStateContext context = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( tabSelectionState, item );
+										edu.cmu.cs.dennisc.cheshire.ListSelectionStateSimpleNote listSelectionStateNote =  edu.cmu.cs.dennisc.cheshire.ListSelectionStateSimpleNote.createInstance( context, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, context.getSuccessfulCompletionEvent() );
+										rv.add( listSelectionStateNote );
+									}
+								}
+							}
+							if( isApplicationInterventionRequired ) {
+								GuidedInteraction.getInstance().addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, modelContext );
+							}
 						}
 						appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, successfulCompletionEvent.getParent() );
 					}

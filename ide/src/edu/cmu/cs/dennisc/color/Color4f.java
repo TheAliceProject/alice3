@@ -79,23 +79,31 @@ public class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecod
 	public Color4f( java.awt.Color awtColor ) {
 		set( awtColor.getRed()/255.0f, awtColor.getGreen()/255.0f, awtColor.getBlue()/255.0f, awtColor.getAlpha()/255.0f );
 	}
-
+	public Color4f( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.red = binaryDecoder.decodeFloat();
+		this.green = binaryDecoder.decodeFloat();
+		this.blue = binaryDecoder.decodeFloat();
+		this.alpha = binaryDecoder.decodeFloat();
+	}
+	
 	//todo
 	public static Color4f createNaN() {
 		return new Color4f( Float.NaN, Float.NaN, Float.NaN, Float.NaN );
 	}
 	
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		red = binaryDecoder.decodeFloat();
-		green = binaryDecoder.decodeFloat();
-		blue = binaryDecoder.decodeFloat();
-		alpha = binaryDecoder.decodeFloat();
+	@Deprecated
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.red = binaryDecoder.decodeFloat();
+		this.green = binaryDecoder.decodeFloat();
+		this.blue = binaryDecoder.decodeFloat();
+		this.alpha = binaryDecoder.decodeFloat();
 	}
+	
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		binaryEncoder.encode( red );
-		binaryEncoder.encode( green );
-		binaryEncoder.encode( blue );
-		binaryEncoder.encode( alpha );
+		binaryEncoder.encode( this.red );
+		binaryEncoder.encode( this.green );
+		binaryEncoder.encode( this.blue );
+		binaryEncoder.encode( this.alpha );
 	}
 	
 	@Override
@@ -106,6 +114,15 @@ public class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecod
 		} else {
 			return false;
 		}
+	}
+	@Override
+	public final int hashCode() {
+		int rv = 17;
+		rv = 37*rv + Float.floatToIntBits( this.red );
+		rv = 37*rv + Float.floatToIntBits( this.green );
+		rv = 37*rv + Float.floatToIntBits( this.blue );
+		rv = 37*rv + Float.floatToIntBits( this.alpha );
+		return rv;
 	}
  
 	public boolean isNaN() {

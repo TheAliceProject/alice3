@@ -56,12 +56,12 @@ public class OtherTypesMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 		super( java.util.UUID.fromString( "909d8fb3-f1a0-4f21-9bbf-a871ea04d1a0" ) );
 	}
 	@Override
-	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		java.util.List< edu.cmu.cs.dennisc.croquet.Model > otherTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > otherTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > otherTypes = org.alice.ide.IDE.getSingleton().getSecondarySelectableTypesDeclaredInJava();
 		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava otherType : otherTypes ) {
-			otherTypeModels.add( SelectTypeOperation.getInstance( otherType ) );
+			otherTypeModels.add( SelectTypeOperation.getInstance( otherType ).getMenuItemPrepModel() );
 		}
 		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, otherTypeModels );
 	}

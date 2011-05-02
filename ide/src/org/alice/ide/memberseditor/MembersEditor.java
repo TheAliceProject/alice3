@@ -46,8 +46,6 @@ package org.alice.ide.memberseditor;
  * @author Dennis Cosgrove
  */
 public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	public static boolean IS_FOLDER_TABBED_PANE_DESIRED = true;
-	
 //	private edu.cmu.cs.dennisc.croquet.TabSelectionState tabbedPaneSelectionState = new org.alice.ide.croquet.models.members.MembersTabSelectionState( 
 //			new ProceduresContentPanel(), new FunctionsContentPanel(), new FieldsContentPanel(), ICON );
 	
@@ -69,9 +67,11 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 		return rv;
 	}
+	private final edu.cmu.cs.dennisc.croquet.CardPanel cardPanel = new edu.cmu.cs.dennisc.croquet.CardPanel();
+	private final java.util.Map< Boolean, edu.cmu.cs.dennisc.croquet.CardPanel.Key > keys = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public MembersEditor() {
 		final float FONT_SCALAR = 1.4f;
-		edu.cmu.cs.dennisc.croquet.ComboBox< edu.cmu.cs.dennisc.alice.ast.Accessible > comboBox = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().createComboBox();
+		edu.cmu.cs.dennisc.croquet.ComboBox< edu.cmu.cs.dennisc.alice.ast.Accessible > comboBox = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getPrepModel().createComboBox();
 		comboBox.scaleFont( FONT_SCALAR );
 		//comboBox.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		
@@ -168,7 +168,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		} catch( NoSuchFieldException nsfe ) {
 			throw new RuntimeException( nsfe );
 		}
-		edu.cmu.cs.dennisc.croquet.ComboBox<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField> partComboBox = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().createComboBox();
+		edu.cmu.cs.dennisc.croquet.ComboBox<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField> partComboBox = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().getPrepModel().createComboBox();
 		partComboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
 			@Override
 			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -234,24 +234,51 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		instancePanel.addComponent( partComboBox );
 		//instancePanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
 
-		org.alice.ide.croquet.models.members.MembersTabSelectionState membersTabSelectionState = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance();
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = IS_FOLDER_TABBED_PANE_DESIRED ? membersTabSelectionState.createDefaultFolderTabbedPane() : membersTabSelectionState.createDefaultToolPaletteTabbedPane();
 		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
-		this.addComponent( tabbedPane, Constraint.CENTER );
-		tabbedPane.scaleFont( 1.5f );
-		if( tabbedPane instanceof edu.cmu.cs.dennisc.croquet.ToolPaletteTabbedPane ) {
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
-			membersTabSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.croquet.PredeterminedTab >() {
-				public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
-					if( nextValue != null ) {
-						MembersEditor.this.setBackgroundColor( nextValue.getMainComponent().getBackgroundColor() );
-					}
-					MembersEditor.this.repaint();
-				}
-			} );
-		} else {
-			this.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.addComponent( cardPanel, Constraint.CENTER );
+	}
+	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isAlwaysAvailableObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+		public void changing( boolean nextValue ) {
 		}
-		
+		public void changed( boolean nextValue ) {
+			MembersEditor.this.cardPanel.show( MembersEditor.this.getKey( nextValue ) );
+		}
+	};
+	
+	private edu.cmu.cs.dennisc.croquet.CardPanel.Key getKey( boolean isAlwaysShowingBlocks ) {
+		edu.cmu.cs.dennisc.croquet.CardPanel.Key rv = this.keys.get( isAlwaysShowingBlocks );
+		if( rv != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane;
+			if( isAlwaysShowingBlocks ) {
+				tabbedPane = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance().createDefaultFolderTabbedPane();
+			} else {
+				tabbedPane = org.alice.ide.croquet.models.templates.TemplatesTabSelectionState.getInstance().createToolPaletteTabbedPane();
+				tabbedPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
+////			membersTabSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.croquet.PredeterminedTab >() {
+////				public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
+////					if( nextValue != null ) {
+////						MembersEditor.this.setBackgroundColor( nextValue.getMainComponent().getBackgroundColor() );
+////					}
+////					MembersEditor.this.repaint();
+////				}
+////			} );
+			}
+			rv = this.cardPanel.createKey( tabbedPane, tabbedPane.getModel().getId() );
+			this.cardPanel.addComponent( rv );
+			this.keys.put( isAlwaysShowingBlocks, rv );
+		}
+		return rv;
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addAndInvokeValueObserver( this.isAlwaysAvailableObserver );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().removeValueObserver( this.isAlwaysAvailableObserver );
+		super.handleUndisplayable();
 	}
 }

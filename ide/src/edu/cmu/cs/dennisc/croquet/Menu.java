@@ -46,8 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Menu extends AbstractMenuItem< javax.swing.JMenu, MenuModel > implements MenuItemContainer {
+public class Menu extends ViewController< javax.swing.JMenu, Model > implements MenuItemContainer {
 	/*package-private*/ Menu( MenuModel model ) {
+		super( model );
+	}
+	/*package-private*/ Menu( CascadeItem< ?,? > model ) {
 		super( model );
 	}
 	public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
@@ -66,21 +69,32 @@ public class Menu extends AbstractMenuItem< javax.swing.JMenu, MenuModel > imple
 		return new javax.swing.JMenu();
 	}
 	
-	public void setText( String text ) {
-		if( text != null ) {
-			this.getAwtComponent().setText( text );
-		} else {
-			//todo
-		}
-	}
-	public void setMnemonic( int mnemonic ) {
-		this.getAwtComponent().setMnemonic( mnemonic );
-	}
+//	/*package-private*/ void setText( String text ) {
+//		this.getAwtComponent().setText( text );
+//	}
+//	/*package-private*/ void setIcon( javax.swing.Icon icon ) {
+//		this.getAwtComponent().setIcon( icon );
+//	}
+	
+//	public void setText( String text ) {
+//		if( text != null ) {
+//			this.getAwtComponent().setText( text );
+//		} else {
+//			//todo
+//		}
+//	}
+//	public void setMnemonic( int mnemonic ) {
+//		this.getAwtComponent().setMnemonic( mnemonic );
+//	}
+
 	public void addMenu( Menu menu ) {
 		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
 	public void addMenuItem( MenuItem menuItem ) {
 		this.getAwtComponent().add( menuItem.getAwtComponent() );
+	}
+	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
+		this.getAwtComponent().add( cascadeMenuItem.getAwtComponent() );
 	}
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
 		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );

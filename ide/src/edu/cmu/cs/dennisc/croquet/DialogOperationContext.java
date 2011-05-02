@@ -45,14 +45,76 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DialogOperationContext extends AbstractDialogOperationContext<DialogOperation> {
-	/*package-private*/ DialogOperationContext( DialogOperation dialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( dialogOperation, e, viewController );
+public class DialogOperationContext<M extends DialogOperation<?>> extends SingleThreadOperationContext<M> {
+	public static abstract class WindowEvent extends ModelEvent< DialogOperationContext > {
+		private java.awt.event.WindowEvent windowEvent;
+		public WindowEvent() {
+		}
+		public WindowEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		/*package-private*/ WindowEvent( java.awt.event.WindowEvent windowEvent ) {
+			this.windowEvent = windowEvent;
+		}
+		public java.awt.event.WindowEvent getWindowEvent() {
+			return this.windowEvent;
+		}
+		@Override
+		public State getState() {
+			return null;
+		}
 	}
-	public DialogOperationContext( DialogOperation dialogOperation ) {
-		this( dialogOperation, null, null );
+
+	public static class WindowOpenedEvent extends WindowEvent {
+		public WindowOpenedEvent() {
+		}
+		public WindowOpenedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		/*package-private*/ WindowOpenedEvent( java.awt.event.WindowEvent e ) {
+			super( e );
+		}
 	}
-	public DialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+
+	public static class WindowClosingEvent extends WindowEvent {
+		public WindowClosingEvent() {
+		}
+		public WindowClosingEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		/*package-private*/ WindowClosingEvent( java.awt.event.WindowEvent e ) {
+			super( e );
+		}
+	}
+//	public static class WindowClosedEvent extends WindowEvent {
+//		public WindowClosedEvent() {
+//		}
+//		/*package-private*/ WindowClosedEvent( java.awt.event.WindowEvent e ) {
+//			super( e );
+//		}
+//	}
+
+	/*package-private*/ DialogOperationContext( M operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( operation, e, viewController );
+	}
+	/*package-private*/ DialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+	public void handleWindowOpened( java.awt.event.WindowEvent e ) {
+		this.addChild( new WindowOpenedEvent( e ) );
+	}
+	public void handleWindowClosing( java.awt.event.WindowEvent e ) {
+		this.addChild( new WindowClosingEvent( e ) );
+	}
+	
+//	@Override
+//	public State getState() {
+//		final int N = this.getChildCount();
+//		if( N > 1 ) {
+//			if( this.getChildAt(N-1) instanceof WindowClosedEvent ) {
+//				return this.getChildAt(N-2).getState();
+//			}
+//		}
+//		return null;
+//	}
 }

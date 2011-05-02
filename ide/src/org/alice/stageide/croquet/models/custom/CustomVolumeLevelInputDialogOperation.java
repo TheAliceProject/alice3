@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomVolumeLevelInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class CustomVolumeLevelInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
 	private static class SingletonHolder {
 		private static CustomVolumeLevelInputDialogOperation instance = new CustomVolumeLevelInputDialogOperation();
 	}

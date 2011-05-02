@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodParameterOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateMethodParameterPane> {
+public class DeclareMethodParameterOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice,org.alice.ide.declarationpanes.CreateMethodParameterPane> {
 	@Deprecated
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, DeclareMethodParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static DeclareMethodParameterOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
@@ -80,7 +80,7 @@ public class DeclareMethodParameterOperation extends org.alice.ide.croquet.model
 	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context, boolean isOk) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
-			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.getActualInputValue();
+			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.getInputValue();
 			if( parameter != null ) {
 				context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodParameterEdit( parameter ) );
 			} else {

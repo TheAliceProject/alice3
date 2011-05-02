@@ -45,8 +45,8 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.FillInExpressionListPropertyMenuModel > {
-	public static class FillInExpressionListPropertyEditMemento extends Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> {
+public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel > {
+	public static class FillInExpressionListPropertyEditMemento extends Memento<org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel> {
 		private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 		private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 		public FillInExpressionListPropertyEditMemento( FillInExpressionListPropertyEdit edit ) {
@@ -58,7 +58,7 @@ public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.cascade
 			super( binaryDecoder );
 		}
 		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > createEdit() {
+		public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel > createEdit() {
 			return new FillInExpressionListPropertyEdit( this );
 		}
 		@Override
@@ -90,21 +90,21 @@ public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.cascade
 		this.nextExpression = memento.nextExpression;
 	}
 	@Override
-	public Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> createMemento() {
+	public Memento<org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel> createMemento() {
 		return new FillInExpressionListPropertyEditMemento( this );
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.FillInExpressionListPropertyMenuModel popupMenuOperation = this.getCascadingRoot();
-		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
-		int index = popupMenuOperation.getIndex();
+		org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel model = this.getModel();
+		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = model.getExpressionListProperty();
+		int index = model.getIndex();
 		expressionListProperty.set( index, this.nextExpression );
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.FillInExpressionListPropertyMenuModel popupMenuOperation = this.getCascadingRoot();
-		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
-		int index = popupMenuOperation.getIndex();
+		org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel model = this.getModel();
+		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = model.getExpressionListProperty();
+		int index = model.getIndex();
 		expressionListProperty.set( index, this.prevExpression );
 	}
 	@Override

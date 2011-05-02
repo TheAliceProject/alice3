@@ -45,21 +45,25 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuModel extends Model {
-	private static final Group MENU_GROUP = Group.getInstance( java.util.UUID.fromString( "4ed42b1f-b4ea-4f70-99d1-5bb2c3f11081" ), "MENU_GROUP" );
-	public static final Model SEPARATOR = null;
+public abstract class MenuModel extends MenuItemPrepModel {
+	public static final MenuItemPrepModel SEPARATOR = null;
 	private Class<?> clsForI18N;
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
 		}
 	};
 	public MenuModel( java.util.UUID individualId, Class<?> clsForI18N ) {
-		super( MENU_GROUP, individualId );
+		super( individualId );
 		this.clsForI18N = clsForI18N;
 	}
 	public MenuModel( java.util.UUID individualId ) {
 		this( individualId, null );
 	}
+	@Override
+	public Iterable< ? extends MenuItemPrepModel > getChildren() {
+		return null;
+	}
+	
 	@Override
 	protected void localize() {
 		if( clsForI18N != null ) {
@@ -71,9 +75,13 @@ public abstract class MenuModel extends Model {
 		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, getLocalizedMnemonicKey( clsForI18N ) );
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, getLocalizedAcceleratorKeyStroke( clsForI18N ) );
 	}
-	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+	protected String getTutorialNoteName() {
 		return this.getName();
+	}
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( "Select <strong>" + this.getTutorialNoteName() + "</strong>" );
+		return rv;
 	}
 	private String getName() {
 		return (String)this.action.getValue( javax.swing.Action.NAME );
@@ -88,20 +96,20 @@ public abstract class MenuModel extends Model {
 		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
 	
-	private PopupMenuOperation popupMenuOperation;
-	public synchronized PopupMenuOperation getPopupMenuOperation() {
+	private StandardPopupOperation popupMenuOperation;
+	public synchronized StandardPopupOperation getPopupMenuOperation() {
 		if( this.popupMenuOperation != null ) {
 			//pass
 		} else {
-			this.popupMenuOperation = new PopupMenuOperation( this );
+			this.popupMenuOperation = new StandardPopupOperation( this );
 		}
 		return this.popupMenuOperation;
 	}
 	
 	
-	protected void handlePopupMenuPrologue( PopupMenu popupMenu, PopupMenuOperationContext context ) {
+	protected void handlePopupMenuPrologue( PopupMenu popupMenu, StandardPopupOperationContext context ) {
 	}
-	protected void handlePopupMenuEpilogue( PopupMenu popupMenu, PopupMenuOperationContext context ) {
+	protected void handlePopupMenuEpilogue( PopupMenu popupMenu, StandardPopupOperationContext context ) {
 	}
 	
 //	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
@@ -204,4 +212,10 @@ public abstract class MenuModel extends Model {
 		};
 		return rv;
 	};
+	
+	@Override
+	public MenuItemContainer createMenuItemAndAddTo( MenuItemContainer rv ) {
+		rv.addMenu( this.createMenu() );
+		return rv;
+	}
 }

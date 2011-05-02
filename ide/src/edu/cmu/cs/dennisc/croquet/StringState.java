@@ -159,6 +159,19 @@ public class StringState extends State<String> {
 			throw new RuntimeException( ble );
 		}
 	}
+	
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		if( edit instanceof StringStateEdit ) {
+			StringStateEdit stringStateEdit = (StringStateEdit)edit;
+			rv.append( "Enter <strong>" );
+			rv.append( stringStateEdit.getNextValue() );
+			rv.append( "</strong>" );
+		} else {
+			rv = super.updateTutorialStepText( rv, modelContext, edit, userInformation );
+		}
+		return rv;
+	}
 
 	protected javax.swing.text.Document getDocument() {
 		return this.document;

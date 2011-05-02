@@ -46,9 +46,9 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class SetterMenuModelStaticGetInstanceResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.templates.SetterMenuModel > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.templates.SetterMenuModel > {
+public class SetterMenuModelStaticGetInstanceResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertOperation > {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class, edu.cmu.cs.dennisc.alice.ast.AbstractField.class };
-	public SetterMenuModelStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.templates.SetterMenuModel instance ) {
+	public SetterMenuModelStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertOperation instance ) {
 		super( instance );
 	}
 	public SetterMenuModelStaticGetInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -72,11 +72,11 @@ public class SetterMenuModelStaticGetInstanceResolver extends edu.cmu.cs.dennisc
 	}
 
 	@Override
-	protected java.lang.Class< org.alice.ide.croquet.models.ast.templates.SetterMenuModel > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return org.alice.ide.croquet.models.ast.templates.SetterMenuModel.class;
+	protected java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertOperation > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertOperation.class;
 	}
 	@Override
-	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Class< org.alice.ide.croquet.models.ast.templates.SetterMenuModel > cls ) {
+	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertOperation > cls ) {
 		//note: do not call super
 	}
 	@Override

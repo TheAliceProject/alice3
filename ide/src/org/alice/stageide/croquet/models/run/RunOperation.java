@@ -107,7 +107,7 @@ class RunIcon implements javax.swing.Icon {
 /**
  * @author Dennis Cosgrove
  */
-public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
+public class RunOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperation {
 	private static class SingletonHolder {
 		private static RunOperation instance = new RunOperation();
 	}
@@ -120,12 +120,14 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 	}
 	
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		return "Preview your program.";
+	protected java.lang.StringBuilder updateTutorialTransactionTitle( java.lang.StringBuilder rv, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		rv.append( "Preview your program." );
+		return rv;
 	}
 	@Override
-	public String getTutorialCloseNoteText( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		return "Press the <strong>Close</strong> button when you have finished previewing the program.";
+	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		rv.append( "Preview your program." );
+		return rv;
 	}
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = null;
@@ -138,7 +140,7 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 		return this.size;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Container< ? > createContentPane( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+	protected edu.cmu.cs.dennisc.croquet.Container< ? > createContentPane( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
 		org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		if( ide.getProject() != null ) {
@@ -159,7 +161,7 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 		return rv;
 	}
 	@Override
-	protected void releaseContentPane( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
+	protected void releaseContentPane( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
 		//todo: investigate		
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
@@ -168,7 +170,7 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 	}
 	
 	@Override
-	protected void handleFinally( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
+	protected void handleFinally( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
 		super.handleFinally( context, dialog, contentPane );
 		org.alice.ide.IDE.getSingleton().enableRendering();
 	}

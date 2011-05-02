@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.EditFieldPane> {
+public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.ide.declarationpanes.EditFieldPane> {
 	private FieldDeclaredInAlice field;
 
 	private edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither prevFinalVolatileOrNeither;
@@ -80,7 +80,7 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.m
 	protected void epilogue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.EditFieldPane > context, boolean isOk ) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.EditFieldPane editFieldPane = context.getMainPanel();
-			FieldDeclaredInAlice tempField = editFieldPane.getActualInputValue();
+			FieldDeclaredInAlice tempField = editFieldPane.getInputValue();
 			if( tempField != null ) {
 				final edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither nextFinalVolatileOrNeither = tempField.finalVolatileOrNeither.getValue();
 				final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> nextValueType = tempField.valueType.getValue();

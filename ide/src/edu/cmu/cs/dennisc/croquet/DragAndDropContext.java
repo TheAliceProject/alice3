@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DragAndDropContext extends ModelContext<DragAndDropModel> {
+public class DragAndDropContext extends PrepContext<DragAndDropModel> {
 	public static abstract class DragAndDropEvent extends ModelEvent< DragAndDropContext > {
 		private java.awt.event.MouseEvent mouseEvent;
 		public DragAndDropEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -381,7 +381,6 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 	}
 	
 	private void popContext( OperationContext< ? > childContext ) {
-		System.err.println( "popContext" );
 		ModelContext< ? > currentContext = ContextManager.getCurrentContext();
 		if( childContext != null && childContext == currentContext ) {
 			ContextManager.popParentContextWhenChildContextIsPopped( this, childContext );
@@ -396,12 +395,13 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 	}
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( this.isCanceled() ) {
-			//pass
+			org.lgna.croquet.steps.TransactionManager.addCancelCompletionStep( null );
 		} else {
 			OperationContext< ? > childContext = null;
 			this.setLatestMouseEvent( e );
 			if( this.currentDropReceptor != null ) {
 				Operation<?> operation = this.currentDropReceptor.dragDropped( this );
+				org.lgna.croquet.steps.TransactionManager.pendDrop( operation, this.currentDropReceptor, this.currentPotentialDropSite );
 				if( operation != null ) {
 					this.addChild( new DroppedEvent( e, this.currentDropReceptor ) );
 					JComponent<?> component = this.currentDropReceptor.getViewController();
@@ -445,5 +445,10 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 		super.popped();
 		this.getDragSource().hideDragProxy();
 		this.getDragSource().hideDropProxyIfNecessary();
+	}
+	
+	@Deprecated
+	public void cancel() {
+		org.lgna.croquet.steps.TransactionManager.addCancelCompletionStep( null );
 	}
 }

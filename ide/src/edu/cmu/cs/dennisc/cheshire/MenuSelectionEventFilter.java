@@ -53,16 +53,16 @@ public enum MenuSelectionEventFilter implements Filter {
 		for( edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node : context.getChildren() ) {
 			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 				edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
-				if( childContext instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
-					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)childContext;
+				if( childContext instanceof edu.cmu.cs.dennisc.croquet.PopupOperationContext ) {
+					edu.cmu.cs.dennisc.croquet.PopupOperationContext popupOperationContext = (edu.cmu.cs.dennisc.croquet.PopupOperationContext)childContext;
 					
-					java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > childListIterator = popupMenuOperationContext.getChildListIterator();
+					java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > childListIterator = popupOperationContext.getChildListIterator();
 					while( childListIterator.hasNext() ) {
 						edu.cmu.cs.dennisc.croquet.HistoryNode< ? > child = childListIterator.next();
-						if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
+						if( child instanceof edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent ) {
 							if( childListIterator.hasNext() ) {
 								int nextIndex = childListIterator.nextIndex();
-								if( popupMenuOperationContext.getChildAt( nextIndex ) instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
+								if( popupOperationContext.getChildAt( nextIndex ) instanceof edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent ) {
 									childListIterator.remove();
 								}
 							}

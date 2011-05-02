@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class InformationDialogOperationContext<J extends Component<?>> extends AbstractDialogOperationContext<InformationDialogOperation<J>> {
+public class InformationDialogOperationContext<J extends Component<?>> extends DialogOperationContext<InformationDialogOperation<J>> {
 	/*package-private*/ InformationDialogOperationContext( InformationDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( inputDialogOperation, e, viewController );
 	}

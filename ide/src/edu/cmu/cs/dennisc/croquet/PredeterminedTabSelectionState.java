@@ -45,44 +45,41 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class PredeterminedTabSelectionState extends DefaultListSelectionState< PredeterminedTab > {
-	private static class PredeterminedTabCreator implements TabCreator< PredeterminedTab > {
-		public final java.util.UUID getId(PredeterminedTab item) {
+public abstract class PredeterminedTabSelectionState<T extends PredeterminedTab> extends TabSelectionState< T > {
+	private static class PredeterminedTabCreator<T extends PredeterminedTab> implements TabCreator< T > {
+		public final java.util.UUID getId(T item) {
 			java.util.UUID rv = item.getId();
 			assert rv != null;
 			return rv;
 		}
-		public final JComponent<?> createMainComponent(PredeterminedTab item) {
+		public final JComponent<?> createMainComponent(T item) {
 			return item.getMainComponent();
 		}
-		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.croquet.PredeterminedTab item ) {
+		public void customizeTitleComponent( BooleanState booleanState, AbstractButton< ?, BooleanState > button, T item ) {
 			item.customizeTitleComponent( booleanState, button );
 		}
-		public final ScrollPane createScrollPane( PredeterminedTab item ) {
+		public final ScrollPane createScrollPane( T item ) {
 			return item.createScrollPane();
 		}
-		public final boolean isCloseable(edu.cmu.cs.dennisc.croquet.PredeterminedTab item) {
+		public final boolean isCloseable(T item) {
 			return false;
 		}
 	};
-	
-	public static PredeterminedTabSelectionState createInstance( Group group, java.util.UUID id, Codec< PredeterminedTab > codec, int selectionIndex, PredeterminedTab... tabs ) {
-		return new PredeterminedTabSelectionState( group, id, codec, selectionIndex, tabs );
-	}
-	public PredeterminedTabSelectionState( Group group, java.util.UUID id, Codec< PredeterminedTab > codec, int selectionIndex, PredeterminedTab... tabs ) {
+	public PredeterminedTabSelectionState( Group group, java.util.UUID id, Codec< T > codec, int selectionIndex, T... tabs ) {
 		super( group, id, codec, selectionIndex, tabs );
 	}
 
-	public FolderTabbedPane<PredeterminedTab> createDefaultFolderTabbedPane() {
+	public FolderTabbedPane<T> createDefaultFolderTabbedPane() {
 		return this.createFolderTabbedPane( new PredeterminedTabCreator() );
 	}
 
-	public ToolPaletteTabbedPane<PredeterminedTab> createDefaultToolPaletteTabbedPane() {
+	public ToolPaletteTabbedPane<T> createDefaultToolPaletteTabbedPane() {
 		return this.createToolPaletteTabbedPane( new PredeterminedTabCreator() );
 	}
 
-	public PredeterminedTab getItemForId( java.util.UUID id ) {
-		for( PredeterminedTab predeterminedTab : this ) {
+	@Deprecated
+	public T getItemForId( java.util.UUID id ) {
+		for( T predeterminedTab : this ) {
 			if( predeterminedTab.getId().equals( id ) ) {
 				return predeterminedTab;
 			}

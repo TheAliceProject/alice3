@@ -45,11 +45,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Edit<M extends Model> {
-	private static <M extends Model> ModelContext<M> getContext( java.util.UUID contextId ) {
+public abstract class Edit<M extends CompletionModel> {
+	private static <M extends CompletionModel> CompletionContext<M> getContext( java.util.UUID contextId ) {
 		return HistoryNode.lookup( contextId );
 	}
-	private static <M extends Model> M getModel( ModelContext<M> context ) {
+	private static <M extends CompletionModel> M getModel( CompletionContext<M> context ) {
 		if( context != null ) {
 			return context.getModel();
 		} else {
@@ -57,7 +57,7 @@ public abstract class Edit<M extends Model> {
 			return null;
 		}
 	}
-	private static <M extends Model> Group getGroup( M model ) {
+	private static <M extends CompletionModel> Group getGroup( M model ) {
 		if( model != null ) {
 			return model.getGroup();
 		} else {
@@ -66,44 +66,48 @@ public abstract class Edit<M extends Model> {
 		}
 	}
 
-	protected static abstract class Memento< M extends Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public static abstract class Memento< M extends CompletionModel > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 		private java.util.UUID contextId;
+//		private java.util.UUID stepId;
 		public Memento( Edit<M> edit ) {
 			this.contextId = edit.contextId;
+//			this.stepId = edit.stepId;
 		}
 		public Memento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.decode( binaryDecoder );
+			this.contextId = binaryDecoder.decodeId();
+//			this.stepId = binaryDecoder.decodeId();
+			this.decodeInternal(binaryDecoder);
 		}
-		public ModelContext<M> getContext() {
+		protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+		protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
+		public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			binaryEncoder.encode( this.contextId );
+//			binaryEncoder.encode( this.stepId );
+			this.encodeInternal(binaryEncoder);
+		}
+		public CompletionContext<M> getContext() {
 			return Edit.getContext( this.contextId );
 		}
 		public M getModel() {
 			return Edit.getModel( this.getContext() );
 		}
 		public abstract Edit< M > createEdit();
-		protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
-		protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
-		public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.contextId = binaryDecoder.decodeId();
-			this.decodeInternal(binaryDecoder);
-		}
-		public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			binaryEncoder.encode( this.contextId );
-			this.encodeInternal(binaryEncoder);
-		}
 	};
 	
 	
 	private java.util.UUID contextId;
-	private transient ModelContext<M> context;
-
+	private transient CompletionContext<M> context;
+//	private java.util.UUID stepId;
+	private transient org.lgna.croquet.steps.CompletionStep< M > completionStep;
+	
 	public Edit() {
 	}
 	public Edit( Memento<M> memento ) {
 		this.contextId = memento.contextId;
+//		this.stepId = memento.stepId;
 	}
 	public abstract Memento<M> createMemento();
-	public ModelContext<M> getContext() {
+	public CompletionContext<M> getContext() {
 		if( this.context != null ) {
 			//pass
 		} else {
@@ -112,13 +116,32 @@ public abstract class Edit<M extends Model> {
 		assert this.context != null;
 		return this.context;
 	}
+	public boolean isValid() {
+		return true;
+	}
 	public M getModel() {
-		return getModel( this.getContext() );
+		if( this.completionStep != null ) {
+			return this.completionStep.getModel();
+		} else {
+			return getModel( this.getContext() );
+		}
 	}
 	public Group getGroup() {
 		return getGroup( this.getModel() );
 	}
-	public void setContext( ModelContext<M> context ) {
+	public org.lgna.croquet.steps.CompletionStep< M > getCompletionStep() {
+//		if( this.completionStep != null ) {
+//			//pass
+//		} else {
+//			this.completionStep = org.lgna.croquet.steps.Step.lookup( this.stepId );
+//		}
+		return this.completionStep;
+	}
+	public void setCompletionStep( org.lgna.croquet.steps.CompletionStep< M > completionStep ) {
+		this.completionStep = completionStep;
+//		this.stepId = this.completionStep.getId();
+	}
+	public void setContext( CompletionContext<M> context ) {
 		this.context = context;
 		if( this.context != null ) {
 			this.contextId = context.getId();
@@ -151,11 +174,11 @@ public abstract class Edit<M extends Model> {
 				throw new javax.swing.undo.CannotRedoException();
 			}
 		}
-		ContextManager.pushUndoOrRedo();
+		Manager.pushUndoOrRedo();
 		try {
 			this.doOrRedoInternal( isDo );
 		} finally {
-			ContextManager.popUndoOrRedo();
+			Manager.popUndoOrRedo();
 		}
 	}
 	public final void undo() {
@@ -164,12 +187,16 @@ public abstract class Edit<M extends Model> {
 		} else {
 			throw new javax.swing.undo.CannotRedoException();
 		}
-		ContextManager.pushUndoOrRedo();
+		Manager.pushUndoOrRedo();
 		try {
 			this.undoInternal();
 		} finally {
-			ContextManager.popUndoOrRedo();
+			Manager.popUndoOrRedo();
 		}
+	}
+
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, UserInformation userInformation ) {
+		return rv;
 	}
 
 	protected abstract StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale );

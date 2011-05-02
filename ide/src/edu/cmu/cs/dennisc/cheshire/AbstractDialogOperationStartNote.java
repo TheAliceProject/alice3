@@ -47,10 +47,10 @@ import edu.cmu.cs.dennisc.tutorial.*;
  * @author Dennis Cosgrove
  */
 /*package-private*/ abstract class AbstractDialogOperationStartNote extends RequirementNote {
-	private edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext< ? > context;
-	protected AbstractDialogOperationStartNote( edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext< ? > context, ParentContextCriterion parentContextCriterion ) {
+	private edu.cmu.cs.dennisc.croquet.DialogOperationContext< ? > context;
+	protected AbstractDialogOperationStartNote( edu.cmu.cs.dennisc.croquet.DialogOperationContext< ? > context, ParentContextCriterion parentContextCriterion ) {
 		super( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.OperationContext.class ) );
-		edu.cmu.cs.dennisc.croquet.AbstractDialogOperation< ? > operation = context.getModel();
+		edu.cmu.cs.dennisc.croquet.DialogOperation< ? > operation = context.getModel();
 		this.setText( operation.getTutorialStartNoteText( context, GuidedInteraction.getInstance().getUserInformation() ) );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( context );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );

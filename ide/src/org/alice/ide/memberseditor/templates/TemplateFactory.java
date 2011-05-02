@@ -94,7 +94,7 @@ public class TemplateFactory {
 		if( rv != null ) {
 			
 		} else {
-			rv = new org.alice.ide.memberseditor.templates.AccessArrayAtIndexTemplate( field );
+			rv = new org.alice.ide.memberseditor.templates.AccessFieldArrayAtIndexTemplate( field );
 			mapMethodToAccessArrayAtIndexTemplate.put( field, rv );
 		}
 		return rv;
@@ -104,7 +104,7 @@ public class TemplateFactory {
 		if( rv != null ) {
 			
 		} else {
-			rv = new org.alice.ide.memberseditor.templates.ArrayLengthTemplate( field );
+			rv = new org.alice.ide.memberseditor.templates.FieldArrayLengthTemplate( field );
 			mapMethodToArrayLengthTemplate.put( field, rv );
 		}
 		return rv;

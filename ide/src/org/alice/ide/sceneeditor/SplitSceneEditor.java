@@ -99,10 +99,10 @@ class FieldTreeSelectionState extends edu.cmu.cs.dennisc.croquet.TreeSelectionSt
 			public Class getValueClass() {
 				return edu.cmu.cs.dennisc.javax.swing.models.TreeNode.class;
 			}
-			public edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			public edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}
-			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > value ) {
+			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > value ) {
 				throw new RuntimeException( "todo" );
 			}
 			public StringBuilder appendRepresentation( StringBuilder rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > value, java.util.Locale locale ) {

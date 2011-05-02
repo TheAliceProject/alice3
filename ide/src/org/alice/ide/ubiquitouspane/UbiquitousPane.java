@@ -133,7 +133,7 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPane
 /**
  * @author Dennis Cosgrove
  */
-public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.WrappedFlowPanel {
+public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.View {
 	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
 //	private LoopTemplate loopTemplate = new LoopTemplate();
 	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();
@@ -149,46 +149,83 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.WrappedFlowPanel 
 	private ReturnStatementWrapper returnStatementWrapper = new ReturnStatementWrapper();
 	private TransientStatementsWrapper transientStatementsWrapper = new TransientStatementsWrapper();
 
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
-		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue) {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
+		public void changed(org.alice.ide.editorstabbedpane.CodeComposite nextValue) {
 			UbiquitousPane.this.refresh();
+		}
+	};
+	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isAlwaysShowingBlocksObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+		public void changing( boolean nextValue ) {
+		}
+		public void changed( boolean nextValue ) {
+			UbiquitousPane.this.removeAllComponents();
+			UbiquitousPane.this.getAwtComponent().setLayout( UbiquitousPane.this.createLayoutManager( UbiquitousPane.this.getAwtComponent() ) );
+			UbiquitousPane.this.addComponents();
+			UbiquitousPane.this.revalidateAndRepaint();
 		}
 	};
 
 	public UbiquitousPane() {
-		super( Alignment.LEADING );
-		final int PAD = 6;
+		super( org.alice.ide.croquet.models.templates.BlockTemplateComposite.getInstance() );
+		this.addComponents();
+		this.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+	}
+	private void addComponents() {
 		this.addComponent( this.doInOrderTemplate );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );
-//		this.addComponent( this.loopTemplate );
-
+		this.addSliver();
 		this.addComponent( this.countLoopTemplate );
 		this.addComponent( this.whileLoopTemplate );
 		this.addComponent( this.forEachInArrayLoopTemplate );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );
+		this.addSliver();
 		this.addComponent( this.conditionalStatementTemplate );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );
+		this.addSliver();
 		this.addComponent( this.doTogetherTemplate );
 		this.addComponent( this.eachInArrayTogetherTemplate );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );
-		this.addComponent( this.doInThreadTemplate );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );
+//		this.addSliver();
+//		this.addComponent( this.doInThreadTemplate );
+		this.addSliver();
 		this.addComponent( this.declareLocalTemplate );
 		this.addComponent( this.transientStatementsWrapper );
 		this.addComponent( this.returnStatementWrapper );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );
-		this.addComponent( this.commentTemplate );
-		
-		this.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+//		this.addSliver();
+//		this.addComponent( this.commentTemplate );
+	}
+	
+	private boolean isHorizontal() {
+		return org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue();
+	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		if( this.isHorizontal() ) {
+			return new wrap.WrappedFlowLayout( wrap.WrappedFlowLayout.LEADING, 0, 0 );
+		} else {
+			return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
+		}
+	}
+	public void addComponent( edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		this.internalAddComponent( component );
+	}
+
+	private static final int PAD = 6;
+	private void addSliver() {
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > sliver;
+		if( this.isHorizontal() ) {
+			sliver = edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD );
+		} else {
+			sliver = edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( PAD );
+		}
+		this.addComponent( sliver );
 	}
 	
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( this.selectionObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueObserver( this.isAlwaysShowingBlocksObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
+		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().removeValueObserver( this.isAlwaysShowingBlocksObserver );
 		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().removeValueObserver( this.selectionObserver );
 		super.handleUndisplayable();
 	}

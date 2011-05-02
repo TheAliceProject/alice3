@@ -43,7 +43,7 @@
 
 package org.alice.ide.openprojectpane;
 
-class RecentPane extends ListContentPanel {
+public class RecentPane extends ListContentPanel {
 	@Override
 	protected String getTextForZeroProjects() {
 		return "there are no recent projects";

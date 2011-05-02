@@ -85,7 +85,7 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation<o
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = context.getMainPanel();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getActualInputValue();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();
 		if (field != null) {
 			Object fieldObject = createFieldFromGalleryPane.createInstanceInJava();
 			
@@ -100,6 +100,10 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation<o
 				else
 				{
 					edu.cmu.cs.dennisc.math.AxisAlignedBox box = org.alice.stageide.gallerybrowser.ResourceManager.getAxisAlignedBox(this.treeNode);
+					if (box.isNaN())
+                    {
+                        System.err.println("TODO: fix broken bounding box for "+this.treeNode.getValue());
+                    }
 					AffineMatrix4x4 goodOrientation = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getGoodPointOfViewInSceneForObject(box);
 					((org.alice.apis.moveandturn.Transformable)fieldObject).setLocalTransformation(goodOrientation);
 				}

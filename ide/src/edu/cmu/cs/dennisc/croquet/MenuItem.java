@@ -54,7 +54,6 @@ public class MenuItem extends OperationButton< javax.swing.JMenuItem, Operation<
 	protected javax.swing.JMenuItem createAwtComponent() {
 		return new javax.swing.JMenuItem();
 	}
-
 //	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
 //		Application application = Application.getSingleton();
 //		MenuModelContext context = (MenuModelContext)application.getCurrentContext();

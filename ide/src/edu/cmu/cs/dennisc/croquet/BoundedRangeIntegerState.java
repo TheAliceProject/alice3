@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class BoundedRangeIntegerState extends State<Integer> {
+public abstract class BoundedRangeIntegerState extends State< Integer > {
 	public static interface ValueObserver {
 		//public void changing( int nextValue );
 		public void changed( int nextValue );
@@ -55,7 +55,8 @@ public final class BoundedRangeIntegerState extends State<Integer> {
 	private javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
 	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 		private boolean previousValueIsAdjusting = false;
-		public void stateChanged(javax.swing.event.ChangeEvent e) {
+
+		public void stateChanged( javax.swing.event.ChangeEvent e ) {
 			BoundedRangeIntegerStateContext boundedRangeIntegerStateContext;
 			if( this.previousValueIsAdjusting ) {
 				boundedRangeIntegerStateContext = (BoundedRangeIntegerStateContext)ContextManager.getCurrentContext();
@@ -65,7 +66,7 @@ public final class BoundedRangeIntegerState extends State<Integer> {
 			this.previousValueIsAdjusting = boundedRangeModel.getValueIsAdjusting();
 			boundedRangeIntegerStateContext.handleStateChanged( e );
 			BoundedRangeIntegerState.this.fireValueChanged( e );
-			
+
 			if( this.previousValueIsAdjusting ) {
 				//pass
 			} else {
@@ -77,6 +78,21 @@ public final class BoundedRangeIntegerState extends State<Integer> {
 			}
 		}
 	};
+	javax.swing.SpinnerModel spinnerModel = new javax.swing.AbstractSpinnerModel() {
+		public Integer getNextValue() {
+			return this.getValue()+1;
+		}
+		public Integer getPreviousValue() {
+			return this.getValue()-1;
+		}
+		public Integer getValue() {
+			return BoundedRangeIntegerState.this.boundedRangeModel.getValue();
+		}
+		public void setValue( Object value ) {
+			BoundedRangeIntegerState.this.boundedRangeModel.setValue( (Integer)value );
+		}
+	};
+
 	public BoundedRangeIntegerState( Group group, java.util.UUID id, int minimum, int value, int maximum ) {
 		super( group, id );
 		this.boundedRangeModel.setMinimum( minimum );
@@ -91,23 +107,27 @@ public final class BoundedRangeIntegerState extends State<Integer> {
 	}
 
 	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	public void addValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.add( valueObserver );
 	}
 	public void removeValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.remove( valueObserver );
 	}
-	
+
 	private void fireValueChanged( javax.swing.event.ChangeEvent e ) {
 		for( ValueObserver valueObserver : this.valueObservers ) {
 			valueObserver.changed( this.boundedRangeModel.getValue() );
 		}
 	}
-	
-	/*package-private*/public javax.swing.BoundedRangeModel getBoundedRangeModel() {
+
+	/*package-private*/ javax.swing.BoundedRangeModel getBoundedRangeModel() {
 		return this.boundedRangeModel;
 	}
-	
+	/*package-private*/ javax.swing.SpinnerModel getSpinnerModel() {
+		return this.spinnerModel;
+	}
+
 	public int getMinimum() {
 		return this.boundedRangeModel.getMinimum();
 	}
@@ -121,7 +141,7 @@ public final class BoundedRangeIntegerState extends State<Integer> {
 	public void setValue( Integer value ) {
 		this.boundedRangeModel.setValue( value );
 	}
-	
+
 	public Slider createSlider() {
 		return new Slider( this );
 	}

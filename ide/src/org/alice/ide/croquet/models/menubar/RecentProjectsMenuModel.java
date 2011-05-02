@@ -60,11 +60,11 @@ public class RecentProjectsMenuModel extends edu.cmu.cs.dennisc.croquet.MenuMode
 	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		java.util.List<String> paths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
 		final int N = paths.size();
-		edu.cmu.cs.dennisc.croquet.Model[] models = new edu.cmu.cs.dennisc.croquet.Model[ N ];
+		edu.cmu.cs.dennisc.croquet.MenuItemPrepModel[] models = new edu.cmu.cs.dennisc.croquet.MenuItemPrepModel[ N ];
 		for( int i=0; i<N; i++ ) {
 			String path = paths.get( i );
 			java.io.File file = new java.io.File( path );
-			models[ i ] = org.alice.ide.croquet.models.projecturi.OpenRecentProjectOperation.getInstance( file.toURI() );
+			models[ i ] = org.alice.ide.croquet.models.projecturi.OpenRecentProjectOperation.getInstance( file.toURI() ).getMenuItemPrepModel();
 		}
 		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( menuItemContainer, models );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: RecentProjectsMenuModel handleMenuSelected" );

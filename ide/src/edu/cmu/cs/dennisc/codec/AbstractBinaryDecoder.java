@@ -180,18 +180,35 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable() {
 		String clsName = this.decodeString();
 		if( clsName.length() > 0 ) {
-			Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-			java.lang.reflect.Constructor< E > cnstrctr;
-			E rv;
 			try {
-				cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class } );
-				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
+				java.lang.reflect.Constructor< E > cnstrctr = CodecUtilities.getPublicDecodeConstructor( clsName );			
+				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
 			} catch( NoSuchMethodException nsme ) {
-				cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
-				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
-				rv.decode( this );
+//				try {
+//					Class<E> cls = (Class<E>)Class.forName( clsName );
+//					java.lang.reflect.Constructor< E > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls );
+//					E rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+//					rv.decode( this );
+//					return rv;
+//				} catch( ClassNotFoundException cnfe ) {
+//					throw new RuntimeException( cnfe );
+//				}
+				throw new RuntimeException( nsme );
+			} catch( ClassNotFoundException cnfe ) {
+				throw new RuntimeException( cnfe );
 			}
-			return rv;
+//			Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
+//			java.lang.reflect.Constructor< E > cnstrctr;
+//			E rv;
+//			try {
+//				cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class } );
+//				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
+//			} catch( NoSuchMethodException nsme ) {
+//				cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
+//				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+//				rv.decode( this );
+//			}
+//			return rv;
 		} else {
 			return null;
 		}

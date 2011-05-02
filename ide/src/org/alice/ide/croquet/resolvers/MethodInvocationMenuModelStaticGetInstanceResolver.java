@@ -46,9 +46,9 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInvocationMenuModelStaticGetInstanceResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel > {
+public class MethodInvocationMenuModelStaticGetInstanceResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation > {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class };
-	public MethodInvocationMenuModelStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel instance ) {
+	public MethodInvocationMenuModelStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation instance ) {
 		super( instance );
 	}
 	public MethodInvocationMenuModelStaticGetInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -72,11 +72,11 @@ public class MethodInvocationMenuModelStaticGetInstanceResolver extends edu.cmu.
 	}
 
 	@Override
-	protected java.lang.Class< org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel.class;
+	protected java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation.class;
 	}
 	@Override
-	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Class< org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel > cls ) {
+	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation > cls ) {
 		//note: do not call super
 	}
 	@Override

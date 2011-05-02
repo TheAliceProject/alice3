@@ -54,21 +54,21 @@ public class FileMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuM
 	}
 	private FileMenuModel() {
 		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), 
-				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance(), 
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance(), 
+				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(), 
+				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(), 
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
 				RecentProjectsMenuModel.getInstance(), 
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance(), 
-				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance(), 
+				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance().getMenuItemPrepModel(), 
+				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance().getMenuItemPrepModel(), 
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance(), 
+				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel(), 
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 				PrintMenuModel.getInstance(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation(), 
+				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation().getMenuItemPrepModel(), 
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance() 
+				org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel()
 		);
 	}
 }

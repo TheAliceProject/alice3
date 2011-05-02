@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclareMethodOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> {
+public abstract class DeclareMethodOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
 	public DeclareMethodOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
@@ -63,19 +63,18 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 	protected abstract StringBuilder appendTutorialFinishNoteText( StringBuilder rv, org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
 
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-		if( successfulCompletionEvent != null ) {
-			org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
+	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+//		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+//		if( successfulCompletionEvent != null ) {
+			org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
 			assert declareMethodEdit != null;
 			assert declareMethodEdit.getMethod() != null;
-			sb.append( "Declare " );
-			sb.append( this.getMethodDescription( userInformation ) );
-			sb.append( " named " );
-			sb.append( declareMethodEdit.getMethod().getName() );
-		}
-		return sb.toString();
+			rv.append( "Declare " );
+			rv.append( this.getMethodDescription( userInformation ) );
+			rv.append( " named " );
+			rv.append( declareMethodEdit.getMethod().getName() );
+//		}
+		return rv;
 	}
 	
 	@Override
@@ -106,7 +105,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Edit< ? > EPIC_HACK_createEdit( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context ) {
 		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
-		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getActualInputValue();
+		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getInputValue();
 		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( declaringType, method );
 	}
 
@@ -120,7 +119,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context, boolean isOk) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
-			final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getActualInputValue();
+			final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getInputValue();
 			if( method != null ) {
 				final org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 				final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = ide.getFocusedCode();

@@ -48,9 +48,9 @@ package org.alice.ide.common;
 public class ThisPane extends AccessiblePane {
 	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava TYPE_FOR_NULL = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Void.class );
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = TYPE_FOR_NULL;
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
-		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue) {
-			ThisPane.this.updateBasedOnFocusedCode( nextValue );
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
+		public void changed(org.alice.ide.editorstabbedpane.CodeComposite nextValue) {
+			ThisPane.this.updateBasedOnFocusedCode( nextValue != null ? nextValue.getCode() : null );
 		}
 	};
 
@@ -87,8 +87,8 @@ public class ThisPane extends AccessiblePane {
 		return this.type;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		return org.alice.ide.croquet.models.ast.cascade.expression.ThisOperation.getInstance( expressionProperty );
 	}
 
 	@Override

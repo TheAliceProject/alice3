@@ -56,13 +56,13 @@ public class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 		super( java.util.UUID.fromString( "a59df2b2-a55a-41b5-be05-60d10a615049" ) );
 	}
 	@Override
-	protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+	protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > javaTypes = org.alice.ide.IDE.getSingleton().getPrimeTimeSelectableTypesDeclaredInJava();
 		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava javaType : javaTypes ) {
-			models.add( SelectTypeOperation.getInstance( javaType ) );
+			models.add( SelectTypeOperation.getInstance( javaType ).getMenuItemPrepModel() );
 		}
 		
 		models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );

@@ -60,7 +60,7 @@ public class ParameterAccessMenuModel extends edu.cmu.cs.dennisc.croquet.Predete
 
 	private ParameterAccessMenuModel( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
 		super( java.util.UUID.fromString( "7a9b90a1-a645-4e13-aeef-9ca631baad55" ),
-				org.alice.ide.croquet.models.ast.rename.RenameParameterOperation.getInstance( parameter ) 
+				org.alice.ide.croquet.models.ast.rename.RenameParameterOperation.getInstance( parameter ).getMenuItemPrepModel() 
 		);
 	}
 }

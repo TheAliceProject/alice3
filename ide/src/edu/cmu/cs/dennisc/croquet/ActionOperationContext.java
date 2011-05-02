@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ActionOperationContext extends OperationContext<ActionOperation> {
+public class ActionOperationContext extends SingleThreadOperationContext<ActionOperation> {
 	/*package-private*/ ActionOperationContext( ActionOperation actionOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( actionOperation, e, viewController );
 	}

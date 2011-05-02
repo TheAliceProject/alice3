@@ -55,15 +55,16 @@ public class PreferencesMenuModel extends edu.cmu.cs.dennisc.croquet.Predetermin
 	}
 	private PreferencesMenuModel() {
 		super( java.util.UUID.fromString( "e8f8a5b3-83be-4519-8956-3ef2b9546e23" ),
-				org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance(),
-				org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance(),
+				org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getMenuModel(),
+				org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().getMenuModel(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance(),
-				org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance(),
+				org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getMenuItemPrepModel(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.recursion.RecursionDialogOperation.getInstance(),
+				org.alice.ide.croquet.models.recursion.RecursionDialogOperation.getInstance().getMenuItemPrepModel(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 				GalleryMenuModel.getInstance()
 		);

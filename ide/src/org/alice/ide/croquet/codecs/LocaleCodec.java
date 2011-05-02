@@ -58,7 +58,7 @@ public enum LocaleCodec implements edu.cmu.cs.dennisc.croquet.Codec< java.util.L
 		}
 		return rv;
 	}
-	public java.util.Locale decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+	public java.util.Locale decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			String language = binaryDecoder.decodeString();
@@ -69,7 +69,7 @@ public enum LocaleCodec implements edu.cmu.cs.dennisc.croquet.Codec< java.util.L
 			return null;
 		}
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Locale value) {
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Locale value) {
 		if( value != null ) {
 			binaryEncoder.encode( true );
 			binaryEncoder.encode( value.getLanguage() );

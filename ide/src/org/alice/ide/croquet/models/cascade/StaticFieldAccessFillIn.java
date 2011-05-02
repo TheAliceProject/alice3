@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class StaticFieldAccessFillIn extends ExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
+public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, StaticFieldAccessFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static StaticFieldAccessFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField value ) {
 		synchronized( map ) {
@@ -60,9 +60,39 @@ public class StaticFieldAccessFillIn extends ExpressionFillIn< edu.cmu.cs.dennis
 			return rv;
 		}
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractField value;
-	private StaticFieldAccessFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractField value ) {
-		super( java.util.UUID.fromString( "c0c8bc11-ed5b-4541-8e4a-45579e05b0d2" ) );
-		this.value = value;
+	public static StaticFieldAccessFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type, String fieldName ) {
+		return getInstance( type.findField( fieldName ) );
 	}
+	public static StaticFieldAccessFillIn getInstance( Class<?> cls, String fieldName ) {
+		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), fieldName );
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.FieldAccess transientValue;
+	private StaticFieldAccessFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( java.util.UUID.fromString( "c0c8bc11-ed5b-4541-8e4a-45579e05b0d2" ) );
+		this.transientValue = this.createValue( field );
+	}
+	private edu.cmu.cs.dennisc.alice.ast.FieldAccess createValue( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( field.getDeclaringType() ), field );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.FieldAccess createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+		return this.createValue( this.transientValue.field.getValue() );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.FieldAccess getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+		return this.transientValue;
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, this.transientValue.field.getValue(), edu.cmu.cs.dennisc.alice.ast.AbstractField.class );
+	}
+	
+	@Override
+	protected String getTutorialItemText() {
+		return this.transientValue.field.getValue().getName();
+	}
+//	@Override
+//	protected org.alice.ide.croquet.resolvers.FieldStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createCodableResolver() {
+//		return new org.alice.ide.croquet.resolvers.FieldStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, this.transientValue.field.getValue() );
+//	}
 }

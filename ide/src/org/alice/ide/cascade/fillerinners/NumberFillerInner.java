@@ -51,125 +51,39 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.DoubleLiteral.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().createCopyOfPreviousExpression();
-		//final boolean isTop = blank.getParentFillIn() == null;
-		System.err.println( "todo: addFillIns isTop" );
-		final boolean isTop = false;
-		if( isTop && previousExpression != null ) {
-			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression ) {
-				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmeticInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)previousExpression;
-				edu.cmu.cs.dennisc.alice.ast.Expression leftOperand = previousArithmeticInfixExpression.leftOperand.getValue();
-				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator prevOperator = previousArithmeticInfixExpression.operator.getValue();
-				edu.cmu.cs.dennisc.alice.ast.Expression rightOperand = previousArithmeticInfixExpression.rightOperand.getValue();
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = previousArithmeticInfixExpression.expressionType.getValue();
-				for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-					if( operator != prevOperator ) {
-						blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression( leftOperand, operator, rightOperand, expressionType ), "(replace operator)" ) );
-					}
+	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addItems( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
+//		System.err.println( "todo: addFillIns isTop" );
+//		final boolean isTop = false;
+//		if( isTop && previousExpression != null ) {
+//			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression ) {
+//				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmeticInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)previousExpression;
+//				edu.cmu.cs.dennisc.alice.ast.Expression leftOperand = previousArithmeticInfixExpression.leftOperand.getValue();
+//				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator prevOperator = previousArithmeticInfixExpression.operator.getValue();
+//				edu.cmu.cs.dennisc.alice.ast.Expression rightOperand = previousArithmeticInfixExpression.rightOperand.getValue();
+//				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = previousArithmeticInfixExpression.expressionType.getValue();
+				for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
+//					if( operator != prevOperator ) {
+						rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
+//					}
 				}
-				blank.addSeparator();
-				blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( leftOperand, "(reduce to left operand only)" ) );
-				blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( rightOperand, "(reduce to right operand only)" ) );
-				blank.addSeparator();
-			}
-		}
+				rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+				rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToLeftOperandInPreviousArithmeticExpressionFillIn.getInstance() );
+				rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToRightOperandInPreviousArithmeticExpressionFillIn.getInstance() );
+				rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+//			}
+//		}
 		
 		for( double d : new double[] { 0.0, 0.25, 0.5, 1.0, 2.0, 10.0 } ) {
-			blank.addFillIn( new DoubleLiteralFillIn( d ) );
+			rv.add( org.alice.ide.croquet.models.cascade.literals.DoubleLiteralFillIn.getInstance( d ) );
 		}
-		if( isTop && previousExpression != null ) {
-			blank.addSeparator();
-			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
-				@Override
-				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-					String NEXT_DOUBLE_IN_RANGE_METHOD_NAME = "nextDoubleInRange";
-					edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = org.alice.ide.ast.NodeUtilities.createMethodInvocation( RANDOM_UTILITIES_TYPE_EXPRESSION, RANDOM_UTILITIES_TYPE.getDeclaredMethod( NEXT_DOUBLE_IN_RANGE_METHOD_NAME, Number.class, Number.class ), new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 ), new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 ) );
-					blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
-					addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, NEXT_DOUBLE_IN_RANGE_METHOD_NAME, java.lang.Number.class, java.lang.Number.class );
-				}
-			} );
-			blank.addSeparator();
-			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Math" ) {
-				@Override
-				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-					if( previousExpression != null ) {
-						for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-							blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Double.class, Number.class ) );
-						}
-						blank.addSeparator();
-					}
-					for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-						blank.addFillIn( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) );
-					}
-					blank.addSeparator();
-					blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "remainder, integer divide" ) {
-						@Override
-						protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-							if( previousExpression != null ) {
-								for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : TUCKED_AWAY_DOUBLE_ARITHMETIC_OPERATORS ) {
-									blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Double.class, Number.class ) );
-								}
-								blank.addSeparator();
-							}
-							for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : TUCKED_AWAY_DOUBLE_ARITHMETIC_OPERATORS ) {
-								blank.addFillIn( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) );
-							}
-						}
-					} );
-					blank.addSeparator();
-					blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "min, max" ) {
-						@Override
-						protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "min", java.lang.Double.TYPE, java.lang.Double.TYPE );
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "max", java.lang.Double.TYPE, java.lang.Double.TYPE );
-						}
-					} );
-					blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "absolute value, round, ceiling, floor" ) {
-						@Override
-						protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "abs", java.lang.Double.TYPE );
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "rint", java.lang.Double.TYPE );
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "ceil", java.lang.Double.TYPE );
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "floor", java.lang.Double.TYPE );
-						}
-					} );
-					//blank.addSeparator();
-					blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "sqrt, pow" ) {
-						@Override
-						protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "sqrt", java.lang.Double.TYPE );
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE );
-						}
-					} );
-					//blank.addSeparator();
-					blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "sin, cos, tan, asin, acos, atan, atan2, PI" ) {
-						@Override
-						protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "sin", java.lang.Double.TYPE );
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "cos", java.lang.Double.TYPE );
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "tan", java.lang.Double.TYPE );
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "asin", java.lang.Double.TYPE );
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "acos", java.lang.Double.TYPE );
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "atan", java.lang.Double.TYPE );
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "atan2", java.lang.Double.TYPE, java.lang.Double.TYPE );
-							addNodeChildForField( blank, MATH_TYPE_EXPRESSION, java.lang.Double.TYPE, "PI" );
-						}
-					} );
-					//blank.addSeparator();
-					blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "exp, log, E" ) {
-						@Override
-						protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "exp", java.lang.Double.TYPE );
-							addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "log", java.lang.Double.TYPE );
-							addNodeChildForField( blank, MATH_TYPE_EXPRESSION, java.lang.Double.TYPE, "E" );
-						}
-					} );
-				}
-			} );
-		}
-		//		self._addArithmeticFillIns( blank, ecc.dennisc.alice.ast.getType( java.lang.Double ), ecc.dennisc.alice.ast.getType( java.lang.Number ) )
-		blank.addSeparator();
-		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
+//		if( isTop && previousExpression != null ) {
+			rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+			rv.add( org.alice.ide.croquet.models.cascade.integer.RandomCascadeMenu.getInstance() );
+			rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+			rv.add( org.alice.ide.croquet.models.cascade.number.MathCascadeMenu.getInstance() );
+//		}
+		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn() );
+		return rv;
 	}
 }

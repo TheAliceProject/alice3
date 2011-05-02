@@ -50,7 +50,22 @@ public class BufferedImageTexture extends Texture {
 	private java.awt.image.BufferedImage m_bufferedImage = null;
 	private boolean m_isMipMappingDesired = true;
 	private boolean m_isPotentiallyAlphaBlended = false;
-	
+
+	public BufferedImageTexture() {
+	}
+	public BufferedImageTexture( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+		byte[] buffer = binaryDecoder.decodeByteArray();
+		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( buffer );
+		setBufferedImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, bais ) );
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		//todo
+		assert m_bufferedImage != null;
+		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+		edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, baos, m_bufferedImage );
+		binaryEncoder.encode( baos.toByteArray() );
+	}
 	public java.awt.image.BufferedImage getBufferedImage() {
 		return m_bufferedImage;
 	}
@@ -80,19 +95,6 @@ public class BufferedImageTexture extends Texture {
 			m_isPotentiallyAlphaBlended = isPotentiallyAlphaBlended;
 			fireTextureChanged();
 		}
-	}
-
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		byte[] buffer = binaryDecoder.decodeByteArray();
-		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( buffer );
-		setBufferedImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, bais ) );
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		//todo
-		assert m_bufferedImage != null;
-		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-		edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, baos, m_bufferedImage );
-		binaryEncoder.encode(  baos.toByteArray() );
 	}
 
 	@Override

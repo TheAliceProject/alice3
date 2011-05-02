@@ -55,15 +55,44 @@ public abstract class HistoryNode<C extends ModelContext<?>> implements edu.cmu.
 		map.put( this.id, this );
 	}
 	public HistoryNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.decode( binaryDecoder );
+		this.id = binaryDecoder.decodeId();
+		map.put( this.id, this );
+		this.decodeInternal( binaryDecoder );
 	}
 
-	public C getParent() {
+	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
+	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.id );
+		this.encodeInternal( binaryEncoder );
+	}
+
+	public final C getParent() {
 		return this.parent;
 	}
 	/*package-private*/ final void setParent( C parent ) {
 		this.parent = parent;
 	}
+	
+	public <T extends HistoryNode<?>> T getFirstAncestorAssignableTo( Class<T> cls, boolean isThisIncludedInSearch ) {
+		HistoryNode<?> rv;
+		if( isThisIncludedInSearch ) {
+			rv = this;
+		} else {
+			rv = this.getParent();
+		}
+		while( rv != null ) {
+			if( cls.isAssignableFrom( rv.getClass() ) ) {
+				break;
+			}
+			rv = rv.getParent();
+		}
+		return (T)rv;
+	}
+	public final <T extends HistoryNode> T getFirstAncestorAssignableTo( Class<T> cls ) {
+		return getFirstAncestorAssignableTo( cls, false );
+	}
+
 	public java.util.UUID getId() {
 		return this.id;
 	}
@@ -84,17 +113,6 @@ public abstract class HistoryNode<C extends ModelContext<?>> implements edu.cmu.
 		} else {
 			return null;
 		}
-	}
-	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
-	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
-	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.id = binaryDecoder.decodeId();
-		map.put( this.id, this );
-		this.decodeInternal( binaryDecoder );
-	}
-	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.id );
-		this.encodeInternal( binaryEncoder );
 	}
 	
 	protected StringBuilder appendRepr( StringBuilder rv ) {

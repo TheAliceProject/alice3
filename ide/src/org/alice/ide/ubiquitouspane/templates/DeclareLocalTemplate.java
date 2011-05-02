@@ -78,8 +78,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 		super.handleUndisplayable();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation<?> createDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
-		org.alice.ide.operations.ast.DeclareLocalOperation declareLocalOperation = new org.alice.ide.operations.ast.DeclareLocalOperation( blockStatement, index );
-		return declareLocalOperation;
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		return new org.alice.ide.operations.ast.DeclareLocalOperation( blockStatementIndexPair );
 	}
 }

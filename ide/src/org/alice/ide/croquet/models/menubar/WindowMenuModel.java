@@ -52,11 +52,11 @@ public class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMen
 	public static WindowMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
-	private static java.util.List<edu.cmu.cs.dennisc.croquet.Model> createModels() {
-		java.util.List<edu.cmu.cs.dennisc.croquet.Model> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		rv.add( org.alice.ide.croquet.models.history.IsProjectHistoryShowingState.getInstance() );
+	private static java.util.List<edu.cmu.cs.dennisc.croquet.MenuItemPrepModel> createModels() {
+		java.util.List<edu.cmu.cs.dennisc.croquet.MenuItemPrepModel> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		rv.add( org.alice.ide.croquet.models.history.IsProjectHistoryShowingState.getInstance().getMenuItemPrepModel() );
 		//rv.add( org.alice.ide.croquet.models.history.IsUIHistoryShowingState.getInstance() );
-		rv.add( org.alice.ide.croquet.models.ui.IsMemoryUsageShowingState.getInstance() );
+		rv.add( org.alice.ide.croquet.models.ui.IsMemoryUsageShowingState.getInstance().getMenuItemPrepModel() );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
 			rv.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 			rv.add( InternalTestingMenuModel.getInstance() );

@@ -42,10 +42,12 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.steps.TransactionManager;
+
 /**
  * @author Dennis Cosgrove
  */
-public /*final*/ class BooleanState extends State<Boolean> {
+public class BooleanState extends State<Boolean> {
 	public static interface ValueObserver {
 		public void changing( boolean nextValue );
 		public void changed( boolean nextValue );
@@ -72,7 +74,7 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	};
 	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 		public void itemStateChanged(java.awt.event.ItemEvent e) {
-			if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
+			if( Manager.isInTheMidstOfUndoOrRedo() ) {
 				//pass
 			} else {
 				if( BooleanState.this.isContextCommitDesired() ) {
@@ -101,6 +103,7 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	}
 	
 	private void commitEdit( BooleanStateEdit booleanStateEdit, java.awt.event.ItemEvent e ) {
+		TransactionManager.addBooleanStateChangeStep( this );
 		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
 		childContext.commitAndInvokeDo( booleanStateEdit );
 		ModelContext< ? > popContext = ContextManager.popContext();
@@ -121,37 +124,36 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	}
 	
 	@Override
-	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, UserInformation userInformation ) {
-		return getTutorialNoteText( modelContext, userInformation );
+	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( getTutorialNoteText( modelContext, userInformation ) );
+		return rv;
 	}
 
 	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-		if( successfulCompletionEvent != null ) {
-			BooleanStateEdit booleanStateEdit = (BooleanStateEdit)successfulCompletionEvent.getEdit();
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		if( edit instanceof BooleanStateEdit ) {
+			BooleanStateEdit booleanStateEdit = (BooleanStateEdit)edit;
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
 				if( booleanStateEdit.getNextValue() ) {
-					sb.append( "Select " );
+					rv.append( "Select " );
 				} else {
-					sb.append( "Unselect " );
+					rv.append( "Unselect " );
 				}
-				sb.append( "<strong>" );
-				sb.append( this.getTrueText() );
-				sb.append( "</strong>" );
+				rv.append( "<strong>" );
+				rv.append( this.getTrueText() );
+				rv.append( "</strong>" );
 			} else {
-				sb.append( "Press " );
-				sb.append( "<strong>" );
+				rv.append( "Press " );
+				rv.append( "<strong>" );
 				if( booleanStateEdit.getNextValue() ) {
-					sb.append( this.falseText );
+					rv.append( this.falseText );
 				} else {
-					sb.append( this.trueText );
+					rv.append( this.trueText );
 				}
-				sb.append( "</strong>" );
+				rv.append( "</strong>" );
 			}
 		}
-		return sb.toString();
+		return rv;
 	}
 	
 	@Override
@@ -244,6 +246,16 @@ public /*final*/ class BooleanState extends State<Boolean> {
 		this.action.putValue(javax.swing.Action.SMALL_ICON, icon);
 	}
 	
+	private BooleanStateMenuItemPrepModel menuPrepModel;
+	public synchronized BooleanStateMenuItemPrepModel getMenuItemPrepModel() {
+		if( this.menuPrepModel != null ) {
+			//pass
+		} else {
+			this.menuPrepModel = new BooleanStateMenuItemPrepModel( this );
+		}
+		return this.menuPrepModel;
+	}
+
 	public RadioButton createRadioButton() {
 		return new RadioButton( this );
 	}
@@ -253,9 +265,9 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	public PushButton createPushButton() {
 		return new PushButton( this );
 	}
-	public CheckBoxMenuItem createCheckBoxMenuItem() {
-		return new CheckBoxMenuItem( this );
-	}
+//	public CheckBoxMenuItem createCheckBoxMenuItem() {
+//		return new CheckBoxMenuItem( this );
+//	}
 	public ToolPalette createToolPalette( Component<?> component ) {
 		ToolPaletteTitle title = new ToolPaletteTitle( this );
 		return new ToolPalette(title, component);

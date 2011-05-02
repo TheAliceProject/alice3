@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.numberpad;
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerModel extends NumberModel {
+public class IntegerModel extends NumberModel<edu.cmu.cs.dennisc.alice.ast.Expression> {
 	private static class SingletonHolder {
 		private static IntegerModel instance = new IntegerModel();
 	}

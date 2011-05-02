@@ -54,13 +54,6 @@ public class AngleInRadians extends Angle {
 			setAsRadians( other.doubleValue() );
 		}
 	}
-	
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		m_radians = binaryDecoder.decodeDouble();
-	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		binaryEncoder.encode( m_radians );
-	}
 
 	@Override
 	public boolean equals( Object obj ) {

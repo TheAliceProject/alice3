@@ -137,9 +137,9 @@ public class RequirementNote extends RetargetableNote /* implements ParentContex
 	
 	@Override
 	public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) throws CancelException {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent ) {
-			edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent)child;
-			edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?> dialogOperationContext = windowOpenedEvent.getParent();
+		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
+			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent)child;
+			edu.cmu.cs.dennisc.croquet.DialogOperationContext<?> dialogOperationContext = windowOpenedEvent.getParent();
 			edu.cmu.cs.dennisc.croquet.Dialog dialog = dialogOperationContext.getModel().getActiveDialog();
 			if( dialog != null ) {
 				java.awt.Rectangle dialogLocalBounds = dialog.getLocalBounds();
@@ -148,8 +148,8 @@ public class RequirementNote extends RetargetableNote /* implements ParentContex
 					this.setLocation( dialog.getWidth()+100, dialog.getHeight()/2, dialog );
 				}
 			}
-		} else if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuResizedEvent ) {
-			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuResizedEvent menuResizedEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuResizedEvent)child;
+		} else if( child instanceof edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuResizedEvent ) {
+			edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuResizedEvent menuResizedEvent = (edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuResizedEvent)child;
 			java.awt.event.ComponentEvent e = menuResizedEvent.getComponentEvent();
 			if( e != null ) {
 				java.awt.Component awtComponent = e.getComponent();

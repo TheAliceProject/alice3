@@ -277,11 +277,11 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 				}
 			};
 			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
-			rv.setBackground( DEFAULT_BACKGROUND_COLOR );
+			//rv.setBackground( this.getBackgroundColor() );
 			return rv;
 		}
 	}
-
+	
 
 	private CardPanel cardPanel = new CardPanel();
 	private TitlesPanel titlesPanel = new TitlesPanel();
@@ -336,7 +336,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		}
 	}
 	
-	private static class PopupButton extends Button {
+	private class PopupButton extends Button {
 		public PopupButton( Operation<?> operation ) {
 			super( operation );
 		}
@@ -358,7 +358,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 					if( isNecessary() ) {
 						super.paint(g);
 					} else {
-						g.setColor( DEFAULT_BACKGROUND_COLOR );
+						g.setColor( FolderTabbedPane.this.getBackgroundColor() );
 						g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 					}
 				}
@@ -376,7 +376,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		}
 	}
 
-	public FolderTabbedPane( ListSelectionState<E> model, ListSelectionState.TabCreator< E > tabCreator ) {
+	public FolderTabbedPane( ListSelectionState<E> model, TabSelectionState.TabCreator< E > tabCreator ) {
 		super( model, tabCreator );
 		this.cardPanel.setBackgroundColor( null );
 		this.headerPanel.setBackgroundColor( null );
@@ -425,7 +425,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		if( component.isOpaque() ) {
 			//pass
 		} else {
-			component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+			component.setBackgroundColor( this.getBackgroundColor() );
 		}
 		component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 		this.headerPanel.addComponent( component, BorderPanel.Constraint.LINE_START );
@@ -435,7 +435,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		if( component.isOpaque() ) {
 			//pass
 		} else {
-			component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+			component.setBackgroundColor( this.getBackgroundColor() );
 		}
 		component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 		this.headerPanel.addComponent( component, BorderPanel.Constraint.LINE_END );

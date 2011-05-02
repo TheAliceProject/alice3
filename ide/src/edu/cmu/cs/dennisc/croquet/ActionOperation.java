@@ -45,12 +45,12 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ActionOperation extends Operation<ActionOperationContext> {
+public abstract class ActionOperation extends SingleThreadOperation<ActionOperationContext> {
 	public ActionOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
 	@Override
-	public ActionOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public ActionOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushActionOperationContext( this, e, viewController );
 	}
 }

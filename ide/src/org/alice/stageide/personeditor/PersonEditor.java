@@ -42,124 +42,19 @@
  */
 package org.alice.stageide.personeditor;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
-
-/**
- * @author Dennis Cosgrove
- */
-class FitnessLevelActionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState fitnessState;
-	private int value;
-	public FitnessLevelActionOperation( edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState fitnessState, int value, String name ) {
-		super( java.util.UUID.fromString( "979d9be8-c24c-4921-93d4-23747bdf079d" ) );
-		this.fitnessState = fitnessState;
-		this.value = value;
-		this.setName( name );
-	}
-	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		this.fitnessState.setValue( this.value );
-	}
-}
+import org.alice.stageide.croquet.models.personeditor.PersonInfo;
 
 /**
  * @author Dennis Cosgrove
  */
 public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	public static final edu.cmu.cs.dennisc.croquet.Group GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "2d7d725d-1806-40d1-ac2b-d9cd48cb0abb" ), "PersonEditor.GROUP" );
-
-	///*package-private*/ static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 220, 220, 255 );
-	/*package-private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
-	/*package-private*/ static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
-
-
-
-	private RandomPersonActionOperation randomPersonActionOperation = new RandomPersonActionOperation( this );
-
-	private LifeStageSelectionState lifeStageSelection = new LifeStageSelectionState();
-	private GenderSelectionState genderSelection = new GenderSelectionState();
-	
-	private BaseSkinToneSelectionState baseSkinToneSelection = new BaseSkinToneSelectionState();
-	private BaseEyeColorSelectionState baseEyeColorSelection = new BaseEyeColorSelectionState();
-	
-	private FullBodyOutfitSelectionState fullBodyOutfitSelection = new FullBodyOutfitSelectionState();
-	private HairColorSelectionState hairColorSelection = new HairColorSelectionState();
-	private HairSelectionState hairSelection = new HairSelectionState();
-
-	private edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState fitnessState = new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ), 0, 50, 100 );
-	private FitnessLevelActionOperation softOperation = new FitnessLevelActionOperation( this.fitnessState, this.fitnessState.getMinimum(), "out of shape" );
-	private FitnessLevelActionOperation cutOperation = new FitnessLevelActionOperation( this.fitnessState, this.fitnessState.getMaximum(), "in shape" );
-
-	private java.util.Map<org.alice.apis.stage.LifeStage, org.alice.apis.stage.Person> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static abstract class ContentTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
-		public ContentTab(java.util.UUID id, String title) {
-			super(id);
-			this.setTitleText( title );
-		}
-		@Override
-		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
-			return null;
-		}
+	private static class SingletonHolder {
+		private static PersonEditor instance = new PersonEditor();
 	}
-
-	private class BodyTab extends ContentTab {
-		public BodyTab() {
-			super( java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ), "Body" );
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
-			edu.cmu.cs.dennisc.croquet.List< ? > list = fullBodyOutfitSelection.createList();
-			edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( list );
-			scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );
-			scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-
-			edu.cmu.cs.dennisc.croquet.Slider slider = fitnessState.createSlider();
-			slider.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-			
-			edu.cmu.cs.dennisc.croquet.BorderPanel fitnessLevelPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-			fitnessLevelPane.addComponent( softOperation.createButton(), Constraint.LINE_START );
-			fitnessLevelPane.addComponent( slider, Constraint.CENTER );
-			fitnessLevelPane.addComponent( cutOperation.createButton(), Constraint.LINE_END );
-
-			edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel( 8, 8 );
-			rv.addComponent( scrollPane, Constraint.CENTER );
-			rv.addComponent( fitnessLevelPane, Constraint.PAGE_END );
-			rv.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-			rv.getAwtComponent().setOpaque( true );
-			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
-			return rv;
-		}
+	public static PersonEditor getInstance() {
+		return SingletonHolder.instance;
 	}
-	private class HeadTab extends ContentTab {
-		public HeadTab() {
-			super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), "Head" );
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
-			edu.cmu.cs.dennisc.croquet.RowsSpringPanel rv = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
-				@Override
-				protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
-					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "hair:", hairColorSelection.createList() ) );
-					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, hairSelection.createList() ) );
-					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "eye color:", baseEyeColorSelection.createList() ) );
-					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() ) );
-					return rv;
-				}
-			};
-			rv.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
-			return rv;
-		}
-	};
-
-	private edu.cmu.cs.dennisc.croquet.PredeterminedTabSelectionState tabbedPaneSelection;
-	
-
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab> tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab>() {
-		public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
-		}
-	};
-	public PersonEditor( org.alice.stageide.personeditor.PersonInfo personInfo ) {
+	private PersonEditor() {
 		org.alice.apis.stage.LifeStage[] lifeStages = {  org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.LifeStage.CHILD };
 		for( org.alice.apis.stage.LifeStage lifeStage : lifeStages ) {
 			map.put( lifeStage, lifeStage.createInstance() );
@@ -168,52 +63,48 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			person.getSGTransformable().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
 		}
 
-		this.setPersonInfo( personInfo );
-		this.handleCataclysm( true, true, true );
-
-		this.lifeStageSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.LifeStage>() {
+		org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.LifeStage>() {
 			public void changed(org.alice.apis.stage.LifeStage nextValue) {
 				handleCataclysm( true, false, false );
 			}
 		} );
-		this.genderSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.Gender>() {
+		org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.Gender>() {
 			public void changed(org.alice.apis.stage.Gender nextValue) {
 				handleCataclysm( false, true, false );
 			}
 		} );
-		this.hairColorSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<String>() {
+		org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<String>() {
 			public void changed(String nextValue) {
 				handleCataclysm( false, false, true );
 			}
 		} );
 		
-		this.fullBodyOutfitSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.FullBodyOutfit>() {
+		org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.FullBodyOutfit>() {
 			public void changed(org.alice.apis.stage.FullBodyOutfit nextValue) {
 				updatePerson();
 			}
 		} );
-		this.hairSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.Hair>() {
+		org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.Hair>() {
 			public void changed(org.alice.apis.stage.Hair nextValue) {
 				updatePerson();
 			}
 		} );
-		this.fitnessState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState.ValueObserver() {
+		org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState.ValueObserver() {
 			public void changed(int nextValue) {
 				updatePerson();
 			}
 		} );
-		this.baseEyeColorSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseEyeColor>() {
+		org.alice.stageide.croquet.models.personeditor.BaseEyeColorSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseEyeColor>() {
 			public void changed(org.alice.apis.stage.BaseEyeColor nextValue) {
 				updatePerson();
 			}
 		} );
 
 
-		this.tabbedPaneSelection = edu.cmu.cs.dennisc.croquet.PredeterminedTabSelectionState.createInstance( PersonEditor.GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), null, 0, new BodyTab(), new HeadTab() );
-		final edu.cmu.cs.dennisc.croquet.FolderTabbedPane<?> tabbedPane = this.tabbedPaneSelection.createDefaultFolderTabbedPane();
+		final edu.cmu.cs.dennisc.croquet.FolderTabbedPane<?> tabbedPane = org.alice.stageide.croquet.models.personeditor.BodyHeadTabSelectionModel.getInstance().createDefaultFolderTabbedPane();
 		tabbedPane.scaleFont( 1.5f );
 
-		this.baseSkinToneSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseSkinTone>() {
+		org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseSkinTone>() {
 			public void changed(org.alice.apis.stage.BaseSkinTone nextValue) {
 				updatePerson();
 				tabbedPane.repaint();
@@ -222,13 +113,13 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel northPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		northPane.addComponent(  this.randomPersonActionOperation.createButton(), Constraint.PAGE_START );
+		northPane.addComponent( org.alice.stageide.croquet.models.personeditor.RandomPersonActionOperation.getInstance().createButton(), Constraint.PAGE_START );
 		edu.cmu.cs.dennisc.croquet.RowsSpringPanel ubiquitousPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
 			@Override
 			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "life stage:", lifeStageSelection.createList() ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "gender:", genderSelection.createList() ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "skin tone:", baseSkinToneSelection.createList() ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "life stage:", org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().createList() ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "gender:", org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().createList() ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "skin tone:", org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().createList() ) );
 				return rv;
 			}
 		};
@@ -250,7 +141,17 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //				PersonViewer.getSingleton().setFitnessLevel( nextValue*0.01 );
 //			}
 //		} );
+	}
 
+	private java.util.Map<org.alice.apis.stage.LifeStage, org.alice.apis.stage.Person> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab> tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab>() {
+		public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
+		}
+	};
+	
+	public void initialize( org.alice.stageide.croquet.models.personeditor.PersonInfo personInfo ) {
+		this.setPersonInfo( personInfo );
+		this.handleCataclysm( true, true, true );
 	}
 	
 	private boolean isAlreadyHandlingCataclysm = false;
@@ -260,29 +161,29 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		} else {
 			this.isAlreadyHandlingCataclysm = true;
 			try {
-				org.alice.apis.stage.LifeStage lifeStage = this.lifeStageSelection.getSelectedItem();
-				org.alice.apis.stage.Gender gender = this.genderSelection.getSelectedItem();
-				String hairColor = this.hairColorSelection.getSelectedItem();
+				org.alice.apis.stage.LifeStage lifeStage = org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().getSelectedItem();
+				org.alice.apis.stage.Gender gender = org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().getSelectedItem();
+				String hairColor = org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().getSelectedItem();
 				if( isLifeStageChange || isGenderChange || isHairColorChange ) {
-					this.hairSelection.handleCataclysmicChange( lifeStage, gender, hairColor );
+					org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().handleCataclysmicChange( lifeStage, gender, hairColor );
 				}
 				if( isLifeStageChange || isGenderChange ) {
-					this.fullBodyOutfitSelection.handleCataclysmicChange( lifeStage, gender );
+					org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().handleCataclysmicChange( lifeStage, gender );
 				}
 				if( isLifeStageChange ) {
-					this.hairColorSelection.handleCataclysmicChange( lifeStage );
+					org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().handleCataclysmicChange( lifeStage );
 				}
 				this.updatePerson();
 				org.alice.apis.stage.Person person = PersonViewer.getSingleton().getPerson();
 				org.alice.apis.stage.Hair hair = person.getHair();
 				if( isLifeStageChange || isGenderChange || isHairColorChange ) {
-					this.hairSelection.setSelectedItem( hair );
+					org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().setSelectedItem( hair );
 				}
 				if( isLifeStageChange || isGenderChange ) {
-					this.fullBodyOutfitSelection.setSelectedItem( (org.alice.apis.stage.FullBodyOutfit)person.getOutfit() );
+					org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().setSelectedItem( (org.alice.apis.stage.FullBodyOutfit)person.getOutfit() );
 				}
 				if( isLifeStageChange ) {
-					this.hairColorSelection.setSelectedItem( hair.toString() );
+					org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().setSelectedItem( hair.toString() );
 				}
 			} finally {
 				this.isAlreadyHandlingCataclysm = false;
@@ -298,15 +199,15 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			this.isAlreadyUpdating = true;
 			//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().acquireRenderingLock();
 			try {
-				org.alice.apis.stage.LifeStage lifeStage = this.lifeStageSelection.getSelectedItem();
-				org.alice.apis.stage.Gender gender = this.genderSelection.getSelectedItem();
-				String hairColor = this.hairColorSelection.getSelectedItem();
+				org.alice.apis.stage.LifeStage lifeStage = org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().getSelectedItem();
+				org.alice.apis.stage.Gender gender = org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().getSelectedItem();
+				String hairColor = org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().getSelectedItem();
 
-				org.alice.apis.stage.FullBodyOutfit fullBodyOutfit = this.fullBodyOutfitSelection.getSelectedItem();
-				org.alice.apis.stage.BaseEyeColor baseEyeColor = this.baseEyeColorSelection.getSelectedItem();
-				org.alice.apis.stage.BaseSkinTone baseSkinTone = this.baseSkinToneSelection.getSelectedItem();
-				org.alice.apis.stage.Hair hair = this.hairSelection.getSelectedItem();
-				double fitnessLevel = this.fitnessState.getValue()*0.01;
+				org.alice.apis.stage.FullBodyOutfit fullBodyOutfit = org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().getSelectedItem();
+				org.alice.apis.stage.BaseEyeColor baseEyeColor = org.alice.stageide.croquet.models.personeditor.BaseEyeColorSelectionState.getInstance().getSelectedItem();
+				org.alice.apis.stage.BaseSkinTone baseSkinTone = org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().getSelectedItem();
+				org.alice.apis.stage.Hair hair = org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().getSelectedItem();
+				double fitnessLevel = org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().getValue()*0.01;
 				
 				assert lifeStage != null;
 				org.alice.apis.stage.Person person = this.map.get( lifeStage );
@@ -357,15 +258,15 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		return PersonInfo.createFromPerson( PersonViewer.getSingleton().getPerson() );
 	}
 	public void setPersonInfo( PersonInfo personInfo ) {
-		this.lifeStageSelection.setSelectedItem( personInfo.getLifeStage() );
-		this.genderSelection.setSelectedItem( personInfo.getGender() );
-		this.baseEyeColorSelection.setSelectedItem( personInfo.getBaseEyeColor() );
-		this.baseSkinToneSelection.setSelectedItem( personInfo.getBaseSkinTone() );
-		this.fullBodyOutfitSelection.setSelectedItem( personInfo.getFullBodyOutfit() );
+		org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().setSelectedItem( personInfo.getLifeStage() );
+		org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().setSelectedItem( personInfo.getGender() );
+		org.alice.stageide.croquet.models.personeditor.BaseEyeColorSelectionState.getInstance().setSelectedItem( personInfo.getBaseEyeColor() );
+		org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().setSelectedItem( personInfo.getBaseSkinTone() );
+		org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().setSelectedItem( personInfo.getFullBodyOutfit() );
 		
 		org.alice.apis.stage.Hair hair = personInfo.getHair();
-		this.hairSelection.setSelectedItem( hair );
-		this.hairColorSelection.setSelectedItem( hair.toString() );
-		this.fitnessState.setValue( (int)(personInfo.getFitnessLevel()*100) );
+		org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().setSelectedItem( hair );
+		org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().setSelectedItem( hair.toString() );
+		org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().setValue( (int)(personInfo.getFitnessLevel()*100) );
 	}
 }

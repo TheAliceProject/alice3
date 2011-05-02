@@ -117,7 +117,7 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context ) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane = context.getMainPanel();
 		//todo: dialog title: "Create New Instance"
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.getActualInputValue();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.getInputValue();
 		if( field != null ) {
 			Object instanceInJava = createFieldPane.createInstanceInJava();
 			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, instanceInJava );

@@ -46,13 +46,13 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class PredeterminedMenuModel extends MenuModel {
-	private Model[] models;
-	public PredeterminedMenuModel( java.util.UUID individualId, Model... models ) {
+	private MenuItemPrepModel[] models;
+	public PredeterminedMenuModel( java.util.UUID individualId, MenuItemPrepModel... models ) {
 		super( individualId );
 		this.models = models;
 	}
-	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List< Model > models ) {
-		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class) );
+	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List< MenuItemPrepModel > models ) {
+		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, MenuItemPrepModel.class) );
 	}
 	
 	public Model[] getModels() {
@@ -67,7 +67,7 @@ public class PredeterminedMenuModel extends MenuModel {
 		return rv;
 	}
 	@Override
-	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
 		MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
 	}

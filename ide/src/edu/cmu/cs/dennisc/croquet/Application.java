@@ -50,6 +50,8 @@ public abstract class Application {
 	public static final Group UI_STATE_GROUP = Group.getInstance( java.util.UUID.fromString( "d92c1a48-a6ae-473b-9b9f-94734e1606c1" ), "UI_STATE_GROUP" );
 	public static final Group INFORMATION_GROUP = Group.getInstance( java.util.UUID.fromString( "c883259e-3346-49d0-a63f-52eeb3d9d805" ), "INFORMATION_GROUP" );
 	public static final Group INHERIT_GROUP = Group.getInstance( java.util.UUID.fromString( "488f8cf9-30cd-49fc-ab72-7fd6a3e13c3f" ), "INHERIT_GROUP" );
+	//todo: just use inherit for cascade?
+	public static final Group CASCADE_GROUP = Group.getInstance( java.util.UUID.fromString( "b8c959a9-5617-435f-a107-412090d9861a" ), "CASCADE_GROUP" );
 
 	private static Application singleton;
 
@@ -133,7 +135,7 @@ public abstract class Application {
 				java.util.Locale.setDefault( locale );
 				javax.swing.JComponent.setDefaultLocale( locale );
 				
-				ContextManager.localizeAllModels();
+				Manager.localizeAllModels();
 				
 				try {
 					javax.swing.UIManager.setLookAndFeel( javax.swing.UIManager.getLookAndFeel() );

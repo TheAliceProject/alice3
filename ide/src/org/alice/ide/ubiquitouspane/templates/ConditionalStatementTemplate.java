@@ -50,17 +50,7 @@ public class ConditionalStatementTemplate extends CascadingUbiquitousStatementCl
 		super( edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteConditionalStatement() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE };
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.ConditionalStatement rv = org.alice.ide.ast.NodeUtilities.createIncompleteConditionalStatement();
-		rv.booleanExpressionBodyPairs.get( 0 ).expression.setValue( expressions[ 0 ] );
-		return rv;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
-		return org.alice.ide.croquet.models.ast.templates.ConditionalStatementMenuModel.getInstance( blockStatementIndexPair );
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.ConditionalStatementInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DragAndDropModel extends Model {
+public abstract class DragAndDropModel extends PrepModel {
 	public static final Group DRAG_GROUP = Group.getInstance( java.util.UUID.fromString( "16f67072-dd57-453c-a812-69f2303bc948" ), "DRAG_GROUP" );
 	public DragAndDropModel( java.util.UUID inividualUUID ) {
 		super( DRAG_GROUP, inividualUUID );
@@ -55,19 +55,37 @@ public abstract class DragAndDropModel extends Model {
 	}
 	
 	@Override
-	public String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
-		return "Drag and Drop...";
+	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( "Drag and Drop..." );
+		return rv;
 	}
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( "Drag..." );
+		return rv;
+	}
+	@Deprecated
 	public String getTutorialDragNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {
 		return "Drag...";
 	}
+	@Deprecated
 	public String getTutorialDropNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {
 		return "Drop...";
 	}
 
 	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	public boolean isAlreadyInState( Edit< ? > edit ) {
 		return false;
+	}
+	
+	@Override
+	public Iterable< ? extends Model > getChildren() {
+		return java.util.Collections.emptyList();
+	}
+	@Override
+	public boolean isChild( edu.cmu.cs.dennisc.croquet.Model model ) {
+		//todo
+		return true;
 	}
 	
 	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );

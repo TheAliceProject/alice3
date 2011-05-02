@@ -99,7 +99,7 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.croquet.AbstractButton;
-import edu.cmu.cs.dennisc.croquet.PopupMenuOperation;
+import edu.cmu.cs.dennisc.croquet.StandardPopupOperation;
 import edu.cmu.cs.dennisc.croquet.BooleanState;
 import edu.cmu.cs.dennisc.croquet.ComboBox;
 import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
@@ -137,6 +137,7 @@ import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
  * @author Dennis Cosgrove
  */
 public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor implements LookingGlassListener{
+	public static boolean IS_RUN_BUTTON_DESIRED = true;
 
 	
 	public static interface SceneEditorFieldObserver
@@ -189,9 +190,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	//private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState.getInstance();
 	//private ListSelectionState<FieldDeclaredInAlice> objectMarkerFieldList = org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState.getInstance();
 
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
-		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode next ) {
-			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( next );
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
+		public void changed( org.alice.ide.editorstabbedpane.CodeComposite next ) {
+			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( next != null ? next.getCode() : null );
 		}
 	};
 	
@@ -573,6 +574,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	public AffineMatrix4x4 getGoodPointOfViewInSceneForObject(edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox)
 	{
+	    if (boundingBox.isNaN())
+        {
+            return AffineMatrix4x4.createIdentity();
+        }
+	    
 		AffineMatrix4x4 goodPointOfView = new AffineMatrix4x4();
 		MarkerWithIcon selectedCameraMarker = getActiveCameraMarker();
 		AffineMatrix4x4 cameraTransform = selectedCameraMarker.getSGTransformable().getAbsoluteTransformation();
@@ -653,6 +659,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		{
 			goodPointOfView.translation.y -= boundingBox.getYMinimum();
 		}
+		assert(!goodPointOfView.isNaN());
 		return goodPointOfView;
 	}
 	
@@ -973,7 +980,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
 			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewTracker);
 			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewSelectionObserver);
-			this.mainCameraViewSelector = this.mainCameraMarkerList.createComboBox();
+			this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
 			this.mainCameraViewSelector.setFontSize(15);
 
 			
@@ -1065,7 +1072,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 			javax.swing.JPanel lgPanel = this.lookingGlassPanel.getAwtComponent();
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouthEast( lgPanel, isSceneEditorExpandedCheckBox.getAwtComponent(), INSET );
-			final boolean IS_RUN_BUTTON_DESIRED = true;
 			if( IS_RUN_BUTTON_DESIRED ) {
 				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().getRunOperation().createButton().getAwtComponent(), INSET );
 			}
@@ -1166,7 +1172,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		FieldTile fieldTile = this.getFieldTileForClick(clickState);
 		if (fieldTile != null)
 		{
-			PopupMenuOperation popUp = fieldTile.getPopupMenuOperation();
+			StandardPopupOperation popUp = fieldTile.getPopupMenuOperation();
 			if (popUp != null)
 			{
 				if( fieldTile.getAwtComponent().isShowing() ) {

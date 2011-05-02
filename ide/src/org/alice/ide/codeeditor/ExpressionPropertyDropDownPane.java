@@ -42,14 +42,12 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
-
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupMenuButton implements edu.cmu.cs.dennisc.croquet.DropReceptor {
+public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuButton< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > implements edu.cmu.cs.dennisc.croquet.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	public ExpressionPropertyDropDownPane( edu.cmu.cs.dennisc.croquet.PopupMenuOperation model, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.croquet.Component< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public ExpressionPropertyDropDownPane( edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > model, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.croquet.Component< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		super( model, prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
 	}
@@ -78,8 +76,14 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 //		return rv;	
 //	}
 
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return "Drop...";
+	}
+	
 	public edu.cmu.cs.dennisc.croquet.CodableResolver< ExpressionPropertyDropDownPane > getCodableResolver() {
-		throw new RuntimeException( "todo" );
+		//todo:
+		System.err.println( "todo: getCodableResolver" );
+		return null;
 	}
 	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.croquet.DropSite potentialDropSite ) {
 		return this;
@@ -114,7 +118,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 //				}
 //			}
 			
-			rv = expressionCreatorPane.createDropOperation( context, this.expressionProperty );
+			rv = expressionCreatorPane.getDropOperation( context, this.expressionProperty );
 		} else {
 			rv = null;
 		}

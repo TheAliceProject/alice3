@@ -74,7 +74,7 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldPane > context ) {
 		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = context.getMainPanel();
-		return createFieldPane.getActualInputValue();
+		return createFieldPane.getInputValue();
 	}
 	@Override
 	protected boolean isInstanceValid() {

@@ -104,8 +104,8 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 
 						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice invokedFromMethod = dst.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 						
-						edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< edu.cmu.cs.dennisc.alice.ast.AbstractCode > listSelectionStateContext = new edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< edu.cmu.cs.dennisc.alice.ast.AbstractCode >( org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance() );
-						edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< edu.cmu.cs.dennisc.alice.ast.AbstractCode > edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< edu.cmu.cs.dennisc.alice.ast.AbstractCode >( methodInAlice, invokedFromMethod );
+						edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< org.alice.ide.editorstabbedpane.CodeComposite > listSelectionStateContext = new edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< org.alice.ide.editorstabbedpane.CodeComposite >( org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance() );
+						edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< org.alice.ide.editorstabbedpane.CodeComposite > edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< org.alice.ide.editorstabbedpane.CodeComposite >( org.alice.ide.editorstabbedpane.CodeComposite.getInstance( methodInAlice ), org.alice.ide.editorstabbedpane.CodeComposite.getInstance( invokedFromMethod ) );
 						addEdit( listSelectionStateContext, edit );
 						rv.addChild( listSelectionStateContext );
 					}
@@ -128,11 +128,16 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 			dragAndDropContext.addChild( droppedEvent );
 			
 			if( statement instanceof edu.cmu.cs.dennisc.alice.ast.CountLoop ) {
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation = null;
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = new edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext( popupMenuOperation );
+				edu.cmu.cs.dennisc.croquet.CascadePopupOperation popupMenuOperation = null;
+				edu.cmu.cs.dennisc.croquet.CascadePopupOperationContext popupMenuOperationContext = new edu.cmu.cs.dennisc.croquet.CascadePopupOperationContext( popupMenuOperation );
 				java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-				models.add( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP, null ) ); 
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = new edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent( models );
+				
+				
+				//todo
+				//models.add( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP, null ) ); 
+				
+				
+				edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent = new edu.cmu.cs.dennisc.croquet.PopupOperationContext.MenuSelectionEvent( models );
 				popupMenuOperationContext.addChild( menuSelectionEvent );
 				popupMenuOperationContext.addChild( insertStatementContext );
 				dragAndDropContext.addChild( popupMenuOperationContext );
@@ -152,7 +157,7 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 		return rv;
 	}
 
-	private static <M extends edu.cmu.cs.dennisc.croquet.Model> edu.cmu.cs.dennisc.croquet.ModelContext< M > addEdit( edu.cmu.cs.dennisc.croquet.ModelContext< M > rv, edu.cmu.cs.dennisc.croquet.Edit< M > edit ) {
+	private static <M extends edu.cmu.cs.dennisc.croquet.CompletionModel> edu.cmu.cs.dennisc.croquet.CompletionContext< M > addEdit( edu.cmu.cs.dennisc.croquet.CompletionContext< M > rv, edu.cmu.cs.dennisc.croquet.Edit< M > edit ) {
 		edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = new edu.cmu.cs.dennisc.croquet.CommitEvent( edit );
 		rv.addChild( commitEvent );
 		edit.setContext( rv );
@@ -162,8 +167,8 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 		edu.cmu.cs.dennisc.croquet.DragAndDropContext rv = new edu.cmu.cs.dennisc.croquet.DragAndDropContext( dragAndDropModel );
 		return rv;
 	}
-	private static edu.cmu.cs.dennisc.croquet.DialogOperationContext createDialogOperationContext( edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation ) {
-		edu.cmu.cs.dennisc.croquet.DialogOperationContext rv = new edu.cmu.cs.dennisc.croquet.DialogOperationContext( dialogOperation );
+	private static edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext createDialogOperationContext( edu.cmu.cs.dennisc.croquet.PlainDialogOperation dialogOperation ) {
+		edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext rv = new edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext( dialogOperation );
 		edu.cmu.cs.dennisc.croquet.FinishEvent finishEvent = new edu.cmu.cs.dennisc.croquet.FinishEvent();
 		rv.addChild( finishEvent );
 		return rv;

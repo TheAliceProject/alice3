@@ -50,15 +50,11 @@ public class AudioResourceFillerInner extends ResourceFillerInner {
 		super( org.alice.virtualmachine.resources.AudioResource.class );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ResourceExpression createResourceExpressionIfAppropriate( org.alice.virtualmachine.Resource resource ) {
-		if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
-			return new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, (org.alice.virtualmachine.resources.AudioResource)resource );
-		} else {
-			return null;
-		}
+	protected org.alice.ide.croquet.models.ast.cascade.resource.AudioResourceExpressionFillIn getResourceExpressionFillIn( org.alice.virtualmachine.Resource resource ) {
+		return org.alice.ide.croquet.models.ast.cascade.resource.AudioResourceExpressionFillIn.getInstance( resource );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.cascade.FillIn< ? > createImportNewResourceFillIn() {
-		return new org.alice.ide.cascade.customfillin.ImportNewAudioResourceFillIn();
+	protected edu.cmu.cs.dennisc.croquet.CascadeFillIn getImportNewResourceFillIn() {
+		return org.alice.ide.croquet.models.ast.cascade.resource.ImportNewAudioResourceFillIn.getInstance();
 	}
 }

@@ -49,7 +49,6 @@ import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.swing.icons.ColorIcon;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.croquet.Button;
 import edu.cmu.cs.dennisc.croquet.Model;
 import edu.cmu.cs.dennisc.croquet.Operation;
 
@@ -75,7 +74,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 		}
 	}
 	
-	private edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation;
+	private edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation;
 	protected java.util.List< SetColorOperation > defaultColorOperationModels;
 	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
 	
@@ -100,7 +99,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 			}
 			this.popupMenuOperation = new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "9aa93f57-87cc-412b-b166-beb73bcd1fe8" ) ) {
 				@Override
-				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) {
 					super.handlePopupMenuPrologue( popupMenu, context );
 					
 					Color4f currentColor = AbstractColorPropertyAdapter.this.getValue();
@@ -120,10 +119,12 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 					
 					SetColorOperation currentColorOperation = new SetColorOperation(currentColor, currentColorName);
 					
-					java.util.List<Model> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-					models.add(currentColorOperation);
+					java.util.List<edu.cmu.cs.dennisc.croquet.MenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					models.add(currentColorOperation.getMenuItemPrepModel());
 					models.add(edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR);
-					models.addAll(AbstractColorPropertyAdapter.this.defaultColorOperationModels);
+					for( SetColorOperation operation : AbstractColorPropertyAdapter.this.defaultColorOperationModels ) {
+						models.add(operation.getMenuItemPrepModel());
+					}
 					
 					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}

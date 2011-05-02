@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.steps.TransactionManager;
+
 public abstract class DragComponent extends Control {
 	private DragAndDropModel dragModel;
 
@@ -210,8 +212,12 @@ public abstract class DragComponent extends Control {
 		layeredPane.add( this.dragProxy, new Integer( 1 ) );
 		layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
 
+		
+		TransactionManager.addDragStep( this.dragModel );
+
 		this.dragAndDropContext = ContextManager.createAndPushDragAndDropContext( this.dragModel, this.getLeftButtonPressedEvent(), e, this );
 		this.dragModel.handleDragStarted( this.dragAndDropContext );
+		this.showDragProxy();
 	}
 	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {
 		if( Application.getSingleton().isDragInProgress() ) {

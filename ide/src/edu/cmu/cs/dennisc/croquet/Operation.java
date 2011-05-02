@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Operation< C extends OperationContext<? extends Operation<?>>> extends EditSource {
+public abstract class Operation< C extends OperationContext<? extends Operation<?>>> extends CompletionModel {
 	private class ButtonActionListener implements java.awt.event.ActionListener {
 		private AbstractButton< ?,? > button;
 		public ButtonActionListener( AbstractButton< ?,? > button ) {
@@ -57,15 +57,21 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	}
 	private java.util.Map< AbstractButton< ?,? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	public abstract C createContext( java.util.EventObject e, ViewController< ?, ? > viewController );
+	public abstract C createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController );
 
 	public String getTutorialStartNoteText( OperationContext< ? > operationContext, UserInformation userInformation ) {
 		return "Press " + this.getTutorialNoteText( operationContext, userInformation );
 	}
 
+	protected String getTutorialNoteName() {
+		return this.getName();
+	}
 	@Override
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
-		return "<strong>" + this.getName() + "</strong>";
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( "Click <strong>" );
+		rv.append( this.getTutorialNoteName() );
+		rv.append( "</strong>" );
+		return rv;
 	}
 	
 	protected Edit< ? > createTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
@@ -75,7 +81,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	public Edit< ? > commitTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		Edit< ? > replacementEdit = this.createTutorialCompletionEdit( originalEdit, retargeter );
 		if( replacementEdit != null ) {
-			final C childContext = this.createContext( null, null );
+			final C childContext = this.createAndPushContext( null, null );
 			try {
 				childContext.commitAndInvokeDo( replacementEdit );
 			} finally {
@@ -128,12 +134,17 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		public void handleFinally(); 
 	}
 	/*package-private*/ final C handleFire( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		final C childContext = this.createContext( e, viewController );
+		final C childContext = this.createAndPushContext( e, viewController );
 		this.perform( childContext, new PerformObserver() {
 			public void handleFinally() {
 				ModelContext< ? > popContext = ContextManager.popContext();
 				if( popContext != null ) {
-					assert popContext == childContext : popContext.getClass() + " " + childContext.getClass();
+					//assert popContext == childContext : "actual: " + popContext.getClass() + " expected: " + childContext.getClass();
+					if( popContext == childContext ) {
+						//pass
+					} else {
+						System.err.println( "actual: " + popContext.getClass() + " expected: " + childContext.getClass() );
+					}
 				} else {
 					System.err.println( "handleFinally popContext==null" );
 				}
@@ -141,15 +152,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		} );
 		return childContext;
 	}
-	protected void perform( C context, PerformObserver performObserver ) {
-		try {
-			this.perform( context );
-		} finally {
-			performObserver.handleFinally();
-		}
-	}
-	protected abstract void perform( C context );
-
+	protected abstract void perform( C context, PerformObserver performObserver );
 
 	public String getName() {
 		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
@@ -193,6 +196,16 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		return false;
 	}
 
+	private OperationMenuItemPrepModel menuPrepModel;
+	public synchronized OperationMenuItemPrepModel getMenuItemPrepModel() {
+		if( this.menuPrepModel != null ) {
+			//pass
+		} else {
+			this.menuPrepModel = new OperationMenuItemPrepModel( this );
+		}
+		return this.menuPrepModel;
+	}
+
 	/*package-private*/ void addButton(OperationButton<?,?> button) {
 		this.addComponent(button);
 		button.setAction( Operation.this.action );
@@ -218,7 +231,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	public Hyperlink createHyperlink() {
 		return new Hyperlink( this );
 	}
-	public MenuItem createMenuItem() {
-		return new MenuItem( this );
-	}
+//	public MenuItem createMenuItem() {
+//		return new MenuItem( this );
+//	}
 }

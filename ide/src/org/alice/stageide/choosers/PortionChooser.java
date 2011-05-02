@@ -47,16 +47,8 @@ package org.alice.stageide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	private edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState boundedRangeIntegerState = new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState(
-			edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP,
-			java.util.UUID.fromString( "4c5552d0-d5c3-4f01-94b5-4920bd4be6fc" ),
-			0, 
-			100,
-			100
-	);
-	
-	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { this.boundedRangeIntegerState.createSlider() };
+public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
+	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { org.alice.stageide.croquet.models.custom.PortionState.getInstance().createSlider() };
 	public PortionChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression != null ) {
@@ -64,7 +56,7 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChoos
 				edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
 				double dValue = doubleLiteral.value.getValue();
 				int iValue = (int)(dValue*100.0);
-				boundedRangeIntegerState.setValue( iValue );
+				org.alice.stageide.croquet.models.custom.PortionState.getInstance().setValue( iValue );
 			}
 		}
 	}
@@ -73,15 +65,15 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChoos
 		return this.components;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
-		double value = this.boundedRangeIntegerState.getValue() / 100.0;
+	public edu.cmu.cs.dennisc.alice.ast.DoubleLiteral getValue() {
+		double value = org.alice.stageide.croquet.models.custom.PortionState.getInstance().getValue() / 100.0;
 		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
-		final boolean IS_LITERAL_DESIRED = true;
-		if( IS_LITERAL_DESIRED ) {
+//		final boolean IS_LITERAL_DESIRED = true;
+//		if( IS_LITERAL_DESIRED ) {
 			return doubleLiteral;
-		} else {
-			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.Portion.class, new Class<?>[] { Number.class }, doubleLiteral );
-		}
+//		} else {
+//			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.Portion.class, new Class<?>[] { Number.class }, doubleLiteral );
+//		}
 	}
 	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {

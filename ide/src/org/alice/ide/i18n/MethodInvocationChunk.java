@@ -55,7 +55,7 @@ public class MethodInvocationChunk extends Chunk {
 		return this.methodName;
 	}
 	@Override
-	protected StringBuffer updateRepr( StringBuffer rv ) {
+	protected StringBuilder updateRepr( StringBuilder rv ) {
 		rv.append( "methodName=" );
 		rv.append( this.methodName );
 		return rv;

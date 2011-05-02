@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.numberpad;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberModel extends edu.cmu.cs.dennisc.croquet.StringState {
+public abstract class NumberModel< N extends edu.cmu.cs.dennisc.alice.ast.Expression > /* extends edu.cmu.cs.dennisc.croquet.StringState */ {
 	@Deprecated
 	/*package-private*/ final static edu.cmu.cs.dennisc.croquet.Group NUMBER_PAD_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
 	
@@ -61,8 +61,28 @@ public abstract class NumberModel extends edu.cmu.cs.dennisc.croquet.StringState
 		}
 		return "";
 	}
+	private javax.swing.text.Document document;
 	public NumberModel( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id ) {
-		super( group, id, getInitialText() );
+		//super( group, id, getInitialText() );
+		this.document = new javax.swing.text.PlainDocument();
+		try {
+			this.document.insertString(0, getInitialText(), null);
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( ble );
+		}
+	}
+	private javax.swing.text.Document getDocument() {
+		return this.document;
+	}
+	public edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JTextField > createTextField() {
+		return new edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JTextField >() {
+			@Override
+			protected javax.swing.JTextField createAwtComponent() {
+				javax.swing.JTextField jTextField = new javax.swing.JTextField();
+				jTextField.setDocument( NumberModel.this.document );
+				return jTextField;
+			}
+		};
 	}
 	private void append( String s ) {
 		javax.swing.text.Document document = this.getDocument();
@@ -111,7 +131,7 @@ public abstract class NumberModel extends edu.cmu.cs.dennisc.croquet.StringState
 
 	}
 	public abstract boolean isDecimalPointSupported();
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s );
+	protected abstract N valueOf( String s );
 //	protected abstract String getEmptyTextExplanation();
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		try {
@@ -135,11 +155,11 @@ public abstract class NumberModel extends edu.cmu.cs.dennisc.croquet.StringState
 			throw new RuntimeException( ble );
 		}
 	}
-	public edu.cmu.cs.dennisc.alice.ast.Expression getExpressionValue() {
+	public N getExpressionValue() {
 		try {
 			javax.swing.text.Document document = this.getDocument();
 			try {
-				edu.cmu.cs.dennisc.alice.ast.Expression rv = this.valueOf( document.getText( 0, document.getLength() ) );
+				N rv = this.valueOf( document.getText( 0, document.getLength() ) );
 				return rv;
 			} catch( NumberFormatException nfe ) {
 				return null;

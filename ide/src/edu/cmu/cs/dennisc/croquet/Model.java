@@ -50,7 +50,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 	private static final int NULL_ACCELERATOR_MASK = 0;
 	private Group group;
 	private java.util.UUID id;
-	private CodableResolver<?> codableResolver;
+	private CodableResolver<Model> codableResolver;
 	public Model( Group group, java.util.UUID id ) {
 		this.group = group;
 		this.id = id;
@@ -223,7 +223,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 	private java.util.List< JComponent<?> > components = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	protected void addComponent( JComponent<?> component ) {
 		if( this.components.size() == 0 ) {
-			ContextManager.registerModel( this );
+			Manager.registerModel( this );
 		}
 		synchronized( this.components ) {
 			this.components.add( component );
@@ -236,7 +236,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 			this.components.remove( component );
 		}
 		if( this.components.size() == 0 ) {
-			ContextManager.unregisterModel( this );
+			Manager.unregisterModel( this );
 		} else {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "removeComponent", this.components.size(), this );
 		}
@@ -366,22 +366,72 @@ public abstract class Model implements RuntimeResolver< Model > {
 		}
 		return rv;
 	}
-	public String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "title: " );
-		sb.append( this );
+	
+	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( "title: " );
+		rv.append( this );
 		if( modelContext != null ) {
-			appendSuccessfulCompletionEventText( sb, modelContext.getSuccessfulCompletionEvent() );
+			appendSuccessfulCompletionEventText( rv, modelContext.getSuccessfulCompletionEvent() );
+		}
+		return rv;
+	}
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		rv.append( "text: " );
+		rv.append( this );
+		if( modelContext != null ) {
+			appendSuccessfulCompletionEventText( rv, modelContext.getSuccessfulCompletionEvent() );
+		}
+		return rv;
+	}
+
+	@Deprecated
+	public final String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		this.initializeIfNecessary();
+		StringBuilder sb = new StringBuilder();
+		updateTutorialStepTitle( sb, modelContext, edit, userInformation );
+		return sb.toString();
+	}
+	@Deprecated
+	public final String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		this.initializeIfNecessary();
+		StringBuilder sb = new StringBuilder();
+		updateTutorialStepText( sb, modelContext, edit, userInformation );
+		return sb.toString();
+	}
+	
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, Edit< ? > edit, UserInformation userInformation ) {
+		return rv;
+	}
+
+	public final String getTutorialNoteText( Edit<?> edit, UserInformation userInformation ) {
+		this.initializeIfNecessary();
+		StringBuilder sb = new StringBuilder();
+		updateTutorialStepText( sb, edit, userInformation );
+		if( sb.length() == 0 ) {
+			this.updateTutorialStepText( sb, null, edit, userInformation );
+//			sb.append( "TODO: " );
+//			sb.append( this );
+//			sb.append( "; " );
+//			sb.append( edit );
 		}
 		return sb.toString();
 	}
-	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this );
-		if( modelContext != null ) {
-			appendSuccessfulCompletionEventText( sb, modelContext.getSuccessfulCompletionEvent() );
+	
+	@Deprecated
+	private static final Edit< ? > getEdit( ModelContext<?> modelContext ) {
+		if( modelContext instanceof CompletionContext< ? >) {
+			return ((CompletionContext< ? >)modelContext).getEdit();
+		} else {
+			return null;
 		}
-		return sb.toString();
+	}
+	@Deprecated
+	public final String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		return this.getTutorialStepTitle( modelContext, getEdit( modelContext ), userInformation );
+	}
+	@Deprecated
+	public final String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		return this.getTutorialNoteText( modelContext, getEdit( modelContext ), userInformation );
 	}
 	public abstract boolean isAlreadyInState( Edit< ? > edit );
 	

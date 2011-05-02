@@ -63,6 +63,7 @@ public class Color implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodab
 	public static final Color PURPLE = new Color( edu.cmu.cs.dennisc.color.Color4f.PURPLE );
 	public static final Color BROWN = new Color( edu.cmu.cs.dennisc.color.Color4f.BROWN );
 
+	//todo: should be immutable
 	private edu.cmu.cs.dennisc.color.Color4f internal = new edu.cmu.cs.dennisc.color.Color4f();
 	public Color() {
 		this.internal.set( 1.0f, 1.0f, 1.0f, 1.0f );
@@ -76,6 +77,12 @@ public class Color implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodab
 	}
 	public Color( edu.cmu.cs.dennisc.color.Color4f internal ) {
 		this.internal.set( internal );
+	}
+	public Color(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		this.internal.decode( binaryDecoder );
+	}
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+		this.internal.encode( binaryEncoder );
 	}
 	
 	public edu.cmu.cs.dennisc.color.Color4f getInternal() {
@@ -91,12 +98,4 @@ public class Color implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodab
 	public Double getBlue() {
 		return (double)this.internal.blue;
 	}
-	
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		this.internal.decode( binaryDecoder );
-	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		this.internal.encode( binaryEncoder );
-	}
-	
 }

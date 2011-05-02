@@ -98,9 +98,13 @@ public abstract class Control extends Widget {
 	protected void addNotify() {
 		super.addNotify();
 		if( isMouseListeningDesired() ) {
-			this.controlAdapter = new ControlAdapter( this );
-			this.addMouseListener( this.controlAdapter );
-			this.addMouseMotionListener( this.controlAdapter );
+			if( this.controlAdapter != null ) {
+				//pass
+			} else {
+				this.controlAdapter = new ControlAdapter( this );
+				this.addMouseListener( this.controlAdapter );
+				this.addMouseMotionListener( this.controlAdapter );
+			}
 		}
 	}
 	@Override

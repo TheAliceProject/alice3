@@ -129,9 +129,9 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 	private CardPanel cardPanel = new CardPanel();
 	
 	private class Card {
-		private WizardStep step;
+		private WizardStage step;
 		private CardPanel.Key key;
-		public Card( WizardStep step ) {
+		public Card( WizardStage step ) {
 			this.step = step;
 			this.key = cardPanel.createKey( this.step.getComponent(), java.util.UUID.randomUUID() );
 			cardPanel.addComponent( key );
@@ -148,10 +148,10 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 				public Class<Card> getValueClass() {
 					return Card.class;
 				}
-				public Card decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+				public Card decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 					throw new RuntimeException( "todo" );
 				}
-				public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Card card ) {
+				public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Card card ) {
 					throw new RuntimeException( "todo" );
 				}
 				public StringBuilder appendRepresentation( StringBuilder rv, Card value, java.util.Locale locale ) {
@@ -256,7 +256,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 		}
 		int index = this.cardSelectionState.getSelectedIndex();
 		PreviousOperation.getInstance().setEnabled( index > 0 );
-		WizardStep step = nextValue.step;
+		WizardStage step = nextValue.step;
 		String explanation = step.getExplanationIfProcedeButtonShouldBeDisabled();
 		NextOperation.getInstance().setEnabled( explanation==null && index < this.cardSelectionState.getItemCount()-1 );
 		this.getCompleteOperation().setEnabled( explanation==null && step.isFinishPotentiallyEnabled() );
@@ -265,11 +265,11 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 		this.updateExplanation( null );
 	}
 	@Override
-	public WizardDialogOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public WizardDialogOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushWizardDialogOperationContext( this, e, viewController );
 	}
 
-	protected abstract WizardStep[] createSteps( WizardDialogOperationContext context );
+	protected abstract WizardStage[] createSteps( WizardDialogOperationContext context );
 	
 	@Override
 	protected Component< ? > createControlsPanel( WizardDialogOperationContext context, Dialog dialog ) {
@@ -288,11 +288,11 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 	}
 	@Override
 	protected Component< ? > createMainPanel( WizardDialogOperationContext context, Dialog dialog, Label explanationLabel ) {
-		WizardStep[] steps = this.createSteps( context );
+		WizardStage[] steps = this.createSteps( context );
 
 		java.util.ArrayList< Card > cards = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		cards.ensureCapacity( steps.length );
-		for( WizardStep step : steps ) {
+		for( WizardStage step : steps ) {
 			Card card = new Card( step );
 			cards.add( card );
 		}
@@ -342,8 +342,8 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 				this.setName( "Action Script" );
 			}
 			@Override
-			protected WizardStep[] createSteps( WizardDialogOperationContext context ) {
-				class ReviewPanel extends PageAxisPanel implements WizardStep {
+			protected WizardStage[] createSteps( WizardDialogOperationContext context ) {
+				class ReviewPanel extends PageAxisPanel implements WizardStage {
 					public ReviewPanel() {
 						this.addComponent( new Label( "please review your animation" ) );
 					}
@@ -360,7 +360,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 						return false;
 					}
 				};
-				class NamePanel extends RowsSpringPanel implements WizardStep {
+				class NamePanel extends RowsSpringPanel implements WizardStage {
 					public String getTitle() {
 						return "Name/Description";
 					}
@@ -394,7 +394,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 						return true;
 					}
 				};
-				class CharactersPanel extends BorderPanel implements WizardStep {
+				class CharactersPanel extends BorderPanel implements WizardStage {
 					public CharactersPanel() {
 						this.addComponent( new Label( "todo" ), Constraint.CENTER );
 					}
@@ -411,7 +411,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 						return true;
 					}
 				};
-				return new WizardStep[] {
+				return new WizardStage[] {
 					new ReviewPanel(),
 					new NamePanel(), 
 					new CharactersPanel()

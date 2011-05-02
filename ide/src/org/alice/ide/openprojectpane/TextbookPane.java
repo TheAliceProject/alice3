@@ -46,7 +46,7 @@ package org.alice.ide.openprojectpane;
 /**
  * @author Dennis Cosgrove
  */
-class TextbookPane extends ApplicationRootDirectoryListPane {
+public class TextbookPane extends ApplicationRootDirectoryListPane {
 	@Override
 	public String getSubPath() {
 		return "projects/textbook";

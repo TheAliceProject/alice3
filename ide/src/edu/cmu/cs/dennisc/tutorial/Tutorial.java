@@ -94,11 +94,11 @@ public class Tutorial {
 		return this.addStep( new BooleanStateStep( title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.BooleanState>( booleanState ), desiredValue ) );
 	}
 
-	public Step addDialogOpenAndCloseStep( String title, String openText, String closeText, RuntimeResolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
+	public Step addDialogOpenAndCloseStep( String title, String openText, String closeText, RuntimeResolver<edu.cmu.cs.dennisc.croquet.PlainDialogOperation> dialogOperationResolver ) {
 		return this.addStep( new DialogOpenAndCloseStep( title, openText, closeText, dialogOperationResolver ) );
 	}
-	public Step addDialogOpenAndCloseStep( String title, String openText, String closeText, edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation ) {
-		return this.addStep( new DialogOpenAndCloseStep( title, openText, closeText, new SelfResolver<edu.cmu.cs.dennisc.croquet.DialogOperation>( dialogOperation ) ) );
+	public Step addDialogOpenAndCloseStep( String title, String openText, String closeText, edu.cmu.cs.dennisc.croquet.PlainDialogOperation dialogOperation ) {
+		return this.addStep( new DialogOpenAndCloseStep( title, openText, closeText, new SelfResolver<edu.cmu.cs.dennisc.croquet.PlainDialogOperation>( dialogOperation ) ) );
 	}
 
 	public Step addInputDialogOpenAndCommitStep( String title, String openText, String commitText, RuntimeResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, InputDialogOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
@@ -108,13 +108,20 @@ public class Tutorial {
 		return this.addStep( new InputDialogOpenAndCommitStep( title, openText, commitText, new SelfResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>>( inputDialogOperation ), completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler ) );
 	}
 	
-	public Step addPopupMenuStep( String title, String popupText, RuntimeResolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> popupMenuResolver, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
+	public Step addPopupMenuStep( String title, String popupText, RuntimeResolver<edu.cmu.cs.dennisc.croquet.StandardPopupOperation> popupMenuResolver, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
 		return this.addStep( new PopupMenuStep( title, popupText, popupMenuResolver, commitText, completorValidator, completorValidator ) );
 	}
-	public Step addPopupMenuStep( String title, String popupText, edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenu, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
-		return this.addStep( new PopupMenuStep( title, popupText, new SelfResolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation>( popupMenu ), commitText, completorValidator, completorValidator ) );
+	public Step addPopupMenuStep( String title, String popupText, edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenu, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
+		return this.addStep( new PopupMenuStep( title, popupText, new SelfResolver<edu.cmu.cs.dennisc.croquet.StandardPopupOperation>( popupMenu ), commitText, completorValidator, completorValidator ) );
 	}
 	
+	public Step addCascadeOperationStep( String title, String text, RuntimeResolver<edu.cmu.cs.dennisc.croquet.CascadePopupOperation> cascadeOperationResolver, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
+		throw new RuntimeException( "todo" );
+	}
+	public Step addCascadeOperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.CascadePopupOperation cascadeOperation, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
+		throw new RuntimeException( "todo" );
+	}
+
 	public <E> Step addListSelectionStep( String title, String text, RuntimeResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, RuntimeResolver<? extends E> itemResolver ) {
 		return this.addStep( new ListSelectionStateStep<E>( title, text, itemSelectionStateResolver, itemResolver, Feature.ConnectionPreference.EAST_WEST ) );
 	}

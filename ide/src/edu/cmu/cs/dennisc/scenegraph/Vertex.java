@@ -64,8 +64,13 @@ public class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecoda
 //	public Vertex( int format ) {
 //		initializeToFormat( format );
 //	}
-	public Vertex( edu.cmu.cs.dennisc.math.Point3 position, edu.cmu.cs.dennisc.math.Vector3f normal, edu.cmu.cs.dennisc.color.Color4f diffuseColor, edu.cmu.cs.dennisc.color.Color4f specularHighlightColor,
-			edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0 ) {
+	public Vertex( 
+			edu.cmu.cs.dennisc.math.Point3 position, 
+			edu.cmu.cs.dennisc.math.Vector3f normal, 
+			edu.cmu.cs.dennisc.color.Color4f diffuseColor, 
+			edu.cmu.cs.dennisc.color.Color4f specularHighlightColor,
+			edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0 
+	) {
 		this.position.set( position );
 		this.normal.set( normal );
 		this.diffuseColor.set( diffuseColor );
@@ -75,7 +80,10 @@ public class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecoda
 	public Vertex( Vertex other ) {
 		this( other.position, other.normal, other.diffuseColor, other.specularHighlightColor, other.textureCoordinate0 );
 	}
-
+	public Vertex( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.decode( binaryDecoder );
+	}
+	@Deprecated
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		position.decode( binaryDecoder );
 		normal.decode( binaryDecoder );

@@ -49,8 +49,8 @@ import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
  */
 public abstract class MemberWithParametersInfo extends MemberInfo {
 	private transient Class<?>[] parameterClses;
-	private String[] parameterClassNames;
-	private String[] parameterNames;
+	private final String[] parameterClassNames;
+	private final String[] parameterNames;
 	public MemberWithParametersInfo( ClassInfo declaringClassInfo, String[] parameterClassNames, String[] parameterNames ) {
 		super( declaringClassInfo );
 		this.parameterClassNames = parameterClassNames;
@@ -58,6 +58,14 @@ public abstract class MemberWithParametersInfo extends MemberInfo {
 	}
 	public MemberWithParametersInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+		this.parameterClassNames = binaryDecoder.decodeStringArray();
+		this.parameterNames = binaryDecoder.decodeStringArray();
+	}
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.parameterClassNames );
+		binaryEncoder.encode( this.parameterNames );
 	}
 	public Class<?>[] getParameterClses() {
 		if( this.parameterClses != null ) {
@@ -80,17 +88,4 @@ public abstract class MemberWithParametersInfo extends MemberInfo {
 	public String[] getParameterNames() {
 		return this.parameterNames;
 	}
-	@Override
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super.decode( binaryDecoder );
-		this.parameterClassNames = binaryDecoder.decodeStringArray();
-		this.parameterNames = binaryDecoder.decodeStringArray();
-	}
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.parameterClassNames );
-		binaryEncoder.encode( this.parameterNames );
-	}
-	
 }

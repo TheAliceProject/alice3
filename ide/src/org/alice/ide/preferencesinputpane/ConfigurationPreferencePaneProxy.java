@@ -52,10 +52,10 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 				public Class< org.alice.ide.preferences.programming.Configuration > getValueClass() {
 					return org.alice.ide.preferences.programming.Configuration.class;
 				}
-				public org.alice.ide.preferences.programming.Configuration decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+				public org.alice.ide.preferences.programming.Configuration decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 					throw new RuntimeException( "todo" );
 				}
-				public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.preferences.programming.Configuration t ) {
+				public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.preferences.programming.Configuration t ) {
 					throw new RuntimeException( "todo" );
 				}
 				public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.preferences.programming.Configuration value, java.util.Locale locale ) {
@@ -183,7 +183,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		super( preference );
 		org.alice.ide.preferences.programming.Configuration[] configurations = org.alice.ide.preferences.ProgrammingPreferences.getSingleton().getBuiltInPreferenceNodes();
 		ConfigurationSelectionOperation configurationSelectionOperation = new ConfigurationSelectionOperation( configurations );
-		edu.cmu.cs.dennisc.croquet.ComboBox<org.alice.ide.preferences.programming.Configuration> activeConfigurationComboBox = configurationSelectionOperation.createComboBox();
+		edu.cmu.cs.dennisc.croquet.ComboBox<org.alice.ide.preferences.programming.Configuration> activeConfigurationComboBox = configurationSelectionOperation.getPrepModel().createComboBox();
 		configurationSelectionOperation.setSelectedItem( configurations[ 0 ] );
 		EditVariantOperation editVariantOperation = new EditVariantOperation();
 		editVariantOperation.setEnabled( false );

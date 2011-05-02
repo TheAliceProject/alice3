@@ -61,10 +61,10 @@ public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDecla
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
-		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getPreviewFactory(), this.getActualInputValue() );
+		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getPreviewFactory(), this.getInputValue() );
 	}
 	@Override
-	public final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActualInputValue() {
+	public final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getInputValue() {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( this.getDeclarationName(), this.getValueType(), this.getInitializer() );
 		edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither value;
 		if( this.isReassignable() ) {

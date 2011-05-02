@@ -55,7 +55,7 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 
 	private TypeSelectionState typeSelectionState = new TypeSelectionState();
 	private javax.swing.JLabel labelType = createLabelForMultiLine( "type:" );
-	private javax.swing.JComboBox comboType = typeSelectionState.createComboBox().getAwtComponent();
+	private javax.swing.JComboBox comboType = typeSelectionState.getPrepModel().createComboBox().getAwtComponent();
 	private java.awt.Component[] rowType = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelType, new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( comboType, javax.swing.Box.createHorizontalGlue() ) );
 	
 	private javax.swing.JLabel labelEnvironment = createLabelForMultiLine( "environment:" );

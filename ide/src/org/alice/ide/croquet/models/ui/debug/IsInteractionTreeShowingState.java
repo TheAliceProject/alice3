@@ -42,6 +42,9 @@
  */
 package org.alice.ide.croquet.models.ui.debug;
 
+/**
+ * @author Dennis Cosgrove
+ */
 class HistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< edu.cmu.cs.dennisc.croquet.HistoryNode > {
 	private edu.cmu.cs.dennisc.croquet.HistoryNode root;
 	public HistoryTreeModel( edu.cmu.cs.dennisc.croquet.HistoryNode root ) {
@@ -167,5 +170,6 @@ public class IsInteractionTreeShowingState extends org.alice.ide.croquet.models.
 	@Override
 	protected void handleChanged( boolean value ) {
 		super.handleChanged( value );
+		//todo: remove listener
 	}
 }

@@ -50,6 +50,7 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 	public final Vector3 up = Vector3.createPositiveYAxis();
 	public final Vector3 backward = Vector3.createPositiveZAxis();
 
+	@Deprecated
 	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		right.decode( binaryDecoder );
 		up.decode( binaryDecoder );

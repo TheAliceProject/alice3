@@ -46,21 +46,31 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class KeyedResolver<T> implements CodableResolver< T > {
+	//todo: rework
+	
+	//either
 	private T instance;
+	
+	//or
+	private Class<T> instanceCls;
+	private java.lang.Class<?>[] parameterTypes;
+	private Object[] arguments;
+
+	//is valid
+	
 	public KeyedResolver( T instance ) {
 		this.instance = instance;
 	}
 	public KeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.decode( binaryDecoder );
+		Class<T> instanceCls = this.decodeInstanceClass( binaryDecoder );
+		Class<?>[] parameterTypes = this.decodeParameterTypes( binaryDecoder );
+		Object[] arguments = this.decodeArguments( binaryDecoder );
+		this.handleDecoded( instanceCls, parameterTypes, arguments );
 	}
 
 	protected T getInstance() {
 		return this.instance;
 	}
-	
-	private Class<T> instanceCls;
-	private java.lang.Class<?>[] parameterTypes;
-	private Object[] arguments;
 	
 	protected Object[] getArguments() {
 		return this.arguments;
@@ -69,22 +79,10 @@ public abstract class KeyedResolver<T> implements CodableResolver< T > {
 //		this.arguments = retargetedArguments;
 //		this.instance = null;
 //	}
-	protected abstract T resolve( Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments );
-	public T getResolved() {
-		if( this.instance != null ) {
-			return this.instance;
-		} else {
-			return this.resolve( this.instanceCls, this.parameterTypes, this.arguments );
-		}
-	}
 	protected final void handleDecoded(Class<T> instanceCls, java.lang.Class<?>[] parameterTypes, Object[] arguments) {
 		this.instanceCls = instanceCls;
 		this.parameterTypes = parameterTypes;
 		this.arguments = arguments;
-	}
-	
-	protected final void encodeClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Class<?> cls ) {
-		binaryEncoder.encode( cls.getName() );
 	}
 	protected final Class<?> decodeClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) { 
 		String clsName = binaryDecoder.decodeString();
@@ -94,26 +92,33 @@ public abstract class KeyedResolver<T> implements CodableResolver< T > {
 			throw new RuntimeException( clsName, cnfe );
 		}
 	}
-	
 	protected Class<T> decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return (Class<T>)decodeClass( binaryDecoder );
 	}
 	protected abstract Class<?>[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	protected abstract Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	
+	protected final void encodeClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Class<?> cls ) {
+		binaryEncoder.encode( cls.getName() );
+	}
+	
 	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Class<T> cls ) {
 		this.encodeClass( binaryEncoder, cls );
 	}
 	protected abstract void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
 	protected abstract void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
-	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		Class<T> instanceCls = this.decodeInstanceClass( binaryDecoder );
-		Class<?>[] parameterTypes = this.decodeParameterTypes( binaryDecoder );
-		Object[] arguments = this.decodeArguments( binaryDecoder );
-		this.handleDecoded( instanceCls, parameterTypes, arguments );
-	}
 	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		this.encodeInstanceClass( binaryEncoder, (Class<T>)this.instance.getClass() );
 		this.encodeParameterTypes( binaryEncoder );
 		this.encodeArguments( binaryEncoder );
+	}
+
+	protected abstract T resolve( Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments );
+	public T getResolved() {
+		if( this.instance != null ) {
+			return this.instance;
+		} else {
+			return this.resolve( this.instanceCls, this.parameterTypes, this.arguments );
+		}
 	}
 }

@@ -45,6 +45,7 @@ package org.alice.ide.properties.adapter;
 
 import java.util.Locale;
 
+import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter.SetColorOperation;
 import org.alice.ide.properties.adapter.AbstractStringPropertyAdapter.SetStringOperation;
 import org.alice.ide.properties.uicontroller.DoublePropertyController;
 
@@ -64,7 +65,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 	}
 	
 	public static java.text.NumberFormat format = new java.text.DecimalFormat( "0.0" );
-	protected edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation;
+	protected edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation;
 	protected java.util.List< SetDoubleOperation > defaultDoubleOperationModels;
 	
 	public AbstractDoublePropertyAdapter(String repr, O instance )
@@ -104,7 +105,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 				
 			this.popupMenuOperation = new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "66435390-e900-44c7-b440-0789c31e5a7a" ) ) {
 				@Override
-				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) {
 					super.handlePopupMenuPrologue( popupMenu, context );
 					
 					Double currentDouble = AbstractDoublePropertyAdapter.this.getValue();
@@ -112,11 +113,12 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 					
 					SetDoubleOperation currentDoubleOperation = new SetDoubleOperation(currentDouble, currentDoubleName);
 					
-					java.util.List<Model> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-					models.add(currentDoubleOperation);
+					java.util.List<edu.cmu.cs.dennisc.croquet.MenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					models.add(currentDoubleOperation.getMenuItemPrepModel());
 					models.add(edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR);
-					models.addAll(AbstractDoublePropertyAdapter.this.defaultDoubleOperationModels);
-					
+					for( SetDoubleOperation operation : AbstractDoublePropertyAdapter.this.defaultDoubleOperationModels ) {
+						models.add(operation.getMenuItemPrepModel());
+					}
 					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
 			}.getPopupMenuOperation();

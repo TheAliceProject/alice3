@@ -45,11 +45,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class MenuSeparatorModel extends Model {
+public final class MenuSeparatorModel extends MenuItemPrepModel {
 	private String name;
 	private javax.swing.Icon icon;
 	public MenuSeparatorModel( String name, javax.swing.Icon icon ) {
-		super( Application.INHERIT_GROUP, java.util.UUID.fromString( "09dcff27-6027-48ba-b436-8a7317ae2760" ) );
+		super( java.util.UUID.fromString( "09dcff27-6027-48ba-b436-8a7317ae2760" ) );
 		this.name = name;
 		this.icon = icon;
 	}
@@ -59,6 +59,10 @@ public final class MenuSeparatorModel extends Model {
 	@Override
 	protected void localize() {
 	}
+	@Override
+	public Iterable< ? extends Model > getChildren() {
+		return java.util.Collections.emptyList();
+	}
 	public String getName() {
 		return this.name;
 	}
@@ -66,12 +70,19 @@ public final class MenuSeparatorModel extends Model {
 		return this.icon;
 	}
 	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	public boolean isAlreadyInState( Edit< ? > edit ) {
 		return false;
 	}
-	/*package-private*/ MenuTextSeparator createMenuTextSeparator() {
-		MenuTextSeparator rv = new MenuTextSeparator( this );
-		return rv;
+	private MenuTextSeparator createMenuTextSeparator() {
+		return new MenuTextSeparator( this );
 	};
-	
+	@Override
+	public MenuItemContainer createMenuItemAndAddTo( MenuItemContainer rv ) {
+		if( this.name != null || this.icon != null ) {
+			rv.addSeparator( this.createMenuTextSeparator() );
+		} else {
+			rv.addSeparator();
+		}
+		return rv;
+	}
 }

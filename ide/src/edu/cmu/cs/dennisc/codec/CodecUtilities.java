@@ -46,10 +46,19 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public abstract class CodecUtilities {
+	public static <T extends BinaryEncodableAndDecodable > java.lang.reflect.Constructor< T > getPublicDecodeConstructor( Class<T> cls ) throws NoSuchMethodException {
+		return cls.getConstructor( new Class[] { BinaryDecoder.class } );
+	}
+	public static <T extends BinaryEncodableAndDecodable > java.lang.reflect.Constructor< T > getPublicDecodeConstructor( String className ) throws ClassNotFoundException, NoSuchMethodException{
+		Class<T> cls = (Class<T>)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( className );
+		return (java.lang.reflect.Constructor< T >)getPublicDecodeConstructor( cls );
+	}
+	public static <T extends BinaryEncodableAndDecodable > java.lang.reflect.Constructor< T > getPublicDecodeConstructor( T instance ) throws NoSuchMethodException {
+		return getPublicDecodeConstructor( (Class<T>)instance.getClass() );
+	}
+	
 	@Deprecated
 	public static boolean isDebugDesired = false;
-
-	
 	private static final String DEFAULT_ZIP_ENTRY_NAME = "edu.cmu.cs.dennisc.codec.CodecUtilities.DEFAULT_ZIP_ENTRY_NAME";
 	private CodecUtilities() {
 		throw new AssertionError();

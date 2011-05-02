@@ -45,68 +45,59 @@ package org.alice.apis.moveandturn;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractBoundedValue extends Number implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public abstract class AbstractBoundedValue extends Number {
 	protected abstract Double getMinimum();
 	protected abstract Double getMaximum();
-	private double m_value;
+	private double value;
 	
 	public AbstractBoundedValue() {
-		m_value = Double.NaN;
+		this.value = Double.NaN;
 	}
 	public AbstractBoundedValue( Number value ) {
-		m_value = value.doubleValue();
+		this.value = value.doubleValue();
 	}
 	public AbstractBoundedValue( AbstractBoundedValue other ) {
-		set( other );
+		if( other != null ) {
+			this.value = other.value;
+		} else {
+			this.value = Double.NaN;
+		}
 	}
-	
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		m_value = binaryDecoder.decodeDouble();
+
+	protected void set( AbstractBoundedValue other ) {
+		this.value = other.value;
 	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( m_value );
-	}
-	
 	@Override
 	public double doubleValue() {
-		return m_value;
+		return this.value;
 	}
 	@Override
 	public float floatValue() {
-		return (float)m_value;
+		return (float)this.value;
 	}
 	@Override
 	public int intValue() {
-		return (int)m_value;
+		return (int)this.value;
 	}
 	@Override
 	public long longValue() {
-		return (long)m_value;
-	}
-	
-	
-	protected void set( AbstractBoundedValue other ) {
-		if( other != null ) {
-			m_value = other.m_value;
-		} else {
-			m_value = Double.NaN;
-		}
+		return (long)this.value;
 	}
 	
 	//todo: NaN
 	
 	public Double getValue() {
-		return m_value;
+		return this.value;
 	}
 	public void setValue( Number value ) {
 		assert value.doubleValue() >= getMinimum();
 		assert value.doubleValue() <= getMaximum();
-		m_value = value.doubleValue();
+		this.value = value.doubleValue();
 	}
 	
 	//Random
 	public static AbstractBoundedValue setReturnValueToRandom( AbstractBoundedValue rv ) {
-		rv.m_value = edu.cmu.cs.dennisc.random.RandomUtilities.nextDoubleInRange( rv.getMinimum(), rv.getMaximum() );
+		rv.value = edu.cmu.cs.dennisc.random.RandomUtilities.nextDoubleInRange( rv.getMinimum(), rv.getMaximum() );
 		return rv;
 	}
 	public void setRandom() {
