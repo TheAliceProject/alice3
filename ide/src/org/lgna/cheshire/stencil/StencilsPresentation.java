@@ -327,10 +327,10 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				if( chapterPage.isGoodToGo() ) {
 					this.handleChapterChanged( chapter );
 				} else {
-					java.util.List< edu.cmu.cs.dennisc.croquet.MenuModel > menuModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
-					if( menuModels != null ) {
-						for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : menuModels ) {
-							org.lgna.croquet.steps.MenuModelStep.createAndAddToTransaction( transaction, menuModel );
+					java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > menuItemPrepModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
+					if( menuItemPrepModels != null ) {
+						for( edu.cmu.cs.dennisc.croquet.MenuItemPrepModel menuItemPrepModel : menuItemPrepModels ) {
+							org.lgna.croquet.steps.MenuItemPrepStep.createAndAddToTransaction( transaction, menuItemPrepModel );
 						}
 						chapterPage.refreshNotes();
 						if( chapterPage.isGoodToGo() ) {

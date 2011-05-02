@@ -42,8 +42,6 @@
  */
 package org.lgna.croquet.steps;
 
-import edu.cmu.cs.dennisc.croquet.Retargeter;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -76,7 +74,7 @@ public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncoda
 	}
 	
 	
-	public void retarget( Retargeter retargeter ) {
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		for( Transaction transaction : this.transactions ) {
 			transaction.retarget( retargeter );
 		}

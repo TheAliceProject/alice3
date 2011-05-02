@@ -198,8 +198,11 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 						final int N = this.lastMenuSelection.size();
 						for( int i=0; i<N; i++ ) {
 							edu.cmu.cs.dennisc.croquet.Model model = this.lastMenuSelection.get( i );
-							if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
-								MenuModelStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.MenuModel)model );
+							
+//							if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
+//								MenuModelStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.MenuModel)model );
+							if( model instanceof edu.cmu.cs.dennisc.croquet.MenuItemPrepModel ) {
+								MenuItemPrepStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.MenuItemPrepModel)model );
 							} else if( model instanceof edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? > ) {
 								edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? > fillIn = (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model;
 //								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {

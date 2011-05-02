@@ -46,13 +46,13 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuModelNote extends PrepNote< org.lgna.croquet.steps.MenuModelStep > {
-	public MenuModelNote( org.lgna.croquet.steps.MenuModelStep step ) {
+public class MenuItemPrepNote extends PrepNote< org.lgna.croquet.steps.MenuItemPrepStep > {
+	public MenuItemPrepNote( org.lgna.croquet.steps.MenuItemPrepStep step ) {
 		super( step );
 	}
 	
 	@Override
-	protected void addFeatures( org.lgna.croquet.steps.MenuModelStep step ) {
+	protected void addFeatures( org.lgna.croquet.steps.MenuItemPrepStep step ) {
 		this.addFeature( new org.lgna.cheshire.stencil.features.MenuHole( 
 				new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), 
 				org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH,

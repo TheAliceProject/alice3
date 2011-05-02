@@ -233,7 +233,7 @@ public abstract class Presentation {
 			}
 		}
 	}
-	private edu.cmu.cs.dennisc.croquet.CompletionModel huntForInMenus( java.util.List< edu.cmu.cs.dennisc.croquet.MenuModel > list, edu.cmu.cs.dennisc.croquet.MenuModel menuModel, edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
+	private edu.cmu.cs.dennisc.croquet.CompletionModel huntForInMenus( java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > list, edu.cmu.cs.dennisc.croquet.MenuItemPrepModel menuModel, edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
 		if( menuModel instanceof edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel ) {
 			edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel defaultMenuModel = (edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel)menuModel;
 			for( edu.cmu.cs.dennisc.croquet.Model child : defaultMenuModel.getModels() ) {
@@ -253,14 +253,14 @@ public abstract class Presentation {
 		}
 		return null;
 	}
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.MenuModel > huntForInMenus( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > huntForInMenus( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
 		edu.cmu.cs.dennisc.croquet.MenuBarModel menuBarModel = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getMenuBarModel();
 		if( menuBarModel != null ) {
-			java.util.List< edu.cmu.cs.dennisc.croquet.MenuModel > rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-			for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : menuBarModel.getChildren() ) {
-				edu.cmu.cs.dennisc.croquet.Model found = this.huntForInMenus( rv, menuModel, model );
+			java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+			for( edu.cmu.cs.dennisc.croquet.MenuItemPrepModel child : menuBarModel.getChildren() ) {
+				edu.cmu.cs.dennisc.croquet.Model found = this.huntForInMenus( rv, child, model );
 				if( found != null ) {
-					rv.add( 0, menuModel );
+					rv.add( 0, child );
 					//rv.add( 0, menuBarModel );
 					return rv;
 				}

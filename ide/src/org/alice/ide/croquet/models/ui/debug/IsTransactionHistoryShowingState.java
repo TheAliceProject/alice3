@@ -202,8 +202,8 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 			protected javax.swing.JFrame createFrame() {
 				javax.swing.JFrame rv = super.createFrame();
 				if( IS_SIDE_DOCKING_DESIRED ) {
-					rv.setLocation( 1000, 0 );
-					rv.setSize( 280, 820 );
+					rv.setLocation( 1280, 0 );
+					rv.setSize( 280, 720 );
 				}
 				return rv;
 			}

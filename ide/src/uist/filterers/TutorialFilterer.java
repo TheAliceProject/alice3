@@ -55,14 +55,14 @@ public class TutorialFilterer implements org.lgna.cheshire.Filterer {
 				org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
 				org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
 				if( transaction.isSuccessfullyCompleted() ) {
-					java.util.ListIterator< org.lgna.croquet.steps.PrepStep< ? > > prepStepListIterator = transaction.prepStepListIterator();
-					while( prepStepListIterator.hasNext() ) {
-						org.lgna.croquet.steps.PrepStep< ? > prepStep = prepStepListIterator.next();
-						edu.cmu.cs.dennisc.croquet.PrepModel prepModel = prepStep.getModel();
-						if( prepModel instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
-							prepStepListIterator.remove();
-						}
-					}
+//					java.util.ListIterator< org.lgna.croquet.steps.PrepStep< ? > > prepStepListIterator = transaction.prepStepListIterator();
+//					while( prepStepListIterator.hasNext() ) {
+//						org.lgna.croquet.steps.PrepStep< ? > prepStep = prepStepListIterator.next();
+//						edu.cmu.cs.dennisc.croquet.PrepModel prepModel = prepStep.getModel();
+//						if( prepModel instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
+//							prepStepListIterator.remove();
+//						}
+//					}
 					edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
 					if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
 						org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
