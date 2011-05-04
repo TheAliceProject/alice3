@@ -107,6 +107,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 //		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		if( source instanceof org.alice.ide.common.ExpressionCreatorPane ) {
 			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source;
+//<<<<<<< HEAD
 //			class DropOperation extends org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation {
 //				public DropOperation() {
 //					super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "43bbcede-3da7-4597-a093-9727e5b63f29" ), ExpressionPropertyDropDownPane.this.expressionProperty );
@@ -119,6 +120,19 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 //			}
 			
 			rv = expressionCreatorPane.getDropOperation( context, this.expressionProperty );
+//=======
+//			class DropOperation extends org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation {
+//				public DropOperation() {
+//					super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "43bbcede-3da7-4597-a093-9727e5b63f29" ), ExpressionPropertyDropDownPane.this.expressionProperty );
+//				}
+//				@Override
+//				protected void initializeInternal(edu.cmu.cs.dennisc.croquet.ModelContext<?> context, java.util.UUID id, edu.cmu.cs.dennisc.croquet.ViewController<?, ?> viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver,
+//						edu.cmu.cs.dennisc.alice.ast.Expression prevExpression) {
+//					expressionCreatorPane.createExpression( context, this.getExpressionProperty().getExpressionType(), taskObserver );
+//				}
+//			}
+//			rv = new DropOperation();
+//>>>>>>> dev
 		} else {
 			rv = null;
 		}
