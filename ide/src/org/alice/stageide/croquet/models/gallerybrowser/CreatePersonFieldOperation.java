@@ -70,7 +70,7 @@ public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOpera
 		super( java.util.UUID.fromString( "84f3a391-4a6c-4a10-82da-6b6231937949" ) );
 	}
 	@Override
-	protected CreateFieldFromPersonPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< CreateFieldFromPersonPane > context ) {
+	protected CreateFieldFromPersonPane prologue( org.lgna.croquet.steps.InputDialogOperationStep< CreateFieldFromPersonPane > context ) {
 		CreatePersonOperation createPersonOperation = new CreatePersonOperation( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP );
 		createPersonOperation.fire();
 		
@@ -85,7 +85,7 @@ public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOpera
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.stage.Person > createFieldAndInstance(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< CreateFieldFromPersonPane > context ) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.stage.Person > createFieldAndInstance(org.lgna.croquet.steps.InputDialogOperationStep< CreateFieldFromPersonPane > context ) {
 		CreateFieldFromPersonPane createFieldFromPersonPane = context.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.getInputValue();
 		if( field != null ) {

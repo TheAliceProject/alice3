@@ -47,11 +47,11 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public class StringStateChangeStep extends StateChangeStep< edu.cmu.cs.dennisc.croquet.StringState >{
-	public static StringStateChangeStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.StringState model ) {
-		return new StringStateChangeStep( parent, model );
+	/*package-private*/ static StringStateChangeStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.StringState model, org.lgna.croquet.Trigger trigger ) {
+		return new StringStateChangeStep( parent, model, trigger );
 	}
-	private StringStateChangeStep( Transaction parent, edu.cmu.cs.dennisc.croquet.StringState model ) {
-		super( parent, model );
+	private StringStateChangeStep( Transaction parent, edu.cmu.cs.dennisc.croquet.StringState model, org.lgna.croquet.Trigger trigger ) {
+		super( parent, model, trigger );
 	}
 	public StringStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

@@ -723,7 +723,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate extra enableRendering" );
 		}
 	}
-	public void handleDragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+	public void handleDragStarted( org.lgna.croquet.steps.DragStep dragAndDropContext ) {
 		this.potentialDragSource = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
@@ -736,19 +736,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		this.disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
-	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+	public void handleDragEnteredDropReceptor( org.lgna.croquet.steps.DragStep dragAndDropContext ) {
 		//		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
 		//		if( this.stencil != null && this.holes != null ) {
 		//			this.stencil.repaint();
 		//		}
 	}
-	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+	public void handleDragExitedDropReceptor( org.lgna.croquet.steps.DragStep dragAndDropContext ) {
 		this.currentDropReceptorComponent = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
 	}
-	public void handleDragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+	public void handleDragStopped( org.lgna.croquet.steps.DragStep dragAndDropContext ) {
 		this.enableRendering();
 	}
 
@@ -910,24 +910,24 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( this.getUri() != null ) {
 			//pass
 		} else {
-			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( e );
+			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
 		}
 	}
 	@Override
-	protected void handleAbout( java.util.EventObject e ) {
-		this.getAboutOperation().fire( e );
+	protected void handleAbout( org.lgna.croquet.Trigger trigger ) {
+		this.getAboutOperation().fire( trigger );
 	}
 	@Override
-	protected void handlePreferences( java.util.EventObject e ) {
-		this.getPreferencesOperation().fire( e );
+	protected void handlePreferences( org.lgna.croquet.Trigger trigger ) {
+		this.getPreferencesOperation().fire( trigger );
 	}
 	protected void preservePreferences() {
 		PreferenceManager.preservePreferences();
 	}
 	@Override
-	protected void handleQuit( java.util.EventObject e ) {
+	protected void handleQuit( org.lgna.croquet.Trigger trigger ) {
 		this.preservePreferences();
-		org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().fire( e );
+		org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().fire( trigger );
 	}
 
 //	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent source ) {

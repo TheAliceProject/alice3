@@ -136,11 +136,11 @@ public abstract class DeleteMemberOperation< N extends edu.cmu.cs.dennisc.alice.
 	}
 	
 	@Override
-	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 		if( this.isClearToDelete( this.member ) ) {
-			context.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< DeleteMemberOperation< N > >() );
+			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< DeleteMemberOperation< N > >() );
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 }

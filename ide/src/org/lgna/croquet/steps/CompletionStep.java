@@ -50,8 +50,8 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 	private edu.cmu.cs.dennisc.croquet.Edit<M> edit;
 	private boolean isSuccessfullyCompleted;
 	private boolean isPending = true;
-	public CompletionStep( Transaction parent, M model, TransactionHistory transactionHistory ) {
-		super( parent, model );
+	public CompletionStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger, TransactionHistory transactionHistory ) {
+		super( parent, model, trigger );
 		parent.setCompletionStep( this );
 		this.transactionHistory = transactionHistory;
 		if( this.transactionHistory != null ) {
@@ -63,13 +63,8 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 		super( binaryDecoder );
 		this.isPending = binaryDecoder.decodeBoolean();
 		this.isSuccessfullyCompleted = binaryDecoder.decodeBoolean();
-		edu.cmu.cs.dennisc.croquet.Edit.Memento< M > memento = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		if( memento != null ) {
-			this.edit = memento.createEdit();
-			this.edit.setCompletionStep( this );
-		} else {
-			this.edit = null;
-		}
+		this.edit = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		this.edit.setCompletionStep( this );
 		this.transactionHistory = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		if( this.transactionHistory != null ) {
 			this.transactionHistory.setParent( this );
@@ -80,13 +75,7 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.isPending );
 		binaryEncoder.encode( this.isSuccessfullyCompleted );
-		edu.cmu.cs.dennisc.croquet.Edit.Memento<M> memento;
-		if( this.edit != null ) {
-			memento = this.edit.createMemento();
-		} else {
-			memento = null;
-		}
-		binaryEncoder.encode( memento );
+		binaryEncoder.encode( this.edit );
 		binaryEncoder.encode( this.transactionHistory );
 	}
 	
@@ -120,16 +109,20 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 	public boolean isSuccessfullyCompleted() {
 		return this.isSuccessfullyCompleted;
 	}
+	public boolean isCanceled() {
+		return this.isPending() && this.isSuccessfullyCompleted() == false;
+	}
 	public edu.cmu.cs.dennisc.croquet.Edit< ? > getEdit() {
 		return this.edit;
 	}
-
-	public void commit( edu.cmu.cs.dennisc.croquet.Edit<M> edit ) {
+	
+	/*package-private*/ void setEdit( edu.cmu.cs.dennisc.croquet.Edit<M> edit ) {
 		this.isSuccessfullyCompleted = true;
 		this.edit = edit;
 		this.edit.setCompletionStep( this );
 		this.isPending = false;
 	}
+
 	public void finish() {
 		this.isSuccessfullyCompleted = true;
 		this.edit = null;
@@ -140,9 +133,15 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 		this.edit = null;
 		this.isPending = false;
 	}
+	
+	public void commitAndInvokeDo( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+		this.setEdit( edit );
+		edit.doOrRedo( true );
+	}
+	
 
 	public String getTutorialTransactionTitle( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		return this.getModel().getTutorialTransactionTitle( this.edit, userInformation );
+		return this.getModel().getTutorialTransactionTitle( this, userInformation );
 	}
 	@Override
 	protected StringBuilder updateRepr( StringBuilder rv ) {

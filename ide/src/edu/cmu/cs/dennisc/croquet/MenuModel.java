@@ -79,7 +79,7 @@ public abstract class MenuModel extends MenuItemPrepModel {
 		return this.getName();
 	}
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		rv.append( "Select <strong>" + this.getTutorialNoteName() + "</strong>" );
 		return rv;
 	}
@@ -107,9 +107,9 @@ public abstract class MenuModel extends MenuItemPrepModel {
 	}
 	
 	
-	protected void handlePopupMenuPrologue( PopupMenu popupMenu, StandardPopupOperationContext context ) {
+	protected void handlePopupMenuPrologue( PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupOperationStep context ) {
 	}
-	protected void handlePopupMenuEpilogue( PopupMenu popupMenu, StandardPopupOperationContext context ) {
+	protected void handlePopupMenuEpilogue( PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupOperationStep context ) {
 	}
 	
 //	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
@@ -145,11 +145,6 @@ public abstract class MenuModel extends MenuItemPrepModel {
 ////		MenuModelContext context = (MenuModelContext)RootContext.getCurrentContext();
 ////		context.handleMenuCanceled( e );
 //		System.err.println( "todo: cancel" + " " + e );
-	}
-	
-	@Override
-	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return false;
 	}
 	
 	private class PopupMenuListener implements javax.swing.event.PopupMenuListener {

@@ -50,12 +50,12 @@ public abstract class InputDialogWithPreviewOperation<T,J extends org.alice.ide.
 		super( group, individualId );
 	}
 	@Override
-	protected String getDialogTitle( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context ) {
+	protected String getDialogTitle( org.lgna.croquet.steps.InputDialogOperationStep< J > context ) {
 		org.alice.ide.preview.PanelWithPreview<T> panelWithPreview = context.getMainPanel();
 		return panelWithPreview.getDialogTitle();
 	}
 	@Override
-	protected String getInternalExplanation( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context ) {
+	protected String getInternalExplanation( org.lgna.croquet.steps.InputDialogOperationStep< J > context ) {
 		org.alice.ide.preview.PanelWithPreview<T> panelWithPreview = context.getMainPanel();
 		String rv = null;
 		if( panelWithPreview != null ) {

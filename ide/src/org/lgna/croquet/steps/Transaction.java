@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet.steps;
 
+import edu.cmu.cs.dennisc.croquet.Model;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -155,7 +157,8 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		private edu.cmu.cs.dennisc.croquet.CompletionModel dropCompletionModel;
 		private edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor;
 		private edu.cmu.cs.dennisc.croquet.DropSite dropSite;
-		private java.util.List< edu.cmu.cs.dennisc.croquet.Model > lastMenuSelection; 
+		private java.util.List< edu.cmu.cs.dennisc.croquet.Model > lastMenuSelection;
+		private javax.swing.event.MenuEvent lastMenuEvent;
 		public void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel dropCompletionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 			this.dropCompletionModel = dropCompletionModel;
 			this.dropReceptor = dropReceptor;
@@ -175,74 +178,74 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		private boolean isReifying;
 		public Step<?> reify( Step<?> step, boolean isLastPrep ) {
 			Step<?> rv = step;
-			if( this.isReifying ) {
-				//pass
-			} else {
-				this.isReifying = true;
-				try {
-					boolean isDropPrep;
-					if( this.lastMenuSelection != null && this.lastMenuSelection.size() > 0 ) {
-						isDropPrep = true;
-					} else {
-						isDropPrep = isLastPrep;
-					}
-					if( this.dropCompletionModel != null ) {
-						if( isDropPrep ) {
-							DropPrepStep.createAndAddToTransaction( Transaction.this, this.dropCompletionModel, this.dropReceptor, this.dropSite );
-						} else {
-							DropCompletionStep.createAndAddToTransaction( Transaction.this, this.dropCompletionModel, this.dropReceptor, this.dropSite );
-							rv = null;
-						}
-					}
-					if( this.lastMenuSelection != null && this.lastMenuSelection.size() > 0 ) {
-						final int N = this.lastMenuSelection.size();
-						for( int i=0; i<N; i++ ) {
-							edu.cmu.cs.dennisc.croquet.Model model = this.lastMenuSelection.get( i );
-							
-//							if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
-//								MenuModelStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.MenuModel)model );
-							if( model instanceof edu.cmu.cs.dennisc.croquet.MenuItemPrepModel ) {
-								MenuItemPrepStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.MenuItemPrepModel)model );
-							} else if( model instanceof edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? > ) {
-								edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? > fillIn = (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model;
-//								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
-//									isLastPrep = false;
-//								}
-//								if( i < N-1 || isLastPrep ) {
-//									CascadeFillInPrepStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model );
-//								} else {
-//									CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadePopupOperation)this.dropCompletionModel, fillIn );
-//									rv = null;
-//								}
-
-//								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
-//									edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn cascadeInputDialogOperationFillIn = (edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn)fillIn;
-//									rv = InputDialogOperationStep.createAndAddToTransaction( Transaction.this, cascadeInputDialogOperationFillIn.getInputDialogOperation() );
-//								} else {
-									if( i < N-1 || isLastPrep ) {
-										CascadeFillInPrepStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model );
-									} else {
-										CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadePopupOperation)this.dropCompletionModel, fillIn );
-										rv = null;
-									}
-//								}
-							} else if( model instanceof edu.cmu.cs.dennisc.croquet.MenuBarModel ) {
-								//pass
-							} else if( model instanceof edu.cmu.cs.dennisc.croquet.CompletionModel ) {
-								//pass
-							} else {
-								assert false : model;
-							}
-						}
-					}
-					this.dropCompletionModel = null;
-					this.dropReceptor = null;
-					this.dropSite = null;
-					this.lastMenuSelection = null;
-				} finally {
-					this.isReifying = false;
-				}
-			}
+//			if( this.isReifying ) {
+//				//pass
+//			} else {
+//				this.isReifying = true;
+//				try {
+//					boolean isDropPrep;
+//					if( this.lastMenuSelection != null && this.lastMenuSelection.size() > 0 ) {
+//						isDropPrep = true;
+//					} else {
+//						isDropPrep = isLastPrep;
+//					}
+//					if( this.dropCompletionModel != null ) {
+//						if( isDropPrep ) {
+//							DropPrepStep.createAndAddToTransaction( Transaction.this, this.dropCompletionModel, this.dropReceptor, this.dropSite );
+//						} else {
+//							DropCompletionStep.createAndAddToTransaction( Transaction.this, this.dropCompletionModel, this.dropReceptor, this.dropSite );
+//							rv = null;
+//						}
+//					}
+//					if( this.lastMenuSelection != null && this.lastMenuSelection.size() > 0 ) {
+//						final int N = this.lastMenuSelection.size();
+//						for( int i=0; i<N; i++ ) {
+//							edu.cmu.cs.dennisc.croquet.Model model = this.lastMenuSelection.get( i );
+//							
+////							if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
+////								MenuModelStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.MenuModel)model );
+//							if( model instanceof edu.cmu.cs.dennisc.croquet.MenuItemPrepModel ) {
+//								MenuItemPrepStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.MenuItemPrepModel)model );
+//							} else if( model instanceof edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? > ) {
+//								edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? > fillIn = (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model;
+////								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
+////									isLastPrep = false;
+////								}
+////								if( i < N-1 || isLastPrep ) {
+////									CascadeFillInPrepStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model );
+////								} else {
+////									CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadePopupOperation)this.dropCompletionModel, fillIn );
+////									rv = null;
+////								}
+//
+////								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
+////									edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn cascadeInputDialogOperationFillIn = (edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn)fillIn;
+////									rv = InputDialogOperationStep.createAndAddToTransaction( Transaction.this, cascadeInputDialogOperationFillIn.getInputDialogOperation() );
+////								} else {
+//									if( i < N-1 || isLastPrep ) {
+//										CascadeFillInPrepStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model );
+//									} else {
+//										CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadePopupOperation)this.dropCompletionModel, fillIn );
+//										rv = null;
+//									}
+////								}
+//							} else if( model instanceof edu.cmu.cs.dennisc.croquet.MenuBarModel ) {
+//								//pass
+//							} else if( model instanceof edu.cmu.cs.dennisc.croquet.CompletionModel ) {
+//								//pass
+//							} else {
+//								assert false : model;
+//							}
+//						}
+//					}
+//					this.dropCompletionModel = null;
+//					this.dropReceptor = null;
+//					this.dropSite = null;
+//					this.lastMenuSelection = null;
+//				} finally {
+//					this.isReifying = false;
+//				}
+//			}
 			return rv;
 		}
 	}
@@ -251,12 +254,12 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 //		return (edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F >)this.pendingDrop.dropCompletionModel;
 //	}
 	private PendingSteps pendingSteps = new PendingSteps();
-	public void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+	/*package-private*/ void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 		this.pendingSteps.pendDrop( completionModel, dropReceptor, dropSite );
 	}
 
 	
-	/*package-private*/ void pendMenuSelection( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
+	/*package-private*/ void pendMenuSelection( javax.swing.event.ChangeEvent changeEvent, java.util.List< Model > models ) {
 		this.pendingSteps.pendMenuSelection( models );
 	}
 	
@@ -267,26 +270,29 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 			return null;
 		}
 	}
-	
-	public void commit( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+
+	/*package-private*/ void reify() {
 		this.pendingSteps.reify( null, false );
-		assert this.completionStep != null;
-		this.completionStep.commit( edit );
 	}
-	public void finish() {
-		this.pendingSteps.reify( null, false );
-		assert this.completionStep != null;
-		this.completionStep.finish();
-	}
-	public void cancel() {
-		this.pendingSteps.reify( null, false );
-		if( this.completionStep != null ) {
-			this.completionStep.cancel();
-			TransactionManager.fireTransactionCanceled( this );
-		} else {
-			CancelCompletionStep.createAndAddToTransaction( this, null );
-		}
-	}
+//	public void commit( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+//		this.pendingSteps.reify( null, false );
+//		assert this.completionStep != null;
+//		this.completionStep.commit( edit );
+//	}
+//	public void finish() {
+//		this.pendingSteps.reify( null, false );
+//		assert this.completionStep != null;
+//		this.completionStep.finish();
+//	}
+//	public void cancel( org.lgna.croquet.Trigger trigger ) {
+//		this.pendingSteps.reify( null, false );
+//		if( this.completionStep != null ) {
+//			this.completionStep.cancel();
+//			TransactionManager.fireTransactionCanceled( this );
+//		} else {
+//			CancelCompletionStep.createAndAddToTransaction( this, null, trigger );
+//		}
+//	}
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		for( PrepStep< ? > prepStep : this.prepSteps ) {
 			prepStep.retarget( retargeter );

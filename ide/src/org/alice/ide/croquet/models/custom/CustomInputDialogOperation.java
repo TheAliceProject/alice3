@@ -60,11 +60,11 @@ public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.al
 		return this.customInputPane.getInputValue();
 	}
 	@Override
-	protected CustomInputPane< E > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {
+	protected CustomInputPane< E > prologue(org.lgna.croquet.steps.InputDialogOperationStep<CustomInputPane< E >> context) {
 		return this.customInputPane;
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep<CustomInputPane< E >> context, boolean isOk) {
 		if( isOk ) {
 			context.finish();
 		} else {

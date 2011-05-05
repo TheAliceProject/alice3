@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlankOwner<F,B,C extends CascadeBlankOwnerContext< F, B, ?, C > > extends CascadeItem< F, C > {
+public abstract class CascadeBlankOwner<F,B,S extends org.lgna.croquet.steps.CascadeBlankOwnerStep< F, B, ?, S > > extends CascadeItem< F, S > {
 	private java.util.List< CascadeBlank<B> > blanks = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	public CascadeBlankOwner( java.util.UUID id ) {
 		super( id );

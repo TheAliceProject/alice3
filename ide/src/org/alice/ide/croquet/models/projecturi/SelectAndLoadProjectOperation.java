@@ -53,7 +53,7 @@ public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.c
 	}
 	protected abstract boolean isNew();
 	@Override
-	protected String getInternalExplanation(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context) {
+	protected String getInternalExplanation(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context) {
 		if( org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedURI() != null ) {
 			return super.getInternalExplanation(context);
 		} else {
@@ -62,7 +62,7 @@ public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.c
 	}
 	
 	@Override
-	protected org.alice.ide.openprojectpane.SelectProjectToOpenPanel prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context) {
+	protected org.alice.ide.openprojectpane.SelectProjectToOpenPanel prologue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context) {
 		if( this.selectProjectToOpenPanel != null ) {
 			//pass
 		} else {
@@ -73,7 +73,7 @@ public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.c
 		return this.selectProjectToOpenPanel;
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context, boolean isOk) {
 		if( isOk ) {
 			//org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel = context.getMainPanel();
 			java.net.URI uri = org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedURI();

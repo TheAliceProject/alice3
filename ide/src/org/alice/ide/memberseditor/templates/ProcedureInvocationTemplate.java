@@ -89,7 +89,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 		return org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( this.method );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( org.lgna.croquet.steps.DragStep context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation.getInstance( blockStatementIndexPair, this.method );
 	}
 }

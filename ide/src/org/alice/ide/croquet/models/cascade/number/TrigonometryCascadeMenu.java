@@ -57,7 +57,7 @@ public class TrigonometryCascadeMenu extends org.alice.ide.croquet.models.cascad
 		super( java.util.UUID.fromString( "fb160569-ac57-4fbc-a665-2239411e3f74" ) );
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateBlankChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateBlankChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "sin", java.lang.Double.TYPE ) );
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "cos", java.lang.Double.TYPE ) );
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "tan", java.lang.Double.TYPE ) );

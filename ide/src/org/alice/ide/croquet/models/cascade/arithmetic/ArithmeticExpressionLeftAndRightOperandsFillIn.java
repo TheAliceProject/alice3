@@ -63,7 +63,7 @@ public abstract class ArithmeticExpressionLeftAndRightOperandsFillIn extends org
 		return new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression( expressions[ 0 ], this.transientValue.operator.getValue(), expressions[ 1 ], this.transientValue.expressionType.getValue() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+	public edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 		return this.transientValue;
 	}
 }

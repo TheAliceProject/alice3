@@ -67,7 +67,7 @@ public class StringConcatinationLeftAndRightOperandsFillIn extends org.alice.ide
 		return new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( expressions[ 0 ], expressions[ 1 ] );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.StringConcatenation getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.StringConcatenation, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+	public edu.cmu.cs.dennisc.alice.ast.StringConcatenation getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep< edu.cmu.cs.dennisc.alice.ast.StringConcatenation, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 		return this.transientValue;
 	}
 }

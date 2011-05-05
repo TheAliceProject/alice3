@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupOperation<C extends PopupOperationContext<?>> extends Operation<C> {
+public abstract class PopupOperation<S extends org.lgna.croquet.steps.PopupOperationStep<?>> extends Operation<S> {
 	public PopupOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}

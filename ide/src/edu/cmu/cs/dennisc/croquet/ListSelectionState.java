@@ -42,6 +42,7 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.edits.ListSelectionStateEdit;
 import org.lgna.croquet.steps.TransactionManager;
 
 /*package-private*/ class ComboBoxModel<E> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
@@ -197,8 +198,8 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 //	private int indexOfLastPerform = -1;
 
 	private ViewController< ?, ? > mostRecentViewController;
-	private java.util.EventObject mostRecentEvent;
-	public void setMostRecentEventAndViewController( java.util.EventObject mostRecentEvent, ViewController< ?, ? > mostRecentViewController ) {
+	private java.awt.event.MouseEvent mostRecentEvent;
+	public void setMostRecentEventAndViewController( java.awt.event.MouseEvent mostRecentEvent, ViewController< ?, ? > mostRecentViewController ) {
 		this.mostRecentEvent = mostRecentEvent;
 		this.mostRecentViewController = mostRecentViewController;
 	}
@@ -213,6 +214,8 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			//pass
 		} else {
 			this.prevAtomicSelectedValue = this.getValue();
+			//todo?
+			this.setMostRecentEventAndViewController( null, null );
 		}
 		this.pushCount++;
 	}
@@ -228,7 +231,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 				if( Manager.isInTheMidstOfUndoOrRedo() ) {
 					//pass
 				} else {
-					this.commitEdit( new ListSelectionStateEdit< E >( this.mostRecentEvent, this.prevAtomicSelectedValue, nextSelectedValue ), this.mostRecentEvent, this.mostRecentViewController );
+					this.commitEdit( new ListSelectionStateEdit< E >( this.prevAtomicSelectedValue, nextSelectedValue ), new org.lgna.croquet.triggers.MouseEventTrigger( this.mostRecentViewController, this.mostRecentEvent ) );
 					//						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
 					//						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
 					//						ModelContext< ? > popContext = ContextManager.popContext();
@@ -512,28 +515,25 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		return null;
 	}
 	
-	protected void commitEdit( ListSelectionStateEdit< E > listSelectionStateEdit, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		TransactionManager.addListSelectionStateChangeStep( this );
-		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
-		childContext.commitAndInvokeDo( listSelectionStateEdit );
-		ModelContext< ? > popContext = ContextManager.popContext();
-		assert popContext == childContext;
+	protected void commitEdit( ListSelectionStateEdit< E > edit, org.lgna.croquet.Trigger trigger ) {
+		org.lgna.croquet.steps.ListSelectionStateChangeStep< E > step = TransactionManager.addListSelectionStateChangeStep( this, trigger );
+		step.commitAndInvokeDo( edit );
+//		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
+//		childContext.commitAndInvokeDo( listSelectionStateEdit );
+//		ModelContext< ? > popContext = ContextManager.popContext();
+//		assert popContext == childContext;
 	}
 
 	@Override
 	public Edit< ? > commitTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		assert originalEdit instanceof ListSelectionStateEdit;
 		ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)originalEdit;
-		this.commitEdit( listSelectionStateEdit, null, null );
+		this.commitEdit( listSelectionStateEdit, org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 		return listSelectionStateEdit;
 	}
 
 	@Override
-	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		return updateTutorialStepText( rv, modelContext, edit, userInformation );
-	}
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		if( edit instanceof ListSelectionStateEdit ) {
 			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
 			rv.append( "Select " );
@@ -543,30 +543,10 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		}
 		return rv;
 	}
-
-	@Deprecated
-	public String getTutorialNoteStartText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "First press on " );
-		sb.append( "<strong>" );
-		this.codec.appendRepresentation( sb, listSelectionStateEdit.getPreviousValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>" );
-		sb.append( " in order to change it to " );
-		sb.append( "<strong>" );
-		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>." );
-		return sb.toString();
+	@Override
+	protected java.lang.StringBuilder updateTutorialTransactionTitle( java.lang.StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 	}
-	@Deprecated
-	public String getTutorialNoteFinishText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Select " );
-		sb.append( "<strong>" );
-		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>." );
-		return sb.toString();
-	}
-
 	public List< E > createList() {
 		return new List< E >( this );
 	}

@@ -155,7 +155,7 @@ public class MoveStatementActionOperation extends edu.cmu.cs.dennisc.croquet.Act
 		return new org.alice.ide.croquet.resolvers.MoveStatementActionOperationNewInstanceResolver( this );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		context.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< MoveStatementActionOperation >() );
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< MoveStatementActionOperation >() );
 	}
 }

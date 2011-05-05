@@ -42,19 +42,25 @@
  */
 package edu.cmu.cs.dennisc.history;
 
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-
+/**
+ * @author Dennis Cosgrove
+ */
 public class HistoryManager {
-	private static edu.cmu.cs.dennisc.croquet.ModelContext.CommitObserver commitObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.CommitObserver() {
-		public void committing(edu.cmu.cs.dennisc.croquet.Edit edit) {
+	private HistoryManager() {
+		throw new AssertionError();
+	}
+	private static org.lgna.croquet.steps.TransactionManager.EventObserver eventObserver = new org.lgna.croquet.steps.TransactionManager.EventObserver() {
+		public void firingEvent( org.lgna.cheshire.events.Event event ) {
 		}
-		public void committed(edu.cmu.cs.dennisc.croquet.Edit edit) {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "HistoryManager:", edit, edit.getGroup() );
-			HistoryManager.handleOperationPerformed( edit );
+		public void firedEvent( org.lgna.cheshire.events.Event event ) {
+			if( event instanceof org.lgna.cheshire.events.EditCommittedEvent ) {
+				org.lgna.cheshire.events.EditCommittedEvent editCommittedEvent = (org.lgna.cheshire.events.EditCommittedEvent)event;
+				HistoryManager.handleEditCommitted( editCommittedEvent.getEdit() );
+			}
 		}
 	};
 	static {
-		edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext().addCommitObserver( HistoryManager.commitObserver );
+		org.lgna.croquet.steps.TransactionManager.addEventObserver( HistoryManager.eventObserver );
 	}
 
 	private static java.util.Map< edu.cmu.cs.dennisc.croquet.Group, HistoryManager > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -75,7 +81,7 @@ public class HistoryManager {
 		}
 		return rv;
 	}
-	private static void handleOperationPerformed( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+	private static void handleEditCommitted( edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
 		assert edit != null;
 		HistoryManager historyManager = HistoryManager.getInstance( edit.getGroup() );
 		if( historyManager != null ) {
@@ -83,7 +89,7 @@ public class HistoryManager {
 		}
 	}
 
-	private java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit > stack = new java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit >();
+	private java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit<?> > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private int insertionIndex = 0;
 	private edu.cmu.cs.dennisc.croquet.Group group;
 
@@ -93,10 +99,10 @@ public class HistoryManager {
 	public edu.cmu.cs.dennisc.croquet.Group getGroup() {
 		return this.group;
 	}
-	public java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit > getStack() {
+	public java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit<?> > getStack() {
 		return this.stack;
 	}
-	private void push( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+	private void push( edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroup(), this.group ) ) {
 			edu.cmu.cs.dennisc.history.event.HistoryPushEvent historyPushEvent = new edu.cmu.cs.dennisc.history.event.HistoryPushEvent( this, edit );
 			this.fireOperationPushing( historyPushEvent );
@@ -112,7 +118,7 @@ public class HistoryManager {
 	}
 	private void undo() {
 		if( this.insertionIndex > 0 ) {
-			edu.cmu.cs.dennisc.croquet.Edit edit = this.stack.get( this.insertionIndex - 1 );
+			edu.cmu.cs.dennisc.croquet.Edit<?> edit = this.stack.get( this.insertionIndex - 1 );
 			if( edit.canUndo() ) {
 				edit.undo();
 				this.insertionIndex--;
@@ -126,7 +132,7 @@ public class HistoryManager {
 	}
 	private void redo() {
 		if( this.insertionIndex < this.stack.size() ) {
-			edu.cmu.cs.dennisc.croquet.Edit edit = this.stack.get( this.insertionIndex );
+			edu.cmu.cs.dennisc.croquet.Edit<?> edit = this.stack.get( this.insertionIndex );
 			if( edit != null ) {
 				if( edit.canRedo() ) {
 					edit.doOrRedo( false );
@@ -253,7 +259,7 @@ public class HistoryManager {
 			}
 		}
 	}
-	public edu.cmu.cs.dennisc.croquet.Edit createDoIgnoringCompositeEdit( String presentation ) {
+	public edu.cmu.cs.dennisc.croquet.Edit<?> createDoIgnoringCompositeEdit( String presentation ) {
 //		synchronized( this.stack ) {
 //			final int N = this.insertionIndex;
 //			if( N > 0 ) {

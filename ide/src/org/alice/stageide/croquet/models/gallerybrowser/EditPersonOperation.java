@@ -75,7 +75,7 @@ public class EditPersonOperation extends PersonOperation {
 		return org.alice.stageide.croquet.models.personeditor.PersonInfo.createFromPerson( person );
 	}
 	@Override
-	protected void epilogue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context, boolean isOk ) {
+	protected void epilogue( org.lgna.croquet.steps.InputDialogOperationStep< org.alice.stageide.personeditor.PersonEditor > context, boolean isOk ) {
 		final org.alice.apis.stage.Person person = this.getSceneEditorPerson();
 		final org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
 		final org.alice.stageide.croquet.models.personeditor.PersonInfo prevPersonInfo = this.getInitialPersonInfo();
@@ -121,7 +121,7 @@ public class EditPersonOperation extends PersonOperation {
 //	private org.alice.apis.stage.Hair prevHair;
 //	private Double prevFitnessLevel;
 //	@Override
-//	protected org.alice.stageide.personeditor.PersonEditor prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.stageide.personeditor.PersonEditor> context) {
+//	protected org.alice.stageide.personeditor.PersonEditor prologue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.stageide.personeditor.PersonEditor> context) {
 //		final org.alice.apis.stage.Person person = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.field, org.alice.apis.stage.Person.class );
 //		if( person != null ) {
 //			this.prevGender = person.getGender(); 
@@ -137,7 +137,7 @@ public class EditPersonOperation extends PersonOperation {
 //		return this.personEditor; 
 //	}
 //	@Override
-//	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.stageide.personeditor.PersonEditor> context, boolean isOk) {
+//	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.stageide.personeditor.PersonEditor> context, boolean isOk) {
 //		org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
 //		final org.alice.apis.stage.Person person = personEditor.getPerson();
 //		if( isOk ) {

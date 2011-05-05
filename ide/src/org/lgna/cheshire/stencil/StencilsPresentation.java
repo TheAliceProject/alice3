@@ -145,12 +145,12 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				case java.awt.event.KeyEvent.VK_SPACE:
 				case java.awt.event.KeyEvent.VK_RIGHT:
 				case java.awt.event.KeyEvent.VK_DOWN:
-					NextStepOperation.getInstance().fire( e );
+					NextStepOperation.getInstance().fire( org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 					break;
 				case java.awt.event.KeyEvent.VK_BACK_SPACE:
 				case java.awt.event.KeyEvent.VK_LEFT:
 				case java.awt.event.KeyEvent.VK_UP:
-					prevOperation.fire( e );
+					prevOperation.fire( org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 					break;
 				}
 			}
@@ -211,7 +211,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
 			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
 			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
-			org.lgna.croquet.steps.MigrationManager migrationManager,
+			org.lgna.croquet.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
 			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess, 
@@ -330,7 +330,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 					java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > menuItemPrepModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
 					if( menuItemPrepModels != null ) {
 						for( edu.cmu.cs.dennisc.croquet.MenuItemPrepModel menuItemPrepModel : menuItemPrepModels ) {
-							org.lgna.croquet.steps.MenuItemPrepStep.createAndAddToTransaction( transaction, menuItemPrepModel );
+							org.lgna.croquet.steps.MenuItemPrepStep.createAndAddToTransaction( transaction, menuItemPrepModel, org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 						}
 						chapterPage.refreshNotes();
 						if( chapterPage.isGoodToGo() ) {

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class StandardPopupOperation extends PopupOperation<StandardPopupOperationContext> {
+public final class StandardPopupOperation extends PopupOperation<org.lgna.croquet.steps.StandardPopupOperationStep> {
 	private static final Group STANDARD_POPUP_MENU_GROUP = Group.getInstance( java.util.UUID.fromString( "4fe7cbeb-627f-4965-a2d3-f4bf42796c59" ), "STANDARD_POPUP_MENU_GROUP" );
 	private MenuModel menuModel;
 	/*package-private*/ StandardPopupOperation( MenuModel menuModel ) {
@@ -64,8 +64,8 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 	}
 	
 	@Override
-	public StandardPopupOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushStandardPopupOperationContext( this, e, viewController );
+	public org.lgna.croquet.steps.StandardPopupOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+		return org.lgna.croquet.steps.TransactionManager.addStandardPopupOperationStep( this, trigger );
 	}
 	
 //	@Override
@@ -114,7 +114,7 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 	
 	
 	@Override
-	protected final void perform( final StandardPopupOperationContext context, final Operation.PerformObserver performObserver ) {
+	protected final void perform( final org.lgna.croquet.steps.StandardPopupOperationStep step, final Operation.PerformObserver performObserver ) {
 		//note: do not call super
 		final PopupMenu popupMenu = new PopupMenu( this ) {
 			@Override
@@ -141,10 +141,10 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 			}
 			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 				if( this.cancelEvent != null ) {
-					context.cancel();
+					step.cancel();
 					this.cancelEvent = null;
 				}
-				StandardPopupOperation.this.menuModel.handlePopupMenuEpilogue( popupMenu, context );
+				StandardPopupOperation.this.menuModel.handlePopupMenuEpilogue( popupMenu, step );
 				
 				performObserver.handleFinally();
 			}
@@ -165,11 +165,7 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 			public void componentResized( java.awt.event.ComponentEvent e ) {
 //				java.awt.Component awtComponent = e.getComponent();
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
-				ModelContext< ? > currentContext = ContextManager.getCurrentContext();
-				if( currentContext instanceof StandardPopupOperationContext ) {
-					StandardPopupOperationContext popupMenuOperationContext = (StandardPopupOperationContext)currentContext;
-					popupMenuOperationContext.handleResized( e );
-				}
+				step.handleResized( e );
 			}
 			public void componentHidden( java.awt.event.ComponentEvent e ) {
 //				java.awt.Component awtComponent = e.getComponent();
@@ -178,19 +174,8 @@ public final class StandardPopupOperation extends PopupOperation<StandardPopupOp
 		} );
 
 		
-		this.menuModel.handlePopupMenuPrologue( popupMenu, context );
-		ViewController<?,?> viewController = context.getViewController();
-		java.awt.Point pt = context.getPoint();
-		if( viewController != null ) {
-			if (pt != null) {
-				popupMenu.showAtLocation( viewController, pt.x, pt.y );
-			} else {
-				popupMenu.showBelow( viewController );
-			}
-		} else {
-			java.awt.Component awtComponent = context.getMouseEvent().getComponent();
-			Component<?> component = Component.lookup( awtComponent );
-			popupMenu.showAtLocation( component, pt.x, pt.y );
-		}
+		this.menuModel.handlePopupMenuPrologue( popupMenu, step );
+		
+		step.showPopupMenu( popupMenu );
 	}
 }

@@ -176,12 +176,12 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		//todo: better name
 		protected abstract org.alice.virtualmachine.Resource selectResource();
 		@Override
-		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 			org.alice.virtualmachine.Resource resource = this.selectResource();
 			if( resource != null ) {
-				context.commitAndInvokeDo( this.createEdit( resource ) );
+				step.commitAndInvokeDo( this.createEdit( resource ) );
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		}
 	}
@@ -361,7 +361,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 			this.setName( "Rename..." );
 		}
 		@Override
-		protected org.alice.ide.name.RenamePane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.name.RenamePane> context) {
+		protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.ide.name.RenamePane> context) {
 			this.resource = ResourceManagerPane.this.getSelectedResource();
 			if( this.resource != null ) {
 				org.alice.ide.name.RenamePane rv;
@@ -382,7 +382,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 			}
 		}
 		@Override
-		protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.name.RenamePane> context, boolean isOk) {
+		protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.ide.name.RenamePane> context, boolean isOk) {
 			if( isOk ) {
 				org.alice.ide.name.RenamePane renamePane = context.getMainPanel();
 				final String nextName = renamePane.getNameText();
@@ -477,7 +477,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 			this.setName( "Reload Content..." );
 		}
 		@Override
-		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 			final org.alice.virtualmachine.Resource resource = ResourceManagerPane.this.getSelectedResource();
 			if( resource != null ) {
 				final Capsule prevCapsule;
@@ -515,7 +515,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 					nextCapsule = null;
 				}
 				if( prevCapsule != null && nextCapsule != null ) {
-					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+					step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 						@Override
 						protected final void doOrRedoInternal( boolean isDo ) {
 							nextCapsule.update( resource );
@@ -531,10 +531,10 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 						}
 					} );
 				} else {
-					context.cancel();
+					step.cancel();
 				}
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		}
 	}

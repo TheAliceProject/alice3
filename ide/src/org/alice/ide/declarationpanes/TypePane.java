@@ -74,9 +74,9 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			this.setName( org.alice.ide.IDE.getSingleton().getTextFor( type ) );
 		}
 		@Override
-		protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
 			typeProperty.setValue( this.type );
-			context.finish();
+			step.finish();
 		}
 	}
 	

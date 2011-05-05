@@ -50,11 +50,12 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 //	public static <S extends Step> S lookup( java.util.UUID id ) {
 //		return (S)map.get( id );
 //	}
-//	
+
 	private Transaction parent;
 	private final edu.cmu.cs.dennisc.croquet.CodableResolver< M > modelResolver;
+	private final transient org.lgna.croquet.Trigger trigger;
 //	private final java.util.UUID id;
-	public Step( Transaction parent, M model ) {
+	public Step( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
 		this.setParent( parent );
 		//this.modelResolver = model != null ? model.getCodableResolver() : null;
 		if( model != null ) {
@@ -62,12 +63,22 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 		} else {
 			this.modelResolver = null;
 		}
+		this.trigger = trigger;
 //		this.id = java.util.UUID.randomUUID();
 //		map.put( this.id, this );
 	}
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 //		this.id = binaryDecoder.decodeId();
+		this.trigger = null;
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.modelResolver );
+//		binaryEncoder.encode( this.id );
+	}
+
+	public org.lgna.croquet.Trigger getTrigger() {
+		return this.trigger;
 	}
 //	public java.util.UUID getId() {
 //		return this.id;
@@ -78,14 +89,10 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		edu.cmu.cs.dennisc.croquet.Model model = this.getModelForTutorialNoteText();
 		if( model != null ) {
-			return model.getTutorialNoteText( edit, userInformation );
+			return model.getTutorialNoteText( this, edit, userInformation );
 		} else {
 			return null;
 		}
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.modelResolver );
-//		binaryEncoder.encode( this.id );
 	}
 	public M getModel() {
 		return this.modelResolver != null ? this.modelResolver.getResolved() : null;

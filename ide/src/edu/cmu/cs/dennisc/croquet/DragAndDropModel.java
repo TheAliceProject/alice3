@@ -55,27 +55,9 @@ public abstract class DragAndDropModel extends PrepModel {
 	}
 	
 	@Override
-	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		rv.append( "Drag and Drop..." );
-		return rv;
-	}
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		rv.append( "Drag..." );
 		return rv;
-	}
-	@Deprecated
-	public String getTutorialDragNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {
-		return "Drag...";
-	}
-	@Deprecated
-	public String getTutorialDropNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {
-		return "Drop...";
-	}
-
-	@Override
-	public boolean isAlreadyInState( Edit< ? > edit ) {
-		return false;
 	}
 	
 	@Override
@@ -89,8 +71,8 @@ public abstract class DragAndDropModel extends PrepModel {
 	}
 	
 	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
-	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragEnteredDropReceptor( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragExitedDropReceptor( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragStopped( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragStarted( org.lgna.croquet.steps.DragStep dragAndDropContext );
+	public abstract void handleDragEnteredDropReceptor( org.lgna.croquet.steps.DragStep dragAndDropContext );
+	public abstract void handleDragExitedDropReceptor( org.lgna.croquet.steps.DragStep dragAndDropContext );
+	public abstract void handleDragStopped( org.lgna.croquet.steps.DragStep dragAndDropContext );
 }

@@ -55,8 +55,8 @@ import org.lgna.cheshire.Presentation;
 		this.presentation = presentation;
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 		this.presentation.decrementSelectedIndex();
-		context.finish();
+		step.finish();
 	}
 }

@@ -73,14 +73,14 @@ public abstract class AbstractSetLocalTransformationActionOperation extends edu.
 		}
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
 		assert prevLT != null;
 		assert nextLT != null;
 		assert prevLT.isNaN() == false;
 		assert nextLT.isNaN() == false;
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				if( isDo && ( isDoRequired == false ) ) {

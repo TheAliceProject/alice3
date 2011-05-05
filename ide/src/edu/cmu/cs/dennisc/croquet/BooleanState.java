@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import org.lgna.croquet.steps.TransactionManager;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -53,20 +51,12 @@ public class BooleanState extends State<Boolean> {
 		public void changed( boolean nextValue );
 	};
 	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public void addValueObserver( ValueObserver valueObserver ) {
-		this.valueObservers.add( valueObserver );
-	}
-	public void addAndInvokeValueObserver(ValueObserver valueObserver) {
-		this.addValueObserver(valueObserver);
-		valueObserver.changed(this.getValue());
-	}
-	public void removeValueObserver( ValueObserver valueObserver ) {
-		this.valueObservers.remove( valueObserver );
-	}
+	private boolean value;
+	private String trueText;
+	private String falseText;
+	private javax.swing.Icon trueIcon;
+	private javax.swing.Icon falseIcon;
 
-	private javax.swing.ButtonModel createButtonModel() {
-		return new javax.swing.JToggleButton.ToggleButtonModel();
-	}
 	private javax.swing.ButtonModel buttonModel = this.createButtonModel();
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -78,17 +68,11 @@ public class BooleanState extends State<Boolean> {
 				//pass
 			} else {
 				if( BooleanState.this.isContextCommitDesired() ) {
-					BooleanState.this.commitEdit( new BooleanStateEdit( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ), e );
+					BooleanState.this.commitEdit( new org.lgna.croquet.edits.BooleanStateEdit( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ), e );
 				}
 			}
 		}
 	};
-
-	private boolean value;
-	private String trueText;
-	private String falseText;
-	private javax.swing.Icon trueIcon;
-	private javax.swing.Icon falseIcon;
 
 	public BooleanState(Group group, java.util.UUID id, boolean initialState ) {
 		super(group, id);
@@ -102,60 +86,10 @@ public class BooleanState extends State<Boolean> {
 		this.setTextForBothTrueAndFalse( name );
 	}
 	
-	private void commitEdit( BooleanStateEdit booleanStateEdit, java.awt.event.ItemEvent e ) {
-		TransactionManager.addBooleanStateChangeStep( this );
-		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
-		childContext.commitAndInvokeDo( booleanStateEdit );
-		ModelContext< ? > popContext = ContextManager.popContext();
-		assert popContext == childContext;
-	}
-	
-	@Override
-	public Edit<?> commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		assert originalEdit instanceof BooleanStateEdit;
-		BooleanStateEdit booleanStateEdit = (BooleanStateEdit)originalEdit;
-		this.commitEdit( booleanStateEdit, null );
-		return booleanStateEdit;
-	}
-	
-	
-	/*package-private*/boolean isContextCommitDesired() {
-		return true;
-	}
-	
-	@Override
-	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		rv.append( getTutorialNoteText( modelContext, userInformation ) );
-		return rv;
-	}
 
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		if( edit instanceof BooleanStateEdit ) {
-			BooleanStateEdit booleanStateEdit = (BooleanStateEdit)edit;
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
-				if( booleanStateEdit.getNextValue() ) {
-					rv.append( "Select " );
-				} else {
-					rv.append( "Unselect " );
-				}
-				rv.append( "<strong>" );
-				rv.append( this.getTrueText() );
-				rv.append( "</strong>" );
-			} else {
-				rv.append( "Press " );
-				rv.append( "<strong>" );
-				if( booleanStateEdit.getNextValue() ) {
-					rv.append( this.falseText );
-				} else {
-					rv.append( this.trueText );
-				}
-				rv.append( "</strong>" );
-			}
-		}
-		return rv;
+	private javax.swing.ButtonModel createButtonModel() {
+		return new javax.swing.JToggleButton.ToggleButtonModel();
 	}
-	
 	@Override
 	protected void localize() {
 		String text = this.getDefaultLocalizedText();
@@ -180,6 +114,73 @@ public class BooleanState extends State<Boolean> {
 	/*package-private*/ javax.swing.Action getAction() {
 		return this.action;
 	}
+
+	public void addValueObserver( ValueObserver valueObserver ) {
+		this.valueObservers.add( valueObserver );
+	}
+	public void addAndInvokeValueObserver(ValueObserver valueObserver) {
+		this.addValueObserver(valueObserver);
+		valueObserver.changed(this.getValue());
+	}
+	public void removeValueObserver( ValueObserver valueObserver ) {
+		this.valueObservers.remove( valueObserver );
+	}
+
+	private void commitEdit( org.lgna.croquet.edits.BooleanStateEdit edit, java.awt.event.ItemEvent e ) {
+		org.lgna.croquet.steps.BooleanStateChangeStep step = org.lgna.croquet.steps.TransactionManager.addBooleanStateChangeStep( this, new org.lgna.croquet.triggers.ItemEventTrigger( e ) );
+		step.commitAndInvokeDo( edit );
+//		TransactionManager.addBooleanStateChangeStep( this );
+//		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
+//		childContext.commitAndInvokeDo( booleanStateEdit );
+//		ModelContext< ? > popContext = ContextManager.popContext();
+//		assert popContext == childContext;
+	}
+	
+	@Override
+	public Edit<?> commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		assert originalEdit instanceof org.lgna.croquet.edits.BooleanStateEdit;
+		org.lgna.croquet.edits.BooleanStateEdit booleanStateEdit = (org.lgna.croquet.edits.BooleanStateEdit)originalEdit;
+		this.commitEdit( booleanStateEdit, null );
+		return booleanStateEdit;
+	}
+	
+	/*package-private*/boolean isContextCommitDesired() {
+		return true;
+	}
+	
+	@Override
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep<?> step, UserInformation userInformation ) {
+		this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
+		return rv;
+	}
+
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
+		if( edit instanceof org.lgna.croquet.edits.BooleanStateEdit ) {
+			org.lgna.croquet.edits.BooleanStateEdit booleanStateEdit = (org.lgna.croquet.edits.BooleanStateEdit)edit;
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
+				if( booleanStateEdit.getNextValue() ) {
+					rv.append( "Select " );
+				} else {
+					rv.append( "Unselect " );
+				}
+				rv.append( "<strong>" );
+				rv.append( this.getTrueText() );
+				rv.append( "</strong>" );
+			} else {
+				rv.append( "Press " );
+				rv.append( "<strong>" );
+				if( booleanStateEdit.getNextValue() ) {
+					rv.append( this.falseText );
+				} else {
+					rv.append( this.trueText );
+				}
+				rv.append( "</strong>" );
+			}
+		}
+		return rv;
+	}
+	
 	@Override
 	public Boolean getValue() {
 		return this.buttonModel.isSelected();
@@ -265,9 +266,6 @@ public class BooleanState extends State<Boolean> {
 	public PushButton createPushButton() {
 		return new PushButton( this );
 	}
-//	public CheckBoxMenuItem createCheckBoxMenuItem() {
-//		return new CheckBoxMenuItem( this );
-//	}
 	public ToolPalette createToolPalette( Component<?> component ) {
 		ToolPaletteTitle title = new ToolPaletteTitle( this );
 		return new ToolPalette(title, component);

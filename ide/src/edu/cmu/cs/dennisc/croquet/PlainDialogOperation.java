@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PlainDialogOperation extends DialogOperation<PlainDialogOperationContext> {
+public abstract class PlainDialogOperation extends DialogOperation<org.lgna.croquet.steps.PlainDialogOperationStep> {
 	public PlainDialogOperation(Group group, java.util.UUID id) {
 		super(group, id);
 	}
@@ -54,10 +54,10 @@ public abstract class PlainDialogOperation extends DialogOperation<PlainDialogOp
 		return this.closeOperation;
 	}
 	@Override
-	public PlainDialogOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushDialogOperationContext( this, e, viewController );
+	public org.lgna.croquet.steps.PlainDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+		return org.lgna.croquet.steps.TransactionManager.addPlainDialogOperationStep( this, trigger );
 	}
-	public String getTutorialCloseNoteText( PlainDialogOperationContext dialogOperationContext, UserInformation userInformation ) {
+	public String getTutorialCloseNoteText( org.lgna.croquet.steps.PlainDialogOperationStep step, UserInformation userInformation ) {
 		return "When finished press the <strong>Close</strong> button.";
 	}
 	@Override

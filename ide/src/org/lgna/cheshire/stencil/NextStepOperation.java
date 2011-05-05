@@ -56,8 +56,8 @@ package org.lgna.cheshire.stencil;
 		super( java.util.UUID.fromString( "114060ef-1231-433b-9084-48faa024d1ba" ), "Next \u2192" );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 		StencilsPresentation.getInstance().incrementSelectedIndex();
-		context.finish();
+		step.finish();
 	}
 }

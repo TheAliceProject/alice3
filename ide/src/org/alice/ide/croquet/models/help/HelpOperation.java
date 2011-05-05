@@ -83,7 +83,7 @@ public class HelpOperation extends org.alice.ide.operations.InconsequentialActio
 	}
 
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
 		edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( new HelpPanel(), "Help", edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
 	}
 }

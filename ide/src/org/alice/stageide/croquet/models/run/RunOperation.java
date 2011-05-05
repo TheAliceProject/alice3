@@ -120,14 +120,13 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperatio
 	}
 	
 	@Override
-	protected java.lang.StringBuilder updateTutorialTransactionTitle( java.lang.StringBuilder rv, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		rv.append( "Preview your program." );
 		return rv;
 	}
 	@Override
-	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		rv.append( "Preview your program." );
-		return rv;
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 	}
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = null;
@@ -140,7 +139,7 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperatio
 		return this.size;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Container< ? > createContentPane( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+	protected edu.cmu.cs.dennisc.croquet.Container< ? > createContentPane( org.lgna.croquet.steps.PlainDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
 		org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		if( ide.getProject() != null ) {
@@ -161,17 +160,17 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperatio
 		return rv;
 	}
 	@Override
-	protected void releaseContentPane( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
+	protected void releaseContentPane( org.lgna.croquet.steps.PlainDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
 		//todo: investigate		
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: releaseContentPane" );
-		context.finish();
+		step.finish();
 	}
 	
 	@Override
-	protected void handleFinally( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
-		super.handleFinally( context, dialog, contentPane );
+	protected void handleFinally( org.lgna.croquet.steps.PlainDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
+		super.handleFinally( step, dialog, contentPane );
 		org.alice.ide.IDE.getSingleton().enableRendering();
 	}
 }

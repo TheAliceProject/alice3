@@ -53,44 +53,44 @@ public abstract class TemplateDragModel extends org.alice.ide.croquet.models.Cod
 	
 	protected abstract String getTutorialStepDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
 	
-	@Override
-	protected StringBuilder updateTutorialStepTitle( java.lang.StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		rv.append( "Drag and Drop " );
-		rv.append( "<strong>" );
-		rv.append( this.getTutorialStepDescription( userInformation ) );
-		rv.append( "</strong>" );
-		
-		if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
-			org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
-			edu.cmu.cs.dennisc.alice.ast.Expression[] originalExpressions = insertStatementEdit.getInitialExpressions();
-			String prefix = " ";
-			for( edu.cmu.cs.dennisc.alice.ast.Expression expression : originalExpressions ) {
-				rv.append( prefix );
-				edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, expression, userInformation.getLocale() );
-				prefix = ", ";
-			}
-		}
-		return rv;
-	}
-	@Override
-	public String getTutorialDragNoteText( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Drag the " );
-		sb.append( "<strong>" );
-		sb.append( this.getTutorialStepDescription( userInformation ) );
-		sb.append( "</strong>" );
-		sb.append( " tile..." );
-		return sb.toString();
-	}
-	@Override
-	public String getTutorialDropNoteText( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Drag the " );
-		sb.append( "<strong>" );
-		sb.append( this.getTutorialStepDescription( userInformation ) );
-		sb.append( "</strong>" );
-		sb.append( " tile here..." );
-		return sb.toString();
-	}
+//	@Override
+//	protected StringBuilder updateTutorialStepTitle( java.lang.StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+//		rv.append( "Drag and Drop " );
+//		rv.append( "<strong>" );
+//		rv.append( this.getTutorialStepDescription( userInformation ) );
+//		rv.append( "</strong>" );
+//		
+//		if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
+//			org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
+//			edu.cmu.cs.dennisc.alice.ast.Expression[] originalExpressions = insertStatementEdit.getInitialExpressions();
+//			String prefix = " ";
+//			for( edu.cmu.cs.dennisc.alice.ast.Expression expression : originalExpressions ) {
+//				rv.append( prefix );
+//				edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, expression, userInformation.getLocale() );
+//				prefix = ", ";
+//			}
+//		}
+//		return rv;
+//	}
+//	@Override
+//	public String getTutorialDragNoteText( org.lgna.croquet.steps.DragStep dragAndDropContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+//		StringBuilder sb = new StringBuilder();
+//		sb.append( "Drag the " );
+//		sb.append( "<strong>" );
+//		sb.append( this.getTutorialStepDescription( userInformation ) );
+//		sb.append( "</strong>" );
+//		sb.append( " tile..." );
+//		return sb.toString();
+//	}
+//	@Override
+//	public String getTutorialDropNoteText( org.lgna.croquet.steps.DragStep dragAndDropContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+//		StringBuilder sb = new StringBuilder();
+//		sb.append( "Drag the " );
+//		sb.append( "<strong>" );
+//		sb.append( this.getTutorialStepDescription( userInformation ) );
+//		sb.append( "</strong>" );
+//		sb.append( " tile here..." );
+//		return sb.toString();
+//	}
 	
 }

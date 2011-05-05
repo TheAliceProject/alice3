@@ -59,7 +59,7 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 			final org.alice.ide.operations.ast.BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.BackwardShiftParameterOperation( this.parametersProperty, parameter );
 			this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
 				@Override
-				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) {
+				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupOperationStep context ) {
 					super.handlePopupMenuPrologue( popupMenu, context );
 					java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					models.add( org.alice.ide.croquet.models.ast.rename.RenameParameterOperation.getInstance( parameter ).getMenuItemPrepModel() );
@@ -79,7 +79,7 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( org.lgna.croquet.steps.DragStep dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.ParameterAccessOperation.getInstance( this.getTransient(), expressionProperty );
 	}
 }

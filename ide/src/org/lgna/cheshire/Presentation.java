@@ -96,7 +96,7 @@ public abstract class Presentation {
 
 	private final edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
-	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, org.lgna.croquet.steps.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, org.lgna.croquet.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
 		
 		assert instance == null;
 		instance = this;
@@ -275,11 +275,7 @@ public abstract class Presentation {
 		for( edu.cmu.cs.dennisc.croquet.TabSelectionState< edu.cmu.cs.dennisc.croquet.Composite > tabSelectionState : edu.cmu.cs.dennisc.croquet.Manager.getRegisteredModels( edu.cmu.cs.dennisc.croquet.TabSelectionState.class ) ) {
 			for( edu.cmu.cs.dennisc.croquet.Composite item : tabSelectionState ) {
 				if( item.contains( model ) ) {
-					org.lgna.croquet.steps.Transaction rv = new org.lgna.croquet.steps.Transaction( transaction.getParent() );
-					org.lgna.croquet.steps.CompletionStep< ? > completionStep = org.lgna.croquet.steps.ListSelectionStateChangeStep.createAndAddToTransaction( rv, tabSelectionState );
-					edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit( tabSelectionState.getValue(), item );
-					completionStep.commit( edit );
-					return rv;
+					return org.lgna.croquet.steps.TransactionManager.createSimulatedTransaction( transaction.getParent(), tabSelectionState, tabSelectionState.getValue(), item, false );
 				}
 			}
 		}

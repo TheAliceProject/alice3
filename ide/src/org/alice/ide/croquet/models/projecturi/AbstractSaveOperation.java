@@ -57,7 +57,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 	protected abstract String getInitialFilename();
 	
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 		org.alice.ide.ProjectApplication application = this.getProjectApplication();
 		java.io.File filePrevious = application.getFile();
 		boolean isExceptionRaised = false;
@@ -79,10 +79,10 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 				if( isExceptionRaised ) {
 					//pass
 				} else {
-					context.finish();
+					step.finish();
 				}
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		} while( isExceptionRaised );
 	}

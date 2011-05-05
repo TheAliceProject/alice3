@@ -91,8 +91,9 @@ public class StringState extends State<String> {
 	private javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
 		private void handleUpdate( javax.swing.event.DocumentEvent e ) {
 			try {
+				javax.swing.text.Document document = e.getDocument();
 				String nextValue = document.getText( 0, document.getLength() );
-				ContextManager.handleDocumentEvent( StringState.this, null, null, e, StringState.this.previousValue, nextValue );
+				org.lgna.croquet.steps.TransactionManager.handleDocumentEvent( StringState.this, e, StringState.this.previousValue, nextValue );
 				fireValueChanged( nextValue );
 			} catch( javax.swing.text.BadLocationException ble ) {
 				throw new RuntimeException( ble );
@@ -161,14 +162,14 @@ public class StringState extends State<String> {
 	}
 	
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		if( edit instanceof StringStateEdit ) {
-			StringStateEdit stringStateEdit = (StringStateEdit)edit;
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		if( edit instanceof org.lgna.croquet.edits.StringStateEdit ) {
+			org.lgna.croquet.edits.StringStateEdit stringStateEdit = (org.lgna.croquet.edits.StringStateEdit)edit;
 			rv.append( "Enter <strong>" );
 			rv.append( stringStateEdit.getNextValue() );
 			rv.append( "</strong>" );
 		} else {
-			rv = super.updateTutorialStepText( rv, modelContext, edit, userInformation );
+			rv = super.updateTutorialStepText( rv, step, edit, userInformation );
 		}
 		return rv;
 	}

@@ -73,7 +73,6 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
 					org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
-					edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext().EPIC_HACK_clear();
 				}
 			} );
 		}
@@ -162,7 +161,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		} else {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			this.isOriginalProjectLive = true;
-			edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH+CONTEXT_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
+//			edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH+CONTEXT_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
 			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH+TRANSACTION_HISTORY_PATH, org.lgna.croquet.steps.TransactionHistory.class );
 			this.isOriginalProjectLive = false;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
@@ -213,7 +212,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	}
 	
 	@Override
-	protected void handleQuit( java.util.EventObject e ) {
+	protected void handleQuit( org.lgna.croquet.Trigger trigger ) {
 		this.preservePreferences();
 //		super.handleQuit( e );
 		if( IS_ENCODING ) {
@@ -229,16 +228,16 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			
 			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory(), ROOT_PATH+TRANSACTION_HISTORY_PATH );
 			
-			edu.cmu.cs.dennisc.croquet.RootContext rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
-			System.err.println( "todo: remove filtering" );
-			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
-					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
-			};
-			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
-				rootContext = filter.filter( rootContext );
-			}
-			
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext(), ROOT_PATH+CONTEXT_PATH );
+//			edu.cmu.cs.dennisc.croquet.RootContext rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
+//			System.err.println( "todo: remove filtering" );
+//			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
+//					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
+//			};
+//			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
+//				rootContext = filter.filter( rootContext );
+//			}
+//			
+//			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext(), ROOT_PATH+CONTEXT_PATH );
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 
 			try {

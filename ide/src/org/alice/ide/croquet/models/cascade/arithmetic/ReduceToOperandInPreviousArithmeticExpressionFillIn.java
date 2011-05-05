@@ -50,10 +50,10 @@ public abstract class ReduceToOperandInPreviousArithmeticExpressionFillIn extend
 	public ReduceToOperandInPreviousArithmeticExpressionFillIn( java.util.UUID id ) {
 		super( id );
 	}
-	@Override
-	protected final boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.Expression, Void > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
-	}
+//	@Override
+//	protected final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< edu.cmu.cs.dennisc.alice.ast.Expression, Void > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+//		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
+//	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression getOperand( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmetic );
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.Expression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {

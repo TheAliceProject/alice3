@@ -56,7 +56,7 @@ public class StatisticsOperation extends edu.cmu.cs.dennisc.croquet.InformationD
 		super( java.util.UUID.fromString( "b34e805e-e6ef-4f08-af53-df98e1653732" ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Container<?> createContentPane(edu.cmu.cs.dennisc.croquet.InformationDialogOperationContext<edu.cmu.cs.dennisc.croquet.JComponent<?>> context, edu.cmu.cs.dennisc.croquet.Dialog dialog) {
+	protected edu.cmu.cs.dennisc.croquet.Container<?> createContentPane(org.lgna.croquet.steps.InformationDialogOperationStep<edu.cmu.cs.dennisc.croquet.JComponent<?>> context, edu.cmu.cs.dennisc.croquet.Dialog dialog) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = ide.getStrippedProgramType();
 		if( programType != null ) {
@@ -122,6 +122,6 @@ public class StatisticsOperation extends edu.cmu.cs.dennisc.croquet.InformationD
 		}
 	}
 	@Override
-	protected void releaseContentPane(edu.cmu.cs.dennisc.croquet.InformationDialogOperationContext<edu.cmu.cs.dennisc.croquet.JComponent<?>> context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container<?> contentPane) {
+	protected void releaseContentPane(org.lgna.croquet.steps.InformationDialogOperationStep<edu.cmu.cs.dennisc.croquet.JComponent<?>> context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container<?> contentPane) {
 	}
 }

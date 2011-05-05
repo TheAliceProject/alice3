@@ -70,9 +70,9 @@ public class SelectDirectoryActionOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 		//todo: create edit
 		this.treeSelectionState.setSelection( this.treeNode );
-		context.finish();
+		step.finish();
 	}
 }

@@ -107,7 +107,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	}
 	@Override
 	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addCustomFillIns( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv,
-			edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > context, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
+			org.lgna.croquet.steps.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.Expression > context, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
 		rv = super.addCustomFillIns( rv, context, type );
 		System.err.println( "TODO: addCustomFillIns handle listeners" );
 //		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();

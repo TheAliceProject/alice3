@@ -62,7 +62,7 @@ public abstract class Application {
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
-		ContextManager.startListeningToMenuSelection();
+		org.lgna.croquet.steps.TransactionManager.startListeningToMenuSelection();
 	}
 
 	protected abstract Component< ? > createContentPane();
@@ -96,7 +96,7 @@ public abstract class Application {
 				Application.this.handleWindowOpened( e );
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
-				Application.this.handleQuit( e );
+				Application.this.handleQuit( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}
@@ -111,13 +111,13 @@ public abstract class Application {
 		} );
 		edu.cmu.cs.dennisc.apple.AppleUtilities.addApplicationListener( new edu.cmu.cs.dennisc.apple.event.ApplicationListener() {
 			public void handleAbout( java.util.EventObject e ) {
-				Application.this.handleAbout( e );
+				Application.this.handleAbout( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
 			}
 			public void handlePreferences( java.util.EventObject e ) {
-				Application.this.handlePreferences( e );
+				Application.this.handlePreferences( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
 			}
 			public void handleQuit( java.util.EventObject e ) {
-				Application.this.handleQuit( e );
+				Application.this.handleQuit( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
 			}
 		} );
 		//this.frame.pack();
@@ -158,9 +158,9 @@ public abstract class Application {
 	}
 
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
-	protected abstract void handleAbout( java.util.EventObject e );
-	protected abstract void handlePreferences( java.util.EventObject e );
-	protected abstract void handleQuit( java.util.EventObject e );
+	protected abstract void handleAbout( org.lgna.croquet.Trigger trigger );
+	protected abstract void handlePreferences( org.lgna.croquet.Trigger trigger );
+	protected abstract void handleQuit( org.lgna.croquet.Trigger trigger );
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		if( message instanceof Component<?> ) {

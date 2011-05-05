@@ -66,11 +66,11 @@ public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( value );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.IntegerLiteral getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+	public edu.cmu.cs.dennisc.alice.ast.IntegerLiteral getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep context ) {
 		return this.transientValue;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.IntegerLiteral createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+	public edu.cmu.cs.dennisc.alice.ast.IntegerLiteral createValue( org.lgna.croquet.steps.CascadeFillInPrepStep context ) {
 		return new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( this.transientValue.value.getValue() );
 	}
 	@Override

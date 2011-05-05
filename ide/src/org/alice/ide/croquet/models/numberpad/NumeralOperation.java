@@ -79,9 +79,9 @@ public class NumeralOperation extends NumberPadOperation {
 		this.setName( Short.toString( this.numeral ) );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
 		this.numberModel.append( this.numeral );
-		context.finish();
+		step.finish();
 	}
 }
 //

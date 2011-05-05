@@ -45,13 +45,13 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SerialOperation extends SingleThreadOperation<SerialOperationContext> {
+public abstract class SerialOperation extends SingleThreadOperation<org.lgna.croquet.steps.SerialOperationStep> {
 	@Override
-	protected final void perform(SerialOperationContext context) {
+	protected final void perform(org.lgna.croquet.steps.SerialOperationStep step) {
 		for( Operation<?> operation : this.getOperations() ) {
 			//todo?
-			operation.handleFire(context.getAwtEvent(), context.getViewController());
-			if( context.isCanceled() ) {
+			operation.handleFire(step.getTrigger());
+			if( step.isCanceled() ) {
 				break;
 			}
 		}
@@ -60,8 +60,8 @@ public abstract class SerialOperation extends SingleThreadOperation<SerialOperat
 		super( group, id );
 	}
 	@Override
-	public SerialOperationContext createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushSerialOperationContext( this, e, viewController );
+	public org.lgna.croquet.steps.SerialOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+		return org.lgna.croquet.steps.TransactionManager.addSerialOperationStep( this, trigger );
 	}
 	protected abstract java.util.List< SingleThreadOperation<?> > getOperations();
 }

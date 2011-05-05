@@ -59,9 +59,9 @@ public class UndoOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 		this.setSmallIcon( org.alice.ide.croquet.models.history.UndoOperation.getInstance().getSmallIcon() );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
 		DocWizardsesquePresentation docWizardsesquePresentation = (DocWizardsesquePresentation)org.lgna.cheshire.Presentation.getInstance();
 		docWizardsesquePresentation.getBackOnTrack();
-		context.finish();
+		step.finish();
 	}
 }

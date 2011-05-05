@@ -55,7 +55,7 @@ public abstract class ShowPathPropertyOperation extends org.alice.ide.operations
 		return this.propertyName;
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
 		edu.cmu.cs.dennisc.croquet.RowsSpringPanel formPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 2 ) {
 			private edu.cmu.cs.dennisc.croquet.Component< ? >[][] createComponentRowsForSystemProperty( String name, String separator ) {
 				String value = System.getProperty( name );

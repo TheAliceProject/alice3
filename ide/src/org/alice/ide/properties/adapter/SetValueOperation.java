@@ -64,10 +64,10 @@ public class SetValueOperation<P> extends edu.cmu.cs.dennisc.croquet.ActionOpera
 	}
 	
 	@Override
-	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) 
+	protected void perform(org.lgna.croquet.steps.ActionOperationStep step) 
 	{
 		this.originalValue = this.propertyAdapter.getValueCopy();
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) 
 			{

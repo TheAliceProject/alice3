@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.javax.swing;
  * @author Dennis Cosgrove
  */
 public class PopupMenuUtilities {
-	public static void showModal( javax.swing.JPopupMenu popupMenu, java.awt.Component invoker, int x, int y ) {
+	public static void showModal( javax.swing.JPopupMenu popupMenu, java.awt.Component invoker, java.awt.Point pt ) {
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( invoker );
 		final javax.swing.JLayeredPane layeredPane;
 		if( root instanceof javax.swing.JFrame ) {
@@ -110,6 +110,21 @@ public class PopupMenuUtilities {
 				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 				}
 			} );
+		}
+
+		int x;
+		int y;
+		if( pt != null ) {
+			x = pt.x;
+			y = pt.y;
+		} else {
+			if( invoker != null ) {
+				x = 0;
+				y = invoker.getHeight();
+			} else {
+				x = 0;
+				y = 0;
+			}
 		}
 		popupMenu.show( invoker, x, y );
 	}

@@ -45,14 +45,22 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class InputDialogOperationStep<J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> extends DialogOperationStep< edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > > {
-	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InputDialogOperationStep<J> createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > model ) {
-		return new InputDialogOperationStep<J>( parent, model );
+public class InputDialogOperationStep<J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> extends GatedCommitDialogOperationStep< edu.cmu.cs.dennisc.croquet.InputDialogOperation< J > > {
+	/*package-private*/ static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InputDialogOperationStep<J> createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.InputDialogOperation< J > model, org.lgna.croquet.Trigger trigger ) {
+		return new InputDialogOperationStep<J>( parent, model, trigger );
 	}
-	private InputDialogOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > model ) {
-		super( parent, model );
+	private InputDialogOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.InputDialogOperation< J > model, org.lgna.croquet.Trigger trigger ) {
+		super( parent, model, trigger );
 	}
 	public InputDialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+	}
+	
+	private J mainPanel;
+	public J getMainPanel() {
+		return this.mainPanel;
+	}
+	public void setMainPanel( J mainPanel ) {
+		this.mainPanel = mainPanel;
 	}
 }

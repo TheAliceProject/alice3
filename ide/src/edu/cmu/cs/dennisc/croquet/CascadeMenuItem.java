@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class CascadeMenuItem extends AbstractButton< javax.swing.JMenuItem, CascadeItem< ?,? > > {
-	/*package-private*/ CascadeMenuItem( CascadeItem< ?,? > model ) {
+	public CascadeMenuItem( CascadeItem< ?,? > model ) {
 		super( model );
 	}
 	@Override

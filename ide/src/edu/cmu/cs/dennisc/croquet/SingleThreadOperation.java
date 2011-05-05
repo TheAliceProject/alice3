@@ -46,13 +46,13 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleThreadOperation< C extends SingleThreadOperationContext<?> > extends Operation< C > {
+public abstract class SingleThreadOperation< S extends org.lgna.croquet.steps.SingleThreadOperationStep<?> > extends Operation< S > {
 	public SingleThreadOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
-	protected abstract void perform( C context );
+	protected abstract void perform( S context );
 	@Override
-	protected final void perform( C context, PerformObserver performObserver ) {
+	protected final void perform( S context, PerformObserver performObserver ) {
 		try {
 			this.perform( context );
 		} finally {

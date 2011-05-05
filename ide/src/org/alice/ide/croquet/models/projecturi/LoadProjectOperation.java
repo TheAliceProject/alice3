@@ -53,12 +53,12 @@ public class LoadProjectOperation extends edu.cmu.cs.dennisc.croquet.ActionOpera
 		this.uri = uri;
 	}
 	@Override
-	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 		if (this.uri != null) {
 			org.alice.ide.ProjectApplication.getSingleton().loadProjectFrom(this.uri);
-			context.finish();
+			step.finish();
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 }
