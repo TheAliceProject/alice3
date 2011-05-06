@@ -46,11 +46,11 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class InformationDialogOperationStep<J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> extends DialogOperationStep< edu.cmu.cs.dennisc.croquet.InformationDialogOperation< J > > {
-	/*package-private*/ static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InformationDialogOperationStep<J> createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.InformationDialogOperation< J > model, org.lgna.croquet.Trigger trigger ) {
-		return new InformationDialogOperationStep<J>( parent, model, trigger );
+public class InformationDialogOperationStep extends DialogOperationStep< edu.cmu.cs.dennisc.croquet.InformationDialogOperation > {
+	/*package-private*/ static InformationDialogOperationStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.InformationDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+		return new InformationDialogOperationStep( parent, model, trigger );
 	}
-	private InformationDialogOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.InformationDialogOperation< J > model, org.lgna.croquet.Trigger trigger ) {
+	private InformationDialogOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.InformationDialogOperation model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public InformationDialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

@@ -112,31 +112,32 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 	public boolean isCanceled() {
 		return this.isPending() && this.isSuccessfullyCompleted() == false;
 	}
+
 	public edu.cmu.cs.dennisc.croquet.Edit< ? > getEdit() {
 		return this.edit;
 	}
-	
 	/*package-private*/ void setEdit( edu.cmu.cs.dennisc.croquet.Edit<M> edit ) {
 		this.isSuccessfullyCompleted = true;
 		this.edit = edit;
 		this.edit.setCompletionStep( this );
 		this.isPending = false;
 	}
-
+	public void commitAndInvokeDo( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+		this.getParent().reify();
+		this.setEdit( edit );
+		edit.doOrRedo( true );
+	}
 	public void finish() {
+		this.getParent().reify();
 		this.isSuccessfullyCompleted = true;
 		this.edit = null;
 		this.isPending = false;
 	}
 	public void cancel() {
+		this.getParent().reify();
 		this.isSuccessfullyCompleted = false;
 		this.edit = null;
 		this.isPending = false;
-	}
-	
-	public void commitAndInvokeDo( edu.cmu.cs.dennisc.croquet.Edit edit ) {
-		this.setEdit( edit );
-		edit.doOrRedo( true );
 	}
 	
 

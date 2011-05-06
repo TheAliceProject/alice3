@@ -109,6 +109,10 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		this.completionStep = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.completionStep.setParent( this );
 	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
+		binaryEncoder.encode( this.completionStep );
+	}
 	
 	public boolean isValid() {
 		if( this.completionStep != null ) {
@@ -306,10 +310,6 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	}
 	/*package-private*/ void setParent( TransactionHistory parent ) {
 		this.parent = parent;
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
-		binaryEncoder.encode( this.completionStep );
 	}
 
 	public int getChildStepCount() {

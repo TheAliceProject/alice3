@@ -42,9 +42,6 @@
  */
 package org.lgna.croquet.steps;
 
-import java.awt.event.MouseEvent;
-import java.util.EventObject;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -53,7 +50,7 @@ public class DragStep extends PrepStep< edu.cmu.cs.dennisc.croquet.DragAndDropMo
 		return new DragStep( parent, model, trigger );
 	}
 	
-	private MouseEvent latestMouseEvent;
+	private java.awt.event.MouseEvent latestMouseEvent;
 	private DragStep( Transaction parent, edu.cmu.cs.dennisc.croquet.DragAndDropModel model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
@@ -67,13 +64,13 @@ public class DragStep extends PrepStep< edu.cmu.cs.dennisc.croquet.DragAndDropMo
 	public java.awt.event.MouseEvent getLatestMouseEvent() {
 		return this.latestMouseEvent;
 	}
-	public void setLatestMouseEvent( MouseEvent e ) {
+	public void setLatestMouseEvent( java.awt.event.MouseEvent e ) {
 		this.latestMouseEvent = e;
 	}
-	public void handleMouseDragged( MouseEvent e ) {
+	public void handleMouseDragged( java.awt.event.MouseEvent e ) {
 	}
-	public void handleMouseReleased( MouseEvent e ) {
+	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 	}
-	public void handleCancel( EventObject e ) {
+	public void handleCancel( java.util.EventObject e ) {
 	}
 }

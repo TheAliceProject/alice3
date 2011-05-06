@@ -461,11 +461,11 @@ public class TransactionManager {
 		Transaction transaction = getActiveTransaction();
 		return InputDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InformationDialogOperationStep<J> addInformationDialogOperationStep( edu.cmu.cs.dennisc.croquet.InformationDialogOperation< J > model, org.lgna.croquet.Trigger trigger ) {
+	public static InformationDialogOperationStep addInformationDialogOperationStep( edu.cmu.cs.dennisc.croquet.InformationDialogOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return InformationDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> WizardDialogOperationStep addWizardDialogOperationStep( edu.cmu.cs.dennisc.croquet.WizardDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static WizardDialogOperationStep addWizardDialogOperationStep( edu.cmu.cs.dennisc.croquet.WizardDialogOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return WizardDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
