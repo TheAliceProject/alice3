@@ -42,8 +42,6 @@
  */
 package org.lgna.croquet.steps;
 
-import edu.cmu.cs.dennisc.croquet.Model;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -157,14 +155,14 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		private edu.cmu.cs.dennisc.croquet.CompletionModel dropCompletionModel;
 		private edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor;
 		private edu.cmu.cs.dennisc.croquet.DropSite dropSite;
-		private java.util.List< edu.cmu.cs.dennisc.croquet.Model > lastMenuSelection;
+		private java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > lastMenuSelection;
 		private javax.swing.event.MenuEvent lastMenuEvent;
 		public void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel dropCompletionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 			this.dropCompletionModel = dropCompletionModel;
 			this.dropReceptor = dropReceptor;
 			this.dropSite = dropSite;
 		}
-		public void pendMenuSelection( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
+		public void pendMenuSelection( java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > models ) {
 			this.lastMenuSelection = models;
 		}
 //		private boolean isDropPrepStepAlreadyAdded() {
@@ -259,7 +257,7 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	}
 
 	
-	/*package-private*/ void pendMenuSelection( javax.swing.event.ChangeEvent changeEvent, java.util.List< Model > models ) {
+	/*package-private*/ void pendMenuSelection( javax.swing.event.ChangeEvent changeEvent, java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > models ) {
 		this.pendingSteps.pendMenuSelection( models );
 	}
 	

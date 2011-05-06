@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Menu extends ViewController< javax.swing.JMenu, Model > implements MenuItemContainer {
+public class Menu extends ViewController< javax.swing.JMenu, MenuItemPrepModel > implements MenuItemContainer {
 	public Menu( MenuModel model ) {
 		super( model );
 	}

@@ -46,7 +46,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInCompletionStep<F,B> extends CompletionStep< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > > implements CascadeFillInStep< F,B > {
+public class CascadeFillInCompletionStep<F,B> extends CompletionStep< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > > {
 	public static < F, B > CascadeFillInCompletionStep< F, B > createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > model, org.lgna.croquet.Trigger trigger, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > fillIn ) {
 		return new CascadeFillInCompletionStep< F, B >( parent, model, trigger, fillIn );
 	}

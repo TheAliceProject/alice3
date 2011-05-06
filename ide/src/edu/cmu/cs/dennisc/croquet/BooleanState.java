@@ -80,12 +80,6 @@ public class BooleanState extends State<Boolean> {
 		this.buttonModel.setSelected(initialState);
 		this.buttonModel.addItemListener(this.itemListener);
 	}
-//	@Deprecated
-//	public BooleanState(Group group, java.util.UUID id, boolean initialState, String name ) {
-//		this(group, id, initialState );
-//		this.setTextForBothTrueAndFalse( name );
-//	}
-//	
 
 	private javax.swing.ButtonModel createButtonModel() {
 		return new javax.swing.JToggleButton.ToggleButtonModel();

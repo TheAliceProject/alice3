@@ -46,9 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeItem< F, S extends org.lgna.croquet.steps.CascadeItemStep<F,?,S> > extends PrepModel {
+public abstract class CascadeItem< F, S extends org.lgna.croquet.steps.CascadeItemStep<F,?,S> > extends MenuItemPrepModel {
 	public CascadeItem( java.util.UUID id ) {
-		super( Application.CASCADE_GROUP, id );
+		//super( Application.CASCADE_GROUP, id );
+		super( id );
 	}
 	@Override
 	protected void localize() {
@@ -58,6 +59,12 @@ public abstract class CascadeItem< F, S extends org.lgna.croquet.steps.CascadeIt
 	}
 	public boolean isAutomaticallySelectedWhenSoleOption() {
 		return true;
+	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.croquet.MenuItemContainer createMenuItemAndAddTo( edu.cmu.cs.dennisc.croquet.MenuItemContainer rv ) {
+		rv.addCascadeMenuItem( new CascadeMenuItem( this ) );
+		return rv;
 	}
 	
 //	public abstract CascadeBlank<B>[] getBlanks();

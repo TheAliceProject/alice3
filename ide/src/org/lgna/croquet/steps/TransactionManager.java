@@ -157,11 +157,10 @@ public class TransactionManager {
 				edu.cmu.cs.dennisc.print.PrintUtilities.print( ", " );
 			}
 			edu.cmu.cs.dennisc.print.PrintUtilities.println();
-			java.util.List< Model > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List< MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			MenuBar menuBar = getMenuBarOrigin( menuElements );
 			int i0;
 			if( menuBar != null ) {
-				models.add( menuBar.getModel() );
 				javax.swing.JPopupMenu jPreviousPopupMenu;
 				if( previousMenuElements.length >= 3 ) {
 					jPreviousPopupMenu = (javax.swing.JPopupMenu)previousMenuElements[ 2 ];
@@ -169,16 +168,16 @@ public class TransactionManager {
 					jPreviousPopupMenu = null;
 				}
 				
-				assert menuElements.length >= 3;
+				assert menuElements.length >= 2;
 				assert menuElements[ 1 ] instanceof javax.swing.JMenu;
 				assert menuElements[ 2 ] instanceof javax.swing.JPopupMenu;
-				javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
+//				javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
 				
 				javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElements[ 1 ];
 				Menu menu = (Menu)Component.lookup( jMenu );
 				assert menu != null;
 
-				Model menuModel = menu.getModel();
+				MenuItemPrepModel menuModel = menu.getModel();
 				assert menuModel != null;
 				models.add( menuModel );
 				i0 = 3;
@@ -197,7 +196,22 @@ public class TransactionManager {
 					if( component instanceof ViewController< ?, ? > ) {
 						ViewController< ?, ? > viewController = (ViewController< ?, ? >)component;
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println( "viewController", i, viewController.getModel() );
-						models.add( viewController.getModel() );
+						Model model = viewController.getModel();
+						if( model != null ) {
+							MenuItemPrepModel menuItemPrepModel;
+							if( model instanceof MenuItemPrepModel ) {
+								menuItemPrepModel = (MenuItemPrepModel)model;
+							} else if( model instanceof Operation<?> ) {
+								menuItemPrepModel = ((Operation< ? >)model).getMenuItemPrepModel();
+							} else if( model instanceof BooleanState ) {
+								menuItemPrepModel = ((BooleanState)model).getMenuItemPrepModel();
+							} else {
+								throw new RuntimeException( model.toString() );
+							}
+							models.add( menuItemPrepModel );
+						} else {
+							throw new NullPointerException();
+						}
 					}
 				}
 			}
