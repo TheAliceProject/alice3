@@ -41,28 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.croquet.steps;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeUnfilledInCancel<F> extends CascadeCancel< F > {
-	private static class SingletonHolder {
-		private static CascadeUnfilledInCancel instance = new CascadeUnfilledInCancel();
+public class StandardPopupOperationPrepStep extends PrepStep {
+	public static StandardPopupOperationPrepStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation model ) {
+		return new StandardPopupOperationPrepStep( parent, model );
 	}
-
-	public static <F> CascadeUnfilledInCancel< F > getInstance() {
-		return (CascadeUnfilledInCancel< F >)SingletonHolder.instance;
+	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.StandardPopupOperation > standardPopupOperationResolver; 
+	private StandardPopupOperationPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation standardPopupOperation ) {
+		super( parent, null, null );
+		this.standardPopupOperationResolver = standardPopupOperation.getCodableResolver();
 	}
-	private CascadeUnfilledInCancel() {
-		super( null );
-	}
-	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.steps.CascadeCancelStep< F > context ) {
-		return null;
+	public StandardPopupOperationPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+		this.standardPopupOperationResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 	@Override
-	public String getMenuItemText( org.lgna.croquet.steps.CascadeCancelStep< F > context ) {
-		return "No suitable fillins were found.  Canceling.";
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.standardPopupOperationResolver );
+	}
+	public edu.cmu.cs.dennisc.croquet.StandardPopupOperation getStandardPopupOperation() {
+		return this.standardPopupOperationResolver.getResolved();
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Model getModelForTutorialNoteText() {
+		return this.getStandardPopupOperation();
 	}
 }

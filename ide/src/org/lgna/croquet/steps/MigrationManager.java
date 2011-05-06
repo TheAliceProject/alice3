@@ -41,28 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.croquet.steps;
+
+import org.lgna.croquet.steps.Transaction;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeUnfilledInCancel<F> extends CascadeCancel< F > {
-	private static class SingletonHolder {
-		private static CascadeUnfilledInCancel instance = new CascadeUnfilledInCancel();
-	}
-
-	public static <F> CascadeUnfilledInCancel< F > getInstance() {
-		return (CascadeUnfilledInCancel< F >)SingletonHolder.instance;
-	}
-	private CascadeUnfilledInCancel() {
-		super( null );
-	}
-	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.steps.CascadeCancelStep< F > context ) {
-		return null;
-	}
-	@Override
-	public String getMenuItemText( org.lgna.croquet.steps.CascadeCancelStep< F > context ) {
-		return "No suitable fillins were found.  Canceling.";
-	}
+public interface MigrationManager {
+	public Transaction createMigration( Transaction transaction );
 }
