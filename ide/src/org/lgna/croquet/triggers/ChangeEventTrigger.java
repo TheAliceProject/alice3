@@ -41,19 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.steps;
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadePopupOperationStep<T> extends PopupOperationStep< edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> >{
-	public static <T> CascadePopupOperationStep<T> createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model, org.lgna.croquet.Trigger trigger ) {
-		return new CascadePopupOperationStep<T>( parent, model, trigger );
+public class ChangeEventTrigger implements org.lgna.croquet.Trigger {
+	private final javax.swing.event.ChangeEvent changeEvent;
+	public ChangeEventTrigger( javax.swing.event.ChangeEvent changeEvent ) {
+		this.changeEvent = changeEvent;
 	}
-	private CascadePopupOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model, org.lgna.croquet.Trigger trigger ) {
-		super( parent, model, trigger, new TransactionHistory() );
+	public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
+		return null;
 	}
-	public CascadePopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public void showPopupMenu( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, null );
 	}
 }

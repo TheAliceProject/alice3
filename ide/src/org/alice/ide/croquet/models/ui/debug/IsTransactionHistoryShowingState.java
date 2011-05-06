@@ -219,7 +219,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 	
 	private final org.lgna.croquet.steps.TransactionHistory transactionHistory;
 	private IsTransactionHistoryShowingState( org.lgna.croquet.steps.TransactionHistory transactionHistory ) {
-		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), false );
+		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), true );
 		this.transactionHistory = transactionHistory;
 	}
 	@Override
