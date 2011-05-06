@@ -48,8 +48,9 @@ package org.alice.ide.declarationpanes;
 class IsArrayState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
 	public IsArrayState( edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ffa22de2-eb3e-46d2-8ccc-ada365f29205" ), isArrayProperty.getValue(), "is array" );
+		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ffa22de2-eb3e-46d2-8ccc-ada365f29205" ), isArrayProperty.getValue() );
 		this.isArrayProperty = isArrayProperty;
+		this.setTextForBothTrueAndFalse( "is array" );
 		this.addValueObserver( new ValueObserver() {
 			public void changing( boolean nextValue ) {
 			}

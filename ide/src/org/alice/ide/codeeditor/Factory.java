@@ -212,7 +212,7 @@ class StatementEnabledStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanS
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue(), "IsEnabled" );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue() );
 		this.statement = statement;
 		this.addValueObserver( new ValueObserver() {
 			public void changing( boolean nextValue ) {
@@ -221,6 +221,7 @@ class StatementEnabledStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanS
 				StatementEnabledStateOperation.this.statement.isEnabled.setValue( nextValue );
 			}
 		} );
+		this.setTextForBothTrueAndFalse( "IsEnabled" );
 		//update();
 	}
 	//	private void update() {

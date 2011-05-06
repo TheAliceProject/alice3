@@ -43,9 +43,7 @@
 
 package org.alice.stageide.croquet.models.sceneditor;
 
-import edu.cmu.cs.dennisc.croquet.BooleanState;
-
-public class AreExtraPropertiesShownState extends BooleanState
+public class AreExtraPropertiesShownState extends edu.cmu.cs.dennisc.croquet.BooleanState
 {
     private static class SingletonHolder {
         private static AreExtraPropertiesShownState instance = new AreExtraPropertiesShownState();
@@ -54,6 +52,6 @@ public class AreExtraPropertiesShownState extends BooleanState
         return SingletonHolder.instance;
     }
     private AreExtraPropertiesShownState() {
-        super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "10e11734-71f3-4e0e-8469-72bfa7ff575d" ), true, "More properties..." );
+        super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "10e11734-71f3-4e0e-8469-72bfa7ff575d" ), true );
     }
 }
