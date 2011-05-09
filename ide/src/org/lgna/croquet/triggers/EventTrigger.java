@@ -46,17 +46,22 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTrigger implements org.lgna.croquet.Trigger {
+public abstract class EventTrigger< E extends java.util.EventObject > implements org.lgna.croquet.Trigger {
 	private final edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > viewController;
-	public AbstractTrigger( edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > viewController ) {
+	private final E event;
+	public EventTrigger( edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > viewController, E event ) {
 		this.viewController = viewController;
+		this.event = event;
+	}
+	public E getEvent() {
+		return this.event;
 	}
 	protected abstract java.awt.Point getPoint();
-	protected final java.awt.Component getComponent() {
-		return this.viewController != null ? this.viewController.getAwtComponent() : null;
-	}
 	public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
 		return this.viewController;
+	}
+	protected java.awt.Component getComponent() {
+		return this.viewController != null ? this.viewController.getAwtComponent() : null;
 	}
 	public void showPopupMenu( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
 		java.awt.Point pt = this.getPoint();

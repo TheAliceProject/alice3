@@ -46,15 +46,12 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class WindowEventTrigger implements org.lgna.croquet.Trigger {
-	private final java.awt.event.WindowEvent windowEvent;
+public class WindowEventTrigger extends ComponentEventTrigger< java.awt.event.WindowEvent > {
 	public WindowEventTrigger( java.awt.event.WindowEvent windowEvent ) {
-		this.windowEvent = windowEvent;
+		super( null, windowEvent );
 	}
-	public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
+	@Override
+	protected java.awt.Point getPoint() {
 		return null;
-	}
-	public void showPopupMenu( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
-		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, null );
 	}
 }

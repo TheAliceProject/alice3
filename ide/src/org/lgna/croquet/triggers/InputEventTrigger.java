@@ -46,17 +46,16 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class InputEventTrigger extends AbstractTrigger {
-	private final java.awt.event.InputEvent inputEvent;
+public class InputEventTrigger extends ComponentEventTrigger< java.awt.event.InputEvent > {
 	public InputEventTrigger( edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > viewController, java.awt.event.InputEvent inputEvent ) {
-		super( viewController );
-		this.inputEvent = inputEvent;
+		super( viewController, inputEvent );
 	}
 	public InputEventTrigger( java.awt.event.InputEvent inputEvent ) {
 		this( null, inputEvent );
 	}
 	@Override
 	protected java.awt.Point getPoint() {
+		java.awt.event.InputEvent inputEvent = this.getEvent();
 		if( inputEvent instanceof java.awt.event.MouseEvent ) {
 			java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent)inputEvent;
 			return mouseEvent.getPoint();

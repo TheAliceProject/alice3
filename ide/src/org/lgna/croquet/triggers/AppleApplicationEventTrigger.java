@@ -46,15 +46,12 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class AppleApplicationEventTrigger implements org.lgna.croquet.Trigger {
-	private final java.util.EventObject eventObject;
-	public AppleApplicationEventTrigger( java.util.EventObject eventObject ) {
-		this.eventObject = eventObject;
+public class AppleApplicationEventTrigger extends EventTrigger< java.util.EventObject > {
+	public AppleApplicationEventTrigger( java.util.EventObject event ) {
+		super( null, event );
 	}
-	public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
+	@Override
+	protected java.awt.Point getPoint() {
 		return null;
-	}
-	public void showPopupMenu( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
-		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, null );
 	}
 }

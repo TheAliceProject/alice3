@@ -46,12 +46,13 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class ChangeEventTrigger extends EventTrigger< javax.swing.event.ChangeEvent > {
-	public ChangeEventTrigger( javax.swing.event.ChangeEvent changeEvent ) {
-		super( null, changeEvent );
+public abstract class ComponentEventTrigger< E extends java.awt.event.ComponentEvent > extends EventTrigger<E> {
+	public ComponentEventTrigger( edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > viewController, E event ) {
+		super( viewController, event );
 	}
 	@Override
-	protected java.awt.Point getPoint() {
-		return null;
+	protected final java.awt.Component getComponent() {
+		java.awt.Component rv = super.getComponent();
+		return rv != null ? rv : this.getEvent().getComponent();
 	}
 }
