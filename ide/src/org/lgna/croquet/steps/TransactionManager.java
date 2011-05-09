@@ -164,55 +164,60 @@ public class TransactionManager {
 				} else {
 					jPreviousPopupMenu = null;
 				}
-				
-				assert menuElements.length >= 2;
-				assert menuElements[ 1 ] instanceof javax.swing.JMenu;
-				assert menuElements[ 2 ] instanceof javax.swing.JPopupMenu;
-//				javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
-				
-				javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElements[ 1 ];
-				Menu menu = (Menu)Component.lookup( jMenu );
-				assert menu != null;
+				if( menuElements.length >= 3 ) {
+					assert menuElements.length >= 3;
+					assert menuElements[ 1 ] instanceof javax.swing.JMenu;
+					assert menuElements[ 2 ] instanceof javax.swing.JPopupMenu;
+					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
+					
+					javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElements[ 1 ];
+					Menu menu = (Menu)Component.lookup( jMenu );
+					assert menu != null;
 
-				MenuItemPrepModel menuModel = menu.getModel();
-				assert menuModel != null;
-				models.add( menuModel );
-				i0 = 3;
+					MenuItemPrepModel menuModel = menu.getModel();
+					assert menuModel != null;
+					models.add( menuModel );
+					i0 = 3;
+				} else {
+					i0 = -1;
+				}
 			} else {
 				i0 = 0;
 			}
-			for( int i=i0; i<menuElements.length; i++ ) {
-				javax.swing.MenuElement menuElementI = menuElements[ i ];
-				if( menuElementI instanceof javax.swing.JPopupMenu ) {
-					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElementI;
-					//pass
-				} else if( menuElementI instanceof javax.swing.JMenuItem ) {
-					javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
-					Component< ? > component = Component.lookup( jMenuItem );
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleMenuSelectionStateChanged", i, component.getClass() );
-					if( component instanceof ViewController< ?, ? > ) {
-						ViewController< ?, ? > viewController = (ViewController< ?, ? >)component;
-						//edu.cmu.cs.dennisc.print.PrintUtilities.println( "viewController", i, viewController.getModel() );
-						Model model = viewController.getModel();
-						if( model != null ) {
-							MenuItemPrepModel menuItemPrepModel;
-							if( model instanceof MenuItemPrepModel ) {
-								menuItemPrepModel = (MenuItemPrepModel)model;
-							} else if( model instanceof Operation<?> ) {
-								menuItemPrepModel = ((Operation< ? >)model).getMenuItemPrepModel();
-							} else if( model instanceof BooleanState ) {
-								menuItemPrepModel = ((BooleanState)model).getMenuItemPrepModel();
+			if( i0 != -1 ) {
+				for( int i=i0; i<menuElements.length; i++ ) {
+					javax.swing.MenuElement menuElementI = menuElements[ i ];
+					if( menuElementI instanceof javax.swing.JPopupMenu ) {
+						javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElementI;
+						//pass
+					} else if( menuElementI instanceof javax.swing.JMenuItem ) {
+						javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
+						Component< ? > component = Component.lookup( jMenuItem );
+						//edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleMenuSelectionStateChanged", i, component.getClass() );
+						if( component instanceof ViewController< ?, ? > ) {
+							ViewController< ?, ? > viewController = (ViewController< ?, ? >)component;
+							//edu.cmu.cs.dennisc.print.PrintUtilities.println( "viewController", i, viewController.getModel() );
+							Model model = viewController.getModel();
+							if( model != null ) {
+								MenuItemPrepModel menuItemPrepModel;
+								if( model instanceof MenuItemPrepModel ) {
+									menuItemPrepModel = (MenuItemPrepModel)model;
+								} else if( model instanceof Operation<?> ) {
+									menuItemPrepModel = ((Operation< ? >)model).getMenuItemPrepModel();
+								} else if( model instanceof BooleanState ) {
+									menuItemPrepModel = ((BooleanState)model).getMenuItemPrepModel();
+								} else {
+									throw new RuntimeException( model.toString() );
+								}
+								models.add( menuItemPrepModel );
 							} else {
-								throw new RuntimeException( model.toString() );
+								throw new NullPointerException();
 							}
-							models.add( menuItemPrepModel );
-						} else {
-							throw new NullPointerException();
 						}
 					}
 				}
+				getActiveTransaction().pendMenuSelection( e, models );
 			}
-			getActiveTransaction().pendMenuSelection( e, models );
 
 //			if( previousMenuElements.length > 0 ) {
 //				if( menuElements.length > 0 ) {
