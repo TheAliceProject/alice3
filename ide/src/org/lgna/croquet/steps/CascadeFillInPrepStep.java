@@ -50,6 +50,9 @@ public class CascadeFillInPrepStep<F,B> extends CascadeBlankOwnerStep< F, B, edu
 	public static < F, B > CascadeFillInPrepStep< F, B > createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > model, org.lgna.croquet.Trigger trigger ) {
 		return new CascadeFillInPrepStep< F, B >( parent, model, trigger );
 	}
+	public static < F, B > CascadeFillInPrepStep< F, B > createInstance( edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > model ) {
+		return new CascadeFillInPrepStep< F,B >( null, model, null );
+	}
 	private CascadeFillInPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}

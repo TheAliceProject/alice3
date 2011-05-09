@@ -42,9 +42,6 @@
  */
 package org.lgna.croquet.steps;
 
-import javax.swing.event.ChangeEvent;
-
-import edu.cmu.cs.dennisc.alice.ast.Accessible;
 import edu.cmu.cs.dennisc.croquet.*;
 
 /**
@@ -545,27 +542,33 @@ public class TransactionManager {
 		completionStep.setEdit( edit );
 		return rv;
 	}
-
-	public static CascadeBlankStep createCascadeBlankStep( CascadeBlank model ) {
-		return null;
-	}
-	public static CascadeCancelStep createCascadeCancelStep( CascadeCancel model ) {
-		return null;
-	}
-	public static CascadeFillInPrepStep createCascadeFillInPrepStep( CascadeFillIn model ) {
-		return null;
-	}
-	public static CascadeMenuStep createCascadeMenuStep( CascadeMenu model ) {
-		return null;
-	}
-	public static CascadeRootStep createCascadeRootStep( CascadeRoot model ) {
-		return null;
-	}
-	public static CascadeSeparatorStep createCascadeSeparatorStep( CascadeSeparator model ) {
-		return null;
+	public static void simulatedMenuTransaction( Transaction transaction, java.util.List< MenuItemPrepModel > menuItemPrepModels ) {
+		for( edu.cmu.cs.dennisc.croquet.MenuItemPrepModel menuItemPrepModel : menuItemPrepModels ) {
+			System.err.println( "todo: add step for: " + menuItemPrepModel );
+			//org.lgna.croquet.steps.MenuItemPrepStep.createAndAddToTransaction( transaction, menuItemPrepModel, org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+		}
 	}
 
-	public static void handleStateChanged( BoundedRangeIntegerState boundedRangeIntegerState, ChangeEvent e ) {
+//	public static CascadeBlankStep createCascadeBlankStep( CascadeBlank model ) {
+//		return null;
+//	}
+//	public static CascadeCancelStep createCascadeCancelStep( CascadeCancel model ) {
+//		return null;
+//	}
+//	public static CascadeFillInPrepStep createCascadeFillInPrepStep( CascadeFillIn model ) {
+//		return null;
+//	}
+//	public static CascadeMenuStep createCascadeMenuStep( CascadeMenu model ) {
+//		return null;
+//	}
+//	public static CascadeRootStep createCascadeRootStep( CascadeRoot model ) {
+//		return null;
+//	}
+//	public static CascadeSeparatorStep createCascadeSeparatorStep( CascadeSeparator model ) {
+//		return new CascadeSeparatorStep( model, null );
+//	}
+
+	public static void handleStateChanged( BoundedRangeIntegerState boundedRangeIntegerState, javax.swing.event.ChangeEvent e ) {
 //		org.lgna.croquet.steps.TransactionManager.handleStateChanged( BoundedRangeIntegerState.this, e );
 //		org.lgna.croquet.steps.BoundedRangeIntegerStateChangeStep step;
 //		if( this.previousValueIsAdjusting ) {
@@ -587,4 +590,5 @@ public class TransactionManager {
 ////				assert popContext == boundedRangeIntegerStateContext;
 //		}
 	}
+
 }

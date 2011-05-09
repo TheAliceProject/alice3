@@ -53,7 +53,7 @@ public abstract class AbstractTrigger implements org.lgna.croquet.Trigger {
 	}
 	protected abstract java.awt.Point getPoint();
 	protected final java.awt.Component getComponent() {
-		return this.viewController.getAwtComponent();
+		return this.viewController != null ? this.viewController.getAwtComponent() : null;
 	}
 	public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
 		return this.viewController;

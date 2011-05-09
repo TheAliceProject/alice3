@@ -63,7 +63,7 @@ public abstract class PredeterminedTabCodec< T extends PredeterminedTab > implem
 		return this.lookUp( id );
 	}
 	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
-		rv.append( value.getTitleText() );
+		rv.append( value != null ? value.getTitleText() : value );
 		return rv;
 	}
 }

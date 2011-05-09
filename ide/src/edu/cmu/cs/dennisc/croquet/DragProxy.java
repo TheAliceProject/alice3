@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DragProxy extends Proxy {
+public class DragProxy extends Proxy {
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
 		public void keyPressed( java.awt.event.KeyEvent e ) {
 		}

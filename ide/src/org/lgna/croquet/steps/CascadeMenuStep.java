@@ -47,6 +47,9 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public class CascadeMenuStep< FB > extends CascadeBlankOwnerStep< FB, FB, edu.cmu.cs.dennisc.croquet.CascadeMenu< FB >, CascadeMenuStep< FB > > {
+	public static <FB> CascadeMenuStep< FB > createInstance( edu.cmu.cs.dennisc.croquet.CascadeMenu< FB > model ) {
+		return new CascadeMenuStep< FB >( null, model, null );
+	}
 	private CascadeMenuStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeMenu< FB > model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}

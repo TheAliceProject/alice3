@@ -73,10 +73,10 @@ public abstract class DragComponent extends Control {
 //		};
 //	}
 
-	/*package-private*/ DragProxy getDragProxy() {
+	public DragProxy getDragProxy() {
 		return this.dragProxy;
 	}
-	/*package-private*/ DropProxy getDropProxy() {
+	public DropProxy getDropProxy() {
 		return this.dropProxy;
 	}
 	

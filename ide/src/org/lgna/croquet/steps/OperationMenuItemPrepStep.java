@@ -46,14 +46,14 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeCancelStep< F > extends CascadeItemStep< F, edu.cmu.cs.dennisc.croquet.CascadeCancel<F>, CascadeCancelStep<F> > {
-	public static <F> CascadeCancelStep< F > createInstance( edu.cmu.cs.dennisc.croquet.CascadeCancel< F > model ) {
-		return new CascadeCancelStep< F >( null, model, null );
+public class OperationMenuItemPrepStep extends MenuItemPrepStep< edu.cmu.cs.dennisc.croquet.OperationMenuItemPrepModel > {
+	public static OperationMenuItemPrepStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.OperationMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
+		return new OperationMenuItemPrepStep( parent, model, trigger );
 	}
-	private CascadeCancelStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeCancel<F> model, org.lgna.croquet.Trigger trigger ) {
+	private OperationMenuItemPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.OperationMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
-	public CascadeCancelStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public OperationMenuItemPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 }

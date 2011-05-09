@@ -46,14 +46,14 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeCancelStep< F > extends CascadeItemStep< F, edu.cmu.cs.dennisc.croquet.CascadeCancel<F>, CascadeCancelStep<F> > {
-	public static <F> CascadeCancelStep< F > createInstance( edu.cmu.cs.dennisc.croquet.CascadeCancel< F > model ) {
-		return new CascadeCancelStep< F >( null, model, null );
+public class BooleanStateMenuItemPrepStep extends MenuItemPrepStep< edu.cmu.cs.dennisc.croquet.BooleanStateMenuItemPrepModel > {
+	public static BooleanStateMenuItemPrepStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.BooleanStateMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
+		return new BooleanStateMenuItemPrepStep( parent, model, trigger );
 	}
-	private CascadeCancelStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeCancel<F> model, org.lgna.croquet.Trigger trigger ) {
+	private BooleanStateMenuItemPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.BooleanStateMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
-	public CascadeCancelStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public BooleanStateMenuItemPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 }

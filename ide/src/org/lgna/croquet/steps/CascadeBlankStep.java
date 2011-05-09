@@ -47,6 +47,9 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public class CascadeBlankStep< B > extends Step< edu.cmu.cs.dennisc.croquet.CascadeBlank< B > > {
+	public static <B> CascadeBlankStep< B > createInstance( edu.cmu.cs.dennisc.croquet.CascadeBlank< B > model ) {
+		return new CascadeBlankStep< B >( null, model, null );
+	}
 	private CascadeBlankStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeBlank< B > model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}

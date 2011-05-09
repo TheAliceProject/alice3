@@ -329,9 +329,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				} else {
 					java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > menuItemPrepModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
 					if( menuItemPrepModels != null ) {
-						for( edu.cmu.cs.dennisc.croquet.MenuItemPrepModel menuItemPrepModel : menuItemPrepModels ) {
-							org.lgna.croquet.steps.MenuItemPrepStep.createAndAddToTransaction( transaction, menuItemPrepModel, org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
-						}
+						org.lgna.croquet.steps.TransactionManager.simulatedMenuTransaction( transaction, menuItemPrepModels );
 						chapterPage.refreshNotes();
 						if( chapterPage.isGoodToGo() ) {
 							this.handleChapterChanged( chapter );

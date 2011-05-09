@@ -81,12 +81,12 @@ public abstract class Operation< S extends org.lgna.croquet.steps.OperationStep<
 	public Edit< ? > commitTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		Edit< ? > replacementEdit = this.createTutorialCompletionEdit( originalEdit, retargeter );
 //		if( replacementEdit != null ) {
-//			final S childContext = this.createAndPushStep( null, null );
+//			final S step = this.createAndPushStep( null, null );
 //			try {
-//				childContext.commitAndInvokeDo( replacementEdit );
+//				step.commitAndInvokeDo( replacementEdit );
 //			} finally {
 //				ModelContext< ? > popContext = ContextManager.popContext();
-//				assert popContext == childContext : popContext.getClass() + " " + childContext.getClass();
+//				assert popContext == step : popContext.getClass() + " " + step.getClass();
 //			}
 //		} else {
 //			System.err.println( "createTutorialCompletionEdit returned null" );
@@ -151,23 +151,23 @@ public abstract class Operation< S extends org.lgna.croquet.steps.OperationStep<
 		public void handleFinally(); 
 	}
 	/*package-private*/ final S handleFire( org.lgna.croquet.Trigger trigger ) {
-		final S childContext = this.createAndPushStep( trigger );
-		this.perform( childContext, new PerformObserver() {
+		final S step = this.createAndPushStep( trigger );
+		this.perform( step, new PerformObserver() {
 			public void handleFinally() {
 //				ModelContext< ? > popContext = ContextManager.popContext();
 //				if( popContext != null ) {
-//					//assert popContext == childContext : "actual: " + popContext.getClass() + " expected: " + childContext.getClass();
-//					if( popContext == childContext ) {
+//					//assert popContext == step : "actual: " + popContext.getClass() + " expected: " + step.getClass();
+//					if( popContext == step ) {
 //						//pass
 //					} else {
-//						System.err.println( "actual: " + popContext.getClass() + " expected: " + childContext.getClass() );
+//						System.err.println( "actual: " + popContext.getClass() + " expected: " + step.getClass() );
 //					}
 //				} else {
 //					System.err.println( "handleFinally popContext==null" );
 //				}
 			}
 		} );
-		return childContext;
+		return step;
 	}
 	protected abstract void perform( S step, PerformObserver performObserver );
 

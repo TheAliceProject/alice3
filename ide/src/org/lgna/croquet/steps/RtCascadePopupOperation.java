@@ -54,7 +54,7 @@ abstract class RtModel<M extends Model, C extends org.lgna.croquet.steps.Step< M
 
 	public RtModel( M model, C step ) {
 		assert model != null;
-		assert step != null;
+		assert step != null : model;
 		this.model = model;
 		this.step = step;
 	}
@@ -191,7 +191,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.steps.Casca
 	private RtItem< B, ?, ?, ? > rtSelectedFillIn;
 
 	public RtBlank( CascadeBlank< B > model ) {
-		super( model, TransactionManager.createCascadeBlankStep( model ) );
+		super( model, CascadeBlankStep.createInstance( model ) );
 		this.getStep().setRtBlank( this );
 	}
 
@@ -445,19 +445,19 @@ abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner< F, B, C >, C exte
 }
 class RtFillIn<F, B> extends RtBlankOwner< F, B, CascadeFillIn< F, B >, org.lgna.croquet.steps.CascadeFillInPrepStep< F, B > > {
 	public RtFillIn( CascadeFillIn< F, B > model ) {
-		super( model, TransactionManager.createCascadeFillInPrepStep( model ) );
+		super( model, CascadeFillInPrepStep.createInstance( model ) );
 	}
 }
 
 class RtMenu<FB> extends RtBlankOwner< FB, FB, CascadeMenu< FB >, org.lgna.croquet.steps.CascadeMenuStep< FB >> {
 	public RtMenu( CascadeMenu< FB > model ) {
-		super( model, TransactionManager.createCascadeMenuStep( model ) );
+		super( model, CascadeMenuStep.createInstance( model ) );
 	}
 }
 
 class RtSeparator extends RtItem< Void, Void, CascadeSeparator, org.lgna.croquet.steps.CascadeSeparatorStep > {
 	public RtSeparator( CascadeSeparator model ) {
-		super( model, TransactionManager.createCascadeSeparatorStep( model ) );
+		super( model, CascadeSeparatorStep.createInstance( model ) );
 	}
 	@Override
 	protected CascadeBlank<Void>[] getModelBlanks() {
@@ -486,7 +486,7 @@ class RtSeparator extends RtItem< Void, Void, CascadeSeparator, org.lgna.croquet
 
 class RtCancel<F> extends RtItem< F, Void, CascadeCancel< F >, org.lgna.croquet.steps.CascadeCancelStep< F > > {
 	public RtCancel( CascadeCancel< F > model ) {
-		super( model, TransactionManager.createCascadeCancelStep( model ) );
+		super( model, CascadeCancelStep.createInstance( model ) );
 	}
 	@Override
 	protected CascadeBlank<Void>[] getModelBlanks() {
@@ -497,7 +497,7 @@ class RtCancel<F> extends RtItem< F, Void, CascadeCancel< F >, org.lgna.croquet.
 class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, CascadeRootStep< T > > {
 	private final RtCascadePopupOperation< T > rtOperation;
 	public RtRoot( CascadeRoot< T > model, RtCascadePopupOperation< T > rtOperation ) {
-		super( model, TransactionManager.createCascadeRootStep( model ) );
+		super( model, CascadeRootStep.createInstance( model ) );
 		this.rtOperation = rtOperation;
 	}
 	@Override

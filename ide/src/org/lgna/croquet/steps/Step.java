@@ -83,6 +83,11 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 //	public java.util.UUID getId() {
 //		return this.id;
 //	}
+	
+	protected edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
+		return this.trigger != null ? this.trigger.getViewController() : null;
+	}
+	
 	protected edu.cmu.cs.dennisc.croquet.Model getModelForTutorialNoteText() {
 		return this.getModel();
 	}
