@@ -48,11 +48,12 @@ package org.alice.ide.croquet.edits.ast;
 public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
 
-	public FillInMoreEdit( edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
+	public FillInMoreEdit( org.lgna.croquet.steps.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
+		super( completionStep );
 		this.argumentExpression = argumentExpression;
 	}
-	public FillInMoreEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public FillInMoreEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 		java.util.UUID prevExpressionId = binaryDecoder.decodeId();

@@ -129,7 +129,7 @@ public class FillInMoreOperation extends edu.cmu.cs.dennisc.croquet.CascadePopup
 //		return lastParameter.getDesiredValueType();
 //	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
-		return new org.alice.ide.croquet.edits.ast.FillInMoreEdit( values[ 0 ] );
+	protected org.alice.ide.croquet.edits.ast.FillInMoreEdit createEdit(org.lgna.croquet.steps.CascadePopupOperationStep<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.Expression[] values) {
+		return new org.alice.ide.croquet.edits.ast.FillInMoreEdit( step, values[ 0 ] );
 	}
 }

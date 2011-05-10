@@ -49,12 +49,13 @@ public class ExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org
 	private final edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 	private final edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 
-	public ExpressionPropertyEdit( edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
+	public ExpressionPropertyEdit( org.lgna.croquet.steps.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
+		super( completionStep );
 		this.prevExpression = prevExpression;
 		this.nextExpression = nextExpression;
 	}
-	public ExpressionPropertyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public ExpressionPropertyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 		java.util.UUID prevExpressionId = binaryDecoder.decodeId();

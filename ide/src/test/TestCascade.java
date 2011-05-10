@@ -242,8 +242,8 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupOperatio
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< Object >> createEdit( final Object[] values ) {
-		return new edu.cmu.cs.dennisc.croquet.Edit() {
+	protected edu.cmu.cs.dennisc.croquet.Edit createEdit( org.lgna.croquet.steps.CascadePopupOperationStep< Object > step, final java.lang.Object[] values ) {
+		return new org.alice.ide.ToDoEdit< edu.cmu.cs.dennisc.croquet.CascadePopupOperation<Object> >() {
 			@Override
 			protected void doOrRedoInternal( boolean isDo ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( values );

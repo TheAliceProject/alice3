@@ -74,12 +74,12 @@ public abstract class Operation< S extends org.lgna.croquet.steps.OperationStep<
 //		return rv;
 //	}
 	
-	protected Edit< ? > createTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	protected Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		return null;
 	}
 	@Override
-	public Edit< ? > commitTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		Edit< ? > replacementEdit = this.createTutorialCompletionEdit( originalEdit, retargeter );
+	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		Edit< ? > replacementEdit = this.createTutorialCompletionEdit( step, originalEdit, retargeter );
 //		if( replacementEdit != null ) {
 //			final S step = this.createAndPushStep( null, null );
 //			try {

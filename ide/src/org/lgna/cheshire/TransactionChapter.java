@@ -61,8 +61,10 @@ public class TransactionChapter extends Chapter {
 	public void complete( edu.cmu.cs.dennisc.croquet.Group completionGroup ) {
 		final edu.cmu.cs.dennisc.croquet.Edit<?> originalEdit = this.transaction.getEdit();
 		if( originalEdit != null ) {
+			//todo
+			org.lgna.croquet.steps.CompletionStep< ? > step = null;
 			edu.cmu.cs.dennisc.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getRetargeter();
-			edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( originalEdit, retargeter );
+			edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( step, originalEdit, retargeter );
 			if( replacementEdit != null ) {
 				//todo
 				org.lgna.cheshire.stencil.StencilsPresentation.getInstance().retargetAll( retargeter );

@@ -231,7 +231,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 				if( Manager.isInTheMidstOfUndoOrRedo() ) {
 					//pass
 				} else {
-					this.commitEdit( new ListSelectionStateEdit< E >( this.prevAtomicSelectedValue, nextSelectedValue ), new org.lgna.croquet.triggers.MouseEventTrigger( this.mostRecentViewController, this.mostRecentEvent ) );
+					this.commitEdit( this.prevAtomicSelectedValue, nextSelectedValue, new org.lgna.croquet.triggers.MouseEventTrigger( this.mostRecentViewController, this.mostRecentEvent ) );
 					//						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
 					//						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
 					//						ModelContext< ? > popContext = ContextManager.popContext();
@@ -515,8 +515,9 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		return null;
 	}
 	
-	protected void commitEdit( ListSelectionStateEdit< E > edit, org.lgna.croquet.Trigger trigger ) {
+	protected void commitEdit( E prevValue, E nextValue, org.lgna.croquet.Trigger trigger ) {
 		org.lgna.croquet.steps.ListSelectionStateChangeStep< E > step = TransactionManager.addListSelectionStateChangeStep( this, trigger );
+		ListSelectionStateEdit< E > edit = new ListSelectionStateEdit< E >( step, prevValue, nextValue );
 		step.commitAndInvokeDo( edit );
 //		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
 //		childContext.commitAndInvokeDo( listSelectionStateEdit );
@@ -525,10 +526,10 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 
 	@Override
-	public Edit< ? > commitTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		assert originalEdit instanceof ListSelectionStateEdit;
 		ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)originalEdit;
-		this.commitEdit( listSelectionStateEdit, org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+		this.commitEdit( listSelectionStateEdit.getPreviousValue(), listSelectionStateEdit.getNextValue(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 		return listSelectionStateEdit;
 	}
 

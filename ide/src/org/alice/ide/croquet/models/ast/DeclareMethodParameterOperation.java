@@ -82,7 +82,7 @@ public class DeclareMethodParameterOperation extends org.alice.ide.croquet.model
 			org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = step.getMainPanel();
 			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.getInputValue();
 			if( parameter != null ) {
-				step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodParameterEdit( parameter ) );
+				step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodParameterEdit( step, parameter ) );
 			} else {
 				step.cancel();
 			}

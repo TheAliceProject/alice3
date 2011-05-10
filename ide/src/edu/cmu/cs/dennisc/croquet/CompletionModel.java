@@ -72,4 +72,8 @@ public abstract class CompletionModel extends Model {
 		}
 	}
 	public abstract boolean isAlreadyInState( Edit< ? > edit );
+	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> completionStep, Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		System.err.println( "todo: commitTutorialCompletionEdit: " + originalEdit );
+		return null;
+	}
 }

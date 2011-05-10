@@ -96,7 +96,7 @@ public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.A
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	protected edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		return originalEdit;
 	}
 
@@ -159,6 +159,6 @@ public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.A
 	}
 	@Override
 	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
-		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< InsertStatementActionOperation >() );
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< InsertStatementActionOperation >( step ) );
 	}
 }

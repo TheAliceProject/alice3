@@ -543,7 +543,7 @@ public class TransactionManager {
 			org.lgna.croquet.steps.ListSelectionStatePrepStep.createAndAddToTransaction( rv, state.getPrepModel(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 		}
 		org.lgna.croquet.steps.ListSelectionStateChangeStep completionStep = org.lgna.croquet.steps.ListSelectionStateChangeStep.createAndAddToTransaction( rv, state, org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
-		org.lgna.croquet.edits.ListSelectionStateEdit edit = new org.lgna.croquet.edits.ListSelectionStateEdit( prevValue, nextValue );
+		org.lgna.croquet.edits.ListSelectionStateEdit edit = new org.lgna.croquet.edits.ListSelectionStateEdit( completionStep, prevValue, nextValue );
 		completionStep.setEdit( edit );
 		return rv;
 	}

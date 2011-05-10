@@ -346,11 +346,6 @@ public abstract class Model implements RuntimeResolver< Model > {
 		return this;
 	}
 
-	public Edit< ? > commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		System.err.println( "todo: commitTutorialCompletionEdit: " + originalEdit );
-		return null;
-	}
-	
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
 		rv.append( "text: " );
 		rv.append( this );

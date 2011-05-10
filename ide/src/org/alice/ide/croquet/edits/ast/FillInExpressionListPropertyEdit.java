@@ -48,12 +48,13 @@ package org.alice.ide.croquet.edits.ast;
 public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
-	public FillInExpressionListPropertyEdit( edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
+	public FillInExpressionListPropertyEdit( org.lgna.croquet.steps.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
+		super( completionStep );
 		this.prevExpression = prevExpression;
 		this.nextExpression = nextExpression;
 	}
-	public FillInExpressionListPropertyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public FillInExpressionListPropertyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 		java.util.UUID prevExpressionId = binaryDecoder.decodeId();

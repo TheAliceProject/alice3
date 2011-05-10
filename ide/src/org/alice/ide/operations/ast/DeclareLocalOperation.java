@@ -52,17 +52,17 @@ public class DeclareLocalOperation extends org.alice.ide.croquet.models.InputDia
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateLocalPane prologue(org.lgna.croquet.steps.InputDialogOperationStep context) {
+	protected org.alice.ide.declarationpanes.CreateLocalPane prologue(org.lgna.croquet.steps.InputDialogOperationStep step) {
 		return new org.alice.ide.declarationpanes.CreateLocalPane( this.blockStatementIndexPair );
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep context, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			org.alice.ide.declarationpanes.CreateLocalPane createLocalPane = context.getMainPanel();
+			org.alice.ide.declarationpanes.CreateLocalPane createLocalPane = step.getMainPanel();
 			edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = createLocalPane.getInputValue();
-			context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( this.blockStatementIndexPair.getBlockStatement(), this.blockStatementIndexPair.getIndex(), localDeclarationStatement ) );
+			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair.getBlockStatement(), this.blockStatementIndexPair.getIndex(), localDeclarationStatement ) );
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 }

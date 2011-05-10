@@ -46,10 +46,11 @@ package org.lgna.croquet.edits;
  * @author Dennis Cosgrove
  */
 public abstract class OperationEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends edu.cmu.cs.dennisc.croquet.Edit<M> {
-	public OperationEdit() {
+	public OperationEdit( org.lgna.croquet.steps.OperationStep< M > completionStep ) {
+		super( completionStep );
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 	}
 //	@Override
 //	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {

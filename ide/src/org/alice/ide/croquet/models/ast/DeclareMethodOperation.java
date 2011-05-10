@@ -89,10 +89,11 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 //	}
 
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit originalDeclareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
-		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( originalDeclareMethodEdit.getDeclaringType(), originalDeclareMethodEdit.getMethod() );
+		//todo
+		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( (org.lgna.croquet.steps.OperationStep)step, originalDeclareMethodEdit.getDeclaringType(), originalDeclareMethodEdit.getMethod() );
 	}
 	protected String getDeclarationName(org.lgna.croquet.steps.InputDialogOperationStep step) {
 		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
@@ -147,7 +148,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 //						return rv;
 //					}
 //				} );
-				step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodEdit(declaringType, method));
+				step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( step, declaringType, method ) );
 			} else {
 				step.cancel();
 			}

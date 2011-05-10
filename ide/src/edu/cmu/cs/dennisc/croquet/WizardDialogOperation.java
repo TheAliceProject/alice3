@@ -423,7 +423,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 			@Override
 			protected void release( org.lgna.croquet.steps.WizardDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, boolean isCompleted ) {
 				if( isCompleted ) {
-					step.commitAndInvokeDo( new OperationEdit< Operation<?> >() {
+					step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 						@Override
 						protected void doOrRedoInternal( boolean isDo ) {
 							edu.cmu.cs.dennisc.print.PrintUtilities.println( "do", name.getValue() );

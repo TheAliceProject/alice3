@@ -49,12 +49,13 @@ public class AddExpressionEdit extends org.lgna.croquet.edits.OperationEdit< org
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
 	private final edu.cmu.cs.dennisc.alice.ast.Expression expression;
 	private transient int index;
-	public AddExpressionEdit( edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public AddExpressionEdit( org.lgna.croquet.steps.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		super( completionStep );
 		this.expressionListProperty = expressionListProperty;
 		this.expression = expression;
 	}
-	public AddExpressionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public AddExpressionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: decode expressionListProperty" );
 		this.expressionListProperty = null;
 		this.expression = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).decodeValue( binaryDecoder );

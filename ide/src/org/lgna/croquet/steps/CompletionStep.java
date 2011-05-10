@@ -63,8 +63,7 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 		super( binaryDecoder );
 		this.isPending = binaryDecoder.decodeBoolean();
 		this.isSuccessfullyCompleted = binaryDecoder.decodeBoolean();
-		this.edit = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.edit.setCompletionStep( this );
+		this.edit = binaryDecoder.decodeBinaryEncodableAndDecodable( this );
 		this.transactionHistory = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		if( this.transactionHistory != null ) {
 			this.transactionHistory.setParent( this );
@@ -119,7 +118,6 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 	/*package-private*/ void setEdit( edu.cmu.cs.dennisc.croquet.Edit<M> edit ) {
 		this.isSuccessfullyCompleted = true;
 		this.edit = edit;
-		this.edit.setCompletionStep( this );
 		this.isPending = false;
 	}
 	public void commitAndInvokeDo( edu.cmu.cs.dennisc.croquet.Edit edit ) {

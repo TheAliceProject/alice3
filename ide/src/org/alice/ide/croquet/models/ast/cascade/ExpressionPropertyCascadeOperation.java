@@ -81,7 +81,7 @@ public abstract class ExpressionPropertyCascadeOperation extends edu.cmu.cs.denn
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions );
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
-		return new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( this.getPreviousExpression(), values[ 0 ] );
+	protected edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> createEdit( org.lgna.croquet.steps.CascadePopupOperationStep< edu.cmu.cs.dennisc.alice.ast.Expression > step, edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
+		return new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, this.getPreviousExpression(), values[ 0 ] );
 	}
 }

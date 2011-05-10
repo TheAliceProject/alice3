@@ -49,13 +49,14 @@ public final class BoundedRangeIntegerStateEdit extends StateEdit<edu.cmu.cs.den
 	private final int prevValue;
 	private final int nextValue;
 	private final boolean isDoDesired;
-	public BoundedRangeIntegerStateEdit( javax.swing.event.ChangeEvent e, int prevValue, int nextValue, boolean isDoDesired ) {
+	public BoundedRangeIntegerStateEdit( org.lgna.croquet.steps.CompletionStep< edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState > completionStep, javax.swing.event.ChangeEvent e, int prevValue, int nextValue, boolean isDoDesired ) {
+		super( completionStep );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 		this.isDoDesired = isDoDesired;
 	}
-	public BoundedRangeIntegerStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public BoundedRangeIntegerStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 		this.prevValue = binaryDecoder.decodeInt();
 		this.nextValue = binaryDecoder.decodeInt();
 		

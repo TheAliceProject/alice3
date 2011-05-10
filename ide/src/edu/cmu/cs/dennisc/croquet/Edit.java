@@ -46,27 +46,12 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private static <M extends CompletionModel> M getModel( org.lgna.croquet.steps.CompletionStep<M> step ) {
-		if( step != null ) {
-			return step.getModel();
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getModel() context==null" );
-			return null;
-		}
+	private transient final org.lgna.croquet.steps.CompletionStep< M > completionStep;
+	public Edit( org.lgna.croquet.steps.CompletionStep< M > completionStep ) {
+		this.completionStep = completionStep;
 	}
-	private static <M extends CompletionModel> Group getGroup( M model ) {
-		if( model != null ) {
-			return model.getGroup();
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getGroup() model==null" );
-			return null;
-		}
-	}
-
-	private transient org.lgna.croquet.steps.CompletionStep< M > completionStep;
-	public Edit() {
-	}
-	public Edit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Edit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		this.completionStep = (org.lgna.croquet.steps.CompletionStep< M >) step;
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
@@ -77,18 +62,23 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		if( this.completionStep != null ) {
 			return this.completionStep.getModel();
 		} else {
-			return getModel( this.getCompletionStep() );
+			return null;
 		}
 	}
 	public Group getGroup() {
-		return getGroup( this.getModel() );
+		M model = this.getModel();
+		if( model != null ) {
+			return model.getGroup();
+		} else {
+			return null;
+		}
 	}
 	public org.lgna.croquet.steps.CompletionStep< M > getCompletionStep() {
 		return this.completionStep;
 	}
-	public void setCompletionStep( org.lgna.croquet.steps.CompletionStep< M > completionStep ) {
-		this.completionStep = completionStep;
-	}
+//	public void setCompletionStep( org.lgna.croquet.steps.CompletionStep< M > completionStep ) {
+//		this.completionStep = completionStep;
+//	}
 	public boolean canUndo() {
 		return true;
 	}
