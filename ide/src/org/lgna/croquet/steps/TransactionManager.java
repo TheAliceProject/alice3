@@ -459,7 +459,7 @@ public class TransactionManager {
 		Transaction transaction = getActiveTransaction();
 		return PlainDialogCloseOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InputDialogOperationStep<J> addInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperation< J > model, org.lgna.croquet.Trigger trigger ) {
+	public static InputDialogOperationStep addInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return InputDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}

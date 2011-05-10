@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodParameterOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice,org.alice.ide.declarationpanes.CreateMethodParameterPane> {
+public class DeclareMethodParameterOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> {
 	@Deprecated
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, DeclareMethodParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static DeclareMethodParameterOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
@@ -72,22 +72,22 @@ public class DeclareMethodParameterOperation extends org.alice.ide.croquet.model
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareMethodParameterOperation >( this, this.method, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateMethodParameterPane prologue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
+	protected org.alice.ide.declarationpanes.CreateMethodParameterPane prologue(org.lgna.croquet.steps.InputDialogOperationStep step) {
 		//todo: create before hand and refresh at this point
 		return new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.ide.declarationpanes.CreateMethodParameterPane> context, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
+			org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = step.getMainPanel();
 			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.getInputValue();
 			if( parameter != null ) {
-				context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodParameterEdit( parameter ) );
+				step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodParameterEdit( parameter ) );
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 }

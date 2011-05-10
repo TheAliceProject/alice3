@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation<org.alice.ide.declarationpanes.CreateFieldFromGalleryPane> {
+public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation {
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 desiredTransformation = null;
 	
 	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, GalleryFileOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -71,7 +71,7 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation<o
 		this.treeNode = treeNode;
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue( org.lgna.croquet.steps.InputDialogOperationStep< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context ) {
+	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue( org.lgna.croquet.steps.InputDialogOperationStep step ) {
 		return new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(this.getOwnerType(), this.treeNode);
 	}
 	
@@ -83,8 +83,8 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation<o
 	
 	//"Create New Instance"
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(org.lgna.croquet.steps.InputDialogOperationStep< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context) {
-		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = context.getMainPanel();
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(org.lgna.croquet.steps.InputDialogOperationStep step) {
+		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = step.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();
 		if (field != null) {
 			Object fieldObject = createFieldFromGalleryPane.createInstanceInJava();

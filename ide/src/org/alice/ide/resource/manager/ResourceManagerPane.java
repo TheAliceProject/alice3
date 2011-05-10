@@ -354,14 +354,14 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		}
 	}
 
-	class RenameResourceOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.name.RenamePane> {
+	class RenameResourceOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 		private org.alice.virtualmachine.Resource resource;
 		public RenameResourceOperation() {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "da920b16-65fc-48a4-9203-b3c2979b0a59" ) );
 			this.setName( "Rename..." );
 		}
 		@Override
-		protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.ide.name.RenamePane> context) {
+		protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.steps.InputDialogOperationStep step) {
 			this.resource = ResourceManagerPane.this.getSelectedResource();
 			if( this.resource != null ) {
 				org.alice.ide.name.RenamePane rv;
@@ -382,13 +382,13 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 			}
 		}
 		@Override
-		protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.ide.name.RenamePane> context, boolean isOk) {
+		protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk) {
 			if( isOk ) {
-				org.alice.ide.name.RenamePane renamePane = context.getMainPanel();
+				org.alice.ide.name.RenamePane renamePane = step.getMainPanel();
 				final String nextName = renamePane.getNameText();
 				if( nextName != null && nextName.length() > 0 ) {
 					final String prevName = this.resource.getName();
-					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+					step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 						@Override
 						protected final void doOrRedoInternal( boolean isDo ) {
 							resource.setName( nextName );
@@ -409,10 +409,10 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 						}
 					} );
 				} else {
-					context.cancel();
+					step.cancel();
 				}
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		}
 	}

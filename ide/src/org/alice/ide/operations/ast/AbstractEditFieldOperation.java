@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.ide.declarationpanes.EditFieldPane> {
+public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
 	private FieldDeclaredInAlice field;
 
 	private edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither prevFinalVolatileOrNeither;
@@ -65,7 +65,7 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.m
 	protected FieldDeclaredInAlice getField() {
 		return this.field;
 	}
-	protected org.alice.ide.declarationpanes.EditFieldPane prologue( org.lgna.croquet.steps.InputDialogOperationStep< org.alice.ide.declarationpanes.EditFieldPane > context, java.util.Set< FieldDeclaredInAlice > referencedFields, java.util.Set< FieldDeclaredInAlice > reassignedFields ) {
+	protected org.alice.ide.declarationpanes.EditFieldPane prologue( org.lgna.croquet.steps.InputDialogOperationStep step, java.util.Set< FieldDeclaredInAlice > referencedFields, java.util.Set< FieldDeclaredInAlice > reassignedFields ) {
 		if( this.field != null ) {
 			this.prevFinalVolatileOrNeither = field.finalVolatileOrNeither.getValue();
 			this.prevValueType = field.valueType.getValue();
@@ -77,16 +77,16 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.m
 		}
 	}
 	@Override
-	protected void epilogue( org.lgna.croquet.steps.InputDialogOperationStep< org.alice.ide.declarationpanes.EditFieldPane > context, boolean isOk ) {
+	protected void epilogue( org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk ) {
 		if( isOk ) {
-			org.alice.ide.declarationpanes.EditFieldPane editFieldPane = context.getMainPanel();
+			org.alice.ide.declarationpanes.EditFieldPane editFieldPane = step.getMainPanel();
 			FieldDeclaredInAlice tempField = editFieldPane.getInputValue();
 			if( tempField != null ) {
 				final edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither nextFinalVolatileOrNeither = tempField.finalVolatileOrNeither.getValue();
 				final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> nextValueType = tempField.valueType.getValue();
 				final String nextName = tempField.getName();
 				final edu.cmu.cs.dennisc.alice.ast.Expression nextInitializer = tempField.initializer.getValue();
-				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
 						field.finalVolatileOrNeither.setValue( nextFinalVolatileOrNeither );
@@ -109,10 +109,10 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.m
 					}
 				} );
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 }

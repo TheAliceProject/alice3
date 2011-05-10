@@ -75,12 +75,12 @@ public class EditPersonOperation extends PersonOperation {
 		return org.alice.stageide.croquet.models.personeditor.PersonInfo.createFromPerson( person );
 	}
 	@Override
-	protected void epilogue( org.lgna.croquet.steps.InputDialogOperationStep< org.alice.stageide.personeditor.PersonEditor > context, boolean isOk ) {
+	protected void epilogue( org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk ) {
 		final org.alice.apis.stage.Person person = this.getSceneEditorPerson();
-		final org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
+		final org.alice.stageide.personeditor.PersonEditor personEditor = step.getMainPanel();
 		final org.alice.stageide.croquet.models.personeditor.PersonInfo prevPersonInfo = this.getInitialPersonInfo();
 		final org.alice.stageide.croquet.models.personeditor.PersonInfo nextPersonInfo = personEditor.getPersonInfo();
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				nextPersonInfo.update( person );
@@ -121,7 +121,7 @@ public class EditPersonOperation extends PersonOperation {
 //	private org.alice.apis.stage.Hair prevHair;
 //	private Double prevFitnessLevel;
 //	@Override
-//	protected org.alice.stageide.personeditor.PersonEditor prologue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.stageide.personeditor.PersonEditor> context) {
+//	protected org.alice.stageide.personeditor.PersonEditor prologue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.stageide.personeditor.PersonEditor> step) {
 //		final org.alice.apis.stage.Person person = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.field, org.alice.apis.stage.Person.class );
 //		if( person != null ) {
 //			this.prevGender = person.getGender(); 
@@ -137,8 +137,8 @@ public class EditPersonOperation extends PersonOperation {
 //		return this.personEditor; 
 //	}
 //	@Override
-//	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.stageide.personeditor.PersonEditor> context, boolean isOk) {
-//		org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
+//	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.stageide.personeditor.PersonEditor> step, boolean isOk) {
+//		org.alice.stageide.personeditor.PersonEditor personEditor = step.getMainPanel();
 //		final org.alice.apis.stage.Person person = personEditor.getPerson();
 //		if( isOk ) {
 //			final org.alice.apis.stage.Gender nextGender = person.getGender();
@@ -147,7 +147,7 @@ public class EditPersonOperation extends PersonOperation {
 //			final org.alice.apis.stage.Outfit nextOutfit = person.getOutfit();
 //			final org.alice.apis.stage.Hair nextHair = person.getHair();
 //			final Double nextFitnessLevel = person.getFitnessLevel();
-//			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+//			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 //				@Override
 //				public void doOrRedo( boolean isDo ) {
 //					EditPersonActionOperation.set( person, nextGender, nextSkinTone, nextEyeColor, nextOutfit, nextHair, nextFitnessLevel );
@@ -165,7 +165,7 @@ public class EditPersonOperation extends PersonOperation {
 //			} );
 //		} else {
 //			EditPersonActionOperation.set( person, prevGender, prevSkinTone, prevEyeColor, prevOutfit, prevHair, prevFitnessLevel );
-//			context.cancel();
+//			step.cancel();
 //		}
 //	}
 //	private static void set( org.alice.apis.stage.Person person, org.alice.apis.stage.Gender gender, org.alice.apis.stage.SkinTone skinTone, org.alice.apis.stage.EyeColor eyeColor, org.alice.apis.stage.Outfit outfit, org.alice.apis.stage.Hair hair, Double fitnessLevel ) {

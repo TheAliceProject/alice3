@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class EditTypeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.editorstabbedpane.EditTypePanel> {
+public class EditTypeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice, EditTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static EditTypeOperation getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		synchronized( map ) {
@@ -76,20 +76,20 @@ public class EditTypeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOpe
 		return new java.awt.Dimension( 640, 480 );
 	}
 	@Override
-	protected org.alice.ide.editorstabbedpane.EditTypePanel prologue( org.lgna.croquet.steps.InputDialogOperationStep< org.alice.ide.editorstabbedpane.EditTypePanel > context ) {
+	protected org.alice.ide.editorstabbedpane.EditTypePanel prologue( org.lgna.croquet.steps.InputDialogOperationStep step ) {
 		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
 		int projectHistoryIndex = projectHistoryManager.getInsertionIndex();
 		return new org.alice.ide.editorstabbedpane.EditTypePanel( this.type, projectHistoryIndex );
 	}
 	@Override
-	protected void epilogue( org.lgna.croquet.steps.InputDialogOperationStep< org.alice.ide.editorstabbedpane.EditTypePanel > context, boolean isOk ) {
-		org.alice.ide.editorstabbedpane.EditTypePanel editTypePanel = context.getMainPanel();
+	protected void epilogue( org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk ) {
+		org.alice.ide.editorstabbedpane.EditTypePanel editTypePanel = step.getMainPanel();
 		if( isOk ) {
-			context.finish();
+			step.finish();
 		} else {
 			edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
 			projectHistoryManager.setInsertionIndex( editTypePanel.getHistoryIndex() );
-			context.cancel();
+			step.cancel();
 		}
 	}
 }

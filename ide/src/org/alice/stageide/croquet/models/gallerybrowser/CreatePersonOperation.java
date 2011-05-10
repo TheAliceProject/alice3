@@ -57,15 +57,15 @@ public class CreatePersonOperation extends PersonOperation {
 		return org.alice.stageide.croquet.models.personeditor.PersonInfo.createRandom();
 	}
 	@Override
-	protected void epilogue( org.lgna.croquet.steps.InputDialogOperationStep< org.alice.stageide.personeditor.PersonEditor > context, boolean isOk ) {
+	protected void epilogue( org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk ) {
 		if( isOk ) {
-			org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
+			org.alice.stageide.personeditor.PersonEditor personEditor = step.getMainPanel();
 			org.alice.stageide.croquet.models.personeditor.PersonInfo personInfo = personEditor.getPersonInfo();
 			this.person = personInfo.createPerson();
-			context.finish();
+			step.finish();
 		} else {
 			this.person = null;
-			context.cancel();
+			step.cancel();
 		}
 	}
 

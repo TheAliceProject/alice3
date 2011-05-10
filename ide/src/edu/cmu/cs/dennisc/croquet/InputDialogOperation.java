@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogOperation<J extends JComponent<?>> extends GatedCommitDialogOperation<org.lgna.croquet.steps.InputDialogOperationStep<J>> {
+public abstract class InputDialogOperation extends GatedCommitDialogOperation<org.lgna.croquet.steps.InputDialogOperationStep> {
 	protected static class OkOperation extends CompleteOperation {
 		private static class SingletonHolder {
 			private static OkOperation instance = new OkOperation();
@@ -76,33 +76,33 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 	}
 
 	@Override
-	public org.lgna.croquet.steps.InputDialogOperationStep<J> createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+	public org.lgna.croquet.steps.InputDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
 		return org.lgna.croquet.steps.TransactionManager.addInputDialogOperationStep( this, trigger );
 	}
 
 	
-	public String getTutorialFinishNoteText( org.lgna.croquet.steps.InputDialogOperationStep< ? > inputDialogOperationContext, UserInformation userInformation ) {
+	public String getTutorialFinishNoteText( org.lgna.croquet.steps.InputDialogOperationStep inputDialogOperationContext, UserInformation userInformation ) {
 		return "When finished press the <strong>OK</strong> button.";
 	}
 
-	public static interface ExternalCommitButtonDisabler<J extends JComponent<?>> {
-		public String getExplanationIfCommitButtonShouldBeDisabled( org.lgna.croquet.steps.InputDialogOperationStep<J> step );
+	public static interface ExternalCommitButtonDisabler {
+		public String getExplanationIfCommitButtonShouldBeDisabled( org.lgna.croquet.steps.InputDialogOperationStep step );
 	}
-	private ExternalCommitButtonDisabler<J> externalCommitButtonDisabler;
-	public ExternalCommitButtonDisabler<J> getExternalCommitButtonDisabler() {
+	private ExternalCommitButtonDisabler externalCommitButtonDisabler;
+	public ExternalCommitButtonDisabler getExternalCommitButtonDisabler() {
 		return this.externalCommitButtonDisabler;
 	}
-	public void setExternalCommitButtonDisabler( ExternalCommitButtonDisabler<J> externalCommitButtonDisabler ) {
+	public void setExternalCommitButtonDisabler( ExternalCommitButtonDisabler externalCommitButtonDisabler ) {
 		this.externalCommitButtonDisabler = externalCommitButtonDisabler;
 	}
 	
-	protected String getInternalExplanation( org.lgna.croquet.steps.InputDialogOperationStep<J> step ) {
+	protected String getInternalExplanation( org.lgna.croquet.steps.InputDialogOperationStep step ) {
 		return null;
 	}
 	
 	@Override
-	protected final String getExplanation( org.lgna.croquet.steps.InputDialogOperationStep<J> step ) {
-		//org.lgna.croquet.steps.InputDialogOperationStep<J> step = (org.lgna.croquet.steps.InputDialogOperationStep<J>)child.findContextFor( InputDialogOperation.this );
+	protected final String getExplanation( org.lgna.croquet.steps.InputDialogOperationStep step ) {
+		//org.lgna.croquet.steps.InputDialogOperationStep step = (org.lgna.croquet.steps.InputDialogOperationStep)child.findContextFor( InputDialogOperation.this );
 //		String text;
 		if( step != null ) {
 			String explanation = this.getInternalExplanation( step );
@@ -126,18 +126,18 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 			return "todo: updateOperationAndExplanation step==null";
 		}
 	}
-	protected abstract J prologue( org.lgna.croquet.steps.InputDialogOperationStep<J> step );
-	protected abstract void epilogue( org.lgna.croquet.steps.InputDialogOperationStep<J> step, boolean isCommit );
+	protected abstract JComponent< ? > prologue( org.lgna.croquet.steps.InputDialogOperationStep step );
+	protected abstract void epilogue( org.lgna.croquet.steps.InputDialogOperationStep step, boolean isCommit );
 
 
 	@Deprecated
-	public Edit< ? > EPIC_HACK_createEdit( org.lgna.croquet.steps.InputDialogOperationStep< J > inputDialogOperationContext ) {
+	public Edit< ? > EPIC_HACK_createEdit( org.lgna.croquet.steps.InputDialogOperationStep inputDialogOperationContext ) {
 		//todo
 		return null;
 	}
 	
 	@Override
-	protected Component< ? > createControlsPanel( org.lgna.croquet.steps.InputDialogOperationStep< J > step, Dialog dialog ) {
+	protected Component< ? > createControlsPanel( org.lgna.croquet.steps.InputDialogOperationStep step, Dialog dialog ) {
 		Button okButton = this.getCompleteOperation().createButton();
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.addComponent( BoxUtilities.createHorizontalGlue() );
@@ -153,12 +153,10 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainPanel( org.lgna.croquet.steps.InputDialogOperationStep< J > step, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Label explanationLabel ) {
-		J child = this.prologue( step );
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainPanel( org.lgna.croquet.steps.InputDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Label explanationLabel ) {
+		JComponent< ? > child = this.prologue( step );
 		assert child != null;
 		step.setMainPanel( child );
-//		child.getAwtComponent().setOpaque( true );
-
 		BorderPanel rv = new BorderPanel();
 		rv.setBackgroundColor( child.getBackgroundColor() );
 		rv.addComponent( child, BorderPanel.Constraint.CENTER );
@@ -166,7 +164,7 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 		return rv;
 	}
 	@Override
-	protected void release( org.lgna.croquet.steps.InputDialogOperationStep< J > step, edu.cmu.cs.dennisc.croquet.Dialog dialog, boolean isCompleted ) {
+	protected void release( org.lgna.croquet.steps.InputDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, boolean isCompleted ) {
 		this.epilogue( step, isCompleted );
 	}
 }
