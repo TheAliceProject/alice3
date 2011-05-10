@@ -47,9 +47,6 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeInputDialogOperation< F > extends InputDialogOperation {
-	public CascadeInputDialogOperation(Group group, java.util.UUID individualId, boolean isCancelDesired ) {
-		super( group, individualId, isCancelDesired );
-	}
 	public CascadeInputDialogOperation(Group group, java.util.UUID individualId) {
 		super( group, individualId );
 	}

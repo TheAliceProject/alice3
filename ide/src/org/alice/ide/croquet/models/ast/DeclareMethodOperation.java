@@ -102,12 +102,12 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 			return null;
 		}
 	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.Edit< ? > EPIC_HACK_createEdit( org.lgna.croquet.steps.InputDialogOperationStep step ) {
-		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
-		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getInputValue();
-		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( declaringType, method );
-	}
+//	@Override
+//	public edu.cmu.cs.dennisc.croquet.Edit< ? > EPIC_HACK_createEdit( org.lgna.croquet.steps.InputDialogOperationStep step ) {
+//		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
+//		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getInputValue();
+//		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( declaringType, method );
+//	}
 
 	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType );
 	@Override

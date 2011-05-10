@@ -67,7 +67,6 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.step
 			return (GatedCommitDialogOperation< ? >)step.getParent().getParent().getParent().getModel();
 		}
 	}
-
 	protected static abstract class CompleteOperation extends InternalDialogOperation {
 		public CompleteOperation( java.util.UUID id ) {
 			super( id );
@@ -79,7 +78,6 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.step
 			this.getDialog().setVisible( false );
 		}
 	}
-
 	protected static class CancelOperation extends InternalDialogOperation {
 		private static class SingletonHolder {
 			private static CancelOperation instance = new CancelOperation();

@@ -66,25 +66,53 @@ public abstract class InputDialogOperation extends GatedCommitDialogOperation<or
 	protected edu.cmu.cs.dennisc.croquet.GatedCommitDialogOperation.CompleteOperation getCompleteOperation() {
 		return OkOperation.getInstance();
 	}
-	private boolean isCancelDesired;
-	public InputDialogOperation(Group group, java.util.UUID individualId, boolean isCancelDesired) {
-		super(group, individualId);
-		this.isCancelDesired = isCancelDesired;
-	}
 	public InputDialogOperation(Group group, java.util.UUID individualId) {
-		this(group, individualId, true);
+		super(group, individualId);
 	}
-
 	@Override
 	public org.lgna.croquet.steps.InputDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
 		return org.lgna.croquet.steps.TransactionManager.addInputDialogOperationStep( this, trigger );
 	}
-
 	
-	public String getTutorialFinishNoteText( org.lgna.croquet.steps.InputDialogOperationStep inputDialogOperationContext, UserInformation userInformation ) {
-		return "When finished press the <strong>OK</strong> button.";
+	@Override
+	protected Component< ? > createControlsPanel( org.lgna.croquet.steps.InputDialogOperationStep step, Dialog dialog ) {
+		Button okButton = this.getCompleteOperation().createButton();
+		LineAxisPanel rv = new LineAxisPanel();
+		rv.addComponent( BoxUtilities.createHorizontalGlue() );
+		rv.addComponent( okButton );
+		
+		//todo: use isCancelDesired?
+		rv.addComponent( BoxUtilities.createHorizontalSliver( 4 ) );
+		rv.addComponent( this.getCancelOperation().createButton() );
+
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
+		dialog.setDefaultButton( okButton );
+		return rv;
 	}
 
+	protected abstract JComponent< ? > prologue( org.lgna.croquet.steps.InputDialogOperationStep step );
+	protected abstract void epilogue( org.lgna.croquet.steps.InputDialogOperationStep step, boolean isCommit );
+	
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainPanel( org.lgna.croquet.steps.InputDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Label explanationLabel ) {
+		JComponent< ? > child = this.prologue( step );
+		assert child != null;
+		step.setMainPanel( child );
+		BorderPanel rv = new BorderPanel();
+		rv.setBackgroundColor( child.getBackgroundColor() );
+		rv.addComponent( child, BorderPanel.Constraint.CENTER );
+		rv.addComponent( explanationLabel, BorderPanel.Constraint.PAGE_END );
+		return rv;
+	}
+	@Override
+	protected void release( org.lgna.croquet.steps.InputDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, boolean isCompleted ) {
+		this.epilogue( step, isCompleted );
+	}
+
+	
+	protected String getInternalExplanation( org.lgna.croquet.steps.InputDialogOperationStep step ) {
+		return null;
+	}
 	public static interface ExternalCommitButtonDisabler {
 		public String getExplanationIfCommitButtonShouldBeDisabled( org.lgna.croquet.steps.InputDialogOperationStep step );
 	}
@@ -94,10 +122,6 @@ public abstract class InputDialogOperation extends GatedCommitDialogOperation<or
 	}
 	public void setExternalCommitButtonDisabler( ExternalCommitButtonDisabler externalCommitButtonDisabler ) {
 		this.externalCommitButtonDisabler = externalCommitButtonDisabler;
-	}
-	
-	protected String getInternalExplanation( org.lgna.croquet.steps.InputDialogOperationStep step ) {
-		return null;
 	}
 	
 	@Override
@@ -126,45 +150,8 @@ public abstract class InputDialogOperation extends GatedCommitDialogOperation<or
 			return "todo: updateOperationAndExplanation step==null";
 		}
 	}
-	protected abstract JComponent< ? > prologue( org.lgna.croquet.steps.InputDialogOperationStep step );
-	protected abstract void epilogue( org.lgna.croquet.steps.InputDialogOperationStep step, boolean isCommit );
 
-
-	@Deprecated
-	public Edit< ? > EPIC_HACK_createEdit( org.lgna.croquet.steps.InputDialogOperationStep inputDialogOperationContext ) {
-		//todo
-		return null;
-	}
-	
-	@Override
-	protected Component< ? > createControlsPanel( org.lgna.croquet.steps.InputDialogOperationStep step, Dialog dialog ) {
-		Button okButton = this.getCompleteOperation().createButton();
-		LineAxisPanel rv = new LineAxisPanel();
-		rv.addComponent( BoxUtilities.createHorizontalGlue() );
-		rv.addComponent( okButton );
-		
-		//todo: use isCancelDesired?
-		rv.addComponent( BoxUtilities.createHorizontalSliver( 4 ) );
-		rv.addComponent( this.getCancelOperation().createButton() );
-
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
-		dialog.setDefaultButton( okButton );
-		return rv;
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainPanel( org.lgna.croquet.steps.InputDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Label explanationLabel ) {
-		JComponent< ? > child = this.prologue( step );
-		assert child != null;
-		step.setMainPanel( child );
-		BorderPanel rv = new BorderPanel();
-		rv.setBackgroundColor( child.getBackgroundColor() );
-		rv.addComponent( child, BorderPanel.Constraint.CENTER );
-		rv.addComponent( explanationLabel, BorderPanel.Constraint.PAGE_END );
-		return rv;
-	}
-	@Override
-	protected void release( org.lgna.croquet.steps.InputDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, boolean isCompleted ) {
-		this.epilogue( step, isCompleted );
+	public String getTutorialFinishNoteText( org.lgna.croquet.steps.InputDialogOperationStep inputDialogOperationContext, UserInformation userInformation ) {
+		return "When finished press the <strong>OK</strong> button.";
 	}
 }
