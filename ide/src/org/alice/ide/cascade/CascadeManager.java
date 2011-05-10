@@ -303,7 +303,7 @@ public abstract class CascadeManager {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo updateChildren isRoot" );
 			boolean isRoot = true;
 
-			if( isRoot && previousExpression != null ) {
+			if( isRoot && this.isPreviousExpressionSet() ) {
 				rv.add( org.alice.ide.croquet.models.cascade.PreviousExpressionItselfFillIn.getInstance( type ) );
 				rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
 			}
