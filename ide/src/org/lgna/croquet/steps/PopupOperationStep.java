@@ -47,8 +47,8 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public abstract class PopupOperationStep< M extends edu.cmu.cs.dennisc.croquet.PopupOperation<?> > extends OperationStep< M > {
-	public PopupOperationStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger, TransactionHistory transactionHistory ) {
-		super( parent, model, trigger, transactionHistory );
+	public PopupOperationStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
+		super( parent, model, trigger, new TransactionHistory() );
 	}
 	public PopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
