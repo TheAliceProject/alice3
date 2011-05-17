@@ -67,10 +67,9 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 		}
 	}
 
-	private static final Group LIST_SELECTION_STATE_PREP_MODEL_GROUP = Group.getInstance( java.util.UUID.fromString( "de535ef7-d377-44ff-8ee0-87706815c69c" ), "LIST_SELECTION_STATE_PREP_MODEL_GROUP" );
 	private final ListSelectionState< E > listSelectionState;
 	/*package-private*/ ListSelectionStatePrepModel( ListSelectionState< E > listSelectionState ) {
-		super( LIST_SELECTION_STATE_PREP_MODEL_GROUP, java.util.UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
+		super( java.util.UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
 		assert listSelectionState != null;
 		this.listSelectionState = listSelectionState;
 	}

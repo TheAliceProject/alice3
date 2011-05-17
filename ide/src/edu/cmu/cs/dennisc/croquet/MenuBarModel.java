@@ -46,10 +46,9 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class MenuBarModel extends Model {
-	public static final Group MENU_BAR_MODEL_GROUP = Group.getInstance( java.util.UUID.fromString( "7d9cd79e-6011-4174-94d4-d67647211481" ), "MENU_BAR_MODEL_GROUP" );
 	private java.util.List< MenuModel > menuModels = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public MenuBarModel( java.util.UUID id ) {
-		super( MENU_BAR_MODEL_GROUP, id );
+		super( id );
 	}
 
 	@Override

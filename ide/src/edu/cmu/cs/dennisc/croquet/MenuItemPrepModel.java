@@ -47,9 +47,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class MenuItemPrepModel extends PrepModel {
-	private static final Group MENU_ITEM_GROUP = Group.getInstance( java.util.UUID.fromString( "4ed42b1f-b4ea-4f70-99d1-5bb2c3f11081" ), "MENU_ITEM_GROUP" );
 	public MenuItemPrepModel( java.util.UUID id ) {
-		super(MENU_ITEM_GROUP, id);
+		super( id );
 	}
 	public abstract MenuItemContainer createMenuItemAndAddTo( MenuItemContainer rv );
 }

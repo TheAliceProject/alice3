@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class PrepModel extends Model {
-	public PrepModel( Group group, java.util.UUID id ) {
-		super(group, id);
+	public PrepModel( java.util.UUID id ) {
+		super( id );
 	}
 	public abstract Iterable< ? extends Model > getChildren();
 	public boolean isChild( Model model ) {

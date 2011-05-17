@@ -48,11 +48,9 @@ package edu.cmu.cs.dennisc.croquet;
 public abstract class Model implements RuntimeResolver< Model > {
 	private static final int NULL_MNEMONIC = 0;
 	private static final int NULL_ACCELERATOR_MASK = 0;
-	private Group group;
-	private java.util.UUID id;
+	private final java.util.UUID id;
 	private CodableResolver<Model> codableResolver;
-	public Model( Group group, java.util.UUID id ) {
-		this.group = group;
+	public Model( java.util.UUID id ) {
 		this.id = id;
 	}
 	
@@ -70,10 +68,6 @@ public abstract class Model implements RuntimeResolver< Model > {
 	}
 
 	protected abstract void localize();
-
-	public Group getGroup() {
-		return this.group;
-	}
 	public java.util.UUID getId() {
 		return this.id;
 	}
