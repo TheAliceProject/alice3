@@ -184,12 +184,10 @@ public abstract class MenuModel extends MenuItemPrepModel {
 			protected void handleDisplayable() {
 				super.handleDisplayable();
 				MenuModel.this.addPopupMenuListener( this );
-				MenuModel.this.addComponent( this );
 			}
 
 			@Override
 			protected void handleUndisplayable() {
-				MenuModel.this.removeComponent( this );
 				MenuModel.this.removePopupMenuListener( this );
 				super.handleUndisplayable();
 			}

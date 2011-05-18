@@ -104,21 +104,38 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 			}
 		}
 	};
+//	@Override
+//	protected void handleDisplayable() {
+//		super.handleDisplayable();
+//		M model = this.getModel();
+//		if( model != null ) {
+//			model.addComponent( this );
+//		}
+//	}
+//	@Override
+//	protected void handleUndisplayable() {
+//		M model = this.getModel();
+//		if( model != null ) {
+//			model.removeComponent( this );
+//		}
+//		super.handleUndisplayable();
+//	}
+	
 	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
+	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
+		super.handleAddedTo( parent );
 		M model = this.getModel();
 		if( model != null ) {
 			model.addComponent( this );
 		}
 	}
 	@Override
-	protected void handleUndisplayable() {
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
 		M model = this.getModel();
 		if( model != null ) {
 			model.removeComponent( this );
 		}
-		super.handleUndisplayable();
+		super.handleRemovedFrom( parent );
 	}
 	
 //	@Override

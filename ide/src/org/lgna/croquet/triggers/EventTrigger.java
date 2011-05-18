@@ -58,10 +58,34 @@ public abstract class EventTrigger< E extends java.util.EventObject > implements
 	}
 	protected abstract java.awt.Point getPoint();
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
-		return this.viewController;
+		if( this.viewController != null ) {
+			return this.viewController;
+		} else {
+			Object source = this.event.getSource();
+			if( source instanceof java.awt.Component ) {
+				java.awt.Component awtComponent = (java.awt.Component)source;
+				org.lgna.croquet.components.Component< ? > component = org.lgna.croquet.components.Component.lookup( awtComponent );
+				if( component instanceof org.lgna.croquet.components.ViewController ) {
+					return (org.lgna.croquet.components.ViewController< ?, ? >)component;
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
 	}
 	protected java.awt.Component getComponent() {
-		return this.viewController != null ? this.viewController.getAwtComponent() : null;
+		if( this.viewController != null ) {
+			return this.viewController.getAwtComponent();
+		} else {
+			Object source = this.event.getSource();
+			if( source instanceof java.awt.Component ) {
+				return (java.awt.Component)source;
+			} else {
+				return null;
+			}
+		}
 	}
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		java.awt.Point pt = this.getPoint();
