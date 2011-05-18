@@ -41,15 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
-
-import org.lgna.croquet.components.OperationButton;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MenuItem extends OperationButton< javax.swing.JMenuItem, Operation<?> > {
-	/*package-private*/ MenuItem( Operation<?> model ) {
+public class MenuItem extends OperationButton< javax.swing.JMenuItem, edu.cmu.cs.dennisc.croquet.Operation<?> > {
+	/*package-private*/ MenuItem( edu.cmu.cs.dennisc.croquet.Operation<?> model ) {
 		super( model );
 	}
 	@Override

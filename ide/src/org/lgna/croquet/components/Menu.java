@@ -44,7 +44,6 @@
 package org.lgna.croquet.components;
 
 import edu.cmu.cs.dennisc.croquet.CascadeItem;
-import edu.cmu.cs.dennisc.croquet.MenuItem;
 import edu.cmu.cs.dennisc.croquet.MenuItemContainer;
 import edu.cmu.cs.dennisc.croquet.MenuItemPrepModel;
 import edu.cmu.cs.dennisc.croquet.MenuModel;

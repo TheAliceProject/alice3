@@ -45,6 +45,7 @@ package org.lgna.croquet.steps;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.Menu;
 import org.lgna.croquet.components.MenuBar;
+import org.lgna.croquet.components.MenuItem;
 import org.lgna.croquet.components.MenuTextSeparator;
 import org.lgna.croquet.components.PopupMenu;
 import org.lgna.croquet.components.ViewController;
