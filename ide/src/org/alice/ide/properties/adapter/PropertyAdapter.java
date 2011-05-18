@@ -43,7 +43,8 @@
 
 package org.alice.ide.properties.adapter;
 
-import edu.cmu.cs.dennisc.croquet.Button;
+import org.lgna.croquet.components.Button;
+
 import edu.cmu.cs.dennisc.croquet.Operation;
 
 public interface PropertyAdapter <P, O>

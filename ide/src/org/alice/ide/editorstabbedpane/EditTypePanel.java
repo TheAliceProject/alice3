@@ -46,7 +46,7 @@ package org.alice.ide.editorstabbedpane;
 /**
  * @author Dennis Cosgrove
  */
-public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 	interface MemberFilter< M extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice > {
 		public boolean isAcceptable( M member );
 	}
@@ -204,7 +204,7 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	}
 
-	static class ReorderableList extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JList > {
+	static class ReorderableList extends org.lgna.croquet.components.JComponent< javax.swing.JList > {
 		@Override
 		protected javax.swing.JList createAwtComponent() {
 			final javax.swing.JList rv = new javax.swing.JList();
@@ -386,19 +386,19 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 	
 	
-	class Title extends edu.cmu.cs.dennisc.croquet.FlowPanel {
+	class Title extends org.lgna.croquet.components.FlowPanel {
 		public Title( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 			super( Alignment.LEADING );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+			this.addComponent( new org.lgna.croquet.components.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type ) );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+			this.addComponent( new org.lgna.croquet.components.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type.getSuperType() ) );
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,8 ) );
 		}
 	}
 
-	private static edu.cmu.cs.dennisc.croquet.Container< ? > createMembersPanel( ReorderableList list, edu.cmu.cs.dennisc.croquet.InputDialogOperation operation ) {
-		edu.cmu.cs.dennisc.croquet.PageAxisPanel rv = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
+	private static org.lgna.croquet.components.Container< ? > createMembersPanel( ReorderableList list, edu.cmu.cs.dennisc.croquet.InputDialogOperation operation ) {
+		org.lgna.croquet.components.PageAxisPanel rv = new org.lgna.croquet.components.PageAxisPanel();
 		rv.addComponent( list );
 		rv.addComponent( operation.createButton() );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 16, 4, 0 ) );
@@ -451,35 +451,35 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 		edu.cmu.cs.dennisc.croquet.BooleanState proceduresToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "4236c740-8881-4cf1-82e3-e3aef61c13dd" ), true );
 		proceduresToolPaletteState.setTextForBothTrueAndFalse( "procedures" );
-		edu.cmu.cs.dennisc.croquet.ToolPalette proceduresToolPalette = proceduresToolPaletteState.createToolPalette( createMembersPanel( proceduresList, org.alice.ide.croquet.models.ast.DeclareProcedureOperation.getInstance( type ) ) );
+		org.lgna.croquet.components.ToolPalette proceduresToolPalette = proceduresToolPaletteState.createToolPalette( createMembersPanel( proceduresList, org.alice.ide.croquet.models.ast.DeclareProcedureOperation.getInstance( type ) ) );
 		proceduresToolPalette.setBackgroundColor( ide.getTheme().getProcedureColor() );
 
 		edu.cmu.cs.dennisc.croquet.BooleanState functionsToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "ea7e601f-255b-41aa-bccd-af181c6b3bf0" ), true );
 		functionsToolPaletteState.setTextForBothTrueAndFalse( "functions" );
-		edu.cmu.cs.dennisc.croquet.ToolPalette functionsToolPalette = functionsToolPaletteState.createToolPalette( createMembersPanel( functionsList, org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( type ) ) );
+		org.lgna.croquet.components.ToolPalette functionsToolPalette = functionsToolPaletteState.createToolPalette( createMembersPanel( functionsList, org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( type ) ) );
 		functionsToolPalette.setBackgroundColor( ide.getTheme().getFunctionColor() );
 
 		edu.cmu.cs.dennisc.croquet.BooleanState fieldsToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7176c895-4e0f-4ebe-98a2-f820b27c9206" ), true );
 		fieldsToolPaletteState.setTextForBothTrueAndFalse( "properties" );
-		edu.cmu.cs.dennisc.croquet.ToolPalette fieldsToolPalette = fieldsToolPaletteState.createToolPalette( createMembersPanel( fieldsList, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type ) ) );
+		org.lgna.croquet.components.ToolPalette fieldsToolPalette = fieldsToolPaletteState.createToolPalette( createMembersPanel( fieldsList, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type ) ) );
 		fieldsToolPalette.setBackgroundColor( ide.getTheme().getFieldColor() );
 
 		proceduresToolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 		functionsToolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 		fieldsToolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 
-		edu.cmu.cs.dennisc.croquet.PageAxisPanel pageAxisPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
+		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
 		pageAxisPanel.addComponent( proceduresToolPalette );
-		pageAxisPanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 4 ) );
+		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ) );
 		pageAxisPanel.addComponent( functionsToolPalette );
-		pageAxisPanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 4 ) );
+		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ) );
 		pageAxisPanel.addComponent( fieldsToolPalette );
 //		pageAxisPanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() );
 		pageAxisPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,14,0,0 ) );
 
-		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel();
 		borderPanel.addComponent( pageAxisPanel, Constraint.PAGE_START );
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( borderPanel );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( borderPanel );
 		scrollPane.setBorder( null );
 		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 		

@@ -46,12 +46,12 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class CodeTitlePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
+public class CodeTitlePane extends org.lgna.croquet.components.LineAxisPanel {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.code = code;
 		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.code.getDeclaringType() ) );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.addComponent( new org.alice.ide.common.DeclarationNameLabel( this.code ) );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {

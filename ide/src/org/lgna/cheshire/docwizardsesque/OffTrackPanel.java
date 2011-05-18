@@ -46,13 +46,13 @@ package org.lgna.cheshire.docwizardsesque;
 /**
  * @author Dennis Cosgrove
  */
-public class OffTrackPanel extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
+public class OffTrackPanel extends org.lgna.croquet.components.LineAxisPanel {
 	public OffTrackPanel() {
 		javax.swing.Icon icon = new javax.swing.ImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/offTrack.png" ) );
-		edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label( "off course", icon );
+		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "off course", icon );
 		label.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		label.scaleFont( 1.5f );
-		label.setHorizontalAlignment( edu.cmu.cs.dennisc.croquet.HorizontalAlignment.CENTER );
+		label.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
 		this.addComponent( label );
 		this.addComponent( UndoOperation.getInstance().createButton() );
 		this.setBackgroundColor( java.awt.Color.RED );

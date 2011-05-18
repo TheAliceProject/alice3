@@ -52,7 +52,7 @@ public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resour
 	protected abstract E createResourceFromFile( java.io.File file ) throws java.io.IOException;
 	protected abstract String getFileDialogTitle();
 	protected abstract java.io.FilenameFilter createFilenameFilter();
-	public E promptUserForResource( edu.cmu.cs.dennisc.croquet.Frame owner ) throws java.io.IOException {
+	public E promptUserForResource( org.lgna.croquet.components.Frame owner ) throws java.io.IOException {
 		java.io.File initialDirectory = null;
 		java.io.File file = org.alice.ide.IDE.getSingleton().showOpenFileDialog( initialDirectory, this.getInitialFileText(), edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory().getAbsolutePath(), true );
 		if( file != null ) {

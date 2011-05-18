@@ -158,6 +158,6 @@ public class CommentPane extends org.alice.ide.common.AbstractStatementPane {
 	public CommentPane( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Comment comment, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( factory, comment, owner );
 		CommentLine commentLine = new CommentLine( comment );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( commentLine ) );
+		this.addComponent( new org.lgna.croquet.components.SwingAdapter( commentLine ) );
 	}
 }

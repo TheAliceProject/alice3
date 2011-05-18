@@ -45,11 +45,12 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanState extends State<Boolean> {
+public class BooleanState extends State< Boolean > {
 	public static interface ValueObserver {
 		public void changing( boolean nextValue );
 		public void changed( boolean nextValue );
 	};
+
 	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private boolean value;
 	private String trueText;
@@ -59,26 +60,26 @@ public class BooleanState extends State<Boolean> {
 
 	private javax.swing.ButtonModel buttonModel = this.createButtonModel();
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
 	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-		public void itemStateChanged(java.awt.event.ItemEvent e) {
+		public void itemStateChanged( java.awt.event.ItemEvent e ) {
 			if( Manager.isInTheMidstOfUndoOrRedo() ) {
 				//pass
 			} else {
-				if( BooleanState.this.isContextCommitDesired() ) {
+				if( BooleanState.this.isEditCommitDesired() ) {
 					BooleanState.this.commitEdit( e.getStateChange() == java.awt.event.ItemEvent.SELECTED, new org.lgna.croquet.triggers.ItemEventTrigger( e ) );
 				}
 			}
 		}
 	};
 
-	public BooleanState(Group group, java.util.UUID id, boolean initialState ) {
-		super(group, id);
+	public BooleanState( Group group, java.util.UUID id, boolean initialState ) {
+		super( group, id );
 		this.value = initialState;
-		this.buttonModel.setSelected(initialState);
-		this.buttonModel.addItemListener(this.itemListener);
+		this.buttonModel.setSelected( initialState );
+		this.buttonModel.addItemListener( this.itemListener );
 	}
 
 	private javax.swing.ButtonModel createButtonModel() {
@@ -102,19 +103,19 @@ public class BooleanState extends State<Boolean> {
 		}
 	}
 
-	/*package-private*/ javax.swing.ButtonModel getButtonModel() {
+	public javax.swing.ButtonModel getButtonModel() {
 		return this.buttonModel;
 	}
-	/*package-private*/ javax.swing.Action getAction() {
+	public javax.swing.Action getAction() {
 		return this.action;
 	}
 
 	public void addValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.add( valueObserver );
 	}
-	public void addAndInvokeValueObserver(ValueObserver valueObserver) {
-		this.addValueObserver(valueObserver);
-		valueObserver.changed(this.getValue());
+	public void addAndInvokeValueObserver( ValueObserver valueObserver ) {
+		this.addValueObserver( valueObserver );
+		valueObserver.changed( this.getValue() );
 	}
 	public void removeValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.remove( valueObserver );
@@ -123,27 +124,27 @@ public class BooleanState extends State<Boolean> {
 	private void commitEdit( boolean value, org.lgna.croquet.Trigger trigger ) {
 		org.lgna.croquet.steps.BooleanStateChangeStep step = org.lgna.croquet.steps.TransactionManager.addBooleanStateChangeStep( this, trigger );
 		step.commitAndInvokeDo( new org.lgna.croquet.edits.BooleanStateEdit( step, value ) );
-//		TransactionManager.addBooleanStateChangeStep( this );
-//		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
-//		childContext.commitAndInvokeDo( booleanStateEdit );
-//		ModelContext< ? > popContext = ContextManager.popContext();
-//		assert popContext == childContext;
+		//		TransactionManager.addBooleanStateChangeStep( this );
+		//		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
+		//		childContext.commitAndInvokeDo( booleanStateEdit );
+		//		ModelContext< ? > popContext = ContextManager.popContext();
+		//		assert popContext == childContext;
 	}
-	
+
 	@Override
-	public Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep< ? > step, Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		assert originalEdit instanceof org.lgna.croquet.edits.BooleanStateEdit;
 		org.lgna.croquet.edits.BooleanStateEdit booleanStateEdit = (org.lgna.croquet.edits.BooleanStateEdit)originalEdit;
 		this.commitEdit( booleanStateEdit.getNextValue(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 		return booleanStateEdit;
 	}
-	
-	/*package-private*/boolean isContextCommitDesired() {
+
+	protected boolean isEditCommitDesired() {
 		return true;
 	}
-	
+
 	@Override
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep<?> step, UserInformation userInformation ) {
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, UserInformation userInformation ) {
 		this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 		return rv;
 	}
@@ -174,7 +175,7 @@ public class BooleanState extends State<Boolean> {
 		}
 		return rv;
 	}
-	
+
 	@Override
 	public Boolean getValue() {
 		return this.buttonModel.isSelected();
@@ -186,7 +187,7 @@ public class BooleanState extends State<Boolean> {
 			for( ValueObserver valueObserver : this.valueObservers ) {
 				valueObserver.changing( value );
 			}
-			this.buttonModel.setSelected(value);
+			this.buttonModel.setSelected( value );
 			this.value = value;
 			for( ValueObserver valueObserver : this.valueObservers ) {
 				valueObserver.changed( value );
@@ -203,10 +204,10 @@ public class BooleanState extends State<Boolean> {
 	public String getFalseText() {
 		return this.falseText;
 	}
-	public void setTextForBothTrueAndFalse(String text) {
+	public void setTextForBothTrueAndFalse( String text ) {
 		this.setTextForTrueAndTextForFalse( text, text );
 	}
-	public void setTextForTrueAndTextForFalse(String trueText, String falseText) {
+	public void setTextForTrueAndTextForFalse( String trueText, String falseText ) {
 		this.trueText = trueText;
 		this.falseText = falseText;
 		this.updateNameAndIcon();
@@ -226,22 +227,22 @@ public class BooleanState extends State<Boolean> {
 		this.updateNameAndIcon();
 	}
 
-
 	private void updateNameAndIcon() {
 		String name;
 		javax.swing.Icon icon;
-		if (this.getValue()) {
+		if( this.getValue() ) {
 			name = this.trueText;
 			icon = this.trueIcon;
 		} else {
 			name = this.falseText;
 			icon = this.falseIcon;
 		}
-		this.action.putValue(javax.swing.Action.NAME, name);
-		this.action.putValue(javax.swing.Action.SMALL_ICON, icon);
+		this.action.putValue( javax.swing.Action.NAME, name );
+		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
-	
+
 	private BooleanStateMenuItemPrepModel menuPrepModel;
+
 	public synchronized BooleanStateMenuItemPrepModel getMenuItemPrepModel() {
 		if( this.menuPrepModel != null ) {
 			//pass
@@ -251,17 +252,17 @@ public class BooleanState extends State<Boolean> {
 		return this.menuPrepModel;
 	}
 
-	public RadioButton createRadioButton() {
-		return new RadioButton( this );
+	public org.lgna.croquet.components.RadioButton createRadioButton() {
+		return new org.lgna.croquet.components.RadioButton( this );
 	}
-	public CheckBox createCheckBox() {
-		return new CheckBox( this );
+	public org.lgna.croquet.components.CheckBox createCheckBox() {
+		return new org.lgna.croquet.components.CheckBox( this );
 	}
-	public PushButton createPushButton() {
-		return new PushButton( this );
+	public org.lgna.croquet.components.PushButton createPushButton() {
+		return new org.lgna.croquet.components.PushButton( this );
 	}
-	public ToolPalette createToolPalette( Component<?> component ) {
-		ToolPaletteTitle title = new ToolPaletteTitle( this );
-		return new ToolPalette(title, component);
+	//todo: convert to composite
+	public org.lgna.croquet.components.ToolPalette createToolPalette( org.lgna.croquet.components.Component< ? > component ) {
+		return new org.lgna.croquet.components.ToolPalette( this, component );
 	}
 }

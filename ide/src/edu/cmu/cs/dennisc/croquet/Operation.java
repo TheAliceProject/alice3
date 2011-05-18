@@ -46,17 +46,48 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Operation< S extends org.lgna.croquet.steps.OperationStep<? extends Operation<?>>> extends CompletionModel {
-	private class ButtonActionListener implements java.awt.event.ActionListener {
-		private AbstractButton< ?,? > button;
-		public ButtonActionListener( AbstractButton< ?,? > button ) {
-			this.button = button;
-		}
+//	private class ButtonActionListener implements java.awt.event.ActionListener {
+//		private AbstractButton< ?,? > button;
+//		public ButtonActionListener( AbstractButton< ?,? > button ) {
+//			this.button = button;
+//		}
+//		public void actionPerformed( java.awt.event.ActionEvent e ) {
+//			Operation.this.fire( e, this.button );
+//		}
+//	}
+//	private java.util.Map< AbstractButton< ?,? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	
+//	private final java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
+//		public void actionPerformed( java.awt.event.ActionEvent e ) {
+//			Operation.this.fire( e );
+//		}
+//	};
+	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			Operation.this.fire( e, this.button );
+			Operation.this.fire( e );
+		}
+	};
+	public Operation( Group group, java.util.UUID id ) {
+		super( group, id );
+	}
+	
+	public javax.swing.Action getAction() {
+		return this.action;
+	}
+//	public java.awt.event.ActionListener getActionListener() {
+//		return this.actionListener;
+//	}
+	
+	@Override
+	protected void localize() {
+		String name = this.getDefaultLocalizedText();
+		if( name != null ) {
+			this.setName( name );
+			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
+			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 		}
 	}
-	private java.util.Map< AbstractButton< ?,? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	
 	public abstract S createAndPushStep( org.lgna.croquet.Trigger trigger );
 
 //	public String getTutorialStartNoteText( S step, UserInformation userInformation ) {
@@ -101,14 +132,14 @@ public abstract class Operation< S extends org.lgna.croquet.steps.OperationStep<
 			return null;
 		}
 	}
-	public S fire( java.awt.event.ActionEvent e, ViewController< ?, ? > viewController ) {
+	public S fire( java.awt.event.ActionEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
 		if( this.isEnabled() ) {
 			return this.handleFire( new org.lgna.croquet.triggers.ActionEventTrigger( viewController, e ) );
 		} else {
 			return null;
 		}
 	}
-	public S fire( java.awt.event.MouseEvent e, ViewController< ?, ? > viewController ) {
+	public S fire( java.awt.event.MouseEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
 		if( this.isEnabled() ) {
 			return this.handleFire( new org.lgna.croquet.triggers.MouseEventTrigger( viewController, e ) );
 		} else {
@@ -126,25 +157,6 @@ public abstract class Operation< S extends org.lgna.croquet.steps.OperationStep<
 	@Deprecated
 	public S fire() {
 		return fire( org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
-	}
-
-	
-	private javax.swing.Action action = new javax.swing.AbstractAction() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-		}
-	};
-	public Operation( Group group, java.util.UUID id ) {
-		super( group, id );
-	}
-	
-	@Override
-	protected void localize() {
-		String name = this.getDefaultLocalizedText();
-		if( name != null ) {
-			this.setName( name );
-			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
-			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
-		}
 	}
 	
 	public static interface PerformObserver { 
@@ -222,33 +234,11 @@ public abstract class Operation< S extends org.lgna.croquet.steps.OperationStep<
 		}
 		return this.menuPrepModel;
 	}
-
-	/*package-private*/ void addButton(OperationButton<?,?> button) {
-		this.addComponent(button);
-		button.setAction( Operation.this.action );
-//			rv.setModel( this.buttonModel );
-		assert Operation.this.mapButtonToListener.containsKey( button ) == false : this;
-		ButtonActionListener buttonActionListener = new ButtonActionListener( button );
-		Operation.this.mapButtonToListener.put( button, buttonActionListener );
-		button.getAwtComponent().addActionListener( buttonActionListener );
-	}
-	/*package-private*/ void removeButton(OperationButton<?,?> button) {
-		ButtonActionListener buttonActionListener = Operation.this.mapButtonToListener.get( button );
-		assert buttonActionListener != null;
-		button.getAwtComponent().removeActionListener( buttonActionListener );
-		mapButtonToListener.remove( button );
-//		rv.setModel( null );
-		button.setAction( null );
-		this.removeComponent(button);
-	}
 	
-	public Button createButton() {
-		return new Button( this );
+	public org.lgna.croquet.components.Button createButton() {
+		return new org.lgna.croquet.components.Button( this );
 	}
-	public Hyperlink createHyperlink() {
-		return new Hyperlink( this );
+	public org.lgna.croquet.components.Hyperlink createHyperlink() {
+		return new org.lgna.croquet.components.Hyperlink( this );
 	}
-//	public MenuItem createMenuItem() {
-//		return new MenuItem( this );
-//	}
 }

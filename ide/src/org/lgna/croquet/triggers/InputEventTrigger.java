@@ -47,7 +47,7 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class InputEventTrigger extends ComponentEventTrigger< java.awt.event.InputEvent > {
-	public InputEventTrigger( edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > viewController, java.awt.event.InputEvent inputEvent ) {
+	public InputEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.InputEvent inputEvent ) {
 		super( viewController, inputEvent );
 	}
 	public InputEventTrigger( java.awt.event.InputEvent inputEvent ) {

@@ -50,11 +50,11 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 		super( constructorDeclaredInAlice, parametersPane, isPreview );
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( constructorDeclaredInAlice.getDeclaringType() ) );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "()" ) );
+			this.addComponent( new org.lgna.croquet.components.Label( "()" ) );
 		} else {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "constructor", NAME_SCALE ) );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new org.lgna.croquet.components.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new org.lgna.croquet.components.Label( "constructor", NAME_SCALE ) );
+			this.addComponent( new org.lgna.croquet.components.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( constructorDeclaredInAlice.getDeclaringType() ) );
 			this.addParametersPaneAndInstanceLineIfDesired();
 		}

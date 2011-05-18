@@ -60,7 +60,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 	}
 	private final org.lgna.cheshire.Chapter chapter;
 	private final java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final edu.cmu.cs.dennisc.croquet.JComponent< ? > card = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+	private final org.lgna.croquet.components.JComponent< ? > card = new org.lgna.croquet.components.BorderPanel();
 	public ChapterPage( org.lgna.cheshire.Chapter chapter ) {
 		this.chapter = chapter;
 		this.refreshNotes();
@@ -159,7 +159,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 			}
 		}
 	}
-	private class PagePanel extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
+	private class PagePanel extends org.lgna.croquet.components.JComponent< javax.swing.JPanel > {
 		@Override
 		protected javax.swing.JPanel createAwtComponent() {
 			javax.swing.JPanel rv = new javax.swing.JPanel() {
@@ -277,7 +277,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		}
 	}
 	
-	protected java.awt.Point calculateLocationForNoteAt( edu.cmu.cs.dennisc.croquet.Container< ? > container, int index ) {
+	protected java.awt.Point calculateLocationForNoteAt( org.lgna.croquet.components.Container< ? > container, int index ) {
 		return this.notes.get( 0 ).calculateLocation( container );
 	}
 
@@ -339,7 +339,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 //		return this.getNotes().size();
 //	}
 
-	protected java.awt.Point calculateLocationOfFirstNote( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
+	protected java.awt.Point calculateLocationOfFirstNote( org.lgna.croquet.components.Container< ? > container ) {
 		return this.calculateLocationForNoteAt( container, 0 );
 	}
 
@@ -396,7 +396,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		this.setLayoutHint( new java.awt.Point( x, y ) );
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.Component< ? > getCard() {
+	public org.lgna.croquet.components.Component< ? > getCard() {
 		return this.stepPanel;
 	}
 

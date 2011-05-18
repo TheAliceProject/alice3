@@ -107,9 +107,9 @@ public abstract class MenuModel extends MenuItemPrepModel {
 	}
 	
 	
-	protected void handlePopupMenuPrologue( PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupOperationStep context ) {
+	protected void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupOperationStep context ) {
 	}
-	protected void handlePopupMenuEpilogue( PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupOperationStep context ) {
+	protected void handlePopupMenuEpilogue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupOperationStep context ) {
 	}
 	
 //	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
@@ -178,8 +178,8 @@ public abstract class MenuModel extends MenuItemPrepModel {
 	}
 	
 	
-	/*package-private*/ Menu createMenu() {
-		Menu rv = new Menu( this ) {
+	public org.lgna.croquet.components.Menu createMenu() {
+		org.lgna.croquet.components.Menu rv = new org.lgna.croquet.components.Menu( this ) {
 			@Override
 			protected void handleDisplayable() {
 				super.handleDisplayable();
@@ -195,12 +195,12 @@ public abstract class MenuModel extends MenuItemPrepModel {
 			}
 			
 			@Override
-			protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+			protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
 				this.getAwtComponent().setAction( MenuModel.this.action );
 				super.handleAddedTo( parent );
 			}
 			@Override
-			protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+			protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
 				super.handleRemovedFrom( parent );
 				this.getAwtComponent().setAction( null );
 			}

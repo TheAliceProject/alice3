@@ -45,7 +45,7 @@ package org.lgna.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
+public abstract class Stencil extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
 	public static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
 	public static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
 	private static java.awt.Paint stencilPaint = null;
@@ -285,7 +285,7 @@ public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<java
 												}
 											} else {
 												if( feature.isPotentiallyScrollable() ) {
-													edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+													org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 													if( scrollPane != null ) {
 														javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
 														java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
@@ -372,7 +372,7 @@ public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<java
 										}
 									} else {
 										if( feature.isPotentiallyScrollable() ) {
-											edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+											org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 											if( scrollPane != null ) {
 												javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
 												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );

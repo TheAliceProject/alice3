@@ -84,7 +84,7 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 //		return this.id;
 //	}
 	
-	protected edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
+	protected org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
 		return this.trigger != null ? this.trigger.getViewController() : null;
 	}
 	

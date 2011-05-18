@@ -42,6 +42,20 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.BoxUtilities;
+import org.lgna.croquet.components.Button;
+import org.lgna.croquet.components.CardPanel;
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.Dialog;
+import org.lgna.croquet.components.GridBagPanel;
+import org.lgna.croquet.components.HorizontalSeparator;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.LineAxisPanel;
+import org.lgna.croquet.components.List;
+import org.lgna.croquet.components.PageAxisPanel;
+import org.lgna.croquet.components.RowsSpringPanel;
+import org.lgna.croquet.components.SpringUtilities;
 import org.lgna.croquet.edits.OperationEdit;
 
 /**
@@ -421,7 +435,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 				};
 			}
 			@Override
-			protected void release( org.lgna.croquet.steps.WizardDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, boolean isCompleted ) {
+			protected void release( org.lgna.croquet.steps.WizardDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, boolean isCompleted ) {
 				if( isCompleted ) {
 					step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 						@Override

@@ -86,7 +86,7 @@ class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
 	}
 }
 
-class LookingGlass extends edu.cmu.cs.dennisc.croquet.CornerSpringPanel {
+class LookingGlass extends org.lgna.croquet.components.CornerSpringPanel {
 	public LookingGlass() {
 		this.setBackgroundColor( java.awt.Color.RED );
 		this.setSouthEastComponent( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().createCheckBox() );
@@ -120,8 +120,8 @@ class FieldTreeSelectionState extends edu.cmu.cs.dennisc.croquet.TreeSelectionSt
 /**
  * @author Dennis Cosgrove
  */
-public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
+public class SplitSceneEditor extends org.lgna.croquet.components.BorderPanel {
+	private org.lgna.croquet.components.HorizontalSplitPane root = new org.lgna.croquet.components.HorizontalSplitPane();
 	private FieldTreeSelectionState treeSelectionState = new FieldTreeSelectionState();
 	private LookingGlass lookingGlass = new LookingGlass();
 	private org.alice.ide.ProjectApplication.ProjectObserver projectObserver = new org.alice.ide.ProjectApplication.ProjectObserver() { 
@@ -135,9 +135,9 @@ public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	};
 
 	public SplitSceneEditor() {
-		edu.cmu.cs.dennisc.croquet.Tree< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > > tree = this.treeSelectionState.createTree();
+		org.lgna.croquet.components.Tree< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > > tree = this.treeSelectionState.createTree();
 		tree.setCellRenderer( new TreeCellRenderer() );
-		this.root.setLeftComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( tree ) );
+		this.root.setLeftComponent( new org.lgna.croquet.components.ScrollPane( tree ) );
 		this.root.setRightComponent( this.lookingGlass );
 		this.addComponent( this.root, Constraint.CENTER );
 	}

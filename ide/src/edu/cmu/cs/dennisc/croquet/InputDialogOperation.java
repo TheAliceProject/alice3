@@ -42,6 +42,14 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.BoxUtilities;
+import org.lgna.croquet.components.Button;
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.Dialog;
+import org.lgna.croquet.components.JComponent;
+import org.lgna.croquet.components.LineAxisPanel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -94,7 +102,7 @@ public abstract class InputDialogOperation extends GatedCommitDialogOperation<or
 	protected abstract void epilogue( org.lgna.croquet.steps.InputDialogOperationStep step, boolean isCommit );
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainPanel( org.lgna.croquet.steps.InputDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Label explanationLabel ) {
+	protected org.lgna.croquet.components.Component< ? > createMainPanel( org.lgna.croquet.steps.InputDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Label explanationLabel ) {
 		JComponent< ? > child = this.prologue( step );
 		assert child != null;
 		step.setMainPanel( child );
@@ -105,7 +113,7 @@ public abstract class InputDialogOperation extends GatedCommitDialogOperation<or
 		return rv;
 	}
 	@Override
-	protected void release( org.lgna.croquet.steps.InputDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, boolean isCompleted ) {
+	protected void release( org.lgna.croquet.steps.InputDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, boolean isCompleted ) {
 		this.epilogue( step, isCompleted );
 	}
 

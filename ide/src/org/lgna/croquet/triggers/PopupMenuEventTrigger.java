@@ -47,7 +47,7 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class PopupMenuEventTrigger extends EventTrigger<javax.swing.event.PopupMenuEvent> {
-	public PopupMenuEventTrigger( edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
+	public PopupMenuEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
 		super( viewController, popupMenuEvent );
 	}
 	@Override

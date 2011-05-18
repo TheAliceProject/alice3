@@ -42,6 +42,13 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.Container;
+import org.lgna.croquet.components.Dialog;
+import org.lgna.croquet.components.GridBagPanel;
+import org.lgna.croquet.components.HorizontalSeparator;
+import org.lgna.croquet.components.Label;
+
 /**
  * @author Dennis Cosgrove
  */

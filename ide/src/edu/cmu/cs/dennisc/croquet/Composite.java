@@ -47,7 +47,6 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Composite extends Model {
-	private final java.util.List< View > views = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public Composite( java.util.UUID id ) {
 		super( id );
 		Manager.registerComposite( this );
@@ -56,11 +55,4 @@ public abstract class Composite extends Model {
 	protected void localize() {
 	}
 	public abstract boolean contains( Model model );
-	
-	/*package-private*/ void handleAdded( View view ) {
-		this.views.add( view );
-	}
-	/*package-private*/ void handleRemoved( View view ) {
-		this.views.remove( view );
-	}
 }

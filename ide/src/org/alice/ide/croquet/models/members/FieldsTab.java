@@ -56,7 +56,7 @@ public class FieldsTab extends MemberTab {
 		super( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 		return new org.alice.ide.memberseditor.FieldsContentPanel();
 	}
 }

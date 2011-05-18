@@ -56,7 +56,7 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 		return "Procedure";
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInitializerComponent() {
+	protected org.lgna.croquet.components.Component< ? > createInitializerComponent() {
 		return null;
 	}
 	@Override
@@ -69,7 +69,7 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 		return false;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
+	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
 		return new org.alice.ide.codeeditor.MethodHeaderPane( this.getInputValue(), null, true, this.declaringType );
 	}
 	

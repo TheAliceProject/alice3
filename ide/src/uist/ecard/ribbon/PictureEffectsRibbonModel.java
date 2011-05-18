@@ -25,16 +25,16 @@ public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.Predet
 		super( java.util.UUID.fromString( "e0b095cb-1cba-443d-b320-c0fc4f7c3312" ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.weightx = 0.0;
-		edu.cmu.cs.dennisc.croquet.GridBagPanel rv = new edu.cmu.cs.dennisc.croquet.GridBagPanel();
+		org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel();
 		rv.setBorder( BorderFactory.createEmptyBorder( 4,2,4,2 ) );
 		rv.setBackgroundColor(java.awt.SystemColor.control);
 
-		edu.cmu.cs.dennisc.croquet.Button button;
+		org.lgna.croquet.components.Button button;
 		javax.swing.JButton jButton;
 
 //		LineAxisPanel rotatePanel = new LineAxisPanel();
@@ -59,25 +59,25 @@ public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.Predet
 //		rotatePanel.addComponent(button);
 
 
-		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 6 ), gbc  );
-		edu.cmu.cs.dennisc.croquet.GridPanel effectsPanel = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane();
+		rv.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 6 ), gbc  );
+		org.lgna.croquet.components.GridPanel effectsPanel = org.lgna.croquet.components.GridPanel.createSingleColumnGridPane();
 //		effectsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		rv.addComponent(effectsPanel, gbc );
 
 		button = uist.ecard.menu.EllipseModel.getInstance().createButton();
-		button.setHorizontalAlignment( edu.cmu.cs.dennisc.croquet.HorizontalAlignment.LEADING );
+		button.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
 		effectsPanel.addComponent(button);
 
 		button = uist.ecard.menu.RoundedCornersModel.getInstance().createButton();
-		button.setHorizontalAlignment( edu.cmu.cs.dennisc.croquet.HorizontalAlignment.LEADING );
+		button.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
 		effectsPanel.addComponent(button);
 
 		button = uist.ecard.ThoughtBubbleEffectModel.getInstance().createButton();
-		button.setHorizontalAlignment( edu.cmu.cs.dennisc.croquet.HorizontalAlignment.LEADING );
+		button.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
 		effectsPanel.addComponent(button);
 		effectsPanel.setBorder( null );
 		
-		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 6 ), gbc  );
+		rv.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 6 ), gbc  );
 //		LineAxisPanel shadowPanel = new LineAxisPanel();
 //		shadowPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 //		rv.addComponent(shadowPanel, gbc );
@@ -93,7 +93,7 @@ public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.Predet
 
 //		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		gbc.weightx = 1.0;
-		rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue(), gbc  );
+		rv.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue(), gbc  );
 		return rv;
 	}
 	@Override

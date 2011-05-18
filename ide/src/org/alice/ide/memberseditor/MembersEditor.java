@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 //	private edu.cmu.cs.dennisc.croquet.TabSelectionState tabbedPaneSelectionState = new org.alice.ide.croquet.models.members.MembersTabSelectionState( 
 //			new ProceduresContentPanel(), new FunctionsContentPanel(), new FieldsContentPanel(), ICON );
 	
@@ -53,12 +53,12 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //		return this.tabbedPaneSelectionState;
 //	}
 	//private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.awt.Component > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, edu.cmu.cs.dennisc.croquet.Component< ? > > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, org.lgna.croquet.components.Component< ? > > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static final byte PROTOTYPE = 0;
 	
-	public static edu.cmu.cs.dennisc.croquet.Component< ? > getComponentFor( Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		edu.cmu.cs.dennisc.croquet.Component< ? > rv = map.get( cls, type );
+	public static org.lgna.croquet.components.Component< ? > getComponentFor( Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		org.lgna.croquet.components.Component< ? > rv = map.get( cls, type );
 		if( rv != null ) {
 			//pass
 		} else {
@@ -67,11 +67,11 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.croquet.CardPanel cardPanel = new edu.cmu.cs.dennisc.croquet.CardPanel();
-	private final java.util.Map< Boolean, edu.cmu.cs.dennisc.croquet.CardPanel.Key > keys = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
+	private final java.util.Map< Boolean, org.lgna.croquet.components.CardPanel.Key > keys = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public MembersEditor() {
 		final float FONT_SCALAR = 1.4f;
-		edu.cmu.cs.dennisc.croquet.ComboBox< edu.cmu.cs.dennisc.alice.ast.Accessible > comboBox = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getPrepModel().createComboBox();
+		org.lgna.croquet.components.ComboBox< edu.cmu.cs.dennisc.alice.ast.Accessible > comboBox = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getPrepModel().createComboBox();
 		comboBox.scaleFont( FONT_SCALAR );
 		//comboBox.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		
@@ -159,7 +159,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		comboBox.setRenderer( new AccessibleCellRenderer() );
 		comboBox.setMaximumSizeClampedToPreferredSize( true );
 
-		edu.cmu.cs.dennisc.croquet.Label instanceLabel = new edu.cmu.cs.dennisc.croquet.Label( "instance:" );
+		org.lgna.croquet.components.Label instanceLabel = new org.lgna.croquet.components.Label( "instance:" );
 		instanceLabel.scaleFont( FONT_SCALAR );
 		
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField PROTOTYPE_FIELD;
@@ -168,7 +168,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		} catch( NoSuchFieldException nsfe ) {
 			throw new RuntimeException( nsfe );
 		}
-		edu.cmu.cs.dennisc.croquet.ComboBox<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField> partComboBox = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().getPrepModel().createComboBox();
+		org.lgna.croquet.components.ComboBox<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField> partComboBox = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().getPrepModel().createComboBox();
 		partComboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
 			@Override
 			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -228,13 +228,13 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //			}
 //		} );
 		
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
 		instancePanel.addComponent( instanceLabel );
 		instancePanel.addComponent( comboBox );
 		instancePanel.addComponent( partComboBox );
 		//instancePanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
 
-		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
+		this.addComponent( instancePanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		this.addComponent( cardPanel, Constraint.CENTER );
 	}
 	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isAlwaysAvailableObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
@@ -245,12 +245,12 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	};
 	
-	private edu.cmu.cs.dennisc.croquet.CardPanel.Key getKey( boolean isAlwaysShowingBlocks ) {
-		edu.cmu.cs.dennisc.croquet.CardPanel.Key rv = this.keys.get( isAlwaysShowingBlocks );
+	private org.lgna.croquet.components.CardPanel.Key getKey( boolean isAlwaysShowingBlocks ) {
+		org.lgna.croquet.components.CardPanel.Key rv = this.keys.get( isAlwaysShowingBlocks );
 		if( rv != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane;
+			org.lgna.croquet.components.AbstractTabbedPane tabbedPane;
 			if( isAlwaysShowingBlocks ) {
 				tabbedPane = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance().createDefaultFolderTabbedPane();
 			} else {

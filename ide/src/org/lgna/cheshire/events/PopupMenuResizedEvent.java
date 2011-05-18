@@ -47,11 +47,11 @@ package org.lgna.cheshire.events;
  * @author Dennis Cosgrove
  */
 public class PopupMenuResizedEvent implements Event {
-	private final edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu;
-	public PopupMenuResizedEvent( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+	private final org.lgna.croquet.components.PopupMenu popupMenu;
+	public PopupMenuResizedEvent( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		this.popupMenu = popupMenu;
 	}
-	public edu.cmu.cs.dennisc.croquet.PopupMenu getPopupMenu() {
+	public org.lgna.croquet.components.PopupMenu getPopupMenu() {
 		return this.popupMenu;
 	}
 }

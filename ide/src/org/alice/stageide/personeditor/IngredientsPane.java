@@ -45,7 +45,7 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+abstract class IngredientsPane extends org.lgna.croquet.components.BorderPanel {
 ///	protected abstract void handleTabSelection( int tabIndex );
 //	protected abstract void handleLifeStageSelection( int tabIndex );
 //	protected abstract void handleGenderSelection( int tabIndex );

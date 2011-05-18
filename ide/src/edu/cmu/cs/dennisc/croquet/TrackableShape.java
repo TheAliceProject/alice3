@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.ScreenElement;
+import org.lgna.croquet.components.ScrollPane;
+
 /**
  * @author Dennis Cosgrove
  */

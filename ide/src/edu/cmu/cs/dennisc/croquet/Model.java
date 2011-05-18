@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.JComponent;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,7 +60,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 	protected void initialize() {
 		this.localize();
 	}
-	/*package-private*/ final void initializeIfNecessary() {
+	public final void initializeIfNecessary() {
 		if( this.isInitialized ) {
 			//pass
 		} else {
@@ -193,7 +195,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 			this.isEnabled = isEnabled;
 			synchronized( this.components ) {
 				for( JComponent<?> component : this.components ) {
-					component.setEnabled( this.isEnabled );
+					component.getAwtComponent().setEnabled( this.isEnabled );
 				}
 			}
 		}
@@ -217,17 +219,17 @@ public abstract class Model implements RuntimeResolver< Model > {
 	}
 
 	private java.util.List< JComponent<?> > components = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	protected void addComponent( JComponent<?> component ) {
+	public void addComponent( JComponent<?> component ) {
 		if( this.components.size() == 0 ) {
 			Manager.registerModel( this );
 		}
 		synchronized( this.components ) {
 			this.components.add( component );
 		}
-		component.setEnabled( this.isEnabled );
+		component.getAwtComponent().setEnabled( this.isEnabled );
 		component.setToolTipText( this.toolTipText );
 	}
-	protected void removeComponent( JComponent<?> component ) {
+	public void removeComponent( JComponent<?> component ) {
 		synchronized( this.components ) {
 			this.components.remove( component );
 		}

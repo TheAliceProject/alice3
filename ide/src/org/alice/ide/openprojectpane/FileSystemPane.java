@@ -88,10 +88,10 @@ public class FileSystemPane extends TabContentPanel {
 		}
 
 		BrowseOperation browseOperation = new BrowseOperation();
-		edu.cmu.cs.dennisc.croquet.BorderPanel pane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		pane.addComponent( new edu.cmu.cs.dennisc.croquet.Label("file:"), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START );
-		pane.addComponent( this.textState.createTextField(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-		pane.addComponent( browseOperation.createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
+		org.lgna.croquet.components.BorderPanel pane = new org.lgna.croquet.components.BorderPanel();
+		pane.addComponent( new org.lgna.croquet.components.Label("file:"), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		pane.addComponent( this.textState.createTextField(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		pane.addComponent( browseOperation.createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
 
 		this.addComponent(pane, Constraint.PAGE_START);
 	}

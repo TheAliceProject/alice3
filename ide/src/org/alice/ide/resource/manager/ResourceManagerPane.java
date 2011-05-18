@@ -166,7 +166,7 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel {
 	abstract class ResourceOperation extends org.alice.ide.operations.ActionOperation {
 		public ResourceOperation( java.util.UUID individualId ) {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
@@ -298,12 +298,12 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		}
 		protected abstract javax.swing.JComponent createPreviewComponent();
 		@Override
-		protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
+		protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
 			rv = super.updateComponentRows( rv );
 			rv.add( 
-					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
-							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "preview:" ),
-							new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.createPreviewComponent() )
+					org.lgna.croquet.components.SpringUtilities.createRow(
+							org.lgna.croquet.components.SpringUtilities.createTrailingLabel( "preview:" ),
+							new org.lgna.croquet.components.SwingAdapter( this.createPreviewComponent() )
 					) 
 			);
 			return rv;
@@ -572,20 +572,20 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 
 		javax.swing.table.JTableHeader tableHeader = this.table.getTableHeader();
 		tableHeader.setReorderingAllowed( false );
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.table ) );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new org.lgna.croquet.components.SwingAdapter( this.table ) );
 		scrollPane.setPreferredSize( new java.awt.Dimension( 320, 240 ) );
 		//this.table.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		this.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		this.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 
-		edu.cmu.cs.dennisc.croquet.Panel pane = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane(  
+		org.lgna.croquet.components.Panel pane = org.lgna.croquet.components.GridPanel.createSingleColumnGridPane(  
 				this.addResourceOperation.createButton(),
 				this.removeResourceOperation.createButton(), 
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ), 
+				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ), 
 				this.renameResourceOperation.createButton(), 
 				this.replaceResourceOperation.createButton() 
 		);
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.PageAxisPanel( pane, edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
+		this.addComponent( new org.lgna.croquet.components.PageAxisPanel( pane, org.lgna.croquet.components.BoxUtilities.createGlue() ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
 		this.handleSelection();
 	}
 

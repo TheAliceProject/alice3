@@ -42,6 +42,14 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.AbstractTabbedPane;
+import org.lgna.croquet.components.DefaultRadioButtons;
+import org.lgna.croquet.components.ItemSelectable;
+import org.lgna.croquet.components.JComponent;
+import org.lgna.croquet.components.List;
+import org.lgna.croquet.components.MutableList;
+import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.components.ViewController;
 import org.lgna.croquet.edits.ListSelectionStateEdit;
 import org.lgna.croquet.steps.TransactionManager;
 
@@ -315,7 +323,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		}
 	}
 
-	/*package-private*/ javax.swing.Action createActionForItem( final E item ) {
+	public javax.swing.Action createActionForItem( final E item ) {
 		javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				ListSelectionState.this.setSelectionFromSwing( item );
@@ -326,10 +334,10 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		action.putValue( javax.swing.Action.SMALL_ICON, getMenuSmallIcon( (E)item ) );
 		return action;
 	}
-	/*package-private*/ javax.swing.ComboBoxModel getComboBoxModel() {
+	public javax.swing.ComboBoxModel getComboBoxModel() {
 		return this.comboBoxModel;
 	}
-	/*package-private*/ javax.swing.ListSelectionModel getListSelectionModel() {
+	public javax.swing.ListSelectionModel getListSelectionModel() {
 		return this.listSelectionModel;
 	}
 
@@ -565,30 +573,6 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( ItemSelectable.class );
 		if( itemSelectable != null ) {
 			return itemSelectable.getTrackableShapeFor( item );
-		} else {
-			return null;
-		}
-	}
-	public JComponent< ? > getMainComponentFor( E item ) {
-		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
-		if( abstractTabbedPane != null ) {
-			return abstractTabbedPane.getMainComponentFor( item );
-		} else {
-			return null;
-		}
-	}
-	public ScrollPane getScrollPaneFor( E item ) {
-		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
-		if( abstractTabbedPane != null ) {
-			return abstractTabbedPane.getScrollPaneFor( item );
-		} else {
-			return null;
-		}
-	}
-	public JComponent< ? > getRootComponentFor( E item ) {
-		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
-		if( abstractTabbedPane != null ) {
-			return abstractTabbedPane.getRootComponentFor( item );
 		} else {
 			return null;
 		}

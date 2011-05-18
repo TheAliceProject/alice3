@@ -45,7 +45,7 @@ package org.lgna.cheshire.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public class BookComboBox extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComboBox > {
+public class BookComboBox extends org.lgna.croquet.components.JComponent< javax.swing.JComboBox > {
 	private BookComboBoxModel comboBoxModel;
 	private boolean isLightWeightPopupEnabled;
 	public BookComboBox( BookComboBoxModel comboBoxModel, boolean isLightWeightPopupEnabled ) {

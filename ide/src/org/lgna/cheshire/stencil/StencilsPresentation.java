@@ -54,7 +54,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 //		return instance;
 //	}
 	
-	public static javax.swing.JLayeredPane getLayeredPane( edu.cmu.cs.dennisc.croquet.AbstractWindow< ? > window ) {
+	public static javax.swing.JLayeredPane getLayeredPane( org.lgna.croquet.components.AbstractWindow< ? > window ) {
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		javax.swing.JFrame frame = application.getFrame().getAwtComponent();
 		javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
@@ -89,29 +89,29 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 	//	}
 
 	class Stencil extends org.lgna.stencil.Stencil {
-		private edu.cmu.cs.dennisc.croquet.CardPanel cardPanel = new edu.cmu.cs.dennisc.croquet.CardPanel();
-		public Stencil( edu.cmu.cs.dennisc.croquet.AbstractWindow< ? > window, org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, org.lgna.stencil.MenuPolicy menuPolicy ) {
+		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
+		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, org.lgna.stencil.MenuPolicy menuPolicy ) {
 			super( getLayeredPane( window ), scrollingRequiredRenderer, menuPolicy );
-			edu.cmu.cs.dennisc.croquet.BorderPanel controlsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-			edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel( edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0 );
+			org.lgna.croquet.components.BorderPanel controlsPanel = new org.lgna.croquet.components.BorderPanel();
+			org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
 			controlPanel.addComponent( StencilsPresentation.this.prevOperation.createButton() );
 			controlPanel.addComponent( new BookComboBox( StencilsPresentation.this.bookComboBoxModel, menuPolicy.isAboveStencil() ) );
 			controlPanel.addComponent( NextStepOperation.getInstance().createButton() );
-			controlsPanel.addComponent( controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+			controlsPanel.addComponent( controlPanel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 			StencilsPresentation.this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
 
-			edu.cmu.cs.dennisc.croquet.CheckBox isPlayingSoundsCheckBox = StencilsPresentation.this.isPlayingSounds.createCheckBox();
+			org.lgna.croquet.components.CheckBox isPlayingSoundsCheckBox = StencilsPresentation.this.isPlayingSounds.createCheckBox();
 			isPlayingSoundsCheckBox.getAwtComponent().setOpaque( false );
-			edu.cmu.cs.dennisc.croquet.CheckBox isInterceptingEventsCheckBox = StencilsPresentation.this.isInterceptingEvents.createCheckBox();
+			org.lgna.croquet.components.CheckBox isInterceptingEventsCheckBox = StencilsPresentation.this.isInterceptingEvents.createCheckBox();
 			isInterceptingEventsCheckBox.getAwtComponent().setOpaque( false );
-			edu.cmu.cs.dennisc.croquet.CheckBox isPaintingStencilCheckBox = StencilsPresentation.this.isPaintingStencil.createCheckBox();
+			org.lgna.croquet.components.CheckBox isPaintingStencilCheckBox = StencilsPresentation.this.isPaintingStencil.createCheckBox();
 			isPaintingStencilCheckBox.getAwtComponent().setOpaque( false );
 
-			edu.cmu.cs.dennisc.croquet.FlowPanel westPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel( edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0 );
+			org.lgna.croquet.components.FlowPanel westPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.TRAILING, 2, 0 );
 			westPanel.addComponent( isPlayingSoundsCheckBox );
 			//controlsPanel.addComponent(westPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START);
 
-			edu.cmu.cs.dennisc.croquet.FlowPanel eastPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel( edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0 );
+			org.lgna.croquet.components.FlowPanel eastPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.TRAILING, 2, 0 );
 			//eastPanel.addComponent( isInterceptingEventsCheckBox );
 			eastPanel.addComponent( isPaintingStencilCheckBox );
 			//controlsPanel.addComponent(eastPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END);
@@ -297,7 +297,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				}
 				chapterPage.reset();
 				java.util.UUID transactionId = chapter.getId();
-				edu.cmu.cs.dennisc.croquet.CardPanel.Key key = this.stencil.cardPanel.getKey( transactionId );
+				org.lgna.croquet.components.CardPanel.Key key = this.stencil.cardPanel.getKey( transactionId );
 				if( key != null ) {
 					// pass
 				} else {

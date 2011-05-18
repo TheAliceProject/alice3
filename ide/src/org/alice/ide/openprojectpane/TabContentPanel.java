@@ -46,7 +46,7 @@ package org.alice.ide.openprojectpane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabContentPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public abstract class TabContentPanel extends org.lgna.croquet.components.BorderPanel {
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 191, 191, 255 );
 //	private edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel;
 	public TabContentPanel() {

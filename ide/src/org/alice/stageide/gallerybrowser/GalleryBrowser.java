@@ -51,9 +51,9 @@ import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 
-	private static edu.cmu.cs.dennisc.croquet.PathControl.Initializer initializer = new edu.cmu.cs.dennisc.croquet.PathControl.Initializer() {
+	private static org.lgna.croquet.components.PathControl.Initializer initializer = new org.lgna.croquet.components.PathControl.Initializer() {
 		public edu.cmu.cs.dennisc.croquet.ActionOperation configure(edu.cmu.cs.dennisc.croquet.ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode) {
 			javax.swing.Icon icon;
 			if (treeNode instanceof edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) {
@@ -92,7 +92,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		public abstract boolean accept( String lcName, String lcFilter );
 	}
 
-	class DirectoryView extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
+	class DirectoryView extends org.lgna.croquet.components.LineAxisPanel {
 		private edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> selectionObserver = new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>() {
 			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> nextValue) {
 				DirectoryView.this.handleSelectionChanged( nextValue );
@@ -141,9 +141,9 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			if( filter != null && filter.length() > 0 ) {
 				java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				String lcFilter = filter.toLowerCase();
-				update( list, treeSelectionState.getTreeModel().getRoot(), lcFilter, Criterion.STARTS_WITH );
+				this.update( list, treeSelectionState.getTreeModel().getRoot(), lcFilter, Criterion.STARTS_WITH );
 				if( lcFilter.length() > 1 ) {
-					update( list, treeSelectionState.getTreeModel().getRoot(), lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH );
+					this.update( list, treeSelectionState.getTreeModel().getRoot(), lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH );
 				}
 				iterable = list;
 			} else {
@@ -158,9 +158,9 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 						} else {
 							edu.cmu.cs.dennisc.croquet.Operation<?> operation = edu.cmu.cs.dennisc.croquet.SelectDirectoryActionOperation.getInstance(treeSelectionState, child, initializer );
 							if( operation != null ) {
-								edu.cmu.cs.dennisc.croquet.Button button = operation.createButton();
-								button.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
-								button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
+								org.lgna.croquet.components.Button button = operation.createButton();
+								button.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
+								button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 								button.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 								this.addComponent( button );
 							}
@@ -223,7 +223,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 		final DirectoryView directoryView = new DirectoryView();
 		
-		final edu.cmu.cs.dennisc.croquet.TextField filterTextField = this.filterState.createTextField();
+		final org.lgna.croquet.components.TextField filterTextField = this.filterState.createTextField();
 		filterTextField.setMinimumPreferredWidth( 320 );
 		filterTextField.setMaximumSizeClampedToPreferredSize( true );
 		filterTextField.getAwtComponent().setTextForBlankCondition( "search entire gallery" );
@@ -240,41 +240,41 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 		} );
 
-		edu.cmu.cs.dennisc.croquet.GridPanel fromFilePane = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 2, 1, 0, 4 );
+		org.lgna.croquet.components.GridPanel fromFilePane = org.lgna.croquet.components.GridPanel.createGridPane( 2, 1, 0, 4 );
 		fromFilePane.addComponent( CreateMyInstanceOperation.getInstance().createButton());
 		fromFilePane.addComponent( CreateTextbookInstanceOperation.getInstance().createButton());
 
-		edu.cmu.cs.dennisc.croquet.GridPanel bonusPane = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 2, 1, 0, 4 );
+		org.lgna.croquet.components.GridPanel bonusPane = org.lgna.croquet.components.GridPanel.createGridPane( 2, 1, 0, 4 );
 		bonusPane.addComponent(CreateBillboardOperation.getInstance().createButton());
 		bonusPane.addComponent(Create3dTextOperation.getInstance().createButton());
 
-		edu.cmu.cs.dennisc.croquet.BorderPanel buttonPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		buttonPane.addComponent(fromFilePane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START);
-		buttonPane.addComponent(bonusPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_END);
+		org.lgna.croquet.components.BorderPanel buttonPane = new org.lgna.croquet.components.BorderPanel();
+		buttonPane.addComponent(fromFilePane, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START);
+		buttonPane.addComponent(bonusPane, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END);
 
 		
 		this.setBackgroundColor(new java.awt.Color(220, 220, 255));
 
 		org.alice.stageide.croquet.models.gallerybrowser.CreatePersonFieldOperation createPersonFieldOperation = org.alice.stageide.croquet.models.gallerybrowser.CreatePersonFieldOperation.getInstance();
-		edu.cmu.cs.dennisc.croquet.Button createPersonButton = createPersonFieldOperation.createButton();
-		createPersonButton.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
-		createPersonButton.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
+		org.lgna.croquet.components.Button createPersonButton = createPersonFieldOperation.createButton();
+		createPersonButton.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
+		createPersonButton.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 
 		createPersonFieldOperation.setSmallIcon(new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
 
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel pathControlPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+		org.lgna.croquet.components.LineAxisPanel pathControlPanel = new org.lgna.croquet.components.LineAxisPanel();
 		pathControlPanel.addComponent( this.treeSelectionState.createPathControl( this.createInitializer() ) );
-		pathControlPanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
+		pathControlPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
 		pathControlPanel.addComponent( filterTextField );
 		
-		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel( 0, GAP );
+		org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel( 0, GAP );
 		borderPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
 		borderPanel.setBackgroundColor( null );
 		borderPanel.addComponent( pathControlPanel, Constraint.PAGE_START );
 
-		edu.cmu.cs.dennisc.croquet.BorderPanel clampSizePanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		org.lgna.croquet.components.BorderPanel clampSizePanel = new org.lgna.croquet.components.BorderPanel();
 		clampSizePanel.addComponent( directoryView, Constraint.LINE_START );
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( clampSizePanel );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( clampSizePanel );
 		scrollPane.getAwtComponent().getHorizontalScrollBar().setUnitIncrement( 16 );
 		scrollPane.setBorder( null );
 		scrollPane.setBackgroundColor( null );
@@ -324,8 +324,8 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	}
 
-	private edu.cmu.cs.dennisc.croquet.PathControl.Initializer createInitializer() {
-		return new edu.cmu.cs.dennisc.croquet.PathControl.Initializer() {
+	private org.lgna.croquet.components.PathControl.Initializer createInitializer() {
+		return new org.lgna.croquet.components.PathControl.Initializer() {
 			public edu.cmu.cs.dennisc.croquet.ActionOperation configure(edu.cmu.cs.dennisc.croquet.ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode) {
 //				if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
 //					edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) treeNode;

@@ -47,7 +47,7 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class MouseEventTrigger extends ComponentEventTrigger<java.awt.event.MouseEvent> {
-	public MouseEventTrigger( edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent ) {
+	public MouseEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent ) {
 		super( viewController, mouseEvent );
 	}
 	@Override

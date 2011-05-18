@@ -62,7 +62,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 			if( getIDE().isJava() ) {
 				//pass
 			} else {
-				this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "." ) );
+				this.addComponent( new org.lgna.croquet.components.Label( "." ) );
 			}
 		}
 		Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > cls = edu.cmu.cs.dennisc.alice.ast.FieldAccess.class;
@@ -75,7 +75,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		boolean isGetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 		if( isExpressionDesired ) {
 			if( isGetter ) {
-				edu.cmu.cs.dennisc.croquet.Label getLabel = new edu.cmu.cs.dennisc.croquet.Label( "get" );
+				org.lgna.croquet.components.Label getLabel = new org.lgna.croquet.components.Label( "get" );
 				//getLabel.scaleFont( 1.2f );
 				//getLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 				this.addComponent( getLabel );
@@ -85,7 +85,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		if( isExpressionDesired ) {
 			if( isGetter ) {
 				if( org.alice.ide.IDE.getSingleton().isJava() ) {
-					this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "()" ) );
+					this.addComponent( new org.lgna.croquet.components.Label( "()" ) );
 				}
 			}
 		}

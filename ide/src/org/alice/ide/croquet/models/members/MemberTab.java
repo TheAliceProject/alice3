@@ -50,8 +50,8 @@ package org.alice.ide.croquet.models.members;
 		super( individualId );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
-		edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createScrollPane();
+	public org.lgna.croquet.components.ScrollPane createScrollPane() {
+		org.lgna.croquet.components.ScrollPane rv = super.createScrollPane();
 		rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 		return rv;
 	}

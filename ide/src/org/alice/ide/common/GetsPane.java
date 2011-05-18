@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class GetsPane extends edu.cmu.cs.dennisc.croquet.Label {
+public class GetsPane extends org.lgna.croquet.components.Label {
 	private static java.awt.Paint createGradientPaint(int width, boolean isReversalDesired) {
 		java.awt.Color colorStart = org.alice.ide.IDE.getSingleton().getTheme().getColorFor(edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class);
 		java.awt.Color colorEnd = colorStart.darker();

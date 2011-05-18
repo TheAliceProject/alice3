@@ -45,8 +45,8 @@ package org.alice.ide.preview;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PanelWithPreview< F > extends edu.cmu.cs.dennisc.croquet.CascadeInputDialogPanel< F > {
-	class PreviewPane extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
+public abstract class PanelWithPreview< F > extends org.lgna.croquet.components.CascadeInputDialogPanel< F > {
+	class PreviewPane extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
 		public void refresh() {
 			this.internalForgetAndRemoveAllComponents();
 			this.internalAddComponent( PanelWithPreview.this.createPreviewSubComponent(), java.awt.BorderLayout.CENTER );
@@ -94,31 +94,31 @@ public abstract class PanelWithPreview< F > extends edu.cmu.cs.dennisc.croquet.C
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.BorderLayout();
 	}
-	public void addComponent( edu.cmu.cs.dennisc.croquet.Component< ? > component, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint constraint ) {
+	public void addComponent( org.lgna.croquet.components.Component< ? > component, org.lgna.croquet.components.BorderPanel.Constraint constraint ) {
 		this.internalAddComponent( component, constraint.getInternal() );
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent();
-	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent();
+	protected abstract org.lgna.croquet.components.Component< ? > createPreviewSubComponent();
+	protected abstract org.lgna.croquet.components.Component< ? > createMainComponent();
 	private void initializeIfNecessary() {
 		if( this.previewPane != null ) {
 			//pass
 		} else {
-			this.addComponent( this.createMainComponent(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+			this.addComponent( this.createMainComponent(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 
 			if( this.isPreviewDesired() ) {
 				this.previewPane = new PreviewPane();
-				edu.cmu.cs.dennisc.croquet.PageAxisPanel northPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel(
-						new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
-								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ),
-								new edu.cmu.cs.dennisc.croquet.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
-								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ),
+				org.lgna.croquet.components.PageAxisPanel northPanel = new org.lgna.croquet.components.PageAxisPanel(
+						new org.lgna.croquet.components.LineAxisPanel( 
+								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
+								new org.lgna.croquet.components.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
+								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
 								this.previewPane
 						),
-						edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ),
-						new edu.cmu.cs.dennisc.croquet.HorizontalSeparator(),
-						edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 )
+						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ),
+						new org.lgna.croquet.components.HorizontalSeparator(),
+						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 )
 				);
-				this.addComponent( northPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
+				this.addComponent( northPanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 			}
 		}
 	}

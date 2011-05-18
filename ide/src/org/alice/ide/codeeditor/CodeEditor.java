@@ -48,13 +48,13 @@ import org.alice.ide.common.StatementListPropertyPane;
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implements edu.cmu.cs.dennisc.croquet.DropReceptor, java.awt.print.Printable {
+public class CodeEditor extends org.lgna.croquet.components.BorderPanel implements edu.cmu.cs.dennisc.croquet.DropReceptor, java.awt.print.Printable {
 	private StatementListPropertyPane EPIC_HACK_desiredStatementListPropertyPane = null;
 	private int EPIC_HACK_desiredIndex = -1;
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
-	private edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane;
+	private org.lgna.croquet.components.ScrollPane scrollPane;
 
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, CodeEditor > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized CodeEditor getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
@@ -95,7 +95,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
 		return this.code;
 	}
-	public edu.cmu.cs.dennisc.croquet.JComponent<?> getViewController() {
+	public org.lgna.croquet.components.JComponent<?> getViewController() {
 		return this;
 	}
 
@@ -194,7 +194,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 				}
 			}
 			org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( new RootStatementListPropertyPane() );
-			this.scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( bodyPane );
+			this.scrollPane = new org.lgna.croquet.components.ScrollPane( bodyPane );
 			this.scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 			this.scrollPane.setBorder( null );
 			this.scrollPane.setBackgroundColor( null );
@@ -232,7 +232,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			}
 		} );
 	}
-	public final boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
+	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source ) {
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 			return getIDE().getFocusedCode() == this.code;
 		} else {
@@ -258,14 +258,14 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	}
 
 	public final void dragEntered( org.lgna.croquet.steps.DragStep context ) {
-		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
+		org.lgna.croquet.components.DragComponent source = context.getDragSource();
 		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
 		this.repaint();
 	}
-	private edu.cmu.cs.dennisc.croquet.Component< ? > getAsSeenBy() {
+	private org.lgna.croquet.components.Component< ? > getAsSeenBy() {
 		return this.scrollPane.getViewportView();
 	}
-	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( edu.cmu.cs.dennisc.croquet.Container<?> source ) {
+	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( org.lgna.croquet.components.Container<?> source ) {
 		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, StatementListPropertyPane.class );
 		StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
 		int i = 0;
@@ -311,7 +311,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		return rv;
 	}
 	public final BlockStatementIndexPair dragUpdated( org.lgna.croquet.steps.DragStep context ) {
-		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
+		org.lgna.croquet.components.DragComponent source = context.getDragSource();
 		if( source != null ) {
 			java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 			java.awt.event.MouseEvent eAsSeenBy = source.convertMouseEvent( eSource, this.getAsSeenBy() );
@@ -322,7 +322,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 				if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 					//pass
 				} else {
-					edu.cmu.cs.dennisc.croquet.Component< ? > subject = source.getSubject();
+					org.lgna.croquet.components.Component< ? > subject = source.getSubject();
 					if( subject instanceof org.alice.ide.common.AbstractStatementPane ) {
 						org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)subject;
 						if( source instanceof org.alice.ide.templates.StatementTemplate ) {
@@ -412,7 +412,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	}
 	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( final org.lgna.croquet.steps.DragStep context ) {
 		edu.cmu.cs.dennisc.croquet.Operation<?> rv = null;
-		final edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
+		final org.lgna.croquet.components.DragComponent source = context.getDragSource();
 		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
 		if( statementListPropertyPane != null ) {
@@ -519,7 +519,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		EPIC_HACK_desiredIndex = -1;
 	}
 
-	private static int convertY( edu.cmu.cs.dennisc.croquet.Component<?> from, int y, edu.cmu.cs.dennisc.croquet.Component<?> to ) {
+	private static int convertY( org.lgna.croquet.components.Component<?> from, int y, org.lgna.croquet.components.Component<?> to ) {
 		java.awt.Point pt = from.convertPoint( new java.awt.Point( 0, y ), to);
 		return pt.y;
 	}
@@ -580,13 +580,13 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			return this.index;
 		}
 		
-		public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
+		public java.awt.Shape getShape( org.lgna.croquet.components.ScreenElement asSeenBy, java.awt.Insets insets ) {
 			java.awt.Rectangle rv = CodeEditor.this.getAsSeenBy().convertRectangle( this.boundsAtIndex, asSeenBy );
 			//note: ignore insets
 			return rv;
 		}
-		public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
-			edu.cmu.cs.dennisc.croquet.Component<?> src = CodeEditor.this.getAsSeenBy();
+		public java.awt.Shape getVisibleShape( org.lgna.croquet.components.ScreenElement asSeenBy, java.awt.Insets insets ) {
+			org.lgna.croquet.components.Component<?> src = CodeEditor.this.getAsSeenBy();
 			if( src != null ) {
 				java.awt.Rectangle bounds = src.convertRectangle( this.boundsAtIndex, asSeenBy );
 				//note: ignore insets
@@ -606,7 +606,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			}
 			return true;
 		}
-		public edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
+		public org.lgna.croquet.components.ScrollPane getScrollPaneAncestor() {
 			return this.statementListPropertyPane.getScrollPaneAncestor();
 		}
 		public void addComponentListener(java.awt.event.ComponentListener listener) {
@@ -626,7 +626,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		if( statementListProperty != null ) {
 			//choose any non-ancestor
 			
-			edu.cmu.cs.dennisc.croquet.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getSingleton().getSceneEditor();
+			org.lgna.croquet.components.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getSingleton().getSceneEditor();
 			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.createStatementListPropertyPaneInfos( arbitrarilyChosenSource );
 			final int N = statementListPropertyPaneInfos.length;
 			for( int i=0; i<N; i++ ) {
@@ -770,7 +770,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			return NO_SUCH_PAGE;
 		} else {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
+			org.lgna.croquet.components.Component<?> component0 = this.getComponent( 0 );
 			int width = Math.max( component0.getAwtComponent().getPreferredSize().width, this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().width );
 			int height = this.scrollPane.getY() + this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().height;
 			double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);

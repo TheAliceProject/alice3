@@ -48,7 +48,7 @@ package org.alice.stageide.choosers;
  * @author Dennis Cosgrove
  */
 public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
-	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { org.alice.stageide.croquet.models.custom.PortionState.getInstance().createSlider() };
+	private org.lgna.croquet.components.Component< ? >[] components = { org.alice.stageide.croquet.models.custom.PortionState.getInstance().createSlider() };
 	public PortionChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression != null ) {
@@ -61,7 +61,7 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChoos
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
+	public org.lgna.croquet.components.Component< ? >[] getComponents() {
 		return this.components;
 	}
 	@Override

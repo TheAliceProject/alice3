@@ -131,17 +131,17 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperatio
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = null;
 	@Override
-	protected java.awt.Point getDesiredDialogLocation( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+	protected java.awt.Point getDesiredDialogLocation( org.lgna.croquet.components.Dialog dialog ) {
 		return this.location;
 	}
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+	protected java.awt.Dimension getDesiredDialogSize( org.lgna.croquet.components.Dialog dialog ) {
 		return this.size;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Container< ? > createContentPane( org.lgna.croquet.steps.PlainDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.steps.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {
 		org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getSingleton();
-		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		if( ide.getProject() != null ) {
 			ide.ensureProjectCodeUpToDate();
 			edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = ide.createVirtualMachineForRuntimeProgram();
@@ -160,7 +160,7 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperatio
 		return rv;
 	}
 	@Override
-	protected void releaseContentPane( org.lgna.croquet.steps.PlainDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
+	protected void releaseContentPane( org.lgna.croquet.steps.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		//todo: investigate		
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
@@ -169,7 +169,7 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperatio
 	}
 	
 	@Override
-	protected void handleFinally( org.lgna.croquet.steps.PlainDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
+	protected void handleFinally( org.lgna.croquet.steps.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		super.handleFinally( step, dialog, contentPane );
 		org.alice.ide.IDE.getSingleton().enableRendering();
 	}

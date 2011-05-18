@@ -57,7 +57,7 @@ public class FunctionTemplateComposite extends MemberTemplateComposite {
 		super( java.util.UUID.fromString( "75657f8d-aeb5-4031-9b33-7e95568bc8fb" ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 		return new org.alice.ide.memberseditor.FunctionsContentPanel();
 	}
 	@Override

@@ -42,7 +42,7 @@
  */
 package org.alice.stageide.croquet.models.gallerybrowser;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
+import org.lgna.croquet.components.BorderPanel.Constraint;
 
 /**
  * @author Dennis Cosgrove

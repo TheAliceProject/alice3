@@ -42,9 +42,9 @@
  */
 package edu.cmu.cs.dennisc.memory;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
+import org.lgna.croquet.components.BorderPanel.Constraint;
 
-class MemoryUsageGraph extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComponent > {
+class MemoryUsageGraph extends org.lgna.croquet.components.JComponent< javax.swing.JComponent > {
 	private static final long K = 1024;
 	//private static final long M = K*K;
 	private java.util.List< java.lang.management.MemoryUsage > samples = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -117,7 +117,7 @@ class GarbageCollectAction extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 	}
 }
 
-public class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public class MemoryUsagePanel extends org.lgna.croquet.components.BorderPanel {
 	private GarbageCollectAction garbageCollectAction = new GarbageCollectAction();
 	private MemoryUsageGraph memoryUsageGraph = new MemoryUsageGraph();
 	private javax.swing.Timer timer = new javax.swing.Timer( 500, new java.awt.event.ActionListener() {
@@ -146,7 +146,7 @@ public class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public static void main(String[] args) {
 		edu.cmu.cs.dennisc.croquet.Application application = new edu.cmu.cs.dennisc.croquet.Application() {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.Component< ? > createContentPane() {
+			protected org.lgna.croquet.components.Component< ? > createContentPane() {
 				return new MemoryUsagePanel();
 			}
 			@Override

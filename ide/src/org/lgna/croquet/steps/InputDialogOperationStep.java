@@ -55,11 +55,11 @@ public class InputDialogOperationStep extends GatedCommitDialogOperationStep< ed
 	public InputDialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	private edu.cmu.cs.dennisc.croquet.JComponent<?> mainPanel;
-	public <J extends edu.cmu.cs.dennisc.croquet.JComponent<?>> J getMainPanel() {
+	private org.lgna.croquet.components.JComponent<?> mainPanel;
+	public <J extends org.lgna.croquet.components.JComponent<?>> J getMainPanel() {
 		return (J)this.mainPanel;
 	}
-	public void setMainPanel( edu.cmu.cs.dennisc.croquet.JComponent<?> mainPanel ) {
+	public void setMainPanel( org.lgna.croquet.components.JComponent<?> mainPanel ) {
 		this.mainPanel = mainPanel;
 	}
 }

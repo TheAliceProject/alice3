@@ -50,7 +50,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 	public DeclareLocalTemplate() {
 		super( new org.alice.ide.croquet.models.ToDoDragModel(), edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class );
 		this.implementor = new UbiquitousStatementImplementor( org.alice.ide.ast.NodeUtilities.createIncompleteVariableDeclarationStatement() );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( this.getLabelText() ) );
+		this.addComponent( new org.lgna.croquet.components.Label( this.getLabelText() ) );
 		this.setToolTipText( "" );
 	}
 	
@@ -58,7 +58,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 		return this.implementor.getLabelText();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? > getSubject() {
+	public org.lgna.croquet.components.Component< ? > getSubject() {
 		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override

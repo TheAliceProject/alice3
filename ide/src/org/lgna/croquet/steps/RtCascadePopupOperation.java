@@ -43,6 +43,11 @@
 
 package org.lgna.croquet.steps;
 
+import org.lgna.croquet.components.CascadeMenuItem;
+import org.lgna.croquet.components.Menu;
+import org.lgna.croquet.components.PopupMenu;
+import org.lgna.croquet.components.ViewController;
+
 import edu.cmu.cs.dennisc.croquet.*;
 
 /**

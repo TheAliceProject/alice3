@@ -44,13 +44,13 @@
 package org.alice.ide.properties.uicontroller;
 
 import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.GridBagPanel;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.Panel;
 
 import edu.cmu.cs.dennisc.alice.Project;
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.Component;
-import edu.cmu.cs.dennisc.croquet.GridBagPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
 import edu.cmu.cs.dennisc.math.Point3;
 
 public abstract class AbstractAdapterController<P> implements PropertyAdapterController<P>

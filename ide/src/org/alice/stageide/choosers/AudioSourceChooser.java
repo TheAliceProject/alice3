@@ -128,7 +128,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 	}
 	
 	private BogusNode bogusNode = new BogusNode();
-	private edu.cmu.cs.dennisc.croquet.Component< ? > dropDown;
+	private org.lgna.croquet.components.Component< ? > dropDown;
 	
 	private org.alice.stageide.controls.VolumeLevelControl volumeLevelControl = new org.alice.stageide.controls.VolumeLevelControl();
 	private TimeSlider startTimeSlider = new TimeSlider();
@@ -260,22 +260,22 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 				"stop marker:" };
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
-		return new edu.cmu.cs.dennisc.croquet.Component< ? >[] { 
+	public org.lgna.croquet.components.Component< ? >[] getComponents() {
+		return new org.lgna.croquet.components.Component< ? >[] { 
 				this.dropDown, 
-				new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
-						new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.volumeLevelControl ), 
-						edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() 
+				new org.lgna.croquet.components.LineAxisPanel( 
+						new org.lgna.croquet.components.SwingAdapter( this.volumeLevelControl ), 
+						org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() 
 				), 
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ), 
-				new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.startTimeSlider ), 
-				new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.stopTimeSlider ) };
+				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ), 
+				new org.lgna.croquet.components.SwingAdapter( this.startTimeSlider ), 
+				new org.lgna.croquet.components.SwingAdapter( this.stopTimeSlider ) };
 	}
 	@Override
-	public java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
+	public java.util.List< org.lgna.croquet.components.Component< ? >[] > updateRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
 		super.updateRows( rv );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 32 ), null ) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( testOperation.createButton(), null ) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 32 ), null ) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( testOperation.createButton(), null ) );
 		return rv;
 	}
 

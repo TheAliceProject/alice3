@@ -43,11 +43,11 @@
 package org.alice.ide.common;
 
 public class BodyPane extends org.alice.ide.common.StatementLikeSubstance {
-	public BodyPane( edu.cmu.cs.dennisc.croquet.Component< ? > statementListComponent ) {
+	public BodyPane( org.lgna.croquet.components.Component< ? > statementListComponent ) {
 		super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class, javax.swing.BoxLayout.PAGE_AXIS );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "do in order" ), java.awt.BorderLayout.NORTH );
+		this.addComponent( new org.lgna.croquet.components.Label( "do in order" ), java.awt.BorderLayout.NORTH );
 		this.addComponent( statementListComponent, java.awt.BorderLayout.CENTER );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ), java.awt.BorderLayout.WEST );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ), java.awt.BorderLayout.WEST );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {

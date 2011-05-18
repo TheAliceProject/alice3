@@ -46,7 +46,7 @@ package org.lgna.cheshire.docwizardsesque;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewComponent extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComponent > {
+public class PreviewComponent extends org.lgna.croquet.components.JComponent< javax.swing.JComponent > {
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 3.0f );
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
@@ -66,11 +66,11 @@ public class PreviewComponent extends edu.cmu.cs.dennisc.croquet.JComponent< jav
 //							model = standardPopupOperationPrepStep.getStandardPopupOperation();
 //						}
 						if( model != null ) {
-							edu.cmu.cs.dennisc.croquet.Component< ? > component = model.getFirstComponent();
+							org.lgna.croquet.components.Component< ? > component = model.getFirstComponent();
 							if( component != null ) {
-								if( component instanceof edu.cmu.cs.dennisc.croquet.FolderTabbedPane ) {
-									edu.cmu.cs.dennisc.croquet.FolderTabbedPane folderTabbedPane = (edu.cmu.cs.dennisc.croquet.FolderTabbedPane)component;
-									component = ((edu.cmu.cs.dennisc.croquet.JComponent)((edu.cmu.cs.dennisc.croquet.JComponent)folderTabbedPane.getComponent( 0 )).getComponent( 0 )).getComponent( 0 );
+								if( component instanceof org.lgna.croquet.components.FolderTabbedPane ) {
+									org.lgna.croquet.components.FolderTabbedPane folderTabbedPane = (org.lgna.croquet.components.FolderTabbedPane)component;
+									component = ((org.lgna.croquet.components.JComponent)((org.lgna.croquet.components.JComponent)folderTabbedPane.getComponent( 0 )).getComponent( 0 )).getComponent( 0 );
 								}
 								java.awt.Dimension size = component.getAwtComponent().getSize();
 								java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;

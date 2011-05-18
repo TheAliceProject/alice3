@@ -45,13 +45,13 @@ package org.alice.ide.name;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NameInputPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
+public abstract class NameInputPane extends org.lgna.croquet.components.RowsSpringPanel {
 	private edu.cmu.cs.dennisc.croquet.StringState nameState = new edu.cmu.cs.dennisc.croquet.StringState(
 			edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP,
 			java.util.UUID.fromString( "482c237a-c2b3-48dc-a8e2-380edfdfffe3" ),
 			""
 	);
-	private edu.cmu.cs.dennisc.croquet.TextField textField;
+	private org.lgna.croquet.components.TextField textField;
 //	private javax.swing.JTextField textField = new javax.swing.JTextField( 10 );
 
 	public void setAndSelectNameText( String text ) {
@@ -63,7 +63,7 @@ public abstract class NameInputPane extends edu.cmu.cs.dennisc.croquet.RowsSprin
 
 	protected abstract String getExplanationIfOkButtonShouldBeDisabled( String name );
 
-	private edu.cmu.cs.dennisc.croquet.TextField getTextField() {
+	private org.lgna.croquet.components.TextField getTextField() {
 		if( this.textField != null ) {
 			//pass
 		} else {
@@ -79,7 +79,7 @@ public abstract class NameInputPane extends edu.cmu.cs.dennisc.croquet.RowsSprin
 //		return super.isOKButtonValid() && this.isNameAcceptable( this.textField.getText() );
 //	}
 	@Override
-	protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
+	protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
 //		assert this.textField != null;
 //		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 //			private void handleUpdate( javax.swing.event.DocumentEvent e ) {
@@ -102,8 +102,8 @@ public abstract class NameInputPane extends edu.cmu.cs.dennisc.croquet.RowsSprin
 //		} );
 
 		rv.add( 
-				edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "name:" ),
+				org.lgna.croquet.components.SpringUtilities.createRow( 
+						org.lgna.croquet.components.SpringUtilities.createTrailingLabel( "name:" ),
 						this.getTextField()
 				) 
 		);

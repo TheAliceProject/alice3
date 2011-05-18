@@ -45,7 +45,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyStatementListAffordance extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JLabel > {
+public class EmptyStatementListAffordance extends org.lgna.croquet.components.JComponent< javax.swing.JLabel > {
 	private static final java.awt.Stroke SOLID_STROKE = new java.awt.BasicStroke( 4.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	private static java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 220 );
 	private static java.awt.Color SHADOW_COLOR = new java.awt.Color( 63, 63, 63 );

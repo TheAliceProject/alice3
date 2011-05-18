@@ -49,10 +49,10 @@ package org.alice.ide.croquet.models.openproject;
 		this.setTitleText( title );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
-		edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createScrollPane();
-		rv.setHorizontalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		rv.setVerticalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
+	public org.lgna.croquet.components.ScrollPane createScrollPane() {
+		org.lgna.croquet.components.ScrollPane rv = super.createScrollPane();
+		rv.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		rv.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
 		rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 		return rv;
 	}
@@ -83,37 +83,37 @@ public class ProjectTabSelectionState extends edu.cmu.cs.dennisc.croquet.Predete
 	static {
 		map.put( TEMPLATES_TAB_ID, new ContentTab( TEMPLATES_TAB_ID, "Templates" ) {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 				return new org.alice.stageide.openprojectpane.templates.TemplatesTabContentPane();
 			}
 		} );
 		map.put( MY_PROJECTS_TAB_ID, new ContentTab( MY_PROJECTS_TAB_ID, "My Projects" ) {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 				return new org.alice.ide.openprojectpane.MyProjectsPane();
 			}
 		} );
 		map.put( RECENT_TAB_ID, new ContentTab( RECENT_TAB_ID, "Recent" ) {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 				return new org.alice.ide.openprojectpane.RecentPane();
 			}
 		} );
 		map.put( TUTORIAL_TAB_ID, new ContentTab( TUTORIAL_TAB_ID, "Tutorial" ) {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 				return new org.alice.ide.openprojectpane.TutorialPane();
 			}
 		} );
 		map.put( TEXTBOOK_TAB_ID, new ContentTab( TEXTBOOK_TAB_ID, "Textbook" ) {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 				return new org.alice.ide.openprojectpane.TextbookPane();
 			}
 		} );
 		map.put( FILE_SYSTEM_TAB_ID, new ContentTab( FILE_SYSTEM_TAB_ID, "File System" ) {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 				return new org.alice.ide.openprojectpane.FileSystemPane();
 			}
 		} );

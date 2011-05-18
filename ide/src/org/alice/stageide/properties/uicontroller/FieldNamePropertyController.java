@@ -52,9 +52,9 @@ import javax.swing.JLabel;
 
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.uicontroller.BasicPropertyController;
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.Label;
 
-import edu.cmu.cs.dennisc.croquet.Component;
-import edu.cmu.cs.dennisc.croquet.Label;
 
 public class FieldNamePropertyController extends BasicPropertyController<String>
 {

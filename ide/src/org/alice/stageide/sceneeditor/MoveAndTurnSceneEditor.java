@@ -91,11 +91,8 @@ import edu.cmu.cs.dennisc.alice.ast.Accessible;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.croquet.AbstractButton;
 import edu.cmu.cs.dennisc.croquet.StandardPopupOperation;
 import edu.cmu.cs.dennisc.croquet.BooleanState;
-import edu.cmu.cs.dennisc.croquet.ComboBox;
-import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;import edu.cmu.cs.dennisc.croquet.Operation;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
@@ -121,6 +118,9 @@ import org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelecti
 import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
 import org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState;
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
+import org.lgna.croquet.components.AbstractButton;
+import org.lgna.croquet.components.ComboBox;
+import org.lgna.croquet.components.DragComponent;
 
 /**
  * @author Dennis Cosgrove
@@ -140,7 +140,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	private java.util.List< SceneEditorFieldObserver > fieldObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createLightweightOnscreenLookingGlass();
-	private class LookingGlassPanel extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
+	private class LookingGlassPanel extends org.lgna.croquet.components.JComponent< javax.swing.JPanel > {
 		@Override
 		protected javax.swing.JPanel createAwtComponent() {
 			javax.swing.JPanel rv = MoveAndTurnSceneEditor.this.onscreenLookingGlass.getJPanel();
@@ -151,7 +151,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
-	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
+	private org.lgna.croquet.components.HorizontalSplitPane splitPane = new org.lgna.croquet.components.HorizontalSplitPane();
 	private SidePane sidePane;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 	private CameraMarker expandedViewSelectedMarker = null;
@@ -268,7 +268,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	};
 	
-	private static class FieldRadioButtons extends edu.cmu.cs.dennisc.croquet.CustomRadioButtons< edu.cmu.cs.dennisc.alice.ast.Accessible > {
+	private static class FieldRadioButtons extends org.lgna.croquet.components.CustomRadioButtons< edu.cmu.cs.dennisc.alice.ast.Accessible > {
 		private static final int SUB_FIELD_LEFT_INSET = 10;
 		private static final int INTRA_FIELD_PAD = 1;
 		private javax.swing.SpringLayout springLayout;
@@ -301,12 +301,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 		
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.BooleanStateButton< ? > createBooleanStateButton( edu.cmu.cs.dennisc.alice.ast.Accessible item, BooleanState booleanState ) {
+		protected org.lgna.croquet.components.BooleanStateButton< ? > createBooleanStateButton( edu.cmu.cs.dennisc.alice.ast.Accessible item, BooleanState booleanState ) {
 			return new FieldTile( item, booleanState );
 		}
 		
-		private edu.cmu.cs.dennisc.croquet.Component<?> previousComponent;
-		private edu.cmu.cs.dennisc.croquet.Component<?> rootComponent;
+		private org.lgna.croquet.components.Component<?> previousComponent;
+		private org.lgna.croquet.components.Component<?> rootComponent;
 		@Override
 		protected void removeAllDetails() {
 			this.internalRemoveAllComponents();
@@ -317,7 +317,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.rootComponent = null;
 		}
 		@Override
-		protected void addItem( edu.cmu.cs.dennisc.croquet.ItemSelectablePanel.ItemDetails itemDetails) {
+		protected void addItem( org.lgna.croquet.components.ItemSelectablePanel.ItemDetails itemDetails) {
 			AbstractButton<?,?> button = itemDetails.getButton();
 			if( this.previousComponent != null ) {
 				this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, button.getAwtComponent(), INTRA_FIELD_PAD, javax.swing.SpringLayout.SOUTH, this.previousComponent.getAwtComponent() );
@@ -338,7 +338,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		
 		public FieldTile getFieldTileForField(FieldDeclaredInAlice field)
 		{
-			for (edu.cmu.cs.dennisc.croquet.ItemSelectablePanel.ItemDetails item : this.getAllItemDetails())
+			for (org.lgna.croquet.components.ItemSelectablePanel.ItemDetails item : this.getAllItemDetails())
 			{
 				FieldTile fieldTile = (FieldTile)item.getButton();
 				Accessible itemField = fieldTile.getAccessible();
@@ -1035,7 +1035,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			});
 			
 			org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState isSceneEditorExpandedState = org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance();
-			final edu.cmu.cs.dennisc.croquet.CheckBox isSceneEditorExpandedCheckBox = isSceneEditorExpandedState.createCheckBox();
+			final org.lgna.croquet.components.CheckBox isSceneEditorExpandedCheckBox = isSceneEditorExpandedState.createCheckBox();
 			isSceneEditorExpandedCheckBox.getAwtComponent().setUI( new IsExpandedCheckBoxUI() );
 			final int X_PAD = 16;
 			final int Y_PAD = 10;
@@ -2004,7 +2004,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return null;
 	}
 
-	public edu.cmu.cs.dennisc.croquet.JComponent<?> getViewController() {
+	public org.lgna.croquet.components.JComponent<?> getViewController() {
 		return this;
 	}
 

@@ -43,6 +43,11 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.AbstractWindow;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.Frame;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -67,10 +72,10 @@ public abstract class Application {
 	private Frame frame = new Frame();
 	private java.util.Stack< AbstractWindow< ? > > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new AbstractWindow< ? >[] { frame } );
 	
-	/*package-private*/void pushWindow( AbstractWindow< ? > window ) {
+	public void pushWindow( AbstractWindow< ? > window ) {
 		this.stack.push( window );
 	}
-	/*package-private*/AbstractWindow< ? > popWindow() {
+	public AbstractWindow< ? > popWindow() {
 		AbstractWindow< ? > rv = this.stack.peek();
 		this.stack.pop();
 		return rv;

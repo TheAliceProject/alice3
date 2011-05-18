@@ -42,6 +42,9 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.JComponent;
+import org.lgna.croquet.components.ScrollPane;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,7 +55,7 @@ public abstract class PredeterminedTab extends Composite {
 
 	private edu.cmu.cs.dennisc.croquet.BooleanState booleanState;
 	//todo: remove
-	private edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button = null;
+	private org.lgna.croquet.components.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button = null;
 	
 	public PredeterminedTab( java.util.UUID id ) {
 		super( id );
@@ -81,7 +84,7 @@ public abstract class PredeterminedTab extends Composite {
 			this.button.getAwtComponent().setIcon( this.titleIcon );
 		}
 	}
-	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
+	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
 		this.booleanState = booleanState;
 		this.button = button;
 		this.updateTitleText();

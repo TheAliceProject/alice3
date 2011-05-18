@@ -47,7 +47,7 @@ package org.alice.ide.common;
  */
 public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennisc.alice.ast.ResourceProperty> {
 	private static java.text.NumberFormat durationFormat = new java.text.DecimalFormat( "0.00" );
-	private edu.cmu.cs.dennisc.croquet.Label label;
+	private org.lgna.croquet.components.Label label;
 	private org.alice.virtualmachine.Resource prevResource;
 	private edu.cmu.cs.dennisc.pattern.event.NameListener nameListener;
 	public ResourcePropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ResourceProperty property ) {
@@ -90,7 +90,7 @@ public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennis
 		if( this.label != null ) {
 			//pass
 		} else {
-			this.label = new edu.cmu.cs.dennisc.croquet.Label();
+			this.label = new org.lgna.croquet.components.Label();
 			this.addComponent( this.label );
 		}
 		if( this.prevResource != null ) {

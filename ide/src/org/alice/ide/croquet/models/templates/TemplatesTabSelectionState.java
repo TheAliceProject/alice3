@@ -154,18 +154,18 @@ public class TemplatesTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSe
 				BlockTemplateComposite.getInstance()
 		);
 	}
-	public edu.cmu.cs.dennisc.croquet.ToolPaletteTabbedPane< TemplateComposite > createToolPaletteTabbedPane() {
+	public org.lgna.croquet.components.ToolPaletteTabbedPane< TemplateComposite > createToolPaletteTabbedPane() {
 		return this.createToolPaletteTabbedPane( new TabCreator< TemplateComposite >() {
-			public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
+			public org.lgna.croquet.components.JComponent< ? > createMainComponent( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
 				return item.createMainComponent();
 			}
-			public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
-				edu.cmu.cs.dennisc.croquet.ScrollPane rv = new edu.cmu.cs.dennisc.croquet.ScrollPane();
+			public org.lgna.croquet.components.ScrollPane createScrollPane( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
+				org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
 				rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 				rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 				return rv;
 			}
-			public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, org.alice.ide.croquet.models.templates.TemplateComposite item ) {
+			public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, org.alice.ide.croquet.models.templates.TemplateComposite item ) {
 				item.customizeTitleComponent( booleanState, button );
 			}
 			public java.util.UUID getId( org.alice.ide.croquet.models.templates.TemplateComposite item ) {

@@ -63,11 +63,11 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode;
 	private GalleryDragComponent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
 		this.treeNode = treeNode;
-		edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label();
+		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 		label.setIcon( ResourceManager.getLargeIcon( this.treeNode ) );
 		label.setText( GalleryBrowser.getTextFor( this.treeNode, false ) );
-		label.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
-		label.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
+		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
+		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 		this.setEnabledBackgroundPaint( new java.awt.Color( 0xf7e4b6 ) );
 		this.addComponent( label );

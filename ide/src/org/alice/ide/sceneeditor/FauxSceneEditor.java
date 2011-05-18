@@ -42,10 +42,11 @@
  */
 package org.alice.ide.sceneeditor;
 
+import org.lgna.croquet.components.DragComponent;
+import org.lgna.croquet.components.ViewController;
+
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.croquet.Operation;
-import edu.cmu.cs.dennisc.croquet.ViewController;
 
 /**
  * @author Dennis Cosgrove

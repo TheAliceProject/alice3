@@ -74,11 +74,11 @@ public abstract class CreateParameterPane extends CreateDeclarationPane<edu.cmu.
 		return "value type:";
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInitializerComponent() {
+	protected org.lgna.croquet.components.Component< ? > createInitializerComponent() {
 		return null;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
+	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
 		return new org.alice.ide.codeeditor.TypedParameterPane( null, this.getInputValue() );
 	}
 	@Override

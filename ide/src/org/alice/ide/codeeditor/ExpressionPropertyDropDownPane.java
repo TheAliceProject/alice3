@@ -47,7 +47,7 @@ package org.alice.ide.codeeditor;
  */
 public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuButton< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > implements edu.cmu.cs.dennisc.croquet.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	public ExpressionPropertyDropDownPane( edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > model, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.croquet.Component< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public ExpressionPropertyDropDownPane( edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > model, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.croquet.components.Component< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		super( model, prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
 	}
@@ -89,7 +89,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 		return this;
 	}
 
-	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
+	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source ) {
 		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
 	}
 	public void dragStarted( org.lgna.croquet.steps.DragStep context ) {
@@ -103,7 +103,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 	}
 	public edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( org.lgna.croquet.steps.DragStep context ) {
 		edu.cmu.cs.dennisc.croquet.Operation<?> rv;
-		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
+		org.lgna.croquet.components.DragComponent source = context.getDragSource();
 //		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		if( source instanceof org.alice.ide.common.ExpressionCreatorPane ) {
 			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source;
@@ -137,7 +137,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 	public void dragStopped( org.lgna.croquet.steps.DragStep context ) {
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.ViewController<?,?> getViewController() {
+	public org.lgna.croquet.components.ViewController<?,?> getViewController() {
 		return this;
 	}
 

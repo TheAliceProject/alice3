@@ -69,7 +69,7 @@ public class MenuHole extends Hole {
 		return this.isHoleRenderingDesired;
 	}
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy ) {
+	public java.awt.geom.Area getAreaToSubstractForContains( org.lgna.croquet.components.Component< ? > asSeenBy ) {
 		if( this.isHoleRenderingDesired() ) {
 			return super.getAreaToSubstractForContains( asSeenBy );
 		} else {
@@ -77,7 +77,7 @@ public class MenuHole extends Hole {
 		}
 	}
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForPaint( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy ) {
+	public java.awt.geom.Area getAreaToSubstractForPaint( org.lgna.croquet.components.Component< ? > asSeenBy ) {
 		if( this.isHoleRenderingDesired() ) {
 			return super.getAreaToSubstractForPaint( asSeenBy );
 		} else {

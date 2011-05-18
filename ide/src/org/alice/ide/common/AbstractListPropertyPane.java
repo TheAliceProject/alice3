@@ -80,7 +80,7 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 	public AbstractListPropertyPane( Factory factory, int axis, E property ) {
 		super( factory, axis, property );
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( Object instance );
+	protected abstract org.lgna.croquet.components.Component< ? > createComponent( Object instance );
 	protected void addPrefixComponents() {
 	}
 	protected void addPostfixComponents() {
@@ -96,7 +96,7 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 		this.getProperty().removeListPropertyListener( this.listPropertyAdapter );
 		super.handleUndisplayable();
 	}
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInterstitial( int i, final int N ) {
+	protected org.lgna.croquet.components.Component< ? > createInterstitial( int i, final int N ) {
 		return null;
 	}
 	
@@ -107,14 +107,14 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 		final int N = getProperty().size();
 		int i = 0;
 		for( Object o : getProperty() ) {
-			edu.cmu.cs.dennisc.croquet.Component< ? > component;
+			org.lgna.croquet.components.Component< ? > component;
 			if( o != null ) {
 				component = this.createComponent( o );
 			} else {
-				component = new edu.cmu.cs.dennisc.croquet.Label( "null" );
+				component = new org.lgna.croquet.components.Label( "null" );
 			}
 			this.addComponent( component );
-			edu.cmu.cs.dennisc.croquet.Component< ? > interstitial = this.createInterstitial( i, N );
+			org.lgna.croquet.components.Component< ? > interstitial = this.createInterstitial( i, N );
 			if( interstitial != null ) {
 				this.addComponent( interstitial );
 			}

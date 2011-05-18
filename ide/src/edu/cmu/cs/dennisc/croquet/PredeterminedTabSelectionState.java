@@ -42,6 +42,12 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.AbstractButton;
+import org.lgna.croquet.components.FolderTabbedPane;
+import org.lgna.croquet.components.JComponent;
+import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.components.ToolPaletteTabbedPane;
+
 /**
  * @author Dennis Cosgrove
  */

@@ -82,7 +82,7 @@ public abstract class Note extends org.lgna.stencil.Note {
 	}
 	
 	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event );
-	private boolean moveOutOfTheWayIfNecessary( edu.cmu.cs.dennisc.croquet.ScreenElement screenElement ) {
+	private boolean moveOutOfTheWayIfNecessary( org.lgna.croquet.components.ScreenElement screenElement ) {
 		java.awt.Rectangle screenElementLocalBounds = screenElement.getLocalBounds();
 		java.awt.Rectangle bounds = this.getBounds( screenElement );
 		if( bounds.intersects( screenElementLocalBounds ) ) {
@@ -93,7 +93,7 @@ public abstract class Note extends org.lgna.stencil.Note {
 		}
 	}
 	public boolean moveOutOfTheWayIfNecessary( org.lgna.cheshire.events.Event event ) {
-		edu.cmu.cs.dennisc.croquet.ScreenElement screenElement;
+		org.lgna.croquet.components.ScreenElement screenElement;
 		if( event instanceof org.lgna.cheshire.events.PopupMenuResizedEvent ) {
 			org.lgna.cheshire.events.PopupMenuResizedEvent menuResizedEvent = (org.lgna.cheshire.events.PopupMenuResizedEvent)event;
 			screenElement = menuResizedEvent.getPopupMenu();

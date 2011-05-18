@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.Slider;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -103,10 +105,10 @@ public abstract class BoundedRangeIntegerState extends State< Integer > {
 		}
 	}
 
-	/*package-private*/ javax.swing.BoundedRangeModel getBoundedRangeModel() {
+	public javax.swing.BoundedRangeModel getBoundedRangeModel() {
 		return this.boundedRangeModel;
 	}
-	/*package-private*/ javax.swing.SpinnerModel getSpinnerModel() {
+	public javax.swing.SpinnerModel getSpinnerModel() {
 		return this.spinnerModel;
 	}
 

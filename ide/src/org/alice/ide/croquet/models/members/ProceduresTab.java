@@ -56,7 +56,7 @@ public class ProceduresTab extends MemberTab {
 		super( java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 		return new org.alice.ide.memberseditor.ProceduresContentPanel();
 	}
 }

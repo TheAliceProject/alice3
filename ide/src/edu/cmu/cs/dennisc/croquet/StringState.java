@@ -42,6 +42,9 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.TextArea;
+import org.lgna.croquet.components.TextField;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -174,7 +177,7 @@ public class StringState extends State<String> {
 		return rv;
 	}
 
-	protected javax.swing.text.Document getDocument() {
+	public javax.swing.text.Document getDocument() {
 		return this.document;
 	}
 	public TextField createTextField() {

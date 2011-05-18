@@ -64,17 +64,17 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		return "2007".equals( this.year );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> createContentPane() {
-		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+	protected org.lgna.croquet.components.Component<?> createContentPane() {
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 
 		this.cardPanel = new ECardPanel(ECardPanel.CardState.PHOTO);
 //		this.cardPanel = new ECardPanel(ECardPanel.CardState.EMPTY);
-		rv.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter(this.cardPanel), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		rv.addComponent( new org.lgna.croquet.components.SwingAdapter(this.cardPanel), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 
 		if (this.isRibbonBased()) {
-			edu.cmu.cs.dennisc.croquet.FolderTabbedPane< ? > folderTabbedPane = uist.ecard.ribbon.ECardRibbonModel.getInstance().createDefaultFolderTabbedPane();
+			org.lgna.croquet.components.FolderTabbedPane< ? > folderTabbedPane = uist.ecard.ribbon.ECardRibbonModel.getInstance().createDefaultFolderTabbedPane();
 			folderTabbedPane.setBackgroundColor( java.awt.SystemColor.controlShadow );
-			rv.addComponent( folderTabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+			rv.addComponent( folderTabbedPane, org.lgna.croquet.components.BorderPanel.Constraint.NORTH );
 		} else {
 			getFrame().setMenuBarModel( uist.ecard.menu.MenuBarComposite.getInstance() );
 
@@ -141,7 +141,7 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 			//deleteJButton.setFocusable(false);
 			//toolbar.add(deleteJButton);	
 
-			rv.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(toolbar) , edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+			rv.addComponent(new org.lgna.croquet.components.SwingAdapter(toolbar) , org.lgna.croquet.components.BorderPanel.Constraint.NORTH );
 		}
 
 		return rv;

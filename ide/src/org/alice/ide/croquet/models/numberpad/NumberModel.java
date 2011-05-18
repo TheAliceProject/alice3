@@ -74,8 +74,8 @@ public abstract class NumberModel< N extends edu.cmu.cs.dennisc.alice.ast.Expres
 	private javax.swing.text.Document getDocument() {
 		return this.document;
 	}
-	public edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JTextField > createTextField() {
-		return new edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JTextField >() {
+	public org.lgna.croquet.components.JComponent< javax.swing.JTextField > createTextField() {
+		return new org.lgna.croquet.components.JComponent< javax.swing.JTextField >() {
 			@Override
 			protected javax.swing.JTextField createAwtComponent() {
 				javax.swing.JTextField jTextField = new javax.swing.JTextField();

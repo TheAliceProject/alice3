@@ -50,13 +50,13 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 	private org.alice.ide.declarationpanes.TypePane typePane;
 	private org.alice.ide.initializer.ArrayInitializerPane arrayInitializerPane;
 	private static final String[] LABEL_TEXTS = { "type:", "value:" };
-	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components;
+	private org.lgna.croquet.components.Component< ? >[] components;
 	
 	public ArrayChooser() {
 		bogusNode.isArray.setValue( true );
 		this.typePane = new org.alice.ide.declarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, true, false );
 		this.arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.componentType, bogusNode.arrayExpressions );
-		this.components = new edu.cmu.cs.dennisc.croquet.Component< ? >[] { this.typePane, this.arrayInitializerPane };
+		this.components = new org.lgna.croquet.components.Component< ? >[] { this.typePane, this.arrayInitializerPane };
 //		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 //			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 //			}
@@ -86,9 +86,9 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 	
 	//todo
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createLabel( String text ) {
+	protected org.lgna.croquet.components.Component< ? > createLabel( String text ) {
 		if( LABEL_TEXTS[ 1 ].equals( text ) ) {
-			return edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( text );
+			return org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( text );
 		} else {
 			return super.createLabel( text );
 		}
@@ -121,7 +121,7 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 		return LABEL_TEXTS;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
+	public org.lgna.croquet.components.Component< ? >[] getComponents() {
 		return this.components;
 	}
 	@Override

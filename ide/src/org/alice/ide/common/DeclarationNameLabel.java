@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationNameLabel extends edu.cmu.cs.dennisc.croquet.Label {
+public class DeclarationNameLabel extends org.lgna.croquet.components.Label {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration;
 
 	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
