@@ -46,15 +46,10 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-//	private static final java.util.Map< java.util.UUID, Step > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-//	public static <S extends Step> S lookup( java.util.UUID id ) {
-//		return (S)map.get( id );
-//	}
-
 	private Transaction parent;
 	private final edu.cmu.cs.dennisc.croquet.CodableResolver< M > modelResolver;
 	private final transient org.lgna.croquet.Trigger trigger;
-//	private final java.util.UUID id;
+	private final java.util.UUID id;
 	public Step( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
 		this.setParent( parent );
 		//this.modelResolver = model != null ? model.getCodableResolver() : null;
@@ -64,25 +59,24 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 			this.modelResolver = null;
 		}
 		this.trigger = trigger;
-//		this.id = java.util.UUID.randomUUID();
-//		map.put( this.id, this );
+		this.id = java.util.UUID.randomUUID();
 	}
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-//		this.id = binaryDecoder.decodeId();
+		this.id = binaryDecoder.decodeId();
 		this.trigger = null;
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.modelResolver );
-//		binaryEncoder.encode( this.id );
+		binaryEncoder.encode( this.id );
 	}
 
 	public org.lgna.croquet.Trigger getTrigger() {
 		return this.trigger;
 	}
-//	public java.util.UUID getId() {
-//		return this.id;
-//	}
+	public java.util.UUID getId() {
+		return this.id;
+	}
 	
 	protected org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
 		return this.trigger != null ? this.trigger.getViewController() : null;
