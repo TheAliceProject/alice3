@@ -85,17 +85,17 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 
 			JButton newButton = new JButton();
 			newButton.setFocusable(false);
-			newButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/document-new.png")));
+			newButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/document-new.png")));
 			toolbar.add(newButton);
 
 			JButton openButton = new JButton();
 			openButton.setFocusable(false);
-			openButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/document-open.png")));
+			openButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/document-open.png")));
 			toolbar.add(openButton);
 
 			JButton saveButton = new JButton();
 			saveButton.setFocusable(false);
-			saveButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/document-save.png")));
+			saveButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/document-save.png")));
 			toolbar.add(saveButton);
 
 			toolbar.addSeparator();
@@ -103,36 +103,36 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 			JButton printButton = new JButton();
 			printButton.setFocusable(false);
 			//printButton.setText("Print");
-			printButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/document-print.png")));
+			printButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/document-print.png")));
 			toolbar.add(printButton);
 
 			toolbar.addSeparator();
 
 			JButton undoButton = new JButton();
 			undoButton.setFocusable(false);
-			undoButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/edit-undo.png")));
+			undoButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/edit-undo.png")));
 			toolbar.add(undoButton);
 
 			JButton redoButton = new JButton();
 			redoButton.setFocusable(false);
-			redoButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/edit-redo.png")));
+			redoButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/edit-redo.png")));
 			toolbar.add(redoButton);
 
 			toolbar.addSeparator();
 
 			JButton copyButton = new JButton();
 			copyButton.setFocusable(false);
-			copyButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/edit-copy.png")));
+			copyButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/edit-copy.png")));
 			toolbar.add(copyButton);	
 
 			JButton cutButton = new JButton();
 			cutButton.setFocusable(false);
-			cutButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/edit-cut.png")));
+			cutButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/edit-cut.png")));
 			toolbar.add(cutButton);	
 
 			JButton pasteButton = new JButton();
 			pasteButton.setFocusable(false);
-			pasteButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/toolbar/edit-paste.png")));
+			pasteButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/edit-paste.png")));
 			toolbar.add(pasteButton);	
 
 			//toolbar.addSeparator();

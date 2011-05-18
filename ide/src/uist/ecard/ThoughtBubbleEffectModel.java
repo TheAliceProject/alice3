@@ -10,7 +10,7 @@ public class ThoughtBubbleEffectModel extends edu.cmu.cs.dennisc.croquet.ActionO
 	
 	private ThoughtBubbleEffectModel() {
 		super( null, java.util.UUID.fromString( "73fa6653-073e-4ab0-91ab-3148678b5226" ) );
-		this.setSmallIcon( new javax.swing.ImageIcon(getClass().getResource("/autotutorial/ecard/resources/menu/thought-bubble.png") ) );
+		this.setSmallIcon( new javax.swing.ImageIcon(getClass().getResource("resources/menu/thought-bubble.png") ) );
 	}
 	@Override
 	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {

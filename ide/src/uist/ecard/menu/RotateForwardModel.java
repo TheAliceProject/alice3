@@ -15,9 +15,9 @@ public class RotateForwardModel extends edu.cmu.cs.dennisc.croquet.ActionOperati
 	private RotateForwardModel() {
 		super( null, java.util.UUID.fromString( "510dd64d-ce22-41a2-adeb-73ad8285187b" ) );
 		if (ECardApplication.getSingleton().isRibbonBased()) {
-			this.setSmallIcon( new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/rotate-clockwise.png") ) );
+			this.setSmallIcon( new ImageIcon(getClass().getResource("../resources/ribbon/rotate-clockwise.png") ) );
 		} else {
-			this.setSmallIcon( new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/menu/rotate-clockwise.png") ) );
+			this.setSmallIcon( new ImageIcon(getClass().getResource("../resources/menu/rotate-clockwise.png") ) );
 		}
 	}
 	@Override
