@@ -352,9 +352,6 @@ public abstract class Model implements RuntimeResolver< Model > {
 	
 	protected StringBuilder appendRepr( StringBuilder rv ) {
 		rv.append( this.getClass().getName() );
-		rv.append( "[" );
-		rv.append( this.getGroup() );
-		rv.append( "]" );
 		return rv;
 	}
 	

@@ -46,7 +46,6 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class PredeterminedTab extends Composite {
-	private java.util.UUID id;
 	private String titleText;
 	private javax.swing.Icon titleIcon;
 	private JComponent< ? > mainComponent;
@@ -56,11 +55,7 @@ public abstract class PredeterminedTab extends Composite {
 	private edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button = null;
 	
 	public PredeterminedTab( java.util.UUID id ) {
-		assert id != null;
-		this.id = id;
-	}
-	public java.util.UUID getId() {
-		return this.id;
+		super( id );
 	}
 	public String getTitleText() {
 		return this.titleText;
@@ -112,7 +107,8 @@ public abstract class PredeterminedTab extends Composite {
 		return false;
 	}
 	@Override
-	public String toString() {
-		return this.titleText;
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		rv.append( this.titleText );
+		return rv;
 	}
 };

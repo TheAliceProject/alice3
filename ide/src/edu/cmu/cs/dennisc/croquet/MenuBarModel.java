@@ -45,16 +45,15 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBarModel extends Model {
-	private java.util.List< MenuModel > menuModels = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+public class MenuBarModel extends Composite {
+	private final java.util.List< MenuModel > menuModels = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public MenuBarModel( java.util.UUID id ) {
 		super( id );
 	}
-
 	@Override
-	protected void localize() {
+	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
+		return this.menuModels.contains( model );
 	}
-
 	public void addMenuModel( MenuModel menuModel ) {
 		this.menuModels.add( menuModel );
 	}

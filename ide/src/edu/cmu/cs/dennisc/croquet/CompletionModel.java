@@ -82,4 +82,12 @@ public abstract class CompletionModel extends Model {
 		System.err.println( "todo: commitTutorialCompletionEdit: " + originalEdit );
 		return null;
 	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "[" );
+		rv.append( this.getGroup() );
+		rv.append( "]" );
+		return rv;
+	}
 }

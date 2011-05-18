@@ -47,6 +47,9 @@ package org.alice.ide.croquet.models.templates;
  * @author Dennis Cosgrove
  */
 public abstract class TemplateComposite extends edu.cmu.cs.dennisc.croquet.Composite {
+	public TemplateComposite( java.util.UUID id ) {
+		super( id );
+	}
 	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
 //		button.getAwtComponent().setIcon( ICON );
 //		button.getAwtComponent().setText( this.getClass().getName() );
@@ -54,6 +57,8 @@ public abstract class TemplateComposite extends edu.cmu.cs.dennisc.croquet.Compo
 
 		button.scaleFont( 1.5f );
 		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		booleanState.setTextForBothTrueAndFalse( this.getTextForTabTitle() );
 	}
 	public abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent();
+	protected abstract String getTextForTabTitle();
 }

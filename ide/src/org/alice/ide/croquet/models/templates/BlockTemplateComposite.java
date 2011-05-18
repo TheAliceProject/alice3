@@ -55,6 +55,7 @@ public class BlockTemplateComposite extends TemplateComposite {
 	}
 	private final java.util.Set< Class<?> > clses = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 	private BlockTemplateComposite() {
+		super( java.util.UUID.fromString( "c61a35cf-5378-44d1-ae4d-8efd7ab40fd3" ) );
 		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertOperation.class );
 		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.WhileLoopInsertOperation.class );
 		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.DoInOrderInsertOperation.class );
@@ -88,10 +89,9 @@ public class BlockTemplateComposite extends TemplateComposite {
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 			}
 		} );
-		booleanState.setTextForBothTrueAndFalse( this.toString() );
 	}
 	@Override
-	public String toString() {
+	protected String getTextForTabTitle() {
 		return "Action Ordering Boxes";
 	}
 }
