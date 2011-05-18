@@ -213,14 +213,14 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		this.getRootPane().setDefaultButton( button.getAwtComponent() );
 	}
 	
-	private MenuBarModel menuBarModel;
-	public MenuBarModel getMenuBarModel() {
+	private MenuBarComposite menuBarModel;
+	public MenuBarComposite getMenuBarModel() {
 		return this.menuBarModel;
 	}
 	
 	protected abstract void setJMenuBar( javax.swing.JMenuBar jMenuBar );
 	
-	public void setMenuBarModel( MenuBarModel menuBarModel ) {
+	public void setMenuBarModel( MenuBarComposite menuBarModel ) {
 		this.menuBarModel = menuBarModel;
 		javax.swing.JMenuBar jMenuBar;
 		if( this.menuBarModel != null ) {

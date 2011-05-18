@@ -134,7 +134,7 @@ public class TransactionManager {
 			return null;
 		}
 	}
-	private static MenuBarModel getMenuBarModelOrigin( javax.swing.MenuElement[] menuElements ) {
+	private static MenuBarComposite getMenuBarModelOrigin( javax.swing.MenuElement[] menuElements ) {
 		MenuBar menuBar = getMenuBarOrigin( menuElements );
 		if( menuBar != null ) {
 			return menuBar.getModel();

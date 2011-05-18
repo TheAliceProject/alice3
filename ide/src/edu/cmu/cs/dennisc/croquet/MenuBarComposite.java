@@ -40,26 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBarModel extends edu.cmu.cs.dennisc.croquet.MenuBarModel {
-	private static class SingletonHolder {
-		private static MenuBarModel instance = new MenuBarModel();
+public class MenuBarComposite extends Composite {
+	private final java.util.List< MenuModel > menuModels = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public MenuBarComposite( java.util.UUID id ) {
+		super( id );
 	}
-	public static MenuBarModel getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
+		return this.menuModels.contains( model );
 	}
-	private MenuBarModel() {
-		super( java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
-		this.addMenuModel( org.alice.ide.croquet.models.menubar.FileMenuModel.getInstance() );
-		this.addMenuModel( org.alice.ide.croquet.models.menubar.EditMenuModel.getInstance() );
-		this.addMenuModel( org.alice.ide.croquet.models.menubar.ProjectMenuModel.getInstance() );
-		this.addMenuModel( org.alice.ide.croquet.models.menubar.RunMenuModel.getInstance() );
-		this.addMenuModel( org.alice.ide.croquet.models.menubar.WindowMenuModel.getInstance() );
-		this.addMenuModel( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
+	public void addMenuModel( MenuModel menuModel ) {
+		this.menuModels.add( menuModel );
 	}
+	public void removeMenuModel( MenuModel menuModel ) {
+		this.menuModels.remove( menuModel );
+	}
+	public Iterable< MenuModel > getChildren() {
+		return this.menuModels;
+	}
+
+	public MenuBar createMenuBar() {
+		MenuBar rv = new MenuBar( this ) {
+			@Override
+			protected void handleDisplayable() {
+				super.handleDisplayable();
+//				assert mapMenuBarToListener.containsKey( menuBar ) == false;
+//				MenuBarChangeListener listener = new MenuBarChangeListener( menuBar );
+//				this.mapMenuBarToListener.put( menuBar, listener );
+//				menuBar.getJComponent().getSelectionModel().addChangeListener( listener );
+				MenuBarComposite.this.addComponent(this);
+			}
+
+			@Override
+			protected void handleUndisplayable() {
+				super.handleUndisplayable();
+				MenuBarComposite.this.removeComponent(this);
+//				MenuBarChangeListener listener = this.mapMenuBarToListener.get( menuBar );
+//				assert listener != null;
+//				menuBar.getJComponent().getSelectionModel().removeChangeListener( listener );
+//				this.mapMenuBarToListener.remove( menuBar );
+			}
+		};
+		for( MenuModel menuModel : this.getChildren() ) {
+			rv.addMenu( menuModel.createMenu() );
+		}
+		return rv;
+	}
+	
 }
