@@ -171,14 +171,9 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ListSelectionState<E> extends State< E > implements Iterable< E >/*, java.util.List<E>*/{
-//	public static interface ValueObserver<E> {
-//		public void changed( E nextValue );
-//	}
-
 	private final Codec< E > codec;
 	private final ComboBoxModel< E > comboBoxModel = new ComboBoxModel< E >( this );
 	private final ListSelectionModel< E > listSelectionModel = new ListSelectionModel< E >( this );
-//	private final java.util.List< ValueObserver< E > > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	
 	/*package-private*/ void setSelectionIndexFromSwing( int index ) {
 		this.pushAtomic();
@@ -297,22 +292,6 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		}
 		return this.prepModel;
 	}
-
-//	public void addValueObserver( ValueObserver< E > valueObserver ) {
-//		this.valueObservers.add( valueObserver );
-//	}
-//	public void addAndInvokeValueObserver( ValueObserver< E > valueObserver ) {
-//		this.addValueObserver( valueObserver );
-//		valueObserver.changed( this.getSelectedItem() );
-//	}
-//	public void removeValueObserver( ValueObserver< E > valueObserver ) {
-//		this.valueObservers.remove( valueObserver );
-//	}
-//	protected void fireValueChanged( E nextValue ) {
-//		for( ValueObserver< E > valueObserver : this.valueObservers ) {
-//			valueObserver.changed( nextValue );
-//		}
-//	}
 
 	public javax.swing.Action createActionForItem( final E item ) {
 		javax.swing.Action action = new javax.swing.AbstractAction() {

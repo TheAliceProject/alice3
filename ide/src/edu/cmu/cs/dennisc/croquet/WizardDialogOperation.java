@@ -56,7 +56,6 @@ import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.PageAxisPanel;
 import org.lgna.croquet.components.RowsSpringPanel;
 import org.lgna.croquet.components.SpringUtilities;
-import org.lgna.croquet.edits.OperationEdit;
 
 /**
  * @author Dennis Cosgrove
