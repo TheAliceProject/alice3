@@ -78,9 +78,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > isAlwaysShowingBlocksObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-		public void changing( Boolean prevValue, Boolean nextValue ) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( Boolean prevValue, Boolean nextValue ) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			if( nextValue ) {
 				IDE.this.right.addComponent( IDE.this.ubiquitousPane, org.lgna.croquet.components.BorderPanel.Constraint.NORTH );
 			} else {
@@ -98,9 +98,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		//initialize locale
 		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< java.util.Locale >() {
-			public void changing( java.util.Locale prevValue, java.util.Locale nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
 			}
-			public void changed( java.util.Locale prevValue, java.util.Locale nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
 				edu.cmu.cs.dennisc.croquet.Application.getSingleton().setLocale( nextValue );
 			}
 		} );
@@ -128,9 +128,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addAndInvokeValueObserver( this.accessibleSelectionObserver );
 
 		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-			public void changing( Boolean prevValue, Boolean nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( Boolean prevValue, Boolean nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				setSceneEditorExpanded( nextValue );
 			}
 		} );
@@ -144,9 +144,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 
 		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-			public void changing( org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 				refreshAccessibles();
 			}
 		} );
@@ -478,10 +478,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, edu.cmu.cs.dennisc.alice.ast.Accessible > mapCodeToAccessible = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
-		public void changing(edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleSelectionObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
 		}
-		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
 			if( nextValue != null ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractCode code = IDE.this.getFocusedCode();
 				if( code != null ) {

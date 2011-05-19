@@ -49,8 +49,8 @@ public abstract class State<T> extends CompletionModel {
 	public static interface ValueObserver<T> {
 //		public void changing( T nextValue );
 //		public void changed( T nextValue );
-		public void changing( T prevValue, T nextValue );
-		public void changed( T prevValue, T nextValue );
+		public void changing( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
+		public void changed( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
 	};
 	private final java.util.List< ValueObserver<T> > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	
@@ -64,20 +64,20 @@ public abstract class State<T> extends CompletionModel {
 	}
 	public void addAndInvokeValueObserver( ValueObserver<T> valueObserver ) {
 		this.addValueObserver( valueObserver );
-		valueObserver.changed( null, this.getValue() );
+		valueObserver.changed( this, null, this.getValue(), false );
 	}
 	public void removeValueObserver( ValueObserver<T> valueObserver ) {
 		this.valueObservers.remove( valueObserver );
 	}
 
-	protected void fireChanging( T prevValue, T nextValue ) {
+	protected void fireChanging( T prevValue, T nextValue, boolean isAdjusting ) {
 		for( ValueObserver<T> valueObserver : this.valueObservers ) {
-			valueObserver.changing( prevValue, nextValue );
+			valueObserver.changing( this, prevValue, nextValue, isAdjusting );
 		}
 	}
-	protected void fireChanged( T prevValue, T nextValue ) {
+	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
 		for( ValueObserver<T> valueObserver : this.valueObservers ) {
-			valueObserver.changed( prevValue, nextValue );
+			valueObserver.changed( this, prevValue, nextValue, isAdjusting );
 		}
 	}
 	

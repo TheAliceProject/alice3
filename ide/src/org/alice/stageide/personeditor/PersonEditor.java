@@ -64,52 +64,52 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		}
 
 		org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.LifeStage>() {
-			public void changing( org.alice.apis.stage.LifeStage prevValue, org.alice.apis.stage.LifeStage nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.apis.stage.LifeStage > state, org.alice.apis.stage.LifeStage prevValue, org.alice.apis.stage.LifeStage nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.alice.apis.stage.LifeStage prevValue, org.alice.apis.stage.LifeStage nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.apis.stage.LifeStage > state, org.alice.apis.stage.LifeStage prevValue, org.alice.apis.stage.LifeStage nextValue, boolean isAdjusting ) {
 				handleCataclysm( true, false, false );
 			}
 		} );
 		org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.Gender>() {
-			public void changing( org.alice.apis.stage.Gender prevValue, org.alice.apis.stage.Gender nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.apis.stage.Gender > state, org.alice.apis.stage.Gender prevValue, org.alice.apis.stage.Gender nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.alice.apis.stage.Gender prevValue, org.alice.apis.stage.Gender nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.apis.stage.Gender > state, org.alice.apis.stage.Gender prevValue, org.alice.apis.stage.Gender nextValue, boolean isAdjusting ) {
 				handleCataclysm( false, true, false );
 			}
 		} );
 		org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<String>() {
-			public void changing( String prevValue, String nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 			}
-			public void changed( String prevValue, String nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 				handleCataclysm( false, false, true );
 			}
 		} );
 		
 		org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.FullBodyOutfit>() {
-			public void changing( org.alice.apis.stage.FullBodyOutfit prevValue, org.alice.apis.stage.FullBodyOutfit nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.apis.stage.FullBodyOutfit > state, org.alice.apis.stage.FullBodyOutfit prevValue, org.alice.apis.stage.FullBodyOutfit nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.alice.apis.stage.FullBodyOutfit prevValue, org.alice.apis.stage.FullBodyOutfit nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.apis.stage.FullBodyOutfit > state, org.alice.apis.stage.FullBodyOutfit prevValue, org.alice.apis.stage.FullBodyOutfit nextValue, boolean isAdjusting ) {
 				updatePerson();
 			}
 		} );
 		org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.Hair>() {
-			public void changing( org.alice.apis.stage.Hair prevValue, org.alice.apis.stage.Hair nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.apis.stage.Hair > state, org.alice.apis.stage.Hair prevValue, org.alice.apis.stage.Hair nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.alice.apis.stage.Hair prevValue, org.alice.apis.stage.Hair nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.apis.stage.Hair > state, org.alice.apis.stage.Hair prevValue, org.alice.apis.stage.Hair nextValue, boolean isAdjusting ) {
 				updatePerson();
 			}
 		} );
 		org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState.ValueObserver<Integer>() {
-			public void changing( Integer prevValue, Integer nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< Integer > state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
 			}
-			public void changed( Integer prevValue, Integer nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< Integer > state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
 				updatePerson();
 			}
 		} );
 		org.alice.stageide.croquet.models.personeditor.BaseEyeColorSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseEyeColor>() {
-			public void changing(org.alice.apis.stage.BaseEyeColor prevValue, org.alice.apis.stage.BaseEyeColor nextValue) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.apis.stage.BaseEyeColor > state, org.alice.apis.stage.BaseEyeColor prevValue, org.alice.apis.stage.BaseEyeColor nextValue, boolean isAdjusting ) {
 			}
-			public void changed(org.alice.apis.stage.BaseEyeColor prevValue, org.alice.apis.stage.BaseEyeColor nextValue) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.apis.stage.BaseEyeColor > state, org.alice.apis.stage.BaseEyeColor prevValue, org.alice.apis.stage.BaseEyeColor nextValue, boolean isAdjusting ) {
 				updatePerson();
 			}
 		} );
@@ -119,9 +119,9 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		tabbedPane.scaleFont( 1.5f );
 
 		org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseSkinTone>() {
-			public void changing(org.alice.apis.stage.BaseSkinTone prevValue, org.alice.apis.stage.BaseSkinTone nextValue) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.apis.stage.BaseSkinTone > state, org.alice.apis.stage.BaseSkinTone prevValue, org.alice.apis.stage.BaseSkinTone nextValue, boolean isAdjusting ) {
 			}
-			public void changed(org.alice.apis.stage.BaseSkinTone prevValue, org.alice.apis.stage.BaseSkinTone nextValue) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.apis.stage.BaseSkinTone > state, org.alice.apis.stage.BaseSkinTone prevValue, org.alice.apis.stage.BaseSkinTone nextValue, boolean isAdjusting ) {
 				updatePerson();
 				tabbedPane.repaint();
 			}
@@ -161,9 +161,10 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 
 	private java.util.Map<org.alice.apis.stage.LifeStage, org.alice.apis.stage.Person> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab> tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab>() {
-		public void changing( edu.cmu.cs.dennisc.croquet.PredeterminedTab prevValue, edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue ) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.croquet.PredeterminedTab > state, edu.cmu.cs.dennisc.croquet.PredeterminedTab prevValue, edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue, boolean isAdjusting ) {
 		}
-		public void changed( edu.cmu.cs.dennisc.croquet.PredeterminedTab prevValue, edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue ) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.croquet.PredeterminedTab > state, edu.cmu.cs.dennisc.croquet.PredeterminedTab prevValue, edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue, boolean isAdjusting ) {
+			//todo
 		}
 	};
 	

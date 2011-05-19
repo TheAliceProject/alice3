@@ -156,12 +156,14 @@ public class BooleanState extends State< Boolean > {
 		if( value != this.value ) {
 			//this.buttonModel.removeItemListener(itemListener);
 
+			boolean isAdjusting = false;
+			
 			Boolean prevValue = this.value;
 			Boolean nextValue = value;
-			this.fireChanging( prevValue, nextValue );
+			this.fireChanging( prevValue, nextValue, isAdjusting );
 			this.buttonModel.setSelected( value );
 			this.value = value;
-			this.fireChanged( prevValue, nextValue );
+			this.fireChanged( prevValue, nextValue, isAdjusting );
 
 			//this.buttonModel.addItemListener(itemListener);
 			this.updateNameAndIcon();

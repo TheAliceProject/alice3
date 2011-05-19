@@ -47,23 +47,23 @@ package org.alice.ide.common;
  */
 public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-		public void changing( org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 			SelectedFieldExpressionPane.this.handleCodeChanged( nextValue != null ? nextValue.getCode() : null );
 		}
 	};
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
-		public void changing(edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
 		}
-		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
 			SelectedFieldExpressionPane.this.handleAccessibleChanged( nextValue );
 		}
 	};
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField > partSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField >() {
-		public void changing( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField nextValue ) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField nextValue, boolean isAdjusting ) {
 		}
-		public void changed( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField nextValue ) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField nextValue, boolean isAdjusting ) {
 			SelectedFieldExpressionPane.this.handlePartChanged( nextValue );
 		}
 	};
@@ -75,9 +75,9 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		}
 	};
 	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > valueObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-		public void changing(Boolean prevValue, Boolean nextValue) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< java.lang.Boolean > state, java.lang.Boolean prevValue, java.lang.Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed(Boolean prevValue, Boolean nextValue) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< java.lang.Boolean > state, java.lang.Boolean prevValue, java.lang.Boolean nextValue, boolean isAdjusting ) {
 			SelectedFieldExpressionPane.this.updateLabel();
 		}
 	};

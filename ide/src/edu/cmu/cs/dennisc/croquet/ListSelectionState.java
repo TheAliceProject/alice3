@@ -218,7 +218,8 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
 				//pass
 			} else {
-				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue );
+				boolean isAdjusting = false;
+				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
 
 				this.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.listSelectionModel.getValueIsAdjusting() );
 
@@ -232,7 +233,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 					//						assert popContext == childContext;
 				}
 
-				this.fireChanged( this.prevAtomicSelectedValue, nextSelectedValue );
+				this.fireChanged( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
 				this.mostRecentEvent = null;
 				this.mostRecentViewController = null;
 			}

@@ -181,10 +181,9 @@ public class CameraMarkerTracker implements PropertyListener, edu.cmu.cs.dennisc
 		this.sceneEditor.switchToPerspectiveCamera();
 	}
 	
-	public void changing( org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue ) {
+	public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.stageide.sceneeditor.View > state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
 	}
-	public void changed(org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue)
-	{
+	public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.stageide.sceneeditor.View > state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
 		if (this.perspectiveCamera == null || this.orthographicCamera == null)
 		{
 			return;

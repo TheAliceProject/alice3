@@ -101,10 +101,11 @@ public abstract class BoundedRangeIntegerState extends State< Integer > {
 	public void setValue( Integer value ) {
 		if( value != this.previousValue ) {
 			Integer prevValue = this.previousValue;
-			this.fireChanging( prevValue, value );
+			boolean isAdjusting = false;
+			this.fireChanging( prevValue, value, isAdjusting );
 			this.boundedRangeModel.setValue( value );
 			this.previousValue = value;
-			this.fireChanged( prevValue, value );
+			this.fireChanged( prevValue, value, isAdjusting );
 		}
 	}
 

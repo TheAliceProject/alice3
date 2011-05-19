@@ -191,10 +191,9 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		this.updateSample();
 
 		edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String > valueObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String >() {
-			
-			public void changing(String prevValue, String nextValue) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 			}
-			public void changed( java.lang.String prevValue, java.lang.String nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 //				if( e.getValueIsAdjusting() ) {
 //					//pass
 //				} else {
@@ -235,9 +234,9 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 			super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "74c18933-e5d7-4c48-ad88-46a7a83ff12d" ), false );
 			this.setTextForBothTrueAndFalse( "constrain to text" );
 			this.addValueObserver( new ValueObserver<Boolean>() {
-				public void changing( Boolean prevValue, Boolean nextValue ) {
+				public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				}
-				public void changed( Boolean prevValue, Boolean nextValue ) {
+				public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 					CreateTextPane.this.instanceNameVC.setEditable( nextValue == false );
 				}
 			} );

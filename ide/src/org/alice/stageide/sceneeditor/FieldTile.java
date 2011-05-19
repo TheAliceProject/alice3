@@ -81,9 +81,9 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 	};
 	
 	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > valueObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-		public void changing(Boolean prevValue, Boolean nextValue) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed(Boolean prevValue, Boolean nextValue) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			FieldTile.this.updateLabel();
 		}
 	};

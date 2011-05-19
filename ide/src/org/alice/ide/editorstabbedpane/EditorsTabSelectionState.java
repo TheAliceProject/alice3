@@ -458,16 +458,16 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 			//button.setBorder( new AttentionGrabbingBorder( button.getAwtComponent() ) );
 		}
 		private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<CodeComposite> selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<CodeComposite>() {
-			public void changing( org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 				DropDownPanel.this.updateOperation( nextValue );
 			}
 		};
 		private edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean> isEmphasizingClassesObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean>() {
-			public void changing( Boolean prevValue, Boolean nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( Boolean prevValue, Boolean nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				DropDownPanel.this.setVisible( nextValue );
 			}
 		};

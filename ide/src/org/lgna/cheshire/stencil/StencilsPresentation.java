@@ -224,17 +224,17 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		this.stencil = new Stencil( application.getFrame(), scrollingRequiredRenderer, menuPolicy );
 		this.isInterceptingEvents.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-			public void changing( Boolean prevValue, Boolean nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( Boolean prevValue, Boolean nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				StencilsPresentation.this.stencil.setEventInterceptEnabled( nextValue );
 			}
 		} );
 
 		this.isPaintingStencil.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-			public void changing( Boolean prevValue, Boolean nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( Boolean prevValue, Boolean nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				StencilsPresentation.this.stencil.revalidateAndRepaint();
 				StencilsPresentation.this.isInterceptingEvents.setValue( nextValue );
 				StencilsPresentation.this.isInterceptingEvents.setEnabled( nextValue );
@@ -242,9 +242,9 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		} );
 
 		this.isPlayingSounds.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-			public void changing( Boolean prevValue, Boolean nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( Boolean prevValue, Boolean nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				org.lgna.cheshire.SoundCache.setEnabled( nextValue );
 			}
 		} );

@@ -99,9 +99,9 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 			}
 		};
 		private edu.cmu.cs.dennisc.croquet.StringState.ValueObserver< String > filterObserver = new edu.cmu.cs.dennisc.croquet.StringState.ValueObserver< String >() {
-			public void changing( String prevValue, String nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 			}
-			public void changed( String prevValue, String nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 				DirectoryView.this.handleFilterChanged( nextValue );
 			}
 		};
@@ -234,9 +234,9 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 		filterTextField.getAwtComponent().setTextForBlankCondition( "search entire gallery" );
 		filterTextField.scaleFont( 1.5f );
 		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-			public void changing( Boolean prevValue, Boolean nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( Boolean prevValue, Boolean nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				javax.swing.SwingUtilities.invokeLater( new Runnable() {
 					public void run() {
 						filterTextField.requestFocus();

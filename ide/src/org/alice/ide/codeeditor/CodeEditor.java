@@ -143,16 +143,16 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		return rv;
 	}
 	private edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean> typeFeedbackObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean>() {
-		public void changing(Boolean prevValue, Boolean nextValue) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed(Boolean prevValue, Boolean nextValue) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			CodeEditor.this.refresh();
 		}
 	};
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.formatter.Formatter > formatterSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.formatter.Formatter >() {
-		public void changing( org.alice.ide.formatter.Formatter prevValue, org.alice.ide.formatter.Formatter nextValue ) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.formatter.Formatter > state, org.alice.ide.formatter.Formatter prevValue, org.alice.ide.formatter.Formatter nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.alice.ide.formatter.Formatter prevValue, org.alice.ide.formatter.Formatter nextValue ) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.formatter.Formatter > state, org.alice.ide.formatter.Formatter prevValue, org.alice.ide.formatter.Formatter nextValue, boolean isAdjusting ) {
 			//CodeEditor.this.refresh();
 		}
 	};

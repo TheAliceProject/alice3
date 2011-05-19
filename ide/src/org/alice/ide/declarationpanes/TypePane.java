@@ -52,9 +52,9 @@ class IsArrayState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 		this.isArrayProperty = isArrayProperty;
 		this.setTextForBothTrueAndFalse( "is array" );
 		this.addValueObserver( new ValueObserver< Boolean >() {
-			public void changing( Boolean prevValue, Boolean nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( Boolean prevValue, Boolean nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				IsArrayState.this.isArrayProperty.setValue( nextValue );
 			}
 		} );
