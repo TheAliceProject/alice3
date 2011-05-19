@@ -46,12 +46,6 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class BooleanState extends State< Boolean > {
-	public static interface ValueObserver {
-		public void changing( boolean nextValue );
-		public void changed( boolean nextValue );
-	};
-
-	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private boolean value;
 	private String trueText;
 	private String falseText;
@@ -65,13 +59,7 @@ public class BooleanState extends State< Boolean > {
 	};
 	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 		public void itemStateChanged( java.awt.event.ItemEvent e ) {
-			if( Manager.isInTheMidstOfUndoOrRedo() ) {
-				//pass
-			} else {
-				if( BooleanState.this.isEditCommitDesired() ) {
-					BooleanState.this.commitEdit( e.getStateChange() == java.awt.event.ItemEvent.SELECTED, new org.lgna.croquet.triggers.ItemEventTrigger( e ) );
-				}
-			}
+			org.lgna.croquet.steps.TransactionManager.handleItemStateChanged( BooleanState.this, e );
 		}
 	};
 
@@ -110,37 +98,21 @@ public class BooleanState extends State< Boolean > {
 		return this.action;
 	}
 
-	public void addValueObserver( ValueObserver valueObserver ) {
-		this.valueObservers.add( valueObserver );
-	}
-	public void addAndInvokeValueObserver( ValueObserver valueObserver ) {
-		this.addValueObserver( valueObserver );
-		valueObserver.changed( this.getValue() );
-	}
-	public void removeValueObserver( ValueObserver valueObserver ) {
-		this.valueObservers.remove( valueObserver );
-	}
-
-	private void commitEdit( boolean value, org.lgna.croquet.Trigger trigger ) {
-		org.lgna.croquet.steps.BooleanStateChangeStep step = org.lgna.croquet.steps.TransactionManager.addBooleanStateChangeStep( this, trigger );
-		step.commitAndInvokeDo( new org.lgna.croquet.edits.BooleanStateEdit( step, value ) );
-		//		TransactionManager.addBooleanStateChangeStep( this );
-		//		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
-		//		childContext.commitAndInvokeDo( booleanStateEdit );
-		//		ModelContext< ? > popContext = ContextManager.popContext();
-		//		assert popContext == childContext;
-	}
+//	private void commitEdit( boolean value, org.lgna.croquet.Trigger trigger ) {
+//		org.lgna.croquet.steps.BooleanStateChangeStep step = org.lgna.croquet.steps.TransactionManager.addBooleanStateChangeStep( this, trigger );
+//		step.commitAndInvokeDo( new org.lgna.croquet.edits.BooleanStateEdit( step, value ) );
+//		//		TransactionManager.addBooleanStateChangeStep( this );
+//		//		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
+//		//		childContext.commitAndInvokeDo( booleanStateEdit );
+//		//		ModelContext< ? > popContext = ContextManager.popContext();
+//		//		assert popContext == childContext;
+//	}
 
 	@Override
 	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep< ? > step, Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		assert originalEdit instanceof org.lgna.croquet.edits.BooleanStateEdit;
 		org.lgna.croquet.edits.BooleanStateEdit booleanStateEdit = (org.lgna.croquet.edits.BooleanStateEdit)originalEdit;
-		this.commitEdit( booleanStateEdit.getNextValue(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
-		return booleanStateEdit;
-	}
-
-	protected boolean isEditCommitDesired() {
-		return true;
+		return org.lgna.croquet.steps.TransactionManager.commitEdit( this, booleanStateEdit.getNextValue(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 	}
 
 	@Override
@@ -184,14 +156,12 @@ public class BooleanState extends State< Boolean > {
 		if( value != this.value ) {
 			//this.buttonModel.removeItemListener(itemListener);
 
-			for( ValueObserver valueObserver : this.valueObservers ) {
-				valueObserver.changing( value );
-			}
+			Boolean prevValue = this.value;
+			Boolean nextValue = value;
+			this.fireChanging( prevValue, nextValue );
 			this.buttonModel.setSelected( value );
 			this.value = value;
-			for( ValueObserver valueObserver : this.valueObservers ) {
-				valueObserver.changed( value );
-			}
+			this.fireChanged( prevValue, nextValue );
 
 			//this.buttonModel.addItemListener(itemListener);
 			this.updateNameAndIcon();

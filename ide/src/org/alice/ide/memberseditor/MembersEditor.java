@@ -237,10 +237,10 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 		this.addComponent( instancePanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		this.addComponent( cardPanel, Constraint.CENTER );
 	}
-	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isAlwaysAvailableObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-		public void changing( boolean nextValue ) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > isAlwaysAvailableObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
+		public void changing( Boolean prevValue, Boolean nextValue ) {
 		}
-		public void changed( boolean nextValue ) {
+		public void changed( Boolean prevValue, Boolean nextValue ) {
 			MembersEditor.this.cardPanel.show( MembersEditor.this.getKey( nextValue ) );
 		}
 	};

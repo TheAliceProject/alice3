@@ -235,18 +235,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	};
 	
-	private BooleanState.ValueObserver showSnapGridObserver = new BooleanState.ValueObserver() {
-		public void changing(boolean nextValue) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean> showSnapGridObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean>() {
+		public void changing(Boolean prevValue, Boolean nextValue) {
 		}
-		public void changed(boolean nextValue) {
+		public void changed(Boolean prevValue, Boolean nextValue) {
 			MoveAndTurnSceneEditor.this.setShowSnapGrid(nextValue);	
 		}
 	};
 	
-	private BooleanState.ValueObserver snapEnabledObserver = new BooleanState.ValueObserver() {
-        public void changing(boolean nextValue) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean> snapEnabledObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean>() {
+        public void changing(Boolean prevValue, Boolean nextValue) {
         }
-        public void changed(boolean nextValue) {
+        public void changed(Boolean prevValue, Boolean nextValue) {
             if (MoveAndTurnSceneEditor.this.snapState.isShowSnapGridEnabled())
             {
                 MoveAndTurnSceneEditor.this.setShowSnapGrid(nextValue);
@@ -1045,10 +1045,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			
 			PrintUtilities.println( "todo: addAndInvokeValueObserver" );
 			this.splitPane.setDividerSize( 0 );
-			isSceneEditorExpandedState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-				public void changing(boolean nextValue) {
+			isSceneEditorExpandedState.addValueObserver( new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
+				public void changing(Boolean prevValue, Boolean nextValue) {
 				}
-				public void changed(boolean nextValue) {
+				public void changed(Boolean prevValue, Boolean nextValue) {
 					handleExpandContractChange( nextValue );
 				}
 			} );

@@ -154,10 +154,10 @@ public class UbiquitousPane extends org.lgna.croquet.components.View {
 			UbiquitousPane.this.refresh();
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isAlwaysShowingBlocksObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-		public void changing( boolean nextValue ) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > isAlwaysShowingBlocksObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
+		public void changing( Boolean prevValue, Boolean nextValue ) {
 		}
-		public void changed( boolean nextValue ) {
+		public void changed( Boolean prevValue, Boolean nextValue ) {
 			UbiquitousPane.this.removeAllComponents();
 			UbiquitousPane.this.getAwtComponent().setLayout( UbiquitousPane.this.createLayoutManager( UbiquitousPane.this.getAwtComponent() ) );
 			UbiquitousPane.this.addComponents();

@@ -90,11 +90,11 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 	
 	private boolean isInitializing = false;
 	
-	private BooleanState.ValueObserver snapStateValueObserver = new BooleanState.ValueObserver() {
-		public void changing(boolean nextValue) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > snapStateValueObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
+		public void changing(Boolean prevValue, Boolean nextValue) {
 			
 		}
-		public void changed(boolean nextValue) {
+		public void changed(Boolean prevValue, Boolean nextValue) {
 			SnapControlPanel.this.updateUIFromSnapState();
 		}
 	};

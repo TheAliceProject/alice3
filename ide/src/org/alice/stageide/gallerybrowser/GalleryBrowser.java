@@ -228,10 +228,10 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 		filterTextField.setMaximumSizeClampedToPreferredSize( true );
 		filterTextField.getAwtComponent().setTextForBlankCondition( "search entire gallery" );
 		filterTextField.scaleFont( 1.5f );
-		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-			public void changing(boolean nextValue) {
+		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
+			public void changing(Boolean prevValue, Boolean nextValue) {
 			}
-			public void changed(boolean nextValue) {
+			public void changed(Boolean prevValue, Boolean nextValue) {
 				javax.swing.SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						filterTextField.requestFocus();

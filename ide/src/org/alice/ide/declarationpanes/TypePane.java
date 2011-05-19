@@ -51,10 +51,10 @@ class IsArrayState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ffa22de2-eb3e-46d2-8ccc-ada365f29205" ), isArrayProperty.getValue() );
 		this.isArrayProperty = isArrayProperty;
 		this.setTextForBothTrueAndFalse( "is array" );
-		this.addValueObserver( new ValueObserver() {
-			public void changing( boolean nextValue ) {
+		this.addValueObserver( new ValueObserver< Boolean >() {
+			public void changing( Boolean prevValue, Boolean nextValue ) {
 			}
-			public void changed( boolean nextValue ) {
+			public void changed( Boolean prevValue, Boolean nextValue ) {
 				IsArrayState.this.isArrayProperty.setValue( nextValue );
 			}
 		} );

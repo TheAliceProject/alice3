@@ -73,6 +73,10 @@ public abstract class Model implements RuntimeResolver< Model > {
 	public java.util.UUID getId() {
 		return this.id;
 	}
+
+	public boolean isToBeIgnored() {
+		return false;
+	}
 	
 	protected static String getLocalizedText( Class<?> cls, String subKey ) {
 		String bundleName = cls.getPackage().getName() + ".croquet";

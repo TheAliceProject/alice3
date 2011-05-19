@@ -231,10 +231,10 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		public ConstrainInstanceNameToTextBooleanStateOperation() {
 			super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "74c18933-e5d7-4c48-ad88-46a7a83ff12d" ), false );
 			this.setTextForBothTrueAndFalse( "constrain to text" );
-			this.addValueObserver( new ValueObserver() {
-				public void changing( boolean nextValue ) {
+			this.addValueObserver( new ValueObserver<Boolean>() {
+				public void changing( Boolean prevValue, Boolean nextValue ) {
 				}
-				public void changed( boolean nextValue ) {
+				public void changed( Boolean prevValue, Boolean nextValue ) {
 					CreateTextPane.this.instanceNameVC.setEditable( nextValue == false );
 				}
 			} );

@@ -142,10 +142,10 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		rv.setLayout( new java.awt.BorderLayout() );
 		return rv;
 	}
-	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver typeFeedbackObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-		public void changing(boolean nextValue) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean> typeFeedbackObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean>() {
+		public void changing(Boolean prevValue, Boolean nextValue) {
 		}
-		public void changed(boolean nextValue) {
+		public void changed(Boolean prevValue, Boolean nextValue) {
 			CodeEditor.this.refresh();
 		}
 	};

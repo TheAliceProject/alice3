@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import org.lgna.croquet.components.JComponent;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -58,12 +56,12 @@ public class Manager {
 	public static Model findFirstAppropriateModel( java.util.UUID id ) {
 		java.util.Set< Model > models = lookupModels( id );
 		for( Model model : models ) {
-			for( JComponent<?> component : model.getComponents() ) {
+			for( org.lgna.croquet.components.JComponent<?> component : model.getComponents() ) {
 				if( component.getAwtComponent().isShowing() ) {
 					return model;
 				}
 			}
-			for( JComponent<?> component : model.getComponents() ) {
+			for( org.lgna.croquet.components.JComponent<?> component : model.getComponents() ) {
 				if( component.getAwtComponent().isVisible() ) {
 					return model;
 				}

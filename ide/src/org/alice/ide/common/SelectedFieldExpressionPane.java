@@ -68,10 +68,10 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 			SelectedFieldExpressionPane.this.updateLabel();
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver valueObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-		public void changing(boolean nextValue) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > valueObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
+		public void changing(Boolean prevValue, Boolean nextValue) {
 		}
-		public void changed(boolean nextValue) {
+		public void changed(Boolean prevValue, Boolean nextValue) {
 			SelectedFieldExpressionPane.this.updateLabel();
 		}
 	};

@@ -42,20 +42,50 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import org.lgna.croquet.edits.StateEdit;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class State<T> extends CompletionModel {
+	public static interface ValueObserver<T> {
+//		public void changing( T nextValue );
+//		public void changed( T nextValue );
+		public void changing( T prevValue, T nextValue );
+		public void changed( T prevValue, T nextValue );
+	};
+	private final java.util.List< ValueObserver<T> > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	
+
 	public State( Group group, java.util.UUID id ) {
 		super(group, id);
 	}
+	
+	public void addValueObserver( ValueObserver<T> valueObserver ) {
+		this.valueObservers.add( valueObserver );
+	}
+	public void addAndInvokeValueObserver( ValueObserver<T> valueObserver ) {
+		this.addValueObserver( valueObserver );
+		valueObserver.changed( null, this.getValue() );
+	}
+	public void removeValueObserver( ValueObserver<T> valueObserver ) {
+		this.valueObservers.remove( valueObserver );
+	}
+
+	protected void fireChanging( T prevValue, T nextValue ) {
+		for( ValueObserver<T> valueObserver : this.valueObservers ) {
+			valueObserver.changing( prevValue, nextValue );
+		}
+	}
+	protected void fireChanged( T prevValue, T nextValue ) {
+		for( ValueObserver<T> valueObserver : this.valueObservers ) {
+			valueObserver.changed( prevValue, nextValue );
+		}
+	}
+	
 	public abstract T getValue();
 	@Override
 	public boolean isAlreadyInState( Edit< ? > edit ) {
-		if( edit instanceof StateEdit ) {
-			StateEdit< ?, T > stateEdit = (StateEdit< ?, T >)edit;
+		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
+			org.lgna.croquet.edits.StateEdit< ?, T > stateEdit = (org.lgna.croquet.edits.StateEdit< ?, T >)edit;
 			T a = this.getValue();
 			T b = stateEdit.getNextValue();
 			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( a, b );
