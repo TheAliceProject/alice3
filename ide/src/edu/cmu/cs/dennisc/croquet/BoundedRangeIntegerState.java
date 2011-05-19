@@ -42,22 +42,14 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import org.lgna.croquet.components.Slider;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class BoundedRangeIntegerState extends State< Integer > {
-	public static interface ValueObserver {
-		//public void changing( int nextValue );
-		public void changed( int nextValue );
-	};
-
 	private int previousValue;
 	private javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
 	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 		private boolean previousValueIsAdjusting = false;
-
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
 			org.lgna.croquet.steps.TransactionManager.handleStateChanged( BoundedRangeIntegerState.this, e );
 		}
@@ -89,22 +81,6 @@ public abstract class BoundedRangeIntegerState extends State< Integer > {
 	@Override
 	protected void localize() {
 	}
-
-	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-
-	public void addValueObserver( ValueObserver valueObserver ) {
-		this.valueObservers.add( valueObserver );
-	}
-	public void removeValueObserver( ValueObserver valueObserver ) {
-		this.valueObservers.remove( valueObserver );
-	}
-
-	private void fireValueChanged( javax.swing.event.ChangeEvent e ) {
-		for( ValueObserver valueObserver : this.valueObservers ) {
-			valueObserver.changed( this.boundedRangeModel.getValue() );
-		}
-	}
-
 	public javax.swing.BoundedRangeModel getBoundedRangeModel() {
 		return this.boundedRangeModel;
 	}
@@ -123,10 +99,19 @@ public abstract class BoundedRangeIntegerState extends State< Integer > {
 		return this.boundedRangeModel.getValue();
 	}
 	public void setValue( Integer value ) {
-		this.boundedRangeModel.setValue( value );
+		if( value != this.previousValue ) {
+			Integer prevValue = this.previousValue;
+			this.fireChanging( prevValue, value );
+			this.boundedRangeModel.setValue( value );
+			this.previousValue = value;
+			this.fireChanged( prevValue, value );
+		}
 	}
 
-	public Slider createSlider() {
-		return new Slider( this );
+	public org.lgna.croquet.components.Slider createSlider() {
+		return new org.lgna.croquet.components.Slider( this );
+	}
+	public org.lgna.croquet.components.Spinner createSpinner() {
+		return new org.lgna.croquet.components.Spinner( this );
 	}
 }

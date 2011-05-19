@@ -96,8 +96,11 @@ public class StringState extends State<String> {
 			try {
 				javax.swing.text.Document document = e.getDocument();
 				String nextValue = document.getText( 0, document.getLength() );
-				org.lgna.croquet.steps.TransactionManager.handleDocumentEvent( StringState.this, e, StringState.this.previousValue, nextValue );
-				fireChanged( StringState.this.previousValue, nextValue );
+				String prevValue = StringState.this.previousValue;
+				fireChanging( prevValue, nextValue );
+				org.lgna.croquet.steps.TransactionManager.handleDocumentEvent( StringState.this, e, prevValue, nextValue );
+				StringState.this.previousValue = nextValue;
+				fireChanged( prevValue, nextValue );
 			} catch( javax.swing.text.BadLocationException ble ) {
 				throw new RuntimeException( ble );
 			}

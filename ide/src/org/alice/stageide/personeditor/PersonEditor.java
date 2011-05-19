@@ -78,9 +78,9 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 			}
 		} );
 		org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<String>() {
-			public void changing( java.lang.String prevValue, java.lang.String nextValue ) {
+			public void changing( String prevValue, String nextValue ) {
 			}
-			public void changed( java.lang.String prevValue, java.lang.String nextValue ) {
+			public void changed( String prevValue, String nextValue ) {
 				handleCataclysm( false, false, true );
 			}
 		} );
@@ -99,8 +99,10 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 				updatePerson();
 			}
 		} );
-		org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState.ValueObserver() {
-			public void changed(int nextValue) {
+		org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState.ValueObserver<Integer>() {
+			public void changing( Integer prevValue, Integer nextValue ) {
+			}
+			public void changed( Integer prevValue, Integer nextValue ) {
 				updatePerson();
 			}
 		} );
