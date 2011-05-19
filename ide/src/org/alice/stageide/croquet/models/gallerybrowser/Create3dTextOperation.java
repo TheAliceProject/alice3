@@ -190,8 +190,11 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		this.sample = new org.lgna.croquet.components.Label( "AaBbYyZz", 1.2f );
 		this.updateSample();
 
-		edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String > valueObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String >() { 
-			public void changed( String nextValue ) {
+		edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String > valueObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String >() {
+			
+			public void changing(String prevValue, String nextValue) {
+			}
+			public void changed( java.lang.String prevValue, java.lang.String nextValue ) {
 //				if( e.getValueIsAdjusting() ) {
 //					//pass
 //				} else {

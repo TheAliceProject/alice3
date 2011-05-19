@@ -237,7 +237,9 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 	}
 	
 	private ListSelectionState.ValueObserver< Card > selectionObserver = new ListSelectionState.ValueObserver< Card >() {
-		public void changed( WizardDialogOperation.Card nextValue ) {
+		public void changing( edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card prevValue, edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card nextValue ) {
+		}
+		public void changed( edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card prevValue, edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card nextValue ) {
 			WizardDialogOperation.this.handleCardChange( nextValue );
 		}
 	};

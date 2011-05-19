@@ -42,17 +42,6 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import org.lgna.croquet.components.AbstractTabbedPane;
-import org.lgna.croquet.components.DefaultRadioButtons;
-import org.lgna.croquet.components.ItemSelectable;
-import org.lgna.croquet.components.JComponent;
-import org.lgna.croquet.components.List;
-import org.lgna.croquet.components.MutableList;
-import org.lgna.croquet.components.ScrollPane;
-import org.lgna.croquet.components.ViewController;
-import org.lgna.croquet.edits.ListSelectionStateEdit;
-import org.lgna.croquet.steps.TransactionManager;
-
 /*package-private*/ class ComboBoxModel<E> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	private final ListSelectionState< E > listSelectionState;
 	public ComboBoxModel( ListSelectionState< E > listSelectionState ) {
@@ -81,15 +70,15 @@ import org.lgna.croquet.steps.TransactionManager;
 	}
 	
 	@Override
-	protected void fireContentsChanged( java.lang.Object source, int index0, int index1 ) {
+	protected void fireContentsChanged( Object source, int index0, int index1 ) {
 		super.fireContentsChanged( source, index0, index1 );
 	}
 	@Override
-	protected void fireIntervalAdded( java.lang.Object source, int index0, int index1 ) {
+	protected void fireIntervalAdded( Object source, int index0, int index1 ) {
 		super.fireIntervalAdded( source, index0, index1 );
 	}
 	@Override
-	protected void fireIntervalRemoved( java.lang.Object source, int index0, int index1 ) {
+	protected void fireIntervalRemoved( Object source, int index0, int index1 ) {
 		super.fireIntervalRemoved( source, index0, index1 );
 	}
 }
@@ -182,14 +171,14 @@ import org.lgna.croquet.steps.TransactionManager;
  * @author Dennis Cosgrove
  */
 public abstract class ListSelectionState<E> extends State< E > implements Iterable< E >/*, java.util.List<E>*/{
-	public static interface ValueObserver<E> {
-		public void changed( E nextValue );
-	}
+//	public static interface ValueObserver<E> {
+//		public void changed( E nextValue );
+//	}
 
 	private final Codec< E > codec;
 	private final ComboBoxModel< E > comboBoxModel = new ComboBoxModel< E >( this );
 	private final ListSelectionModel< E > listSelectionModel = new ListSelectionModel< E >( this );
-	private final java.util.List< ValueObserver< E > > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+//	private final java.util.List< ValueObserver< E > > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	
 	/*package-private*/ void setSelectionIndexFromSwing( int index ) {
 		this.pushAtomic();
@@ -205,9 +194,9 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	private int index = -1;
 //	private int indexOfLastPerform = -1;
 
-	private ViewController< ?, ? > mostRecentViewController;
+	private org.lgna.croquet.components.ViewController< ?, ? > mostRecentViewController;
 	private java.awt.event.MouseEvent mostRecentEvent;
-	public void setMostRecentEventAndViewController( java.awt.event.MouseEvent mostRecentEvent, ViewController< ?, ? > mostRecentViewController ) {
+	public void setMostRecentEventAndViewController( java.awt.event.MouseEvent mostRecentEvent, org.lgna.croquet.components.ViewController< ?, ? > mostRecentViewController ) {
 		this.mostRecentEvent = mostRecentEvent;
 		this.mostRecentViewController = mostRecentViewController;
 	}
@@ -234,6 +223,8 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
 				//pass
 			} else {
+				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue );
+
 				this.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.listSelectionModel.getValueIsAdjusting() );
 
 				if( Manager.isInTheMidstOfUndoOrRedo() ) {
@@ -246,7 +237,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 					//						assert popContext == childContext;
 				}
 
-				this.fireValueChanged( nextSelectedValue );
+				this.fireChanged( this.prevAtomicSelectedValue, nextSelectedValue );
 				this.mostRecentEvent = null;
 				this.mostRecentViewController = null;
 			}
@@ -307,21 +298,21 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		return this.prepModel;
 	}
 
-	public void addValueObserver( ValueObserver< E > valueObserver ) {
-		this.valueObservers.add( valueObserver );
-	}
-	public void addAndInvokeValueObserver( ValueObserver< E > valueObserver ) {
-		this.addValueObserver( valueObserver );
-		valueObserver.changed( this.getSelectedItem() );
-	}
-	public void removeValueObserver( ValueObserver< E > valueObserver ) {
-		this.valueObservers.remove( valueObserver );
-	}
-	protected void fireValueChanged( E nextValue ) {
-		for( ValueObserver< E > valueObserver : this.valueObservers ) {
-			valueObserver.changed( nextValue );
-		}
-	}
+//	public void addValueObserver( ValueObserver< E > valueObserver ) {
+//		this.valueObservers.add( valueObserver );
+//	}
+//	public void addAndInvokeValueObserver( ValueObserver< E > valueObserver ) {
+//		this.addValueObserver( valueObserver );
+//		valueObserver.changed( this.getSelectedItem() );
+//	}
+//	public void removeValueObserver( ValueObserver< E > valueObserver ) {
+//		this.valueObservers.remove( valueObserver );
+//	}
+//	protected void fireValueChanged( E nextValue ) {
+//		for( ValueObserver< E > valueObserver : this.valueObservers ) {
+//			valueObserver.changed( nextValue );
+//		}
+//	}
 
 	public javax.swing.Action createActionForItem( final E item ) {
 		javax.swing.Action action = new javax.swing.AbstractAction() {
@@ -524,8 +515,8 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 	
 	protected void commitEdit( E prevValue, E nextValue, org.lgna.croquet.Trigger trigger ) {
-		org.lgna.croquet.steps.ListSelectionStateChangeStep< E > step = TransactionManager.addListSelectionStateChangeStep( this, trigger );
-		ListSelectionStateEdit< E > edit = new ListSelectionStateEdit< E >( step, prevValue, nextValue );
+		org.lgna.croquet.steps.ListSelectionStateChangeStep< E > step = org.lgna.croquet.steps.TransactionManager.addListSelectionStateChangeStep( this, trigger );
+		org.lgna.croquet.edits.ListSelectionStateEdit< E > edit = new org.lgna.croquet.edits.ListSelectionStateEdit< E >( step, prevValue, nextValue );
 		step.commitAndInvokeDo( edit );
 //		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
 //		childContext.commitAndInvokeDo( listSelectionStateEdit );
@@ -535,16 +526,16 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 
 	@Override
 	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		assert originalEdit instanceof ListSelectionStateEdit;
-		ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)originalEdit;
+		assert originalEdit instanceof org.lgna.croquet.edits.ListSelectionStateEdit;
+		org.lgna.croquet.edits.ListSelectionStateEdit< E > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< E >)originalEdit;
 		this.commitEdit( listSelectionStateEdit.getPreviousValue(), listSelectionStateEdit.getNextValue(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 		return listSelectionStateEdit;
 	}
 
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		if( edit instanceof ListSelectionStateEdit ) {
-			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		if( edit instanceof org.lgna.croquet.edits.ListSelectionStateEdit ) {
+			org.lgna.croquet.edits.ListSelectionStateEdit< E > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< E >)edit;
 			rv.append( "Select " );
 			rv.append( "<strong>" );
 			this.codec.appendRepresentation( rv, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
@@ -553,24 +544,24 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		return rv;
 	}
 	@Override
-	protected java.lang.StringBuilder updateTutorialTransactionTitle( java.lang.StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 	}
-	public List< E > createList() {
-		return new List< E >( this );
+	public org.lgna.croquet.components.List< E > createList() {
+		return new org.lgna.croquet.components.List< E >( this );
 	}
-	public DefaultRadioButtons< E > createVerticalDefaultRadioButtons() {
-		return new DefaultRadioButtons< E >( this, true );
+	public org.lgna.croquet.components.DefaultRadioButtons< E > createVerticalDefaultRadioButtons() {
+		return new org.lgna.croquet.components.DefaultRadioButtons< E >( this, true );
 	}
-	public DefaultRadioButtons< E > createHorizontalDefaultRadioButtons() {
-		return new DefaultRadioButtons< E >( this, false );
+	public org.lgna.croquet.components.DefaultRadioButtons< E > createHorizontalDefaultRadioButtons() {
+		return new org.lgna.croquet.components.DefaultRadioButtons< E >( this, false );
 	}
-	public MutableList< E > createMutableList( MutableList.Factory< E > factory ) {
-		return new MutableList< E >( this, factory );
+	public org.lgna.croquet.components.MutableList< E > createMutableList( org.lgna.croquet.components.MutableList.Factory< E > factory ) {
+		return new org.lgna.croquet.components.MutableList< E >( this, factory );
 	}
 
 	public TrackableShape getTrackableShapeFor( E item ) {
-		ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( ItemSelectable.class );
+		org.lgna.croquet.components.ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( org.lgna.croquet.components.ItemSelectable.class );
 		if( itemSelectable != null ) {
 			return itemSelectable.getTrackableShapeFor( item );
 		} else {

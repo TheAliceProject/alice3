@@ -47,12 +47,16 @@ package org.alice.ide.memberseditor;
  */
 public abstract class MembersContentPanel extends org.lgna.croquet.components.PageAxisPanel {
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
-		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+		public void changing(edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+		}
+		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
 			MembersContentPanel.this.handleAccessibleSelection( nextValue );
 		}
 	};
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField> partSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField>() {
-		public void changed(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField nextValue) {
+		public void changing( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField nextValue ) {
+		}
+		public void changed( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField nextValue ) {
 			MembersContentPanel.this.handlePartSelection( nextValue );
 		}
 	};

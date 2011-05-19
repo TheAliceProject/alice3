@@ -458,7 +458,9 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 			//button.setBorder( new AttentionGrabbingBorder( button.getAwtComponent() ) );
 		}
 		private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<CodeComposite> selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<CodeComposite>() {
-			public void changed(CodeComposite nextValue) {
+			public void changing( org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
+			}
+			public void changed( org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
 				DropDownPanel.this.updateOperation( nextValue );
 			}
 		};

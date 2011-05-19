@@ -150,7 +150,9 @@ public class UbiquitousPane extends org.lgna.croquet.components.View {
 	private TransientStatementsWrapper transientStatementsWrapper = new TransientStatementsWrapper();
 
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-		public void changed(org.alice.ide.editorstabbedpane.CodeComposite nextValue) {
+		public void changing( org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
+		}
+		public void changed( org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
 			UbiquitousPane.this.refresh();
 		}
 	};

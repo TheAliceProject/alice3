@@ -194,8 +194,9 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 	    this.addNameAndControllerToPanel(propertyPair.label, propertyPair.controller.getPanel(), panel, index);
 	}
 	
-	public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) 
-	{
+	public void changing( edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue ) {
+	}
+	public void changed( edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue ) {
 		this.selectedField = null;
 		this.selectedObject = null;
 		if( nextValue instanceof AbstractField ) {

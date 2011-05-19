@@ -98,7 +98,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		//initialize locale
 		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< java.util.Locale >() {
-			public void changed( java.util.Locale nextValue ) {
+			public void changing( java.util.Locale prevValue, java.util.Locale nextValue ) {
+			}
+			public void changed( java.util.Locale prevValue, java.util.Locale nextValue ) {
 				edu.cmu.cs.dennisc.croquet.Application.getSingleton().setLocale( nextValue );
 			}
 		} );
@@ -142,7 +144,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 
 		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-			public void changed( org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
+			public void changing( org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
+			}
+			public void changed( org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue ) {
 				refreshAccessibles();
 			}
 		} );
@@ -475,7 +479,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, edu.cmu.cs.dennisc.alice.ast.Accessible > mapCodeToAccessible = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
-		public void changed( edu.cmu.cs.dennisc.alice.ast.Accessible nextValue ) {
+		public void changing(edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+		}
+		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
 			if( nextValue != null ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractCode code = IDE.this.getFocusedCode();
 				if( code != null ) {

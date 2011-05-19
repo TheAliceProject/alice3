@@ -150,7 +150,9 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		}
 	};
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.formatter.Formatter > formatterSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.formatter.Formatter >() {
-		public void changed(org.alice.ide.formatter.Formatter nextValue) {
+		public void changing( org.alice.ide.formatter.Formatter prevValue, org.alice.ide.formatter.Formatter nextValue ) {
+		}
+		public void changed( org.alice.ide.formatter.Formatter prevValue, org.alice.ide.formatter.Formatter nextValue ) {
 			//CodeEditor.this.refresh();
 		}
 	};
