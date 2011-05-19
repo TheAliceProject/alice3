@@ -150,7 +150,7 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 					//pass
 				} else {
 					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					g2.setPaint( edu.cmu.cs.dennisc.croquet.PaintUtilities.getDisabledTexturePaint() );
+					g2.setPaint( org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint() );
 					g2.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 				}
 			}

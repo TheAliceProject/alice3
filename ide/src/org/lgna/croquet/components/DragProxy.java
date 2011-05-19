@@ -42,7 +42,6 @@
  */
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.PaintUtilities;
 
 /**
  * @author Dennis Cosgrove

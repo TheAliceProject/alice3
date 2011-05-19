@@ -83,7 +83,7 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 						java.awt.Paint prevPaint = g2.getPaint();
 						try {
-							g2.setPaint( edu.cmu.cs.dennisc.croquet.PaintUtilities.getDisabledTexturePaint() );
+							g2.setPaint( org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint() );
 							g2.fill( g2.getClipBounds() );
 						} finally {
 							g2.setPaint( prevPaint );

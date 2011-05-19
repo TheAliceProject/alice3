@@ -40,10 +40,8 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.croquet.components;
 
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.Container;
 
 /**
  * @author Dennis Cosgrove

@@ -78,7 +78,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		if( this.isInScope() ) {
 			//pass
 		} else {
-			g2.setPaint(edu.cmu.cs.dennisc.croquet.PaintUtilities.getDisabledTexturePaint());
+			g2.setPaint(org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint());
 			this.fillBounds(g2);
 		}
 	}
