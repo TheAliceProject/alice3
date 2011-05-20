@@ -189,8 +189,8 @@ public class UbiquitousPane extends org.lgna.croquet.components.View {
 		this.addComponent( this.declareLocalTemplate );
 		this.addComponent( this.transientStatementsWrapper );
 		this.addComponent( this.returnStatementWrapper );
-//		this.addSliver();
-//		this.addComponent( this.commentTemplate );
+		this.addSliver();
+		this.addComponent( this.commentTemplate );
 	}
 	
 	private boolean isHorizontal() {

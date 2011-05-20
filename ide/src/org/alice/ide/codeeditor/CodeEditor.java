@@ -211,28 +211,34 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	public java.util.List< ? extends ExpressionPropertyDropDownPane > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		return org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
-			public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
-				if( expressionType.isAssignableFrom( type ) ) {
-					return true;
-				} else {
-					if( type.isArray() ) {
-						if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
-							return true;
-						} else {
-							for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava integerType : edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
-								if( expressionType == integerType ) {
-									return true;
+	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE ) {
+			java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			rv.add( this );
+			return rv;
+		} else {
+			return org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
+				public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
+					if( expressionType.isAssignableFrom( type ) ) {
+						return true;
+					} else {
+						if( type.isArray() ) {
+							if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
+								return true;
+							} else {
+								for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava integerType : edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
+									if( expressionType == integerType ) {
+										return true;
+									}
 								}
 							}
 						}
 					}
+					return false;
 				}
-				return false;
-			}
-		} );
+			} );
+		}
 	}
 	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source ) {
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {

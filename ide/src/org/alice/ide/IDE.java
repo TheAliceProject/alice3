@@ -42,8 +42,6 @@
  */
 package org.alice.ide;
 
-import org.alice.ide.ubiquitouspane.UbiquitousPane;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -569,7 +567,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private ComponentStencil stencil;
-	private java.util.List< ? extends org.lgna.croquet.components.Component< ? > > holes = null;
+	private java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > holes = null;
 	private org.lgna.croquet.components.DragComponent potentialDragSource;
 	private org.lgna.croquet.components.Component< ? > currentDropReceptorComponent;
 
@@ -607,7 +605,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					}
 
 					if( isFauxStencilDesired() ) {
-						for( org.lgna.croquet.components.Component< ? > component : IDE.this.holes ) {
+						for( edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor : IDE.this.holes ) {
+							org.lgna.croquet.components.Component< ? > component = (org.lgna.croquet.components.Component< ? >)dropReceptor;
 							java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this );
 							area.subtract( new java.awt.geom.Area( holeBounds ) );
 						}
@@ -620,7 +619,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 					g2.setStroke( THICK_STROKE );
 					final int BUFFER = 6;
-					for( org.lgna.croquet.components.Component< ? > component : IDE.this.holes ) {
+					for( edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor : IDE.this.holes ) {
+						org.lgna.croquet.components.Component< ? > component = (org.lgna.croquet.components.Component< ? >)dropReceptor;
 						java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this );
 						holeBounds.x -= BUFFER;
 						holeBounds.y -= BUFFER;

@@ -40,47 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models;
 
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CodeDragModel extends IdeDragModel {
-	public CodeDragModel( java.util.UUID id ) {
+public abstract class VoidTemplateDragModel extends TemplateDragModel {
+	public VoidTemplateDragModel( java.util.UUID id ) {
 		super( id );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getExpressionType();
 	@Override
-	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		if( ide != null ) {
-			org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
-			if( codeEditor != null ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > expressionType = this.getExpressionType();
-				if( expressionType != null ) {
-					return codeEditor.createListOfPotentialDropReceptors( expressionType );
-				} else {
-					if( dragSource.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
-						org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)dragSource.getSubject();
-						return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
-					} else {
-						java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-						rv.add( codeEditor );
-						//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
-						//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
-						//					rv.add( dropReceptor );
-						//				}
-						//			}
-						return rv;
-					}
-				}
-			} else {
-				//todo: investigate
-				return java.util.Collections.emptyList();
-			}
-		} else {
-			return java.util.Collections.emptyList();
-		}
+	protected final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getExpressionType() {
+		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 	}
 }
