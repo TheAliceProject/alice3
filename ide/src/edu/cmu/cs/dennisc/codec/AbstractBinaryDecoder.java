@@ -174,12 +174,12 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		}
 	}
 
-	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable() {
+	private <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Class<?>[] parameterTypes, Object[] args ) {
 		String clsName = this.decodeString();
 		if( clsName.length() > 0 ) {
 			try {
-				java.lang.reflect.Constructor< E > cnstrctr = CodecUtilities.getPublicDecodeConstructor( clsName );			
-				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
+				java.lang.reflect.Constructor< E > cnstrctr = CodecUtilities.getPublicDecodeConstructor( clsName, parameterTypes );
+				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, args );
 			} catch( NoSuchMethodException nsme ) {
 //				try {
 //					Class<E> cls = (Class<E>)Class.forName( clsName );
@@ -210,6 +210,57 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 			return null;
 		}
 	}
+
+	private static final Class<?>[] EMPTY_PARAMETER_TYPES = { BinaryDecoder.class };
+	private static final Class<?>[] OBJECT_PARAMETER_TYPES = { BinaryDecoder.class, Object.class };
+	
+	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable() {
+		return decodeBinaryEncodableAndDecodable( EMPTY_PARAMETER_TYPES, new Object[] { this } );
+	}
+	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Object context ) {
+		return decodeBinaryEncodableAndDecodable( OBJECT_PARAMETER_TYPES, new Object[] { this, context } );
+	}
+
+//	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable() {
+//		String clsName = this.decodeString();
+//		if( clsName.length() > 0 ) {
+//			try {
+//				java.lang.reflect.Constructor< E > cnstrctr = CodecUtilities.getPublicDecodeConstructor( clsName, EMPTY_PARAMETER_TYPES );			
+//				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
+//			} catch( NoSuchMethodException nsme ) {
+////				try {
+////					Class<E> cls = (Class<E>)Class.forName( clsName );
+////					java.lang.reflect.Constructor< E > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls );
+////					E rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+////					rv.decode( this );
+////					return rv;
+////				} catch( ClassNotFoundException cnfe ) {
+////					throw new RuntimeException( cnfe );
+////				}
+//				throw new RuntimeException( nsme );
+//			} catch( ClassNotFoundException cnfe ) {
+//				throw new RuntimeException( cnfe );
+//			}
+////			Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
+////			java.lang.reflect.Constructor< E > cnstrctr;
+////			E rv;
+////			try {
+////				cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class } );
+////				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
+////			} catch( NoSuchMethodException nsme ) {
+////				cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
+////				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+////				rv.decode( this );
+////			}
+////			return rv;
+//		} else {
+//			return null;
+//		}
+//	}
+	public <E extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( java.lang.Class< E > componentCls, Object context ) {
+		throw new RuntimeException( "todo" );
+	}
+	
 //	@Deprecated
 //	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Class< E > cls ) {
 //		E rv = decodeBinaryEncodableAndDecodable();

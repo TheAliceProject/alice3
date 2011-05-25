@@ -45,7 +45,7 @@ package org.alice.ide.operations.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.preferencesinputpane.PreferencesPanel> {
+public class PreferencesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 	@Deprecated
 	public static final edu.cmu.cs.dennisc.croquet.Group PREFERENCES_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" ), "PREFERENCES_GROUP" );
 	public PreferencesOperation() {
@@ -54,11 +54,11 @@ public class PreferencesOperation extends edu.cmu.cs.dennisc.croquet.InputDialog
 	}
 	private org.alice.ide.preferencesinputpane.PreferencesPanel preferencesInputPane = new org.alice.ide.preferencesinputpane.PreferencesPanel();
 	@Override
-	protected org.alice.ide.preferencesinputpane.PreferencesPanel prologue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.ide.preferencesinputpane.PreferencesPanel> context) {
+	protected org.alice.ide.preferencesinputpane.PreferencesPanel prologue(org.lgna.croquet.steps.InputDialogOperationStep context) {
 		return this.preferencesInputPane;
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.ide.preferencesinputpane.PreferencesPanel> context, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep context, boolean isOk) {
 		//todo
 		if( isOk ) {
 			context.finish();

@@ -49,13 +49,14 @@ public class CompositeEdit extends Edit {
 	private final Edit<?>[] edits;
 	private final boolean isDoToBeIgnored;
 	private final String presentation;
-	public CompositeEdit( Edit<?>[] edits, boolean isDoToBeIgnored, String presentation ) {
+	public CompositeEdit( org.lgna.croquet.steps.CompletionStep completionStep, Edit<?>[] edits, boolean isDoToBeIgnored, String presentation ) {
+		super( completionStep );
 		this.edits = edits;
 		this.isDoToBeIgnored = isDoToBeIgnored;
 		this.presentation = presentation;
 	}
-	public CompositeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public CompositeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 		this.edits = binaryDecoder.decodeBinaryEncodableAndDecodableArray( Edit.class );
 		this.isDoToBeIgnored = binaryDecoder.decodeBoolean();
 		this.presentation = binaryDecoder.decodeString();

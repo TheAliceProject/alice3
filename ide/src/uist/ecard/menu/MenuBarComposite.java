@@ -1,13 +1,13 @@
 package uist.ecard.menu;
 
-public class MenuBarModel extends edu.cmu.cs.dennisc.croquet.MenuBarModel {
+public class MenuBarComposite extends edu.cmu.cs.dennisc.croquet.MenuBarComposite {
 	private static class SingletonHolder {
-		private static MenuBarModel instance = new MenuBarModel();
+		private static MenuBarComposite instance = new MenuBarComposite();
 	}
-	public static MenuBarModel getInstance() {
+	public static MenuBarComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private MenuBarModel() {
+	private MenuBarComposite() {
 		super( java.util.UUID.fromString( "78686290-eac5-47b3-9ec1-625fdb838721" ) );
 		this.addMenuModel( FileMenuModel.getInstance() );
 		this.addMenuModel( EditMenuModel.getInstance() );

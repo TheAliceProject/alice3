@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.project;
 /**
  * @author Dennis Cosgrove
  */
-public class ManageResourcesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.resource.manager.ResourceManagerPane> {
+public class ManageResourcesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 	private static class SingletonHolder {
 		private static ManageResourcesOperation instance = new ManageResourcesOperation();
 	}
@@ -57,16 +57,16 @@ public class ManageResourcesOperation extends edu.cmu.cs.dennisc.croquet.InputDi
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ManageResourcesOperation handle cancel" );
 	}
 	@Override
-	protected org.alice.ide.resource.manager.ResourceManagerPane prologue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.ide.resource.manager.ResourceManagerPane> context) {
+	protected org.alice.ide.resource.manager.ResourceManagerPane prologue(org.lgna.croquet.steps.InputDialogOperationStep step) {
 		return new org.alice.ide.resource.manager.ResourceManagerPane();
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep<org.alice.ide.resource.manager.ResourceManagerPane> context, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			context.finish();
+			step.finish();
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle cancel" );
-			context.cancel();
+			step.cancel();
 		}
 	}
 //	@Override

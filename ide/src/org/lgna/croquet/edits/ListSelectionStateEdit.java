@@ -53,12 +53,13 @@ public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionStat
 	private E prevValue;
 	private E nextValue;
 	
-	public ListSelectionStateEdit( E prevValue, E nextValue ) {
+	public ListSelectionStateEdit( org.lgna.croquet.steps.CompletionStep< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > completionStep, E prevValue, E nextValue ) {
+		super( completionStep );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 	}
-	public ListSelectionStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public ListSelectionStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 		ListSelectionState< E > listSelectionState = this.getModel();
 		Codec<E> codec = listSelectionState.getCodec();
 		this.prevValue = codec.decodeValue( binaryDecoder );

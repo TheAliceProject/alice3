@@ -46,32 +46,35 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeInputDialogOperationFillIn<F,J extends CascadeInputDialogPanel< F > > extends CascadeFillIn< F, Void > {
-	private final CascadeInputDialogOperation< F,J > inputDialogOperation;
-	public CascadeInputDialogOperationFillIn( CascadeInputDialogOperation< F,J > inputDialogOperation ) {
+public class CascadeInputDialogOperationFillIn<F> extends CascadeFillIn< F, Void > {
+	private final CascadeInputDialogOperation<F> inputDialogOperation;
+
+	public CascadeInputDialogOperationFillIn( CascadeInputDialogOperation<F> inputDialogOperation ) {
 		super( java.util.UUID.fromString( "f2c75b9f-aa0d-487c-a161-46cb23ff3e76" ) );
 		this.inputDialogOperation = inputDialogOperation;
 	}
-	public static class CascadeInputDialogOperationFillInResolver<F,J extends CascadeInputDialogPanel< F >> implements CodableResolver< CascadeInputDialogOperationFillIn<F,J> > {
-		private final CascadeInputDialogOperationFillIn<F,J> model;
-		
-		public CascadeInputDialogOperationFillInResolver( CascadeInputDialogOperationFillIn<F,J> model ) {
+
+	public static class CascadeInputDialogOperationFillInResolver<F> implements CodableResolver< CascadeInputDialogOperationFillIn<F> > {
+		private final CascadeInputDialogOperationFillIn<F> model;
+
+		public CascadeInputDialogOperationFillInResolver( CascadeInputDialogOperationFillIn<F> model ) {
 			this.model = model;
 		}
 		public CascadeInputDialogOperationFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			CodableResolver<CascadeInputDialogOperation<F,J>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			CascadeInputDialogOperation<F,J> inputDialogOperation = resolver.getResolved();
+			CodableResolver< CascadeInputDialogOperation<F>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			CascadeInputDialogOperation<F> inputDialogOperation = resolver.getResolved();
 			this.model = inputDialogOperation.getFillIn();
 		}
-		public edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn<F,J> getResolved() {
+		public edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn<F> getResolved() {
 			return this.model;
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			CodableResolver<CascadeInputDialogOperation<F,J>> resolver = this.model.inputDialogOperation.getCodableResolver();
+			CodableResolver< CascadeInputDialogOperation<F>> resolver = this.model.inputDialogOperation.getCodableResolver();
 			binaryEncoder.encode( resolver );
 		}
 	}
-	public CascadeInputDialogOperation< F, J > getInputDialogOperation() {
+
+	public CascadeInputDialogOperation<F> getInputDialogOperation() {
 		return this.inputDialogOperation;
 	}
 	@Override
@@ -83,17 +86,17 @@ public class CascadeInputDialogOperationFillIn<F,J extends CascadeInputDialogPan
 		return this.inputDialogOperation.getDefaultLocalizedText();
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.steps.CascadeFillInPrepStep< F, Void > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.steps.CascadeFillInPrepStep< F, Void > step ) {
 		return new javax.swing.JLabel( this.getTutorialItemText() );
 	}
 	@Override
-	public F createValue( org.lgna.croquet.steps.CascadeFillInPrepStep< F, Void > context ) {
-		org.lgna.croquet.steps.InputDialogOperationStep< J > inputDialogStep = this.inputDialogOperation.fire();
-		J panel = inputDialogStep.getMainPanel();
+	public F createValue( org.lgna.croquet.steps.CascadeFillInPrepStep< F, Void > step ) {
+		org.lgna.croquet.steps.InputDialogOperationStep inputDialogStep = this.inputDialogOperation.fire();
+		CascadeInputDialogPanel<F> panel = inputDialogStep.getMainPanel();
 		return panel.getInputValue();
 	}
 	@Override
-	public F getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep< F, Void > context ) {
+	public F getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep< F, Void > step ) {
 		return null;
 	}
 }

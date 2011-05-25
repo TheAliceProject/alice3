@@ -51,7 +51,7 @@ public class CascadePopupOperationStep<T> extends PopupOperationStep< edu.cmu.cs
 		return new CascadePopupOperationStep<T>( parent, model, trigger );
 	}
 	private CascadePopupOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model, org.lgna.croquet.Trigger trigger ) {
-		super( parent, model, trigger, new TransactionHistory() );
+		super( parent, model, trigger );
 	}
 	public CascadePopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

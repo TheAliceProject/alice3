@@ -49,12 +49,13 @@ public final class StringStateEdit extends StateEdit<edu.cmu.cs.dennisc.croquet.
 	private final String prevValue;
 	private final String nextValue;
 
-	public StringStateEdit( String prevValue, String nextValue ) {
+	public StringStateEdit( org.lgna.croquet.steps.CompletionStep< edu.cmu.cs.dennisc.croquet.StringState > completionStep, String prevValue, String nextValue ) {
+		super( completionStep );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 	}
-	public StringStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public StringStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 		this.prevValue = binaryDecoder.decodeString();
 		this.nextValue = binaryDecoder.decodeString();
 	}

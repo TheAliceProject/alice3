@@ -54,6 +54,7 @@ public class FieldTemplateComposite extends MemberTemplateComposite {
 		return SingletonHolder.instance;
 	}
 	private FieldTemplateComposite() {
+		super( java.util.UUID.fromString( "be6a1945-fb77-4d07-9c11-351f4119099c" ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {

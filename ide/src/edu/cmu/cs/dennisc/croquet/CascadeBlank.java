@@ -48,11 +48,9 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class CascadeBlank< B > extends Model {
 	//todo: just use inherit for cascade?
-	public static final Group CASCADE_BLANK_GROUP = Group.getInstance( java.util.UUID.fromString( "b8c959a9-5617-435f-a107-412090d9861a" ), "CASCADE_BLANK_GROUP" );
-
 	private java.util.List< CascadeItem< ? extends B,? > > ownees;
 	public CascadeBlank( java.util.UUID id ) {
-		super( CASCADE_BLANK_GROUP, id );
+		super( id );
 	}
 
 	protected abstract java.util.List< CascadeItem > updateChildren( java.util.List< CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep<B> step );

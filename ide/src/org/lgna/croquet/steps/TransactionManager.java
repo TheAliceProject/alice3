@@ -134,7 +134,7 @@ public class TransactionManager {
 			return null;
 		}
 	}
-	private static MenuBarModel getMenuBarModelOrigin( javax.swing.MenuElement[] menuElements ) {
+	private static MenuBarComposite getMenuBarModelOrigin( javax.swing.MenuElement[] menuElements ) {
 		MenuBar menuBar = getMenuBarOrigin( menuElements );
 		if( menuBar != null ) {
 			return menuBar.getModel();
@@ -459,7 +459,7 @@ public class TransactionManager {
 		Transaction transaction = getActiveTransaction();
 		return PlainDialogCloseOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InputDialogOperationStep<J> addInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperation< J > model, org.lgna.croquet.Trigger trigger ) {
+	public static InputDialogOperationStep addInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return InputDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
@@ -543,7 +543,7 @@ public class TransactionManager {
 			org.lgna.croquet.steps.ListSelectionStatePrepStep.createAndAddToTransaction( rv, state.getPrepModel(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 		}
 		org.lgna.croquet.steps.ListSelectionStateChangeStep completionStep = org.lgna.croquet.steps.ListSelectionStateChangeStep.createAndAddToTransaction( rv, state, org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
-		org.lgna.croquet.edits.ListSelectionStateEdit edit = new org.lgna.croquet.edits.ListSelectionStateEdit( prevValue, nextValue );
+		org.lgna.croquet.edits.ListSelectionStateEdit edit = new org.lgna.croquet.edits.ListSelectionStateEdit( completionStep, prevValue, nextValue );
 		completionStep.setEdit( edit );
 		return rv;
 	}

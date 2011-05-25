@@ -46,16 +46,16 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public abstract class CodecUtilities {
-	public static <T extends BinaryEncodableAndDecodable > java.lang.reflect.Constructor< T > getPublicDecodeConstructor( Class<T> cls ) throws NoSuchMethodException {
-		return cls.getConstructor( new Class[] { BinaryDecoder.class } );
+	public static <T extends BinaryEncodableAndDecodable > java.lang.reflect.Constructor< T > getPublicDecodeConstructor( Class<T> cls, Class<?>[] parameterTypes ) throws NoSuchMethodException {
+		return cls.getConstructor( parameterTypes );
 	}
-	public static <T extends BinaryEncodableAndDecodable > java.lang.reflect.Constructor< T > getPublicDecodeConstructor( String className ) throws ClassNotFoundException, NoSuchMethodException{
+	public static <T extends BinaryEncodableAndDecodable > java.lang.reflect.Constructor< T > getPublicDecodeConstructor( String className, Class<?>[] parameterTypes ) throws ClassNotFoundException, NoSuchMethodException{
 		Class<T> cls = (Class<T>)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( className );
-		return (java.lang.reflect.Constructor< T >)getPublicDecodeConstructor( cls );
+		return (java.lang.reflect.Constructor< T >)getPublicDecodeConstructor( cls, parameterTypes );
 	}
-	public static <T extends BinaryEncodableAndDecodable > java.lang.reflect.Constructor< T > getPublicDecodeConstructor( T instance ) throws NoSuchMethodException {
-		return getPublicDecodeConstructor( (Class<T>)instance.getClass() );
-	}
+//	public static <T extends BinaryEncodableAndDecodable > java.lang.reflect.Constructor< T > getPublicDecodeConstructor( T instance ) throws NoSuchMethodException {
+//		return getPublicDecodeConstructor( (Class<T>)instance.getClass() );
+//	}
 	
 	@Deprecated
 	public static boolean isDebugDesired = false;

@@ -76,7 +76,7 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 			folderTabbedPane.setBackgroundColor( java.awt.SystemColor.controlShadow );
 			rv.addComponent( folderTabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		} else {
-			getFrame().setMenuBarModel( uist.ecard.menu.MenuBarModel.getInstance() );
+			getFrame().setMenuBarModel( uist.ecard.menu.MenuBarComposite.getInstance() );
 
 			// Make mock toolbar
 			javax.swing.JToolBar toolbar = new javax.swing.JToolBar();

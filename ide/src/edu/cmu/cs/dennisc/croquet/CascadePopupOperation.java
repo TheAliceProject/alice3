@@ -71,20 +71,20 @@ public abstract class CascadePopupOperation<B> extends PopupOperation< org.lgna.
 		return this.componentType;
 	}
 
-	protected abstract Edit< ? extends CascadePopupOperation< B > > createEdit( B[] values );
+	protected abstract Edit< ? extends CascadePopupOperation< B > > createEdit( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, B[] values );
 
-	public void handleCompletion( org.lgna.croquet.steps.CascadePopupOperationStep< B > context, PerformObserver performObserver, B[] values ) {
+	public void handleCompletion( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, PerformObserver performObserver, B[] values ) {
 		try {
-			Edit< ? extends CascadePopupOperation< B > > edit = this.createEdit( values );
-			context.commitAndInvokeDo( edit );
+			Edit< ? extends CascadePopupOperation< B > > edit = this.createEdit( step, values );
+			step.commitAndInvokeDo( edit );
 		} finally {
 //			ContextManager.popContext();
 			performObserver.handleFinally();
 		}
 	}
-	public void handleCancel( org.lgna.croquet.steps.CascadePopupOperationStep< B > context, PerformObserver performObserver ) {
+	public void handleCancel( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, PerformObserver performObserver ) {
 		try {
-			context.cancel();
+			step.cancel();
 		} finally {
 //			ContextManager.popContext();
 			performObserver.handleFinally();

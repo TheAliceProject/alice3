@@ -68,7 +68,7 @@ public class BooleanState extends State<Boolean> {
 				//pass
 			} else {
 				if( BooleanState.this.isContextCommitDesired() ) {
-					BooleanState.this.commitEdit( new org.lgna.croquet.edits.BooleanStateEdit( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ), e );
+					BooleanState.this.commitEdit( e.getStateChange() == java.awt.event.ItemEvent.SELECTED, new org.lgna.croquet.triggers.ItemEventTrigger( e ) );
 				}
 			}
 		}
@@ -120,9 +120,9 @@ public class BooleanState extends State<Boolean> {
 		this.valueObservers.remove( valueObserver );
 	}
 
-	private void commitEdit( org.lgna.croquet.edits.BooleanStateEdit edit, java.awt.event.ItemEvent e ) {
-		org.lgna.croquet.steps.BooleanStateChangeStep step = org.lgna.croquet.steps.TransactionManager.addBooleanStateChangeStep( this, new org.lgna.croquet.triggers.ItemEventTrigger( e ) );
-		step.commitAndInvokeDo( edit );
+	private void commitEdit( boolean value, org.lgna.croquet.Trigger trigger ) {
+		org.lgna.croquet.steps.BooleanStateChangeStep step = org.lgna.croquet.steps.TransactionManager.addBooleanStateChangeStep( this, trigger );
+		step.commitAndInvokeDo( new org.lgna.croquet.edits.BooleanStateEdit( step, value ) );
 //		TransactionManager.addBooleanStateChangeStep( this );
 //		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
 //		childContext.commitAndInvokeDo( booleanStateEdit );
@@ -131,10 +131,10 @@ public class BooleanState extends State<Boolean> {
 	}
 	
 	@Override
-	public Edit<?> commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		assert originalEdit instanceof org.lgna.croquet.edits.BooleanStateEdit;
 		org.lgna.croquet.edits.BooleanStateEdit booleanStateEdit = (org.lgna.croquet.edits.BooleanStateEdit)originalEdit;
-		this.commitEdit( booleanStateEdit, null );
+		this.commitEdit( booleanStateEdit.getNextValue(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 		return booleanStateEdit;
 	}
 	

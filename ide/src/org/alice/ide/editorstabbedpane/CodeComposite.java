@@ -62,6 +62,7 @@ public class CodeComposite extends edu.cmu.cs.dennisc.croquet.Composite {
 
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	public CodeComposite( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		super( java.util.UUID.fromString( "db2c8eb1-cc2f-4a23-8836-59af43de82fb" ) );
 		this.code = code;
 	}
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
@@ -73,7 +74,8 @@ public class CodeComposite extends edu.cmu.cs.dennisc.croquet.Composite {
 		return false;
 	}
 	@Override
-	public String toString() {
-		return this.code.getName();
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		rv.append( this.code.getName() );
+		return rv;
 	}
 }

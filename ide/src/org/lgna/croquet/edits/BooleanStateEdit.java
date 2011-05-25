@@ -50,12 +50,13 @@ public final class BooleanStateEdit extends StateEdit<edu.cmu.cs.dennisc.croquet
 	private final boolean prevValue;
 	private final boolean nextValue;
 
-	public BooleanStateEdit( boolean nextValue ) {
+	public BooleanStateEdit( org.lgna.croquet.steps.CompletionStep< edu.cmu.cs.dennisc.croquet.BooleanState > completionStep, boolean nextValue ) {
+		super( completionStep );
 		this.prevValue = !nextValue;
 		this.nextValue = nextValue;
 	}
-	public BooleanStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public BooleanStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 		this.prevValue = binaryDecoder.decodeBoolean();
 		this.nextValue = binaryDecoder.decodeBoolean();
 	}

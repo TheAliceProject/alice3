@@ -47,8 +47,14 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CompletionModel extends Model {
+	private final Group group;
+
 	public CompletionModel( Group group, java.util.UUID id ) {
-		super(group, id);
+		super( id );
+		this.group = group;
+	}
+	public Group getGroup() {
+		return this.group;
 	}
 	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, UserInformation userInformation ) {
 		Edit< ? > edit = step.getEdit();
@@ -62,14 +68,26 @@ public abstract class CompletionModel extends Model {
 		StringBuilder sb = new StringBuilder();
 		updateTutorialTransactionTitle( sb, step, userInformation );
 		if( sb.length() == 0 ) {
-//			sb.append( "TODO: " );
-//			sb.append( this );
-//			sb.append( "; " );
-//			sb.append( edit );
+			//			sb.append( "TODO: " );
+			//			sb.append( this );
+			//			sb.append( "; " );
+			//			sb.append( edit );
 			return null;
 		} else {
 			return sb.toString();
 		}
 	}
 	public abstract boolean isAlreadyInState( Edit< ? > edit );
+	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep< ? > completionStep, Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		System.err.println( "todo: commitTutorialCompletionEdit: " + originalEdit );
+		return null;
+	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "[" );
+		rv.append( this.getGroup() );
+		rv.append( "]" );
+		return rv;
+	}
 }

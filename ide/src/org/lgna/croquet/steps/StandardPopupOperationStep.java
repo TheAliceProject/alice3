@@ -43,8 +43,6 @@
 
 package org.lgna.croquet.steps;
 
-import edu.cmu.cs.dennisc.croquet.RetargetingData;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -53,11 +51,11 @@ public class StandardPopupOperationStep extends PopupOperationStep< edu.cmu.cs.d
 		return new StandardPopupOperationStep( parent, model, trigger );
 	}
 	private StandardPopupOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation model, org.lgna.croquet.Trigger trigger ) {
-		super( parent, model, trigger, null );
+		super( parent, model, trigger );
 	}
 	public StandardPopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public void handleRetargetableMenuModelInitialization( RetargetingData retargetableData ) {
+	public void handleRetargetableMenuModelInitialization( edu.cmu.cs.dennisc.croquet.RetargetingData retargetableData ) {
 	}
 }

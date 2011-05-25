@@ -46,9 +46,13 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBar extends ViewController< javax.swing.JMenuBar, MenuBarModel > {
-	/*package-private*/ MenuBar( MenuBarModel model ) {
-		super( model );
+public class MenuBar extends JComponent< javax.swing.JMenuBar > {
+	private final MenuBarComposite model;
+	/*package-private*/ MenuBar( MenuBarComposite model ) {
+		this.model = model;
+	}
+	public MenuBarComposite getModel() {
+		return this.model;
 	}
 	@Override
 	protected javax.swing.JMenuBar createAwtComponent() {

@@ -47,14 +47,14 @@ package org.alice.ide.operations.ast;
  */
 //todo: remove
 @Deprecated
-abstract class AbstractNonGalleryDeclareFieldOperation<J extends org.alice.ide.preview.PanelWithPreview<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice>> extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation<J> {
+abstract class AbstractNonGalleryDeclareFieldOperation extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation {
 	public AbstractNonGalleryDeclareFieldOperation( java.util.UUID individualId ) {
 		super( individualId );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.steps.InputDialogOperationStep< J > context );
+	protected abstract edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.steps.InputDialogOperationStep step );
 	protected abstract Object createInstance();
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( org.lgna.croquet.steps.InputDialogOperationStep< J > context ) {
-		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( this.createField( context ), this.createInstance() );
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( org.lgna.croquet.steps.InputDialogOperationStep step ) {
+		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( this.createField( step ), this.createInstance() );
 	}
 }

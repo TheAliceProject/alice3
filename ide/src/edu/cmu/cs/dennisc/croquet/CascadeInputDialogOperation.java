@@ -46,19 +46,16 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeInputDialogOperation< F, J extends CascadeInputDialogPanel< F > > extends InputDialogOperation< J > {
-	public CascadeInputDialogOperation(Group group, java.util.UUID individualId, boolean isCancelDesired ) {
-		super( group, individualId, isCancelDesired );
-	}
+public abstract class CascadeInputDialogOperation< F > extends InputDialogOperation {
 	public CascadeInputDialogOperation(Group group, java.util.UUID individualId) {
 		super( group, individualId );
 	}
-	private CascadeInputDialogOperationFillIn<F,J> cascadeFillIn;
-	public synchronized CascadeInputDialogOperationFillIn<F,J> getFillIn() {
+	private CascadeInputDialogOperationFillIn<F> cascadeFillIn;
+	public synchronized CascadeInputDialogOperationFillIn<F> getFillIn() {
 		if( this.cascadeFillIn != null ) {
 			//pass
 		} else {
-			this.cascadeFillIn = new CascadeInputDialogOperationFillIn<F,J>( this );
+			this.cascadeFillIn = new CascadeInputDialogOperationFillIn<F>( this );
 		}
 		return this.cascadeFillIn;
 	}

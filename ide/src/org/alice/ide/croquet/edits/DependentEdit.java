@@ -47,10 +47,11 @@ package org.alice.ide.croquet.edits;
  * @author Dennis Cosgrove
  */
 public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends org.lgna.croquet.edits.OperationEdit< M > {
-	public DependentEdit() {
+	public DependentEdit( org.lgna.croquet.steps.OperationStep completionStep ) {
+		super( completionStep );
 	}
-	public DependentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public DependentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {

@@ -48,5 +48,6 @@ package org.alice.ide;
 @Deprecated
 public abstract class ToDoEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends org.lgna.croquet.edits.OperationEdit< M > {
 	public ToDoEdit() {
+		super( null );
 	}
 }

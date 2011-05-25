@@ -51,12 +51,13 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.OperationEdit<org.
 	
 	private transient edu.cmu.cs.dennisc.alice.ast.AbstractCode prevFocusedCode;
 
-	public DeclareMethodEdit( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+	public DeclareMethodEdit( org.lgna.croquet.steps.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		super( completionStep );
 		this.declaringType = declaringType;
 		this.method = method;
 	}
-	public DeclareMethodEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public DeclareMethodEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).decodeValue( binaryDecoder );
 		this.method = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ).decodeValue( binaryDecoder );
 	}
@@ -140,13 +141,13 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.OperationEdit<org.
 		}
 	}
 	
-	public DeclareMethodEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> replacementDeclaringType = retargeter.retarget( this.declaringType );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice replacementMethod = org.alice.ide.ast.NodeUtilities.createMethod( this.method.getName(), this.method.getReturnType() );
-		retargeter.addKeyValuePair( this.method, replacementMethod );
-		retargeter.addKeyValuePair( this.method.body.getValue(), replacementMethod.body.getValue() );
-		return new DeclareMethodEdit( replacementDeclaringType, replacementMethod );
-	}
+//	public DeclareMethodEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+//		edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> replacementDeclaringType = retargeter.retarget( this.declaringType );
+//		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice replacementMethod = org.alice.ide.ast.NodeUtilities.createMethod( this.method.getName(), this.method.getReturnType() );
+//		retargeter.addKeyValuePair( this.method, replacementMethod );
+//		retargeter.addKeyValuePair( this.method.body.getValue(), replacementMethod.body.getValue() );
+//		return new DeclareMethodEdit( replacementDeclaringType, replacementMethod );
+//	}
 
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {

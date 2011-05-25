@@ -48,22 +48,23 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.OperationEdit< e
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	private int specifiedIndex;
 	private edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions;
-	private InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
+	private InsertStatementEdit( org.lgna.croquet.steps.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
+		super( completionStep );
 		this.blockStatement = blockStatement;
 		this.specifiedIndex = index;
 		this.statement = statement;
 		this.initialExpressions = initialExpressions;
 	}
-	public InsertStatementEdit( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
-		this( blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex(), statement, initialExpressions );
+	public InsertStatementEdit( org.lgna.croquet.steps.OperationStep completionStep, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
+		this( completionStep, blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex(), statement, initialExpressions );
 	}
 
 	//todo
-	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		this( blockStatement, index, statement, new edu.cmu.cs.dennisc.alice.ast.Expression[] {} );
+	public InsertStatementEdit( org.lgna.croquet.steps.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		this( completionStep, blockStatement, index, statement, new edu.cmu.cs.dennisc.alice.ast.Expression[] {} );
 	}
-	public InsertStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public InsertStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 		java.util.UUID blockStatementId = binaryDecoder.decodeId();
@@ -181,16 +182,16 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.OperationEdit< e
 	}
 
 	
-	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.alice.ast.Statement replacementStatement ) {
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
-		retargeter.addKeyValuePair( this.statement, replacementStatement );
-		final int N = this.initialExpressions.length;
-
-		System.err.println( "todo: replacementExpressions" );
-		edu.cmu.cs.dennisc.alice.ast.Expression[] replacementExpressions = this.initialExpressions;
-		
-		return new InsertStatementEdit( replacementBlockStatement, this.specifiedIndex, replacementStatement, replacementExpressions );
-	}
+//	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.alice.ast.Statement replacementStatement ) {
+//		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+//		retargeter.addKeyValuePair( this.statement, replacementStatement );
+//		final int N = this.initialExpressions.length;
+//
+//		System.err.println( "todo: replacementExpressions" );
+//		edu.cmu.cs.dennisc.alice.ast.Expression[] replacementExpressions = this.initialExpressions;
+//		
+//		return new InsertStatementEdit( replacementBlockStatement, this.specifiedIndex, replacementStatement, replacementExpressions );
+//	}
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );

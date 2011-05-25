@@ -235,7 +235,7 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 										rv = null;
 									}
 //								}
-							} else if( model instanceof edu.cmu.cs.dennisc.croquet.MenuBarModel ) {
+							} else if( model instanceof edu.cmu.cs.dennisc.croquet.MenuBarComposite ) {
 								//pass
 							} else if( model instanceof edu.cmu.cs.dennisc.croquet.CompletionModel ) {
 								//pass

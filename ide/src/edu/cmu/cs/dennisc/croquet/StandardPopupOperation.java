@@ -143,9 +143,10 @@ public final class StandardPopupOperation extends PopupOperation<org.lgna.croque
 				if( this.cancelEvent != null ) {
 					step.cancel();
 					this.cancelEvent = null;
+				} else {
+					step.finish();
 				}
 				StandardPopupOperation.this.menuModel.handlePopupMenuEpilogue( popupMenu, step );
-				
 				performObserver.handleFinally();
 			}
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
