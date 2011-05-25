@@ -42,59 +42,65 @@
  */
 
 package edu.cmu.cs.dennisc.croquet;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadePopupOperation<B> extends PopupOperation< org.lgna.croquet.steps.CascadePopupOperationStep< B > > {
-	private final Class< B > componentType;
-	private final CascadeRoot< B > root;
-	public CascadePopupOperation( Group group, java.util.UUID id, Class< B > componentType, CascadeBlank< B >[] blanks ) {
-		super( group, id );
-		this.componentType = componentType;
-		this.root = new CascadeRoot< B >( this );
-		assert blanks != null;
-		for( int i=0; i<blanks.length; i++ ) {
-			assert blanks[ i ] != null : this;
-			root.addBlank( blanks[ i ] );
+public abstract class PopupPrepModel< S extends org.lgna.croquet.steps.PopupOperationStep<? extends PopupPrepModel<?>>> extends PrepModel {
+	private javax.swing.Action action = new javax.swing.AbstractAction() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			PopupPrepModel.this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
 		}
+	};
+	public PopupPrepModel( java.util.UUID id ) {
+		super( id );
 	}
-	@Override
-	public org.lgna.croquet.steps.CascadePopupOperationStep< B > createAndPushStep( org.lgna.croquet.Trigger trigger ) {
-		return org.lgna.croquet.steps.TransactionManager.addCascadePopupOperationStep( this, trigger );
+	public javax.swing.Action getAction() {
+		return this.action;
+	}
+	public String getName() {
+		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
+	}
+	public void setName( String name ) {
+		this.action.putValue( javax.swing.Action.NAME, name );
+	}
+	public void setShortDescription( String shortDescription ) {
+		this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+	}
+	public void setLongDescription( String longDescription ) {
+		this.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
+	}
+	public void setSmallIcon( javax.swing.Icon icon ) {
+		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+	}
+	public void setMnemonicKey( int mnemonicKey ) {
+		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
+	}
+	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
+		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
+	}
+	
+	public org.lgna.croquet.components.PopupButton createPopupButton() {
+		return new org.lgna.croquet.components.PopupButton( this );
 	}
 
-	public CascadeRoot< B > getRoot() {
-		return this.root;
+	protected static interface PerformObserver { 
+		public void handleFinally(); 
 	}
-
-	public Class< B > getComponentType() {
-		return this.componentType;
-	}
-
-	protected abstract Edit< ? extends CascadePopupOperation< B > > createEdit( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, B[] values );
-
-	public void handleCompletion( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, PerformObserver performObserver, B[] values ) {
-		try {
-			Edit< ? extends CascadePopupOperation< B > > edit = this.createEdit( step, values );
-			step.commitAndInvokeDo( edit );
-		} finally {
-//			ContextManager.popContext();
-			performObserver.handleFinally();
+	protected abstract S createAndPushStep( org.lgna.croquet.Trigger trigger );
+	protected abstract void perform( S step, PerformObserver performObserver );
+	
+	public S fire( org.lgna.croquet.Trigger trigger ) {
+		if( this.isEnabled() ) {
+			final S step = this.createAndPushStep( trigger );
+			this.perform( step, new PerformObserver() {
+				public void handleFinally() {
+					//todo?
+				}
+			} );
+			return step;
+		} else {
+			return null;
 		}
-	}
-	public void handleCancel( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, PerformObserver performObserver ) {
-		try {
-			step.cancel();
-		} finally {
-//			ContextManager.popContext();
-			performObserver.handleFinally();
-		}
-	}
-
-	@Override
-	protected void perform( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, PerformObserver performObserver ) {
-		org.lgna.croquet.steps.RtCascadePopupOperation< B > rt = new org.lgna.croquet.steps.RtCascadePopupOperation< B >( this, step, performObserver );
-//		ContextManager.pushContext( ContextManager.createCascadeRootContext( this.root ) );
-		rt.perform();
 	}
 }

@@ -449,7 +449,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 	private static class DropDownPanel extends org.lgna.croquet.components.BorderPanel {
 		private javax.swing.ButtonModel buttonModel;
 		public DropDownPanel() {
-			org.lgna.croquet.components.Button button = TypeRootMenuModel.getInstance().getPopupMenuOperation().createButton();
+			org.lgna.croquet.components.PopupButton button = TypeRootMenuModel.getInstance().getPopupMenuOperation().createPopupButton();
 			button.getAwtComponent().setFocusable( false );
 			this.buttonModel = button.getAwtComponent().getModel();
 			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );

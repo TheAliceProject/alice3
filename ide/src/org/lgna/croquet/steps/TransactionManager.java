@@ -479,10 +479,10 @@ public class TransactionManager {
 		Transaction transaction = getActiveTransaction();
 		return WizardDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static StandardPopupOperationStep addStandardPopupOperationStep( edu.cmu.cs.dennisc.croquet.StandardPopupOperation standardPopupOperation, org.lgna.croquet.Trigger trigger ) {
+	public static StandardPopupOperationStep addStandardPopupOperationStep( edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel standardPopupOperation, org.lgna.croquet.Trigger trigger ) {
 		return StandardPopupOperationStep.createAndAddToTransaction( getActiveTransaction(), standardPopupOperation, trigger );
 	}
-	public static <T> CascadePopupOperationStep<T> addCascadePopupOperationStep( edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model, org.lgna.croquet.Trigger trigger ) {
+	public static <T> CascadePopupOperationStep<T> addCascadePopupOperationStep( edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel<T> model, org.lgna.croquet.Trigger trigger ) {
 		return CascadePopupOperationStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
 

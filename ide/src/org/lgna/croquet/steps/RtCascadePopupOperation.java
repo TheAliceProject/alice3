@@ -45,6 +45,7 @@ package org.lgna.croquet.steps;
 
 import org.lgna.croquet.components.CascadeMenuItem;
 import org.lgna.croquet.components.Menu;
+import org.lgna.croquet.components.MenuItemContainer;
 import org.lgna.croquet.components.PopupMenu;
 import org.lgna.croquet.components.ViewController;
 
@@ -521,11 +522,11 @@ class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, CascadeRootStep<
 	}
 }
 
-public class RtCascadePopupOperation<T> extends RtModel< CascadePopupOperation< T >, org.lgna.croquet.steps.CascadePopupOperationStep< T > > {
+public class RtCascadePopupOperation<T> extends RtModel< CascadePopupPrepModel< T >, org.lgna.croquet.steps.CascadePopupOperationStep< T > > {
 	private Operation.PerformObserver performObserver;
 	private RtRoot< T > rtRoot;
 
-	public RtCascadePopupOperation( CascadePopupOperation< T > model, org.lgna.croquet.steps.CascadePopupOperationStep< T > step, Operation.PerformObserver performObserver ) {
+	public RtCascadePopupOperation( CascadePopupPrepModel< T > model, org.lgna.croquet.steps.CascadePopupOperationStep< T > step, Operation.PerformObserver performObserver ) {
 		super( model, step );
 		this.performObserver = performObserver;
 		this.rtRoot = new RtRoot< T >( model.getRoot(), this );
@@ -576,7 +577,7 @@ public class RtCascadePopupOperation<T> extends RtModel< CascadePopupOperation< 
 		}
 	}
 	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-		CascadePopupOperation< T > model = this.getModel();
+		CascadePopupPrepModel< T > model = this.getModel();
 		RtBlank< T >[] rtBlanks = this.rtRoot.getChildren();
 		T[] values = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( model.getComponentType(), rtBlanks.length );
 		boolean isReadyForCompletion;

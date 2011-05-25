@@ -40,19 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
-
-import edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupOperation<S extends org.lgna.croquet.steps.PopupOperationStep<?>> extends Operation<S> {
-	public PopupOperation( Group group, java.util.UUID id ) {
-		super( group, id );
+public class PopupButton extends AbstractButton< javax.swing.JButton, edu.cmu.cs.dennisc.croquet.PopupPrepModel >{
+ 	public PopupButton( edu.cmu.cs.dennisc.croquet.PopupPrepModel model ) {
+ 		super( model );
 	}
- 	private static class ArrowIcon extends AbstractArrowIcon {
+ 	private static class ArrowIcon extends edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon {
 		public ArrowIcon( int size ) {
 			super( size );
 		}
@@ -74,17 +71,11 @@ public abstract class PopupOperation<S extends org.lgna.croquet.steps.PopupOpera
 			g2.fill( path );
 		}
 	}
-	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 14 ); 
-	
-	@Override
-	public org.lgna.croquet.components.Button createButton() {
-		if( this.getSmallIcon() != null ) {
-			//pass
-		} else {
-			this.setSmallIcon( ARROW_ICON );
-		}
-		org.lgna.croquet.components.Button rv = super.createButton();
-		rv.getAwtComponent().setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 14 );
+	protected javax.swing.JButton createAwtComponent() {
+		javax.swing.JButton rv = new javax.swing.JButton();
+		rv.setIcon( ARROW_ICON );
+		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
 		return rv;
 	}
 }

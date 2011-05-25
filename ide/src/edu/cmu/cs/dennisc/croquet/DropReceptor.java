@@ -62,7 +62,7 @@ public interface DropReceptor {
 	public DropSite dragUpdated( org.lgna.croquet.steps.DragStep dragAndDropContext );
 	
 	//todo: Dropped or Exited but not both?
-	public Operation<?> dragDropped( org.lgna.croquet.steps.DragStep dragAndDropContext );
+	public Model dragDropped( org.lgna.croquet.steps.DragStep dragAndDropContext );
 	public void dragExited( org.lgna.croquet.steps.DragStep dragAndDropContext, boolean isDropRecipient );
 	
 	

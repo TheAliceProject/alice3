@@ -43,19 +43,11 @@
 
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.CascadePopupOperation;
-import edu.cmu.cs.dennisc.croquet.MenuItemContainer;
-import edu.cmu.cs.dennisc.croquet.Operation;
-import edu.cmu.cs.dennisc.croquet.StandardPopupOperation;
-
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenu extends ViewController< javax.swing.JPopupMenu, Operation< ? > > implements MenuItemContainer {
-	public PopupMenu( StandardPopupOperation model ) {
-		super( model );
-	}
-	public PopupMenu( CascadePopupOperation< ? > model ) {
+public class PopupMenu extends ViewController< javax.swing.JPopupMenu, edu.cmu.cs.dennisc.croquet.PopupPrepModel< ? > > implements MenuItemContainer {
+	public PopupMenu( edu.cmu.cs.dennisc.croquet.PopupPrepModel< ? > model ) {
 		super( model );
 	}
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {

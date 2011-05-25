@@ -91,7 +91,7 @@ import edu.cmu.cs.dennisc.alice.ast.Accessible;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.croquet.StandardPopupOperation;
+import edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel;
 import edu.cmu.cs.dennisc.croquet.BooleanState;
 import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;import edu.cmu.cs.dennisc.croquet.Operation;
@@ -343,7 +343,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		protected void addEpilogue() {
 			this.previousComponent = null;
 			this.rootComponent = null;
-			this.getPopupMenuOperation();
+			this.getPopupMenuPrepModel();
 		}
 		
 		public FieldTile getFieldTileForField(FieldDeclaredInAlice field)
@@ -1164,7 +1164,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		FieldTile fieldTile = this.getFieldTileForClick(clickState);
 		if (fieldTile != null)
 		{
-			StandardPopupOperation popUp = fieldTile.getPopupMenuOperation();
+			StandardPopupPrepModel popUp = fieldTile.getPopupMenuPrepModel();
 			if (popUp != null)
 			{
 				if( fieldTile.getAwtComponent().isShowing() ) {
@@ -2022,7 +2022,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent;
 	}
 	
-	public Operation<?> dragDropped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public edu.cmu.cs.dennisc.croquet.Model dragDropped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{

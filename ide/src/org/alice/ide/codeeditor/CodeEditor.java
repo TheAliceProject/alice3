@@ -418,8 +418,8 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			return null;
 		}
 	}
-	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( final org.lgna.croquet.steps.DragStep context ) {
-		edu.cmu.cs.dennisc.croquet.Operation<?> rv = null;
+	public final edu.cmu.cs.dennisc.croquet.Model dragDropped( final org.lgna.croquet.steps.DragStep context ) {
+		edu.cmu.cs.dennisc.croquet.Model rv = null;
 		final org.lgna.croquet.components.DragComponent source = context.getDragSource();
 		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
@@ -478,7 +478,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 						blockStatement = null;
 						//index = -1;
 					}
-					rv = statementTemplate.getDropOperation( context, blockStatement, index );
+					rv = statementTemplate.getDropModel( context, blockStatement, index );
 				}
 			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
 				if( this.currentUnder != null ) {
@@ -718,7 +718,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		return null;
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > getOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > getOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		java.util.List< ExpressionPropertyDropDownPane > expressionPropertyDropDownPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class );
 		for( final ExpressionPropertyDropDownPane expressionPropertyDropDownPane : expressionPropertyDropDownPanes ) {
 			if( expressionPropertyDropDownPane.getExpressionProperty() == expressionProperty ) {
@@ -739,12 +739,12 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		}
 		return null;
 	}
-	public edu.cmu.cs.dennisc.croquet.StandardPopupOperation getPopupMenuOperationForStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	public edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel getPopupMenuOperationForStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		if( statement != null ) {
 			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
 			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
 				if( statementPane.getStatement() == statement ) {
-					return statementPane.getPopupMenuOperation();
+					return statementPane.getPopupMenuPrepModel();
 				}
 			}
 		}

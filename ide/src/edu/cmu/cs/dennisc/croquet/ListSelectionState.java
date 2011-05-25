@@ -581,7 +581,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			return new ListSelectionMenuModelResolver< E >( this );
 		}
 		@Override
-		protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleShowing" );
 			super.handleShowing( menuItemContainer, e );
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
@@ -594,7 +594,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			}
 		}
 		@Override
-		protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		protected void handleHiding( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 			menuItemContainer.forgetAndRemoveAllMenuItems();
 			super.handleHiding( menuItemContainer, e );
 		}

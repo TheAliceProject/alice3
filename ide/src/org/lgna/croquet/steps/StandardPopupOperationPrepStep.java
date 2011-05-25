@@ -47,11 +47,11 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public class StandardPopupOperationPrepStep extends PrepStep {
-	public static StandardPopupOperationPrepStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation model ) {
+	public static StandardPopupOperationPrepStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel model ) {
 		return new StandardPopupOperationPrepStep( parent, model );
 	}
-	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.StandardPopupOperation > standardPopupOperationResolver; 
-	private StandardPopupOperationPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation standardPopupOperation ) {
+	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel > standardPopupOperationResolver; 
+	private StandardPopupOperationPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel standardPopupOperation ) {
 		super( parent, null, null );
 		this.standardPopupOperationResolver = standardPopupOperation.getCodableResolver();
 	}
@@ -64,7 +64,7 @@ public class StandardPopupOperationPrepStep extends PrepStep {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.standardPopupOperationResolver );
 	}
-	public edu.cmu.cs.dennisc.croquet.StandardPopupOperation getStandardPopupOperation() {
+	public edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel getStandardPopupOperation() {
 		return this.standardPopupOperationResolver.getResolved();
 	}
 	@Override

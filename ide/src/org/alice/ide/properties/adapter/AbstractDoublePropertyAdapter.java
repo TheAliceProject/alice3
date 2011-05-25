@@ -65,7 +65,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 	}
 	
 	public static java.text.NumberFormat format = new java.text.DecimalFormat( "0.0" );
-	protected edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation;
+	protected edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel popupMenuOperation;
 	protected java.util.List< SetDoubleOperation > defaultDoubleOperationModels;
 	
 	public AbstractDoublePropertyAdapter(String repr, O instance )
@@ -90,7 +90,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 	}
 	
 	@Override
-	public Operation getEditOperation() 
+	public edu.cmu.cs.dennisc.croquet.PopupPrepModel getEditModel() 
 	{
 		if (this.popupMenuOperation == null)
 		{
@@ -119,7 +119,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 					for( SetDoubleOperation operation : AbstractDoublePropertyAdapter.this.defaultDoubleOperationModels ) {
 						models.add(operation.getMenuItemPrepModel());
 					}
-					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
+					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
 			}.getPopupMenuOperation();
 		}

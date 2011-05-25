@@ -51,9 +51,9 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		this.setDragModel( dragModel );
 	}
 	
-	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( org.lgna.croquet.steps.DragStep context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair );
-	public final edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( org.lgna.croquet.steps.DragStep context, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
-		return this.getDropOperation( context, new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index ) );
+	public abstract edu.cmu.cs.dennisc.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair );
+	public final edu.cmu.cs.dennisc.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
+		return this.getDropModel( step, new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index ) );
 	}
 	
 	@Override

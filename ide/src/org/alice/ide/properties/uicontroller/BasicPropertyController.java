@@ -62,7 +62,7 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
     protected static final String BLANK_STRING = "NO VALUE";
     
     protected Component<?> propertyComponent;
-    protected Button editButton;
+    protected org.lgna.croquet.components.JComponent< ? > editButton;
     
     public BasicPropertyController(PropertyAdapter<P, ?> propertyAdapter)
     {
@@ -100,7 +100,7 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
                 );
         if (this.propertyAdapter != null)
         {
-            this.editButton = this.propertyAdapter.createEditButton();
+            this.editButton = this.propertyAdapter.createEditViewController();
             this.mainPanel.addComponent(this.editButton, new GridBagConstraints(
                     xIndex++, // gridX
                     0, // gridY
@@ -132,7 +132,7 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
     
     public void mouseClicked(MouseEvent e)
     {
-        this.propertyAdapter.getEditOperation().fire(e, this.editButton);
+        this.propertyAdapter.getEditModel().fire(e, this.editButton);
     }
     
     public void mouseEntered(MouseEvent e){}

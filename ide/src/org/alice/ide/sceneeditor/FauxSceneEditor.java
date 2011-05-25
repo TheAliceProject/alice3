@@ -84,7 +84,7 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 		// TODO Auto-generated method stub
 		
 	}
-	public Operation<?> dragDropped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public edu.cmu.cs.dennisc.croquet.Model dragDropped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 		return null;
 	}
 	public void dragEntered(org.lgna.croquet.steps.DragStep dragAndDropContext) {

@@ -63,6 +63,6 @@ public class MyTypesMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMe
 		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice aliceType : aliceTypes ) {
 			myTypeModels.add( SelectTypeOperation.getInstance( aliceType ).getMenuItemPrepModel() );
 		}
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, myTypeModels );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, myTypeModels );
 	}
 }

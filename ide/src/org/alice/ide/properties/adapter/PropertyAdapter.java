@@ -76,9 +76,9 @@ public interface PropertyAdapter <P, O>
 	
 	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
 	
-	public Operation getEditOperation();
+	public edu.cmu.cs.dennisc.croquet.Model getEditModel();
 	
-	public Button createEditButton();
+	public org.lgna.croquet.components.ViewController<?,?> createEditViewController();
 	
 	public SetValueOperation<P> getSetValueOperation(P value); 
 	

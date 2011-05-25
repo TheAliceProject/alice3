@@ -64,7 +64,7 @@ public abstract class CascadeItem< F, S extends org.lgna.croquet.steps.CascadeIt
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.croquet.MenuItemContainer createMenuItemAndAddTo( edu.cmu.cs.dennisc.croquet.MenuItemContainer rv ) {
+	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
 		rv.addCascadeMenuItem( new CascadeMenuItem( this ) );
 		return rv;
 	}

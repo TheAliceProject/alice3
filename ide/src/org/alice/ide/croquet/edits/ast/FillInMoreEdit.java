@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation > {
+public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation.CascadeCloser > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
 
 	public FillInMoreEdit( org.lgna.croquet.steps.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
@@ -67,7 +67,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.i
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = this.getModel();
+		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = (org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 
@@ -86,7 +86,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.i
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = this.getModel();
+		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = (org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 		
@@ -108,7 +108,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.i
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = this.getModel();
+		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = (org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
 			rv.append( "more: " );

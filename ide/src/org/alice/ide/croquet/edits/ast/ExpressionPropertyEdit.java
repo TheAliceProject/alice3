@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation > {
+public class ExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation.CascadeCloser > {
 	private final edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 	private final edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 
@@ -71,7 +71,7 @@ public class ExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
-		org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation expressionPropertyOperation = this.getModel();
+		org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation expressionPropertyOperation = (org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation)this.getModel().getPopupPrepModel();
 		return expressionPropertyOperation.getExpressionProperty();
 	}
 	@Override

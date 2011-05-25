@@ -42,25 +42,25 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
-public class InsertStatementEdit extends org.lgna.croquet.edits.OperationEdit< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > {
+public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel.CascadeCloser< edu.cmu.cs.dennisc.alice.ast.Expression > > {
 	public static final int AT_END = Short.MAX_VALUE;
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	private int specifiedIndex;
 	private edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions;
-	private InsertStatementEdit( org.lgna.croquet.steps.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
+	private InsertStatementEdit( org.lgna.croquet.steps.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
 		super( completionStep );
 		this.blockStatement = blockStatement;
 		this.specifiedIndex = index;
 		this.statement = statement;
 		this.initialExpressions = initialExpressions;
 	}
-	public InsertStatementEdit( org.lgna.croquet.steps.OperationStep completionStep, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
+	public InsertStatementEdit( org.lgna.croquet.steps.CompletionStep< ? > completionStep, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
 		this( completionStep, blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex(), statement, initialExpressions );
 	}
 
 	//todo
-	public InsertStatementEdit( org.lgna.croquet.steps.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	public InsertStatementEdit( org.lgna.croquet.steps.CompletionStep< ? > completionStep, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		this( completionStep, blockStatement, index, statement, new edu.cmu.cs.dennisc.alice.ast.Expression[] {} );
 	}
 	public InsertStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {

@@ -395,7 +395,7 @@ public class DragStep extends PrepStep< edu.cmu.cs.dennisc.croquet.DragAndDropMo
 		} else {
 			this.setLatestMouseEvent( e );
 			if( this.currentDropReceptor != null ) {
-				Operation<?> operation = this.currentDropReceptor.dragDropped( this );
+				Model operation = this.currentDropReceptor.dragDropped( this );
 				org.lgna.croquet.steps.TransactionManager.pendDrop( operation, this.currentDropReceptor, this.currentPotentialDropSite );
 				if( operation != null ) {
 					//this.addChild( new DroppedEvent( e, this.currentDropReceptor ) );

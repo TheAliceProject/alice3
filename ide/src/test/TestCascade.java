@@ -221,7 +221,7 @@ enum ZodiacSigns {
 	ARIES, TAURUS, GEMINI, CANCER, LEO, VIRGO, LIBRA, SCORPIO, SAGITARIUS, CAPRICORN, AQUARIUS, PISCES
 }
 
-class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupOperation< Object > {
+class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel< Object > {
 	private static class SingletonHolder {
 		private static MyCascadeOperation instance = new MyCascadeOperation();
 	}
@@ -243,7 +243,7 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupOperatio
 
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Edit createEdit( org.lgna.croquet.steps.CascadePopupOperationStep< Object > step, final java.lang.Object[] values ) {
-		return new org.alice.ide.ToDoEdit< edu.cmu.cs.dennisc.croquet.CascadePopupOperation<Object> >() {
+		return new edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel.CascadeCloser<Object> >( null ) {
 			@Override
 			protected void doOrRedoInternal( boolean isDo ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( values );
@@ -263,7 +263,7 @@ class CascadePanel extends org.lgna.croquet.components.BorderPanel {
 	public CascadePanel() {
 		this.setMinimumPreferredWidth( 640 );
 		this.setMinimumPreferredHeight( 480 );
-		this.addComponent( MyCascadeOperation.getInstance().createButton(), Constraint.PAGE_START );
+		this.addComponent( MyCascadeOperation.getInstance().createPopupButton(), Constraint.PAGE_START );
 	}
 }
 
