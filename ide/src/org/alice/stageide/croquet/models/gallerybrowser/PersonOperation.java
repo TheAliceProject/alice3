@@ -53,7 +53,7 @@ public abstract class PersonOperation extends edu.cmu.cs.dennisc.croquet.InputDi
 		super( group, id );
 	}
 	@Override
-	protected org.alice.stageide.personeditor.PersonEditor prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context ) {
+	protected org.alice.stageide.personeditor.PersonEditor prologue( org.lgna.croquet.steps.InputDialogOperationStep< org.alice.stageide.personeditor.PersonEditor > context ) {
 		PersonInfo personInfo = this.getInitialPersonInfo();
 		org.alice.stageide.personeditor.PersonEditor rv = org.alice.stageide.personeditor.PersonEditor.getInstance();
 		rv.initialize( this.getInitialPersonInfo() );

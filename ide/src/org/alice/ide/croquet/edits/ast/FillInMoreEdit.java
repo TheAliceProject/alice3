@@ -46,44 +46,22 @@ package org.alice.ide.croquet.edits.ast;
  * @author Dennis Cosgrove
  */
 public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation > {
-	public static class FillInMoreEditMemento extends Memento<org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation> {
-		private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
-		public FillInMoreEditMemento( FillInMoreEdit edit ) {
-			super( edit );
-			this.argumentExpression = edit.argumentExpression;
-		}
-		public FillInMoreEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation > createEdit() {
-			return new FillInMoreEdit( this );
-		}
-		@Override
-		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-			java.util.UUID prevExpressionId = binaryDecoder.decodeId();
-			this.argumentExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, prevExpressionId );
-		}
-		@Override
-		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			binaryEncoder.encode( this.argumentExpression.getUUID() );
-		}
-	}
-
 	private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
 
 	public FillInMoreEdit( edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
 		this.argumentExpression = argumentExpression;
 	}
-	private FillInMoreEdit( FillInMoreEditMemento memento ) {
-		super( memento );
-		this.argumentExpression = memento.argumentExpression;
+	public FillInMoreEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		java.util.UUID prevExpressionId = binaryDecoder.decodeId();
+		this.argumentExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, prevExpressionId );
 	}
 	@Override
-	public Memento<org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation> createMemento() {
-		return new FillInMoreEditMemento( this );
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.argumentExpression.getUUID() );
 	}
 
 	@Override

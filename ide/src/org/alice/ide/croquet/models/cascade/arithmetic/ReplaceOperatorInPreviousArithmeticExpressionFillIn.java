@@ -65,10 +65,10 @@ public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.ali
 		super( java.util.UUID.fromString( "7699fe5b-b1bc-4bc2-9632-eace7166bdb6" ) );
 		this.operator = operator;
 	}
-	@Override
-	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression, Void > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
-	}
+//	@Override
+//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression, Void > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+//		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
+//	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
 		assert previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;

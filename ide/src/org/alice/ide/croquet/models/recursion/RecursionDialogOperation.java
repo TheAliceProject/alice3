@@ -164,25 +164,26 @@ public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.PlainDi
 		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "a5e1ded2-18c7-4ae5-8676-e6deca5650fe" ) );
 	}
 	@Override
-	protected RecursionPanel createContentPane(edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog) {
+	protected RecursionPanel createContentPane(org.lgna.croquet.steps.PlainDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog) {
 		String explanationA = "<html>Recursion is disabled by default because otherwise many users unwittingly and mistakenly make recursive calls.<p><p>Recursion is a powerful tool in computer science.  It is not to be feared.  It simply needs to be understood.<p><p>For more information on recursion, please see:</html>";
 		String explanationB = "Hopefully, this button makes sense to you:  ";
 		return new RecursionPanel( explanationA, explanationB );
 	}
 	
-	private static int getDepth( edu.cmu.cs.dennisc.croquet.HistoryNode node, int depth ) {
-		edu.cmu.cs.dennisc.croquet.HistoryNode parent = node.getParent();
-		if( parent != null ) {
-			return getDepth( parent, depth+1 );
+	private static int getDepth( org.lgna.croquet.steps.Transaction transaction, int depth ) {
+		org.lgna.croquet.steps.TransactionHistory transactionHistory = transaction.getParent();
+		org.lgna.croquet.steps.CompletionStep< ? > completionStep = transactionHistory.getParent();
+		if( completionStep != null ) {
+			return getDepth( completionStep.getParent(), depth+1 );
 		} else {
 			return depth;
 		}
 	}
 	
 	@Override
-	protected void tweakDialog(edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context ) {
-		super.tweakDialog(dialog, context);
-		int depth = getDepth( context, 1 );
+	protected void tweakDialog(edu.cmu.cs.dennisc.croquet.Dialog dialog, org.lgna.croquet.steps.PlainDialogOperationStep step ) {
+		super.tweakDialog(dialog, step);
+		int depth = getDepth( step.getParent(), 1 );
 		int offset = (depth-5)*24;
 		java.awt.Point p = dialog.getLocation();
 		p.x += offset;
@@ -190,7 +191,7 @@ public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.PlainDi
 		dialog.setLocation( p );
 	}
 	@Override
-	protected void releaseContentPane(edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container<?> contentPane) {
+	protected void releaseContentPane(org.lgna.croquet.steps.PlainDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container<?> contentPane) {
 	}
 	@Override
 	protected java.awt.Dimension getDesiredDialogSize(edu.cmu.cs.dennisc.croquet.Dialog dialog) {

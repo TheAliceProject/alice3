@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.edits.ListSelectionStateEdit;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -83,10 +85,6 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 		return this.listSelectionState;
 	}
 	@Override
-	public boolean isAlreadyInState( Edit< ? > edit ) {
-		return this.listSelectionState.isAlreadyInState( edit );
-	}
-	@Override
 	protected ListSelectionStatePrepModelResolver<E> createCodableResolver() {
 		return new ListSelectionStatePrepModelResolver<E>( this );
 	}
@@ -98,7 +96,7 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 		return new ComboBox< E >( this.getListSelectionState() );
 	}
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext<?> modelContext, Edit<?> edit, UserInformation userInformation) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		if( edit != null ) {
 			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
 			rv.append( "First press on " );

@@ -65,27 +65,27 @@ class EnumConstantFillIn<T extends Enum< T >> extends edu.cmu.cs.dennisc.croquet
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.steps.CascadeFillInPrepStep< T, Void > context ) {
 		return null;
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.steps.CascadeFillInPrepStep< T, Void > context ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
+	public String getMenuItemText( org.lgna.croquet.steps.CascadeFillInPrepStep< T, Void > context ) {
 		return this.value.name();
 	}
 
 	@Override
-	public T createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
+	public T createValue( org.lgna.croquet.steps.CascadeFillInPrepStep< T, Void > context ) {
 		return this.value;
 	}
 
 	@Override
-	public T getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
+	public T getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep< T, Void > context ) {
 		return this.value;
 	}
 }
@@ -99,7 +99,7 @@ class EnumBlank<T extends Enum< T >> extends edu.cmu.cs.dennisc.croquet.CascadeB
 	}
 
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< T > context ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep< T > context ) {
 		for( T value : this.cls.getEnumConstants() ) {
 			rv.add( EnumConstantFillIn.getInstance( value ) );
 		}
@@ -129,27 +129,27 @@ class IntegerLiteralFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Int
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
 		return null;
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public String getMenuItemText( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
 		return Integer.toString( this.value );
 	}
 
 	@Override
-	public Integer createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public Integer createValue( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
 		return this.value;
 	}
 
 	@Override
-	public Integer getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public Integer getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
 		return this.value;
 	}
 }
@@ -168,27 +168,27 @@ class CustomIntegerFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Inte
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
 		return null;
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public String getMenuItemText( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
 		return "custom integer...";
 	}
 
 	@Override
-	public Integer createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public Integer createValue( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
 		return 42;
 	}
 
 	@Override
-	public Integer getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public Integer getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
 		return null;
 	}
 }
@@ -207,7 +207,7 @@ class IntegerBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< Integer > {
 	}
 
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< Integer > context ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> rv, org.lgna.croquet.steps.CascadeBlankStep< Integer > context ) {
 		for( Integer value : new int[] { 1, 2, 3, 4, 5 } ) {
 			rv.add( IntegerLiteralFillIn.getInstance( value ) );
 		}
@@ -245,19 +245,12 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupOperatio
 	protected edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< Object >> createEdit( final Object[] values ) {
 		return new edu.cmu.cs.dennisc.croquet.Edit() {
 			@Override
-			public edu.cmu.cs.dennisc.croquet.Edit.Memento createMemento() {
-				return null;
-			}
-
-			@Override
 			protected void doOrRedoInternal( boolean isDo ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( values );
 			}
-
 			@Override
 			protected void undoInternal() {
 			}
-
 			@Override
 			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 				return null;
@@ -289,15 +282,15 @@ public class TestCascade extends edu.cmu.cs.dennisc.croquet.Application {
 	}
 
 	@Override
-	protected void handleAbout( java.util.EventObject e ) {
+	protected void handleAbout( org.lgna.croquet.Trigger trigger ) {
 	}
 
 	@Override
-	protected void handlePreferences( java.util.EventObject e ) {
+	protected void handlePreferences( org.lgna.croquet.Trigger trigger ) {
 	}
 
 	@Override
-	protected void handleQuit( java.util.EventObject e ) {
+	protected void handleQuit( org.lgna.croquet.Trigger trigger ) {
 		System.exit( 0 );
 	}
 

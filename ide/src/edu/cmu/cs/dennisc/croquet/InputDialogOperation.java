@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogOperation<J extends JComponent<?>> extends GatedCommitDialogOperation<InputDialogOperationContext<J>> {
+public abstract class InputDialogOperation<J extends JComponent<?>> extends GatedCommitDialogOperation<org.lgna.croquet.steps.InputDialogOperationStep<J>> {
 	protected static class OkOperation extends CompleteOperation {
 		private static class SingletonHolder {
 			private static OkOperation instance = new OkOperation();
@@ -66,102 +66,27 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 	protected edu.cmu.cs.dennisc.croquet.GatedCommitDialogOperation.CompleteOperation getCompleteOperation() {
 		return OkOperation.getInstance();
 	}
-
-	//	private static abstract class ButtonOperation extends ActionOperation {
-//		private boolean isOk;
-//		private Dialog dialog;
-//		public ButtonOperation(java.util.UUID individualId, String name, boolean isOk) {
-//			super( DIALOG_IMPLEMENTATION_GROUP, individualId );
-//			this.setName(name);
-//			this.isOk = isOk;
-//		}
-//		public void setDialog(Dialog dialog) {
-//			if( dialog != null ) {
-//				assert this.dialog == null;
-//			}
-//			this.dialog = dialog;
-//		}
-//		
-//		private InputDialogOperationContext< ? > getInputDialogOperationContext( ActionOperationContext context ) {
-//			System.err.println( "todo: getInputDialogOperationContext" );
-//			return (InputDialogOperationContext< ? >)context.getParent();
-//		}
-//		private InputDialogOperation< ? > getInputDialogOperation( ActionOperationContext context ) {
-//			return this.getInputDialogOperationContext( context ).getModel();
-//		}
-//		@Override
-//		protected final void perform(ActionOperationContext context) {
-//			assert this.dialog != null;
-//			InputDialogOperation< ? > inputDialogOperation = this.getInputDialogOperation( context );
-//			inputDialogOperation.isOk = this.isOk;
-//			this.dialog.setVisible( false );
-//			//this.dialog.getAwtWindow().dispose();
-//			context.finish();
-//		}
-//	}
-//	
-//	public static class CommitOperation extends ButtonOperation { 
-//		private static class SingletonHolder {
-//			private static CommitOperation instance = new CommitOperation();
-//		}
-//		public static CommitOperation getInstance() {
-//			return SingletonHolder.instance;
-//		}
-//		private CommitOperation() {
-//			super( java.util.UUID.fromString("f6019ff0-cf2b-4d6c-8c8d-14cac8154ebc"), "OK", true );
-//		}
-//	}
-//	public static class CancelOperation extends ButtonOperation { 
-//		private static class SingletonHolder {
-//			private static CancelOperation instance = new CancelOperation();
-//		}
-//		public static CancelOperation getInstance() {
-//			return SingletonHolder.instance;
-//		}
-//		private CancelOperation() {
-//			super( java.util.UUID.fromString("2a7e61c8-119a-45b1-830c-f59edda720a0"), "Cancel", false );
-//		}
-//	}
-//	private static final String NULL_EXPLANATION = "good to go";
-//	private Label explanationLabel = new Label( NULL_EXPLANATION ) {
-//		@Override
-//		protected javax.swing.JLabel createAwtComponent() {
-//			return new javax.swing.JLabel() {
-//				@Override
-//				protected void paintComponent(java.awt.Graphics g) {
-//					if( this.getText() == NULL_EXPLANATION ) {
-//						//pass
-//					} else {
-//						super.paintComponent( g );
-//					}
-//				}
-//			};
-//		};
-//	};
 	private boolean isCancelDesired;
 	public InputDialogOperation(Group group, java.util.UUID individualId, boolean isCancelDesired) {
 		super(group, individualId);
 		this.isCancelDesired = isCancelDesired;
-//		this.explanationLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
-//		this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
-//		this.explanationLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
 	}
 	public InputDialogOperation(Group group, java.util.UUID individualId) {
 		this(group, individualId, true);
 	}
 
 	@Override
-	public InputDialogOperationContext<J> createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushInputDialogOperationContext( this, e, viewController );
+	public org.lgna.croquet.steps.InputDialogOperationStep<J> createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+		return org.lgna.croquet.steps.TransactionManager.addInputDialogOperationStep( this, trigger );
 	}
 
 	
-	public String getTutorialFinishNoteText( InputDialogOperationContext< ? > inputDialogOperationContext, UserInformation userInformation ) {
+	public String getTutorialFinishNoteText( org.lgna.croquet.steps.InputDialogOperationStep< ? > inputDialogOperationContext, UserInformation userInformation ) {
 		return "When finished press the <strong>OK</strong> button.";
 	}
 
 	public static interface ExternalCommitButtonDisabler<J extends JComponent<?>> {
-		public String getExplanationIfCommitButtonShouldBeDisabled( InputDialogOperationContext<J> context );
+		public String getExplanationIfCommitButtonShouldBeDisabled( org.lgna.croquet.steps.InputDialogOperationStep<J> step );
 	}
 	private ExternalCommitButtonDisabler<J> externalCommitButtonDisabler;
 	public ExternalCommitButtonDisabler<J> getExternalCommitButtonDisabler() {
@@ -171,18 +96,18 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 		this.externalCommitButtonDisabler = externalCommitButtonDisabler;
 	}
 	
-	protected String getInternalExplanation( InputDialogOperationContext<J> context ) {
+	protected String getInternalExplanation( org.lgna.croquet.steps.InputDialogOperationStep<J> step ) {
 		return null;
 	}
 	
 	@Override
-	protected final String getExplanation( InputDialogOperationContext<J> context ) {
-		//InputDialogOperationContext<J> context = (InputDialogOperationContext<J>)child.findContextFor( InputDialogOperation.this );
+	protected final String getExplanation( org.lgna.croquet.steps.InputDialogOperationStep<J> step ) {
+		//org.lgna.croquet.steps.InputDialogOperationStep<J> step = (org.lgna.croquet.steps.InputDialogOperationStep<J>)child.findContextFor( InputDialogOperation.this );
 //		String text;
-		if( context != null ) {
-			String explanation = this.getInternalExplanation( context );
+		if( step != null ) {
+			String explanation = this.getInternalExplanation( step );
 			if( this.externalCommitButtonDisabler != null ) {
-				String externalExplanation = this.externalCommitButtonDisabler.getExplanationIfCommitButtonShouldBeDisabled( context );
+				String externalExplanation = this.externalCommitButtonDisabler.getExplanationIfCommitButtonShouldBeDisabled( step );
 				if( externalExplanation != null ) {
 					explanation = externalExplanation;
 				}
@@ -196,31 +121,23 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 //			this.getCompleteOperation().setEnabled( text == NULL_EXPLANATION );
 //			this.explanationLabel.setText( text );
 		} else {
-//			this.explanationLabel.setText( "todo: updateOperationAndExplanation context==null" );
+//			this.explanationLabel.setText( "todo: updateOperationAndExplanation step==null" );
 			this.getCompleteOperation().setEnabled( true );
-			return "todo: updateOperationAndExplanation context==null";
+			return "todo: updateOperationAndExplanation step==null";
 		}
 	}
-	protected abstract J prologue( InputDialogOperationContext<J> context );
-	protected abstract void epilogue( InputDialogOperationContext<J> context, boolean isCommit );
+	protected abstract J prologue( org.lgna.croquet.steps.InputDialogOperationStep<J> step );
+	protected abstract void epilogue( org.lgna.croquet.steps.InputDialogOperationStep<J> step, boolean isCommit );
 
-
-//	private ModelContext.ChildrenObserver childrenObserver = new ModelContext.ChildrenObserver() {
-//		public void addingChild(HistoryNode child) {
-//		}
-//		public void addedChild(HistoryNode child) {
-//			InputDialogOperation.this.updateOperationAndExplanation( child );
-//		}
-//	};
 
 	@Deprecated
-	public Edit< ? > EPIC_HACK_createEdit( InputDialogOperationContext< J > inputDialogOperationContext ) {
+	public Edit< ? > EPIC_HACK_createEdit( org.lgna.croquet.steps.InputDialogOperationStep< J > inputDialogOperationContext ) {
 		//todo
 		return null;
 	}
 	
 	@Override
-	protected Component< ? > createControlsPanel( InputDialogOperationContext< J > context, Dialog dialog ) {
+	protected Component< ? > createControlsPanel( org.lgna.croquet.steps.InputDialogOperationStep< J > step, Dialog dialog ) {
 		Button okButton = this.getCompleteOperation().createButton();
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.addComponent( BoxUtilities.createHorizontalGlue() );
@@ -236,10 +153,10 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainPanel( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Label explanationLabel ) {
-		J child = this.prologue( context );
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainPanel( org.lgna.croquet.steps.InputDialogOperationStep< J > step, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Label explanationLabel ) {
+		J child = this.prologue( step );
 		assert child != null;
-		context.setMainPanel( child );
+		step.setMainPanel( child );
 //		child.getAwtComponent().setOpaque( true );
 
 		BorderPanel rv = new BorderPanel();
@@ -249,96 +166,7 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 		return rv;
 	}
 	@Override
-	protected void release( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context, edu.cmu.cs.dennisc.croquet.Dialog dialog, boolean isCompleted ) {
-		this.epilogue( context, isCompleted );
+	protected void release( org.lgna.croquet.steps.InputDialogOperationStep< J > step, edu.cmu.cs.dennisc.croquet.Dialog dialog, boolean isCompleted ) {
+		this.epilogue( step, isCompleted );
 	}
-	
-//	@Override
-//	protected final Container<?> createContentPane(InputDialogOperationContext<J> context, Dialog dialog) {
-//		J mainPane = this.prologue(context);
-//		if( mainPane != null ) {
-//			assert mainPane != null;
-//			context.setMainPanel( mainPane );
-//			class OkCancelPanel extends Panel {
-//				private Button okButton = CommitOperation.getInstance().createButton();
-//				public OkCancelPanel() {
-//					this.internalAddComponent( BoxUtilities.createHorizontalGlue() );
-//					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-//						this.internalAddComponent( okButton );
-//						if( isCancelDesired ) {
-//							//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
-//							this.internalAddComponent( CancelOperation.getInstance().createButton() );
-//						}
-//					} else {
-//						if( isCancelDesired ) {
-//							this.internalAddComponent( CancelOperation.getInstance().createButton() );
-//							//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
-//						}
-//						this.internalAddComponent( okButton );
-//					}
-//					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,4,16 ) );
-//				}
-//				@Override
-//				protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
-////					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-////						return new java.awt.FlowLayout( java.awt.FlowLayout.CENTER, 2, 0 );
-////					} else {
-//						return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
-////					}
-//				}
-//				public Button getOkButton() {
-//					return this.okButton;
-//				}
-//			};
-//			
-//			OkCancelPanel okCancelPanel = new OkCancelPanel();
-//			okCancelPanel.setBackgroundColor( null );
-//
-//			PageAxisPanel southPanel = new PageAxisPanel();
-//			southPanel.addComponent( this.explanationLabel );
-//			southPanel.addComponent( okCancelPanel );
-//
-//			java.awt.Color backgroundColor = mainPane.getBackgroundColor();
-//			this.explanationLabel.setBackgroundColor( backgroundColor );
-//			
-//			BorderPanel borderPanel = dialog.getContentPanel();
-//			borderPanel.setBackgroundColor( backgroundColor );
-//			borderPanel.addComponent( mainPane, BorderPanel.Constraint.CENTER );
-//			borderPanel.addComponent( southPanel, BorderPanel.Constraint.PAGE_END );
-//			
-//			dialog.setDefaultButton( okCancelPanel.getOkButton() );
-//
-//			CommitOperation.getInstance().setDialog(dialog);
-//			CancelOperation.getInstance().setDialog(dialog);
-//			this.isOk = false;
-//
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate.  observer should not need to be added to the root" );
-//			ContextManager.getRootContext().addChildrenObserver( this.childrenObserver );
-//			this.updateOperationAndExplanation( context );
-//
-//			return borderPanel;
-//		} else {
-//			this.isOk = false;
-//			return null;
-//		}
-//	}
-//	@Override
-//	protected final void releaseContentPane(InputDialogOperationContext<J> context, Dialog dialog, Container<?> contentPane) {
-//		if( contentPane != null ) {
-//			this.epilogue(context, this.isOk);
-//			
-//			ContextManager.getRootContext().removeChildrenObserver( this.childrenObserver );
-//
-//			CommitOperation.getInstance().setDialog(null);
-//			CancelOperation.getInstance().setDialog(null);
-//			if( this.isOk ) {
-//				//pass
-//			} else {
-//				assert context.isCanceled();
-//			}
-//		} else {
-//			context.cancel();
-//		}
-//	}
-
 }

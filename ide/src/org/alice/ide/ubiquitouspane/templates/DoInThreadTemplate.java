@@ -50,7 +50,7 @@ public class DoInThreadTemplate extends CascadingUbiquitousStatementClassTemplat
 		super( edu.cmu.cs.dennisc.alice.ast.DoInThread.class, org.alice.ide.ast.NodeUtilities.createDoInThread() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( org.lgna.croquet.steps.DragStep context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.DoInThreadInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

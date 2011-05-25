@@ -46,40 +46,20 @@ package org.alice.ide.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends edu.cmu.cs.dennisc.croquet.OperationEdit< M > {
-	public static class DependentEditMemento<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends Memento<M> {
-		public DependentEditMemento( DependentEdit<M> edit ) {
-			super( edit );
-		}
-		public DependentEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit<M> createEdit() {
-			return new DependentEdit<M>( this );
-		}
-		@Override
-		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		}
-		@Override
-		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		}
-	}
-	
+public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends org.lgna.croquet.edits.OperationEdit< M > {
 	public DependentEdit() {
 	}
-	private DependentEdit( DependentEditMemento<M> memento ) {
-		super( memento );
+	public DependentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
-
 	@Override
-	public Memento< M > createMemento() {
-		return new DependentEditMemento<M>( this );
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
 	}
 	private org.alice.ide.croquet.models.ResponsibleModel getResponsibleModel() {
-		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = this.getContext();
-		if( context != null ) {
-			edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
+		org.lgna.croquet.steps.CompletionStep< ? > step = this.getCompletionStep();
+		if( step != null ) {
+			edu.cmu.cs.dennisc.croquet.CompletionModel model = step.getModel();
 			if( model instanceof org.alice.ide.croquet.models.ResponsibleModel ) {
 				return (org.alice.ide.croquet.models.ResponsibleModel)model;
 			} else {

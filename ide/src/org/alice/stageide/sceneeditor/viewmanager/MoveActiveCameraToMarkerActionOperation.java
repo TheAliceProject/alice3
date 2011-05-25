@@ -52,7 +52,6 @@ import org.alice.ide.operations.ActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.croquet.ActionOperationContext;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
@@ -126,7 +125,7 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 	}
 	
 	@Override
-	protected void perform(ActionOperationContext context) 
+	protected void perform(org.lgna.croquet.steps.ActionOperationStep step) 
 	{
 		
 		final CameraMarker cameraMarker;
@@ -144,9 +143,9 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 			prevPOV = camera.getPointOfView(org.alice.apis.moveandturn.AsSeenBy.SCENE);
 			if( nextPOV.getInternal().isNaN() ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveActiveCameraToMarkerActionOperation isNaN" );
-				context.cancel();
+				step.cancel();
 			} else {
-				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
 						setAbsolutePOV( camera, nextPOV );
@@ -163,7 +162,7 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 				} );
 			}
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 		
 	}

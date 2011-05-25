@@ -54,16 +54,16 @@ public interface DropReceptor {
 	//public ViewController<?,?> getViewController();
 	//todo: rename
 	public JComponent<?> getViewController();
-	public void dragStarted( DragAndDropContext dragAndDropContext );
-	public void dragEntered( DragAndDropContext dragAndDropContext );
-	public DropSite dragUpdated( DragAndDropContext dragAndDropContext );
+	public void dragStarted( org.lgna.croquet.steps.DragStep dragAndDropContext );
+	public void dragEntered( org.lgna.croquet.steps.DragStep dragAndDropContext );
+	public DropSite dragUpdated( org.lgna.croquet.steps.DragStep dragAndDropContext );
 	
 	//todo: Dropped or Exited but not both?
-	public Operation<?> dragDropped( DragAndDropContext dragAndDropContext );
-	public void dragExited( DragAndDropContext dragAndDropContext, boolean isDropRecipient );
+	public Operation<?> dragDropped( org.lgna.croquet.steps.DragStep dragAndDropContext );
+	public void dragExited( org.lgna.croquet.steps.DragStep dragAndDropContext, boolean isDropRecipient );
 	
 	
-	public void dragStopped( DragAndDropContext dragAndDropContext );
+	public void dragStopped( org.lgna.croquet.steps.DragStep dragAndDropContext );
 	
 	public String getTutorialNoteText( CompletionModel completionModel, Edit< ? > edit, UserInformation userInformation );
 }

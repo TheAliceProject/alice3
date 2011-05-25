@@ -46,13 +46,13 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInCompletionStep<F,B> extends CompletionStep< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > > implements CascadeFillInStep< F,B > {
-	public static < F, B > CascadeFillInCompletionStep< F, B > createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > model, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > fillIn ) {
-		return new CascadeFillInCompletionStep< F, B >( parent, model, fillIn );
+public class CascadeFillInCompletionStep<F,B> extends CompletionStep< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > > {
+	public static < F, B > CascadeFillInCompletionStep< F, B > createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > model, org.lgna.croquet.Trigger trigger, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > fillIn ) {
+		return new CascadeFillInCompletionStep< F, B >( parent, model, trigger, fillIn );
 	}
 	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > > fillInResolver; 
-	private CascadeFillInCompletionStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > model, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > fillIn ) {
-		super( parent, model, null );
+	private CascadeFillInCompletionStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > model, org.lgna.croquet.Trigger trigger, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > fillIn ) {
+		super( parent, model, trigger, null );
 		this.fillInResolver = fillIn.getCodableResolver();
 	}
 	public CascadeFillInCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

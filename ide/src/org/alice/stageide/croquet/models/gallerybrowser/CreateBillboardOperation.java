@@ -89,7 +89,7 @@ public class CreateBillboardOperation extends AbstractGalleryDeclareFieldOperati
 		super( java.util.UUID.fromString( "6ec4f250-7bb7-4f73-830b-1e9b511b69d5" ) );
 	}
 	@Override
-	protected org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromBillboardPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromBillboardPane > context ) {
+	protected org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromBillboardPane prologue( org.lgna.croquet.steps.InputDialogOperationStep< org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromBillboardPane > context ) {
 		org.alice.ide.resource.prompter.ImageResourcePrompter imageResourcePrompter = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton();
 		CreateFieldFromBillboardPane rv = new CreateFieldFromBillboardPane( this.getOwnerType() );
 		try {
@@ -119,7 +119,7 @@ public class CreateBillboardOperation extends AbstractGalleryDeclareFieldOperati
 		return rv;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.moveandturn.Billboard > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromBillboardPane > context ) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.moveandturn.Billboard > createFieldAndInstance( org.lgna.croquet.steps.InputDialogOperationStep< org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromBillboardPane > context ) {
 		CreateFieldFromBillboardPane createFieldFromBillboardPane = context.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromBillboardPane.getInputValue();
 		if( field != null ) {

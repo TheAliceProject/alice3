@@ -57,25 +57,7 @@ public abstract class BoundedRangeIntegerState extends State< Integer > {
 		private boolean previousValueIsAdjusting = false;
 
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			BoundedRangeIntegerStateContext boundedRangeIntegerStateContext;
-			if( this.previousValueIsAdjusting ) {
-				boundedRangeIntegerStateContext = (BoundedRangeIntegerStateContext)ContextManager.getCurrentContext();
-			} else {
-				boundedRangeIntegerStateContext = ContextManager.createAndPushBoundedRangeIntegerStateContext( BoundedRangeIntegerState.this );
-			}
-			this.previousValueIsAdjusting = boundedRangeModel.getValueIsAdjusting();
-			boundedRangeIntegerStateContext.handleStateChanged( e );
-			BoundedRangeIntegerState.this.fireValueChanged( e );
-
-			if( this.previousValueIsAdjusting ) {
-				//pass
-			} else {
-				int nextValue = boundedRangeModel.getValue();
-				boundedRangeIntegerStateContext.commitAndInvokeDo( new BoundedRangeIntegerStateEdit( e, BoundedRangeIntegerState.this.previousValue, nextValue, false ) );
-				BoundedRangeIntegerState.this.previousValue = nextValue;
-				ModelContext< ? > popContext = ContextManager.popContext();
-				assert popContext == boundedRangeIntegerStateContext;
-			}
+			org.lgna.croquet.steps.TransactionManager.handleStateChanged( BoundedRangeIntegerState.this, e );
 		}
 	};
 	javax.swing.SpinnerModel spinnerModel = new javax.swing.AbstractSpinnerModel() {

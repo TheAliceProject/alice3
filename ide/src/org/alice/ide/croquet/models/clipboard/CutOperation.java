@@ -56,7 +56,7 @@ public class CutOperation extends org.alice.ide.operations.InconsequentialAction
 		super( java.util.UUID.fromString( "48a0202c-8153-4772-89ca-08fe5a8f28b5" ) );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
 		String title = "Cut coming soon";
 		String message = "Cut is not yet implemented.  Apologies.";
 		this.getIDE().showMessageDialog( message, title, edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 

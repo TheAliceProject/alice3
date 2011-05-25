@@ -75,11 +75,11 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< edu.
 		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( field.getDeclaringType() ), field );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.FieldAccess createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+	public edu.cmu.cs.dennisc.alice.ast.FieldAccess createValue( org.lgna.croquet.steps.CascadeFillInPrepStep context ) {
 		return this.createValue( this.transientValue.field.getValue() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.FieldAccess getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+	public edu.cmu.cs.dennisc.alice.ast.FieldAccess getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep context ) {
 		return this.transientValue;
 	}
 	@Override

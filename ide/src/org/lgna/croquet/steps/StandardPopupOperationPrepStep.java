@@ -52,7 +52,7 @@ public class StandardPopupOperationPrepStep extends PrepStep {
 	}
 	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.StandardPopupOperation > standardPopupOperationResolver; 
 	private StandardPopupOperationPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation standardPopupOperation ) {
-		super( parent, null );
+		super( parent, null, null );
 		this.standardPopupOperationResolver = standardPopupOperation.getCodableResolver();
 	}
 	public StandardPopupOperationPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

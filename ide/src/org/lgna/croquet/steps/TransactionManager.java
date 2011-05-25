@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet.steps;
 
+import edu.cmu.cs.dennisc.croquet.*;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,15 +62,37 @@ public class TransactionManager {
 		public void dialogOpened( edu.cmu.cs.dennisc.croquet.Dialog dialog );
 		public void transactionCanceled( Transaction transaction );
 	}
+
+	public static interface EventObserver {
+		public void firingEvent( org.lgna.cheshire.events.Event event );
+		public void firedEvent( org.lgna.cheshire.events.Event event );
+	}
+	
 	private static final java.util.List<Observer> observers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private static final java.util.List<EventObserver> eventObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private static final java.util.Stack< TransactionHistory > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-//	private static final java.util.Set< CompletionStep<?> > stepsAwaitingFinish = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+
 	static {
 		stack.push( new TransactionHistory() );
 	}
 	private TransactionManager() {
 		throw new AssertionError();
 	}
+
+	public static void addObserver( Observer observer ) {
+		observers.add( observer );
+	}
+	public static void removeObserver( Observer observer ) {
+		observers.remove( observer );
+	}
+	
+	public static void addEventObserver( EventObserver eventObserver ) {
+		eventObservers.add( eventObserver );
+	}
+	public static void removeEventObserver( EventObserver eventObserver ) {
+		eventObservers.remove( eventObserver );
+	}
+
 	public static TransactionHistory getRootTransactionHistory() {
 		return stack.firstElement();
 	}
@@ -83,14 +107,268 @@ public class TransactionManager {
 		return stack.pop();
 	}
 	
-	public static void addObserver( Observer observer ) {
-		observers.add( observer );
+	private static boolean isCroquetMenuSelection( javax.swing.MenuElement[] menuElements ) {
+		for( javax.swing.MenuElement menuElement : menuElements ) {
+			Component< ? > component = Component.lookup( menuElement.getComponent() );
+			if( component instanceof MenuBar || component instanceof MenuItem || component instanceof Menu || component instanceof PopupMenu || component instanceof MenuTextSeparator ) {
+				return true;
+			}
+		}
+		return menuElements.length == 0;
 	}
-	public static void removeObserver( Observer observer ) {
-		observers.remove( observer );
+
+	private static javax.swing.JMenuBar getJMenuBarOrigin( javax.swing.MenuElement[] menuElements ) { 
+		if( menuElements.length > 0 ) {
+			javax.swing.MenuElement menuElement0 = menuElements[ 0 ];
+			if( menuElement0 instanceof javax.swing.JMenuBar ) {
+				return (javax.swing.JMenuBar)menuElement0;
+			}
+		}
+		return null;
+	}
+	private static MenuBar getMenuBarOrigin( javax.swing.MenuElement[] menuElements ) {
+		javax.swing.JMenuBar jMenuBar = getJMenuBarOrigin( menuElements );
+		if( jMenuBar != null ) {
+			return (MenuBar)Component.lookup( jMenuBar );
+		} else {
+			return null;
+		}
+	}
+	private static MenuBarModel getMenuBarModelOrigin( javax.swing.MenuElement[] menuElements ) {
+		MenuBar menuBar = getMenuBarOrigin( menuElements );
+		if( menuBar != null ) {
+			return menuBar.getModel();
+		} else {
+			return null;
+		}
+	}
+
+	private static javax.swing.MenuElement[] previousMenuElements = {};
+	private static void handleMenuSelectionStateChanged( javax.swing.event.ChangeEvent e ) {
+		
+		javax.swing.MenuElement[] menuElements = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
+		if( isCroquetMenuSelection( menuElements ) ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( menuElements.length );
+			for( javax.swing.MenuElement menuElement : menuElements ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.print( menuElement.getClass().getName() );
+				edu.cmu.cs.dennisc.print.PrintUtilities.print( ", " );
+			}
+			edu.cmu.cs.dennisc.print.PrintUtilities.println();
+			java.util.List< MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			MenuBar menuBar = getMenuBarOrigin( menuElements );
+			int i0;
+			if( menuBar != null ) {
+				javax.swing.JPopupMenu jPreviousPopupMenu;
+				if( previousMenuElements.length >= 3 ) {
+					jPreviousPopupMenu = (javax.swing.JPopupMenu)previousMenuElements[ 2 ];
+				} else {
+					jPreviousPopupMenu = null;
+				}
+				if( menuElements.length >= 3 ) {
+					assert menuElements.length >= 3;
+					assert menuElements[ 1 ] instanceof javax.swing.JMenu;
+					assert menuElements[ 2 ] instanceof javax.swing.JPopupMenu;
+					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
+					
+					javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElements[ 1 ];
+					Menu menu = (Menu)Component.lookup( jMenu );
+					assert menu != null;
+
+					MenuItemPrepModel menuModel = menu.getModel();
+					assert menuModel != null;
+					models.add( menuModel );
+					i0 = 3;
+				} else {
+					i0 = -1;
+				}
+			} else {
+				i0 = 0;
+			}
+			if( i0 != -1 ) {
+				for( int i=i0; i<menuElements.length; i++ ) {
+					javax.swing.MenuElement menuElementI = menuElements[ i ];
+					if( menuElementI instanceof javax.swing.JPopupMenu ) {
+						javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElementI;
+						//pass
+					} else if( menuElementI instanceof javax.swing.JMenuItem ) {
+						javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
+						Component< ? > component = Component.lookup( jMenuItem );
+						//edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleMenuSelectionStateChanged", i, component.getClass() );
+						if( component instanceof ViewController< ?, ? > ) {
+							ViewController< ?, ? > viewController = (ViewController< ?, ? >)component;
+							//edu.cmu.cs.dennisc.print.PrintUtilities.println( "viewController", i, viewController.getModel() );
+							Model model = viewController.getModel();
+							if( model != null ) {
+								MenuItemPrepModel menuItemPrepModel;
+								if( model instanceof MenuItemPrepModel ) {
+									menuItemPrepModel = (MenuItemPrepModel)model;
+								} else if( model instanceof Operation<?> ) {
+									menuItemPrepModel = ((Operation< ? >)model).getMenuItemPrepModel();
+								} else if( model instanceof BooleanState ) {
+									menuItemPrepModel = ((BooleanState)model).getMenuItemPrepModel();
+								} else {
+									throw new RuntimeException( model.toString() );
+								}
+								models.add( menuItemPrepModel );
+							} else {
+								throw new NullPointerException();
+							}
+						}
+					}
+				}
+				getActiveTransaction().pendMenuSelection( e, models );
+			}
+
+//			if( previousMenuElements.length > 0 ) {
+//				if( menuElements.length > 0 ) {
+//					java.util.List< Model > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//					MenuBar menuBar = getMenuBarOrigin( menuElements );
+//					int i0;
+//					if( menuBar != null ) {
+//						models.add( menuBar.getModel() );
+//						javax.swing.JPopupMenu jPreviousPopupMenu;
+//						if( previousMenuElements.length >= 3 ) {
+//							jPreviousPopupMenu = (javax.swing.JPopupMenu)previousMenuElements[ 2 ];
+//						} else {
+//							jPreviousPopupMenu = null;
+//						}
+//						
+//						assert menuElements.length >= 3;
+//						assert menuElements[ 1 ] instanceof javax.swing.JMenu;
+//						assert menuElements[ 2 ] instanceof javax.swing.JPopupMenu;
+//						javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
+//						
+//						javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElements[ 1 ];
+//						Menu menu = (Menu)Component.lookup( jMenu );
+//						assert menu != null;
+//
+//						Model menuModel = menu.getModel();
+//						assert menuModel != null;
+//						models.add( menuModel );
+//
+//						if( jPreviousPopupMenu != jPopupMenu ) {
+//							if( jPreviousPopupMenu != null ) {
+//								ModelContext< ? > popupContext = ContextManager.popContext();
+//								assert popupContext instanceof PopupOperationContext;
+//							}
+//							
+//							if( menuModel instanceof MenuModel ) {
+//								/*AbstractPopupMenuOperationContext popupContext =*/ ContextManager.createAndPushStandardPopupOperationContext( ((MenuModel)menuModel).getPopupMenuOperation(), e, null );
+//							} else {
+//								System.err.println( "handleMenuSelectionStateChanged: " + menuModel );
+//							}
+//							
+//						}
+//						i0 = 3;
+//					} else {
+//						i0 = 0;
+//					}
+//					for( int i=i0; i<menuElements.length; i++ ) {
+//						javax.swing.MenuElement menuElementI = menuElements[ i ];
+//						if( menuElementI instanceof javax.swing.JPopupMenu ) {
+//							javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElementI;
+//							//pass
+//						} else if( menuElementI instanceof javax.swing.JMenuItem ) {
+//							javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
+//							Component< ? > component = Component.lookup( jMenuItem );
+//							//edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleMenuSelectionStateChanged", i, component.getClass() );
+//							if( component instanceof ViewController< ?, ? > ) {
+//								ViewController< ?, ? > viewController = (ViewController< ?, ? >)component;
+//								//edu.cmu.cs.dennisc.print.PrintUtilities.println( "viewController", i, viewController.getModel() );
+//								models.add( viewController.getModel() );
+//							}
+//						}
+//					}
+//					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+//					if( modelContext instanceof PopupOperationContext ) {
+//						PopupOperationContext popupContext = (PopupOperationContext)modelContext;
+//						popupContext.handleMenuSelectionChanged( e, models );
+//					} else {
+//						System.err.println( "WARNING: handleMenuSelectionStateChanged not PopupMenuOperationContext " + modelContext );
+//					}
+//					TransactionManager.handleMenuSelectionChanged( models );
+//				} else {
+//					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
+//					if( menuBarModel != null ) {
+//						ModelContext< ? > popupContext = ContextManager.popContext();
+//						assert popupContext instanceof StandardPopupOperationContext;
+//
+//						ModelContext< ? > menuBarContext = ContextManager.popContext();
+//						assert menuBarContext instanceof MenuBarModelContext;
+//					}
+//				}
+//			} else {
+//				if( menuElements.length > 0 ) {
+//					MenuBar menuBar = getMenuBarOrigin( menuElements );
+//					if( menuBar != null ) {
+//						/*MenuBarModelContext childContext =*/ ContextManager.createAndPushMenuBarModelContext( menuBar.getModel(), e, menuBar );
+//						assert menuElements.length == 2;
+//					} else {
+//						ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+//						if( modelContext instanceof StandardPopupOperationContext ) {
+//							//pass
+//						} else {
+//							System.err.println( "combo box? " + menuElements.length + " " + java.util.Arrays.toString( menuElements ) );
+//							System.err.println( "modelContext: " + modelContext );
+//						}
+//					}
+//				} else {
+//					//assert false;
+//					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+//					System.err.println( "both prev and current menu selection length 0" );
+//					System.err.println( "modelContext: " + modelContext );
+//				}
+//			}
+//			previousMenuElements = menuElements;
+		} else {
+			System.err.println( "warning: not croquet menu selection." );
+		}
+	}
+	private static javax.swing.event.ChangeListener menuSelectionChangeListener = new javax.swing.event.ChangeListener() {
+		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+			handleMenuSelectionStateChanged( e );
+		}
+	};
+	public static void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		fireDropPending( completionModel, dropReceptor, dropSite );
+		getLastTransaction().pendDrop( completionModel, dropReceptor, dropSite );
+		fireDropPended( completionModel, dropReceptor, dropSite );
 	}
 	
-	private static Transaction getActiveTransaction() {
+	public static void handleMenuSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
+		fireMenuItemsSelectionChanged( models );
+	}
+
+	public static void handleDocumentEvent( StringState stringState, javax.swing.event.DocumentEvent documentEvent, String previousValue, String nextValue ) {
+//		ModelContext< ? > topContext = stack.peek();
+//		StringStateContext stringStateContext;
+//		if( topContext instanceof StringStateContext ) {
+//			stringStateContext = (StringStateContext)topContext;
+//		} else {
+//			stringStateContext = pushContext( new StringStateContext( stringState, documentEvent, viewController, previousValue ) );
+//			org.lgna.croquet.steps.TransactionManager.addStringStateChangeStep( stringState );
+//		}
+	}
+
+//	public static <E> void addListSelectionPopupMenuWillBecomeVisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+//		ListSelectionStateContext<E> listSelectionStateContext = createAndPushItemSelectionStateContext( model, e, itemSelectable );
+//		listSelectionStateContext.handlePopupMenuWillBecomeVisibleEvent( e );
+//		TransactionManager.addListSelectionPrepStep( model.getPrepModel() );
+//	}
+//	public static <E> void addListSelectionPopupMenuWillBecomeInvisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+//	}
+//	public static <E> void addListSelectionPopupMenuCanceled( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+//		TransactionManager.addCancelCompletionStep( model );
+//	}
+
+	public static void startListeningToMenuSelection() {
+		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( menuSelectionChangeListener );
+	}
+	public static void stopListeningToMenuSelection() {
+		javax.swing.MenuSelectionManager.defaultManager().removeChangeListener( menuSelectionChangeListener );
+	}
+
+	/*package-private*/ static Transaction getActiveTransaction() {
 		return getActiveTransactionHistory().getActiveTransaction();
 	}
 	private static Transaction getLastTransaction() {
@@ -162,45 +440,58 @@ public class TransactionManager {
 	}
 	
 	
-	public static DragStep addDragStep( edu.cmu.cs.dennisc.croquet.DragAndDropModel model ) {
-		return DragStep.createAndAddToTransaction( getActiveTransaction(), model ); 
+	public static DragStep addDragStep( edu.cmu.cs.dennisc.croquet.DragAndDropModel model, org.lgna.croquet.Trigger trigger ) {
+		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	public static ActionOperationStep addActionOperationStep( edu.cmu.cs.dennisc.croquet.ActionOperation model ) {
+	public static ActionOperationStep addActionOperationStep( edu.cmu.cs.dennisc.croquet.ActionOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
-		return ActionOperationStep.createAndAddToTransaction( transaction, model ); 
+		return ActionOperationStep.createAndAddToTransaction( transaction, model, trigger ); 
 	}
-	public static PlainDialogOperationStep addDialogOperationStep( edu.cmu.cs.dennisc.croquet.PlainDialogOperation model ) {
+	public static SerialOperationStep addSerialOperationStep( edu.cmu.cs.dennisc.croquet.SerialOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
-		return PlainDialogOperationStep.createAndAddToTransaction( transaction, model );
+		return SerialOperationStep.createAndAddToTransaction( transaction, model, trigger ); 
 	}
-	public static PlainDialogCloseOperationStep addPlainDialogCloseOperationStep( edu.cmu.cs.dennisc.croquet.PlainDialogCloseOperation model ) {
+	public static PlainDialogOperationStep addPlainDialogOperationStep( edu.cmu.cs.dennisc.croquet.PlainDialogOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
-		return PlainDialogCloseOperationStep.createAndAddToTransaction( transaction, model );
+		return PlainDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InputDialogOperationStep<J> addInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperation< J > model ) {
+	public static PlainDialogCloseOperationStep addPlainDialogCloseOperationStep( edu.cmu.cs.dennisc.croquet.PlainDialogCloseOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
-		return InputDialogOperationStep.createAndAddToTransaction( transaction, model );
+		return PlainDialogCloseOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static StandardPopupOperationPrepStep addStandardPopupOperationPrepStep( edu.cmu.cs.dennisc.croquet.StandardPopupOperation standardPopupOperation ) {
-		return StandardPopupOperationPrepStep.createAndAddToTransaction( getActiveTransaction(), standardPopupOperation );
+	public static <J extends edu.cmu.cs.dennisc.croquet.JComponent< ? >> InputDialogOperationStep<J> addInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperation< J > model, org.lgna.croquet.Trigger trigger ) {
+		Transaction transaction = getActiveTransaction();
+		return InputDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static <T> CascadePopupOperationStep<T> addCascadePopupOperationStep( edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model ) {
-		return CascadePopupOperationStep.createAndAddToTransaction( getActiveTransaction(), model );
+	public static InformationDialogOperationStep addInformationDialogOperationStep( edu.cmu.cs.dennisc.croquet.InformationDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+		Transaction transaction = getActiveTransaction();
+		return InformationDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static BooleanStateChangeStep addBooleanStateChangeStep( edu.cmu.cs.dennisc.croquet.BooleanState model ) {
-		return BooleanStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model );
+	public static WizardDialogOperationStep addWizardDialogOperationStep( edu.cmu.cs.dennisc.croquet.WizardDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+		Transaction transaction = getActiveTransaction();
+		return WizardDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static StringStateChangeStep addStringStateChangeStep( edu.cmu.cs.dennisc.croquet.StringState model ) {
-		return StringStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model ); 
+	public static StandardPopupOperationStep addStandardPopupOperationStep( edu.cmu.cs.dennisc.croquet.StandardPopupOperation standardPopupOperation, org.lgna.croquet.Trigger trigger ) {
+		return StandardPopupOperationStep.createAndAddToTransaction( getActiveTransaction(), standardPopupOperation, trigger );
 	}
-	public static <E> ListSelectionStateChangeStep<E> addListSelectionStateChangeStep( edu.cmu.cs.dennisc.croquet.ListSelectionState< E > model ) {
-		return ListSelectionStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model ); 
+	public static <T> CascadePopupOperationStep<T> addCascadePopupOperationStep( edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model, org.lgna.croquet.Trigger trigger ) {
+		return CascadePopupOperationStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
-	public static <E> ListSelectionStatePrepStep<E> addListSelectionPrepStep( edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > model ) {
-		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model ); 
+
+	public static BooleanStateChangeStep addBooleanStateChangeStep( edu.cmu.cs.dennisc.croquet.BooleanState model, org.lgna.croquet.Trigger trigger ) {
+		return BooleanStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
-	public static <E> CancelCompletionStep addCancelCompletionStep( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
-		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction(), model ); 
+	public static StringStateChangeStep addStringStateChangeStep( edu.cmu.cs.dennisc.croquet.StringState model, org.lgna.croquet.Trigger trigger ) {
+		return StringStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
+	}
+	public static <E> ListSelectionStateChangeStep<E> addListSelectionStateChangeStep( edu.cmu.cs.dennisc.croquet.ListSelectionState< E > model, org.lgna.croquet.Trigger trigger ) {
+		return ListSelectionStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
+	}
+	public static <E> ListSelectionStatePrepStep<E> addListSelectionPrepStep( edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > model, org.lgna.croquet.Trigger trigger ) {
+		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
+	}
+	public static <E> CancelCompletionStep addCancelCompletionStep( edu.cmu.cs.dennisc.croquet.CompletionModel model, org.lgna.croquet.Trigger trigger ) {
+		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
 
 
@@ -225,35 +516,84 @@ public class TransactionManager {
 //		}
 //	}
 
-	public static void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
-		fireDropPending( completionModel, dropReceptor, dropSite );
-		getLastTransaction().pendDrop( completionModel, dropReceptor, dropSite );
-		fireDropPended( completionModel, dropReceptor, dropSite );
+//	public static void commit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+//		popCompletionStepTransactionHistoryIfNecessary( edit.getModel() );
+//		fireEditCommitting( edit );
+//		getLastTransaction().commit( edit );
+//		fireEditCommitted( edit );
+////		finishPendingTransactionIfNecessary();
+//	}
+//	public static void finish( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
+//		popCompletionStepTransactionHistoryIfNecessary( model );
+//		Transaction transaction = getLastTransaction();
+//		fireFinishing( transaction );
+//		transaction.finish();
+//		fireFinished( transaction );
+////		finishPendingTransactionIfNecessary();
+//	}
+//	public static void cancel( edu.cmu.cs.dennisc.croquet.CompletionModel model, org.lgna.croquet.Trigger trigger ) {
+//		popCompletionStepTransactionHistoryIfNecessary( model );
+//		getLastTransaction().cancel( trigger );
+////		finishPendingTransactionIfNecessary();
+//	}
+
+	public static <E> Transaction createSimulatedTransaction( TransactionHistory transactionHistory, ListSelectionState< E > state, E prevValue, E nextValue, boolean isPrepStepDesired ) {
+		org.lgna.croquet.steps.Transaction rv = new org.lgna.croquet.steps.Transaction( transactionHistory );
+		if( isPrepStepDesired ) {
+			org.lgna.croquet.steps.ListSelectionStatePrepStep.createAndAddToTransaction( rv, state.getPrepModel(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+		}
+		org.lgna.croquet.steps.ListSelectionStateChangeStep completionStep = org.lgna.croquet.steps.ListSelectionStateChangeStep.createAndAddToTransaction( rv, state, org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+		org.lgna.croquet.edits.ListSelectionStateEdit edit = new org.lgna.croquet.edits.ListSelectionStateEdit( prevValue, nextValue );
+		completionStep.setEdit( edit );
+		return rv;
 	}
-	
-	public static void handleMenuSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
-		getActiveTransaction().pendMenuSelection( models );
-		fireMenuItemsSelectionChanged( models );
+	public static void simulatedMenuTransaction( Transaction transaction, java.util.List< MenuItemPrepModel > menuItemPrepModels ) {
+		for( edu.cmu.cs.dennisc.croquet.MenuItemPrepModel menuItemPrepModel : menuItemPrepModels ) {
+			System.err.println( "todo: add step for: " + menuItemPrepModel );
+			//org.lgna.croquet.steps.MenuItemPrepStep.createAndAddToTransaction( transaction, menuItemPrepModel, org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+		}
 	}
 
-	public static void commit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		popCompletionStepTransactionHistoryIfNecessary( edit.getModel() );
-		fireEditCommitting( edit );
-		getLastTransaction().commit( edit );
-		fireEditCommitted( edit );
-//		finishPendingTransactionIfNecessary();
+//	public static CascadeBlankStep createCascadeBlankStep( CascadeBlank model ) {
+//		return null;
+//	}
+//	public static CascadeCancelStep createCascadeCancelStep( CascadeCancel model ) {
+//		return null;
+//	}
+//	public static CascadeFillInPrepStep createCascadeFillInPrepStep( CascadeFillIn model ) {
+//		return null;
+//	}
+//	public static CascadeMenuStep createCascadeMenuStep( CascadeMenu model ) {
+//		return null;
+//	}
+//	public static CascadeRootStep createCascadeRootStep( CascadeRoot model ) {
+//		return null;
+//	}
+//	public static CascadeSeparatorStep createCascadeSeparatorStep( CascadeSeparator model ) {
+//		return new CascadeSeparatorStep( model, null );
+//	}
+
+	public static void handleStateChanged( BoundedRangeIntegerState boundedRangeIntegerState, javax.swing.event.ChangeEvent e ) {
+//		org.lgna.croquet.steps.TransactionManager.handleStateChanged( BoundedRangeIntegerState.this, e );
+//		org.lgna.croquet.steps.BoundedRangeIntegerStateChangeStep step;
+//		if( this.previousValueIsAdjusting ) {
+//			step = (org.lgna.croquet.steps.BoundedRangeIntegerStateChangeStep)org.lgna.croquet.steps.TransactionManager.getActiveTransaction().getCompletionStep();
+//		} else {
+//			step = org.lgna.croquet.steps.TransactionManager.addBoundedRangeIntegerStateChangeStep( BoundedRangeIntegerState.this );
+//		}
+//		this.previousValueIsAdjusting = boundedRangeModel.getValueIsAdjusting();
+//		step.handleStateChanged( e );
+//		BoundedRangeIntegerState.this.fireValueChanged( e );
+//
+//		if( this.previousValueIsAdjusting ) {
+//			//pass
+//		} else {
+//			int nextValue = boundedRangeModel.getValue();
+//			step.commitAndInvokeDo( new org.lgna.croquet.edits.BoundedRangeIntegerStateEdit( e, BoundedRangeIntegerState.this.previousValue, nextValue, false ) );
+//			BoundedRangeIntegerState.this.previousValue = nextValue;
+////				ModelContext< ? > popContext = ContextManager.popContext();
+////				assert popContext == boundedRangeIntegerStateContext;
+//		}
 	}
-	public static void finish( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
-		popCompletionStepTransactionHistoryIfNecessary( model );
-		Transaction transaction = getLastTransaction();
-		fireFinishing( transaction );
-		transaction.finish();
-		fireFinished( transaction );
-//		finishPendingTransactionIfNecessary();
-	}
-	public static void cancel( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
-		popCompletionStepTransactionHistoryIfNecessary( model );
-		getLastTransaction().cancel();
-//		finishPendingTransactionIfNecessary();
-	}
+
 }

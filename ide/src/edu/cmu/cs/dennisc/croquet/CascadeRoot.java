@@ -46,25 +46,25 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeRoot<B> extends CascadeBlankOwner< B[], B, CascadeRootContext< B > > {
+public class CascadeRoot<B> extends CascadeBlankOwner< B[], B, org.lgna.croquet.steps.CascadeRootStep< B > > {
 	private final CascadePopupOperation< B > operation;
 	/*package-private*/ CascadeRoot( CascadePopupOperation< B > operation ) {
 		super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ) );
 		this.operation = operation;
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy(CascadeRootContext<B> context) {
+	protected javax.swing.JComponent createMenuItemIconProxy(org.lgna.croquet.steps.CascadeRootStep<B> context) {
 		return null;
 	}
 	@Override
-	public B[] createValue( CascadeRootContext< B > context ) {
+	public B[] createValue( org.lgna.croquet.steps.CascadeRootStep< B > context ) {
 		//todo
 		//this.operation.getComponentType();
 		//handled elsewhere for now
 		throw new AssertionError();
 	}
 	@Override
-	public B[] getTransientValue( CascadeRootContext< B > context ) {
+	public B[] getTransientValue( org.lgna.croquet.steps.CascadeRootStep< B > context ) {
 		//todo
 		//this.operation.getComponentType();
 		//handled elsewhere for now

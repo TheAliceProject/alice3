@@ -45,13 +45,10 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Edit<M extends CompletionModel> {
-	private static <M extends CompletionModel> CompletionContext<M> getContext( java.util.UUID contextId ) {
-		return HistoryNode.lookup( contextId );
-	}
-	private static <M extends CompletionModel> M getModel( CompletionContext<M> context ) {
-		if( context != null ) {
-			return context.getModel();
+public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private static <M extends CompletionModel> M getModel( org.lgna.croquet.steps.CompletionStep<M> step ) {
+		if( step != null ) {
+			return step.getModel();
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getModel() context==null" );
 			return null;
@@ -66,55 +63,12 @@ public abstract class Edit<M extends CompletionModel> {
 		}
 	}
 
-	public static abstract class Memento< M extends CompletionModel > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-		private java.util.UUID contextId;
-//		private java.util.UUID stepId;
-		public Memento( Edit<M> edit ) {
-			this.contextId = edit.contextId;
-//			this.stepId = edit.stepId;
-		}
-		public Memento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.contextId = binaryDecoder.decodeId();
-//			this.stepId = binaryDecoder.decodeId();
-			this.decodeInternal(binaryDecoder);
-		}
-		protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
-		protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
-		public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			binaryEncoder.encode( this.contextId );
-//			binaryEncoder.encode( this.stepId );
-			this.encodeInternal(binaryEncoder);
-		}
-		public CompletionContext<M> getContext() {
-			return Edit.getContext( this.contextId );
-		}
-		public M getModel() {
-			return Edit.getModel( this.getContext() );
-		}
-		public abstract Edit< M > createEdit();
-	};
-	
-	
-	private java.util.UUID contextId;
-	private transient CompletionContext<M> context;
-//	private java.util.UUID stepId;
 	private transient org.lgna.croquet.steps.CompletionStep< M > completionStep;
-	
 	public Edit() {
 	}
-	public Edit( Memento<M> memento ) {
-		this.contextId = memento.contextId;
-//		this.stepId = memento.stepId;
+	public Edit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
-	public abstract Memento<M> createMemento();
-	public CompletionContext<M> getContext() {
-		if( this.context != null ) {
-			//pass
-		} else {
-			this.context = getContext( this.contextId );
-		}
-		assert this.context != null;
-		return this.context;
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 	public boolean isValid() {
 		return true;
@@ -123,36 +77,17 @@ public abstract class Edit<M extends CompletionModel> {
 		if( this.completionStep != null ) {
 			return this.completionStep.getModel();
 		} else {
-			return getModel( this.getContext() );
+			return getModel( this.getCompletionStep() );
 		}
 	}
 	public Group getGroup() {
 		return getGroup( this.getModel() );
 	}
 	public org.lgna.croquet.steps.CompletionStep< M > getCompletionStep() {
-//		if( this.completionStep != null ) {
-//			//pass
-//		} else {
-//			this.completionStep = org.lgna.croquet.steps.Step.lookup( this.stepId );
-//		}
 		return this.completionStep;
 	}
 	public void setCompletionStep( org.lgna.croquet.steps.CompletionStep< M > completionStep ) {
 		this.completionStep = completionStep;
-//		this.stepId = this.completionStep.getId();
-	}
-	public void setContext( CompletionContext<M> context ) {
-		this.context = context;
-		if( this.context != null ) {
-			this.contextId = context.getId();
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: context == null" );
-			this.contextId = null;
-		}
-	}
-	
-	protected java.util.UUID getContextId() {
-		return this.contextId;
 	}
 	public boolean canUndo() {
 		return true;

@@ -46,11 +46,23 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public abstract class PrepStep<M extends edu.cmu.cs.dennisc.croquet.PrepModel> extends Step< M > {
-	public PrepStep( Transaction parent, M model ) {
-		super( parent, model );
-		parent.addPrepStep( this );
+	public PrepStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
+		super( parent, model, trigger );
+		if( parent != null ) {
+			parent.addPrepStep( this );
+		} else {
+			System.err.println( "PrepStep transaction is null" );
+		}
 	}
 	public PrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+	}
+	
+	public void cancelTransaction( org.lgna.croquet.Trigger trigger ) {
+		throw new RuntimeException( "todo" );
+	}
+	@Deprecated
+	public void cancelTransaction() {
+		this.cancelTransaction( org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 	}
 }

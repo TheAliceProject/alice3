@@ -71,7 +71,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 	
 	
 	protected abstract boolean isRestartSupported();
-	protected void restart( java.util.EventObject e ) {
+	protected void restart( java.awt.event.ActionEvent e ) {
 		this.animator.completeAll( null );
 	}
 

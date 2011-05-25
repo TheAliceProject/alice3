@@ -95,7 +95,6 @@ import edu.cmu.cs.dennisc.croquet.AbstractButton;
 import edu.cmu.cs.dennisc.croquet.StandardPopupOperation;
 import edu.cmu.cs.dennisc.croquet.BooleanState;
 import edu.cmu.cs.dennisc.croquet.ComboBox;
-import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
 import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;import edu.cmu.cs.dennisc.croquet.Operation;
@@ -1162,7 +1161,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 					MouseEvent convertedEvent = SwingUtilities.convertMouseEvent((Component)clickState.getInputEvent().getSource(), (MouseEvent)clickState.getInputEvent(), fieldTile.getAwtComponent());
 					popUp.fire(convertedEvent, fieldTile);
 				} else {
-					popUp.fire( clickState.getInputEvent() );
+					popUp.fire( new org.lgna.croquet.triggers.InputEventTrigger( clickState.getInputEvent() ) );
 				}
 			}
 		}
@@ -1953,7 +1952,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 	}
 
-	public void dragStarted(DragAndDropContext dragAndDropContext) {
+	public void dragStarted(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		dragSource.showDragProxy();
 		Operation<?> operation = dragSource.getLeftButtonClickOperation();
@@ -1963,28 +1962,28 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
-	public void dragStopped(DragAndDropContext dragAndDropContext) 
+	public void dragStopped(org.lgna.croquet.steps.DragStep dragAndDropContext) 
 	{
 		this.globalDragAdapter.dragExited(dragAndDropContext);
 	}
 
-	public void dragEntered(DragAndDropContext dragAndDropContext) 
+	public void dragEntered(org.lgna.croquet.steps.DragStep dragAndDropContext) 
 	{
 	}
-	public void dragExited(DragAndDropContext dragAndDropContext, boolean isDropRecipient) 
+	public void dragExited(org.lgna.croquet.steps.DragStep dragAndDropContext, boolean isDropRecipient) 
 	{
 	}
 
 	private boolean overLookingGlass = false;
 	
-	private boolean isDropLocationOverLookingGlass(DragAndDropContext dragAndDropContext)
+	private boolean isDropLocationOverLookingGlass(org.lgna.croquet.steps.DragStep dragAndDropContext)
 	{
 		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.lookingGlassPanel.getAwtComponent() );
 		return this.lookingGlassPanel.getAwtComponent().contains(pointInLookingGlass);
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.DropSite dragUpdated(DragAndDropContext dragAndDropContext) {
+	public edu.cmu.cs.dennisc.croquet.DropSite dragUpdated(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{
 			if (!overLookingGlass)
@@ -2013,7 +2012,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent;
 	}
 	
-	public Operation<?> dragDropped(DragAndDropContext dragAndDropContext) {
+	public Operation<?> dragDropped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{

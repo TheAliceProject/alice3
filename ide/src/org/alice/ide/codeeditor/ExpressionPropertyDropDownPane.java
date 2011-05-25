@@ -92,16 +92,16 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
 		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
 	}
-	public void dragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public void dragStarted( org.lgna.croquet.steps.DragStep context ) {
 	}
-	public void dragEntered( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public void dragEntered( org.lgna.croquet.steps.DragStep context ) {
 //		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		context.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height, -1 );
 	}
-	public edu.cmu.cs.dennisc.croquet.DropSite dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public edu.cmu.cs.dennisc.croquet.DropSite dragUpdated( org.lgna.croquet.steps.DragStep context ) {
 		return null;
 	}
-	public edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( org.lgna.croquet.steps.DragStep context ) {
 		edu.cmu.cs.dennisc.croquet.Operation<?> rv;
 		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 //		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
@@ -140,15 +140,15 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 			//pass
 		} else {
 //			source.hideDropProxyIfNecessary();
-			context.cancel();
+			context.cancelTransaction();
 		}
 		return rv;
 	}
-	public void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
+	public void dragExited( org.lgna.croquet.steps.DragStep context, boolean isDropRecipient ) {
 //		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 //		source.hideDropProxyIfNecessary();
 	}
-	public void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public void dragStopped( org.lgna.croquet.steps.DragStep context ) {
 	}
 	
 	public edu.cmu.cs.dennisc.croquet.ViewController<?,?> getViewController() {

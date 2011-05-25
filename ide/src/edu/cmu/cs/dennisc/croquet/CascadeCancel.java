@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeCancel< F > extends CascadeItem< F, CascadeCancelContext<F> > {
+public abstract class CascadeCancel< F > extends CascadeItem< F, org.lgna.croquet.steps.CascadeCancelStep<F> > {
 	public CascadeCancel( java.util.UUID id ) {
 		super( id );
 	}
@@ -55,11 +55,11 @@ public abstract class CascadeCancel< F > extends CascadeItem< F, CascadeCancelCo
 		return false;
 	}
 	@Override
-	public final F createValue( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
+	public final F createValue( org.lgna.croquet.steps.CascadeCancelStep< F > context ) {
 		throw new CancelException( this.getMenuItemText( context ) );
 	}
 	@Override
-	public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeCancelContext< F > context ) {
+	public final F getTransientValue( org.lgna.croquet.steps.CascadeCancelStep< F > context ) {
 		return null;
 	}
 	@Override

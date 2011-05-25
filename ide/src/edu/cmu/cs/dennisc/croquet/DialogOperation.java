@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogOperation< C extends DialogOperationContext<?> > extends SingleThreadOperation<C> {
+public abstract class DialogOperation< S extends org.lgna.croquet.steps.DialogOperationStep<?> > extends SingleThreadOperation<S> {
 	public DialogOperation(Group group, java.util.UUID id) {
 		super(group, id);
 	}
@@ -55,7 +55,7 @@ public abstract class DialogOperation< C extends DialogOperationContext<?> > ext
 	protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
 		return null;
 	}
-	protected void tweakDialog( Dialog dialog, C context ) {
+	protected void tweakDialog( Dialog dialog, S context ) {
 	}
 	
 	private Dialog activeDialog;
@@ -63,12 +63,12 @@ public abstract class DialogOperation< C extends DialogOperationContext<?> > ext
 		return this.activeDialog;
 	}
 	
-	protected abstract Container<?> createContentPane(C context, Dialog dialog);
-	protected abstract void releaseContentPane(C context, Dialog dialog, Container<?> contentPane );
-	protected void handleFinally( C context, Dialog dialog, Container<?> contentPane ) {
+	protected abstract Container<?> createContentPane(S context, Dialog dialog);
+	protected abstract void releaseContentPane(S context, Dialog dialog, Container<?> contentPane );
+	protected void handleFinally( S context, Dialog dialog, Container<?> contentPane ) {
 	}
 	
-	protected String getDialogTitle(C context) {
+	protected String getDialogTitle(S context) {
 		String rv = this.getName();
 		if( rv != null ) {
 			rv = rv.replaceAll( "<[a-z]*>", "" );
@@ -88,8 +88,9 @@ public abstract class DialogOperation< C extends DialogOperationContext<?> > ext
 	}
 	
 	@Override
-	protected final void perform( final C context ) {
-		ViewController<?,?> viewController = context.getViewController();
+	protected final void perform( final S step ) {
+		org.lgna.croquet.Trigger trigger = step.getTrigger();
+		ViewController<?,?> viewController = trigger.getViewController();
 		Component<?> owner;
 		if( viewController != null ) {
 			owner = viewController;
@@ -104,12 +105,12 @@ public abstract class DialogOperation< C extends DialogOperationContext<?> > ext
 		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				org.lgna.croquet.steps.TransactionManager.fireDialogOpened( dialog );
-				context.handleWindowOpened( e );
+				step.handleWindowOpened( e );
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
 				if( DialogOperation.this.isWindowClosingEnabled( e ) ) {
 					dialog.setVisible( false );
-					context.handleWindowClosing( e );
+					step.handleWindowClosing( e );
 				}
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
@@ -126,7 +127,7 @@ public abstract class DialogOperation< C extends DialogOperationContext<?> > ext
 		dialog.addWindowListener( windowListener );
 
 		
-		Container<?> contentPane = this.createContentPane(context, dialog);
+		Container<?> contentPane = this.createContentPane(step, dialog);
 		
 		try {
 			if( contentPane != null ) {
@@ -143,24 +144,24 @@ public abstract class DialogOperation< C extends DialogOperationContext<?> > ext
 				} else {
 					edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getSingleton().getFrame().getAwtComponent() ); 
 				}
-				this.tweakDialog( dialog, context );
+				this.tweakDialog( dialog, step );
 				
-				dialog.setTitle( this.getDialogTitle(context) );
+				dialog.setTitle( this.getDialogTitle(step) );
 				this.activeDialog = dialog;
 				try {
 					dialog.setVisible( true );
 					this.handleClosing();
-					this.releaseContentPane( context, dialog, contentPane );
+					this.releaseContentPane( step, dialog, contentPane );
 					dialog.removeWindowListener( windowListener );
 					dialog.getAwtComponent().dispose();
 				} finally {
 					this.activeDialog = null;
 				}
 			} else {
-				this.releaseContentPane( context, dialog, contentPane );
+				this.releaseContentPane( step, dialog, contentPane );
 			}
 		} finally {
-			this.handleFinally( context, dialog, contentPane );
+			this.handleFinally( step, dialog, contentPane );
 		}
 	}
 }

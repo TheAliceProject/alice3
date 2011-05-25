@@ -75,7 +75,7 @@ public abstract class ExpressionPropertyCascadeOperation extends edu.cmu.cs.denn
 		return null;
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.CascadePopupOperationContext< edu.cmu.cs.dennisc.alice.ast.Expression > context, edu.cmu.cs.dennisc.croquet.Operation.PerformObserver performObserver ) {
+	protected void perform( org.lgna.croquet.steps.CascadePopupOperationStep< edu.cmu.cs.dennisc.alice.ast.Expression > context, edu.cmu.cs.dennisc.croquet.Operation.PerformObserver performObserver ) {
 		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementIndexPair() );
 		super.perform( context, performObserver );
 	}

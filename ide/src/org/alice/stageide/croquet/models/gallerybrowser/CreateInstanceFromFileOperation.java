@@ -67,7 +67,7 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 	}
 	
 	@Override
-	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context ) {
+	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue( org.lgna.croquet.steps.InputDialogOperationStep< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context ) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane rv = null;
 		java.io.File directory = this.getInitialDirectory();
 		java.io.File file = this.getIDE().showOpenFileDialog( directory, null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION, false );
@@ -114,7 +114,7 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 		return rv;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context ) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( org.lgna.croquet.steps.InputDialogOperationStep< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context ) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane = context.getMainPanel();
 		//todo: dialog title: "Create New Instance"
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.getInputValue();

@@ -53,12 +53,12 @@ public abstract class PreviousExpressionBasedFillInWithBlanks< F extends edu.cmu
 	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		return org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
 	}
-	protected abstract boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
-	@Override
-	public final boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,B> context ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
-	}
+//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,B> context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
+//	@Override
+//	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,B> context ) {
+//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+//		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
+//	}
 	protected abstract F createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, B[] expressions);
 	@Override
 	protected final F createValue( B[] expressions ) {

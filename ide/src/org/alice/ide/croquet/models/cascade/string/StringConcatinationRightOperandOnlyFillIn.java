@@ -61,16 +61,16 @@ public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.cro
 				new org.alice.ide.ast.EmptyExpression( Object.class )
 		);
 	}
-	@Override
-	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral == false;
-	}
+//	@Override
+//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+//		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral == false;
+//	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.StringConcatenation createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
 		return new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( previousExpression, expressions[ 0 ] );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.StringConcatenation getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.StringConcatenation, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+	public edu.cmu.cs.dennisc.alice.ast.StringConcatenation getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep< edu.cmu.cs.dennisc.alice.ast.StringConcatenation, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 		return this.transientValue;
 	}
 }

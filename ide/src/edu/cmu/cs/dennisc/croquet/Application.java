@@ -50,9 +50,6 @@ public abstract class Application {
 	public static final Group UI_STATE_GROUP = Group.getInstance( java.util.UUID.fromString( "d92c1a48-a6ae-473b-9b9f-94734e1606c1" ), "UI_STATE_GROUP" );
 	public static final Group INFORMATION_GROUP = Group.getInstance( java.util.UUID.fromString( "c883259e-3346-49d0-a63f-52eeb3d9d805" ), "INFORMATION_GROUP" );
 	public static final Group INHERIT_GROUP = Group.getInstance( java.util.UUID.fromString( "488f8cf9-30cd-49fc-ab72-7fd6a3e13c3f" ), "INHERIT_GROUP" );
-	//todo: just use inherit for cascade?
-	public static final Group CASCADE_GROUP = Group.getInstance( java.util.UUID.fromString( "b8c959a9-5617-435f-a107-412090d9861a" ), "CASCADE_GROUP" );
-
 	private static Application singleton;
 
 	public static Application getSingleton() {
@@ -62,7 +59,7 @@ public abstract class Application {
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
-		ContextManager.startListeningToMenuSelection();
+		org.lgna.croquet.steps.TransactionManager.startListeningToMenuSelection();
 	}
 
 	protected abstract Component< ? > createContentPane();
@@ -96,7 +93,7 @@ public abstract class Application {
 				Application.this.handleWindowOpened( e );
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
-				Application.this.handleQuit( e );
+				Application.this.handleQuit( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}
@@ -111,13 +108,13 @@ public abstract class Application {
 		} );
 		edu.cmu.cs.dennisc.apple.AppleUtilities.addApplicationListener( new edu.cmu.cs.dennisc.apple.event.ApplicationListener() {
 			public void handleAbout( java.util.EventObject e ) {
-				Application.this.handleAbout( e );
+				Application.this.handleAbout( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
 			}
 			public void handlePreferences( java.util.EventObject e ) {
-				Application.this.handlePreferences( e );
+				Application.this.handlePreferences( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
 			}
 			public void handleQuit( java.util.EventObject e ) {
-				Application.this.handleQuit( e );
+				Application.this.handleQuit( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
 			}
 		} );
 		//this.frame.pack();
@@ -158,9 +155,9 @@ public abstract class Application {
 	}
 
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
-	protected abstract void handleAbout( java.util.EventObject e );
-	protected abstract void handlePreferences( java.util.EventObject e );
-	protected abstract void handleQuit( java.util.EventObject e );
+	protected abstract void handleAbout( org.lgna.croquet.Trigger trigger );
+	protected abstract void handlePreferences( org.lgna.croquet.Trigger trigger );
+	protected abstract void handleQuit( org.lgna.croquet.Trigger trigger );
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		if( message instanceof Component<?> ) {

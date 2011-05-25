@@ -49,9 +49,9 @@ class AddExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cm
 		this.componentTypeProperty = componentTypeProperty;
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> rv, org.lgna.croquet.steps.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		ide.getCascadeManager().updateChildren( rv, context, this.componentTypeProperty.getValue() );
+		ide.getCascadeManager().updateChildren( rv, step, this.componentTypeProperty.getValue() );
 		return rv;
 	}
 }

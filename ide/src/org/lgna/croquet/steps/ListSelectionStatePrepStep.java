@@ -46,11 +46,11 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public class ListSelectionStatePrepStep<E> extends PrepStep< edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > > {
-	public static <E> ListSelectionStatePrepStep<E> createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel<E> model ) {
-		return new ListSelectionStatePrepStep<E>( parent, model );
+	public static <E> ListSelectionStatePrepStep<E> createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel<E> model, org.lgna.croquet.Trigger trigger ) {
+		return new ListSelectionStatePrepStep<E>( parent, model, trigger );
 	}
-	private ListSelectionStatePrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > model ) {
-		super( parent, model );
+	private ListSelectionStatePrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > model, org.lgna.croquet.Trigger trigger ) {
+		super( parent, model, trigger );
 	}
 	public ListSelectionStatePrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

@@ -83,10 +83,6 @@ public class OperationMenuItemPrepModel extends MenuItemPrepModel {
 		return this.operation;
 	}
 	@Override
-	public boolean isAlreadyInState( Edit< ? > edit ) {
-		return this.operation.isAlreadyInState( edit );
-	}
-	@Override
 	protected OperationMenuPrepModelResolver createCodableResolver() {
 		return new OperationMenuPrepModelResolver( this );
 	}

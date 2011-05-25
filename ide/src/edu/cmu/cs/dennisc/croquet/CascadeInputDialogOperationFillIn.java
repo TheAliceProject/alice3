@@ -83,17 +83,17 @@ public class CascadeInputDialogOperationFillIn<F,J extends CascadeInputDialogPan
 		return this.inputDialogOperation.getDefaultLocalizedText();
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( CascadeFillInContext< F, Void > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.steps.CascadeFillInPrepStep< F, Void > context ) {
 		return new javax.swing.JLabel( this.getTutorialItemText() );
 	}
 	@Override
-	public F createValue( CascadeFillInContext< F, Void > context ) {
-		InputDialogOperationContext< J > inputDialogContext = this.inputDialogOperation.fire();
-		J panel = inputDialogContext.getMainPanel();
+	public F createValue( org.lgna.croquet.steps.CascadeFillInPrepStep< F, Void > context ) {
+		org.lgna.croquet.steps.InputDialogOperationStep< J > inputDialogStep = this.inputDialogOperation.fire();
+		J panel = inputDialogStep.getMainPanel();
 		return panel.getInputValue();
 	}
 	@Override
-	public F getTransientValue( CascadeFillInContext< F, Void > context ) {
+	public F getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep< F, Void > context ) {
 		return null;
 	}
 }

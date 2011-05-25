@@ -45,12 +45,12 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InformationDialogOperation<J extends Component<?>> extends DialogOperation<InformationDialogOperationContext<J>> {
+public abstract class InformationDialogOperation extends DialogOperation<org.lgna.croquet.steps.InformationDialogOperationStep> {
 	public InformationDialogOperation(java.util.UUID individualId) {
 		super(Application.INFORMATION_GROUP, individualId);
 	}
 	@Override
-	public InformationDialogOperationContext<J> createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return ContextManager.createAndPushInformationDialogOperationContext( this, e, viewController );
+	public org.lgna.croquet.steps.InformationDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+		return org.lgna.croquet.steps.TransactionManager.addInformationDialogOperationStep( this, trigger );
 	}
 }

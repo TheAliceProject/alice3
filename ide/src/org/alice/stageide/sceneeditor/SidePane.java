@@ -103,7 +103,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.GridBagPanel {
 			this.setName( "Show SceneGraph" );
 		}
 		@Override
-		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		protected void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
 			if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
 			{
 				if (SidePane.this.sceneGraphViewer == null)
@@ -142,7 +142,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.GridBagPanel {
 			this.setName( "Show Lookingglass Tree" );
 		}
 		@Override
-		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		protected void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
 			if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
 			{
 				if (SidePane.this.lookingglassViewer == null)

@@ -43,7 +43,6 @@
 package org.alice.ide.sceneeditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
 import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.croquet.Operation;
 import edu.cmu.cs.dennisc.croquet.ViewController;
@@ -84,18 +83,18 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 		// TODO Auto-generated method stub
 		
 	}
-	public Operation<?> dragDropped(DragAndDropContext dragAndDropContext) {
+	public Operation<?> dragDropped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 		return null;
 	}
-	public void dragEntered(DragAndDropContext dragAndDropContext) {
+	public void dragEntered(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 	}
-	public void dragExited(DragAndDropContext dragAndDropContext, boolean isDropRecipient) {
+	public void dragExited(org.lgna.croquet.steps.DragStep dragAndDropContext, boolean isDropRecipient) {
 	}
-	public void dragStarted(DragAndDropContext dragAndDropContext) {
+	public void dragStarted(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 	}
-	public void dragStopped(DragAndDropContext dragAndDropContext) {
+	public void dragStopped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 	}
-	public edu.cmu.cs.dennisc.croquet.DropSite dragUpdated(DragAndDropContext dragAndDropContext) {
+	public edu.cmu.cs.dennisc.croquet.DropSite dragUpdated(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 		return null;
 	}
 	public ViewController<?, ?> getViewController() {

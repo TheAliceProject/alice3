@@ -56,8 +56,8 @@ package org.alice.ide.croquet.models.ast;
 		return this.code;
 	}
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 		this.getIDE().setFocusedCode( this.code );
-		context.finish();
+		step.finish();
 	}
 }

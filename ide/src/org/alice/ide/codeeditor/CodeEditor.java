@@ -254,10 +254,10 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			}
 		}
 	}
-	public final void dragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final void dragStarted( org.lgna.croquet.steps.DragStep context ) {
 	}
 
-	public final void dragEntered( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final void dragEntered( org.lgna.croquet.steps.DragStep context ) {
 		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
 		this.repaint();
@@ -310,7 +310,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		}
 		return rv;
 	}
-	public final BlockStatementIndexPair dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final BlockStatementIndexPair dragUpdated( org.lgna.croquet.steps.DragStep context ) {
 		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		if( source != null ) {
 			java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
@@ -410,7 +410,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			return null;
 		}
 	}
-	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( final edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( final org.lgna.croquet.steps.DragStep context ) {
 		edu.cmu.cs.dennisc.croquet.Operation<?> rv = null;
 		final edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
@@ -429,7 +429,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 //					EPIC_HACK_desiredStatementListPropertyPane = null;
 //					EPIC_HACK_desiredIndex = -1;
 //					source.hideDropProxyIfNecessary();
-					context.cancel();
+					context.cancelTransaction();
 					return null;
 				}
 			}
@@ -506,7 +506,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			}
 		} );
 	}
-	public final void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
+	public final void dragExited( org.lgna.croquet.steps.DragStep context, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
 		//todo: listen to context
 		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = true;
@@ -514,7 +514,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = false;
 		this.repaint();
 	}
-	public final void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final void dragStopped( org.lgna.croquet.steps.DragStep context ) {
 		EPIC_HACK_desiredStatementListPropertyPane = null;
 		EPIC_HACK_desiredIndex = -1;
 	}

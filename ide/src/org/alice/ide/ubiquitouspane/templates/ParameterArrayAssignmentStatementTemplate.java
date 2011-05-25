@@ -60,7 +60,7 @@ public class ParameterArrayAssignmentStatementTemplate extends ArrayAssignmentSt
 		return this.parameter.valueType.getValue().getComponentType();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( org.lgna.croquet.steps.DragStep context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		return new org.alice.ide.croquet.models.ast.cascade.statement.ParameterArrayAtIndexAssignmentInsertOperation( blockStatementIndexPair, this.parameter );
 	}
 }

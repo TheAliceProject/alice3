@@ -69,10 +69,6 @@ public final class MenuSeparatorModel extends MenuItemPrepModel {
 	public javax.swing.Icon getIcon() {
 		return this.icon;
 	}
-	@Override
-	public boolean isAlreadyInState( Edit< ? > edit ) {
-		return false;
-	}
 	private MenuTextSeparator createMenuTextSeparator() {
 		return new MenuTextSeparator( this );
 	};

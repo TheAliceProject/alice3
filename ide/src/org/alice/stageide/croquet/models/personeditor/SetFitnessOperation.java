@@ -54,7 +54,7 @@ public class SetFitnessOperation extends org.alice.ide.operations.Inconsequentia
 		this.setName( name );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
 		FitnessModel.getInstance().setValue( this.value );
 	}
 }

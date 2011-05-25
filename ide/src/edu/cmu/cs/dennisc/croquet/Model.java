@@ -55,6 +55,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 		this.group = group;
 		this.id = id;
 	}
+	
 	private boolean isInitialized = false;
 	protected void initialize() {
 		this.localize();
@@ -76,6 +77,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 	public java.util.UUID getId() {
 		return this.id;
 	}
+	
 	protected static String getLocalizedText( Class<?> cls, String subKey ) {
 		String bundleName = cls.getPackage().getName() + ".croquet";
 		try {
@@ -348,92 +350,16 @@ public abstract class Model implements RuntimeResolver< Model > {
 		System.err.println( "todo: commitTutorialCompletionEdit: " + originalEdit );
 		return null;
 	}
-	private static StringBuilder appendSuccessfulCompletionEventText( StringBuilder rv, SuccessfulCompletionEvent successfulCompletionEvent ) {
-		if( successfulCompletionEvent != null ) {
-			if( successfulCompletionEvent instanceof CommitEvent ) {
-				CommitEvent commitEvent = (CommitEvent)successfulCompletionEvent;
-				rv.append( "[committed=" );
-				rv.append( commitEvent.getEdit() );
-				rv.append( "]" );
-			} else if( successfulCompletionEvent instanceof FinishEvent ) {
-				FinishEvent finishEvent = (FinishEvent)successfulCompletionEvent;
-				rv.append( "[finished]" );
-			} else {
-				rv.append( "[unknown]" );
-			}
-		} else {
-			rv.append( "[null]" );
-		}
-		return rv;
-	}
 	
-	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		rv.append( "title: " );
-		rv.append( this );
-		if( modelContext != null ) {
-			appendSuccessfulCompletionEventText( rv, modelContext.getSuccessfulCompletionEvent() );
-		}
-		return rv;
-	}
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
 		rv.append( "text: " );
 		rv.append( this );
-		if( modelContext != null ) {
-			appendSuccessfulCompletionEventText( rv, modelContext.getSuccessfulCompletionEvent() );
-		}
 		return rv;
 	}
 
-	@Deprecated
-	public final String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		this.initializeIfNecessary();
-		StringBuilder sb = new StringBuilder();
-		updateTutorialStepTitle( sb, modelContext, edit, userInformation );
-		return sb.toString();
+	public final String getTutorialNoteText( org.lgna.croquet.steps.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
+		return "todo getTutorialNoteText";
 	}
-	@Deprecated
-	public final String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		this.initializeIfNecessary();
-		StringBuilder sb = new StringBuilder();
-		updateTutorialStepText( sb, modelContext, edit, userInformation );
-		return sb.toString();
-	}
-	
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, Edit< ? > edit, UserInformation userInformation ) {
-		return rv;
-	}
-
-	public final String getTutorialNoteText( Edit<?> edit, UserInformation userInformation ) {
-		this.initializeIfNecessary();
-		StringBuilder sb = new StringBuilder();
-		updateTutorialStepText( sb, edit, userInformation );
-		if( sb.length() == 0 ) {
-			this.updateTutorialStepText( sb, null, edit, userInformation );
-//			sb.append( "TODO: " );
-//			sb.append( this );
-//			sb.append( "; " );
-//			sb.append( edit );
-		}
-		return sb.toString();
-	}
-	
-	@Deprecated
-	private static final Edit< ? > getEdit( ModelContext<?> modelContext ) {
-		if( modelContext instanceof CompletionContext< ? >) {
-			return ((CompletionContext< ? >)modelContext).getEdit();
-		} else {
-			return null;
-		}
-	}
-	@Deprecated
-	public final String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
-		return this.getTutorialStepTitle( modelContext, getEdit( modelContext ), userInformation );
-	}
-	@Deprecated
-	public final String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
-		return this.getTutorialNoteText( modelContext, getEdit( modelContext ), userInformation );
-	}
-	public abstract boolean isAlreadyInState( Edit< ? > edit );
 	
 	protected StringBuilder appendRepr( StringBuilder rv ) {
 		rv.append( this.getClass().getName() );

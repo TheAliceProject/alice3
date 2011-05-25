@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import org.lgna.croquet.steps.TransactionManager;
-
 public abstract class DragComponent extends Control {
 	private DragAndDropModel dragModel;
 
@@ -75,10 +73,10 @@ public abstract class DragComponent extends Control {
 //		};
 //	}
 
-	/*package-private*/ DragProxy getDragProxy() {
+	public DragProxy getDragProxy() {
 		return this.dragProxy;
 	}
-	/*package-private*/ DropProxy getDropProxy() {
+	public DropProxy getDropProxy() {
 		return this.dropProxy;
 	}
 	
@@ -200,7 +198,7 @@ public abstract class DragComponent extends Control {
 	}
 
 
-	private DragAndDropContext dragAndDropContext;
+	private org.lgna.croquet.steps.DragStep step;
 
 	private void handleLeftMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		Application application = Application.getSingleton();
@@ -213,16 +211,15 @@ public abstract class DragComponent extends Control {
 		layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
 
 		
-		TransactionManager.addDragStep( this.dragModel );
-
-		this.dragAndDropContext = ContextManager.createAndPushDragAndDropContext( this.dragModel, this.getLeftButtonPressedEvent(), e, this );
-		this.dragModel.handleDragStarted( this.dragAndDropContext );
+		this.step = org.lgna.croquet.steps.TransactionManager.addDragStep( this.dragModel, new org.lgna.croquet.triggers.MouseEventTrigger( this, this.getLeftButtonPressedEvent() ) );
+		this.step.setLatestMouseEvent( e );
+		this.dragModel.handleDragStarted( this.step );
 		this.showDragProxy();
 	}
 	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {
 		if( Application.getSingleton().isDragInProgress() ) {
 			this.updateProxyPosition( e );
-			this.dragAndDropContext.handleMouseDragged( e );
+			this.step.handleMouseDragged( e );
 		}
 	}
 	@Override
@@ -271,8 +268,8 @@ public abstract class DragComponent extends Control {
 					java.awt.Rectangle bounds = this.dragProxy.getBounds();
 					layeredPane.remove( this.dragProxy );
 					layeredPane.repaint( bounds );
-					if( this.dragAndDropContext != null ) {
-						this.dragAndDropContext.handleMouseReleased( e );
+					if( this.step != null ) {
+						this.step.handleMouseReleased( e );
 					}
 				}
 			}
@@ -333,6 +330,6 @@ public abstract class DragComponent extends Control {
 			layeredPane.remove( this.dragProxy );
 			layeredPane.repaint( bounds );
 		}
-		this.dragAndDropContext.handleCancel( e );
+		this.step.handleCancel( e );
 	}
 }

@@ -158,7 +158,7 @@ public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.A
 		return new org.alice.ide.croquet.resolvers.InsertStatementActionOperationNewInstanceResolver( this );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		context.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< InsertStatementActionOperation >() );
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< InsertStatementActionOperation >() );
 	}
 }

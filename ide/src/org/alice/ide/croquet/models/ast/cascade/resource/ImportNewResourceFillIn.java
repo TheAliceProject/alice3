@@ -54,7 +54,7 @@ public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachin
 		super( id );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression createValue(edu.cmu.cs.dennisc.croquet.CascadeFillInContext<edu.cmu.cs.dennisc.alice.ast.ResourceExpression,Void> context) {
+	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression createValue(org.lgna.croquet.steps.CascadeFillInPrepStep<edu.cmu.cs.dennisc.alice.ast.ResourceExpression,Void> context) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		try {
 			E resource = getResourcePrompter().promptUserForResource( ide.getFrame() );
@@ -73,7 +73,7 @@ public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachin
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.ResourceExpression, Void > context ) {
+	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep< edu.cmu.cs.dennisc.alice.ast.ResourceExpression, Void > context ) {
 		return null;
 	}
 //	@Override

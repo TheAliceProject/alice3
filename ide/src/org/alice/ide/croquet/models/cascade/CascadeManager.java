@@ -84,7 +84,7 @@ public class CascadeManager {
 		return createBlanks( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( clses ) );
 	}
 	
-	public static boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeItemContext< ?,?,? > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType ) {
+	public static boolean isInclusionDesired( org.lgna.croquet.steps.CascadeItemStep< ?,?,? > step, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType ) {
 //		if( this.previousExpression != null ) {
 //		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> prevExpressionType = this.previousExpression.getType();
 //		if( prevExpressionType != null && prevExpressionType.isAssignableTo( type ) ) {
@@ -100,7 +100,7 @@ public class CascadeManager {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: isInclusionDesired" );
 		return true;
 	}
-	public static boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeItemContext< ?,?,? > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, Class<?> desiredCls ) {
-		return isInclusionDesired( context, previousExpression, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( desiredCls ) );
+	public static boolean isInclusionDesired( org.lgna.croquet.steps.CascadeItemStep< ?,?,? > step, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, Class<?> desiredCls ) {
+		return isInclusionDesired( step, previousExpression, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( desiredCls ) );
 	}
 }

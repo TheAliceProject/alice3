@@ -44,7 +44,6 @@
 package org.alice.interact.operations;
 
 import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
-import edu.cmu.cs.dennisc.croquet.ActionOperationContext;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 
@@ -95,8 +94,8 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends edu
 	}
 	
 	@Override
-	protected void perform(ActionOperationContext context) {
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
+		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			protected void doOrRedoInternal(boolean isDo) {
 				if( isDo && ( isDoRequired == false ) ) {

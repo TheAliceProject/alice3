@@ -50,16 +50,17 @@ public abstract class CompletionModel extends Model {
 	public CompletionModel( Group group, java.util.UUID id ) {
 		super(group, id);
 	}
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, Edit< ? > edit, UserInformation userInformation ) {
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, UserInformation userInformation ) {
+		Edit< ? > edit = step.getEdit();
 		if( edit != null ) {
 			edit.updateTutorialTransactionTitle( rv, userInformation );
 		}
 		return rv;
 	}
-	public final String getTutorialTransactionTitle( Edit<?> edit, UserInformation userInformation ) {
+	public final String getTutorialTransactionTitle( org.lgna.croquet.steps.CompletionStep< ? > step, UserInformation userInformation ) {
 		this.initializeIfNecessary();
 		StringBuilder sb = new StringBuilder();
-		updateTutorialTransactionTitle( sb, edit, userInformation );
+		updateTutorialTransactionTitle( sb, step, userInformation );
 		if( sb.length() == 0 ) {
 //			sb.append( "TODO: " );
 //			sb.append( this );
@@ -70,5 +71,5 @@ public abstract class CompletionModel extends Model {
 			return sb.toString();
 		}
 	}
-	
+	public abstract boolean isAlreadyInState( Edit< ? > edit );
 }

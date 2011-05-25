@@ -61,10 +61,10 @@ public class PreviewComponent extends edu.cmu.cs.dennisc.croquet.JComponent< jav
 					org.lgna.croquet.steps.Step< ? > step0 = transactionChapter.getTransaction().getChildStepAt( 0 );
 					if( step0 != null ) {
 						edu.cmu.cs.dennisc.croquet.Model model = step0.getModel();
-						if( step0 instanceof org.lgna.croquet.steps.StandardPopupOperationPrepStep ) {
-							org.lgna.croquet.steps.StandardPopupOperationPrepStep standardPopupOperationPrepStep = (org.lgna.croquet.steps.StandardPopupOperationPrepStep)step0;
-							model = standardPopupOperationPrepStep.getStandardPopupOperation();
-						}
+//						if( step0 instanceof org.lgna.croquet.steps.StandardPopupOperationPrepStep ) {
+//							org.lgna.croquet.steps.StandardPopupOperationPrepStep standardPopupOperationPrepStep = (org.lgna.croquet.steps.StandardPopupOperationPrepStep)step0;
+//							model = standardPopupOperationPrepStep.getStandardPopupOperation();
+//						}
 						if( model != null ) {
 							edu.cmu.cs.dennisc.croquet.Component< ? > component = model.getFirstComponent();
 							if( component != null ) {

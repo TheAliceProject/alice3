@@ -51,10 +51,10 @@ abstract class AbstractNonGalleryDeclareFieldOperation<J extends org.alice.ide.p
 	public AbstractNonGalleryDeclareFieldOperation( java.util.UUID individualId ) {
 		super( individualId );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context );
+	protected abstract edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.steps.InputDialogOperationStep< J > context );
 	protected abstract Object createInstance();
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context ) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( org.lgna.croquet.steps.InputDialogOperationStep< J > context ) {
 		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( this.createField( context ), this.createInstance() );
 	}
 }

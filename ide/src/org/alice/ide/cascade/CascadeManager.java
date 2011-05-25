@@ -176,7 +176,7 @@ public abstract class CascadeManager {
 		updateAccessibleLocals( rv, blockStatement );
 		return rv;
 	}
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addExpressionBonusFillInsForType( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addExpressionBonusFillInsForType( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 //		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getSingleton().getFocusedCode();
 //		if( codeInFocus != null ) {
 //
@@ -259,7 +259,7 @@ public abstract class CascadeManager {
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> interfaceType ) {
 		return null;
 	}
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addFillInsForObjectType( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addFillInsForObjectType( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> step ) {
 		rv.add( org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance().getFillIn() );
 		rv.add( org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn() );
 		rv.add( org.alice.ide.croquet.models.custom.CustomIntegerInputDialogOperation.getInstance().getFillIn() );
@@ -278,7 +278,7 @@ public abstract class CascadeManager {
 //		}
 		return rv;
 	}
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addCustomFillIns( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addCustomFillIns( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 		return rv;
 	}
 
@@ -294,18 +294,21 @@ public abstract class CascadeManager {
 		return true;
 	}
 	
-	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 		if( type != null ) {
-			edu.cmu.cs.dennisc.croquet.ModelContext<?> parent = context.getParent();
-			boolean isRoot = parent instanceof edu.cmu.cs.dennisc.croquet.CascadeRootContext;
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "updateChildren", isRoot, parent, this.previousExpression );
+//			org.lgna.croquet.steps.Transaction transaction = step.getParent();
+//			org.lgna.croquet.steps.TransactionHistory transactionHistory = transaction.getParent();
+//			edu.cmu.cs.dennisc.croquet.ModelContext<?> parent = step.getParent();
+//			boolean isRoot = parent instanceof edu.cmu.cs.dennisc.croquet.CascadeRootContext;
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo updateChildren isRoot" );
+			boolean isRoot = true;
 
 			rv.add( org.alice.ide.croquet.models.cascade.PreviousExpressionItselfFillIn.getInstance( type ) );
 			rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
-			this.addCustomFillIns( rv, context, type );
+			this.addCustomFillIns( rv, step, type );
 			type = getTypeFor( type );
 			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) {
-				this.addFillInsForObjectType( rv, context );
+				this.addFillInsForObjectType( rv, step );
 			} else {
 				for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
 					if( expressionFillerInner.isAssignableTo( type ) ) {
@@ -329,7 +332,7 @@ public abstract class CascadeManager {
 			}
 
 			rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
-			this.addExpressionBonusFillInsForType( rv, context, type );
+			this.addExpressionBonusFillInsForType( rv, step, type );
 			rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
 			if( type.isArray() ) {
 				//rv.add( new org.alice.ide.cascade.customfillin.CustomArrayFillIn() );

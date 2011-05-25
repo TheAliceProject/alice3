@@ -322,7 +322,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			this.setName( ">>" );
 		}
 		@Override
-		protected void perform(ActionOperationContext context) {
+		protected void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 			javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 			for( E item : FolderTabbedPane.this.getModel() ) {
@@ -331,7 +331,8 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 				popupMenu.add( checkBox );
 				buttonGroup.add( checkBox );
 			}
-			ViewController<?,?> viewController = context.getViewController();
+			org.lgna.croquet.Trigger trigger = step.getTrigger();
+			ViewController<?,?> viewController = trigger.getViewController();
 			popupMenu.show( viewController.getAwtComponent(), 0, viewController.getHeight() );
 		}
 	}

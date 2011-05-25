@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Operation< C extends OperationContext<? extends Operation<?>>> extends CompletionModel {
+public abstract class Operation< S extends org.lgna.croquet.steps.OperationStep<? extends Operation<?>>> extends CompletionModel {
 	private class ButtonActionListener implements java.awt.event.ActionListener {
 		private AbstractButton< ?,? > button;
 		public ButtonActionListener( AbstractButton< ?,? > button ) {
@@ -57,22 +57,22 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	}
 	private java.util.Map< AbstractButton< ?,? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	public abstract C createAndPushContext( java.util.EventObject e, ViewController< ?, ? > viewController );
+	public abstract S createAndPushStep( org.lgna.croquet.Trigger trigger );
 
-	public String getTutorialStartNoteText( OperationContext< ? > operationContext, UserInformation userInformation ) {
-		return "Press " + this.getTutorialNoteText( operationContext, userInformation );
-	}
-
-	protected String getTutorialNoteName() {
-		return this.getName();
-	}
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		rv.append( "Click <strong>" );
-		rv.append( this.getTutorialNoteName() );
-		rv.append( "</strong>" );
-		return rv;
-	}
+//	public String getTutorialStartNoteText( S step, UserInformation userInformation ) {
+//		return "Press " + this.getTutorialNoteText( step, userInformation );
+//	}
+//
+//	protected String getTutorialNoteName() {
+//		return this.getName();
+//	}
+//	@Override
+//	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+//		rv.append( "Click <strong>" );
+//		rv.append( this.getTutorialNoteName() );
+//		rv.append( "</strong>" );
+//		return rv;
+//	}
 	
 	protected Edit< ? > createTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		return null;
@@ -80,37 +80,54 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	@Override
 	public Edit< ? > commitTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		Edit< ? > replacementEdit = this.createTutorialCompletionEdit( originalEdit, retargeter );
-		if( replacementEdit != null ) {
-			final C childContext = this.createAndPushContext( null, null );
-			try {
-				childContext.commitAndInvokeDo( replacementEdit );
-			} finally {
-				ModelContext< ? > popContext = ContextManager.popContext();
-				assert popContext == childContext : popContext.getClass() + " " + childContext.getClass();
-			}
-		} else {
-			System.err.println( "createTutorialCompletionEdit returned null" );
-		}
+//		if( replacementEdit != null ) {
+//			final S step = this.createAndPushStep( null, null );
+//			try {
+//				step.commitAndInvokeDo( replacementEdit );
+//			} finally {
+//				ModelContext< ? > popContext = ContextManager.popContext();
+//				assert popContext == step : popContext.getClass() + " " + step.getClass();
+//			}
+//		} else {
+//			System.err.println( "createTutorialCompletionEdit returned null" );
+//		}
 		return replacementEdit;
 	}
 
-	public C fire( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public S fire( org.lgna.croquet.Trigger trigger ) {
 		if( this.isEnabled() ) {
-			return this.handleFire(e, viewController);
+			return this.handleFire( trigger );
+		} else {
+			return null;
+		}
+	}
+	public S fire( java.awt.event.ActionEvent e, ViewController< ?, ? > viewController ) {
+		if( this.isEnabled() ) {
+			return this.handleFire( new org.lgna.croquet.triggers.ActionEventTrigger( viewController, e ) );
+		} else {
+			return null;
+		}
+	}
+	public S fire( java.awt.event.MouseEvent e, ViewController< ?, ? > viewController ) {
+		if( this.isEnabled() ) {
+			return this.handleFire( new org.lgna.croquet.triggers.MouseEventTrigger( viewController, e ) );
 		} else {
 			return null;
 		}
 	}
 	@Deprecated
-	public C fire( java.util.EventObject e ) {
+	public S fire( java.awt.event.MouseEvent e ) {
 		return fire( e, null );
 	}
 	@Deprecated
-	public C fire() {
-		return fire( null );
+	public S fire( java.awt.event.ActionEvent e ) {
+		return fire( e, null );
 	}
-	
-	
+	@Deprecated
+	public S fire() {
+		return fire( org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+	}
+
 	
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
@@ -130,29 +147,29 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		}
 	}
 	
-	protected static interface PerformObserver { 
+	public static interface PerformObserver { 
 		public void handleFinally(); 
 	}
-	/*package-private*/ final C handleFire( java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		final C childContext = this.createAndPushContext( e, viewController );
-		this.perform( childContext, new PerformObserver() {
+	/*package-private*/ final S handleFire( org.lgna.croquet.Trigger trigger ) {
+		final S step = this.createAndPushStep( trigger );
+		this.perform( step, new PerformObserver() {
 			public void handleFinally() {
-				ModelContext< ? > popContext = ContextManager.popContext();
-				if( popContext != null ) {
-					//assert popContext == childContext : "actual: " + popContext.getClass() + " expected: " + childContext.getClass();
-					if( popContext == childContext ) {
-						//pass
-					} else {
-						System.err.println( "actual: " + popContext.getClass() + " expected: " + childContext.getClass() );
-					}
-				} else {
-					System.err.println( "handleFinally popContext==null" );
-				}
+//				ModelContext< ? > popContext = ContextManager.popContext();
+//				if( popContext != null ) {
+//					//assert popContext == step : "actual: " + popContext.getClass() + " expected: " + step.getClass();
+//					if( popContext == step ) {
+//						//pass
+//					} else {
+//						System.err.println( "actual: " + popContext.getClass() + " expected: " + step.getClass() );
+//					}
+//				} else {
+//					System.err.println( "handleFinally popContext==null" );
+//				}
 			}
 		} );
-		return childContext;
+		return step;
 	}
-	protected abstract void perform( C context, PerformObserver performObserver );
+	protected abstract void perform( S step, PerformObserver performObserver );
 
 	public String getName() {
 		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );

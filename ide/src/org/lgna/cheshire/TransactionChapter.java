@@ -87,7 +87,7 @@ public class TransactionChapter extends Chapter {
 	public boolean isAlreadyInTheDesiredState() {
 		org.lgna.croquet.steps.Transaction transaction = this.getTransaction();
 		org.lgna.croquet.steps.CompletionStep< ? > completionStep = transaction.getCompletionStep();
-		edu.cmu.cs.dennisc.croquet.Model model = completionStep.getModel();
+		edu.cmu.cs.dennisc.croquet.CompletionModel model = completionStep.getModel();
 		if( model != null ) {
 			edu.cmu.cs.dennisc.croquet.Edit< ? > edit = completionStep.getEdit();
 			return model.isAlreadyInState( edit );

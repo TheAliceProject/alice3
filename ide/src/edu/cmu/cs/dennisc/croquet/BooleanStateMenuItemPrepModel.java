@@ -82,10 +82,6 @@ public class BooleanStateMenuItemPrepModel extends MenuItemPrepModel {
 		return this.booleanState;
 	}
 	@Override
-	public boolean isAlreadyInState( Edit< ? > edit ) {
-		return this.booleanState.isAlreadyInState( edit );
-	}
-	@Override
 	protected BooleanStateMenuPrepModelResolver createCodableResolver() {
 		return new BooleanStateMenuPrepModelResolver( this );
 	}

@@ -94,7 +94,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 	public DocWizardsesquePresentation( 
 			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
 			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
-			org.lgna.croquet.steps.MigrationManager migrationManager,
+			org.lgna.croquet.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
 			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess

@@ -46,29 +46,26 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class CompositeEdit extends Edit {
-	private Edit<?>[] edits;
-	private boolean isDoToBeIgnored;
-	private String presentation;
+	private final Edit<?>[] edits;
+	private final boolean isDoToBeIgnored;
+	private final String presentation;
 	public CompositeEdit( Edit<?>[] edits, boolean isDoToBeIgnored, String presentation ) {
 		this.edits = edits;
 		this.isDoToBeIgnored = isDoToBeIgnored;
 		this.presentation = presentation;
 	}
+	public CompositeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+		this.edits = binaryDecoder.decodeBinaryEncodableAndDecodableArray( Edit.class );
+		this.isDoToBeIgnored = binaryDecoder.decodeBoolean();
+		this.presentation = binaryDecoder.decodeString();
+	}
 	@Override
-	public Memento< ? > createMemento() {
-		throw new RuntimeException( "todo" );
-//		@Override
-//		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-//			binaryEncoder.encode( this.edits );
-//			binaryEncoder.encode( this.isDoToBeIgnored );
-//			binaryEncoder.encode( this.presentation );
-//		}
-//		@Override
-//		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-//			this.edits = binaryDecoder.decodeBinaryEncodableAndDecodableArray( Edit.class );
-//			this.isDoToBeIgnored = binaryDecoder.decodeBoolean();
-//			this.presentation = binaryDecoder.decodeString();
-//		}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.edits );
+		binaryEncoder.encode( this.isDoToBeIgnored );
+		binaryEncoder.encode( this.presentation );
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {

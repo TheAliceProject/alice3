@@ -53,11 +53,11 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 		this.replacement = replacement;
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 		final int index = this.property.indexOf( this.original );
 		final edu.cmu.cs.dennisc.alice.ast.BlockStatement body = this.original.body.getValue();
 		if( index >= 0 ) {
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
@@ -121,7 +121,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 		this.setName( "Dissolve " + this.abstractStatementWithBody.getClass().getSimpleName() );
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 		final int index = this.property.indexOf( this.abstractStatementWithBody );
 		if( index >= 0 ) {
 			final int N = this.abstractStatementWithBody.body.getValue().statements.size();
@@ -129,7 +129,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 			final edu.cmu.cs.dennisc.alice.ast.Statement[] statements = new edu.cmu.cs.dennisc.alice.ast.Statement[ N ];
 			this.abstractStatementWithBody.body.getValue().statements.toArray( statements );
 			
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
@@ -179,10 +179,10 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 		this.setName( sb.toString() );
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 		final int index = this.property.indexOf( this.statement );
 		if( index >= 0 ) {
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
@@ -212,7 +212,7 @@ class StatementEnabledStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanS
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue(), "IsEnabled" );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue() );
 		this.statement = statement;
 		this.addValueObserver( new ValueObserver() {
 			public void changing( boolean nextValue ) {
@@ -221,6 +221,7 @@ class StatementEnabledStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanS
 				StatementEnabledStateOperation.this.statement.isEnabled.setValue( nextValue );
 			}
 		} );
+		this.setTextForBothTrueAndFalse( "IsEnabled" );
 		//update();
 	}
 	//	private void update() {

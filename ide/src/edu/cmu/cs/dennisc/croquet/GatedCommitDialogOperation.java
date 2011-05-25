@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-abstract class GatedCommitDialogOperation<C extends DialogOperationContext< ? >> extends DialogOperation< C > {
+public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.steps.GatedCommitDialogOperationStep< ? >> extends DialogOperation< S > {
 	private static final String NULL_EXPLANATION = "good to go";
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "35b47d9d-d17b-4862-ac22-5ece4e317242" ), "DIALOG_IMPLEMENTATION_GROUP" );
 	protected static final Group ENCLOSING_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_DIALOG_GROUP" );
@@ -62,8 +62,9 @@ abstract class GatedCommitDialogOperation<C extends DialogOperationContext< ? >>
 		public void setDialog( Dialog dialog ) {
 			this.dialog = dialog;
 		}
-		protected GatedCommitDialogOperation< ? > getGatedCommitDialogOperation( ActionOperationContext context ) {
-			return (GatedCommitDialogOperation< ? >)context.getFirstAncestorAssignableTo( GatedCommitDialogOperationContext.class ).getModel();
+		protected GatedCommitDialogOperation< ? > getGatedCommitDialogOperation( org.lgna.croquet.steps.ActionOperationStep step ) {
+			//todo: fix
+			return (GatedCommitDialogOperation< ? >)step.getParent().getParent().getParent().getModel();
 		}
 	}
 
@@ -72,9 +73,9 @@ abstract class GatedCommitDialogOperation<C extends DialogOperationContext< ? >>
 			super( id );
 		}
 		@Override
-		protected final void perform( ActionOperationContext context ) {
-			this.getGatedCommitDialogOperation( context ).isCompleted = true;
-			context.finish();
+		protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+			this.getGatedCommitDialogOperation( step ).isCompleted = true;
+			step.finish();
 			this.getDialog().setVisible( false );
 		}
 	}
@@ -95,8 +96,8 @@ abstract class GatedCommitDialogOperation<C extends DialogOperationContext< ? >>
 			this.setName( "Cancel" );
 		}
 		@Override
-		protected void perform( ActionOperationContext context ) {
-			context.cancel();
+		protected void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+			step.cancel();
 			this.getDialog().setVisible( false );
 		}
 	}
@@ -170,11 +171,11 @@ abstract class GatedCommitDialogOperation<C extends DialogOperationContext< ? >>
 			return rv;
 		};
 	};
-	private ModelContext.ChildrenObserver childrenObserver = new ModelContext.ChildrenObserver() {
-		public void addingChild( HistoryNode child ) {
+	private org.lgna.croquet.steps.TransactionManager.EventObserver eventObserver = new org.lgna.croquet.steps.TransactionManager.EventObserver() {
+		public void firingEvent(org.lgna.cheshire.events.Event event) {
 		}
-		public void addedChild( HistoryNode child ) {
-			GatedCommitDialogOperation.this.handleCroquetAddedChild( child );
+		public void firedEvent(org.lgna.cheshire.events.Event event ) {
+			GatedCommitDialogOperation.this.handleFiredEvent( event );
 		}
 	};
 
@@ -192,13 +193,13 @@ abstract class GatedCommitDialogOperation<C extends DialogOperationContext< ? >>
 		return CancelOperation.getInstance();
 	}
 
-	protected abstract Component< ? > createMainPanel( C context, Dialog dialog, Label explanationLabel );
-	protected abstract Component< ? > createControlsPanel( C context, Dialog dialog );
-	protected abstract void release( C context, Dialog dialog, boolean isCompleted );
+	protected abstract Component< ? > createMainPanel( S step, Dialog dialog, Label explanationLabel );
+	protected abstract Component< ? > createControlsPanel( S step, Dialog dialog );
+	protected abstract void release( S step, Dialog dialog, boolean isCompleted );
 
-	protected abstract String getExplanation( C context );
-	protected void updateExplanation( C context ) {
-		String explanation = this.getExplanation( context );
+	protected abstract String getExplanation( S step );
+	protected void updateExplanation( S step ) {
+		String explanation = this.getExplanation( step );
 		if( explanation != null ) {
 			//pass
 		} else {
@@ -207,13 +208,14 @@ abstract class GatedCommitDialogOperation<C extends DialogOperationContext< ? >>
 		this.explanationLabel.setText( explanation );
 	}
 
-	protected void handleCroquetAddedChild( HistoryNode child ) {
-		this.updateExplanation( (C)child.findContextFor( GatedCommitDialogOperation.this ) );
+	public void handleFiredEvent( org.lgna.cheshire.events.Event event ) {
+		System.err.println( "handleFiredEvent: " + event );
+		//this.updateExplanation( (S)event.findContextFor( GatedCommitDialogOperation.this ) );
 	}
 	@Override
-	protected final Container< ? > createContentPane( C context, Dialog dialog ) {
-		Component< ? > mainPanel = this.createMainPanel( context, dialog, this.explanationLabel );
-		Component< ? > controlPanel = this.createControlsPanel( context, dialog );
+	protected final Container< ? > createContentPane( S step, Dialog dialog ) {
+		Component< ? > mainPanel = this.createMainPanel( step, dialog, this.explanationLabel );
+		Component< ? > controlPanel = this.createControlsPanel( step, dialog );
 		GridBagPanel rv = new GridBagPanel();
 		rv.setBackgroundColor( mainPanel.getBackgroundColor() );
 
@@ -227,8 +229,8 @@ abstract class GatedCommitDialogOperation<C extends DialogOperationContext< ? >>
 		rv.addComponent( new HorizontalSeparator(), gbc );
 		rv.addComponent( controlPanel, gbc );
 
-		ContextManager.getRootContext().addChildrenObserver( this.childrenObserver );
-		this.updateExplanation( context );
+		org.lgna.croquet.steps.TransactionManager.addEventObserver( this.eventObserver );
+		this.updateExplanation( step );
 
 		this.getCompleteOperation().setDialog( dialog );
 		this.getCancelOperation().setDialog( dialog );
@@ -236,12 +238,12 @@ abstract class GatedCommitDialogOperation<C extends DialogOperationContext< ? >>
 		return rv;
 	}
 	@Override
-	protected final void releaseContentPane( C context, Dialog dialog, Container< ? > contentPane ) {
+	protected final void releaseContentPane( S step, Dialog dialog, Container< ? > contentPane ) {
 		if( contentPane != null ) {
-			ContextManager.getRootContext().removeChildrenObserver( this.childrenObserver );
-			this.release( context, dialog, this.isCompleted );
+			org.lgna.croquet.steps.TransactionManager.removeEventObserver( this.eventObserver );
+			this.release( step, dialog, this.isCompleted );
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 }

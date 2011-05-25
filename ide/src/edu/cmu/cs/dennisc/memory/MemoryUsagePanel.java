@@ -111,9 +111,9 @@ class GarbageCollectAction extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 		this.setName( "garbage collect" );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
 		System.gc();
-		context.finish();
+		step.finish();
 	}
 }
 
@@ -154,13 +154,13 @@ public class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				return null;
 			}
 			@Override
-			protected void handleAbout( java.util.EventObject e ) {
+			protected void handleAbout( org.lgna.croquet.Trigger trigger ) {
 			}
 			@Override
-			protected void handlePreferences( java.util.EventObject e ) {
+			protected void handlePreferences( org.lgna.croquet.Trigger trigger ) {
 			}
 			@Override
-			protected void handleQuit( java.util.EventObject e ) {
+			protected void handleQuit( org.lgna.croquet.Trigger trigger ) {
 				System.exit( 0 );
 			}
 			@Override

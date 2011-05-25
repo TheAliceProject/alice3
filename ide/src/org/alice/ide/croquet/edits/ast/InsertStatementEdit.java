@@ -42,60 +42,11 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
-public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > {
-	public static class InsertStatementEditMemento extends Memento<edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression >> {
-		private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
-		private int specifiedIndex;
-		private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-		private edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions;
-		public InsertStatementEditMemento( InsertStatementEdit edit ) {
-			super( edit );
-			this.blockStatement = edit.blockStatement;
-			this.specifiedIndex = edit.specifiedIndex;
-			this.statement = edit.statement;
-			this.initialExpressions = edit.initialExpressions;
-		}
-		public InsertStatementEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > createEdit() {
-			return new InsertStatementEdit( this );
-		}
-		@Override
-		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-			java.util.UUID blockStatementId = binaryDecoder.decodeId();
-			this.blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, blockStatementId );
-			this.specifiedIndex = binaryDecoder.decodeInt();
-			java.util.UUID statementId = binaryDecoder.decodeId();
-			this.statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, statementId );
-			java.util.UUID[] ids = binaryDecoder.decodeIdArray();
-			final int N = ids.length;
-			this.initialExpressions = new edu.cmu.cs.dennisc.alice.ast.Expression[ N ];
-			for( int i=0; i<N; i++ ) {
-				this.initialExpressions[ i ] = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, ids[ i ] );
-			}
-		}
-		@Override
-		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			binaryEncoder.encode( this.blockStatement.getUUID() );
-			binaryEncoder.encode( this.specifiedIndex );
-			binaryEncoder.encode( this.statement.getUUID() );
-			final int N = this.initialExpressions.length;
-			java.util.UUID[] ids = new java.util.UUID[ N ];
-			for( int i=0; i<N; i++ ) {
-				ids[ i ] = this.initialExpressions[ i ].getUUID();
-			}
-			binaryEncoder.encode( ids );
-		}
-	}
-
+public class InsertStatementEdit extends org.lgna.croquet.edits.OperationEdit< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > > {
 	public static final int AT_END = Short.MAX_VALUE;
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
-	private int specifiedIndex;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	private int specifiedIndex;
 	private edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions;
 	private InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
 		this.blockStatement = blockStatement;
@@ -111,19 +62,35 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		this( blockStatement, index, statement, new edu.cmu.cs.dennisc.alice.ast.Expression[] {} );
 	}
-
-	private InsertStatementEdit( InsertStatementEditMemento memento ) {
-		super( memento );
-		this.blockStatement = memento.blockStatement;
-		this.specifiedIndex = memento.specifiedIndex;
-		this.statement = memento.statement;
-		this.initialExpressions = memento.initialExpressions;
+	public InsertStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		java.util.UUID blockStatementId = binaryDecoder.decodeId();
+		this.blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, blockStatementId );
+		this.specifiedIndex = binaryDecoder.decodeInt();
+		java.util.UUID statementId = binaryDecoder.decodeId();
+		this.statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, statementId );
+		java.util.UUID[] ids = binaryDecoder.decodeIdArray();
+		final int N = ids.length;
+		this.initialExpressions = new edu.cmu.cs.dennisc.alice.ast.Expression[ N ];
+		for( int i=0; i<N; i++ ) {
+			this.initialExpressions[ i ] = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, ids[ i ] );
+		}
 	}
 	@Override
-	public InsertStatementEditMemento createMemento() {
-		return new InsertStatementEditMemento( this );
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.blockStatement.getUUID() );
+		binaryEncoder.encode( this.specifiedIndex );
+		binaryEncoder.encode( this.statement.getUUID() );
+		final int N = this.initialExpressions.length;
+		java.util.UUID[] ids = new java.util.UUID[ N ];
+		for( int i=0; i<N; i++ ) {
+			ids[ i ] = this.initialExpressions[ i ].getUUID();
+		}
+		binaryEncoder.encode( ids );
 	}
-	
 
 	public edu.cmu.cs.dennisc.alice.ast.Expression[] getInitialExpressions() {
 		return this.initialExpressions;

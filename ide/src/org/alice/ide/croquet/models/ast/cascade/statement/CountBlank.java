@@ -59,7 +59,7 @@ public class CountBlank extends org.alice.ide.croquet.models.cascade.ExpressionB
 	@Override
 	protected java.util.List<edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren(
 			java.util.List<edu.cmu.cs.dennisc.croquet.CascadeItem> rv,
-			edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
+			org.lgna.croquet.steps.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
 		rv.add( CountSeparator.getInstance() );
 		return super.updateChildren(rv, context);
 	}

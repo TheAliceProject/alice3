@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.edits.StateEdit;
+
 /**
  * @author Dennis Cosgrove
  */

@@ -43,6 +43,8 @@
 
 package org.lgna.croquet.steps;
 
+import org.lgna.croquet.steps.Transaction;
+
 /**
  * @author Dennis Cosgrove
  */

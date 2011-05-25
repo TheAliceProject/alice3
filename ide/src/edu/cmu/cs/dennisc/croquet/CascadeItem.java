@@ -46,35 +46,38 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeItem< F, C extends CascadeItemContext<F,?,?> > extends PrepModel {
+public abstract class CascadeItem< F, S extends org.lgna.croquet.steps.CascadeItemStep<F,?,S> > extends MenuItemPrepModel {
 	public CascadeItem( java.util.UUID id ) {
-		super( Application.CASCADE_GROUP, id );
+		//super( Application.CASCADE_GROUP, id );
+		super( id );
 	}
 	@Override
 	protected void localize() {
 	}
-	@Override
-	public boolean isAlreadyInState( Edit< ? > edit ) {
-		return false;
-	}
-	public boolean isInclusionDesired( C context ) {
+	public boolean isInclusionDesired( S context ) {
 		return true;
 	}
 	public boolean isAutomaticallySelectedWhenSoleOption() {
 		return true;
 	}
 	
+	@Override
+	public edu.cmu.cs.dennisc.croquet.MenuItemContainer createMenuItemAndAddTo( edu.cmu.cs.dennisc.croquet.MenuItemContainer rv ) {
+		rv.addCascadeMenuItem( new CascadeMenuItem( this ) );
+		return rv;
+	}
+	
 //	public abstract CascadeBlank<B>[] getBlanks();
-	public abstract F getTransientValue( C context );
-	public abstract F createValue( C context );
+	public abstract F getTransientValue( S context );
+	public abstract F createValue( S context );
 
 	private javax.swing.JComponent menuProxy = null;
 	private javax.swing.Icon icon = null;
-	protected abstract javax.swing.JComponent createMenuItemIconProxy( C context );
+	protected abstract javax.swing.JComponent createMenuItemIconProxy( S context );
 //	protected javax.swing.JComponent createMenuProxy() {
 //		return new javax.swing.JLabel( "todo: override getMenuProxy" );
 //	}
-	protected javax.swing.JComponent getMenuProxy( C context ) {
+	protected javax.swing.JComponent getMenuProxy( S context ) {
 		//System.err.println( "todo: cache getMenuProxy()" );
 		//todo
 		if( this.menuProxy != null ) {
@@ -84,7 +87,7 @@ public abstract class CascadeItem< F, C extends CascadeItemContext<F,?,?> > exte
 		}
 		return this.menuProxy;
 	}
-	public javax.swing.Icon getMenuItemIcon( C context ) {
+	public javax.swing.Icon getMenuItemIcon( S context ) {
 		if( this.icon != null ) {
 			//pass
 		} else {
@@ -108,16 +111,16 @@ public abstract class CascadeItem< F, C extends CascadeItemContext<F,?,?> > exte
 		}
 		return this.icon;
 	}
-	public String getMenuItemText( C context ) {
+	public String getMenuItemText( S context ) {
 		return null;
 	}
 	
 	protected String getTutorialItemText() {
 		return this.getDefaultLocalizedText();
 	}
-	
+
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		rv.append( "Select <strong>" );
 		rv.append( this.getTutorialItemText() );
 		rv.append( "</strong>." );

@@ -46,13 +46,13 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public class DropCompletionStep extends CompletionStep< edu.cmu.cs.dennisc.croquet.CompletionModel > implements DropStep {
-	public static DropCompletionStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
-		return new DropCompletionStep( parent, model, dropReceptor, dropSite );
+	public static DropCompletionStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, org.lgna.croquet.Trigger trigger, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		return new DropCompletionStep( parent, model, trigger, dropReceptor, dropSite );
 	}
 	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.DropReceptor > dropReceptorResolver;
 	private edu.cmu.cs.dennisc.croquet.DropSite dropSite;
-	private DropCompletionStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
-		super( parent, model, null );
+	private DropCompletionStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel model, org.lgna.croquet.Trigger trigger, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		super( parent, model, trigger, null );
 		this.dropReceptorResolver = dropReceptor.getCodableResolver();
 		this.dropSite = dropSite;
 	}

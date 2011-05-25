@@ -67,8 +67,8 @@ public class CreateIdeOperation extends edu.cmu.cs.dennisc.croquet.ActionOperati
 		return new org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< CreateIdeOperation >( this, this.cls );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 		IDE ide = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.cls );
-		context.finish();
+		step.finish();
 	}
 }
