@@ -47,10 +47,10 @@ public abstract class IsFrameShowingState extends edu.cmu.cs.dennisc.croquet.Boo
 	public IsFrameShowingState( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, boolean initialValue ) {
 		super( group, individualId, initialValue );
 		
-		this.addValueObserver( new ValueObserver() {
-			public void changing(boolean nextValue) {
+		this.addValueObserver( new ValueObserver<Boolean>() {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed(boolean nextValue) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				IsFrameShowingState.this.handleChanged( nextValue );
 			}
 		} );

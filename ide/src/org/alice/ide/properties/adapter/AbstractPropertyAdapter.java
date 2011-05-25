@@ -134,11 +134,20 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 		}
 	}
 
-	public abstract Operation getEditOperation();
+	public abstract edu.cmu.cs.dennisc.croquet.Model getEditModel();
 	
-	public Button createEditButton()
+	public org.lgna.croquet.components.ViewController< ?,? > createEditViewController()
     {
-        return this.getEditOperation().createButton();
+		edu.cmu.cs.dennisc.croquet.Model model = this.getEditModel();
+		if( model instanceof edu.cmu.cs.dennisc.croquet.PopupPrepModel< ? > ) {
+			edu.cmu.cs.dennisc.croquet.PopupPrepModel< ? > popupPrepModel = (edu.cmu.cs.dennisc.croquet.PopupPrepModel< ? >)model;
+	        return popupPrepModel.createPopupButton();
+		} else if( model instanceof edu.cmu.cs.dennisc.croquet.Operation< ? > ) {
+			edu.cmu.cs.dennisc.croquet.Operation< ? > operation = (edu.cmu.cs.dennisc.croquet.Operation< ? >)model;
+	        return operation.createButton();
+		} else {
+			throw new RuntimeException( "todo" );
+		}
     }
 	
 	protected abstract void startListening();

@@ -204,8 +204,8 @@ class MutableList extends org.lgna.croquet.components.PageAxisPanel {
 		}
 	};
 	
-	private org.lgna.croquet.components.Button buttonToScrollToVisibleOnAdd;
-	public MutableList( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, org.lgna.croquet.components.Button buttonToScrollToVisibleOnAdd ) {
+	private org.lgna.croquet.components.ViewController< ?,? > buttonToScrollToVisibleOnAdd;
+	public MutableList( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, org.lgna.croquet.components.ViewController< ?,? > buttonToScrollToVisibleOnAdd ) {
         this.componentTypeProperty = componentTypeProperty;
         this.expressionListProperty = expressionListProperty;
         this.buttonToScrollToVisibleOnAdd = buttonToScrollToVisibleOnAdd;
@@ -406,7 +406,7 @@ class MutableList extends org.lgna.croquet.components.PageAxisPanel {
 public class ArrayInitializerPane extends org.lgna.croquet.components.BorderPanel {
     public ArrayInitializerPane( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions ) {
         org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation addExpressionOperation = new org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation( componentTypeProperty, arrayExpressions );
-        org.lgna.croquet.components.Button button = addExpressionOperation.createButton();
+        org.lgna.croquet.components.PopupButton button = addExpressionOperation.createPopupButton();
 
         MutableList mutableList = new MutableList( componentTypeProperty, arrayExpressions, button );
         org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel( 

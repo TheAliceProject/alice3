@@ -63,6 +63,6 @@ public class OtherTypesMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava otherType : otherTypes ) {
 			otherTypeModels.add( SelectTypeOperation.getInstance( otherType ).getMenuItemPrepModel() );
 		}
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, otherTypeModels );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, otherTypeModels );
 	}
 }

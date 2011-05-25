@@ -150,7 +150,7 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 					//pass
 				} else {
 					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					g2.setPaint( edu.cmu.cs.dennisc.croquet.PaintUtilities.getDisabledTexturePaint() );
+					g2.setPaint( org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint() );
 					g2.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 				}
 			}
@@ -237,10 +237,10 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 		this.addComponent( instancePanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		this.addComponent( cardPanel, Constraint.CENTER );
 	}
-	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isAlwaysAvailableObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-		public void changing( boolean nextValue ) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > isAlwaysAvailableObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( boolean nextValue ) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			MembersEditor.this.cardPanel.show( MembersEditor.this.getKey( nextValue ) );
 		}
 	};

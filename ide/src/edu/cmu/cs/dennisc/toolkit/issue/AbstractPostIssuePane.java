@@ -130,8 +130,10 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 		rows.add( this.rowEnvironment );
 		return rows;
 	}
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.jira.JIRAReport.Type > typeSelectionListener = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.jira.JIRAReport.Type >() { 
-		public void changed( edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue ) {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.jira.JIRAReport.Type > typeSelectionListener = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.jira.JIRAReport.Type >() {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.jira.JIRAReport.Type > state, edu.cmu.cs.dennisc.jira.JIRAReport.Type prevValue, edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue, boolean isAdjusting ) {
+		}
+		public void changed( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.jira.JIRAReport.Type > state, edu.cmu.cs.dennisc.jira.JIRAReport.Type prevValue, edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue, boolean isAdjusting ) {
 			AbstractPostIssuePane.this.refreshRows();
 		}
 	};

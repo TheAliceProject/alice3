@@ -63,7 +63,7 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	protected boolean isAlphaDesiredWhenOverDropReceptor() {
 		return true;
 	}
-	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( org.lgna.croquet.steps.DragStep dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty );
+	public abstract edu.cmu.cs.dennisc.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty );
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
 		return null;
 	}

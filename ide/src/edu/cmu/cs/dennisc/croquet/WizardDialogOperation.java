@@ -56,7 +56,6 @@ import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.PageAxisPanel;
 import org.lgna.croquet.components.RowsSpringPanel;
 import org.lgna.croquet.components.SpringUtilities;
-import org.lgna.croquet.edits.OperationEdit;
 
 /**
  * @author Dennis Cosgrove
@@ -237,7 +236,9 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 	}
 	
 	private ListSelectionState.ValueObserver< Card > selectionObserver = new ListSelectionState.ValueObserver< Card >() {
-		public void changed( WizardDialogOperation.Card nextValue ) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card > state, edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card prevValue, edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card nextValue, boolean isAdjusting ) {
+		}
+		public void changed( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card > state, edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card prevValue, edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card nextValue, boolean isAdjusting ) {
 			WizardDialogOperation.this.handleCardChange( nextValue );
 		}
 	};

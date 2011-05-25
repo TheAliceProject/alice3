@@ -70,6 +70,6 @@ public class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 
 		models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 		models.add( OtherTypesMenuModel.getInstance() );
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 	}
 }

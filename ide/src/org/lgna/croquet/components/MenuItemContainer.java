@@ -41,60 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.croquet.components;
+
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadePopupOperation<B> extends PopupOperation< org.lgna.croquet.steps.CascadePopupOperationStep< B > > {
-	private final Class< B > componentType;
-	private final CascadeRoot< B > root;
-	public CascadePopupOperation( Group group, java.util.UUID id, Class< B > componentType, CascadeBlank< B >[] blanks ) {
-		super( group, id );
-		this.componentType = componentType;
-		this.root = new CascadeRoot< B >( this );
-		assert blanks != null;
-		for( int i=0; i<blanks.length; i++ ) {
-			assert blanks[ i ] != null : this;
-			root.addBlank( blanks[ i ] );
-		}
-	}
-	@Override
-	public org.lgna.croquet.steps.CascadePopupOperationStep< B > createAndPushStep( org.lgna.croquet.Trigger trigger ) {
-		return org.lgna.croquet.steps.TransactionManager.addCascadePopupOperationStep( this, trigger );
-	}
+public interface MenuItemContainer {
+	public ViewController< ?, ? > getViewController();
+//	public void addChangeListener( javax.swing.event.ChangeListener changeListener );
+//	public void removeChangeListener( javax.swing.event.ChangeListener changeListener );
+//	public void addItemListener( java.awt.event.ItemListener listener );
+//	public void removeItemListener( java.awt.event.ItemListener listener );
 
-	public CascadeRoot< B > getRoot() {
-		return this.root;
-	}
-
-	public Class< B > getComponentType() {
-		return this.componentType;
-	}
-
-	protected abstract Edit< ? extends CascadePopupOperation< B > > createEdit( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, B[] values );
-
-	public void handleCompletion( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, PerformObserver performObserver, B[] values ) {
-		try {
-			Edit< ? extends CascadePopupOperation< B > > edit = this.createEdit( step, values );
-			step.commitAndInvokeDo( edit );
-		} finally {
-//			ContextManager.popContext();
-			performObserver.handleFinally();
-		}
-	}
-	public void handleCancel( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, PerformObserver performObserver ) {
-		try {
-			step.cancel();
-		} finally {
-//			ContextManager.popContext();
-			performObserver.handleFinally();
-		}
-	}
-
-	@Override
-	protected void perform( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, PerformObserver performObserver ) {
-		org.lgna.croquet.steps.RtCascadePopupOperation< B > rt = new org.lgna.croquet.steps.RtCascadePopupOperation< B >( this, step, performObserver );
-//		ContextManager.pushContext( ContextManager.createCascadeRootContext( this.root ) );
-		rt.perform();
-	}
+	public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener );
+	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener );
+	
+	public Container< ? > getParent();
+	public void addMenu( Menu menu );
+	public void addMenuItem( MenuItem menuItem );
+	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem );
+	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
+	public void addSeparator();
+	public void addSeparator( MenuTextSeparator menuTextSeparator );
+	public void forgetAndRemoveAllMenuItems();
+	public void removeAllMenuItems();
 }

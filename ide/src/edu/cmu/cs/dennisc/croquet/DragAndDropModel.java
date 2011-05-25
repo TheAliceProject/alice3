@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import org.lgna.croquet.components.DragComponent;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -71,9 +69,9 @@ public abstract class DragAndDropModel extends PrepModel {
 		return true;
 	}
 	
-	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
-	public abstract void handleDragStarted( org.lgna.croquet.steps.DragStep dragAndDropContext );
-	public abstract void handleDragEnteredDropReceptor( org.lgna.croquet.steps.DragStep dragAndDropContext );
-	public abstract void handleDragExitedDropReceptor( org.lgna.croquet.steps.DragStep dragAndDropContext );
-	public abstract void handleDragStopped( org.lgna.croquet.steps.DragStep dragAndDropContext );
+	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource );
+	public abstract void handleDragStarted( org.lgna.croquet.steps.DragStep step );
+	public abstract void handleDragEnteredDropReceptor( org.lgna.croquet.steps.DragStep step );
+	public abstract void handleDragExitedDropReceptor( org.lgna.croquet.steps.DragStep step );
+	public abstract void handleDragStopped( org.lgna.croquet.steps.DragStep step );
 }

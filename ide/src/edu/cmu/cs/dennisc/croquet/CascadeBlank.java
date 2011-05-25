@@ -52,15 +52,13 @@ public abstract class CascadeBlank< B > extends Model {
 	public CascadeBlank( java.util.UUID id ) {
 		super( id );
 	}
-
+	@Override
+	protected void localize() {
+	}
 	protected abstract java.util.List< CascadeItem > updateChildren( java.util.List< CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep<B> step );
 	public final Iterable< CascadeItem > getChildren( org.lgna.croquet.steps.CascadeBlankStep<B> step ) {
 		java.util.List< CascadeItem > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.updateChildren( rv, step );
 		return rv;
-	}
-	
-	@Override
-	protected void localize() {
 	}
 }

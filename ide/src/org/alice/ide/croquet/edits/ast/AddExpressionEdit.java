@@ -45,11 +45,11 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class AddExpressionEdit extends org.lgna.croquet.edits.OperationEdit< org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation > {
+public class AddExpressionEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation.CascadeCloser > {
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
 	private final edu.cmu.cs.dennisc.alice.ast.Expression expression;
 	private transient int index;
-	public AddExpressionEdit( org.lgna.croquet.steps.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public AddExpressionEdit( org.lgna.croquet.steps.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		super( completionStep );
 		this.expressionListProperty = expressionListProperty;
 		this.expression = expression;

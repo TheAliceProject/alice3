@@ -53,8 +53,8 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 			super( ITEM_SELECTABLE_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "f0faf391-1b41-417d-98a9-ab9ba1a20335" ), false );
 		}
 		@Override
-		protected boolean isEditCommitDesired() {
-			return false;
+		public boolean isToBeIgnored() {
+			return true;
 		}
 	}
 	

@@ -63,7 +63,7 @@ import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composite, Transformable> {
 
 	private HierarchyListener hierarchyListener;
-	private edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation;
+	private edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel popupMenuOperation;
 	
 	protected class SetVehicleOperation extends SetValueOperation<Composite>
 	{
@@ -125,7 +125,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	}
 	
 	@Override
-	public Operation getEditOperation() 
+	public Model getEditModel() 
 	{
 		if (this.popupMenuOperation == null)
 		{
@@ -171,7 +171,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 							}
 						}
 					}
-					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, setVehicleOperations );
+					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, setVehicleOperations );
 				}
 			}.getPopupMenuOperation();
 		}

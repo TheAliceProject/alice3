@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.MenuItemContainer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -96,12 +98,12 @@ public abstract class MenuModel extends MenuItemPrepModel {
 		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
 	
-	private StandardPopupOperation popupMenuOperation;
-	public synchronized StandardPopupOperation getPopupMenuOperation() {
+	private StandardPopupPrepModel popupMenuOperation;
+	public synchronized StandardPopupPrepModel getPopupMenuOperation() {
 		if( this.popupMenuOperation != null ) {
 			//pass
 		} else {
-			this.popupMenuOperation = new StandardPopupOperation( this );
+			this.popupMenuOperation = new StandardPopupPrepModel( this );
 		}
 		return this.popupMenuOperation;
 	}

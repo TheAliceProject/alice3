@@ -42,6 +42,7 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.MenuItemContainer;
 import org.lgna.croquet.components.MenuTextSeparator;
 
 /**

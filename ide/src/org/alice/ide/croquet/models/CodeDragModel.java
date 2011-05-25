@@ -50,24 +50,30 @@ public abstract class CodeDragModel extends IdeDragModel {
 	public CodeDragModel( java.util.UUID id ) {
 		super( id );
 	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getExpressionType();
 	@Override
 	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		if( ide != null ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
 			if( codeEditor != null ) {
-				if( dragSource.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
-					org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)dragSource.getSubject();
-					return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
+				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > expressionType = this.getExpressionType();
+				if( expressionType != null ) {
+					return codeEditor.createListOfPotentialDropReceptors( expressionType );
 				} else {
-					java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-					rv.add( codeEditor );
-					//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
-					//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
-					//					rv.add( dropReceptor );
-					//				}
-					//			}
-					return rv;
+					if( dragSource.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
+						org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)dragSource.getSubject();
+						return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
+					} else {
+						java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+						rv.add( codeEditor );
+						//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
+						//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
+						//					rv.add( dropReceptor );
+						//				}
+						//			}
+						return rv;
+					}
 				}
 			} else {
 				//todo: investigate

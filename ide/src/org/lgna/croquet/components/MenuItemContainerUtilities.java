@@ -41,20 +41,71 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.triggers;
+package org.lgna.croquet.components;
+
+import edu.cmu.cs.dennisc.croquet.MenuItemPrepModel;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ActionEventTrigger extends EventTrigger<java.awt.event.ActionEvent> {
-	public ActionEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.ActionEvent actionEvent ) {
-		super( viewController, actionEvent );
+public class MenuItemContainerUtilities {
+	private MenuItemContainerUtilities() {
+		throw new AssertionError();
 	}
-	public ActionEventTrigger( java.awt.event.ActionEvent actionEvent ) {
-		this( null, actionEvent );
+	
+//	public static java.util.List< Model > getMenuPath( MenuItem menuItem ) {
+//		java.util.List< Model > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//		rv.add( menuItem.getModel() );
+//
+//		Container< ? > parent = menuItem.getParent();
+//		while( parent != null ) {
+//			if( parent instanceof MenuItemContainer ) {
+//				MenuItemContainer menuItemContainer = (MenuItemContainer)parent;
+//				rv.add( menuItemContainer.getViewController().getModel() );
+//			} else {
+//				break;
+//			}
+//			parent = parent.getParent();
+//		}
+//		return rv;
+//	}
+	
+	public static MenuItemContainer addMenuElement( MenuItemContainer rv, MenuItemPrepModel model ) {
+		if( model != null ) {
+			model.createMenuItemAndAddTo( rv );
+//			if( model instanceof MenuModel ) {
+//				MenuModel menuOperation = (MenuModel)model;
+//				rv.addMenu( menuOperation.createMenu() );
+//			} else if( model instanceof ListSelectionState< ? > ) {
+//				ListSelectionState< ? > itemSelectionOperation = (ListSelectionState< ? >)model;
+//				rv.addMenu( itemSelectionOperation.getMenuModel().createMenu() );
+//			} else if( model instanceof MenuSeparatorModel ) {
+//				MenuSeparatorModel menuSeparatorModel = (MenuSeparatorModel)model;
+//				rv.addSeparator( menuSeparatorModel.createMenuTextSeparator() );
+//			} else if( model instanceof Operation<?> ) {
+//				Operation<?> operation = (Operation<?>)model;
+//				rv.addMenuItem( operation.createMenuItem() );
+//			} else if( model instanceof BooleanState ) {
+//				BooleanState booleanState = (BooleanState)model;
+//				rv.addCheckBoxMenuItem( booleanState.createCheckBoxMenuItem() );
+//			} else {
+//				throw new RuntimeException();
+//			}
+		} else {
+			rv.addSeparator();
+		}
+		return rv;
 	}
-	@Override
-	protected java.awt.Point getPoint() {
-		return null;
+	public static MenuItemContainer addMenuElements( MenuItemContainer rv, java.util.List<MenuItemPrepModel> models ) {
+		for( MenuItemPrepModel model : models ) {
+			addMenuElement( rv, model );
+		}
+		return rv;
+	}
+	public static MenuItemContainer addMenuElements( MenuItemContainer rv, MenuItemPrepModel[] models ) {
+		for( MenuItemPrepModel model : models ) {
+			addMenuElement( rv, model );
+		}
+		return rv;
 	}
 }

@@ -42,18 +42,15 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import org.lgna.croquet.components.JComponent;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model implements RuntimeResolver< Model > {
+public abstract class Model extends Element implements RuntimeResolver< Model > {
 	private static final int NULL_MNEMONIC = 0;
 	private static final int NULL_ACCELERATOR_MASK = 0;
-	private final java.util.UUID id;
 	private CodableResolver<Model> codableResolver;
 	public Model( java.util.UUID id ) {
-		this.id = id;
+		super( id );
 	}
 	
 	private boolean isInitialized = false;
@@ -70,8 +67,9 @@ public abstract class Model implements RuntimeResolver< Model > {
 	}
 
 	protected abstract void localize();
-	public java.util.UUID getId() {
-		return this.id;
+
+	public boolean isToBeIgnored() {
+		return false;
 	}
 	
 	protected static String getLocalizedText( Class<?> cls, String subKey ) {
@@ -194,7 +192,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 		if( this.isEnabled != isEnabled ) {
 			this.isEnabled = isEnabled;
 			synchronized( this.components ) {
-				for( JComponent<?> component : this.components ) {
+				for( org.lgna.croquet.components.JComponent<?> component : this.components ) {
 					component.getAwtComponent().setEnabled( this.isEnabled );
 				}
 			}
@@ -211,15 +209,15 @@ public abstract class Model implements RuntimeResolver< Model > {
 		} else {
 			this.toolTipText = toolTipText;
 			synchronized( this.components ) {
-				for( JComponent<?> component : this.components ) {
+				for( org.lgna.croquet.components.JComponent<?> component : this.components ) {
 					component.setToolTipText( this.toolTipText );
 				}
 			}
 		}
 	}
 
-	private java.util.List< JComponent<?> > components = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	public void addComponent( JComponent<?> component ) {
+	private java.util.List< org.lgna.croquet.components.JComponent<?> > components = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public void addComponent( org.lgna.croquet.components.JComponent<?> component ) {
 		if( this.components.size() == 0 ) {
 			Manager.registerModel( this );
 		}
@@ -229,7 +227,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 		component.getAwtComponent().setEnabled( this.isEnabled );
 		component.setToolTipText( this.toolTipText );
 	}
-	public void removeComponent( JComponent<?> component ) {
+	public void removeComponent( org.lgna.croquet.components.JComponent<?> component ) {
 		synchronized( this.components ) {
 			this.components.remove( component );
 		}
@@ -242,33 +240,33 @@ public abstract class Model implements RuntimeResolver< Model > {
 
 	protected void repaintAllComponents() {
 		synchronized( this.components ) {
-			for( JComponent<?> component : this.components ) {
+			for( org.lgna.croquet.components.JComponent<?> component : this.components ) {
 				component.repaint();
 			}
 		}
 	}
 	protected void revalidateAndRepaintAllComponents() {
 		synchronized( this.components ) {
-			for( JComponent<?> component : this.components ) {
+			for( org.lgna.croquet.components.JComponent<?> component : this.components ) {
 				component.revalidateAndRepaint();
 			}
 		}
 	}
 	
-	/*package-private*/ Iterable< JComponent<?> > getComponents() {
+	/*package-private*/ Iterable< org.lgna.croquet.components.JComponent<?> > getComponents() {
 		return this.components;
 	}
 	
-	private JComponent< ? > firstComponentHint;
+	private org.lgna.croquet.components.JComponent< ? > firstComponentHint;
 	
 	@Deprecated
-	public <J extends JComponent< ? > > J getFirstComponent( Class<J> cls, boolean isVisibleAcceptable ) {
+	public <J extends org.lgna.croquet.components.JComponent< ? > > J getFirstComponent( Class<J> cls, boolean isVisibleAcceptable ) {
 		if( this.firstComponentHint != null ) {
 			return cls.cast( this.firstComponentHint );
 		} else {
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getFirstComponent:", this );
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "count:", this.components.size() );
-			for( JComponent< ? > component : this.components ) {
+			for( org.lgna.croquet.components.JComponent< ? > component : this.components ) {
 				if( cls.isAssignableFrom( component.getClass() ) ) {
 					if( component.getAwtComponent().isShowing() ) {
 //						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
@@ -279,7 +277,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 				}
 			}
 			if( isVisibleAcceptable ) {
-				for( JComponent< ? > component : this.components ) {
+				for( org.lgna.croquet.components.JComponent< ? > component : this.components ) {
 					if( cls.isAssignableFrom( component.getClass() ) ) {
 						if( component.getAwtComponent().isVisible() ) {
 //							edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
@@ -304,19 +302,19 @@ public abstract class Model implements RuntimeResolver< Model > {
 //		return null;
 //	}
 	@Deprecated
-	public<J extends JComponent< ? > > J getFirstComponent( Class<J> cls ) {
+	public<J extends org.lgna.croquet.components.JComponent< ? > > J getFirstComponent( Class<J> cls ) {
 		return getFirstComponent( cls, false );
 	}
 	@Deprecated
-	public JComponent< ? > getFirstComponent( boolean isVisibleAcceptable ) {
-		return getFirstComponent( JComponent.class, isVisibleAcceptable );
+	public org.lgna.croquet.components.JComponent< ? > getFirstComponent( boolean isVisibleAcceptable ) {
+		return getFirstComponent( org.lgna.croquet.components.JComponent.class, isVisibleAcceptable );
 	}
 	@Deprecated
-	public JComponent< ? > getFirstComponent() {
+	public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
 		return getFirstComponent( false );
 	}
 	@Deprecated
-	public void setFirstComponentHint( JComponent< ? > firstComponentHint ) {
+	public void setFirstComponentHint( org.lgna.croquet.components.JComponent< ? > firstComponentHint ) {
 //		Thread.dumpStack();
 		assert this.components.contains( firstComponentHint );
 		if( this.firstComponentHint != firstComponentHint ) {

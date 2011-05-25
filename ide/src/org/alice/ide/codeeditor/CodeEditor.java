@@ -142,15 +142,17 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		rv.setLayout( new java.awt.BorderLayout() );
 		return rv;
 	}
-	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver typeFeedbackObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-		public void changing(boolean nextValue) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean> typeFeedbackObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean>() {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed(boolean nextValue) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			CodeEditor.this.refresh();
 		}
 	};
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.formatter.Formatter > formatterSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.formatter.Formatter >() {
-		public void changed(org.alice.ide.formatter.Formatter nextValue) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.formatter.Formatter > state, org.alice.ide.formatter.Formatter prevValue, org.alice.ide.formatter.Formatter nextValue, boolean isAdjusting ) {
+		}
+		public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.formatter.Formatter > state, org.alice.ide.formatter.Formatter prevValue, org.alice.ide.formatter.Formatter nextValue, boolean isAdjusting ) {
 			//CodeEditor.this.refresh();
 		}
 	};
@@ -209,28 +211,34 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	public java.util.List< ? extends ExpressionPropertyDropDownPane > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		return edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
-			public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
-				if( expressionType.isAssignableFrom( type ) ) {
-					return true;
-				} else {
-					if( type.isArray() ) {
-						if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
-							return true;
-						} else {
-							for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava integerType : edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
-								if( expressionType == integerType ) {
-									return true;
+	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE ) {
+			java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			rv.add( this );
+			return rv;
+		} else {
+			return org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
+				public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
+					if( expressionType.isAssignableFrom( type ) ) {
+						return true;
+					} else {
+						if( type.isArray() ) {
+							if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
+								return true;
+							} else {
+								for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava integerType : edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
+									if( expressionType == integerType ) {
+										return true;
+									}
 								}
 							}
 						}
 					}
+					return false;
 				}
-				return false;
-			}
-		} );
+			} );
+		}
 	}
 	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source ) {
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
@@ -266,7 +274,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		return this.scrollPane.getViewportView();
 	}
 	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( org.lgna.croquet.components.Container<?> source ) {
-		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, StatementListPropertyPane.class );
+		java.util.List< StatementListPropertyPane > statementListPropertyPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, StatementListPropertyPane.class );
 		StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
 		int i = 0;
 		for( StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
@@ -410,8 +418,8 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			return null;
 		}
 	}
-	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( final org.lgna.croquet.steps.DragStep context ) {
-		edu.cmu.cs.dennisc.croquet.Operation<?> rv = null;
+	public final edu.cmu.cs.dennisc.croquet.Model dragDropped( final org.lgna.croquet.steps.DragStep context ) {
+		edu.cmu.cs.dennisc.croquet.Model rv = null;
 		final org.lgna.croquet.components.DragComponent source = context.getDragSource();
 		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
@@ -470,7 +478,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 						blockStatement = null;
 						//index = -1;
 					}
-					rv = statementTemplate.getDropOperation( context, blockStatement, index );
+					rv = statementTemplate.getDropModel( context, blockStatement, index );
 				}
 			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
 				if( this.currentUnder != null ) {
@@ -710,8 +718,8 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		return null;
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.CascadePopupOperation< edu.cmu.cs.dennisc.alice.ast.Expression > getOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		java.util.List< ExpressionPropertyDropDownPane > expressionPropertyDropDownPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class );
+	public edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > getOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		java.util.List< ExpressionPropertyDropDownPane > expressionPropertyDropDownPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class );
 		for( final ExpressionPropertyDropDownPane expressionPropertyDropDownPane : expressionPropertyDropDownPanes ) {
 			if( expressionPropertyDropDownPane.getExpressionProperty() == expressionProperty ) {
 				return expressionPropertyDropDownPane.getModel();
@@ -731,12 +739,12 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		}
 		return null;
 	}
-	public edu.cmu.cs.dennisc.croquet.StandardPopupOperation getPopupMenuOperationForStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	public edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel getPopupMenuOperationForStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		if( statement != null ) {
-			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
+			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
 			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
 				if( statementPane.getStatement() == statement ) {
-					return statementPane.getPopupMenuOperation();
+					return statementPane.getPopupMenuPrepModel();
 				}
 			}
 		}
@@ -744,7 +752,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	}
 	public edu.cmu.cs.dennisc.croquet.DragAndDropModel getDragAndDropOperationForStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		if( statement != null ) {
-			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
+			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
 			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
 				if( statementPane.getStatement() == statement ) {
 					return statementPane.getDragModel();
@@ -755,7 +763,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	}
 	public edu.cmu.cs.dennisc.croquet.DragAndDropModel getDragAndDropOperationForTransient( edu.cmu.cs.dennisc.alice.ast.AbstractTransient trans ) {
 		if( trans != null ) {
-			java.util.List< org.alice.ide.common.TransientPane > transientPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.TransientPane.class );
+			java.util.List< org.alice.ide.common.TransientPane > transientPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.TransientPane.class );
 			for( org.alice.ide.common.TransientPane transientPane : transientPanes ) {
 				if( transientPane.getTransient() == trans ) {
 					return transientPane.getDragModel();

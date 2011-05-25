@@ -94,16 +94,16 @@ public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.den
 	}
 	
 	@Override
-	public Operation getEditOperation() 
+	public Operation getEditModel() 
 	{
 		return RenameFieldOperation.getInstance( this.instance );
 		
 	}
 	
 	@Override
-    public Button createEditButton()
+    public Button createEditViewController()
 	{
-	    Button b = this.getEditOperation().createButton();
+	    Button b = this.getEditModel().createButton();
 	    //TODO: Localize This
 	    b.getAwtComponent().setText("Rename...");
 	    return b;

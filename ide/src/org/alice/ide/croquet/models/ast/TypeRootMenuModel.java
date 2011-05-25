@@ -56,7 +56,7 @@ public class TypeRootMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 		super( java.util.UUID.fromString( "259dfcc5-dd20-4890-8104-a34a075734d0" ) );
 	}
 	@Override
-	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		super.handleShowing( menuItemContainer, e );
 		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getSingleton().getProject();
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
@@ -66,12 +66,12 @@ public class TypeRootMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 			if( type == programType ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, TypeMenuModel.getInstance( type ) );
+				org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, TypeMenuModel.getInstance( type ) );
 			}
 		}
 	}
 	@Override
-	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleHiding( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		menuItemContainer.forgetAndRemoveAllMenuItems();
 		super.handleHiding( menuItemContainer, e );
 	}

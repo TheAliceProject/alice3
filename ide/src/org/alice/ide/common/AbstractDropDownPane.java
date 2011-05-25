@@ -46,24 +46,36 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDropDownPane extends org.lgna.croquet.components.Control {
-//public abstract class AbstractDropDownPane extends edu.cmu.cs.dennisc.croquet.AbstractButton< javax.swing.AbstractButton, edu.cmu.cs.dennisc.croquet.Operation< ? > > {
-
-//	private zoot.event.ControlAdapter controlAdapter = new zoot.event.ControlAdapter( this );
 	public AbstractDropDownPane() {
 		this.setBackgroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 230 ) );
 		this.setForegroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );
 		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
 	}
+
+//	private class MouseAdapter implements java.awt.event.MouseListener {
+//		public void mousePressed( java.awt.event.MouseEvent e ) {
+//			AbstractDropDownPane.this.popupPrepModel.fire( new org.lgna.croquet.triggers.MouseEventTrigger( AbstractDropDownPane.this, e ) );
+//		}
+//		public void mouseReleased( java.awt.event.MouseEvent e ) {
+//		}
+//		public void mouseEntered( java.awt.event.MouseEvent e ) {
+//		}
+//		public void mouseExited( java.awt.event.MouseEvent e ) {
+//		}
+//		public void mouseClicked( java.awt.event.MouseEvent e ) {
+//		}
+//	}
+//	private final MouseAdapter mouseAdapter = new MouseAdapter();
 //	@Override
 //	public void addNotify() {
 //		super.addNotify();
-//		this.addMouseListener( controlAdapter );
-//		this.addMouseMotionListener( controlAdapter );
+//		this.addMouseListener( mouseAdapter );
+////		this.addMouseMotionListener( controlAdapter );
 //	}
 //	@Override
 //	public void removeNotify() {
-//		this.removeMouseListener( controlAdapter );
-//		this.removeMouseMotionListener( controlAdapter );
+//		this.removeMouseListener( mouseAdapter );
+////		this.removeMouseMotionListener( controlAdapter );
 //		super.removeNotify();
 //	}
 	

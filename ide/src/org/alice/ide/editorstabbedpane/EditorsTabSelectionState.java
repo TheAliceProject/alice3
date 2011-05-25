@@ -449,7 +449,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 	private static class DropDownPanel extends org.lgna.croquet.components.BorderPanel {
 		private javax.swing.ButtonModel buttonModel;
 		public DropDownPanel() {
-			org.lgna.croquet.components.Button button = TypeRootMenuModel.getInstance().getPopupMenuOperation().createButton();
+			org.lgna.croquet.components.PopupButton button = TypeRootMenuModel.getInstance().getPopupMenuOperation().createPopupButton();
 			button.getAwtComponent().setFocusable( false );
 			this.buttonModel = button.getAwtComponent().getModel();
 			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
@@ -458,14 +458,16 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 			//button.setBorder( new AttentionGrabbingBorder( button.getAwtComponent() ) );
 		}
 		private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<CodeComposite> selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<CodeComposite>() {
-			public void changed(CodeComposite nextValue) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+			}
+			public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 				DropDownPanel.this.updateOperation( nextValue );
 			}
 		};
-		private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isEmphasizingClassesObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-			public void changing( boolean nextValue ) {
+		private edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean> isEmphasizingClassesObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean>() {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( boolean nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				DropDownPanel.this.setVisible( nextValue );
 			}
 		};

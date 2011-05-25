@@ -46,11 +46,11 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class StandardPopupOperationStep extends PopupOperationStep< edu.cmu.cs.dennisc.croquet.StandardPopupOperation >{
-	public static <T> StandardPopupOperationStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation model, org.lgna.croquet.Trigger trigger ) {
+public class StandardPopupOperationStep extends PopupOperationStep< edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel >{
+	public static <T> StandardPopupOperationStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel model, org.lgna.croquet.Trigger trigger ) {
 		return new StandardPopupOperationStep( parent, model, trigger );
 	}
-	private StandardPopupOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation model, org.lgna.croquet.Trigger trigger ) {
+	private StandardPopupOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public StandardPopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

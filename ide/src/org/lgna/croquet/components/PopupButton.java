@@ -40,70 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MenuItemContainerUtilities {
-	private MenuItemContainerUtilities() {
-		throw new AssertionError();
+public class PopupButton extends AbstractButton< javax.swing.JButton, edu.cmu.cs.dennisc.croquet.PopupPrepModel >{
+ 	public PopupButton( edu.cmu.cs.dennisc.croquet.PopupPrepModel model ) {
+ 		super( model );
 	}
-	
-//	public static java.util.List< Model > getMenuPath( MenuItem menuItem ) {
-//		java.util.List< Model > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//		rv.add( menuItem.getModel() );
-//
-//		Container< ? > parent = menuItem.getParent();
-//		while( parent != null ) {
-//			if( parent instanceof MenuItemContainer ) {
-//				MenuItemContainer menuItemContainer = (MenuItemContainer)parent;
-//				rv.add( menuItemContainer.getViewController().getModel() );
-//			} else {
-//				break;
-//			}
-//			parent = parent.getParent();
-//		}
-//		return rv;
-//	}
-	
-	public static MenuItemContainer addMenuElement( MenuItemContainer rv, MenuItemPrepModel model ) {
-		if( model != null ) {
-			model.createMenuItemAndAddTo( rv );
-//			if( model instanceof MenuModel ) {
-//				MenuModel menuOperation = (MenuModel)model;
-//				rv.addMenu( menuOperation.createMenu() );
-//			} else if( model instanceof ListSelectionState< ? > ) {
-//				ListSelectionState< ? > itemSelectionOperation = (ListSelectionState< ? >)model;
-//				rv.addMenu( itemSelectionOperation.getMenuModel().createMenu() );
-//			} else if( model instanceof MenuSeparatorModel ) {
-//				MenuSeparatorModel menuSeparatorModel = (MenuSeparatorModel)model;
-//				rv.addSeparator( menuSeparatorModel.createMenuTextSeparator() );
-//			} else if( model instanceof Operation<?> ) {
-//				Operation<?> operation = (Operation<?>)model;
-//				rv.addMenuItem( operation.createMenuItem() );
-//			} else if( model instanceof BooleanState ) {
-//				BooleanState booleanState = (BooleanState)model;
-//				rv.addCheckBoxMenuItem( booleanState.createCheckBoxMenuItem() );
-//			} else {
-//				throw new RuntimeException();
-//			}
-		} else {
-			rv.addSeparator();
+ 	private static class ArrowIcon extends edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon {
+		public ArrowIcon( int size ) {
+			super( size );
 		}
-		return rv;
+		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			java.awt.geom.GeneralPath path = this.createPath(x, y, Heading.SOUTH);
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			java.awt.Paint fillPaint;
+			if( button.getModel().isPressed() ) {
+				fillPaint = java.awt.Color.BLACK;
+			} else {
+				if( button.getModel().isRollover() ) {
+					fillPaint = java.awt.Color.GRAY;
+				} else {
+					fillPaint = java.awt.Color.DARK_GRAY;
+				}
+			}
+			g2.setPaint( fillPaint );
+			g2.fill( path );
+		}
 	}
-	public static MenuItemContainer addMenuElements( MenuItemContainer rv, java.util.List<MenuItemPrepModel> models ) {
-		for( MenuItemPrepModel model : models ) {
-			addMenuElement( rv, model );
-		}
-		return rv;
-	}
-	public static MenuItemContainer addMenuElements( MenuItemContainer rv, MenuItemPrepModel[] models ) {
-		for( MenuItemPrepModel model : models ) {
-			addMenuElement( rv, model );
-		}
+	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 14 );
+	protected javax.swing.JButton createAwtComponent() {
+		javax.swing.JButton rv = new javax.swing.JButton();
+		rv.setIcon( ARROW_ICON );
+		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
 		return rv;
 	}
 }

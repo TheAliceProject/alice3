@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class StatementClassTemplateDragModel extends TemplateDragModel {
+public class StatementClassTemplateDragModel extends VoidTemplateDragModel {
 	private static java.util.Map< Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement >, StatementClassTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized StatementClassTemplateDragModel getInstance( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		StatementClassTemplateDragModel rv = map.get( cls );

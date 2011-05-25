@@ -46,9 +46,13 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class View extends ViewController< javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Composite > {
-	public View( edu.cmu.cs.dennisc.croquet.Composite model ) {
-		super( model );
+public abstract class View extends JComponent< javax.swing.JPanel > {
+	private final edu.cmu.cs.dennisc.croquet.Composite composite;
+	public View( edu.cmu.cs.dennisc.croquet.Composite composite ) {
+		this.composite = composite;
+	}
+	public edu.cmu.cs.dennisc.croquet.Composite getComposite() {
+		return composite;
 	}
 	@Override
 	protected final javax.swing.JPanel createAwtComponent() {

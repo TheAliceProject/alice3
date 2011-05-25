@@ -126,7 +126,7 @@ public class ModelScaleAdapter extends AbstractScaleAdapter<org.alice.apis.movea
 	}
 
 	@Override
-	public Operation getEditOperation() 
+	public Operation getEditModel() 
 	{
 		return null;
 	}

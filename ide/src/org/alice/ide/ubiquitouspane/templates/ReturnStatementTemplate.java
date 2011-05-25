@@ -50,7 +50,7 @@ public class ReturnStatementTemplate extends CascadingUbiquitousStatementClassTe
 		super( edu.cmu.cs.dennisc.alice.ast.ReturnStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteReturnStatement( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( org.lgna.croquet.steps.DragStep context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public edu.cmu.cs.dennisc.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.ReturnStatementInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

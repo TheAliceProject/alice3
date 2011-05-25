@@ -66,27 +66,27 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 //		this.isPopupMenuOperationLimitedToRightMouseButton = isPopupMenuOperationLimitedToRightMouseButton;
 //	}
 	
-	private edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation;
-	public final edu.cmu.cs.dennisc.croquet.StandardPopupOperation getPopupMenuOperation() {
-		if( this.popupMenuOperation != null ) {
-			this.popupMenuOperation.setFirstComponentHint( this );
+	private edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel popupMenuPrepModel;
+	public final edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel getPopupMenuPrepModel() {
+		if( this.popupMenuPrepModel != null ) {
+			this.popupMenuPrepModel.setFirstComponentHint( this );
 		}
-		return this.popupMenuOperation;
+		return this.popupMenuPrepModel;
 	}
-	public final void setPopupMenuOperation( edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation ) {
+	public final void setPopupMenuOperation( edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel popupMenuPrepModel ) {
 		if( this.getAwtComponent().getParent() == null ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: setPopupMenuOperation" );
 		}
-		if( this.popupMenuOperation != null ) {
+		if( this.popupMenuPrepModel != null ) {
 			this.getAwtComponent().removeMouseListener( this.lenientMouseClickAdapter );
 			this.getAwtComponent().removeMouseMotionListener( this.lenientMouseClickAdapter );
-			this.popupMenuOperation.removeComponent( this );
+			this.popupMenuPrepModel.removeComponent( this );
 		}
-		this.popupMenuOperation = popupMenuOperation;
-		if( this.popupMenuOperation != null ) {
-			this.popupMenuOperation.addComponent( this );
+		this.popupMenuPrepModel = popupMenuPrepModel;
+		if( this.popupMenuPrepModel != null ) {
+			this.popupMenuPrepModel.addComponent( this );
 			this.getAwtComponent().addMouseListener( this.lenientMouseClickAdapter );
 			this.getAwtComponent().addMouseMotionListener( this.lenientMouseClickAdapter );
 		}
@@ -96,9 +96,9 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 		@Override
 		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote) {
 			if( quoteClickCountUnquote == 1 ) {
-				if( ViewController.this.popupMenuOperation != null ) {
+				if( ViewController.this.popupMenuPrepModel != null ) {
 					if( ViewController.this.isPopupMenuOperationLimitedToRightMouseButton==false || edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-						ViewController.this.popupMenuOperation.fire( e, ViewController.this );
+						ViewController.this.popupMenuPrepModel.fire( new org.lgna.croquet.triggers.MouseEventTrigger( ViewController.this, e ) );
 					}
 				}
 			}

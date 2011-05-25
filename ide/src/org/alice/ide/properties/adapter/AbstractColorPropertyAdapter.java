@@ -74,12 +74,12 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 		}
 	}
 	
-	private edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation;
+	private edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel popupMenuOperation;
 	protected java.util.List< SetColorOperation > defaultColorOperationModels;
 	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
 	
 	@Override
-	public Operation getEditOperation() 
+	public edu.cmu.cs.dennisc.croquet.PopupPrepModel getEditModel() 
 	{
 		if (this.popupMenuOperation == null)
 		{
@@ -126,7 +126,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 						models.add(operation.getMenuItemPrepModel());
 					}
 					
-					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
+					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
 			}.getPopupMenuOperation();
 		}

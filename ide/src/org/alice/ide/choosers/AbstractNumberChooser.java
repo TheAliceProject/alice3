@@ -113,7 +113,7 @@ abstract class AbstractNumberChooser<N extends edu.cmu.cs.dennisc.alice.ast.Expr
 
 		java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( gridBagPanel.getFont(), 3.0f );
 		view.setFont( font );
-		for( org.lgna.croquet.components.Button button : edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( rv, org.lgna.croquet.components.Button.class ) ) {
+		for( org.lgna.croquet.components.Button button : org.lgna.croquet.components.HierarchyUtilities.findAllMatches( rv, org.lgna.croquet.components.Button.class ) ) {
 			button.setFont( font );
 		}
 		return rv;

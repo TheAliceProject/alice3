@@ -82,7 +82,9 @@ public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultList
 		);
 		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 		this.addValueObserver( new ValueObserver< java.util.Locale >() {
-			public void changed( java.util.Locale nextValue ) {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
+			}
+			public void changed( edu.cmu.cs.dennisc.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
 				org.alice.ide.croquet.models.information.RestartRequiredOperation.getInstance().fire();
 			}
 		} );

@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel > {
+public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel.CascadeCloser > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 	public FillInExpressionListPropertyEdit( org.lgna.croquet.steps.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
@@ -70,14 +70,14 @@ public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.croquet
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel model = this.getModel();
+		org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel model = (org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = model.getExpressionListProperty();
 		int index = model.getIndex();
 		expressionListProperty.set( index, this.nextExpression );
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel model = this.getModel();
+		org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel model = (org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = model.getExpressionListProperty();
 		int index = model.getIndex();
 		expressionListProperty.set( index, this.prevExpression );

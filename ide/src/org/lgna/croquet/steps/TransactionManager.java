@@ -479,10 +479,10 @@ public class TransactionManager {
 		Transaction transaction = getActiveTransaction();
 		return WizardDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static StandardPopupOperationStep addStandardPopupOperationStep( edu.cmu.cs.dennisc.croquet.StandardPopupOperation standardPopupOperation, org.lgna.croquet.Trigger trigger ) {
+	public static StandardPopupOperationStep addStandardPopupOperationStep( edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel standardPopupOperation, org.lgna.croquet.Trigger trigger ) {
 		return StandardPopupOperationStep.createAndAddToTransaction( getActiveTransaction(), standardPopupOperation, trigger );
 	}
-	public static <T> CascadePopupOperationStep<T> addCascadePopupOperationStep( edu.cmu.cs.dennisc.croquet.CascadePopupOperation<T> model, org.lgna.croquet.Trigger trigger ) {
+	public static <T> CascadePopupOperationStep<T> addCascadePopupOperationStep( edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel<T> model, org.lgna.croquet.Trigger trigger ) {
 		return CascadePopupOperationStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
 
@@ -604,4 +604,21 @@ public class TransactionManager {
 //		}
 	}
 
+	public static org.lgna.croquet.edits.BooleanStateEdit commitEdit( BooleanState booleanState, boolean value, org.lgna.croquet.Trigger trigger ) {
+		org.lgna.croquet.steps.BooleanStateChangeStep step = org.lgna.croquet.steps.TransactionManager.addBooleanStateChangeStep( booleanState, trigger );
+		org.lgna.croquet.edits.BooleanStateEdit rv = new org.lgna.croquet.edits.BooleanStateEdit( step, value );
+		step.commitAndInvokeDo( rv );
+		return rv;
+	}
+	public static void handleItemStateChanged( BooleanState booleanState, java.awt.event.ItemEvent e ) {
+		if( Manager.isInTheMidstOfUndoOrRedo() ) {
+			//pass
+		} else {
+			if( booleanState.isToBeIgnored() ) {
+				//pass
+			} else {
+				commitEdit( booleanState, e.getStateChange() == java.awt.event.ItemEvent.SELECTED, new org.lgna.croquet.triggers.ItemEventTrigger( e ) );
+			}
+		}
+	}
 }

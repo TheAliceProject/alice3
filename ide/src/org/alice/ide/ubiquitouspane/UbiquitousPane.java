@@ -150,14 +150,16 @@ public class UbiquitousPane extends org.lgna.croquet.components.View {
 	private TransientStatementsWrapper transientStatementsWrapper = new TransientStatementsWrapper();
 
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-		public void changed(org.alice.ide.editorstabbedpane.CodeComposite nextValue) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+		}
+		public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 			UbiquitousPane.this.refresh();
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isAlwaysShowingBlocksObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-		public void changing( boolean nextValue ) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > isAlwaysShowingBlocksObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( boolean nextValue ) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			UbiquitousPane.this.removeAllComponents();
 			UbiquitousPane.this.getAwtComponent().setLayout( UbiquitousPane.this.createLayoutManager( UbiquitousPane.this.getAwtComponent() ) );
 			UbiquitousPane.this.addComponents();
@@ -187,8 +189,8 @@ public class UbiquitousPane extends org.lgna.croquet.components.View {
 		this.addComponent( this.declareLocalTemplate );
 		this.addComponent( this.transientStatementsWrapper );
 		this.addComponent( this.returnStatementWrapper );
-//		this.addSliver();
-//		this.addComponent( this.commentTemplate );
+		this.addSliver();
+		this.addComponent( this.commentTemplate );
 	}
 	
 	private boolean isHorizontal() {

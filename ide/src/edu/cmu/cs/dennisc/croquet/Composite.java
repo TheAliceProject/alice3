@@ -46,13 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Composite extends Model {
+public abstract class Composite extends Element {
 	public Composite( java.util.UUID id ) {
 		super( id );
 		Manager.registerComposite( this );
-	}
-	@Override
-	protected void localize() {
 	}
 	public abstract boolean contains( Model model );
 }

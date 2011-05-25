@@ -83,7 +83,7 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 						java.awt.Paint prevPaint = g2.getPaint();
 						try {
-							g2.setPaint( edu.cmu.cs.dennisc.croquet.PaintUtilities.getDisabledTexturePaint() );
+							g2.setPaint( org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint() );
 							g2.fill( g2.getClipBounds() );
 						} finally {
 							g2.setPaint( prevPaint );
@@ -93,10 +93,10 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 				}
 			};
 		}
-		private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver valueObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-			public void changing(boolean nextValue) {
+		private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > valueObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed(boolean nextValue) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				if( nextValue ) {
 					//pass
 				} else {

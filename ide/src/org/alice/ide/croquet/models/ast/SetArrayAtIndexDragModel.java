@@ -41,36 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
-
-import org.lgna.croquet.components.CascadeMenuItem;
-import org.lgna.croquet.components.CheckBoxMenuItem;
-import org.lgna.croquet.components.Container;
-import org.lgna.croquet.components.Menu;
-import org.lgna.croquet.components.MenuItem;
-import org.lgna.croquet.components.MenuTextSeparator;
-import org.lgna.croquet.components.ViewController;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface MenuItemContainer {
-	public ViewController< ?, ? > getViewController();
-//	public void addChangeListener( javax.swing.event.ChangeListener changeListener );
-//	public void removeChangeListener( javax.swing.event.ChangeListener changeListener );
-//	public void addItemListener( java.awt.event.ItemListener listener );
-//	public void removeItemListener( java.awt.event.ItemListener listener );
-
-	public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener );
-	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener );
-	
-	public Container< ? > getParent();
-	public void addMenu( Menu menu );
-	public void addMenuItem( MenuItem menuItem );
-	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem );
-	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
-	public void addSeparator();
-	public void addSeparator( MenuTextSeparator menuTextSeparator );
-	public void forgetAndRemoveAllMenuItems();
-	public void removeAllMenuItems();
+public class SetArrayAtIndexDragModel extends VoidTemplateDragModel {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, SetArrayAtIndexDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized SetArrayAtIndexDragModel getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		SetArrayAtIndexDragModel rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new SetArrayAtIndexDragModel( field );
+			map.put( field, rv );
+		}
+		return rv;
+	}
+	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	private SetArrayAtIndexDragModel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( java.util.UUID.fromString( "099819b6-500a-4f77-b53f-9067f8bb9e75" ) );
+		this.field = field;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.CodableResolver< SetArrayAtIndexDragModel > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< SetArrayAtIndexDragModel >( this, this.field, edu.cmu.cs.dennisc.alice.ast.AbstractField.class );
+	}
+	@Override
+	protected String getTutorialStepDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return this.field.getName();
+	}
 }

@@ -91,7 +91,7 @@ import edu.cmu.cs.dennisc.alice.ast.Accessible;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.croquet.StandardPopupOperation;
+import edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel;
 import edu.cmu.cs.dennisc.croquet.BooleanState;
 import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;import edu.cmu.cs.dennisc.croquet.Operation;
@@ -180,31 +180,41 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	//private ListSelectionState<FieldDeclaredInAlice> objectMarkerFieldList = org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState.getInstance();
 
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-		public void changed( org.alice.ide.editorstabbedpane.CodeComposite next ) {
-			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( next != null ? next.getCode() : null );
+		public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+		}
+		public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( nextValue != null ? nextValue.getCode() : null );
 		}
 	};
 	
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<View> mainCameraViewSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<View>() {
-		public void changed(View nextValue) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.stageide.sceneeditor.View > state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
+		}
+		public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.stageide.sceneeditor.View > state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
 			MoveAndTurnSceneEditor.this.handleMainCameraViewSelection( mainCameraViewTracker.getCameraMarker( nextValue ) );
 		}
 	};
 	
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice> cameraMarkerFieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice>() {
-		public void changed(FieldDeclaredInAlice nextValue) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
+		}
+		public void changed( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
 			MoveAndTurnSceneEditor.this.handleCameraMarkerFieldSelection( nextValue );
 		}
 	};
 	
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice> objectMarkerFieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice>() {
-		public void changed(FieldDeclaredInAlice nextValue) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
+		}
+		public void changed( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
 			MoveAndTurnSceneEditor.this.handleObjectMarkerFieldSelection( nextValue );
 		}
 	};
 	
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
-		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+		}
+		public void changed( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
 			MoveAndTurnSceneEditor.this.handleAccessibleSelection( nextValue );
 		}
 	};
@@ -235,18 +245,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	};
 	
-	private BooleanState.ValueObserver showSnapGridObserver = new BooleanState.ValueObserver() {
-		public void changing(boolean nextValue) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean> showSnapGridObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean>() {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed(boolean nextValue) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			MoveAndTurnSceneEditor.this.setShowSnapGrid(nextValue);	
 		}
 	};
 	
-	private BooleanState.ValueObserver snapEnabledObserver = new BooleanState.ValueObserver() {
-        public void changing(boolean nextValue) {
-        }
-        public void changed(boolean nextValue) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean> snapEnabledObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean>() {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
             if (MoveAndTurnSceneEditor.this.snapState.isShowSnapGridEnabled())
             {
                 MoveAndTurnSceneEditor.this.setShowSnapGrid(nextValue);
@@ -333,7 +343,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		protected void addEpilogue() {
 			this.previousComponent = null;
 			this.rootComponent = null;
-			this.getPopupMenuOperation();
+			this.getPopupMenuPrepModel();
 		}
 		
 		public FieldTile getFieldTileForField(FieldDeclaredInAlice field)
@@ -1045,10 +1055,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			
 			PrintUtilities.println( "todo: addAndInvokeValueObserver" );
 			this.splitPane.setDividerSize( 0 );
-			isSceneEditorExpandedState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-				public void changing(boolean nextValue) {
+			isSceneEditorExpandedState.addValueObserver( new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
+				public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				}
-				public void changed(boolean nextValue) {
+				public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 					handleExpandContractChange( nextValue );
 				}
 			} );
@@ -1154,7 +1164,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		FieldTile fieldTile = this.getFieldTileForClick(clickState);
 		if (fieldTile != null)
 		{
-			StandardPopupOperation popUp = fieldTile.getPopupMenuOperation();
+			StandardPopupPrepModel popUp = fieldTile.getPopupMenuPrepModel();
 			if (popUp != null)
 			{
 				if( fieldTile.getAwtComponent().isShowing() ) {
@@ -2012,7 +2022,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent;
 	}
 	
-	public Operation<?> dragDropped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public edu.cmu.cs.dennisc.croquet.Model dragDropped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{

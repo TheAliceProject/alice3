@@ -89,7 +89,7 @@ public class TransformableTranslationAdapter extends AbstractAbsolutePositionPro
 	}
 
 	@Override
-	public Operation getEditOperation() 
+	public Operation getEditModel() 
 	{
 		// TODO Auto-generated method stub
 		return null;

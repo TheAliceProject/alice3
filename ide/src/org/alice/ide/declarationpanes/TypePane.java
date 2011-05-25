@@ -51,10 +51,10 @@ class IsArrayState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ffa22de2-eb3e-46d2-8ccc-ada365f29205" ), isArrayProperty.getValue() );
 		this.isArrayProperty = isArrayProperty;
 		this.setTextForBothTrueAndFalse( "is array" );
-		this.addValueObserver( new ValueObserver() {
-			public void changing( boolean nextValue ) {
+		this.addValueObserver( new ValueObserver< Boolean >() {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( boolean nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				IsArrayState.this.isArrayProperty.setValue( nextValue );
 			}
 		} );
@@ -81,7 +81,7 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 		}
 	}
 	
-	private edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation = org.alice.ide.croquet.models.ast.declaration.TypeMenuModel.getInstance().getPopupMenuOperation();
+	private edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel popupMenuOperation = org.alice.ide.croquet.models.ast.declaration.TypeMenuModel.getInstance().getPopupMenuOperation();
 	
 	private class TypeDropDownPane extends org.alice.ide.common.AbstractDropDownPane {
 		private org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();

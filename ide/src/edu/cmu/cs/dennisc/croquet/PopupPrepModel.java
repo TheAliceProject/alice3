@@ -43,48 +43,64 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
-import edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupOperation<S extends org.lgna.croquet.steps.PopupOperationStep<?>> extends Operation<S> {
-	public PopupOperation( Group group, java.util.UUID id ) {
-		super( group, id );
-	}
- 	private static class ArrowIcon extends AbstractArrowIcon {
-		public ArrowIcon( int size ) {
-			super( size );
+public abstract class PopupPrepModel< S extends org.lgna.croquet.steps.PopupOperationStep<? extends PopupPrepModel<?>>> extends PrepModel {
+	private javax.swing.Action action = new javax.swing.AbstractAction() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			PopupPrepModel.this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
 		}
-		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-			java.awt.geom.GeneralPath path = this.createPath(x, y, Heading.SOUTH);
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			java.awt.Paint fillPaint;
-			if( button.getModel().isPressed() ) {
-				fillPaint = java.awt.Color.BLACK;
-			} else {
-				if( button.getModel().isRollover() ) {
-					fillPaint = java.awt.Color.GRAY;
-				} else {
-					fillPaint = java.awt.Color.DARK_GRAY;
-				}
-			}
-			g2.setPaint( fillPaint );
-			g2.fill( path );
-		}
+	};
+	public PopupPrepModel( java.util.UUID id ) {
+		super( id );
 	}
-	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 14 ); 
+	public javax.swing.Action getAction() {
+		return this.action;
+	}
+	public String getName() {
+		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
+	}
+	public void setName( String name ) {
+		this.action.putValue( javax.swing.Action.NAME, name );
+	}
+	public void setShortDescription( String shortDescription ) {
+		this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+	}
+	public void setLongDescription( String longDescription ) {
+		this.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
+	}
+	public void setSmallIcon( javax.swing.Icon icon ) {
+		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+	}
+	public void setMnemonicKey( int mnemonicKey ) {
+		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
+	}
+	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
+		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
+	}
 	
-	@Override
-	public org.lgna.croquet.components.Button createButton() {
-		if( this.getSmallIcon() != null ) {
-			//pass
+	public org.lgna.croquet.components.PopupButton createPopupButton() {
+		return new org.lgna.croquet.components.PopupButton( this );
+	}
+
+	protected static interface PerformObserver { 
+		public void handleFinally(); 
+	}
+	protected abstract S createAndPushStep( org.lgna.croquet.Trigger trigger );
+	protected abstract void perform( S step, PerformObserver performObserver );
+	
+	public S fire( org.lgna.croquet.Trigger trigger ) {
+		if( this.isEnabled() ) {
+			final S step = this.createAndPushStep( trigger );
+			this.perform( step, new PerformObserver() {
+				public void handleFinally() {
+					//todo?
+				}
+			} );
+			return step;
 		} else {
-			this.setSmallIcon( ARROW_ICON );
+			return null;
 		}
-		org.lgna.croquet.components.Button rv = super.createButton();
-		rv.getAwtComponent().setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
-		return rv;
 	}
 }

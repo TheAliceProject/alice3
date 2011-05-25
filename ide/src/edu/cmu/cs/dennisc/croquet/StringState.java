@@ -49,25 +49,25 @@ import org.lgna.croquet.components.TextField;
  * @author Dennis Cosgrove
  */
 public class StringState extends State<String> {
-	public static interface ValueObserver {
-		public void changed( String nextValue );
-	};
-	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public void addValueObserver( ValueObserver valueObserver ) {
-		this.valueObservers.add( valueObserver );
-	}
-	public void addAndInvokeValueObserver( ValueObserver valueObserver ) {
-		this.addValueObserver(valueObserver);
-		valueObserver.changed(this.getValue());
-	}
-	public void removeValueObserver( ValueObserver valueObserver ) {
-		this.valueObservers.remove( valueObserver );
-	}
-	private void fireValueChanged( String nextValue ) {
-		for( ValueObserver valueObserver : this.valueObservers ) {
-			valueObserver.changed( nextValue );
-		}
-	}
+//	public static interface ValueObserver {
+//		public void changed( String nextValue );
+//	};
+//	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+//	public void addValueObserver( ValueObserver valueObserver ) {
+//		this.valueObservers.add( valueObserver );
+//	}
+//	public void addAndInvokeValueObserver( ValueObserver valueObserver ) {
+//		this.addValueObserver(valueObserver);
+//		valueObserver.changed(this.getValue());
+//	}
+//	public void removeValueObserver( ValueObserver valueObserver ) {
+//		this.valueObservers.remove( valueObserver );
+//	}
+//	private void fireValueChanged( String nextValue ) {
+//		for( ValueObserver valueObserver : this.valueObservers ) {
+//			valueObserver.changed( nextValue );
+//		}
+//	}
 	
 	private javax.swing.text.Document document;
 	
@@ -96,8 +96,12 @@ public class StringState extends State<String> {
 			try {
 				javax.swing.text.Document document = e.getDocument();
 				String nextValue = document.getText( 0, document.getLength() );
-				org.lgna.croquet.steps.TransactionManager.handleDocumentEvent( StringState.this, e, StringState.this.previousValue, nextValue );
-				fireValueChanged( nextValue );
+				String prevValue = StringState.this.previousValue;
+				boolean isAdjusting = false;
+				fireChanging( prevValue, nextValue, isAdjusting );
+				org.lgna.croquet.steps.TransactionManager.handleDocumentEvent( StringState.this, e, prevValue, nextValue );
+				StringState.this.previousValue = nextValue;
+				fireChanged( prevValue, nextValue, isAdjusting );
 			} catch( javax.swing.text.BadLocationException ble ) {
 				throw new RuntimeException( ble );
 			}

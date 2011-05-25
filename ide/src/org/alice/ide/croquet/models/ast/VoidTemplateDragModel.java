@@ -41,20 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.triggers;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ActionEventTrigger extends EventTrigger<java.awt.event.ActionEvent> {
-	public ActionEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.ActionEvent actionEvent ) {
-		super( viewController, actionEvent );
-	}
-	public ActionEventTrigger( java.awt.event.ActionEvent actionEvent ) {
-		this( null, actionEvent );
+public abstract class VoidTemplateDragModel extends TemplateDragModel {
+	public VoidTemplateDragModel( java.util.UUID id ) {
+		super( id );
 	}
 	@Override
-	protected java.awt.Point getPoint() {
-		return null;
+	protected final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getExpressionType() {
+		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 	}
 }

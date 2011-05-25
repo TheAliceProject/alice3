@@ -42,22 +42,22 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import org.lgna.croquet.components.PopupMenu;
-
 /**
  * @author Dennis Cosgrove
  */
-public final class StandardPopupOperation extends PopupOperation<org.lgna.croquet.steps.StandardPopupOperationStep> {
-	private static final Group STANDARD_POPUP_MENU_GROUP = Group.getInstance( java.util.UUID.fromString( "4fe7cbeb-627f-4965-a2d3-f4bf42796c59" ), "STANDARD_POPUP_MENU_GROUP" );
+public final class StandardPopupPrepModel extends PopupPrepModel {
 	private MenuModel menuModel;
-	/*package-private*/ StandardPopupOperation( MenuModel menuModel ) {
-		super( STANDARD_POPUP_MENU_GROUP, java.util.UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
+	/*package-private*/ StandardPopupPrepModel( MenuModel menuModel ) {
+		super( java.util.UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
 		this.menuModel = menuModel;
 	}
 	
 	@Override
+	public Iterable< ? extends edu.cmu.cs.dennisc.croquet.Model > getChildren() {
+		return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( this.menuModel );
+	}
+	@Override
 	protected void localize() {
-		super.localize();
 		this.setName( this.menuModel.getLocalizedText( "popupMenuOperation" ) );
 	}
 	
@@ -91,9 +91,9 @@ public final class StandardPopupOperation extends PopupOperation<org.lgna.croque
 //		}
 //	}
 	
-	public static class PopupMenuOperationResolver implements CodableResolver< StandardPopupOperation > {
-		private final StandardPopupOperation popupMenuOperation;
-		public PopupMenuOperationResolver( StandardPopupOperation popupMenuOperation ) {
+	public static class PopupMenuOperationResolver implements CodableResolver< StandardPopupPrepModel > {
+		private final StandardPopupPrepModel popupMenuOperation;
+		public PopupMenuOperationResolver( StandardPopupPrepModel popupMenuOperation ) {
 			this.popupMenuOperation = popupMenuOperation;
 		}
 		public PopupMenuOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -105,31 +105,30 @@ public final class StandardPopupOperation extends PopupOperation<org.lgna.croque
 			CodableResolver<MenuModel> menuModelResolver = this.popupMenuOperation.menuModel.getCodableResolver();
 			binaryEncoder.encode( menuModelResolver );
 		}
-		public StandardPopupOperation getResolved() {
+		public StandardPopupPrepModel getResolved() {
 			return this.popupMenuOperation;
 		}
 	}
 	@Override
-	protected CodableResolver< StandardPopupOperation > createCodableResolver() {
+	protected CodableResolver< StandardPopupPrepModel > createCodableResolver() {
 		return new PopupMenuOperationResolver( this );
 	}
 	
-	
 	@Override
-	protected final void perform( final org.lgna.croquet.steps.StandardPopupOperationStep step, final Operation.PerformObserver performObserver ) {
+	protected void perform( org.lgna.croquet.steps.PopupOperationStep step, edu.cmu.cs.dennisc.croquet.PopupPrepModel.PerformObserver performObserver ) {
 		//note: do not call super
-		final PopupMenu popupMenu = new PopupMenu( this ) {
+		final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this ) {
 			@Override
 			protected void handleDisplayable() {
 				//todo: investigate
 				super.handleDisplayable();
 				//PopupMenuOperation.this.menuModel.addPopupMenuListener( this );
-				StandardPopupOperation.this.addComponent( this );
+				StandardPopupPrepModel.this.addComponent( this );
 			}
 			@Override
 			protected void handleUndisplayable() {
-				StandardPopupOperation.this.removeComponent( this );
-				StandardPopupOperation.this.menuModel.removePopupMenuListener( this );
+				StandardPopupPrepModel.this.removeComponent( this );
+				StandardPopupPrepModel.this.menuModel.removePopupMenuListener( this );
 				super.handleUndisplayable();
 			}
 		};
@@ -148,7 +147,7 @@ public final class StandardPopupOperation extends PopupOperation<org.lgna.croque
 				} else {
 					step.finish();
 				}
-				StandardPopupOperation.this.menuModel.handlePopupMenuEpilogue( popupMenu, step );
+				StandardPopupPrepModel.this.menuModel.handlePopupMenuEpilogue( popupMenu, step );
 				performObserver.handleFinally();
 			}
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {

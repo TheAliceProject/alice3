@@ -190,8 +190,10 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		this.sample = new org.lgna.croquet.components.Label( "AaBbYyZz", 1.2f );
 		this.updateSample();
 
-		edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String > valueObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String >() { 
-			public void changed( String nextValue ) {
+		edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String > valueObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String >() {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
+			}
+			public void changed( edu.cmu.cs.dennisc.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 //				if( e.getValueIsAdjusting() ) {
 //					//pass
 //				} else {
@@ -231,10 +233,10 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		public ConstrainInstanceNameToTextBooleanStateOperation() {
 			super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "74c18933-e5d7-4c48-ad88-46a7a83ff12d" ), false );
 			this.setTextForBothTrueAndFalse( "constrain to text" );
-			this.addValueObserver( new ValueObserver() {
-				public void changing( boolean nextValue ) {
+			this.addValueObserver( new ValueObserver<Boolean>() {
+				public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				}
-				public void changed( boolean nextValue ) {
+				public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 					CreateTextPane.this.instanceNameVC.setEditable( nextValue == false );
 				}
 			} );

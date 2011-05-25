@@ -41,20 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.triggers;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ActionEventTrigger extends EventTrigger<java.awt.event.ActionEvent> {
-	public ActionEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.ActionEvent actionEvent ) {
-		super( viewController, actionEvent );
+public class DeclareLocalDragModel extends VoidTemplateDragModel {
+	private static class SingletonHolder {
+		private static DeclareLocalDragModel instance = new DeclareLocalDragModel();
 	}
-	public ActionEventTrigger( java.awt.event.ActionEvent actionEvent ) {
-		this( null, actionEvent );
+	public static DeclareLocalDragModel getInstance() {
+		return SingletonHolder.instance;
+	}
+	private DeclareLocalDragModel() {
+		super( java.util.UUID.fromString( "8a72ad5f-8273-4de9-a1c4-60bedda45b9e" ) );
 	}
 	@Override
-	protected java.awt.Point getPoint() {
-		return null;
+	protected String getTutorialStepDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		//todo
+		return "local";
 	}
 }

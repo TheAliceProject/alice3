@@ -214,10 +214,10 @@ class StatementEnabledStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanS
 	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue() );
 		this.statement = statement;
-		this.addValueObserver( new ValueObserver() {
-			public void changing( boolean nextValue ) {
+		this.addValueObserver( new ValueObserver<Boolean>() {
+			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( boolean nextValue ) {
+			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				StatementEnabledStateOperation.this.statement.isEnabled.setValue( nextValue );
 			}
 		} );

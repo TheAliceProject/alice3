@@ -74,10 +74,10 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 			AbstractTypeMembersPane.this.refresh();
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isEmphasizingClassesObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-		public void changing( boolean nextValue ) {
+	private edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean> isEmphasizingClassesObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean>() {
+		public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( boolean nextValue ) {
+		public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			AbstractTypeMembersPane.this.refresh();
 		}
 	};
