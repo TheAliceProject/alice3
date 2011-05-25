@@ -47,9 +47,9 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public abstract class EventTrigger< E extends java.util.EventObject > implements org.lgna.croquet.Trigger {
-	private final edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > viewController;
+	private final org.lgna.croquet.components.ViewController< ?, ? > viewController;
 	private final E event;
-	public EventTrigger( edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > viewController, E event ) {
+	public EventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, E event ) {
 		this.viewController = viewController;
 		this.event = event;
 	}
@@ -57,13 +57,37 @@ public abstract class EventTrigger< E extends java.util.EventObject > implements
 		return this.event;
 	}
 	protected abstract java.awt.Point getPoint();
-	public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
-		return this.viewController;
+	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+		if( this.viewController != null ) {
+			return this.viewController;
+		} else {
+			Object source = this.event.getSource();
+			if( source instanceof java.awt.Component ) {
+				java.awt.Component awtComponent = (java.awt.Component)source;
+				org.lgna.croquet.components.Component< ? > component = org.lgna.croquet.components.Component.lookup( awtComponent );
+				if( component instanceof org.lgna.croquet.components.ViewController ) {
+					return (org.lgna.croquet.components.ViewController< ?, ? >)component;
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
 	}
 	protected java.awt.Component getComponent() {
-		return this.viewController != null ? this.viewController.getAwtComponent() : null;
+		if( this.viewController != null ) {
+			return this.viewController.getAwtComponent();
+		} else {
+			Object source = this.event.getSource();
+			if( source instanceof java.awt.Component ) {
+				return (java.awt.Component)source;
+			} else {
+				return null;
+			}
+		}
 	}
-	public void showPopupMenu( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		java.awt.Point pt = this.getPoint();
 		java.awt.Component invoker = this.getComponent();
 		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), invoker, pt );

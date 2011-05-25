@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.BooleanStateButton<javax.swing.AbstractButton> {
+/*package-private*/ class FieldTile extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> {
 	private edu.cmu.cs.dennisc.alice.ast.Accessible accessible;
 //	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 //		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {

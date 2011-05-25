@@ -53,11 +53,11 @@ abstract class AbstractListSelectionState<E> extends edu.cmu.cs.dennisc.croquet.
 		return 1;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<E> createList() {
-		edu.cmu.cs.dennisc.croquet.List<E> rv = super.createList();
-		rv.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
+	public org.lgna.croquet.components.List<E> createList() {
+		org.lgna.croquet.components.List<E> rv = super.createList();
+		rv.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
 		rv.setVisibleRowCount( this.getVisibleRowCount() );
-		rv.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		rv.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		//rv.getAwtComponent().setOpaque( false );
 		return rv;
 	}	

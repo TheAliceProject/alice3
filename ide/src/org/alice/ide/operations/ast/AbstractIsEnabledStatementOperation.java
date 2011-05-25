@@ -42,7 +42,7 @@
  */
 package org.alice.ide.operations.ast;
 
-import edu.cmu.cs.dennisc.croquet.Component;
+import org.lgna.croquet.components.Component;
 
 /**
  * @author Dennis Cosgrove

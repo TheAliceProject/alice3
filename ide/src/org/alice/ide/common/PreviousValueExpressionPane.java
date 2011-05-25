@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviousValueExpressionPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public class PreviousValueExpressionPane extends org.lgna.croquet.components.BorderPanel {
 	private final org.alice.ide.ast.PreviousValueExpression expression;
 	private final Factory factory;
 	public PreviousValueExpressionPane( org.alice.ide.ast.PreviousValueExpression expression, Factory factory ) {
@@ -53,15 +53,15 @@ public class PreviousValueExpressionPane extends edu.cmu.cs.dennisc.croquet.Bord
 		this.factory = factory;
 	}
 	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
 		super.handleAddedTo( parent );
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
-		edu.cmu.cs.dennisc.croquet.JComponent< ? > component = this.factory.createExpressionPane( previousExpression );
+		org.lgna.croquet.components.JComponent< ? > component = this.factory.createExpressionPane( previousExpression );
 		component.getAwtComponent().doLayout();
 		this.addComponent( component, Constraint.CENTER );
 	}
 	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
 		this.forgetAndRemoveAllComponents();
 		super.handleRemovedFrom( parent );
 	}

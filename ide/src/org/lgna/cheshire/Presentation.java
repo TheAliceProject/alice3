@@ -83,10 +83,10 @@ public abstract class Presentation {
 		public void dropPended( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.DropPendedEvent( completionModel, dropReceptor, dropSite ) );
 		}
-		public void popupMenuResized(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+		public void popupMenuResized(org.lgna.croquet.components.PopupMenu popupMenu ) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.PopupMenuResizedEvent( popupMenu ) );
 		}
-		public void dialogOpened(edu.cmu.cs.dennisc.croquet.Dialog dialog) {
+		public void dialogOpened(org.lgna.croquet.components.Dialog dialog) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.DialogOpenedEvent( dialog ) );
 		}
 		public void menuItemsSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {

@@ -46,7 +46,8 @@ package org.alice.ide.properties.adapter;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.cmu.cs.dennisc.croquet.Button;
+import org.lgna.croquet.components.Button;
+
 import edu.cmu.cs.dennisc.croquet.Operation;
 
 public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P, O> 

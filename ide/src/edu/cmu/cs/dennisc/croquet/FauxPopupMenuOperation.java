@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -74,13 +76,13 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 14 ); 
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Button createButton() {
+	public org.lgna.croquet.components.Button createButton() {
 		if( this.getSmallIcon() != null ) {
 			//pass
 		} else {
 			this.setSmallIcon( ARROW_ICON );
 		}
-		edu.cmu.cs.dennisc.croquet.Button rv = super.createButton();
+		org.lgna.croquet.components.Button rv = super.createButton();
 		rv.getAwtComponent().setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
 		return rv;
 	}

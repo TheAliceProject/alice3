@@ -42,6 +42,9 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.DragComponent;
+import org.lgna.croquet.components.JComponent;
+
 
 /**
  * @author Dennis Cosgrove

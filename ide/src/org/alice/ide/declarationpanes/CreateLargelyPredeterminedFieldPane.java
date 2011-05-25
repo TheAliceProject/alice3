@@ -150,19 +150,19 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	}
 		
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createValueTypeComponent() {
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel valueTypeLine = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+	protected org.lgna.croquet.components.Component< ? > createValueTypeComponent() {
+		org.lgna.croquet.components.LineAxisPanel valueTypeLine = new org.lgna.croquet.components.LineAxisPanel();
 		valueTypeLine.addComponent( org.alice.ide.common.TypeComponent.createInstance( CreateLargelyPredeterminedFieldPane.this.valueType ) );
 		if( CreateLargelyPredeterminedFieldPane.this.valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			valueTypeLine.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " which extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+			valueTypeLine.addComponent( new org.lgna.croquet.components.Label( " which extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			valueTypeLine.addComponent( org.alice.ide.common.TypeComponent.createInstance( CreateLargelyPredeterminedFieldPane.this.valueType.getSuperType() ) );
 //			valueTypeLine.add( zoot.ZLabel.acquire( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
 		}
 		return valueTypeLine;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInitializerComponent() {
-		return new edu.cmu.cs.dennisc.croquet.LineAxisPanel( getIDE().getPreviewFactory().createExpressionPane( this.getInitializer() ) );
+	protected org.lgna.croquet.components.Component< ? > createInitializerComponent() {
+		return new org.lgna.croquet.components.LineAxisPanel( getIDE().getPreviewFactory().createExpressionPane( this.getInitializer() ) );
 	}
 	
 	@Override

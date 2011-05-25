@@ -42,6 +42,11 @@
  */
 package org.lgna.croquet.steps;
 
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.DragComponent;
+import org.lgna.croquet.components.JComponent;
+import org.lgna.croquet.components.ViewController;
+
 import edu.cmu.cs.dennisc.croquet.*;
 
 /**
@@ -270,8 +275,8 @@ public class DragStep extends PrepStep< edu.cmu.cs.dennisc.croquet.DragAndDropMo
 		super( binaryDecoder );
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.DragComponent getDragSource() {
-		return (edu.cmu.cs.dennisc.croquet.DragComponent)this.getViewController();
+	public org.lgna.croquet.components.DragComponent getDragSource() {
+		return (org.lgna.croquet.components.DragComponent)this.getViewController();
 	}
 	public java.awt.event.MouseEvent getLatestMouseEvent() {
 		return this.latestMouseEvent;

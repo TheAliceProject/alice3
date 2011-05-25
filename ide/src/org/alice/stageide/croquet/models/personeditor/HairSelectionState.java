@@ -91,8 +91,8 @@ public class HairSelectionState extends AbstractListSelectionState<org.alice.api
 		return -1;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Hair> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Hair> rv = super.createList();
+	public org.lgna.croquet.components.List<org.alice.apis.stage.Hair> createList() {
+		org.lgna.croquet.components.List<org.alice.apis.stage.Hair> rv = super.createList();
 		rv.setCellRenderer( new HairListCellRenderer() );
 		return rv;
 	}

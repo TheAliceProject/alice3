@@ -45,7 +45,7 @@ package org.lgna.cheshire.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public class BookList extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JList > {
+public class BookList extends org.lgna.croquet.components.JComponent< javax.swing.JList > {
 	private BookComboBoxModel comboBoxModel;
 	public BookList( BookComboBoxModel comboBoxModel ) {
 		this.comboBoxModel = comboBoxModel;

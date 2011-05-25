@@ -88,7 +88,7 @@ public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.c
 		}
 	}
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+	protected java.awt.Dimension getDesiredDialogSize( org.lgna.croquet.components.Dialog dialog ) {
 		return new java.awt.Dimension( 620, 480 );
 	}
 }

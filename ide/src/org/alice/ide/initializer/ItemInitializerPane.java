@@ -45,7 +45,7 @@ package org.alice.ide.initializer;
 /**
  * @author Dennis Cosgrove
  */
-public class ItemInitializerPane extends edu.cmu.cs.dennisc.croquet.FlowPanel {
+public class ItemInitializerPane extends org.lgna.croquet.components.FlowPanel {
 	public ItemInitializerPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty initializerProperty ) {
 		super( Alignment.LEADING );
 		this.addComponent( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPropertyPane( initializerProperty, null, null, edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP ) );

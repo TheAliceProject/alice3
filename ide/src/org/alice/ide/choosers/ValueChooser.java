@@ -64,7 +64,7 @@ public abstract class ValueChooser<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 		sb.append( this.typeDescription );
 		return sb.toString();
 	}
-	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent();
+	public abstract org.lgna.croquet.components.Component< ? > createMainComponent();
 	public abstract E getValue();
 	public abstract String getExplanationIfOkButtonShouldBeDisabled();
 }

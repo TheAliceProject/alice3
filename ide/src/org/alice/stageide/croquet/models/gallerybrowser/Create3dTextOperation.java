@@ -48,7 +48,7 @@ import org.alice.ide.operations.ast.DeclareFieldEdit;
  * @author Dennis Cosgrove
  */
 //class CreateTextPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
-class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
+class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 	private static abstract class TextAttributeSelectionOperation extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState<String> {
 		public TextAttributeSelectionOperation( java.util.UUID individualId, int selectionIndex, String... items ) {
 			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, selectionIndex, items );
@@ -127,13 +127,13 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 
 	private javax.swing.JTextField textVC;
 	private javax.swing.JTextField instanceNameVC;
-	private edu.cmu.cs.dennisc.croquet.CheckBox constrainInstanceNameToTextVC;
+	private org.lgna.croquet.components.CheckBox constrainInstanceNameToTextVC;
 
 	private javax.swing.JTextField heightTextField;
 	private FamilySelectionOperation familySelection;
 	private StyleSelectionOperation styleSelection;
 
-	private edu.cmu.cs.dennisc.croquet.Label sample;
+	private org.lgna.croquet.components.Label sample;
 
 //	public CreateTextPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 //		super( declaringType, org.alice.apis.moveandturn.Billboard.class, null );
@@ -187,7 +187,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		this.familySelection = new FamilySelectionOperation();
 		this.styleSelection = new StyleSelectionOperation();
 
-		this.sample = new edu.cmu.cs.dennisc.croquet.Label( "AaBbYyZz", 1.2f );
+		this.sample = new org.lgna.croquet.components.Label( "AaBbYyZz", 1.2f );
 		this.updateSample();
 
 		edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String > valueObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String >() { 
@@ -241,48 +241,48 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		}
 	}
 	@Override
-	protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "text:" ), 
-				new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.textVC ), 
+	protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
+				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "text:" ), 
+				new org.lgna.croquet.components.SwingAdapter( this.textVC ), 
 				null 
 		) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "instance:" ), 
-				new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.instanceNameVC ), 
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
+				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "instance:" ), 
+				new org.lgna.croquet.components.SwingAdapter( this.instanceNameVC ), 
 				this.constrainInstanceNameToTextVC 
 		) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 24 ),
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
+				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ),
 				null,
 				null 
 		) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "letter height:" ), 
-				new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.heightTextField ), 
-				new edu.cmu.cs.dennisc.croquet.Label( "(meters)" ) 
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
+				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "letter height:" ), 
+				new org.lgna.croquet.components.SwingAdapter( this.heightTextField ), 
+				new org.lgna.croquet.components.Label( "(meters)" ) 
 		) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 4 ), 
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
+				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ), 
 				null, 
 				null 
 		) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "family:" ), 
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
+				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "family:" ), 
 				this.familySelection.createList(), 
 				null 
 		) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "style:" ), 
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
+				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "style:" ), 
 				this.styleSelection.createList(), 
 				null 
 		) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "sample:" ), 
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
+				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "sample:" ), 
 				this.sample, 
 				null 
 		) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, null, null ) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( null, null, null ) );
 
 		return rv;
 	}

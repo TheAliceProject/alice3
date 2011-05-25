@@ -45,7 +45,7 @@ package org.alice.ide.initializer;
 /**
  * @author Dennis Cosgrove
  */
-public class InitializerPane extends edu.cmu.cs.dennisc.croquet.CardPanel {
+public class InitializerPane extends org.lgna.croquet.components.CardPanel {
 	private Key itemKey;
 	private Key arrayKey;
 	private BogusNode bogusNode;

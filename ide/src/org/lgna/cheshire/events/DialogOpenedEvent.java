@@ -47,11 +47,11 @@ package org.lgna.cheshire.events;
  * @author Dennis Cosgrove
  */
 public class DialogOpenedEvent implements Event {
-	private final edu.cmu.cs.dennisc.croquet.Dialog dialog;
-	public DialogOpenedEvent( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+	private final org.lgna.croquet.components.Dialog dialog;
+	public DialogOpenedEvent( org.lgna.croquet.components.Dialog dialog ) {
 		this.dialog = dialog;
 	}
-	public edu.cmu.cs.dennisc.croquet.Dialog getDialog() {
+	public org.lgna.croquet.components.Dialog getDialog() {
 		return this.dialog;
 	}
 }

@@ -45,7 +45,7 @@ package org.alice.ide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >, edu.cmu.cs.dennisc.croquet.DropReceptor, FieldAndInstanceMapper {
+public abstract class AbstractSceneEditor extends org.lgna.croquet.components.BorderPanel implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >, edu.cmu.cs.dennisc.croquet.DropReceptor, FieldAndInstanceMapper {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = null;
 	private org.alice.ide.ProjectApplication.ProjectObserver projectObserver = new org.alice.ide.ProjectApplication.ProjectObserver() { 
 		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {

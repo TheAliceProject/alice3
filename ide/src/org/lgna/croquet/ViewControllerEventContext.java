@@ -47,5 +47,5 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public interface ViewControllerEventContext {
-	public void showPopupMenu( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu );
+	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu );
 }

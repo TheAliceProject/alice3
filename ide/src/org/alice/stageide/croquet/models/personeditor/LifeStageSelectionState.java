@@ -58,8 +58,8 @@ public class LifeStageSelectionState extends AbstractListSelectionState< org.ali
 		super( java.util.UUID.fromString( "ee61b76d-b154-4e45-a07c-fb2eac906895" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.apis.stage.LifeStage.class ), org.alice.apis.stage.LifeStage.CHILD, org.alice.apis.stage.LifeStage.ADULT );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.LifeStage> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.LifeStage> rv = super.createList();
+	public org.lgna.croquet.components.List<org.alice.apis.stage.LifeStage> createList() {
+		org.lgna.croquet.components.List<org.alice.apis.stage.LifeStage> rv = super.createList();
 		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}

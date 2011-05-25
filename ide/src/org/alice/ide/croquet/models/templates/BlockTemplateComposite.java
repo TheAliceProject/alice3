@@ -70,14 +70,14 @@ public class BlockTemplateComposite extends TemplateComposite {
 		return false;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
-		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.ubiquitouspane.UbiquitousPane();
+	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.ubiquitouspane.UbiquitousPane();
 		rv.setBackgroundColor( new java.awt.Color( 250, 150, 105 ) );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 		return rv;
 	}
 	@Override
-	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
+	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
 		super.customizeTitleComponent( booleanState, button );
 		button.getAwtComponent().setIcon( new javax.swing.Icon() {
 			public int getIconHeight() {

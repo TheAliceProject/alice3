@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.CascadeMenuItem;
+
 /**
  * @author Dennis Cosgrove
  */

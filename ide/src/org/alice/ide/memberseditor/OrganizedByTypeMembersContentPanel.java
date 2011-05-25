@@ -57,8 +57,8 @@ abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 				boolean isFirstNonConsumedTypeEncounteredInJava = false;
 				if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
 					if( isSeparatorDesired ) {
-						this.addComponent( new edu.cmu.cs.dennisc.croquet.HorizontalSeparator() );
-						this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ) );
+						this.addComponent( new org.lgna.croquet.components.HorizontalSeparator() );
+						this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
 						isSeparatorDesired = false;
 					}
 					if( isNonConsumedTypeDeclaredInJavaAlreadyEncountered ) {

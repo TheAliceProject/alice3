@@ -259,7 +259,7 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupOperatio
 	}
 }
 
-class CascadePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+class CascadePanel extends org.lgna.croquet.components.BorderPanel {
 	public CascadePanel() {
 		this.setMinimumPreferredWidth( 640 );
 		this.setMinimumPreferredHeight( 480 );
@@ -272,7 +272,7 @@ class CascadePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
  */
 public class TestCascade extends edu.cmu.cs.dennisc.croquet.Application {
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createContentPane() {
+	protected org.lgna.croquet.components.Component< ? > createContentPane() {
 		return new CascadePanel();
 	}
 

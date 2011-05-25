@@ -56,22 +56,22 @@ public class TypeProceduresPane extends AbstractTypeMethodsPane {
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Button createDeclareMemberButton(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type) {
+	protected org.lgna.croquet.components.Button createDeclareMemberButton(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type) {
 		return org.alice.ide.croquet.models.ast.DeclareProcedureOperation.getInstance(type).createButton();
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Button createEditConstructorButton(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type) {
+	protected org.lgna.croquet.components.Button createEditConstructorButton(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type) {
 		return null;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> createFunctionTemplate(edu.cmu.cs.dennisc.alice.ast.AbstractMethod method) {
+	protected org.lgna.croquet.components.Component<?> createFunctionTemplate(edu.cmu.cs.dennisc.alice.ast.AbstractMethod method) {
 		return null;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> createProcedureTemplate(edu.cmu.cs.dennisc.alice.ast.AbstractMethod method) {
+	protected org.lgna.croquet.components.Component<?> createProcedureTemplate(edu.cmu.cs.dennisc.alice.ast.AbstractMethod method) {
 		return org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate(method);
 	}
 }

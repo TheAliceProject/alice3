@@ -52,8 +52,8 @@ package org.lgna.cheshire.stencil;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Button createButton() {
-		edu.cmu.cs.dennisc.croquet.Button rv = super.createButton();
+	public org.lgna.croquet.components.Button createButton() {
+		org.lgna.croquet.components.Button rv = super.createButton();
 		rv.setBackgroundColor( StencilsPresentation.CONTROL_COLOR );
 		return rv;
 	}

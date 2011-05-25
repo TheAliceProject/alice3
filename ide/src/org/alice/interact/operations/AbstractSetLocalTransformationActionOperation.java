@@ -42,7 +42,8 @@
  */
 package org.alice.interact.operations;
 
-import edu.cmu.cs.dennisc.croquet.Component;
+import org.lgna.croquet.components.Component;
+
 import edu.cmu.cs.dennisc.croquet.Group;
 
 /**

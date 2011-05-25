@@ -48,10 +48,10 @@ package org.lgna.croquet.triggers;
  */
 public enum SimulatedTrigger implements org.lgna.croquet.Trigger {
 	SINGLETON() {
-		public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
+		public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
 			return null;
 		}
-		public void showPopupMenu( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+		public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 			edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
 		}
 	};

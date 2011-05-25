@@ -42,6 +42,14 @@
  */
 package org.lgna.croquet.steps;
 
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.Menu;
+import org.lgna.croquet.components.MenuBar;
+import org.lgna.croquet.components.MenuItem;
+import org.lgna.croquet.components.MenuTextSeparator;
+import org.lgna.croquet.components.PopupMenu;
+import org.lgna.croquet.components.ViewController;
+
 import edu.cmu.cs.dennisc.croquet.*;
 
 /**
@@ -58,8 +66,8 @@ public class TransactionManager {
 		public void dropPending( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
 		public void dropPended( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
 		public void menuItemsSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models );
-		public void popupMenuResized( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu );
-		public void dialogOpened( edu.cmu.cs.dennisc.croquet.Dialog dialog );
+		public void popupMenuResized( org.lgna.croquet.components.PopupMenu popupMenu );
+		public void dialogOpened( org.lgna.croquet.components.Dialog dialog );
 		public void transactionCanceled( Transaction transaction );
 	}
 
@@ -393,12 +401,12 @@ public class TransactionManager {
 		}
 	}
 	//todo: reduce accessibility
-	public static void firePopupMenuResized( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+	public static void firePopupMenuResized( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		for( Observer observer : observers ) {
 			observer.popupMenuResized( popupMenu );
 		}
 	}
-	public static void fireDialogOpened( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+	public static void fireDialogOpened( org.lgna.croquet.components.Dialog dialog ) {
 		for( Observer observer : observers ) {
 			observer.dialogOpened( dialog );
 		}

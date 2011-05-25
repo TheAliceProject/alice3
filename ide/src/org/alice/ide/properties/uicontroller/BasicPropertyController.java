@@ -49,13 +49,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.lgna.croquet.components.BoxUtilities;
+import org.lgna.croquet.components.Button;
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.GridBagPanel;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.Panel;
 
-import edu.cmu.cs.dennisc.croquet.BoxUtilities;
-import edu.cmu.cs.dennisc.croquet.Button;
-import edu.cmu.cs.dennisc.croquet.Component;
-import edu.cmu.cs.dennisc.croquet.GridBagPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
 
 public abstract class BasicPropertyController<P> extends AbstractAdapterController<P> implements MouseListener
 {

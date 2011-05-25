@@ -51,7 +51,7 @@ public class DialogCloseButtonFeature extends org.lgna.stencil.Feature {
 			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
 				edu.cmu.cs.dennisc.croquet.PlainDialogOperation dialogOperation = step.getModel().getPlainDialogOperation();
 				if( dialogOperation != null ) {
-					edu.cmu.cs.dennisc.croquet.Dialog activeDialog = dialogOperation.getActiveDialog();
+					org.lgna.croquet.components.Dialog activeDialog = dialogOperation.getActiveDialog();
 					if( activeDialog != null ) {
 						return activeDialog.getCloseButtonTrackableShape();
 					} else {
@@ -84,11 +84,11 @@ public class DialogCloseButtonFeature extends org.lgna.stencil.Feature {
 		return null;
 	}
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForPaint(edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy) {
+	public java.awt.geom.Area getAreaToSubstractForPaint(org.lgna.croquet.components.Component<?> asSeenBy) {
 		return null;
 	}
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForContains(edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy) {
+	public java.awt.geom.Area getAreaToSubstractForContains(org.lgna.croquet.components.Component<?> asSeenBy) {
 		return null;
 	}
 	@Override

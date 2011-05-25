@@ -44,7 +44,7 @@ package org.alice.ide.croquet.models.ui;
 
 import org.alice.ide.croquet.models.IsFrameShowingState;
 
-class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+class MemoryUsagePanel extends org.lgna.croquet.components.BorderPanel {
 	private javax.swing.Timer timer = new javax.swing.Timer( 50, new java.awt.event.ActionListener() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );

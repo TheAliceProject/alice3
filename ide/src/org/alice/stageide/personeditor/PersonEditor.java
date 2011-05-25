@@ -47,7 +47,7 @@ import org.alice.stageide.croquet.models.personeditor.PersonInfo;
 /**
  * @author Dennis Cosgrove
  */
-public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 	private static class SingletonHolder {
 		private static PersonEditor instance = new PersonEditor();
 	}
@@ -101,7 +101,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		} );
 
 
-		final edu.cmu.cs.dennisc.croquet.FolderTabbedPane<?> tabbedPane = org.alice.stageide.croquet.models.personeditor.BodyHeadTabSelectionModel.getInstance().createDefaultFolderTabbedPane();
+		final org.lgna.croquet.components.FolderTabbedPane<?> tabbedPane = org.alice.stageide.croquet.models.personeditor.BodyHeadTabSelectionModel.getInstance().createDefaultFolderTabbedPane();
 		tabbedPane.scaleFont( 1.5f );
 
 		org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseSkinTone>() {
@@ -112,27 +112,27 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		} );
 		
 
-		edu.cmu.cs.dennisc.croquet.BorderPanel northPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		org.lgna.croquet.components.BorderPanel northPane = new org.lgna.croquet.components.BorderPanel();
 		northPane.addComponent( org.alice.stageide.croquet.models.personeditor.RandomPersonActionOperation.getInstance().createButton(), Constraint.PAGE_START );
-		edu.cmu.cs.dennisc.croquet.RowsSpringPanel ubiquitousPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
+		org.lgna.croquet.components.RowsSpringPanel ubiquitousPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
 			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "life stage:", org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().createList() ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "gender:", org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().createList() ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "skin tone:", org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().createList() ) );
+			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "life stage:", org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().createList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "gender:", org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().createList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "skin tone:", org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().createList() ) );
 				return rv;
 			}
 		};
-		ubiquitousPane.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		ubiquitousPane.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
 
-		edu.cmu.cs.dennisc.croquet.BorderPanel ingredientsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		org.lgna.croquet.components.BorderPanel ingredientsPanel = new org.lgna.croquet.components.BorderPanel();
 		ingredientsPanel.addComponent( northPane, Constraint.PAGE_START );
 		ingredientsPanel.addComponent( tabbedPane, Constraint.CENTER );
-		ingredientsPanel.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		ingredientsPanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 
 		//		this.personViewer.initializeValues( this.person );
-		edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane( PersonViewer.getSingleton(), ingredientsPanel );
+		org.lgna.croquet.components.HorizontalSplitPane splitPane = new org.lgna.croquet.components.HorizontalSplitPane( PersonViewer.getSingleton(), ingredientsPanel );
 		splitPane.setDividerLocation( 400 );
 		this.addComponent( splitPane, Constraint.CENTER );
 

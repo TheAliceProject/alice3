@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.ComboBox;
+import org.lgna.croquet.components.JComponent;
 import org.lgna.croquet.edits.ListSelectionStateEdit;
 
 /**

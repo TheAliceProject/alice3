@@ -99,7 +99,7 @@ public abstract class Feature {
 	}	
 	protected abstract boolean isPathRenderingDesired();
 	
-	public java.awt.Rectangle getBoundsForRepaint( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
+	public java.awt.Rectangle getBoundsForRepaint( org.lgna.croquet.components.Component<?> asSeenBy ) {
 		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
 		if( trackableShape != null ) {
 			java.awt.Insets boundsInsets = this.getBoundsInsets();
@@ -232,7 +232,7 @@ public abstract class Feature {
 		return y;
 	}
 	
-	/*package-private*/ Connection calculateActualConnection( edu.cmu.cs.dennisc.croquet.Component<?> container, edu.cmu.cs.dennisc.croquet.JComponent<?> note ) {
+	/*package-private*/ Connection calculateActualConnection( org.lgna.croquet.components.Component<?> container, org.lgna.croquet.components.JComponent<?> note ) {
 		Connection actualConnection = null;
 		edu.cmu.cs.dennisc.croquet.TrackableShape featureTrackableShape = this.getTrackableShape();
 		if( featureTrackableShape != null ) {
@@ -279,7 +279,7 @@ public abstract class Feature {
 		}
 		return actualConnection;
 	}
-	public java.awt.Point calculateNoteLocation( edu.cmu.cs.dennisc.croquet.Container< ? > container, edu.cmu.cs.dennisc.croquet.Component< ? > note ) {
+	public java.awt.Point calculateNoteLocation( org.lgna.croquet.components.Container< ? > container, org.lgna.croquet.components.Component< ? > note ) {
 		java.awt.Rectangle containerBounds = container.getLocalBounds();
 		java.awt.Rectangle noteBounds = note.getBounds( container );
 		
@@ -386,7 +386,7 @@ public abstract class Feature {
 	protected abstract java.awt.Insets getContainsInsets();
 	protected abstract java.awt.Insets getPaintInsets();
 	
-	protected java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy, java.awt.Insets insets ) {
+	protected java.awt.Shape getShape( org.lgna.croquet.components.Component<?> asSeenBy, java.awt.Insets insets ) {
 		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
 		if( trackableShape != null ) {
 			if( trackableShape.isInView() ) {
@@ -400,7 +400,7 @@ public abstract class Feature {
 			return null;
 		}
 	}
-	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
+	public java.awt.geom.Area getAreaToSubstractForContains( org.lgna.croquet.components.Component<?> asSeenBy ) {
 		java.awt.Shape shape = this.getShape( asSeenBy, this.getContainsInsets() );
 		if( shape != null ) {
 			return new java.awt.geom.Area( shape );
@@ -408,7 +408,7 @@ public abstract class Feature {
 			return null;
 		}
 	}
-	public java.awt.geom.Area getAreaToSubstractForPaint( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
+	public java.awt.geom.Area getAreaToSubstractForPaint( org.lgna.croquet.components.Component<?> asSeenBy ) {
 		java.awt.Shape shape = this.getShape( asSeenBy, this.getPaintInsets() );
 		if( shape != null ) {
 			return new java.awt.geom.Area( shape );
@@ -508,7 +508,7 @@ public abstract class Feature {
 			}
 		}
 	}
-	public final void paint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy, edu.cmu.cs.dennisc.croquet.JComponent<?> note ) {
+	public final void paint( java.awt.Graphics2D g2, org.lgna.croquet.components.Component<?> asSeenBy, org.lgna.croquet.components.JComponent<?> note ) {
 		java.awt.Shape shape = this.getShape( asSeenBy, this.getPaintInsets() );
 		if( shape != null ) {
 			Connection actualConnection = this.calculateActualConnection( asSeenBy, note );

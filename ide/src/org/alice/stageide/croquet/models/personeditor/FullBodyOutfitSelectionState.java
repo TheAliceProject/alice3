@@ -86,8 +86,8 @@ public class FullBodyOutfitSelectionState extends AbstractListSelectionState<org
 		return -1;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> rv = super.createList();
+	public org.lgna.croquet.components.List<org.alice.apis.stage.FullBodyOutfit> createList() {
+		org.lgna.croquet.components.List<org.alice.apis.stage.FullBodyOutfit> rv = super.createList();
 		rv.setCellRenderer( new FullBodyOutfitListCellRenderer() );
 		return rv;
 	}

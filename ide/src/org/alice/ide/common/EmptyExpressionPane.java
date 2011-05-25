@@ -54,7 +54,7 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 	private EmptyExpression emptyExpression;
 	public EmptyExpressionPane( EmptyExpression emptyExpression ) {
 		this.emptyExpression = emptyExpression;
-		edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label( " ??? " );
+		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( " ??? " );
 		this.addComponent( label );
 	}
 	@Override

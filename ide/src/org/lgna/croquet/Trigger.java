@@ -47,6 +47,6 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public interface Trigger {
-	public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController();
-	public void showPopupMenu( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu );
+	public org.lgna.croquet.components.ViewController< ?, ? > getViewController();
+	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu );
 }

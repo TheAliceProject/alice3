@@ -56,7 +56,7 @@ public class StatisticsOperation extends edu.cmu.cs.dennisc.croquet.InformationD
 		super( java.util.UUID.fromString( "b34e805e-e6ef-4f08-af53-df98e1653732" ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Container<?> createContentPane(org.lgna.croquet.steps.InformationDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog) {
+	protected org.lgna.croquet.components.Container<?> createContentPane(org.lgna.croquet.steps.InformationDialogOperationStep step, org.lgna.croquet.components.Dialog dialog) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = ide.getStrippedProgramType();
 		if( programType != null ) {
@@ -115,13 +115,13 @@ public class StatisticsOperation extends edu.cmu.cs.dennisc.croquet.InformationD
 				}
 			}
 			sb.append( "</html>" );
-			return new edu.cmu.cs.dennisc.croquet.Label( sb.toString() );
+			return new org.lgna.croquet.components.Label( sb.toString() );
 		} else {
 			//todo
-			return new edu.cmu.cs.dennisc.croquet.Label( "open a project first" );
+			return new org.lgna.croquet.components.Label( "open a project first" );
 		}
 	}
 	@Override
-	protected void releaseContentPane(org.lgna.croquet.steps.InformationDialogOperationStep step, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container<?> contentPane) {
+	protected void releaseContentPane(org.lgna.croquet.steps.InformationDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane) {
 	}
 }

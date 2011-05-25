@@ -62,7 +62,7 @@ class IsArrayState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 }
 
 
-public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public class TypePane extends org.lgna.croquet.components.BorderPanel {
 	private edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty;
 	private IsArrayState isArrayStateState;
 	//private TypeSelectionState typeSelectionState = new TypeSelectionState();
@@ -84,7 +84,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation = org.alice.ide.croquet.models.ast.declaration.TypeMenuModel.getInstance().getPopupMenuOperation();
 	
 	private class TypeDropDownPane extends org.alice.ide.common.AbstractDropDownPane {
-		private edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label();
+		private org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 		public TypeDropDownPane() {
 			this.addComponent( label );
 		}
@@ -164,7 +164,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.isArrayStateState = new IsArrayState( isArrayProperty );
 		this.isArrayStateState.setEnabled( isArrayCheckBoxEnabled );
 		
-		edu.cmu.cs.dennisc.croquet.CheckBox isArrayCheckBox = this.isArrayStateState.createCheckBox();
+		org.lgna.croquet.components.CheckBox isArrayCheckBox = this.isArrayStateState.createCheckBox();
 		isArrayCheckBox.setBackgroundColor( null );
 		
 //		this.typeSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>>() {

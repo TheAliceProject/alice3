@@ -79,7 +79,7 @@ public class DropPreviewHole extends org.lgna.cheshire.stencil.features.Hole {
 		return false;
 	}
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy ) {
+	public java.awt.geom.Area getAreaToSubstractForContains( org.lgna.croquet.components.Component< ? > asSeenBy ) {
 		return null;
 	}
 	

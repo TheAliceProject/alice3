@@ -47,7 +47,7 @@ package org.alice.ide.common;
  */
 public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance  {
 	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression, org.lgna.croquet.components.Component< ? > component ) {
 		this.expression = expression;
 		this.addComponent( component );
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( expression ) );

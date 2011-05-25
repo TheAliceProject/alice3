@@ -72,7 +72,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 			super.removeNotify();
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.keyReceiver ) };
+	private org.lgna.croquet.components.Component< ? >[] components = { new org.lgna.croquet.components.SwingAdapter( this.keyReceiver ) };
 	private org.alice.apis.moveandturn.Key key = null;
 
 	public KeyChooser() {
@@ -105,7 +105,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 //		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
+	public org.lgna.croquet.components.Component< ? >[] getComponents() {
 		return this.components;
 	}
 	@Override

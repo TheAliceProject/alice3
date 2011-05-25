@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
+public abstract class MembersContentPanel extends org.lgna.croquet.components.PageAxisPanel {
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
 		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
 			MembersContentPanel.this.handleAccessibleSelection( nextValue );

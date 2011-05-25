@@ -196,7 +196,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 			this.setCurrentPotentialDropIndex( -1 );
 		}
 		if( this.getComponentCount() > 0 ) {
-			edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
+			org.lgna.croquet.components.Component<?> component0 = this.getComponent( 0 );
 			if( component0 instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance ) {
 				org.alice.ide.codeeditor.EmptyStatementListAffordance emptyStatementListAfforance = (org.alice.ide.codeeditor.EmptyStatementListAffordance)component0;
 	
@@ -275,7 +275,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( Object instance ) {
+	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)instance;
 		return this.getFactory().createStatementPane( statement, getProperty() );
 	}
@@ -400,11 +400,11 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 				rv.y = null;
 				rv.yPlusHeight = 0;
 			} else if( index == N ) {
-				edu.cmu.cs.dennisc.croquet.Component< ? > lastComponent = this.getComponent( N-1 );
+				org.lgna.croquet.components.Component< ? > lastComponent = this.getComponent( N-1 );
 				rv.y = lastComponent.getY() + lastComponent.getHeight();
 				rv.yPlusHeight = null;
 			} else {
-				edu.cmu.cs.dennisc.croquet.Component< ? > component = this.getComponent( index );
+				org.lgna.croquet.components.Component< ? > component = this.getComponent( index );
 				rv.y = component.getY();
 				rv.yPlusHeight = rv.y + component.getHeight();
 			}

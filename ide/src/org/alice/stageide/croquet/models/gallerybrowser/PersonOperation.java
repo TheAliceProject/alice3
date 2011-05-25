@@ -60,7 +60,7 @@ public abstract class PersonOperation extends edu.cmu.cs.dennisc.croquet.InputDi
 		return rv;
 	}
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+	protected java.awt.Dimension getDesiredDialogSize( org.lgna.croquet.components.Dialog dialog ) {
 		return new java.awt.Dimension( 1000, 800 );
 	}
 }

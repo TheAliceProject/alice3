@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.PathControl;
+
 public class SelectDirectoryActionOperation extends ActionOperation {
 	private static edu.cmu.cs.dennisc.map.MapToMap<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, PathControl.Initializer, SelectDirectoryActionOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static SelectDirectoryActionOperation getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {

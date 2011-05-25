@@ -56,16 +56,16 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.fields };
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected org.lgna.croquet.components.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type ).createButton();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected org.lgna.croquet.components.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return null;
 	}
 	@Override
-	protected Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
-		java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? > > rv;
+	protected Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
+		java.util.List< org.lgna.croquet.components.Component< ? > > rv;
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
 			rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)member;
@@ -74,7 +74,7 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 			} else {
 				if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field;
-					edu.cmu.cs.dennisc.croquet.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), fieldInAlice);
+					org.lgna.croquet.components.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), fieldInAlice);
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: add popup menu to field declaration pane" );
 //					class EditFieldDeclarationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation { 
 //						public EditFieldDeclarationOperation() {
@@ -86,9 +86,9 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 //							edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "todo" );
 //						}
 //					}
-					rv.add( new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
+					rv.add( new org.lgna.croquet.components.LineAxisPanel(
 								new org.alice.ide.operations.ast.EditFieldOperation( fieldInAlice ).createButton(),
-								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ),
+								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
 								declarationPane
 							) 
 					);
@@ -103,8 +103,8 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 				//pass
 			} else {
 				rv.add( 
-						new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
-								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( org.alice.ide.common.ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT ),
+						new org.lgna.croquet.components.LineAxisPanel( 
+								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( org.alice.ide.common.ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT ),
 								TemplateFactory.getMutatorTemplate( field )
 						)
 				);
@@ -112,8 +112,8 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 			
 			if( field.getValueType().isArray() ) {
 				rv.add( 
-						new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
-								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( org.alice.ide.common.ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT ),
+						new org.lgna.croquet.components.LineAxisPanel( 
+								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( org.alice.ide.common.ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT ),
 								TemplateFactory.getMutateArrayAtIndexTemplate( field )
 						)
 				);
@@ -122,7 +122,7 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 				//pass
 			} else {
-				rv.add( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ) );
+				rv.add( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
 			}
 		} else {
 			rv = null;

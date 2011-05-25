@@ -11,7 +11,7 @@ public class RoundedCornersModel extends edu.cmu.cs.dennisc.croquet.ActionOperat
 	}
 	private RoundedCornersModel() {
 		super( null, java.util.UUID.fromString( "3e8dec1d-8fec-41c3-961a-1828fbb17250" ) );
-		this.setSmallIcon( new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/menu/rounded-corners.png") ) );
+		this.setSmallIcon( new ImageIcon(getClass().getResource("../resources/menu/rounded-corners.png") ) );
 	}
 	@Override
 	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {

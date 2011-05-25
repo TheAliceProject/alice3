@@ -51,15 +51,15 @@ public class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cm
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInterstitial( int i, final int N ) {
+	protected org.lgna.croquet.components.Component< ? > createInterstitial( int i, final int N ) {
 		if( i < N - 1 ) {
-			return new edu.cmu.cs.dennisc.croquet.Label( ", " );
+			return new org.lgna.croquet.components.Label( ", " );
 		} else {
 			return null;
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( Object instance ) {
+	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = (edu.cmu.cs.dennisc.alice.ast.Expression)instance;
 		return this.getFactory().createExpressionPane( expression );
 	}

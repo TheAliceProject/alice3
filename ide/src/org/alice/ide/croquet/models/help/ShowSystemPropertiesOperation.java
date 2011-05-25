@@ -57,36 +57,36 @@ public class ShowSystemPropertiesOperation extends org.alice.ide.operations.Inco
 	}
 	@Override
 	protected void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
-		edu.cmu.cs.dennisc.croquet.RowsSpringPanel formPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 2 ) {
-			private edu.cmu.cs.dennisc.croquet.Component< ? >[] createComponentRowForSystemProperty( String name ) {
+		org.lgna.croquet.components.RowsSpringPanel formPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 2 ) {
+			private org.lgna.croquet.components.Component< ? >[] createComponentRowForSystemProperty( String name ) {
 				String value = System.getProperty( name );
 				assert value != null;
-				return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( name+":" ),
-						new edu.cmu.cs.dennisc.croquet.Label( value ) 
+				return org.lgna.croquet.components.SpringUtilities.createRow( 
+						org.lgna.croquet.components.SpringUtilities.createTrailingLabel( name+":" ),
+						new org.lgna.croquet.components.Label( value ) 
 				);
 			}
 			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
+			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
 				rv.add( createComponentRowForSystemProperty( "java.version" ) );
 				rv.add( createComponentRowForSystemProperty( "os.name" ) );
 				rv.add( createComponentRowForSystemProperty( "os.version" ) );
 				rv.add( createComponentRowForSystemProperty( "os.arch" ) );
 				rv.add( createComponentRowForSystemProperty( "sun.arch.data.model" ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ), null ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ), null ) );
 				ShowPathPropertyOperation[] showPathPropertyOperations = { 
 						ShowClassPathPropertyOperation.getInstance(),
 						ShowLibraryPathPropertyOperation.getInstance(),
 				};
 				for( ShowPathPropertyOperation showPathPropertyOperation : showPathPropertyOperations ) {
 					String propertyName = showPathPropertyOperation.getPropertyName();				
-					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( propertyName+":" ), 
+					rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
+							org.lgna.croquet.components.SpringUtilities.createTrailingLabel( propertyName+":" ), 
 							showPathPropertyOperation.createHyperlink() 
 					) );
 				}
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ), null ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, ShowAllSystemPropertiesOperation.getInstance().createHyperlink() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ), null ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( null, ShowAllSystemPropertiesOperation.getInstance().createHyperlink() ) );
 				return rv;
 			}
 		};

@@ -62,7 +62,7 @@ public class ProcedureTemplateComposite extends MemberTemplateComposite {
 		return model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 		return new org.alice.ide.memberseditor.ProceduresContentPanel();
 	}
 	@Override

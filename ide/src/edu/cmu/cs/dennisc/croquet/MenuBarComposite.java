@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.MenuBar;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -64,32 +66,8 @@ public class MenuBarComposite extends Composite {
 		return this.menuModels;
 	}
 
-	public MenuBar createMenuBar() {
-		MenuBar rv = new MenuBar( this ) {
-			@Override
-			protected void handleDisplayable() {
-				super.handleDisplayable();
-//				assert mapMenuBarToListener.containsKey( menuBar ) == false;
-//				MenuBarChangeListener listener = new MenuBarChangeListener( menuBar );
-//				this.mapMenuBarToListener.put( menuBar, listener );
-//				menuBar.getJComponent().getSelectionModel().addChangeListener( listener );
-				MenuBarComposite.this.addComponent(this);
-			}
-
-			@Override
-			protected void handleUndisplayable() {
-				super.handleUndisplayable();
-				MenuBarComposite.this.removeComponent(this);
-//				MenuBarChangeListener listener = this.mapMenuBarToListener.get( menuBar );
-//				assert listener != null;
-//				menuBar.getJComponent().getSelectionModel().removeChangeListener( listener );
-//				this.mapMenuBarToListener.remove( menuBar );
-			}
-		};
-		for( MenuModel menuModel : this.getChildren() ) {
-			rv.addMenu( menuModel.createMenu() );
-		}
-		return rv;
+	public org.lgna.croquet.components.MenuBar createMenuBar() {
+		return new org.lgna.croquet.components.MenuBar( this );
 	}
 	
 }

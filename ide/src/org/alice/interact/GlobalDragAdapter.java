@@ -93,10 +93,10 @@ import org.alice.interact.manipulator.ScaleDragManipulator;
 import org.alice.interact.manipulator.SelectObjectDragManipulator;
 import org.alice.interact.manipulator.TargetManipulator;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+import org.lgna.croquet.components.DragComponent;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;

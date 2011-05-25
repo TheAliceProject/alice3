@@ -61,13 +61,13 @@ public class PredeterminedMenuModel extends MenuModel {
 	
 	//todo:
 	@Override
-	/*package-private*/ Menu createMenu() {
-		Menu rv = super.createMenu();
+	public org.lgna.croquet.components.Menu createMenu() {
+		org.lgna.croquet.components.Menu rv = super.createMenu();
 		MenuItemContainerUtilities.addMenuElements( rv, this.models );
 		return rv;
 	}
 	@Override
-	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupOperationStep context ) {
+	protected void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupOperationStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
 		MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
 	}

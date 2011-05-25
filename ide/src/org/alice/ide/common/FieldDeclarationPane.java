@@ -45,26 +45,26 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
+public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPanel {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-	private edu.cmu.cs.dennisc.croquet.Label finalLabel = new edu.cmu.cs.dennisc.croquet.Label();
+	private org.lgna.croquet.components.Label finalLabel = new org.lgna.croquet.components.Label();
 	public FieldDeclarationPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		this.field = field;
 		if( org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getValue() ) {
 			this.addComponent( finalLabel );
 		}
 		this.addComponent( TypeComponent.createInstance( field.getValueType() ) );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
 		nameLabel.scaleFont( 1.5f );
 		this.addComponent( nameLabel );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.addComponent( new org.alice.ide.common.GetsPane( true ) );
 		
 		//todo
 		//boolean isDropDownPotentiallyDesired = factory instanceof org.alice.ide.memberseditor.Factory;
 		
-		edu.cmu.cs.dennisc.croquet.Component< ? > component = new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer );
+		org.lgna.croquet.components.Component< ? > component = new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer );
 //		if( factory instanceof org.alice.ide.memberseditor.Factory ) {
 //			if( org.alice.ide.IDE.getSingleton().isDropDownDesiredForFieldInitializer( field ) ) {
 //				component = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane(null, component, field.initializer, field.getDesiredValueType() );

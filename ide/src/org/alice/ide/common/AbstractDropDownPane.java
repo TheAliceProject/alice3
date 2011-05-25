@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDropDownPane extends edu.cmu.cs.dennisc.croquet.Control {
+public abstract class AbstractDropDownPane extends org.lgna.croquet.components.Control {
 //public abstract class AbstractDropDownPane extends edu.cmu.cs.dennisc.croquet.AbstractButton< javax.swing.AbstractButton, edu.cmu.cs.dennisc.croquet.Operation< ? > > {
 
 //	private zoot.event.ControlAdapter controlAdapter = new zoot.event.ControlAdapter( this );

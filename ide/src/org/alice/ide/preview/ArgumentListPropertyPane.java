@@ -50,15 +50,15 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		super( factory, property );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( Object instance ) {
+	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
-		edu.cmu.cs.dennisc.croquet.Component< ? > expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
+		org.lgna.croquet.components.Component< ? > expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
 		final boolean IS_PARAMETER_NAME_DESIRED = false;
 		if( IS_PARAMETER_NAME_DESIRED ) {
 			String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getNameForDeclaration( argument.parameter.getValue() );
 			if( parameterName != null && parameterName.length() > 0 ) {
-				edu.cmu.cs.dennisc.croquet.LineAxisPanel rv = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
-				rv.addComponent( new edu.cmu.cs.dennisc.croquet.Label( parameterName + ": " ) );
+				org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
+				rv.addComponent( new org.lgna.croquet.components.Label( parameterName + ": " ) );
 				rv.addComponent( expressionComponent );
 				return rv;
 			} else {

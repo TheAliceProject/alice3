@@ -47,7 +47,7 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class ItemEventTrigger extends EventTrigger<java.awt.event.ItemEvent> {
-	public ItemEventTrigger( edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > viewController, java.awt.event.ItemEvent itemEvent ) {
+	public ItemEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.ItemEvent itemEvent ) {
 		super( viewController, itemEvent );
 	}
 	public ItemEventTrigger( java.awt.event.ItemEvent itemEvent ) {

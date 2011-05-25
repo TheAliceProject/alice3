@@ -47,7 +47,7 @@ package org.alice.ide.preferencesinputpane;
  */
 public class BooleanPreferenceCheckBoxProxy extends PreferenceProxy<Boolean> {
 	private edu.cmu.cs.dennisc.croquet.BooleanState operation;
-	private edu.cmu.cs.dennisc.croquet.CheckBox checkBox;
+	private org.lgna.croquet.components.CheckBox checkBox;
 	public BooleanPreferenceCheckBoxProxy( edu.cmu.cs.dennisc.preference.Preference<Boolean> preference ) {
 		super( preference );
 		this.operation = new edu.cmu.cs.dennisc.croquet.BooleanState( 
@@ -59,7 +59,7 @@ public class BooleanPreferenceCheckBoxProxy extends PreferenceProxy<Boolean> {
 		this.checkBox = this.operation.createCheckBox();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
+	public org.lgna.croquet.components.Component< ? > getComponent() {
 		return this.checkBox;
 	}
 	@Override

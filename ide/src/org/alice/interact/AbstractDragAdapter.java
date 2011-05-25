@@ -81,8 +81,8 @@ import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.alice.stageide.sceneeditor.snap.SnapState;
+import org.lgna.croquet.components.DragComponent;
 
-import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 
 import edu.cmu.cs.dennisc.alice.Project;

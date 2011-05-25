@@ -45,7 +45,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.croquet.Panel {
+class AbstractCodeHeaderPane extends org.lgna.croquet.components.Panel {
 	protected static final float NAME_SCALE = 1.8f;
 	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclarationInAlice;
 	private ParametersPane parametersPane;
@@ -73,7 +73,7 @@ class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.croquet.Panel {
 //			this.addComponent( new InstanceLine( this.codeDeclarationInAlice ) );
 //		}
 	}
-	protected void addComponent( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+	protected void addComponent( org.lgna.croquet.components.Component< ? > component ) {
 		this.internalAddComponent( component );
 	}
 }

@@ -87,11 +87,11 @@ public class OperationMenuItemPrepModel extends MenuItemPrepModel {
 		return new OperationMenuPrepModelResolver( this );
 	}
 	@Override
-	public JComponent< ? > getFirstComponent() {
+	public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
 		return this.operation.getFirstComponent();
 	}
-	private MenuItem createMenuItem() {
-		return new MenuItem( this.getOperation() );
+	private org.lgna.croquet.components.MenuItem createMenuItem() {
+		return new org.lgna.croquet.components.MenuItem( this.getOperation() );
 	}
 	@Override
 	public MenuItemContainer createMenuItemAndAddTo( MenuItemContainer rv ) {

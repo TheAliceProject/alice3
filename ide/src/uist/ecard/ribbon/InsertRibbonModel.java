@@ -11,8 +11,8 @@ public class InsertRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedT
 		super( java.util.UUID.fromString( "9c428c49-11f7-485a-ba03-dc9f0e3d3ec6" ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
-		edu.cmu.cs.dennisc.croquet.PageAxisPanel rv = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
+	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+		org.lgna.croquet.components.PageAxisPanel rv = new org.lgna.croquet.components.PageAxisPanel();
 		rv.setBackgroundColor(java.awt.SystemColor.control);
 		return rv;
 	}

@@ -53,7 +53,7 @@ public abstract class PopupOperationStep< M extends edu.cmu.cs.dennisc.croquet.P
 	public PopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public void showPopupMenu( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		org.lgna.croquet.Trigger trigger = this.getTrigger();
 		trigger.showPopupMenu( popupMenu );
 	}

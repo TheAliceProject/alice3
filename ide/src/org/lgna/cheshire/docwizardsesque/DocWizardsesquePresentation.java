@@ -56,12 +56,12 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 	protected org.lgna.cheshire.Chapter createChapter(org.lgna.croquet.steps.Transaction transaction) {
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
-	private final edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
+	private final org.lgna.croquet.components.Frame frame = new org.lgna.croquet.components.Frame();
 	private final PreviewComponent previewComponent = new PreviewComponent();
 	private final OffTrackPanel offTrackPanel = new OffTrackPanel();
-	private final edu.cmu.cs.dennisc.croquet.CardPanel cardPanel = new edu.cmu.cs.dennisc.croquet.CardPanel();
-	private final edu.cmu.cs.dennisc.croquet.CardPanel.Key previewKey;
-	private final edu.cmu.cs.dennisc.croquet.CardPanel.Key offTrackKey;
+	private final org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
+	private final org.lgna.croquet.components.CardPanel.Key previewKey;
+	private final org.lgna.croquet.components.CardPanel.Key offTrackKey;
 	private final javax.swing.JTree jTree;
 	private final BookTreeModel bookTreeModel;
 	private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
@@ -132,14 +132,14 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 			
 		} );
 		
-		edu.cmu.cs.dennisc.croquet.BorderPanel contentPanel = this.frame.getContentPanel();
+		org.lgna.croquet.components.BorderPanel contentPanel = this.frame.getContentPanel();
 		
-		edu.cmu.cs.dennisc.croquet.FlowPanel flowPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel();
+		org.lgna.croquet.components.FlowPanel flowPanel = new org.lgna.croquet.components.FlowPanel();
 		flowPanel.addComponent( DoSingleStepOperation.getInstance().createButton() );
 		flowPanel.addComponent( DoAllStepsOperation.getInstance().createButton() );
 
-		edu.cmu.cs.dennisc.croquet.Label previewLabel = new edu.cmu.cs.dennisc.croquet.Label( "start with:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-		edu.cmu.cs.dennisc.croquet.PageAxisPanel previewPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel( previewLabel, this.previewComponent );
+		org.lgna.croquet.components.Label previewLabel = new org.lgna.croquet.components.Label( "start with:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		org.lgna.croquet.components.PageAxisPanel previewPanel = new org.lgna.croquet.components.PageAxisPanel( previewLabel, this.previewComponent );
 		
 		this.previewKey = cardPanel.createKey( previewPanel, java.util.UUID.randomUUID() ); 
 		this.offTrackKey = cardPanel.createKey( this.offTrackPanel, java.util.UUID.randomUUID() );
@@ -148,7 +148,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		cardPanel.setMinimumPreferredHeight( 50 );
 		cardPanel.show( this.previewKey );
 		
-		edu.cmu.cs.dennisc.croquet.VerticalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.VerticalSplitPane(flowPanel, this.cardPanel );
+		org.lgna.croquet.components.VerticalSplitPane splitPane = new org.lgna.croquet.components.VerticalSplitPane(flowPanel, this.cardPanel );
 		
 		this.bookTreeModel = new BookTreeModel( this.getBook() );
 		this.jTree = new javax.swing.JTree( this.bookTreeModel );
@@ -160,9 +160,9 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		this.jTree.setCellRenderer( new BookTreeCellRenderer() );
 		this.jTree.setRootVisible( false );
 		this.jTree.addMouseMotionListener( this.mouseMotionListener );
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( new edu.cmu.cs.dennisc.croquet.SwingAdapter( jTree ) );
-		contentPanel.addComponent( splitPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
-		contentPanel.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new org.lgna.croquet.components.SwingAdapter( jTree ) );
+		contentPanel.addComponent( splitPane, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+		contentPanel.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 	}
 	@Override
 	protected void handleTransactionCanceled( org.lgna.croquet.steps.Transaction transaction ) {

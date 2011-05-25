@@ -62,7 +62,7 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
+	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
 		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = this.getInputValue();
 		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( localDeclarationStatement );
 //		pane.setLeftButtonPressOperation( null );

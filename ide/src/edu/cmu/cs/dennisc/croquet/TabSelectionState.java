@@ -61,16 +61,40 @@ public class TabSelectionState< T extends Composite > extends DefaultListSelecti
 	}
 	public interface TabCreator<T> {
 		public java.util.UUID getId( T item );
-		public void customizeTitleComponent( BooleanState booleanState, AbstractButton< ?, BooleanState > button, T item );
-		public JComponent< ? > createMainComponent( T item );
-		public ScrollPane createScrollPane( T item );
+		public void customizeTitleComponent( BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, BooleanState > button, T item );
+		public org.lgna.croquet.components.JComponent< ? > createMainComponent( T item );
+		public org.lgna.croquet.components.ScrollPane createScrollPane( T item );
 		public boolean isCloseable( T item );
 	}
 
-	public FolderTabbedPane< T > createFolderTabbedPane( TabCreator< T > tabCreator ) {
-		return new FolderTabbedPane< T >( this, tabCreator );
+	public org.lgna.croquet.components.FolderTabbedPane< T > createFolderTabbedPane( TabCreator< T > tabCreator ) {
+		return new org.lgna.croquet.components.FolderTabbedPane< T >( this, tabCreator );
 	};
-	public ToolPaletteTabbedPane< T > createToolPaletteTabbedPane( TabCreator< T > tabCreator ) {
-		return new ToolPaletteTabbedPane< T >( this, tabCreator );
+	public org.lgna.croquet.components.ToolPaletteTabbedPane< T > createToolPaletteTabbedPane( TabCreator< T > tabCreator ) {
+		return new org.lgna.croquet.components.ToolPaletteTabbedPane< T >( this, tabCreator );
 	};
+	public org.lgna.croquet.components.JComponent< ? > getMainComponentFor( T item ) {
+		org.lgna.croquet.components.AbstractTabbedPane< T, ? > abstractTabbedPane = this.getFirstComponent( org.lgna.croquet.components.AbstractTabbedPane.class );
+		if( abstractTabbedPane != null ) {
+			return abstractTabbedPane.getMainComponentFor( item );
+		} else {
+			return null;
+		}
+	}
+	public org.lgna.croquet.components.ScrollPane getScrollPaneFor( T item ) {
+		org.lgna.croquet.components.AbstractTabbedPane< T, ? > abstractTabbedPane = this.getFirstComponent( org.lgna.croquet.components.AbstractTabbedPane.class );
+		if( abstractTabbedPane != null ) {
+			return abstractTabbedPane.getScrollPaneFor( item );
+		} else {
+			return null;
+		}
+	}
+	public org.lgna.croquet.components.JComponent< ? > getRootComponentFor( T item ) {
+		org.lgna.croquet.components.AbstractTabbedPane< T, ? > abstractTabbedPane = this.getFirstComponent( org.lgna.croquet.components.AbstractTabbedPane.class );
+		if( abstractTabbedPane != null ) {
+			return abstractTabbedPane.getRootComponentFor( item );
+		} else {
+			return null;
+		}
+	}
 }

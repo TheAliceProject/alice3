@@ -82,7 +82,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		public void changed( boolean nextValue ) {
 			if( nextValue ) {
-				IDE.this.right.addComponent( IDE.this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+				IDE.this.right.addComponent( IDE.this.ubiquitousPane, org.lgna.croquet.components.BorderPanel.Constraint.NORTH );
 			} else {
 				IDE.this.right.removeComponent( IDE.this.ubiquitousPane );
 			}
@@ -111,7 +111,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.membersEditor = this.createClassMembersEditor();
 		this.ubiquitousPane = this.createUbiquitousPane();
 
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().createEditorsFolderTabbedPane();
+		org.lgna.croquet.components.AbstractTabbedPane tabbedPane = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().createEditorsFolderTabbedPane();
 		tabbedPane.scaleFont( 2.0f );
 
 		final int MINIMUM_SIZE = 24;
@@ -119,7 +119,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.left.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
 
 		//this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
-		this.right.addComponent( tabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		this.right.addComponent( tabbedPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 		//this.right.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "hello" ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 
 		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addAndInvokeValueObserver( this.isAlwaysShowingBlocksObserver );
@@ -151,27 +151,27 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private int leftDividerLocation = 240;
 
 	private edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin concealedBin = new edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin();
-	private edu.cmu.cs.dennisc.croquet.JComponent< ? > galleryBrowser;
+	private org.lgna.croquet.components.JComponent< ? > galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
 
-	private edu.cmu.cs.dennisc.croquet.VerticalSplitPane left = new edu.cmu.cs.dennisc.croquet.VerticalSplitPane();
-	private edu.cmu.cs.dennisc.croquet.BorderPanel right = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane( left, right );
+	private org.lgna.croquet.components.VerticalSplitPane left = new org.lgna.croquet.components.VerticalSplitPane();
+	private org.lgna.croquet.components.BorderPanel right = new org.lgna.croquet.components.BorderPanel();
+	private org.lgna.croquet.components.HorizontalSplitPane root = new org.lgna.croquet.components.HorizontalSplitPane( left, right );
 
 	@Override
 	public void initialize( java.lang.String[] args ) {
 		super.initialize( args );
-		edu.cmu.cs.dennisc.croquet.Frame frame = this.getFrame();
+		org.lgna.croquet.components.Frame frame = this.getFrame();
 		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarComposite.getInstance() );		
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createContentPane() {
-		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+	protected org.lgna.croquet.components.Component< ? > createContentPane() {
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		rv.addMouseWheelListener( new edu.cmu.cs.dennisc.javax.swing.plaf.metal.FontMouseWheelAdapter() );
-		rv.addComponent( this.root, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-		rv.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.concealedBin ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
+		rv.addComponent( this.root, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		rv.addComponent( new org.lgna.croquet.components.SwingAdapter( this.concealedBin ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
 
 		this.setSceneEditorExpanded( false );
 		return rv;
@@ -381,7 +381,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	}
 
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public org.lgna.croquet.components.JComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		return null;
 	}
 
@@ -453,7 +453,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > getGalleryRoot();
-	protected abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > root );
+	protected abstract org.lgna.croquet.components.JComponent< ? > createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > root );
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
 		return new org.alice.ide.memberseditor.MembersEditor();
 	}
@@ -467,7 +467,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
 		return this.membersEditor;
 	}
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > getGalleryBrowser() {
+	public org.lgna.croquet.components.JComponent< ? > getGalleryBrowser() {
 		return this.galleryBrowser;
 	}
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
@@ -487,11 +487,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	public abstract org.alice.ide.cascade.CascadeManager getCascadeManager();
 
-	public void addToConcealedBin( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+	public void addToConcealedBin( org.lgna.croquet.components.Component< ? > component ) {
 		this.concealedBin.add( component.getAwtComponent() );
 		this.concealedBin.revalidate();
 	}
-	public void removeFromConcealedBin( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+	public void removeFromConcealedBin( org.lgna.croquet.components.Component< ? > component ) {
 		this.concealedBin.remove( component.getAwtComponent() );
 	}
 
@@ -564,8 +564,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private ComponentStencil stencil;
 	private java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > holes = null;
-	private edu.cmu.cs.dennisc.croquet.DragComponent potentialDragSource;
-	private edu.cmu.cs.dennisc.croquet.Component< ? > currentDropReceptorComponent;
+	private org.lgna.croquet.components.DragComponent potentialDragSource;
+	private org.lgna.croquet.components.Component< ? > currentDropReceptorComponent;
 
 	protected boolean isFauxStencilDesired() {
 		return this.isDragInProgress();
@@ -601,14 +601,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					}
 
 					if( isFauxStencilDesired() ) {
-//<<<<<<< HEAD
-//						for( edu.cmu.cs.dennisc.croquet.Component< ? > component : IDE.this.holes ) {
-//							java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this );
-//=======
 						for( edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor : IDE.this.holes ) {
-							edu.cmu.cs.dennisc.croquet.Component< ? > component = dropReceptor.getViewController();
+							org.lgna.croquet.components.Component< ? > component = dropReceptor.getViewController();
 							java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this );
-//>>>>>>> dev
 							area.subtract( new java.awt.geom.Area( holeBounds ) );
 						}
 
@@ -624,7 +619,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 						if( dropReceptor instanceof org.alice.ide.codeeditor.CodeEditor ) {
 							//pass
 						} else {
-							edu.cmu.cs.dennisc.croquet.Component< ? > component = dropReceptor.getViewController();
+							org.lgna.croquet.components.Component< ? > component = dropReceptor.getViewController();
 							java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this );
 							holeBounds.x -= BUFFER;
 							holeBounds.y -= BUFFER;
@@ -675,7 +670,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	//public abstract void handleDelete( edu.cmu.cs.dennisc.alice.ast.Node node );
 
-	public void showStencilOver( edu.cmu.cs.dennisc.croquet.DragComponent potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
+	public void showStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
 		if( codeEditor != null ) {
 			this.holes = codeEditor.createListOfPotentialDropReceptors( type );
@@ -1225,7 +1220,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.croquet.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+	public org.lgna.croquet.components.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		return null;
 	}
 

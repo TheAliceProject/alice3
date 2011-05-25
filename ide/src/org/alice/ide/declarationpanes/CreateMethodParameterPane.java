@@ -53,7 +53,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 		this.methodInvocations = methodInvocations;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? >[] createWarningRow() {
+	protected org.lgna.croquet.components.Component< ? >[] createWarningRow() {
 		final int N = this.methodInvocations.size();
 		if( N > 0 ) {
 
@@ -72,7 +72,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 			String text = "I understand that I need to update the invocations to this " + codeText + ".";
 			edu.cmu.cs.dennisc.croquet.BooleanState isUnderstandingConfirmed = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "21efac8d-c2dd-451f-8065-d2e284a3e244" ), false );
 			isUnderstandingConfirmed.setTextForBothTrueAndFalse( text );
-			edu.cmu.cs.dennisc.croquet.CheckBox checkBox = isUnderstandingConfirmed.createCheckBox();
+			org.lgna.croquet.components.CheckBox checkBox = isUnderstandingConfirmed.createCheckBox();
 			checkBox.setBackgroundColor( null );
 			
 			StringBuffer sb = new StringBuffer();
@@ -100,13 +100,13 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 			}
 			sb.append( " invocation.</body></html>" );
 
-			edu.cmu.cs.dennisc.croquet.PageAxisPanel pane = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
-			pane.addComponent( new edu.cmu.cs.dennisc.croquet.Label( sb.toString() ) );
-			pane.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ) );
-			pane.addComponent( new edu.cmu.cs.dennisc.croquet.LineAxisPanel( new edu.cmu.cs.dennisc.croquet.Label( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
-			pane.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ) );
+			org.lgna.croquet.components.PageAxisPanel pane = new org.lgna.croquet.components.PageAxisPanel();
+			pane.addComponent( new org.lgna.croquet.components.Label( sb.toString() ) );
+			pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
+			pane.addComponent( new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
+			pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
 			pane.addComponent( checkBox );
-			return new edu.cmu.cs.dennisc.croquet.Component< ? >[] { new edu.cmu.cs.dennisc.croquet.Label( "WARNING:" ), pane };
+			return new org.lgna.croquet.components.Component< ? >[] { new org.lgna.croquet.components.Label( "WARNING:" ), pane };
 		} else {
 			return null;
 		}

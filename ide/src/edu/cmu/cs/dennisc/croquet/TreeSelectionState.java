@@ -70,9 +70,9 @@ public class TreeSelectionState<E> extends State<E> {
 
 	private class SingleTreeSelectionModel extends javax.swing.tree.DefaultTreeSelectionModel {
 	}
-	private SingleTreeSelectionModel treeSelectionModel;
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel;
-	private Codec< E > codec;
+	private final SingleTreeSelectionModel treeSelectionModel;
+	private final edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel;
+	private final Codec< E > codec;
 	public TreeSelectionState(Group group, java.util.UUID id, Codec< E > codec, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel, E initialSelection ) {
 		super(group, id);
 		this.codec = codec;
@@ -96,6 +96,9 @@ public class TreeSelectionState<E> extends State<E> {
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> getTreeModel() {
 		return this.treeModel;
 	}
+	public javax.swing.tree.TreeSelectionModel getTreeSelectionModel() {
+		return this.treeSelectionModel;
+	}
 	public E getSelection() {
 		javax.swing.tree.TreePath path = this.treeSelectionModel.getSelectionPath();
 		if( path != null ) {
@@ -113,31 +116,13 @@ public class TreeSelectionState<E> extends State<E> {
 		return this.getSelection();
 	}
 	
-	public Tree<E> createTree() {
-		Tree<E> rv = new Tree<E>( this ) {
-			@Override
-			protected void handleDisplayable() {
-				super.handleDisplayable();
-				TreeSelectionState.this.addComponent(this);
-			};
-
-			@Override
-			protected void handleUndisplayable() {
-				TreeSelectionState.this.removeComponent(this);
-				super.handleUndisplayable();
-			}
-		};
-		rv.setSwingTreeModel(this.treeModel);
-		rv.setSwingTreeSelectionModel( this.treeSelectionModel );
-		return rv;
+	public org.lgna.croquet.components.Tree<E> createTree() {
+		return new org.lgna.croquet.components.Tree<E>( this );
 	}
 
-	public PathControl createPathControl( PathControl.Initializer initializer ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: createPathControl" );
-		PathControl rv = new PathControl( (TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>)this, initializer );
-		rv.setSwingTreeModel( this.treeModel );
-		rv.setSwingTreeSelectionModel( this.treeSelectionModel );
-		return rv;
+	public org.lgna.croquet.components.PathControl createPathControl( org.lgna.croquet.components.PathControl.Initializer initializer ) {
+		assert initializer != null;
+		return new org.lgna.croquet.components.PathControl( (TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>)this, initializer );
 	}
 	
 }

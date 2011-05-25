@@ -51,7 +51,7 @@ import javax.swing.ImageIcon;
 
 import edu.cmu.cs.dennisc.croquet.BooleanState;
 
-public class LinkScaleButton  extends edu.cmu.cs.dennisc.croquet.BooleanStateButton<javax.swing.AbstractButton> 
+public class LinkScaleButton  extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> 
 {
 	private ImageIcon linkedIcon;
 	private ImageIcon unlinkedIcon;

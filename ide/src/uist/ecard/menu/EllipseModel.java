@@ -11,7 +11,7 @@ public class EllipseModel extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 	}
 	private EllipseModel() {
 		super( null, java.util.UUID.fromString( "2ba1d48e-7474-490a-beba-38c3f0a40352" ) );
-		this.setSmallIcon( new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/menu/ellipse.png") ) );
+		this.setSmallIcon( new ImageIcon(getClass().getResource("../resources/menu/ellipse.png") ) );
 	}
 	@Override
 	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {

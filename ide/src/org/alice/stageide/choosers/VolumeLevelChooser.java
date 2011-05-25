@@ -47,13 +47,13 @@ package org.alice.stageide.choosers;
  */
 public class VolumeLevelChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
 	private org.alice.stageide.controls.VolumeLevelControl volumeLevelControl = new org.alice.stageide.controls.VolumeLevelControl();
-	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.volumeLevelControl ) };
+	private org.lgna.croquet.components.Component< ? >[] components = { new org.lgna.croquet.components.SwingAdapter( this.volumeLevelControl ) };
 	public VolumeLevelChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		//todo
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
+	public org.lgna.croquet.components.Component< ? >[] getComponents() {
 		return this.components;
 	}
 	@Override

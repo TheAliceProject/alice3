@@ -45,7 +45,7 @@ package org.alice.ide.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuButton<M extends edu.cmu.cs.dennisc.croquet.Operation< ? > > extends edu.cmu.cs.dennisc.croquet.OperationButton<javax.swing.AbstractButton,M> {
+public class MenuButton<M extends edu.cmu.cs.dennisc.croquet.Operation< ? > > extends org.lgna.croquet.components.OperationButton<javax.swing.AbstractButton,M> {
 	private static final int AFFORDANCE_WIDTH = 6;
 	private static final int AFFORDANCE_HALF_HEIGHT = 5;
 	private static final java.awt.Color ARROW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray(191);
@@ -133,10 +133,10 @@ public class MenuButton<M extends edu.cmu.cs.dennisc.croquet.Operation< ? > > ex
 	//			g2.setPaint( prevPaint );
 	//		}
 	//	}
-	private edu.cmu.cs.dennisc.croquet.Component<?> prefixComponent;
-	private edu.cmu.cs.dennisc.croquet.Component<?> mainComponent;
-	private edu.cmu.cs.dennisc.croquet.Component<?> postfixComponent;
-	public MenuButton(M model, edu.cmu.cs.dennisc.croquet.Component<?> prefixComponent, edu.cmu.cs.dennisc.croquet.Component<?> mainComponent, edu.cmu.cs.dennisc.croquet.Component<?> postfixComponent) {
+	private org.lgna.croquet.components.Component<?> prefixComponent;
+	private org.lgna.croquet.components.Component<?> mainComponent;
+	private org.lgna.croquet.components.Component<?> postfixComponent;
+	public MenuButton(M model, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent) {
 		super(model);
 		this.prefixComponent = prefixComponent;
 		this.mainComponent = mainComponent;
@@ -146,7 +146,7 @@ public class MenuButton<M extends edu.cmu.cs.dennisc.croquet.Operation< ? > > ex
 	public MenuButton(M model) {
 		this(model, null, null, null);
 	}
-	public edu.cmu.cs.dennisc.croquet.Component<?> getMainComponent() {
+	public org.lgna.croquet.components.Component<?> getMainComponent() {
 		return this.mainComponent;
 	}
 	protected boolean isInactiveFeedbackDesired() {

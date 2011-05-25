@@ -87,7 +87,7 @@ package org.lgna.cheshire.stencil.features;
 		return null;
 	}
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy ) {
+	public java.awt.geom.Area getAreaToSubstractForContains( org.lgna.croquet.components.Component< ? > asSeenBy ) {
 //		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
 //		java.awt.Rectangle bounds = this.getScrollBarBoundsIfNecessary( trackableShape, asSeenBy);
 //		if( bounds != null ) {

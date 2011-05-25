@@ -44,9 +44,9 @@
 package org.alice.ide.properties.uicontroller;
 
 import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.Label;
 
-import edu.cmu.cs.dennisc.croquet.Component;
-import edu.cmu.cs.dennisc.croquet.Label;
 
 public abstract class LabelBasedPropertyController<P> extends BasicPropertyController<P>
 {

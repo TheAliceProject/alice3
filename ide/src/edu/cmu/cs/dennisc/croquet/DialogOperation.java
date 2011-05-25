@@ -42,6 +42,11 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.Container;
+import org.lgna.croquet.components.Dialog;
+import org.lgna.croquet.components.ViewController;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -101,7 +106,7 @@ public abstract class DialogOperation< S extends org.lgna.croquet.steps.DialogOp
 //		dialog.getAwtComponent().setUndecorated( true );
 //		dialog.getRootPane().setWindowDecorationStyle(javax.swing.JRootPane.PLAIN_DIALOG);
 
-		dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DO_NOTHING );
+		dialog.setDefaultCloseOperation( org.lgna.croquet.components.Dialog.DefaultCloseOperation.DO_NOTHING );
 		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				org.lgna.croquet.steps.TransactionManager.fireDialogOpened( dialog );

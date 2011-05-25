@@ -53,22 +53,22 @@ public class HelpOperation extends org.alice.ide.operations.InconsequentialActio
 		return SingletonHolder.instance;
 	}
 
-	private static class HelpPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	private static class HelpPanel extends org.lgna.croquet.components.BorderPanel {
 		public HelpPanel() {
 			BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ), "http://help.alice.org/" ); //"http://kenai.com/projects/alice/pages/Help"
 
-			edu.cmu.cs.dennisc.croquet.Hyperlink hyperlink = browserOperation.createHyperlink();
-			edu.cmu.cs.dennisc.croquet.Label iconLabel = new edu.cmu.cs.dennisc.croquet.Label( new javax.swing.ImageIcon( HelpPanel.class.getResource( "images/help.png" ) ) );
-			edu.cmu.cs.dennisc.croquet.Label textLabel = new edu.cmu.cs.dennisc.croquet.Label( "Help is available on the web:" );
+			org.lgna.croquet.components.Hyperlink hyperlink = browserOperation.createHyperlink();
+			org.lgna.croquet.components.Label iconLabel = new org.lgna.croquet.components.Label( new javax.swing.ImageIcon( HelpPanel.class.getResource( "images/help.png" ) ) );
+			org.lgna.croquet.components.Label textLabel = new org.lgna.croquet.components.Label( "Help is available on the web:" );
 			
 			textLabel.scaleFont( 2.0f );
 			hyperlink.scaleFont( 2.0f );
 
-			edu.cmu.cs.dennisc.croquet.PageAxisPanel pageAxisPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel(
-					edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalGlue(),
+			org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel(
+					org.lgna.croquet.components.BoxUtilities.createVerticalGlue(),
 					textLabel,
 					hyperlink,
-					edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalGlue()
+					org.lgna.croquet.components.BoxUtilities.createVerticalGlue()
 			);
 			pageAxisPanel.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 			this.addComponent( iconLabel, Constraint.LINE_START );

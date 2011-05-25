@@ -259,10 +259,10 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 		public java.util.UUID getId( CodeComposite item ) {
 			return item.getCode().getUUID();
 		}
-		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane( CodeComposite item ) {
+		public org.lgna.croquet.components.ScrollPane createScrollPane( CodeComposite item ) {
 			return null;
 		}
-		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( CodeComposite item ) {
+		public org.lgna.croquet.components.JComponent< ? > createMainComponent( CodeComposite item ) {
 			return org.alice.ide.codeeditor.CodeEditor.getInstance( item.getCode() );
 		}
 		
@@ -272,7 +272,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 			}
 			return false;
 		}
-		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, final edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, CodeComposite item ) {
+		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, final org.lgna.croquet.components.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, CodeComposite item ) {
 			booleanState.setTextForBothTrueAndFalse( getMenuText( item ) );
 			button.getAwtComponent().setIcon( getMenuSmallIcon( item ) );
 			button.scaleFont( 1.5f );
@@ -293,7 +293,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 			if( IS_RUN_BUTTON_DESIRED ) {
 				if( isEntryPoint(code) ) {
 					edu.cmu.cs.dennisc.croquet.Operation<?> runOperation = org.alice.ide.IDE.getSingleton().getRunOperation();
-					edu.cmu.cs.dennisc.croquet.Button runButton = runOperation.createButton();
+					org.lgna.croquet.components.Button runButton = runOperation.createButton();
 					edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( button.getAwtComponent(), runButton.getAwtComponent(), edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 1 );
 					runButton.getAwtComponent().setText( null );
 					runButton.getAwtComponent().setToolTipText( runOperation.getName() );
@@ -309,7 +309,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 			return isEntryPoint(item.getCode()) == false;
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.FolderTabbedPane<CodeComposite> singleton;
+	private org.lgna.croquet.components.FolderTabbedPane<CodeComposite> singleton;
 //	private DeclarationsDropDown declarationsDropDown = new DeclarationsDropDown();
 
 	@Override
@@ -336,18 +336,18 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeFor(CodeComposite codeComposite) {
 		final edu.cmu.cs.dennisc.croquet.TrackableShape rv = super.getTrackableShapeFor(codeComposite);
 		if( IS_RUN_BUTTON_DESIRED ) {
-			if( rv instanceof edu.cmu.cs.dennisc.croquet.JComponent<?> ) {
-				edu.cmu.cs.dennisc.croquet.JComponent<?> component = (edu.cmu.cs.dennisc.croquet.JComponent<?>)rv;
+			if( rv instanceof org.lgna.croquet.components.JComponent<?> ) {
+				org.lgna.croquet.components.JComponent<?> component = (org.lgna.croquet.components.JComponent<?>)rv;
 				if( "run".equals( codeComposite.getCode().getName() ) ) {
-					edu.cmu.cs.dennisc.croquet.Button button = null;
-					for( edu.cmu.cs.dennisc.croquet.Component<?> child : component.getComponents() ) {
-						if( child instanceof edu.cmu.cs.dennisc.croquet.Button ) {
-							button = (edu.cmu.cs.dennisc.croquet.Button)child;
+					org.lgna.croquet.components.Button button = null;
+					for( org.lgna.croquet.components.Component<?> child : component.getComponents() ) {
+						if( child instanceof org.lgna.croquet.components.Button ) {
+							button = (org.lgna.croquet.components.Button)child;
 							break;
 						}
 					}
 					if( button != null ) {
-						final edu.cmu.cs.dennisc.croquet.Button accessibleButton = button;
+						final org.lgna.croquet.components.Button accessibleButton = button;
 						return new edu.cmu.cs.dennisc.croquet.TrackableShape() {
 							public void addComponentListener(java.awt.event.ComponentListener listener) {
 								rv.addComponentListener(listener);
@@ -361,10 +361,10 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 							public void removeHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
 								rv.addHierarchyBoundsListener(listener);
 							}
-							public edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
+							public org.lgna.croquet.components.ScrollPane getScrollPaneAncestor() {
 								return rv.getScrollPaneAncestor();
 							}
-							public java.awt.Shape getShape(edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets) {
+							public java.awt.Shape getShape(org.lgna.croquet.components.ScreenElement asSeenBy, java.awt.Insets insets) {
 								java.awt.Rectangle rvRect = (java.awt.Rectangle)rv.getShape(asSeenBy, insets);
 								java.awt.Rectangle buttonRect = (java.awt.Rectangle)accessibleButton.getShape(asSeenBy, null);
 								rvRect.width = buttonRect.x-rvRect.x;
@@ -373,7 +373,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 								}
 								return rvRect;
 							}
-							public java.awt.Shape getVisibleShape(edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets) {
+							public java.awt.Shape getVisibleShape(org.lgna.croquet.components.ScreenElement asSeenBy, java.awt.Insets insets) {
 								java.awt.Rectangle rvRect = (java.awt.Rectangle)rv.getVisibleShape(asSeenBy, insets);
 								java.awt.Rectangle buttonRect = (java.awt.Rectangle)accessibleButton.getShape(asSeenBy, null);
 								rvRect.width = buttonRect.x-rvRect.x;
@@ -446,13 +446,13 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 			}
 		}
 	};
-	private static class DropDownPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	private static class DropDownPanel extends org.lgna.croquet.components.BorderPanel {
 		private javax.swing.ButtonModel buttonModel;
 		public DropDownPanel() {
-			edu.cmu.cs.dennisc.croquet.Button button = TypeRootMenuModel.getInstance().getPopupMenuOperation().createButton();
+			org.lgna.croquet.components.Button button = TypeRootMenuModel.getInstance().getPopupMenuOperation().createButton();
 			button.getAwtComponent().setFocusable( false );
 			this.buttonModel = button.getAwtComponent().getModel();
-			button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.LEADING );
+			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
 			this.addComponent( button, Constraint.CENTER );
 			this.setBorder( new AttentionGrabbingBorder( button.getAwtComponent() ) );
 			//button.setBorder( new AttentionGrabbingBorder( button.getAwtComponent() ) );
@@ -502,7 +502,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 	}
 	private EditorTabCreator editorTabCreator = new EditorTabCreator();
 	private DropDownPanel dropDownPanel = new DropDownPanel();
-	public edu.cmu.cs.dennisc.croquet.FolderTabbedPane<CodeComposite> createEditorsFolderTabbedPane() {
+	public org.lgna.croquet.components.FolderTabbedPane<CodeComposite> createEditorsFolderTabbedPane() {
 		assert this.singleton == null;
 		this.singleton = this.createFolderTabbedPane( this.editorTabCreator );
 		this.singleton.setHeaderLeadingComponent( this.dropDownPanel );
