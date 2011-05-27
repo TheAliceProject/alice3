@@ -78,10 +78,10 @@ public abstract class Presentation {
 		public void transactionCanceled( org.lgna.croquet.steps.Transaction transaction ) {
 			Presentation.this.handleTransactionCanceled( transaction );
 		}
-		public void dropPending( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		public void dropPending( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 		}
-		public void dropPended( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.DropPendedEvent( completionModel, dropReceptor, dropSite ) );
+		public void dropPended( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+			Presentation.this.handleEvent( new org.lgna.cheshire.events.DropPendedEvent( model, dropReceptor, dropSite ) );
 		}
 		public void popupMenuResized(org.lgna.croquet.components.PopupMenu popupMenu ) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.PopupMenuResizedEvent( popupMenu ) );

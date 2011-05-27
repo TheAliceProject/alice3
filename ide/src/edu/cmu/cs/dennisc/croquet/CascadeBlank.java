@@ -53,6 +53,10 @@ public abstract class CascadeBlank< B > extends Model {
 		super( id );
 	}
 	@Override
+	public org.lgna.croquet.steps.Step< ? > fire( org.lgna.croquet.Trigger trigger ) {
+		throw new RuntimeException();
+	}
+	@Override
 	protected void localize() {
 	}
 	protected abstract java.util.List< CascadeItem > updateChildren( java.util.List< CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep<B> step );

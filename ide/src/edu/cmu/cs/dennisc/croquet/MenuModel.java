@@ -109,9 +109,9 @@ public abstract class MenuModel extends MenuItemPrepModel {
 	}
 	
 	
-	protected void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupOperationStep context ) {
+	protected void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep context ) {
 	}
-	protected void handlePopupMenuEpilogue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupOperationStep context ) {
+	protected void handlePopupMenuEpilogue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep context ) {
 	}
 	
 //	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {

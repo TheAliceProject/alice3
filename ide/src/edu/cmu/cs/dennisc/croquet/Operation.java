@@ -125,6 +125,7 @@ public abstract class Operation< S extends org.lgna.croquet.steps.OperationStep<
 		return replacementEdit;
 	}
 
+	@Override
 	public S fire( org.lgna.croquet.Trigger trigger ) {
 		if( this.isEnabled() ) {
 			return this.handleFire( trigger );

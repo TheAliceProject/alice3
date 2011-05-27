@@ -522,11 +522,11 @@ class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, CascadeRootStep<
 	}
 }
 
-public class RtCascadePopupOperation<T> extends RtModel< CascadePopupPrepModel< T >, org.lgna.croquet.steps.CascadePopupOperationStep< T > > {
+public class RtCascadePopupOperation<T> extends RtModel< CascadePopupPrepModel< T >, org.lgna.croquet.steps.CascadePopupPrepStep< T > > {
 	private Operation.PerformObserver performObserver;
 	private RtRoot< T > rtRoot;
 
-	public RtCascadePopupOperation( CascadePopupPrepModel< T > model, org.lgna.croquet.steps.CascadePopupOperationStep< T > step, Operation.PerformObserver performObserver ) {
+	public RtCascadePopupOperation( CascadePopupPrepModel< T > model, org.lgna.croquet.steps.CascadePopupPrepStep< T > step, Operation.PerformObserver performObserver ) {
 		super( model, step );
 		this.performObserver = performObserver;
 		this.rtRoot = new RtRoot< T >( model.getRoot(), this );

@@ -53,4 +53,14 @@ public class Element {
 	public java.util.UUID getId() {
 		return this.id;
 	}
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		rv.append( this.getClass().getName() );
+		return rv;
+	}
+	@Override
+	public final String toString() {
+		StringBuilder sb = new StringBuilder();
+		this.appendRepr( sb );
+		return sb.toString();
+	}
 }

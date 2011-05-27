@@ -133,7 +133,7 @@ class TransientStatementsWrapper extends org.lgna.croquet.components.LineAxisPan
 /**
  * @author Dennis Cosgrove
  */
-public class UbiquitousPane extends org.lgna.croquet.components.View {
+public class UbiquitousPane extends org.lgna.croquet.components.ViewPanel {
 	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
 //	private LoopTemplate loopTemplate = new LoopTemplate();
 	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();

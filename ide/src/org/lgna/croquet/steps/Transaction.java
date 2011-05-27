@@ -155,20 +155,68 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		}
 	}
 	
+	private static class MenuSelection { 
+//		private final edu.cmu.cs.dennisc.croquet.MenuBarComposite menuBarComposite;
+		private final java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > menuItemPrepModels;
+		public MenuSelection( javax.swing.MenuElement[] menuElements, int i0 ) {
+//			this.menuBarComposite = null;
+			this.menuItemPrepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( int i=i0; i<menuElements.length; i++ ) {
+				javax.swing.MenuElement menuElementI = menuElements[ i ];
+				if( menuElementI instanceof javax.swing.JPopupMenu ) {
+					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElementI;
+					//pass
+				} else if( menuElementI instanceof javax.swing.JMenuItem ) {
+					javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
+					org.lgna.croquet.components.Component< ? > component = org.lgna.croquet.components.Component.lookup( jMenuItem );
+					//edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleMenuSelectionStateChanged", i, component.getClass() );
+					if( component instanceof org.lgna.croquet.components.ViewController< ?, ? > ) {
+						org.lgna.croquet.components.ViewController< ?, ? > viewController = (org.lgna.croquet.components.ViewController< ?, ? >)component;
+						//edu.cmu.cs.dennisc.print.PrintUtilities.println( "viewController", i, viewController.getModel() );
+						edu.cmu.cs.dennisc.croquet.Model model = viewController.getModel();
+						if( model != null ) {
+							edu.cmu.cs.dennisc.croquet.MenuItemPrepModel menuItemPrepModel;
+							if( model instanceof edu.cmu.cs.dennisc.croquet.MenuItemPrepModel ) {
+								menuItemPrepModel = (edu.cmu.cs.dennisc.croquet.MenuItemPrepModel)model;
+							} else if( model instanceof edu.cmu.cs.dennisc.croquet.Operation<?> ) {
+								menuItemPrepModel = ((edu.cmu.cs.dennisc.croquet.Operation< ? >)model).getMenuItemPrepModel();
+							} else if( model instanceof edu.cmu.cs.dennisc.croquet.BooleanState ) {
+								menuItemPrepModel = ((edu.cmu.cs.dennisc.croquet.BooleanState)model).getMenuItemPrepModel();
+							} else {
+								throw new RuntimeException( model.toString() );
+							}
+							this.menuItemPrepModels.add( menuItemPrepModel );
+						} else {
+							throw new NullPointerException();
+						}
+					}
+				}
+			}
+		}
+//		public edu.cmu.cs.dennisc.croquet.MenuBarComposite getMenuBarComposite() {
+//			return this.menuBarComposite;
+//		}
+		public int getMenuItemPrepModelCount() {
+			return this.menuItemPrepModels.size();
+		}
+		public edu.cmu.cs.dennisc.croquet.MenuItemPrepModel getMenuItemPrepModelAt( int index ) {
+			return this.menuItemPrepModels.get( index );
+		}
+	}
 	private class PendingSteps {
 		private edu.cmu.cs.dennisc.croquet.CompletionModel dropCompletionModel;
 		private edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor;
 		private edu.cmu.cs.dennisc.croquet.DropSite dropSite;
-		private java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > lastMenuSelection;
+		private MenuSelection lastMenuSelection;
 		private javax.swing.event.ChangeEvent lastChangeEvent;
 		public void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel dropCompletionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
 			this.dropCompletionModel = dropCompletionModel;
 			this.dropReceptor = dropReceptor;
 			this.dropSite = dropSite;
 		}
-		public void pendMenuSelection( javax.swing.event.ChangeEvent changeEvent, java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > models ) {
+		public void pendMenuSelection( javax.swing.event.ChangeEvent changeEvent, MenuSelection menuSelection ) {
 			this.lastChangeEvent = changeEvent;
-			this.lastMenuSelection = models;
+			this.lastMenuSelection = menuSelection;
 		}
 //		private boolean isDropPrepStepAlreadyAdded() {
 //			for( PrepStep< ? > prepStep : Transaction.this.getPrepSteps() ) {
@@ -188,7 +236,7 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 				org.lgna.croquet.Trigger trigger = new org.lgna.croquet.triggers.ChangeEventTrigger( this.lastChangeEvent );
 				try {
 					boolean isDropPrep;
-					if( this.lastMenuSelection != null && this.lastMenuSelection.size() > 0 ) {
+					if( this.lastMenuSelection != null && this.lastMenuSelection.getMenuItemPrepModelCount() > 0 ) {
 						isDropPrep = true;
 					} else {
 						isDropPrep = isLastPrep;
@@ -201,10 +249,10 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 							rv = null;
 						}
 					}
-					if( this.lastMenuSelection != null && this.lastMenuSelection.size() > 0 ) {
-						final int N = this.lastMenuSelection.size();
+					if( this.lastMenuSelection != null && this.lastMenuSelection.getMenuItemPrepModelCount() > 0 ) {
+						final int N = this.lastMenuSelection.getMenuItemPrepModelCount();
 						for( int i=0; i<N; i++ ) {
-							edu.cmu.cs.dennisc.croquet.Model model = this.lastMenuSelection.get( i );
+							edu.cmu.cs.dennisc.croquet.MenuItemPrepModel model = this.lastMenuSelection.getMenuItemPrepModelAt( i );
 							
 //							if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
 //								MenuModelStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.MenuModel)model );
@@ -237,10 +285,6 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 //								}
 							} else if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
 								//pass
-							} else if( model instanceof edu.cmu.cs.dennisc.croquet.MenuBarComposite ) {
-								//pass
-							} else if( model instanceof edu.cmu.cs.dennisc.croquet.CompletionModel ) {
-								//pass
 							} else {
 								assert false : model;
 							}
@@ -268,8 +312,8 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 	}
 
 	
-	/*package-private*/ void pendMenuSelection( javax.swing.event.ChangeEvent changeEvent, java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > models ) {
-		this.pendingSteps.pendMenuSelection( changeEvent, models );
+	/*package-private*/ void pendMenuSelection( javax.swing.event.ChangeEvent changeEvent, javax.swing.MenuElement[] menuElements, int i0 ) {
+		this.pendingSteps.pendMenuSelection( changeEvent, new MenuSelection( menuElements, i0 ) );
 	}
 	
 	public edu.cmu.cs.dennisc.croquet.Edit< ? > getEdit() {
@@ -365,7 +409,7 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 
 	private void addStep( Step<?> step ) {
 		assert step != null;
-		if( step instanceof CascadePopupOperationStep< ? > ) {
+		if( step instanceof CascadePopupPrepStep< ? > ) {
 			step = null;
 		} else {
 			step = this.pendingSteps.reify( step, true );

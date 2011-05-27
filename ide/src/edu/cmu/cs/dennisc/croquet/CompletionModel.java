@@ -56,6 +56,11 @@ public abstract class CompletionModel extends Model {
 	public Group getGroup() {
 		return this.group;
 	}
+
+	public boolean isToBeIgnored() {
+		return false;
+	}
+	
 	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, UserInformation userInformation ) {
 		Edit< ? > edit = step.getEdit();
 		if( edit != null ) {

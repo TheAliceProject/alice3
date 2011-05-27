@@ -45,30 +45,13 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadePopupPrepModel<B> extends PopupPrepModel<org.lgna.croquet.steps.CascadePopupOperationStep< B > > {
-	public static final class CascadeCloser<B> extends CompletionModel {
-		private final CascadePopupPrepModel<B> popupPrepModel;
-		public CascadeCloser( Group group, CascadePopupPrepModel<B> popupPrepModel ) {
-			super( group, java.util.UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
-			this.popupPrepModel = popupPrepModel;
-		}
-		public CascadePopupPrepModel<B> getPopupPrepModel() {
-			return this.popupPrepModel;
-		}
-		@Override
-		protected void localize() {
-		}
-		@Override
-		public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-			return false;
-		}
-	}
-	private final CascadeCloser<B> closer;
+public abstract class CascadePopupPrepModel<B> extends PopupPrepModel<org.lgna.croquet.steps.CascadePopupPrepStep< B > > {
+	private final CascadePopupCompletionModel<B> completionModel;
 	private final Class< B > componentType;
 	private final CascadeRoot< B > root;
-	public CascadePopupPrepModel( Group group, java.util.UUID id, Class< B > componentType, CascadeBlank< B >[] blanks ) {
+	public CascadePopupPrepModel( Group completionGroup, java.util.UUID id, Class< B > componentType, CascadeBlank< B >[] blanks ) {
 		super( id );
-		this.closer = new CascadeCloser<B>( group, this );
+		this.completionModel = new CascadePopupCompletionModel<B>( completionGroup, this );
 		this.componentType = componentType;
 		this.root = new CascadeRoot< B >( this );
 		assert blanks != null;
@@ -82,10 +65,11 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel<org.lgna.c
 		return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( root );
 	}
 	@Override
-	public org.lgna.croquet.steps.CascadePopupOperationStep< B > createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+	public org.lgna.croquet.steps.CascadePopupPrepStep< B > createAndPushStep( org.lgna.croquet.Trigger trigger ) {
 		return org.lgna.croquet.steps.TransactionManager.addCascadePopupOperationStep( this, trigger );
 	}
 
+	@Override
 	protected void localize() {
 		String name = this.getDefaultLocalizedText();
 		if( name != null ) {
@@ -102,18 +86,18 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel<org.lgna.c
 		return this.componentType;
 	}
 
-	protected abstract Edit< ? extends CascadeCloser< B > > createEdit( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, B[] values );
+	protected abstract Edit< ? extends CascadePopupCompletionModel< B > > createEdit( org.lgna.croquet.steps.CascadePopupPrepStep< B > step, B[] values );
 
-	public void handleCompletion( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, PerformObserver performObserver, B[] values ) {
+	public void handleCompletion( org.lgna.croquet.steps.CascadePopupPrepStep< B > step, PerformObserver performObserver, B[] values ) {
 		try {
-			Edit< ? extends CascadeCloser< B > > edit = this.createEdit( step, values );
+			Edit< ? extends CascadePopupCompletionModel< B > > edit = this.createEdit( step, values );
 			step.commitAndInvokeDo( edit );
 		} finally {
 //			ContextManager.popContext();
 			performObserver.handleFinally();
 		}
 	}
-	public void handleCancel( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, PerformObserver performObserver ) {
+	public void handleCancel( org.lgna.croquet.steps.CascadePopupPrepStep< B > step, PerformObserver performObserver ) {
 		try {
 			step.cancel();
 		} finally {
@@ -123,7 +107,7 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel<org.lgna.c
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.steps.CascadePopupOperationStep< B > step, PerformObserver performObserver ) {
+	protected void perform( org.lgna.croquet.steps.CascadePopupPrepStep< B > step, PerformObserver performObserver ) {
 		org.lgna.croquet.steps.RtCascadePopupOperation< B > rt = new org.lgna.croquet.steps.RtCascadePopupOperation< B >( this, step, performObserver );
 //		ContextManager.pushContext( ContextManager.createCascadeRootContext( this.root ) );
 		rt.perform();

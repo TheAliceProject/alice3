@@ -46,10 +46,10 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBar extends ViewController< javax.swing.JMenuBar, edu.cmu.cs.dennisc.croquet.MenuBarComposite > {
-	public MenuBar( edu.cmu.cs.dennisc.croquet.MenuBarComposite model ) {
-		super( model );
-		for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : model.getChildren() ) {
+public class MenuBar extends View< javax.swing.JMenuBar, edu.cmu.cs.dennisc.croquet.MenuBarComposite > {
+	public MenuBar( edu.cmu.cs.dennisc.croquet.MenuBarComposite composite ) {
+		super( composite );
+		for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : composite.getChildren() ) {
 			this.addMenu( menuModel.createMenu() );
 		}
 	}

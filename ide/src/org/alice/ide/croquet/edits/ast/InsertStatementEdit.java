@@ -42,7 +42,7 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
-public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel.CascadeCloser< edu.cmu.cs.dennisc.alice.ast.Expression > > {
+public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupCompletionModel< edu.cmu.cs.dennisc.alice.ast.Expression > > {
 	public static final int AT_END = Short.MAX_VALUE;
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;

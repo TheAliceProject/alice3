@@ -46,32 +46,12 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class View extends JComponent< javax.swing.JPanel > {
-	private final edu.cmu.cs.dennisc.croquet.Composite composite;
-	public View( edu.cmu.cs.dennisc.croquet.Composite composite ) {
+public abstract class View< J extends javax.swing.JComponent, C extends edu.cmu.cs.dennisc.croquet.Composite > extends JComponent< J > {
+	private final C composite;
+	public View( C composite ) {
 		this.composite = composite;
 	}
-	public edu.cmu.cs.dennisc.croquet.Composite getComposite() {
+	public C getComposite() {
 		return composite;
-	}
-	@Override
-	protected final javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel();
-		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
-		rv.setLayout( layoutManager );
-		return rv;
-	}
-	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
-	public void removeComponent( Component< ? > component ) {
-		this.internalRemoveComponent( component );
-	}
-	public void forgetAndRemoveComponent( Component< ? > component ) {
-		this.internalForgetAndRemoveComponent( component );
-	}
-	public void removeAllComponents() {
-		this.internalRemoveAllComponents();
-	}
-	public void forgetAndRemoveAllComponents() {
-		this.internalForgetAndRemoveAllComponents();
 	}
 }

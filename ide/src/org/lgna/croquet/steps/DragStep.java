@@ -406,7 +406,7 @@ public class DragStep extends PrepStep< edu.cmu.cs.dennisc.croquet.DragAndDropMo
 					} else {
 						viewController = null;
 					}
-					org.lgna.croquet.steps.OperationStep< ? > step = operation.fire( this.getLatestMouseEvent(), viewController );
+					org.lgna.croquet.steps.Step< ? > step = operation.fire( new org.lgna.croquet.triggers.MouseEventTrigger( viewController, this.getLatestMouseEvent() ) );
 				} else {
 					this.cancel( trigger );
 				}

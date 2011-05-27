@@ -67,11 +67,9 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 	}
 
 	protected abstract void localize();
-
-	public boolean isToBeIgnored() {
-		return false;
-	}
 	
+	public abstract org.lgna.croquet.steps.Step<?> fire( org.lgna.croquet.Trigger trigger );
+
 	protected static String getLocalizedText( Class<?> cls, String subKey ) {
 		String bundleName = cls.getPackage().getName() + ".croquet";
 		try {
@@ -348,17 +346,5 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 
 	public final String getTutorialNoteText( org.lgna.croquet.steps.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
 		return "todo getTutorialNoteText";
-	}
-	
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		rv.append( this.getClass().getName() );
-		return rv;
-	}
-	
-	@Override
-	public final String toString() {
-		StringBuilder sb = new StringBuilder();
-		this.appendRepr( sb );
-		return sb.toString();
 	}
 }

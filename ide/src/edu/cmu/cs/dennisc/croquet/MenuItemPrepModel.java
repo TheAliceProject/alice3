@@ -53,4 +53,8 @@ public abstract class MenuItemPrepModel extends PrepModel {
 		super( id );
 	}
 	public abstract MenuItemContainer createMenuItemAndAddTo( MenuItemContainer rv );
+	@Override
+	public org.lgna.croquet.steps.Step<?> fire(org.lgna.croquet.Trigger trigger) {
+		throw new RuntimeException();
+	}
 }

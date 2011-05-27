@@ -74,4 +74,9 @@ public abstract class DragAndDropModel extends PrepModel {
 	public abstract void handleDragEnteredDropReceptor( org.lgna.croquet.steps.DragStep step );
 	public abstract void handleDragExitedDropReceptor( org.lgna.croquet.steps.DragStep step );
 	public abstract void handleDragStopped( org.lgna.croquet.steps.DragStep step );
+	
+	@Override
+	public org.lgna.croquet.steps.Step<?> fire(org.lgna.croquet.Trigger trigger) {
+		throw new RuntimeException();
+	}
 }

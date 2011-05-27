@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class AddExpressionEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation.CascadeCloser > {
+public class AddExpressionEdit extends edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupCompletionModel > {
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
 	private final edu.cmu.cs.dennisc.alice.ast.Expression expression;
 	private transient int index;

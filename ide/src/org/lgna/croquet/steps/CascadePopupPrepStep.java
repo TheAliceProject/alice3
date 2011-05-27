@@ -46,16 +46,14 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class StandardPopupOperationStep extends PopupOperationStep< edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel >{
-	public static <T> StandardPopupOperationStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel model, org.lgna.croquet.Trigger trigger ) {
-		return new StandardPopupOperationStep( parent, model, trigger );
+public class CascadePopupPrepStep<T> extends PopupPrepStep< edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel<T> >{
+	public static <T> CascadePopupPrepStep<T> createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel<T> model, org.lgna.croquet.Trigger trigger ) {
+		return new CascadePopupPrepStep<T>( parent, model, trigger );
 	}
-	private StandardPopupOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel model, org.lgna.croquet.Trigger trigger ) {
+	private CascadePopupPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel<T> model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
-	public StandardPopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public CascadePopupPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	public void handleRetargetableMenuModelInitialization( edu.cmu.cs.dennisc.croquet.RetargetingData retargetableData ) {
 	}
 }

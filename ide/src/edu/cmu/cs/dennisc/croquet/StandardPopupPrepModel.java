@@ -66,7 +66,7 @@ public final class StandardPopupPrepModel extends PopupPrepModel {
 	}
 	
 	@Override
-	public org.lgna.croquet.steps.StandardPopupOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+	public org.lgna.croquet.steps.StandardPopupPrepStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
 		return org.lgna.croquet.steps.TransactionManager.addStandardPopupOperationStep( this, trigger );
 	}
 	
@@ -115,7 +115,7 @@ public final class StandardPopupPrepModel extends PopupPrepModel {
 	}
 	
 	@Override
-	protected void perform( org.lgna.croquet.steps.PopupOperationStep step, edu.cmu.cs.dennisc.croquet.PopupPrepModel.PerformObserver performObserver ) {
+	protected void perform( final org.lgna.croquet.steps.PopupPrepStep step, edu.cmu.cs.dennisc.croquet.PopupPrepModel.PerformObserver performObserver ) {
 		//note: do not call super
 		final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this ) {
 			@Override

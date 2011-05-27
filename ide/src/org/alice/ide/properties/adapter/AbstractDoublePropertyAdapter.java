@@ -105,7 +105,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 				
 			this.popupMenuOperation = new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "66435390-e900-44c7-b440-0789c31e5a7a" ) ) {
 				@Override
-				protected void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupOperationStep context ) {
+				protected void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep context ) {
 					super.handlePopupMenuPrologue( popupMenu, context );
 					
 					Double currentDouble = AbstractDoublePropertyAdapter.this.getValue();

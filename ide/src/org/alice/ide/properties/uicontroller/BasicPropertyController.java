@@ -62,7 +62,7 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
     protected static final String BLANK_STRING = "NO VALUE";
     
     protected Component<?> propertyComponent;
-    protected org.lgna.croquet.components.JComponent< ? > editButton;
+    protected org.lgna.croquet.components.ViewController< ?,? > editButton;
     
     public BasicPropertyController(PropertyAdapter<P, ?> propertyAdapter)
     {
@@ -132,7 +132,7 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
     
     public void mouseClicked(MouseEvent e)
     {
-        this.propertyAdapter.getEditModel().fire(e, this.editButton);
+        this.propertyAdapter.getEditModel().fire( new org.lgna.croquet.triggers.MouseEventTrigger( this.editButton, e ) );
     }
     
     public void mouseEntered(MouseEvent e){}

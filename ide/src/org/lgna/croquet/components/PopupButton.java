@@ -72,6 +72,7 @@ public class PopupButton extends AbstractButton< javax.swing.JButton, edu.cmu.cs
 		}
 	}
 	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 14 );
+	@Override
 	protected javax.swing.JButton createAwtComponent() {
 		javax.swing.JButton rv = new javax.swing.JButton();
 		rv.setIcon( ARROW_ICON );

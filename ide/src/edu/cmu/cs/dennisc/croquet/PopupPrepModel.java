@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupPrepModel< S extends org.lgna.croquet.steps.PopupOperationStep<? extends PopupPrepModel<?>>> extends PrepModel {
+public abstract class PopupPrepModel< S extends org.lgna.croquet.steps.PopupPrepStep<? extends PopupPrepModel<?>>> extends PrepModel {
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			PopupPrepModel.this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
@@ -90,6 +90,7 @@ public abstract class PopupPrepModel< S extends org.lgna.croquet.steps.PopupOper
 	protected abstract S createAndPushStep( org.lgna.croquet.Trigger trigger );
 	protected abstract void perform( S step, PerformObserver performObserver );
 	
+	@Override
 	public S fire( org.lgna.croquet.Trigger trigger ) {
 		if( this.isEnabled() ) {
 			final S step = this.createAndPushStep( trigger );

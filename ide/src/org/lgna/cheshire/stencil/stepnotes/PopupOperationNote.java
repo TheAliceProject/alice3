@@ -46,7 +46,7 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupOperationNote< S extends org.lgna.croquet.steps.PopupOperationStep<?> > extends OperationNote< S > {
+public abstract class PopupOperationNote< S extends org.lgna.croquet.steps.PopupPrepStep<?> > extends OperationNote< S > {
 	public PopupOperationNote( S step ) {
 		super( step );
 	}
