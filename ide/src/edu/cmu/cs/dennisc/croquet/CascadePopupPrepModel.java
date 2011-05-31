@@ -86,9 +86,12 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel<org.lgna.c
 		return this.componentType;
 	}
 
-	protected abstract Edit< ? extends CascadePopupCompletionModel< B > > createEdit( org.lgna.croquet.steps.CascadePopupPrepStep< B > step, B[] values );
+	public CascadePopupCompletionModel< B > getCompletionModel() {
+		return this.completionModel;
+	}
+	protected abstract Edit< ? extends CascadePopupCompletionModel< B > > createEdit( org.lgna.croquet.steps.CascadePopupCompletionStep< B > step, B[] values );
 
-	public void handleCompletion( org.lgna.croquet.steps.CascadePopupPrepStep< B > step, PerformObserver performObserver, B[] values ) {
+	public void handleCompletion( org.lgna.croquet.steps.CascadePopupCompletionStep< B > step, PerformObserver performObserver, B[] values ) {
 		try {
 			Edit< ? extends CascadePopupCompletionModel< B > > edit = this.createEdit( step, values );
 			step.commitAndInvokeDo( edit );
@@ -97,7 +100,7 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel<org.lgna.c
 			performObserver.handleFinally();
 		}
 	}
-	public void handleCancel( org.lgna.croquet.steps.CascadePopupPrepStep< B > step, PerformObserver performObserver ) {
+	public void handleCancel( org.lgna.croquet.steps.CascadePopupCompletionStep< B > step, PerformObserver performObserver ) {
 		try {
 			step.cancel();
 		} finally {
@@ -108,7 +111,7 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel<org.lgna.c
 
 	@Override
 	protected void perform( org.lgna.croquet.steps.CascadePopupPrepStep< B > step, PerformObserver performObserver ) {
-		org.lgna.croquet.steps.RtCascadePopupOperation< B > rt = new org.lgna.croquet.steps.RtCascadePopupOperation< B >( this, step, performObserver );
+		org.lgna.croquet.steps.RtCascadePopupPrepModel< B > rt = new org.lgna.croquet.steps.RtCascadePopupPrepModel< B >( this, step, performObserver );
 //		ContextManager.pushContext( ContextManager.createCascadeRootContext( this.root ) );
 		rt.perform();
 	}

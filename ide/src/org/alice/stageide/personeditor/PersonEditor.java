@@ -202,7 +202,7 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 					org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().setSelectedItem( (org.alice.apis.stage.FullBodyOutfit)person.getOutfit() );
 				}
 				if( isLifeStageChange ) {
-					org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().setSelectedItem( hair.toString() );
+					org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().setSelectedItem( hair != null ? hair.toString() : null );
 				}
 			} finally {
 				this.isAlreadyHandlingCataclysm = false;
@@ -252,19 +252,20 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 					if( baseEyeColor != null ) {
 						person.setEyeColor( baseEyeColor );
 					}
-					
-					if( hair != null && org.alice.apis.stage.HairManager.getSingleton().isApplicable( hair, lifeStage, gender ) ) {
-						//pass
-					} else {
-						try {
-							Class<? extends org.alice.apis.stage.Hair> cls = org.alice.apis.stage.HairManager.getSingleton().getRandomClass(lifeStage, gender);
-							java.lang.reflect.Field field = cls.getField( hairColor );
-							hair = (org.alice.apis.stage.Hair)field.get( null );
-						} catch( Exception e ) {
-							hair = org.alice.apis.stage.HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender);
+					if( gender != null ) {
+						if( hair != null && org.alice.apis.stage.HairManager.getSingleton().isApplicable( hair, lifeStage, gender ) ) {
+							//pass
+						} else {
+							try {
+								Class<? extends org.alice.apis.stage.Hair> cls = org.alice.apis.stage.HairManager.getSingleton().getRandomClass(lifeStage, gender);
+								java.lang.reflect.Field field = cls.getField( hairColor );
+								hair = (org.alice.apis.stage.Hair)field.get( null );
+							} catch( Exception e ) {
+								hair = org.alice.apis.stage.HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender);
+							}
 						}
+						person.setHair( hair );
 					}
-					person.setHair( hair );
 					PersonViewer.getSingleton().setPerson( person );
 				}
 			} finally {

@@ -84,7 +84,7 @@ public abstract class PopupPrepModel< S extends org.lgna.croquet.steps.PopupPrep
 		return new org.lgna.croquet.components.PopupButton( this );
 	}
 
-	protected static interface PerformObserver { 
+	public static interface PerformObserver { 
 		public void handleFinally(); 
 	}
 	protected abstract S createAndPushStep( org.lgna.croquet.Trigger trigger );

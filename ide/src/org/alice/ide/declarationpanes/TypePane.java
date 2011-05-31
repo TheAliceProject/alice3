@@ -139,7 +139,7 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 		typeDropDownPane.getAwtComponent().setEnabled( isTypeComboBoxEnabled );
 //		this.typeSelectionState.setSelectedItem( componentType );
 		if( isTypeComboBoxEnabled ) {
-			typeDropDownPane.setLeftButtonPressOperation( popupMenuOperation );
+			typeDropDownPane.setLeftButtonPressModel( popupMenuOperation );
 		}
 		typeDropDownPane.refresh();
 		

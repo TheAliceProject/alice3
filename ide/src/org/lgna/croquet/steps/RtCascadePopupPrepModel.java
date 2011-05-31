@@ -501,8 +501,8 @@ class RtCancel<F> extends RtItem< F, Void, CascadeCancel< F >, org.lgna.croquet.
 }
 
 class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, CascadeRootStep< T > > {
-	private final RtCascadePopupOperation< T > rtOperation;
-	public RtRoot( CascadeRoot< T > model, RtCascadePopupOperation< T > rtOperation ) {
+	private final RtCascadePopupPrepModel< T > rtOperation;
+	public RtRoot( CascadeRoot< T > model, RtCascadePopupPrepModel< T > rtOperation ) {
 		super( model, CascadeRootStep.createInstance( model ) );
 		this.rtOperation = rtOperation;
 	}
@@ -522,14 +522,16 @@ class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, CascadeRootStep<
 	}
 }
 
-public class RtCascadePopupOperation<T> extends RtModel< CascadePopupPrepModel< T >, org.lgna.croquet.steps.CascadePopupPrepStep< T > > {
-	private Operation.PerformObserver performObserver;
-	private RtRoot< T > rtRoot;
+public class RtCascadePopupPrepModel<T> extends RtModel< CascadePopupPrepModel< T >, org.lgna.croquet.steps.CascadePopupPrepStep< T > > {
+	private final PopupPrepModel.PerformObserver performObserver;
+	private final RtRoot< T > rtRoot;
+	private final org.lgna.croquet.steps.CascadePopupCompletionStep< T > completionStep;
 
-	public RtCascadePopupOperation( CascadePopupPrepModel< T > model, org.lgna.croquet.steps.CascadePopupPrepStep< T > step, Operation.PerformObserver performObserver ) {
+	public RtCascadePopupPrepModel( CascadePopupPrepModel< T > model, org.lgna.croquet.steps.CascadePopupPrepStep< T > step, PopupPrepModel.PerformObserver performObserver ) {
 		super( model, step );
 		this.performObserver = performObserver;
 		this.rtRoot = new RtRoot< T >( model.getRoot(), this );
+		this.completionStep = new CascadePopupCompletionStep<T>( step.getParent(), model.getCompletionModel(), null, null );
 	}
 	protected T[] createValues( Class< T > componentType ) {
 		RtBlank< T >[] rtBlanks = this.rtRoot.getChildren();
@@ -542,22 +544,22 @@ public class RtCascadePopupOperation<T> extends RtModel< CascadePopupPrepModel< 
 	public void perform() {
 		if( this.rtRoot.isGoodToGo() ) {
 			T[] values = this.createValues( this.getModel().getComponentType() );
-			this.getModel().handleCompletion( this.getStep(), this.performObserver, values );
+			this.getModel().handleCompletion( this.completionStep, this.performObserver, values );
 		} else {
 			final PopupMenu popupMenu = new PopupMenu( this.getModel() );
 			//popupMenu.setLightWeightPopupEnabled( false );
 			popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
 				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
 					//ContextManager.pushContext( RtOperation.this.rtRoot.getContext() );
-					RtCascadePopupOperation.this.rtRoot.addNextNodeMenuItems( popupMenu );
+					RtCascadePopupPrepModel.this.rtRoot.addNextNodeMenuItems( popupMenu );
 				}
 				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-					RtCascadePopupOperation.this.rtRoot.removeAll( popupMenu );
+					RtCascadePopupPrepModel.this.rtRoot.removeAll( popupMenu );
 					//AbstractModelContext< ? > step = ContextManager.popContext();
 					//assert RtOperation.this.rtRoot.getContext() == step : step;
 				}
 				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-					RtCascadePopupOperation.this.handleCancel( e );
+					RtCascadePopupPrepModel.this.handleCancel( e );
 				}
 			} );
 			popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
@@ -590,7 +592,7 @@ public class RtCascadePopupOperation<T> extends RtModel< CascadePopupPrepModel< 
 			isReadyForCompletion = false;
 		}
 		if( isReadyForCompletion ) {
-			model.handleCompletion( this.getStep(), this.performObserver, values );
+			model.handleCompletion( this.completionStep, this.performObserver, values );
 		} else {
 			this.handleCancel( e );
 		}
@@ -610,6 +612,6 @@ public class RtCascadePopupOperation<T> extends RtModel< CascadePopupPrepModel< 
 		//		}
 	}
 	private void handleCancel( java.util.EventObject e ) {
-		this.getModel().handleCancel( this.getStep(), this.performObserver );
+		this.getModel().handleCancel( this.completionStep, this.performObserver );
 	}
 }

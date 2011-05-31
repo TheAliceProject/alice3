@@ -71,7 +71,7 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 		this.setEnabledBackgroundPaint( new java.awt.Color( 0xf7e4b6 ) );
 		this.addComponent( label );
-		this.setLeftButtonClickOperation( GalleryFileOperation.getInstance( treeNode ) );
+		this.setLeftButtonClickModel( GalleryFileOperation.getInstance( treeNode ) );
 		this.setDragModel( new org.alice.ide.croquet.models.GalleryDragModel() );
 		this.getAwtComponent().setOpaque( false );
 	}

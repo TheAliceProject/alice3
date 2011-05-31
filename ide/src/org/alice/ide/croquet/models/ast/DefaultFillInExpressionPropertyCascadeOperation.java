@@ -55,7 +55,7 @@ public class DefaultFillInExpressionPropertyCascadeOperation extends org.alice.i
 		}
 		DefaultFillInExpressionPropertyCascadeOperation rv = map.get( expressionProperty );
 		if( rv != null ) {
-			assert rv.getGroup() == group;
+			assert rv.getCompletionModel().getGroup() == group;
 			assert rv.desiredType == desiredType : " " + rv.desiredType + " " + desiredType;
 			//pass
 		} else {

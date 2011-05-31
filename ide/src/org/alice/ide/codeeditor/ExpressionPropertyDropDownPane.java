@@ -76,7 +76,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 //		return rv;	
 //	}
 
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		return "Drop...";
 	}
 	

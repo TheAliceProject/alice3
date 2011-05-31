@@ -204,13 +204,13 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		}
 	}
 	private class PendingSteps {
-		private edu.cmu.cs.dennisc.croquet.CompletionModel dropCompletionModel;
+		private edu.cmu.cs.dennisc.croquet.Model dropModel;
 		private edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor;
 		private edu.cmu.cs.dennisc.croquet.DropSite dropSite;
 		private MenuSelection lastMenuSelection;
 		private javax.swing.event.ChangeEvent lastChangeEvent;
-		public void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel dropCompletionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
-			this.dropCompletionModel = dropCompletionModel;
+		public void pendDrop( edu.cmu.cs.dennisc.croquet.Model dropModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+			this.dropModel = dropModel;
 			this.dropReceptor = dropReceptor;
 			this.dropSite = dropSite;
 		}
@@ -241,11 +241,11 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 					} else {
 						isDropPrep = isLastPrep;
 					}
-					if( this.dropCompletionModel != null ) {
+					if( this.dropModel != null ) {
 						if( isDropPrep ) {
-							DropPrepStep.createAndAddToTransaction( Transaction.this, this.dropCompletionModel, trigger, this.dropReceptor, this.dropSite );
+							//DropPrepStep.createAndAddToTransaction( Transaction.this, this.dropModel, trigger, this.dropReceptor, this.dropSite );
 						} else {
-							DropCompletionStep.createAndAddToTransaction( Transaction.this, this.dropCompletionModel, trigger, this.dropReceptor, this.dropSite );
+							//DropCompletionStep.createAndAddToTransaction( Transaction.this, this.dropModel, trigger, this.dropReceptor, this.dropSite );
 							rv = null;
 						}
 					}
@@ -279,7 +279,7 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 									if( i < N-1 || isLastPrep ) {
 										CascadeFillInPrepStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model, trigger );
 									} else {
-										CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel)this.dropCompletionModel, trigger, fillIn );
+										//CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, this.dropModel, trigger, fillIn );
 										rv = null;
 									}
 //								}
@@ -290,7 +290,7 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 							}
 						}
 					}
-					this.dropCompletionModel = null;
+					this.dropModel = null;
 					this.dropReceptor = null;
 					this.dropSite = null;
 					this.lastChangeEvent = null;
@@ -307,8 +307,8 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 //		return (edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F >)this.pendingDrop.dropCompletionModel;
 //	}
 	private PendingSteps pendingSteps = new PendingSteps();
-	/*package-private*/ void pendDrop( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
-		this.pendingSteps.pendDrop( completionModel, dropReceptor, dropSite );
+	/*package-private*/ void pendDrop( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+		this.pendingSteps.pendDrop( model, dropReceptor, dropSite );
 	}
 
 	

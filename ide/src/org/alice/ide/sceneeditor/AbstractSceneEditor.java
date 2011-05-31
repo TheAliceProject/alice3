@@ -73,7 +73,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 //		this.mapFieldToInstance.put( field, instance );
 //	}
 	
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		return "Drop...";
 	}
 	

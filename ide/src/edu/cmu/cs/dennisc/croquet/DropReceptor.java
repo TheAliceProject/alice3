@@ -42,10 +42,6 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import org.lgna.croquet.components.DragComponent;
-import org.lgna.croquet.components.JComponent;
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -53,10 +49,10 @@ public interface DropReceptor {
 	public <R extends DropReceptor> CodableResolver< DropReceptor > getCodableResolver();
 	public TrackableShape getTrackableShape( DropSite potentialDropSite );
 	
-	public boolean isPotentiallyAcceptingOf( DragComponent source );
+	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source );
 	//public ViewController<?,?> getViewController();
 	//todo: rename
-	public JComponent<?> getViewController();
+	public org.lgna.croquet.components.JComponent<?> getViewController();
 	public void dragStarted( org.lgna.croquet.steps.DragStep dragAndDropContext );
 	public void dragEntered( org.lgna.croquet.steps.DragStep dragAndDropContext );
 	public DropSite dragUpdated( org.lgna.croquet.steps.DragStep dragAndDropContext );
@@ -68,5 +64,5 @@ public interface DropReceptor {
 	
 	public void dragStopped( org.lgna.croquet.steps.DragStep dragAndDropContext );
 	
-	public String getTutorialNoteText( CompletionModel completionModel, Edit< ? > edit, UserInformation userInformation );
+	public String getTutorialNoteText( Model model, Edit< ? > edit, UserInformation userInformation );
 }

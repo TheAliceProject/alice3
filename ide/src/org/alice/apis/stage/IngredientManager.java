@@ -63,7 +63,11 @@ public abstract class IngredientManager<E extends Ingredient> {
 		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.createArray( this.getImplementingClassesComponentType(), enumClsesGendered, enumClsesUnisex );
 	}
 	public Class<? extends E> getRandomClass( LifeStage lifeStage, Gender gender ) {
-		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( getImplementingClasses( lifeStage, gender ) );
+		assert lifeStage != null;
+		assert gender != null;
+		Class< ? extends E >[] clses = getImplementingClasses( lifeStage, gender );
+		assert clses.length > 0 : lifeStage.toString() + gender.toString();
+		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( clses );
 	}
 	public E getRandomEnumConstant( LifeStage lifeStage, Gender gender ) {
 		while( true ) {

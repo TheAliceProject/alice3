@@ -242,7 +242,7 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupPrepMode
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Edit createEdit( org.lgna.croquet.steps.CascadePopupPrepStep< Object > step, final java.lang.Object[] values ) {
+	protected edu.cmu.cs.dennisc.croquet.Edit createEdit( org.lgna.croquet.steps.CascadePopupCompletionStep< Object > step, final java.lang.Object[] values ) {
 		return new edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupCompletionModel<Object> >( null ) {
 			@Override
 			protected void doOrRedoInternal( boolean isDo ) {

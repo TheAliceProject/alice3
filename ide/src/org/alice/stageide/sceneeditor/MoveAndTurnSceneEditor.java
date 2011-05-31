@@ -1169,7 +1169,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			{
 				if( fieldTile.getAwtComponent().isShowing() ) {
 					MouseEvent convertedEvent = SwingUtilities.convertMouseEvent((Component)clickState.getInputEvent().getSource(), (MouseEvent)clickState.getInputEvent(), fieldTile.getAwtComponent());
-					popUp.fire(convertedEvent, fieldTile);
+					popUp.fire( new org.lgna.croquet.triggers.MouseEventTrigger( fieldTile, convertedEvent ) );
 				} else {
 					popUp.fire( new org.lgna.croquet.triggers.InputEventTrigger( clickState.getInputEvent() ) );
 				}
@@ -1965,10 +1965,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	public void dragStarted(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		dragSource.showDragProxy();
-		Operation<?> operation = dragSource.getLeftButtonClickOperation();
-		if (operation instanceof GalleryFileOperation)
+		edu.cmu.cs.dennisc.croquet.Model model = dragSource.getLeftButtonClickModel();
+		if (model instanceof GalleryFileOperation)
 		{
-			((GalleryFileOperation)operation).setDesiredTransformation(null);
+			((GalleryFileOperation)model).setDesiredTransformation(null);
 		}
 	}
 
@@ -2026,13 +2026,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{
-			Operation<?> operation = dragSource.getLeftButtonClickOperation();
-			if (operation instanceof GalleryFileOperation)
+			edu.cmu.cs.dennisc.croquet.Model model = dragSource.getLeftButtonClickModel();
+			if (model instanceof GalleryFileOperation)
 			{
 				AffineMatrix4x4 dropTargetPosition = this.globalDragAdapter.getDropTargetTransformation();
-				((GalleryFileOperation)operation).setDesiredTransformation(dropTargetPosition);
+				((GalleryFileOperation)model).setDesiredTransformation(dropTargetPosition);
 			}
-			return operation;
+			return model;
 		}
 		return null;
 	}

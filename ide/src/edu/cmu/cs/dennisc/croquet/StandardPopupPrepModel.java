@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class StandardPopupPrepModel extends PopupPrepModel {
+public final class StandardPopupPrepModel extends PopupPrepModel< org.lgna.croquet.steps.StandardPopupPrepStep > {
 	private MenuModel menuModel;
 	/*package-private*/ StandardPopupPrepModel( MenuModel menuModel ) {
 		super( java.util.UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
@@ -115,7 +115,7 @@ public final class StandardPopupPrepModel extends PopupPrepModel {
 	}
 	
 	@Override
-	protected void perform( final org.lgna.croquet.steps.PopupPrepStep step, edu.cmu.cs.dennisc.croquet.PopupPrepModel.PerformObserver performObserver ) {
+	protected void perform( final org.lgna.croquet.steps.StandardPopupPrepStep step, final edu.cmu.cs.dennisc.croquet.PopupPrepModel.PerformObserver performObserver ) {
 		//note: do not call super
 		final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this ) {
 			@Override
@@ -142,10 +142,12 @@ public final class StandardPopupPrepModel extends PopupPrepModel {
 			}
 			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 				if( this.cancelEvent != null ) {
-					step.cancel();
+					System.err.println( "todo: cancel" );
+					//step.getParent().cancel();
 					this.cancelEvent = null;
 				} else {
-					step.finish();
+					System.err.println( "todo: finish" );
+					//step.getParent().finish();
 				}
 				StandardPopupPrepModel.this.menuModel.handlePopupMenuEpilogue( popupMenu, step );
 				performObserver.handleFinally();

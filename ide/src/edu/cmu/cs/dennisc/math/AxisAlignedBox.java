@@ -64,11 +64,15 @@ public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableA
 	public AxisAlignedBox( AxisAlignedBox other ) {
 		set( other );
 	}
-	
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+	public AxisAlignedBox( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		m_minimum.decode( binaryDecoder );
 		m_maximum.decode( binaryDecoder );
 	}
+	
+//	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+//		m_minimum.decode( binaryDecoder );
+//		m_maximum.decode( binaryDecoder );
+//	}
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 		m_minimum.encode( binaryEncoder );
 		m_maximum.encode( binaryEncoder );
