@@ -42,13 +42,6 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.Container;
-import org.lgna.croquet.components.Dialog;
-import org.lgna.croquet.components.GridBagPanel;
-import org.lgna.croquet.components.HorizontalSeparator;
-import org.lgna.croquet.components.Label;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -58,15 +51,15 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.step
 	protected static final Group ENCLOSING_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_DIALOG_GROUP" );
 
 	private static abstract class InternalDialogOperation extends ActionOperation {
-		private Dialog dialog;
+		private org.lgna.croquet.components.Dialog dialog;
 
 		public InternalDialogOperation( java.util.UUID id ) {
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
 		}
-		public Dialog getDialog() {
+		public org.lgna.croquet.components.Dialog getDialog() {
 			return this.dialog;
 		}
-		public void setDialog( Dialog dialog ) {
+		public void setDialog( org.lgna.croquet.components.Dialog dialog ) {
 			this.dialog = dialog;
 		}
 		protected GatedCommitDialogOperation< ? > getGatedCommitDialogOperation( org.lgna.croquet.steps.ActionOperationStep step ) {
@@ -107,7 +100,7 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.step
 		}
 	}
 
-	private Label explanationLabel = new Label( NULL_EXPLANATION ) {
+	private org.lgna.croquet.components.Label explanationLabel = new org.lgna.croquet.components.Label( NULL_EXPLANATION ) {
 		@Override
 		protected javax.swing.JLabel createAwtComponent() {
 			javax.swing.JLabel rv = new javax.swing.JLabel() {
@@ -198,9 +191,9 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.step
 		return CancelOperation.getInstance();
 	}
 
-	protected abstract Component< ? > createMainPanel( S step, Dialog dialog, Label explanationLabel );
-	protected abstract Component< ? > createControlsPanel( S step, Dialog dialog );
-	protected abstract void release( S step, Dialog dialog, boolean isCompleted );
+	protected abstract org.lgna.croquet.components.Component< ? > createMainPanel( S step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Label explanationLabel );
+	protected abstract org.lgna.croquet.components.Component< ? > createControlsPanel( S step, org.lgna.croquet.components.Dialog dialog );
+	protected abstract void release( S step, org.lgna.croquet.components.Dialog dialog, boolean isCompleted );
 
 	protected abstract String getExplanation( S step );
 	protected void updateExplanation( S step ) {
@@ -214,14 +207,15 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.step
 	}
 
 	public void handleFiredEvent( org.lgna.cheshire.events.Event event ) {
-		System.err.println( "handleFiredEvent: " + event );
-		//this.updateExplanation( (S)event.findContextFor( GatedCommitDialogOperation.this ) );
+		//System.err.println( "handleFiredEvent: " + event );
+		S step = null;//(S)event.findContextFor( GatedCommitDialogOperation.this )
+		this.updateExplanation( step );
 	}
 	@Override
-	protected final Container< ? > createContentPane( S step, Dialog dialog ) {
-		Component< ? > mainPanel = this.createMainPanel( step, dialog, this.explanationLabel );
-		Component< ? > controlPanel = this.createControlsPanel( step, dialog );
-		GridBagPanel rv = new GridBagPanel();
+	protected final org.lgna.croquet.components.Container< ? > createContentPane( S step, org.lgna.croquet.components.Dialog dialog ) {
+		org.lgna.croquet.components.Component< ? > mainPanel = this.createMainPanel( step, dialog, this.explanationLabel );
+		org.lgna.croquet.components.Component< ? > controlPanel = this.createControlsPanel( step, dialog );
+		org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel();
 		rv.setBackgroundColor( mainPanel.getBackgroundColor() );
 
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
@@ -231,7 +225,7 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.step
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		rv.addComponent( mainPanel, gbc );
 		gbc.weighty = 0.0;
-		rv.addComponent( new HorizontalSeparator(), gbc );
+		rv.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), gbc );
 		rv.addComponent( controlPanel, gbc );
 
 		org.lgna.croquet.steps.TransactionManager.addEventObserver( this.eventObserver );
@@ -243,7 +237,7 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.step
 		return rv;
 	}
 	@Override
-	protected final void releaseContentPane( S step, Dialog dialog, Container< ? > contentPane ) {
+	protected final void releaseContentPane( S step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		if( contentPane != null ) {
 			org.lgna.croquet.steps.TransactionManager.removeEventObserver( this.eventObserver );
 			this.release( step, dialog, this.isCompleted );

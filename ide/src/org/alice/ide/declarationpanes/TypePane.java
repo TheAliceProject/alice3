@@ -65,22 +65,6 @@ class IsArrayState extends org.lgna.croquet.BooleanState {
 public class TypePane extends org.lgna.croquet.components.BorderPanel {
 	private edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty;
 	private IsArrayState isArrayStateState;
-	//private TypeSelectionState typeSelectionState = new TypeSelectionState();
-	private class SelectTypeOperation extends org.lgna.croquet.ActionOperation {
-		private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
-		public SelectTypeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8f3e1f74-d1fd-4484-98e0-bc37da452005" ) );
-			this.type = type;
-			this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( this.type ) );
-			this.setName( org.alice.ide.IDE.getSingleton().getTextFor( type ) );
-		}
-		@Override
-		protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
-			typeProperty.setValue( this.type );
-			step.finish();
-		}
-	}
-	
 	private org.lgna.croquet.StandardPopupPrepModel popupMenuOperation = org.alice.ide.croquet.models.ast.declaration.TypeMenuModel.getInstance().getPopupMenuOperation();
 	
 	private class TypeDropDownPane extends org.alice.ide.common.AbstractDropDownPane {

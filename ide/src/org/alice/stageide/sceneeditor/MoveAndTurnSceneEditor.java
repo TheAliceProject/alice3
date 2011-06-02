@@ -2037,5 +2037,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return null;
 	}
 
+	@Override
+	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
+		this.initializeIfNecessary();
+		super.handleAddedTo( parent );
+	}
 	
 }

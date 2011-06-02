@@ -134,17 +134,17 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 
 	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
+	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
 		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.ProjectApplication.getSingleton().getProject();
 		if( project != null ) {
 			this.projectObserver.projectOpened(null, project);
 		}
 		org.alice.ide.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
+		super.handleAddedTo( parent );
 	}
 	@Override
-	protected void handleUndisplayable() {
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
+		super.handleRemovedFrom( parent );
 		org.alice.ide.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
-		super.handleUndisplayable();
 	}
 }

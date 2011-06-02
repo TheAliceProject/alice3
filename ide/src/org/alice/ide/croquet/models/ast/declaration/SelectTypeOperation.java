@@ -72,10 +72,10 @@ public class SelectTypeOperation extends org.lgna.croquet.ActionOperation {
 	
 	@Override
 	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
-//		//typeProperty.setValue( this.type );
-//		org.lgna.croquet.steps.InputDialogOperationStep< org.alice.ide.declarationpanes.AbstractDeclarationPane > inputDialogOperationContext = step.getFirstAncestorAssignableTo(org.lgna.croquet.steps.InputDialogOperationStep.class );
-//		org.alice.ide.declarationpanes.AbstractDeclarationPane createDeclarationPane = inputDialogOperationContext.getMainPanel();
-//		createDeclarationPane.EPIC_HACK_setComponentType( this.type );
-//		step.finish();
+		//typeProperty.setValue( this.type );
+		org.lgna.croquet.steps.InputDialogOperationStep inputDialogOperationContext = (org.lgna.croquet.steps.InputDialogOperationStep)step.getParent().getParent().getParent();
+		org.alice.ide.declarationpanes.AbstractDeclarationPane createDeclarationPane = inputDialogOperationContext.getMainPanel();
+		createDeclarationPane.EPIC_HACK_setComponentType( this.type );
+		step.finish();
 	}
 }
