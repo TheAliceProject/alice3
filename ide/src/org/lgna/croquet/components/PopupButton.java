@@ -75,6 +75,7 @@ public class PopupButton extends AbstractButton< javax.swing.JButton, edu.cmu.cs
 	@Override
 	protected javax.swing.JButton createAwtComponent() {
 		javax.swing.JButton rv = new javax.swing.JButton();
+		rv.setAction( this.getModel().getAction() );
 		rv.setIcon( ARROW_ICON );
 		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
 		return rv;
