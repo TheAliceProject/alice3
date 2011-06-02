@@ -46,20 +46,20 @@ package org.alice.ide.croquet.models.projecturi;
  * @author Dennis Cosgrove
  */
 public abstract class ClearanceRequiringUriCompositeOperation extends UriCompositeOperation {
-	private final edu.cmu.cs.dennisc.croquet.SingleThreadOperation<?> otherOperation;
-	public ClearanceRequiringUriCompositeOperation( java.util.UUID individualUUID, edu.cmu.cs.dennisc.croquet.SingleThreadOperation<?> otherOperation ) {
+	private final org.lgna.croquet.SingleThreadOperation<?> otherOperation;
+	public ClearanceRequiringUriCompositeOperation( java.util.UUID individualUUID, org.lgna.croquet.SingleThreadOperation<?> otherOperation ) {
 		super( individualUUID );
 		this.otherOperation = otherOperation;
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.SingleThreadOperation<?> > getOperations() {
-		java.util.List< edu.cmu.cs.dennisc.croquet.SingleThreadOperation<?> > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	protected java.util.List< org.lgna.croquet.SingleThreadOperation<?> > getOperations() {
+		java.util.List< org.lgna.croquet.SingleThreadOperation<?> > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		org.alice.ide.ProjectApplication application = this.getProjectApplication();
 		if( application.isProjectUpToDateWithFile() ) {
 			operations.add( this.otherOperation );
 		} else {
-			edu.cmu.cs.dennisc.croquet.YesNoCancelOption option = application.showYesNoCancelConfirmDialog( "Your program has been modified.  Would you like to save it?", "Save changed project?" );
-			if( option == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ) {
+			org.lgna.croquet.YesNoCancelOption option = application.showYesNoCancelConfirmDialog( "Your program has been modified.  Would you like to save it?", "Save changed project?" );
+			if( option == org.lgna.croquet.YesNoCancelOption.YES ) {
 				operations.add( SaveProjectOperation.getInstance() );
 				operations.add( this.otherOperation );
 //				edu.cmu.cs.dennisc.croquet.ActionContext saveContext = compositeContext.performInChildContext( this.saveOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
@@ -68,7 +68,7 @@ public abstract class ClearanceRequiringUriCompositeOperation extends UriComposi
 //				} else {
 //					compositeContext.cancel();
 //				}
-			} else if( option == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.NO ) {
+			} else if( option == org.lgna.croquet.YesNoCancelOption.NO ) {
 				operations.add( this.otherOperation );
 			} else {
 				//pass

@@ -46,13 +46,13 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class DropPrepStep extends PrepStep< edu.cmu.cs.dennisc.croquet.PrepModel > implements DropStep {
-	public static DropPrepStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.PrepModel prepModel, org.lgna.croquet.Trigger trigger, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+public class DropPrepStep extends PrepStep< org.lgna.croquet.PrepModel > implements DropStep {
+	public static DropPrepStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.PrepModel prepModel, org.lgna.croquet.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		return new DropPrepStep( parent, prepModel, trigger, dropReceptor, dropSite );
 	}
-	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.DropReceptor > dropReceptorResolver;
-	private edu.cmu.cs.dennisc.croquet.DropSite dropSite;
-	private DropPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.PrepModel prepModel, org.lgna.croquet.Trigger trigger, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+	private final org.lgna.croquet.CodableResolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
+	private org.lgna.croquet.DropSite dropSite;
+	private DropPrepStep( Transaction parent, org.lgna.croquet.PrepModel prepModel, org.lgna.croquet.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		super( parent, prepModel, trigger );
 		this.dropReceptorResolver = dropReceptor.getCodableResolver();
 		assert this.dropReceptorResolver != null;
@@ -69,25 +69,25 @@ public class DropPrepStep extends PrepStep< edu.cmu.cs.dennisc.croquet.PrepModel
 		binaryEncoder.encode( this.dropReceptorResolver );
 		binaryEncoder.encode( this.dropSite );
 	}
-	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor() {
+	public org.lgna.croquet.DropReceptor getDropReceptor() {
 		return this.dropReceptorResolver.getResolved();
 	}
-	public edu.cmu.cs.dennisc.croquet.DropSite getDropSite() {
+	public org.lgna.croquet.DropSite getDropSite() {
 		return this.dropSite;
 	}
 	@Override
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		return this.getDropReceptor().getTutorialNoteText( this.getModel(), edit, userInformation );
 	}
 	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
-		if( this.dropReceptorResolver instanceof edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> ) {
-			edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> retargetableResolver = (edu.cmu.cs.dennisc.croquet.RetargetableResolver<?>)this.dropReceptorResolver;
+		if( this.dropReceptorResolver instanceof org.lgna.croquet.RetargetableResolver<?> ) {
+			org.lgna.croquet.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.RetargetableResolver<?>)this.dropReceptorResolver;
 			retargetableResolver.retarget( retargeter );
 		}
-		if( this.dropSite instanceof edu.cmu.cs.dennisc.croquet.RetargetableDropSite ) {
-			edu.cmu.cs.dennisc.croquet.RetargetableDropSite retargetableDropSite = (edu.cmu.cs.dennisc.croquet.RetargetableDropSite)this.dropSite;
+		if( this.dropSite instanceof org.lgna.croquet.RetargetableDropSite ) {
+			org.lgna.croquet.RetargetableDropSite retargetableDropSite = (org.lgna.croquet.RetargetableDropSite)this.dropSite;
 			this.dropSite = retargetableDropSite.createReplacement( retargeter );
 		}
 	}

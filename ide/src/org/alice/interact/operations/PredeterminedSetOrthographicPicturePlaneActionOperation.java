@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 
-public class PredeterminedSetOrthographicPicturePlaneActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class PredeterminedSetOrthographicPicturePlaneActionOperation extends org.lgna.croquet.ActionOperation {
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
 	private edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgCamera;
@@ -55,7 +55,7 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends edu
 	private double nextPicturePlaneHeight;
 	
 	private String editPresentationKey;
-	public PredeterminedSetOrthographicPicturePlaneActionOperation( edu.cmu.cs.dennisc.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgCamera, double previousPicturePlaneHeight, double nextPicturePlaneHeight, String editPresentationKey ) {
+	public PredeterminedSetOrthographicPicturePlaneActionOperation( org.lgna.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgCamera, double previousPicturePlaneHeight, double nextPicturePlaneHeight, String editPresentationKey ) {
 		super( group, java.util.UUID.fromString( "67faf90c-97c6-40d4-9ddb-f31f22003682" ) );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;

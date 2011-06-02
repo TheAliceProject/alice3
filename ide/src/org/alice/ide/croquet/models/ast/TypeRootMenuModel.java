@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeRootMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+public class TypeRootMenuModel extends org.lgna.croquet.MenuModel {
 	private static class SingletonHolder {
 		private static TypeRootMenuModel instance = new TypeRootMenuModel();
 	}

@@ -85,14 +85,14 @@ public class BookTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rendere
 			} else {
 				icon = BLANK_ICON;
 			}
-			edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = transactionChapter.getReplacementAcceptability();
+			org.lgna.croquet.ReplacementAcceptability replacementAcceptability = transactionChapter.getReplacementAcceptability();
 			if( replacementAcceptability != null ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( replacementAcceptability );
-				if( replacementAcceptability == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH || replacementAcceptability == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK ) {
+				if( replacementAcceptability == org.lgna.croquet.ReplacementAcceptability.PERFECT_MATCH || replacementAcceptability == org.lgna.croquet.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK ) {
 					icon = PERFECT_MATCH_ICON;
 				} else {
 					if( replacementAcceptability.isDeviation() ) {
-						if( replacementAcceptability.getDeviationSeverity() == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE ) {
+						if( replacementAcceptability.getDeviationSeverity() == org.lgna.croquet.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE ) {
 							icon = SHOULD_BE_FINE_ICON;
 						} else {
 							icon = DEVIATION_ICON;
@@ -110,7 +110,7 @@ public class BookTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rendere
 			rv.setIcon( STEP_ICON );
 		} else if( value instanceof org.lgna.croquet.steps.Step< ? > ) {
 			org.lgna.croquet.steps.Step< ? > step = (org.lgna.croquet.steps.Step< ? >)value;
-			edu.cmu.cs.dennisc.croquet.Edit< ? > edit = step.getParent().getEdit();
+			org.lgna.croquet.Edit< ? > edit = step.getParent().getEdit();
 			rv.setText( "<html>" + step.getTutorialNoteText( edit, null ) + "</html>" );
 			rv.setFont( STEP_FONT );
 			rv.setIcon( STEP_ICON );

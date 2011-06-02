@@ -45,8 +45,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupButton extends AbstractButton< javax.swing.JButton, edu.cmu.cs.dennisc.croquet.PopupPrepModel >{
- 	public PopupButton( edu.cmu.cs.dennisc.croquet.PopupPrepModel model ) {
+public class PopupButton extends AbstractButton< javax.swing.JButton, org.lgna.croquet.PopupPrepModel >{
+ 	public PopupButton( org.lgna.croquet.PopupPrepModel model ) {
  		super( model );
 	}
  	private static class ArrowIcon extends edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon {

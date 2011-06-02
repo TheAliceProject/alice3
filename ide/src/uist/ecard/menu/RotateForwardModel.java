@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 import uist.ecard.ECardApplication;
 
 
-public class RotateForwardModel extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class RotateForwardModel extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static RotateForwardModel instance = new RotateForwardModel();
 	}

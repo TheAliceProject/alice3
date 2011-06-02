@@ -46,16 +46,16 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class StandardPopupPrepStep extends PopupPrepStep< edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel >{
-	public static <T> StandardPopupPrepStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel model, org.lgna.croquet.Trigger trigger ) {
+public class StandardPopupPrepStep extends PopupPrepStep< org.lgna.croquet.StandardPopupPrepModel >{
+	public static <T> StandardPopupPrepStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.StandardPopupPrepModel model, org.lgna.croquet.Trigger trigger ) {
 		return new StandardPopupPrepStep( parent, model, trigger );
 	}
-	private StandardPopupPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel model, org.lgna.croquet.Trigger trigger ) {
+	private StandardPopupPrepStep( Transaction parent, org.lgna.croquet.StandardPopupPrepModel model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public StandardPopupPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public void handleRetargetableMenuModelInitialization( edu.cmu.cs.dennisc.croquet.RetargetingData retargetableData ) {
+	public void handleRetargetableMenuModelInitialization( org.lgna.croquet.RetargetingData retargetableData ) {
 	}
 }

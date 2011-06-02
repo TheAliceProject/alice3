@@ -46,7 +46,7 @@ package org.lgna.cheshire.docwizardsesque;
 /**
  * @author Dennis Cosgrove
  */
-public class UndoOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class UndoOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static UndoOperation instance = new UndoOperation();
 	}

@@ -48,7 +48,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  */
 public abstract class StatementInsertOperation extends org.alice.ide.croquet.models.ast.cascade.ExpressionsCascadeOperation {
 	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
-	public StatementInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
+	public StatementInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id, blanks );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
@@ -63,7 +63,7 @@ public abstract class StatementInsertOperation extends org.alice.ide.croquet.mod
 	}
 
 	@Override
-	protected <M extends edu.cmu.cs.dennisc.croquet.Model> edu.cmu.cs.dennisc.croquet.CodableResolver< M > createCodableResolver() {
+	protected <M extends org.lgna.croquet.Model> org.lgna.croquet.CodableResolver< M > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
 	}
 }

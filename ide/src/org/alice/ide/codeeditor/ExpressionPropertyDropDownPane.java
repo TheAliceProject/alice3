@@ -45,9 +45,9 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuButton< edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > > implements edu.cmu.cs.dennisc.croquet.DropReceptor {
+public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuButton< org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > > implements org.lgna.croquet.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	public ExpressionPropertyDropDownPane( edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > model, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.croquet.components.Component< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > model, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.croquet.components.Component< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		super( model, prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
 	}
@@ -76,16 +76,16 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 //		return rv;	
 //	}
 
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		return "Drop...";
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.CodableResolver< ExpressionPropertyDropDownPane > getCodableResolver() {
+	public org.lgna.croquet.CodableResolver< ExpressionPropertyDropDownPane > getCodableResolver() {
 		//todo:
 		System.err.println( "todo: getCodableResolver" );
 		return null;
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.croquet.DropSite potentialDropSite ) {
+	public org.lgna.croquet.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		return this;
 	}
 
@@ -98,11 +98,11 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 //		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		context.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height, -1 );
 	}
-	public edu.cmu.cs.dennisc.croquet.DropSite dragUpdated( org.lgna.croquet.steps.DragStep context ) {
+	public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.steps.DragStep context ) {
 		return null;
 	}
-	public edu.cmu.cs.dennisc.croquet.Model dragDropped( org.lgna.croquet.steps.DragStep context ) {
-		edu.cmu.cs.dennisc.croquet.Model rv;
+	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.steps.DragStep context ) {
+		org.lgna.croquet.Model rv;
 		org.lgna.croquet.components.DragComponent source = context.getDragSource();
 //		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		if( source instanceof org.alice.ide.common.ExpressionCreatorPane ) {

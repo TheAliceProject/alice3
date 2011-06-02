@@ -57,6 +57,10 @@ import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.ide.IDE;
 import org.alice.ide.swing.BasicTreeNodeViewerPanel;
 import org.alice.interact.handle.HandleSet;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.PredeterminedTab;
+import org.lgna.croquet.TabSelectionState.TabCreator;
 import org.lgna.croquet.components.BooleanStateButton;
 import org.lgna.croquet.components.DefaultRadioButtons;
 import org.lgna.croquet.components.GridBagPanel;
@@ -66,15 +70,11 @@ import org.lgna.croquet.components.PushButton;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.ToolPaletteTabbedPane;
 
-import edu.cmu.cs.dennisc.croquet.ActionOperation;
-import edu.cmu.cs.dennisc.croquet.BooleanState;
 
-import edu.cmu.cs.dennisc.croquet.PredeterminedTab;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory;
 import edu.cmu.cs.dennisc.lookingglass.opengl.SceneAdapter;
 import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.croquet.TabSelectionState.TabCreator;
 
 /**
  * @author Dennis Cosgrove
@@ -330,7 +330,7 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 	        public final JComponent<?> createMainComponent(PredeterminedTab item) {
 	            return item.getMainComponent();
 	        }
-	        public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.croquet.PredeterminedTab item ) {
+	        public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.lgna.croquet.PredeterminedTab item ) {
 	            item.customizeTitleComponent( booleanState, button );
 	            button.scaleFont(1.2f);
 	            button.setFont(edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( button.getAwtComponent(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
@@ -339,7 +339,7 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 	        public final ScrollPane createScrollPane( PredeterminedTab item ) {
 	            return item.createScrollPane();
 	        }
-	        public final boolean isCloseable(edu.cmu.cs.dennisc.croquet.PredeterminedTab item) {
+	        public final boolean isCloseable(org.lgna.croquet.PredeterminedTab item) {
 	            return false;
 	        }
 	    };

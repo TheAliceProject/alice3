@@ -45,11 +45,11 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanStateChangeStep extends StateChangeStep< edu.cmu.cs.dennisc.croquet.BooleanState >{
-	/*package-private*/ static BooleanStateChangeStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.BooleanState model, org.lgna.croquet.Trigger trigger ) {
+public class BooleanStateChangeStep extends StateChangeStep< org.lgna.croquet.BooleanState >{
+	/*package-private*/ static BooleanStateChangeStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.BooleanState model, org.lgna.croquet.Trigger trigger ) {
 		return new BooleanStateChangeStep( parent, model, trigger );
 	}
-	private BooleanStateChangeStep( Transaction parent, edu.cmu.cs.dennisc.croquet.BooleanState model, org.lgna.croquet.Trigger trigger ) {
+	private BooleanStateChangeStep( Transaction parent, org.lgna.croquet.BooleanState model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public BooleanStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

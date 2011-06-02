@@ -1,6 +1,6 @@
 package uist.ecard.ribbon;
 
-public class InsertRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
+public class InsertRibbonModel extends org.lgna.croquet.PredeterminedTab {
 	private static class SingletonHolder {
 		private static InsertRibbonModel instance = new InsertRibbonModel();
 	}

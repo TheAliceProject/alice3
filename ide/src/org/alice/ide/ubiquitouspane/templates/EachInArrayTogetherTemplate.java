@@ -50,7 +50,7 @@ public class EachInArrayTogetherTemplate extends CascadingUbiquitousStatementCla
 		super( edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class, org.alice.ide.ast.NodeUtilities.createIncompleteEachInArrayTogether() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

@@ -62,7 +62,7 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 	
 
 	protected abstract String getText();
-	protected abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation();
+	protected abstract org.lgna.croquet.Operation< ? > getNextOperation();
 	public String getLabel() {
 		return this.label;
 	}
@@ -119,7 +119,7 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 //		return false;
 //	}
 		
-	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability() {
+	public org.lgna.croquet.ReplacementAcceptability getReplacementAcceptability() {
 		return null;
 	}
 

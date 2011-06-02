@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationNameState extends edu.cmu.cs.dennisc.croquet.StringState {
+public class DeclarationNameState extends org.lgna.croquet.StringState {
 	private static class SingletonHolder {
 		private static DeclarationNameState instance = new DeclarationNameState();
 	}
@@ -53,6 +53,6 @@ public class DeclarationNameState extends edu.cmu.cs.dennisc.croquet.StringState
 		return SingletonHolder.instance;
 	}
 	private DeclarationNameState() {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c63e8377-84e0-48b0-a77e-137879e398c1" ), "" );
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c63e8377-84e0-48b0-a77e-137879e398c1" ), "" );
 	}
 }

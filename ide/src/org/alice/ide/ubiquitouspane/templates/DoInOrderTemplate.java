@@ -50,7 +50,7 @@ public class DoInOrderTemplate extends CascadingUbiquitousStatementClassTemplate
 		super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class, org.alice.ide.ast.NodeUtilities.createDoInOrder() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.DoInOrderInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

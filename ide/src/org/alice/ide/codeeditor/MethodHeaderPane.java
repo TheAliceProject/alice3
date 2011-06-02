@@ -73,9 +73,9 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		if( methodDeclaredInAlice.isSignatureLocked.getValue() ) {
 			this.addComponent( nameLabel );
 		} else {
-			class PopupPanel extends org.lgna.croquet.components.ViewController<javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Model> {
+			class PopupPanel extends org.lgna.croquet.components.ViewController<javax.swing.JPanel, org.lgna.croquet.Model> {
 				private org.lgna.croquet.components.Component<?> centerComponent;
-				public PopupPanel( org.lgna.croquet.components.Component<?> centerComponent, edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel popupMenuOperation ) {
+				public PopupPanel( org.lgna.croquet.components.Component<?> centerComponent, org.lgna.croquet.StandardPopupPrepModel popupMenuOperation ) {
 					super( null );
 					this.centerComponent = centerComponent;
 					this.setPopupMenuOperation( popupMenuOperation );

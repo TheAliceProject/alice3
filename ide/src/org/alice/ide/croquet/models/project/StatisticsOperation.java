@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.project;
 /**
  * @author Dennis Cosgrove
  */
-public class StatisticsOperation extends edu.cmu.cs.dennisc.croquet.InformationDialogOperation {
+public class StatisticsOperation extends org.lgna.croquet.InformationDialogOperation {
 	private static class SingletonHolder {
 		private static StatisticsOperation instance = new StatisticsOperation();
 	}

@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.members;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class MemberTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
+/*package-private*/ abstract class MemberTab extends org.lgna.croquet.PredeterminedTab {
 	public MemberTab( java.util.UUID individualId ) {
 		super( individualId );
 	}

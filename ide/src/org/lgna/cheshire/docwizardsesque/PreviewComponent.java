@@ -60,7 +60,7 @@ public class PreviewComponent extends org.lgna.croquet.components.JComponent< ja
 					org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
 					org.lgna.croquet.steps.Step< ? > step0 = transactionChapter.getTransaction().getChildStepAt( 0 );
 					if( step0 != null ) {
-						edu.cmu.cs.dennisc.croquet.Model model = step0.getModel();
+						org.lgna.croquet.Model model = step0.getModel();
 //						if( step0 instanceof org.lgna.croquet.steps.StandardPopupOperationPrepStep ) {
 //							org.lgna.croquet.steps.StandardPopupOperationPrepStep standardPopupOperationPrepStep = (org.lgna.croquet.steps.StandardPopupOperationPrepStep)step0;
 //							model = standardPopupOperationPrepStep.getStandardPopupOperation();

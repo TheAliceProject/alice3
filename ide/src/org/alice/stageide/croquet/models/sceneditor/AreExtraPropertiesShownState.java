@@ -43,7 +43,7 @@
 
 package org.alice.stageide.croquet.models.sceneditor;
 
-public class AreExtraPropertiesShownState extends edu.cmu.cs.dennisc.croquet.BooleanState
+public class AreExtraPropertiesShownState extends org.lgna.croquet.BooleanState
 {
     private static class SingletonHolder {
         private static AreExtraPropertiesShownState instance = new AreExtraPropertiesShownState();

@@ -43,7 +43,7 @@
 
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.StringState;
+import org.lgna.croquet.StringState;
 
 /**
  * @author Dennis Cosgrove

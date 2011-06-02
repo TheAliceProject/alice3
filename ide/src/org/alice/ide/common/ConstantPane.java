@@ -51,7 +51,7 @@ public class ConstantPane extends LocalPane< edu.cmu.cs.dennisc.alice.ast.Consta
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.ConstantAccess.class ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.ConstantAccessOperation.getInstance( this.getTransient(), expressionProperty );
 	}
 }

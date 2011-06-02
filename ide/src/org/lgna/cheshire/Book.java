@@ -138,17 +138,17 @@ public class Book {
 		}
 	}
 
-	/*package-private*/ void handleEditCommitted( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	/*package-private*/ void handleEditCommitted( org.lgna.croquet.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
 		Chapter chapter = this.getSelectedChapter();
 		if( chapter instanceof TransactionChapter ) {
 			TransactionChapter transactionChapter = (TransactionChapter)chapter;
 			org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
-			edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = transaction.getEdit();
+			org.lgna.croquet.Edit< ? > originalEdit = transaction.getEdit();
 			if( originalEdit != null ) {
-				edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate, userInformation );
+				org.lgna.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate, userInformation );
 				if( replacementAcceptability.isAcceptable() ) {
 					transactionChapter.setReplacementAcceptability( replacementAcceptability );
-					edu.cmu.cs.dennisc.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getRetargeter();
+					org.lgna.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getRetargeter();
 					originalEdit.addKeyValuePairs( retargeter, replacementCandidate );
 					this.retargetForward( retargeter );
 				}
@@ -162,16 +162,16 @@ public class Book {
 		}
 	}
 
-	private void retarget( int fromIndex, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	private void retarget( int fromIndex, org.lgna.croquet.Retargeter retargeter ) {
 		final int N = this.getChapterCount();
 		for( int i = this.selectedIndex + 1; i < N; i++ ) {
 			this.getChapterAt( i ).retarget( retargeter );
 		}
 	}
-	/*package-private*/void retargetAll( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	/*package-private*/void retargetAll( org.lgna.croquet.Retargeter retargeter ) {
 		this.retarget( 0, retargeter );
 	}
-	/*package-private*/void retargetForward( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	/*package-private*/void retargetForward( org.lgna.croquet.Retargeter retargeter ) {
 		this.retarget( this.selectedIndex + 1, retargeter );
 	}
 

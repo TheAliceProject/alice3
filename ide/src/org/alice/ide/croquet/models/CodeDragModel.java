@@ -52,7 +52,7 @@ public abstract class CodeDragModel extends IdeDragModel {
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getExpressionType();
 	@Override
-	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
+	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		if( ide != null ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
@@ -65,7 +65,7 @@ public abstract class CodeDragModel extends IdeDragModel {
 						org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)dragSource.getSubject();
 						return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
 					} else {
-						java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+						java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 						rv.add( codeEditor );
 						//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
 						//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {

@@ -63,7 +63,7 @@ package org.alice.ide.memberseditor.templates;
 		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.FieldArrayLengthOperation.getInstance( this.field, expressionProperty );
 	}
 }

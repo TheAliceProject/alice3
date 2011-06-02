@@ -43,9 +43,9 @@
 package org.lgna.croquet.components;
 
 public abstract class Control extends Widget {
-	private edu.cmu.cs.dennisc.croquet.Model leftButtonPressModel;
-	private edu.cmu.cs.dennisc.croquet.Model leftButtonClickModel;
-	private edu.cmu.cs.dennisc.croquet.Model leftButtonDoubleClickModel;
+	private org.lgna.croquet.Model leftButtonPressModel;
+	private org.lgna.croquet.Model leftButtonClickModel;
+	private org.lgna.croquet.Model leftButtonDoubleClickModel;
 
 	private boolean isActive = false;
 	private boolean isPressed = false;
@@ -165,14 +165,14 @@ public abstract class Control extends Widget {
 		}
 	}
 	public void handleMouseEntered( java.awt.event.MouseEvent e ) {
-		if( edu.cmu.cs.dennisc.croquet.Application.getSingleton().isDragInProgress() ) {
+		if( org.lgna.croquet.Application.getSingleton().isDragInProgress() ) {
 			//pass
 		} else {
 			this.setActive( true );
 		}
 	}
 	public void handleMouseExited( java.awt.event.MouseEvent e ) {
-		if( edu.cmu.cs.dennisc.croquet.Application.getSingleton().isDragInProgress() ) {
+		if( org.lgna.croquet.Application.getSingleton().isDragInProgress() ) {
 			//pass
 		} else {
 			this.setActive( false );
@@ -206,22 +206,22 @@ public abstract class Control extends Widget {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.croquet.Model getLeftButtonPressModel() {
+	public org.lgna.croquet.Model getLeftButtonPressModel() {
 		return this.leftButtonPressModel;
 	}
-	public void setLeftButtonPressModel( edu.cmu.cs.dennisc.croquet.Model leftButtonPressModel ) {
+	public void setLeftButtonPressModel( org.lgna.croquet.Model leftButtonPressModel ) {
 		this.leftButtonPressModel = leftButtonPressModel;
 	}
-	public edu.cmu.cs.dennisc.croquet.Model getLeftButtonClickModel() {
+	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		return this.leftButtonClickModel;
 	}
-	public void setLeftButtonClickModel( edu.cmu.cs.dennisc.croquet.Model leftButtonClickModel ) {
+	public void setLeftButtonClickModel( org.lgna.croquet.Model leftButtonClickModel ) {
 		this.leftButtonClickModel = leftButtonClickModel;
 	}
-	public edu.cmu.cs.dennisc.croquet.Model getLeftButtonDoubleClickModel() {
+	public org.lgna.croquet.Model getLeftButtonDoubleClickModel() {
 		return this.leftButtonDoubleClickModel;
 	}
-	public void setLeftButtonDoubleClickModel( edu.cmu.cs.dennisc.croquet.Model leftButtonDoubleClickModel ) {
+	public void setLeftButtonDoubleClickModel( org.lgna.croquet.Model leftButtonDoubleClickModel ) {
 		this.leftButtonDoubleClickModel = leftButtonDoubleClickModel;
 	}
 	public boolean isActive() {

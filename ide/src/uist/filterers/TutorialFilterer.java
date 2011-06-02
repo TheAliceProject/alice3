@@ -47,7 +47,7 @@ package uist.filterers;
  * @author Dennis Cosgrove
  */
 public class TutorialFilterer implements org.lgna.cheshire.Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, org.lgna.croquet.UserInformation userInformation ) {
 		java.util.Set< Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> > introducedStatementClses = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		while( chapterIterator.hasNext() ) {
 			org.lgna.cheshire.Chapter chapter = chapterIterator.next();
@@ -63,7 +63,7 @@ public class TutorialFilterer implements org.lgna.cheshire.Filterer {
 //							prepStepListIterator.remove();
 //						}
 //					}
-					edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
+					org.lgna.croquet.Edit< ? > edit = transaction.getEdit();
 					if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
 						org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
 						edu.cmu.cs.dennisc.alice.ast.Statement statement = insertStatementEdit.getStatement();

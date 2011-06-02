@@ -48,7 +48,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 public class CreatePersonOperation extends PersonOperation {
 	private org.alice.apis.stage.Person person;
 
-	public CreatePersonOperation( edu.cmu.cs.dennisc.croquet.Group group ) {
+	public CreatePersonOperation( org.lgna.croquet.Group group ) {
 		super( group, java.util.UUID.fromString( "e5d143e7-2aa2-4cd0-ae65-3f20cc0faf96" ) );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: CreatePersonOperation( group )" );
 	}

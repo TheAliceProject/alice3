@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-public class HomeRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
+public class HomeRibbonModel extends org.lgna.croquet.PredeterminedTab {
 	private static class SingletonHolder {
 		private static HomeRibbonModel instance = new HomeRibbonModel();
 	}

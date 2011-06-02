@@ -51,8 +51,8 @@ import org.alice.ide.properties.adapter.AbstractScaleAdapter;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+import org.lgna.croquet.Operation;
 
-import edu.cmu.cs.dennisc.croquet.Operation;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.print.PrintUtilities;

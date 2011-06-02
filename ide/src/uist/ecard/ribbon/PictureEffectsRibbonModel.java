@@ -4,14 +4,14 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
-public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
+public class PictureEffectsRibbonModel extends org.lgna.croquet.PredeterminedTab {
 	private static class SingletonHolder {
 		private static PictureEffectsRibbonModel instance = new PictureEffectsRibbonModel();
 	}
 	public static PictureEffectsRibbonModel getInstance() {
 		return SingletonHolder.instance;
 	}
-	private edu.cmu.cs.dennisc.croquet.Operation< ? >[] operations = new edu.cmu.cs.dennisc.croquet.Operation< ? >[] {
+	private org.lgna.croquet.Operation< ? >[] operations = new org.lgna.croquet.Operation< ? >[] {
 			uist.ecard.menu.DropShadowModel.getInstance(),
 			null,
 			uist.ecard.menu.RoundedCornersModel.getInstance(),
@@ -97,8 +97,8 @@ public class PictureEffectsRibbonModel extends edu.cmu.cs.dennisc.croquet.Predet
 		return rv;
 	}
 	@Override
-	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
-		for( edu.cmu.cs.dennisc.croquet.Operation< ? > operation : this.operations ) {
+	public boolean contains( org.lgna.croquet.Model model ) {
+		for( org.lgna.croquet.Operation< ? > operation : this.operations ) {
 			if( operation == model ) {
 				return true;
 			}

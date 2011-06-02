@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+public class TypeMenuModel extends org.lgna.croquet.MenuModel {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice, TypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized TypeMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		TypeMenuModel rv = map.get( type );

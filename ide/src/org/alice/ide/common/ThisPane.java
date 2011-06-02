@@ -48,10 +48,10 @@ package org.alice.ide.common;
 public class ThisPane extends AccessiblePane {
 	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava TYPE_FOR_NULL = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Void.class );
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = TYPE_FOR_NULL;
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-		public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > codeSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 		}
-		public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 			ThisPane.this.updateBasedOnFocusedCode( nextValue != null ? nextValue.getCode() : null );
 		}
 	};
@@ -89,7 +89,7 @@ public class ThisPane extends AccessiblePane {
 		return this.type;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.ThisOperation.getInstance( expressionProperty );
 	}
 

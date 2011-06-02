@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class EditTypeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+public class EditTypeOperation extends org.lgna.croquet.InputDialogOperation {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice, EditTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static EditTypeOperation getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		synchronized( map ) {

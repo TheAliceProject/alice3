@@ -44,7 +44,8 @@
 package org.alice.stageide.sceneeditor.snap;
 
 
-import edu.cmu.cs.dennisc.croquet.BooleanState;
+import org.lgna.croquet.BooleanState;
+
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 
 import edu.cmu.cs.dennisc.math.Angle;

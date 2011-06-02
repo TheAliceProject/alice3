@@ -47,7 +47,7 @@ package org.alice.ide.openprojectpane;
  * @author Dennis Cosgrove
  */
 public class FileSystemPane extends TabContentPanel {
-	private edu.cmu.cs.dennisc.croquet.StringState textState = new edu.cmu.cs.dennisc.croquet.StringState( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "a0051988-1f98-4401-a054-f87547d3faf3" ), "" );
+	private org.lgna.croquet.StringState textState = new org.lgna.croquet.StringState( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "a0051988-1f98-4401-a054-f87547d3faf3" ), "" );
 	public FileSystemPane() {
 //		this.textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 //			private void handleUpdate(javax.swing.event.DocumentEvent e) {
@@ -67,9 +67,9 @@ public class FileSystemPane extends TabContentPanel {
 //			}
 //		});
 
-		class BrowseOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+		class BrowseOperation extends org.lgna.croquet.ActionOperation {
 			public BrowseOperation() {
-				super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString("67936a64-be55-44d5-9441-4cc3cce5cc75"));
+				super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString("67936a64-be55-44d5-9441-4cc3cce5cc75"));
 			}
 			@Override
 			protected void localize() {
@@ -79,7 +79,7 @@ public class FileSystemPane extends TabContentPanel {
 
 			@Override
 			protected final void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
-				java.io.File file = edu.cmu.cs.dennisc.croquet.Application.getSingleton().showOpenFileDialog(org.alice.ide.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true);
+				java.io.File file = org.lgna.croquet.Application.getSingleton().showOpenFileDialog(org.alice.ide.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true);
 				if (file != null) {
 					FileSystemPane.this.textState.setValue(edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible(file));
 				}

@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.recursion;
 /**
  * @author Dennis Cosgrove
  */
-public class IsRecursionAllowedState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+public class IsRecursionAllowedState extends org.lgna.croquet.BooleanState {
 	private static class SingletonHolder {
 		private static IsRecursionAllowedState instance = new IsRecursionAllowedState();
 	}

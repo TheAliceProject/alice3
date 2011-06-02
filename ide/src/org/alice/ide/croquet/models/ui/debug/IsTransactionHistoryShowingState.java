@@ -164,7 +164,7 @@ class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rend
 			sb.append( "transaction[" );
 			sb.append( i );
 			sb.append( "] " );
-			String title = transaction.getTitle( edu.cmu.cs.dennisc.croquet.DefaultUserInformation.SINGLETON );
+			String title = transaction.getTitle( org.lgna.croquet.DefaultUserInformation.SINGLETON );
 			if( title != null ) {
 				sb.append( "<strong>" );
 				sb.append( title );
@@ -236,7 +236,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 		if( bounds != null ) {
 			rv.setBounds( bounds );
 		} else {
-			edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
+			org.lgna.croquet.Application application = org.lgna.croquet.Application.getSingleton();
 			if( application != null ) {
 				org.lgna.croquet.components.Frame frame = application.getFrame();
 				if( frame != null ) {
@@ -284,9 +284,9 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 			public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
 				this.reload();
 			}
-			public void editCommitting( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+			public void editCommitting( org.lgna.croquet.Edit< ? > edit ) {
 			}
-			public void editCommitted( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+			public void editCommitted( org.lgna.croquet.Edit< ? > edit ) {
 				tree.repaint();
 			}
 			public void finishing(org.lgna.croquet.steps.Transaction transaction) {
@@ -294,15 +294,15 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 			public void finished(org.lgna.croquet.steps.Transaction transaction) {
 				tree.repaint();
 			}
-			public void dropPending( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+			public void dropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 			}
-			public void dropPended( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+			public void dropPended( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 			}
 			public void dialogOpened( org.lgna.croquet.components.Dialog dialog ) {
 			}
 			public void popupMenuResized( org.lgna.croquet.components.PopupMenu popupMenu ) {
 			}
-			public void menuItemsSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
+			public void menuItemsSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
 			}
 			public void transactionCanceled(org.lgna.croquet.steps.Transaction transaction) {
 			}

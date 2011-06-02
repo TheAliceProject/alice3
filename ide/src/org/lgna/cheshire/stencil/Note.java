@@ -60,7 +60,7 @@ public abstract class Note extends org.lgna.stencil.Note {
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
+	protected org.lgna.croquet.Operation< ? > getNextOperation() {
 		return NextStepOperation.getInstance();
 	}
 	public boolean isGoodToGo() {

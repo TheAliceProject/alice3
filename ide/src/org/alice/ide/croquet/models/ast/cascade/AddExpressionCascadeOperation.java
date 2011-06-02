@@ -42,14 +42,14 @@
  */
 package org.alice.ide.croquet.models.ast.cascade;
 
-class AddExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > {
+class AddExpressionBlank extends org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private final edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty;
 	public AddExpressionBlank( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty ) {
 		super( java.util.UUID.fromString( "c8fa59ec-80ba-4776-8b56-4c0e23848a5d" ) );
 		this.componentTypeProperty = componentTypeProperty;
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> rv, org.lgna.croquet.steps.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem> updateChildren( java.util.List< org.lgna.croquet.CascadeItem> rv, org.lgna.croquet.steps.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		ide.getCascadeManager().updateChildren( rv, step, this.componentTypeProperty.getValue() );
 		return rv;

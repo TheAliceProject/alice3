@@ -42,8 +42,8 @@
  */
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.Application;
-import edu.cmu.cs.dennisc.croquet.DragAndDropModel;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.DragAndDropModel;
 
 public abstract class DragComponent extends Control {
 	private DragAndDropModel dragModel;

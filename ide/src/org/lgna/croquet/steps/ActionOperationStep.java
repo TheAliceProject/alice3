@@ -45,11 +45,11 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class ActionOperationStep extends SingleThreadOperationStep< edu.cmu.cs.dennisc.croquet.ActionOperation >{
-	public static ActionOperationStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.ActionOperation model, org.lgna.croquet.Trigger trigger ) {
+public class ActionOperationStep extends SingleThreadOperationStep< org.lgna.croquet.ActionOperation >{
+	public static ActionOperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.ActionOperation model, org.lgna.croquet.Trigger trigger ) {
 		return new ActionOperationStep( parent, model, trigger );
 	}
-	private ActionOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.ActionOperation model, org.lgna.croquet.Trigger trigger ) {
+	private ActionOperationStep( Transaction parent, org.lgna.croquet.ActionOperation model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger, null );
 	}
 	public ActionOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

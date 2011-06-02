@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.menubar;
 /**
  * @author Dennis Cosgrove
  */
-public class FileMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
+public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static FileMenuModel instance = new FileMenuModel();
 	}
@@ -56,18 +56,18 @@ public class FileMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuM
 		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), 
 				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(), 
 				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(), 
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
+				org.lgna.croquet.MenuModel.SEPARATOR, 
 				RecentProjectsMenuModel.getInstance(), 
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
+				org.lgna.croquet.MenuModel.SEPARATOR, 
 				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance().getMenuItemPrepModel(), 
 				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance().getMenuItemPrepModel(), 
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
+				org.lgna.croquet.MenuModel.SEPARATOR, 
 				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel(), 
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+				org.lgna.croquet.MenuModel.SEPARATOR,
 				PrintMenuModel.getInstance(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+				org.lgna.croquet.MenuModel.SEPARATOR,
 				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation().getMenuItemPrepModel(), 
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
+				org.lgna.croquet.MenuModel.SEPARATOR, 
 				org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel()
 		);
 	}

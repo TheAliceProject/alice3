@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInvocationMenuModelStaticGetInstanceResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation > {
+public class MethodInvocationMenuModelStaticGetInstanceResolver extends org.lgna.croquet.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation > implements org.lgna.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation > {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class };
 	public MethodInvocationMenuModelStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation instance ) {
 		super( instance );
@@ -55,7 +55,7 @@ public class MethodInvocationMenuModelStaticGetInstanceResolver extends edu.cmu.
 		super( binaryDecoder );
 	}
 
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		Object[] arguments = this.getArguments();
 		assert arguments != null;
 		assert arguments.length == 2;

@@ -43,8 +43,8 @@
 
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
-import edu.cmu.cs.dennisc.croquet.TrackableShape;
+import org.lgna.croquet.RuntimeResolver;
+import org.lgna.croquet.TrackableShape;
 
 /**
  * @author Dennis Cosgrove

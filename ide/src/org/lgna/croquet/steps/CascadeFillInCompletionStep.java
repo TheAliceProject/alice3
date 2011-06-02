@@ -46,12 +46,12 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInCompletionStep<F,B> extends CompletionStep< edu.cmu.cs.dennisc.croquet.CascadePopupCompletionModel< F > > {
-	public static < F, B > CascadeFillInCompletionStep< F, B > createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupCompletionModel< F > model, org.lgna.croquet.Trigger trigger, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > fillIn ) {
+public class CascadeFillInCompletionStep<F,B> extends CompletionStep< org.lgna.croquet.CascadePopupCompletionModel< F > > {
+	public static < F, B > CascadeFillInCompletionStep< F, B > createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadePopupCompletionModel< F > model, org.lgna.croquet.Trigger trigger, org.lgna.croquet.CascadeFillIn< F, B > fillIn ) {
 		return new CascadeFillInCompletionStep< F, B >( parent, model, trigger, fillIn );
 	}
-	private final edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > > fillInResolver; 
-	private CascadeFillInCompletionStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadePopupCompletionModel< F > model, org.lgna.croquet.Trigger trigger, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > fillIn ) {
+	private final org.lgna.croquet.CodableResolver< org.lgna.croquet.CascadeFillIn< F, B > > fillInResolver; 
+	private CascadeFillInCompletionStep( Transaction parent, org.lgna.croquet.CascadePopupCompletionModel< F > model, org.lgna.croquet.Trigger trigger, org.lgna.croquet.CascadeFillIn< F, B > fillIn ) {
 		super( parent, model, trigger, null );
 		this.fillInResolver = fillIn.getCodableResolver();
 	}
@@ -64,18 +64,18 @@ public class CascadeFillInCompletionStep<F,B> extends CompletionStep< edu.cmu.cs
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.fillInResolver );
 	}
-	public edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > getCascadeFillIn() {
+	public org.lgna.croquet.CascadeFillIn< F, B > getCascadeFillIn() {
 		return this.fillInResolver.getResolved();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Model getModelForTutorialNoteText() {
+	protected org.lgna.croquet.Model getModelForTutorialNoteText() {
 		return this.getCascadeFillIn();
 	}
 	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
-		if( this.fillInResolver instanceof edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> ) {
-			edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> retargetableResolver = (edu.cmu.cs.dennisc.croquet.RetargetableResolver<?>)this.fillInResolver;
+		if( this.fillInResolver instanceof org.lgna.croquet.RetargetableResolver<?> ) {
+			org.lgna.croquet.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.RetargetableResolver<?>)this.fillInResolver;
 			retargetableResolver.retarget( retargeter );
 		}
 	}

@@ -46,7 +46,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuItemPrepStep< M extends edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > extends PrepStep< M > {
+public abstract class MenuItemPrepStep< M extends org.lgna.croquet.MenuItemPrepModel > extends PrepStep< M > {
 	public MenuItemPrepStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}

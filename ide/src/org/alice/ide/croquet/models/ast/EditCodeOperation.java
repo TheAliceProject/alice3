@@ -49,7 +49,7 @@ package org.alice.ide.croquet.models.ast;
 /*package-private*/ abstract class EditCodeOperation<N extends edu.cmu.cs.dennisc.alice.ast.AbstractCode> extends org.alice.ide.operations.ActionOperation {
 	private N code;
 	public EditCodeOperation( java.util.UUID id, N code ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, id );
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, id );
 		this.code = code;
 	}
 	public N getCode() {

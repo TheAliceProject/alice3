@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionsCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	public ExpressionsCascadeOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id, edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
+public abstract class ExpressionsCascadeOperation extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	public ExpressionsCascadeOperation( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
 		super( group, id, edu.cmu.cs.dennisc.alice.ast.Expression.class, blanks );
 	}
 }

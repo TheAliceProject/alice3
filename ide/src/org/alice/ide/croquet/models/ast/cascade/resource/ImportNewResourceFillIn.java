@@ -65,11 +65,11 @@ public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachin
 				}
 				return new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( getResourceClass(), resource );
 			} else {
-				throw new edu.cmu.cs.dennisc.croquet.CancelException();
+				throw new org.lgna.croquet.CancelException();
 			}
 		} catch( java.io.IOException ioe ) {
 			//todo
-			throw new edu.cmu.cs.dennisc.croquet.CancelException();
+			throw new org.lgna.croquet.CancelException();
 		}
 	}
 	@Override

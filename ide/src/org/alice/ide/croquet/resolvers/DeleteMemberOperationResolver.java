@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteMemberOperationResolver< N extends edu.cmu.cs.dennisc.alice.ast.AbstractMember > extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.DeleteMemberOperation< N > > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.DeleteMemberOperation<N> > {
+public class DeleteMemberOperationResolver< N extends edu.cmu.cs.dennisc.alice.ast.AbstractMember > extends org.lgna.croquet.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.DeleteMemberOperation< N > > implements org.lgna.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.DeleteMemberOperation<N> > {
 	public DeleteMemberOperationResolver( org.alice.ide.croquet.models.ast.DeleteMemberOperation<N> instance ) {
 		super( instance );
 	}
@@ -69,7 +69,7 @@ public class DeleteMemberOperationResolver< N extends edu.cmu.cs.dennisc.alice.a
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		this.getInstance().encodeArguments( binaryEncoder );
 	}
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		Object[] arguments = this.getArguments();
 		org.alice.ide.croquet.models.ast.DeleteMemberOperation.retargetArguments( arguments, retargeter );
 	}

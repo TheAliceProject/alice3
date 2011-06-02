@@ -47,6 +47,6 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public interface DropStep {
-	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor();
-	public edu.cmu.cs.dennisc.croquet.DropSite getDropSite();
+	public org.lgna.croquet.DropReceptor getDropReceptor();
+	public org.lgna.croquet.DropSite getDropSite();
 }

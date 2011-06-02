@@ -45,9 +45,9 @@ package org.alice.stageide.croquet.models.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractListSelectionState<E> extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState< E > {
-	public AbstractListSelectionState( java.util.UUID individualId, edu.cmu.cs.dennisc.croquet.Codec< E > codec, E... elements ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, codec, -1, elements );
+abstract class AbstractListSelectionState<E> extends org.lgna.croquet.DefaultListSelectionState< E > {
+	public AbstractListSelectionState( java.util.UUID individualId, org.lgna.croquet.Codec< E > codec, E... elements ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, individualId, codec, -1, elements );
 	}
 	protected int getVisibleRowCount() {
 		return 1;

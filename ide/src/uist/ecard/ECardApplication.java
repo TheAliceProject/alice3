@@ -3,9 +3,9 @@ package uist.ecard;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
-	public static final edu.cmu.cs.dennisc.croquet.Group HISTORY_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
-	public static final edu.cmu.cs.dennisc.croquet.Group URI_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
+public class ECardApplication extends org.lgna.croquet.Application {
+	public static final org.lgna.croquet.Group HISTORY_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
+	public static final org.lgna.croquet.Group URI_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
 
 	protected String year = "2003";
 	protected ECardPanel cardPanel;
@@ -147,7 +147,7 @@ public class ECardApplication extends edu.cmu.cs.dennisc.croquet.Application {
 		return rv;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor(edu.cmu.cs.dennisc.croquet.DropSite dropSite) {
+	public org.lgna.croquet.DropReceptor getDropReceptor(org.lgna.croquet.DropSite dropSite) {
 		// TODO Auto-generated method stub
 		return null;
 	}

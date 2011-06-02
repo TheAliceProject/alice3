@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 import uist.ecard.ECardApplication;
 
 
-public class DropShadowModel extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class DropShadowModel extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static DropShadowModel instance = new DropShadowModel();
 	}

@@ -63,7 +63,7 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 		sb.append( ".\n\nLook for files with an " );
 		sb.append( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION );
 		sb.append( " extension." );
-		this.getIDE().showMessageDialog( sb.toString(), "Cannot read file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+		this.getIDE().showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 	}
 	
 	@Override
@@ -74,10 +74,10 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 		if( file != null ) {
 			String lcFilename = file.getName().toLowerCase();
 			if( lcFilename.endsWith( ".a2c" ) ) {
-				this.getIDE().showMessageDialog( "Alice3 does not load Alice2 characters", "Cannot read file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+				this.getIDE().showMessageDialog( "Alice3 does not load Alice2 characters", "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 			} else if( lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase() ) ) {
 				this.getIDE().showMessageDialog( file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION + " extension.",
-						"Incorrect File Type", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION );
+						"Incorrect File Type", org.lgna.croquet.MessageType.INFORMATION );
 			} else {
 				boolean isWorthyOfException = lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase() );
 				java.util.zip.ZipFile zipFile;

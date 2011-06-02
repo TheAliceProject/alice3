@@ -63,7 +63,7 @@ public class BlockTemplateComposite extends TemplateComposite {
 		//todo
 	}
 	@Override
-	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
+	public boolean contains( org.lgna.croquet.Model model ) {
 		if( clses.contains( model.getClass() ) ) {
 			return true;
 		}
@@ -77,7 +77,7 @@ public class BlockTemplateComposite extends TemplateComposite {
 		return rv;
 	}
 	@Override
-	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
 		super.customizeTitleComponent( booleanState, button );
 		button.getAwtComponent().setIcon( new javax.swing.Icon() {
 			public int getIconHeight() {

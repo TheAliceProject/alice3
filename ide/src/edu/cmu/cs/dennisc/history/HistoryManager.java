@@ -63,9 +63,9 @@ public class HistoryManager {
 		org.lgna.croquet.steps.TransactionManager.addEventObserver( HistoryManager.eventObserver );
 	}
 
-	private static java.util.Map< edu.cmu.cs.dennisc.croquet.Group, HistoryManager > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< org.lgna.croquet.Group, HistoryManager > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static HistoryManager getInstance( edu.cmu.cs.dennisc.croquet.Group group ) {
+	public static HistoryManager getInstance( org.lgna.croquet.Group group ) {
 		HistoryManager rv;
 		if( group != null ) {
 			rv = HistoryManager.map.get( group );
@@ -81,7 +81,7 @@ public class HistoryManager {
 		}
 		return rv;
 	}
-	private static void handleEditCommitted( edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
+	private static void handleEditCommitted( org.lgna.croquet.Edit<?> edit ) {
 		assert edit != null;
 		HistoryManager historyManager = HistoryManager.getInstance( edit.getGroup() );
 		if( historyManager != null ) {
@@ -89,20 +89,20 @@ public class HistoryManager {
 		}
 	}
 
-	private java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit<?> > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private java.util.Stack< org.lgna.croquet.Edit<?> > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private int insertionIndex = 0;
-	private edu.cmu.cs.dennisc.croquet.Group group;
+	private org.lgna.croquet.Group group;
 
-	private HistoryManager( edu.cmu.cs.dennisc.croquet.Group group ) {
+	private HistoryManager( org.lgna.croquet.Group group ) {
 		this.group = group;
 	}
-	public edu.cmu.cs.dennisc.croquet.Group getGroup() {
+	public org.lgna.croquet.Group getGroup() {
 		return this.group;
 	}
-	public java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit<?> > getStack() {
+	public java.util.Stack< org.lgna.croquet.Edit<?> > getStack() {
 		return this.stack;
 	}
-	private void push( edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
+	private void push( org.lgna.croquet.Edit<?> edit ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroup(), this.group ) ) {
 			edu.cmu.cs.dennisc.history.event.HistoryPushEvent historyPushEvent = new edu.cmu.cs.dennisc.history.event.HistoryPushEvent( this, edit );
 			this.fireOperationPushing( historyPushEvent );
@@ -118,7 +118,7 @@ public class HistoryManager {
 	}
 	private void undo() {
 		if( this.insertionIndex > 0 ) {
-			edu.cmu.cs.dennisc.croquet.Edit<?> edit = this.stack.get( this.insertionIndex - 1 );
+			org.lgna.croquet.Edit<?> edit = this.stack.get( this.insertionIndex - 1 );
 			if( edit.canUndo() ) {
 				edit.undo();
 				this.insertionIndex--;
@@ -132,7 +132,7 @@ public class HistoryManager {
 	}
 	private void redo() {
 		if( this.insertionIndex < this.stack.size() ) {
-			edu.cmu.cs.dennisc.croquet.Edit<?> edit = this.stack.get( this.insertionIndex );
+			org.lgna.croquet.Edit<?> edit = this.stack.get( this.insertionIndex );
 			if( edit != null ) {
 				if( edit.canRedo() ) {
 					edit.doOrRedo( false );
@@ -259,7 +259,7 @@ public class HistoryManager {
 			}
 		}
 	}
-	public edu.cmu.cs.dennisc.croquet.Edit<?> createDoIgnoringCompositeEdit( String presentation ) {
+	public org.lgna.croquet.Edit<?> createDoIgnoringCompositeEdit( String presentation ) {
 //		synchronized( this.stack ) {
 //			final int N = this.insertionIndex;
 //			if( N > 0 ) {

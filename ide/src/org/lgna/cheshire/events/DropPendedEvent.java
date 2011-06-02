@@ -47,21 +47,21 @@ package org.lgna.cheshire.events;
  * @author Dennis Cosgrove
  */
 public class DropPendedEvent implements Event {
-	private final edu.cmu.cs.dennisc.croquet.Model model;
-	private final edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor; 
-	private final edu.cmu.cs.dennisc.croquet.DropSite dropSite;
-	public DropPendedEvent( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+	private final org.lgna.croquet.Model model;
+	private final org.lgna.croquet.DropReceptor dropReceptor; 
+	private final org.lgna.croquet.DropSite dropSite;
+	public DropPendedEvent( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		this.model = model;
 		this.dropReceptor = dropReceptor;
 		this.dropSite = dropSite;
 	}
-	public edu.cmu.cs.dennisc.croquet.Model getModel() {
+	public org.lgna.croquet.Model getModel() {
 		return this.model;
 	}
-	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor() {
+	public org.lgna.croquet.DropReceptor getDropReceptor() {
 		return this.dropReceptor;
 	}
-	public edu.cmu.cs.dennisc.croquet.DropSite getDropSite() {
+	public org.lgna.croquet.DropSite getDropSite() {
 		return this.dropSite;
 	}
 }

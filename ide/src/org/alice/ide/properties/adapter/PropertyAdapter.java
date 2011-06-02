@@ -43,9 +43,9 @@
 
 package org.alice.ide.properties.adapter;
 
+import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.Button;
 
-import edu.cmu.cs.dennisc.croquet.Operation;
 
 public interface PropertyAdapter <P, O>
 {
@@ -76,7 +76,7 @@ public interface PropertyAdapter <P, O>
 	
 	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
 	
-	public edu.cmu.cs.dennisc.croquet.Model getEditModel();
+	public org.lgna.croquet.Model getEditModel();
 	
 	public org.lgna.croquet.components.ViewController<?,?> createEditViewController();
 	

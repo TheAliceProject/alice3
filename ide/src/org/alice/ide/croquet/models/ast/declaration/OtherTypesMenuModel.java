@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class OtherTypesMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+public class OtherTypesMenuModel extends org.lgna.croquet.MenuModel {
 	private static class SingletonHolder {
 		private static OtherTypesMenuModel instance = new OtherTypesMenuModel();
 	}
@@ -58,7 +58,7 @@ public class OtherTypesMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 	@Override
 	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > otherTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< org.lgna.croquet.MenuItemPrepModel > otherTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > otherTypes = org.alice.ide.IDE.getSingleton().getSecondarySelectableTypesDeclaredInJava();
 		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava otherType : otherTypes ) {
 			otherTypeModels.add( SelectTypeOperation.getInstance( otherType ).getMenuItemPrepModel() );

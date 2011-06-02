@@ -50,7 +50,7 @@ public class CountLoopTemplate extends CascadingUbiquitousStatementClassTemplate
 		super( edu.cmu.cs.dennisc.alice.ast.CountLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteCountLoop() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

@@ -47,10 +47,10 @@ import java.util.Locale;
 
 import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.swing.icons.ColorIcon;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.Operation;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.croquet.Model;
-import edu.cmu.cs.dennisc.croquet.Operation;
 
 public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, O> 
 {
@@ -74,12 +74,12 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 		}
 	}
 	
-	private edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel popupMenuOperation;
+	private org.lgna.croquet.StandardPopupPrepModel popupMenuOperation;
 	protected java.util.List< SetColorOperation > defaultColorOperationModels;
 	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
 	
 	@Override
-	public edu.cmu.cs.dennisc.croquet.PopupPrepModel getEditModel() 
+	public org.lgna.croquet.PopupPrepModel getEditModel() 
 	{
 		if (this.popupMenuOperation == null)
 		{
@@ -97,7 +97,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 					e.printStackTrace();
 				}
 			}
-			this.popupMenuOperation = new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "9aa93f57-87cc-412b-b166-beb73bcd1fe8" ) ) {
+			this.popupMenuOperation = new org.lgna.croquet.MenuModel( java.util.UUID.fromString( "9aa93f57-87cc-412b-b166-beb73bcd1fe8" ) ) {
 				@Override
 				public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep context ) {
 					super.handlePopupMenuPrologue( popupMenu, context );
@@ -119,9 +119,9 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 					
 					SetColorOperation currentColorOperation = new SetColorOperation(currentColor, currentColorName);
 					
-					java.util.List<edu.cmu.cs.dennisc.croquet.MenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					java.util.List<org.lgna.croquet.MenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					models.add(currentColorOperation.getMenuItemPrepModel());
-					models.add(edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR);
+					models.add(org.lgna.croquet.MenuModel.SEPARATOR);
 					for( SetColorOperation operation : AbstractColorPropertyAdapter.this.defaultColorOperationModels ) {
 						models.add(operation.getMenuItemPrepModel());
 					}

@@ -133,7 +133,7 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 					menuSelectionManager.processMouseEvent( eSrc );
 				}
 			} else {
-				javax.swing.JFrame jFrame = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtComponent();
+				javax.swing.JFrame jFrame = org.lgna.croquet.Application.getSingleton().getFrame().getAwtComponent();
 				java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(jFrame.getContentPane(), pSrc.x, pSrc.y);
 				if (component != null) {
 					java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(componentSrc, pSrc, component);
@@ -170,7 +170,7 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 	private java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
 		public void mouseWheelMoved(java.awt.event.MouseWheelEvent e) {
 			java.awt.Point p = e.getPoint();
-			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtComponent().getContentPane(), p.x, p.y);
+			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(org.lgna.croquet.Application.getSingleton().getFrame().getAwtComponent().getContentPane(), p.x, p.y);
 			if (component != null) {
 				java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(e.getComponent(), p, component);
 				component.dispatchEvent(new java.awt.event.MouseWheelEvent(component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()));
@@ -276,7 +276,7 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 							for( Note note : page.getNotes() ) {
 								if( note.isActive() ) {
 									for( Feature feature : note.getFeatures() ) {
-										edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+										org.lgna.croquet.TrackableShape trackableShape = feature.getTrackableShape();
 										if( trackableShape != null ) {
 											if( trackableShape.isInView() ) {
 												java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
@@ -333,7 +333,7 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 						for( Note note : page.getNotes() ) {
 							if( note.isActive() ) {
 								for( Feature feature : note.getFeatures() ) {
-									edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+									org.lgna.croquet.TrackableShape trackableShape = feature.getTrackableShape();
 									if( trackableShape != null ) {
 										if( trackableShape.isInView() ) {
 											//pass
@@ -363,7 +363,7 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 					for( Note note : page.getNotes() ) {
 						if( note.isActive() ) {
 							for( Feature feature : note.getFeatures() ) {
-								edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+								org.lgna.croquet.TrackableShape trackableShape = feature.getTrackableShape();
 								if( trackableShape != null ) {
 									if( trackableShape.isInView() ) {
 										java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );
@@ -401,5 +401,5 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		return rv;
 	}
-	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation();
+	public abstract org.lgna.croquet.Operation< ? > getNextOperation();
 }

@@ -46,9 +46,9 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionPropertyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class ExpressionPropertyCascadeOperation extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	public ExpressionPropertyCascadeOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
+	public ExpressionPropertyCascadeOperation( org.lgna.croquet.Group group, java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
 		super( group, id, edu.cmu.cs.dennisc.alice.ast.Expression.class, blanks );
 		this.expressionProperty = expressionProperty;
 	}
@@ -75,7 +75,7 @@ public abstract class ExpressionPropertyCascadeOperation extends edu.cmu.cs.denn
 		return null;
 	}
 	@Override
-	protected void perform( org.lgna.croquet.steps.CascadePopupPrepStep< edu.cmu.cs.dennisc.alice.ast.Expression > step, edu.cmu.cs.dennisc.croquet.PopupPrepModel.PerformObserver performObserver ) {
+	protected void perform( org.lgna.croquet.steps.CascadePopupPrepStep< edu.cmu.cs.dennisc.alice.ast.Expression > step, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
 		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementIndexPair() );
 		super.perform( step, performObserver );
 	}

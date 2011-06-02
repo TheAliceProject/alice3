@@ -46,9 +46,9 @@ package org.alice.ide.properties.adapter;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.Button;
 
-import edu.cmu.cs.dennisc.croquet.Operation;
 
 public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P, O> 
 {
@@ -134,16 +134,16 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 		}
 	}
 
-	public abstract edu.cmu.cs.dennisc.croquet.Model getEditModel();
+	public abstract org.lgna.croquet.Model getEditModel();
 	
 	public org.lgna.croquet.components.ViewController< ?,? > createEditViewController()
     {
-		edu.cmu.cs.dennisc.croquet.Model model = this.getEditModel();
-		if( model instanceof edu.cmu.cs.dennisc.croquet.PopupPrepModel< ? > ) {
-			edu.cmu.cs.dennisc.croquet.PopupPrepModel< ? > popupPrepModel = (edu.cmu.cs.dennisc.croquet.PopupPrepModel< ? >)model;
+		org.lgna.croquet.Model model = this.getEditModel();
+		if( model instanceof org.lgna.croquet.PopupPrepModel< ? > ) {
+			org.lgna.croquet.PopupPrepModel< ? > popupPrepModel = (org.lgna.croquet.PopupPrepModel< ? >)model;
 	        return popupPrepModel.createPopupButton();
-		} else if( model instanceof edu.cmu.cs.dennisc.croquet.Operation< ? > ) {
-			edu.cmu.cs.dennisc.croquet.Operation< ? > operation = (edu.cmu.cs.dennisc.croquet.Operation< ? >)model;
+		} else if( model instanceof org.lgna.croquet.Operation< ? > ) {
+			org.lgna.croquet.Operation< ? > operation = (org.lgna.croquet.Operation< ? >)model;
 	        return operation.createButton();
 		} else {
 			throw new RuntimeException( "todo" );

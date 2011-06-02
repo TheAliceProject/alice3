@@ -171,7 +171,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		public ResourceOperation( java.util.UUID individualId ) {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		}
-		protected abstract edu.cmu.cs.dennisc.croquet.Edit createEdit( org.alice.virtualmachine.Resource resource );
+		protected abstract org.lgna.croquet.Edit createEdit( org.alice.virtualmachine.Resource resource );
 
 		//todo: better name
 		protected abstract org.alice.virtualmachine.Resource selectResource();
@@ -236,7 +236,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			}
 		}
 		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
+		public org.lgna.croquet.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
 			return new AddOrRemoveResourceEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
@@ -266,7 +266,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			return ResourceManagerPane.this.getSelectedResource();
 		}
 		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
+		public org.lgna.croquet.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
 			return new AddOrRemoveResourceEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
@@ -354,7 +354,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		}
 	}
 
-	class RenameResourceOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+	class RenameResourceOperation extends org.lgna.croquet.InputDialogOperation {
 		private org.alice.virtualmachine.Resource resource;
 		public RenameResourceOperation() {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "da920b16-65fc-48a4-9203-b3c2979b0a59" ) );

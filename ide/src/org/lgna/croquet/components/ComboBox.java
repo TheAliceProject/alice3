@@ -43,8 +43,8 @@
 
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.ListSelectionState;
-import edu.cmu.cs.dennisc.croquet.TrackableShape;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.TrackableShape;
 
 /**
  * @author Dennis Cosgrove

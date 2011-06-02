@@ -47,5 +47,5 @@ package org.lgna.stencil;
  * @author Dennis Cosgrove
  */
 public interface ScrollingRequiredRenderer {
-	public java.awt.Shape renderScrollIndicators( java.awt.Graphics2D g2, org.lgna.croquet.components.ScreenElement root, edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape );
+	public java.awt.Shape renderScrollIndicators( java.awt.Graphics2D g2, org.lgna.croquet.components.ScreenElement root, org.lgna.croquet.TrackableShape trackableShape );
 }

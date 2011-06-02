@@ -295,8 +295,8 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 	}
 	
 	static abstract class EditableList<E> extends ReorderableList {
-		protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> getDoubleClickOperation( E item );
-		protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> getPopupTriggerOperation( E item );
+		protected abstract org.lgna.croquet.Operation<?> getDoubleClickOperation( E item );
+		protected abstract org.lgna.croquet.Operation<?> getPopupTriggerOperation( E item );
 		
 		private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter lenientMouseClickAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 			private E getItem( java.awt.event.MouseEvent e ) {
@@ -319,7 +319,7 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 					if( quoteClickCountUnquote == 1 ) {
 						E item = this.getItem( e );
 						if( item != null ) {
-							edu.cmu.cs.dennisc.croquet.Operation<?> operation = getPopupTriggerOperation( item );
+							org.lgna.croquet.Operation<?> operation = getPopupTriggerOperation( item );
 							if( operation != null ) {
 								operation.fire( e );
 							}
@@ -329,7 +329,7 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 					if( quoteClickCountUnquote == 2 ) {
 						E item = this.getItem( e );
 						if( item != null ) {
-							edu.cmu.cs.dennisc.croquet.Operation<?> operation = getDoubleClickOperation( item );
+							org.lgna.croquet.Operation<?> operation = getDoubleClickOperation( item );
 							if( operation != null ) {
 								operation.fire( e );
 							}
@@ -355,32 +355,32 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 	
 	static class MethodList extends EditableList< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.Operation<?> getDoubleClickOperation(edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice item) {
+		protected org.lgna.croquet.Operation<?> getDoubleClickOperation(edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice item) {
 			if( item.isSignatureLocked.getValue() ) {
-				edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( item.getName() + " is locked and therefore cannot be renamed." );
+				org.lgna.croquet.Application.getSingleton().showMessageDialog( item.getName() + " is locked and therefore cannot be renamed." );
 				return null;
 			} else {
 				return org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item );
 			}
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.Operation<?> getPopupTriggerOperation(edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice item) {
+		protected org.lgna.croquet.Operation<?> getPopupTriggerOperation(edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice item) {
 			return null;
 		}
 	}
 	static class FieldList extends EditableList< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.Operation<?> getDoubleClickOperation(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice item) {
+		protected org.lgna.croquet.Operation<?> getDoubleClickOperation(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice item) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = item.getValueType();
 			if( valueType.isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class ) ) {
-				edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "Currently, camera markers cannot be renamed." );
+				org.lgna.croquet.Application.getSingleton().showMessageDialog( "Currently, camera markers cannot be renamed." );
 				return null;
 			} else {
 				return new org.alice.ide.operations.ast.EditFieldOperation( item );
 			}
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.Operation<?> getPopupTriggerOperation(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice item) {
+		protected org.lgna.croquet.Operation<?> getPopupTriggerOperation(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice item) {
 			return null;
 		}
 	}
@@ -397,7 +397,7 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 		}
 	}
 
-	private static org.lgna.croquet.components.Container< ? > createMembersPanel( ReorderableList list, edu.cmu.cs.dennisc.croquet.InputDialogOperation operation ) {
+	private static org.lgna.croquet.components.Container< ? > createMembersPanel( ReorderableList list, org.lgna.croquet.InputDialogOperation operation ) {
 		org.lgna.croquet.components.PageAxisPanel rv = new org.lgna.croquet.components.PageAxisPanel();
 		rv.addComponent( list );
 		rv.addComponent( operation.createButton() );
@@ -449,17 +449,17 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 		functionsList.setBackgroundColor( null );
 		fieldsList.setBackgroundColor( null );
 
-		edu.cmu.cs.dennisc.croquet.BooleanState proceduresToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "4236c740-8881-4cf1-82e3-e3aef61c13dd" ), true );
+		org.lgna.croquet.BooleanState proceduresToolPaletteState = new org.lgna.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "4236c740-8881-4cf1-82e3-e3aef61c13dd" ), true );
 		proceduresToolPaletteState.setTextForBothTrueAndFalse( "procedures" );
 		org.lgna.croquet.components.ToolPalette proceduresToolPalette = proceduresToolPaletteState.createToolPalette( createMembersPanel( proceduresList, org.alice.ide.croquet.models.ast.DeclareProcedureOperation.getInstance( type ) ) );
 		proceduresToolPalette.setBackgroundColor( ide.getTheme().getProcedureColor() );
 
-		edu.cmu.cs.dennisc.croquet.BooleanState functionsToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "ea7e601f-255b-41aa-bccd-af181c6b3bf0" ), true );
+		org.lgna.croquet.BooleanState functionsToolPaletteState = new org.lgna.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "ea7e601f-255b-41aa-bccd-af181c6b3bf0" ), true );
 		functionsToolPaletteState.setTextForBothTrueAndFalse( "functions" );
 		org.lgna.croquet.components.ToolPalette functionsToolPalette = functionsToolPaletteState.createToolPalette( createMembersPanel( functionsList, org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( type ) ) );
 		functionsToolPalette.setBackgroundColor( ide.getTheme().getFunctionColor() );
 
-		edu.cmu.cs.dennisc.croquet.BooleanState fieldsToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7176c895-4e0f-4ebe-98a2-f820b27c9206" ), true );
+		org.lgna.croquet.BooleanState fieldsToolPaletteState = new org.lgna.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7176c895-4e0f-4ebe-98a2-f820b27c9206" ), true );
 		fieldsToolPaletteState.setTextForBothTrueAndFalse( "properties" );
 		org.lgna.croquet.components.ToolPalette fieldsToolPalette = fieldsToolPaletteState.createToolPalette( createMembersPanel( fieldsList, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type ) ) );
 		fieldsToolPalette.setBackgroundColor( ide.getTheme().getFieldColor() );

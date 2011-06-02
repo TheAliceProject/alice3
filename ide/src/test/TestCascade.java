@@ -43,7 +43,7 @@
 
 package test;
 
-class EnumConstantFillIn<T extends Enum< T >> extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< T, Void > {
+class EnumConstantFillIn<T extends Enum< T >> extends org.lgna.croquet.CascadeFillIn< T, Void > {
 	private static java.util.Map< Object, EnumConstantFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static synchronized <T extends Enum< T >> EnumConstantFillIn< T > getInstance( T value ) {
@@ -90,7 +90,7 @@ class EnumConstantFillIn<T extends Enum< T >> extends edu.cmu.cs.dennisc.croquet
 	}
 }
 
-class EnumBlank<T extends Enum< T >> extends edu.cmu.cs.dennisc.croquet.CascadeBlank< T > {
+class EnumBlank<T extends Enum< T >> extends org.lgna.croquet.CascadeBlank< T > {
 	private final Class< T > cls;
 
 	public EnumBlank( Class< T > cls ) {
@@ -99,7 +99,7 @@ class EnumBlank<T extends Enum< T >> extends edu.cmu.cs.dennisc.croquet.CascadeB
 	}
 
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep< T > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep< T > context ) {
 		for( T value : this.cls.getEnumConstants() ) {
 			rv.add( EnumConstantFillIn.getInstance( value ) );
 		}
@@ -107,7 +107,7 @@ class EnumBlank<T extends Enum< T >> extends edu.cmu.cs.dennisc.croquet.CascadeB
 	}
 }
 
-class IntegerLiteralFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Integer, Void > {
+class IntegerLiteralFillIn extends org.lgna.croquet.CascadeFillIn< Integer, Void > {
 	private static java.util.Map< Integer, IntegerLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static synchronized IntegerLiteralFillIn getInstance( Integer value ) {
@@ -154,7 +154,7 @@ class IntegerLiteralFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Int
 	}
 }
 
-class CustomIntegerFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Integer, Void > {
+class CustomIntegerFillIn extends org.lgna.croquet.CascadeFillIn< Integer, Void > {
 	private static class SingletonHolder {
 		private static CustomIntegerFillIn instance = new CustomIntegerFillIn();
 	}
@@ -193,7 +193,7 @@ class CustomIntegerFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Inte
 	}
 }
 
-class IntegerBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< Integer > {
+class IntegerBlank extends org.lgna.croquet.CascadeBlank< Integer > {
 	private static class SingletonHolder {
 		private static IntegerBlank instance = new IntegerBlank();
 	}
@@ -207,11 +207,11 @@ class IntegerBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< Integer > {
 	}
 
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> rv, org.lgna.croquet.steps.CascadeBlankStep< Integer > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem> updateChildren( java.util.List< org.lgna.croquet.CascadeItem> rv, org.lgna.croquet.steps.CascadeBlankStep< Integer > context ) {
 		for( Integer value : new int[] { 1, 2, 3, 4, 5 } ) {
 			rv.add( IntegerLiteralFillIn.getInstance( value ) );
 		}
-		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		rv.add( CustomIntegerFillIn.getInstance() );
 		return rv;
 	}
@@ -221,7 +221,7 @@ enum ZodiacSigns {
 	ARIES, TAURUS, GEMINI, CANCER, LEO, VIRGO, LIBRA, SCORPIO, SAGITARIUS, CAPRICORN, AQUARIUS, PISCES
 }
 
-class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel< Object > {
+class MyCascadeOperation extends org.lgna.croquet.CascadePopupPrepModel< Object > {
 	private static class SingletonHolder {
 		private static MyCascadeOperation instance = new MyCascadeOperation();
 	}
@@ -231,7 +231,7 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupPrepMode
 	}
 
 	private MyCascadeOperation() {
-		super( null, java.util.UUID.fromString( "2c0ba898-1f06-48ff-bc15-65f6f350484b" ), Object.class, new edu.cmu.cs.dennisc.croquet.CascadeBlank[] { new EnumBlank( ZodiacSigns.class ), IntegerBlank.getInstance(), IntegerBlank.getInstance(),
+		super( null, java.util.UUID.fromString( "2c0ba898-1f06-48ff-bc15-65f6f350484b" ), Object.class, new org.lgna.croquet.CascadeBlank[] { new EnumBlank( ZodiacSigns.class ), IntegerBlank.getInstance(), IntegerBlank.getInstance(),
 				new EnumBlank( ZodiacSigns.class ), IntegerBlank.getInstance() } );
 	}
 
@@ -242,8 +242,8 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupPrepMode
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Edit createEdit( org.lgna.croquet.steps.CascadePopupCompletionStep< Object > step, final java.lang.Object[] values ) {
-		return new edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupCompletionModel<Object> >( null ) {
+	protected org.lgna.croquet.Edit createEdit( org.lgna.croquet.steps.CascadePopupCompletionStep< Object > step, final java.lang.Object[] values ) {
+		return new org.lgna.croquet.Edit< org.lgna.croquet.CascadePopupCompletionModel<Object> >( null ) {
 			@Override
 			protected void doOrRedoInternal( boolean isDo ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( values );
@@ -270,14 +270,14 @@ class CascadePanel extends org.lgna.croquet.components.BorderPanel {
 /**
  * @author Dennis Cosgrove
  */
-public class TestCascade extends edu.cmu.cs.dennisc.croquet.Application {
+public class TestCascade extends org.lgna.croquet.Application {
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createContentPane() {
 		return new CascadePanel();
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor( edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
 		return null;
 	}
 

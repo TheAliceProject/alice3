@@ -42,9 +42,9 @@
  */
 package org.lgna.croquet.edits;
 
-import edu.cmu.cs.dennisc.croquet.Codec;
-import edu.cmu.cs.dennisc.croquet.ListSelectionState;
-import edu.cmu.cs.dennisc.croquet.UserInformation;
+import org.lgna.croquet.Codec;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.UserInformation;
 
 /**
  * @author Dennis Cosgrove
@@ -53,7 +53,7 @@ public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionStat
 	private E prevValue;
 	private E nextValue;
 	
-	public ListSelectionStateEdit( org.lgna.croquet.steps.CompletionStep< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > completionStep, E prevValue, E nextValue ) {
+	public ListSelectionStateEdit( org.lgna.croquet.steps.CompletionStep< org.lgna.croquet.ListSelectionState<E> > completionStep, E prevValue, E nextValue ) {
 		super( completionStep );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
@@ -92,7 +92,7 @@ public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionStat
 	}
 
 	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
 		this.prevValue = retargeter.retarget( this.prevValue );
 		this.nextValue = retargeter.retarget( this.nextValue );

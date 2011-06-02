@@ -49,7 +49,7 @@ import org.lgna.cheshire.stencil.StencilsPresentation;
  * @author Dennis Cosgrove
  */
 public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation {
-	/*package-private*/static edu.cmu.cs.dennisc.croquet.Group IMPLEMENTATION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "90e2f36f-512c-41e4-8e7b-61e10c95cee6" ), "IMPLEMENTATION_GROUP" );
+	/*package-private*/static org.lgna.croquet.Group IMPLEMENTATION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "90e2f36f-512c-41e4-8e7b-61e10c95cee6" ), "IMPLEMENTATION_GROUP" );
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
 	@Override
@@ -72,7 +72,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 				if( path.length > 1 ) {
 					if( path[ 1 ] instanceof org.lgna.cheshire.TransactionChapter  ) {
 						org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)path[ 1 ];
-						edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = transactionChapter.getReplacementAcceptability();
+						org.lgna.croquet.ReplacementAcceptability replacementAcceptability = transactionChapter.getReplacementAcceptability();
 						if( replacementAcceptability != null ) {
 							if( replacementAcceptability.isAcceptable() ) {
 								if( replacementAcceptability.isDeviation() ) {
@@ -92,12 +92,12 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		}
 	};
 	public DocWizardsesquePresentation( 
-			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
+			org.lgna.croquet.UserInformation userInformation, 
 			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
 			org.lgna.croquet.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
-			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess
+			org.lgna.croquet.Group[] groupsTrackedForRandomAccess
 	) {
 		super( userInformation, org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess );
 		
@@ -170,13 +170,13 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 	}
 	private boolean isIgnoringEvents;
 	
-	private final void handlePotentialReplacementEdit( org.lgna.cheshire.TransactionChapter transactionChapter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidateEdit ) {
-		edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = transactionChapter.getTransaction().getEdit();
-		edu.cmu.cs.dennisc.croquet.Group group = replacementCandidateEdit.getGroup();
+	private final void handlePotentialReplacementEdit( org.lgna.cheshire.TransactionChapter transactionChapter, org.lgna.croquet.Edit< ? > replacementCandidateEdit ) {
+		org.lgna.croquet.Edit< ? > originalEdit = transactionChapter.getTransaction().getEdit();
+		org.lgna.croquet.Group group = replacementCandidateEdit.getGroup();
 		if( group == DocWizardsesquePresentation.IMPLEMENTATION_GROUP ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidateEdit, this.getUserInformation() );
+			org.lgna.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidateEdit, this.getUserInformation() );
 			if( replacementAcceptability.isAcceptable() ) {
 				transactionChapter.setReplacementAcceptability( replacementAcceptability );
 				this.incrementSelectedIndex();
@@ -198,7 +198,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 				org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
 				if( event instanceof org.lgna.cheshire.events.EditCommittedEvent ) {
 					org.lgna.cheshire.events.EditCommittedEvent editCommittedEvent = (org.lgna.cheshire.events.EditCommittedEvent)event;
-					edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidateEdit = editCommittedEvent.getEdit();
+					org.lgna.croquet.Edit< ? > replacementCandidateEdit = editCommittedEvent.getEdit();
 					org.lgna.croquet.steps.CompletionStep< ? > completionStep = replacementCandidateEdit.getCompletionStep();
 					org.lgna.croquet.steps.Transaction transaction = completionStep.getParent();
 					org.lgna.croquet.steps.TransactionHistory transactionHistory = transaction.getParent();
@@ -220,7 +220,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 						//pass
 					} else {
 						if( transaction.getCompletionStep().getModel() == org.alice.stageide.croquet.models.run.RunOperation.getInstance() ) {
-							transactionChapter.setReplacementAcceptability( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH );
+							transactionChapter.setReplacementAcceptability( org.lgna.croquet.ReplacementAcceptability.PERFECT_MATCH );
 							try { 
 								isIgnoringEvents = true;
 								this.incrementSelectedIndex();

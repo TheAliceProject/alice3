@@ -46,7 +46,7 @@ package org.lgna.cheshire.docwizardsesque;
 /**
  * @author Dennis Cosgrove
  */
-public class DoSingleStepOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class DoSingleStepOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static DoSingleStepOperation instance = new DoSingleStepOperation();
 	}

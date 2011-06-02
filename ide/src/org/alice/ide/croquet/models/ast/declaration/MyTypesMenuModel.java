@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class MyTypesMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
+public class MyTypesMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static MyTypesMenuModel instance = new MyTypesMenuModel();
 	}
@@ -58,7 +58,7 @@ public class MyTypesMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMe
 	@Override
 	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > myTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< org.lgna.croquet.MenuItemPrepModel > myTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > aliceTypes = org.alice.ide.IDE.getSingleton().getTypesDeclaredInAlice();
 		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice aliceType : aliceTypes ) {
 			myTypeModels.add( SelectTypeOperation.getInstance( aliceType ).getMenuItemPrepModel() );

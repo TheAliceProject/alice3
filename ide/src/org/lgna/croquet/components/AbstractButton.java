@@ -43,7 +43,7 @@
 
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.Model;
+import org.lgna.croquet.Model;
 
 /**
  * @author Dennis Cosgrove

@@ -54,7 +54,7 @@ import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
 public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 
 	private static org.lgna.croquet.components.PathControl.Initializer initializer = new org.lgna.croquet.components.PathControl.Initializer() {
-		public edu.cmu.cs.dennisc.croquet.ActionOperation configure( edu.cmu.cs.dennisc.croquet.ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > treeNode ) {
+		public org.lgna.croquet.ActionOperation configure( org.lgna.croquet.ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > treeNode ) {
 			javax.swing.Icon icon;
 			if( treeNode instanceof edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode ) {
 				edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode directoryZipTreeNode = (edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode)treeNode;
@@ -71,7 +71,7 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 			rv.setName( GalleryBrowser.getTextFor( treeNode, false ) );
 			return rv;
 		}
-		public edu.cmu.cs.dennisc.croquet.Operation< ? > getOperationForLeaf( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > treeNode ) {
+		public org.lgna.croquet.Operation< ? > getOperationForLeaf( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > treeNode ) {
 			return null;
 		}
 	};
@@ -93,15 +93,15 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 	}
 
 	class DirectoryView extends org.lgna.croquet.components.LineAxisPanel {
-		private edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String >> selectionObserver = new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String >>() {
+		private org.lgna.croquet.TreeSelectionState.SelectionObserver< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String >> selectionObserver = new org.lgna.croquet.TreeSelectionState.SelectionObserver< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String >>() {
 			public void selectionChanged( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > nextValue ) {
 				DirectoryView.this.handleSelectionChanged( nextValue );
 			}
 		};
-		private edu.cmu.cs.dennisc.croquet.StringState.ValueObserver< String > filterObserver = new edu.cmu.cs.dennisc.croquet.StringState.ValueObserver< String >() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
+		private org.lgna.croquet.StringState.ValueObserver< String > filterObserver = new org.lgna.croquet.StringState.ValueObserver< String >() {
+			public void changing( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 				DirectoryView.this.handleFilterChanged( nextValue );
 			}
 		};
@@ -160,7 +160,7 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 						if( child.isLeaf() ) {
 							this.addComponent( GalleryDragComponent.getInstance( child ) );
 						} else {
-							edu.cmu.cs.dennisc.croquet.Operation< ? > operation = edu.cmu.cs.dennisc.croquet.SelectDirectoryActionOperation.getInstance( treeSelectionState, child, initializer );
+							org.lgna.croquet.Operation< ? > operation = org.lgna.croquet.SelectDirectoryActionOperation.getInstance( treeSelectionState, child, initializer );
 							if( operation != null ) {
 								org.lgna.croquet.components.Button button = operation.createButton();
 								button.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
@@ -195,15 +195,15 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 	private static final javax.swing.ImageIcon FOLDER_LARGE_ICON = new javax.swing.ImageIcon( GalleryBrowser.class.getResource( "images/folder.png" ) );
 	private static final javax.swing.ImageIcon FOLDER_SMALL_ICON = new javax.swing.ImageIcon( GalleryBrowser.class.getResource( "images/folder24.png" ) );
 
-	private edu.cmu.cs.dennisc.croquet.TreeSelectionState< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > > treeSelectionState;
-	private edu.cmu.cs.dennisc.croquet.StringState filterState;
+	private org.lgna.croquet.TreeSelectionState< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > > treeSelectionState;
+	private org.lgna.croquet.StringState filterState;
 
 	public GalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > root ) {
 		//super(GAP * 2, 0);
 
 		edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel< String > treeModel = new edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel< String >( root );
-		this.treeSelectionState = new edu.cmu.cs.dennisc.croquet.TreeSelectionState< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String >>( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ),
-				new edu.cmu.cs.dennisc.croquet.Codec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > >() {
+		this.treeSelectionState = new org.lgna.croquet.TreeSelectionState< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String >>( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ),
+				new org.lgna.croquet.Codec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > >() {
 					public Class getValueClass() {
 						return edu.cmu.cs.dennisc.javax.swing.models.TreeNode.class;
 					}
@@ -218,9 +218,9 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 					}
 				}, treeModel, treeModel.getRoot() );
 
-		this.filterState = new edu.cmu.cs.dennisc.croquet.StringState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "8648d640-5676-4627-a002-44db06ce58ce" ), "" );
+		this.filterState = new org.lgna.croquet.StringState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "8648d640-5676-4627-a002-44db06ce58ce" ), "" );
 
-		this.treeSelectionState.addSelectionObserver( new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String >>() {
+		this.treeSelectionState.addSelectionObserver( new org.lgna.croquet.TreeSelectionState.SelectionObserver< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String >>() {
 			public void selectionChanged( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > nextValue ) {
 				filterState.setValue( "" );
 			}
@@ -233,10 +233,10 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 		filterTextField.setMaximumSizeClampedToPreferredSize( true );
 		filterTextField.getAwtComponent().setTextForBlankCondition( "search entire gallery" );
 		filterTextField.scaleFont( 1.5f );
-		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
+			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				javax.swing.SwingUtilities.invokeLater( new Runnable() {
 					public void run() {
 						filterTextField.requestFocus();
@@ -330,7 +330,7 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 
 	private org.lgna.croquet.components.PathControl.Initializer createInitializer() {
 		return new org.lgna.croquet.components.PathControl.Initializer() {
-			public edu.cmu.cs.dennisc.croquet.ActionOperation configure( edu.cmu.cs.dennisc.croquet.ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > treeNode ) {
+			public org.lgna.croquet.ActionOperation configure( org.lgna.croquet.ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > treeNode ) {
 				//				if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
 				//					edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) treeNode;
 				//					rv.setName( zipTreeNode.getName() );
@@ -341,10 +341,10 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 				rv.setSmallIcon( FOLDER_SMALL_ICON );
 				return rv;
 			}
-			public edu.cmu.cs.dennisc.croquet.Operation< ? > getOperationForLeaf( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > treeNode ) {
+			public org.lgna.croquet.Operation< ? > getOperationForLeaf( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > treeNode ) {
 				String name = GalleryBrowser.getTextFor( treeNode, true );
 				if( name != null ) {
-					edu.cmu.cs.dennisc.croquet.Operation< ? > rv = GalleryFileOperation.getInstance( treeNode );
+					org.lgna.croquet.Operation< ? > rv = GalleryFileOperation.getInstance( treeNode );
 					rv.setName( name );
 					rv.setSmallIcon( ResourceManager.getSmallIcon( treeNode ) );
 					return rv;

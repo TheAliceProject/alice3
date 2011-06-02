@@ -50,10 +50,10 @@ import org.alice.apis.moveandturn.ObjectMarker;
 import org.alice.apis.moveandturn.Transformable;
 import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+import org.lgna.croquet.ActionOperation;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.croquet.ActionOperation;
 import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;
 
 public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {

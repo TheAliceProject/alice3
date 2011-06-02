@@ -44,8 +44,9 @@ package org.lgna.croquet.components;
 
 import java.awt.Dimension;
 
+import org.lgna.croquet.BooleanState;
 
-import edu.cmu.cs.dennisc.croquet.BooleanState;
+
 import edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 

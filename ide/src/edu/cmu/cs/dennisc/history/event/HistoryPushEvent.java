@@ -46,12 +46,12 @@ package edu.cmu.cs.dennisc.history.event;
  * @author Dennis Cosgrove
  */
 public class HistoryPushEvent extends HistoryEvent {
-	private edu.cmu.cs.dennisc.croquet.Edit edit;
-	public HistoryPushEvent( edu.cmu.cs.dennisc.history.HistoryManager source, edu.cmu.cs.dennisc.croquet.Edit edit ) {
+	private org.lgna.croquet.Edit edit;
+	public HistoryPushEvent( edu.cmu.cs.dennisc.history.HistoryManager source, org.lgna.croquet.Edit edit ) {
 		super( source );
 		this.edit = edit;
 	}
-	public edu.cmu.cs.dennisc.croquet.Edit getEdit() {
+	public org.lgna.croquet.Edit getEdit() {
 		return this.edit;
 	}
 }

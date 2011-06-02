@@ -106,7 +106,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		}
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addCustomFillIns( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv,
+	protected java.util.List< org.lgna.croquet.CascadeItem > addCustomFillIns( java.util.List< org.lgna.croquet.CascadeItem > rv,
 			org.lgna.croquet.steps.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.Expression > context, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
 		rv = super.addCustomFillIns( rv, context, type );
 		System.err.println( "TODO: addCustomFillIns handle listeners" );
@@ -164,7 +164,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	}
 
 	@Override
-	protected void addFillInAndPossiblyPartFillIns( edu.cmu.cs.dennisc.croquet.CascadeBlank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
+	protected void addFillInAndPossiblyPartFillIns( org.lgna.croquet.CascadeBlank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
 		super.addFillInAndPossiblyPartFillIns( blank, expression, type, type2 );
 		System.err.println( "TODO: addFillInAndPossiblyPartFills" );
 //		if( type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel.class ) ) {

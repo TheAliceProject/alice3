@@ -46,20 +46,20 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInPrepStep<F,B> extends CascadeBlankOwnerStep< F, B, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B >, CascadeFillInPrepStep<F,B> > {
-	public static < F, B > CascadeFillInPrepStep< F, B > createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > model, org.lgna.croquet.Trigger trigger ) {
+public class CascadeFillInPrepStep<F,B> extends CascadeBlankOwnerStep< F, B, org.lgna.croquet.CascadeFillIn< F, B >, CascadeFillInPrepStep<F,B> > {
+	public static < F, B > CascadeFillInPrepStep< F, B > createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadeFillIn< F, B > model, org.lgna.croquet.Trigger trigger ) {
 		return new CascadeFillInPrepStep< F, B >( parent, model, trigger );
 	}
-	public static < F, B > CascadeFillInPrepStep< F, B > createInstance( edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > model ) {
+	public static < F, B > CascadeFillInPrepStep< F, B > createInstance( org.lgna.croquet.CascadeFillIn< F, B > model ) {
 		return new CascadeFillInPrepStep< F,B >( null, model, null );
 	}
-	private CascadeFillInPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > model, org.lgna.croquet.Trigger trigger ) {
+	private CascadeFillInPrepStep( Transaction parent, org.lgna.croquet.CascadeFillIn< F, B > model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public CascadeFillInPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public edu.cmu.cs.dennisc.croquet.CascadeFillIn< F, B > getCascadeFillIn() {
+	public org.lgna.croquet.CascadeFillIn< F, B > getCascadeFillIn() {
 		return this.getModel();
 	}
 }

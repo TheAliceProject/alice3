@@ -43,9 +43,9 @@
 
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.CascadeItem;
-import edu.cmu.cs.dennisc.croquet.MenuItemPrepModel;
-import edu.cmu.cs.dennisc.croquet.MenuModel;
+import org.lgna.croquet.CascadeItem;
+import org.lgna.croquet.MenuItemPrepModel;
+import org.lgna.croquet.MenuModel;
 
 /**
  * @author Dennis Cosgrove

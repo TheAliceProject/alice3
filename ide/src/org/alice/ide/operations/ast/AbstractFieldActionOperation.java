@@ -47,7 +47,7 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractFieldActionOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public AbstractFieldActionOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	public AbstractFieldActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( group, individualId );
 		this.field = field;
 	}

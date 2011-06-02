@@ -47,11 +47,11 @@ package org.lgna.cheshire.events;
  * @author Dennis Cosgrove
  */
 public class EditCommittedEvent implements Event {
-	private final edu.cmu.cs.dennisc.croquet.Edit< ? > edit;
-	public EditCommittedEvent( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	private final org.lgna.croquet.Edit< ? > edit;
+	public EditCommittedEvent( org.lgna.croquet.Edit< ? > edit ) {
 		this.edit = edit;
 	}
-	public edu.cmu.cs.dennisc.croquet.Edit< ? > getEdit() {
+	public org.lgna.croquet.Edit< ? > getEdit() {
 		return this.edit;
 	}
 }

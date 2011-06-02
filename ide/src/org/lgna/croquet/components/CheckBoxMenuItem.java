@@ -47,7 +47,7 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class CheckBoxMenuItem extends BooleanStateButton< javax.swing.JCheckBoxMenuItem > {
-	public CheckBoxMenuItem( edu.cmu.cs.dennisc.croquet.BooleanState model ) {
+	public CheckBoxMenuItem( org.lgna.croquet.BooleanState model ) {
 		super( model );
 	}
 	@Override

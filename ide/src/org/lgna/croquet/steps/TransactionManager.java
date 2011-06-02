@@ -42,6 +42,13 @@
  */
 package org.lgna.croquet.steps;
 
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.BoundedRangeIntegerState;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.Manager;
+import org.lgna.croquet.MenuBarComposite;
+import org.lgna.croquet.MenuItemPrepModel;
+import org.lgna.croquet.StringState;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.Menu;
 import org.lgna.croquet.components.MenuBar;
@@ -59,13 +66,13 @@ public class TransactionManager {
 	public static interface Observer {
 		public void addingStep( Step<?> step );
 		public void addedStep( Step<?> step );
-		public void editCommitting( edu.cmu.cs.dennisc.croquet.Edit<?> edit );
-		public void editCommitted( edu.cmu.cs.dennisc.croquet.Edit<?> edit );
+		public void editCommitting( org.lgna.croquet.Edit<?> edit );
+		public void editCommitted( org.lgna.croquet.Edit<?> edit );
 		public void finishing( Transaction transaction );
 		public void finished( Transaction transaction );
-		public void dropPending( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
-		public void dropPended( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite );
-		public void menuItemsSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models );
+		public void dropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite );
+		public void dropPended( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite );
+		public void menuItemsSelectionChanged( java.util.List< org.lgna.croquet.Model > models );
 		public void popupMenuResized( org.lgna.croquet.components.PopupMenu popupMenu );
 		public void dialogOpened( org.lgna.croquet.components.Dialog dialog );
 		public void transactionCanceled( Transaction transaction );
@@ -306,13 +313,13 @@ public class TransactionManager {
 			handleMenuSelectionStateChanged( e );
 		}
 	};
-	public static void pendDrop( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+	public static void pendDrop( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		fireDropPending( model, dropReceptor, dropSite );
 		getLastTransaction().pendDrop( model, dropReceptor, dropSite );
 		fireDropPended( model, dropReceptor, dropSite );
 	}
 	
-	public static void handleMenuSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
+	public static void handleMenuSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
 		fireMenuItemsSelectionChanged( models );
 	}
 
@@ -380,12 +387,12 @@ public class TransactionManager {
 			observer.dialogOpened( dialog );
 		}
 	}
-	private static void fireEditCommitting( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	private static void fireEditCommitting( org.lgna.croquet.Edit< ? > edit ) {
 		for( Observer observer : observers ) {
 			observer.editCommitting( edit );
 		}
 	}
-	private static void fireEditCommitted( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	private static void fireEditCommitted( org.lgna.croquet.Edit< ? > edit ) {
 		for( Observer observer : observers ) {
 			observer.editCommitted( edit );
 		}
@@ -400,79 +407,79 @@ public class TransactionManager {
 			observer.finished( transaction );
 		}
 	}
-	private static void fireDropPending( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+	private static void fireDropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		for( Observer observer : observers ) {
 			observer.dropPending( model, dropReceptor, dropSite );
 		}
 	}
-	private static void fireDropPended( edu.cmu.cs.dennisc.croquet.Model model, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+	private static void fireDropPended( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		for( Observer observer : observers ) {
 			observer.dropPended( model, dropReceptor, dropSite );
 		}
 	}
-	private static void fireMenuItemsSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
+	private static void fireMenuItemsSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
 		for( Observer observer : observers ) {
 			observer.menuItemsSelectionChanged( models );
 		}
 	}
 	
 	
-	public static DragStep addDragStep( edu.cmu.cs.dennisc.croquet.DragAndDropModel model, org.lgna.croquet.Trigger trigger ) {
+	public static DragStep addDragStep( org.lgna.croquet.DragAndDropModel model, org.lgna.croquet.Trigger trigger ) {
 		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	public static ActionOperationStep addActionOperationStep( edu.cmu.cs.dennisc.croquet.ActionOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static ActionOperationStep addActionOperationStep( org.lgna.croquet.ActionOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return ActionOperationStep.createAndAddToTransaction( transaction, model, trigger ); 
 	}
-	public static SerialOperationStep addSerialOperationStep( edu.cmu.cs.dennisc.croquet.SerialOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static SerialOperationStep addSerialOperationStep( org.lgna.croquet.SerialOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return SerialOperationStep.createAndAddToTransaction( transaction, model, trigger ); 
 	}
-	public static PlainDialogOperationStep addPlainDialogOperationStep( edu.cmu.cs.dennisc.croquet.PlainDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static PlainDialogOperationStep addPlainDialogOperationStep( org.lgna.croquet.PlainDialogOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return PlainDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static PlainDialogCloseOperationStep addPlainDialogCloseOperationStep( edu.cmu.cs.dennisc.croquet.PlainDialogCloseOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static PlainDialogCloseOperationStep addPlainDialogCloseOperationStep( org.lgna.croquet.PlainDialogCloseOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return PlainDialogCloseOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static InputDialogOperationStep addInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static InputDialogOperationStep addInputDialogOperationStep( org.lgna.croquet.InputDialogOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return InputDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static InformationDialogOperationStep addInformationDialogOperationStep( edu.cmu.cs.dennisc.croquet.InformationDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static InformationDialogOperationStep addInformationDialogOperationStep( org.lgna.croquet.InformationDialogOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return InformationDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static WizardDialogOperationStep addWizardDialogOperationStep( edu.cmu.cs.dennisc.croquet.WizardDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static WizardDialogOperationStep addWizardDialogOperationStep( org.lgna.croquet.WizardDialogOperation model, org.lgna.croquet.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return WizardDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static StandardPopupPrepStep addStandardPopupOperationStep( edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel standardPopupOperation, org.lgna.croquet.Trigger trigger ) {
+	public static StandardPopupPrepStep addStandardPopupOperationStep( org.lgna.croquet.StandardPopupPrepModel standardPopupOperation, org.lgna.croquet.Trigger trigger ) {
 		return StandardPopupPrepStep.createAndAddToTransaction( getActiveTransaction(), standardPopupOperation, trigger );
 	}
-	public static <T> CascadePopupPrepStep<T> addCascadePopupOperationStep( edu.cmu.cs.dennisc.croquet.CascadePopupPrepModel<T> model, org.lgna.croquet.Trigger trigger ) {
+	public static <T> CascadePopupPrepStep<T> addCascadePopupOperationStep( org.lgna.croquet.CascadePopupPrepModel<T> model, org.lgna.croquet.Trigger trigger ) {
 		return CascadePopupPrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
 
-	public static BooleanStateChangeStep addBooleanStateChangeStep( edu.cmu.cs.dennisc.croquet.BooleanState model, org.lgna.croquet.Trigger trigger ) {
+	public static BooleanStateChangeStep addBooleanStateChangeStep( org.lgna.croquet.BooleanState model, org.lgna.croquet.Trigger trigger ) {
 		return BooleanStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
-	public static StringStateChangeStep addStringStateChangeStep( edu.cmu.cs.dennisc.croquet.StringState model, org.lgna.croquet.Trigger trigger ) {
+	public static StringStateChangeStep addStringStateChangeStep( org.lgna.croquet.StringState model, org.lgna.croquet.Trigger trigger ) {
 		return StringStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	public static <E> ListSelectionStateChangeStep<E> addListSelectionStateChangeStep( edu.cmu.cs.dennisc.croquet.ListSelectionState< E > model, org.lgna.croquet.Trigger trigger ) {
+	public static <E> ListSelectionStateChangeStep<E> addListSelectionStateChangeStep( org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.Trigger trigger ) {
 		return ListSelectionStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	public static <E> ListSelectionStatePrepStep<E> addListSelectionPrepStep( edu.cmu.cs.dennisc.croquet.ListSelectionStatePrepModel< E > model, org.lgna.croquet.Trigger trigger ) {
+	public static <E> ListSelectionStatePrepStep<E> addListSelectionPrepStep( org.lgna.croquet.ListSelectionStatePrepModel< E > model, org.lgna.croquet.Trigger trigger ) {
 		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	public static <E> CancelCompletionStep addCancelCompletionStep( edu.cmu.cs.dennisc.croquet.CompletionModel model, org.lgna.croquet.Trigger trigger ) {
+	public static <E> CancelCompletionStep addCancelCompletionStep( org.lgna.croquet.CompletionModel model, org.lgna.croquet.Trigger trigger ) {
 		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
 
 
-	private static void popCompletionStepTransactionHistoryIfNecessary( edu.cmu.cs.dennisc.croquet.Model model ) {
+	private static void popCompletionStepTransactionHistoryIfNecessary( org.lgna.croquet.Model model ) {
 		TransactionHistory transactionHistory = getActiveTransactionHistory();
 		CompletionStep< ? > completionStep = transactionHistory.getParent();
 		if( completionStep != null ) {
@@ -525,7 +532,7 @@ public class TransactionManager {
 		return rv;
 	}
 	public static void simulatedMenuTransaction( Transaction transaction, java.util.List< MenuItemPrepModel > menuItemPrepModels ) {
-		for( edu.cmu.cs.dennisc.croquet.MenuItemPrepModel menuItemPrepModel : menuItemPrepModels ) {
+		for( org.lgna.croquet.MenuItemPrepModel menuItemPrepModel : menuItemPrepModels ) {
 			System.err.println( "todo: add step for: " + menuItemPrepModel );
 			//org.lgna.croquet.steps.MenuItemPrepStep.createAndAddToTransaction( transaction, menuItemPrepModel, org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 		}

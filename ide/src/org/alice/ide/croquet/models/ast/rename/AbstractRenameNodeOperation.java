@@ -45,8 +45,8 @@ package org.alice.ide.croquet.models.ast.rename;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
-	public AbstractRenameNodeOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId ) {
+public abstract class AbstractRenameNodeOperation extends org.lgna.croquet.InputDialogOperation {
+	public AbstractRenameNodeOperation( org.lgna.croquet.Group group, java.util.UUID individualId ) {
 		super( group, individualId );
 	}
 	@Override

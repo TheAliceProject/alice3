@@ -72,7 +72,7 @@ import org.lgna.croquet.components.ToolPalette;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 
-public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>
+public class SceneObjectPropertyManager extends GridBagPanel implements org.lgna.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>
 {
 	private AbstractField selectedField;
 	private Object selectedObject;
@@ -194,9 +194,9 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 	    this.addNameAndControllerToPanel(propertyPair.label, propertyPair.controller.getPanel(), panel, index);
 	}
 
-	public void changing( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+	public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
 	}
-	public void changed( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+	public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
 		this.selectedField = null;
 		this.selectedObject = null;
 		if( nextValue instanceof AbstractField ) {

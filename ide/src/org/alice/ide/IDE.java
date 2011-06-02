@@ -46,8 +46,8 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class IDE extends org.alice.ide.ProjectApplication {
-	public static final edu.cmu.cs.dennisc.croquet.Group RUN_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ), "RUN_GROUP" );
-	public static final edu.cmu.cs.dennisc.croquet.Group PROGRAMMING_LANGUAGE_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "1fc6d8ce-3ce8-4b8d-91be-bc74d0d02c3e" ), "PROGRAMMING_LANGUAGE_GROUP" );
+	public static final org.lgna.croquet.Group RUN_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ), "RUN_GROUP" );
+	public static final org.lgna.croquet.Group PROGRAMMING_LANGUAGE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "1fc6d8ce-3ce8-4b8d-91be-bc74d0d02c3e" ), "PROGRAMMING_LANGUAGE_GROUP" );
 
 	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
 
@@ -75,10 +75,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return IDE.singleton;
 	}
 
-	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > isAlwaysShowingBlocksObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-		public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.State.ValueObserver< Boolean > isAlwaysShowingBlocksObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			if( nextValue ) {
 				IDE.this.right.addComponent( IDE.this.ubiquitousPane, org.lgna.croquet.components.BorderPanel.Constraint.NORTH );
 			} else {
@@ -95,11 +95,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		IDE.singleton = this;
 
 		//initialize locale
-		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< java.util.Locale >() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
+		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver< java.util.Locale >() {
+			public void changing( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
-				edu.cmu.cs.dennisc.croquet.Application.getSingleton().setLocale( nextValue );
+			public void changed( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
+				org.lgna.croquet.Application.getSingleton().setLocale( nextValue );
 			}
 		} );
 
@@ -118,17 +118,17 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.right.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
 		this.left.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
 
-		//this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
+		//this.right.addComponent( this.ubiquitousPane, org.lgna.croquet.BorderPanel.Constraint.PAGE_START );
 		this.right.addComponent( tabbedPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		//this.right.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "hello" ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		//this.right.addComponent( new org.lgna.croquet.Label( "hello" ), org.lgna.croquet.BorderPanel.Constraint.CENTER );
 
 		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addAndInvokeValueObserver( this.isAlwaysShowingBlocksObserver );
 		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addAndInvokeValueObserver( this.accessibleSelectionObserver );
 
-		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
+			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				setSceneEditorExpanded( nextValue );
 			}
 		} );
@@ -141,10 +141,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		} );
 
-		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
+			public void changing( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 				refreshAccessibles();
 			}
 		} );
@@ -180,7 +180,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor( edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
 		if( dropSite instanceof org.alice.ide.codeeditor.BlockStatementIndexPair ) {
 			org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.codeeditor.BlockStatementIndexPair)dropSite;
 			edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
@@ -269,14 +269,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		}
 	}
-	public final edu.cmu.cs.dennisc.croquet.Operation< ? > getPreferencesOperation() {
+	public final org.lgna.croquet.Operation< ? > getPreferencesOperation() {
 		return null;
 	}
-	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getRunOperation();
-	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getRestartOperation();
-	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getAboutOperation();
+	public abstract org.lgna.croquet.Operation< ? > getRunOperation();
+	public abstract org.lgna.croquet.Operation< ? > getRestartOperation();
+	public abstract org.lgna.croquet.Operation< ? > getAboutOperation();
 
-	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
+	public abstract org.lgna.croquet.Operation< ? > createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
 
 	public enum AccessorAndMutatorDisplayStyle {
 		GETTER_AND_SETTER, ACCESS_AND_ASSIGNMENT
@@ -476,10 +476,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, edu.cmu.cs.dennisc.alice.ast.Accessible > mapCodeToAccessible = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleSelectionObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
-		public void changing( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.State.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleSelectionObserver = new org.lgna.croquet.State.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
+		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
 		}
-		public void changed( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
 			if( nextValue != null ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractCode code = IDE.this.getFocusedCode();
 				if( code != null ) {
@@ -567,7 +567,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private ComponentStencil stencil;
-	private java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > holes = null;
+	private java.util.List< ? extends org.lgna.croquet.DropReceptor > holes = null;
 	private org.lgna.croquet.components.DragComponent potentialDragSource;
 	private org.lgna.croquet.components.Component< ? > currentDropReceptorComponent;
 
@@ -605,7 +605,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					}
 
 					if( isFauxStencilDesired() ) {
-						for( edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor : IDE.this.holes ) {
+						for( org.lgna.croquet.DropReceptor dropReceptor : IDE.this.holes ) {
 							org.lgna.croquet.components.Component< ? > component = (org.lgna.croquet.components.Component< ? >)dropReceptor;
 							java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this );
 							area.subtract( new java.awt.geom.Area( holeBounds ) );
@@ -619,7 +619,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 					g2.setStroke( THICK_STROKE );
 					final int BUFFER = 6;
-					for( edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor : IDE.this.holes ) {
+					for( org.lgna.croquet.DropReceptor dropReceptor : IDE.this.holes ) {
 						org.lgna.croquet.components.Component< ? > component = (org.lgna.croquet.components.Component< ? >)dropReceptor;
 						java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this );
 						holeBounds.x -= BUFFER;
@@ -941,7 +941,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().fire( trigger );
 	}
 
-//	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
+//	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.DragComponent source ) {
 //		if( source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent ) {
 //			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.getSceneEditor() );
 //		} else {
@@ -952,7 +952,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //					org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
 //					return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
 //				} else {
-//					java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//					java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 //					rv.add( codeEditor );
 //					//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
 //					//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {

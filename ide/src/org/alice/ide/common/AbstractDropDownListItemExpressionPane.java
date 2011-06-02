@@ -60,7 +60,7 @@ public abstract class AbstractDropDownListItemExpressionPane extends org.alice.i
 	public AbstractDropDownListItemExpressionPane( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;
-		this.setLeftButtonPressModel( new org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "dec13fc9-4b3f-4e4e-8b1f-21956e789b32" ), this.index, this.expressionListProperty, this.getFillInType() ) );
+		this.setLeftButtonPressModel( new org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "dec13fc9-4b3f-4e4e-8b1f-21956e789b32" ), this.index, this.expressionListProperty, this.getFillInType() ) );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {

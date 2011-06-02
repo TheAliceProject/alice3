@@ -46,7 +46,7 @@ package org.lgna.cheshire.stencil;
  * @author Dennis Cosgrove
  */
 public class StencilsPresentation extends org.lgna.cheshire.Presentation {
-	/*package-private*/static edu.cmu.cs.dennisc.croquet.Group IMPLEMENTATION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "e582737d-b56b-4105-93d2-581853e193e2" ), "IMPLEMENTATION_GROUP" );
+	/*package-private*/static org.lgna.croquet.Group IMPLEMENTATION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "e582737d-b56b-4105-93d2-581853e193e2" ), "IMPLEMENTATION_GROUP" );
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
 //	private static Presentation instance;
@@ -55,7 +55,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 //	}
 	
 	public static javax.swing.JLayeredPane getLayeredPane( org.lgna.croquet.components.AbstractWindow< ? > window ) {
-		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
+		org.lgna.croquet.Application application = org.lgna.croquet.Application.getSingleton();
 		javax.swing.JFrame frame = application.getFrame().getAwtComponent();
 		javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
 		final int PAD = 4;
@@ -71,10 +71,10 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		return layeredPane;
 	}
 
-	private final edu.cmu.cs.dennisc.croquet.Operation< ? > prevOperation = new PrevStepOperation( this );
-	private final edu.cmu.cs.dennisc.croquet.BooleanState isInterceptingEvents = new PresentationBooleanState( java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), true, "intercept events" );
-	private final edu.cmu.cs.dennisc.croquet.BooleanState isPaintingStencil = new PresentationBooleanState( java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stencil" );
-	private final edu.cmu.cs.dennisc.croquet.BooleanState isPlayingSounds = new PresentationBooleanState( java.util.UUID.fromString( "4d8ac630-0679-415a-882f-780c7cb014ef" ), true, "play sounds" );
+	private final org.lgna.croquet.Operation< ? > prevOperation = new PrevStepOperation( this );
+	private final org.lgna.croquet.BooleanState isInterceptingEvents = new PresentationBooleanState( java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), true, "intercept events" );
+	private final org.lgna.croquet.BooleanState isPaintingStencil = new PresentationBooleanState( java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stencil" );
+	private final org.lgna.croquet.BooleanState isPlayingSounds = new PresentationBooleanState( java.util.UUID.fromString( "4d8ac630-0679-415a-882f-780c7cb014ef" ), true, "play sounds" );
 
 	@Override
 	protected org.lgna.cheshire.Chapter createChapter(org.lgna.croquet.steps.Transaction transaction) {
@@ -198,7 +198,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		}
 		
 		@Override
-		public edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
+		public org.lgna.croquet.Operation< ? > getNextOperation() {
 			return NextStepOperation.getInstance();
 		}
 	}
@@ -208,43 +208,43 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 
 	private boolean isIgnoringEvents = false;
 	public StencilsPresentation( 
-			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
+			org.lgna.croquet.UserInformation userInformation, 
 			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
 			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
 			org.lgna.croquet.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
-			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess, 
+			org.lgna.croquet.Group[] groupsTrackedForRandomAccess, 
 			org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, 
 			org.lgna.stencil.MenuPolicy menuPolicy
 	) {
 		super( userInformation, transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess );
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
 		
-		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
+		org.lgna.croquet.Application application = org.lgna.croquet.Application.getSingleton();
 		this.stencil = new Stencil( application.getFrame(), scrollingRequiredRenderer, menuPolicy );
-		this.isInterceptingEvents.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		this.isInterceptingEvents.addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
+			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				StencilsPresentation.this.stencil.setEventInterceptEnabled( nextValue );
 			}
 		} );
 
-		this.isPaintingStencil.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		this.isPaintingStencil.addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
+			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				StencilsPresentation.this.stencil.revalidateAndRepaint();
 				StencilsPresentation.this.isInterceptingEvents.setValue( nextValue );
 				StencilsPresentation.this.isInterceptingEvents.setEnabled( nextValue );
 			}
 		} );
 
-		this.isPlayingSounds.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		this.isPlayingSounds.addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
+			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				org.lgna.cheshire.SoundCache.setEnabled( nextValue );
 			}
 		} );
@@ -327,7 +327,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				if( chapterPage.isGoodToGo() ) {
 					this.handleChapterChanged( chapter );
 				} else {
-					java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > menuItemPrepModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
+					java.util.List< org.lgna.croquet.MenuItemPrepModel > menuItemPrepModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
 					if( menuItemPrepModels != null ) {
 						org.lgna.croquet.steps.TransactionManager.simulatedMenuTransaction( transaction, menuItemPrepModels );
 						chapterPage.refreshNotes();
@@ -345,7 +345,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 							if( applicationRecoveryTransaction != null ) {
 								this.insertRecoveryTransactionChapter( applicationRecoveryTransaction );
 							} else {
-								edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "unable to recover" );
+								org.lgna.croquet.Application.getSingleton().showMessageDialog( "unable to recover" );
 							}
 						}
 					}

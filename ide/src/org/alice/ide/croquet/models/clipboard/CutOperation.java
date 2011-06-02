@@ -59,6 +59,6 @@ public class CutOperation extends org.alice.ide.operations.InconsequentialAction
 	protected void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
 		String title = "Cut coming soon";
 		String message = "Cut is not yet implemented.  Apologies.";
-		this.getIDE().showMessageDialog( message, title, edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
+		this.getIDE().showMessageDialog( message, title, org.lgna.croquet.MessageType.INFORMATION ); 
 	}
 }

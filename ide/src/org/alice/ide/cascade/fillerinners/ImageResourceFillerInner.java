@@ -54,7 +54,7 @@ public class ImageResourceFillerInner extends ResourceFillerInner {
 		return org.alice.ide.croquet.models.ast.cascade.resource.ImageResourceExpressionFillIn.getInstance( resource );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CascadeFillIn getImportNewResourceFillIn() {
+	protected org.lgna.croquet.CascadeFillIn getImportNewResourceFillIn() {
 		return org.alice.ide.croquet.models.ast.cascade.resource.ImportNewImageResourceFillIn.getInstance();
 	}
 }

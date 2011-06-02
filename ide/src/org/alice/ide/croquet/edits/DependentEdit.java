@@ -46,7 +46,7 @@ package org.alice.ide.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends org.lgna.croquet.edits.OperationEdit< M > {
+public final class DependentEdit<M extends org.lgna.croquet.Operation<?>> extends org.lgna.croquet.edits.OperationEdit< M > {
 	public DependentEdit( org.lgna.croquet.steps.OperationStep completionStep ) {
 		super( completionStep );
 	}
@@ -60,7 +60,7 @@ public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<
 	private org.alice.ide.croquet.models.ResponsibleModel getResponsibleModel() {
 		org.lgna.croquet.steps.CompletionStep< ? > step = this.getCompletionStep();
 		if( step != null ) {
-			edu.cmu.cs.dennisc.croquet.CompletionModel model = step.getModel();
+			org.lgna.croquet.CompletionModel model = step.getModel();
 			if( model instanceof org.alice.ide.croquet.models.ResponsibleModel ) {
 				return (org.alice.ide.croquet.models.ResponsibleModel)model;
 			} else {
@@ -71,7 +71,7 @@ public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<
 		}
 	}
 	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
 		this.getResponsibleModel().retarget( retargeter );
 	}
@@ -91,11 +91,11 @@ public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<
 		return this.getResponsibleModel().updatePresentation( rv, locale );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
 		return this.getResponsibleModel().getReplacementAcceptability( replacementCandidate, userInformation );
 	}
 	@Override
-	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.Edit< ? > edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		this.getResponsibleModel().addKeyValuePairs( retargeter, edit );
 	}

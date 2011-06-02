@@ -42,14 +42,14 @@
  */
 package org.alice.interact.operations;
 
+import org.lgna.croquet.Group;
 import org.lgna.croquet.components.Component;
 
-import edu.cmu.cs.dennisc.croquet.Group;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSetLocalTransformationActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public abstract class AbstractSetLocalTransformationActionOperation extends org.lgna.croquet.ActionOperation {
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
 	public AbstractSetLocalTransformationActionOperation( Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator ) {

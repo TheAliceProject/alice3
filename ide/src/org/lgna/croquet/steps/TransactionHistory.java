@@ -74,7 +74,7 @@ public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncoda
 	}
 	
 	
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		for( Transaction transaction : this.transactions ) {
 			transaction.retarget( retargeter );
 		}

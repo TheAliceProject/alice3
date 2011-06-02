@@ -45,18 +45,18 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class ListSelectionStateChangeStep<E> extends StateChangeStep< edu.cmu.cs.dennisc.croquet.ListSelectionState< E > >{
-	/*package-private*/ static <E> ListSelectionStateChangeStep<E> createAndAddToTransaction( Transaction transaction, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> model, org.lgna.croquet.Trigger trigger ) {
+public class ListSelectionStateChangeStep<E> extends StateChangeStep< org.lgna.croquet.ListSelectionState< E > >{
+	/*package-private*/ static <E> ListSelectionStateChangeStep<E> createAndAddToTransaction( Transaction transaction, org.lgna.croquet.ListSelectionState<E> model, org.lgna.croquet.Trigger trigger ) {
 		return new ListSelectionStateChangeStep<E>( transaction, model, trigger );
 	}
-	private ListSelectionStateChangeStep( Transaction parent, edu.cmu.cs.dennisc.croquet.ListSelectionState< E > model, org.lgna.croquet.Trigger trigger ) {
+	private ListSelectionStateChangeStep( Transaction parent, org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public ListSelectionStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	public E getItem() {
-		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = this.getEdit();
+		org.lgna.croquet.Edit< ? > edit = this.getEdit();
 		if( edit instanceof org.lgna.croquet.edits.ListSelectionStateEdit ) {
 			org.lgna.croquet.edits.ListSelectionStateEdit<E> listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit<E>)edit;
 			return listSelectionStateEdit.getNextValue();

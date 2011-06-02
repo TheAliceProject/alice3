@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuItem extends OperationButton< javax.swing.JMenuItem, edu.cmu.cs.dennisc.croquet.Operation<?> > {
-	public MenuItem( edu.cmu.cs.dennisc.croquet.Operation<?> model ) {
+public class MenuItem extends OperationButton< javax.swing.JMenuItem, org.lgna.croquet.Operation<?> > {
+	public MenuItem( org.lgna.croquet.Operation<?> model ) {
 		super( model );
 	}
 	@Override

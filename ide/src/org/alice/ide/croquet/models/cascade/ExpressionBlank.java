@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class ExpressionBlank extends org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType;
 
 	public ExpressionBlank( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType ) {
@@ -60,7 +60,7 @@ public abstract class ExpressionBlank extends edu.cmu.cs.dennisc.croquet.Cascade
 		return this.valueType;
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		ide.getCascadeManager().updateChildren( rv, step, this.valueType );
 		return rv;

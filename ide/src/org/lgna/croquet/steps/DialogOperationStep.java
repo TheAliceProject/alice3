@@ -46,7 +46,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogOperationStep< M extends edu.cmu.cs.dennisc.croquet.DialogOperation< ? > > extends SingleThreadOperationStep< M > {
+public abstract class DialogOperationStep< M extends org.lgna.croquet.DialogOperation< ? > > extends SingleThreadOperationStep< M > {
 	public DialogOperationStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger, new TransactionHistory() );
 	}

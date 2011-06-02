@@ -46,11 +46,11 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectable< J extends javax.swing.JComponent, E > extends ViewController<J, edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> {
-	public ItemSelectable( edu.cmu.cs.dennisc.croquet.ListSelectionState<E> model ) {
+public abstract class ItemSelectable< J extends javax.swing.JComponent, E > extends ViewController<J, org.lgna.croquet.ListSelectionState<E>> {
+	public ItemSelectable( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
-	public abstract edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeFor( E item );
+	public abstract org.lgna.croquet.TrackableShape getTrackableShapeFor( E item );
 	public boolean isSingleStageSelectable() {
 		return true;
 	}

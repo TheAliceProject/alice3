@@ -81,9 +81,9 @@ import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.alice.stageide.sceneeditor.snap.SnapState;
+import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.components.DragComponent;
 
-import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 
 import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.animation.Animator;
@@ -144,9 +144,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	}
 	
 	public ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.HandleStyle> handleStateValueObserver = new ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.HandleStyle>() {
-		public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.stageide.sceneeditor.HandleStyle > state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
+		public void changing( org.lgna.croquet.State< org.alice.stageide.sceneeditor.HandleStyle > state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
 		}
-		public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.stageide.sceneeditor.HandleStyle > state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.alice.stageide.sceneeditor.HandleStyle > state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
 			PrintUtilities.println( nextValue );
 			AbstractDragAdapter.this.setInteractionState( nextValue );
 		}

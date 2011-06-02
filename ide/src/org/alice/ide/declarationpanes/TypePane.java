@@ -45,16 +45,16 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-class IsArrayState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+class IsArrayState extends org.lgna.croquet.BooleanState {
 	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
 	public IsArrayState( edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ffa22de2-eb3e-46d2-8ccc-ada365f29205" ), isArrayProperty.getValue() );
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ffa22de2-eb3e-46d2-8ccc-ada365f29205" ), isArrayProperty.getValue() );
 		this.isArrayProperty = isArrayProperty;
 		this.setTextForBothTrueAndFalse( "is array" );
 		this.addValueObserver( new ValueObserver< Boolean >() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				IsArrayState.this.isArrayProperty.setValue( nextValue );
 			}
 		} );
@@ -66,10 +66,10 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 	private edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty;
 	private IsArrayState isArrayStateState;
 	//private TypeSelectionState typeSelectionState = new TypeSelectionState();
-	private class SelectTypeOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+	private class SelectTypeOperation extends org.lgna.croquet.ActionOperation {
 		private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 		public SelectTypeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8f3e1f74-d1fd-4484-98e0-bc37da452005" ) );
+			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8f3e1f74-d1fd-4484-98e0-bc37da452005" ) );
 			this.type = type;
 			this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( this.type ) );
 			this.setName( org.alice.ide.IDE.getSingleton().getTextFor( type ) );
@@ -81,7 +81,7 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 		}
 	}
 	
-	private edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel popupMenuOperation = org.alice.ide.croquet.models.ast.declaration.TypeMenuModel.getInstance().getPopupMenuOperation();
+	private org.lgna.croquet.StandardPopupPrepModel popupMenuOperation = org.alice.ide.croquet.models.ast.declaration.TypeMenuModel.getInstance().getPopupMenuOperation();
 	
 	private class TypeDropDownPane extends org.alice.ide.common.AbstractDropDownPane {
 		private org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();

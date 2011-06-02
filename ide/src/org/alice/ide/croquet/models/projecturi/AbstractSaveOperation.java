@@ -74,7 +74,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 					this.save( application, fileNext );
 				} catch( java.io.IOException ioe ) {
 					isExceptionRaised = true;
-					application.showMessageDialog( ioe.getMessage(), "Unable to save file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+					application.showMessageDialog( ioe.getMessage(), "Unable to save file", org.lgna.croquet.MessageType.ERROR );
 				}
 				if( isExceptionRaised ) {
 					//pass

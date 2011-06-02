@@ -46,14 +46,14 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeSeparatorStep extends CascadeItemStep< Void, edu.cmu.cs.dennisc.croquet.CascadeSeparator, CascadeSeparatorStep > {
-	public static CascadeSeparatorStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeSeparator model, org.lgna.croquet.Trigger trigger ) {
+public class CascadeSeparatorStep extends CascadeItemStep< Void, org.lgna.croquet.CascadeSeparator, CascadeSeparatorStep > {
+	public static CascadeSeparatorStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadeSeparator model, org.lgna.croquet.Trigger trigger ) {
 		return new CascadeSeparatorStep( parent, model, trigger );
 	}
-	public static CascadeSeparatorStep createInstance( edu.cmu.cs.dennisc.croquet.CascadeSeparator model ) {
+	public static CascadeSeparatorStep createInstance( org.lgna.croquet.CascadeSeparator model ) {
 		return new CascadeSeparatorStep( null, model, null );
 	}
-	private CascadeSeparatorStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CascadeSeparator model, org.lgna.croquet.Trigger trigger ) {
+	private CascadeSeparatorStep( Transaction parent, org.lgna.croquet.CascadeSeparator model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public CascadeSeparatorStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

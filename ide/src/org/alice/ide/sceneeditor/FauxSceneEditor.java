@@ -42,20 +42,20 @@
  */
 package org.alice.ide.sceneeditor;
 
+import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.DragComponent;
 import org.lgna.croquet.components.ViewController;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.croquet.Operation;
 
 /**
  * @author Dennis Cosgrove
  */
 public class FauxSceneEditor extends AbstractSceneEditor {
-	public <R extends edu.cmu.cs.dennisc.croquet.DropReceptor> edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.DropReceptor > getCodableResolver() {
+	public <R extends org.lgna.croquet.DropReceptor> org.lgna.croquet.CodableResolver< org.lgna.croquet.DropReceptor > getCodableResolver() {
 		return null;
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.croquet.DropSite potentialDropSite ) {
+	public org.lgna.croquet.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		return null;
 	}
 	@Override
@@ -84,7 +84,7 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 		// TODO Auto-generated method stub
 		
 	}
-	public edu.cmu.cs.dennisc.croquet.Model dragDropped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public org.lgna.croquet.Model dragDropped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 		return null;
 	}
 	public void dragEntered(org.lgna.croquet.steps.DragStep dragAndDropContext) {
@@ -95,7 +95,7 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 	}
 	public void dragStopped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 	}
-	public edu.cmu.cs.dennisc.croquet.DropSite dragUpdated(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public org.lgna.croquet.DropSite dragUpdated(org.lgna.croquet.steps.DragStep dragAndDropContext) {
 		return null;
 	}
 	public ViewController<?, ?> getViewController() {

@@ -45,9 +45,9 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.CompletionModel > extends Step< M > {
+public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel > extends Step< M > {
 	private final TransactionHistory transactionHistory;
-	private edu.cmu.cs.dennisc.croquet.Edit<M> edit;
+	private org.lgna.croquet.Edit<M> edit;
 	private boolean isSuccessfullyCompleted;
 	private boolean isPending = true;
 	public CompletionStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger, TransactionHistory transactionHistory ) {
@@ -83,7 +83,7 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 	}
 
 	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
 		if( this.transactionHistory != null ) {
 			this.transactionHistory.retarget( retargeter );
@@ -112,15 +112,15 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 		return this.isPending() && this.isSuccessfullyCompleted() == false;
 	}
 
-	public edu.cmu.cs.dennisc.croquet.Edit< ? > getEdit() {
+	public org.lgna.croquet.Edit< ? > getEdit() {
 		return this.edit;
 	}
-	/*package-private*/ void setEdit( edu.cmu.cs.dennisc.croquet.Edit<M> edit ) {
+	/*package-private*/ void setEdit( org.lgna.croquet.Edit<M> edit ) {
 		this.isSuccessfullyCompleted = true;
 		this.edit = edit;
 		this.isPending = false;
 	}
-	public void commitAndInvokeDo( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+	public void commitAndInvokeDo( org.lgna.croquet.Edit edit ) {
 		this.getParent().reify();
 		this.setEdit( edit );
 		edit.doOrRedo( true );
@@ -139,7 +139,7 @@ public abstract class CompletionStep< M extends edu.cmu.cs.dennisc.croquet.Compl
 	}
 	
 
-	public String getTutorialTransactionTitle( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialTransactionTitle( org.lgna.croquet.UserInformation userInformation ) {
 		return this.getModel().getTutorialTransactionTitle( this, userInformation );
 	}
 	@Override

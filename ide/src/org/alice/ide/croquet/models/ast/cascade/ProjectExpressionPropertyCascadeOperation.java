@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectExpressionPropertyCascadeOperation extends ExpressionPropertyCascadeOperation {
-	public ProjectExpressionPropertyCascadeOperation( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
+	public ProjectExpressionPropertyCascadeOperation( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id, expressionProperty, blanks );
 	}
 }

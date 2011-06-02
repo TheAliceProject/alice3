@@ -1,6 +1,6 @@
 package uist.ecard.menu;
 
-public class FileMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
+public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static FileMenuModel instance = new FileMenuModel();
 	}
@@ -9,7 +9,7 @@ public class FileMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuM
 	}
 	private FileMenuModel() {
 		super( java.util.UUID.fromString( "19120db4-10f8-4787-9453-4c5a83a7376f" ), 
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR
+				org.lgna.croquet.MenuModel.SEPARATOR
 		);
 	}
 }

@@ -53,17 +53,17 @@ import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.Operation;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.croquet.Model;
-import edu.cmu.cs.dennisc.croquet.Operation;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 
 public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composite, Transformable> {
 
 	private HierarchyListener hierarchyListener;
-	private edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel popupMenuOperation;
+	private org.lgna.croquet.StandardPopupPrepModel popupMenuOperation;
 	
 	protected class SetVehicleOperation extends SetValueOperation<Composite>
 	{
@@ -129,18 +129,18 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	{
 		if (this.popupMenuOperation == null)
 		{
-			this.popupMenuOperation = new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "2ae18028-e18a-47ad-8dda-ba6c186142a4" ) ) {
+			this.popupMenuOperation = new org.lgna.croquet.MenuModel( java.util.UUID.fromString( "2ae18028-e18a-47ad-8dda-ba6c186142a4" ) ) {
 				@Override
 				public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep context ) 
 				{
-					edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > possibleFields = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
-					java.util.List<edu.cmu.cs.dennisc.croquet.MenuItemPrepModel> setVehicleOperations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					org.lgna.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > possibleFields = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
+					java.util.List<org.lgna.croquet.MenuItemPrepModel> setVehicleOperations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					
 					Composite currentVehicle = TransformableVehicleAdapter.this.getValue();
 					if (currentVehicle != null)
 					{
 						setVehicleOperations.add(new SetVehicleOperation(currentVehicle, TransformableVehicleAdapter.getNameForVehicle(currentVehicle)+TransformableVehicleAdapter.this.getCurrentValueLabelString()).getMenuItemPrepModel());
-						setVehicleOperations.add(edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR);
+						setVehicleOperations.add(org.lgna.croquet.MenuModel.SEPARATOR);
 					}
 					
 					for (edu.cmu.cs.dennisc.alice.ast.Accessible field : possibleFields)

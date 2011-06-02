@@ -93,10 +93,10 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 				}
 			};
 		}
-		private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > valueObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		private org.lgna.croquet.State.ValueObserver< Boolean > valueObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				if( nextValue ) {
 					//pass
 				} else {
@@ -153,7 +153,7 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 /**
  * @author Dennis Cosgrove
  */
-public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperation {
+public class RecursionDialogOperation extends org.lgna.croquet.PlainDialogOperation {
 	private static class SingletonHolder {
 		private static RecursionDialogOperation instance = new RecursionDialogOperation();
 	}
@@ -161,7 +161,7 @@ public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.PlainDi
 		return SingletonHolder.instance;
 	}
 	private RecursionDialogOperation() {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "a5e1ded2-18c7-4ae5-8676-e6deca5650fe" ) );
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "a5e1ded2-18c7-4ae5-8676-e6deca5650fe" ) );
 	}
 	@Override
 	protected RecursionPanel createContentPane(org.lgna.croquet.steps.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog) {

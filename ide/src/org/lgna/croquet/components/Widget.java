@@ -42,7 +42,7 @@
  */
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.Model;
+import org.lgna.croquet.Model;
 
 public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
 	protected abstract int getInsetTop();

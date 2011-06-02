@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.menubar;
 /**
  * @author Dennis Cosgrove
  */
-public class HelpMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
+public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static HelpMenuModel instance = new HelpMenuModel();
 	}
@@ -55,11 +55,11 @@ public class HelpMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuM
 	private HelpMenuModel() {
 		super( java.util.UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), 
 				org.alice.ide.croquet.models.help.HelpOperation.getInstance().getMenuItemPrepModel(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.croquet.models.help.ReportBugOperation.getInstance().getMenuItemPrepModel(), 
 				org.alice.ide.croquet.models.help.SuggestImprovementOperation.getInstance().getMenuItemPrepModel(), 
 				org.alice.ide.croquet.models.help.RequestNewFeatureOperation.getInstance().getMenuItemPrepModel(), 
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.croquet.models.help.ShowWarningOperation.getInstance().getMenuItemPrepModel(), 
 				org.alice.ide.croquet.models.help.ShowSystemPropertiesOperation.getInstance().getMenuItemPrepModel(), 
 				org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation.getInstance().getMenuItemPrepModel(),

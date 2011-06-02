@@ -50,7 +50,7 @@ public class MenuHole extends Hole {
 	private boolean isHoleRenderingDesired;
 	private boolean isCheckMarkRenderingDesired;
 	public MenuHole( 
-			edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, 
+			org.lgna.croquet.RuntimeResolver< ? extends org.lgna.croquet.TrackableShape > trackableShapeResolver, 
 			ConnectionPreference connectionPreference, 
 			boolean isPathRenderingDesired, 
 			boolean isHoleRenderingDesired,

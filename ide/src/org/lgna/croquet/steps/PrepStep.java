@@ -45,7 +45,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PrepStep<M extends edu.cmu.cs.dennisc.croquet.PrepModel> extends Step< M > {
+public abstract class PrepStep<M extends org.lgna.croquet.PrepModel> extends Step< M > {
 	public PrepStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 		if( parent != null ) {

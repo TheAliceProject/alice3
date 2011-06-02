@@ -64,11 +64,11 @@ public class SetArrayAtIndexDragModel extends VoidTemplateDragModel {
 		this.field = field;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CodableResolver< SetArrayAtIndexDragModel > createCodableResolver() {
+	protected org.lgna.croquet.CodableResolver< SetArrayAtIndexDragModel > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< SetArrayAtIndexDragModel >( this, this.field, edu.cmu.cs.dennisc.alice.ast.AbstractField.class );
 	}
 	@Override
-	protected String getTutorialStepDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected String getTutorialStepDescription( org.lgna.croquet.UserInformation userInformation ) {
 		return this.field.getName();
 	}
 }

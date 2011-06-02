@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BooleanStateButton< J extends javax.swing.AbstractButton > extends AbstractButton< J, edu.cmu.cs.dennisc.croquet.BooleanState > {
-	public BooleanStateButton( edu.cmu.cs.dennisc.croquet.BooleanState model ) {
+public abstract class BooleanStateButton< J extends javax.swing.AbstractButton > extends AbstractButton< J, org.lgna.croquet.BooleanState > {
+	public BooleanStateButton( org.lgna.croquet.BooleanState model ) {
 		super( model );
 		assert model != null;
 		this.setSwingButtonModel( this.getModel().getButtonModel() );

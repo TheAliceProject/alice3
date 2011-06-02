@@ -50,7 +50,7 @@ public class CommentTemplate extends CascadingUbiquitousStatementClassTemplate {
 		super( edu.cmu.cs.dennisc.alice.ast.Comment.class, org.alice.ide.ast.NodeUtilities.createComment() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.CommentInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+public abstract class SelectAndLoadProjectOperation extends org.lgna.croquet.InputDialogOperation {
 	private org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel;
 	public SelectAndLoadProjectOperation( java.util.UUID individualUUID ) {
 		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );

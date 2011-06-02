@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class NodeStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< T > {
+public class NodeStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.StaticGetInstanceKeyedResolver< T > implements org.lgna.croquet.RetargetableResolver< T > {
 	private edu.cmu.cs.dennisc.alice.ast.Node nodes[];
 	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterTypes[];
 	
@@ -64,7 +64,7 @@ public class NodeStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.cr
 		super( binaryDecoder );
 	}
 
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		Object[] arguments = this.getArguments();
 		for( int i=0; i<arguments.length; i++ ) {
 			arguments[ i ] = retargeter.retarget( arguments[ i ] );

@@ -46,14 +46,14 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TextComponent<J extends javax.swing.text.JTextComponent> extends ViewController< J, edu.cmu.cs.dennisc.croquet.StringState > {
+public abstract class TextComponent<J extends javax.swing.text.JTextComponent> extends ViewController< J, org.lgna.croquet.StringState > {
 	private javax.swing.border.BevelBorder outsideBorder = new javax.swing.border.BevelBorder( javax.swing.border.BevelBorder.LOWERED );
 	private edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder insideBorder = new edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder();
 	private javax.swing.border.CompoundBorder border = new javax.swing.border.CompoundBorder( outsideBorder, insideBorder );
 
 	//	private javax.swing.border.Border border = new edu.cmu.cs.dennisc.javax.swing.border.SunkenBorder( 4, 4, 2, 2 );
 
-	public TextComponent( edu.cmu.cs.dennisc.croquet.StringState model ) {
+	public TextComponent( org.lgna.croquet.StringState model ) {
 		super( model );
 		this.getAwtComponent().setBorder( this.border );
 		this.getAwtComponent().setDocument( model.getDocument() );

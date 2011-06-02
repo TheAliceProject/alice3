@@ -46,8 +46,8 @@ package org.alice.stageide.properties;
 import java.util.Locale;
 
 import org.alice.apis.moveandturn.AsSeenBy;
+import org.lgna.croquet.Operation;
 
-import edu.cmu.cs.dennisc.croquet.Operation;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.print.PrintUtilities;

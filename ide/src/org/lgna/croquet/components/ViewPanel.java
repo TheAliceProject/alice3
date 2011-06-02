@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ViewPanel extends View< javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Composite > {
-	public ViewPanel( edu.cmu.cs.dennisc.croquet.Composite composite ) {
+public abstract class ViewPanel extends View< javax.swing.JPanel, org.lgna.croquet.Composite > {
+	public ViewPanel( org.lgna.croquet.Composite composite ) {
 		super( composite );
 	}
 	@Override

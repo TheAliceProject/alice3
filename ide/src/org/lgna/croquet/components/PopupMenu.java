@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenu extends ViewController< javax.swing.JPopupMenu, edu.cmu.cs.dennisc.croquet.PopupPrepModel< ? > > implements MenuItemContainer {
-	public PopupMenu( edu.cmu.cs.dennisc.croquet.PopupPrepModel< ? > model ) {
+public class PopupMenu extends ViewController< javax.swing.JPopupMenu, org.lgna.croquet.PopupPrepModel< ? > > implements MenuItemContainer {
+	public PopupMenu( org.lgna.croquet.PopupPrepModel< ? > model ) {
 		super( model );
 	}
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {

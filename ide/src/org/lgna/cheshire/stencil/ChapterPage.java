@@ -321,7 +321,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 						this.setActiveNote( activeNoteIndex );
 					}
 				}
-			} catch( edu.cmu.cs.dennisc.croquet.CancelException ce ) {
+			} catch( org.lgna.croquet.CancelException ce ) {
 				//this.reset();
 				org.lgna.cheshire.stencil.StencilsPresentation.getInstance().restoreHistoryIndicesDueToCancel();
 				this.reset();

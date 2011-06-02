@@ -47,8 +47,8 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.ItemDetails > extends ItemSelectable<javax.swing.JPanel, E> {
-	private static final edu.cmu.cs.dennisc.croquet.Group ITEM_SELECTABLE_IMPLEMENTATION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "40759574-7892-469f-93c7-730ed6617d3e" ), "ITEM_SELECTABLE_IMPLEMENTATION_GROUP" );
-	private static class ImplementationBooleanState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+	private static final org.lgna.croquet.Group ITEM_SELECTABLE_IMPLEMENTATION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "40759574-7892-469f-93c7-730ed6617d3e" ), "ITEM_SELECTABLE_IMPLEMENTATION_GROUP" );
+	private static class ImplementationBooleanState extends org.lgna.croquet.BooleanState {
 		public ImplementationBooleanState() {
 			super( ITEM_SELECTABLE_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "f0faf391-1b41-417d-98a9-ab9ba1a20335" ), false );
 		}
@@ -61,7 +61,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 	//todo: better name
 	public class ItemDetails {
 		private E item;
-		private AbstractButton<?,edu.cmu.cs.dennisc.croquet.BooleanState> button;
+		private AbstractButton<?,org.lgna.croquet.BooleanState> button;
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent e) {
 				if( ItemSelectablePanel.this.comboBoxModel.getSelectedItem() != ItemDetails.this.item ) {
@@ -75,7 +75,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 				}
 			}
 		};
-		public ItemDetails( E item, AbstractButton<?,edu.cmu.cs.dennisc.croquet.BooleanState> button ) {
+		public ItemDetails( E item, AbstractButton<?,org.lgna.croquet.BooleanState> button ) {
 			this.item = item;
 			this.button = button;
 		}
@@ -106,7 +106,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 	}
 
 	
-	public ItemSelectablePanel( edu.cmu.cs.dennisc.croquet.ListSelectionState<E> model ) {
+	public ItemSelectablePanel( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
 	
@@ -176,7 +176,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 //		return null;
 //	}
 	
-	protected abstract D createItemDetails( E item, edu.cmu.cs.dennisc.croquet.BooleanState booleanState );
+	protected abstract D createItemDetails( E item, org.lgna.croquet.BooleanState booleanState );
 	protected abstract void removeAllDetails();
 	protected abstract void addPrologue( int count );
 	protected abstract void addItem( D itemDetails );
@@ -215,7 +215,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 					if( itemDetails != null ) {
 						//pass
 					} else {
-						edu.cmu.cs.dennisc.croquet.BooleanState booleanState = new ImplementationBooleanState();
+						org.lgna.croquet.BooleanState booleanState = new ImplementationBooleanState();
 						itemDetails = this.createItemDetails( item, booleanState );
 						this.map.put( item, itemDetails );
 					}
@@ -254,7 +254,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeFor( E item ) {
+	public org.lgna.croquet.TrackableShape getTrackableShapeFor( E item ) {
 		ItemDetails itemDetails = this.getItemDetails( item );
 		if( itemDetails != null ) {
 			return itemDetails.getButton();

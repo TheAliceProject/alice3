@@ -43,7 +43,7 @@
 
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.Operation;
+import org.lgna.croquet.Operation;
 
 /**
  * @author Dennis Cosgrove

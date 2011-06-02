@@ -46,8 +46,8 @@ package org.alice.ide.name;
  * @author Dennis Cosgrove
  */
 public abstract class NameInputPane extends org.lgna.croquet.components.RowsSpringPanel {
-	private edu.cmu.cs.dennisc.croquet.StringState nameState = new edu.cmu.cs.dennisc.croquet.StringState(
-			edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP,
+	private org.lgna.croquet.StringState nameState = new org.lgna.croquet.StringState(
+			org.lgna.croquet.Application.INHERIT_GROUP,
 			java.util.UUID.fromString( "482c237a-c2b3-48dc-a8e2-380edfdfffe3" ),
 			""
 	);

@@ -46,16 +46,16 @@ package org.lgna.cheshire.stencil.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class ModelFirstComponentResolver implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< org.lgna.croquet.components.Component<?> > {
+public class ModelFirstComponentResolver implements org.lgna.croquet.RuntimeResolver< org.lgna.croquet.components.Component<?> > {
 	private final org.lgna.croquet.steps.Step< ? > step;
 	public ModelFirstComponentResolver( org.lgna.croquet.steps.Step< ? > step ) {
 		this.step = step;
 	}
-	protected edu.cmu.cs.dennisc.croquet.Model getModel() {
+	protected org.lgna.croquet.Model getModel() {
 		return this.step.getModel();
 	}
 	public org.lgna.croquet.components.Component<?> getResolved() {
-		edu.cmu.cs.dennisc.croquet.Model model = this.getModel();
+		org.lgna.croquet.Model model = this.getModel();
 		if( model != null ) {
 			return model.getFirstComponent();
 		} else {

@@ -46,11 +46,11 @@ package org.alice.ide.croquet.models.templates;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateComposite extends edu.cmu.cs.dennisc.croquet.Composite {
+public abstract class TemplateComposite extends org.lgna.croquet.Composite {
 	public TemplateComposite( java.util.UUID id ) {
 		super( id );
 	}
-	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
 //		button.getAwtComponent().setIcon( ICON );
 //		button.getAwtComponent().setText( this.getClass().getName() );
 //		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );

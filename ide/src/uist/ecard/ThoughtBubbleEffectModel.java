@@ -1,6 +1,6 @@
 package uist.ecard;
 
-public class ThoughtBubbleEffectModel extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class ThoughtBubbleEffectModel extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static ThoughtBubbleEffectModel instance = new ThoughtBubbleEffectModel();
 	}
@@ -18,7 +18,7 @@ public class ThoughtBubbleEffectModel extends edu.cmu.cs.dennisc.croquet.ActionO
 		step.finish();
 	}
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Select " + this.getDefaultLocalizedText() );
 		return rv;
 	}

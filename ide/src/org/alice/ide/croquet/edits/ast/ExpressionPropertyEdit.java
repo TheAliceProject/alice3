@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupCompletionModel<edu.cmu.cs.dennisc.alice.ast.Expression> > {
+public class ExpressionPropertyEdit extends org.lgna.croquet.Edit< org.lgna.croquet.CascadePopupCompletionModel<edu.cmu.cs.dennisc.alice.ast.Expression> > {
 	private final edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 	private final edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 
@@ -92,7 +92,7 @@ public class ExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< edu
 	}
 
 	@Override
-	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.Edit< ? > edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		ExpressionPropertyEdit replacementEdit = (ExpressionPropertyEdit)edit;
 		retargeter.addKeyValuePair( this.prevExpression, replacementEdit.prevExpression );

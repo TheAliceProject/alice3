@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast;
  */
 public class DefaultFillInExpressionPropertyCascadeOperation extends org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, DefaultFillInExpressionPropertyCascadeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DefaultFillInExpressionPropertyCascadeOperation getInstance( edu.cmu.cs.dennisc.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+	public static synchronized DefaultFillInExpressionPropertyCascadeOperation getInstance( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
 		if( desiredType != null ) {
 			//pass
 		} else {
@@ -65,7 +65,7 @@ public class DefaultFillInExpressionPropertyCascadeOperation extends org.alice.i
 		return rv;
 	}
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
-	private DefaultFillInExpressionPropertyCascadeOperation( edu.cmu.cs.dennisc.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+	private DefaultFillInExpressionPropertyCascadeOperation( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
 		super( group, java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( desiredType ) );
 		this.desiredType = desiredType;
 	}

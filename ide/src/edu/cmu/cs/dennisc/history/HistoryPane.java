@@ -65,9 +65,9 @@ class HistoryStackModel extends javax.swing.AbstractListModel {
 	}
 };
 
-class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.croquet.Edit > {
+class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.croquet.Edit > {
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.croquet.Edit value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.croquet.Edit value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( index == 0 ) {
 			rv.setText( "---open project---" );
 		} else {
@@ -112,7 +112,7 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 
 	private javax.swing.JList list = new javax.swing.JList();
 	private HistoryStackModel historyStackModel;
-	public HistoryPane( edu.cmu.cs.dennisc.croquet.Group group ) {
+	public HistoryPane( org.lgna.croquet.Group group ) {
 		final HistoryManager historyManager = HistoryManager.getInstance( group );
 		this.historyStackModel = new HistoryStackModel( historyManager );
 		this.list.setModel( this.historyStackModel );

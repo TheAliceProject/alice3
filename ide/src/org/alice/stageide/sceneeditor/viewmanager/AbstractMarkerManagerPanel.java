@@ -61,7 +61,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
     protected MutableList<FieldDeclaredInAlice> fieldList;
     
     protected abstract MutableList<FieldDeclaredInAlice> createMutableList(org.lgna.croquet.components.MutableList.Factory<FieldDeclaredInAlice> factory);
-    protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> getAddItemOperation();
+    protected abstract org.lgna.croquet.Operation<?> getAddItemOperation();
     protected abstract String getTitleString();
     
     protected abstract Button getMovetoMarkerButton();
@@ -88,7 +88,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
                 public void updateSelection(org.lgna.croquet.components.Component<?> leadingComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> trailingComponent, boolean isSelected) {
                     ((MarkerFieldTile)mainComponent).setSelected( isSelected );
                 }
-                public edu.cmu.cs.dennisc.croquet.Operation<?> getAddItemOperation() {
+                public org.lgna.croquet.Operation<?> getAddItemOperation() {
                     return AbstractMarkerManagerPanel.this.getAddItemOperation();
                 }
         };

@@ -42,15 +42,15 @@
  */
 package org.alice.ide.croquet.models;
 
-public abstract class IsFrameShowingState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+public abstract class IsFrameShowingState extends org.lgna.croquet.BooleanState {
 	private javax.swing.JFrame frame;
-	public IsFrameShowingState( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, boolean initialValue ) {
+	public IsFrameShowingState( org.lgna.croquet.Group group, java.util.UUID individualId, boolean initialValue ) {
 		super( group, individualId, initialValue );
 		
 		this.addValueObserver( new ValueObserver<Boolean>() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				IsFrameShowingState.this.handleChanged( nextValue );
 			}
 		} );

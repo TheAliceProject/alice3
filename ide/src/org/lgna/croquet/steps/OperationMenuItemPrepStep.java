@@ -46,11 +46,11 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class OperationMenuItemPrepStep extends MenuItemPrepStep< edu.cmu.cs.dennisc.croquet.OperationMenuItemPrepModel > {
-	public static OperationMenuItemPrepStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.OperationMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
+public class OperationMenuItemPrepStep extends MenuItemPrepStep< org.lgna.croquet.OperationMenuItemPrepModel > {
+	public static OperationMenuItemPrepStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.OperationMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
 		return new OperationMenuItemPrepStep( parent, model, trigger );
 	}
-	private OperationMenuItemPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.OperationMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
+	private OperationMenuItemPrepStep( Transaction parent, org.lgna.croquet.OperationMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public OperationMenuItemPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

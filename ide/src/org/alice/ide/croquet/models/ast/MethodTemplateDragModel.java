@@ -68,11 +68,11 @@ public class MethodTemplateDragModel extends TemplateDragModel {
 		return this.method.getReturnType();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CodableResolver< MethodTemplateDragModel > createCodableResolver() {
+	protected org.lgna.croquet.CodableResolver< MethodTemplateDragModel > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateDragModel >( this, this.method, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class );
 	}
 	@Override
-	protected String getTutorialStepDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected String getTutorialStepDescription( org.lgna.croquet.UserInformation userInformation ) {
 		return this.method.getName();
 	}
 }

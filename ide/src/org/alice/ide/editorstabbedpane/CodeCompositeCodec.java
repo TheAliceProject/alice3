@@ -46,7 +46,7 @@ package org.alice.ide.editorstabbedpane;
 /**
  * @author Dennis Cosgrove
  */
-public enum CodeCompositeCodec implements edu.cmu.cs.dennisc.croquet.Codec< CodeComposite > {
+public enum CodeCompositeCodec implements org.lgna.croquet.Codec< CodeComposite > {
 	SINGLETON;
 	public Class< CodeComposite > getValueClass() {
 		return CodeComposite.class;

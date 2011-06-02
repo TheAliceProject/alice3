@@ -58,8 +58,8 @@ public class RevertProjectOperation extends UriActionOperation {
 	@Override
 	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
 		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getSingleton();
-		edu.cmu.cs.dennisc.croquet.YesNoCancelOption yesNoCancelOption = application.showYesNoCancelConfirmDialog( "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", edu.cmu.cs.dennisc.croquet.MessageType.WARNING );
-		if( yesNoCancelOption == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ) {
+		org.lgna.croquet.YesNoCancelOption yesNoCancelOption = application.showYesNoCancelConfirmDialog( "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", org.lgna.croquet.MessageType.WARNING );
+		if( yesNoCancelOption == org.lgna.croquet.YesNoCancelOption.YES ) {
 			java.net.URI uri = application.getUri();
 			if( uri != null ) {
 				application.loadProjectFrom( uri );

@@ -134,7 +134,7 @@ package org.alice.ide.croquet.models.templates;
 //	}
 //}
 
-public class TemplatesTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSelectionState< TemplateComposite > {
+public class TemplatesTabSelectionState extends org.lgna.croquet.TabSelectionState< TemplateComposite > {
 	private static class SingletonHolder {
 		private static TemplatesTabSelectionState instance = new TemplatesTabSelectionState();
 	}
@@ -165,7 +165,7 @@ public class TemplatesTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSe
 				rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 				return rv;
 			}
-			public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, org.alice.ide.croquet.models.templates.TemplateComposite item ) {
+			public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.alice.ide.croquet.models.templates.TemplateComposite item ) {
 				item.customizeTitleComponent( booleanState, button );
 			}
 			public java.util.UUID getId( org.alice.ide.croquet.models.templates.TemplateComposite item ) {

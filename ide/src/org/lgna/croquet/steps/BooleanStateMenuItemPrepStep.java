@@ -46,11 +46,11 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanStateMenuItemPrepStep extends MenuItemPrepStep< edu.cmu.cs.dennisc.croquet.BooleanStateMenuItemPrepModel > {
-	public static BooleanStateMenuItemPrepStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.BooleanStateMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
+public class BooleanStateMenuItemPrepStep extends MenuItemPrepStep< org.lgna.croquet.BooleanStateMenuItemPrepModel > {
+	public static BooleanStateMenuItemPrepStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.BooleanStateMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
 		return new BooleanStateMenuItemPrepStep( parent, model, trigger );
 	}
-	private BooleanStateMenuItemPrepStep( Transaction parent, edu.cmu.cs.dennisc.croquet.BooleanStateMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
+	private BooleanStateMenuItemPrepStep( Transaction parent, org.lgna.croquet.BooleanStateMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public BooleanStateMenuItemPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

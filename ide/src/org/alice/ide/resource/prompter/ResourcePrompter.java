@@ -72,7 +72,7 @@ public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resour
 					prefix = ", ";
 				}
 				sb.append( " }." );
-				org.alice.ide.IDE.getSingleton().showMessageDialog( sb.toString(), "Content Type Not Supported", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+				org.alice.ide.IDE.getSingleton().showMessageDialog( sb.toString(), "Content Type Not Supported", org.lgna.croquet.MessageType.ERROR );
 				return null;
 			}
 		} else {

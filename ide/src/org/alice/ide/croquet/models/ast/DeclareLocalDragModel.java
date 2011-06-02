@@ -57,7 +57,7 @@ public class DeclareLocalDragModel extends VoidTemplateDragModel {
 		super( java.util.UUID.fromString( "8a72ad5f-8273-4de9-a1c4-60bedda45b9e" ) );
 	}
 	@Override
-	protected String getTutorialStepDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected String getTutorialStepDescription( org.lgna.croquet.UserInformation userInformation ) {
 		//todo
 		return "local";
 	}

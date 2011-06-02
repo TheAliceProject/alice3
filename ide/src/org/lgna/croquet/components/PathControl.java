@@ -43,14 +43,14 @@
 
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.ActionOperation;
-import edu.cmu.cs.dennisc.croquet.MenuItemPrepModel;
-import edu.cmu.cs.dennisc.croquet.Operation;
-import edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel;
-import edu.cmu.cs.dennisc.croquet.SelectDirectoryActionOperation;
-import edu.cmu.cs.dennisc.croquet.TreeSelectionState;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.MenuItemPrepModel;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.PredeterminedMenuModel;
+import org.lgna.croquet.SelectDirectoryActionOperation;
+import org.lgna.croquet.TreeSelectionState;
 
-/*package-private*/ class SelectChildDirectoryMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
+/*package-private*/ class SelectChildDirectoryMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	public static SelectChildDirectoryMenuModel getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SelectChildDirectoryPopupMenuOperation.getInstance()" );
 		return new SelectChildDirectoryMenuModel(treeSelectionState, treeNode, initializer);

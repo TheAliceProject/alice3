@@ -43,7 +43,7 @@
 
 package org.alice.ide.croquet.models.openproject;
 
-/*package-private*/ abstract class ContentTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
+/*package-private*/ abstract class ContentTab extends org.lgna.croquet.PredeterminedTab {
 	public ContentTab( java.util.UUID id, String title ) {
 		super( id );
 		this.setTitleText( title );
@@ -61,7 +61,7 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectTabSelectionState extends edu.cmu.cs.dennisc.croquet.PredeterminedTabSelectionState< ContentTab > {
+public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabSelectionState< ContentTab > {
 	public static final java.util.UUID TEMPLATES_TAB_ID = java.util.UUID.fromString( "e658dbd1-c58b-42ec-9338-49f186aecc71" );
 	public static final java.util.UUID MY_PROJECTS_TAB_ID = java.util.UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" );
 	public static final java.util.UUID RECENT_TAB_ID = java.util.UUID.fromString( "b490bb6c-f74f-422b-b9a6-5ef643b02b58" );
@@ -69,7 +69,7 @@ public class ProjectTabSelectionState extends edu.cmu.cs.dennisc.croquet.Predete
 	public static final java.util.UUID TEXTBOOK_TAB_ID = java.util.UUID.fromString( "033afcdf-29b9-4fbf-b9f5-fb5c496a7860" );
 	public static final java.util.UUID FILE_SYSTEM_TAB_ID = java.util.UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" );
 
-	private static class ContentPredeterminedTabCodec extends edu.cmu.cs.dennisc.croquet.PredeterminedTabCodec< ContentTab > {
+	private static class ContentPredeterminedTabCodec extends org.lgna.croquet.PredeterminedTabCodec< ContentTab > {
 		private ContentPredeterminedTabCodec() {
 			super( ContentTab.class );
 		}
@@ -126,7 +126,7 @@ public class ProjectTabSelectionState extends edu.cmu.cs.dennisc.croquet.Predete
 		return SingletonHolder.instance;
 	}
 	private ProjectTabSelectionState() {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP,
+		super( org.lgna.croquet.Application.UI_STATE_GROUP,
 			java.util.UUID.fromString( "12e1d59b-2893-4144-b995-08090680a318" ), new ContentPredeterminedTabCodec(), -1, 
 			map.get( TEMPLATES_TAB_ID ),
 			map.get( MY_PROJECTS_TAB_ID ),
@@ -141,7 +141,7 @@ public class ProjectTabSelectionState extends edu.cmu.cs.dennisc.croquet.Predete
 	}
 	
 	public java.net.URI getSelectedURI() {
-		edu.cmu.cs.dennisc.croquet.PredeterminedTab current = org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedItem();
+		org.lgna.croquet.PredeterminedTab current = org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedItem();
 		if( current != null ) {
 			return ((org.alice.ide.openprojectpane.TabContentPanel)(current.getMainComponent())).getSelectedURI();
 		} else {

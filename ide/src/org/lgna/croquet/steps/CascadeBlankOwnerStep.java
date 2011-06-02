@@ -46,7 +46,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlankOwnerStep< F, B, M extends edu.cmu.cs.dennisc.croquet.CascadeBlankOwner< F, B, S >, S extends CascadeBlankOwnerStep<F,B,M,S>  > extends CascadeItemStep< F, M, S > {
+public abstract class CascadeBlankOwnerStep< F, B, M extends org.lgna.croquet.CascadeBlankOwner< F, B, S >, S extends CascadeBlankOwnerStep<F,B,M,S>  > extends CascadeItemStep< F, M, S > {
 	public CascadeBlankOwnerStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}

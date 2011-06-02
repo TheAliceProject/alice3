@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ui.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class IsEmphasizingClassesState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+public class IsEmphasizingClassesState extends org.lgna.croquet.BooleanState {
 	private static class SingletonHolder {
 		private static IsEmphasizingClassesState instance = new IsEmphasizingClassesState();
 	}
@@ -53,7 +53,7 @@ public class IsEmphasizingClassesState extends edu.cmu.cs.dennisc.croquet.Boolea
 		return SingletonHolder.instance;
 	}
 	private IsEmphasizingClassesState() {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), true );
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), true );
 		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 }

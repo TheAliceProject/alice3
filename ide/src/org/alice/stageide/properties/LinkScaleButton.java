@@ -48,8 +48,9 @@ import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 
+import org.lgna.croquet.BooleanState;
 
-import edu.cmu.cs.dennisc.croquet.BooleanState;
+
 
 public class LinkScaleButton  extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> 
 {
@@ -65,10 +66,10 @@ public class LinkScaleButton  extends org.lgna.croquet.components.BooleanStateBu
 		this.updateLabel();
 	}
 	
-	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > valueObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-		public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.State.ValueObserver< Boolean > valueObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			LinkScaleButton.this.updateLabel();
 		}
 	};

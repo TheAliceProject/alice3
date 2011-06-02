@@ -45,7 +45,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StateChangeStep< M extends edu.cmu.cs.dennisc.croquet.State<?> > extends CompletionStep< M > {
+public abstract class StateChangeStep< M extends org.lgna.croquet.State<?> > extends CompletionStep< M > {
 	public StateChangeStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger, null );
 	}

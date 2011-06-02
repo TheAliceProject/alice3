@@ -48,7 +48,7 @@ package org.alice.ide.initializer;
 public class ItemInitializerPane extends org.lgna.croquet.components.FlowPanel {
 	public ItemInitializerPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty initializerProperty ) {
 		super( Alignment.LEADING );
-		this.addComponent( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPropertyPane( initializerProperty, null, null, edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP ) );
+		this.addComponent( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPropertyPane( initializerProperty, null, null, org.lgna.croquet.Application.INHERIT_GROUP ) );
 	}
 }
 //public class ItemInitializerPane extends org.alice.ide.codeeditor.ExpressionPropertyDropDownPane {

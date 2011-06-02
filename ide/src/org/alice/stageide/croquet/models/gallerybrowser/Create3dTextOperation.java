@@ -49,9 +49,9 @@ import org.alice.ide.operations.ast.DeclareFieldEdit;
  */
 //class CreateTextPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
 class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
-	private static abstract class TextAttributeSelectionOperation extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState<String> {
+	private static abstract class TextAttributeSelectionOperation extends org.lgna.croquet.DefaultListSelectionState<String> {
 		public TextAttributeSelectionOperation( java.util.UUID individualId, int selectionIndex, String... items ) {
-			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, selectionIndex, items );
+			super( org.lgna.croquet.Application.INHERIT_GROUP, individualId, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, selectionIndex, items );
 		}
 	}
 	private static class FamilySelectionOperation extends TextAttributeSelectionOperation {
@@ -122,8 +122,8 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		}
 	}
 
-//	private edu.cmu.cs.dennisc.croquet.StringStateOperation textState = new edu.cmu.cs.dennisc.croquet.StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "e1f5fa35-6ddb-4d9a-8a76-8ff9421cf4b4" ), "" );
-//	private edu.cmu.cs.dennisc.croquet.StringStateOperation instanceNameState = new edu.cmu.cs.dennisc.croquet.StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "1c29999d-003b-4f90-83da-67d21f93789a" ), "" );
+//	private org.lgna.croquet.StringStateOperation textState = new org.lgna.croquet.StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "e1f5fa35-6ddb-4d9a-8a76-8ff9421cf4b4" ), "" );
+//	private org.lgna.croquet.StringStateOperation instanceNameState = new org.lgna.croquet.StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "1c29999d-003b-4f90-83da-67d21f93789a" ), "" );
 
 	private javax.swing.JTextField textVC;
 	private javax.swing.JTextField instanceNameVC;
@@ -190,10 +190,10 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		this.sample = new org.lgna.croquet.components.Label( "AaBbYyZz", 1.2f );
 		this.updateSample();
 
-		edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String > valueObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< String >() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
+		org.lgna.croquet.ListSelectionState.ValueObserver< String > valueObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< String >() {
+			public void changing( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 //				if( e.getValueIsAdjusting() ) {
 //					//pass
 //				} else {
@@ -229,14 +229,14 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 //		this.addComponent( pane, java.awt.BorderLayout.CENTER );
 	}
 
-	class ConstrainInstanceNameToTextBooleanStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanState {
+	class ConstrainInstanceNameToTextBooleanStateOperation extends org.lgna.croquet.BooleanState {
 		public ConstrainInstanceNameToTextBooleanStateOperation() {
 			super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "74c18933-e5d7-4c48-ad88-46a7a83ff12d" ), false );
 			this.setTextForBothTrueAndFalse( "constrain to text" );
 			this.addValueObserver( new ValueObserver<Boolean>() {
-				public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+				public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				}
-				public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+				public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 					CreateTextPane.this.instanceNameVC.setEditable( nextValue == false );
 				}
 			} );
@@ -331,7 +331,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 /**
  * @author Dennis Cosgrove
  */
-public class Create3dTextOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation {
 	private static class SingletonHolder {
 		private static Create3dTextOperation instance = new Create3dTextOperation();
 	}

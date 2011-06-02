@@ -66,6 +66,6 @@ public class CopyOperation extends org.alice.ide.operations.InconsequentialActio
 			message += "Control";
 		}
 		message += " key pressed.";
-		this.getIDE().showMessageDialog( message, title, edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION );
+		this.getIDE().showMessageDialog( message, title, org.lgna.croquet.MessageType.INFORMATION );
 	}
 }

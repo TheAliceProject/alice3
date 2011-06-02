@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationButton< J extends javax.swing.AbstractButton, M extends edu.cmu.cs.dennisc.croquet.Operation<?> > extends AbstractButton< J, M > {
+public abstract class OperationButton< J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Operation<?> > extends AbstractButton< J, M > {
 	public OperationButton( M model ) {
 		super( model );
 	}

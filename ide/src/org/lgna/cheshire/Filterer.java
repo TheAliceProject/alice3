@@ -47,5 +47,5 @@ package org.lgna.cheshire;
  * @author Dennis Cosgrove
  */
 public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
+	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, org.lgna.croquet.UserInformation userInformation );
 }

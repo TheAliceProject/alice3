@@ -44,8 +44,8 @@
 package org.alice.stageide.croquet.models.sceneditor;
 
 import org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel;
+import org.lgna.croquet.PredeterminedTab;
 
-import edu.cmu.cs.dennisc.croquet.PredeterminedTab;
 
 public class MarkerPanelTab extends PredeterminedTab
 {

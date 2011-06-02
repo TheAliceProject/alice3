@@ -59,8 +59,8 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 //	}
 	
 	//todo: rename
-	protected abstract String getMethodDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
-	protected abstract StringBuilder appendTutorialFinishNoteText( StringBuilder rv, org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
+	protected abstract String getMethodDescription( org.lgna.croquet.UserInformation userInformation );
+	protected abstract StringBuilder appendTutorialFinishNoteText( StringBuilder rv, org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit, org.lgna.croquet.UserInformation userInformation );
 
 //	@Override
 //	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
@@ -89,7 +89,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 //	}
 
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public org.lgna.croquet.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.Retargeter retargeter ) {
 		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit originalDeclareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
 		//todo

@@ -97,7 +97,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 
 	private void retarget() {
 		//note: we leverage the fact that the uuids are identical for much of the initial states of the two projects
-		class AstDecodingRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
+		class AstDecodingRetargeter implements org.lgna.croquet.Retargeter {
 			private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapIdToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 			public void addAllToReplacementMap( edu.cmu.cs.dennisc.alice.Project project ) {
 				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = project.getProgramType();
@@ -183,7 +183,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					filterer,
 					recoverer,
 					
-					new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
+					new org.lgna.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
 					
 					org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
 
@@ -192,7 +192,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					org.lgna.stencil.MenuPolicy.BELOW_STENCIL
 			);
 		} else {
-			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.FinishFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.FinishFilterer.INSTANCE, recoverer, new org.lgna.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
 		}
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );

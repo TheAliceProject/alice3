@@ -85,5 +85,5 @@ public abstract class ExpressionFillerInner {
 //		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( expression ) ); 
 //	}
 	
-	public abstract java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addItems( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
+	public abstract java.util.List< org.lgna.croquet.CascadeItem > addItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
 }

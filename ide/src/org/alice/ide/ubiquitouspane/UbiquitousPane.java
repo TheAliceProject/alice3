@@ -149,17 +149,17 @@ public class UbiquitousPane extends org.lgna.croquet.components.ViewPanel {
 	private ReturnStatementWrapper returnStatementWrapper = new ReturnStatementWrapper();
 	private TransientStatementsWrapper transientStatementsWrapper = new TransientStatementsWrapper();
 
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-		public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > selectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 		}
-		public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 			UbiquitousPane.this.refresh();
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean > isAlwaysShowingBlocksObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-		public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.State.ValueObserver< Boolean > isAlwaysShowingBlocksObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			UbiquitousPane.this.removeAllComponents();
 			UbiquitousPane.this.getAwtComponent().setLayout( UbiquitousPane.this.createLayoutManager( UbiquitousPane.this.getAwtComponent() ) );
 			UbiquitousPane.this.addComponents();

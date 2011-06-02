@@ -45,7 +45,7 @@ package org.lgna.cheshire.stencil;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class PresentationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+/*package-private*/abstract class PresentationOperation extends org.lgna.croquet.ActionOperation {
 	public PresentationOperation( java.util.UUID individualId, String name ) {
 		super( StencilsPresentation.IMPLEMENTATION_GROUP, individualId );
 		this.setName( name );

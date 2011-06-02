@@ -47,24 +47,24 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class ToolPalette extends BorderPanel {
-	private final AbstractButton<?,edu.cmu.cs.dennisc.croquet.BooleanState> title;
+	private final AbstractButton<?,org.lgna.croquet.BooleanState> title;
 	private final Component< ? > mainComponent;
 	//todo: convert to composite
-	public ToolPalette( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, Component<?> mainComponent ) {
+	public ToolPalette( org.lgna.croquet.BooleanState booleanState, Component<?> mainComponent ) {
 		this.title = new ToolPaletteTitle( booleanState );
 		this.mainComponent = mainComponent;
 		this.addComponent( this.title, Constraint.PAGE_START );
 		this.addComponent( this.mainComponent, Constraint.CENTER );
 	}
-	private edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean> valueObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver< Boolean >() {
-		public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.State.ValueObserver<Boolean> valueObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			mainComponent.setVisible( nextValue );
 		}
 	};
 	
-	public AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > getTitle() {
+	public AbstractButton< ?, org.lgna.croquet.BooleanState > getTitle() {
 		return this.title;
 	}
 	public Component< ? > getMainComponent() {

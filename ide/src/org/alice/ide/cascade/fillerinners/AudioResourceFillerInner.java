@@ -54,7 +54,7 @@ public class AudioResourceFillerInner extends ResourceFillerInner {
 		return org.alice.ide.croquet.models.ast.cascade.resource.AudioResourceExpressionFillIn.getInstance( resource );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CascadeFillIn getImportNewResourceFillIn() {
+	protected org.lgna.croquet.CascadeFillIn getImportNewResourceFillIn() {
 		return org.alice.ide.croquet.models.ast.cascade.resource.ImportNewAudioResourceFillIn.getInstance();
 	}
 }

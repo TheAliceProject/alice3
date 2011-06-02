@@ -71,7 +71,7 @@ public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOpera
 	}
 	@Override
 	protected CreateFieldFromPersonPane prologue( org.lgna.croquet.steps.InputDialogOperationStep step ) {
-		CreatePersonOperation createPersonOperation = new CreatePersonOperation( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP );
+		CreatePersonOperation createPersonOperation = new CreatePersonOperation( org.lgna.croquet.Application.INHERIT_GROUP );
 		createPersonOperation.fire();
 		
 		org.alice.apis.stage.Person person = createPersonOperation.getPerson();

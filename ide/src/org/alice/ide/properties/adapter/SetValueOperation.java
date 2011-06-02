@@ -45,7 +45,7 @@ package org.alice.ide.properties.adapter;
 
 import edu.cmu.cs.dennisc.alice.Project;
 
-public class SetValueOperation<P> extends edu.cmu.cs.dennisc.croquet.ActionOperation 
+public class SetValueOperation<P> extends org.lgna.croquet.ActionOperation 
 {
 	protected PropertyAdapter <P, ?> propertyAdapter;
 	protected P value;

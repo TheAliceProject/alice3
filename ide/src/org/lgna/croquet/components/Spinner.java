@@ -43,7 +43,7 @@
 
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState;
+import org.lgna.croquet.BoundedRangeIntegerState;
 
 /**
  * @author Dennis Cosgrove

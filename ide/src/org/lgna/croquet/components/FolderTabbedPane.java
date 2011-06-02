@@ -43,13 +43,13 @@
 
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.ActionOperation;
-import edu.cmu.cs.dennisc.croquet.Application;
-import edu.cmu.cs.dennisc.croquet.BooleanState;
-import edu.cmu.cs.dennisc.croquet.ListSelectionState;
-import edu.cmu.cs.dennisc.croquet.Operation;
-import edu.cmu.cs.dennisc.croquet.TabSelectionState;
-import edu.cmu.cs.dennisc.croquet.TabSelectionState.TabCreator;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.TabSelectionState;
+import org.lgna.croquet.TabSelectionState.TabCreator;
 
 /**
  * @author Dennis Cosgrove

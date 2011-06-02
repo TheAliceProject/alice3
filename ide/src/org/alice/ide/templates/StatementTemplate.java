@@ -46,13 +46,13 @@ package org.alice.ide.templates;
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
-	public StatementTemplate( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragModel, Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
+	public StatementTemplate( org.lgna.croquet.DragAndDropModel dragModel, Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
 		super(cls, javax.swing.BoxLayout.LINE_AXIS);
 		this.setDragModel( dragModel );
 	}
 	
-	public abstract edu.cmu.cs.dennisc.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair );
-	public final edu.cmu.cs.dennisc.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
+	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair );
+	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
 		return this.getDropModel( step, new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index ) );
 	}
 	

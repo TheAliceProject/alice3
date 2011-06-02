@@ -45,11 +45,11 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class InputDialogOperationStep extends GatedCommitDialogOperationStep< edu.cmu.cs.dennisc.croquet.InputDialogOperation > {
-	/*package-private*/ static InputDialogOperationStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.InputDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+public class InputDialogOperationStep extends GatedCommitDialogOperationStep< org.lgna.croquet.InputDialogOperation > {
+	/*package-private*/ static InputDialogOperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.InputDialogOperation model, org.lgna.croquet.Trigger trigger ) {
 		return new InputDialogOperationStep( parent, model, trigger );
 	}
-	private InputDialogOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.InputDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+	private InputDialogOperationStep( Transaction parent, org.lgna.croquet.InputDialogOperation model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public InputDialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

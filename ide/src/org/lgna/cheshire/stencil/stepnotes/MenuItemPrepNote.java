@@ -65,7 +65,7 @@ public class MenuItemPrepNote extends PrepNote< org.lgna.croquet.steps.MenuItemP
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
 		if( event instanceof org.lgna.cheshire.events.MenuSelectionChangedEvent ) {
 			org.lgna.cheshire.events.MenuSelectionChangedEvent menuSelectionChangedEvent = (org.lgna.cheshire.events.MenuSelectionChangedEvent)event;
-			java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = menuSelectionChangedEvent.getModels();
+			java.util.List< org.lgna.croquet.Model > models = menuSelectionChangedEvent.getModels();
 			final int N = models.size();
 			if( N > 0 ) {
 				return models.get( N-1 ) == this.getStep().getModel();

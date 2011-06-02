@@ -48,7 +48,7 @@ package org.lgna.croquet.components;
  */
 public class PushButton extends BooleanStateButton< javax.swing.JButton > {
 	private java.awt.Color selectedColor = java.awt.Color.YELLOW;
-	public PushButton( edu.cmu.cs.dennisc.croquet.BooleanState model ) {
+	public PushButton( org.lgna.croquet.BooleanState model ) {
 		super( model );
 	}
 	@Override

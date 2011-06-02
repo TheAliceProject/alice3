@@ -46,7 +46,7 @@ package org.alice.ide.templates;
  * @author Dennis Cosgrove
  */
 public abstract class CascadingExpressionsStatementTemplate extends StatementTemplate {
-	public CascadingExpressionsStatementTemplate( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragModel, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+	public CascadingExpressionsStatementTemplate( org.lgna.croquet.DragAndDropModel dragModel, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		super( dragModel, cls );
 	}
 //	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes();

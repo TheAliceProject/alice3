@@ -55,7 +55,7 @@ public class HairSelectionState extends AbstractListSelectionState<org.alice.api
 		return SingletonHolder.instance;
 	}
 	private HairSelectionState() {
-		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.apis.stage.Hair >(){
+		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new org.lgna.croquet.Codec< org.alice.apis.stage.Hair >(){
 			public Class< org.alice.apis.stage.Hair > getValueClass() {
 				return org.alice.apis.stage.Hair.class;
 			}

@@ -2,7 +2,7 @@ package uist.ecard.menu;
 
 import javax.swing.ImageIcon;
 
-public class EllipseModel extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class EllipseModel extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static EllipseModel instance = new EllipseModel();
 	}

@@ -46,7 +46,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public final class BlockStatementIndexPair implements edu.cmu.cs.dennisc.croquet.RetargetableDropSite {
+public final class BlockStatementIndexPair implements org.lgna.croquet.RetargetableDropSite {
 	private final edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private final int index;
 	public BlockStatementIndexPair( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
@@ -72,7 +72,7 @@ public final class BlockStatementIndexPair implements edu.cmu.cs.dennisc.croquet
 		return this.index;
 	}
 	
-	public BlockStatementIndexPair createReplacement( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public BlockStatementIndexPair createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
 		return new BlockStatementIndexPair( replacementBlockStatement, this.index );
 	}

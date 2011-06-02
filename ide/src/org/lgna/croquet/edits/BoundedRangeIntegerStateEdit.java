@@ -45,11 +45,11 @@ package org.lgna.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public final class BoundedRangeIntegerStateEdit extends StateEdit<edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState,Integer> {
+public final class BoundedRangeIntegerStateEdit extends StateEdit<org.lgna.croquet.BoundedRangeIntegerState,Integer> {
 	private final int prevValue;
 	private final int nextValue;
 	private final boolean isDoDesired;
-	public BoundedRangeIntegerStateEdit( org.lgna.croquet.steps.CompletionStep< edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState > completionStep, javax.swing.event.ChangeEvent e, int prevValue, int nextValue, boolean isDoDesired ) {
+	public BoundedRangeIntegerStateEdit( org.lgna.croquet.steps.CompletionStep< org.lgna.croquet.BoundedRangeIntegerState > completionStep, javax.swing.event.ChangeEvent e, int prevValue, int nextValue, boolean isDoDesired ) {
 		super( completionStep );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;

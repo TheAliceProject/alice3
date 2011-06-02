@@ -43,8 +43,8 @@
 
 package org.lgna.croquet.components;
 
-import edu.cmu.cs.dennisc.croquet.BooleanState;
-import edu.cmu.cs.dennisc.croquet.ListSelectionState;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ListSelectionState;
 
 /**
  * @author Dennis Cosgrove

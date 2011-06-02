@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.toolkit.issue;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPostIssuePane extends IssueReportPane {
-	public static final edu.cmu.cs.dennisc.croquet.Group POST_ISSUE_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "b010ccc1-b127-494d-9cc0-18c378fe0800" ), "POST_ISSUE_GROUP" );
+	public static final org.lgna.croquet.Group POST_ISSUE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "b010ccc1-b127-494d-9cc0-18c378fe0800" ), "POST_ISSUE_GROUP" );
 	class TypeSelectionState extends edu.cmu.cs.dennisc.toolkit.croquet.models.EnumConstantSelectionState< edu.cmu.cs.dennisc.jira.JIRAReport.Type > {
 		public TypeSelectionState() {
 			super( POST_ISSUE_GROUP, java.util.UUID.fromString( "8998dd3a-4ccc-4f75-8699-5d6d5e468259" ), -1, edu.cmu.cs.dennisc.jira.JIRAReport.Type.class );
@@ -130,10 +130,10 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 		rows.add( this.rowEnvironment );
 		return rows;
 	}
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.jira.JIRAReport.Type > typeSelectionListener = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.jira.JIRAReport.Type >() {
-		public void changing( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.jira.JIRAReport.Type > state, edu.cmu.cs.dennisc.jira.JIRAReport.Type prevValue, edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.jira.JIRAReport.Type > typeSelectionListener = new org.lgna.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.jira.JIRAReport.Type >() {
+		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.jira.JIRAReport.Type > state, edu.cmu.cs.dennisc.jira.JIRAReport.Type prevValue, edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue, boolean isAdjusting ) {
 		}
-		public void changed( edu.cmu.cs.dennisc.croquet.State< edu.cmu.cs.dennisc.jira.JIRAReport.Type > state, edu.cmu.cs.dennisc.jira.JIRAReport.Type prevValue, edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.jira.JIRAReport.Type > state, edu.cmu.cs.dennisc.jira.JIRAReport.Type prevValue, edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue, boolean isAdjusting ) {
 			AbstractPostIssuePane.this.refreshRows();
 		}
 	};

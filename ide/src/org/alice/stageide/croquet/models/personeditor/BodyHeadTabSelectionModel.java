@@ -43,7 +43,7 @@
 
 package org.alice.stageide.croquet.models.personeditor;
 
-/*package-private*/ abstract class ContentTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
+/*package-private*/ abstract class ContentTab extends org.lgna.croquet.PredeterminedTab {
 	public ContentTab(java.util.UUID id, String title) {
 		super(id);
 		this.setTitleText( title );
@@ -107,7 +107,7 @@ package org.alice.stageide.croquet.models.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class BodyHeadTabSelectionModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTabSelectionState< ContentTab >{
+public class BodyHeadTabSelectionModel extends org.lgna.croquet.PredeterminedTabSelectionState< ContentTab >{
 	private static class SingletonHolder {
 		private static BodyHeadTabSelectionModel instance = new BodyHeadTabSelectionModel();
 	}
@@ -115,6 +115,6 @@ public class BodyHeadTabSelectionModel extends edu.cmu.cs.dennisc.croquet.Predet
 		return SingletonHolder.instance;
 	}
 	private BodyHeadTabSelectionModel() {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), null, 0, new BodyTab(), new HeadTab() );
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), null, 0, new BodyTab(), new HeadTab() );
 	}
 }

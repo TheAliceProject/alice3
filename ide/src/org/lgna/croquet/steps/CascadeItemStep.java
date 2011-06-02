@@ -46,7 +46,7 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeItemStep< F, M extends edu.cmu.cs.dennisc.croquet.CascadeItem< F, S >, S extends CascadeItemStep< F, M, S >  > extends MenuItemPrepStep< M > {
+public abstract class CascadeItemStep< F, M extends org.lgna.croquet.CascadeItem< F, S >, S extends CascadeItemStep< F, M, S >  > extends MenuItemPrepStep< M > {
 	public CascadeItemStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}

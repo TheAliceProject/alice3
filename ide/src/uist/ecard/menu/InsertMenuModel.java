@@ -1,6 +1,6 @@
 package uist.ecard.menu;
 
-public class InsertMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
+public class InsertMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static InsertMenuModel instance = new InsertMenuModel();
 	}

@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuTextSeparator extends ViewController< javax.swing.JMenuItem, edu.cmu.cs.dennisc.croquet.MenuSeparatorModel > {
-	public MenuTextSeparator( edu.cmu.cs.dennisc.croquet.MenuSeparatorModel model ) {
+public class MenuTextSeparator extends ViewController< javax.swing.JMenuItem, org.lgna.croquet.MenuSeparatorModel > {
+	public MenuTextSeparator( org.lgna.croquet.MenuSeparatorModel model ) {
 		super( model );
 	}
 	@Override
@@ -59,7 +59,7 @@ public class MenuTextSeparator extends ViewController< javax.swing.JMenuItem, ed
 	
 	@Override
 	protected void handleDisplayable() {
-		edu.cmu.cs.dennisc.croquet.MenuSeparatorModel model = this.getModel();
+		org.lgna.croquet.MenuSeparatorModel model = this.getModel();
 		this.getAwtComponent().setText( model.getName() );
 		this.getAwtComponent().setIcon( model.getIcon() );
 		this.getAwtComponent().setDisabledIcon( model.getIcon() );

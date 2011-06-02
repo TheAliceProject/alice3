@@ -91,9 +91,9 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Incons
 							} else {
 								message = MESSAGE;
 							}
-							org.alice.ide.IDE.getSingleton().showMessageDialog( message, title, edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
+							org.alice.ide.IDE.getSingleton().showMessageDialog( message, title, org.lgna.croquet.MessageType.PLAIN );
 						} else {
-							org.alice.ide.IDE.getSingleton().showMessageDialog( "Your issue report FAILED to submit.  Thank you for trying.", "Report Submission Failed", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+							org.alice.ide.IDE.getSingleton().showMessageDialog( "Your issue report FAILED to submit.  Thank you for trying.", "Report Submission Failed", org.lgna.croquet.MessageType.ERROR );
 						}
 					}
 				}

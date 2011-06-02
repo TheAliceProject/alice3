@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ViewController< J extends javax.swing.JComponent, M extends edu.cmu.cs.dennisc.croquet.Model > extends JComponent< J > {
+public abstract class ViewController< J extends javax.swing.JComponent, M extends org.lgna.croquet.Model > extends JComponent< J > {
 	private M model;
 	
 	public ViewController( M model ) {
@@ -66,14 +66,14 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 //		this.isPopupMenuOperationLimitedToRightMouseButton = isPopupMenuOperationLimitedToRightMouseButton;
 //	}
 	
-	private edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel popupMenuPrepModel;
-	public final edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel getPopupMenuPrepModel() {
+	private org.lgna.croquet.StandardPopupPrepModel popupMenuPrepModel;
+	public final org.lgna.croquet.StandardPopupPrepModel getPopupMenuPrepModel() {
 		if( this.popupMenuPrepModel != null ) {
 			this.popupMenuPrepModel.setFirstComponentHint( this );
 		}
 		return this.popupMenuPrepModel;
 	}
-	public final void setPopupMenuOperation( edu.cmu.cs.dennisc.croquet.StandardPopupPrepModel popupMenuPrepModel ) {
+	public final void setPopupMenuOperation( org.lgna.croquet.StandardPopupPrepModel popupMenuPrepModel ) {
 		if( this.getAwtComponent().getParent() == null ) {
 			//pass
 		} else {

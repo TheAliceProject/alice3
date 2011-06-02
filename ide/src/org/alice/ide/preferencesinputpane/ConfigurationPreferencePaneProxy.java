@@ -48,7 +48,7 @@ package org.alice.ide.preferencesinputpane;
 public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.ide.preferences.programming.Configuration> {
 	class ConfigurationSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<org.alice.ide.preferences.programming.Configuration> {
 		public ConfigurationSelectionOperation( org.alice.ide.preferences.programming.Configuration... panes ) {
-			super( java.util.UUID.fromString( "68071aa4-895c-4d30-8b8a-5bbcc5262586" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.ide.preferences.programming.Configuration >() {
+			super( java.util.UUID.fromString( "68071aa4-895c-4d30-8b8a-5bbcc5262586" ), new org.lgna.croquet.Codec< org.alice.ide.preferences.programming.Configuration >() {
 				public Class< org.alice.ide.preferences.programming.Configuration > getValueClass() {
 					return org.alice.ide.preferences.programming.Configuration.class;
 				}

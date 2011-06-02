@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class SelectTypeOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class SelectTypeOperation extends org.lgna.croquet.ActionOperation {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, SelectTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized SelectTypeOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		SelectTypeOperation rv = map.get( type );
@@ -59,7 +59,7 @@ public class SelectTypeOperation extends edu.cmu.cs.dennisc.croquet.ActionOperat
 	}
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 	private SelectTypeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8f3e1f74-d1fd-4484-98e0-bc37da452005" ) );
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8f3e1f74-d1fd-4484-98e0-bc37da452005" ) );
 		this.type = type;
 		this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( this.type ) );
 		this.setName( org.alice.ide.IDE.getSingleton().getTextFor( type ) );

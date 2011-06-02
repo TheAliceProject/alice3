@@ -44,8 +44,8 @@
 package org.alice.stageide.croquet.models.sceneditor;
 
 import org.alice.stageide.sceneeditor.SceneObjectPropertyManager;
+import org.lgna.croquet.PredeterminedTab;
 
-import edu.cmu.cs.dennisc.croquet.PredeterminedTab;
 
 public class ObjectPropertiesTab extends PredeterminedTab
 {

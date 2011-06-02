@@ -48,7 +48,7 @@ package org.alice.ide.ubiquitouspane.templates;
 public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
 	private UbiquitousStatementImplementor implementor;
 	private org.lgna.croquet.components.Label label;
-	public CascadingUbiquitousStatementTemplate( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragModel, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
+	public CascadingUbiquitousStatementTemplate( org.lgna.croquet.DragAndDropModel dragModel, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
 		super( dragModel, cls );
 		this.implementor = new UbiquitousStatementImplementor( incompleteStatement );
 	}

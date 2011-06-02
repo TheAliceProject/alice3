@@ -55,7 +55,7 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.m
 	private String prevName;
 	private edu.cmu.cs.dennisc.alice.ast.Expression prevInitializer;
 	
-	public AbstractEditFieldOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, String name, FieldDeclaredInAlice field ) {
+	public AbstractEditFieldOperation( org.lgna.croquet.Group group, java.util.UUID individualId, String name, FieldDeclaredInAlice field ) {
 		super( group, individualId );
 		this.setName( name );
 		this.field = field;

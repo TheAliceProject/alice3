@@ -46,10 +46,10 @@ package org.lgna.croquet.steps;
  * @author Dennis Cosgrove
  */
 public class CancelCompletionStep extends CompletionStep {
-	public static CancelCompletionStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, org.lgna.croquet.Trigger trigger ) {
+	public static CancelCompletionStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.CompletionModel completionModel, org.lgna.croquet.Trigger trigger ) {
 		return new CancelCompletionStep( parent, completionModel, trigger );
 	}
-	private CancelCompletionStep( Transaction parent, edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, org.lgna.croquet.Trigger trigger ) {
+	private CancelCompletionStep( Transaction parent, org.lgna.croquet.CompletionModel completionModel, org.lgna.croquet.Trigger trigger ) {
 		super( parent, completionModel, trigger, null );
 		TransactionManager.fireTransactionCanceled( parent );
 	}
@@ -57,7 +57,7 @@ public class CancelCompletionStep extends CompletionStep {
 		super( binaryDecoder );
 	}
 	@Override
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.Edit edit, org.lgna.croquet.UserInformation userInformation ) {
 		return "Cancel";
 	}
 	@Override

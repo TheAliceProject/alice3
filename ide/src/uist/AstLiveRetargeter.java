@@ -46,7 +46,7 @@ package uist;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class AstLiveRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
+/*package-private*/ class AstLiveRetargeter implements org.lgna.croquet.Retargeter {
 	private java.util.Map< Object, Object > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public void addKeyValuePair( Object key, Object value ) {
 		this.map.put( key, value );

@@ -241,7 +241,7 @@ class Cycle< E > {
 /**
  * @author Dennis Cosgrove
  */
-public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSelectionState<CodeComposite> {
+public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState<CodeComposite> {
 	private static class SingletonHolder {
 		private static EditorsTabSelectionState instance = new EditorsTabSelectionState();
 	}
@@ -272,7 +272,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 			}
 			return false;
 		}
-		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, final org.lgna.croquet.components.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, CodeComposite item ) {
+		public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, final org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, CodeComposite item ) {
 			booleanState.setTextForBothTrueAndFalse( getMenuText( item ) );
 			button.getAwtComponent().setIcon( getMenuSmallIcon( item ) );
 			button.scaleFont( 1.5f );
@@ -292,7 +292,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 			
 			if( IS_RUN_BUTTON_DESIRED ) {
 				if( isEntryPoint(code) ) {
-					edu.cmu.cs.dennisc.croquet.Operation<?> runOperation = org.alice.ide.IDE.getSingleton().getRunOperation();
+					org.lgna.croquet.Operation<?> runOperation = org.alice.ide.IDE.getSingleton().getRunOperation();
 					org.lgna.croquet.components.Button runButton = runOperation.createButton();
 					edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( button.getAwtComponent(), runButton.getAwtComponent(), edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 1 );
 					runButton.getAwtComponent().setText( null );
@@ -300,8 +300,8 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 				}
 			}
 		}
-//		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createInnerTitleComponent( CodeComposite item ) {
-//			edu.cmu.cs.dennisc.croquet.Label rv = new edu.cmu.cs.dennisc.croquet.Label( code.getName() );
+//		public org.lgna.croquet.JComponent< ? > createInnerTitleComponent( CodeComposite item ) {
+//			org.lgna.croquet.Label rv = new org.lgna.croquet.Label( code.getName() );
 //			rv.scaleFont( 1.5f );
 //			return rv;
 //		}
@@ -333,8 +333,8 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeFor(CodeComposite codeComposite) {
-		final edu.cmu.cs.dennisc.croquet.TrackableShape rv = super.getTrackableShapeFor(codeComposite);
+	public org.lgna.croquet.TrackableShape getTrackableShapeFor(CodeComposite codeComposite) {
+		final org.lgna.croquet.TrackableShape rv = super.getTrackableShapeFor(codeComposite);
 		if( IS_RUN_BUTTON_DESIRED ) {
 			if( rv instanceof org.lgna.croquet.components.JComponent<?> ) {
 				org.lgna.croquet.components.JComponent<?> component = (org.lgna.croquet.components.JComponent<?>)rv;
@@ -348,7 +348,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 					}
 					if( button != null ) {
 						final org.lgna.croquet.components.Button accessibleButton = button;
-						return new edu.cmu.cs.dennisc.croquet.TrackableShape() {
+						return new org.lgna.croquet.TrackableShape() {
 							public void addComponentListener(java.awt.event.ComponentListener listener) {
 								rv.addComponentListener(listener);
 							}
@@ -457,17 +457,17 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 			this.setBorder( new AttentionGrabbingBorder( button.getAwtComponent() ) );
 			//button.setBorder( new AttentionGrabbingBorder( button.getAwtComponent() ) );
 		}
-		private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<CodeComposite> selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<CodeComposite>() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+		private org.lgna.croquet.ListSelectionState.ValueObserver<CodeComposite> selectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver<CodeComposite>() {
+			public void changing( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 				DropDownPanel.this.updateOperation( nextValue );
 			}
 		};
-		private edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean> isEmphasizingClassesObserver = new edu.cmu.cs.dennisc.croquet.State.ValueObserver<Boolean>() {
-			public void changing( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		private org.lgna.croquet.State.ValueObserver<Boolean> isEmphasizingClassesObserver = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( edu.cmu.cs.dennisc.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				DropDownPanel.this.setVisible( nextValue );
 			}
 		};
@@ -511,7 +511,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 		return this.singleton;
 	}
 //	private void updateFocusedCode() {
-//		edu.cmu.cs.dennisc.croquet.Component< ? > component = this.getCurrentTabStateOperation().getSingletonView();
+//		org.lgna.croquet.Component< ? > component = this.getCurrentTabStateOperation().getSingletonView();
 //		if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
 //			org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
 //			edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode;
@@ -535,7 +535,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 		//this.getEditPreviousCodeOperation().setVisible( isVisibleAndEnabled );
 	}
 	
-//	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+//	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( org.lgna.croquet.Component< ? > component ) {
 //		if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
 //			org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
 //			return codeEditor;
@@ -629,8 +629,8 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 				}
 			}
 			this.setSelectedItem( item );
-//			for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
-//				edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
+//			for( org.lgna.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
+//				org.lgna.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getClass() );
 //				if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
 //					org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
@@ -641,7 +641,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 //					}
 //				}
 //			}
-//			class CodeTabIsSelectedOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
+//			class CodeTabIsSelectedOperation extends org.lgna.croquet.TabStateOperation<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
 //				public CodeTabIsSelectedOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 //					super( org.alice.ide.IDE.IDE_GROUP,  java.util.UUID.fromString( "83fc2f34-a05f-48fd-941f-4e2ba08f45af" ), code );
 //				}
@@ -666,7 +666,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 ////					return index > 0 || org.alice.ide.IDE.getSingleton().isEmphasizingClasses();
 ////				}
 //				@Override
-//				protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
+//				protected org.lgna.croquet.JComponent<?> createSingletonView() {
 //					final org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
 //					if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 //						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
@@ -733,8 +733,8 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 //		this.getSingletonSingleSelectionPane().getAwtComponent().updateUI();
 //	}
 //	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-//		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
-//			edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
+//		for( org.lgna.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
+//			org.lgna.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
 //			if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
 //				org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
 //				codeEditor.refresh();

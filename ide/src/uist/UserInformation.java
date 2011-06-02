@@ -45,7 +45,7 @@ package uist;
 /**
  * @author Dennis Cosgrove
  */
-public enum UserInformation implements edu.cmu.cs.dennisc.croquet.UserInformation {
+public enum UserInformation implements org.lgna.croquet.UserInformation {
 	INSTANCE;
 	public java.util.Locale getLocale() {
 		return java.util.Locale.getDefault();

@@ -48,7 +48,7 @@ package uist.filterers;
  */
 public enum FinishFilterer implements org.lgna.cheshire.Filterer {
 	INSTANCE;
-	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, org.lgna.croquet.UserInformation userInformation ) {
 		while( chapterIterator.hasNext() ) {
 			chapterIterator.next();
 		}

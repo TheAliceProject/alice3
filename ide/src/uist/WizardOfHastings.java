@@ -46,7 +46,7 @@ package uist;
  * @author Dennis Cosgrove
  */
 class WizardOfHastings {
-	public static void castPart( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.alice.Project originalProject, String originalFieldName, edu.cmu.cs.dennisc.alice.Project replacementProject, String replacementFieldName ) {
+	public static void castPart( org.lgna.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.alice.Project originalProject, String originalFieldName, edu.cmu.cs.dennisc.alice.Project replacementProject, String replacementFieldName ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> orginalSceneType = originalProject.getProgramType().getDeclaredFields().get( 0 ).getValueType();		
 		edu.cmu.cs.dennisc.alice.ast.AbstractField originalField = orginalSceneType.getDeclaredField( originalFieldName );
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> replacementSceneType = replacementProject.getProgramType().getDeclaredFields().get( 0 ).getValueType();

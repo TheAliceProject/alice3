@@ -87,13 +87,13 @@ public abstract class MemberTemplateComposite extends TemplateComposite {
 		super( id );
 	}
 	@Override
-	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
 		super.customizeTitleComponent( booleanState, button );
 		//booleanState.setIconForBothTrueAndFalse( ICON );
 		button.getAwtComponent().setIcon( ICON );
 	}
 	@Override
-	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
+	public boolean contains( org.lgna.croquet.Model model ) {
 		System.err.println( "todo contains TemplateComposite" );
 		return false;
 	}

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBarComposite extends edu.cmu.cs.dennisc.croquet.MenuBarComposite {
+public class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
 	private static class SingletonHolder {
 		private static MenuBarComposite instance = new MenuBarComposite();
 	}

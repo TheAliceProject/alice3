@@ -45,8 +45,8 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogWithPreviewOperation<T> extends edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperation<T> {
-	public InputDialogWithPreviewOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId ) {
+public abstract class InputDialogWithPreviewOperation<T> extends org.lgna.croquet.CascadeInputDialogOperation<T> {
+	public InputDialogWithPreviewOperation( org.lgna.croquet.Group group, java.util.UUID individualId ) {
 		super( group, individualId );
 	}
 	@Override

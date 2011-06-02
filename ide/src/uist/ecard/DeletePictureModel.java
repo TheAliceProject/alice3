@@ -2,7 +2,7 @@ package uist.ecard;
 
 import javax.swing.ImageIcon;
 
-public class DeletePictureModel extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class DeletePictureModel extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static DeletePictureModel instance = new DeletePictureModel();
 	}

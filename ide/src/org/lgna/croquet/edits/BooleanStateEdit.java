@@ -45,12 +45,12 @@ package org.lgna.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public final class BooleanStateEdit extends StateEdit<edu.cmu.cs.dennisc.croquet.BooleanState,Boolean> {
+public final class BooleanStateEdit extends StateEdit<org.lgna.croquet.BooleanState,Boolean> {
 	//can't really imagine this values being the same, but it doesn't seem likely to hurt to track both values
 	private final boolean prevValue;
 	private final boolean nextValue;
 
-	public BooleanStateEdit( org.lgna.croquet.steps.CompletionStep< edu.cmu.cs.dennisc.croquet.BooleanState > completionStep, boolean nextValue ) {
+	public BooleanStateEdit( org.lgna.croquet.steps.CompletionStep< org.lgna.croquet.BooleanState > completionStep, boolean nextValue ) {
 		super( completionStep );
 		this.prevValue = !nextValue;
 		this.nextValue = nextValue;

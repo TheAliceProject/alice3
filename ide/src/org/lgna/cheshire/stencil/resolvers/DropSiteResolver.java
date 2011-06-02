@@ -46,12 +46,12 @@ package org.lgna.cheshire.stencil.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class DropSiteResolver implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
+public class DropSiteResolver implements org.lgna.croquet.RuntimeResolver< org.lgna.croquet.TrackableShape > {
 	private final org.lgna.croquet.steps.DropStep step;
 	public DropSiteResolver( org.lgna.croquet.steps.DropStep step ) {
 		this.step = step;
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+	public org.lgna.croquet.TrackableShape getResolved() {
 		return this.step.getDropReceptor().getTrackableShape( this.step.getDropSite() );
 	}
 }

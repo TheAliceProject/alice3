@@ -46,7 +46,7 @@ package org.alice.ide.memberseditor.templates;
  * @author Dennis Cosgrove
  */
 /*package-private*/ abstract class ExpressionStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
-	public ExpressionStatementTemplate( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropModel ) {
+	public ExpressionStatementTemplate( org.lgna.croquet.DragAndDropModel dragAndDropModel ) {
 		super( dragAndDropModel, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();

@@ -107,7 +107,7 @@ class RunIcon implements javax.swing.Icon {
 /**
  * @author Dennis Cosgrove
  */
-public class RunOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperation {
+public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	private static class SingletonHolder {
 		private static RunOperation instance = new RunOperation();
 	}
@@ -120,12 +120,12 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperatio
 	}
 	
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Preview your program." );
 		return rv;
 	}
 	@Override
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
 		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 	}
 	private java.awt.Point location = new java.awt.Point( 100, 100 );

@@ -45,11 +45,11 @@ package org.lgna.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public final class StringStateEdit extends StateEdit<edu.cmu.cs.dennisc.croquet.StringState,String> {
+public final class StringStateEdit extends StateEdit<org.lgna.croquet.StringState,String> {
 	private final String prevValue;
 	private final String nextValue;
 
-	public StringStateEdit( org.lgna.croquet.steps.CompletionStep< edu.cmu.cs.dennisc.croquet.StringState > completionStep, String prevValue, String nextValue ) {
+	public StringStateEdit( org.lgna.croquet.steps.CompletionStep< org.lgna.croquet.StringState > completionStep, String prevValue, String nextValue ) {
 		super( completionStep );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;

@@ -57,7 +57,7 @@ public class RandomCascadeMenu extends org.alice.ide.croquet.models.cascade.Expr
 		super( java.util.UUID.fromString( "1cea7986-9a06-4796-a41b-52aacedf3e06" ) );
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateBlankChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > context ) {
 		rv.add( NextDouble01FillIn.getInstance() );
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextDoubleInRange", java.lang.Number.class, java.lang.Number.class ) );
 		return rv;

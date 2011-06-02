@@ -58,6 +58,6 @@ public class ShowWarningOperation extends org.alice.ide.operations.Inconsequenti
 	@Override
 	protected void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
 		org.alice.ide.warningpane.WarningPane warningPane = new org.alice.ide.warningpane.WarningPane( true );
-		this.getIDE().showMessageDialog( warningPane, "Alice3 is currently under development", edu.cmu.cs.dennisc.croquet.MessageType.WARNING ); 
+		this.getIDE().showMessageDialog( warningPane, "Alice3 is currently under development", org.lgna.croquet.MessageType.WARNING ); 
 	}
 }

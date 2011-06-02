@@ -360,22 +360,22 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation<?> getRunOperation() {
+	public org.lgna.croquet.Operation<?> getRunOperation() {
 		return EPIC_HACK_getRunDialogOperation();
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.PlainDialogOperation EPIC_HACK_getRunDialogOperation() {
+	public org.lgna.croquet.PlainDialogOperation EPIC_HACK_getRunDialogOperation() {
 		return org.alice.stageide.croquet.models.run.RunOperation.getInstance();
 	}
 	
 	
 	
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getRestartOperation() {
+	public org.lgna.croquet.Operation< ? > getRestartOperation() {
 		return org.alice.stageide.croquet.models.run.RestartOperation.getInstance();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
+	public org.lgna.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		return new org.alice.stageide.croquet.models.run.PreviewMethodOperation( procedureInvocationTemplate );
 	}
 //	@Override
@@ -410,7 +410,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getAboutOperation() {
+	public org.lgna.croquet.Operation< ? > getAboutOperation() {
 		return org.alice.stageide.croquet.models.help.AboutOperation.getInstance();
 	}
 

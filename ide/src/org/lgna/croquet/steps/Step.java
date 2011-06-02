@@ -45,9 +45,9 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public abstract class Step< M extends org.lgna.croquet.Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	private Transaction parent;
-	private final edu.cmu.cs.dennisc.croquet.CodableResolver< M > modelResolver;
+	private final org.lgna.croquet.CodableResolver< M > modelResolver;
 	private final transient org.lgna.croquet.Trigger trigger;
 	private final java.util.UUID id;
 	public Step( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
@@ -82,11 +82,11 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 		return this.trigger != null ? this.trigger.getViewController() : null;
 	}
 	
-	protected edu.cmu.cs.dennisc.croquet.Model getModelForTutorialNoteText() {
+	protected org.lgna.croquet.Model getModelForTutorialNoteText() {
 		return this.getModel();
 	}
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		edu.cmu.cs.dennisc.croquet.Model model = this.getModelForTutorialNoteText();
+	public String getTutorialNoteText( org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		org.lgna.croquet.Model model = this.getModelForTutorialNoteText();
 		if( model != null ) {
 			return model.getTutorialNoteText( this, edit, userInformation );
 		} else {
@@ -103,15 +103,15 @@ public abstract class Step< M extends edu.cmu.cs.dennisc.croquet.Model > impleme
 		this.parent = parent;
 	}
 
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		if( this.modelResolver instanceof edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> ) {
-			edu.cmu.cs.dennisc.croquet.RetargetableResolver<?> retargetableResolver = (edu.cmu.cs.dennisc.croquet.RetargetableResolver<?>)this.modelResolver;
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		if( this.modelResolver instanceof org.lgna.croquet.RetargetableResolver<?> ) {
+			org.lgna.croquet.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.RetargetableResolver<?>)this.modelResolver;
 			retargetableResolver.retarget( retargeter );
 		}
 	}
 	
 	protected StringBuilder updateRepr( StringBuilder rv ) {
-		edu.cmu.cs.dennisc.croquet.Model model = this.getModel();
+		org.lgna.croquet.Model model = this.getModel();
 		if( model != null ) {
 			rv.append( this.getModel().getClass().getName() );
 		}

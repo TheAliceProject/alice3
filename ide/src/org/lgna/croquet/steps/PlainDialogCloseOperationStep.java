@@ -46,11 +46,11 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class PlainDialogCloseOperationStep extends SingleThreadOperationStep< edu.cmu.cs.dennisc.croquet.PlainDialogCloseOperation > {
-	public static PlainDialogCloseOperationStep createAndAddToTransaction( Transaction parent, edu.cmu.cs.dennisc.croquet.PlainDialogCloseOperation model, org.lgna.croquet.Trigger trigger ) {
+public class PlainDialogCloseOperationStep extends SingleThreadOperationStep< org.lgna.croquet.PlainDialogCloseOperation > {
+	public static PlainDialogCloseOperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.PlainDialogCloseOperation model, org.lgna.croquet.Trigger trigger ) {
 		return new PlainDialogCloseOperationStep( parent, model, trigger );
 	}
-	private PlainDialogCloseOperationStep( Transaction parent, edu.cmu.cs.dennisc.croquet.PlainDialogCloseOperation model, org.lgna.croquet.Trigger trigger ) {
+	private PlainDialogCloseOperationStep( Transaction parent, org.lgna.croquet.PlainDialogCloseOperation model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger, null );
 	}
 	public PlainDialogCloseOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

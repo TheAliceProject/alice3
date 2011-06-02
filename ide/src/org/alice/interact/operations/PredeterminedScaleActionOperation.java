@@ -42,12 +42,12 @@
  */
 package org.alice.interact.operations;
 
-import edu.cmu.cs.dennisc.croquet.Group;
+import org.lgna.croquet.Group;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOperation {
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
 	private edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable;

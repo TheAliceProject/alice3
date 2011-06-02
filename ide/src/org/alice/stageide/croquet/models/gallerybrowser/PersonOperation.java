@@ -47,9 +47,9 @@ import org.alice.stageide.croquet.models.personeditor.PersonInfo;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PersonOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+public abstract class PersonOperation extends org.lgna.croquet.InputDialogOperation {
 	protected abstract PersonInfo getInitialPersonInfo();
-	public PersonOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id ) {
+	public PersonOperation( org.lgna.croquet.Group group, java.util.UUID id ) {
 		super( group, id );
 	}
 	@Override

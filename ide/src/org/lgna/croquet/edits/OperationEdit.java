@@ -45,7 +45,7 @@ package org.lgna.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends edu.cmu.cs.dennisc.croquet.Edit<M> {
+public abstract class OperationEdit<M extends org.lgna.croquet.Operation<?>> extends org.lgna.croquet.Edit<M> {
 	public OperationEdit( org.lgna.croquet.steps.OperationStep< M > completionStep ) {
 		super( completionStep );
 	}

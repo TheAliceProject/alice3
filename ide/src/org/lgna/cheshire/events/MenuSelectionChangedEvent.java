@@ -47,11 +47,11 @@ package org.lgna.cheshire.events;
  * @author Dennis Cosgrove
  */
 public class MenuSelectionChangedEvent implements Event {
-	private final java.util.List< edu.cmu.cs.dennisc.croquet.Model > models;
-	public MenuSelectionChangedEvent( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
+	private final java.util.List< org.lgna.croquet.Model > models;
+	public MenuSelectionChangedEvent( java.util.List< org.lgna.croquet.Model > models ) {
 		this.models = models;
 	}
-	public java.util.List< edu.cmu.cs.dennisc.croquet.Model > getModels() {
+	public java.util.List< org.lgna.croquet.Model > getModels() {
 		return this.models;
 	}
 }

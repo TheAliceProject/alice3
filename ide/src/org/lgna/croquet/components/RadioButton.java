@@ -47,7 +47,7 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class RadioButton extends BooleanStateButton< javax.swing.JRadioButton > {
-	public RadioButton( edu.cmu.cs.dennisc.croquet.BooleanState model ) {
+	public RadioButton( org.lgna.croquet.BooleanState model ) {
 		super( model );
 	}
 	@Override

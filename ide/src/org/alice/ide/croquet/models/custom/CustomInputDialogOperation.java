@@ -49,7 +49,7 @@ public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.al
 	private CustomInputPane< E > customInputPane;
 	
 	public CustomInputDialogOperation( java.util.UUID id, org.alice.ide.choosers.ValueChooser< E > chooser ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, id );
+		super( org.lgna.croquet.Application.INHERIT_GROUP, id );
 		this.customInputPane = new CustomInputPane< E >( chooser );
 	}
 	

@@ -46,9 +46,10 @@ package org.lgna.croquet.components;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import edu.cmu.cs.dennisc.croquet.BooleanState;
-import edu.cmu.cs.dennisc.croquet.ListSelectionState;
-import edu.cmu.cs.dennisc.croquet.Operation;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.Operation;
+
 
 /**
  * @author Dennis Cosgrove

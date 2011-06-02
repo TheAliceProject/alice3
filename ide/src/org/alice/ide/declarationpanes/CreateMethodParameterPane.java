@@ -70,7 +70,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 //			}
 			
 			String text = "I understand that I need to update the invocations to this " + codeText + ".";
-			edu.cmu.cs.dennisc.croquet.BooleanState isUnderstandingConfirmed = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "21efac8d-c2dd-451f-8065-d2e284a3e244" ), false );
+			org.lgna.croquet.BooleanState isUnderstandingConfirmed = new org.lgna.croquet.BooleanState( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "21efac8d-c2dd-451f-8065-d2e284a3e244" ), false );
 			isUnderstandingConfirmed.setTextForBothTrueAndFalse( text );
 			org.lgna.croquet.components.CheckBox checkBox = isUnderstandingConfirmed.createCheckBox();
 			checkBox.setBackgroundColor( null );

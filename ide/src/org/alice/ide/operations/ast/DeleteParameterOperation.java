@@ -116,8 +116,8 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 						sb.append( "invocations" );
 					}
 					sb.append( "<br>Would you like to continue with the deletion?</body></html>" );
-					edu.cmu.cs.dennisc.croquet.YesNoCancelOption result = this.getIDE().showYesNoCancelConfirmDialog(sb.toString(), "Delete Parameter");
-					if( result == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ){
+					org.lgna.croquet.YesNoCancelOption result = this.getIDE().showYesNoCancelConfirmDialog(sb.toString(), "Delete Parameter");
+					if( result == org.lgna.croquet.YesNoCancelOption.YES ){
 						//pass
 					} else {
 						step.cancel();
