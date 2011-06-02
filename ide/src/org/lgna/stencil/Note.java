@@ -119,7 +119,7 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 //		return false;
 //	}
 		
-	public org.lgna.croquet.ReplacementAcceptability getReplacementAcceptability() {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability() {
 		return null;
 	}
 

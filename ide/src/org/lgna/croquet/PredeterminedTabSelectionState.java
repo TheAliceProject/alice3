@@ -71,7 +71,7 @@ public abstract class PredeterminedTabSelectionState<T extends PredeterminedTab>
 			return false;
 		}
 	};
-	public PredeterminedTabSelectionState( Group group, java.util.UUID id, Codec< T > codec, int selectionIndex, T... tabs ) {
+	public PredeterminedTabSelectionState( Group group, java.util.UUID id, ItemCodec< T > codec, int selectionIndex, T... tabs ) {
 		super( group, id, codec, selectionIndex, tabs );
 	}
 

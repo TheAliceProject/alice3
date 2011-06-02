@@ -81,7 +81,7 @@ public class HistoryManager {
 		}
 		return rv;
 	}
-	private static void handleEditCommitted( org.lgna.croquet.Edit<?> edit ) {
+	private static void handleEditCommitted( org.lgna.croquet.edits.Edit<?> edit ) {
 		assert edit != null;
 		HistoryManager historyManager = HistoryManager.getInstance( edit.getGroup() );
 		if( historyManager != null ) {
@@ -89,7 +89,7 @@ public class HistoryManager {
 		}
 	}
 
-	private java.util.Stack< org.lgna.croquet.Edit<?> > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private java.util.Stack< org.lgna.croquet.edits.Edit<?> > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private int insertionIndex = 0;
 	private org.lgna.croquet.Group group;
 
@@ -99,10 +99,10 @@ public class HistoryManager {
 	public org.lgna.croquet.Group getGroup() {
 		return this.group;
 	}
-	public java.util.Stack< org.lgna.croquet.Edit<?> > getStack() {
+	public java.util.Stack< org.lgna.croquet.edits.Edit<?> > getStack() {
 		return this.stack;
 	}
-	private void push( org.lgna.croquet.Edit<?> edit ) {
+	private void push( org.lgna.croquet.edits.Edit<?> edit ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroup(), this.group ) ) {
 			edu.cmu.cs.dennisc.history.event.HistoryPushEvent historyPushEvent = new edu.cmu.cs.dennisc.history.event.HistoryPushEvent( this, edit );
 			this.fireOperationPushing( historyPushEvent );
@@ -118,7 +118,7 @@ public class HistoryManager {
 	}
 	private void undo() {
 		if( this.insertionIndex > 0 ) {
-			org.lgna.croquet.Edit<?> edit = this.stack.get( this.insertionIndex - 1 );
+			org.lgna.croquet.edits.Edit<?> edit = this.stack.get( this.insertionIndex - 1 );
 			if( edit.canUndo() ) {
 				edit.undo();
 				this.insertionIndex--;
@@ -132,7 +132,7 @@ public class HistoryManager {
 	}
 	private void redo() {
 		if( this.insertionIndex < this.stack.size() ) {
-			org.lgna.croquet.Edit<?> edit = this.stack.get( this.insertionIndex );
+			org.lgna.croquet.edits.Edit<?> edit = this.stack.get( this.insertionIndex );
 			if( edit != null ) {
 				if( edit.canRedo() ) {
 					edit.doOrRedo( false );
@@ -259,7 +259,7 @@ public class HistoryManager {
 			}
 		}
 	}
-	public org.lgna.croquet.Edit<?> createDoIgnoringCompositeEdit( String presentation ) {
+	public org.lgna.croquet.edits.Edit<?> createDoIgnoringCompositeEdit( String presentation ) {
 //		synchronized( this.stack ) {
 //			final int N = this.insertionIndex;
 //			if( N > 0 ) {

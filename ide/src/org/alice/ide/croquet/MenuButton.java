@@ -162,8 +162,8 @@ public class MenuButton< M extends org.lgna.croquet.PopupPrepModel > extends org
 	protected javax.swing.AbstractButton createAwtComponent() {
 		class JPopupMenuButton extends javax.swing.JButton {
 			public JPopupMenuButton() {
-//				this.setModel( new javax.swing.DefaultButtonModel() );
 				this.setRolloverEnabled(true);
+				this.setAction( MenuButton.this.getModel().getAction() );
 			}
 			@Override
 			public void updateUI() {

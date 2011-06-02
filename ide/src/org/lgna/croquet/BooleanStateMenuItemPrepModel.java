@@ -46,6 +46,7 @@ package org.lgna.croquet;
 import org.lgna.croquet.components.CheckBoxMenuItem;
 import org.lgna.croquet.components.JComponent;
 import org.lgna.croquet.components.MenuItemContainer;
+import org.lgna.croquet.resolvers.CodableResolver;
 
 /**
  * @author Dennis Cosgrove

@@ -160,7 +160,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 	
 	private static class CardSelectionState extends DefaultListSelectionState< Card > {
 		public CardSelectionState() {
-			super( DIALOG_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "2382103d-a67e-4a35-baa2-9a612fd2d8f2" ), new Codec< Card >() {
+			super( DIALOG_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "2382103d-a67e-4a35-baa2-9a612fd2d8f2" ), new ItemCodec< Card >() {
 				public Class<Card> getValueClass() {
 					return Card.class;
 				}
@@ -438,7 +438,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 			@Override
 			protected void release( org.lgna.croquet.steps.WizardDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, boolean isCompleted ) {
 				if( isCompleted ) {
-					step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+					step.commitAndInvokeDo( new org.lgna.croquet.edits.Edit( step ) {
 						@Override
 						protected void doOrRedoInternal( boolean isDo ) {
 							edu.cmu.cs.dennisc.print.PrintUtilities.println( "do", name.getValue() );

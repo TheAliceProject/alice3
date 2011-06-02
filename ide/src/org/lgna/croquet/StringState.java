@@ -42,55 +42,11 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.TextArea;
-import org.lgna.croquet.components.TextField;
-
 /**
  * @author Dennis Cosgrove
  */
 public class StringState extends State<String> {
-//	public static interface ValueObserver {
-//		public void changed( String nextValue );
-//	};
-//	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-//	public void addValueObserver( ValueObserver valueObserver ) {
-//		this.valueObservers.add( valueObserver );
-//	}
-//	public void addAndInvokeValueObserver( ValueObserver valueObserver ) {
-//		this.addValueObserver(valueObserver);
-//		valueObserver.changed(this.getValue());
-//	}
-//	public void removeValueObserver( ValueObserver valueObserver ) {
-//		this.valueObservers.remove( valueObserver );
-//	}
-//	private void fireValueChanged( String nextValue ) {
-//		for( ValueObserver valueObserver : this.valueObservers ) {
-//			valueObserver.changed( nextValue );
-//		}
-//	}
-	
 	private javax.swing.text.Document document;
-	
-//	private class FocusListener implements java.awt.event.FocusListener { 
-//		private TextComponent< ? > textComponent;
-//		public FocusListener( TextComponent< ? > textComponent ) {
-//			this.textComponent = textComponent;
-//		}
-//		public void focusGained(java.awt.event.FocusEvent e) {
-//			StringStateContext stringStateContext = ContextManager.createAndPushStringStateContext( StringState.this, e, this.textComponent );
-//			stringStateContext.handleFocusGained( e );
-//			ModelContext< ? > popContext = ContextManager.popContext();
-//			assert popContext == stringStateContext;
-//		}
-//		public void focusLost(java.awt.event.FocusEvent e) {
-//			StringStateContext stringStateContext = ContextManager.createAndPushStringStateContext( StringState.this, e, this.textComponent );
-//			stringStateContext.handleFocusLost( e );
-//			ModelContext< ? > popContext = ContextManager.popContext();
-//			assert popContext == stringStateContext;
-//		}
-//	}
-	
-	
 	private javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
 		private void handleUpdate( javax.swing.event.DocumentEvent e ) {
 			try {
@@ -105,23 +61,6 @@ public class StringState extends State<String> {
 			} catch( javax.swing.text.BadLocationException ble ) {
 				throw new RuntimeException( ble );
 			}
-////			ModelContext< ? > currentContext = ContextManager.getCurrentContext();
-//			StringStateContext stringStateContext = ContextManager.createAndPushStringStateContext( StringState.this, null, null );
-////			if( currentContext instanceof StringStateContext ) {
-////				StringStateContext stringStateContext = (StringStateContext)currentContext; 
-//				try {
-//					String s = document.getText( 0, document.getLength() );
-//					fireValueChanged( s );
-//					stringStateContext.handleDocumentEvent( e );
-//				} catch( javax.swing.text.BadLocationException ble ) {
-//					throw new RuntimeException( ble );
-//				} finally {
-//					ModelContext< ? > popContext = ContextManager.popContext();
-//					assert popContext == stringStateContext;
-//				}
-////			} else {
-////				System.err.println( "not string state context: " + currentContext );
-////			}
 		}
 		public void changedUpdate(javax.swing.event.DocumentEvent e) {
 			this.handleUpdate(e);
@@ -169,7 +108,7 @@ public class StringState extends State<String> {
 	}
 	
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		if( edit instanceof org.lgna.croquet.edits.StringStateEdit ) {
 			org.lgna.croquet.edits.StringStateEdit stringStateEdit = (org.lgna.croquet.edits.StringStateEdit)edit;
 			rv.append( "Enter <strong>" );
@@ -184,10 +123,10 @@ public class StringState extends State<String> {
 	public javax.swing.text.Document getDocument() {
 		return this.document;
 	}
-	public TextField createTextField() {
-		return new TextField( this );
+	public org.lgna.croquet.components.TextField createTextField() {
+		return new org.lgna.croquet.components.TextField( this );
 	}
-	public TextArea createTextArea() {
-		return new TextArea( this );
+	public org.lgna.croquet.components.TextArea createTextArea() {
+		return new org.lgna.croquet.components.TextArea( this );
 	}
 }

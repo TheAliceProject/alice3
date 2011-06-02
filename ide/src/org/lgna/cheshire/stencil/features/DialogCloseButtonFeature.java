@@ -47,8 +47,8 @@ package org.lgna.cheshire.stencil.features;
  */
 public class DialogCloseButtonFeature extends org.lgna.stencil.Feature {
 	public DialogCloseButtonFeature( final org.lgna.croquet.steps.PlainDialogCloseOperationStep step ) {
-		super( new org.lgna.croquet.RuntimeResolver< org.lgna.croquet.TrackableShape >() {
-			public org.lgna.croquet.TrackableShape getResolved() {
+		super( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
+			public org.lgna.croquet.components.TrackableShape getResolved() {
 				org.lgna.croquet.PlainDialogOperation dialogOperation = step.getModel().getPlainDialogOperation();
 				if( dialogOperation != null ) {
 					org.lgna.croquet.components.Dialog activeDialog = dialogOperation.getActiveDialog();

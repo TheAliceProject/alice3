@@ -276,7 +276,7 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 							for( Note note : page.getNotes() ) {
 								if( note.isActive() ) {
 									for( Feature feature : note.getFeatures() ) {
-										org.lgna.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+										org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 										if( trackableShape != null ) {
 											if( trackableShape.isInView() ) {
 												java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
@@ -333,7 +333,7 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 						for( Note note : page.getNotes() ) {
 							if( note.isActive() ) {
 								for( Feature feature : note.getFeatures() ) {
-									org.lgna.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+									org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 									if( trackableShape != null ) {
 										if( trackableShape.isInView() ) {
 											//pass
@@ -363,7 +363,7 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 					for( Note note : page.getNotes() ) {
 						if( note.isActive() ) {
 							for( Feature feature : note.getFeatures() ) {
-								org.lgna.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+								org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 								if( trackableShape != null ) {
 									if( trackableShape.isInView() ) {
 										java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );

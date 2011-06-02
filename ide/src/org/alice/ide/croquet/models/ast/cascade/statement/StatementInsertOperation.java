@@ -63,7 +63,7 @@ public abstract class StatementInsertOperation extends org.alice.ide.croquet.mod
 	}
 
 	@Override
-	protected <M extends org.lgna.croquet.Model> org.lgna.croquet.CodableResolver< M > createCodableResolver() {
+	protected <M extends org.lgna.croquet.Model> org.lgna.croquet.resolvers.CodableResolver< M > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
 	}
 }

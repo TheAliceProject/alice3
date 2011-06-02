@@ -41,11 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.lgna.croquet.migration;
+
+import org.lgna.croquet.steps.Transaction;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface RuntimeResolver<T> {
-	public T getResolved();
+public interface MigrationManager {
+	public Transaction createMigration( Transaction transaction );
 }

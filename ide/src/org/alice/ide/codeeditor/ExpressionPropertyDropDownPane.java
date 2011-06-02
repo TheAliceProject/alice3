@@ -76,16 +76,16 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 //		return rv;	
 //	}
 
-	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		return "Drop...";
 	}
 	
-	public org.lgna.croquet.CodableResolver< ExpressionPropertyDropDownPane > getCodableResolver() {
+	public org.lgna.croquet.resolvers.CodableResolver< ExpressionPropertyDropDownPane > getCodableResolver() {
 		//todo:
 		System.err.println( "todo: getCodableResolver" );
 		return null;
 	}
-	public org.lgna.croquet.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		return this;
 	}
 

@@ -45,7 +45,7 @@ package org.alice.ide.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public class SingletonCodec< T > implements org.lgna.croquet.Codec< T > {
+public class SingletonCodec< T > implements org.lgna.croquet.ItemCodec< T > {
 	private static java.util.Map< Class<?>, SingletonCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized < T > SingletonCodec< T > getInstance( Class< T > cls ) {
 		SingletonCodec< ? > rv = map.get( cls );

@@ -72,8 +72,8 @@ public class TreeSelectionState<E> extends State<E> {
 	}
 	private final SingleTreeSelectionModel treeSelectionModel;
 	private final edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel;
-	private final Codec< E > codec;
-	public TreeSelectionState(Group group, java.util.UUID id, Codec< E > codec, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel, E initialSelection ) {
+	private final ItemCodec< E > codec;
+	public TreeSelectionState(Group group, java.util.UUID id, ItemCodec< E > codec, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel, E initialSelection ) {
 		super(group, id);
 		this.codec = codec;
 		this.treeSelectionModel = new SingleTreeSelectionModel();
@@ -86,7 +86,7 @@ public class TreeSelectionState<E> extends State<E> {
 		} );
 	}
 
-	public Codec<E> getCodec() {
+	public ItemCodec<E> getCodec() {
 		return this.codec;
 	}
 

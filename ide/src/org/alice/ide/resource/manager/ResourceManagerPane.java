@@ -171,7 +171,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		public ResourceOperation( java.util.UUID individualId ) {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		}
-		protected abstract org.lgna.croquet.Edit createEdit( org.alice.virtualmachine.Resource resource );
+		protected abstract org.lgna.croquet.edits.Edit createEdit( org.alice.virtualmachine.Resource resource );
 
 		//todo: better name
 		protected abstract org.alice.virtualmachine.Resource selectResource();
@@ -236,7 +236,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			}
 		}
 		@Override
-		public org.lgna.croquet.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
+		public org.lgna.croquet.edits.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
 			return new AddOrRemoveResourceEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
@@ -266,7 +266,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			return ResourceManagerPane.this.getSelectedResource();
 		}
 		@Override
-		public org.lgna.croquet.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
+		public org.lgna.croquet.edits.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
 			return new AddOrRemoveResourceEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {

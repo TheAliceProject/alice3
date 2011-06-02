@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class NodeStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.StaticGetInstanceKeyedResolver< T > implements org.lgna.croquet.RetargetableResolver< T > {
+public class NodeStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > implements org.lgna.croquet.resolvers.RetargetableResolver< T > {
 	private edu.cmu.cs.dennisc.alice.ast.Node nodes[];
 	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterTypes[];
 	

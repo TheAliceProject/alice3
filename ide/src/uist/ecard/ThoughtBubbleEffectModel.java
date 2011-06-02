@@ -18,7 +18,7 @@ public class ThoughtBubbleEffectModel extends org.lgna.croquet.ActionOperation {
 		step.finish();
 	}
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Select " + this.getDefaultLocalizedText() );
 		return rv;
 	}

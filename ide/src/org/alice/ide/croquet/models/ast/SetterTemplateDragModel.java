@@ -64,7 +64,7 @@ public class SetterTemplateDragModel extends VoidTemplateDragModel {
 		this.field = field;
 	}
 	@Override
-	protected org.lgna.croquet.CodableResolver< SetterTemplateDragModel > createCodableResolver() {
+	protected org.lgna.croquet.resolvers.CodableResolver< SetterTemplateDragModel > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< SetterTemplateDragModel >( this, this.field, edu.cmu.cs.dennisc.alice.ast.AbstractField.class );
 	}
 	@Override

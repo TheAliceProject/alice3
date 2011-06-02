@@ -43,6 +43,8 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.edits.Edit;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,25 +63,13 @@ public abstract class CompletionModel extends Model {
 		return false;
 	}
 	
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, UserInformation userInformation ) {
-		Edit< ? > edit = step.getEdit();
-		if( edit != null ) {
-			edit.updateTutorialTransactionTitle( rv, userInformation );
-		}
-		return rv;
-	}
 	public final String getTutorialTransactionTitle( org.lgna.croquet.steps.CompletionStep< ? > step, UserInformation userInformation ) {
 		this.initializeIfNecessary();
-		StringBuilder sb = new StringBuilder();
-		updateTutorialTransactionTitle( sb, step, userInformation );
-		if( sb.length() == 0 ) {
-			//			sb.append( "TODO: " );
-			//			sb.append( this );
-			//			sb.append( "; " );
-			//			sb.append( edit );
-			return null;
+		Edit< ? > edit = step.getEdit();
+		if( edit != null ) {
+			return edit.getTutorialTransactionTitle( userInformation );
 		} else {
-			return sb.toString();
+			return null;
 		}
 	}
 	public abstract boolean isAlreadyInState( Edit< ? > edit );

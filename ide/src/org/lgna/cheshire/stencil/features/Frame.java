@@ -67,7 +67,7 @@ package org.lgna.cheshire.stencil.features;
 	};
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 3.0f ); 
 
-	public Frame( org.lgna.croquet.RuntimeResolver< ? extends org.lgna.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
+	public Frame( org.lgna.croquet.resolvers.RuntimeResolver< ? extends org.lgna.croquet.components.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
 		super( trackableShapeResolver, connectionPreference );
 	}
 	@Override

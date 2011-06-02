@@ -76,7 +76,7 @@ package org.lgna.cheshire.stencil;
 	protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, org.lgna.cheshire.Chapter value, int index, boolean isSelected, boolean cellHasFocus) {
 		assert list != null;
 		StringBuilder sb = new StringBuilder();
-		org.lgna.croquet.ReplacementAcceptability replacementAcceptability;
+		org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability;
 		if( value != null) {
 			int i;
 			if (index >= 0) {
@@ -109,11 +109,11 @@ package org.lgna.cheshire.stencil;
 			if( index <= this.book.getSelectedIndex() ) {
 				if( replacementAcceptability != null ) {
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( replacementAcceptability );
-					if( replacementAcceptability == org.lgna.croquet.ReplacementAcceptability.PERFECT_MATCH || replacementAcceptability == org.lgna.croquet.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK ) {
+					if( replacementAcceptability == org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH || replacementAcceptability == org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK ) {
 						icon = PERFECT_MATCH_ICON;
 					} else {
 						if( replacementAcceptability.isDeviation() ) {
-							if( replacementAcceptability.getDeviationSeverity() == org.lgna.croquet.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE ) {
+							if( replacementAcceptability.getDeviationSeverity() == org.lgna.croquet.edits.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE ) {
 								icon = SHOULD_BE_FINE_ICON;
 							} else {
 								icon = DEVIATION_ICON;

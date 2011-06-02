@@ -47,7 +47,8 @@ package org.alice.ide.codeeditor;
  */
 public abstract class DropDownPane extends org.alice.ide.common.AbstractDropDownPane {
 	private org.lgna.croquet.components.Component< ? > mainComponent;
-	public DropDownPane( org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.croquet.components.Component< ? > mainComponent, org.lgna.croquet.components.Component< ? > postfixPane ) {
+	public DropDownPane( org.lgna.croquet.PopupPrepModel< ? > model, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.croquet.components.Component< ? > mainComponent, org.lgna.croquet.components.Component< ? > postfixPane ) {
+		super( model );
 		if( prefixPane != null ) {
 			this.addComponent( prefixPane );
 		}
@@ -57,11 +58,6 @@ public abstract class DropDownPane extends org.alice.ide.common.AbstractDropDown
 			this.addComponent( postfixPane );
 		}
 	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
-	}
-	
 	public org.lgna.croquet.components.Component< ? > getMainComponent() {
 		return this.mainComponent;
 	}

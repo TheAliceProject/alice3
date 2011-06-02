@@ -113,12 +113,7 @@ abstract class FauxItem extends org.lgna.croquet.components.JComponent< javax.sw
 //		rv.setOpaque( false );
 //		rv.setBackground( null );
 
-		org.alice.ide.common.AbstractDropDownListItemExpressionPane dropDownListItemExpressionPane = new org.alice.ide.common.AbstractDropDownListItemExpressionPane( this.index, this.expressionListProperty ) {
-			@Override
-			protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType() {
-				return FauxItem.this.getFillInType();
-			}
-		};
+		org.alice.ide.common.DropDownListItemExpressionPane dropDownListItemExpressionPane = new org.alice.ide.common.DropDownListItemExpressionPane( this.index, this.expressionListProperty, this.getFillInType() );
 		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel(
 				new org.lgna.croquet.components.Label(  "[ " + index + " ]" ),
 				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),

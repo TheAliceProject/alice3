@@ -254,7 +254,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 	}
 
 	@Override
-	public org.lgna.croquet.TrackableShape getTrackableShapeFor( E item ) {
+	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( E item ) {
 		ItemDetails itemDetails = this.getItemDetails( item );
 		if( itemDetails != null ) {
 			return itemDetails.getButton();

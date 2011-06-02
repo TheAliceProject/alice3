@@ -203,7 +203,7 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 
 		edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel< String > treeModel = new edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel< String >( root );
 		this.treeSelectionState = new org.lgna.croquet.TreeSelectionState< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String >>( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ),
-				new org.lgna.croquet.Codec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > >() {
+				new org.lgna.croquet.ItemCodec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > >() {
 					public Class getValueClass() {
 						return edu.cmu.cs.dennisc.javax.swing.models.TreeNode.class;
 					}

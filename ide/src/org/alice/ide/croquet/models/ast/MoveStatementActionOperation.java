@@ -117,11 +117,11 @@ public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperati
 	}
 	
 	@Override
-	protected org.lgna.croquet.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, org.lgna.croquet.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	protected org.lgna.croquet.edits.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		return originalEdit;
 	}
 
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.Edit< ? > edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<MoveStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<MoveStatementActionOperation>)edit;
 		MoveStatementActionOperation replacement = replacementEdit.getModel();
 		retargeter.addKeyValuePair( this.fromBlockStatement, replacement.fromBlockStatement );
@@ -142,16 +142,16 @@ public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperati
 		return rv;
 	}
 	
-	public org.lgna.croquet.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
 		if( replacementCandidate instanceof org.alice.ide.croquet.edits.DependentEdit ) {
-			return org.lgna.croquet.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
+			return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 		} else {
-			return org.lgna.croquet.ReplacementAcceptability.createRejection( "edit is not an instance of DependentEdit" );
+			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "edit is not an instance of DependentEdit" );
 		}
 	}
 	
 	@Override
-	protected org.lgna.croquet.CodableResolver< MoveStatementActionOperation > createCodableResolver() {
+	protected org.lgna.croquet.resolvers.CodableResolver< MoveStatementActionOperation > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.MoveStatementActionOperationNewInstanceResolver( this );
 	}
 	@Override

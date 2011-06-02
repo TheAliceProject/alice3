@@ -54,19 +54,19 @@ public class PlainDialogCloseOperation extends SingleThreadOperation< org.lgna.c
 		assert plainDialogOperation != null;
 		this.plainDialogOperation = plainDialogOperation;
 	}
-	public static class PlainDialogCloseOperationResolver implements CodableResolver< PlainDialogCloseOperation > {
+	public static class PlainDialogCloseOperationResolver implements org.lgna.croquet.resolvers.CodableResolver< PlainDialogCloseOperation > {
 		private PlainDialogCloseOperation model;
 		
 		public PlainDialogCloseOperationResolver( PlainDialogCloseOperation model ) {
 			this.model = model;
 		}
 		public PlainDialogCloseOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			CodableResolver<PlainDialogOperation> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			org.lgna.croquet.resolvers.CodableResolver<PlainDialogOperation> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 			PlainDialogOperation plainDialogOperation = resolver.getResolved();
 			this.model = plainDialogOperation.getCloseOperation();
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			CodableResolver<PlainDialogOperation> resolver = this.model.plainDialogOperation.getCodableResolver();
+			org.lgna.croquet.resolvers.CodableResolver<PlainDialogOperation> resolver = this.model.plainDialogOperation.getCodableResolver();
 			binaryEncoder.encode( resolver );
 		}
 		public PlainDialogCloseOperation getResolved() {
@@ -74,7 +74,7 @@ public class PlainDialogCloseOperation extends SingleThreadOperation< org.lgna.c
 		}
 	}
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Press the <strong>Close</strong> button when you are ready." );
 		return rv;
 	}

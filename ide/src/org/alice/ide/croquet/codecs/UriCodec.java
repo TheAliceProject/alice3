@@ -46,7 +46,7 @@ package org.alice.ide.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public enum UriCodec implements org.lgna.croquet.Codec< java.net.URI > {
+public enum UriCodec implements org.lgna.croquet.ItemCodec< java.net.URI > {
 	SINGLETON;
 	public Class<java.net.URI> getValueClass() {
 		return java.net.URI.class;

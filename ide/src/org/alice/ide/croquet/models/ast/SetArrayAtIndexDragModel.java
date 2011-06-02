@@ -64,7 +64,7 @@ public class SetArrayAtIndexDragModel extends VoidTemplateDragModel {
 		this.field = field;
 	}
 	@Override
-	protected org.lgna.croquet.CodableResolver< SetArrayAtIndexDragModel > createCodableResolver() {
+	protected org.lgna.croquet.resolvers.CodableResolver< SetArrayAtIndexDragModel > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< SetArrayAtIndexDragModel >( this, this.field, edu.cmu.cs.dennisc.alice.ast.AbstractField.class );
 	}
 	@Override

@@ -109,7 +109,7 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.OperationEdit<org.
 	}
 
 	@Override
-	public org.lgna.croquet.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
 		if( replacementCandidate instanceof DeclareMethodEdit ) {
 			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)replacementCandidate;
 			if( this.method != null ) {
@@ -119,7 +119,7 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.OperationEdit<org.
 					String originalName = this.method.getName();
 					String replacementName = declareMethodEdit.method.getName();
 					if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( originalName, replacementName ) ) {
-						return org.lgna.croquet.ReplacementAcceptability.PERFECT_MATCH;
+						return org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH;
 					} else {
 						StringBuilder sb = new StringBuilder();
 						sb.append( "original name: " );
@@ -127,17 +127,17 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.OperationEdit<org.
 						sb.append( "; changed to: " );
 						sb.append( replacementName );
 						//sb.append( "." );
-						return org.lgna.croquet.ReplacementAcceptability.createDeviation( org.lgna.croquet.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE, sb.toString() ); 
+						return org.lgna.croquet.edits.ReplacementAcceptability.createDeviation( org.lgna.croquet.edits.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE, sb.toString() ); 
 					}
 				} else {
 					org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
-					return org.lgna.croquet.ReplacementAcceptability.createRejection( "<html>return type <strong>MUST</strong> be <strong>" + formatter.getTextForType( method.getReturnType() ) + "</strong></html>" ); 
+					return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "<html>return type <strong>MUST</strong> be <strong>" + formatter.getTextForType( method.getReturnType() ) + "</strong></html>" ); 
 				}
 			} else {
-				return org.lgna.croquet.ReplacementAcceptability.createRejection( "replacement method is null" ); 
+				return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement method is null" ); 
 			}
 		} else {
-			return org.lgna.croquet.ReplacementAcceptability.createRejection( "replacement is not an instance of DeclareMethodEdit" ); 
+			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of DeclareMethodEdit" ); 
 		}
 	}
 	
@@ -156,7 +156,7 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.OperationEdit<org.
 		this.method = retargeter.retarget( this.method );
 	}
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.Edit< ? > edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		assert edit instanceof DeclareMethodEdit;
 		DeclareMethodEdit replacementEdit = (DeclareMethodEdit)edit;

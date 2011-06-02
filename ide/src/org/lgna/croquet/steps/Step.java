@@ -47,7 +47,7 @@ package org.lgna.croquet.steps;
  */
 public abstract class Step< M extends org.lgna.croquet.Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	private Transaction parent;
-	private final org.lgna.croquet.CodableResolver< M > modelResolver;
+	private final org.lgna.croquet.resolvers.CodableResolver< M > modelResolver;
 	private final transient org.lgna.croquet.Trigger trigger;
 	private final java.util.UUID id;
 	public Step( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
@@ -85,7 +85,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > implements edu.cm
 	protected org.lgna.croquet.Model getModelForTutorialNoteText() {
 		return this.getModel();
 	}
-	public String getTutorialNoteText( org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		org.lgna.croquet.Model model = this.getModelForTutorialNoteText();
 		if( model != null ) {
 			return model.getTutorialNoteText( this, edit, userInformation );
@@ -104,8 +104,8 @@ public abstract class Step< M extends org.lgna.croquet.Model > implements edu.cm
 	}
 
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		if( this.modelResolver instanceof org.lgna.croquet.RetargetableResolver<?> ) {
-			org.lgna.croquet.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.RetargetableResolver<?>)this.modelResolver;
+		if( this.modelResolver instanceof org.lgna.croquet.resolvers.RetargetableResolver<?> ) {
+			org.lgna.croquet.resolvers.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.resolvers.RetargetableResolver<?>)this.modelResolver;
 			retargetableResolver.retarget( retargeter );
 		}
 	}

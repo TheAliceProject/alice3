@@ -47,16 +47,16 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public class TabSelectionState< T extends Composite > extends DefaultListSelectionState< T > {
-	public TabSelectionState( Group group, java.util.UUID id, Codec< T > codec, int selectionIndex ) {
+	public TabSelectionState( Group group, java.util.UUID id, ItemCodec< T > codec, int selectionIndex ) {
 		super( group, id, codec, selectionIndex );
 	}
-	public TabSelectionState( Group group, java.util.UUID id, Codec< T > codec ) {
+	public TabSelectionState( Group group, java.util.UUID id, ItemCodec< T > codec ) {
 		super( group, id, codec );
 	}
-	public TabSelectionState( Group group, java.util.UUID id, Codec< T > codec, int selectionIndex, java.util.Collection<T> data ) {
+	public TabSelectionState( Group group, java.util.UUID id, ItemCodec< T > codec, int selectionIndex, java.util.Collection<T> data ) {
 		super( group, id, codec, selectionIndex, data );
 	}
-	public TabSelectionState( Group group, java.util.UUID id, Codec< T > codec, int selectionIndex, T... data ) {
+	public TabSelectionState( Group group, java.util.UUID id, ItemCodec< T > codec, int selectionIndex, T... data ) {
 		super( group, id, codec, selectionIndex, data );
 	}
 	public interface TabCreator<T> {

@@ -44,13 +44,6 @@ package org.lgna.croquet.steps;
 
 import org.lgna.croquet.DropReceptor;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.DragComponent;
-import org.lgna.croquet.components.JComponent;
-import org.lgna.croquet.components.ViewController;
-
-import edu.cmu.cs.dennisc.croquet.*;
 
 /**
  * @author Dennis Cosgrove
@@ -258,12 +251,12 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragAndDropModel > {
 	}
 	private DragStep( Transaction parent, org.lgna.croquet.DragAndDropModel model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
-		DragComponent dragSource = this.getDragSource();
+		org.lgna.croquet.components.DragComponent dragSource = this.getDragSource();
 		java.util.List< ? extends DropReceptor > potentialDropReceptors = model.createListOfPotentialDropReceptors( dragSource );
 		this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
 		int i = 0;
 		for( DropReceptor dropReceptor : potentialDropReceptors ) {
-			Component<?> dropComponent = dropReceptor.getViewController();
+			org.lgna.croquet.components.Component<?> dropComponent = dropReceptor.getViewController();
 			java.awt.Rectangle bounds = dropComponent.getBounds();
 			bounds = javax.swing.SwingUtilities.convertRectangle( dropComponent.getAwtComponent().getParent(), bounds, this.getDragSource().getAwtComponent() );
 			this.potentialDropReceptorInfos[ i ] = new DropReceptorInfo( dropReceptor, bounds );
@@ -398,18 +391,18 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragAndDropModel > {
 		} else {
 			this.setLatestMouseEvent( e );
 			if( this.currentDropReceptor != null ) {
-				Model operation = this.currentDropReceptor.dragDropped( this );
-				org.lgna.croquet.steps.TransactionManager.pendDrop( operation, this.currentDropReceptor, this.currentPotentialDropSite );
-				if( operation != null ) {
+				org.lgna.croquet.Model model = this.currentDropReceptor.dragDropped( this );
+				org.lgna.croquet.steps.TransactionManager.pendDrop( model, this.currentDropReceptor, this.currentPotentialDropSite );
+				if( model != null ) {
 					//this.addChild( new DroppedEvent( e, this.currentDropReceptor ) );
-					JComponent<?> component = this.currentDropReceptor.getViewController();
-					ViewController<?,?> viewController; 
-					if( component instanceof ViewController<?,?> ) {
-						viewController = (ViewController<?,?>)component;
+					org.lgna.croquet.components.JComponent<?> component = this.currentDropReceptor.getViewController();
+					org.lgna.croquet.components.ViewController<?,?> viewController; 
+					if( component instanceof org.lgna.croquet.components.ViewController<?,?> ) {
+						viewController = (org.lgna.croquet.components.ViewController<?,?>)component;
 					} else {
 						viewController = null;
 					}
-					org.lgna.croquet.steps.Step< ? > step = operation.fire( new org.lgna.croquet.triggers.MouseEventTrigger( viewController, this.getLatestMouseEvent() ) );
+					org.lgna.croquet.steps.Step< ? > step = model.fire( new org.lgna.croquet.triggers.MouseEventTrigger( viewController, this.getLatestMouseEvent() ) );
 				} else {
 					this.cancel( trigger );
 				}

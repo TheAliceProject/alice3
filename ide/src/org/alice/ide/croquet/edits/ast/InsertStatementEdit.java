@@ -42,7 +42,7 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
-public class InsertStatementEdit extends org.lgna.croquet.Edit< org.lgna.croquet.CascadePopupCompletionModel< edu.cmu.cs.dennisc.alice.ast.Expression > > {
+public class InsertStatementEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.CascadePopupCompletionModel< edu.cmu.cs.dennisc.alice.ast.Expression > > {
 	public static final int AT_END = Short.MAX_VALUE;
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
@@ -135,12 +135,12 @@ public class InsertStatementEdit extends org.lgna.croquet.Edit< org.lgna.croquet
 		return rv;
 	}
 	@Override
-	public org.lgna.croquet.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
 		if( replacementCandidate instanceof InsertStatementEdit ) {
 			InsertStatementEdit insertStatementEdit = (InsertStatementEdit)replacementCandidate;
 			final int N = this.initialExpressions.length;
 			if( insertStatementEdit.initialExpressions.length == N ) {
-				org.lgna.croquet.ReplacementAcceptability rv = org.lgna.croquet.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
+				org.lgna.croquet.edits.ReplacementAcceptability rv = org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 				//todo
 				if( N == 1 ) {
 					for( int i=0; i<N; i++ ) {
@@ -151,7 +151,7 @@ public class InsertStatementEdit extends org.lgna.croquet.Edit< org.lgna.croquet
 								Object originalValue = ((edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral)originalI).getValueProperty().getValue();
 								Object replacementValue = ((edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral)replacementI).getValueProperty().getValue();
 								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( originalValue, replacementValue ) ) {
-									rv = org.lgna.croquet.ReplacementAcceptability.PERFECT_MATCH;
+									rv = org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH;
 								} else {
 									StringBuilder sb = new StringBuilder();
 									sb.append( "original value: " );
@@ -159,7 +159,7 @@ public class InsertStatementEdit extends org.lgna.croquet.Edit< org.lgna.croquet
 									sb.append( "; changed to: " );
 									sb.append( replacementValue );
 									sb.append( "." );
-									rv = org.lgna.croquet.ReplacementAcceptability.createDeviation( org.lgna.croquet.ReplacementAcceptability.DeviationSeverity.POTENTIAL_SOURCE_OF_PROBLEMS, sb.toString() );
+									rv = org.lgna.croquet.edits.ReplacementAcceptability.createDeviation( org.lgna.croquet.edits.ReplacementAcceptability.DeviationSeverity.POTENTIAL_SOURCE_OF_PROBLEMS, sb.toString() );
 								}
 							}
 						}
@@ -167,10 +167,10 @@ public class InsertStatementEdit extends org.lgna.croquet.Edit< org.lgna.croquet
 				}
 				return rv;
 			} else {
-				return org.lgna.croquet.ReplacementAcceptability.createRejection( "expressions count not the same" ); 
+				return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "expressions count not the same" ); 
 			}
 		} else {
-			return org.lgna.croquet.ReplacementAcceptability.createRejection( "replacement is not an instance of InsertStatementEdit" ); 
+			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of InsertStatementEdit" ); 
 		}
 	}
 	
@@ -207,7 +207,7 @@ public class InsertStatementEdit extends org.lgna.croquet.Edit< org.lgna.croquet
 		}
 	}
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.Edit< ? > edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		InsertStatementEdit replacementEdit = (InsertStatementEdit)edit;
 		retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );

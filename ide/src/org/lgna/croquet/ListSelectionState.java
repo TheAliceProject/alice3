@@ -42,6 +42,10 @@
  */
 package org.lgna.croquet;
 
+import org.lgna.croquet.components.TrackableShape;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.resolvers.CodableResolver;
+
 /*package-private*/ class ComboBoxModel<E> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	private final ListSelectionState< E > listSelectionState;
 	public ComboBoxModel( ListSelectionState< E > listSelectionState ) {
@@ -171,7 +175,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ListSelectionState<E> extends State< E > implements Iterable< E >/*, java.util.List<E>*/{
-	private final Codec< E > codec;
+	private final ItemCodec< E > codec;
 	private final ComboBoxModel< E > comboBoxModel = new ComboBoxModel< E >( this );
 	private final ListSelectionModel< E > listSelectionModel = new ListSelectionModel< E >( this );
 	
@@ -271,7 +275,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 //		}
 //	}
 
-	public ListSelectionState( Group group, java.util.UUID id, Codec< E > codec, int selectionIndex ) {
+	public ListSelectionState( Group group, java.util.UUID id, ItemCodec< E > codec, int selectionIndex ) {
 		super( group, id );
 		//assert codec != null;
 		if( codec != null ) {
@@ -282,7 +286,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		this.codec = codec;
 		this.index = selectionIndex;
 	}
-	public Codec< E > getCodec() {
+	public ItemCodec< E > getCodec() {
 		return this.codec;
 	}
 	@Override
@@ -518,7 +522,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		if( edit instanceof org.lgna.croquet.edits.ListSelectionStateEdit ) {
 			org.lgna.croquet.edits.ListSelectionStateEdit< E > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< E >)edit;
 			rv.append( "Select " );
@@ -528,10 +532,10 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		}
 		return rv;
 	}
-	@Override
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
-		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
-	}
+//	@Override
+//	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
+//		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
+//	}
 	public org.lgna.croquet.components.List< E > createList() {
 		return new org.lgna.croquet.components.List< E >( this );
 	}

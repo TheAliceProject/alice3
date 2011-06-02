@@ -43,8 +43,6 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.CascadeMenuItem;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -65,7 +63,7 @@ public abstract class CascadeItem< F, S extends org.lgna.croquet.steps.CascadeIt
 	
 	@Override
 	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-		rv.addCascadeMenuItem( new CascadeMenuItem( this ) );
+		rv.addCascadeMenuItem( new org.lgna.croquet.components.CascadeMenuItem( this ) );
 		return rv;
 	}
 	
@@ -122,7 +120,7 @@ public abstract class CascadeItem< F, S extends org.lgna.croquet.steps.CascadeIt
 	}
 
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Select <strong>" );
 		rv.append( this.getTutorialItemText() );
 		rv.append( "</strong>." );

@@ -47,7 +47,7 @@ package org.lgna.croquet.steps;
  */
 public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel > extends Step< M > {
 	private final TransactionHistory transactionHistory;
-	private org.lgna.croquet.Edit<M> edit;
+	private org.lgna.croquet.edits.Edit<M> edit;
 	private boolean isSuccessfullyCompleted;
 	private boolean isPending = true;
 	public CompletionStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger, TransactionHistory transactionHistory ) {
@@ -112,15 +112,15 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 		return this.isPending() && this.isSuccessfullyCompleted() == false;
 	}
 
-	public org.lgna.croquet.Edit< ? > getEdit() {
+	public org.lgna.croquet.edits.Edit< ? > getEdit() {
 		return this.edit;
 	}
-	/*package-private*/ void setEdit( org.lgna.croquet.Edit<M> edit ) {
+	/*package-private*/ void setEdit( org.lgna.croquet.edits.Edit<M> edit ) {
 		this.isSuccessfullyCompleted = true;
 		this.edit = edit;
 		this.isPending = false;
 	}
-	public void commitAndInvokeDo( org.lgna.croquet.Edit edit ) {
+	public void commitAndInvokeDo( org.lgna.croquet.edits.Edit edit ) {
 		this.getParent().reify();
 		this.setEdit( edit );
 		edit.doOrRedo( true );

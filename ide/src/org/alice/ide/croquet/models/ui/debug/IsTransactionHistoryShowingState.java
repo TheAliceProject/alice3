@@ -284,9 +284,9 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 			public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
 				this.reload();
 			}
-			public void editCommitting( org.lgna.croquet.Edit< ? > edit ) {
+			public void editCommitting( org.lgna.croquet.edits.Edit< ? > edit ) {
 			}
-			public void editCommitted( org.lgna.croquet.Edit< ? > edit ) {
+			public void editCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
 				tree.repaint();
 			}
 			public void finishing(org.lgna.croquet.steps.Transaction transaction) {

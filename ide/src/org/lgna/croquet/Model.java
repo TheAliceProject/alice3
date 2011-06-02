@@ -42,6 +42,11 @@
  */
 package org.lgna.croquet;
 
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.resolvers.CodableResolver;
+import org.lgna.croquet.resolvers.RuntimeResolver;
+import org.lgna.croquet.resolvers.SingletonResolver;
+
 /**
  * @author Dennis Cosgrove
  */

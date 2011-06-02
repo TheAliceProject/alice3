@@ -48,17 +48,17 @@ package org.lgna.croquet;
  */
 public class DefaultListSelectionState< E > extends ListSelectionState< E > {
 	private final java.util.concurrent.CopyOnWriteArrayList< E > data = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public DefaultListSelectionState( Group group, java.util.UUID id, Codec< E > codec, int selectionIndex ) {
+	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec< E > codec, int selectionIndex ) {
 		super( group, id, codec, selectionIndex );
 	}
-	public DefaultListSelectionState( Group group, java.util.UUID id, Codec< E > codec ) {
+	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec< E > codec ) {
 		this( group, id, codec, -1 );
 	}
-	public DefaultListSelectionState( Group group, java.util.UUID id, Codec< E > codec, int selectionIndex, java.util.Collection<E> data ) {
+	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec< E > codec, int selectionIndex, java.util.Collection<E> data ) {
 		this( group, id, codec, selectionIndex );
 		this.data.addAll( data );
 	}
-	public DefaultListSelectionState( Group group, java.util.UUID id, Codec< E > codec, int selectionIndex, E... data ) {
+	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec< E > codec, int selectionIndex, E... data ) {
 		this( group, id, codec, selectionIndex, java.util.Arrays.asList( data ) );
 	}
 

@@ -50,7 +50,7 @@ public class CascadeFillInCompletionStep<F,B> extends CompletionStep< org.lgna.c
 	public static < F, B > CascadeFillInCompletionStep< F, B > createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadePopupCompletionModel< F > model, org.lgna.croquet.Trigger trigger, org.lgna.croquet.CascadeFillIn< F, B > fillIn ) {
 		return new CascadeFillInCompletionStep< F, B >( parent, model, trigger, fillIn );
 	}
-	private final org.lgna.croquet.CodableResolver< org.lgna.croquet.CascadeFillIn< F, B > > fillInResolver; 
+	private final org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.CascadeFillIn< F, B > > fillInResolver; 
 	private CascadeFillInCompletionStep( Transaction parent, org.lgna.croquet.CascadePopupCompletionModel< F > model, org.lgna.croquet.Trigger trigger, org.lgna.croquet.CascadeFillIn< F, B > fillIn ) {
 		super( parent, model, trigger, null );
 		this.fillInResolver = fillIn.getCodableResolver();
@@ -74,8 +74,8 @@ public class CascadeFillInCompletionStep<F,B> extends CompletionStep< org.lgna.c
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
-		if( this.fillInResolver instanceof org.lgna.croquet.RetargetableResolver<?> ) {
-			org.lgna.croquet.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.RetargetableResolver<?>)this.fillInResolver;
+		if( this.fillInResolver instanceof org.lgna.croquet.resolvers.RetargetableResolver<?> ) {
+			org.lgna.croquet.resolvers.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.resolvers.RetargetableResolver<?>)this.fillInResolver;
 			retargetableResolver.retarget( retargeter );
 		}
 	}

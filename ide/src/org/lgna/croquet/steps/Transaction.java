@@ -316,7 +316,7 @@ public class Transaction implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndD
 		this.pendingSteps.pendMenuSelection( changeEvent, new MenuSelection( menuElements, i0 ) );
 	}
 	
-	public org.lgna.croquet.Edit< ? > getEdit() {
+	public org.lgna.croquet.edits.Edit< ? > getEdit() {
 		if( this.completionStep != null ) {
 			return this.completionStep.getEdit();
 		} else {

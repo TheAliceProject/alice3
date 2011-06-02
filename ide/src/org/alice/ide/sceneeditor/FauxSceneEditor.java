@@ -52,10 +52,10 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
  * @author Dennis Cosgrove
  */
 public class FauxSceneEditor extends AbstractSceneEditor {
-	public <R extends org.lgna.croquet.DropReceptor> org.lgna.croquet.CodableResolver< org.lgna.croquet.DropReceptor > getCodableResolver() {
+	public <R extends org.lgna.croquet.DropReceptor> org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.DropReceptor > getCodableResolver() {
 		return null;
 	}
-	public org.lgna.croquet.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		return null;
 	}
 	@Override

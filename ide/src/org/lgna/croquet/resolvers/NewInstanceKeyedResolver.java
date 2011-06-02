@@ -40,50 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.resolvers;
 
-import edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-/*public*/ abstract class FauxPopupMenuOperation extends ActionOperation {
-	public FauxPopupMenuOperation( Group group, java.util.UUID id ) {
-		super( group, id );
+public abstract class NewInstanceKeyedResolver<T> extends KeyedResolver< T > {
+	private static <T> String buildExceptionMessage( Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "\n" );
+		sb.append( instanceCls );
+		sb.append( "\n" );
+		sb.append( java.util.Arrays.toString( parameterTypes ) );
+		sb.append( "\n" );
+		sb.append( java.util.Arrays.toString( arguments ) );
+		sb.append( "\n" );
+		return sb.toString();
 	}
-	private static class ArrowIcon extends AbstractArrowIcon {
-		public ArrowIcon( int size ) {
-			super( size );
-		}
-		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-			java.awt.geom.GeneralPath path = this.createPath(x, y, Heading.SOUTH);
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			java.awt.Paint fillPaint;
-			if( button.getModel().isPressed() ) {
-				fillPaint = java.awt.Color.BLACK;
-			} else {
-				if( button.getModel().isRollover() ) {
-					fillPaint = java.awt.Color.GRAY;
-				} else {
-					fillPaint = java.awt.Color.DARK_GRAY;
-				}
-			}
-			g2.setPaint( fillPaint );
-			g2.fill( path );
-		}
+	public NewInstanceKeyedResolver( T instance ) {
+		super( instance );
 	}
-	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 14 ); 
+	public NewInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
-	public org.lgna.croquet.components.Button createButton() {
-		if( this.getSmallIcon() != null ) {
-			//pass
-		} else {
-			this.setSmallIcon( ARROW_ICON );
+	protected T resolve(Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments) {
+		try {
+			java.lang.reflect.Constructor< T > cstrctr = instanceCls.getConstructor( parameterTypes );
+			return cstrctr.newInstance( arguments );
+		} catch( InstantiationException ie ) {
+			throw new RuntimeException( buildExceptionMessage( instanceCls, parameterTypes, arguments ), ie );
+		} catch( IllegalAccessException iae ) {
+			throw new RuntimeException( buildExceptionMessage( instanceCls, parameterTypes, arguments ), iae );
+		} catch( NoSuchMethodException nsme ) {
+			throw new RuntimeException( buildExceptionMessage( instanceCls, parameterTypes, arguments ), nsme );
+		} catch( java.lang.reflect.InvocationTargetException ite ) {
+			throw new RuntimeException( buildExceptionMessage( instanceCls, parameterTypes, arguments ), ite );
+		} catch( RuntimeException re ) {
+			System.err.println( buildExceptionMessage( instanceCls, parameterTypes, arguments ) );
+			throw re;
 		}
-		org.lgna.croquet.components.Button rv = super.createButton();
-		rv.getAwtComponent().setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
-		return rv;
 	}
 }

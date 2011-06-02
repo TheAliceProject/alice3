@@ -59,12 +59,12 @@ public class TransactionChapter extends Chapter {
 	}
 	@Override
 	public void complete( org.lgna.croquet.Group completionGroup ) {
-		final org.lgna.croquet.Edit<?> originalEdit = this.transaction.getEdit();
+		final org.lgna.croquet.edits.Edit<?> originalEdit = this.transaction.getEdit();
 		if( originalEdit != null ) {
 			//todo
 			org.lgna.croquet.steps.CompletionStep< ? > step = null;
 			org.lgna.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getRetargeter();
-			org.lgna.croquet.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( step, originalEdit, retargeter );
+			org.lgna.croquet.edits.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( step, originalEdit, retargeter );
 			if( replacementEdit != null ) {
 				//todo
 				org.lgna.cheshire.stencil.StencilsPresentation.getInstance().retargetAll( retargeter );
@@ -91,7 +91,7 @@ public class TransactionChapter extends Chapter {
 		org.lgna.croquet.steps.CompletionStep< ? > completionStep = transaction.getCompletionStep();
 		org.lgna.croquet.CompletionModel model = completionStep.getModel();
 		if( model != null ) {
-			org.lgna.croquet.Edit< ? > edit = completionStep.getEdit();
+			org.lgna.croquet.edits.Edit< ? > edit = completionStep.getEdit();
 			return model.isAlreadyInState( edit );
 		} else {
 			return false;

@@ -44,7 +44,6 @@
 package org.lgna.croquet.components;
 
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.TrackableShape;
 
 /**
  * @author Dennis Cosgrove

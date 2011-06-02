@@ -40,7 +40,8 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.resolvers;
+
 
 /**
  * @author Dennis Cosgrove

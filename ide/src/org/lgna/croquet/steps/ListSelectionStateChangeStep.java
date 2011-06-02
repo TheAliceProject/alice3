@@ -56,7 +56,7 @@ public class ListSelectionStateChangeStep<E> extends StateChangeStep< org.lgna.c
 		super( binaryDecoder );
 	}
 	public E getItem() {
-		org.lgna.croquet.Edit< ? > edit = this.getEdit();
+		org.lgna.croquet.edits.Edit< ? > edit = this.getEdit();
 		if( edit instanceof org.lgna.croquet.edits.ListSelectionStateEdit ) {
 			org.lgna.croquet.edits.ListSelectionStateEdit<E> listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit<E>)edit;
 			return listSelectionStateEdit.getNextValue();

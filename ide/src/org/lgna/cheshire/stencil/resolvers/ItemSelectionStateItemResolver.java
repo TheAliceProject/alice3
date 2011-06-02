@@ -42,22 +42,22 @@
  */
 package org.lgna.cheshire.stencil.resolvers;
 
-import org.lgna.croquet.RuntimeResolver;
+import org.lgna.croquet.resolvers.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ItemSelectionStateItemResolver<E> implements RuntimeResolver<org.lgna.croquet.TrackableShape> {
+public class ItemSelectionStateItemResolver<E> implements RuntimeResolver<org.lgna.croquet.components.TrackableShape> {
 	private final org.lgna.croquet.steps.ListSelectionStateChangeStep< E > step;
 	public ItemSelectionStateItemResolver( org.lgna.croquet.steps.ListSelectionStateChangeStep< E > step ) {
 		this.step = step;
 	}
 
-	public org.lgna.croquet.TrackableShape getResolved() {
+	public org.lgna.croquet.components.TrackableShape getResolved() {
 		org.lgna.croquet.ListSelectionState<E> model = this.step.getModel();
 		if (model != null) {
 			E item = this.step.getItem();
-			org.lgna.croquet.TrackableShape rv = model.getTrackableShapeFor(item);
+			org.lgna.croquet.components.TrackableShape rv = model.getTrackableShapeFor(item);
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "ItemSelectionStateItemResolver", rv );
 			return rv;
 		} else {

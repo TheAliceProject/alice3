@@ -45,6 +45,7 @@ package org.lgna.croquet;
 import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.JComponent;
 import org.lgna.croquet.edits.ListSelectionStateEdit;
+import org.lgna.croquet.resolvers.CodableResolver;
 
 /**
  * @author Dennis Cosgrove
@@ -101,7 +102,7 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 		return new ComboBox< E >( this.getListSelectionState() );
 	}
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		if( edit != null ) {
 			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
 			rv.append( "First press on " );

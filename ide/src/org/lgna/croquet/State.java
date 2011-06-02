@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet;
 
+import org.lgna.croquet.edits.Edit;
+
 /**
  * @author Dennis Cosgrove
  */

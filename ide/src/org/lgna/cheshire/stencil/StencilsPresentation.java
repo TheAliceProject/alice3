@@ -211,7 +211,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			org.lgna.croquet.UserInformation userInformation, 
 			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
 			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
-			org.lgna.croquet.MigrationManager migrationManager,
+			org.lgna.croquet.migration.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
 			org.lgna.croquet.Group[] groupsTrackedForRandomAccess, 

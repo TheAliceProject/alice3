@@ -45,7 +45,7 @@ package org.alice.ide.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public enum StringCodec implements org.lgna.croquet.Codec< String > {
+public enum StringCodec implements org.lgna.croquet.ItemCodec< String > {
 	SINGLETON;
 	public Class< String > getValueClass() {
 		return String.class;

@@ -89,7 +89,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 //	}
 
 	@Override
-	public org.lgna.croquet.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.Retargeter retargeter ) {
+	public org.lgna.croquet.edits.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.Retargeter retargeter ) {
 		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit originalDeclareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
 		//todo

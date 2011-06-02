@@ -40,76 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.resolvers;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class CompositeEdit extends Edit {
-	private final Edit<?>[] edits;
-	private final boolean isDoToBeIgnored;
-	private final String presentation;
-	public CompositeEdit( org.lgna.croquet.steps.CompletionStep completionStep, Edit<?>[] edits, boolean isDoToBeIgnored, String presentation ) {
-		super( completionStep );
-		this.edits = edits;
-		this.isDoToBeIgnored = isDoToBeIgnored;
-		this.presentation = presentation;
+public final class SingletonResolver<T> implements CodableResolver< T > {
+	private final T instance;
+	public SingletonResolver( T instance ) {
+		this.instance = instance;
 	}
-	public CompositeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.edits = binaryDecoder.decodeBinaryEncodableAndDecodableArray( Edit.class );
-		this.isDoToBeIgnored = binaryDecoder.decodeBoolean();
-		this.presentation = binaryDecoder.decodeString();
+	public SingletonResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		String clsName = binaryDecoder.decodeString();
+		try {
+			Class<T> cls = (Class<T>)Class.forName( clsName );
+			try {
+				java.lang.reflect.Method mthd = cls.getMethod( "getInstance" );
+				this.instance = (T)mthd.invoke( null );
+			} catch( IllegalAccessException iae ) {
+				throw new RuntimeException( clsName, iae );
+			} catch( IllegalArgumentException iae ) {
+				throw new RuntimeException( clsName, iae );
+			} catch( NoSuchMethodException nsme ) {
+				throw new RuntimeException( clsName, nsme );
+			} catch( java.lang.reflect.InvocationTargetException ite ) {
+				throw new RuntimeException( clsName, ite );
+			}
+		} catch( ClassNotFoundException cnfe ) {
+			throw new RuntimeException( cnfe );
+		}
 	}
-	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.edits );
-		binaryEncoder.encode( this.isDoToBeIgnored );
-		binaryEncoder.encode( this.presentation );
+		Class<T> cls = (Class<T>)this.instance.getClass();
+		String clsName = cls.getName();
+		binaryEncoder.encode( clsName );
 	}
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		if( isDo && this.isDoToBeIgnored ) {
-			//pass
-		} else {
-			for( Edit<?> edit : this.edits ) {
-				edit.doOrRedo( isDo );
-			}
-		}
-	}
-	@Override
-	protected final void undoInternal() {
-		final int N = this.edits.length;
-		for( int i=0; i<N; i++ ) {
-			this.edits[ N-1-i ].undo();
-		}
-	}
-	@Override
-	public boolean canRedo() {
-		for( Edit<?> edit : this.edits ) {
-			if( edit.canRedo() ) {
-				//pass
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
-	@Override
-	public boolean canUndo() {
-		for( Edit<?> edit : this.edits ) {
-			if( edit.canUndo() ) {
-				//pass
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
-	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( this.presentation );
-		return rv;
+	public T getResolved() {
+		return this.instance;
 	}
 }

@@ -46,7 +46,7 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractItemSelectionOperation<E> extends org.lgna.croquet.DefaultListSelectionState<E> {
-	public AbstractItemSelectionOperation( java.util.UUID individualId, org.lgna.croquet.Codec< E > codec, int selectedIndex, E... elements ) {
+	public AbstractItemSelectionOperation( java.util.UUID individualId, org.lgna.croquet.ItemCodec< E > codec, int selectedIndex, E... elements ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, individualId, codec, selectedIndex, elements );
 	}
 	protected org.alice.ide.IDE getIDE() {

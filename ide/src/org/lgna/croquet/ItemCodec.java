@@ -40,23 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet;
-
-import org.lgna.croquet.components.ScreenElement;
-import org.lgna.croquet.components.ScrollPane;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface TrackableShape {
-	public boolean isInView();
-	public ScrollPane getScrollPaneAncestor();
-	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets );
-	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets );
-	
-	public void addComponentListener( java.awt.event.ComponentListener listener );
-	public void removeComponentListener( java.awt.event.ComponentListener listener );
-	public void addHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener );
-	public void removeHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener );
+public interface ItemCodec<T> {
+	public Class<T> getValueClass();
+	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value );
+	public StringBuilder appendRepresentation( StringBuilder rv, T value, java.util.Locale locale );
 }

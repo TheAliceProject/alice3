@@ -51,6 +51,6 @@ public interface ResponsibleModel {
 	public void doOrRedoInternal( boolean isDo );
 	public void undoInternal();
 	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale );
-	public org.lgna.croquet.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation );
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.Edit< ? > edit );	
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation );
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit );	
 }

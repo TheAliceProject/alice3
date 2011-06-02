@@ -44,6 +44,7 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.components.CascadeInputDialogPanel;
+import org.lgna.croquet.resolvers.CodableResolver;
 
 /**
  * @author Dennis Cosgrove

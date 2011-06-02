@@ -63,7 +63,7 @@ public class TutorialFilterer implements org.lgna.cheshire.Filterer {
 //							prepStepListIterator.remove();
 //						}
 //					}
-					org.lgna.croquet.Edit< ? > edit = transaction.getEdit();
+					org.lgna.croquet.edits.Edit< ? > edit = transaction.getEdit();
 					if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
 						org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
 						edu.cmu.cs.dennisc.alice.ast.Statement statement = insertStatementEdit.getStatement();

@@ -57,7 +57,7 @@ public class CancelCompletionStep extends CompletionStep {
 		super( binaryDecoder );
 	}
 	@Override
-	public String getTutorialNoteText( org.lgna.croquet.Edit edit, org.lgna.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.edits.Edit edit, org.lgna.croquet.UserInformation userInformation ) {
 		return "Cancel";
 	}
 	@Override

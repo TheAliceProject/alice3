@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PredeterminedTabCodec< T extends PredeterminedTab > implements Codec< T > {
+public abstract class PredeterminedTabCodec< T extends PredeterminedTab > implements ItemCodec< T > {
 	private final Class<T> cls;
 	public PredeterminedTabCodec(Class<T> cls) {
 		this.cls = cls;

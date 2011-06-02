@@ -17,7 +17,7 @@ public final class CascadePopupCompletionModel<B> extends CompletionModel {
 		throw new RuntimeException();
 	}
 	@Override
-	public boolean isAlreadyInState( org.lgna.croquet.Edit< ? > edit ) {
+	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
 		return false;
 	}
 }

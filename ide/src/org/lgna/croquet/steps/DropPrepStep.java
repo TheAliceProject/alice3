@@ -50,7 +50,7 @@ public class DropPrepStep extends PrepStep< org.lgna.croquet.PrepModel > impleme
 	public static DropPrepStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.PrepModel prepModel, org.lgna.croquet.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		return new DropPrepStep( parent, prepModel, trigger, dropReceptor, dropSite );
 	}
-	private final org.lgna.croquet.CodableResolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
+	private final org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
 	private org.lgna.croquet.DropSite dropSite;
 	private DropPrepStep( Transaction parent, org.lgna.croquet.PrepModel prepModel, org.lgna.croquet.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		super( parent, prepModel, trigger );
@@ -76,14 +76,14 @@ public class DropPrepStep extends PrepStep< org.lgna.croquet.PrepModel > impleme
 		return this.dropSite;
 	}
 	@Override
-	public String getTutorialNoteText( org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		return this.getDropReceptor().getTutorialNoteText( this.getModel(), edit, userInformation );
 	}
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
-		if( this.dropReceptorResolver instanceof org.lgna.croquet.RetargetableResolver<?> ) {
-			org.lgna.croquet.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.RetargetableResolver<?>)this.dropReceptorResolver;
+		if( this.dropReceptorResolver instanceof org.lgna.croquet.resolvers.RetargetableResolver<?> ) {
+			org.lgna.croquet.resolvers.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.resolvers.RetargetableResolver<?>)this.dropReceptorResolver;
 			retargetableResolver.retarget( retargeter );
 		}
 		if( this.dropSite instanceof org.lgna.croquet.RetargetableDropSite ) {

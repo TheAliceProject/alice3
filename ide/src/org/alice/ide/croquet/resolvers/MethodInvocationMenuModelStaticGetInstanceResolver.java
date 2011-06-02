@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInvocationMenuModelStaticGetInstanceResolver extends org.lgna.croquet.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation > implements org.lgna.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation > {
+public class MethodInvocationMenuModelStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation > implements org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation > {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class };
 	public MethodInvocationMenuModelStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation instance ) {
 		super( instance );

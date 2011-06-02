@@ -374,10 +374,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 	}
 	
-	public org.lgna.croquet.CodableResolver< MoveAndTurnSceneEditor > getCodableResolver() {
-		return new org.lgna.croquet.SingletonResolver< MoveAndTurnSceneEditor >( this );
+	public org.lgna.croquet.resolvers.CodableResolver< MoveAndTurnSceneEditor > getCodableResolver() {
+		return new org.lgna.croquet.resolvers.SingletonResolver< MoveAndTurnSceneEditor >( this );
 	}
-	public org.lgna.croquet.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		return this;
 	}
 

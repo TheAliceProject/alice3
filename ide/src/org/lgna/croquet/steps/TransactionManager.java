@@ -42,22 +42,7 @@
  */
 package org.lgna.croquet.steps;
 
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.BoundedRangeIntegerState;
-import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.Manager;
-import org.lgna.croquet.MenuBarComposite;
-import org.lgna.croquet.MenuItemPrepModel;
-import org.lgna.croquet.StringState;
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.Menu;
-import org.lgna.croquet.components.MenuBar;
-import org.lgna.croquet.components.MenuItem;
-import org.lgna.croquet.components.MenuTextSeparator;
-import org.lgna.croquet.components.PopupMenu;
-import org.lgna.croquet.components.ViewController;
-
-import edu.cmu.cs.dennisc.croquet.*;
+import org.lgna.croquet.*;
 
 /**
  * @author Dennis Cosgrove
@@ -66,8 +51,8 @@ public class TransactionManager {
 	public static interface Observer {
 		public void addingStep( Step<?> step );
 		public void addedStep( Step<?> step );
-		public void editCommitting( org.lgna.croquet.Edit<?> edit );
-		public void editCommitted( org.lgna.croquet.Edit<?> edit );
+		public void editCommitting( org.lgna.croquet.edits.Edit<?> edit );
+		public void editCommitted( org.lgna.croquet.edits.Edit<?> edit );
 		public void finishing( Transaction transaction );
 		public void finished( Transaction transaction );
 		public void dropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite );
@@ -124,8 +109,8 @@ public class TransactionManager {
 	
 	private static boolean isCroquetMenuSelection( javax.swing.MenuElement[] menuElements ) {
 		for( javax.swing.MenuElement menuElement : menuElements ) {
-			Component< ? > component = Component.lookup( menuElement.getComponent() );
-			if( component instanceof MenuBar || component instanceof MenuItem || component instanceof Menu || component instanceof PopupMenu || component instanceof MenuTextSeparator ) {
+			org.lgna.croquet.components.Component< ? > component = org.lgna.croquet.components.Component.lookup( menuElement.getComponent() );
+			if( component instanceof org.lgna.croquet.components.MenuBar || component instanceof org.lgna.croquet.components.MenuItem || component instanceof org.lgna.croquet.components.Menu || component instanceof org.lgna.croquet.components.PopupMenu || component instanceof org.lgna.croquet.components.MenuTextSeparator ) {
 				return true;
 			}
 		}
@@ -141,16 +126,16 @@ public class TransactionManager {
 		}
 		return null;
 	}
-	private static MenuBar getMenuBarOrigin( javax.swing.MenuElement[] menuElements ) {
+	private static org.lgna.croquet.components.MenuBar getMenuBarOrigin( javax.swing.MenuElement[] menuElements ) {
 		javax.swing.JMenuBar jMenuBar = getJMenuBarOrigin( menuElements );
 		if( jMenuBar != null ) {
-			return (MenuBar)Component.lookup( jMenuBar );
+			return (org.lgna.croquet.components.MenuBar)org.lgna.croquet.components.Component.lookup( jMenuBar );
 		} else {
 			return null;
 		}
 	}
 	private static MenuBarComposite getMenuBarModelOrigin( javax.swing.MenuElement[] menuElements ) {
-		MenuBar menuBar = getMenuBarOrigin( menuElements );
+		org.lgna.croquet.components.MenuBar menuBar = getMenuBarOrigin( menuElements );
 		if( menuBar != null ) {
 			return menuBar.getComposite();
 		} else {
@@ -170,7 +155,7 @@ public class TransactionManager {
 			}
 			edu.cmu.cs.dennisc.print.PrintUtilities.println();
 			java.util.List< MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			MenuBar menuBar = getMenuBarOrigin( menuElements );
+			org.lgna.croquet.components.MenuBar menuBar = getMenuBarOrigin( menuElements );
 			int i0;
 			if( menuBar != null ) {
 				javax.swing.JPopupMenu jPreviousPopupMenu;
@@ -186,7 +171,7 @@ public class TransactionManager {
 					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
 					
 					javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElements[ 1 ];
-					Menu menu = (Menu)Component.lookup( jMenu );
+					org.lgna.croquet.components.Menu menu = (org.lgna.croquet.components.Menu)org.lgna.croquet.components.Component.lookup( jMenu );
 					assert menu != null;
 
 					MenuItemPrepModel menuModel = menu.getModel();
@@ -387,12 +372,12 @@ public class TransactionManager {
 			observer.dialogOpened( dialog );
 		}
 	}
-	private static void fireEditCommitting( org.lgna.croquet.Edit< ? > edit ) {
+	private static void fireEditCommitting( org.lgna.croquet.edits.Edit< ? > edit ) {
 		for( Observer observer : observers ) {
 			observer.editCommitting( edit );
 		}
 	}
-	private static void fireEditCommitted( org.lgna.croquet.Edit< ? > edit ) {
+	private static void fireEditCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
 		for( Observer observer : observers ) {
 			observer.editCommitted( edit );
 		}

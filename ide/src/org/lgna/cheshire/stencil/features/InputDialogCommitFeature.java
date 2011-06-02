@@ -51,7 +51,7 @@ import org.lgna.stencil.Feature.ConnectionPreference;
  * @author Dennis Cosgrove
  */
 public class InputDialogCommitFeature extends Feature {
-	public InputDialogCommitFeature(org.lgna.croquet.RuntimeResolver<? extends org.lgna.croquet.TrackableShape> trackableShapeResolver) {
+	public InputDialogCommitFeature(org.lgna.croquet.resolvers.RuntimeResolver<? extends org.lgna.croquet.components.TrackableShape> trackableShapeResolver) {
 		super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
 	}
 	@Override

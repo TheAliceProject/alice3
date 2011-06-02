@@ -49,7 +49,7 @@ public class DropCompletionStep extends CompletionStep< org.lgna.croquet.Complet
 	public static DropCompletionStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.CompletionModel model, org.lgna.croquet.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		return new DropCompletionStep( parent, model, trigger, dropReceptor, dropSite );
 	}
-	private final org.lgna.croquet.CodableResolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
+	private final org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
 	private org.lgna.croquet.DropSite dropSite;
 	private DropCompletionStep( Transaction parent, org.lgna.croquet.CompletionModel model, org.lgna.croquet.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		super( parent, model, trigger, null );
@@ -74,7 +74,7 @@ public class DropCompletionStep extends CompletionStep< org.lgna.croquet.Complet
 		return this.dropSite;
 	}
 	@Override
-	public String getTutorialNoteText( org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		for( PrepStep< ? > prepStep : this.getParent().getPrepSteps() ) {
 			if( prepStep instanceof DropPrepStep ) {
 				return this.getModel().getTutorialNoteText( null, edit, userInformation );
@@ -85,8 +85,8 @@ public class DropCompletionStep extends CompletionStep< org.lgna.croquet.Complet
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
-		if( this.dropReceptorResolver instanceof org.lgna.croquet.RetargetableResolver<?> ) {
-			org.lgna.croquet.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.RetargetableResolver<?>)this.dropReceptorResolver;
+		if( this.dropReceptorResolver instanceof org.lgna.croquet.resolvers.RetargetableResolver<?> ) {
+			org.lgna.croquet.resolvers.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.resolvers.RetargetableResolver<?>)this.dropReceptorResolver;
 			retargetableResolver.retarget( retargeter );
 		}
 		if( this.dropSite instanceof org.lgna.croquet.RetargetableDropSite ) {

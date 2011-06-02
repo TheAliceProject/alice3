@@ -64,7 +64,7 @@ public class StatementClassTemplateDragModel extends VoidTemplateDragModel {
 		this.cls = cls;
 	}
 	@Override
-	protected org.lgna.croquet.CodableResolver< StatementClassTemplateDragModel > createCodableResolver() {
+	protected org.lgna.croquet.resolvers.CodableResolver< StatementClassTemplateDragModel > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< StatementClassTemplateDragModel >( this, this.cls );
 	}
 	@Override

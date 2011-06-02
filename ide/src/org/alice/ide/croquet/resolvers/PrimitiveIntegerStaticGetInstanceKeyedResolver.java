@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class PrimitiveIntegerStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.StaticGetInstanceKeyedResolver<T> {
+public class PrimitiveIntegerStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<T> {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { Integer.TYPE };
 	private int value;
 	public PrimitiveIntegerStaticGetInstanceKeyedResolver( T instance, int value ) {

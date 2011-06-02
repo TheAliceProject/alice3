@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class MoveStatementActionOperationNewInstanceResolver extends org.lgna.croquet.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.MoveStatementActionOperation > implements org.lgna.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.MoveStatementActionOperation > {
+public class MoveStatementActionOperationNewInstanceResolver extends org.lgna.croquet.resolvers.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.MoveStatementActionOperation > implements org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.croquet.models.ast.MoveStatementActionOperation > {
 	public MoveStatementActionOperationNewInstanceResolver( org.alice.ide.croquet.models.ast.MoveStatementActionOperation instance ) {
 		super( instance );
 	}

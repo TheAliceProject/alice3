@@ -50,7 +50,7 @@ public class StandardPopupOperationPrepStep extends PrepStep {
 	public static StandardPopupOperationPrepStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.StandardPopupPrepModel model ) {
 		return new StandardPopupOperationPrepStep( parent, model );
 	}
-	private final org.lgna.croquet.CodableResolver< org.lgna.croquet.StandardPopupPrepModel > standardPopupOperationResolver; 
+	private final org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.StandardPopupPrepModel > standardPopupOperationResolver; 
 	private StandardPopupOperationPrepStep( Transaction parent, org.lgna.croquet.StandardPopupPrepModel standardPopupOperation ) {
 		super( parent, null, null );
 		this.standardPopupOperationResolver = standardPopupOperation.getCodableResolver();

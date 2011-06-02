@@ -42,6 +42,10 @@
  */
 package org.lgna.croquet;
 
+import org.lgna.croquet.components.TrackableShape;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.resolvers.CodableResolver;
+
 /**
  * @author Dennis Cosgrove
  */

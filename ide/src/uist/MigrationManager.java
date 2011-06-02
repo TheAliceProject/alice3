@@ -46,7 +46,7 @@ package uist;
 /**
  * @author Dennis Cosgrove
  */
-public enum MigrationManager implements org.lgna.croquet.MigrationManager {
+public enum MigrationManager implements org.lgna.croquet.migration.MigrationManager {
 	INSTANCE;
 	public org.lgna.croquet.steps.Transaction createMigration( org.lgna.croquet.steps.Transaction transaction ) {
 		throw new RuntimeException( transaction.toString() );

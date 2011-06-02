@@ -95,7 +95,7 @@ class LookingGlass extends org.lgna.croquet.components.CornerSpringPanel {
 
 class FieldTreeSelectionState extends org.lgna.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<edu.cmu.cs.dennisc.alice.ast.AbstractField>> {
 	public FieldTreeSelectionState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "89223cff-76d3-4cb7-baf3-3a5e990bcaff" ), new org.lgna.croquet.Codec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<edu.cmu.cs.dennisc.alice.ast.AbstractField> >() {
+		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "89223cff-76d3-4cb7-baf3-3a5e990bcaff" ), new org.lgna.croquet.ItemCodec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<edu.cmu.cs.dennisc.alice.ast.AbstractField> >() {
 			public Class getValueClass() {
 				return edu.cmu.cs.dennisc.javax.swing.models.TreeNode.class;
 			}

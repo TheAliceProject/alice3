@@ -63,12 +63,12 @@ public class PreferenceManager {
 	private static String getKey( org.lgna.croquet.Model model ) {
 		return model.getId().toString();
 	}
-	private static <T> T decode( byte[] data, org.lgna.croquet.Codec< T > codec ) {
+	private static <T> T decode( byte[] data, org.lgna.croquet.ItemCodec< T > codec ) {
 		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
 		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
 		return codec.decodeValue( decoder );
 	}
-	private static <T> byte[] encode( T value, org.lgna.croquet.Codec< T > codec ) throws java.io.IOException {
+	private static <T> byte[] encode( T value, org.lgna.croquet.ItemCodec< T > codec ) throws java.io.IOException {
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
 		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
 		codec.encodeValue( encoder, value );
@@ -76,7 +76,7 @@ public class PreferenceManager {
 		return baos.toByteArray();
 	}
 	private static <E> org.lgna.croquet.ListSelectionState< E > decode( org.lgna.croquet.ListSelectionState< E > rv, java.util.prefs.Preferences userPreferences ) throws java.io.IOException {
-		org.lgna.croquet.Codec< E > codec = rv.getCodec();
+		org.lgna.croquet.ItemCodec< E > codec = rv.getCodec();
 		E defaultValue = rv.getSelectedItem();
 		byte[] defaultEncoding = encode( defaultValue, codec );
 		String key = getKey( rv );
@@ -90,7 +90,7 @@ public class PreferenceManager {
 		return rv;
 	}
 	private static <E> void encode( org.lgna.croquet.ListSelectionState< E > listSelectionState, java.util.prefs.Preferences userPreferences ) throws java.io.IOException {
-		org.lgna.croquet.Codec< E > codec = listSelectionState.getCodec();
+		org.lgna.croquet.ItemCodec< E > codec = listSelectionState.getCodec();
 		E value = listSelectionState.getSelectedItem();
 		byte[] encoding = encode( value, codec );
 		String key = getKey( listSelectionState );

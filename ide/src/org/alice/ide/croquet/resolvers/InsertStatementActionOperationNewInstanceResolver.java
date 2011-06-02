@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementActionOperationNewInstanceResolver extends org.lgna.croquet.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements org.lgna.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
+public class InsertStatementActionOperationNewInstanceResolver extends org.lgna.croquet.resolvers.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
 	public InsertStatementActionOperationNewInstanceResolver( org.alice.ide.croquet.models.ast.InsertStatementActionOperation instance ) {
 		super( instance );
 	}

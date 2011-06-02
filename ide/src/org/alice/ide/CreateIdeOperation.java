@@ -63,7 +63,7 @@ public class CreateIdeOperation extends org.lgna.croquet.ActionOperation {
 		this.cls = cls;
 	}
 	@Override
-	protected org.lgna.croquet.CodableResolver< CreateIdeOperation > createCodableResolver() {
+	protected org.lgna.croquet.resolvers.CodableResolver< CreateIdeOperation > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< CreateIdeOperation >( this, this.cls );
 	}
 	@Override

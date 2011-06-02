@@ -40,14 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.croquet.resolvers;
 
-package org.lgna.croquet;
-
-import org.lgna.croquet.steps.Transaction;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface MigrationManager {
-	public Transaction createMigration( Transaction transaction );
+public abstract class StaticGetInstanceKeyedResolver<T> extends KeyedResolver< T > {
+	public StaticGetInstanceKeyedResolver( T instance ) {
+		super( instance );
+	}
+	public StaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	@Override
+	protected T resolve( Class<T> cls, Class<?>[] parameterTypes, Object[] arguments ) {
+		try {
+			java.lang.reflect.Method mthd = cls.getMethod( "getInstance", parameterTypes );
+			return (T)mthd.invoke( null, arguments );
+		} catch( IllegalAccessException iae ) {
+			throw new RuntimeException( iae );
+		} catch( NoSuchMethodException nsme ) {
+			throw new RuntimeException( nsme );
+		} catch( java.lang.reflect.InvocationTargetException ite ) {
+			throw new RuntimeException( ite );
+		}
+	}
 }

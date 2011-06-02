@@ -64,9 +64,9 @@ public abstract class Presentation {
 		public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.StepAddedEvent( step ) );
 		}
-		public void editCommitting( org.lgna.croquet.Edit< ? > edit ) {
+		public void editCommitting( org.lgna.croquet.edits.Edit< ? > edit ) {
 		}
-		public void editCommitted( org.lgna.croquet.Edit< ? > edit ) {
+		public void editCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
 			Presentation.this.handleEditCommitted( edit );
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.EditCommittedEvent( edit ) );
 		}
@@ -96,7 +96,7 @@ public abstract class Presentation {
 
 	private final edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
-	public Presentation( org.lgna.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, org.lgna.croquet.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public Presentation( org.lgna.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
 		
 		assert instance == null;
 		instance = this;
@@ -116,7 +116,7 @@ public abstract class Presentation {
 		org.lgna.croquet.steps.TransactionManager.addObserver( this.observer );
 	}
 
-	private void handleEditCommitted( org.lgna.croquet.Edit< ? > edit ) {
+	private void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
 		this.book.handleEditCommitted( edit, this.userInformation );
 	}
 	protected abstract void handleTransactionCanceled( org.lgna.croquet.steps.Transaction transaction );

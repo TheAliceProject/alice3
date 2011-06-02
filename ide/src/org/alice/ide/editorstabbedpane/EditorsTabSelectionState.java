@@ -333,8 +333,8 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 	}
 	
 	@Override
-	public org.lgna.croquet.TrackableShape getTrackableShapeFor(CodeComposite codeComposite) {
-		final org.lgna.croquet.TrackableShape rv = super.getTrackableShapeFor(codeComposite);
+	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor(CodeComposite codeComposite) {
+		final org.lgna.croquet.components.TrackableShape rv = super.getTrackableShapeFor(codeComposite);
 		if( IS_RUN_BUTTON_DESIRED ) {
 			if( rv instanceof org.lgna.croquet.components.JComponent<?> ) {
 				org.lgna.croquet.components.JComponent<?> component = (org.lgna.croquet.components.JComponent<?>)rv;
@@ -348,7 +348,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 					}
 					if( button != null ) {
 						final org.lgna.croquet.components.Button accessibleButton = button;
-						return new org.lgna.croquet.TrackableShape() {
+						return new org.lgna.croquet.components.TrackableShape() {
 							public void addComponentListener(java.awt.event.ComponentListener listener) {
 								rv.addComponentListener(listener);
 							}

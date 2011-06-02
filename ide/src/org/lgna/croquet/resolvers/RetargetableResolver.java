@@ -40,42 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+
+package org.lgna.croquet.resolvers;
+
+import org.lgna.croquet.Retargeter;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class SingletonResolver<T> implements CodableResolver< T > {
-	private final T instance;
-	public SingletonResolver( T instance ) {
-		this.instance = instance;
-	}
-	public SingletonResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		String clsName = binaryDecoder.decodeString();
-		try {
-			Class<T> cls = (Class<T>)Class.forName( clsName );
-			try {
-				java.lang.reflect.Method mthd = cls.getMethod( "getInstance" );
-				this.instance = (T)mthd.invoke( null );
-			} catch( IllegalAccessException iae ) {
-				throw new RuntimeException( clsName, iae );
-			} catch( IllegalArgumentException iae ) {
-				throw new RuntimeException( clsName, iae );
-			} catch( NoSuchMethodException nsme ) {
-				throw new RuntimeException( clsName, nsme );
-			} catch( java.lang.reflect.InvocationTargetException ite ) {
-				throw new RuntimeException( clsName, ite );
-			}
-		} catch( ClassNotFoundException cnfe ) {
-			throw new RuntimeException( cnfe );
-		}
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		Class<T> cls = (Class<T>)this.instance.getClass();
-		String clsName = cls.getName();
-		binaryEncoder.encode( clsName );
-	}
-	public T getResolved() {
-		return this.instance;
-	}
+public interface RetargetableResolver<T> extends CodableResolver<T> {
+	public void retarget( Retargeter retargeter );
 }

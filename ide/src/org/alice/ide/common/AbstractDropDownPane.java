@@ -45,40 +45,13 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDropDownPane extends org.lgna.croquet.components.Control {
-	public AbstractDropDownPane() {
+public abstract class AbstractDropDownPane extends org.lgna.croquet.components.PopupContainer {
+	public AbstractDropDownPane( org.lgna.croquet.PopupPrepModel< ? > model ) {
+		super( model );
 		this.setBackgroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 230 ) );
 		this.setForegroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );
 		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
 	}
-
-//	private class MouseAdapter implements java.awt.event.MouseListener {
-//		public void mousePressed( java.awt.event.MouseEvent e ) {
-//			AbstractDropDownPane.this.popupPrepModel.fire( new org.lgna.croquet.triggers.MouseEventTrigger( AbstractDropDownPane.this, e ) );
-//		}
-//		public void mouseReleased( java.awt.event.MouseEvent e ) {
-//		}
-//		public void mouseEntered( java.awt.event.MouseEvent e ) {
-//		}
-//		public void mouseExited( java.awt.event.MouseEvent e ) {
-//		}
-//		public void mouseClicked( java.awt.event.MouseEvent e ) {
-//		}
-//	}
-//	private final MouseAdapter mouseAdapter = new MouseAdapter();
-//	@Override
-//	public void addNotify() {
-//		super.addNotify();
-//		this.addMouseListener( mouseAdapter );
-////		this.addMouseMotionListener( controlAdapter );
-//	}
-//	@Override
-//	public void removeNotify() {
-//		this.removeMouseListener( mouseAdapter );
-////		this.removeMouseMotionListener( controlAdapter );
-//		super.removeNotify();
-//	}
-	
 	private static final int AFFORDANCE_WIDTH = 6;
 	private static final int AFFORDANCE_HALF_HEIGHT = 5;
 	@Override
@@ -149,13 +122,12 @@ public abstract class AbstractDropDownPane extends org.lgna.croquet.components.C
 
 //		float[] xs = { x0, xC, x1 };
 //		float[] ys = { y0, y1, y0 };
-		
+
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		path.moveTo( x0, y0 );
 		path.lineTo( xC, y1 );
 		path.lineTo( x1, y0 );
 		path.closePath();
-		
 		
 		g2.setColor( triangleFill );
 		g2.fill( path );

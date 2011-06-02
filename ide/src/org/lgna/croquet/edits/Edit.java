@@ -40,7 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.edits;
+
+import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.Manager;
+import org.lgna.croquet.Retargeter;
+import org.lgna.croquet.UserInformation;
 
 /**
  * @author Dennis Cosgrove
@@ -122,6 +128,19 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 
 	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, UserInformation userInformation ) {
 		return rv;
+	}
+	public final String getTutorialTransactionTitle( UserInformation userInformation ) {
+		StringBuilder sb = new StringBuilder();
+		this.updateTutorialTransactionTitle( sb, userInformation );
+		if( sb.length() == 0 ) {
+			//			sb.append( "TODO: " );
+			//			sb.append( this );
+			//			sb.append( "; " );
+			//			sb.append( edit );
+			return null;
+		} else {
+			return sb.toString();
+		}
 	}
 
 	protected abstract StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale );

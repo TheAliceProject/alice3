@@ -41,7 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.lgna.croquet.edits;
+
+import org.lgna.croquet.UserInformation;
 
 /**
  * @author Dennis Cosgrove

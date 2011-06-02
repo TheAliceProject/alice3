@@ -40,49 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.lgna.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDropDownListItemExpressionPane extends org.alice.ide.common.AbstractDropDownPane {
-	private int index;
-	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.Expression > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
-		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
-		}
-		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
-			AbstractDropDownListItemExpressionPane.this.refresh();
-		}
-	};
-	public AbstractDropDownListItemExpressionPane( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
-		this.index = index;
-		this.expressionListProperty = expressionListProperty;
-		this.setLeftButtonPressModel( new org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "dec13fc9-4b3f-4e4e-8b1f-21956e789b32" ), this.index, this.expressionListProperty, this.getFillInType() ) );
-	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.GridLayout( 1, 1 );
-	}
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.expressionListProperty.addListPropertyListener( this.listPropertyAdapter );
-		this.refresh();
-	}
-	@Override
-	protected void handleUndisplayable() {
-		this.expressionListProperty.removeListPropertyListener( this.listPropertyAdapter );
-		super.handleUndisplayable();
-	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType();
-	public void refresh() {
-		this.forgetAndRemoveAllComponents();
-		if( this.index < this.expressionListProperty.size() ) {
-			this.addComponent( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPane( this.expressionListProperty.get( this.index ) ) );
-		}
-	}
+public interface CodableResolver<T> extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public T getResolved();
 }
-

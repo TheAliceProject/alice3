@@ -48,7 +48,7 @@ package org.lgna.cheshire;
 public abstract class Chapter {
 	private java.util.UUID id = java.util.UUID.randomUUID();
 	private int[] historyIndices = null;
-	private org.lgna.croquet.ReplacementAcceptability replacementAcceptability;
+	private org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability;
 	public java.util.UUID getId() {
 		return id;
 	}
@@ -58,10 +58,10 @@ public abstract class Chapter {
 	/*package-private*/ void setHistoryIndices( int[] historyIndices ) {
 		this.historyIndices = historyIndices;
 	}
-	public org.lgna.croquet.ReplacementAcceptability getReplacementAcceptability() {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability() {
 		return this.replacementAcceptability;
 	}
-	public void setReplacementAcceptability( org.lgna.croquet.ReplacementAcceptability replacementAcceptability ) {
+	public void setReplacementAcceptability( org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability ) {
 		this.replacementAcceptability = replacementAcceptability;
 	}
 

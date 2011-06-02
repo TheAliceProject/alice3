@@ -81,7 +81,7 @@ public abstract class MenuModel extends MenuItemPrepModel {
 		return this.getName();
 	}
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Select <strong>" + this.getTutorialNoteName() + "</strong>" );
 		return rv;
 	}

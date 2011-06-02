@@ -50,7 +50,7 @@ public abstract class ItemSelectable< J extends javax.swing.JComponent, E > exte
 	public ItemSelectable( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
-	public abstract org.lgna.croquet.TrackableShape getTrackableShapeFor( E item );
+	public abstract org.lgna.croquet.components.TrackableShape getTrackableShapeFor( E item );
 	public boolean isSingleStageSelectable() {
 		return true;
 	}

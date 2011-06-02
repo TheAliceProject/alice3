@@ -40,45 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+
+package org.lgna.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NewInstanceKeyedResolver<T> extends KeyedResolver< T > {
-	private static <T> String buildExceptionMessage( Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "\n" );
-		sb.append( instanceCls );
-		sb.append( "\n" );
-		sb.append( java.util.Arrays.toString( parameterTypes ) );
-		sb.append( "\n" );
-		sb.append( java.util.Arrays.toString( arguments ) );
-		sb.append( "\n" );
-		return sb.toString();
-	}
-	public NewInstanceKeyedResolver( T instance ) {
-		super( instance );
-	}
-	public NewInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	@Override
-	protected T resolve(Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments) {
-		try {
-			java.lang.reflect.Constructor< T > cstrctr = instanceCls.getConstructor( parameterTypes );
-			return cstrctr.newInstance( arguments );
-		} catch( InstantiationException ie ) {
-			throw new RuntimeException( buildExceptionMessage( instanceCls, parameterTypes, arguments ), ie );
-		} catch( IllegalAccessException iae ) {
-			throw new RuntimeException( buildExceptionMessage( instanceCls, parameterTypes, arguments ), iae );
-		} catch( NoSuchMethodException nsme ) {
-			throw new RuntimeException( buildExceptionMessage( instanceCls, parameterTypes, arguments ), nsme );
-		} catch( java.lang.reflect.InvocationTargetException ite ) {
-			throw new RuntimeException( buildExceptionMessage( instanceCls, parameterTypes, arguments ), ite );
-		} catch( RuntimeException re ) {
-			System.err.println( buildExceptionMessage( instanceCls, parameterTypes, arguments ) );
-			throw re;
-		}
-	}
+public interface RuntimeResolver<T> {
+	public T getResolved();
 }

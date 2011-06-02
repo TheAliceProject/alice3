@@ -91,11 +91,11 @@ public final class DependentEdit<M extends org.lgna.croquet.Operation<?>> extend
 		return this.getResponsibleModel().updatePresentation( rv, locale );
 	}
 	@Override
-	public org.lgna.croquet.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
 		return this.getResponsibleModel().getReplacementAcceptability( replacementCandidate, userInformation );
 	}
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.Edit< ? > edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		this.getResponsibleModel().addKeyValuePairs( retargeter, edit );
 	}

@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet;
 
+import org.lgna.croquet.edits.Edit;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -115,11 +117,11 @@ public class BooleanState extends State< Boolean > {
 		return org.lgna.croquet.steps.TransactionManager.commitEdit( this, booleanStateEdit.getNextValue(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 	}
 
-	@Override
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, UserInformation userInformation ) {
-		this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
-		return rv;
-	}
+//	@Override
+//	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, UserInformation userInformation ) {
+//		this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
+//		return rv;
+//	}
 
 	@Override
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {

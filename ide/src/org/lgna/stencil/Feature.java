@@ -79,18 +79,18 @@ public abstract class Feature {
 	}
 	private static final java.awt.Stroke ARROW_STROKE = new java.awt.BasicStroke( 3.0f ); 
 
-	private org.lgna.croquet.RuntimeResolver< ? extends org.lgna.croquet.TrackableShape > trackableShapeResolver;
+	private org.lgna.croquet.resolvers.RuntimeResolver< ? extends org.lgna.croquet.components.TrackableShape > trackableShapeResolver;
 	private ConnectionPreference connectionPreference;
 	private Integer heightConstraint = null;
 	private boolean isEntered = false;
-	public Feature( org.lgna.croquet.RuntimeResolver< ? extends org.lgna.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
+	public Feature( org.lgna.croquet.resolvers.RuntimeResolver< ? extends org.lgna.croquet.components.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
 		//assert trackableShape != null;
 		this.trackableShapeResolver = trackableShapeResolver;
 		this.connectionPreference = connectionPreference;
 	}
 	
 	public boolean isGoodToGo() {
-		org.lgna.croquet.TrackableShape trackableShape = this.trackableShapeResolver.getResolved();
+		org.lgna.croquet.components.TrackableShape trackableShape = this.trackableShapeResolver.getResolved();
 		if( trackableShape != null ) {
 			return true;//trackableShape.isInView();
 		} else {
@@ -100,7 +100,7 @@ public abstract class Feature {
 	protected abstract boolean isPathRenderingDesired();
 	
 	public java.awt.Rectangle getBoundsForRepaint( org.lgna.croquet.components.Component<?> asSeenBy ) {
-		org.lgna.croquet.TrackableShape trackableShape = this.getTrackableShape();
+		org.lgna.croquet.components.TrackableShape trackableShape = this.getTrackableShape();
 		if( trackableShape != null ) {
 			java.awt.Insets boundsInsets = this.getBoundsInsets();
 			if( boundsInsets != null ) {
@@ -147,12 +147,12 @@ public abstract class Feature {
 		}
 	};
 	
-	protected org.lgna.croquet.RuntimeResolver< ? extends org.lgna.croquet.TrackableShape > getTrackableShapeResolver() {
+	protected org.lgna.croquet.resolvers.RuntimeResolver< ? extends org.lgna.croquet.components.TrackableShape > getTrackableShapeResolver() {
 		return this.trackableShapeResolver;
 	}
-	private org.lgna.croquet.TrackableShape trackableShape;
+	private org.lgna.croquet.components.TrackableShape trackableShape;
 	public void updateTrackableShapeIfNecessary() {
-		org.lgna.croquet.TrackableShape nextTrackableShape = this.trackableShapeResolver.getResolved();
+		org.lgna.croquet.components.TrackableShape nextTrackableShape = this.trackableShapeResolver.getResolved();
 		if( nextTrackableShape != this.trackableShape ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "trackableShape change" );
 			if( this.trackableShape != null ) {
@@ -172,7 +172,7 @@ public abstract class Feature {
 	public void unbind() {
 		this.trackableShape = null;
 	}
-	protected org.lgna.croquet.TrackableShape getTrackableShape() {
+	protected org.lgna.croquet.components.TrackableShape getTrackableShape() {
 		return this.trackableShape;
 	}
 	
@@ -234,7 +234,7 @@ public abstract class Feature {
 	
 	/*package-private*/ Connection calculateActualConnection( org.lgna.croquet.components.Component<?> container, org.lgna.croquet.components.JComponent<?> note ) {
 		Connection actualConnection = null;
-		org.lgna.croquet.TrackableShape featureTrackableShape = this.getTrackableShape();
+		org.lgna.croquet.components.TrackableShape featureTrackableShape = this.getTrackableShape();
 		if( featureTrackableShape != null ) {
 			java.awt.Shape shape = featureTrackableShape.getShape( container, null );
 			if( shape != null ) {
@@ -285,7 +285,7 @@ public abstract class Feature {
 		
 		java.awt.Point rv = new java.awt.Point();
 		Connection actualConnection = null;
-		org.lgna.croquet.TrackableShape featureTrackableShape = this.getTrackableShape();
+		org.lgna.croquet.components.TrackableShape featureTrackableShape = this.getTrackableShape();
 		if( featureTrackableShape != null ) {
 			java.awt.Shape shape = featureTrackableShape.getShape( container, null );
 			if( shape != null ) {
@@ -387,7 +387,7 @@ public abstract class Feature {
 	protected abstract java.awt.Insets getPaintInsets();
 	
 	protected java.awt.Shape getShape( org.lgna.croquet.components.Component<?> asSeenBy, java.awt.Insets insets ) {
-		org.lgna.croquet.TrackableShape trackableShape = this.getTrackableShape();
+		org.lgna.croquet.components.TrackableShape trackableShape = this.getTrackableShape();
 		if( trackableShape != null ) {
 			if( trackableShape.isInView() ) {
 				java.awt.Shape shape = trackableShape.getVisibleShape( asSeenBy, insets );

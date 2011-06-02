@@ -85,7 +85,8 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 	
 	private class TypeDropDownPane extends org.alice.ide.common.AbstractDropDownPane {
 		private org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
-		public TypeDropDownPane() {
+		public TypeDropDownPane( org.lgna.croquet.PopupPrepModel< ? > model ) {
+			super( model );
 			this.addComponent( label );
 		}
 		
@@ -97,11 +98,6 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 				}
 			} );
 		}
-		@Override
-		protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
-			return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
-		}
-		
 		@Override
 		protected int getInsetTop() {
 			return super.getInsetTop() + 3;
@@ -135,12 +131,12 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 //			componentType = null;
 //		}
 
-		final TypeDropDownPane typeDropDownPane = new TypeDropDownPane();
+		final TypeDropDownPane typeDropDownPane = new TypeDropDownPane( popupMenuOperation );
 		typeDropDownPane.getAwtComponent().setEnabled( isTypeComboBoxEnabled );
-//		this.typeSelectionState.setSelectedItem( componentType );
-		if( isTypeComboBoxEnabled ) {
-			typeDropDownPane.setLeftButtonPressModel( popupMenuOperation );
-		}
+////		this.typeSelectionState.setSelectedItem( componentType );
+//		if( isTypeComboBoxEnabled ) {
+//			typeDropDownPane.setLeftButtonPressModel( popupMenuOperation );
+//		}
 		typeDropDownPane.refresh();
 		
 		this.typeProperty.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {

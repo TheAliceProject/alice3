@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class BlockStatementIndexPairStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.StaticGetInstanceKeyedResolver< T > implements org.lgna.croquet.RetargetableResolver< T > {
+public class BlockStatementIndexPairStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > implements org.lgna.croquet.resolvers.RetargetableResolver< T > {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class };
 	private org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
 	public BlockStatementIndexPairStaticGetInstanceKeyedResolver( T instance, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {

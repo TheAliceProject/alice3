@@ -75,13 +75,13 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		this.setBackgroundColor( color );
 	}
 
-	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		return "Drop...";
 	}
-	public org.lgna.croquet.CodableResolver< CodeEditor > getCodableResolver() {
+	public org.lgna.croquet.resolvers.CodableResolver< CodeEditor > getCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<CodeEditor>( this, this.code, edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
 	}
-	public org.lgna.croquet.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		if( potentialDropSite instanceof BlockStatementIndexPair ) {
 			BlockStatementIndexPair blockStatementIndexPair = (BlockStatementIndexPair)potentialDropSite;
 			edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty = blockStatementIndexPair.getBlockStatement().statements;
@@ -566,7 +566,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	
 	private static boolean isWarningAlreadyPrinted = false;
 	
-	public class StatementListIndexTrackableShape implements org.lgna.croquet.TrackableShape {
+	public class StatementListIndexTrackableShape implements org.lgna.croquet.components.TrackableShape {
 		private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
 		private int index;
 		private StatementListPropertyPane statementListPropertyPane;
@@ -630,7 +630,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			this.statementListPropertyPane.removeHierarchyBoundsListener(listener);
 		}
 	}
-	public org.lgna.croquet.TrackableShape getTrackableShapeAtIndexOf( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index, boolean EPIC_HACK_isDropConstraintDesired ) {
+	public org.lgna.croquet.components.TrackableShape getTrackableShapeAtIndexOf( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index, boolean EPIC_HACK_isDropConstraintDesired ) {
 		if( statementListProperty != null ) {
 			//choose any non-ancestor
 			

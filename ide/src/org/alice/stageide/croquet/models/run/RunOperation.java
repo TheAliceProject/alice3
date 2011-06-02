@@ -120,14 +120,14 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	}
 	
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Preview your program." );
 		return rv;
 	}
-	@Override
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
-		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
-	}
+//	@Override
+//	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
+//		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
+//	}
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = null;
 	@Override

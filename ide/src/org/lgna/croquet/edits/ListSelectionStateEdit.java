@@ -42,14 +42,10 @@
  */
 package org.lgna.croquet.edits;
 
-import org.lgna.croquet.Codec;
-import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.UserInformation;
-
 /**
  * @author Dennis Cosgrove
  */
-public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionState<E>,E> {
+public final class ListSelectionStateEdit<E> extends StateEdit<org.lgna.croquet.ListSelectionState<E>,E> {
 	private E prevValue;
 	private E nextValue;
 	
@@ -60,16 +56,16 @@ public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionStat
 	}
 	public ListSelectionStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		ListSelectionState< E > listSelectionState = this.getModel();
-		Codec<E> codec = listSelectionState.getCodec();
+		org.lgna.croquet.ListSelectionState< E > listSelectionState = this.getModel();
+		org.lgna.croquet.ItemCodec<E> codec = listSelectionState.getCodec();
 		this.prevValue = codec.decodeValue( binaryDecoder );
 		this.nextValue = codec.decodeValue( binaryDecoder );
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		ListSelectionState< E > listSelectionState = this.getModel();
-		Codec<E> codec = listSelectionState.getCodec();
+		org.lgna.croquet.ListSelectionState< E > listSelectionState = this.getModel();
+		org.lgna.croquet.ItemCodec<E> codec = listSelectionState.getCodec();
 		codec.encodeValue( binaryEncoder, this.prevValue );
 		codec.encodeValue( binaryEncoder, this.nextValue );
 	}
@@ -114,7 +110,7 @@ public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionStat
 		this.getModel().setSelectedItem( this.prevValue );
 	}
 	@Override
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, UserInformation userInformation ) {
+	public StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "select " );
 		this.getModel().getCodec().appendRepresentation( rv, this.nextValue, userInformation.getLocale() );
 		return rv;

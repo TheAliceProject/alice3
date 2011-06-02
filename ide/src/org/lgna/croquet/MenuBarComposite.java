@@ -42,8 +42,6 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.MenuBar;
-
 /**
  * @author Dennis Cosgrove
  */

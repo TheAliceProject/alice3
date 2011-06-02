@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class PrimitiveDoubleStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.StaticGetInstanceKeyedResolver<T> {
+public class PrimitiveDoubleStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<T> {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { Double.TYPE };
 	private double value;
 	public PrimitiveDoubleStaticGetInstanceKeyedResolver( T instance, double value ) {
