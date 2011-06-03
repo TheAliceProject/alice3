@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeDragModel extends org.lgna.croquet.DragAndDropModel {
+public abstract class IdeDragModel extends org.lgna.croquet.DragModel {
 	public IdeDragModel( java.util.UUID id ) {
 		super( id );
 	}

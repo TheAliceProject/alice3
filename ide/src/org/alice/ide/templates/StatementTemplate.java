@@ -46,7 +46,7 @@ package org.alice.ide.templates;
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
-	public StatementTemplate( org.lgna.croquet.DragAndDropModel dragModel, Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
+	public StatementTemplate( org.lgna.croquet.DragModel dragModel, Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
 		super(cls, javax.swing.BoxLayout.LINE_AXIS);
 		this.setDragModel( dragModel );
 	}

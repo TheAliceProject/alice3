@@ -48,7 +48,7 @@ import org.lgna.croquet.DropSite;
 /**
  * @author Dennis Cosgrove
  */
-public class DragStep extends PrepStep< org.lgna.croquet.DragAndDropModel > {
+public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 //	public static abstract class DragAndDropEvent extends ModelEvent< DragAndDropContext > {
 //		private java.awt.event.MouseEvent mouseEvent;
 //		public DragAndDropEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -246,10 +246,10 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragAndDropModel > {
 	private DropReceptor currentDropReceptor;
 	private DropSite currentPotentialDropSite;
 	private java.awt.event.MouseEvent latestMouseEvent;
-	public static DragStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.DragAndDropModel model, org.lgna.croquet.Trigger trigger ) {
+	public static DragStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.Trigger trigger ) {
 		return new DragStep( parent, model, trigger );
 	}
-	private DragStep( Transaction parent, org.lgna.croquet.DragAndDropModel model, org.lgna.croquet.Trigger trigger ) {
+	private DragStep( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 		org.lgna.croquet.components.DragComponent dragSource = this.getDragSource();
 		java.util.List< ? extends DropReceptor > potentialDropReceptors = model.createListOfPotentialDropReceptors( dragSource );

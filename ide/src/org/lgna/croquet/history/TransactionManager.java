@@ -409,7 +409,7 @@ public class TransactionManager {
 	}
 	
 	
-	public static DragStep addDragStep( org.lgna.croquet.DragAndDropModel model, org.lgna.croquet.Trigger trigger ) {
+	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.Trigger trigger ) {
 		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
 	public static ActionOperationStep addActionOperationStep( org.lgna.croquet.ActionOperation model, org.lgna.croquet.Trigger trigger ) {

@@ -43,10 +43,10 @@
 package org.lgna.croquet.components;
 
 import org.lgna.croquet.Application;
-import org.lgna.croquet.DragAndDropModel;
+import org.lgna.croquet.DragModel;
 
 public abstract class DragComponent extends Control {
-	private DragAndDropModel dragModel;
+	private DragModel dragModel;
 
 	private DragProxy dragProxy = null;
 	private DropProxy dropProxy = null;
@@ -109,13 +109,13 @@ public abstract class DragComponent extends Control {
 	//	public void setSubject( java.awt.Component subject ) {
 	//		this.subject = subject;
 	//	}
-	public DragAndDropModel getDragModel() {
+	public DragModel getDragModel() {
 		if( this.dragModel != null ) {
 			this.dragModel.setFirstComponentHint( DragComponent.this );
 		}
 		return this.dragModel;
 	}
-	public void setDragModel( DragAndDropModel dragModel ) {
+	public void setDragModel( DragModel dragModel ) {
 		if( this.dragModel != dragModel ) {
 //			if( this.dragAndDropOperation != null ) {
 //				assert dragAndDropOperation == null; 
