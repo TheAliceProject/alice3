@@ -45,13 +45,14 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, Iterable< Transaction > {
-	private CompletionStep< ? > parent;
+public class TransactionHistory extends Node< CompletionStep<?> > implements Iterable< Transaction > {
 	private final java.util.List< Transaction > transactions;
 	public TransactionHistory() {
+		super( (CompletionStep<?>)null );
 		this.transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	}
 	public TransactionHistory( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 		this.transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( binaryDecoder.decodeBinaryEncodableAndDecodableArray( Transaction.class ) );
 		for( Transaction transaction : this.transactions ) {
 			transaction.setParent( this );
@@ -59,13 +60,6 @@ public class TransactionHistory implements edu.cmu.cs.dennisc.codec.BinaryEncoda
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.transactions, Transaction.class ) );
-	}
-	
-	public CompletionStep< ? > getParent() {
-		return this.parent;
-	}
-	/*package-private*/ void setParent( CompletionStep< ? > parent ) {
-		this.parent = parent;
 	}
 
 	@Deprecated

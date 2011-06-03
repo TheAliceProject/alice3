@@ -45,13 +45,12 @@ package org.lgna.croquet.steps;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step< M extends org.lgna.croquet.Model > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private Transaction parent;
+public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Transaction> {
 	private final org.lgna.croquet.resolvers.CodableResolver< M > modelResolver;
 	private final transient org.lgna.croquet.Trigger trigger;
 	private final java.util.UUID id;
 	public Step( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
-		this.setParent( parent );
+		super( parent );
 		//this.modelResolver = model != null ? model.getCodableResolver() : null;
 		if( model != null ) {
 			this.modelResolver = model.getCodableResolver();
@@ -62,6 +61,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > implements edu.cm
 		this.id = java.util.UUID.randomUUID();
 	}
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.id = binaryDecoder.decodeId();
 		this.trigger = null;
@@ -95,12 +95,6 @@ public abstract class Step< M extends org.lgna.croquet.Model > implements edu.cm
 	}
 	public M getModel() {
 		return this.modelResolver != null ? this.modelResolver.getResolved() : null;
-	}
-	public Transaction getParent() {
-		return this.parent;
-	}
-	/*package-private*/ void setParent( Transaction parent ) {
-		this.parent = parent;
 	}
 
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
