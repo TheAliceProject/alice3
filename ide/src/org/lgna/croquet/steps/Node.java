@@ -58,5 +58,23 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 	/*package-private*/ void setParent( P parent ) {
 		this.parent = parent;
 	}
+	private <N extends Node<?>> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
+		Node<?> rv;
+		if( isThisIncludedInSearch ) {
+			rv = this;
+		} else {
+			rv = this.getParent();
+		}
+		while( rv != null ) {
+			if( cls.isAssignableFrom( rv.getClass() ) ) {
+				break;
+			}
+			rv = rv.getParent();
+		}
+		return (N)rv;
+	}
+	public final <N extends Node<?>> N getFirstAncestorAssignableTo( Class<N> cls ) {
+		return this.getFirstAncestorAssignableTo( cls, false );
+	}
 }
 	

@@ -63,8 +63,7 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.step
 			this.dialog = dialog;
 		}
 		protected GatedCommitDialogOperation< ? > getGatedCommitDialogOperation( org.lgna.croquet.steps.ActionOperationStep step ) {
-			//todo: fix
-			return (GatedCommitDialogOperation< ? >)step.getParent().getParent().getParent().getModel();
+			return (GatedCommitDialogOperation< ? >)step.getFirstAncestorAssignableTo( org.lgna.croquet.steps.GatedCommitDialogOperationStep.class ).getModel();
 		}
 	}
 	protected static abstract class CompleteOperation extends InternalDialogOperation {

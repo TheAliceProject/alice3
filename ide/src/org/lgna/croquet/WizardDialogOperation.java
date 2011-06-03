@@ -87,8 +87,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
 		}
 		protected ListSelectionState< Card > getCardSelectionState(  org.lgna.croquet.steps.ActionOperationStep step ) {
-			//todo: fix
-			return ((WizardDialogOperation)step.getParent().getParent().getParent().getModel()).cardSelectionState;
+			return step.getFirstAncestorAssignableTo( org.lgna.croquet.steps.WizardDialogOperationStep.class ).getModel().cardSelectionState;
 		}
 	}
 	private static class NextOperation extends WizardOperation {
