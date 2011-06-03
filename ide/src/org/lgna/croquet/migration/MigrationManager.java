@@ -47,5 +47,5 @@ package org.lgna.croquet.migration;
  * @author Dennis Cosgrove
  */
 public interface MigrationManager {
-	public org.lgna.croquet.steps.Transaction createMigration( org.lgna.croquet.steps.Transaction transaction );
+	public org.lgna.croquet.history.Transaction createMigration( org.lgna.croquet.history.Transaction transaction );
 }

@@ -65,7 +65,7 @@ public class GetterTemplate extends org.alice.ide.templates.CascadingExpressions
 		return this.field.getValueType();
 	}
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.FieldAccessOperation.getInstance( this.field, expressionProperty );
 	}
 }

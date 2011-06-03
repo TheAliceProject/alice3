@@ -77,7 +77,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 	private final org.lgna.croquet.BooleanState isPlayingSounds = new PresentationBooleanState( java.util.UUID.fromString( "4d8ac630-0679-415a-882f-780c7cb014ef" ), true, "play sounds" );
 
 	@Override
-	protected org.lgna.cheshire.Chapter createChapter(org.lgna.croquet.steps.Transaction transaction) {
+	protected org.lgna.cheshire.Chapter createChapter(org.lgna.croquet.history.Transaction transaction) {
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
 	
@@ -210,7 +210,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 	public StencilsPresentation( 
 			org.lgna.croquet.UserInformation userInformation, 
 			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
-			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
+			org.lgna.croquet.history.TransactionHistory originalTransactionHistory,
 			org.lgna.croquet.migration.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
@@ -250,7 +250,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		} );
 	}
 	@Override
-	protected void handleTransactionCanceled( org.lgna.croquet.steps.Transaction transaction ) {
+	protected void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction ) {
 		this.restoreHistoryIndicesDueToCancel();
 		org.lgna.cheshire.Chapter chapter = this.getBook().getSelectedChapter();
 		if( chapter != null ) {
@@ -320,8 +320,8 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				this.stencil.revalidateAndRepaint();
 				this.stencil.setCursor( cursor );
 			} else {
-				org.lgna.croquet.steps.Transaction transaction = ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction();
-				org.lgna.croquet.steps.PrepStep< ? >[] prepSteps = transaction.getPrepStepsAsArray();
+				org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction();
+				org.lgna.croquet.history.PrepStep< ? >[] prepSteps = transaction.getPrepStepsAsArray();
 				transaction.removeAllPrepSteps();
 				chapterPage.refreshNotes();
 				if( chapterPage.isGoodToGo() ) {
@@ -329,7 +329,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				} else {
 					java.util.List< org.lgna.croquet.MenuItemPrepModel > menuItemPrepModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
 					if( menuItemPrepModels != null ) {
-						org.lgna.croquet.steps.TransactionManager.simulatedMenuTransaction( transaction, menuItemPrepModels );
+						org.lgna.croquet.history.TransactionManager.simulatedMenuTransaction( transaction, menuItemPrepModels );
 						chapterPage.refreshNotes();
 						if( chapterPage.isGoodToGo() ) {
 							this.handleChapterChanged( chapter );
@@ -337,11 +337,11 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 					} else {
 						transaction.setPrepSteps( prepSteps );
 						chapterPage.refreshNotes();
-						org.lgna.croquet.steps.Transaction tabSelectionRecoveryTransaction = this.createTabSelectionRecoveryTransactionIfAppropriate( transaction );
+						org.lgna.croquet.history.Transaction tabSelectionRecoveryTransaction = this.createTabSelectionRecoveryTransactionIfAppropriate( transaction );
 						if( tabSelectionRecoveryTransaction != null ) {
 							this.insertRecoveryTransactionChapter( tabSelectionRecoveryTransaction );
 						} else {
-							org.lgna.croquet.steps.Transaction applicationRecoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( transaction );
+							org.lgna.croquet.history.Transaction applicationRecoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( transaction );
 							if( applicationRecoveryTransaction != null ) {
 								this.insertRecoveryTransactionChapter( applicationRecoveryTransaction );
 							} else {
@@ -354,7 +354,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		}
 	}
 	
-	private void insertRecoveryTransactionChapter( org.lgna.croquet.steps.Transaction recoveryTransaction ) {
+	private void insertRecoveryTransactionChapter( org.lgna.croquet.history.Transaction recoveryTransaction ) {
 		org.lgna.cheshire.Chapter recoveryChapter = new org.lgna.cheshire.TransactionChapter( recoveryTransaction );
 		this.getBook().addChapter( this.getBook().getSelectedIndex(), recoveryChapter );
 		this.handleChapterChanged( recoveryChapter );

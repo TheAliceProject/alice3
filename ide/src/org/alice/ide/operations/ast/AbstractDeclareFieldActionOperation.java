@@ -47,13 +47,13 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractDeclareFieldActionOperation extends org.alice.ide.operations.ActionOperation {
 	protected abstract edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( org.lgna.croquet.steps.ActionOperationStep step, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
+	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
 	protected abstract boolean isInstanceValid();
 	public AbstractDeclareFieldActionOperation( java.util.UUID individualId ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 	}
 	@Override
-	protected final void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
 		if( ownerType != null ) {
 			final edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> tuple = this.createFieldAndInstance( step, ownerType );

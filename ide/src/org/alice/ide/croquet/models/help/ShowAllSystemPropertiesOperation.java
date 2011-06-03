@@ -56,7 +56,7 @@ public class ShowAllSystemPropertiesOperation extends org.alice.ide.operations.I
 		super( java.util.UUID.fromString( "db633e18-dd47-49ca-9406-cf4988d90960" ) );
 	}
 	@Override
-	protected void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
+	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 		java.util.Properties properties = System.getProperties();
 		java.util.Enumeration< String > nameEnum = (java.util.Enumeration< String >)properties.propertyNames();
 		java.util.SortedSet< String > names = new java.util.TreeSet< String >();

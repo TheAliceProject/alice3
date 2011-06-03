@@ -49,7 +49,7 @@ public final class BoundedRangeIntegerStateEdit extends StateEdit<org.lgna.croqu
 	private final int prevValue;
 	private final int nextValue;
 	private final boolean isDoDesired;
-	public BoundedRangeIntegerStateEdit( org.lgna.croquet.steps.CompletionStep< org.lgna.croquet.BoundedRangeIntegerState > completionStep, javax.swing.event.ChangeEvent e, int prevValue, int nextValue, boolean isDoDesired ) {
+	public BoundedRangeIntegerStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.BoundedRangeIntegerState > completionStep, javax.swing.event.ChangeEvent e, int prevValue, int nextValue, boolean isDoDesired ) {
 		super( completionStep );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;

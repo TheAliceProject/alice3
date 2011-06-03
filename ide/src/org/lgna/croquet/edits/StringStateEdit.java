@@ -49,7 +49,7 @@ public final class StringStateEdit extends StateEdit<org.lgna.croquet.StringStat
 	private final String prevValue;
 	private final String nextValue;
 
-	public StringStateEdit( org.lgna.croquet.steps.CompletionStep< org.lgna.croquet.StringState > completionStep, String prevValue, String nextValue ) {
+	public StringStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.StringState > completionStep, String prevValue, String nextValue ) {
 		super( completionStep );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;

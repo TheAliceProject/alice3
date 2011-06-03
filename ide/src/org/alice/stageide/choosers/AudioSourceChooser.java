@@ -140,7 +140,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 			this.setName( "test" );
 		}
 		@Override
-		protected void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
+		protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 			org.alice.apis.moveandturn.AudioSource audioSource = getAudioSource();
 			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
 			edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime() );

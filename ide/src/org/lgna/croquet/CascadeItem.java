@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeItem< F, S extends org.lgna.croquet.steps.CascadeItemStep<F,?,S> > extends MenuItemPrepModel {
+public abstract class CascadeItem< F, S extends org.lgna.croquet.history.CascadeItemStep<F,?,S> > extends MenuItemPrepModel {
 	public CascadeItem( java.util.UUID id ) {
 		//super( Application.CASCADE_GROUP, id );
 		super( id );
@@ -120,7 +120,7 @@ public abstract class CascadeItem< F, S extends org.lgna.croquet.steps.CascadeIt
 	}
 
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Select <strong>" );
 		rv.append( this.getTutorialItemText() );
 		rv.append( "</strong>." );

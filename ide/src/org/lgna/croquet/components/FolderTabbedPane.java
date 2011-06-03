@@ -330,7 +330,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			this.setName( ">>" );
 		}
 		@Override
-		protected void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+		protected void perform(org.lgna.croquet.history.ActionOperationStep step) {
 			javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 			for( E item : FolderTabbedPane.this.getModel() ) {

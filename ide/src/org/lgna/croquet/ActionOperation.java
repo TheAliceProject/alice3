@@ -45,12 +45,12 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ActionOperation extends SingleThreadOperation<org.lgna.croquet.steps.ActionOperationStep> {
+public abstract class ActionOperation extends SingleThreadOperation<org.lgna.croquet.history.ActionOperationStep> {
 	public ActionOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
 	@Override
-	public org.lgna.croquet.steps.ActionOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
-		return org.lgna.croquet.steps.TransactionManager.addActionOperationStep( this, trigger );
+	public org.lgna.croquet.history.ActionOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+		return org.lgna.croquet.history.TransactionManager.addActionOperationStep( this, trigger );
 	}
 }

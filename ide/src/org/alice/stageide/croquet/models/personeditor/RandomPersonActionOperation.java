@@ -59,7 +59,7 @@ public class RandomPersonActionOperation extends org.alice.ide.operations.Action
 		this.setName( "Generate Random Selection" );
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final PersonInfo prevState = org.alice.stageide.personeditor.PersonEditor.getInstance().getPersonInfo();
 		final PersonInfo nextState = org.alice.stageide.croquet.models.personeditor.PersonInfo.createRandom();
 		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {

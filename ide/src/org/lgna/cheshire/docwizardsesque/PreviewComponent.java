@@ -58,7 +58,7 @@ public class PreviewComponent extends org.lgna.croquet.components.JComponent< ja
 				org.lgna.cheshire.Chapter chapter = presentation.getBook().getSelectedChapter();
 				if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
 					org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
-					org.lgna.croquet.steps.Step< ? > step0 = transactionChapter.getTransaction().getChildStepAt( 0 );
+					org.lgna.croquet.history.Step< ? > step0 = transactionChapter.getTransaction().getChildStepAt( 0 );
 					if( step0 != null ) {
 						org.lgna.croquet.Model model = step0.getModel();
 //						if( step0 instanceof org.lgna.croquet.steps.StandardPopupOperationPrepStep ) {

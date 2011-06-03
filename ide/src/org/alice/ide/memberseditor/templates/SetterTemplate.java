@@ -60,7 +60,7 @@ package org.alice.ide.memberseditor.templates;
 		return org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( this.field );
 	}
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.steps.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		//todo
 		return new org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertOperation( blockStatementIndexPair, this.field );
 	}

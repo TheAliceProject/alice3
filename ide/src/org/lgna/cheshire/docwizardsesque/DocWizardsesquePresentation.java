@@ -53,7 +53,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
 	@Override
-	protected org.lgna.cheshire.Chapter createChapter(org.lgna.croquet.steps.Transaction transaction) {
+	protected org.lgna.cheshire.Chapter createChapter(org.lgna.croquet.history.Transaction transaction) {
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
 	private final org.lgna.croquet.components.Frame frame = new org.lgna.croquet.components.Frame();
@@ -93,7 +93,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 	};
 	public DocWizardsesquePresentation( 
 			org.lgna.croquet.UserInformation userInformation, 
-			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
+			org.lgna.croquet.history.TransactionHistory originalTransactionHistory,
 			org.lgna.croquet.migration.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
@@ -165,7 +165,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		contentPanel.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 	}
 	@Override
-	protected void handleTransactionCanceled( org.lgna.croquet.steps.Transaction transaction ) {
+	protected void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction ) {
 		this.restoreHistoryIndicesDueToCancel();
 	}
 	private boolean isIgnoringEvents;
@@ -199,9 +199,9 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 				if( event instanceof org.lgna.cheshire.events.EditCommittedEvent ) {
 					org.lgna.cheshire.events.EditCommittedEvent editCommittedEvent = (org.lgna.cheshire.events.EditCommittedEvent)event;
 					org.lgna.croquet.edits.Edit< ? > replacementCandidateEdit = editCommittedEvent.getEdit();
-					org.lgna.croquet.steps.CompletionStep< ? > completionStep = replacementCandidateEdit.getCompletionStep();
-					org.lgna.croquet.steps.Transaction transaction = completionStep.getParent();
-					org.lgna.croquet.steps.TransactionHistory transactionHistory = transaction.getParent();
+					org.lgna.croquet.history.CompletionStep< ? > completionStep = replacementCandidateEdit.getCompletionStep();
+					org.lgna.croquet.history.Transaction transaction = completionStep.getParent();
+					org.lgna.croquet.history.TransactionHistory transactionHistory = transaction.getParent();
 					if( transactionHistory.getParent() != null ) {
 						//pass
 					} else {
@@ -214,8 +214,8 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 					}
 				} else if( event instanceof org.lgna.cheshire.events.FinishedEvent ) {
 					org.lgna.cheshire.events.FinishedEvent finishEvent = (org.lgna.cheshire.events.FinishedEvent)event;
-					org.lgna.croquet.steps.Transaction transaction = finishEvent.getTransaction();
-					org.lgna.croquet.steps.TransactionHistory transactionHistory = transaction.getParent();
+					org.lgna.croquet.history.Transaction transaction = finishEvent.getTransaction();
+					org.lgna.croquet.history.TransactionHistory transactionHistory = transaction.getParent();
 					if( transactionHistory.getParent() != null ) {
 						//pass
 					} else {

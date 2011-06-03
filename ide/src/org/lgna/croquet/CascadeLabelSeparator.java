@@ -54,7 +54,7 @@ public abstract class CascadeLabelSeparator extends CascadeSeparator {
 		return this.getDefaultLocalizedText();
 	}
 	@Override
-	protected final javax.swing.JComponent createMenuItemIconProxy(org.lgna.croquet.steps.CascadeSeparatorStep step) {
+	protected final javax.swing.JComponent createMenuItemIconProxy(org.lgna.croquet.history.CascadeSeparatorStep step) {
 		String text = this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
 		//todo
 		if( text != null && text.length() > 0 && "null".equals( text )==false ) {
@@ -70,7 +70,7 @@ public abstract class CascadeLabelSeparator extends CascadeSeparator {
 		}
 	}
 	@Override
-	public String getMenuItemText( org.lgna.croquet.steps.CascadeSeparatorStep step ) {
+	public String getMenuItemText( org.lgna.croquet.history.CascadeSeparatorStep step ) {
 		return null;
 //		return this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
 	}

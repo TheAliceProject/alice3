@@ -58,10 +58,10 @@ public abstract class Presentation {
 	private final Book book;
 	private boolean isResultOfNextOperation = false;
 
-	private final org.lgna.croquet.steps.TransactionManager.Observer observer = new org.lgna.croquet.steps.TransactionManager.Observer() {
-		public void addingStep( org.lgna.croquet.steps.Step< ? > step ) {
+	private final org.lgna.croquet.history.TransactionManager.Observer observer = new org.lgna.croquet.history.TransactionManager.Observer() {
+		public void addingStep( org.lgna.croquet.history.Step< ? > step ) {
 		}
-		public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
+		public void addedStep( org.lgna.croquet.history.Step< ? > step ) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.StepAddedEvent( step ) );
 		}
 		public void editCommitting( org.lgna.croquet.edits.Edit< ? > edit ) {
@@ -70,12 +70,12 @@ public abstract class Presentation {
 			Presentation.this.handleEditCommitted( edit );
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.EditCommittedEvent( edit ) );
 		}
-		public void finishing(org.lgna.croquet.steps.Transaction transaction) {
+		public void finishing(org.lgna.croquet.history.Transaction transaction) {
 		}
-		public void finished(org.lgna.croquet.steps.Transaction transaction) {
+		public void finished(org.lgna.croquet.history.Transaction transaction) {
 			Presentation.this.handleEvent( new org.lgna.cheshire.events.FinishedEvent( transaction ) );
 		}
-		public void transactionCanceled( org.lgna.croquet.steps.Transaction transaction ) {
+		public void transactionCanceled( org.lgna.croquet.history.Transaction transaction ) {
 			Presentation.this.handleTransactionCanceled( transaction );
 		}
 		public void dropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
@@ -96,7 +96,7 @@ public abstract class Presentation {
 
 	private final edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
-	public Presentation( org.lgna.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public Presentation( org.lgna.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
 		
 		assert instance == null;
 		instance = this;
@@ -113,13 +113,13 @@ public abstract class Presentation {
 			this.historyManagers[ i ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupsTrackedForRandomAccess[ i ] );
 		}
 		this.historyManagers[ N ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( COMPLETION_GROUP );
-		org.lgna.croquet.steps.TransactionManager.addObserver( this.observer );
+		org.lgna.croquet.history.TransactionManager.addObserver( this.observer );
 	}
 
 	private void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
 		this.book.handleEditCommitted( edit, this.userInformation );
 	}
-	protected abstract void handleTransactionCanceled( org.lgna.croquet.steps.Transaction transaction );
+	protected abstract void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction );
 	protected abstract void handleEvent( org.lgna.cheshire.events.Event event );
 	private org.lgna.cheshire.Book.SelectionObserver selectionObserver = new org.lgna.cheshire.Book.SelectionObserver() {
 		public void selectionChanging( Book source, int fromIndex, int toIndex ) {
@@ -141,11 +141,11 @@ public abstract class Presentation {
 	public Recoverer getRecoverer() {
 		return this.recoverer;
 	}
-	protected abstract Chapter createChapter( org.lgna.croquet.steps.Transaction transaction );
-	private Book generateDraft( ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory transactionHistory ) {
+	protected abstract Chapter createChapter( org.lgna.croquet.history.Transaction transaction );
+	private Book generateDraft( ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		Book rv = new Book();
 		rv.setAccessPolicy( accessPolicy );
-		for( org.lgna.croquet.steps.Transaction transaction : transactionHistory ) {
+		for( org.lgna.croquet.history.Transaction transaction : transactionHistory ) {
 			rv.addChapter( this.createChapter( transaction ) );
 		}
 		return rv;
@@ -222,10 +222,10 @@ public abstract class Presentation {
 		return this.book;
 	}
 	
-	protected void validate( org.lgna.croquet.steps.TransactionHistory transactionHistory ) {
-		java.util.ListIterator< org.lgna.croquet.steps.Transaction > transactionListIterator = transactionHistory.listIterator();
+	protected void validate( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		java.util.ListIterator< org.lgna.croquet.history.Transaction > transactionListIterator = transactionHistory.listIterator();
 		while( transactionListIterator.hasNext() ) {
-			org.lgna.croquet.steps.Transaction transaction = transactionListIterator.next();
+			org.lgna.croquet.history.Transaction transaction = transactionListIterator.next();
 			if( transaction.isValid() ) {
 				//pass
 			} else {
@@ -270,12 +270,12 @@ public abstract class Presentation {
 	}
 	
 	
-	protected org.lgna.croquet.steps.Transaction createTabSelectionRecoveryTransactionIfAppropriate( org.lgna.croquet.steps.Transaction transaction ) {
+	protected org.lgna.croquet.history.Transaction createTabSelectionRecoveryTransactionIfAppropriate( org.lgna.croquet.history.Transaction transaction ) {
 		org.lgna.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
 		for( org.lgna.croquet.TabSelectionState< org.lgna.croquet.Composite > tabSelectionState : org.lgna.croquet.Manager.getRegisteredModels( org.lgna.croquet.TabSelectionState.class ) ) {
 			for( org.lgna.croquet.Composite item : tabSelectionState ) {
 				if( item.contains( model ) ) {
-					return org.lgna.croquet.steps.TransactionManager.createSimulatedTransaction( transaction.getParent(), tabSelectionState, tabSelectionState.getValue(), item, false );
+					return org.lgna.croquet.history.TransactionManager.createSimulatedTransaction( transaction.getParent(), tabSelectionState, tabSelectionState.getValue(), item, false );
 				}
 			}
 		}

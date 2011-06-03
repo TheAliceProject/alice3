@@ -84,7 +84,7 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 	protected void localize() {
 	}
 	@Override
-	public org.lgna.croquet.steps.Step<?> fire(org.lgna.croquet.Trigger trigger) {
+	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.Trigger trigger) {
 		throw new RuntimeException();
 	}
 	public ListSelectionState< E > getListSelectionState() {
@@ -102,7 +102,7 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 		return new ComboBox< E >( this.getListSelectionState() );
 	}
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		if( edit != null ) {
 			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
 			rv.append( "First press on " );

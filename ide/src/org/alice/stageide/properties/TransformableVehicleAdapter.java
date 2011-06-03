@@ -131,7 +131,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 		{
 			this.popupMenuOperation = new org.lgna.croquet.MenuModel( java.util.UUID.fromString( "2ae18028-e18a-47ad-8dda-ba6c186142a4" ) ) {
 				@Override
-				public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep context ) 
+				public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) 
 				{
 					org.lgna.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > possibleFields = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
 					java.util.List<org.lgna.croquet.MenuItemPrepModel> setVehicleOperations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();

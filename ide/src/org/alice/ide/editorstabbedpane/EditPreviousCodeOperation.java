@@ -57,7 +57,7 @@ public class EditPreviousCodeOperation extends org.alice.ide.operations.ActionOp
 		this.setName( "previous" );
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		EditorsTabSelectionState.getInstance().editPreviousCode();
 	}
 }

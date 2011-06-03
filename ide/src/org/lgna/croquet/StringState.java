@@ -55,7 +55,7 @@ public class StringState extends State<String> {
 				String prevValue = StringState.this.previousValue;
 				boolean isAdjusting = false;
 				fireChanging( prevValue, nextValue, isAdjusting );
-				org.lgna.croquet.steps.TransactionManager.handleDocumentEvent( StringState.this, e, prevValue, nextValue );
+				org.lgna.croquet.history.TransactionManager.handleDocumentEvent( StringState.this, e, prevValue, nextValue );
 				StringState.this.previousValue = nextValue;
 				fireChanged( prevValue, nextValue, isAdjusting );
 			} catch( javax.swing.text.BadLocationException ble ) {
@@ -108,7 +108,7 @@ public class StringState extends State<String> {
 	}
 	
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		if( edit instanceof org.lgna.croquet.edits.StringStateEdit ) {
 			org.lgna.croquet.edits.StringStateEdit stringStateEdit = (org.lgna.croquet.edits.StringStateEdit)edit;
 			rv.append( "Enter <strong>" );

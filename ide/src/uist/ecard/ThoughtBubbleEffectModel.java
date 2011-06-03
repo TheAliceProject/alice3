@@ -13,12 +13,12 @@ public class ThoughtBubbleEffectModel extends org.lgna.croquet.ActionOperation {
 		this.setSmallIcon( new javax.swing.ImageIcon(getClass().getResource("resources/menu/thought-bubble.png") ) );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		ECardApplication.getSingleton().getCardPanel().setImage(ECardPanel.CardState.BUBBLE_PHOTO);
 		step.finish();
 	}
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Select " + this.getDefaultLocalizedText() );
 		return rv;
 	}

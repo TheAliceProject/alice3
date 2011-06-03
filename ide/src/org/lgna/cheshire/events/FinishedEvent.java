@@ -47,11 +47,11 @@ package org.lgna.cheshire.events;
  * @author Dennis Cosgrove
  */
 public class FinishedEvent implements Event {
-	private final org.lgna.croquet.steps.Transaction transaction;
-	public FinishedEvent( org.lgna.croquet.steps.Transaction transaction ) {
+	private final org.lgna.croquet.history.Transaction transaction;
+	public FinishedEvent( org.lgna.croquet.history.Transaction transaction ) {
 		this.transaction = transaction;
 	}
-	public org.lgna.croquet.steps.Transaction getTransaction() {
+	public org.lgna.croquet.history.Transaction getTransaction() {
 		return this.transaction;
 	}
 }

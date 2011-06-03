@@ -46,11 +46,11 @@ package org.lgna.cheshire;
  * @author Dennis Cosgrove
  */
 public class TransactionChapter extends Chapter {
-	private final org.lgna.croquet.steps.Transaction transaction;
-	public TransactionChapter( org.lgna.croquet.steps.Transaction transaction ) {
+	private final org.lgna.croquet.history.Transaction transaction;
+	public TransactionChapter( org.lgna.croquet.history.Transaction transaction ) {
 		this.transaction = transaction;
 	}
-	public org.lgna.croquet.steps.Transaction getTransaction() {
+	public org.lgna.croquet.history.Transaction getTransaction() {
 		return this.transaction;
 	}
 	@Override
@@ -62,7 +62,7 @@ public class TransactionChapter extends Chapter {
 		final org.lgna.croquet.edits.Edit<?> originalEdit = this.transaction.getEdit();
 		if( originalEdit != null ) {
 			//todo
-			org.lgna.croquet.steps.CompletionStep< ? > step = null;
+			org.lgna.croquet.history.CompletionStep< ? > step = null;
 			org.lgna.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getRetargeter();
 			org.lgna.croquet.edits.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( step, originalEdit, retargeter );
 			if( replacementEdit != null ) {
@@ -87,8 +87,8 @@ public class TransactionChapter extends Chapter {
 	
 	@Override
 	public boolean isAlreadyInTheDesiredState() {
-		org.lgna.croquet.steps.Transaction transaction = this.getTransaction();
-		org.lgna.croquet.steps.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+		org.lgna.croquet.history.Transaction transaction = this.getTransaction();
+		org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
 		org.lgna.croquet.CompletionModel model = completionStep.getModel();
 		if( model != null ) {
 			org.lgna.croquet.edits.Edit< ? > edit = completionStep.getEdit();

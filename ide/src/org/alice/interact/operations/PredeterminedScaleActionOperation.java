@@ -96,7 +96,7 @@ public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOp
 		
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {

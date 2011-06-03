@@ -47,7 +47,7 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( org.lgna.croquet.steps.InputDialogOperationStep step );
+	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep step );
 	protected abstract boolean isInstanceValid();
 	
 	public AbstractDeclareFieldInputDialogOperation( java.util.UUID individualId ) {
@@ -58,7 +58,7 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 		return org.alice.ide.IDE.getSingleton();
 	}
 	@Override
-	protected final void epilogue(org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk) {
+	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
 			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> tuple = this.createFieldAndInstance( step );
 			if( tuple != null ) {

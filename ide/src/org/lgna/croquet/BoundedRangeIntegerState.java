@@ -51,7 +51,7 @@ public abstract class BoundedRangeIntegerState extends State< Integer > {
 	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 		private boolean previousValueIsAdjusting = false;
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			org.lgna.croquet.steps.TransactionManager.handleStateChanged( BoundedRangeIntegerState.this, e );
+			org.lgna.croquet.history.TransactionManager.handleStateChanged( BoundedRangeIntegerState.this, e );
 		}
 	};
 	javax.swing.SpinnerModel spinnerModel = new javax.swing.AbstractSpinnerModel() {

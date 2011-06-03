@@ -58,11 +58,11 @@ public class CascadeUnfilledInCancel<F> extends CascadeCancel< F > {
 		super( null );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.steps.CascadeCancelStep< F > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadeCancelStep< F > context ) {
 		return null;
 	}
 	@Override
-	public String getMenuItemText( org.lgna.croquet.steps.CascadeCancelStep< F > context ) {
+	public String getMenuItemText( org.lgna.croquet.history.CascadeCancelStep< F > context ) {
 		return "No suitable fillins were found.  Canceling.";
 	}
 }

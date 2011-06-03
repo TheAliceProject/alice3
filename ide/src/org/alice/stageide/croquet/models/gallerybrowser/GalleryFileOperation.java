@@ -71,7 +71,7 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation {
 		this.treeNode = treeNode;
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue( org.lgna.croquet.steps.InputDialogOperationStep step ) {
+	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
 		return new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(this.getOwnerType(), this.treeNode);
 	}
 	
@@ -83,7 +83,7 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation {
 	
 	//"Create New Instance"
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(org.lgna.croquet.steps.InputDialogOperationStep step) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = step.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();
 		if (field != null) {

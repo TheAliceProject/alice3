@@ -57,7 +57,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 	protected abstract String getInitialFilename();
 	
 	@Override
-	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		org.alice.ide.ProjectApplication application = this.getProjectApplication();
 		java.io.File filePrevious = application.getFile();
 		boolean isExceptionRaised = false;

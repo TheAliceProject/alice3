@@ -86,7 +86,7 @@ public class InputState {
 	private long timeCaptured = 0;
 	private InputEvent inputEvent = null;
 	private boolean isDragEvent = false;
-	private org.lgna.croquet.steps.DragStep dragAndDropContext = null;
+	private org.lgna.croquet.history.DragStep dragAndDropContext = null;
 	
 	
 	public InputEvent getInputEvent()
@@ -126,12 +126,12 @@ public class InputState {
 		return this.isDragEvent;
 	}
 	
-	public void setDragAndDropContext(org.lgna.croquet.steps.DragStep dragAndDropContext)
+	public void setDragAndDropContext(org.lgna.croquet.history.DragStep dragAndDropContext)
 	{
 		this.dragAndDropContext = dragAndDropContext;
 	}
 	
-	public org.lgna.croquet.steps.DragStep getDragAndDropContext()
+	public org.lgna.croquet.history.DragStep getDragAndDropContext()
 	{
 		return this.dragAndDropContext;
 	}

@@ -55,13 +55,13 @@ public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.a
 	private enum BlankOperation {
 		CREATE_VALUES() {
 			@Override
-			public <F,M extends org.lgna.croquet.CascadeItem< F,C >,C extends org.lgna.croquet.steps.CascadeItemStep<F,M,C>> F operate( org.lgna.croquet.steps.CascadeItemStep< F,M,C > selectedFillInContext ) {
+			public <F,M extends org.lgna.croquet.CascadeItem< F,C >,C extends org.lgna.croquet.history.CascadeItemStep<F,M,C>> F operate( org.lgna.croquet.history.CascadeItemStep< F,M,C > selectedFillInContext ) {
 				return selectedFillInContext.createValue();
 			}
 		},
 		GET_TRANSIENT_VALUES() {
 			@Override
-			public <F,M extends org.lgna.croquet.CascadeItem< F,C >,C extends org.lgna.croquet.steps.CascadeItemStep<F,M,C>> F operate( org.lgna.croquet.steps.CascadeItemStep< F,M,C > selectedFillInContext ) {
+			public <F,M extends org.lgna.croquet.CascadeItem< F,C >,C extends org.lgna.croquet.history.CascadeItemStep<F,M,C>> F operate( org.lgna.croquet.history.CascadeItemStep< F,M,C > selectedFillInContext ) {
 				if( selectedFillInContext != null ) {
 					return selectedFillInContext.getTransientValue();
 				} else {
@@ -69,14 +69,14 @@ public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.a
 				}
 			}
 		};
-		public abstract <F,M extends org.lgna.croquet.CascadeItem< F,C >, C extends org.lgna.croquet.steps.CascadeItemStep<F,M,C> > F operate( org.lgna.croquet.steps.CascadeItemStep< F,M,C > selectedFillInContext );
+		public abstract <F,M extends org.lgna.croquet.CascadeItem< F,C >, C extends org.lgna.croquet.history.CascadeItemStep<F,M,C> > F operate( org.lgna.croquet.history.CascadeItemStep< F,M,C > selectedFillInContext );
 	}
-	private B[] runBlanks( org.lgna.croquet.steps.CascadeFillInPrepStep<F,B> step, BlankOperation blankOperation ) { 
+	private B[] runBlanks( org.lgna.croquet.history.CascadeFillInPrepStep<F,B> step, BlankOperation blankOperation ) { 
 		org.lgna.croquet.CascadeBlank< B >[] blanks = this.getBlanks();
 		B[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( this.cls, blanks.length );
 		for( int i=0; i<rv.length; i++ ) {
-			org.lgna.croquet.steps.CascadeBlankStep< B > blankStep = step.getBlankStepAt( i );
-			org.lgna.croquet.steps.CascadeItemStep< B,?,? > selectedFillInContext = blankStep.getSelectedFillInContext();
+			org.lgna.croquet.history.CascadeBlankStep< B > blankStep = step.getBlankStepAt( i );
+			org.lgna.croquet.history.CascadeItemStep< B,?,? > selectedFillInContext = blankStep.getSelectedFillInContext();
 			rv[ i ] = (B)blankOperation.operate( selectedFillInContext );
 //			if( rv[ i ] == null ) {
 //				if( this.cls == edu.cmu.cs.dennisc.alice.ast.Expression.class ) {
@@ -94,7 +94,7 @@ public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.a
 	}
 	protected abstract F createValue( B[] expressions );
 	@Override
-	public final F createValue( org.lgna.croquet.steps.CascadeFillInPrepStep<F,B> step ) {
+	public final F createValue( org.lgna.croquet.history.CascadeFillInPrepStep<F,B> step ) {
 		return this.createValue( runBlanks( step, BlankOperation.CREATE_VALUES ) );
 	}
 //	protected abstract F getTransientValue( B[] expressions );

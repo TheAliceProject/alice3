@@ -57,7 +57,7 @@ public class PowerCascadeMenu extends org.alice.ide.croquet.models.cascade.Expre
 		super( java.util.UUID.fromString( "2d1bbbdb-cf33-406d-98a9-4ba421bfd10e" ) );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "sqrt", java.lang.Double.TYPE ) );
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
 		return rv;

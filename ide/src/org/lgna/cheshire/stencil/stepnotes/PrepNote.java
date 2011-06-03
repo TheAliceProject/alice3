@@ -46,7 +46,7 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PrepNote< S extends org.lgna.croquet.steps.PrepStep<?> > extends Note< S > {
+public abstract class PrepNote< S extends org.lgna.croquet.history.PrepStep<?> > extends Note< S > {
 	public PrepNote( S step ) {
 		super( step );
 	}

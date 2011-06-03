@@ -46,12 +46,12 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class DropPrepNote extends PrepNote< org.lgna.croquet.steps.DropPrepStep > {
-	public DropPrepNote( org.lgna.croquet.steps.DropPrepStep step ) {
+public class DropPrepNote extends PrepNote< org.lgna.croquet.history.DropPrepStep > {
+	public DropPrepNote( org.lgna.croquet.history.DropPrepStep step ) {
 		super( step );
 	}
 	@Override
-	protected void addFeatures( org.lgna.croquet.steps.DropPrepStep step ) {
+	protected void addFeatures( org.lgna.croquet.history.DropPrepStep step ) {
 		this.addFeature( DropNoteUtilities.createHole( step ) );
 	}
 	@Override

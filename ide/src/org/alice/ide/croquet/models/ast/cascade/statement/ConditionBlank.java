@@ -60,7 +60,7 @@ public class ConditionBlank extends org.alice.ide.croquet.models.cascade.Express
 	@Override
 	protected java.util.List<org.lgna.croquet.CascadeItem> updateChildren(
 			java.util.List<org.lgna.croquet.CascadeItem> rv,
-			org.lgna.croquet.steps.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
+			org.lgna.croquet.history.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
 		rv.add( ConditionSeparator.getInstance() );
 		return super.updateChildren(rv, context);
 	}

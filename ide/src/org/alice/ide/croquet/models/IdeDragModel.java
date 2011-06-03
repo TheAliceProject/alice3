@@ -54,19 +54,19 @@ public abstract class IdeDragModel extends org.lgna.croquet.DragAndDropModel {
 		return org.alice.ide.IDE.getSingleton();
 	}
 	@Override
-	public void handleDragStarted( org.lgna.croquet.steps.DragStep step ) {
+	public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
 		getIDE().handleDragStarted( step );
 	}
 	@Override
-	public void handleDragEnteredDropReceptor( org.lgna.croquet.steps.DragStep step ) {
+	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
 		getIDE().handleDragEnteredDropReceptor( step );
 	}
 	@Override
-	public void handleDragExitedDropReceptor( org.lgna.croquet.steps.DragStep step ) {
+	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
 		getIDE().handleDragExitedDropReceptor( step );
 	}
 	@Override
-	public void handleDragStopped( org.lgna.croquet.steps.DragStep step ) {
+	public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
 		getIDE().handleDragStopped( step );
 	}
 }

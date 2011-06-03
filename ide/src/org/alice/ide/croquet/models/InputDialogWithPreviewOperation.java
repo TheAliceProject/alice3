@@ -50,12 +50,12 @@ public abstract class InputDialogWithPreviewOperation<T> extends org.lgna.croque
 		super( group, individualId );
 	}
 	@Override
-	protected String getDialogTitle( org.lgna.croquet.steps.InputDialogOperationStep context ) {
+	protected String getDialogTitle( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		org.alice.ide.preview.PanelWithPreview<T> panelWithPreview = context.getMainPanel();
 		return panelWithPreview.getDialogTitle();
 	}
 	@Override
-	protected String getInternalExplanation( org.lgna.croquet.steps.InputDialogOperationStep context ) {
+	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		org.alice.ide.preview.PanelWithPreview<T> panelWithPreview = context.getMainPanel();
 		String rv = null;
 		if( panelWithPreview != null ) {

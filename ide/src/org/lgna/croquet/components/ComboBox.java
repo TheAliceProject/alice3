@@ -82,12 +82,12 @@ public class ComboBox<E> extends ItemSelectable< javax.swing.JComboBox, E > {
 
 	private javax.swing.event.PopupMenuListener popupMenuListener = new javax.swing.event.PopupMenuListener() {
 		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-			org.lgna.croquet.steps.TransactionManager.addListSelectionPrepStep( ComboBox.this.getModel().getPrepModel(), new org.lgna.croquet.triggers.PopupMenuEventTrigger( ComboBox.this, e ) );
+			org.lgna.croquet.history.TransactionManager.addListSelectionPrepStep( ComboBox.this.getModel().getPrepModel(), new org.lgna.croquet.triggers.PopupMenuEventTrigger( ComboBox.this, e ) );
 		}
 		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 		}
 		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-			org.lgna.croquet.steps.TransactionManager.addCancelCompletionStep( ComboBox.this.getModel(), new org.lgna.croquet.triggers.PopupMenuEventTrigger( ComboBox.this, e ) );
+			org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( ComboBox.this.getModel(), new org.lgna.croquet.triggers.PopupMenuEventTrigger( ComboBox.this, e ) );
 		}
 	};
 

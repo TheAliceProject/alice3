@@ -49,7 +49,7 @@ public class CompositeEdit extends Edit {
 	private final Edit<?>[] edits;
 	private final boolean isDoToBeIgnored;
 	private final String presentation;
-	public CompositeEdit( org.lgna.croquet.steps.CompletionStep completionStep, Edit<?>[] edits, boolean isDoToBeIgnored, String presentation ) {
+	public CompositeEdit( org.lgna.croquet.history.CompletionStep completionStep, Edit<?>[] edits, boolean isDoToBeIgnored, String presentation ) {
 		super( completionStep );
 		this.edits = edits;
 		this.isDoToBeIgnored = isDoToBeIgnored;

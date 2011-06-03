@@ -47,7 +47,7 @@ import org.lgna.croquet.edits.Edit;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Operation< S extends org.lgna.croquet.steps.OperationStep<? extends Operation<?>>> extends CompletionModel {
+public abstract class Operation< S extends org.lgna.croquet.history.OperationStep<? extends Operation<?>>> extends CompletionModel {
 //	private class ButtonActionListener implements java.awt.event.ActionListener {
 //		private AbstractButton< ?,? > button;
 //		public ButtonActionListener( AbstractButton< ?,? > button ) {
@@ -107,11 +107,11 @@ public abstract class Operation< S extends org.lgna.croquet.steps.OperationStep<
 //		return rv;
 //	}
 	
-	protected Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	protected Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		return null;
 	}
 	@Override
-	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		Edit< ? > replacementEdit = this.createTutorialCompletionEdit( step, originalEdit, retargeter );
 //		if( replacementEdit != null ) {
 //			final S step = this.createAndPushStep( null, null );

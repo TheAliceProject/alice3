@@ -48,8 +48,8 @@ import org.lgna.croquet.resolvers.RuntimeResolver;
  * @author Dennis Cosgrove
  */
 public class ItemSelectionStateItemResolver<E> implements RuntimeResolver<org.lgna.croquet.components.TrackableShape> {
-	private final org.lgna.croquet.steps.ListSelectionStateChangeStep< E > step;
-	public ItemSelectionStateItemResolver( org.lgna.croquet.steps.ListSelectionStateChangeStep< E > step ) {
+	private final org.lgna.croquet.history.ListSelectionStateChangeStep< E > step;
+	public ItemSelectionStateItemResolver( org.lgna.croquet.history.ListSelectionStateChangeStep< E > step ) {
 		this.step = step;
 	}
 

@@ -46,7 +46,7 @@ package org.lgna.croquet.edits;
  * @author Dennis Cosgrove
  */
 public abstract class StateEdit<M extends org.lgna.croquet.State<?>,T> extends org.lgna.croquet.edits.Edit<M> {
-	public StateEdit( org.lgna.croquet.steps.CompletionStep< M > completionStep ) {
+	public StateEdit( org.lgna.croquet.history.CompletionStep< M > completionStep ) {
 		super( completionStep );
 	}
 	public StateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {

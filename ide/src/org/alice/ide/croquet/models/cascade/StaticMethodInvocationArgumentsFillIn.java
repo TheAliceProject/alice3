@@ -85,7 +85,7 @@ public class StaticMethodInvocationArgumentsFillIn extends ExpressionFillInWithE
 		return org.alice.ide.ast.NodeUtilities.createStaticMethodInvocation( this.transientValue.method.getValue(), expressions );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep context ) {
+	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue( org.lgna.croquet.history.CascadeFillInPrepStep context ) {
 		return this.transientValue;
 	}
 }

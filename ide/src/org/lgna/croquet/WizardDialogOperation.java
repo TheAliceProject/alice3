@@ -60,7 +60,7 @@ import org.lgna.croquet.components.SpringUtilities;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardDialogOperation extends GatedCommitDialogOperation<org.lgna.croquet.steps.WizardDialogOperationStep> {
+public abstract class WizardDialogOperation extends GatedCommitDialogOperation<org.lgna.croquet.history.WizardDialogOperationStep> {
 	protected static class FinishOperation extends CompleteOperation {
 		private static class SingletonHolder {
 			private static FinishOperation instance = new FinishOperation();
@@ -86,8 +86,8 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 		public WizardOperation( java.util.UUID id ) {
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
 		}
-		protected ListSelectionState< Card > getCardSelectionState(  org.lgna.croquet.steps.ActionOperationStep step ) {
-			return step.getFirstAncestorAssignableTo( org.lgna.croquet.steps.WizardDialogOperationStep.class ).getModel().cardSelectionState;
+		protected ListSelectionState< Card > getCardSelectionState(  org.lgna.croquet.history.ActionOperationStep step ) {
+			return step.getFirstAncestorAssignableTo( org.lgna.croquet.history.WizardDialogOperationStep.class ).getModel().cardSelectionState;
 		}
 	}
 	private static class NextOperation extends WizardOperation {
@@ -106,7 +106,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 			this.setName( "Next >" );
 		}
 		@Override
-		protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
+		protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 			ListSelectionState< Card > cardSelectionState = this.getCardSelectionState(step);
 			int index = cardSelectionState.getSelectedIndex();
 			final int N = cardSelectionState.getItemCount();
@@ -131,7 +131,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 			this.setName( "< Back" );
 		}
 		@Override
-		protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
+		protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 			ListSelectionState< Card > cardSelectionState = this.getCardSelectionState(step);
 			int index = cardSelectionState.getSelectedIndex();
 			if( index > 0 ) {
@@ -249,7 +249,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 	}
 
 	@Override
-	protected String getExplanation( org.lgna.croquet.steps.WizardDialogOperationStep step ) {
+	protected String getExplanation( org.lgna.croquet.history.WizardDialogOperationStep step ) {
 		Card card = this.cardSelectionState.getSelectedItem();
 		if( card != null ) {
 			return card.step.getExplanationIfProcedeButtonShouldBeDisabled();
@@ -282,14 +282,14 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 		this.updateExplanation( null );
 	}
 	@Override
-	public org.lgna.croquet.steps.WizardDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
-		return org.lgna.croquet.steps.TransactionManager.addWizardDialogOperationStep( this, trigger );
+	public org.lgna.croquet.history.WizardDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+		return org.lgna.croquet.history.TransactionManager.addWizardDialogOperationStep( this, trigger );
 	}
 
-	protected abstract WizardStage[] createSteps( org.lgna.croquet.steps.WizardDialogOperationStep step );
+	protected abstract WizardStage[] createSteps( org.lgna.croquet.history.WizardDialogOperationStep step );
 	
 	@Override
-	protected Component< ? > createControlsPanel( org.lgna.croquet.steps.WizardDialogOperationStep step, Dialog dialog ) {
+	protected Component< ? > createControlsPanel( org.lgna.croquet.history.WizardDialogOperationStep step, Dialog dialog ) {
 		Button finishButton = this.getCompleteOperation().createButton();
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.addComponent( BoxUtilities.createHorizontalGlue() );
@@ -304,7 +304,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 		return rv;
 	}
 	@Override
-	protected Component< ? > createMainPanel( org.lgna.croquet.steps.WizardDialogOperationStep step, Dialog dialog, Label explanationLabel ) {
+	protected Component< ? > createMainPanel( org.lgna.croquet.history.WizardDialogOperationStep step, Dialog dialog, Label explanationLabel ) {
 		WizardStage[] stages = this.createSteps( step );
 
 		java.util.ArrayList< Card > cards = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
@@ -359,7 +359,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 				this.setName( "Action Script" );
 			}
 			@Override
-			protected WizardStage[] createSteps( org.lgna.croquet.steps.WizardDialogOperationStep step ) {
+			protected WizardStage[] createSteps( org.lgna.croquet.history.WizardDialogOperationStep step ) {
 				class ReviewPanel extends PageAxisPanel implements WizardStage {
 					public ReviewPanel() {
 						this.addComponent( new Label( "please review your animation" ) );
@@ -435,7 +435,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 				};
 			}
 			@Override
-			protected void release( org.lgna.croquet.steps.WizardDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, boolean isCompleted ) {
+			protected void release( org.lgna.croquet.history.WizardDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, boolean isCompleted ) {
 				if( isCompleted ) {
 					step.commitAndInvokeDo( new org.lgna.croquet.edits.Edit( step ) {
 						@Override

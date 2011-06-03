@@ -176,7 +176,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		//todo: better name
 		protected abstract org.alice.virtualmachine.Resource selectResource();
 		@Override
-		protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 			org.alice.virtualmachine.Resource resource = this.selectResource();
 			if( resource != null ) {
 				step.commitAndInvokeDo( this.createEdit( resource ) );
@@ -361,7 +361,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			this.setName( "Rename..." );
 		}
 		@Override
-		protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.steps.InputDialogOperationStep step) {
+		protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
 			this.resource = ResourceManagerPane.this.getSelectedResource();
 			if( this.resource != null ) {
 				org.alice.ide.name.RenamePane rv;
@@ -382,7 +382,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			}
 		}
 		@Override
-		protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk) {
+		protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 			if( isOk ) {
 				org.alice.ide.name.RenamePane renamePane = step.getMainPanel();
 				final String nextName = renamePane.getNameText();
@@ -477,7 +477,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			this.setName( "Reload Content..." );
 		}
 		@Override
-		protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 			final org.alice.virtualmachine.Resource resource = ResourceManagerPane.this.getSelectedResource();
 			if( resource != null ) {
 				final Capsule prevCapsule;

@@ -51,7 +51,7 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.OperationEdit<org.
 	
 	private transient edu.cmu.cs.dennisc.alice.ast.AbstractCode prevFocusedCode;
 
-	public DeclareMethodEdit( org.lgna.croquet.steps.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+	public DeclareMethodEdit( org.lgna.croquet.history.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		super( completionStep );
 		this.declaringType = declaringType;
 		this.method = method;

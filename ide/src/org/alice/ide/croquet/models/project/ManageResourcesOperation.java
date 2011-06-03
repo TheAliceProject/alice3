@@ -57,11 +57,11 @@ public class ManageResourcesOperation extends org.lgna.croquet.InputDialogOperat
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ManageResourcesOperation handle cancel" );
 	}
 	@Override
-	protected org.alice.ide.resource.manager.ResourceManagerPane prologue(org.lgna.croquet.steps.InputDialogOperationStep step) {
+	protected org.alice.ide.resource.manager.ResourceManagerPane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
 		return new org.alice.ide.resource.manager.ResourceManagerPane();
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
 			step.finish();
 		} else {

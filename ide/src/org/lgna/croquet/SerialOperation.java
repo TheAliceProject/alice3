@@ -45,9 +45,9 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SerialOperation extends SingleThreadOperation<org.lgna.croquet.steps.SerialOperationStep> {
+public abstract class SerialOperation extends SingleThreadOperation<org.lgna.croquet.history.SerialOperationStep> {
 	@Override
-	protected final void perform(org.lgna.croquet.steps.SerialOperationStep step) {
+	protected final void perform(org.lgna.croquet.history.SerialOperationStep step) {
 		for( Operation<?> operation : this.getOperations() ) {
 			//todo?
 			operation.handleFire(step.getTrigger());
@@ -60,8 +60,8 @@ public abstract class SerialOperation extends SingleThreadOperation<org.lgna.cro
 		super( group, id );
 	}
 	@Override
-	public org.lgna.croquet.steps.SerialOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
-		return org.lgna.croquet.steps.TransactionManager.addSerialOperationStep( this, trigger );
+	public org.lgna.croquet.history.SerialOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+		return org.lgna.croquet.history.TransactionManager.addSerialOperationStep( this, trigger );
 	}
 	protected abstract java.util.List< SingleThreadOperation<?> > getOperations();
 }

@@ -72,7 +72,7 @@ public class SelectDirectoryActionOperation extends ActionOperation {
 	}
 
 	@Override
-	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		//todo: create edit
 		this.treeSelectionState.setSelection( this.treeNode );
 		step.finish();

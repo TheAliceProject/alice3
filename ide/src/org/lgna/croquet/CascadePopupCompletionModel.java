@@ -13,7 +13,7 @@ public final class CascadePopupCompletionModel<B> extends CompletionModel {
 	protected void localize() {
 	}
 	@Override
-	public org.lgna.croquet.steps.Step<?> fire(org.lgna.croquet.Trigger trigger) {
+	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.Trigger trigger) {
 		throw new RuntimeException();
 	}
 	@Override

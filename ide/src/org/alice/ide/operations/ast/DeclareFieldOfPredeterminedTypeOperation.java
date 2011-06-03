@@ -63,13 +63,13 @@ public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGallery
 		return this.createFieldPane.getDeclaringType();
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue(org.lgna.croquet.steps.InputDialogOperationStep context) {
+	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue(org.lgna.croquet.history.InputDialogOperationStep context) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = this.valueType.getFirstTypeEncounteredDeclaredInJava();
 		this.createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane( ownerType, typeInJava.getClassReflectionProxy().getReification() );
 		return this.createFieldPane;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.steps.InputDialogOperationStep context ) {
+	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		//dialog title: "Create New Instance"
 		return this.createFieldPane.getInputValue();
 	}

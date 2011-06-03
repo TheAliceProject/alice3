@@ -504,7 +504,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 	
 	protected void commitEdit( E prevValue, E nextValue, org.lgna.croquet.Trigger trigger ) {
-		org.lgna.croquet.steps.ListSelectionStateChangeStep< E > step = org.lgna.croquet.steps.TransactionManager.addListSelectionStateChangeStep( this, trigger );
+		org.lgna.croquet.history.ListSelectionStateChangeStep< E > step = org.lgna.croquet.history.TransactionManager.addListSelectionStateChangeStep( this, trigger );
 		org.lgna.croquet.edits.ListSelectionStateEdit< E > edit = new org.lgna.croquet.edits.ListSelectionStateEdit< E >( step, prevValue, nextValue );
 		step.commitAndInvokeDo( edit );
 //		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
@@ -514,7 +514,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 
 	@Override
-	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		assert originalEdit instanceof org.lgna.croquet.edits.ListSelectionStateEdit;
 		org.lgna.croquet.edits.ListSelectionStateEdit< E > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< E >)originalEdit;
 		this.commitEdit( listSelectionStateEdit.getPreviousValue(), listSelectionStateEdit.getNextValue(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
@@ -522,7 +522,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	}
 
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		if( edit instanceof org.lgna.croquet.edits.ListSelectionStateEdit ) {
 			org.lgna.croquet.edits.ListSelectionStateEdit< E > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< E >)edit;
 			rv.append( "Select " );

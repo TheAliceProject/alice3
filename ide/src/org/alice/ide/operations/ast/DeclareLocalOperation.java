@@ -52,11 +52,11 @@ public class DeclareLocalOperation extends org.alice.ide.croquet.models.InputDia
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateLocalPane prologue(org.lgna.croquet.steps.InputDialogOperationStep step) {
+	protected org.alice.ide.declarationpanes.CreateLocalPane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
 		return new org.alice.ide.declarationpanes.CreateLocalPane( this.blockStatementIndexPair );
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.CreateLocalPane createLocalPane = step.getMainPanel();
 			edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = createLocalPane.getInputValue();

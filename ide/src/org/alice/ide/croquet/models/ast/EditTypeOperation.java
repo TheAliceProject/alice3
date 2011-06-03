@@ -76,13 +76,13 @@ public class EditTypeOperation extends org.lgna.croquet.InputDialogOperation {
 		return new java.awt.Dimension( 640, 480 );
 	}
 	@Override
-	protected org.alice.ide.editorstabbedpane.EditTypePanel prologue( org.lgna.croquet.steps.InputDialogOperationStep step ) {
+	protected org.alice.ide.editorstabbedpane.EditTypePanel prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
 		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
 		int projectHistoryIndex = projectHistoryManager.getInsertionIndex();
 		return new org.alice.ide.editorstabbedpane.EditTypePanel( this.type, projectHistoryIndex );
 	}
 	@Override
-	protected void epilogue( org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk ) {
+	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk ) {
 		org.alice.ide.editorstabbedpane.EditTypePanel editTypePanel = step.getMainPanel();
 		if( isOk ) {
 			step.finish();

@@ -50,7 +50,7 @@ public class DropNoteUtilities {
 	private DropNoteUtilities() {
 		throw new AssertionError();
 	}
-	public static boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.steps.DropStep dropStep, org.lgna.cheshire.events.Event event ) {
+	public static boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.DropStep dropStep, org.lgna.cheshire.events.Event event ) {
 		if( event instanceof org.lgna.cheshire.events.DropPendedEvent ) {
 			org.lgna.cheshire.events.DropPendedEvent dropPendedEvent = (org.lgna.cheshire.events.DropPendedEvent)event;
 			return dropPendedEvent.getDropSite().equals( dropStep.getDropSite() );
@@ -58,12 +58,12 @@ public class DropNoteUtilities {
 			return false;
 		}
 	}
-	public static org.lgna.stencil.Feature createHole( org.lgna.croquet.steps.DropStep dropStep ) {
+	public static org.lgna.stencil.Feature createHole( org.lgna.croquet.history.DropStep dropStep ) {
 		org.lgna.cheshire.stencil.features.Hole rv = new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( dropStep ), org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH );
 		rv.setHeightConstraint( 64 );
 		return rv;			
 	}
-	public static org.lgna.stencil.Feature createPreviewHole( org.lgna.croquet.steps.DropStep dropStep ) {
+	public static org.lgna.stencil.Feature createPreviewHole( org.lgna.croquet.history.DropStep dropStep ) {
 		return new org.lgna.cheshire.stencil.features.DropPreviewHole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( dropStep ), null );
 	}
 }

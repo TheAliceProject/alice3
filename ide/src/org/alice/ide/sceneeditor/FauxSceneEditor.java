@@ -84,18 +84,18 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 		// TODO Auto-generated method stub
 		
 	}
-	public org.lgna.croquet.Model dragDropped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public org.lgna.croquet.Model dragDropped(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		return null;
 	}
-	public void dragEntered(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public void dragEntered(org.lgna.croquet.history.DragStep dragAndDropContext) {
 	}
-	public void dragExited(org.lgna.croquet.steps.DragStep dragAndDropContext, boolean isDropRecipient) {
+	public void dragExited(org.lgna.croquet.history.DragStep dragAndDropContext, boolean isDropRecipient) {
 	}
-	public void dragStarted(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public void dragStarted(org.lgna.croquet.history.DragStep dragAndDropContext) {
 	}
-	public void dragStopped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public void dragStopped(org.lgna.croquet.history.DragStep dragAndDropContext) {
 	}
-	public org.lgna.croquet.DropSite dragUpdated(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public org.lgna.croquet.DropSite dragUpdated(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		return null;
 	}
 	public ViewController<?, ?> getViewController() {

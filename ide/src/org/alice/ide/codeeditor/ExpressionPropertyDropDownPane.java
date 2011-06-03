@@ -92,16 +92,16 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source ) {
 		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
 	}
-	public void dragStarted( org.lgna.croquet.steps.DragStep context ) {
+	public void dragStarted( org.lgna.croquet.history.DragStep context ) {
 	}
-	public void dragEntered( org.lgna.croquet.steps.DragStep context ) {
+	public void dragEntered( org.lgna.croquet.history.DragStep context ) {
 //		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		context.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height, -1 );
 	}
-	public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.steps.DragStep context ) {
+	public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep context ) {
 		return null;
 	}
-	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.steps.DragStep context ) {
+	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep context ) {
 		org.lgna.croquet.Model rv;
 		org.lgna.croquet.components.DragComponent source = context.getDragSource();
 //		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
@@ -131,11 +131,11 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.MenuBu
 		}
 		return rv;
 	}
-	public void dragExited( org.lgna.croquet.steps.DragStep context, boolean isDropRecipient ) {
+	public void dragExited( org.lgna.croquet.history.DragStep context, boolean isDropRecipient ) {
 //		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 //		source.hideDropProxyIfNecessary();
 	}
-	public void dragStopped( org.lgna.croquet.steps.DragStep context ) {
+	public void dragStopped( org.lgna.croquet.history.DragStep context ) {
 	}
 	
 	public org.lgna.croquet.components.ViewController<?,?> getViewController() {

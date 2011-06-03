@@ -72,12 +72,12 @@ public class DeclareMethodParameterOperation extends org.alice.ide.croquet.model
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareMethodParameterOperation >( this, this.method, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateMethodParameterPane prologue(org.lgna.croquet.steps.InputDialogOperationStep step) {
+	protected org.alice.ide.declarationpanes.CreateMethodParameterPane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
 		//todo: create before hand and refresh at this point
 		return new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = step.getMainPanel();
 			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.getInputValue();

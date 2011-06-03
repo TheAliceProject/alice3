@@ -50,7 +50,7 @@ public final class BooleanStateEdit extends StateEdit<org.lgna.croquet.BooleanSt
 	private final boolean prevValue;
 	private final boolean nextValue;
 
-	public BooleanStateEdit( org.lgna.croquet.steps.CompletionStep< org.lgna.croquet.BooleanState > completionStep, boolean nextValue ) {
+	public BooleanStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.BooleanState > completionStep, boolean nextValue ) {
 		super( completionStep );
 		this.prevValue = !nextValue;
 		this.nextValue = nextValue;

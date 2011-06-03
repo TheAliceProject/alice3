@@ -734,7 +734,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate extra enableRendering" );
 		}
 	}
-	public void handleDragStarted( org.lgna.croquet.steps.DragStep dragAndDropContext ) {
+	public void handleDragStarted( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		this.potentialDragSource = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
@@ -747,19 +747,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		this.disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
-	public void handleDragEnteredDropReceptor( org.lgna.croquet.steps.DragStep dragAndDropContext ) {
+	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		//		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
 		//		if( this.stencil != null && this.holes != null ) {
 		//			this.stencil.repaint();
 		//		}
 	}
-	public void handleDragExitedDropReceptor( org.lgna.croquet.steps.DragStep dragAndDropContext ) {
+	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		this.currentDropReceptorComponent = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
 	}
-	public void handleDragStopped( org.lgna.croquet.steps.DragStep dragAndDropContext ) {
+	public void handleDragStopped( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		this.enableRendering();
 	}
 

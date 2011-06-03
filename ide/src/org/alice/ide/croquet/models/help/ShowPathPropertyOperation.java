@@ -55,7 +55,7 @@ public abstract class ShowPathPropertyOperation extends org.alice.ide.operations
 		return this.propertyName;
 	}
 	@Override
-	protected void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
+	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 		org.lgna.croquet.components.RowsSpringPanel formPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 2 ) {
 			private org.lgna.croquet.components.Component< ? >[][] createComponentRowsForSystemProperty( String name, String separator ) {
 				String value = System.getProperty( name );

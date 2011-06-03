@@ -65,27 +65,27 @@ class EnumConstantFillIn<T extends Enum< T >> extends org.lgna.croquet.CascadeFi
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.steps.CascadeFillInPrepStep< T, Void > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadeFillInPrepStep< T, Void > context ) {
 		return null;
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.steps.CascadeFillInPrepStep< T, Void > context ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.history.CascadeFillInPrepStep< T, Void > context ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.steps.CascadeFillInPrepStep< T, Void > context ) {
+	public String getMenuItemText( org.lgna.croquet.history.CascadeFillInPrepStep< T, Void > context ) {
 		return this.value.name();
 	}
 
 	@Override
-	public T createValue( org.lgna.croquet.steps.CascadeFillInPrepStep< T, Void > context ) {
+	public T createValue( org.lgna.croquet.history.CascadeFillInPrepStep< T, Void > context ) {
 		return this.value;
 	}
 
 	@Override
-	public T getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep< T, Void > context ) {
+	public T getTransientValue( org.lgna.croquet.history.CascadeFillInPrepStep< T, Void > context ) {
 		return this.value;
 	}
 }
@@ -99,7 +99,7 @@ class EnumBlank<T extends Enum< T >> extends org.lgna.croquet.CascadeBlank< T > 
 	}
 
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep< T > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankStep< T > context ) {
 		for( T value : this.cls.getEnumConstants() ) {
 			rv.add( EnumConstantFillIn.getInstance( value ) );
 		}
@@ -129,27 +129,27 @@ class IntegerLiteralFillIn extends org.lgna.croquet.CascadeFillIn< Integer, Void
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadeFillInPrepStep< Integer, Void > context ) {
 		return null;
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.history.CascadeFillInPrepStep< Integer, Void > context ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
+	public String getMenuItemText( org.lgna.croquet.history.CascadeFillInPrepStep< Integer, Void > context ) {
 		return Integer.toString( this.value );
 	}
 
 	@Override
-	public Integer createValue( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
+	public Integer createValue( org.lgna.croquet.history.CascadeFillInPrepStep< Integer, Void > context ) {
 		return this.value;
 	}
 
 	@Override
-	public Integer getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
+	public Integer getTransientValue( org.lgna.croquet.history.CascadeFillInPrepStep< Integer, Void > context ) {
 		return this.value;
 	}
 }
@@ -168,27 +168,27 @@ class CustomIntegerFillIn extends org.lgna.croquet.CascadeFillIn< Integer, Void 
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadeFillInPrepStep< Integer, Void > context ) {
 		return null;
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.history.CascadeFillInPrepStep< Integer, Void > context ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
+	public String getMenuItemText( org.lgna.croquet.history.CascadeFillInPrepStep< Integer, Void > context ) {
 		return "custom integer...";
 	}
 
 	@Override
-	public Integer createValue( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
+	public Integer createValue( org.lgna.croquet.history.CascadeFillInPrepStep< Integer, Void > context ) {
 		return 42;
 	}
 
 	@Override
-	public Integer getTransientValue( org.lgna.croquet.steps.CascadeFillInPrepStep< Integer, Void > context ) {
+	public Integer getTransientValue( org.lgna.croquet.history.CascadeFillInPrepStep< Integer, Void > context ) {
 		return null;
 	}
 }
@@ -207,7 +207,7 @@ class IntegerBlank extends org.lgna.croquet.CascadeBlank< Integer > {
 	}
 
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem> updateChildren( java.util.List< org.lgna.croquet.CascadeItem> rv, org.lgna.croquet.steps.CascadeBlankStep< Integer > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem> updateChildren( java.util.List< org.lgna.croquet.CascadeItem> rv, org.lgna.croquet.history.CascadeBlankStep< Integer > context ) {
 		for( Integer value : new int[] { 1, 2, 3, 4, 5 } ) {
 			rv.add( IntegerLiteralFillIn.getInstance( value ) );
 		}
@@ -242,7 +242,7 @@ class MyCascadeOperation extends org.lgna.croquet.CascadePopupPrepModel< Object 
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.steps.CascadePopupCompletionStep< Object > step, final java.lang.Object[] values ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< Object > step, final java.lang.Object[] values ) {
 		return new org.lgna.croquet.edits.Edit< org.lgna.croquet.CascadePopupCompletionModel<Object> >( null ) {
 			@Override
 			protected void doOrRedoInternal( boolean isDo ) {

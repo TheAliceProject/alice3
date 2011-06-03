@@ -53,7 +53,7 @@ public class TutorialFilterer implements org.lgna.cheshire.Filterer {
 			org.lgna.cheshire.Chapter chapter = chapterIterator.next();
 			if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
 				org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
-				org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
+				org.lgna.croquet.history.Transaction transaction = transactionChapter.getTransaction();
 				if( transaction.isSuccessfullyCompleted() ) {
 //					java.util.ListIterator< org.lgna.croquet.steps.PrepStep< ? > > prepStepListIterator = transaction.prepStepListIterator();
 //					while( prepStepListIterator.hasNext() ) {

@@ -46,7 +46,7 @@ package org.lgna.croquet.edits;
  * @author Dennis Cosgrove
  */
 public abstract class OperationEdit<M extends org.lgna.croquet.Operation<?>> extends org.lgna.croquet.edits.Edit<M> {
-	public OperationEdit( org.lgna.croquet.steps.OperationStep< M > completionStep ) {
+	public OperationEdit( org.lgna.croquet.history.OperationStep< M > completionStep ) {
 		super( completionStep );
 	}
 	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {

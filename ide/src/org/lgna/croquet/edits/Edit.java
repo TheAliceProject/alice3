@@ -52,12 +52,12 @@ import org.lgna.croquet.UserInformation;
  * @author Dennis Cosgrove
  */
 public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private transient final org.lgna.croquet.steps.CompletionStep< M > completionStep;
-	public Edit( org.lgna.croquet.steps.CompletionStep< M > completionStep ) {
+	private transient final org.lgna.croquet.history.CompletionStep< M > completionStep;
+	public Edit( org.lgna.croquet.history.CompletionStep< M > completionStep ) {
 		this.completionStep = completionStep;
 	}
 	public Edit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		this.completionStep = (org.lgna.croquet.steps.CompletionStep< M >) step;
+		this.completionStep = (org.lgna.croquet.history.CompletionStep< M >) step;
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
@@ -79,7 +79,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 			return null;
 		}
 	}
-	public org.lgna.croquet.steps.CompletionStep< M > getCompletionStep() {
+	public org.lgna.croquet.history.CompletionStep< M > getCompletionStep() {
 		return this.completionStep;
 	}
 //	public void setCompletionStep( org.lgna.croquet.steps.CompletionStep< M > completionStep ) {

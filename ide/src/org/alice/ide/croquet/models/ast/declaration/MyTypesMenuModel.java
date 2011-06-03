@@ -56,7 +56,7 @@ public class MyTypesMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 		super( java.util.UUID.fromString( "71f303de-54a8-481e-b57f-f5c8ade814ea" ) );
 	}
 	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep context ) {
+	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
 		java.util.List< org.lgna.croquet.MenuItemPrepModel > myTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > aliceTypes = org.alice.ide.IDE.getSingleton().getTypesDeclaredInAlice();

@@ -65,7 +65,7 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.m
 	protected FieldDeclaredInAlice getField() {
 		return this.field;
 	}
-	protected org.alice.ide.declarationpanes.EditFieldPane prologue( org.lgna.croquet.steps.InputDialogOperationStep step, java.util.Set< FieldDeclaredInAlice > referencedFields, java.util.Set< FieldDeclaredInAlice > reassignedFields ) {
+	protected org.alice.ide.declarationpanes.EditFieldPane prologue( org.lgna.croquet.history.InputDialogOperationStep step, java.util.Set< FieldDeclaredInAlice > referencedFields, java.util.Set< FieldDeclaredInAlice > reassignedFields ) {
 		if( this.field != null ) {
 			this.prevFinalVolatileOrNeither = field.finalVolatileOrNeither.getValue();
 			this.prevValueType = field.valueType.getValue();
@@ -77,7 +77,7 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.m
 		}
 	}
 	@Override
-	protected void epilogue( org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk ) {
+	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk ) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.EditFieldPane editFieldPane = step.getMainPanel();
 			FieldDeclaredInAlice tempField = editFieldPane.getInputValue();

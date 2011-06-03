@@ -344,11 +344,11 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	}
 
 	@Override
-	protected org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane prologue( org.lgna.croquet.steps.InputDialogOperationStep context ) {
+	protected org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane prologue( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		return new CreateTextPane(); 
 	}
 	
-	private edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.moveandturn.Text > createFieldAndInstance( org.lgna.croquet.steps.InputDialogOperationStep context ) {
+	private edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.moveandturn.Text > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		//"Create Text"
 		CreateTextPane createTextPane = context.getMainPanel();
 		org.alice.apis.moveandturn.Text text = createTextPane.createText();
@@ -372,7 +372,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	}
 	
 	@Override
-	protected final void epilogue(org.lgna.croquet.steps.InputDialogOperationStep context, boolean isOk) {
+	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep context, boolean isOk) {
 		if( isOk ) {
 			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.moveandturn.Text> tuple = this.createFieldAndInstance( context );
 			if( tuple != null ) {

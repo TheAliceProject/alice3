@@ -262,10 +262,10 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			}
 		}
 	}
-	public final void dragStarted( org.lgna.croquet.steps.DragStep context ) {
+	public final void dragStarted( org.lgna.croquet.history.DragStep context ) {
 	}
 
-	public final void dragEntered( org.lgna.croquet.steps.DragStep context ) {
+	public final void dragEntered( org.lgna.croquet.history.DragStep context ) {
 		org.lgna.croquet.components.DragComponent source = context.getDragSource();
 		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
 		this.repaint();
@@ -318,7 +318,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		}
 		return rv;
 	}
-	public final BlockStatementIndexPair dragUpdated( org.lgna.croquet.steps.DragStep context ) {
+	public final BlockStatementIndexPair dragUpdated( org.lgna.croquet.history.DragStep context ) {
 		org.lgna.croquet.components.DragComponent source = context.getDragSource();
 		if( source != null ) {
 			java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
@@ -418,7 +418,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			return null;
 		}
 	}
-	public final org.lgna.croquet.Model dragDropped( final org.lgna.croquet.steps.DragStep context ) {
+	public final org.lgna.croquet.Model dragDropped( final org.lgna.croquet.history.DragStep context ) {
 		org.lgna.croquet.Model rv = null;
 		final org.lgna.croquet.components.DragComponent source = context.getDragSource();
 		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
@@ -514,7 +514,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			}
 		} );
 	}
-	public final void dragExited( org.lgna.croquet.steps.DragStep context, boolean isDropRecipient ) {
+	public final void dragExited( org.lgna.croquet.history.DragStep context, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
 		//todo: listen to context
 		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = true;
@@ -522,7 +522,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = false;
 		this.repaint();
 	}
-	public final void dragStopped( org.lgna.croquet.steps.DragStep context ) {
+	public final void dragStopped( org.lgna.croquet.history.DragStep context ) {
 		EPIC_HACK_desiredStatementListPropertyPane = null;
 		EPIC_HACK_desiredIndex = -1;
 	}

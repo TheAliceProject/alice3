@@ -81,7 +81,7 @@ public abstract class MenuModel extends MenuItemPrepModel {
 		return this.getName();
 	}
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Select <strong>" + this.getTutorialNoteName() + "</strong>" );
 		return rv;
 	}
@@ -109,9 +109,9 @@ public abstract class MenuModel extends MenuItemPrepModel {
 	}
 	
 	
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep context ) {
+	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 	}
-	public void handlePopupMenuEpilogue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep context ) {
+	public void handlePopupMenuEpilogue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 	}
 	
 //	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {

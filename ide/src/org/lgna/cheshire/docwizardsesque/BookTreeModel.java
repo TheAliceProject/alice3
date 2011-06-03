@@ -55,7 +55,7 @@ public class BookTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 		return this.book;
 	}
 	public boolean isLeaf( Object node ) {
-		return node instanceof org.lgna.croquet.steps.Step< ? >;
+		return node instanceof org.lgna.croquet.history.Step< ? >;
 	}
 	public int getIndexOfChild( Object parent, Object child ) {
 		if( parent instanceof org.lgna.cheshire.Book ) {
@@ -65,7 +65,7 @@ public class BookTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 			org.lgna.cheshire.Chapter chapter = (org.lgna.cheshire.Chapter)parent;
 			if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
 				org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
-				return transactionChapter.getTransaction().getIndexOfChildStep( (org.lgna.croquet.steps.Step< ? >)child );
+				return transactionChapter.getTransaction().getIndexOfChildStep( (org.lgna.croquet.history.Step< ? >)child );
 			}
 		}
 		return -1;
@@ -98,7 +98,7 @@ public class BookTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 	}
 	private java.util.List< Object > updatePath( java.util.List< Object > rv, Object node ) {
 		Object parent;
-		if( node instanceof org.lgna.croquet.steps.Transaction ) {
+		if( node instanceof org.lgna.croquet.history.Transaction ) {
 //			parent = ((org.lgna.croquet.steps.Transaction)node).getParent();
 //			if( parent instanceof org.lgna.croquet.steps.TransactionHistory ) {
 //				org.lgna.croquet.steps.TransactionHistory transactionHistory = (org.lgna.croquet.steps.TransactionHistory)parent;
@@ -107,8 +107,8 @@ public class BookTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 //				}
 //			}
 			parent = this.book;
-		} else if( node instanceof org.lgna.croquet.steps.Step ) {
-			parent = ((org.lgna.croquet.steps.Step)node).getParent();
+		} else if( node instanceof org.lgna.croquet.history.Step ) {
+			parent = ((org.lgna.croquet.history.Step)node).getParent();
 		} else {
 			parent = null;
 		}

@@ -47,7 +47,7 @@ package org.alice.ide.croquet.edits;
  * @author Dennis Cosgrove
  */
 public final class DependentEdit<M extends org.lgna.croquet.Operation<?>> extends org.lgna.croquet.edits.OperationEdit< M > {
-	public DependentEdit( org.lgna.croquet.steps.OperationStep completionStep ) {
+	public DependentEdit( org.lgna.croquet.history.OperationStep completionStep ) {
 		super( completionStep );
 	}
 	public DependentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
@@ -58,7 +58,7 @@ public final class DependentEdit<M extends org.lgna.croquet.Operation<?>> extend
 		super.encode( binaryEncoder );
 	}
 	private org.alice.ide.croquet.models.ResponsibleModel getResponsibleModel() {
-		org.lgna.croquet.steps.CompletionStep< ? > step = this.getCompletionStep();
+		org.lgna.croquet.history.CompletionStep< ? > step = this.getCompletionStep();
 		if( step != null ) {
 			org.lgna.croquet.CompletionModel model = step.getModel();
 			if( model instanceof org.alice.ide.croquet.models.ResponsibleModel ) {

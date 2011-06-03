@@ -67,7 +67,7 @@ public class ParameterBlank extends ExpressionBlank {
 	@Override
 	protected java.util.List<org.lgna.croquet.CascadeItem> updateChildren(
 			java.util.List<org.lgna.croquet.CascadeItem> rv,
-			org.lgna.croquet.steps.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
+			org.lgna.croquet.history.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
 		rv.add( ParameterNameSeparator.getInstance( this.parameter ) );
 		return super.updateChildren(rv, context);
 	}

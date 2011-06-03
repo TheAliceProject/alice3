@@ -49,7 +49,7 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit< org.lgn
 	private final edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 	private final edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 
-	public ExpressionPropertyEdit( org.lgna.croquet.steps.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
+	public ExpressionPropertyEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
 		super( completionStep );
 		this.prevExpression = prevExpression;
 		this.nextExpression = nextExpression;

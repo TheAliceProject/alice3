@@ -56,7 +56,7 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 		super( java.util.UUID.fromString( "b34e805e-e6ef-4f08-af53-df98e1653732" ) );
 	}
 	@Override
-	protected org.lgna.croquet.components.Container<?> createContentPane(org.lgna.croquet.steps.InformationDialogOperationStep step, org.lgna.croquet.components.Dialog dialog) {
+	protected org.lgna.croquet.components.Container<?> createContentPane(org.lgna.croquet.history.InformationDialogOperationStep step, org.lgna.croquet.components.Dialog dialog) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = ide.getStrippedProgramType();
 		if( programType != null ) {
@@ -122,6 +122,6 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 		}
 	}
 	@Override
-	protected void releaseContentPane(org.lgna.croquet.steps.InformationDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane) {
+	protected void releaseContentPane(org.lgna.croquet.history.InformationDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane) {
 	}
 }

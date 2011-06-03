@@ -46,8 +46,8 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadePopupOperationNote extends PopupPrepNote< org.lgna.croquet.steps.CascadePopupPrepStep< ? > > {
-	public CascadePopupOperationNote( org.lgna.croquet.steps.CascadePopupPrepStep< ? > step ) {
+public class CascadePopupOperationNote extends PopupPrepNote< org.lgna.croquet.history.CascadePopupPrepStep< ? > > {
+	public CascadePopupOperationNote( org.lgna.croquet.history.CascadePopupPrepStep< ? > step ) {
 		super( step );
 	}
 }

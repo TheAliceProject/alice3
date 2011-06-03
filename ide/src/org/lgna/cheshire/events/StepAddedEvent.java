@@ -47,11 +47,11 @@ package org.lgna.cheshire.events;
  * @author Dennis Cosgrove
  */
 public class StepAddedEvent implements Event {
-	private final org.lgna.croquet.steps.Step< ? > step;
-	public StepAddedEvent( org.lgna.croquet.steps.Step< ? > step ) {
+	private final org.lgna.croquet.history.Step< ? > step;
+	public StepAddedEvent( org.lgna.croquet.history.Step< ? > step ) {
 		this.step = step;
 	}
-	public org.lgna.croquet.steps.Step< ? > getStep() {
+	public org.lgna.croquet.history.Step< ? > getStep() {
 		return this.step;
 	}
 }

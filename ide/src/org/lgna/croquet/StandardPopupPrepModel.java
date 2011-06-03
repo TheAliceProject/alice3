@@ -47,7 +47,7 @@ import org.lgna.croquet.resolvers.CodableResolver;
 /**
  * @author Dennis Cosgrove
  */
-public final class StandardPopupPrepModel extends PopupPrepModel< org.lgna.croquet.steps.StandardPopupPrepStep > {
+public final class StandardPopupPrepModel extends PopupPrepModel< org.lgna.croquet.history.StandardPopupPrepStep > {
 	private MenuModel menuModel;
 	/*package-private*/ StandardPopupPrepModel( MenuModel menuModel ) {
 		super( java.util.UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
@@ -68,8 +68,8 @@ public final class StandardPopupPrepModel extends PopupPrepModel< org.lgna.croqu
 	}
 	
 	@Override
-	public org.lgna.croquet.steps.StandardPopupPrepStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
-		return org.lgna.croquet.steps.TransactionManager.addStandardPopupOperationStep( this, trigger );
+	public org.lgna.croquet.history.StandardPopupPrepStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+		return org.lgna.croquet.history.TransactionManager.addStandardPopupOperationStep( this, trigger );
 	}
 	
 //	@Override
@@ -117,7 +117,7 @@ public final class StandardPopupPrepModel extends PopupPrepModel< org.lgna.croqu
 	}
 	
 	@Override
-	protected void perform( final org.lgna.croquet.steps.StandardPopupPrepStep step, final org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
+	protected void perform( final org.lgna.croquet.history.StandardPopupPrepStep step, final org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
 		//note: do not call super
 		final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this ) {
 			@Override

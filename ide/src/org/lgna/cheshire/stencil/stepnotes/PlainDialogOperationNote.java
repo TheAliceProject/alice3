@@ -46,8 +46,8 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class PlainDialogOperationNote extends DialogOperationNote< org.lgna.croquet.steps.PlainDialogOperationStep > {
-	public PlainDialogOperationNote( org.lgna.croquet.steps.PlainDialogOperationStep step ) {
+public class PlainDialogOperationNote extends DialogOperationNote< org.lgna.croquet.history.PlainDialogOperationStep > {
+	public PlainDialogOperationNote( org.lgna.croquet.history.PlainDialogOperationStep step ) {
 		super( step );
 	}
 }

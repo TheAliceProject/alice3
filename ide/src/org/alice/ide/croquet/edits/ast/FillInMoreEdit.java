@@ -48,7 +48,7 @@ package org.alice.ide.croquet.edits.ast;
 public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.CascadePopupCompletionModel<edu.cmu.cs.dennisc.alice.ast.Expression> > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
 
-	public FillInMoreEdit( org.lgna.croquet.steps.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
+	public FillInMoreEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
 		super( completionStep );
 		this.argumentExpression = argumentExpression;
 	}

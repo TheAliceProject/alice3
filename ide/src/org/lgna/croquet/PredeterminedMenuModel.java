@@ -69,7 +69,7 @@ public class PredeterminedMenuModel extends MenuModel {
 		return rv;
 	}
 	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep context ) {
+	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
 		MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
 	}

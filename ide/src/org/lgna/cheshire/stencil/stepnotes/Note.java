@@ -46,7 +46,7 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Note<S extends org.lgna.croquet.steps.Step<?>> extends org.lgna.cheshire.stencil.Note {
+public abstract class Note<S extends org.lgna.croquet.history.Step<?>> extends org.lgna.cheshire.stencil.Note {
 	private final S step;
 	public Note( S step ) {
 		this.step = step;
@@ -58,7 +58,7 @@ public abstract class Note<S extends org.lgna.croquet.steps.Step<?>> extends org
 	}
 	@Override
 	protected String getText() {
-		org.lgna.croquet.steps.Transaction transaction = this.step.getParent();
+		org.lgna.croquet.history.Transaction transaction = this.step.getParent();
 		org.lgna.croquet.edits.Edit< ? > edit = transaction.getEdit();
 		org.lgna.croquet.UserInformation userInformation = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getUserInformation();
 		return this.step.getTutorialNoteText( edit, userInformation );

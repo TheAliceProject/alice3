@@ -46,7 +46,7 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StateChangeNote< S extends org.lgna.croquet.steps.StateChangeStep<?> > extends CompletionNote< S > {
+public abstract class StateChangeNote< S extends org.lgna.croquet.history.StateChangeStep<?> > extends CompletionNote< S > {
 	public StateChangeNote( S step ) {
 		super( step );
 	}

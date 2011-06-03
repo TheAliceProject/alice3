@@ -1962,7 +1962,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 	}
 
-	public void dragStarted(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public void dragStarted(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		dragSource.showDragProxy();
 		org.lgna.croquet.Model model = dragSource.getLeftButtonClickModel();
@@ -1972,28 +1972,28 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
-	public void dragStopped(org.lgna.croquet.steps.DragStep dragAndDropContext) 
+	public void dragStopped(org.lgna.croquet.history.DragStep dragAndDropContext) 
 	{
 		this.globalDragAdapter.dragExited(dragAndDropContext);
 	}
 
-	public void dragEntered(org.lgna.croquet.steps.DragStep dragAndDropContext) 
+	public void dragEntered(org.lgna.croquet.history.DragStep dragAndDropContext) 
 	{
 	}
-	public void dragExited(org.lgna.croquet.steps.DragStep dragAndDropContext, boolean isDropRecipient) 
+	public void dragExited(org.lgna.croquet.history.DragStep dragAndDropContext, boolean isDropRecipient) 
 	{
 	}
 
 	private boolean overLookingGlass = false;
 	
-	private boolean isDropLocationOverLookingGlass(org.lgna.croquet.steps.DragStep dragAndDropContext)
+	private boolean isDropLocationOverLookingGlass(org.lgna.croquet.history.DragStep dragAndDropContext)
 	{
 		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.lookingGlassPanel.getAwtComponent() );
 		return this.lookingGlassPanel.getAwtComponent().contains(pointInLookingGlass);
 	}
 	
-	public org.lgna.croquet.DropSite dragUpdated(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public org.lgna.croquet.DropSite dragUpdated(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{
 			if (!overLookingGlass)
@@ -2022,7 +2022,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent;
 	}
 	
-	public org.lgna.croquet.Model dragDropped(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public org.lgna.croquet.Model dragDropped(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{

@@ -126,7 +126,7 @@ public class MoveMarkerToActiveCameraActionOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		final MarkerWithIcon cameraMarker;
 		final org.alice.apis.moveandturn.AbstractCamera camera;
 		final org.alice.apis.moveandturn.PointOfView prevPOV;

@@ -51,7 +51,7 @@ public abstract class PrintOperation extends org.alice.ide.operations.Inconseque
 	}
 	protected abstract java.awt.print.Printable getPrintable();
 	@Override
-	protected final void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
+	protected final void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 		java.awt.print.PrinterJob job = java.awt.print.PrinterJob.getPrinterJob();
 		java.awt.print.Printable printable = this.getPrintable();
 		if( printable != null ) {

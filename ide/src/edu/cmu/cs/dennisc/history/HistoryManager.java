@@ -49,7 +49,7 @@ public class HistoryManager {
 	private HistoryManager() {
 		throw new AssertionError();
 	}
-	private static org.lgna.croquet.steps.TransactionManager.EventObserver eventObserver = new org.lgna.croquet.steps.TransactionManager.EventObserver() {
+	private static org.lgna.croquet.history.TransactionManager.EventObserver eventObserver = new org.lgna.croquet.history.TransactionManager.EventObserver() {
 		public void firingEvent( org.lgna.cheshire.events.Event event ) {
 		}
 		public void firedEvent( org.lgna.cheshire.events.Event event ) {
@@ -60,7 +60,7 @@ public class HistoryManager {
 		}
 	};
 	static {
-		org.lgna.croquet.steps.TransactionManager.addEventObserver( HistoryManager.eventObserver );
+		org.lgna.croquet.history.TransactionManager.addEventObserver( HistoryManager.eventObserver );
 	}
 
 	private static java.util.Map< org.lgna.croquet.Group, HistoryManager > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

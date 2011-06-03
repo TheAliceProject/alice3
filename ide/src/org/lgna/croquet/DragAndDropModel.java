@@ -54,7 +54,7 @@ public abstract class DragAndDropModel extends PrepModel {
 	}
 	
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Drag..." );
 		return rv;
 	}
@@ -70,13 +70,13 @@ public abstract class DragAndDropModel extends PrepModel {
 	}
 	
 	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource );
-	public abstract void handleDragStarted( org.lgna.croquet.steps.DragStep step );
-	public abstract void handleDragEnteredDropReceptor( org.lgna.croquet.steps.DragStep step );
-	public abstract void handleDragExitedDropReceptor( org.lgna.croquet.steps.DragStep step );
-	public abstract void handleDragStopped( org.lgna.croquet.steps.DragStep step );
+	public abstract void handleDragStarted( org.lgna.croquet.history.DragStep step );
+	public abstract void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step );
+	public abstract void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step );
+	public abstract void handleDragStopped( org.lgna.croquet.history.DragStep step );
 	
 	@Override
-	public org.lgna.croquet.steps.Step<?> fire(org.lgna.croquet.Trigger trigger) {
+	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.Trigger trigger) {
 		throw new RuntimeException();
 	}
 }

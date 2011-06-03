@@ -51,9 +51,9 @@ public abstract class InconsequentialActionOperation extends org.alice.ide.opera
 	public InconsequentialActionOperation( java.util.UUID individualUUID ) {
 		super( INCONSEQUENTIAL_GROUP, individualUUID );
 	}
-	protected abstract void performInternal( org.lgna.croquet.steps.ActionOperationStep step );
+	protected abstract void performInternal( org.lgna.croquet.history.ActionOperationStep step );
 	@Override
-	protected final void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		this.performInternal(step);
 		step.finish();
 	}

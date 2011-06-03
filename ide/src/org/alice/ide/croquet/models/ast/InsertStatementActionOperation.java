@@ -96,7 +96,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	}
 	
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	protected org.lgna.croquet.edits.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		return originalEdit;
 	}
 
@@ -158,7 +158,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		return new org.alice.ide.croquet.resolvers.InsertStatementActionOperationNewInstanceResolver( this );
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< InsertStatementActionOperation >( step ) );
 	}
 }

@@ -47,8 +47,8 @@ package org.lgna.cheshire.stencil.resolvers;
  * @author Dennis Cosgrove
  */
 public class DropSiteResolver implements org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > {
-	private final org.lgna.croquet.steps.DropStep step;
-	public DropSiteResolver( org.lgna.croquet.steps.DropStep step ) {
+	private final org.lgna.croquet.history.DropStep step;
+	public DropSiteResolver( org.lgna.croquet.history.DropStep step ) {
 		this.step = step;
 	}
 	public org.lgna.croquet.components.TrackableShape getResolved() {

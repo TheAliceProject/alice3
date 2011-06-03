@@ -50,16 +50,16 @@ public class TutorialECard extends uist.ecard.ECardApplication {
 	private static boolean IS_ENCODING;
 	private static String ROOT_PATH;
 	private static final String TRANSACTION_HISTORY_SUB_PATH = "/transactionHistory.bin";
-	private org.lgna.croquet.steps.TransactionHistory originalTransactionHistory;
+	private org.lgna.croquet.history.TransactionHistory originalTransactionHistory;
 
 	private void createAndShowTutorial() {
 		edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
-		this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH + TRANSACTION_HISTORY_SUB_PATH, org.lgna.croquet.steps.TransactionHistory.class );
+		this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH + TRANSACTION_HISTORY_SUB_PATH, org.lgna.croquet.history.TransactionHistory.class );
 		edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 
 		org.lgna.cheshire.Filterer filterer = new uist.filterers.TutorialFilterer();
 		org.lgna.cheshire.Recoverer recoverer = new org.lgna.cheshire.Recoverer() {
-			public org.lgna.croquet.steps.Transaction createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( org.lgna.croquet.steps.Transaction transaction ) {
+			public org.lgna.croquet.history.Transaction createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( org.lgna.croquet.history.Transaction transaction ) {
 				return null;
 			}
 		};
@@ -118,7 +118,7 @@ public class TutorialECard extends uist.ecard.ECardApplication {
 		if( IS_ENCODING ) {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory(), ROOT_PATH + TRANSACTION_HISTORY_SUB_PATH );
+			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory(), ROOT_PATH + TRANSACTION_HISTORY_SUB_PATH );
 			
 //			System.err.println( "todo: remove filtering" );
 //			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
@@ -147,7 +147,7 @@ public class TutorialECard extends uist.ecard.ECardApplication {
 				if( IS_ENCODING ) {
 					app.getFrame().setVisible(true);
 					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 500 );
-					org.lgna.croquet.steps.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
+					org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
 				} else {
 					app.createAndShowTutorial();
 				}

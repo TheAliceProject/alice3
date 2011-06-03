@@ -108,8 +108,8 @@ public class BookTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rendere
 			org.lgna.cheshire.MessageChapter messageChapter = (org.lgna.cheshire.MessageChapter)value;
 			rv.setText( "<html>" + messageChapter.getTitle() + "</html>");
 			rv.setIcon( STEP_ICON );
-		} else if( value instanceof org.lgna.croquet.steps.Step< ? > ) {
-			org.lgna.croquet.steps.Step< ? > step = (org.lgna.croquet.steps.Step< ? >)value;
+		} else if( value instanceof org.lgna.croquet.history.Step< ? > ) {
+			org.lgna.croquet.history.Step< ? > step = (org.lgna.croquet.history.Step< ? >)value;
 			org.lgna.croquet.edits.Edit< ? > edit = step.getParent().getEdit();
 			rv.setText( "<html>" + step.getTutorialNoteText( edit, null ) + "</html>" );
 			rv.setFont( STEP_FONT );

@@ -47,8 +47,8 @@ package org.lgna.cheshire.stencil.resolvers;
  * @author Dennis Cosgrove
  */
 public class ModelFirstComponentResolver implements org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.Component<?> > {
-	private final org.lgna.croquet.steps.Step< ? > step;
-	public ModelFirstComponentResolver( org.lgna.croquet.steps.Step< ? > step ) {
+	private final org.lgna.croquet.history.Step< ? > step;
+	public ModelFirstComponentResolver( org.lgna.croquet.history.Step< ? > step ) {
 		this.step = step;
 	}
 	protected org.lgna.croquet.Model getModel() {

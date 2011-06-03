@@ -47,5 +47,5 @@ package org.lgna.cheshire;
  * @author Dennis Cosgrove
  */
 public interface Recoverer {
-	public org.lgna.croquet.steps.Transaction createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( org.lgna.croquet.steps.Transaction transaction );
+	public org.lgna.croquet.history.Transaction createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( org.lgna.croquet.history.Transaction transaction );
 }

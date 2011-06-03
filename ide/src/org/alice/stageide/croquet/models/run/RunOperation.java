@@ -120,7 +120,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	}
 	
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Preview your program." );
 		return rv;
 	}
@@ -139,7 +139,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		return this.size;
 	}
 	@Override
-	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.steps.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {
+	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {
 		org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getSingleton();
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		if( ide.getProject() != null ) {
@@ -160,7 +160,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		return rv;
 	}
 	@Override
-	protected void releaseContentPane( org.lgna.croquet.steps.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void releaseContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		//todo: investigate		
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
@@ -169,7 +169,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	}
 	
 	@Override
-	protected void handleFinally( org.lgna.croquet.steps.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void handleFinally( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		super.handleFinally( step, dialog, contentPane );
 		org.alice.ide.IDE.getSingleton().enableRendering();
 	}

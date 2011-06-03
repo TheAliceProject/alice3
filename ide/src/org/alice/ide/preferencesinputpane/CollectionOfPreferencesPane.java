@@ -67,7 +67,7 @@ public class CollectionOfPreferencesPane extends org.lgna.croquet.components.Bor
 			this.setName( "Restore Defaults" );
 		}
 		@Override
-		protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 			String name = CollectionOfPreferencesPane.this.getTitle();
 			
 			java.awt.Component parentComponent = org.alice.ide.IDE.getSingleton().getFrame().getAwtComponent();
@@ -97,7 +97,7 @@ public class CollectionOfPreferencesPane extends org.lgna.croquet.components.Bor
 			this.setName( "Apply" );
 		}
 		@Override
-		protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 			//todo
 		}
 	}

@@ -144,7 +144,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 	}
 	
 	@Override
-	protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final ObjectMarker objectMarker;
 		final org.alice.apis.moveandturn.PointOfView prevPOV;
 		final org.alice.apis.moveandturn.PointOfView nextPOV;

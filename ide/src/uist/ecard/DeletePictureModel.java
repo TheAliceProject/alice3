@@ -20,7 +20,7 @@ public class DeletePictureModel extends org.lgna.croquet.ActionOperation {
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		ECardApplication.getSingleton().getCardPanel().setImage(ECardPanel.CardState.EMPTY);
 		step.finish();
 	}

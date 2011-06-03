@@ -125,7 +125,7 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 	}
 	
 	@Override
-	protected void perform(org.lgna.croquet.steps.ActionOperationStep step) 
+	protected void perform(org.lgna.croquet.history.ActionOperationStep step) 
 	{
 		
 		final CameraMarker cameraMarker;

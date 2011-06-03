@@ -89,13 +89,13 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 //	}
 
 	@Override
-	public org.lgna.croquet.edits.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.Retargeter retargeter ) {
+	public org.lgna.croquet.edits.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.Retargeter retargeter ) {
 		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit originalDeclareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
 		//todo
-		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( (org.lgna.croquet.steps.OperationStep)step, originalDeclareMethodEdit.getDeclaringType(), originalDeclareMethodEdit.getMethod() );
+		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( (org.lgna.croquet.history.OperationStep)step, originalDeclareMethodEdit.getDeclaringType(), originalDeclareMethodEdit.getMethod() );
 	}
-	protected String getDeclarationName(org.lgna.croquet.steps.InputDialogOperationStep step) {
+	protected String getDeclarationName(org.lgna.croquet.history.InputDialogOperationStep step) {
 		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
 		if( createMethodPane != null ) {
 			return createMethodPane.getDeclarationName();
@@ -112,12 +112,12 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 
 	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType );
 	@Override
-	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > prologue(org.lgna.croquet.steps.InputDialogOperationStep step) {
+	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
 		assert this.declaringType != null;
 		return this.createCreateMethodPane( this.declaringType );
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep step, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
 			final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getInputValue();

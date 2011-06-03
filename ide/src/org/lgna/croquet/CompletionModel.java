@@ -63,7 +63,7 @@ public abstract class CompletionModel extends Model {
 		return false;
 	}
 	
-	public final String getTutorialTransactionTitle( org.lgna.croquet.steps.CompletionStep< ? > step, UserInformation userInformation ) {
+	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep< ? > step, UserInformation userInformation ) {
 		this.initializeIfNecessary();
 		Edit< ? > edit = step.getEdit();
 		if( edit != null ) {
@@ -73,7 +73,7 @@ public abstract class CompletionModel extends Model {
 		}
 	}
 	public abstract boolean isAlreadyInState( Edit< ? > edit );
-	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep< ? > completionStep, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		System.err.println( "todo: commitTutorialCompletionEdit: " + originalEdit );
 		return null;
 	}

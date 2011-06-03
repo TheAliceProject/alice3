@@ -62,7 +62,7 @@ public abstract class State<T> extends CompletionModel {
 	}
 	
 	@Override
-	public org.lgna.croquet.steps.Step<?> fire(org.lgna.croquet.Trigger trigger) {
+	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.Trigger trigger) {
 		throw new RuntimeException();
 	}
 	public void addValueObserver( ValueObserver<T> valueObserver ) {

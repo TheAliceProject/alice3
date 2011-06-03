@@ -56,7 +56,7 @@ public class TypeMenuModel extends org.lgna.croquet.MenuModel {
 		super( java.util.UUID.fromString( "a59df2b2-a55a-41b5-be05-60d10a615049" ) );
 	}
 	@Override
-	public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep context ) {
+	public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
 		java.util.List< org.lgna.croquet.MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 

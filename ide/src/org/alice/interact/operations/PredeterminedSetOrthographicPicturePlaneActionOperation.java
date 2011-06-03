@@ -94,7 +94,7 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends org
 	}
 	
 	@Override
-	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			protected void doOrRedoInternal(boolean isDo) {

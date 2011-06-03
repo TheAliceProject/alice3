@@ -1045,14 +1045,14 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	private Point getDragAndDropPoint(org.lgna.croquet.steps.DragStep dragAndDropContext)
+	private Point getDragAndDropPoint(org.lgna.croquet.history.DragStep dragAndDropContext)
 	{
 		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.getAWTComponent() );
 		return pointInLookingGlass;
 	}
 	
-	public void dragUpdated(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public void dragUpdated(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		this.currentInputState.setDragAndDropContext(dragAndDropContext);
 		this.currentInputState.setIsDragEvent(true);
 		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );
@@ -1061,7 +1061,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		handleStateChange();
 	}
 	
-	public void dragEntered(org.lgna.croquet.steps.DragStep dragAndDropContext) {
+	public void dragEntered(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		this.currentInputState.setDragAndDropContext(dragAndDropContext);
 		this.currentInputState.setIsDragEvent(true);
 		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );
@@ -1070,7 +1070,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		handleStateChange();
 	}
 	
-	public void dragExited(org.lgna.croquet.steps.DragStep dragAndDropContext) {		
+	public void dragExited(org.lgna.croquet.history.DragStep dragAndDropContext) {		
 		this.currentInputState.setDragAndDropContext(dragAndDropContext); //We need a valid dragAndDropContext when we handle the update
 		this.currentInputState.setIsDragEvent(false);
 		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );

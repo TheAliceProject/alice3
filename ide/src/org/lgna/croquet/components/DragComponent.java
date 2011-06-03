@@ -201,7 +201,7 @@ public abstract class DragComponent extends Control {
 	}
 
 
-	private org.lgna.croquet.steps.DragStep step;
+	private org.lgna.croquet.history.DragStep step;
 
 	private void handleLeftMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		Application application = Application.getSingleton();
@@ -214,7 +214,7 @@ public abstract class DragComponent extends Control {
 		layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
 
 		
-		this.step = org.lgna.croquet.steps.TransactionManager.addDragStep( this.dragModel, new org.lgna.croquet.triggers.MouseEventTrigger( this, this.getLeftButtonPressedEvent() ) );
+		this.step = org.lgna.croquet.history.TransactionManager.addDragStep( this.dragModel, new org.lgna.croquet.triggers.MouseEventTrigger( this, this.getLeftButtonPressedEvent() ) );
 		this.step.setLatestMouseEvent( e );
 		this.dragModel.handleDragStarted( this.step );
 		this.showDragProxy();

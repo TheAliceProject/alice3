@@ -45,12 +45,12 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InformationDialogOperation extends DialogOperation<org.lgna.croquet.steps.InformationDialogOperationStep> {
+public abstract class InformationDialogOperation extends DialogOperation<org.lgna.croquet.history.InformationDialogOperationStep> {
 	public InformationDialogOperation(java.util.UUID individualId) {
 		super(Application.INFORMATION_GROUP, individualId);
 	}
 	@Override
-	public org.lgna.croquet.steps.InformationDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
-		return org.lgna.croquet.steps.TransactionManager.addInformationDialogOperationStep( this, trigger );
+	public org.lgna.croquet.history.InformationDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+		return org.lgna.croquet.history.TransactionManager.addInformationDialogOperationStep( this, trigger );
 	}
 }

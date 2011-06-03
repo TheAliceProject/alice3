@@ -79,7 +79,7 @@ public class NumeralOperation extends NumberPadOperation {
 		this.setName( Short.toString( this.numeral ) );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		this.numberModel.append( this.numeral );
 		step.finish();
 	}

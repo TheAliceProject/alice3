@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PlainDialogOperation extends DialogOperation<org.lgna.croquet.steps.PlainDialogOperationStep> {
+public abstract class PlainDialogOperation extends DialogOperation<org.lgna.croquet.history.PlainDialogOperationStep> {
 	public PlainDialogOperation(Group group, java.util.UUID id) {
 		super(group, id);
 	}
@@ -54,10 +54,10 @@ public abstract class PlainDialogOperation extends DialogOperation<org.lgna.croq
 		return this.closeOperation;
 	}
 	@Override
-	public org.lgna.croquet.steps.PlainDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
-		return org.lgna.croquet.steps.TransactionManager.addPlainDialogOperationStep( this, trigger );
+	public org.lgna.croquet.history.PlainDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+		return org.lgna.croquet.history.TransactionManager.addPlainDialogOperationStep( this, trigger );
 	}
-	public String getTutorialCloseNoteText( org.lgna.croquet.steps.PlainDialogOperationStep step, UserInformation userInformation ) {
+	public String getTutorialCloseNoteText( org.lgna.croquet.history.PlainDialogOperationStep step, UserInformation userInformation ) {
 		return "When finished press the <strong>Close</strong> button.";
 	}
 	@Override

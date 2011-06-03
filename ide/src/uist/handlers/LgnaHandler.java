@@ -47,7 +47,7 @@ package uist.handlers;
  * @author Dennis Cosgrove
  */
 public class LgnaHandler implements uist.Handler {
-	public org.lgna.croquet.steps.Transaction createTransactionToGetIntoABetterStateWhenNoViewControllerCanBeFound( org.lgna.croquet.steps.Transaction transaction ) {
+	public org.lgna.croquet.history.Transaction createTransactionToGetIntoABetterStateWhenNoViewControllerCanBeFound( org.lgna.croquet.history.Transaction transaction ) {
 		return null;
 	}
 }

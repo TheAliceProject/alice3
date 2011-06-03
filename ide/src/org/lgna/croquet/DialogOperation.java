@@ -50,7 +50,7 @@ import org.lgna.croquet.components.ViewController;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogOperation< S extends org.lgna.croquet.steps.DialogOperationStep<?> > extends SingleThreadOperation<S> {
+public abstract class DialogOperation< S extends org.lgna.croquet.history.DialogOperationStep<?> > extends SingleThreadOperation<S> {
 	public DialogOperation(Group group, java.util.UUID id) {
 		super(group, id);
 	}
@@ -109,7 +109,7 @@ public abstract class DialogOperation< S extends org.lgna.croquet.steps.DialogOp
 		dialog.setDefaultCloseOperation( org.lgna.croquet.components.Dialog.DefaultCloseOperation.DO_NOTHING );
 		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
-				org.lgna.croquet.steps.TransactionManager.fireDialogOpened( dialog );
+				org.lgna.croquet.history.TransactionManager.fireDialogOpened( dialog );
 				step.handleWindowOpened( e );
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {

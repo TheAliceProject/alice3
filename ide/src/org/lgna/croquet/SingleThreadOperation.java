@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleThreadOperation< S extends org.lgna.croquet.steps.SingleThreadOperationStep<?> > extends Operation< S > {
+public abstract class SingleThreadOperation< S extends org.lgna.croquet.history.SingleThreadOperationStep<?> > extends Operation< S > {
 	public SingleThreadOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}

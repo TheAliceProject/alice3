@@ -56,7 +56,7 @@ public class AboutOperation extends org.alice.ide.operations.InconsequentialActi
 		super( java.util.UUID.fromString( "175834c9-b8f4-4714-a212-e7d346d77835" ) );
 	}
 	@Override
-	protected void performInternal( org.lgna.croquet.steps.ActionOperationStep step ) {
+	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 		org.alice.stageide.aboutpane.AboutPane aboutPane = new org.alice.stageide.aboutpane.AboutPane();
 		this.getIDE().showMessageDialog( aboutPane, "About Alice 3", org.lgna.croquet.MessageType.PLAIN );
 	}

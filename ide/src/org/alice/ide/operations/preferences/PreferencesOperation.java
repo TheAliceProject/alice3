@@ -54,11 +54,11 @@ public class PreferencesOperation extends org.lgna.croquet.InputDialogOperation 
 	}
 	private org.alice.ide.preferencesinputpane.PreferencesPanel preferencesInputPane = new org.alice.ide.preferencesinputpane.PreferencesPanel();
 	@Override
-	protected org.alice.ide.preferencesinputpane.PreferencesPanel prologue(org.lgna.croquet.steps.InputDialogOperationStep context) {
+	protected org.alice.ide.preferencesinputpane.PreferencesPanel prologue(org.lgna.croquet.history.InputDialogOperationStep context) {
 		return this.preferencesInputPane;
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.steps.InputDialogOperationStep context, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep context, boolean isOk) {
 		//todo
 		if( isOk ) {
 			context.finish();

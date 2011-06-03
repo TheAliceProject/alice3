@@ -61,7 +61,7 @@ public class BooleanState extends State< Boolean > {
 	};
 	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 		public void itemStateChanged( java.awt.event.ItemEvent e ) {
-			org.lgna.croquet.steps.TransactionManager.handleItemStateChanged( BooleanState.this, e );
+			org.lgna.croquet.history.TransactionManager.handleItemStateChanged( BooleanState.this, e );
 		}
 	};
 
@@ -111,10 +111,10 @@ public class BooleanState extends State< Boolean > {
 //	}
 
 	@Override
-	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.steps.CompletionStep< ? > step, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > step, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		assert originalEdit instanceof org.lgna.croquet.edits.BooleanStateEdit;
 		org.lgna.croquet.edits.BooleanStateEdit booleanStateEdit = (org.lgna.croquet.edits.BooleanStateEdit)originalEdit;
-		return org.lgna.croquet.steps.TransactionManager.commitEdit( this, booleanStateEdit.getNextValue(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+		return org.lgna.croquet.history.TransactionManager.commitEdit( this, booleanStateEdit.getNextValue(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
 	}
 
 //	@Override
@@ -124,7 +124,7 @@ public class BooleanState extends State< Boolean > {
 //	}
 
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
 		if( edit instanceof org.lgna.croquet.edits.BooleanStateEdit ) {
 			org.lgna.croquet.edits.BooleanStateEdit booleanStateEdit = (org.lgna.croquet.edits.BooleanStateEdit)edit;
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {

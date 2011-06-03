@@ -50,7 +50,7 @@ public abstract class RetargetableMenuModel extends MenuModel {
 		super( individualId );
 	}
 	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.steps.StandardPopupPrepStep step ) {
+	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep step ) {
 		super.handlePopupMenuPrologue( popupMenu, step );
 		step.handleRetargetableMenuModelInitialization( this.getRetargetableData() );
 	}

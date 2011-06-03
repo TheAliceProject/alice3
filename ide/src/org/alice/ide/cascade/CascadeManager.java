@@ -176,7 +176,7 @@ public abstract class CascadeManager {
 		updateAccessibleLocals( rv, blockStatement );
 		return rv;
 	}
-	protected java.util.List< org.lgna.croquet.CascadeItem > addExpressionBonusFillInsForType( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > addExpressionBonusFillInsForType( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 //		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getSingleton().getFocusedCode();
 //		if( codeInFocus != null ) {
 //
@@ -259,7 +259,7 @@ public abstract class CascadeManager {
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> interfaceType ) {
 		return null;
 	}
-	protected java.util.List< org.lgna.croquet.CascadeItem > addFillInsForObjectType( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> step ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > addFillInsForObjectType( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> step ) {
 		rv.add( org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance().getFillIn() );
 		rv.add( org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn() );
 		rv.add( org.alice.ide.croquet.models.custom.CustomIntegerInputDialogOperation.getInstance().getFillIn() );
@@ -278,7 +278,7 @@ public abstract class CascadeManager {
 //		}
 		return rv;
 	}
-	protected java.util.List< org.lgna.croquet.CascadeItem > addCustomFillIns( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > addCustomFillIns( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 		return rv;
 	}
 
@@ -294,7 +294,7 @@ public abstract class CascadeManager {
 		return true;
 	}
 	
-	public java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+	public java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankStep<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 		if( type != null ) {
 //			org.lgna.croquet.steps.Transaction transaction = step.getParent();
 //			org.lgna.croquet.steps.TransactionHistory transactionHistory = transaction.getParent();

@@ -57,7 +57,7 @@ public class DoSingleStepOperation extends org.lgna.croquet.ActionOperation {
 		super( DocWizardsesquePresentation.IMPLEMENTATION_GROUP, java.util.UUID.fromString( "28eb190f-b082-4329-b54d-62a3e2d9bd7a" ) );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		org.lgna.cheshire.Book book = DocWizardsesquePresentation.getInstance().getBook();
 		int i = book.getSelectedIndex();
 		book.setSelectedIndex( Math.min( i+1, book.getChapterCount()-1 ) );

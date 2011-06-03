@@ -57,6 +57,6 @@ public class DoAllStepsOperation extends org.lgna.croquet.ActionOperation {
 		super( DocWizardsesquePresentation.IMPLEMENTATION_GROUP, java.util.UUID.fromString( "406d915c-6b5a-421b-91c6-780205d52b95" ) );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.steps.ActionOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 	}
 }

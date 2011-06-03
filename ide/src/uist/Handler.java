@@ -47,5 +47,5 @@ package uist;
  * @author Dennis Cosgrove
  */
 public interface Handler {
-	public org.lgna.croquet.steps.Transaction createTransactionToGetIntoABetterStateWhenNoViewControllerCanBeFound( org.lgna.croquet.steps.Transaction transaction );
+	public org.lgna.croquet.history.Transaction createTransactionToGetIntoABetterStateWhenNoViewControllerCanBeFound( org.lgna.croquet.history.Transaction transaction );
 }

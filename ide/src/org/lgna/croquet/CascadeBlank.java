@@ -53,14 +53,14 @@ public abstract class CascadeBlank< B > extends Model {
 		super( id );
 	}
 	@Override
-	public org.lgna.croquet.steps.Step< ? > fire( org.lgna.croquet.Trigger trigger ) {
+	public org.lgna.croquet.history.Step< ? > fire( org.lgna.croquet.Trigger trigger ) {
 		throw new RuntimeException();
 	}
 	@Override
 	protected void localize() {
 	}
-	protected abstract java.util.List< CascadeItem > updateChildren( java.util.List< CascadeItem > rv, org.lgna.croquet.steps.CascadeBlankStep<B> step );
-	public final Iterable< CascadeItem > getChildren( org.lgna.croquet.steps.CascadeBlankStep<B> step ) {
+	protected abstract java.util.List< CascadeItem > updateChildren( java.util.List< CascadeItem > rv, org.lgna.croquet.history.CascadeBlankStep<B> step );
+	public final Iterable< CascadeItem > getChildren( org.lgna.croquet.history.CascadeBlankStep<B> step ) {
 		java.util.List< CascadeItem > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.updateChildren( rv, step );
 		return rv;

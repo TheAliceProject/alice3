@@ -87,7 +87,7 @@ public class PreferencesPanel extends org.lgna.croquet.components.BorderPanel {
 				this.setName( "Clear Recent Projects" );
 			}
 			@Override
-			protected final void perform(org.lgna.croquet.steps.ActionOperationStep step) {
+			protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 				org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
 				step.finish();
 			}

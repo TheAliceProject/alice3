@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class PlainDialogCloseOperation extends SingleThreadOperation< org.lgna.croquet.steps.PlainDialogCloseOperationStep > {
+public class PlainDialogCloseOperation extends SingleThreadOperation< org.lgna.croquet.history.PlainDialogCloseOperationStep > {
 	private static final Group DIALOG_CLOSE_OPERATION_GROUP = Group.getInstance( java.util.UUID.fromString( "e9b1fda4-6668-4d23-980d-ab1610ffd2d0" ), "DIALOG_CLOSE_OPERATION_GROUP" );
 	private final PlainDialogOperation plainDialogOperation;
 	/*package-private*/ PlainDialogCloseOperation( PlainDialogOperation plainDialogOperation ) {
@@ -74,7 +74,7 @@ public class PlainDialogCloseOperation extends SingleThreadOperation< org.lgna.c
 		}
 	}
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.steps.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Press the <strong>Close</strong> button when you are ready." );
 		return rv;
 	}
@@ -87,11 +87,11 @@ public class PlainDialogCloseOperation extends SingleThreadOperation< org.lgna.c
 		return new PlainDialogCloseOperationResolver( this );
 	}
 	@Override
-	public org.lgna.croquet.steps.PlainDialogCloseOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
-		return org.lgna.croquet.steps.TransactionManager.addPlainDialogCloseOperationStep( this, trigger );
+	public org.lgna.croquet.history.PlainDialogCloseOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+		return org.lgna.croquet.history.TransactionManager.addPlainDialogCloseOperationStep( this, trigger );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.steps.PlainDialogCloseOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.PlainDialogCloseOperationStep step ) {
 		step.finish();
 	}
 }

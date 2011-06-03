@@ -64,7 +64,7 @@ public abstract class Application {
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
-		org.lgna.croquet.steps.TransactionManager.startListeningToMenuSelection();
+		org.lgna.croquet.history.TransactionManager.startListeningToMenuSelection();
 	}
 
 	protected abstract Component< ? > createContentPane();

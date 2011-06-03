@@ -49,7 +49,7 @@ public final class ListSelectionStateEdit<E> extends StateEdit<org.lgna.croquet.
 	private E prevValue;
 	private E nextValue;
 	
-	public ListSelectionStateEdit( org.lgna.croquet.steps.CompletionStep< org.lgna.croquet.ListSelectionState<E> > completionStep, E prevValue, E nextValue ) {
+	public ListSelectionStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.ListSelectionState<E> > completionStep, E prevValue, E nextValue ) {
 		super( completionStep );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
