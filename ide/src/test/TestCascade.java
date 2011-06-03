@@ -298,6 +298,10 @@ public class TestCascade extends org.lgna.croquet.Application {
 	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 	}
 
+	@Override
+	protected void handleOpenFile( org.lgna.croquet.Trigger trigger ) {
+	}
+
 	public static void main( String[] args ) {
 		TestCascade application = new TestCascade();
 		application.initialize( args );

@@ -167,4 +167,8 @@ public class ECardApplication extends org.lgna.croquet.Application {
 		System.exit(0);
 	}
 
+	@Override
+	protected void handleOpenFile( org.lgna.croquet.Trigger trigger ) {
+	}
+
 }

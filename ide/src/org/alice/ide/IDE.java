@@ -929,6 +929,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.getAboutOperation().fire( trigger );
 	}
 	@Override
+	protected void handleOpenFile( org.lgna.croquet.Trigger trigger ) {
+	}
+
+	@Override
 	protected void handlePreferences( org.lgna.croquet.Trigger trigger ) {
 		this.getPreferencesOperation().fire( trigger );
 	}

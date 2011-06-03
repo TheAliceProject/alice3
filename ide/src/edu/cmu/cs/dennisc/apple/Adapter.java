@@ -55,6 +55,7 @@ public class Adapter implements com.apple.eawt.ApplicationListener {
 	public void handleReOpenApplication( com.apple.eawt.ApplicationEvent e ) {
 	}
 	public void handleOpenFile( com.apple.eawt.ApplicationEvent e ) {
+		this.listener.handleOpenFile( e );
 	}
 	public void handlePrintFile( com.apple.eawt.ApplicationEvent e ) {
 	}

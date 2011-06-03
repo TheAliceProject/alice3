@@ -121,6 +121,9 @@ public abstract class Application {
 			public void handleQuit( java.util.EventObject e ) {
 				Application.this.handleQuit( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
 			}
+			public void handleOpenFile( java.util.EventObject e ) {
+				Application.this.handleOpenFile( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
+			}
 		} );
 		//this.frame.pack();
 	}
@@ -163,6 +166,7 @@ public abstract class Application {
 	protected abstract void handleAbout( org.lgna.croquet.Trigger trigger );
 	protected abstract void handlePreferences( org.lgna.croquet.Trigger trigger );
 	protected abstract void handleQuit( org.lgna.croquet.Trigger trigger );
+	protected abstract void handleOpenFile( org.lgna.croquet.Trigger trigger );
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		if( message instanceof Component<?> ) {

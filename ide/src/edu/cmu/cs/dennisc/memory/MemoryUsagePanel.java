@@ -166,6 +166,9 @@ public class MemoryUsagePanel extends org.lgna.croquet.components.BorderPanel {
 			@Override
 			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 			}
+			@Override
+			protected void handleOpenFile( org.lgna.croquet.Trigger trigger ) {
+			}
 		};
 		application.initialize( args );
 		application.getFrame().pack();
