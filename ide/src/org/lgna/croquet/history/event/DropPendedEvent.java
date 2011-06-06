@@ -41,17 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.events;
+package org.lgna.croquet.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EditCommittedEvent implements Event {
-	private final org.lgna.croquet.edits.Edit< ? > edit;
-	public EditCommittedEvent( org.lgna.croquet.edits.Edit< ? > edit ) {
-		this.edit = edit;
+public class DropPendedEvent implements Event {
+	private final org.lgna.croquet.Model model;
+	private final org.lgna.croquet.DropReceptor dropReceptor; 
+	private final org.lgna.croquet.DropSite dropSite;
+	public DropPendedEvent( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+		this.model = model;
+		this.dropReceptor = dropReceptor;
+		this.dropSite = dropSite;
 	}
-	public org.lgna.croquet.edits.Edit< ? > getEdit() {
-		return this.edit;
+	public org.lgna.croquet.Model getModel() {
+		return this.model;
+	}
+	public org.lgna.croquet.DropReceptor getDropReceptor() {
+		return this.dropReceptor;
+	}
+	public org.lgna.croquet.DropSite getDropSite() {
+		return this.dropSite;
 	}
 }

@@ -186,7 +186,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		}
 	}
 	@Override
-	protected void handleEvent( org.lgna.cheshire.events.Event event ) {
+	protected void handleEvent( org.lgna.croquet.history.event.Event event ) {
 		this.jTree.repaint();
 		this.previewComponent.repaint();
 		if( isIgnoringEvents ) {
@@ -196,8 +196,8 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 			org.lgna.cheshire.Chapter chapter = book.getSelectedChapter();
 			if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
 				org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
-				if( event instanceof org.lgna.cheshire.events.EditCommittedEvent ) {
-					org.lgna.cheshire.events.EditCommittedEvent editCommittedEvent = (org.lgna.cheshire.events.EditCommittedEvent)event;
+				if( event instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+					org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)event;
 					org.lgna.croquet.edits.Edit< ? > replacementCandidateEdit = editCommittedEvent.getEdit();
 					org.lgna.croquet.history.CompletionStep< ? > completionStep = replacementCandidateEdit.getCompletionStep();
 					org.lgna.croquet.history.Transaction transaction = completionStep.getParent();
@@ -212,8 +212,8 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 							isIgnoringEvents = false;
 						}
 					}
-				} else if( event instanceof org.lgna.cheshire.events.FinishedEvent ) {
-					org.lgna.cheshire.events.FinishedEvent finishEvent = (org.lgna.cheshire.events.FinishedEvent)event;
+				} else if( event instanceof org.lgna.croquet.history.event.FinishedEvent ) {
+					org.lgna.croquet.history.event.FinishedEvent finishEvent = (org.lgna.croquet.history.event.FinishedEvent)event;
 					org.lgna.croquet.history.Transaction transaction = finishEvent.getTransaction();
 					org.lgna.croquet.history.TransactionHistory transactionHistory = transaction.getParent();
 					if( transactionHistory.getParent() != null ) {

@@ -41,17 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.events;
+package org.lgna.croquet.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MenuSelectionChangedEvent implements Event {
-	private final java.util.List< org.lgna.croquet.Model > models;
-	public MenuSelectionChangedEvent( java.util.List< org.lgna.croquet.Model > models ) {
-		this.models = models;
+public class DialogOpenedEvent implements Event {
+	private final org.lgna.croquet.components.Dialog dialog;
+	public DialogOpenedEvent( org.lgna.croquet.components.Dialog dialog ) {
+		this.dialog = dialog;
 	}
-	public java.util.List< org.lgna.croquet.Model > getModels() {
-		return this.models;
+	public org.lgna.croquet.components.Dialog getDialog() {
+		return this.dialog;
 	}
 }

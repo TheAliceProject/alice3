@@ -48,28 +48,28 @@ import org.lgna.croquet.*;
  * @author Dennis Cosgrove
  */
 public class TransactionManager {
-	public static interface Observer {
-		public void addingStep( Step<?> step );
-		public void addedStep( Step<?> step );
-		public void editCommitting( org.lgna.croquet.edits.Edit<?> edit );
-		public void editCommitted( org.lgna.croquet.edits.Edit<?> edit );
-		public void finishing( Transaction transaction );
-		public void finished( Transaction transaction );
-		public void dropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite );
-		public void dropPended( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite );
-		public void menuItemsSelectionChanged( java.util.List< org.lgna.croquet.Model > models );
-		public void popupMenuResized( org.lgna.croquet.components.PopupMenu popupMenu );
-		public void dialogOpened( org.lgna.croquet.components.Dialog dialog );
-		public void transactionCanceled( Transaction transaction );
-	}
-
-	public static interface EventObserver {
-		public void firingEvent( org.lgna.cheshire.events.Event event );
-		public void firedEvent( org.lgna.cheshire.events.Event event );
-	}
-	
-	private static final java.util.List<Observer> observers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private static final java.util.List<EventObserver> eventObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+//	public static interface Observer {
+//		public void addingStep( Step<?> step );
+//		public void addedStep( Step<?> step );
+//		public void editCommitting( org.lgna.croquet.edits.Edit<?> edit );
+//		public void editCommitted( org.lgna.croquet.edits.Edit<?> edit );
+//		public void finishing( Transaction transaction );
+//		public void finished( Transaction transaction );
+//		public void dropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite );
+//		public void dropPended( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite );
+//		public void menuItemsSelectionChanged( java.util.List< org.lgna.croquet.Model > models );
+//		public void popupMenuResized( org.lgna.croquet.components.PopupMenu popupMenu );
+//		public void dialogOpened( org.lgna.croquet.components.Dialog dialog );
+//		public void transactionCanceled( Transaction transaction );
+//	}
+//
+//	public static interface EventObserver {
+//		public void firingEvent( org.lgna.croquet.history.event.Event event );
+//		public void firedEvent( org.lgna.croquet.history.event.Event event );
+//	}
+//	
+//	private static final java.util.List<Observer> observers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+//	private static final java.util.List<EventObserver> eventObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private static final java.util.Stack< TransactionHistory > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 
 	static {
@@ -79,19 +79,19 @@ public class TransactionManager {
 		throw new AssertionError();
 	}
 
-	public static void addObserver( Observer observer ) {
-		observers.add( observer );
-	}
-	public static void removeObserver( Observer observer ) {
-		observers.remove( observer );
-	}
-	
-	public static void addEventObserver( EventObserver eventObserver ) {
-		eventObservers.add( eventObserver );
-	}
-	public static void removeEventObserver( EventObserver eventObserver ) {
-		eventObservers.remove( eventObserver );
-	}
+//	public static void addObserver( Observer observer ) {
+//		observers.add( observer );
+//	}
+//	public static void removeObserver( Observer observer ) {
+//		observers.remove( observer );
+//	}
+//	
+//	public static void addEventObserver( EventObserver eventObserver ) {
+//		eventObservers.add( eventObserver );
+//	}
+//	public static void removeEventObserver( EventObserver eventObserver ) {
+//		eventObservers.remove( eventObserver );
+//	}
 
 	public static TransactionHistory getRootTransactionHistory() {
 		return stack.firstElement();
@@ -299,14 +299,14 @@ public class TransactionManager {
 		}
 	};
 	public static void pendDrop( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-		fireDropPending( model, dropReceptor, dropSite );
+//		fireDropPending( model, dropReceptor, dropSite );
 		getLastTransaction().pendDrop( model, dropReceptor, dropSite );
-		fireDropPended( model, dropReceptor, dropSite );
+//		fireDropPended( model, dropReceptor, dropSite );
 	}
 	
-	public static void handleMenuSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
-		fireMenuItemsSelectionChanged( models );
-	}
+//	public static void handleMenuSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
+//		fireMenuItemsSelectionChanged( models );
+//	}
 
 	public static void handleDocumentEvent( StringState stringState, javax.swing.event.DocumentEvent documentEvent, String previousValue, String nextValue ) {
 //		ModelContext< ? > topContext = stack.peek();
@@ -344,69 +344,72 @@ public class TransactionManager {
 		return getActiveTransactionHistory().getLastTransaction();
 	}
 
-	/*package-private*/ static void fireAddingStep( Step<?> step ) {
-		for( Observer observer : observers ) {
-			observer.addingStep( step );
-		}
-	}
-	/*package-private*/ static void fireAddedStep( Step<?> step ) {
-		for( Observer observer : observers ) {
-			observer.addedStep( step );
-		}
-	}
-	
-	//todo: reduce accessibility
+//	/*package-private*/ static void fireAddingStep( Step<?> step ) {
+//		for( Observer observer : observers ) {
+//			observer.addingStep( step );
+//		}
+//	}
+//	/*package-private*/ static void fireAddedStep( Step<?> step ) {
+//		for( Observer observer : observers ) {
+//			observer.addedStep( step );
+//		}
+//	}
+//	
+//	//todo: reduce accessibility
+	@Deprecated
 	public static void fireTransactionCanceled( Transaction transaction ) {
-		for( Observer observer : observers ) {
-			observer.transactionCanceled( transaction );
-		}
+//		for( Observer observer : observers ) {
+//			observer.transactionCanceled( transaction );
+//		}
 	}
-	//todo: reduce accessibility
+//	//todo: reduce accessibility
+	@Deprecated
 	public static void firePopupMenuResized( org.lgna.croquet.components.PopupMenu popupMenu ) {
-		for( Observer observer : observers ) {
-			observer.popupMenuResized( popupMenu );
-		}
+//		for( Observer observer : observers ) {
+//			observer.popupMenuResized( popupMenu );
+//		}
 	}
+	@Deprecated
 	public static void fireDialogOpened( org.lgna.croquet.components.Dialog dialog ) {
-		for( Observer observer : observers ) {
-			observer.dialogOpened( dialog );
-		}
+//		for( Observer observer : observers ) {
+//			observer.dialogOpened( dialog );
+//		}
 	}
-	private static void fireEditCommitting( org.lgna.croquet.edits.Edit< ? > edit ) {
-		for( Observer observer : observers ) {
-			observer.editCommitting( edit );
-		}
-	}
-	private static void fireEditCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
-		for( Observer observer : observers ) {
-			observer.editCommitted( edit );
-		}
-	}
-	private static void fireFinishing( Transaction transaction ) {
-		for( Observer observer : observers ) {
-			observer.finishing( transaction );
-		}
-	}
-	private static void fireFinished( Transaction transaction ) {
-		for( Observer observer : observers ) {
-			observer.finished( transaction );
-		}
-	}
-	private static void fireDropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-		for( Observer observer : observers ) {
-			observer.dropPending( model, dropReceptor, dropSite );
-		}
-	}
-	private static void fireDropPended( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-		for( Observer observer : observers ) {
-			observer.dropPended( model, dropReceptor, dropSite );
-		}
-	}
-	private static void fireMenuItemsSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
-		for( Observer observer : observers ) {
-			observer.menuItemsSelectionChanged( models );
-		}
-	}
+//	private static void fireEditCommitting( org.lgna.croquet.edits.Edit< ? > edit ) {
+//		for( Observer observer : observers ) {
+//			observer.editCommitting( edit );
+//		}
+//	}
+//	private static void fireEditCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
+//		for( Observer observer : observers ) {
+//			observer.editCommitted( edit );
+//		}
+//	}
+//	private static void fireFinishing( Transaction transaction ) {
+//		for( Observer observer : observers ) {
+//			observer.finishing( transaction );
+//		}
+//	}
+//	private static void fireFinished( Transaction transaction ) {
+//		for( Observer observer : observers ) {
+//			observer.finished( transaction );
+//		}
+//	}
+//	private static void fireDropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+//		for( Observer observer : observers ) {
+//			observer.dropPending( model, dropReceptor, dropSite );
+//		}
+//	}
+//	private static void fireDropPended( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+//		for( Observer observer : observers ) {
+//			observer.dropPended( model, dropReceptor, dropSite );
+//		}
+//	}
+//	private static void fireMenuItemsSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
+//		for( Observer observer : observers ) {
+//			observer.menuItemsSelectionChanged( models );
+//		}
+//	}
 	
 	
 	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.Trigger trigger ) {

@@ -50,9 +50,9 @@ public class DropNoteUtilities {
 	private DropNoteUtilities() {
 		throw new AssertionError();
 	}
-	public static boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.DropStep dropStep, org.lgna.cheshire.events.Event event ) {
-		if( event instanceof org.lgna.cheshire.events.DropPendedEvent ) {
-			org.lgna.cheshire.events.DropPendedEvent dropPendedEvent = (org.lgna.cheshire.events.DropPendedEvent)event;
+	public static boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.DropStep dropStep, org.lgna.croquet.history.event.Event event ) {
+		if( event instanceof org.lgna.croquet.history.event.DropPendedEvent ) {
+			org.lgna.croquet.history.event.DropPendedEvent dropPendedEvent = (org.lgna.croquet.history.event.DropPendedEvent)event;
 			return dropPendedEvent.getDropSite().equals( dropStep.getDropSite() );
 		} else {
 			return false;

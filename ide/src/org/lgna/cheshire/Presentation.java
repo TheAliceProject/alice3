@@ -58,41 +58,48 @@ public abstract class Presentation {
 	private final Book book;
 	private boolean isResultOfNextOperation = false;
 
-	private final org.lgna.croquet.history.TransactionManager.Observer observer = new org.lgna.croquet.history.TransactionManager.Observer() {
-		public void addingStep( org.lgna.croquet.history.Step< ? > step ) {
+	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
+		public void changing( org.lgna.croquet.history.event.Event e ) {
 		}
-		public void addedStep( org.lgna.croquet.history.Step< ? > step ) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.StepAddedEvent( step ) );
-		}
-		public void editCommitting( org.lgna.croquet.edits.Edit< ? > edit ) {
-		}
-		public void editCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
-			Presentation.this.handleEditCommitted( edit );
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.EditCommittedEvent( edit ) );
-		}
-		public void finishing(org.lgna.croquet.history.Transaction transaction) {
-		}
-		public void finished(org.lgna.croquet.history.Transaction transaction) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.FinishedEvent( transaction ) );
-		}
-		public void transactionCanceled( org.lgna.croquet.history.Transaction transaction ) {
-			Presentation.this.handleTransactionCanceled( transaction );
-		}
-		public void dropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-		}
-		public void dropPended( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.DropPendedEvent( model, dropReceptor, dropSite ) );
-		}
-		public void popupMenuResized(org.lgna.croquet.components.PopupMenu popupMenu ) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.PopupMenuResizedEvent( popupMenu ) );
-		}
-		public void dialogOpened(org.lgna.croquet.components.Dialog dialog) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.DialogOpenedEvent( dialog ) );
-		}
-		public void menuItemsSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.MenuSelectionChangedEvent( models ) );
+		public void changed( org.lgna.croquet.history.event.Event e ) {
+			Presentation.this.handleEvent( e );
 		}
 	};
+//	private final org.lgna.croquet.history.TransactionManager.Observer observer = new org.lgna.croquet.history.TransactionManager.Observer() {
+//		public void addingStep( org.lgna.croquet.history.Step< ? > step ) {
+//		}
+//		public void addedStep( org.lgna.croquet.history.Step< ? > step ) {
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.AddStepEvent( step ) );
+//		}
+//		public void editCommitting( org.lgna.croquet.edits.Edit< ? > edit ) {
+//		}
+//		public void editCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
+//			Presentation.this.handleEditCommitted( edit );
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.EditCommittedEvent( edit ) );
+//		}
+//		public void finishing(org.lgna.croquet.history.Transaction transaction) {
+//		}
+//		public void finished(org.lgna.croquet.history.Transaction transaction) {
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.FinishedEvent( transaction ) );
+//		}
+//		public void transactionCanceled( org.lgna.croquet.history.Transaction transaction ) {
+//			Presentation.this.handleTransactionCanceled( transaction );
+//		}
+//		public void dropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+//		}
+//		public void dropPended( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.DropPendedEvent( model, dropReceptor, dropSite ) );
+//		}
+//		public void popupMenuResized(org.lgna.croquet.components.PopupMenu popupMenu ) {
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.PopupMenuResizedEvent( popupMenu ) );
+//		}
+//		public void dialogOpened(org.lgna.croquet.components.Dialog dialog) {
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.DialogOpenedEvent( dialog ) );
+//		}
+//		public void menuItemsSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.MenuSelectionChangedEvent( models ) );
+//		}
+//	};
 
 	private final edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
@@ -113,14 +120,14 @@ public abstract class Presentation {
 			this.historyManagers[ i ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupsTrackedForRandomAccess[ i ] );
 		}
 		this.historyManagers[ N ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( COMPLETION_GROUP );
-		org.lgna.croquet.history.TransactionManager.addObserver( this.observer );
+		org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().addListener( this.listener );
 	}
 
 	private void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
 		this.book.handleEditCommitted( edit, this.userInformation );
 	}
 	protected abstract void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction );
-	protected abstract void handleEvent( org.lgna.cheshire.events.Event event );
+	protected abstract void handleEvent( org.lgna.croquet.history.event.Event event );
 	private org.lgna.cheshire.Book.SelectionObserver selectionObserver = new org.lgna.cheshire.Book.SelectionObserver() {
 		public void selectionChanging( Book source, int fromIndex, int toIndex ) {
 		}

@@ -46,6 +46,8 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private final java.util.List<org.lgna.croquet.history.event.Listener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	
 	private P parent;
 	public Node( P parent ) {
 		this.setParent( parent );
@@ -75,6 +77,29 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 	}
 	public final <N extends Node<?>> N getFirstAncestorAssignableTo( Class<N> cls ) {
 		return this.getFirstAncestorAssignableTo( cls, false );
+	}
+	
+	public void addListener( org.lgna.croquet.history.event.Listener listener ) {
+		this.listeners.add( listener );
+	}
+	public void removeListener( org.lgna.croquet.history.event.Listener listener ) {
+		this.listeners.remove( listener );
+	}
+	protected void fireChanging( org.lgna.croquet.history.event.Event e ) {
+		if( this.parent != null ) {
+			this.parent.fireChanging( e );
+		}
+		for( org.lgna.croquet.history.event.Listener listener : this.listeners ) {
+			listener.changing( e );
+		}
+	}
+	protected void fireChanged( org.lgna.croquet.history.event.Event e ) {
+		if( this.parent != null ) {
+			this.parent.fireChanged( e );
+		}
+		for( org.lgna.croquet.history.event.Listener listener : this.listeners ) {
+			listener.changed( e );
+		}
 	}
 }
 	

@@ -62,9 +62,9 @@ public class MenuItemPrepNote extends PrepNote< org.lgna.croquet.history.MenuIte
 		) ) ;
 	}
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
-		if( event instanceof org.lgna.cheshire.events.MenuSelectionChangedEvent ) {
-			org.lgna.cheshire.events.MenuSelectionChangedEvent menuSelectionChangedEvent = (org.lgna.cheshire.events.MenuSelectionChangedEvent)event;
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
+		if( event instanceof org.lgna.croquet.history.event.MenuSelectionChangedEvent ) {
+			org.lgna.croquet.history.event.MenuSelectionChangedEvent menuSelectionChangedEvent = (org.lgna.croquet.history.event.MenuSelectionChangedEvent)event;
 			java.util.List< org.lgna.croquet.Model > models = menuSelectionChangedEvent.getModels();
 			final int N = models.size();
 			if( N > 0 ) {

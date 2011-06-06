@@ -41,17 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.events;
+package org.lgna.croquet.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StepAddedEvent implements Event {
-	private final org.lgna.croquet.history.Step< ? > step;
-	public StepAddedEvent( org.lgna.croquet.history.Step< ? > step ) {
-		this.step = step;
-	}
-	public org.lgna.croquet.history.Step< ? > getStep() {
-		return this.step;
-	}
+public interface Event {
+
 }

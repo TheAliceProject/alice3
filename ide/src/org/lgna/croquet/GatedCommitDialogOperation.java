@@ -168,11 +168,11 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 			return rv;
 		};
 	};
-	private org.lgna.croquet.history.TransactionManager.EventObserver eventObserver = new org.lgna.croquet.history.TransactionManager.EventObserver() {
-		public void firingEvent(org.lgna.cheshire.events.Event event) {
+	private org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
+		public void changing( org.lgna.croquet.history.event.Event e ) {
 		}
-		public void firedEvent(org.lgna.cheshire.events.Event event ) {
-			GatedCommitDialogOperation.this.handleFiredEvent( event );
+		public void changed( org.lgna.croquet.history.event.Event e ) {
+			GatedCommitDialogOperation.this.handleFiredEvent( e );
 		}
 	};
 
@@ -205,7 +205,7 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 		this.explanationLabel.setText( explanation );
 	}
 
-	public void handleFiredEvent( org.lgna.cheshire.events.Event event ) {
+	public void handleFiredEvent( org.lgna.croquet.history.event.Event event ) {
 		//System.err.println( "handleFiredEvent: " + event );
 		S step = null;//(S)event.findContextFor( GatedCommitDialogOperation.this )
 		this.updateExplanation( step );
@@ -227,7 +227,7 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 		rv.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), gbc );
 		rv.addComponent( controlPanel, gbc );
 
-		org.lgna.croquet.history.TransactionManager.addEventObserver( this.eventObserver );
+		step.addListener( this.listener );
 		this.updateExplanation( step );
 
 		this.getCompleteOperation().setDialog( dialog );
@@ -238,7 +238,7 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 	@Override
 	protected final void releaseContentPane( S step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		if( contentPane != null ) {
-			org.lgna.croquet.history.TransactionManager.removeEventObserver( this.eventObserver );
+			step.removeListener( this.listener );
 			this.release( step, dialog, this.isCompleted );
 		} else {
 			step.cancel();

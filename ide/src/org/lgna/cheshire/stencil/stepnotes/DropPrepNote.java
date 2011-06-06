@@ -55,7 +55,7 @@ public class DropPrepNote extends PrepNote< org.lgna.croquet.history.DropPrepSte
 		this.addFeature( DropNoteUtilities.createHole( step ) );
 	}
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
 		return DropNoteUtilities.isWhatWeveBeenWaitingFor( this.getStep(), event );
 	}
 }

@@ -48,11 +48,11 @@ import org.lgna.croquet.components.*;
 /**
  * @author Dennis Cosgrove
  */
-abstract class RtModel<M extends Model, C extends org.lgna.croquet.history.Step< M >> {
+abstract class RtModel<M extends Model, S extends org.lgna.croquet.history.Step< M >> {
 	private M model;
-	private C step;
+	private S step;
 
-	public RtModel( M model, C step ) {
+	public RtModel( M model, S step ) {
 		assert model != null;
 		assert step != null : model;
 		this.model = model;
@@ -61,7 +61,7 @@ abstract class RtModel<M extends Model, C extends org.lgna.croquet.history.Step<
 	public M getModel() {
 		return this.model;
 	}
-	public C getStep() {
+	public S getStep() {
 		return this.step;
 	}
 }

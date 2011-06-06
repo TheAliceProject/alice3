@@ -41,17 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.events;
+package org.lgna.croquet.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenuResizedEvent implements Event {
-	private final org.lgna.croquet.components.PopupMenu popupMenu;
-	public PopupMenuResizedEvent( org.lgna.croquet.components.PopupMenu popupMenu ) {
-		this.popupMenu = popupMenu;
+public class FinishedEvent implements Event {
+	private final org.lgna.croquet.history.Transaction transaction;
+	public FinishedEvent( org.lgna.croquet.history.Transaction transaction ) {
+		this.transaction = transaction;
 	}
-	public org.lgna.croquet.components.PopupMenu getPopupMenu() {
-		return this.popupMenu;
+	public org.lgna.croquet.history.Transaction getTransaction() {
+		return this.transaction;
 	}
 }

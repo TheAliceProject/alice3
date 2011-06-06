@@ -261,7 +261,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 		tree.setRootVisible( false );
 		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tree );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
-		org.lgna.croquet.history.TransactionManager.addObserver( new org.lgna.croquet.history.TransactionManager.Observer() {
+		org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().addListener( new org.lgna.croquet.history.event.Listener() {
 			private void reload() {
 				javax.swing.SwingUtilities.invokeLater( new Runnable() {
 					public void run() {
@@ -279,32 +279,15 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 					}
 				} );
 			}
-			public void addingStep( org.lgna.croquet.history.Step< ? > step ) {
+			public void changing(org.lgna.croquet.history.event.Event e) {
+				
 			}
-			public void addedStep( org.lgna.croquet.history.Step< ? > step ) {
-				this.reload();
-			}
-			public void editCommitting( org.lgna.croquet.edits.Edit< ? > edit ) {
-			}
-			public void editCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
-				tree.repaint();
-			}
-			public void finishing(org.lgna.croquet.history.Transaction transaction) {
-			}
-			public void finished(org.lgna.croquet.history.Transaction transaction) {
-				tree.repaint();
-			}
-			public void dropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-			}
-			public void dropPended( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-			}
-			public void dialogOpened( org.lgna.croquet.components.Dialog dialog ) {
-			}
-			public void popupMenuResized( org.lgna.croquet.components.PopupMenu popupMenu ) {
-			}
-			public void menuItemsSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
-			}
-			public void transactionCanceled(org.lgna.croquet.history.Transaction transaction) {
+			public void changed(org.lgna.croquet.history.event.Event e) {
+				if( e instanceof org.lgna.croquet.history.event.AddStepEvent ) {
+					this.reload();
+				} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+					tree.repaint();
+				}
 			}
 		} );
 		return scrollPane;
