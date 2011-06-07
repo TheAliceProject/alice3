@@ -46,9 +46,10 @@ package org.lgna.croquet.history.event;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuSelectionChangedEvent implements Event {
+public class MenuSelectionChangedEvent extends Event< org.lgna.croquet.history.Transaction > {
 	private final java.util.List< org.lgna.croquet.Model > models;
-	public MenuSelectionChangedEvent( java.util.List< org.lgna.croquet.Model > models ) {
+	public MenuSelectionChangedEvent( org.lgna.croquet.history.Transaction transaction, java.util.List< org.lgna.croquet.Model > models ) {
+		super( transaction );
 		this.models = models;
 	}
 	public java.util.List< org.lgna.croquet.Model > getModels() {

@@ -46,6 +46,12 @@ package org.lgna.croquet.history.event;
 /**
  * @author Dennis Cosgrove
  */
-public interface Event {
-
+public abstract class Event< N extends org.lgna.croquet.history.Node< ? > > {
+	private final N node;
+	public Event( N node ) {
+		this.node = node;
+	}
+	public N getNode() {
+		return this.node;
+	}
 }

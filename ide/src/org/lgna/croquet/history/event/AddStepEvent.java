@@ -46,9 +46,10 @@ package org.lgna.croquet.history.event;
 /**
  * @author Dennis Cosgrove
  */
-public class AddStepEvent implements Event {
+public class AddStepEvent extends Event< org.lgna.croquet.history.Transaction > {
 	private final org.lgna.croquet.history.Step< ? > step;
-	public AddStepEvent( org.lgna.croquet.history.Step< ? > step ) {
+	public AddStepEvent( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.history.Step< ? > step ) {
+		super( transaction );
 		this.step = step;
 	}
 	public org.lgna.croquet.history.Step< ? > getStep() {

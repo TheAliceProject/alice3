@@ -364,7 +364,8 @@ public class TransactionManager {
 	}
 //	//todo: reduce accessibility
 	@Deprecated
-	public static void firePopupMenuResized( org.lgna.croquet.components.PopupMenu popupMenu ) {
+	public static void firePopupMenuResized( PopupPrepStep< ? > step ) {
+		step.fireChanged( new org.lgna.croquet.history.event.PopupMenuResizedEvent( step ) );
 //		for( Observer observer : observers ) {
 //			observer.popupMenuResized( popupMenu );
 //		}

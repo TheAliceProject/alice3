@@ -46,12 +46,8 @@ package org.lgna.croquet.history.event;
 /**
  * @author Dennis Cosgrove
  */
-public class FinishedEvent implements Event {
-	private final org.lgna.croquet.history.Transaction transaction;
-	public FinishedEvent( org.lgna.croquet.history.Transaction transaction ) {
-		this.transaction = transaction;
-	}
-	public org.lgna.croquet.history.Transaction getTransaction() {
-		return this.transaction;
+public class FinishedEvent extends Event< org.lgna.croquet.history.CompletionStep< ? > >  {
+	public FinishedEvent( org.lgna.croquet.history.CompletionStep< ? > step ) {
+		super( step );
 	}
 }

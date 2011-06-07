@@ -47,6 +47,7 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public abstract class PopupPrepStep< M extends org.lgna.croquet.PopupPrepModel<?> > extends PrepStep< M > {
+	private transient org.lgna.croquet.components.PopupMenu popupMenu;
 	public PopupPrepStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
@@ -55,8 +56,13 @@ public abstract class PopupPrepStep< M extends org.lgna.croquet.PopupPrepModel<?
 	}
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		org.lgna.croquet.Trigger trigger = this.getTrigger();
+		this.popupMenu = popupMenu;
 		trigger.showPopupMenu( popupMenu );
+		this.popupMenu = null;
 	}
 	public void handleResized( java.awt.event.ComponentEvent componentEvent ) {
+	}
+	public org.lgna.croquet.components.PopupMenu getPopupMenu() {
+		return this.popupMenu;
 	}
 }

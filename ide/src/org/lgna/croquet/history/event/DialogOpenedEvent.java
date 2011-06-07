@@ -46,9 +46,10 @@ package org.lgna.croquet.history.event;
 /**
  * @author Dennis Cosgrove
  */
-public class DialogOpenedEvent implements Event {
+public class DialogOpenedEvent extends Event< org.lgna.croquet.history.DialogOperationStep< ? > > {
 	private final org.lgna.croquet.components.Dialog dialog;
-	public DialogOpenedEvent( org.lgna.croquet.components.Dialog dialog ) {
+	public DialogOpenedEvent( org.lgna.croquet.history.DialogOperationStep< ? > step, org.lgna.croquet.components.Dialog dialog ) {
+		super( step );
 		this.dialog = dialog;
 	}
 	public org.lgna.croquet.components.Dialog getDialog() {

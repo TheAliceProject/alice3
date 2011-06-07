@@ -207,8 +207,14 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 
 	public void handleFiredEvent( org.lgna.croquet.history.event.Event event ) {
 		//System.err.println( "handleFiredEvent: " + event );
-		S step = null;//(S)event.findContextFor( GatedCommitDialogOperation.this )
-		this.updateExplanation( step );
+		if( event instanceof org.lgna.croquet.history.event.AddStepEvent ) {
+			org.lgna.croquet.history.event.AddStepEvent addStepEvent = (org.lgna.croquet.history.event.AddStepEvent)event;
+			org.lgna.croquet.history.Step< ? > step = addStepEvent.getStep();
+			org.lgna.croquet.history.GatedCommitDialogOperationStep gatedCommitDialogOperationStep = step.getFirstAncestorAssignableTo( org.lgna.croquet.history.GatedCommitDialogOperationStep.class );
+			//todo
+			S s = (S)gatedCommitDialogOperationStep;
+			this.updateExplanation( s );
+		}
 	}
 	@Override
 	protected final org.lgna.croquet.components.Container< ? > createContentPane( S step, org.lgna.croquet.components.Dialog dialog ) {

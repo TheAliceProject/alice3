@@ -96,7 +96,7 @@ public abstract class Note extends org.lgna.stencil.Note {
 		org.lgna.croquet.components.ScreenElement screenElement;
 		if( event instanceof org.lgna.croquet.history.event.PopupMenuResizedEvent ) {
 			org.lgna.croquet.history.event.PopupMenuResizedEvent menuResizedEvent = (org.lgna.croquet.history.event.PopupMenuResizedEvent)event;
-			screenElement = menuResizedEvent.getPopupMenu();
+			screenElement = menuResizedEvent.getNode().getPopupMenu();
 		} else if( event instanceof org.lgna.croquet.history.event.DialogOpenedEvent ) {
 			org.lgna.croquet.history.event.DialogOpenedEvent dialogOpenedEvent = (org.lgna.croquet.history.event.DialogOpenedEvent)event;
 			screenElement = dialogOpenedEvent.getDialog();

@@ -408,7 +408,7 @@ public class Transaction extends Node< TransactionHistory > {
 			step = this.pendingSteps.reify( step, true );
 		}
 		if( step != null ) {
-			org.lgna.croquet.history.event.Event e = new org.lgna.croquet.history.event.AddStepEvent( step );
+			org.lgna.croquet.history.event.Event e = new org.lgna.croquet.history.event.AddStepEvent( this, step );
 			step.fireChanging( e );
 			if( step instanceof PrepStep< ? > ) {
 				this.prepSteps.add( (PrepStep< ? >)step );

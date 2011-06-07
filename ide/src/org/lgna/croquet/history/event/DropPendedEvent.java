@@ -46,11 +46,12 @@ package org.lgna.croquet.history.event;
 /**
  * @author Dennis Cosgrove
  */
-public class DropPendedEvent implements Event {
+public class DropPendedEvent extends Event< org.lgna.croquet.history.Transaction > {
 	private final org.lgna.croquet.Model model;
 	private final org.lgna.croquet.DropReceptor dropReceptor; 
 	private final org.lgna.croquet.DropSite dropSite;
-	public DropPendedEvent( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+	public DropPendedEvent( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+		super( transaction );
 		this.model = model;
 		this.dropReceptor = dropReceptor;
 		this.dropSite = dropSite;

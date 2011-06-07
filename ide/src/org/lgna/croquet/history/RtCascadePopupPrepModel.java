@@ -562,7 +562,7 @@ public class RtCascadePopupPrepModel<T> extends RtModel< CascadePopupPrepModel< 
 				public void componentMoved( java.awt.event.ComponentEvent e ) {
 				}
 				public void componentResized( java.awt.event.ComponentEvent e ) {
-					org.lgna.croquet.history.TransactionManager.firePopupMenuResized( popupMenu );
+					org.lgna.croquet.history.TransactionManager.firePopupMenuResized( getStep() );
 				}
 				public void componentHidden( java.awt.event.ComponentEvent e ) {
 				}
