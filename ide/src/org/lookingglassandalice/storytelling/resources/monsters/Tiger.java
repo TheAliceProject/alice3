@@ -53,7 +53,7 @@ public enum Tiger implements org.lookingglassandalice.storytelling.resources.Adu
     private Tiger() {
     	this.implementation = org.lookingglassandalice.storytelling.resources.monsters.PersonResource.getInstance( "tiger.a3r" );
 	}
-	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
-		return this.implementation.createPersonImplementation( abstraction );
+	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
+		return this.implementation.createImplementation( abstraction );
 	}
 }

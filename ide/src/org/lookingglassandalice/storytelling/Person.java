@@ -53,7 +53,7 @@ public abstract class Person extends Model implements Walker, Toucher {
 		return this.implementation;
 	}
 	public Person( org.lookingglassandalice.storytelling.resources.PersonResource resource ) {
-		this.implementation = resource.createPersonImplementation( this );
+		this.implementation = resource.createImplementation( this );
 	}
 	
 	public void walkTo( Entity entity ) {

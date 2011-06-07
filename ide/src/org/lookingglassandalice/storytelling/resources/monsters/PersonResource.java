@@ -48,9 +48,9 @@ package org.lookingglassandalice.storytelling.resources.monsters;
 /**
  * @author Dennis Cosgrove
  */
-/*package-protected*/ class PersonResource implements org.lookingglassandalice.storytelling.resources.PersonResource {
+	public class PersonResource implements org.lookingglassandalice.storytelling.resources.PersonResource {
 	private static java.util.Map< String, PersonResource > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-    /*package-protected*/ static PersonResource getInstance( String path ) {
+    public static PersonResource getInstance( String path ) {
     	synchronized( map ) {
     		PersonResource rv = map.get( path );
     		if( rv != null ) {
@@ -62,12 +62,25 @@ package org.lookingglassandalice.storytelling.resources.monsters;
     		return rv;
 		}
     }
+    
+    public static PersonResource getInstance( String resourceName, String textureKey ) {
+    	synchronized( map ) {
+    		PersonResource rv = map.get( resourceName );
+    		if( rv != null ) {
+    			//pass
+    		} else {
+    			rv = new PersonResource( resourceName );
+    			map.put( resourceName, rv );
+    		}
+    		return rv;
+		}
+    }
 
     private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal;
     private PersonResource( String path ) {
     	this.sgOriginal = MonsterUtilities.decode( path );
 	}
-	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
+	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
 	    edu.cmu.cs.dennisc.texture.Texture texture = MonsterUtilities.getTexture( this.sgOriginal );
 	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = MonsterUtilities.createCopy( this.sgOriginal );
 		return new org.lookingglassandalice.storytelling.implementation.monsters.MonsterImplementation( sgSkeletonVisual, abstraction, this, texture );

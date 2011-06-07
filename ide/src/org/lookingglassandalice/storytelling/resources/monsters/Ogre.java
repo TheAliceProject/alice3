@@ -52,7 +52,7 @@ public enum Ogre implements org.lookingglassandalice.storytelling.resources.Adul
     private Ogre() {
     	this.implementation = org.lookingglassandalice.storytelling.resources.monsters.PersonResource.getInstance( "ogre.a3r" );
 	}
-	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
-		return this.implementation.createPersonImplementation( abstraction );
+	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
+		return this.implementation.createImplementation( abstraction );
 	}
 }

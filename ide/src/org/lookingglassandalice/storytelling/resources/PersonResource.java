@@ -91,5 +91,5 @@ public interface PersonResource {
 			return this.children;
 		}
 	};
-	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction );
+	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createImplementation( org.lookingglassandalice.storytelling.Person abstraction );
 }

@@ -59,7 +59,7 @@ public class AdultPersonResource extends PersonResource implements org.lookinggl
 	public org.alice.apis.stage.LifeStage getLifeStage() {
 		return org.alice.apis.stage.LifeStage.ADULT;
 	}
-	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createPersonImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
+	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
 		return new org.lookingglassandalice.storytelling.implementation.sims2.AdultImplementation( abstraction, this, this.gender, this.skinTone, this.outfit );
 	}
 }
