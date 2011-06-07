@@ -41,16 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.croquet.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadePopupCompletionStep< B > extends CompletionStep< org.lgna.croquet.CascadePopupCompletionModel< B > >{
-	public CascadePopupCompletionStep( Transaction parent, org.lgna.croquet.CascadePopupCompletionModel< B > model, org.lgna.croquet.Trigger trigger, TransactionHistory transactionHistory ) {
-		super( parent, model, trigger, transactionHistory );
-	}
-	public CascadePopupCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
+public interface Listener {
+	public void changing( Event e );
+	public void changed( Event e );
 }
