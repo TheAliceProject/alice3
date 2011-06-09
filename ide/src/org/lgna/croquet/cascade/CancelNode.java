@@ -46,7 +46,7 @@ package org.lgna.croquet.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class CancelNode< F > extends CascadeItemNode< F, Void, org.lgna.croquet.CascadeCancel<F> > {
+public class CancelNode< F > extends AbstractItemNode< F, Void, org.lgna.croquet.CascadeCancel<F> > {
 	public static <F> CancelNode< F > createInstance( org.lgna.croquet.CascadeCancel< F > model ) {
 		return new CancelNode< F >( model );
 	}
@@ -56,10 +56,12 @@ public class CancelNode< F > extends CascadeItemNode< F, Void, org.lgna.croquet.
 	public CancelNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+	@Override
 	public int getBlankStepCount() {
 		return 0;
 	}
-	public org.lgna.croquet.cascade.BlankNode< java.lang.Void > getBlankStepAt( int index ) {
+	@Override
+	public BlankNode< Void > getBlankStepAt( int index ) {
 		throw new AssertionError();
 	}
 }

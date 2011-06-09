@@ -51,11 +51,11 @@ public abstract class CascadeSeparator extends CascadeItem< Void, Void > {
 		super( id );
 	}
 	@Override
-	public final Void createValue( org.lgna.croquet.cascade.CascadePrepStep< ? super Void,Void > step ) {
+	public final Void createValue( org.lgna.croquet.cascade.ItemNode< ? super Void,Void > step ) {
 		throw new AssertionError();
 	}
 	@Override
-	public final Void getTransientValue( org.lgna.croquet.cascade.CascadePrepStep< ? super Void,Void > step ) {
+	public final Void getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super Void,Void > step ) {
 		throw new AssertionError();
 	}
 	@Override

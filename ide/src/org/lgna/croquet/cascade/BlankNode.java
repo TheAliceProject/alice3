@@ -46,7 +46,7 @@ package org.lgna.croquet.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class BlankNode< B > extends CascadeNode< CascadeItemNode< B, ?, org.lgna.croquet.CascadeItem<B,?> >, org.lgna.croquet.CascadeBlank< B > > {
+public class BlankNode< B > extends CascadeNode< AbstractItemNode< B, ?, org.lgna.croquet.CascadeItem<B,?> >, org.lgna.croquet.CascadeBlank< B > > {
 	public static <B> BlankNode< B > createInstance( org.lgna.croquet.CascadeBlank< B > model ) {
 		return new BlankNode< B >( model );
 	}
@@ -60,7 +60,7 @@ public class BlankNode< B > extends CascadeNode< CascadeItemNode< B, ?, org.lgna
 	/*package-private*/ void setRtBlank( RtBlank< B > rtBlank ) {
 		this.rtBlank = rtBlank;
 	}
-	public CascadeItemNode getSelectedFillInContext() {	
+	public AbstractItemNode getSelectedFillInContext() {	
 		return this.rtBlank.getSelectedFillInContext();
 	}
 }

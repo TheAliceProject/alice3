@@ -148,10 +148,10 @@ abstract class RtNode<M extends Element, C extends org.lgna.croquet.history.Node
 }
 
 class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.BlankNode< B > > {
-	private static <F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.cascade.CascadeItemNode< F, B, M > > boolean isEmptySeparator( RtItem< F, B, M, C > rtItem ) {
+	private static <F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.cascade.AbstractItemNode< F, B, M > > boolean isEmptySeparator( RtItem< F, B, M, C > rtItem ) {
 		return rtItem instanceof RtSeparator && ((RtSeparator)rtItem).getMenuItem() == null;
 	}
-	private static <F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.cascade.CascadeItemNode< F, B, M >> void cleanUpSeparators( java.util.List< RtItem< F, B, M, C >> rtItems ) {
+	private static <F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.cascade.AbstractItemNode< F, B, M >> void cleanUpSeparators( java.util.List< RtItem< F, B, M, C >> rtItems ) {
 		java.util.ListIterator< RtItem< F, B, M, C > > listIterator = rtItems.listIterator();
 		boolean isLineSeparatorAcceptable = false;
 		while( listIterator.hasNext() ) {
@@ -199,7 +199,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 		this.getStep().setRtBlank( this );
 	}
 
-	public org.lgna.croquet.cascade.CascadeItemNode getSelectedFillInContext() {
+	public org.lgna.croquet.cascade.AbstractItemNode getSelectedFillInContext() {
 		if( this.rtSelectedFillIn != null ) {
 			return this.rtSelectedFillIn.getStep();
 		} else {
@@ -296,7 +296,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 	}
 }
 
-abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.cascade.CascadeItemNode< F,B,M > > extends RtNode< M, C > {
+abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.cascade.AbstractItemNode< F,B,M > > extends RtNode< M, C > {
 	private final RtBlank< B >[] rtBlanks;
 //	private javax.swing.JMenuItem menuItem = null;
 	private ViewController<?,?> menuItem = null;

@@ -46,7 +46,7 @@ package org.lgna.croquet.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class SeparatorNode extends CascadeItemNode< Void, Void, org.lgna.croquet.CascadeSeparator > {
+public class SeparatorNode extends AbstractItemNode< Void, Void, org.lgna.croquet.CascadeSeparator > {
 	public static SeparatorNode createInstance( org.lgna.croquet.CascadeSeparator model ) {
 		return new SeparatorNode( model );
 	}
@@ -56,10 +56,12 @@ public class SeparatorNode extends CascadeItemNode< Void, Void, org.lgna.croquet
 	public SeparatorNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+	@Override
 	public int getBlankStepCount() {
 		return 0;
 	}
-	public org.lgna.croquet.cascade.BlankNode< java.lang.Void > getBlankStepAt( int index ) {
+	@Override
+	public BlankNode< Void > getBlankStepAt( int index ) {
 		throw new AssertionError();
 	}
 }

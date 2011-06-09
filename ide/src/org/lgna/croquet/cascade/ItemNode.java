@@ -46,17 +46,9 @@ package org.lgna.croquet.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeItemNode< F, B, M extends org.lgna.croquet.CascadeItem< F,B > > extends CascadeNode< BlankNode<?>, M > implements CascadePrepStep<F,B> {
-	public CascadeItemNode( M model ) {
-		super( null, model );
-	}
-	public CascadeItemNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public F createValue() {
-		return this.getElement().createValue( this );
-	}
-	public F getTransientValue() {
-		return this.getElement().getTransientValue( this );
-	}
+public interface ItemNode<F,B> {
+	public int getBlankStepCount();
+	public BlankNode< B > getBlankStepAt( int index );
+	public F getTransientValue();
+	public F createValue();
 }

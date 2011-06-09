@@ -65,27 +65,27 @@ class EnumConstantFillIn<T extends Enum< T >> extends org.lgna.croquet.CascadeFi
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.CascadePrepStep< ? super T,Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T,Void > step ) {
 		return null;
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.CascadePrepStep< ? super T,Void > step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T,Void > step ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.CascadePrepStep< ? super T,Void > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T,Void > step ) {
 		return this.value.name();
 	}
 
 	@Override
-	public T createValue( org.lgna.croquet.cascade.CascadePrepStep< ? super T,Void > step ) {
+	public T createValue( org.lgna.croquet.cascade.ItemNode< ? super T,Void > step ) {
 		return this.value;
 	}
 
 	@Override
-	public T getTransientValue( org.lgna.croquet.cascade.CascadePrepStep< ? super T,Void > step ) {
+	public T getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super T,Void > step ) {
 		return this.value;
 	}
 }
@@ -129,27 +129,27 @@ class IntegerLiteralFillIn extends org.lgna.croquet.CascadeFillIn< Integer, Void
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.CascadePrepStep< ? super Integer,Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return null;
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.CascadePrepStep< ? super Integer,Void > step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.CascadePrepStep< ? super Integer,Void > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return Integer.toString( this.value );
 	}
 
 	@Override
-	public Integer createValue( org.lgna.croquet.cascade.CascadePrepStep< ? super Integer,Void > step ) {
+	public Integer createValue( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return this.value;
 	}
 
 	@Override
-	public Integer getTransientValue( org.lgna.croquet.cascade.CascadePrepStep< ? super Integer,Void > step ) {
+	public Integer getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return this.value;
 	}
 }
@@ -168,27 +168,27 @@ class CustomIntegerFillIn extends org.lgna.croquet.CascadeFillIn< Integer, Void 
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.CascadePrepStep< ? super Integer,Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return null;
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.CascadePrepStep< ? super Integer,Void > step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.CascadePrepStep< ? super Integer,Void > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return "custom integer...";
 	}
 
 	@Override
-	public Integer createValue( org.lgna.croquet.cascade.CascadePrepStep< ? super Integer,Void > step ) {
+	public Integer createValue( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return 42;
 	}
 
 	@Override
-	public Integer getTransientValue( org.lgna.croquet.cascade.CascadePrepStep< ? super Integer,Void > step ) {
+	public Integer getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return null;
 	}
 }

@@ -71,7 +71,7 @@ public class RelationalExpressionLeftAndRightOperandsFillIn extends ExpressionFi
 		return new edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression( expressions[ 0 ], this.transientValue.operator.getValue(), expressions[ 1 ], this.transientValue.leftOperandType.getValue(), this.transientValue.rightOperandType.getValue() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression getTransientValue( org.lgna.croquet.cascade.CascadePrepStep< ? super edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression,edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	public edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression,edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
 		return this.transientValue;
 	}
 }

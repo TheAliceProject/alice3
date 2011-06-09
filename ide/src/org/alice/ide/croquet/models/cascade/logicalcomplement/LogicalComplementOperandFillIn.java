@@ -65,7 +65,7 @@ public class LogicalComplementOperandFillIn extends org.alice.ide.croquet.models
 		return new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( expressions[ 0 ] );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.LogicalComplement getTransientValue( org.lgna.croquet.cascade.CascadePrepStep< ? super edu.cmu.cs.dennisc.alice.ast.LogicalComplement,edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	public edu.cmu.cs.dennisc.alice.ast.LogicalComplement getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.LogicalComplement,edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
 		return this.transientValue;
 	}
 }
