@@ -66,10 +66,6 @@ public class PreviousExpressionItselfFillIn extends PreviousExpressionBasedFillI
 		this.type = type;
 	}
 	@Override
-	protected String getMenuItemIconProxyText() {
-		return "(current value)";
-	}
-	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
 		return previousExpression;
 	}
