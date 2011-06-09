@@ -60,6 +60,9 @@ public class BlankNode< B > extends CascadeNode< AbstractItemNode< B, ?, org.lgn
 	/*package-private*/ void setRtBlank( RtBlank< B > rtBlank ) {
 		this.rtBlank = rtBlank;
 	}
+	public boolean isTop() {
+		return this.rtBlank.getParent() instanceof RtRoot;
+	}
 	public AbstractItemNode getSelectedFillInContext() {	
 		return this.rtBlank.getSelectedFillInContext();
 	}

@@ -52,8 +52,8 @@ public abstract class CascadeMenu< FB > extends CascadeBlankOwner< FB, FB > {
 			super(java.util.UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
 		}
 		@Override
-		protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< FB > context ) {
-			CascadeMenu.this.updateBlankChildren( rv, context );
+		protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< FB > blankNode ) {
+			CascadeMenu.this.updateBlankChildren( rv, blankNode );
 			return rv;
 		}
 	}

@@ -294,23 +294,21 @@ public abstract class CascadeManager {
 		return true;
 	}
 	
-	public java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+	public java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode<edu.cmu.cs.dennisc.alice.ast.Expression> blankNode, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 		if( type != null ) {
 //			org.lgna.croquet.steps.Transaction transaction = step.getParent();
 //			org.lgna.croquet.steps.TransactionHistory transactionHistory = transaction.getParent();
 //			edu.cmu.cs.dennisc.croquet.ModelContext<?> parent = step.getParent();
 //			boolean isRoot = parent instanceof edu.cmu.cs.dennisc.croquet.CascadeRootContext;
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo updateChildren isRoot" );
-			boolean isRoot = true;
-
+			boolean isRoot = blankNode.isTop();
 			if( isRoot && this.isPreviousExpressionSet() ) {
 				rv.add( org.alice.ide.croquet.models.cascade.PreviousExpressionItselfFillIn.getInstance( type ) );
 				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			}
-			this.addCustomFillIns( rv, step, type );
+			this.addCustomFillIns( rv, blankNode, type );
 			type = getTypeFor( type );
 			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) {
-				this.addFillInsForObjectType( rv, step );
+				this.addFillInsForObjectType( rv, blankNode );
 			} else {
 				for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
 					if( expressionFillerInner.isAssignableTo( type ) ) {
@@ -334,7 +332,7 @@ public abstract class CascadeManager {
 			}
 
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			this.addExpressionBonusFillInsForType( rv, step, type );
+			this.addExpressionBonusFillInsForType( rv, blankNode, type );
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			if( type.isArray() ) {
 				//rv.add( new org.alice.ide.cascade.customfillin.CustomArrayFillIn() );

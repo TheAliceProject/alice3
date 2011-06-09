@@ -65,10 +65,10 @@ public class PreviousExpressionItselfFillIn extends PreviousExpressionBasedFillI
 		super( java.util.UUID.fromString( "a15cbb4f-f955-498a-9291-60bf23007c34" ) );
 		this.type = type;
 	}
-//	@Override
-//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-//		return CascadeManager.isInclusionDesired( context, previousExpression, this.type );
-//	}
+	@Override
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.Expression, Void > step ) {
+		return "(current value)";
+	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
 		return previousExpression;

@@ -50,18 +50,17 @@ public class ConditionBlank extends org.alice.ide.croquet.models.cascade.Express
 	private static class SingletonHolder {
 		private static ConditionBlank instance = new ConditionBlank();
 	}
+
 	public static ConditionBlank getInstance() {
 		return SingletonHolder.instance;
 	}
 	private ConditionBlank() {
 		super( java.util.UUID.fromString( "a5de4626-9fd1-4936-9958-7b85b1637262" ), Boolean.class );
 	}
-	
+
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeItem> updateChildren(
-			java.util.List<org.lgna.croquet.CascadeItem> rv,
-			org.lgna.croquet.cascade.BlankNode<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > blankNode ) {
 		rv.add( ConditionSeparator.getInstance() );
-		return super.updateChildren(rv, context);
+		return super.updateChildren( rv, blankNode );
 	}
 }

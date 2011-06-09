@@ -46,9 +46,6 @@ package org.lgna.croquet.cascade;
 import org.lgna.croquet.*;
 import org.lgna.croquet.components.*;
 import org.lgna.croquet.history.CascadePopupCompletionStep;
-import org.lgna.croquet.history.CascadePopupPrepStep;
-import org.lgna.croquet.history.Node;
-import org.lgna.croquet.history.TransactionManager;
 /**
  * @author Dennis Cosgrove
  */
@@ -411,6 +408,8 @@ abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.cro
 			jMenuItem = menu.getAwtComponent();
 			rv = menu;
 		}
+//		String text = item.getMenuItemText( this.getStep() );
+//		jMenuItem.setText( text != null ? text : "" );
 		jMenuItem.setText( item.getMenuItemText( this.getStep() ) );
 		jMenuItem.setIcon( item.getMenuItemIcon( this.getStep() ) );
 		return rv;

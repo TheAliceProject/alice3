@@ -56,15 +56,12 @@ public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.cro
 	private final edu.cmu.cs.dennisc.alice.ast.StringConcatenation transientValue;
 	private StringConcatinationRightOperandOnlyFillIn() {
 		super( java.util.UUID.fromString( "1470e7b1-4f71-4d1b-8f3d-bbd708d64282" ) );
+		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Object.class ) );
 		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( 
 				new org.alice.ide.ast.PreviousValueExpression( Object.class ),
 				new org.alice.ide.ast.EmptyExpression( Object.class )
 		);
 	}
-//	@Override
-//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-//		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral == false;
-//	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.StringConcatenation createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
 		return new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( previousExpression, expressions[ 0 ] );

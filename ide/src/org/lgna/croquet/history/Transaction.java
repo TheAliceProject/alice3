@@ -260,8 +260,8 @@ public class Transaction extends Node< TransactionHistory > {
 								OperationMenuItemPrepStep.createAndAddToTransaction( Transaction.this, (org.lgna.croquet.OperationMenuItemPrepModel)model, trigger );
 							} else if( model instanceof org.lgna.croquet.BooleanStateMenuItemPrepModel ) {
 								BooleanStateMenuItemPrepStep.createAndAddToTransaction( Transaction.this, (org.lgna.croquet.BooleanStateMenuItemPrepModel)model, trigger );
-							} else if( model instanceof org.lgna.croquet.CascadeFillIn< ?, ? > ) {
-								org.lgna.croquet.CascadeFillIn< ?, ? > fillIn = (org.lgna.croquet.CascadeFillIn< ?, ? >)model;
+							} else if( model instanceof org.lgna.croquet.CascadeItem< ?, ? > ) {
+								org.lgna.croquet.CascadeItem< ?, ? > item = (org.lgna.croquet.CascadeItem< ?, ? >)model;
 //								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
 //									isLastPrep = false;
 //								}

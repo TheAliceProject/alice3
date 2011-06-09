@@ -45,7 +45,7 @@ package org.alice.ide.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuButton< M extends org.lgna.croquet.PopupPrepModel > extends org.lgna.croquet.components.AbstractButton<javax.swing.AbstractButton,M> {
+public class PopupButton< M extends org.lgna.croquet.PopupPrepModel > extends org.lgna.croquet.components.AbstractButton<javax.swing.AbstractButton,M> {
 	private static final int AFFORDANCE_WIDTH = 6;
 	private static final int AFFORDANCE_HALF_HEIGHT = 5;
 	private static final java.awt.Color ARROW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray(191);
@@ -136,14 +136,14 @@ public class MenuButton< M extends org.lgna.croquet.PopupPrepModel > extends org
 	private org.lgna.croquet.components.Component<?> prefixComponent;
 	private org.lgna.croquet.components.Component<?> mainComponent;
 	private org.lgna.croquet.components.Component<?> postfixComponent;
-	public MenuButton(M model, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent) {
+	public PopupButton(M model, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent) {
 		super(model);
 		this.prefixComponent = prefixComponent;
 		this.mainComponent = mainComponent;
 		this.postfixComponent = postfixComponent;
 		this.setMaximumSizeClampedToPreferredSize( true );
 	}
-	public MenuButton(M model) {
+	public PopupButton(M model) {
 		this(model, null, null, null);
 	}
 	public org.lgna.croquet.components.Component<?> getMainComponent() {
@@ -163,7 +163,7 @@ public class MenuButton< M extends org.lgna.croquet.PopupPrepModel > extends org
 		class JPopupMenuButton extends javax.swing.JButton {
 			public JPopupMenuButton() {
 				this.setRolloverEnabled(true);
-				this.setAction( MenuButton.this.getModel().getAction() );
+				this.setAction( PopupButton.this.getModel().getAction() );
 			}
 			@Override
 			public void updateUI() {
@@ -184,7 +184,7 @@ public class MenuButton< M extends org.lgna.croquet.PopupPrepModel > extends org
 
 				java.awt.Paint prevPaint = g2.getPaint();
 				boolean isActive = buttonModel.isRollover();
-				if (isActive || MenuButton.this.isInactiveFeedbackDesired()) {
+				if (isActive || PopupButton.this.isInactiveFeedbackDesired()) {
 					if (isActive) {
 						g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 220 ) );
 					} else {
@@ -242,7 +242,7 @@ public class MenuButton< M extends org.lgna.croquet.PopupPrepModel > extends org
 					g2.drawLine( xMax, yMax, xMax, y );
 					
 				} else {
-					if (MenuButton.this.isInactiveFeedbackDesired()) {
+					if (PopupButton.this.isInactiveFeedbackDesired()) {
 						g2.setColor(java.awt.Color.WHITE);
 						//g2.drawRect( x, y, width-1, height-1 );
 						g2.drawLine(x + 1, y + 1, x + width - 4, y + 1);

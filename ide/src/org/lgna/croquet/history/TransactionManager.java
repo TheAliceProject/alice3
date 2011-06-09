@@ -48,28 +48,6 @@ import org.lgna.croquet.*;
  * @author Dennis Cosgrove
  */
 public class TransactionManager {
-//	public static interface Observer {
-//		public void addingStep( Step<?> step );
-//		public void addedStep( Step<?> step );
-//		public void editCommitting( org.lgna.croquet.edits.Edit<?> edit );
-//		public void editCommitted( org.lgna.croquet.edits.Edit<?> edit );
-//		public void finishing( Transaction transaction );
-//		public void finished( Transaction transaction );
-//		public void dropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite );
-//		public void dropPended( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite );
-//		public void menuItemsSelectionChanged( java.util.List< org.lgna.croquet.Model > models );
-//		public void popupMenuResized( org.lgna.croquet.components.PopupMenu popupMenu );
-//		public void dialogOpened( org.lgna.croquet.components.Dialog dialog );
-//		public void transactionCanceled( Transaction transaction );
-//	}
-//
-//	public static interface EventObserver {
-//		public void firingEvent( org.lgna.croquet.history.event.Event event );
-//		public void firedEvent( org.lgna.croquet.history.event.Event event );
-//	}
-//	
-//	private static final java.util.List<Observer> observers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-//	private static final java.util.List<EventObserver> eventObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private static final java.util.Stack< TransactionHistory > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 
 	static {
@@ -78,20 +56,6 @@ public class TransactionManager {
 	private TransactionManager() {
 		throw new AssertionError();
 	}
-
-//	public static void addObserver( Observer observer ) {
-//		observers.add( observer );
-//	}
-//	public static void removeObserver( Observer observer ) {
-//		observers.remove( observer );
-//	}
-//	
-//	public static void addEventObserver( EventObserver eventObserver ) {
-//		eventObservers.add( eventObserver );
-//	}
-//	public static void removeEventObserver( EventObserver eventObserver ) {
-//		eventObservers.remove( eventObserver );
-//	}
 
 	public static TransactionHistory getRootTransactionHistory() {
 		return stack.firstElement();
