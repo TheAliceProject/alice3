@@ -46,7 +46,7 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeItemStep< F, M extends org.lgna.croquet.CascadeItem< F, S >, S extends CascadeItemStep< F, M, S >  > extends MenuItemPrepStep< M > {
+public abstract class CascadeItemStep< F, B, M extends org.lgna.croquet.CascadeItem< F,B > > extends MenuItemPrepStep< M > implements CascadePrepStep<F,B> {
 	public CascadeItemStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
@@ -54,9 +54,9 @@ public abstract class CascadeItemStep< F, M extends org.lgna.croquet.CascadeItem
 		super( binaryDecoder );
 	}
 	public F createValue() {
-		return this.getModel().createValue( (S)this );
+		return this.getModel().createValue( this );
 	}
 	public F getTransientValue() {
-		return this.getModel().getTransientValue( (S)this );
+		return this.getModel().getTransientValue( this );
 	}
 }

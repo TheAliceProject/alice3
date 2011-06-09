@@ -46,16 +46,13 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeItem< F, S extends org.lgna.croquet.history.CascadeItemStep<F,?,S> > extends MenuItemPrepModel {
+public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
 	public CascadeItem( java.util.UUID id ) {
 		//super( Application.CASCADE_GROUP, id );
 		super( id );
 	}
 	@Override
 	protected void localize() {
-	}
-	public boolean isInclusionDesired( S context ) {
-		return true;
 	}
 	public boolean isAutomaticallySelectedWhenSoleOption() {
 		return true;
@@ -68,30 +65,30 @@ public abstract class CascadeItem< F, S extends org.lgna.croquet.history.Cascade
 	}
 	
 //	public abstract CascadeBlank<B>[] getBlanks();
-	public abstract F getTransientValue( S context );
-	public abstract F createValue( S context );
+	public abstract F getTransientValue( org.lgna.croquet.history.CascadePrepStep<? super F,B> step );
+	public abstract F createValue( org.lgna.croquet.history.CascadePrepStep<? super F,B> step );
 
 	private javax.swing.JComponent menuProxy = null;
 	private javax.swing.Icon icon = null;
-	protected abstract javax.swing.JComponent createMenuItemIconProxy( S context );
+	protected abstract javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadePrepStep<? super F,B> step );
 //	protected javax.swing.JComponent createMenuProxy() {
 //		return new javax.swing.JLabel( "todo: override getMenuProxy" );
 //	}
-	protected javax.swing.JComponent getMenuProxy( S context ) {
+	protected javax.swing.JComponent getMenuProxy( org.lgna.croquet.history.CascadePrepStep<? super F,B> step ) {
 		//System.err.println( "todo: cache getMenuProxy()" );
 		//todo
 		if( this.menuProxy != null ) {
 			//pass
 		} else {
-			this.menuProxy = this.createMenuItemIconProxy( context );
+			this.menuProxy = this.createMenuItemIconProxy( step );
 		}
 		return this.menuProxy;
 	}
-	public javax.swing.Icon getMenuItemIcon( S context ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.history.CascadePrepStep<? super F,B> step ) {
 		if( this.icon != null ) {
 			//pass
 		} else {
-			javax.swing.JComponent component = this.getMenuProxy( context );
+			javax.swing.JComponent component = this.getMenuProxy( step );
 			if( component != null ) {
 				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( component );
 				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
@@ -111,7 +108,7 @@ public abstract class CascadeItem< F, S extends org.lgna.croquet.history.Cascade
 		}
 		return this.icon;
 	}
-	public String getMenuItemText( S context ) {
+	public String getMenuItemText( org.lgna.croquet.history.CascadePrepStep< ? super F,B > step ) {
 		return null;
 	}
 	

@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeFillIn<F,B> extends CascadeBlankOwner< F, B, org.lgna.croquet.history.CascadeFillInPrepStep< F, B > > {
+public abstract class CascadeFillIn<F,B> extends CascadeBlankOwner< F, B > {
 	public CascadeFillIn( java.util.UUID id ) {
 		super( id );
 	}

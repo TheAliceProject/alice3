@@ -50,6 +50,7 @@ public class CascadeLineSeparator extends CascadeSeparator {
 	private static class SingletonHolder {
 		private static CascadeLineSeparator instance = new CascadeLineSeparator();
 	}
+
 	public static CascadeLineSeparator getInstance() {
 		return SingletonHolder.instance;
 	}
@@ -57,7 +58,7 @@ public class CascadeLineSeparator extends CascadeSeparator {
 		super( java.util.UUID.fromString( "5103f9f4-b85d-4c49-b384-5a9785d1d2ac" ) );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy(org.lgna.croquet.history.CascadeSeparatorStep step) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadePrepStep< ? super Void,Void > step ) {
 		return null;
 	}
 }

@@ -43,13 +43,11 @@
 
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.CascadeItem;
-
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeMenuItem extends AbstractButton< javax.swing.JMenuItem, CascadeItem< ?,? > > {
-	public CascadeMenuItem( CascadeItem< ?,? > model ) {
+public class CascadeMenuItem extends AbstractButton< javax.swing.JMenuItem, org.lgna.croquet.CascadeItem< ?,? > > {
+	public CascadeMenuItem( org.lgna.croquet.CascadeItem< ?,? > model ) {
 		super( model );
 	}
 	@Override

@@ -83,24 +83,4 @@ public class CascadeManager {
 	public static org.alice.ide.croquet.models.cascade.ExpressionBlank[] createBlanks( Class<?>... clses ) {
 		return createBlanks( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( clses ) );
 	}
-	
-	public static boolean isInclusionDesired( org.lgna.croquet.history.CascadeItemStep< ?,?,? > step, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType ) {
-//		if( this.previousExpression != null ) {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> prevExpressionType = this.previousExpression.getType();
-//		if( prevExpressionType != null && prevExpressionType.isAssignableTo( type ) ) {
-//			if( blank.isTop() ) {
-//				//pass
-//			} else {
-//				blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( this.previousExpression, "(current value)" ) );
-//				blank.addSeparator();
-//			}
-//		}
-//	}
-		//this.leftOperandType.isAssignableFrom( previousExpression.getType() )
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: isInclusionDesired" );
-		return true;
-	}
-	public static boolean isInclusionDesired( org.lgna.croquet.history.CascadeItemStep< ?,?,? > step, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, Class<?> desiredCls ) {
-		return isInclusionDesired( step, previousExpression, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( desiredCls ) );
-	}
 }

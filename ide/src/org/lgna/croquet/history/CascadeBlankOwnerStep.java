@@ -46,16 +46,19 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlankOwnerStep< F, B, M extends org.lgna.croquet.CascadeBlankOwner< F, B, S >, S extends CascadeBlankOwnerStep<F,B,M,S>  > extends CascadeItemStep< F, M, S > {
+public abstract class CascadeBlankOwnerStep< F, B, M extends org.lgna.croquet.CascadeBlankOwner< F, B >  > extends CascadeItemStep< F, B, M > {
 	public CascadeBlankOwnerStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public CascadeBlankOwnerStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	private RtBlankOwner<F,B,M,S> rtBlankOwner;
-	/*private-private*/ void setRtBlankOwner( RtBlankOwner<F,B,M,S> rtBlankOwner ) {
+	private RtBlankOwner<F,B,M,?> rtBlankOwner;
+	/*private-private*/ void setRtBlankOwner( RtBlankOwner<F,B,M,?> rtBlankOwner ) {
 		this.rtBlankOwner = rtBlankOwner;
+	}
+	public int getBlankStepCount() {
+		return this.rtBlankOwner.getBlankStepCount();
 	}
 	public CascadeBlankStep< B > getBlankStepAt( int i ) {	
 		return this.rtBlankOwner.getBlankStepAt( i );

@@ -46,7 +46,7 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInPrepStep<F,B> extends CascadeBlankOwnerStep< F, B, org.lgna.croquet.CascadeFillIn< F, B >, CascadeFillInPrepStep<F,B> > {
+public class CascadeFillInPrepStep<F,B> extends CascadeBlankOwnerStep< F, B, org.lgna.croquet.CascadeFillIn< F, B > > {
 	public static < F, B > CascadeFillInPrepStep< F, B > createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadeFillIn< F, B > model, org.lgna.croquet.Trigger trigger ) {
 		return new CascadeFillInPrepStep< F, B >( parent, model, trigger );
 	}

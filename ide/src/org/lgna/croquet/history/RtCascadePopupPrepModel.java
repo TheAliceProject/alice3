@@ -144,10 +144,10 @@ abstract class RtNode<M extends Model, C extends org.lgna.croquet.history.Step< 
 }
 
 class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.history.CascadeBlankStep< B > > {
-	private static <F, B, M extends CascadeItem< F, C >, C extends org.lgna.croquet.history.CascadeItemStep< F, M, C > > boolean isEmptySeparator( RtItem< F, B, M, C > rtItem ) {
+	private static <F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.history.CascadeItemStep< F, B, M > > boolean isEmptySeparator( RtItem< F, B, M, C > rtItem ) {
 		return rtItem instanceof RtSeparator && ((RtSeparator)rtItem).getMenuItem() == null;
 	}
-	private static <F, B, M extends CascadeItem< F, C >, C extends org.lgna.croquet.history.CascadeItemStep< F, M, C >> void cleanUpSeparators( java.util.List< RtItem< F, B, M, C >> rtItems ) {
+	private static <F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.history.CascadeItemStep< F, B, M >> void cleanUpSeparators( java.util.List< RtItem< F, B, M, C >> rtItems ) {
 		java.util.ListIterator< RtItem< F, B, M, C > > listIterator = rtItems.listIterator();
 		boolean isLineSeparatorAcceptable = false;
 		while( listIterator.hasNext() ) {
@@ -292,7 +292,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.history.Cas
 	}
 }
 
-abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends org.lgna.croquet.history.CascadeItemStep< F, M, C > > extends RtNode< M, C > {
+abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.history.CascadeItemStep< F,B,M > > extends RtNode< M, C > {
 	private final RtBlank< B >[] rtBlanks;
 //	private javax.swing.JMenuItem menuItem = null;
 	private ViewController<?,?> menuItem = null;
@@ -317,6 +317,9 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends org.lgna.cr
 
 	protected abstract CascadeBlank< B >[] getModelBlanks();
 	
+	public int getBlankStepCount() {
+		return this.rtBlanks.length;
+	}
 	public org.lgna.croquet.history.CascadeBlankStep< B > getBlankStepAt( int i ) {
 		return this.rtBlanks[ i ].getStep();
 	}
@@ -341,9 +344,10 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends org.lgna.cr
 		}
 		return true;
 	}
-
-	public boolean isInclusionDesired() {
-		return this.getModel().isInclusionDesired( this.getStep() );
+	//todo: remove
+	@Deprecated
+	/*package-private*/ boolean isInclusionDesired() {
+		return true;//this.getModel().isInclusionDesired( this.getStep() );
 	}
 	@Override
 	protected RtNode< ? extends Model, ? extends org.lgna.croquet.history.Step< ? > > getNextNode() {
@@ -389,7 +393,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends org.lgna.cr
 		}
 	};
 
-	protected ViewController<?,?> createMenuItem( CascadeItem< F, C > item, boolean isLast ) {
+	protected ViewController<?,?> createMenuItem( CascadeItem< F,B > item, boolean isLast ) {
 		ViewController<?,?> rv;
 		javax.swing.JMenuItem jMenuItem;
 		if( isLast ) {
@@ -408,7 +412,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends org.lgna.cr
 		return rv;
 	}
 	public ViewController<?,?> getMenuItem() {
-		CascadeItem< F, C > item = this.getModel();
+		CascadeItem< F,B > item = this.getModel();
 		boolean isLast = this.isLast();
 		if( this.menuItem != null ) {
 			if( this.wasLast == isLast ) {
@@ -433,7 +437,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, C >, C extends org.lgna.cr
 	}
 }
 
-abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner< F, B, C >, C extends org.lgna.croquet.history.CascadeBlankOwnerStep< F, B, M, C > > extends RtItem< F, B, M, C > {
+abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner< F, B >, C extends org.lgna.croquet.history.CascadeBlankOwnerStep< F, B, M > > extends RtItem< F, B, M, C > {
 	public RtBlankOwner( M model, C step ) {
 		super( model, step );
 		this.getStep().setRtBlankOwner( this );
@@ -472,7 +476,7 @@ class RtSeparator extends RtItem< Void, Void, CascadeSeparator, org.lgna.croquet
 		return null;
 	}
 	@Override
-	protected ViewController<?,?> createMenuItem( CascadeItem< Void, org.lgna.croquet.history.CascadeSeparatorStep > item, boolean isLast ) {
+	protected ViewController<?,?> createMenuItem( CascadeItem< Void,Void > item, boolean isLast ) {
 		//todo
 		if( item.getMenuItemText( null ) != null || item.getMenuItemIcon( null ) != null ) {
 			ViewController<?,?> rv = super.createMenuItem( item, isLast );

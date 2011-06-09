@@ -46,16 +46,16 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeSeparator extends CascadeItem< Void, org.lgna.croquet.history.CascadeSeparatorStep > {
+public abstract class CascadeSeparator extends CascadeItem< Void, Void > {
 	public CascadeSeparator( java.util.UUID id ) {
 		super( id );
 	}
 	@Override
-	public final Void createValue( org.lgna.croquet.history.CascadeSeparatorStep step ) {
+	public final Void createValue( org.lgna.croquet.history.CascadePrepStep< ? super Void,Void > step ) {
 		throw new AssertionError();
 	}
 	@Override
-	public final Void getTransientValue( org.lgna.croquet.history.CascadeSeparatorStep step ) {
+	public final Void getTransientValue( org.lgna.croquet.history.CascadePrepStep< ? super Void,Void > step ) {
 		throw new AssertionError();
 	}
 	@Override

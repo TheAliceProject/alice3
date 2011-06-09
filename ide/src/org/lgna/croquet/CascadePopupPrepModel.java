@@ -43,8 +43,6 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.edits.Edit;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -92,11 +90,11 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel<org.lgna.c
 	public CascadePopupCompletionModel< B > getCompletionModel() {
 		return this.completionModel;
 	}
-	protected abstract Edit< ? extends CascadePopupCompletionModel< B > > createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< B > step, B[] values );
+	protected abstract org.lgna.croquet.edits.Edit< ? extends CascadePopupCompletionModel< B > > createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< B > step, B[] values );
 
 	public void handleCompletion( org.lgna.croquet.history.CascadePopupCompletionStep< B > step, PerformObserver performObserver, B[] values ) {
 		try {
-			Edit< ? extends CascadePopupCompletionModel< B > > edit = this.createEdit( step, values );
+			org.lgna.croquet.edits.Edit< ? extends CascadePopupCompletionModel< B > > edit = this.createEdit( step, values );
 			step.commitAndInvokeDo( edit );
 		} finally {
 //			ContextManager.popContext();

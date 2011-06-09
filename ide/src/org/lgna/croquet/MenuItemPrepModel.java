@@ -43,8 +43,6 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.MenuItemContainer;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -52,7 +50,7 @@ public abstract class MenuItemPrepModel extends PrepModel {
 	public MenuItemPrepModel( java.util.UUID id ) {
 		super( id );
 	}
-	public abstract MenuItemContainer createMenuItemAndAddTo( MenuItemContainer rv );
+	public abstract org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv );
 	@Override
 	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.Trigger trigger) {
 		throw new RuntimeException();

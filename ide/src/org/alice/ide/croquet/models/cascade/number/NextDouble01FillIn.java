@@ -59,14 +59,14 @@ public class NextDouble01FillIn extends org.alice.ide.croquet.models.cascade.Exp
 		this.transientValue = this.createValue( null );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( org.lgna.croquet.history.CascadeFillInPrepStep context ) {
+	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( org.lgna.croquet.history.CascadePrepStep< ? super edu.cmu.cs.dennisc.alice.ast.MethodInvocation,Void > step ) {
 		final String NEXT_DOUBLE_IN_RANGE_METHOD_NAME = "nextDoubleInRange";
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava RANDOM_UTILITIES_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.random.RandomUtilities.class );
 		edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression = new edu.cmu.cs.dennisc.alice.ast.TypeExpression( RANDOM_UTILITIES_TYPE );
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( typeExpression, RANDOM_UTILITIES_TYPE.getDeclaredMethod( NEXT_DOUBLE_IN_RANGE_METHOD_NAME, Number.class, Number.class ), new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 ), new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue( org.lgna.croquet.history.CascadeFillInPrepStep context ) {
+	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue( org.lgna.croquet.history.CascadePrepStep< ? super edu.cmu.cs.dennisc.alice.ast.MethodInvocation,Void > step ) {
 		return this.transientValue;
 	}
 }

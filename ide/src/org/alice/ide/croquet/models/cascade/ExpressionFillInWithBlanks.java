@@ -55,23 +55,23 @@ public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.a
 	private enum BlankOperation {
 		CREATE_VALUES() {
 			@Override
-			public <F,M extends org.lgna.croquet.CascadeItem< F,C >,C extends org.lgna.croquet.history.CascadeItemStep<F,M,C>> F operate( org.lgna.croquet.history.CascadeItemStep< F,M,C > selectedFillInContext ) {
-				return selectedFillInContext.createValue();
+			public <F> F operate( org.lgna.croquet.history.CascadePrepStep< F,? > step ) {
+				return step.createValue();
 			}
 		},
 		GET_TRANSIENT_VALUES() {
 			@Override
-			public <F,M extends org.lgna.croquet.CascadeItem< F,C >,C extends org.lgna.croquet.history.CascadeItemStep<F,M,C>> F operate( org.lgna.croquet.history.CascadeItemStep< F,M,C > selectedFillInContext ) {
-				if( selectedFillInContext != null ) {
-					return selectedFillInContext.getTransientValue();
+			public <F> F operate( org.lgna.croquet.history.CascadePrepStep< F,? > step ) {
+				if( step != null ) {
+					return step.getTransientValue();
 				} else {
 					return null;
 				}
 			}
 		};
-		public abstract <F,M extends org.lgna.croquet.CascadeItem< F,C >, C extends org.lgna.croquet.history.CascadeItemStep<F,M,C> > F operate( org.lgna.croquet.history.CascadeItemStep< F,M,C > selectedFillInContext );
+		public abstract <F> F operate( org.lgna.croquet.history.CascadePrepStep< F,? > step );
 	}
-	private B[] runBlanks( org.lgna.croquet.history.CascadeFillInPrepStep<F,B> step, BlankOperation blankOperation ) { 
+	private B[] runBlanks( org.lgna.croquet.history.CascadePrepStep< ? super F,B> step, BlankOperation blankOperation ) { 
 		org.lgna.croquet.CascadeBlank< B >[] blanks = this.getBlanks();
 		B[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( this.cls, blanks.length );
 		for( int i=0; i<rv.length; i++ ) {
@@ -94,7 +94,7 @@ public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.a
 	}
 	protected abstract F createValue( B[] expressions );
 	@Override
-	public final F createValue( org.lgna.croquet.history.CascadeFillInPrepStep<F,B> step ) {
+	public final F createValue( org.lgna.croquet.history.CascadePrepStep< ? super F,B > step ) {
 		return this.createValue( runBlanks( step, BlankOperation.CREATE_VALUES ) );
 	}
 //	protected abstract F getTransientValue( B[] expressions );

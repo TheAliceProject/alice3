@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeMenu< FB > extends CascadeBlankOwner< FB, FB, org.lgna.croquet.history.CascadeMenuStep<FB> > {
+public abstract class CascadeMenu< FB > extends CascadeBlankOwner< FB, FB > {
 	private class InternalBlank extends CascadeBlank< FB > {
 		public InternalBlank() {
 			super(java.util.UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
@@ -66,21 +66,20 @@ public abstract class CascadeMenu< FB > extends CascadeBlankOwner< FB, FB, org.l
 //		return this.blank;
 //	}
 	protected abstract java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankStep< FB > step );
-	//protected abstract void addChildrenToBlank( java.util.List< edu.cmu.cs.dennisc.croquet.AbstractCascadeFillIn > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< FB > context, CascadeBlank<FB> blank );
-	private org.lgna.croquet.history.CascadeItemStep< FB,?,? > getSelectedFillInContext( org.lgna.croquet.history.CascadeMenuStep<FB> step ) {
-		org.lgna.croquet.history.CascadeBlankStep< FB > blankContext = step.getBlankStepAt( 0 );
+	private org.lgna.croquet.history.CascadeItemStep< FB,FB,? > getSelectedFillInContext( org.lgna.croquet.history.CascadePrepStep< ? super FB,? > step ) {
+		org.lgna.croquet.history.CascadeBlankStep< ? > blankContext = step.getBlankStepAt( 0 );
 		return blankContext.getSelectedFillInContext();
 	}
 	@Override
-	public FB getTransientValue( org.lgna.croquet.history.CascadeMenuStep<FB> step ) {
+	public FB getTransientValue( org.lgna.croquet.history.CascadePrepStep< ? super FB,FB > step ) {
 		return this.getSelectedFillInContext( step ).getTransientValue();
 	}
 	@Override
-	public FB createValue( org.lgna.croquet.history.CascadeMenuStep<FB> step ) {
+	public FB createValue( org.lgna.croquet.history.CascadePrepStep< ? super FB,FB > step ) {
 		return this.getSelectedFillInContext( step ).createValue();
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadeMenuStep< FB > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadePrepStep< ? super FB,FB > step ) {
 		return new javax.swing.JLabel( this.getDefaultLocalizedText() );
 	}
 //	@Override

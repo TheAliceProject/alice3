@@ -402,13 +402,13 @@ public class Transaction extends Node< TransactionHistory > {
 
 	private void addStep( Step<?> step ) {
 		assert step != null;
-		if( step instanceof CascadePopupPrepStep< ? > ) {
+		if( step instanceof CascadeRootStep< ? > ) {
 			step = null;
 		} else {
 			step = this.pendingSteps.reify( step, true );
 		}
 		if( step != null ) {
-			org.lgna.croquet.history.event.Event e = new org.lgna.croquet.history.event.AddStepEvent( this, step );
+			org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddStepEvent( this, step );
 			step.fireChanging( e );
 			if( step instanceof PrepStep< ? > ) {
 				this.prepSteps.add( (PrepStep< ? >)step );

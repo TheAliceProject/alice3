@@ -51,11 +51,11 @@ package org.alice.ide.croquet.models.cascade.cancels;
 		super( id );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadeCancelStep< F > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadePrepStep< ? super F,Void > step ) {
 		return null;
 	}
 	@Override
-	public String getMenuItemText( org.lgna.croquet.history.CascadeCancelStep< F > context ) {
+	public String getMenuItemText( org.lgna.croquet.history.CascadePrepStep< ? super F,Void > step ) {
 		return this.getDefaultLocalizedText();
 	}
 }

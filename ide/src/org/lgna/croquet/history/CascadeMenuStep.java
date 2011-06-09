@@ -46,7 +46,7 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeMenuStep< FB > extends CascadeBlankOwnerStep< FB, FB, org.lgna.croquet.CascadeMenu< FB >, CascadeMenuStep< FB > > {
+public class CascadeMenuStep< FB > extends CascadeBlankOwnerStep< FB, FB, org.lgna.croquet.CascadeMenu< FB > > {
 	public static <FB> CascadeMenuStep< FB > createInstance( org.lgna.croquet.CascadeMenu< FB > model ) {
 		return new CascadeMenuStep< FB >( null, model, null );
 	}

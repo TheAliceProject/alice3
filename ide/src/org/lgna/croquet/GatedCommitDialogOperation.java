@@ -169,9 +169,9 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 		};
 	};
 	private org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
-		public void changing( org.lgna.croquet.history.event.Event e ) {
+		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
-		public void changed( org.lgna.croquet.history.event.Event e ) {
+		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
 			GatedCommitDialogOperation.this.handleFiredEvent( e );
 		}
 	};

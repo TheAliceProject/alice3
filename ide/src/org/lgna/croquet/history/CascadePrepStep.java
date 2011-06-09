@@ -41,13 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history.event;
+package org.lgna.croquet.history;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FinishedEvent extends Event< org.lgna.croquet.history.CompletionStep< ? > >  {
-	public FinishedEvent( org.lgna.croquet.history.CompletionStep< ? > step ) {
-		super( step );
-	}
+public interface CascadePrepStep<F,B> {
+	public int getBlankStepCount();
+	public CascadeBlankStep< B > getBlankStepAt( int index );
+	public F getTransientValue();
+	public F createValue();
 }

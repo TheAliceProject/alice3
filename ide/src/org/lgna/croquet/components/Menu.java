@@ -43,18 +43,14 @@
 
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.CascadeItem;
-import org.lgna.croquet.MenuItemPrepModel;
-import org.lgna.croquet.MenuModel;
-
 /**
  * @author Dennis Cosgrove
  */
-public class Menu extends ViewController< javax.swing.JMenu, MenuItemPrepModel > implements MenuItemContainer {
-	public Menu( MenuModel model ) {
+public class Menu extends ViewController< javax.swing.JMenu, org.lgna.croquet.MenuItemPrepModel > implements MenuItemContainer {
+	public Menu( org.lgna.croquet.MenuModel model ) {
 		super( model );
 	}
-	public Menu( CascadeItem< ?,? > model ) {
+	public Menu( org.lgna.croquet.CascadeItem< ?,? > model ) {
 		super( model );
 	}
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {

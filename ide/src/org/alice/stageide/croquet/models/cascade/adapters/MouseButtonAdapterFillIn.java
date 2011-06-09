@@ -72,11 +72,11 @@ public class MouseButtonAdapterFillIn extends org.alice.ide.croquet.models.casca
 		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( org.lgna.croquet.history.CascadeFillInPrepStep< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, Void > context ) {
+	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( org.lgna.croquet.history.CascadePrepStep< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation,Void > step ) {
 		return this.createValue();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getTransientValue( org.lgna.croquet.history.CascadeFillInPrepStep< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > context ) {
+	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getTransientValue( org.lgna.croquet.history.CascadePrepStep< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation,Void > step ) {
 		return this.transientValue;
 	}
 }

@@ -46,27 +46,27 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeRoot<B> extends CascadeBlankOwner< B[], B, org.lgna.croquet.history.CascadeRootStep< B > > {
-	private final CascadePopupPrepModel< B > operation;
-	/*package-private*/ CascadeRoot( CascadePopupPrepModel< B > operation ) {
+public class CascadeRoot<B> extends CascadeBlankOwner< B[], B > {
+	private final CascadePopupPrepModel< B > prepModel;
+	/*package-private*/ CascadeRoot( CascadePopupPrepModel< B > prepModel ) {
 		super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ) );
-		this.operation = operation;
+		this.prepModel = prepModel;
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy(org.lgna.croquet.history.CascadeRootStep<B> context) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadePrepStep< ? super B[],B > step) {
 		return null;
 	}
 	@Override
-	public B[] createValue( org.lgna.croquet.history.CascadeRootStep< B > context ) {
+	public B[] createValue( org.lgna.croquet.history.CascadePrepStep< ? super B[],B > step ) {
 		//todo
-		//this.operation.getComponentType();
+		//this.prepModel.getComponentType();
 		//handled elsewhere for now
 		throw new AssertionError();
 	}
 	@Override
-	public B[] getTransientValue( org.lgna.croquet.history.CascadeRootStep< B > context ) {
+	public B[] getTransientValue( org.lgna.croquet.history.CascadePrepStep< ? super B[],B > step ) {
 		//todo
-		//this.operation.getComponentType();
+		//this.prepModel.getComponentType();
 		//handled elsewhere for now
 		throw new AssertionError();
 	}

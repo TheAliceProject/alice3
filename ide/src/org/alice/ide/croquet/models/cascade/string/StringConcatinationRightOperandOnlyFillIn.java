@@ -70,7 +70,7 @@ public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.cro
 		return new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( previousExpression, expressions[ 0 ] );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.StringConcatenation getTransientValue( org.lgna.croquet.history.CascadeFillInPrepStep< edu.cmu.cs.dennisc.alice.ast.StringConcatenation, edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+	public edu.cmu.cs.dennisc.alice.ast.StringConcatenation getTransientValue( org.lgna.croquet.history.CascadePrepStep< ? super edu.cmu.cs.dennisc.alice.ast.StringConcatenation,edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
 		return this.transientValue;
 	}
 }

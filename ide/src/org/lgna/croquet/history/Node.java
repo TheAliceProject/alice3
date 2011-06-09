@@ -85,7 +85,7 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 	public void removeListener( org.lgna.croquet.history.event.Listener listener ) {
 		this.listeners.remove( listener );
 	}
-	protected void fireChanging( org.lgna.croquet.history.event.Event e ) {
+	protected void fireChanging( org.lgna.croquet.history.event.Event<?> e ) {
 		if( this.parent != null ) {
 			this.parent.fireChanging( e );
 		}
@@ -93,7 +93,7 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 			listener.changing( e );
 		}
 	}
-	protected void fireChanged( org.lgna.croquet.history.event.Event e ) {
+	protected void fireChanged( org.lgna.croquet.history.event.Event<?> e ) {
 		if( this.parent != null ) {
 			this.parent.fireChanged( e );
 		}
