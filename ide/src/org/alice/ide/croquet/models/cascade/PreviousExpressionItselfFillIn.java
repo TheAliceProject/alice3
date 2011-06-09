@@ -66,7 +66,7 @@ public class PreviousExpressionItselfFillIn extends PreviousExpressionBasedFillI
 		this.type = type;
 	}
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.Expression, Void > step ) {
+	protected String getMenuItemIconProxyText() {
 		return "(current value)";
 	}
 	@Override
