@@ -75,8 +75,8 @@ public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.a
 		org.lgna.croquet.CascadeBlank< B >[] blanks = this.getBlanks();
 		B[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( this.cls, blanks.length );
 		for( int i=0; i<rv.length; i++ ) {
-			org.lgna.croquet.history.CascadeBlankStep< B > blankStep = step.getBlankStepAt( i );
-			org.lgna.croquet.history.CascadeItemStep< B,?,? > selectedFillInContext = blankStep.getSelectedFillInContext();
+			org.lgna.croquet.history.CascadeBlankNode< B > blankStep = step.getBlankStepAt( i );
+			org.lgna.croquet.history.CascadeItemNode< B,?,? > selectedFillInContext = blankStep.getSelectedFillInContext();
 			rv[ i ] = (B)blankOperation.operate( selectedFillInContext );
 //			if( rv[ i ] == null ) {
 //				if( this.cls == edu.cmu.cs.dennisc.alice.ast.Expression.class ) {

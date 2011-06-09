@@ -53,11 +53,14 @@ import org.lgna.croquet.resolvers.SingletonResolver;
 public abstract class Model extends Element implements RuntimeResolver< Model > {
 	private static final int NULL_MNEMONIC = 0;
 	private static final int NULL_ACCELERATOR_MASK = 0;
-	private CodableResolver<Model> codableResolver;
 	public Model( java.util.UUID id ) {
 		super( id );
 	}
-	
+
+	public final Model getResolved() {
+		return this;
+	}
+
 	private boolean isInitialized = false;
 	protected void initialize() {
 		this.localize();
@@ -325,24 +328,7 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 			this.firstComponentHint = firstComponentHint;
 		}
 	}
-
-//	protected abstract <M extends Model> CodableResolver< M > createCodableResolver();
-	protected <M extends Model> CodableResolver< M > createCodableResolver() {
-		return new SingletonResolver( this );
-	}
-	public <M extends Model> CodableResolver< M > getCodableResolver() {
-		if( this.codableResolver != null ) {
-			//pass
-		} else {
-			this.codableResolver = this.createCodableResolver();
-		}
-		return (CodableResolver< M >)this.codableResolver;
-	}
 	
-	public final Model getResolved() {
-		return this;
-	}
-
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
 		rv.append( "text: " );
 		rv.append( this );

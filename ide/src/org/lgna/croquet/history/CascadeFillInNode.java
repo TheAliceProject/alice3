@@ -46,21 +46,17 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlankOwnerStep< F, B, M extends org.lgna.croquet.CascadeBlankOwner< F, B >  > extends CascadeItemStep< F, B, M > {
-	public CascadeBlankOwnerStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
-		super( parent, model, trigger );
+public class CascadeFillInNode<F,B> extends CascadeBlankOwnerNode< F, B, org.lgna.croquet.CascadeFillIn< F, B > > {
+	public static < F, B > CascadeFillInNode< F, B > createInstance( org.lgna.croquet.CascadeFillIn< F, B > model ) {
+		return new CascadeFillInNode< F,B >( model );
 	}
-	public CascadeBlankOwnerStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	private CascadeFillInNode( org.lgna.croquet.CascadeFillIn< F, B > model ) {
+		super( model );
+	}
+	public CascadeFillInNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	private RtBlankOwner<F,B,M,?> rtBlankOwner;
-	/*private-private*/ void setRtBlankOwner( RtBlankOwner<F,B,M,?> rtBlankOwner ) {
-		this.rtBlankOwner = rtBlankOwner;
-	}
-	public int getBlankStepCount() {
-		return this.rtBlankOwner.getBlankStepCount();
-	}
-	public CascadeBlankStep< B > getBlankStepAt( int i ) {	
-		return this.rtBlankOwner.getBlankStepAt( i );
+	public org.lgna.croquet.CascadeFillIn< F, B > getCascadeFillIn() {
+		return this.getModel();
 	}
 }

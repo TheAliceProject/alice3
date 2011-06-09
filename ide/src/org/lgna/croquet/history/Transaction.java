@@ -277,7 +277,7 @@ public class Transaction extends Node< TransactionHistory > {
 //									rv = InputDialogOperationStep.createAndAddToTransaction( Transaction.this, cascadeInputDialogOperationFillIn.getInputDialogOperation() );
 //								} else {
 									if( i < N-1 || isLastPrep ) {
-										CascadeFillInPrepStep.createAndAddToTransaction( Transaction.this, (org.lgna.croquet.CascadeFillIn< ?, ? >)model, trigger );
+										CascadeItemStep.createAndAddToTransaction( Transaction.this, (org.lgna.croquet.CascadeFillIn< ?, ? >)model, trigger );
 									} else {
 										//CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, this.dropModel, trigger, fillIn );
 										rv = null;
@@ -402,23 +402,17 @@ public class Transaction extends Node< TransactionHistory > {
 
 	private void addStep( Step<?> step ) {
 		assert step != null;
-		if( step instanceof CascadeRootStep< ? > ) {
-			step = null;
+		step = this.pendingSteps.reify( step, true );
+		org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddStepEvent( this, step );
+		step.fireChanging( e );
+		if( step instanceof PrepStep< ? > ) {
+			this.prepSteps.add( (PrepStep< ? >)step );
+		} else if( step instanceof CompletionStep< ? > ) {
+			this.completionStep = (CompletionStep< ? >)step;
 		} else {
-			step = this.pendingSteps.reify( step, true );
+			assert false : step;
 		}
-		if( step != null ) {
-			org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddStepEvent( this, step );
-			step.fireChanging( e );
-			if( step instanceof PrepStep< ? > ) {
-				this.prepSteps.add( (PrepStep< ? >)step );
-			} else if( step instanceof CompletionStep< ? > ) {
-				this.completionStep = (CompletionStep< ? >)step;
-			} else {
-				assert false : step;
-			}
-			step.fireChanged( e );
-		}
+		step.fireChanged( e );
 	}
 	
 	/*package-private*/ void addPrepStep( PrepStep< ? > step ) {

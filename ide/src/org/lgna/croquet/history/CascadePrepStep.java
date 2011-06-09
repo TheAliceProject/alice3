@@ -48,7 +48,7 @@ package org.lgna.croquet.history;
  */
 public interface CascadePrepStep<F,B> {
 	public int getBlankStepCount();
-	public CascadeBlankStep< B > getBlankStepAt( int index );
+	public CascadeBlankNode< B > getBlankStepAt( int index );
 	public F getTransientValue();
 	public F createValue();
 }

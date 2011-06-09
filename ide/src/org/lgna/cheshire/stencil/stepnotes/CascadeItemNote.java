@@ -41,28 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.cheshire.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeSeparatorStep extends CascadeItemStep< Void, Void, org.lgna.croquet.CascadeSeparator > {
-	public static CascadeSeparatorStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadeSeparator model, org.lgna.croquet.Trigger trigger ) {
-		return new CascadeSeparatorStep( parent, model, trigger );
+public class CascadeItemNote extends PrepNote< org.lgna.croquet.history.CascadeItemStep< ?,? > > {
+	public CascadeItemNote( org.lgna.croquet.history.CascadeItemStep< ?,? > step ) {
+		super( step );
 	}
-	public static CascadeSeparatorStep createInstance( org.lgna.croquet.CascadeSeparator model ) {
-		return new CascadeSeparatorStep( null, model, null );
+	@Override
+	protected void addFeatures( org.lgna.croquet.history.CascadeItemStep< ?,? > step ) {
 	}
-	private CascadeSeparatorStep( Transaction parent, org.lgna.croquet.CascadeSeparator model, org.lgna.croquet.Trigger trigger ) {
-		super( parent, model, trigger );
-	}
-	public CascadeSeparatorStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public int getBlankStepCount() {
-		return 0;
-	}
-	public org.lgna.croquet.history.CascadeBlankStep< java.lang.Void > getBlankStepAt( int index ) {
-		throw new AssertionError();
+	@Override
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
+		if( event instanceof org.lgna.croquet.history.event.MenuSelectionChangedEvent ) {
+			org.lgna.croquet.history.event.MenuSelectionChangedEvent menuSelectionChangedEvent = (org.lgna.croquet.history.event.MenuSelectionChangedEvent)event;
+			java.util.List< org.lgna.croquet.Model > models = menuSelectionChangedEvent.getModels();
+			final int N = models.size();
+			if( N > 0 ) {
+				return models.get( N-1 ) == this.getStep().getModel();
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 }

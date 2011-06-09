@@ -41,34 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade;
+package org.lgna.croquet.history;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterBlank extends ExpressionBlank {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, ParameterBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ParameterBlank getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
-		assert parameter != null;
-		ParameterBlank rv = map.get( parameter );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterBlank( parameter );
-			map.put( parameter, rv );
-		}
-		return rv;
+public class CascadeSeparatorNode extends CascadeItemNode< Void, Void, org.lgna.croquet.CascadeSeparator > {
+	public static CascadeSeparatorNode createInstance( org.lgna.croquet.CascadeSeparator model ) {
+		return new CascadeSeparatorNode( model );
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter;
-	private ParameterBlank( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
-		super( java.util.UUID.fromString( "84524eb1-7dbe-4481-8037-005d6402dbf3" ), parameter.getDesiredValueType() );
-		this.parameter = parameter;
+	private CascadeSeparatorNode( org.lgna.croquet.CascadeSeparator model ) {
+		super( model );
 	}
-	@Override
-	protected java.util.List<org.lgna.croquet.CascadeItem> updateChildren(
-			java.util.List<org.lgna.croquet.CascadeItem> rv,
-			org.lgna.croquet.history.CascadeBlankNode<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
-		rv.add( ParameterNameSeparator.getInstance( this.parameter ) );
-		return super.updateChildren(rv, context);
+	public CascadeSeparatorNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public int getBlankStepCount() {
+		return 0;
+	}
+	public org.lgna.croquet.history.CascadeBlankNode< java.lang.Void > getBlankStepAt( int index ) {
+		throw new AssertionError();
 	}
 }

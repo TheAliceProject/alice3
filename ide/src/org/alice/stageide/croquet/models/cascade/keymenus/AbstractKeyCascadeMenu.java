@@ -53,7 +53,7 @@ public abstract class AbstractKeyCascadeMenu extends org.alice.ide.croquet.model
 		this.keys = keys;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.FieldAccess > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankNode< edu.cmu.cs.dennisc.alice.ast.FieldAccess > context ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Key.class );
 		for( org.alice.apis.moveandturn.Key key : this.keys ) {
  			edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( key.name() );

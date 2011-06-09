@@ -62,7 +62,8 @@ public abstract class CascadeBlankOwner<F,B> extends CascadeItem< F,B > {
 		return rv;
 	}
 	@Override
-	public Iterable< CascadeBlank<B> > getChildren() {
-		return this.blanks;
+	public Iterable< CascadeItem<B,?> > getChildren() {
+		//todo: search blanks
+		return java.util.Collections.emptyList();
 	}
 }

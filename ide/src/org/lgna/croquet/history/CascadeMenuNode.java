@@ -46,21 +46,14 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeBlankStep< B > extends Step< org.lgna.croquet.CascadeBlank< B > > {
-	public static <B> CascadeBlankStep< B > createInstance( org.lgna.croquet.CascadeBlank< B > model ) {
-		return new CascadeBlankStep< B >( null, model, null );
+public class CascadeMenuNode< FB > extends CascadeBlankOwnerNode< FB, FB, org.lgna.croquet.CascadeMenu< FB > > {
+	public static <FB> CascadeMenuNode< FB > createInstance( org.lgna.croquet.CascadeMenu< FB > model ) {
+		return new CascadeMenuNode< FB >( model );
 	}
-	private CascadeBlankStep( Transaction parent, org.lgna.croquet.CascadeBlank< B > model, org.lgna.croquet.Trigger trigger ) {
-		super( parent, model, trigger );
+	private CascadeMenuNode( org.lgna.croquet.CascadeMenu< FB > model ) {
+		super( model );
 	}
-	private RtBlank< B > rtBlank;
-	public CascadeBlankStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public CascadeMenuNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	/*package-private*/ void setRtBlank( RtBlank< B > rtBlank ) {
-		this.rtBlank = rtBlank;
-	}
-	public CascadeItemStep getSelectedFillInContext() {	
-		return this.rtBlank.getSelectedFillInContext();
 	}
 }

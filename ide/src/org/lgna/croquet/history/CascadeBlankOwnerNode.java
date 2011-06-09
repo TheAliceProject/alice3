@@ -41,31 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.croquet.history;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInPrepNote extends PrepNote< org.lgna.croquet.history.CascadeFillInPrepStep< ?,? > > {
-	public CascadeFillInPrepNote( org.lgna.croquet.history.CascadeFillInPrepStep< ?,? > step ) {
-		super( step );
+public abstract class CascadeBlankOwnerNode< F, B, M extends org.lgna.croquet.CascadeBlankOwner< F, B >  > extends CascadeItemNode< F, B, M > {
+	public CascadeBlankOwnerNode( M model ) {
+		super( model );
 	}
-	@Override
-	protected void addFeatures( org.lgna.croquet.history.CascadeFillInPrepStep< ?,? > step ) {
+	public CascadeBlankOwnerNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
-		if( event instanceof org.lgna.croquet.history.event.MenuSelectionChangedEvent ) {
-			org.lgna.croquet.history.event.MenuSelectionChangedEvent menuSelectionChangedEvent = (org.lgna.croquet.history.event.MenuSelectionChangedEvent)event;
-			java.util.List< org.lgna.croquet.Model > models = menuSelectionChangedEvent.getModels();
-			final int N = models.size();
-			if( N > 0 ) {
-				return models.get( N-1 ) == this.getStep().getCascadeFillIn();
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+	private RtBlankOwner<F,B,M,?> rtBlankOwner;
+	/*private-private*/ void setRtBlankOwner( RtBlankOwner<F,B,M,?> rtBlankOwner ) {
+		this.rtBlankOwner = rtBlankOwner;
+	}
+	public int getBlankStepCount() {
+		return this.rtBlankOwner.getBlankStepCount();
+	}
+	public CascadeBlankNode< B > getBlankStepAt( int i ) {	
+		return this.rtBlankOwner.getBlankStepAt( i );
 	}
 }

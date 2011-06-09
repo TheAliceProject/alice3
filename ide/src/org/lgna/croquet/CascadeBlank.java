@@ -46,21 +46,12 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank< B > extends Model {
-	//todo: just use inherit for cascade?
-	private java.util.List< CascadeItem< ? extends B,? > > ownees;
+public abstract class CascadeBlank< B > extends Element {
 	public CascadeBlank( java.util.UUID id ) {
 		super( id );
 	}
-	@Override
-	public org.lgna.croquet.history.Step< ? > fire( org.lgna.croquet.Trigger trigger ) {
-		throw new RuntimeException();
-	}
-	@Override
-	protected void localize() {
-	}
-	protected abstract java.util.List< CascadeItem > updateChildren( java.util.List< CascadeItem > rv, org.lgna.croquet.history.CascadeBlankStep<B> step );
-	public final Iterable< CascadeItem > getChildren( org.lgna.croquet.history.CascadeBlankStep<B> step ) {
+	protected abstract java.util.List< CascadeItem > updateChildren( java.util.List< CascadeItem > rv, org.lgna.croquet.history.CascadeBlankNode<B> step );
+	public final Iterable< CascadeItem > getChildren( org.lgna.croquet.history.CascadeBlankNode<B> step ) {
 		java.util.List< CascadeItem > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.updateChildren( rv, step );
 		return rv;

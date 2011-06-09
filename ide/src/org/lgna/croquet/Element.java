@@ -47,12 +47,26 @@ package org.lgna.croquet;
  */
 public class Element {
 	private final java.util.UUID id;
+	private org.lgna.croquet.resolvers.CodableResolver<Element> codableResolver;
 	public Element( java.util.UUID id ) {
 		this.id = id;
 	}
 	public java.util.UUID getId() {
 		return this.id;
 	}
+//	protected abstract <M extends Model> CodableResolver< M > createCodableResolver();
+	protected <M extends Element> org.lgna.croquet.resolvers.CodableResolver< M > createCodableResolver() {
+		return new org.lgna.croquet.resolvers.SingletonResolver( this );
+	}
+	public <M extends Element> org.lgna.croquet.resolvers.CodableResolver< M > getCodableResolver() {
+		if( this.codableResolver != null ) {
+			//pass
+		} else {
+			this.codableResolver = this.createCodableResolver();
+		}
+		return (org.lgna.croquet.resolvers.CodableResolver< M >)this.codableResolver;
+	}
+	
 	protected StringBuilder appendRepr( StringBuilder rv ) {
 		rv.append( this.getClass().getName() );
 		return rv;

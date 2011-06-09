@@ -46,17 +46,14 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeRootStep<T> extends CascadeBlankOwnerStep< T[], T, org.lgna.croquet.CascadeRoot<T> > {
-	public static <T> CascadeRootStep< T > createInstance( org.lgna.croquet.CascadeRoot< T > model ) {
-		return new CascadeRootStep< T >( null, model, null );
+public class CascadeRootNode<T> extends CascadeBlankOwnerNode< T[], T, org.lgna.croquet.CascadeRoot<T> > {
+	public static <T> CascadeRootNode< T > createInstance( org.lgna.croquet.CascadeRoot< T > model ) {
+		return new CascadeRootNode< T >( model );
 	}
-//	public static <T> CascadeRootStep<T> createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadeRoot<T> model, org.lgna.croquet.Trigger trigger ) {
-//		return new CascadeRootStep<T>( parent, model, trigger );
-//	}
-	private CascadeRootStep( Transaction parent, org.lgna.croquet.CascadeRoot<T> model, org.lgna.croquet.Trigger trigger ) {
-		super( parent, model, trigger );
+	private CascadeRootNode( org.lgna.croquet.CascadeRoot<T> model ) {
+		super( model );
 	}
-	public CascadeRootStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public CascadeRootNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 }

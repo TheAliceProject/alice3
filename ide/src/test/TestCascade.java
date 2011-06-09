@@ -99,7 +99,7 @@ class EnumBlank<T extends Enum< T >> extends org.lgna.croquet.CascadeBlank< T > 
 	}
 
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankStep< T > step ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankNode< T > step ) {
 		for( T value : this.cls.getEnumConstants() ) {
 			rv.add( EnumConstantFillIn.getInstance( value ) );
 		}
@@ -207,7 +207,7 @@ class IntegerBlank extends org.lgna.croquet.CascadeBlank< Integer > {
 	}
 
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem> updateChildren( java.util.List< org.lgna.croquet.CascadeItem> rv, org.lgna.croquet.history.CascadeBlankStep< Integer > step ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem> updateChildren( java.util.List< org.lgna.croquet.CascadeItem> rv, org.lgna.croquet.history.CascadeBlankNode< Integer > step ) {
 		for( Integer value : new int[] { 1, 2, 3, 4, 5 } ) {
 			rv.add( IntegerLiteralFillIn.getInstance( value ) );
 		}

@@ -51,7 +51,6 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 	private final java.util.UUID id;
 	public Step( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
 		super( parent );
-		//this.modelResolver = model != null ? model.getCodableResolver() : null;
 		if( model != null ) {
 			this.modelResolver = model.getCodableResolver();
 		} else {

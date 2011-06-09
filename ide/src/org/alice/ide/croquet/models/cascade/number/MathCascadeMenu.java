@@ -57,7 +57,7 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 		super( java.util.UUID.fromString( "d6d9501b-2a63-4b72-9ceb-3046ff079ba1" ) );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankStep< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 //		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
 //			rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Double.class, Number.class ) );
 //		}
