@@ -41,25 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.croquet.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeSeparatorNode extends CascadeItemNode< Void, Void, org.lgna.croquet.CascadeSeparator > {
-	public static CascadeSeparatorNode createInstance( org.lgna.croquet.CascadeSeparator model ) {
-		return new CascadeSeparatorNode( model );
+public abstract class CascadeItemNode< F, B, M extends org.lgna.croquet.CascadeItem< F,B > > extends CascadeNode< BlankNode<?>, M > implements CascadePrepStep<F,B> {
+	public CascadeItemNode( M model ) {
+		super( null, model );
 	}
-	private CascadeSeparatorNode( org.lgna.croquet.CascadeSeparator model ) {
-		super( model );
-	}
-	public CascadeSeparatorNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public CascadeItemNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public int getBlankStepCount() {
-		return 0;
+	public F createValue() {
+		return this.getElement().createValue( this );
 	}
-	public org.lgna.croquet.history.CascadeBlankNode< java.lang.Void > getBlankStepAt( int index ) {
-		throw new AssertionError();
+	public F getTransientValue() {
+		return this.getElement().getTransientValue( this );
 	}
 }

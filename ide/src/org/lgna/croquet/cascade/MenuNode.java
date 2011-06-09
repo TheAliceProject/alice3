@@ -41,25 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.croquet.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeCancelNode< F > extends CascadeItemNode< F, Void, org.lgna.croquet.CascadeCancel<F> > {
-	public static <F> CascadeCancelNode< F > createInstance( org.lgna.croquet.CascadeCancel< F > model ) {
-		return new CascadeCancelNode< F >( model );
+public class MenuNode< FB > extends BlankOwnerNode< FB, FB, org.lgna.croquet.CascadeMenu< FB > > {
+	public static <FB> MenuNode< FB > createInstance( org.lgna.croquet.CascadeMenu< FB > model ) {
+		return new MenuNode< FB >( model );
 	}
-	private CascadeCancelNode( org.lgna.croquet.CascadeCancel<F> model ) {
+	private MenuNode( org.lgna.croquet.CascadeMenu< FB > model ) {
 		super( model );
 	}
-	public CascadeCancelNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public MenuNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	public int getBlankStepCount() {
-		return 0;
-	}
-	public org.lgna.croquet.history.CascadeBlankNode< java.lang.Void > getBlankStepAt( int index ) {
-		throw new AssertionError();
 	}
 }

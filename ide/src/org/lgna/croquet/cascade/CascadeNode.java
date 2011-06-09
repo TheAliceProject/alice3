@@ -41,19 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.croquet.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeMenuNode< FB > extends CascadeBlankOwnerNode< FB, FB, org.lgna.croquet.CascadeMenu< FB > > {
-	public static <FB> CascadeMenuNode< FB > createInstance( org.lgna.croquet.CascadeMenu< FB > model ) {
-		return new CascadeMenuNode< FB >( model );
+public abstract class CascadeNode< P extends CascadeNode<?,?>, E extends org.lgna.croquet.Element > extends org.lgna.croquet.history.Node< P > {
+	private final org.lgna.croquet.resolvers.CodableResolver< E > elementResolver;
+	public CascadeNode( P parent, E element ) {
+		super( parent );
+		if( element != null ) {
+			this.elementResolver = element.getCodableResolver();
+		} else {
+			this.elementResolver = null;
+		}
 	}
-	private CascadeMenuNode( org.lgna.croquet.CascadeMenu< FB > model ) {
-		super( model );
-	}
-	public CascadeMenuNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public CascadeNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+		this.elementResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.elementResolver );
+	}
+	public E getElement() {
+		return this.elementResolver != null ? this.elementResolver.getResolved() : null;
 	}
 }

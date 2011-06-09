@@ -51,7 +51,7 @@ public abstract class ExpressionFillIn< F extends edu.cmu.cs.dennisc.alice.ast.E
 		super( id );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadePrepStep< ? super F,B > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.CascadePrepStep< ? super F,B > step ) {
 		javax.swing.JComponent rv;
 		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getSingleton().getPreviewFactory();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.getTransientValue( step );

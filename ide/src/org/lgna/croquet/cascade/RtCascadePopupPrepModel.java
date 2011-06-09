@@ -41,10 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.croquet.cascade;
 
 import org.lgna.croquet.*;
 import org.lgna.croquet.components.*;
+import org.lgna.croquet.history.CascadePopupCompletionStep;
+import org.lgna.croquet.history.CascadePopupPrepStep;
+import org.lgna.croquet.history.Node;
+import org.lgna.croquet.history.TransactionManager;
 /**
  * @author Dennis Cosgrove
  */
@@ -106,7 +110,7 @@ abstract class RtNode<M extends Element, C extends org.lgna.croquet.history.Node
 	}
 
 	protected abstract RtNode[] getChildren();
-	protected abstract RtNode< ? extends Element, ? extends org.lgna.croquet.history.CascadeNode< ? > > getNextNode();
+	protected abstract RtNode< ? extends Element, ? extends org.lgna.croquet.cascade.CascadeNode< ?,? > > getNextNode();
 	public abstract RtBlank< ? > getNearestBlank();
 	public RtBlank< ? > getNextBlank() {
 		RtBlank< ? > blank = this.getNearestBlank();
@@ -143,11 +147,11 @@ abstract class RtNode<M extends Element, C extends org.lgna.croquet.history.Node
 	}
 }
 
-class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.history.CascadeBlankNode< B > > {
-	private static <F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.history.CascadeItemNode< F, B, M > > boolean isEmptySeparator( RtItem< F, B, M, C > rtItem ) {
+class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.BlankNode< B > > {
+	private static <F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.cascade.CascadeItemNode< F, B, M > > boolean isEmptySeparator( RtItem< F, B, M, C > rtItem ) {
 		return rtItem instanceof RtSeparator && ((RtSeparator)rtItem).getMenuItem() == null;
 	}
-	private static <F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.history.CascadeItemNode< F, B, M >> void cleanUpSeparators( java.util.List< RtItem< F, B, M, C >> rtItems ) {
+	private static <F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.cascade.CascadeItemNode< F, B, M >> void cleanUpSeparators( java.util.List< RtItem< F, B, M, C >> rtItems ) {
 		java.util.ListIterator< RtItem< F, B, M, C > > listIterator = rtItems.listIterator();
 		boolean isLineSeparatorAcceptable = false;
 		while( listIterator.hasNext() ) {
@@ -191,11 +195,11 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.history.Cas
 	private RtItem< B, ?, ?, ? > rtSelectedFillIn;
 
 	public RtBlank( CascadeBlank< B > model ) {
-		super( model, CascadeBlankNode.createInstance( model ) );
+		super( model, BlankNode.createInstance( model ) );
 		this.getStep().setRtBlank( this );
 	}
 
-	public org.lgna.croquet.history.CascadeItemNode getSelectedFillInContext() {
+	public org.lgna.croquet.cascade.CascadeItemNode getSelectedFillInContext() {
 		if( this.rtSelectedFillIn != null ) {
 			return this.rtSelectedFillIn.getStep();
 		} else {
@@ -255,7 +259,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.history.Cas
 		return this.rtFillIns;
 	}
 	@Override
-	protected RtNode< ? extends Element, ? extends org.lgna.croquet.history.CascadeNode< ? > > getNextNode() {
+	protected RtNode< ? extends Element, ? extends org.lgna.croquet.cascade.CascadeNode< ?,? > > getNextNode() {
 		return this;
 	}
 	@Override
@@ -292,7 +296,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.history.Cas
 	}
 }
 
-abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.history.CascadeItemNode< F,B,M > > extends RtNode< M, C > {
+abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.cascade.CascadeItemNode< F,B,M > > extends RtNode< M, C > {
 	private final RtBlank< B >[] rtBlanks;
 //	private javax.swing.JMenuItem menuItem = null;
 	private ViewController<?,?> menuItem = null;
@@ -320,7 +324,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.cro
 	public int getBlankStepCount() {
 		return this.rtBlanks.length;
 	}
-	public org.lgna.croquet.history.CascadeBlankNode< B > getBlankStepAt( int i ) {
+	public org.lgna.croquet.cascade.BlankNode< B > getBlankStepAt( int i ) {
 		return this.rtBlanks[ i ].getStep();
 	}
 	@Override
@@ -350,7 +354,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.cro
 		return true;//this.getModel().isInclusionDesired( this.getStep() );
 	}
 	@Override
-	protected RtNode< ? extends Element, ? extends org.lgna.croquet.history.CascadeNode< ? > > getNextNode() {
+	protected RtNode< ? extends Element, ? extends org.lgna.croquet.cascade.CascadeNode< ?,? > > getNextNode() {
 		if( this.rtBlanks.length > 0 ) {
 			return this.rtBlanks[ 0 ];
 		} else {
@@ -437,7 +441,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.cro
 	}
 }
 
-abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner< F, B >, C extends org.lgna.croquet.history.CascadeBlankOwnerNode< F, B, M > > extends RtItem< F, B, M, C > {
+abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner< F, B >, C extends org.lgna.croquet.cascade.BlankOwnerNode< F, B, M > > extends RtItem< F, B, M, C > {
 	public RtBlankOwner( M model, C step ) {
 		super( model, step );
 		this.getStep().setRtBlankOwner( this );
@@ -447,21 +451,21 @@ abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner< F, B >, C extends
 		return this.getModel().getBlanks();
 	}
 }
-class RtFillIn<F, B> extends RtBlankOwner< F, B, CascadeFillIn< F, B >, org.lgna.croquet.history.CascadeFillInNode< F, B > > {
+class RtFillIn<F, B> extends RtBlankOwner< F, B, CascadeFillIn< F, B >, org.lgna.croquet.cascade.FillInNode< F, B > > {
 	public RtFillIn( CascadeFillIn< F, B > model ) {
-		super( model, CascadeFillInNode.createInstance( model ) );
+		super( model, FillInNode.createInstance( model ) );
 	}
 }
 
-class RtMenu<FB> extends RtBlankOwner< FB, FB, CascadeMenu< FB >, org.lgna.croquet.history.CascadeMenuNode< FB >> {
+class RtMenu<FB> extends RtBlankOwner< FB, FB, CascadeMenu< FB >, org.lgna.croquet.cascade.MenuNode< FB >> {
 	public RtMenu( CascadeMenu< FB > model ) {
-		super( model, CascadeMenuNode.createInstance( model ) );
+		super( model, MenuNode.createInstance( model ) );
 	}
 }
 
-class RtSeparator extends RtItem< Void, Void, CascadeSeparator, org.lgna.croquet.history.CascadeSeparatorNode > {
+class RtSeparator extends RtItem< Void, Void, CascadeSeparator, org.lgna.croquet.cascade.SeparatorNode > {
 	public RtSeparator( CascadeSeparator model ) {
-		super( model, CascadeSeparatorNode.createInstance( model ) );
+		super( model, SeparatorNode.createInstance( model ) );
 	}
 	@Override
 	protected CascadeBlank<Void>[] getModelBlanks() {
@@ -488,9 +492,9 @@ class RtSeparator extends RtItem< Void, Void, CascadeSeparator, org.lgna.croquet
 	}
 }
 
-class RtCancel<F> extends RtItem< F, Void, CascadeCancel< F >, org.lgna.croquet.history.CascadeCancelNode< F > > {
+class RtCancel<F> extends RtItem< F, Void, CascadeCancel< F >, org.lgna.croquet.cascade.CancelNode< F > > {
 	public RtCancel( CascadeCancel< F > model ) {
-		super( model, CascadeCancelNode.createInstance( model ) );
+		super( model, CancelNode.createInstance( model ) );
 	}
 	@Override
 	protected CascadeBlank<Void>[] getModelBlanks() {
@@ -498,10 +502,10 @@ class RtCancel<F> extends RtItem< F, Void, CascadeCancel< F >, org.lgna.croquet.
 	}
 }
 
-class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, CascadeRootNode< T > > {
+class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, RootNode< T > > {
 	private final RtCascadePopupPrepModel< T > rtOperation;
 	public RtRoot( CascadeRoot< T > model, RtCascadePopupPrepModel< T > rtOperation ) {
-		super( model, CascadeRootNode.createInstance( model ) );
+		super( model, RootNode.createInstance( model ) );
 		this.rtOperation = rtOperation;
 	}
 	@Override

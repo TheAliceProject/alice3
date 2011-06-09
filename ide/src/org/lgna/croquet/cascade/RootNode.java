@@ -41,26 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.croquet.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlankOwnerNode< F, B, M extends org.lgna.croquet.CascadeBlankOwner< F, B >  > extends CascadeItemNode< F, B, M > {
-	public CascadeBlankOwnerNode( M model ) {
+public class RootNode<T> extends BlankOwnerNode< T[], T, org.lgna.croquet.CascadeRoot<T> > {
+	public static <T> RootNode< T > createInstance( org.lgna.croquet.CascadeRoot< T > model ) {
+		return new RootNode< T >( model );
+	}
+	private RootNode( org.lgna.croquet.CascadeRoot<T> model ) {
 		super( model );
 	}
-	public CascadeBlankOwnerNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public RootNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	private RtBlankOwner<F,B,M,?> rtBlankOwner;
-	/*private-private*/ void setRtBlankOwner( RtBlankOwner<F,B,M,?> rtBlankOwner ) {
-		this.rtBlankOwner = rtBlankOwner;
-	}
-	public int getBlankStepCount() {
-		return this.rtBlankOwner.getBlankStepCount();
-	}
-	public CascadeBlankNode< B > getBlankStepAt( int i ) {	
-		return this.rtBlankOwner.getBlankStepAt( i );
 	}
 }

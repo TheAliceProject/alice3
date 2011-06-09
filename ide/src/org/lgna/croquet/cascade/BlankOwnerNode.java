@@ -41,26 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.croquet.cascade;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeBlankNode< B > extends CascadeNode< org.lgna.croquet.CascadeBlank< B > > {
-	public static <B> CascadeBlankNode< B > createInstance( org.lgna.croquet.CascadeBlank< B > model ) {
-		return new CascadeBlankNode< B >( model );
+public abstract class BlankOwnerNode< F, B, M extends org.lgna.croquet.CascadeBlankOwner< F, B >  > extends CascadeItemNode< F, B, M > {
+	public BlankOwnerNode( M model ) {
+		super( model );
 	}
-	private CascadeBlankNode( org.lgna.croquet.CascadeBlank< B > model ) {
-		super( null, model );
-	}
-	private RtBlank< B > rtBlank;
-	public CascadeBlankNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public BlankOwnerNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	/*package-private*/ void setRtBlank( RtBlank< B > rtBlank ) {
-		this.rtBlank = rtBlank;
+	private RtBlankOwner<F,B,M,?> rtBlankOwner;
+	/*private-private*/ void setRtBlankOwner( RtBlankOwner<F,B,M,?> rtBlankOwner ) {
+		this.rtBlankOwner = rtBlankOwner;
 	}
-	public CascadeItemNode getSelectedFillInContext() {	
-		return this.rtBlank.getSelectedFillInContext();
+	public int getBlankStepCount() {
+		return this.rtBlankOwner.getBlankStepCount();
+	}
+	public BlankNode< B > getBlankStepAt( int i ) {	
+		return this.rtBlankOwner.getBlankStepAt( i );
 	}
 }

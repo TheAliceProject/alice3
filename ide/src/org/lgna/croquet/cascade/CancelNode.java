@@ -41,29 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.croquet.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeNode< M extends org.lgna.croquet.Element > extends Node< CascadeNode<?> > {
-	private final org.lgna.croquet.resolvers.CodableResolver< M > modelResolver;
-	public CascadeNode( CascadeNode<?> parent, M model ) {
-		super( parent );
-		if( model != null ) {
-			this.modelResolver = model.getCodableResolver();
-		} else {
-			this.modelResolver = null;
-		}
+public class CancelNode< F > extends CascadeItemNode< F, Void, org.lgna.croquet.CascadeCancel<F> > {
+	public static <F> CancelNode< F > createInstance( org.lgna.croquet.CascadeCancel< F > model ) {
+		return new CancelNode< F >( model );
 	}
-	public CascadeNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	private CancelNode( org.lgna.croquet.CascadeCancel<F> model ) {
+		super( model );
+	}
+	public CancelNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.modelResolver );
+	public int getBlankStepCount() {
+		return 0;
 	}
-	public M getModel() {
-		return this.modelResolver != null ? this.modelResolver.getResolved() : null;
+	public org.lgna.croquet.cascade.BlankNode< java.lang.Void > getBlankStepAt( int index ) {
+		throw new AssertionError();
 	}
 }

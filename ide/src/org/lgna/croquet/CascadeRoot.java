@@ -53,18 +53,18 @@ public class CascadeRoot<B> extends CascadeBlankOwner< B[], B > {
 		this.prepModel = prepModel;
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadePrepStep< ? super B[],B > step) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.CascadePrepStep< ? super B[],B > step) {
 		return null;
 	}
 	@Override
-	public B[] createValue( org.lgna.croquet.history.CascadePrepStep< ? super B[],B > step ) {
+	public B[] createValue( org.lgna.croquet.cascade.CascadePrepStep< ? super B[],B > step ) {
 		//todo
 		//this.prepModel.getComponentType();
 		//handled elsewhere for now
 		throw new AssertionError();
 	}
 	@Override
-	public B[] getTransientValue( org.lgna.croquet.history.CascadePrepStep< ? super B[],B > step ) {
+	public B[] getTransientValue( org.lgna.croquet.cascade.CascadePrepStep< ? super B[],B > step ) {
 		//todo
 		//this.prepModel.getComponentType();
 		//handled elsewhere for now

@@ -52,7 +52,7 @@ public abstract class CascadeMenu< FB > extends CascadeBlankOwner< FB, FB > {
 			super(java.util.UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
 		}
 		@Override
-		protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankNode< FB > context ) {
+		protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< FB > context ) {
 			CascadeMenu.this.updateBlankChildren( rv, context );
 			return rv;
 		}
@@ -65,21 +65,21 @@ public abstract class CascadeMenu< FB > extends CascadeBlankOwner< FB, FB > {
 //	/*package-private*/ CascadeBlank< FB > getInternalBlank() {
 //		return this.blank;
 //	}
-	protected abstract java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankNode< FB > step );
-	private org.lgna.croquet.history.CascadeItemNode< FB,FB,? > getSelectedFillInContext( org.lgna.croquet.history.CascadePrepStep< ? super FB,? > step ) {
-		org.lgna.croquet.history.CascadeBlankNode< ? > blankContext = step.getBlankStepAt( 0 );
+	protected abstract java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< FB > step );
+	private org.lgna.croquet.cascade.CascadeItemNode< FB,FB,? > getSelectedFillInContext( org.lgna.croquet.cascade.CascadePrepStep< ? super FB,? > step ) {
+		org.lgna.croquet.cascade.BlankNode< ? > blankContext = step.getBlankStepAt( 0 );
 		return blankContext.getSelectedFillInContext();
 	}
 	@Override
-	public FB getTransientValue( org.lgna.croquet.history.CascadePrepStep< ? super FB,FB > step ) {
+	public FB getTransientValue( org.lgna.croquet.cascade.CascadePrepStep< ? super FB,FB > step ) {
 		return this.getSelectedFillInContext( step ).getTransientValue();
 	}
 	@Override
-	public FB createValue( org.lgna.croquet.history.CascadePrepStep< ? super FB,FB > step ) {
+	public FB createValue( org.lgna.croquet.cascade.CascadePrepStep< ? super FB,FB > step ) {
 		return this.getSelectedFillInContext( step ).createValue();
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadePrepStep< ? super FB,FB > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.CascadePrepStep< ? super FB,FB > step ) {
 		return new javax.swing.JLabel( this.getDefaultLocalizedText() );
 	}
 //	@Override

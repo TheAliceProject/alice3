@@ -73,7 +73,7 @@ public class ConditionalExpressionLeftAndRightOperandsFillIn extends org.alice.i
 		return new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression( expressions[ 0 ], this.transientValue.operator.getValue(), expressions[ 1 ] );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression getTransientValue( org.lgna.croquet.history.CascadePrepStep< ? super edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression,edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	public edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression getTransientValue( org.lgna.croquet.cascade.CascadePrepStep< ? super edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression,edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
 		return this.transientValue;
 	}
 }

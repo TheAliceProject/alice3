@@ -61,11 +61,11 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends edu.
 //	}
 	protected abstract F createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
 	@Override
-	public final F createValue( org.lgna.croquet.history.CascadePrepStep< ? super F,Void > step ) {
+	public final F createValue( org.lgna.croquet.cascade.CascadePrepStep< ? super F,Void > step ) {
 		return this.createValue( this.getPreviousExpression() );
 	}
 	@Override
-	public final F getTransientValue( org.lgna.croquet.history.CascadePrepStep< ? super F,Void > step ) {
+	public final F getTransientValue( org.lgna.croquet.cascade.CascadePrepStep< ? super F,Void > step ) {
 		//todo?
 		return this.createValue( this.getPreviousExpression() );
 	}

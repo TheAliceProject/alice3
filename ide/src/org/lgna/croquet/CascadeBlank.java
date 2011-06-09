@@ -50,8 +50,8 @@ public abstract class CascadeBlank< B > extends Element {
 	public CascadeBlank( java.util.UUID id ) {
 		super( id );
 	}
-	protected abstract java.util.List< CascadeItem > updateChildren( java.util.List< CascadeItem > rv, org.lgna.croquet.history.CascadeBlankNode<B> step );
-	public final Iterable< CascadeItem > getChildren( org.lgna.croquet.history.CascadeBlankNode<B> step ) {
+	protected abstract java.util.List< CascadeItem > updateChildren( java.util.List< CascadeItem > rv, org.lgna.croquet.cascade.BlankNode<B> step );
+	public final Iterable< CascadeItem > getChildren( org.lgna.croquet.cascade.BlankNode<B> step ) {
 		java.util.List< CascadeItem > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.updateChildren( rv, step );
 		return rv;

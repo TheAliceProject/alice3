@@ -41,14 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.croquet.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface CascadePrepStep<F,B> {
-	public int getBlankStepCount();
-	public CascadeBlankNode< B > getBlankStepAt( int index );
-	public F getTransientValue();
-	public F createValue();
+public class BlankNode< B > extends CascadeNode< CascadeItemNode< B, ?, org.lgna.croquet.CascadeItem<B,?> >, org.lgna.croquet.CascadeBlank< B > > {
+	public static <B> BlankNode< B > createInstance( org.lgna.croquet.CascadeBlank< B > model ) {
+		return new BlankNode< B >( model );
+	}
+	private BlankNode( org.lgna.croquet.CascadeBlank< B > model ) {
+		super( null, model );
+	}
+	private RtBlank< B > rtBlank;
+	public BlankNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	/*package-private*/ void setRtBlank( RtBlank< B > rtBlank ) {
+		this.rtBlank = rtBlank;
+	}
+	public CascadeItemNode getSelectedFillInContext() {	
+		return this.rtBlank.getSelectedFillInContext();
+	}
 }

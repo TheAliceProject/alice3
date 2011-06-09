@@ -65,16 +65,16 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
 	}
 	
 //	public abstract CascadeBlank<B>[] getBlanks();
-	public abstract F getTransientValue( org.lgna.croquet.history.CascadePrepStep<? super F,B> step );
-	public abstract F createValue( org.lgna.croquet.history.CascadePrepStep<? super F,B> step );
+	public abstract F getTransientValue( org.lgna.croquet.cascade.CascadePrepStep<? super F,B> step );
+	public abstract F createValue( org.lgna.croquet.cascade.CascadePrepStep<? super F,B> step );
 
 	private javax.swing.JComponent menuProxy = null;
 	private javax.swing.Icon icon = null;
-	protected abstract javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.history.CascadePrepStep<? super F,B> step );
+	protected abstract javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.CascadePrepStep<? super F,B> step );
 //	protected javax.swing.JComponent createMenuProxy() {
 //		return new javax.swing.JLabel( "todo: override getMenuProxy" );
 //	}
-	protected javax.swing.JComponent getMenuProxy( org.lgna.croquet.history.CascadePrepStep<? super F,B> step ) {
+	protected javax.swing.JComponent getMenuProxy( org.lgna.croquet.cascade.CascadePrepStep<? super F,B> step ) {
 		//System.err.println( "todo: cache getMenuProxy()" );
 		//todo
 		if( this.menuProxy != null ) {
@@ -84,7 +84,7 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
 		}
 		return this.menuProxy;
 	}
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.history.CascadePrepStep<? super F,B> step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.CascadePrepStep<? super F,B> step ) {
 		if( this.icon != null ) {
 			//pass
 		} else {
@@ -108,7 +108,7 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
 		}
 		return this.icon;
 	}
-	public String getMenuItemText( org.lgna.croquet.history.CascadePrepStep< ? super F,B > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.CascadePrepStep< ? super F,B > step ) {
 		return null;
 	}
 	

@@ -58,7 +58,7 @@ public class ArrayBlank extends org.alice.ide.croquet.models.cascade.ExpressionB
 		super( java.util.UUID.fromString( "afafc379-2254-41c1-9ce5-6515d1b04211" ), Object[].class );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.history.CascadeBlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
 		rv.add( ArraySeparator.getInstance() );
 		return super.updateChildren( rv, step );
 	}
