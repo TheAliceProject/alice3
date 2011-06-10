@@ -137,7 +137,6 @@ class IntegerLiteralFillIn extends org.lgna.croquet.CascadeFillIn< Integer, Void
 	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return null;
 	}
-
 	@Override
 	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return Integer.toString( this.value );
@@ -166,7 +165,6 @@ class CustomIntegerFillIn extends org.lgna.croquet.CascadeFillIn< Integer, Void 
 	private CustomIntegerFillIn() {
 		super( java.util.UUID.fromString( "abfa96df-32be-4a94-8f5d-030f173b77e9" ) );
 	}
-
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return null;

@@ -59,6 +59,18 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends edu.
 //		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 //		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
 //	}
+	private edu.cmu.cs.dennisc.alice.ast.Expression cleanExpression;
+	@Override
+	protected void markClean() {
+		super.markClean();
+		this.cleanExpression = this.getPreviousExpression();
+	}
+	@Override
+	protected boolean isDirty() {
+		boolean isPrevExpressionChanged = this.cleanExpression != this.getPreviousExpression();
+		return super.isDirty() || isPrevExpressionChanged;
+	}
+
 	protected abstract F createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
 	@Override
 	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {

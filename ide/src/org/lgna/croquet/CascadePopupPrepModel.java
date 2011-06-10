@@ -92,21 +92,22 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel<org.lgna.c
 	}
 	protected abstract org.lgna.croquet.edits.Edit< ? extends CascadePopupCompletionModel< B > > createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< B > step, B[] values );
 
+	protected void handleFinally( PerformObserver performObserver ) {
+		performObserver.handleFinally();
+	}
 	public void handleCompletion( org.lgna.croquet.history.CascadePopupCompletionStep< B > step, PerformObserver performObserver, B[] values ) {
 		try {
 			org.lgna.croquet.edits.Edit< ? extends CascadePopupCompletionModel< B > > edit = this.createEdit( step, values );
 			step.commitAndInvokeDo( edit );
 		} finally {
-//			ContextManager.popContext();
-			performObserver.handleFinally();
+			this.handleFinally( performObserver );
 		}
 	}
 	public void handleCancel( org.lgna.croquet.history.CascadePopupCompletionStep< B > step, PerformObserver performObserver ) {
 		try {
 			step.cancel();
 		} finally {
-//			ContextManager.popContext();
-			performObserver.handleFinally();
+			this.handleFinally( performObserver );
 		}
 	}
 

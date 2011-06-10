@@ -58,13 +58,11 @@ public abstract class CascadeMenu< FB > extends CascadeBlankOwner< FB, FB > {
 		}
 	}
 	private final InternalBlank blank = new InternalBlank();
+	private transient boolean isDirty;
 	public CascadeMenu( java.util.UUID id ) {
 		super( id );
 		this.addBlank( this.blank );
 	}
-//	/*package-private*/ CascadeBlank< FB > getInternalBlank() {
-//		return this.blank;
-//	}
 	protected abstract java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< FB > step );
 	private org.lgna.croquet.cascade.AbstractItemNode< FB,FB,? > getSelectedFillInContext( org.lgna.croquet.cascade.ItemNode< ? super FB,? > step ) {
 		org.lgna.croquet.cascade.BlankNode< ? > blankContext = step.getBlankStepAt( 0 );
@@ -82,12 +80,4 @@ public abstract class CascadeMenu< FB > extends CascadeBlankOwner< FB, FB > {
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > step ) {
 		return new javax.swing.JLabel( this.getDefaultLocalizedText() );
 	}
-//	@Override
-//	public javax.swing.Icon getMenuItemIcon( CascadeMenuContext<FB> context ) {
-//		return null;
-//	}
-//	@Override
-//	public String getMenuItemText( CascadeMenuContext<FB> context ) {
-//		return this.getDefaultLocalizedText();
-//	}
 }

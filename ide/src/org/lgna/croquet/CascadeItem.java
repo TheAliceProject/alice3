@@ -47,12 +47,11 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
+	private transient boolean isDirty = true;
+	private transient javax.swing.JComponent menuProxy = null;
+	private transient javax.swing.Icon icon = null;
 	public CascadeItem( java.util.UUID id ) {
-		//super( Application.CASCADE_GROUP, id );
 		super( id );
-	}
-	@Override
-	protected void localize() {
 	}
 	public boolean isAutomaticallySelectedWhenSoleOption() {
 		return true;
@@ -63,20 +62,20 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
 		rv.addCascadeMenuItem( new org.lgna.croquet.components.CascadeMenuItem( this ) );
 		return rv;
 	}
-	
-//	public abstract CascadeBlank<B>[] getBlanks();
 	public abstract F getTransientValue( org.lgna.croquet.cascade.ItemNode<? super F,B> step );
 	public abstract F createValue( org.lgna.croquet.cascade.ItemNode<? super F,B> step );
-
-	private javax.swing.JComponent menuProxy = null;
-	private javax.swing.Icon icon = null;
 	protected abstract javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F,B> step );
-//	protected javax.swing.JComponent createMenuProxy() {
-//		return new javax.swing.JLabel( "todo: override getMenuProxy" );
-//	}
+	@Override
+	protected void localize() {
+		this.isDirty = true;
+	}
+	protected boolean isDirty() {
+		return this.isDirty;
+	}
+	protected void markClean() {
+		this.isDirty = false;
+	}
 	protected javax.swing.JComponent getMenuProxy( org.lgna.croquet.cascade.ItemNode<? super F,B> step ) {
-		//System.err.println( "todo: cache getMenuProxy()" );
-		//todo
 		if( this.menuProxy != null ) {
 			//pass
 		} else {
@@ -85,6 +84,10 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
 		return this.menuProxy;
 	}
 	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super F,B> step ) {
+		if( this.isDirty() ) {
+			this.icon = null;
+			this.menuProxy = null;
+		}
 		if( this.icon != null ) {
 			//pass
 		} else {
@@ -105,6 +108,7 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
 			} else {
 				this.icon = null;
 			}
+			this.markClean();
 		}
 		return this.icon;
 	}
@@ -123,6 +127,4 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
 		rv.append( "</strong>." );
 		return rv;
 	}
-//	public abstract javax.swing.Icon getMenuItemIcon( C context );
-//	public abstract String getMenuItemText( C context );
 }
