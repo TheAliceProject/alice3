@@ -42,14 +42,12 @@
  */
 package org.alice.stageide.cascade.fillerinners;
 
-import org.alice.apis.moveandturn.Key;
-
 /**
  * @author Dennis Cosgrove
  */
 public class KeyFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
 	public KeyFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Key.class ), edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+		super( org.alice.apis.moveandturn.Key.class );
 	}
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeItem > addItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {

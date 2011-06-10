@@ -47,6 +47,7 @@ package org.alice.ide.cascade;
  */
 public abstract class CascadeManager {
 	private java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner assumingStringConcatenationObjectFillerInner = new org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner();
 
 	public CascadeManager() {
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.NumberFillerInner() );
@@ -176,7 +177,7 @@ public abstract class CascadeManager {
 		updateAccessibleLocals( rv, blockStatement );
 		return rv;
 	}
-	protected java.util.List< org.lgna.croquet.CascadeItem > addExpressionBonusFillInsForType( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > addExpressionBonusFillInsForType( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode<edu.cmu.cs.dennisc.alice.ast.Expression> blankNode, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 //		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getSingleton().getFocusedCode();
 //		if( codeInFocus != null ) {
 //
@@ -187,24 +188,24 @@ public abstract class CascadeManager {
 //			//boolean isNecessary = true;
 //			if( type.isAssignableFrom( selectedType ) ) {
 //				//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
-//				this.addFillInAndPossiblyPartFillIns( blank, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), selectedType, type );
+//				this.addFillInAndPossiblyPartFillIns( rv, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), selectedType, type );
 //			}
 //			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : selectedType.getDeclaredFields() ) {
 //				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldType = field.getValueType();
 //				if( type.isAssignableFrom( fieldType ) ) {
-//					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+//					//isNecessary = this.addSeparatorIfNecessary( rv, "in scope", isNecessary );
 //					edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
-//					this.addFillInAndPossiblyPartFillIns( blank, fieldAccess, fieldType, type );
+//					this.addFillInAndPossiblyPartFillIns( rv, fieldAccess, fieldType, type );
 //				}
 //				if( fieldType.isArray() ) {
 //					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldComponentType = fieldType.getComponentType();
 //					if( type.isAssignableFrom( fieldComponentType ) ) {
-//						//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+//						//isNecessary = this.addSeparatorIfNecessary( rv, "in scope", isNecessary );
 //						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
 //						//rv.add( new ArrayAccessFillIn( fieldType, fieldAccess ) );
 //					}
 //					if( type.isAssignableFrom( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) ) {
-//						//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+//						//isNecessary = this.addSeparatorIfNecessary( rv, "in scope", isNecessary );
 //						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
 //						edu.cmu.cs.dennisc.alice.ast.ArrayLength arrayLength = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( fieldAccess );
 //						rv.add( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.ArrayLength >( arrayLength ) );
@@ -217,8 +218,8 @@ public abstract class CascadeManager {
 //				if( this.dropParent != null && this.dropIndex != -1 ) {
 //					for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : codeInFocus.getParameters() ) {
 //						if( type.isAssignableFrom( parameter.getValueType() ) ) {
-//							//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
-//							this.addFillInAndPossiblyPartFillIns( blank, new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
+//							//isNecessary = this.addSeparatorIfNecessary( rv, "in scope", isNecessary );
+//							this.addFillInAndPossiblyPartFillIns( rv, new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
 //						}
 //					}
 //					for( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local : this.getAccessibleLocals( this.dropParent, this.dropIndex ) ) {
@@ -234,7 +235,7 @@ public abstract class CascadeManager {
 //								expression = null;
 //							}
 //							if( expression != null ) {
-//								this.addFillInAndPossiblyPartFillIns( blank, expression, local.valueType.getValue(), type );
+//								this.addFillInAndPossiblyPartFillIns( rv, expression, local.valueType.getValue(), type );
 //							}
 //						}
 //					}
@@ -258,13 +259,6 @@ public abstract class CascadeManager {
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> interfaceType ) {
 		return null;
-	}
-	protected java.util.List< org.lgna.croquet.CascadeItem > addFillInsForObjectType( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode<edu.cmu.cs.dennisc.alice.ast.Expression> blankNode ) {
-		rv.add( org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance().getFillIn() );
-		rv.add( org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn() );
-		rv.add( org.alice.ide.croquet.models.custom.CustomIntegerInputDialogOperation.getInstance().getFillIn() );
-		org.alice.ide.cascade.fillerinners.StringFillerInner.addConcatenationItems( rv, blankNode.isTop(), previousExpression );
-		return rv;
 	}
 	protected java.util.List< org.lgna.croquet.CascadeItem > addCustomFillIns( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 		return rv;
@@ -296,7 +290,7 @@ public abstract class CascadeManager {
 			this.addCustomFillIns( rv, blankNode, type );
 			type = getTypeFor( type );
 			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) {
-				this.addFillInsForObjectType( rv, blankNode );
+				this.assumingStringConcatenationObjectFillerInner.addItems( rv, isRoot, this.previousExpression );
 			} else {
 				for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
 					if( expressionFillerInner.isAssignableTo( type ) ) {

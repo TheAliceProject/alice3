@@ -45,34 +45,16 @@ package org.alice.ide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class StringFillerInner extends ExpressionFillerInner {
+public class StringFillerInner extends ConcatenationFillerInner {
 	public StringFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), edu.cmu.cs.dennisc.alice.ast.StringLiteral.class );
+		super( String.class );
 	}
-	
-	public static java.util.List< org.lgna.croquet.CascadeItem > addConcatenationItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-		if( isTop ) {
-			if( prevExpression != null ) {
-				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-				if( prevExpression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral ) {
-					//pass
-				} else {
-					if( prevExpression instanceof edu.cmu.cs.dennisc.alice.ast.StringLiteral ) {
-						rv.add( org.alice.ide.croquet.models.cascade.string.StringConcatinationRightOperandOnlyFillIn.getInstance() );
-					}
-				}
-				rv.add( org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn.getInstance() );
-			}
-		}
-		return rv;
-	}
-	
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeItem > addItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 		rv.add( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( "hello" ) );
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		rv.add( org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance().getFillIn() );
-		addConcatenationItems( rv, isTop, prevExpression );
+		this.addConcatenationItems( rv, isTop, prevExpression );
 		return rv;
 	}
 }

@@ -63,7 +63,7 @@ public class ConstantsOwningFillerInner extends ExpressionFillerInner {
 		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
 	}
 	private ConstantsOwningFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+		super( type );
 	}
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeItem > addItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {

@@ -40,25 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.cascade.fillerinners;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionFillerInner {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
-	public ExpressionFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		this.type = type;
+public abstract class ConcatenationFillerInner extends ExpressionFillerInner {
+	public ConcatenationFillerInner( Class<?> cls ) {
+		super( cls );
 	}
-	public ExpressionFillerInner( Class<?> cls ) {
-		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+	protected java.util.List< org.lgna.croquet.CascadeItem > addConcatenationItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
+		if( isTop ) {
+			if( prevExpression != null ) {
+				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				if( prevExpression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral ) {
+					//pass
+				} else {
+					if( prevExpression.getType().isAssignableTo( String.class ) ) {
+						rv.add( org.alice.ide.croquet.models.cascade.string.StringConcatinationRightOperandOnlyFillIn.getInstance() );
+					}
+				}
+				rv.add( org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn.getInstance() );
+			}
+		}
+		return rv;
 	}
-
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getType() {
-		return this.type;
-	}
-	public boolean isAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		return this.type.isAssignableTo( type );
-	}
-	public abstract java.util.List< org.lgna.croquet.CascadeItem > addItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
 }

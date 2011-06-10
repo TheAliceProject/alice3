@@ -47,7 +47,7 @@ package org.alice.ide.cascade.fillerinners;
  */
 public abstract class ResourceFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
 	public ResourceFillerInner( Class< ? extends org.alice.virtualmachine.Resource> cls ) {
-		super( cls, edu.cmu.cs.dennisc.alice.ast.ResourceExpression.class );
+		super( cls );
 	}
 	protected abstract org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.ResourceExpression,? > getResourceExpressionFillIn( org.alice.virtualmachine.Resource resource );
 	protected abstract org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.Expression,? > getImportNewResourceFillIn();

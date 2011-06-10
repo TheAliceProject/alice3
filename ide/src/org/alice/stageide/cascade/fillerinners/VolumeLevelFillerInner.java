@@ -47,7 +47,7 @@ package org.alice.stageide.cascade.fillerinners;
  */
 public class VolumeLevelFillerInner extends org.alice.ide.cascade.fillerinners.AbstractNumberFillerInner {
 	public VolumeLevelFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.VolumeLevel.class ), edu.cmu.cs.dennisc.alice.ast.DoubleLiteral.class );
+		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.VolumeLevel.class ) );
 	}
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeItem > addItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {

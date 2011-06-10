@@ -46,29 +46,7 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
-//	protected static final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator[] PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS = {
-//		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.PLUS, 	
-//		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.MINUS, 	
-//		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.TIMES, 	
-//		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.REAL_DIVIDE 	
-//	};
-//	protected static final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator[] TUCKED_AWAY_DOUBLE_ARITHMETIC_OPERATORS = {
-//		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.REAL_REMAINDER, 	
-//		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.INTEGER_DIVIDE, 	
-//		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.INTEGER_REMAINDER, 	
-//	};
-//
-//	protected static final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator[] PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS = {
-//		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.PLUS, 	
-//		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.MINUS, 	
-//		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.TIMES, 	
-//	};
-//	protected static final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator[] TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS = {
-//		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.INTEGER_DIVIDE, 	
-//		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.INTEGER_REMAINDER 	
-//	};
-	
-	public AbstractNumberFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > cls ) {
-		super( type, cls );
+	public AbstractNumberFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		super( type );
 	}
 }

@@ -44,7 +44,7 @@ package org.alice.stageide.cascade.fillerinners;
 
 public class MouseButtonListenerFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
 	public MouseButtonListenerFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonListener.class ), edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class );
+		super( org.alice.apis.moveandturn.event.MouseButtonListener.class );
 	}
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeItem > addItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {

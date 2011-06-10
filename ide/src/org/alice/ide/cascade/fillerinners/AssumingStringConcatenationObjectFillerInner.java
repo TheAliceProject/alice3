@@ -40,25 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.cascade.fillerinners;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionFillerInner {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
-	public ExpressionFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		this.type = type;
+public class AssumingStringConcatenationObjectFillerInner extends ConcatenationFillerInner {
+	public AssumingStringConcatenationObjectFillerInner() {
+		super( Object.class );
 	}
-	public ExpressionFillerInner( Class<?> cls ) {
-		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+	@Override
+	public java.util.List< org.lgna.croquet.CascadeItem > addItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
+		rv.add( org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance().getFillIn() );
+		rv.add( org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn() );
+		rv.add( org.alice.ide.croquet.models.custom.CustomIntegerInputDialogOperation.getInstance().getFillIn() );
+		this.addConcatenationItems( rv, isTop, prevExpression );
+		return rv;
 	}
-
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getType() {
-		return this.type;
-	}
-	public boolean isAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		return this.type.isAssignableTo( type );
-	}
-	public abstract java.util.List< org.lgna.croquet.CascadeItem > addItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
 }
