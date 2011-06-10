@@ -70,14 +70,14 @@ public class FillInExpressionListPropertyEdit extends org.lgna.croquet.edits.Edi
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel model = (org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel)this.getModel().getPopupPrepModel();
+		org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade model = (org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = model.getExpressionListProperty();
 		int index = model.getIndex();
 		expressionListProperty.set( index, this.nextExpression );
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel model = (org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel)this.getModel().getPopupPrepModel();
+		org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade model = (org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = model.getExpressionListProperty();
 		int index = model.getIndex();
 		expressionListProperty.set( index, this.prevExpression );

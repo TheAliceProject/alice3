@@ -41,13 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade;
+package org.alice.ide.croquet.models.ast.cascade.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProjectExpressionPropertyCascadePopupPrepModel extends ExpressionPropertyCascadePopupPrepModel {
-	public ProjectExpressionPropertyCascadePopupPrepModel( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id, expressionProperty, blanks );
+public class FieldArrayAccessCascade extends ArrayAccessCascade {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FieldArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized FieldArrayAccessCascade getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		assert field != null;
+		assert expressionProperty != null;
+		FieldArrayAccessCascade rv = map.get( field, expressionProperty );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FieldArrayAccessCascade( field, expressionProperty );
+			map.put( field, expressionProperty, rv );
+		}
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	private FieldArrayAccessCascade( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "1aa9aa94-fd7f-47e9-99a6-2556d7871f28" ), expressionProperty );
+		this.field = field;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return org.alice.ide.ast.NodeUtilities.createFieldAccess( 
+				org.alice.ide.IDE.getSingleton().createInstanceExpression(), 
+				this.field
+		);
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
+		return this.field.getValueType();
 	}
 }

@@ -46,24 +46,32 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionalStatementInsertOperation extends StatementInsertOperation {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, ConditionalStatementInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ConditionalStatementInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		ConditionalStatementInsertOperation rv = map.get( blockStatementIndexPair );
+public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertCascade {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.codeeditor.BlockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod, ProcedureInvocationInsertCascade > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ProcedureInvocationInsertCascade getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		ProcedureInvocationInsertCascade rv = mapToMap.get( blockStatementIndexPair, method );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new ConditionalStatementInsertOperation( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
+			rv = new ProcedureInvocationInsertCascade( blockStatementIndexPair, method );
+			mapToMap.put( blockStatementIndexPair, method, rv );
 		}
 		return rv;
 	}
-	private ConditionalStatementInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "52743dfb-d19c-455a-a723-0bd3d59b2326" ), blockStatementIndexPair, ConditionBlank.getInstance() );
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
+	private ProcedureInvocationInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "d8ea7244-f0eb-4c3a-a9fa-a92182ed221a" ), blockStatementIndexPair, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
+		this.method = method;
+	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getMethod() {
+		return this.method;
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createConditionalStatement( expressions[ 0 ] );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( instanceExpression, this.method, expressions );
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.MethodInvocationMenuModelStaticGetInstanceResolver createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.MethodInvocationMenuModelStaticGetInstanceResolver( this );
 	}
 }

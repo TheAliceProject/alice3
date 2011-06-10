@@ -45,14 +45,14 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class MoreCascadePopupPrepModel extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, MoreCascadePopupPrepModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized MoreCascadePopupPrepModel getInstance( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-		MoreCascadePopupPrepModel rv = map.get( methodInvocation );
+public class MoreCascade extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, MoreCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized MoreCascade getInstance( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+		MoreCascade rv = map.get( methodInvocation );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new MoreCascadePopupPrepModel( methodInvocation );
+			rv = new MoreCascade( methodInvocation );
 			map.put( methodInvocation, rv );
 		}
 		return rv;
@@ -68,7 +68,7 @@ public class MoreCascadePopupPrepModel extends org.lgna.croquet.CascadePopupPrep
 	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation;
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
 	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
-	private MoreCascadePopupPrepModel( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+	private MoreCascade( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), edu.cmu.cs.dennisc.alice.ast.Expression.class, new org.lgna.croquet.CascadeBlank[] { org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) } );
 		assert methodInvocation != null;
 		this.methodInvocation = methodInvocation;

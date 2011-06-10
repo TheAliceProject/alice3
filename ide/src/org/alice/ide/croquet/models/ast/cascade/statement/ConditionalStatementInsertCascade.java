@@ -41,39 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.expression;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldArrayAccessCascadePopupPrepModel extends ArrayAccessCascadePopupPrepModel {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FieldArrayAccessCascadePopupPrepModel > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized FieldArrayAccessCascadePopupPrepModel getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		assert field != null;
-		assert expressionProperty != null;
-		FieldArrayAccessCascadePopupPrepModel rv = map.get( field, expressionProperty );
+public class ConditionalStatementInsertCascade extends StatementInsertCascade {
+	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, ConditionalStatementInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ConditionalStatementInsertCascade getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		assert blockStatementIndexPair != null;
+		ConditionalStatementInsertCascade rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new FieldArrayAccessCascadePopupPrepModel( field, expressionProperty );
-			map.put( field, expressionProperty, rv );
+			rv = new ConditionalStatementInsertCascade( blockStatementIndexPair );
+			map.put( blockStatementIndexPair, rv );
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	private FieldArrayAccessCascadePopupPrepModel( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "1aa9aa94-fd7f-47e9-99a6-2556d7871f28" ), expressionProperty );
-		this.field = field;
+	private ConditionalStatementInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "52743dfb-d19c-455a-a723-0bd3d59b2326" ), blockStatementIndexPair, ConditionBlank.getInstance() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return org.alice.ide.ast.NodeUtilities.createFieldAccess( 
-				org.alice.ide.IDE.getSingleton().createInstanceExpression(), 
-				this.field
-		);
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
-		return this.field.getValueType();
+	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createConditionalStatement( expressions[ 0 ] );
 	}
 }

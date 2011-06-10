@@ -40,20 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariableArrayAtIndexAssignmentInsertOperation extends ArrayAtIndexAssignmentInsertOperation {
-	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
-	public VariableArrayAtIndexAssignmentInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		super( java.util.UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, variable.getValueType() );
-		this.variable = variable;
+public class DefaultExpressionPropertyCascade extends org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, DefaultExpressionPropertyCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DefaultExpressionPropertyCascade getInstance( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+		if( desiredType != null ) {
+			//pass
+		} else {
+			desiredType = expressionProperty.getExpressionType();
+		}
+		DefaultExpressionPropertyCascade rv = map.get( expressionProperty );
+		if( rv != null ) {
+			assert rv.getCompletionModel().getGroup() == group;
+			assert rv.desiredType == desiredType : " " + rv.desiredType + " " + desiredType;
+			//pass
+		} else {
+			rv = new DefaultExpressionPropertyCascade( group, expressionProperty, desiredType );
+			map.put( expressionProperty, rv );
+		}
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
+	private DefaultExpressionPropertyCascade( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+		super( group, java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( desiredType ) );
+		this.desiredType = desiredType;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable ); 
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		assert expressions.length == 1;
+		return expressions[ 0 ];
 	}
+//	@Override
+//	protected String getTitle() {
+//		return null;
+//	}
 }

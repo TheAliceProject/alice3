@@ -45,27 +45,38 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionListPropertyMenuModel extends ExpressionsCascadeOperation {
-	private final int index;
-	private final edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType;
-	public FillInExpressionListPropertyMenuModel( org.lgna.croquet.Group group, java.util.UUID id, int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType ) {
-		super( group, id, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( desiredType ) );
-		this.index = index;
-		this.expressionListProperty = expressionListProperty;
-		this.desiredType = desiredType;
+public class ArgumentCascade extends ProjectExpressionPropertyCascade {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.Argument, ArgumentCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ArgumentCascade getInstance( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
+		ArgumentCascade rv = map.get( argument );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ArgumentCascade( argument );
+			map.put( argument, rv );
+		}
+		return rv;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty getExpressionListProperty() {
-		return this.expressionListProperty;
+	private final edu.cmu.cs.dennisc.alice.ast.Argument argument;
+	private ArgumentCascade( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
+		super( java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), argument.expression, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( argument.parameter.getValue() ) );
+		this.argument = argument;
 	}
-	public int getIndex() {
-		return this.index;
-	}
-	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-		return this.expressionListProperty.get( this.index );
+//	@Override
+//	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
+//		return this.argument.expression;
+//	}
+//	@Override
+//	protected String getTitle() {
+//		return this.argument.parameter.getValue().getName();
+//	}
+	@Override
+	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascade > getCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascade >( this, this.argument, edu.cmu.cs.dennisc.alice.ast.Argument.class );
 	}
 	@Override
-	protected org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< edu.cmu.cs.dennisc.alice.ast.Expression > step, edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
-		return new org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit( step, this.getPreviousExpression(), values[ 0 ] );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		assert expressions.length == 1;
+		return expressions[ 0 ];
 	}
 }

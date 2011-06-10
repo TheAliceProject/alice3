@@ -41,36 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.expression;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariableArrayAccessCascadePopupPrepModel extends ArrayAccessCascadePopupPrepModel {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, VariableArrayAccessCascadePopupPrepModel > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized VariableArrayAccessCascadePopupPrepModel getInstance( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		assert variable != null;
-		assert expressionProperty != null;
-		VariableArrayAccessCascadePopupPrepModel rv = map.get( variable, expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new VariableArrayAccessCascadePopupPrepModel( variable, expressionProperty );
-			map.put( variable, expressionProperty, rv );
-		}
-		return rv;
-	}
+public class VariableArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
 	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
-	private VariableArrayAccessCascadePopupPrepModel( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "93e8c105-e813-4000-ac8c-78a0d2d81d18" ), expressionProperty );
+	public VariableArrayAtIndexAssignmentInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		super( java.util.UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, variable.getValueType() );
 		this.variable = variable;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
-		return this.variable.getValueType();
+		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable ); 
 	}
 }

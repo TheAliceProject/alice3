@@ -41,23 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.croquet.models.ast.cascade.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionStatementInsertOperation extends SelectedExpressionBasedStatmentInsertOperation {
-	public ExpressionStatementInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
-	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
-	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.createExpression( instanceExpression, expressions );
-		if( expression != null ) {
-			return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( expression );
+public class ParameterArrayAccessCascade extends ArrayAccessCascade {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ParameterArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ParameterArrayAccessCascade getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		assert parameter != null;
+		assert expressionProperty != null;
+		ParameterArrayAccessCascade rv = map.get( parameter, expressionProperty );
+		if( rv != null ) {
+			//pass
 		} else {
-			return null;
+			rv = new ParameterArrayAccessCascade( parameter, expressionProperty );
+			map.put( parameter, expressionProperty, rv );
 		}
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
+	private ParameterArrayAccessCascade( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "2b84b886-9b1d-4e1b-b0aa-2d35b88a71c2" ), expressionProperty );
+		this.parameter = parameter;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.parameter );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
+		return this.parameter.getValueType();
 	}
 }

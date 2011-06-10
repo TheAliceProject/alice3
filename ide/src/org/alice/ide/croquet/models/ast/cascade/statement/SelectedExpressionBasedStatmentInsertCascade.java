@@ -41,20 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.expression;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayAccessCascadePopupPrepModel extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadePopupPrepModel {
-	public ArrayAccessCascadePopupPrepModel( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( id, expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( Integer.class ) );
+public abstract class SelectedExpressionBasedStatmentInsertCascade extends StatementInsertCascade {
+	public SelectedExpressionBasedStatmentInsertCascade( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
+		super( id, blockStatementIndexPair, blanks );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getArrayType();
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-		assert expressions.length == 1;
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( this.getArrayType(), this.createAccessExpression(), expressions[ 0 ] );
+	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		return this.createStatement( org.alice.ide.IDE.getSingleton().createInstanceExpression(), expressions );
 	}
 }

@@ -40,30 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.croquet.models.ast.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class WhileLoopInsertOperation extends StatementInsertOperation {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, WhileLoopInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized WhileLoopInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		WhileLoopInsertOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new WhileLoopInsertOperation( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
+public class ExpressionListPropertyCascade extends ExpressionsCascade {
+	private final int index;
+	private final edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType;
+	public ExpressionListPropertyCascade( org.lgna.croquet.Group group, java.util.UUID id, int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType ) {
+		super( group, id, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( desiredType ) );
+		this.index = index;
+		this.expressionListProperty = expressionListProperty;
+		this.desiredType = desiredType;
 	}
-	private WhileLoopInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "e23920c4-97fa-47e8-9307-24153e3d56a6" ), blockStatementIndexPair, ConditionBlank.getInstance() );
+	public edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty getExpressionListProperty() {
+		return this.expressionListProperty;
+	}
+	public int getIndex() {
+		return this.index;
+	}
+	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+		return this.expressionListProperty.get( this.index );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createWhileLoop( expressions[ 0 ] );
+	protected org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< edu.cmu.cs.dennisc.alice.ast.Expression > step, edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
+		return new org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit( step, this.getPreviousExpression(), values[ 0 ] );
 	}
 }

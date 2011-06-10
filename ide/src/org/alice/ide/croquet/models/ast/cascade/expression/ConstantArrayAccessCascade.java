@@ -46,31 +46,31 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterArrayAccessCascadePopupPrepModel extends ArrayAccessCascadePopupPrepModel {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ParameterArrayAccessCascadePopupPrepModel > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ParameterArrayAccessCascadePopupPrepModel getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		assert parameter != null;
+public class ConstantArrayAccessCascade extends ArrayAccessCascade {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ConstantArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ConstantArrayAccessCascade getInstance( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		assert constant != null;
 		assert expressionProperty != null;
-		ParameterArrayAccessCascadePopupPrepModel rv = map.get( parameter, expressionProperty );
+		ConstantArrayAccessCascade rv = map.get( constant, expressionProperty );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new ParameterArrayAccessCascadePopupPrepModel( parameter, expressionProperty );
-			map.put( parameter, expressionProperty, rv );
+			rv = new ConstantArrayAccessCascade( constant, expressionProperty );
+			map.put( constant, expressionProperty, rv );
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
-	private ParameterArrayAccessCascadePopupPrepModel( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "2b84b886-9b1d-4e1b-b0aa-2d35b88a71c2" ), expressionProperty );
-		this.parameter = parameter;
+	private final edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant;
+	private ConstantArrayAccessCascade( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "bad422f3-67ca-4ecf-871e-07eae04a2881" ), expressionProperty );
+		this.constant = constant;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.parameter );
+		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.constant );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
-		return this.parameter.getValueType();
+		return this.constant.getValueType();
 	}
 }

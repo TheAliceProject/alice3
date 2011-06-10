@@ -59,7 +59,7 @@ public class ProcedureTemplateComposite extends MemberTemplateComposite {
 	}
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
-		return model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation;
+		return model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade;
 	}
 	@Override
 	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {

@@ -727,9 +727,9 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		}
 		return null;
 	}
-	public org.alice.ide.croquet.models.ast.cascade.MoreCascadePopupPrepModel getMoreOperation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+	public org.alice.ide.croquet.models.ast.cascade.MoreCascade getMoreOperation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 		if( methodInvocation != null ) {
-			return org.alice.ide.croquet.models.ast.cascade.MoreCascadePopupPrepModel.getInstance( methodInvocation );
+			return org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation );
 //			java.util.List< org.alice.ide.common.ExpressionStatementPane > statementPanes = org.lgna.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.ExpressionStatementPane.class );
 //			for( org.alice.ide.common.ExpressionStatementPane statementPane : statementPanes ) {
 //				if( statementPane.getStatement() == methodInvocation.getParent() ) {

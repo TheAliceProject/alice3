@@ -41,13 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionsCascadeOperation extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	public ExpressionsCascadeOperation( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
-		super( group, id, edu.cmu.cs.dennisc.alice.ast.Expression.class, blanks );
+public class ForEachInArrayInsertCascade extends StatementInsertCascade {
+	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, ForEachInArrayInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ForEachInArrayInsertCascade getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		assert blockStatementIndexPair != null;
+		ForEachInArrayInsertCascade rv = map.get( blockStatementIndexPair );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ForEachInArrayInsertCascade( blockStatementIndexPair );
+			map.put( blockStatementIndexPair, rv );
+		}
+		return rv;
+	}
+	private ForEachInArrayInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "b5764acd-4d2a-4967-a695-beffc7ea19a8" ), blockStatementIndexPair, ArrayBlank.getInstance() );
+	}
+	@Override
+	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createForEachInArrayLoop( expressions[ 0 ] );
 	}
 }

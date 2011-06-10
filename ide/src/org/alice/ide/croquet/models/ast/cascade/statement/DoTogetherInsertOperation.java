@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class DoTogetherInsertOperation extends StatementInsertOperation {
+public class DoTogetherInsertOperation extends StatementInsertCascade {
 	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, DoTogetherInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized DoTogetherInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;

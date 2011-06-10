@@ -59,9 +59,9 @@ class AddExpressionBlank extends org.lgna.croquet.CascadeBlank< edu.cmu.cs.denni
 /**
  * @author Dennis Cosgrove
  */
-public class AddExpressionCascadeOperation extends ExpressionsCascadeOperation {
+public class AddExpressionCascade extends ExpressionsCascade {
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
-	public AddExpressionCascadeOperation( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
+	public AddExpressionCascade( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
         super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "4f3ccba2-c44f-49b3-b20e-c9e847e90db2" ), new AddExpressionBlank( componentTypeProperty ) );
         this.expressionListProperty = expressionListProperty;
         this.setName( "Add" );

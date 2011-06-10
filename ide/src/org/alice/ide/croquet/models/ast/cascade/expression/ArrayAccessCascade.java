@@ -41,22 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.croquet.models.ast.cascade.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldArrayAtIndexAssignmentInsertOperation extends ArrayAtIndexAssignmentInsertOperation {
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public FieldArrayAtIndexAssignmentInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "9097fa73-b622-47a0-8f69-3c4bfaf55d71" ), blockStatementIndexPair, field.getDesiredValueType() );
-		this.field = field;
+public abstract class ArrayAccessCascade extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascade {
+	public ArrayAccessCascade( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( id, expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( Integer.class ) );
 	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getArrayType();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression();
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return org.alice.ide.ast.NodeUtilities.createFieldAccess( 
-				org.alice.ide.IDE.getSingleton().createInstanceExpression(), 
-				field
-		);
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		assert expressions.length == 1;
+		return new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( this.getArrayType(), this.createAccessExpression(), expressions[ 0 ] );
 	}
 }

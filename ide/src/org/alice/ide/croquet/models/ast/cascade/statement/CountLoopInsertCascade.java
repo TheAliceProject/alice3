@@ -46,13 +46,24 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectedExpressionBasedStatmentInsertOperation extends StatementInsertOperation {
-	public SelectedExpressionBasedStatmentInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+public class CountLoopInsertCascade extends StatementInsertCascade {
+	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, CountLoopInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CountLoopInsertCascade getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		assert blockStatementIndexPair != null;
+		CountLoopInsertCascade rv = map.get( blockStatementIndexPair );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new CountLoopInsertCascade( blockStatementIndexPair );
+			map.put( blockStatementIndexPair, rv );
+		}
+		return rv;
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
+	private CountLoopInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "6c314e4c-fec7-4c33-803c-a7efb17249aa" ), blockStatementIndexPair, CountBlank.getInstance() );
+	}
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.IDE.getSingleton().createInstanceExpression(), expressions );
+		return org.alice.ide.ast.NodeUtilities.createCountLoop( expressions[ 0 ] );
 	}
 }

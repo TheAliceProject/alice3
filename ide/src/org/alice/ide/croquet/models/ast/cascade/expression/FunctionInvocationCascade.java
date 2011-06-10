@@ -41,32 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.croquet.models.ast.cascade.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetterInsertOperation extends ExpressionStatementInsertOperation {
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public SetterInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "2593d9c3-5619-4d8d-812b-481d73035fe9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( field.getDesiredValueType() ) );
-		this.field = field;
-	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {
-		return this.field;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.AssignmentExpression rv = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression(
-			this.field.getValueType(), 
-			new edu.cmu.cs.dennisc.alice.ast.FieldAccess( instanceExpression, this.field ),
-			edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN,
-			expressions[ 0 ] 
-		);
+public class FunctionInvocationCascade extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascade {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FunctionInvocationCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized FunctionInvocationCascade getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		assert method != null;
+		assert expressionProperty != null;
+		FunctionInvocationCascade rv = map.get( method, expressionProperty );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FunctionInvocationCascade( method, expressionProperty );
+			map.put( method, expressionProperty, rv );
+		}
 		return rv;
 	}
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
+	private FunctionInvocationCascade( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "a205ee93-2f1a-4dc0-8aaf-60f1f3310643" ), expressionProperty, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
+		this.method = method;
+	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.SetterMenuModelStaticGetInstanceResolver createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.SetterMenuModelStaticGetInstanceResolver( this );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( org.alice.ide.IDE.getSingleton().createInstanceExpression(), this.method, expressions );
 	}
 }

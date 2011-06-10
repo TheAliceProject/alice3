@@ -46,24 +46,36 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementInsertOperation extends org.alice.ide.croquet.models.ast.cascade.ExpressionsCascadeOperation {
-	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
-	public StatementInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id, blanks );
-		this.blockStatementIndexPair = blockStatementIndexPair;
-	}
-	public org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
-		return this.blockStatementIndexPair;
-	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
-	@Override
-	protected org.alice.ide.croquet.edits.ast.InsertStatementEdit createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< edu.cmu.cs.dennisc.alice.ast.Expression > step, edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement( values );
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement, values );
+public class ReturnStatementInsertCascade extends StatementInsertCascade {
+	private static edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getReturnType( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = blockStatementIndexPair.getBlockStatement().getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
+		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
+			if( method.isFunction() ) {
+				return method.returnType.getValue();
+			}
+		}
+		return null;
 	}
 
+	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, ReturnStatementInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ReturnStatementInsertCascade getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		assert blockStatementIndexPair != null;
+		ReturnStatementInsertCascade rv = map.get( blockStatementIndexPair );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ReturnStatementInsertCascade( blockStatementIndexPair );
+			map.put( blockStatementIndexPair, rv );
+		}
+		return rv;
+	}
+	private ReturnStatementInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "6b1dae07-066f-4250-92e8-db1eacd32801" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( getReturnType( blockStatementIndexPair ) ) );
+	}
+	
 	@Override
-	protected <M extends org.lgna.croquet.Element> org.lgna.croquet.resolvers.CodableResolver< M > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
+	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createReturnStatement( getReturnType( this.getBlockStatementIndexPair() ), expressions[ 0 ] );
 	}
 }

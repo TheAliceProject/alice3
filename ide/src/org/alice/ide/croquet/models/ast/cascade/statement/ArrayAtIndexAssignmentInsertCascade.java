@@ -46,24 +46,25 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class ForEachInArrayInsertOperation extends StatementInsertOperation {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, ForEachInArrayInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ForEachInArrayInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		ForEachInArrayInsertOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ForEachInArrayInsertOperation( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
+public abstract class ArrayAtIndexAssignmentInsertCascade extends StatementInsertCascade {
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > arrayType;
+	public ArrayAtIndexAssignmentInsertCascade( java.util.UUID id,  org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > arrayType ) {
+		super( id, blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, arrayType.getComponentType() ) );
+		this.arrayType = arrayType;
 	}
-	private ForEachInArrayInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "b5764acd-4d2a-4967-a695-beffc7ea19a8" ), blockStatementIndexPair, ArrayBlank.getInstance() );
-	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression(); 
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createForEachInArrayLoop( expressions[ 0 ] );
+		edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression(
+				this.arrayType.getComponentType(), 
+				new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
+						this.arrayType, 
+						this.createAccessExpression(), 
+						expressions[ 0 ]
+				), 
+				edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, 
+				expressions[ 1 ]
+		);
+		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( assignmentExpression );
 	}
 }

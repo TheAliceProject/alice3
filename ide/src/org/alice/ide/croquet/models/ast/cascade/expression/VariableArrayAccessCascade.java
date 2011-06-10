@@ -41,37 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.croquet.models.ast.cascade.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureInvocationInsertOperation extends ExpressionStatementInsertOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.codeeditor.BlockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod, ProcedureInvocationInsertOperation > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ProcedureInvocationInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		ProcedureInvocationInsertOperation rv = mapToMap.get( blockStatementIndexPair, method );
+public class VariableArrayAccessCascade extends ArrayAccessCascade {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, VariableArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized VariableArrayAccessCascade getInstance( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		assert variable != null;
+		assert expressionProperty != null;
+		VariableArrayAccessCascade rv = map.get( variable, expressionProperty );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new ProcedureInvocationInsertOperation( blockStatementIndexPair, method );
-			mapToMap.put( blockStatementIndexPair, method, rv );
+			rv = new VariableArrayAccessCascade( variable, expressionProperty );
+			map.put( variable, expressionProperty, rv );
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	private ProcedureInvocationInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "d8ea7244-f0eb-4c3a-a9fa-a92182ed221a" ), blockStatementIndexPair, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
-		this.method = method;
-	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getMethod() {
-		return this.method;
+	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
+	private VariableArrayAccessCascade( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "93e8c105-e813-4000-ac8c-78a0d2d81d18" ), expressionProperty );
+		this.variable = variable;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( instanceExpression, this.method, expressions );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.MethodInvocationMenuModelStaticGetInstanceResolver createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.MethodInvocationMenuModelStaticGetInstanceResolver( this );
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
+		return this.variable.getValueType();
 	}
 }

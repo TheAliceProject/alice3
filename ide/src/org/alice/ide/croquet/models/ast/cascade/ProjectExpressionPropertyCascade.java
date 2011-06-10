@@ -41,32 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.expression;
+package org.alice.ide.croquet.models.ast.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionInvocationCascadePopupPrepModel extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadePopupPrepModel {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FunctionInvocationCascadePopupPrepModel > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized FunctionInvocationCascadePopupPrepModel getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		assert method != null;
-		assert expressionProperty != null;
-		FunctionInvocationCascadePopupPrepModel rv = map.get( method, expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FunctionInvocationCascadePopupPrepModel( method, expressionProperty );
-			map.put( method, expressionProperty, rv );
-		}
-		return rv;
-	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	private FunctionInvocationCascadePopupPrepModel( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "a205ee93-2f1a-4dc0-8aaf-60f1f3310643" ), expressionProperty, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
-		this.method = method;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( org.alice.ide.IDE.getSingleton().createInstanceExpression(), this.method, expressions );
+public abstract class ProjectExpressionPropertyCascade extends ExpressionPropertyCascade {
+	public ProjectExpressionPropertyCascade( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id, expressionProperty, blanks );
 	}
 }

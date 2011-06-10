@@ -40,43 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.cascade;
+
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArgumentCascadePopupPrepModel extends ProjectExpressionPropertyCascadePopupPrepModel {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.Argument, ArgumentCascadePopupPrepModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ArgumentCascadePopupPrepModel getInstance( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
-		ArgumentCascadePopupPrepModel rv = map.get( argument );
-		if( rv != null ) {
-			//pass
+public abstract class ExpressionStatementInsertCascade extends SelectedExpressionBasedStatmentInsertCascade {
+	public ExpressionStatementInsertCascade( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
+		super( id, blockStatementIndexPair, blanks );
+	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
+	@Override
+	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.createExpression( instanceExpression, expressions );
+		if( expression != null ) {
+			return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( expression );
 		} else {
-			rv = new ArgumentCascadePopupPrepModel( argument );
-			map.put( argument, rv );
+			return null;
 		}
-		return rv;
-	}
-	private final edu.cmu.cs.dennisc.alice.ast.Argument argument;
-	private ArgumentCascadePopupPrepModel( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
-		super( java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), argument.expression, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( argument.parameter.getValue() ) );
-		this.argument = argument;
-	}
-//	@Override
-//	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
-//		return this.argument.expression;
-//	}
-//	@Override
-//	protected String getTitle() {
-//		return this.argument.parameter.getValue().getName();
-//	}
-	@Override
-	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascadePopupPrepModel > getCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascadePopupPrepModel >( this, this.argument, edu.cmu.cs.dennisc.alice.ast.Argument.class );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-		assert expressions.length == 1;
-		return expressions[ 0 ];
 	}
 }

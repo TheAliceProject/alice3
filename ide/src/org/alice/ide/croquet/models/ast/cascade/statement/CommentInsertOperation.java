@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class CommentInsertOperation extends StatementInsertOperation {
+public class CommentInsertOperation extends StatementInsertCascade {
 	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, CommentInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized CommentInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;

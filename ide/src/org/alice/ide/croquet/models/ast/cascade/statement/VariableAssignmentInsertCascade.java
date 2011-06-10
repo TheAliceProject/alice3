@@ -46,24 +46,14 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class CountLoopInsertOperation extends StatementInsertOperation {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, CountLoopInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CountLoopInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		CountLoopInsertOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new CountLoopInsertOperation( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
-	private CountLoopInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "6c314e4c-fec7-4c33-803c-a7efb17249aa" ), blockStatementIndexPair, CountBlank.getInstance() );
+public class VariableAssignmentInsertCascade extends ExpressionStatementInsertCascade {
+	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
+	public VariableAssignmentInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		super( java.util.UUID.fromString( "ae9cd20c-b158-4298-bcee-720810dcbef9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( variable.getValueType() ) );
+		this.variable = variable;
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createCountLoop( expressions[ 0 ] );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createVariableAssignment( this.variable, expressions[ 0 ] );
 	}
 }

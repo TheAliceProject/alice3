@@ -41,36 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.expression;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantArrayAccessCascadePopupPrepModel extends ArrayAccessCascadePopupPrepModel {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ConstantArrayAccessCascadePopupPrepModel > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ConstantArrayAccessCascadePopupPrepModel getInstance( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		assert constant != null;
-		assert expressionProperty != null;
-		ConstantArrayAccessCascadePopupPrepModel rv = map.get( constant, expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ConstantArrayAccessCascadePopupPrepModel( constant, expressionProperty );
-			map.put( constant, expressionProperty, rv );
-		}
-		return rv;
-	}
-	private final edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant;
-	private ConstantArrayAccessCascadePopupPrepModel( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "bad422f3-67ca-4ecf-871e-07eae04a2881" ), expressionProperty );
-		this.constant = constant;
+public class FieldArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	public FieldArrayAtIndexAssignmentInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( java.util.UUID.fromString( "9097fa73-b622-47a0-8f69-3c4bfaf55d71" ), blockStatementIndexPair, field.getDesiredValueType() );
+		this.field = field;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.constant );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
-		return this.constant.getValueType();
+		return org.alice.ide.ast.NodeUtilities.createFieldAccess( 
+				org.alice.ide.IDE.getSingleton().createInstanceExpression(), 
+				field
+		);
 	}
 }

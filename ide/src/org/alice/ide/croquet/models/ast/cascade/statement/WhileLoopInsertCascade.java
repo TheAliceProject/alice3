@@ -46,14 +46,24 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class VariableAssignmentStatementInsertOperation extends ExpressionStatementInsertOperation {
-	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
-	public VariableAssignmentStatementInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		super( java.util.UUID.fromString( "ae9cd20c-b158-4298-bcee-720810dcbef9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( variable.getValueType() ) );
-		this.variable = variable;
+public class WhileLoopInsertCascade extends StatementInsertCascade {
+	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, WhileLoopInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized WhileLoopInsertCascade getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		assert blockStatementIndexPair != null;
+		WhileLoopInsertCascade rv = map.get( blockStatementIndexPair );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new WhileLoopInsertCascade( blockStatementIndexPair );
+			map.put( blockStatementIndexPair, rv );
+		}
+		return rv;
+	}
+	private WhileLoopInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "e23920c4-97fa-47e8-9307-24153e3d56a6" ), blockStatementIndexPair, ConditionBlank.getInstance() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createVariableAssignment( this.variable, expressions[ 0 ] );
+	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createWhileLoop( expressions[ 0 ] );
 	}
 }

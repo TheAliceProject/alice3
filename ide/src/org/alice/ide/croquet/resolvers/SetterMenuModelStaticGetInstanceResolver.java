@@ -46,9 +46,9 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class SetterMenuModelStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertOperation > implements org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertOperation > {
+public class SetterMenuModelStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade > implements org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade > {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class, edu.cmu.cs.dennisc.alice.ast.AbstractField.class };
-	public SetterMenuModelStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertOperation instance ) {
+	public SetterMenuModelStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade instance ) {
 		super( instance );
 	}
 	public SetterMenuModelStaticGetInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -72,11 +72,11 @@ public class SetterMenuModelStaticGetInstanceResolver extends org.lgna.croquet.r
 	}
 
 	@Override
-	protected java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertOperation > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertOperation.class;
+	protected java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade.class;
 	}
 	@Override
-	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertOperation > cls ) {
+	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade > cls ) {
 		//note: do not call super
 	}
 	@Override

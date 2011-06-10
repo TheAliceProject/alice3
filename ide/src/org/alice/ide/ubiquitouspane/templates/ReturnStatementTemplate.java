@@ -51,6 +51,6 @@ public class ReturnStatementTemplate extends CascadingUbiquitousStatementClassTe
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.ReturnStatementInsertOperation.getInstance( blockStatementIndexPair );
+		return org.alice.ide.croquet.models.ast.cascade.statement.ReturnStatementInsertCascade.getInstance( blockStatementIndexPair );
 	}
 }
