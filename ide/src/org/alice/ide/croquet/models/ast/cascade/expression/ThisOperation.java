@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation {
+public class ThisOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ThisOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ThisOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		assert expressionProperty != null;
@@ -63,7 +63,7 @@ public class ThisOperation extends org.alice.ide.croquet.models.ast.cascade.Proj
 		super( java.util.UUID.fromString( "b90478a4-6cfc-457b-be93-dfdde76c9e24" ), expressionProperty );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+	protected final edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
 		return new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
 	}
 }

@@ -41,19 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.expression;
+package org.alice.ide.croquet.models.ast.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation {
-	public ArrayAccessOperation( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( id, expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( Integer.class ) );
+public abstract class ProjectExpressionPropertyOperation extends org.lgna.croquet.ActionOperation {
+	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
+	public ProjectExpressionPropertyOperation( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
+		this.expressionProperty = expressionProperty;
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getArrayType();
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression();
+	public final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
+		return this.expressionProperty;
+	}
+	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+		return this.expressionProperty.getValue();
+	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression();
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( this.getArrayType(), this.createAccessExpression(), expressions[ 0 ] );
+	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		edu.cmu.cs.dennisc.alice.ast.Expression value = this.createExpression();
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, this.expressionProperty, this.getPreviousExpression(), value ) );
 	}
 }

@@ -219,16 +219,16 @@ enum ZodiacSigns {
 	ARIES, TAURUS, GEMINI, CANCER, LEO, VIRGO, LIBRA, SCORPIO, SAGITARIUS, CAPRICORN, AQUARIUS, PISCES
 }
 
-class MyCascadeOperation extends org.lgna.croquet.CascadePopupPrepModel< Object > {
+class MyCascadePopupPrepModel extends org.lgna.croquet.CascadePopupPrepModel< Object > {
 	private static class SingletonHolder {
-		private static MyCascadeOperation instance = new MyCascadeOperation();
+		private static MyCascadePopupPrepModel instance = new MyCascadePopupPrepModel();
 	}
 
-	public static MyCascadeOperation getInstance() {
+	public static MyCascadePopupPrepModel getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private MyCascadeOperation() {
+	private MyCascadePopupPrepModel() {
 		super( null, java.util.UUID.fromString( "2c0ba898-1f06-48ff-bc15-65f6f350484b" ), Object.class, new org.lgna.croquet.CascadeBlank[] { new EnumBlank( ZodiacSigns.class ), IntegerBlank.getInstance(), IntegerBlank.getInstance(),
 				new EnumBlank( ZodiacSigns.class ), IntegerBlank.getInstance() } );
 	}
@@ -261,7 +261,7 @@ class CascadePanel extends org.lgna.croquet.components.BorderPanel {
 	public CascadePanel() {
 		this.setMinimumPreferredWidth( 640 );
 		this.setMinimumPreferredHeight( 480 );
-		this.addComponent( MyCascadeOperation.getInstance().createPopupButton(), Constraint.PAGE_START );
+		this.addComponent( MyCascadePopupPrepModel.getInstance().createPopupButton(), Constraint.PAGE_START );
 	}
 }
 

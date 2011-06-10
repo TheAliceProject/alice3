@@ -40,37 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast.cascade.expression;
+package org.alice.ide.croquet.models.ast.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterArrayAccessOperation extends ArrayAccessOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ParameterArrayAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ParameterArrayAccessOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		assert parameter != null;
-		assert expressionProperty != null;
-		ParameterArrayAccessOperation rv = map.get( parameter, expressionProperty );
+public class ArgumentCascadePopupPrepModel extends ProjectExpressionPropertyCascadePopupPrepModel {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.Argument, ArgumentCascadePopupPrepModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ArgumentCascadePopupPrepModel getInstance( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
+		ArgumentCascadePopupPrepModel rv = map.get( argument );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new ParameterArrayAccessOperation( parameter, expressionProperty );
-			map.put( parameter, expressionProperty, rv );
+			rv = new ArgumentCascadePopupPrepModel( argument );
+			map.put( argument, rv );
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
-	private ParameterArrayAccessOperation( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "2b84b886-9b1d-4e1b-b0aa-2d35b88a71c2" ), expressionProperty );
-		this.parameter = parameter;
+	private final edu.cmu.cs.dennisc.alice.ast.Argument argument;
+	private ArgumentCascadePopupPrepModel( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
+		super( java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), argument.expression, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( argument.parameter.getValue() ) );
+		this.argument = argument;
+	}
+//	@Override
+//	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
+//		return this.argument.expression;
+//	}
+//	@Override
+//	protected String getTitle() {
+//		return this.argument.parameter.getValue().getName();
+//	}
+	@Override
+	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascadePopupPrepModel > getCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascadePopupPrepModel >( this, this.argument, edu.cmu.cs.dennisc.alice.ast.Argument.class );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.parameter );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
-		return this.parameter.getValueType();
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		assert expressions.length == 1;
+		return expressions[ 0 ];
 	}
 }

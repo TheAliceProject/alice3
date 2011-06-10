@@ -46,27 +46,31 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionInvocationOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FunctionInvocationOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized FunctionInvocationOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		assert method != null;
+public class VariableArrayAccessCascadePopupPrepModel extends ArrayAccessCascadePopupPrepModel {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, VariableArrayAccessCascadePopupPrepModel > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized VariableArrayAccessCascadePopupPrepModel getInstance( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		assert variable != null;
 		assert expressionProperty != null;
-		FunctionInvocationOperation rv = map.get( method, expressionProperty );
+		VariableArrayAccessCascadePopupPrepModel rv = map.get( variable, expressionProperty );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new FunctionInvocationOperation( method, expressionProperty );
-			map.put( method, expressionProperty, rv );
+			rv = new VariableArrayAccessCascadePopupPrepModel( variable, expressionProperty );
+			map.put( variable, expressionProperty, rv );
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	private FunctionInvocationOperation( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "a205ee93-2f1a-4dc0-8aaf-60f1f3310643" ), expressionProperty, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
-		this.method = method;
+	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
+	private VariableArrayAccessCascadePopupPrepModel( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "93e8c105-e813-4000-ac8c-78a0d2d81d18" ), expressionProperty );
+		this.variable = variable;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( org.alice.ide.IDE.getSingleton().createInstanceExpression(), this.method, expressions );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
+		return this.variable.getValueType();
 	}
 }

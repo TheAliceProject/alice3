@@ -46,31 +46,34 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
 /**
  * @author Dennis Cosgrove
  */
-public class VariableArrayAccessOperation extends ArrayAccessOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, VariableArrayAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized VariableArrayAccessOperation getInstance( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		assert variable != null;
+public class FieldArrayAccessCascadePopupPrepModel extends ArrayAccessCascadePopupPrepModel {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FieldArrayAccessCascadePopupPrepModel > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized FieldArrayAccessCascadePopupPrepModel getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		assert field != null;
 		assert expressionProperty != null;
-		VariableArrayAccessOperation rv = map.get( variable, expressionProperty );
+		FieldArrayAccessCascadePopupPrepModel rv = map.get( field, expressionProperty );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new VariableArrayAccessOperation( variable, expressionProperty );
-			map.put( variable, expressionProperty, rv );
+			rv = new FieldArrayAccessCascadePopupPrepModel( field, expressionProperty );
+			map.put( field, expressionProperty, rv );
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
-	private VariableArrayAccessOperation( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "93e8c105-e813-4000-ac8c-78a0d2d81d18" ), expressionProperty );
-		this.variable = variable;
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	private FieldArrayAccessCascadePopupPrepModel( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "1aa9aa94-fd7f-47e9-99a6-2556d7871f28" ), expressionProperty );
+		this.field = field;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
+		return org.alice.ide.ast.NodeUtilities.createFieldAccess( 
+				org.alice.ide.IDE.getSingleton().createInstanceExpression(), 
+				this.field
+		);
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
-		return this.variable.getValueType();
+		return this.field.getValueType();
 	}
 }

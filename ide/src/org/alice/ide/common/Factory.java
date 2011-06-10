@@ -60,7 +60,7 @@ public abstract class Factory {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
 		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
-			org.alice.ide.croquet.models.ast.cascade.FillInArgumentOperation model = org.alice.ide.croquet.models.ast.cascade.FillInArgumentOperation.getInstance( argument );
+			org.alice.ide.croquet.models.ast.cascade.ArgumentCascadePopupPrepModel model = org.alice.ide.croquet.models.ast.cascade.ArgumentCascadePopupPrepModel.getInstance( argument );
 			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty );
 			rv = expressionPropertyDropDownPane;
 		}

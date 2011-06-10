@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation {
+public class ParameterAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
 	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ParameterAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static synchronized ParameterAccessOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		assert parameter != null;
@@ -66,7 +66,7 @@ public class ParameterAccessOperation extends org.alice.ide.croquet.models.ast.c
 		this.parameter = parameter;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
 		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.parameter );
 	}
 }

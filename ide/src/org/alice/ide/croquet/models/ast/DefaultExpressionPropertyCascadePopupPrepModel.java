@@ -40,40 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast.cascade.expression;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldArrayAccessOperation extends ArrayAccessOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FieldArrayAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized FieldArrayAccessOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		assert field != null;
-		assert expressionProperty != null;
-		FieldArrayAccessOperation rv = map.get( field, expressionProperty );
-		if( rv != null ) {
+public class DefaultExpressionPropertyCascadePopupPrepModel extends org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadePopupPrepModel {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, DefaultExpressionPropertyCascadePopupPrepModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DefaultExpressionPropertyCascadePopupPrepModel getInstance( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+		if( desiredType != null ) {
 			//pass
 		} else {
-			rv = new FieldArrayAccessOperation( field, expressionProperty );
-			map.put( field, expressionProperty, rv );
+			desiredType = expressionProperty.getExpressionType();
+		}
+		DefaultExpressionPropertyCascadePopupPrepModel rv = map.get( expressionProperty );
+		if( rv != null ) {
+			assert rv.getCompletionModel().getGroup() == group;
+			assert rv.desiredType == desiredType : " " + rv.desiredType + " " + desiredType;
+			//pass
+		} else {
+			rv = new DefaultExpressionPropertyCascadePopupPrepModel( group, expressionProperty, desiredType );
+			map.put( expressionProperty, rv );
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	private FieldArrayAccessOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "1aa9aa94-fd7f-47e9-99a6-2556d7871f28" ), expressionProperty );
-		this.field = field;
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
+	private DefaultExpressionPropertyCascadePopupPrepModel( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+		super( group, java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( desiredType ) );
+		this.desiredType = desiredType;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return org.alice.ide.ast.NodeUtilities.createFieldAccess( 
-				org.alice.ide.IDE.getSingleton().createInstanceExpression(), 
-				this.field
-		);
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		assert expressions.length == 1;
+		return expressions[ 0 ];
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
-		return this.field.getValueType();
-	}
+//	@Override
+//	protected String getTitle() {
+//		return null;
+//	}
 }

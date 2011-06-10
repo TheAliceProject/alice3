@@ -45,31 +45,31 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreOperation extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, FillInMoreOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized FillInMoreOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-		FillInMoreOperation rv = map.get( methodInvocation );
+public class MoreCascadePopupPrepModel extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, MoreCascadePopupPrepModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized MoreCascadePopupPrepModel getInstance( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+		MoreCascadePopupPrepModel rv = map.get( methodInvocation );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new FillInMoreOperation( methodInvocation );
+			rv = new MoreCascadePopupPrepModel( methodInvocation );
 			map.put( methodInvocation, rv );
 		}
 		return rv;
 	}
 	
-	private static edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getNextType( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+	private static edu.cmu.cs.dennisc.alice.ast.AbstractParameter getNextParameter( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
 		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextMethod.getParameters();
-		return parameters.get( parameters.size()-1 ).getDesiredValueType();
+		return parameters.get( parameters.size()-1 );
 	}
 	
 	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation;
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
 	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
-	private FillInMoreOperation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), edu.cmu.cs.dennisc.alice.ast.Expression.class, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( getNextType( methodInvocation ) ) );
+	private MoreCascadePopupPrepModel( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), edu.cmu.cs.dennisc.alice.ast.Expression.class, new org.lgna.croquet.CascadeBlank[] { org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) } );
 		assert methodInvocation != null;
 		this.methodInvocation = methodInvocation;
 		this.expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)this.methodInvocation.getParent();

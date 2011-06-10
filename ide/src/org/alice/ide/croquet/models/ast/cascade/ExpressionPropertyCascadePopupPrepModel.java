@@ -46,9 +46,9 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionPropertyCascadeOperation extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class ExpressionPropertyCascadePopupPrepModel extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	public ExpressionPropertyCascadeOperation( org.lgna.croquet.Group group, java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
+	public ExpressionPropertyCascadePopupPrepModel( org.lgna.croquet.Group group, java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
 		super( group, id, edu.cmu.cs.dennisc.alice.ast.Expression.class, blanks );
 		this.expressionProperty = expressionProperty;
 	}
@@ -88,6 +88,6 @@ public abstract class ExpressionPropertyCascadeOperation extends org.lgna.croque
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions );
 	@Override
 	protected org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< edu.cmu.cs.dennisc.alice.ast.Expression > step, edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
-		return new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, this.getPreviousExpression(), values[ 0 ] );
+		return new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, this.expressionProperty, this.getPreviousExpression(), values[ 0 ] );
 	}
 }

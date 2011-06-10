@@ -40,42 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+
+package org.alice.ide.croquet.models.ast.cascade.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultFillInExpressionPropertyCascadeOperation extends org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, DefaultFillInExpressionPropertyCascadeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DefaultFillInExpressionPropertyCascadeOperation getInstance( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
-		if( desiredType != null ) {
-			//pass
-		} else {
-			desiredType = expressionProperty.getExpressionType();
-		}
-		DefaultFillInExpressionPropertyCascadeOperation rv = map.get( expressionProperty );
+public class ConstantArrayAccessCascadePopupPrepModel extends ArrayAccessCascadePopupPrepModel {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ConstantArrayAccessCascadePopupPrepModel > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ConstantArrayAccessCascadePopupPrepModel getInstance( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		assert constant != null;
+		assert expressionProperty != null;
+		ConstantArrayAccessCascadePopupPrepModel rv = map.get( constant, expressionProperty );
 		if( rv != null ) {
-			assert rv.getCompletionModel().getGroup() == group;
-			assert rv.desiredType == desiredType : " " + rv.desiredType + " " + desiredType;
 			//pass
 		} else {
-			rv = new DefaultFillInExpressionPropertyCascadeOperation( group, expressionProperty, desiredType );
-			map.put( expressionProperty, rv );
+			rv = new ConstantArrayAccessCascadePopupPrepModel( constant, expressionProperty );
+			map.put( constant, expressionProperty, rv );
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
-	private DefaultFillInExpressionPropertyCascadeOperation( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
-		super( group, java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( desiredType ) );
-		this.desiredType = desiredType;
+	private final edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant;
+	private ConstantArrayAccessCascadePopupPrepModel( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "bad422f3-67ca-4ecf-871e-07eae04a2881" ), expressionProperty );
+		this.constant = constant;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-		assert expressions.length == 1;
-		return expressions[ 0 ];
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.constant );
 	}
-//	@Override
-//	protected String getTitle() {
-//		return null;
-//	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
+		return this.constant.getValueType();
+	}
 }

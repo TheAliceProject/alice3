@@ -40,43 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.cascade;
+
+package org.alice.ide.croquet.models.ast.cascade.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FillInArgumentOperation extends ProjectExpressionPropertyCascadeOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.Argument, FillInArgumentOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized FillInArgumentOperation getInstance( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
-		FillInArgumentOperation rv = map.get( argument );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FillInArgumentOperation( argument );
-			map.put( argument, rv );
-		}
-		return rv;
+public abstract class ArrayAccessCascadePopupPrepModel extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadePopupPrepModel {
+	public ArrayAccessCascadePopupPrepModel( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( id, expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( Integer.class ) );
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.Argument argument;
-	private FillInArgumentOperation( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
-		super( java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), argument.expression, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( argument.parameter.getValue() ) );
-		this.argument = argument;
-	}
-//	@Override
-//	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
-//		return this.argument.expression;
-//	}
-//	@Override
-//	protected String getTitle() {
-//		return this.argument.parameter.getValue().getName();
-//	}
-	@Override
-	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FillInArgumentOperation > getCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FillInArgumentOperation >( this, this.argument, edu.cmu.cs.dennisc.alice.ast.Argument.class );
-	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getArrayType();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression();
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
 		assert expressions.length == 1;
-		return expressions[ 0 ];
+		return new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( this.getArrayType(), this.createAccessExpression(), expressions[ 0 ] );
 	}
 }

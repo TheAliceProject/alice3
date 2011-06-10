@@ -41,18 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.expression;
+package org.alice.ide.croquet.models.ast.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayLengthOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	public ArrayLengthOperation( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( id, expressionProperty );
-	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression();
-	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayLength( this.createAccessExpression() );
+public abstract class ProjectExpressionPropertyCascadePopupPrepModel extends ExpressionPropertyCascadePopupPrepModel {
+	public ProjectExpressionPropertyCascadePopupPrepModel( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id, expressionProperty, blanks );
 	}
 }

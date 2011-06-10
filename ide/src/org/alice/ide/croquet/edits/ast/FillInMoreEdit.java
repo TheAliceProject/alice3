@@ -67,7 +67,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = (org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation)this.getModel().getPopupPrepModel();
+		org.alice.ide.croquet.models.ast.cascade.MoreCascadePopupPrepModel model = (org.alice.ide.croquet.models.ast.cascade.MoreCascadePopupPrepModel)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 
@@ -86,7 +86,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = (org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation)this.getModel().getPopupPrepModel();
+		org.alice.ide.croquet.models.ast.cascade.MoreCascadePopupPrepModel model = (org.alice.ide.croquet.models.ast.cascade.MoreCascadePopupPrepModel)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 		
@@ -108,7 +108,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = (org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation)this.getModel().getPopupPrepModel();
+		org.alice.ide.croquet.models.ast.cascade.MoreCascadePopupPrepModel model = (org.alice.ide.croquet.models.ast.cascade.MoreCascadePopupPrepModel)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
 			rv.append( "more: " );

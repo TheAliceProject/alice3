@@ -43,27 +43,18 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.CascadeInputDialogPanel;
-import org.lgna.croquet.resolvers.CodableResolver;
-
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeInputDialogOperationFillIn<F> extends CascadeFillIn< F, Void > {
-	private final CascadeInputDialogOperation<F> inputDialogOperation;
-	public CascadeInputDialogOperationFillIn( CascadeInputDialogOperation<F> inputDialogOperation ) {
-		super( java.util.UUID.fromString( "f2c75b9f-aa0d-487c-a161-46cb23ff3e76" ) );
-		this.inputDialogOperation = inputDialogOperation;
-	}
-
-	public static class CascadeInputDialogOperationFillInResolver<F> implements CodableResolver< CascadeInputDialogOperationFillIn<F> > {
+public final class CascadeInputDialogOperationFillIn<F> extends CascadeFillIn< F, Void > {
+	public static class CascadeInputDialogOperationFillInResolver<F> implements org.lgna.croquet.resolvers.CodableResolver< CascadeInputDialogOperationFillIn<F> > {
 		private final CascadeInputDialogOperationFillIn<F> model;
 
 		public CascadeInputDialogOperationFillInResolver( CascadeInputDialogOperationFillIn<F> model ) {
 			this.model = model;
 		}
 		public CascadeInputDialogOperationFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			CodableResolver< CascadeInputDialogOperation<F>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			org.lgna.croquet.resolvers.CodableResolver< CascadeInputDialogOperation<F>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 			CascadeInputDialogOperation<F> inputDialogOperation = resolver.getResolved();
 			this.model = inputDialogOperation.getFillIn();
 		}
@@ -71,11 +62,15 @@ public class CascadeInputDialogOperationFillIn<F> extends CascadeFillIn< F, Void
 			return this.model;
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			CodableResolver< CascadeInputDialogOperation<F>> resolver = this.model.inputDialogOperation.getCodableResolver();
+			org.lgna.croquet.resolvers.CodableResolver< CascadeInputDialogOperation<F>> resolver = this.model.inputDialogOperation.getCodableResolver();
 			binaryEncoder.encode( resolver );
 		}
 	}
-
+	private final CascadeInputDialogOperation<F> inputDialogOperation;
+	public CascadeInputDialogOperationFillIn( CascadeInputDialogOperation<F> inputDialogOperation ) {
+		super( java.util.UUID.fromString( "f2c75b9f-aa0d-487c-a161-46cb23ff3e76" ) );
+		this.inputDialogOperation = inputDialogOperation;
+	}
 	public CascadeInputDialogOperation<F> getInputDialogOperation() {
 		return this.inputDialogOperation;
 	}
@@ -94,7 +89,7 @@ public class CascadeInputDialogOperationFillIn<F> extends CascadeFillIn< F, Void
 	@Override
 	public F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
 		org.lgna.croquet.history.InputDialogOperationStep inputDialogStep = this.inputDialogOperation.fire();
-		CascadeInputDialogPanel<F> panel = inputDialogStep.getMainPanel();
+		org.lgna.croquet.components.CascadeInputDialogPanel<F> panel = inputDialogStep.getMainPanel();
 		return panel.getInputValue();
 	}
 	@Override

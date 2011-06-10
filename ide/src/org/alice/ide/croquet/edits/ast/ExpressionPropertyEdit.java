@@ -45,42 +45,50 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.CascadePopupCompletionModel<edu.cmu.cs.dennisc.alice.ast.Expression> > {
+public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
+	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 	private final edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 	private final edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 
-	public ExpressionPropertyEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
+	public ExpressionPropertyEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
 		super( completionStep );
+		this.expressionProperty = expressionProperty;
 		this.prevExpression = prevExpression;
 		this.nextExpression = nextExpression;
 	}
 	public ExpressionPropertyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
+		java.util.UUID expressionPropertyNodeId = binaryDecoder.decodeId();
+		String propertyName = binaryDecoder.decodeString();
+		java.util.UUID prevExpressionId = binaryDecoder.decodeId();
+		java.util.UUID nextExpressionId = binaryDecoder.decodeId();
+
+		
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-		java.util.UUID prevExpressionId = binaryDecoder.decodeId();
+		edu.cmu.cs.dennisc.alice.ast.AbstractNode node = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, expressionPropertyNodeId );
+		this.expressionProperty = (edu.cmu.cs.dennisc.alice.ast.ExpressionProperty)node.getPropertyNamed( propertyName );
 		this.prevExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, prevExpressionId );
-		java.util.UUID nextExpressionId = binaryDecoder.decodeId();
 		this.nextExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, nextExpressionId );
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
+		edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)this.expressionProperty.getOwner();
+		binaryEncoder.encode( node.getUUID() );
+		binaryEncoder.encode( this.expressionProperty.getName() );
+		
 		binaryEncoder.encode( this.prevExpression.getUUID() );
 		binaryEncoder.encode( this.nextExpression.getUUID() );
 	}
 
-	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
-		org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation expressionPropertyOperation = (org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascadeOperation)this.getModel().getPopupPrepModel();
-		return expressionPropertyOperation.getExpressionProperty();
-	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		this.getExpressionProperty().setValue( this.nextExpression );
+		this.expressionProperty.setValue( this.nextExpression );
 	}
 	@Override
 	protected final void undoInternal() {
-		this.getExpressionProperty().setValue( this.prevExpression );
+		this.expressionProperty.setValue( this.prevExpression );
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
@@ -92,9 +100,10 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit< org.lgn
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		ExpressionPropertyEdit replacementEdit = (ExpressionPropertyEdit)edit;
+		retargeter.addKeyValuePair( this.expressionProperty, replacementEdit.expressionProperty );
 		retargeter.addKeyValuePair( this.prevExpression, replacementEdit.prevExpression );
 		retargeter.addKeyValuePair( this.nextExpression, replacementEdit.nextExpression );
 	}

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation {
+public class FieldAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
 	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FieldAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static synchronized FieldAccessOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		assert field != null;
@@ -66,8 +66,8 @@ public class FieldAccessOperation extends org.alice.ide.croquet.models.ast.casca
 		this.field = field;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createFieldAccess( 
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
+		return org.alice.ide.ast.NodeUtilities.createFieldAccess(
 				org.alice.ide.IDE.getSingleton().createInstanceExpression(), 
 				this.field
 		);
