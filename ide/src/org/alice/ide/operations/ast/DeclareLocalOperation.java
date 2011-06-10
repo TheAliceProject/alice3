@@ -60,7 +60,7 @@ public class DeclareLocalOperation extends org.alice.ide.croquet.models.InputDia
 		if( isOk ) {
 			org.alice.ide.declarationpanes.CreateLocalPane createLocalPane = step.getMainPanel();
 			edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = createLocalPane.getInputValue();
-			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair.getBlockStatement(), this.blockStatementIndexPair.getIndex(), localDeclarationStatement ) );
+			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, localDeclarationStatement ) );
 		} else {
 			step.cancel();
 		}

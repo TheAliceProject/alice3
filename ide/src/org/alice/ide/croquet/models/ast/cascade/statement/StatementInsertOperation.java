@@ -41,46 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompletionModel extends Model {
-	private final Group group;
-
-	public CompletionModel( Group group, java.util.UUID id ) {
-		super( id );
-		this.group = group;
+public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOperation {
+	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
+	public StatementInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
+		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
-	public Group getGroup() {
-		return this.group;
+	public org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+		return this.blockStatementIndexPair;
 	}
-
-	public boolean isToBeIgnored() {
-		return false;
-	}
-	
-	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep< ? > step, UserInformation userInformation ) {
-		this.initializeIfNecessary();
-		org.lgna.croquet.edits.Edit< ? > edit = step.getEdit();
-		if( edit != null ) {
-			return edit.getTutorialTransactionTitle( userInformation );
-		} else {
-			return null;
-		}
-	}
-	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit );
-	public org.lgna.croquet.edits.Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		System.err.println( "todo: commitTutorialCompletionEdit: " + originalEdit );
-		return null;
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement();
+	@Override
+	protected <M extends org.lgna.croquet.Element> org.lgna.croquet.resolvers.CodableResolver< M > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		super.appendRepr( rv );
-		rv.append( "[" );
-		rv.append( this.getGroup() );
-		rv.append( "]" );
-		return rv;
+	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement();
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement, null ) );
 	}
 }

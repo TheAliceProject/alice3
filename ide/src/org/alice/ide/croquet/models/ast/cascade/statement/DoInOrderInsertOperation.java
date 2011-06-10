@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class DoInOrderInsertOperation extends StatementInsertCascade {
+public class DoInOrderInsertOperation extends StatementInsertOperation {
 	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, DoInOrderInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized DoInOrderInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
@@ -63,7 +63,7 @@ public class DoInOrderInsertOperation extends StatementInsertCascade {
 		super( java.util.UUID.fromString( "6f297fb3-8618-4d6c-bfdc-63c8320471f7" ), blockStatementIndexPair );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement() {
 		return org.alice.ide.ast.NodeUtilities.createDoInOrder();
 	}
 }

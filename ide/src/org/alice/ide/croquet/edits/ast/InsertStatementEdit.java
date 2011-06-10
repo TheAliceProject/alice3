@@ -42,26 +42,21 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
-public class InsertStatementEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.CascadePopupCompletionModel< edu.cmu.cs.dennisc.alice.ast.Expression > > {
+public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 	public static final int AT_END = Short.MAX_VALUE;
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	private int specifiedIndex;
 	private edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions;
-	private InsertStatementEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
+	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
 		super( completionStep );
-		this.blockStatement = blockStatement;
-		this.specifiedIndex = index;
+		this.blockStatement = blockStatementIndexPair.getBlockStatement();
+		this.specifiedIndex = blockStatementIndexPair.getIndex();
 		this.statement = statement;
 		this.initialExpressions = initialExpressions;
 	}
-	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
-		this( completionStep, blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex(), statement, initialExpressions );
-	}
-
-	//todo
-	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		this( completionStep, blockStatement, index, statement, new edu.cmu.cs.dennisc.alice.ast.Expression[] {} );
+	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		this( completionStep, blockStatementIndexPair, statement, new edu.cmu.cs.dennisc.alice.ast.Expression[] {} );
 	}
 	public InsertStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
@@ -135,7 +130,7 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit< org.lgna.c
 		return rv;
 	}
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
 		if( replacementCandidate instanceof InsertStatementEdit ) {
 			InsertStatementEdit insertStatementEdit = (InsertStatementEdit)replacementCandidate;
 			final int N = this.initialExpressions.length;
@@ -207,7 +202,7 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit< org.lgna.c
 		}
 	}
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		InsertStatementEdit replacementEdit = (InsertStatementEdit)edit;
 		retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );

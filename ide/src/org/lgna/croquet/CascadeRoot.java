@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeRoot<B> extends CascadeBlankOwner< B[], B > {
+public final class CascadeRoot<B> extends CascadeBlankOwner< B[], B > {
 	private final CascadePopupPrepModel< B > prepModel;
 	/*package-private*/ CascadeRoot( CascadePopupPrepModel< B > prepModel ) {
 		super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ) );
