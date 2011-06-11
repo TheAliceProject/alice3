@@ -46,9 +46,12 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadePopupCompletionStep< B > extends CompletionStep< org.lgna.croquet.CascadePopupCompletionModel< B > >{
-	public CascadePopupCompletionStep( Transaction parent, org.lgna.croquet.CascadePopupCompletionModel< B > model, org.lgna.croquet.Trigger trigger, TransactionHistory transactionHistory ) {
-		super( parent, model, trigger, transactionHistory );
+public class CascadePopupCompletionStep< T > extends CompletionStep< org.lgna.croquet.CascadePopupCompletionModel< T > >{
+	public static <T> CascadePopupCompletionStep<T> createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadePopupCompletionModel<T> model, org.lgna.croquet.Trigger trigger ) {
+		return new CascadePopupCompletionStep<T>( parent, model, trigger );
+	}
+	private CascadePopupCompletionStep( Transaction parent, org.lgna.croquet.CascadePopupCompletionModel< T > model, org.lgna.croquet.Trigger trigger ) {
+		super( parent, model, trigger, null );
 	}
 	public CascadePopupCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

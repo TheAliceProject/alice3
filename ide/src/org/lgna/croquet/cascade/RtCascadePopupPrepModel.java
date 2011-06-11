@@ -526,13 +526,10 @@ class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, RootNode< T > > 
 public class RtCascadePopupPrepModel<T> extends RtElement< CascadePopupPrepModel< T >, org.lgna.croquet.history.CascadePopupPrepStep< T > > {
 	private final PopupPrepModel.PerformObserver performObserver;
 	private final RtRoot< T > rtRoot;
-	private final org.lgna.croquet.history.CascadePopupCompletionStep< T > completionStep;
-
 	public RtCascadePopupPrepModel( CascadePopupPrepModel< T > model, org.lgna.croquet.history.CascadePopupPrepStep< T > step, PopupPrepModel.PerformObserver performObserver ) {
 		super( model, step );
 		this.performObserver = performObserver;
 		this.rtRoot = new RtRoot< T >( model.getRoot(), this );
-		this.completionStep = new CascadePopupCompletionStep<T>( step.getParent(), model.getCompletionModel(), null, null );
 	}
 	protected T[] createValues( Class< T > componentType ) {
 		RtBlank< T >[] rtBlanks = this.rtRoot.getChildren();
@@ -545,7 +542,8 @@ public class RtCascadePopupPrepModel<T> extends RtElement< CascadePopupPrepModel
 	public void perform() {
 		if( this.rtRoot.isGoodToGo() ) {
 			T[] values = this.createValues( this.getModel().getComponentType() );
-			this.getModel().handleCompletion( this.completionStep, this.performObserver, values );
+			org.lgna.croquet.history.CascadePopupCompletionStep< T > completionStep = CascadePopupCompletionStep.createAndAddToTransaction( this.getStep().getParent(), this.getModel().getCompletionModel(), null );
+			this.getModel().handleCompletion( completionStep, this.performObserver, values );
 		} else {
 			final PopupMenu popupMenu = new PopupMenu( this.getModel() );
 			//popupMenu.setLightWeightPopupEnabled( false );
@@ -593,7 +591,8 @@ public class RtCascadePopupPrepModel<T> extends RtElement< CascadePopupPrepModel
 			isReadyForCompletion = false;
 		}
 		if( isReadyForCompletion ) {
-			model.handleCompletion( this.completionStep, this.performObserver, values );
+			org.lgna.croquet.history.CascadePopupCompletionStep< T > completionStep = CascadePopupCompletionStep.createAndAddToTransaction( this.getStep().getParent(), this.getModel().getCompletionModel(), null );
+			model.handleCompletion( completionStep, this.performObserver, values );
 		} else {
 			this.handleCancel( e );
 		}
@@ -613,6 +612,7 @@ public class RtCascadePopupPrepModel<T> extends RtElement< CascadePopupPrepModel
 		//		}
 	}
 	private void handleCancel( java.util.EventObject e ) {
-		this.getModel().handleCancel( this.completionStep, this.performObserver );
+		org.lgna.croquet.history.CascadePopupCompletionStep< T > completionStep = CascadePopupCompletionStep.createAndAddToTransaction( this.getStep().getParent(), this.getModel().getCompletionModel(), null );
+		this.getModel().handleCancel( completionStep, this.performObserver );
 	}
 }
