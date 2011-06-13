@@ -282,7 +282,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 		this.updateExplanation( null );
 	}
 	@Override
-	public org.lgna.croquet.history.WizardDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+	public org.lgna.croquet.history.WizardDialogOperationStep createAndPushStep( org.lgna.croquet.triggers.Trigger trigger ) {
 		return org.lgna.croquet.history.TransactionManager.addWizardDialogOperationStep( this, trigger );
 	}
 

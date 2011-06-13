@@ -47,13 +47,30 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class StringStateChangeStep extends StateChangeStep< org.lgna.croquet.StringState >{
-	/*package-private*/ static StringStateChangeStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.StringState model, org.lgna.croquet.Trigger trigger ) {
-		return new StringStateChangeStep( parent, model, trigger );
+	/*package-private*/ static StringStateChangeStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.StringState model, org.lgna.croquet.triggers.Trigger trigger, String originalValue, String currentValue ) {
+		return new StringStateChangeStep( parent, model, trigger, originalValue, currentValue );
 	}
-	private StringStateChangeStep( Transaction parent, org.lgna.croquet.StringState model, org.lgna.croquet.Trigger trigger ) {
+	private final transient String originalValue;
+	private transient String currentValue;
+	
+	private StringStateChangeStep( Transaction parent, org.lgna.croquet.StringState model, org.lgna.croquet.triggers.Trigger trigger, String originalValue, String currentValue ) {
 		super( parent, model, trigger );
+		this.originalValue = originalValue;
+		this.currentValue = currentValue;
 	}
 	public StringStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+		this.originalValue = null;
+		this.currentValue = null;
+	}
+	/*package-private*/ void pendDocumentEvent( org.lgna.croquet.triggers.DocumentEventTrigger trigger, String currentValue ) {
+		org.lgna.croquet.history.event.PendStringStateChangeEvent e = new org.lgna.croquet.history.event.PendStringStateChangeEvent( this, currentValue );
+		this.fireChanging( e );
+		this.currentValue = currentValue;
+		this.fireChanged( e );
+	}
+	@Override
+	/*package-private*/ void reifyIfNecessary() {
+		this.commitAndInvokeDo( new org.lgna.croquet.edits.StringStateEdit( this, this.originalValue, this.currentValue ) );
 	}
 }

@@ -47,7 +47,7 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public abstract class SingleThreadOperationStep< M extends org.lgna.croquet.SingleThreadOperation<?> > extends OperationStep< M >{
-	public SingleThreadOperationStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger, TransactionHistory transactionHistory ) {
+	public SingleThreadOperationStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
 		super( parent, model, trigger, transactionHistory );
 	}
 	public SingleThreadOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

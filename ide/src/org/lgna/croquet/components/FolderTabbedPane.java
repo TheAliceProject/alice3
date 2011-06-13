@@ -339,7 +339,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 				popupMenu.add( checkBox );
 				buttonGroup.add( checkBox );
 			}
-			org.lgna.croquet.Trigger trigger = step.getTrigger();
+			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
 			ViewController<?,?> viewController = trigger.getViewController();
 			popupMenu.show( viewController.getAwtComponent(), 0, viewController.getHeight() );
 		}

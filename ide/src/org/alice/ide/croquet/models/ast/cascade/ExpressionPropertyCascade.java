@@ -81,7 +81,7 @@ public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade
 		super.handleFinally( performObserver );
 	}
 	@Override
-	protected org.lgna.croquet.history.Step< ? > perform( org.lgna.croquet.Trigger trigger, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
+	protected org.lgna.croquet.history.Step< ? > perform( org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
 		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementIndexPair() );
 		return super.perform( trigger, performObserver );
 	}

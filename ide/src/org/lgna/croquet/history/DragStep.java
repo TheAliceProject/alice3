@@ -246,10 +246,10 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 	private DropReceptor currentDropReceptor;
 	private DropSite currentPotentialDropSite;
 	private java.awt.event.MouseEvent latestMouseEvent;
-	public static DragStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.Trigger trigger ) {
+	public static DragStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new DragStep( parent, model, trigger );
 	}
-	private DragStep( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.Trigger trigger ) {
+	private DragStep( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 		org.lgna.croquet.components.DragComponent dragSource = this.getDragSource();
 		java.util.List< ? extends DropReceptor > potentialDropReceptors = model.createListOfPotentialDropReceptors( dragSource );
@@ -385,7 +385,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 	}
 	
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
-		org.lgna.croquet.Trigger trigger = new org.lgna.croquet.triggers.MouseEventTrigger( this.getDragSource(), e );
+		org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.MouseEventTrigger( this.getDragSource(), e );
 		if( this.isCanceled() ) {
 			this.cancel( trigger );
 		} else {
@@ -442,7 +442,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 		//todo
 		return false;
 	}
-	public void cancel( org.lgna.croquet.Trigger trigger ) {
+	public void cancel( org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( null, trigger );
 	}
 }

@@ -47,10 +47,10 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class CascadeItemStep< F, B > extends MenuItemPrepStep< org.lgna.croquet.CascadeItem< F, B > > {
-	public static < F, B > CascadeItemStep< F, B > createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadeItem< F, B > model, org.lgna.croquet.Trigger trigger ) {
+	public static < F, B > CascadeItemStep< F, B > createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadeItem< F, B > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new CascadeItemStep< F, B >( parent, model, trigger );
 	}
-	private CascadeItemStep( Transaction parent, org.lgna.croquet.CascadeItem< F, B > model, org.lgna.croquet.Trigger trigger ) {
+	private CascadeItemStep( Transaction parent, org.lgna.croquet.CascadeItem< F, B > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public CascadeItemStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

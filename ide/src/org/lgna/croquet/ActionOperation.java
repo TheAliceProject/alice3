@@ -50,7 +50,7 @@ public abstract class ActionOperation extends SingleThreadOperation<org.lgna.cro
 		super( group, id );
 	}
 	@Override
-	public org.lgna.croquet.history.ActionOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+	public org.lgna.croquet.history.ActionOperationStep createAndPushStep( org.lgna.croquet.triggers.Trigger trigger ) {
 		return org.lgna.croquet.history.TransactionManager.addActionOperationStep( this, trigger );
 	}
 }

@@ -46,7 +46,7 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class ChangeEventTrigger extends EventTrigger< javax.swing.event.ChangeEvent > {
+public class ChangeEventTrigger extends EventObjectTrigger< javax.swing.event.ChangeEvent > {
 	public ChangeEventTrigger( javax.swing.event.ChangeEvent changeEvent ) {
 		super( null, changeEvent );
 	}

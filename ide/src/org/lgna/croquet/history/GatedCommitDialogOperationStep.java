@@ -47,7 +47,7 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public abstract class GatedCommitDialogOperationStep< M extends org.lgna.croquet.GatedCommitDialogOperation< ? > > extends DialogOperationStep< M > {
-	public GatedCommitDialogOperationStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
+	public GatedCommitDialogOperationStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public GatedCommitDialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

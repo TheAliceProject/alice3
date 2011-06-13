@@ -76,7 +76,7 @@ public abstract class DragModel extends PrepModel {
 	public abstract void handleDragStopped( org.lgna.croquet.history.DragStep step );
 	
 	@Override
-	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.Trigger trigger) {
+	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
 		throw new RuntimeException();
 	}
 }

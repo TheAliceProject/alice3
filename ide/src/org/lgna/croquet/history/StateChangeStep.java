@@ -46,7 +46,7 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public abstract class StateChangeStep< M extends org.lgna.croquet.State<?> > extends CompletionStep< M > {
-	public StateChangeStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
+	public StateChangeStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger, null );
 	}
 	public StateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

@@ -84,7 +84,7 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 	protected void localize() {
 	}
 	@Override
-	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.Trigger trigger) {
+	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
 		throw new RuntimeException();
 	}
 	public ListSelectionState< E > getListSelectionState() {

@@ -503,7 +503,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 		return null;
 	}
 	
-	protected void commitEdit( E prevValue, E nextValue, org.lgna.croquet.Trigger trigger ) {
+	protected void commitEdit( E prevValue, E nextValue, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.ListSelectionStateChangeStep< E > step = org.lgna.croquet.history.TransactionManager.addListSelectionStateChangeStep( this, trigger );
 		org.lgna.croquet.edits.ListSelectionStateEdit< E > edit = new org.lgna.croquet.edits.ListSelectionStateEdit< E >( step, prevValue, nextValue );
 		step.commitAndInvokeDo( edit );

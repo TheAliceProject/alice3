@@ -47,9 +47,9 @@ package org.lgna.croquet.history;
  */
 public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Transaction> {
 	private final org.lgna.croquet.resolvers.CodableResolver< M > modelResolver;
-	private final transient org.lgna.croquet.Trigger trigger;
+	private final transient org.lgna.croquet.triggers.Trigger trigger;
 	private final java.util.UUID id;
-	public Step( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
+	public Step( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent );
 		if( model != null ) {
 			this.modelResolver = model.getCodableResolver();
@@ -70,7 +70,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		binaryEncoder.encode( this.id );
 	}
 
-	public org.lgna.croquet.Trigger getTrigger() {
+	public org.lgna.croquet.triggers.Trigger getTrigger() {
 		return this.trigger;
 	}
 	public java.util.UUID getId() {

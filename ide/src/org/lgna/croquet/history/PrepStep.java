@@ -46,7 +46,7 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public abstract class PrepStep<M extends org.lgna.croquet.PrepModel> extends Step< M > {
-	public PrepStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
+	public PrepStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 		if( parent != null ) {
 			parent.addPrepStep( this );
@@ -58,7 +58,7 @@ public abstract class PrepStep<M extends org.lgna.croquet.PrepModel> extends Ste
 		super( binaryDecoder );
 	}
 	
-	public void cancelTransaction( org.lgna.croquet.Trigger trigger ) {
+	public void cancelTransaction( org.lgna.croquet.triggers.Trigger trigger ) {
 		CancelCompletionStep.createAndAddToTransaction( this.getParent(), null, trigger );
 	}
 	@Deprecated

@@ -113,7 +113,7 @@ public class TutorialECard extends uist.ecard.ECardApplication {
 	}
 	
 	@Override
-	protected void handleQuit( org.lgna.croquet.Trigger trigger ) {
+	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
 //		super.handleQuit( e );
 		if( IS_ENCODING ) {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;

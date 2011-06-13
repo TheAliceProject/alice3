@@ -54,7 +54,7 @@ public abstract class PlainDialogOperation extends DialogOperation<org.lgna.croq
 		return this.closeOperation;
 	}
 	@Override
-	public org.lgna.croquet.history.PlainDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+	public org.lgna.croquet.history.PlainDialogOperationStep createAndPushStep( org.lgna.croquet.triggers.Trigger trigger ) {
 		return org.lgna.croquet.history.TransactionManager.addPlainDialogOperationStep( this, trigger );
 	}
 	public String getTutorialCloseNoteText( org.lgna.croquet.history.PlainDialogOperationStep step, UserInformation userInformation ) {

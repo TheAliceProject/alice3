@@ -46,7 +46,7 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class AppleApplicationEventTrigger extends EventTrigger< java.util.EventObject > {
+public class AppleApplicationEventTrigger extends EventObjectTrigger< java.util.EventObject > {
 	public AppleApplicationEventTrigger( java.util.EventObject event ) {
 		super( null, event );
 	}

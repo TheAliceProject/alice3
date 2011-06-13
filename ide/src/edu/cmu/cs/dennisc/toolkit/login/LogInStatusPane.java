@@ -190,7 +190,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 		@Override
 		protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 			LogInPane pane = new LogInPane();
-			org.lgna.croquet.Trigger trigger = step.getTrigger();
+			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
 			java.awt.Component owner = trigger.getViewController().getAwtComponent();
 			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 			edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, javax.swing.SwingUtilities.getRoot( owner ) );

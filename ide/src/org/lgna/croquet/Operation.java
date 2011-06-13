@@ -90,7 +90,7 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 		}
 	}
-	public abstract S createAndPushStep( org.lgna.croquet.Trigger trigger );
+	public abstract S createAndPushStep( org.lgna.croquet.triggers.Trigger trigger );
 
 //	public String getTutorialStartNoteText( S step, UserInformation userInformation ) {
 //		return "Press " + this.getTutorialNoteText( step, userInformation );
@@ -128,7 +128,7 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 	}
 
 	@Override
-	public S fire( org.lgna.croquet.Trigger trigger ) {
+	public S fire( org.lgna.croquet.triggers.Trigger trigger ) {
 		if( this.isEnabled() ) {
 			return this.handleFire( trigger );
 		} else {
@@ -165,7 +165,7 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 	public static interface PerformObserver { 
 		public void handleFinally(); 
 	}
-	/*package-private*/ final S handleFire( org.lgna.croquet.Trigger trigger ) {
+	/*package-private*/ final S handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
 		final S step = this.createAndPushStep( trigger );
 		this.perform( step, new PerformObserver() {
 			public void handleFinally() {

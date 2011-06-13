@@ -78,7 +78,7 @@ public abstract class InputDialogOperation extends GatedCommitDialogOperation<or
 		super(group, individualId);
 	}
 	@Override
-	public org.lgna.croquet.history.InputDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+	public org.lgna.croquet.history.InputDialogOperationStep createAndPushStep( org.lgna.croquet.triggers.Trigger trigger ) {
 		return org.lgna.croquet.history.TransactionManager.addInputDialogOperationStep( this, trigger );
 	}
 	

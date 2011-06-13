@@ -46,9 +46,9 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class AutomaticCompletionTrigger implements org.lgna.croquet.Trigger {
-	private final transient org.lgna.croquet.Trigger previousTrigger;
-	public AutomaticCompletionTrigger( org.lgna.croquet.Trigger previousTrigger ) {
+public class AutomaticCompletionTrigger implements org.lgna.croquet.triggers.Trigger {
+	private final transient org.lgna.croquet.triggers.Trigger previousTrigger;
+	public AutomaticCompletionTrigger( org.lgna.croquet.triggers.Trigger previousTrigger ) {
 		this.previousTrigger = previousTrigger;
 	}
 	public AutomaticCompletionTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

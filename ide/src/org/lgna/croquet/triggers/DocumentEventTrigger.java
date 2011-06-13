@@ -41,12 +41,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Trigger extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public org.lgna.croquet.components.ViewController< ?, ? > getViewController();
-	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu );
+public class DocumentEventTrigger implements org.lgna.croquet.triggers.Trigger {
+	private final transient org.lgna.croquet.components.ViewController< ?, ? > viewController;
+	private final transient javax.swing.event.DocumentEvent documentEvent;
+	public DocumentEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, javax.swing.event.DocumentEvent documentEvent ) {
+		this.viewController = viewController;
+		this.documentEvent = documentEvent;
+	}
+	public DocumentEventTrigger( javax.swing.event.DocumentEvent documentEvent ) {
+		this( null, documentEvent );
+	}
+	public DocumentEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.viewController = null;
+		this.documentEvent = null;
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+		return this.viewController;
+	}
+	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
+		if( this.viewController != null ) {
+			java.awt.Component invoker = this.viewController.getAwtComponent();
+			java.awt.Point pt = new java.awt.Point( 0, invoker.getHeight() );
+			edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), invoker, pt );
+		} else {
+			throw new RuntimeException( "todo" );
+		}
+	}
 }

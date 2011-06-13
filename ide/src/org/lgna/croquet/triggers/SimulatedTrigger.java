@@ -46,7 +46,7 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class SimulatedTrigger implements org.lgna.croquet.Trigger {
+public class SimulatedTrigger implements org.lgna.croquet.triggers.Trigger {
 	public SimulatedTrigger() {
 	}
 	public SimulatedTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

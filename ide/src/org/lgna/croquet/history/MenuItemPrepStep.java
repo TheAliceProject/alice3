@@ -47,7 +47,7 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public abstract class MenuItemPrepStep< M extends org.lgna.croquet.MenuItemPrepModel > extends PrepStep< M > {
-	public MenuItemPrepStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
+	public MenuItemPrepStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public MenuItemPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

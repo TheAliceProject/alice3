@@ -45,6 +45,7 @@ package org.lgna.croquet.cascade;
 
 import org.lgna.croquet.*;
 import org.lgna.croquet.components.*;
+import org.lgna.croquet.triggers.Trigger;
 /**
  * @author Dennis Cosgrove
  */

@@ -47,10 +47,10 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class SerialOperationStep extends SingleThreadOperationStep< org.lgna.croquet.SerialOperation >{
-	public static SerialOperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.SerialOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static SerialOperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.SerialOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new SerialOperationStep( parent, model, trigger );
 	}
-	private SerialOperationStep( Transaction parent, org.lgna.croquet.SerialOperation model, org.lgna.croquet.Trigger trigger ) {
+	private SerialOperationStep( Transaction parent, org.lgna.croquet.SerialOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger, null );
 	}
 	public SerialOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

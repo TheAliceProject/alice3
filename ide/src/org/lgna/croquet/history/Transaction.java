@@ -231,7 +231,7 @@ public class Transaction extends Node< TransactionHistory > {
 				//pass
 			} else {
 				this.isReifying = true;
-				org.lgna.croquet.Trigger trigger = new org.lgna.croquet.triggers.ChangeEventTrigger( this.lastChangeEvent );
+				org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.ChangeEventTrigger( this.lastChangeEvent );
 				try {
 					boolean isDropPrep;
 					if( this.lastMenuSelection != null && this.lastMenuSelection.getMenuItemPrepModelCount() > 0 ) {
@@ -324,8 +324,22 @@ public class Transaction extends Node< TransactionHistory > {
 		}
 	}
 
-	/*package-private*/ void reify() {
-		this.pendingSteps.reify( null, false );
+	//todo
+	private boolean isInTheMidstOfReification = false;
+	/*package-private*/ void reifyIfNecessary() {
+		if( isInTheMidstOfReification ) {
+			//pass
+		} else {
+			this.isInTheMidstOfReification = true;
+			try {
+				this.pendingSteps.reify( null, false );
+				if( this.completionStep != null ) {
+					this.completionStep.reifyIfNecessary();
+				}
+			} finally {
+				this.isInTheMidstOfReification = false;
+			}
+		}
 	}
 //	public void commit( edu.cmu.cs.dennisc.croquet.Edit edit ) {
 //		this.pendingSteps.reify( null, false );

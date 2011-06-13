@@ -925,22 +925,22 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	@Override
-	protected void handleAbout( org.lgna.croquet.Trigger trigger ) {
+	protected void handleAbout( org.lgna.croquet.triggers.Trigger trigger ) {
 		this.getAboutOperation().fire( trigger );
 	}
 	@Override
-	protected void handleOpenFile( org.lgna.croquet.Trigger trigger ) {
+	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
 	}
 
 	@Override
-	protected void handlePreferences( org.lgna.croquet.Trigger trigger ) {
+	protected void handlePreferences( org.lgna.croquet.triggers.Trigger trigger ) {
 		this.getPreferencesOperation().fire( trigger );
 	}
 	protected void preservePreferences() {
 		PreferenceManager.preservePreferences();
 	}
 	@Override
-	protected void handleQuit( org.lgna.croquet.Trigger trigger ) {
+	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
 		this.preservePreferences();
 		org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().fire( trigger );
 	}

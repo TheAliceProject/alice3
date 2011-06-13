@@ -50,7 +50,7 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 	private org.lgna.croquet.edits.Edit<M> edit;
 	private boolean isSuccessfullyCompleted;
 	private boolean isPending = true;
-	public CompletionStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger, TransactionHistory transactionHistory ) {
+	public CompletionStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
 		super( parent, model, trigger );
 		parent.setCompletionStep( this );
 		this.transactionHistory = transactionHistory;
@@ -78,6 +78,8 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 		binaryEncoder.encode( this.transactionHistory );
 	}
 	
+	/*package-private*/ void reifyIfNecessary() {
+	}
 	public boolean isValid() {
 		return this.getModel() != null && ( this.edit == null || this.edit.isValid() );
 	}
@@ -121,7 +123,7 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 		this.isPending = false;
 	}
 	public void commitAndInvokeDo( org.lgna.croquet.edits.Edit edit ) {
-		this.getParent().reify();
+		this.getParent().reifyIfNecessary();
 		org.lgna.croquet.history.event.EditCommittedEvent e = new org.lgna.croquet.history.event.EditCommittedEvent( this, edit );
 		this.fireChanging( e );
 		this.setEdit( edit );
@@ -130,14 +132,14 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 		this.popTransactionHistoryIfNecessary();
 	}
 	public void finish() {
-		this.getParent().reify();
+		this.getParent().reifyIfNecessary();
 		this.isSuccessfullyCompleted = true;
 		this.edit = null;
 		this.isPending = false;
 		this.popTransactionHistoryIfNecessary();
 	}
 	public void cancel() {
-		this.getParent().reify();
+		this.getParent().reifyIfNecessary();
 		this.isSuccessfullyCompleted = false;
 		this.edit = null;
 		this.isPending = false;

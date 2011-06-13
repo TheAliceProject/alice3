@@ -212,7 +212,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	}
 	
 	@Override
-	protected void handleQuit( org.lgna.croquet.Trigger trigger ) {
+	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
 		this.preservePreferences();
 //		super.handleQuit( e );
 		if( IS_ENCODING ) {

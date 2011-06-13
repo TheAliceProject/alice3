@@ -50,7 +50,7 @@ public abstract class InformationDialogOperation extends DialogOperation<org.lgn
 		super(Application.INFORMATION_GROUP, individualId);
 	}
 	@Override
-	public org.lgna.croquet.history.InformationDialogOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+	public org.lgna.croquet.history.InformationDialogOperationStep createAndPushStep( org.lgna.croquet.triggers.Trigger trigger ) {
 		return org.lgna.croquet.history.TransactionManager.addInformationDialogOperationStep( this, trigger );
 	}
 }

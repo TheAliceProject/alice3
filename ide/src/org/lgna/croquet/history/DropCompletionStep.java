@@ -46,12 +46,12 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class DropCompletionStep extends CompletionStep< org.lgna.croquet.CompletionModel > implements DropStep {
-	public static DropCompletionStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.CompletionModel model, org.lgna.croquet.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+	public static DropCompletionStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.CompletionModel model, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		return new DropCompletionStep( parent, model, trigger, dropReceptor, dropSite );
 	}
 	private final org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
 	private org.lgna.croquet.DropSite dropSite;
-	private DropCompletionStep( Transaction parent, org.lgna.croquet.CompletionModel model, org.lgna.croquet.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+	private DropCompletionStep( Transaction parent, org.lgna.croquet.CompletionModel model, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		super( parent, model, trigger, null );
 		this.dropReceptorResolver = dropReceptor.getCodableResolver();
 		this.dropSite = dropSite;

@@ -47,10 +47,10 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class WizardDialogOperationStep extends GatedCommitDialogOperationStep< org.lgna.croquet.WizardDialogOperation > {
-	/*package-private*/ static WizardDialogOperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.WizardDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+	/*package-private*/ static WizardDialogOperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.WizardDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new WizardDialogOperationStep( parent, model, trigger );
 	}
-	private WizardDialogOperationStep( Transaction parent, org.lgna.croquet.WizardDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+	private WizardDialogOperationStep( Transaction parent, org.lgna.croquet.WizardDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public WizardDialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

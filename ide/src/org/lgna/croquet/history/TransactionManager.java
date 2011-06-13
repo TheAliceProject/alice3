@@ -71,6 +71,27 @@ public class TransactionManager {
 		return stack.pop();
 	}
 	
+	public static void handleDocumentEvent( StringState stringState, javax.swing.event.DocumentEvent documentEvent, String previousValue, String nextValue ) {
+		Transaction transaction = getLastTransaction();
+		StringStateChangeStep stringStateChangeStep = null;
+		if( transaction != null ) {
+			CompletionStep< ? > step = transaction.getCompletionStep();
+			if( step instanceof StringStateChangeStep ) {
+				if( step.getModel() == stringState ) {
+					stringStateChangeStep = (StringStateChangeStep)step;
+				}
+			}
+		} else {
+			transaction = getActiveTransaction();
+		}
+		org.lgna.croquet.triggers.DocumentEventTrigger trigger = new org.lgna.croquet.triggers.DocumentEventTrigger( documentEvent );
+		if( stringStateChangeStep != null ) {
+			stringStateChangeStep.pendDocumentEvent( trigger, nextValue );
+		} else {
+			stringStateChangeStep = StringStateChangeStep.createAndAddToTransaction( transaction, stringState, new org.lgna.croquet.triggers.DocumentEventTrigger( documentEvent ), previousValue, nextValue );
+		}
+	}
+
 	private static boolean isCroquetMenuSelection( javax.swing.MenuElement[] menuElements ) {
 		for( javax.swing.MenuElement menuElement : menuElements ) {
 			org.lgna.croquet.components.Component< ? > component = org.lgna.croquet.components.Component.lookup( menuElement.getComponent() );
@@ -109,7 +130,6 @@ public class TransactionManager {
 
 	private static javax.swing.MenuElement[] previousMenuElements = {};
 	private static void handleMenuSelectionStateChanged( javax.swing.event.ChangeEvent e ) {
-		
 		javax.swing.MenuElement[] menuElements = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
 		if( isCroquetMenuSelection( menuElements ) ) {
 			java.util.List< MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -272,17 +292,6 @@ public class TransactionManager {
 //		fireMenuItemsSelectionChanged( models );
 //	}
 
-	public static void handleDocumentEvent( StringState stringState, javax.swing.event.DocumentEvent documentEvent, String previousValue, String nextValue ) {
-//		ModelContext< ? > topContext = stack.peek();
-//		StringStateContext stringStateContext;
-//		if( topContext instanceof StringStateContext ) {
-//			stringStateContext = (StringStateContext)topContext;
-//		} else {
-//			stringStateContext = pushContext( new StringStateContext( stringState, documentEvent, viewController, previousValue ) );
-//			org.lgna.croquet.steps.TransactionManager.addStringStateChangeStep( stringState );
-//		}
-	}
-
 //	public static <E> void addListSelectionPopupMenuWillBecomeVisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
 //		ListSelectionStateContext<E> listSelectionStateContext = createAndPushItemSelectionStateContext( model, e, itemSelectable );
 //		listSelectionStateContext.handlePopupMenuWillBecomeVisibleEvent( e );
@@ -376,60 +385,57 @@ public class TransactionManager {
 //		}
 //	}
 		
-	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.Trigger trigger ) {
+	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	public static ActionOperationStep addActionOperationStep( org.lgna.croquet.ActionOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static ActionOperationStep addActionOperationStep( org.lgna.croquet.ActionOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return ActionOperationStep.createAndAddToTransaction( transaction, model, trigger ); 
 	}
-	public static SerialOperationStep addSerialOperationStep( org.lgna.croquet.SerialOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static SerialOperationStep addSerialOperationStep( org.lgna.croquet.SerialOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return SerialOperationStep.createAndAddToTransaction( transaction, model, trigger ); 
 	}
-	public static PlainDialogOperationStep addPlainDialogOperationStep( org.lgna.croquet.PlainDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static PlainDialogOperationStep addPlainDialogOperationStep( org.lgna.croquet.PlainDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return PlainDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static PlainDialogCloseOperationStep addPlainDialogCloseOperationStep( org.lgna.croquet.PlainDialogCloseOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static PlainDialogCloseOperationStep addPlainDialogCloseOperationStep( org.lgna.croquet.PlainDialogCloseOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return PlainDialogCloseOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static InputDialogOperationStep addInputDialogOperationStep( org.lgna.croquet.InputDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static InputDialogOperationStep addInputDialogOperationStep( org.lgna.croquet.InputDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return InputDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static InformationDialogOperationStep addInformationDialogOperationStep( org.lgna.croquet.InformationDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static InformationDialogOperationStep addInformationDialogOperationStep( org.lgna.croquet.InformationDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return InformationDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static WizardDialogOperationStep addWizardDialogOperationStep( org.lgna.croquet.WizardDialogOperation model, org.lgna.croquet.Trigger trigger ) {
+	public static WizardDialogOperationStep addWizardDialogOperationStep( org.lgna.croquet.WizardDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return WizardDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static StandardPopupPrepStep addStandardPopupOperationStep( org.lgna.croquet.StandardPopupPrepModel standardPopupOperation, org.lgna.croquet.Trigger trigger ) {
+	public static StandardPopupPrepStep addStandardPopupOperationStep( org.lgna.croquet.StandardPopupPrepModel standardPopupOperation, org.lgna.croquet.triggers.Trigger trigger ) {
 		return StandardPopupPrepStep.createAndAddToTransaction( getActiveTransaction(), standardPopupOperation, trigger );
 	}
-	public static <T> CascadePopupPrepStep<T> addCascadePopupPrepStep( org.lgna.croquet.CascadePopupPrepModel<T> model, org.lgna.croquet.Trigger trigger ) {
+	public static <T> CascadePopupPrepStep<T> addCascadePopupPrepStep( org.lgna.croquet.CascadePopupPrepModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return CascadePopupPrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
-	public static <T> CascadePopupCompletionStep<T> addCascadePopupCompletionStep( org.lgna.croquet.CascadePopupCompletionModel<T> model, org.lgna.croquet.Trigger trigger ) {
+	public static <T> CascadePopupCompletionStep<T> addCascadePopupCompletionStep( org.lgna.croquet.CascadePopupCompletionModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return CascadePopupCompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
 
-	public static BooleanStateChangeStep addBooleanStateChangeStep( org.lgna.croquet.BooleanState model, org.lgna.croquet.Trigger trigger ) {
+	public static BooleanStateChangeStep addBooleanStateChangeStep( org.lgna.croquet.BooleanState model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return BooleanStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
-	public static StringStateChangeStep addStringStateChangeStep( org.lgna.croquet.StringState model, org.lgna.croquet.Trigger trigger ) {
-		return StringStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
-	}
-	public static <E> ListSelectionStateChangeStep<E> addListSelectionStateChangeStep( org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.Trigger trigger ) {
+	public static <E> ListSelectionStateChangeStep<E> addListSelectionStateChangeStep( org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return ListSelectionStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	public static <E> ListSelectionStatePrepStep<E> addListSelectionPrepStep( org.lgna.croquet.ListSelectionStatePrepModel< E > model, org.lgna.croquet.Trigger trigger ) {
+	public static <E> ListSelectionStatePrepStep<E> addListSelectionPrepStep( org.lgna.croquet.ListSelectionStatePrepModel< E > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	public static <E> CancelCompletionStep addCancelCompletionStep( org.lgna.croquet.CompletionModel model, org.lgna.croquet.Trigger trigger ) {
+	public static <E> CancelCompletionStep addCancelCompletionStep( org.lgna.croquet.CompletionModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
 
@@ -535,7 +541,7 @@ public class TransactionManager {
 //		}
 	}
 
-	public static org.lgna.croquet.edits.BooleanStateEdit commitEdit( BooleanState booleanState, boolean value, org.lgna.croquet.Trigger trigger ) {
+	public static org.lgna.croquet.edits.BooleanStateEdit commitEdit( BooleanState booleanState, boolean value, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.BooleanStateChangeStep step = org.lgna.croquet.history.TransactionManager.addBooleanStateChangeStep( booleanState, trigger );
 		org.lgna.croquet.edits.BooleanStateEdit rv = new org.lgna.croquet.edits.BooleanStateEdit( step, value );
 		step.commitAndInvokeDo( rv );

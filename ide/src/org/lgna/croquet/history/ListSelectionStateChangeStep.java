@@ -46,10 +46,10 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class ListSelectionStateChangeStep<E> extends StateChangeStep< org.lgna.croquet.ListSelectionState< E > >{
-	/*package-private*/ static <E> ListSelectionStateChangeStep<E> createAndAddToTransaction( Transaction transaction, org.lgna.croquet.ListSelectionState<E> model, org.lgna.croquet.Trigger trigger ) {
+	/*package-private*/ static <E> ListSelectionStateChangeStep<E> createAndAddToTransaction( Transaction transaction, org.lgna.croquet.ListSelectionState<E> model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new ListSelectionStateChangeStep<E>( transaction, model, trigger );
 	}
-	private ListSelectionStateChangeStep( Transaction parent, org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.Trigger trigger ) {
+	private ListSelectionStateChangeStep( Transaction parent, org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public ListSelectionStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

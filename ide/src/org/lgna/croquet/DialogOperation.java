@@ -94,7 +94,7 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 	
 	@Override
 	protected final void perform( final S step ) {
-		org.lgna.croquet.Trigger trigger = step.getTrigger();
+		org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
 		ViewController<?,?> viewController = trigger.getViewController();
 		Component<?> owner;
 		if( viewController != null ) {

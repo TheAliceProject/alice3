@@ -110,9 +110,15 @@ public class TransactionHistory extends Node< CompletionStep<?> > implements Ite
 	}
 	public Transaction getActiveTransaction() {
 		Transaction lastTransaction = this.getLastTransaction();
-		Transaction rv;
-		if( lastTransaction != null && lastTransaction.isPending() ) {
-			rv = lastTransaction;
+		Transaction rv = null;
+		if( lastTransaction != null ) {
+			lastTransaction.reifyIfNecessary();
+			if( lastTransaction.isPending() ) {
+				rv = lastTransaction;
+			}
+		}
+		if( rv != null ) {
+			//pass
 		} else {
 			rv = new Transaction( this );
 			this.transactions.add( rv );

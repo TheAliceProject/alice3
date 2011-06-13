@@ -47,12 +47,12 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class DropPrepStep extends PrepStep< org.lgna.croquet.PrepModel > implements DropStep {
-	public static DropPrepStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.PrepModel prepModel, org.lgna.croquet.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+	public static DropPrepStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.PrepModel prepModel, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		return new DropPrepStep( parent, prepModel, trigger, dropReceptor, dropSite );
 	}
 	private final org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
 	private org.lgna.croquet.DropSite dropSite;
-	private DropPrepStep( Transaction parent, org.lgna.croquet.PrepModel prepModel, org.lgna.croquet.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+	private DropPrepStep( Transaction parent, org.lgna.croquet.PrepModel prepModel, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		super( parent, prepModel, trigger );
 		this.dropReceptorResolver = dropReceptor.getCodableResolver();
 		assert this.dropReceptorResolver != null;

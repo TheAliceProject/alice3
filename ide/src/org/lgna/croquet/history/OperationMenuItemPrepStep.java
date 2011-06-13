@@ -47,10 +47,10 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class OperationMenuItemPrepStep extends MenuItemPrepStep< org.lgna.croquet.OperationMenuItemPrepModel > {
-	public static OperationMenuItemPrepStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.OperationMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
+	public static OperationMenuItemPrepStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.OperationMenuItemPrepModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new OperationMenuItemPrepStep( parent, model, trigger );
 	}
-	private OperationMenuItemPrepStep( Transaction parent, org.lgna.croquet.OperationMenuItemPrepModel model, org.lgna.croquet.Trigger trigger ) {
+	private OperationMenuItemPrepStep( Transaction parent, org.lgna.croquet.OperationMenuItemPrepModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public OperationMenuItemPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

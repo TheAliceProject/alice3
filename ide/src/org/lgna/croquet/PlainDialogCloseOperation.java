@@ -87,7 +87,7 @@ public class PlainDialogCloseOperation extends SingleThreadOperation< org.lgna.c
 		return new PlainDialogCloseOperationResolver( this );
 	}
 	@Override
-	public org.lgna.croquet.history.PlainDialogCloseOperationStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
+	public org.lgna.croquet.history.PlainDialogCloseOperationStep createAndPushStep( org.lgna.croquet.triggers.Trigger trigger ) {
 		return org.lgna.croquet.history.TransactionManager.addPlainDialogCloseOperationStep( this, trigger );
 	}
 	@Override

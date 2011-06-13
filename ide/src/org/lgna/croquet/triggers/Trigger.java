@@ -40,63 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
 
-import org.lgna.croquet.edits.Edit;
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class State<T> extends CompletionModel {
-	public static interface ValueObserver<T> {
-//		public void changing( T nextValue );
-//		public void changed( T nextValue );
-		public void changing( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
-		public void changed( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
-	};
-	private final java.util.List< ValueObserver<T> > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	
-
-	public State( Group group, java.util.UUID id ) {
-		super(group, id);
-	}
-	
-	@Override
-	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
-		throw new RuntimeException();
-	}
-	public void addValueObserver( ValueObserver<T> valueObserver ) {
-		this.valueObservers.add( valueObserver );
-	}
-	public void addAndInvokeValueObserver( ValueObserver<T> valueObserver ) {
-		this.addValueObserver( valueObserver );
-		valueObserver.changed( this, null, this.getValue(), false );
-	}
-	public void removeValueObserver( ValueObserver<T> valueObserver ) {
-		this.valueObservers.remove( valueObserver );
-	}
-
-	protected void fireChanging( T prevValue, T nextValue, boolean isAdjusting ) {
-		for( ValueObserver<T> valueObserver : this.valueObservers ) {
-			valueObserver.changing( this, prevValue, nextValue, isAdjusting );
-		}
-	}
-	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
-		for( ValueObserver<T> valueObserver : this.valueObservers ) {
-			valueObserver.changed( this, prevValue, nextValue, isAdjusting );
-		}
-	}
-	
-	public abstract T getValue();
-	@Override
-	public boolean isAlreadyInState( Edit< ? > edit ) {
-		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
-			org.lgna.croquet.edits.StateEdit< ?, T > stateEdit = (org.lgna.croquet.edits.StateEdit< ?, T >)edit;
-			T a = this.getValue();
-			T b = stateEdit.getNextValue();
-			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( a, b );
-		} else {
-			return false;
-		}
-	}
+public interface Trigger extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public org.lgna.croquet.components.ViewController< ?, ? > getViewController();
+	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu );
 }

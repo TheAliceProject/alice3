@@ -43,6 +43,8 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.triggers.Trigger;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -112,7 +114,7 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel {
 	}
 
 	@Override
-	protected org.lgna.croquet.history.Step< ? > perform( org.lgna.croquet.Trigger trigger, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
+	protected org.lgna.croquet.history.Step< ? > perform( org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
 		org.lgna.croquet.cascade.RtCascadePopupPrepModel< B > rt = new org.lgna.croquet.cascade.RtCascadePopupPrepModel< B >( this, performObserver );
 		return rt.perform( trigger );
 	}

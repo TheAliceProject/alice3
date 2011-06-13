@@ -163,10 +163,10 @@ public abstract class Application {
 	}
 
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
-	protected abstract void handleAbout( org.lgna.croquet.Trigger trigger );
-	protected abstract void handlePreferences( org.lgna.croquet.Trigger trigger );
-	protected abstract void handleQuit( org.lgna.croquet.Trigger trigger );
-	protected abstract void handleOpenFile( org.lgna.croquet.Trigger trigger );
+	protected abstract void handleAbout( org.lgna.croquet.triggers.Trigger trigger );
+	protected abstract void handlePreferences( org.lgna.croquet.triggers.Trigger trigger );
+	protected abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
+	protected abstract void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger );
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		if( message instanceof Component<?> ) {

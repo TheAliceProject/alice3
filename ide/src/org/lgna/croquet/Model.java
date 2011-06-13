@@ -76,7 +76,7 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 
 	protected abstract void localize();
 	
-	public abstract org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.Trigger trigger );
+	public abstract org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
 
 	protected static String getLocalizedText( Class<?> cls, String subKey ) {
 		String bundleName = cls.getPackage().getName() + ".croquet";

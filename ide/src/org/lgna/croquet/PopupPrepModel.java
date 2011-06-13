@@ -87,10 +87,10 @@ public abstract class PopupPrepModel extends PrepModel {
 	public static interface PerformObserver { 
 		public void handleFinally(); 
 	}
-	protected abstract org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.Trigger trigger, PerformObserver performObserver );
+	protected abstract org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.triggers.Trigger trigger, PerformObserver performObserver );
 	
 	@Override
-	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.Trigger trigger ) {
+	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
 		if( this.isEnabled() ) {
 			return this.perform( trigger, new PerformObserver() {
 				public void handleFinally() {
