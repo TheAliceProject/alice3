@@ -1,0 +1,166 @@
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without 
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, 
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice, 
+ *    this list of conditions and the following disclaimer in the documentation 
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. Products derived from the software may not be called "Alice", nor may 
+ *    "Alice" appear in their name, without prior written permission of 
+ *    Carnegie Mellon University.
+ *
+ * 4. All advertising materials mentioning features or use of this software must
+ *    display the following acknowledgement: "This product includes software 
+ *    developed by Carnegie Mellon University"
+ *
+ * 5. The gallery of art assets and animations provided with this software is 
+ *    contributed by Electronic Arts Inc. and may be used for personal, 
+ *    non-commercial, and academic use only. Redistributions of any program 
+ *    source code that utilizes The Sims 2 Assets must also retain the copyright
+ *    notice, list of conditions and the disclaimer contained in 
+ *    The Alice 3.0 Art Gallery License.
+ * 
+ * DISCLAIMER:
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+package org.alice.ide.clipboard;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class Clipboard extends org.lgna.croquet.components.JComponent< javax.swing.JComponent > {
+	private static java.awt.Shape createClip( float x, float y, float width, float height, float holeRadius ) {
+		float xADelta = width*0.2f;
+		float xBDelta = width*0.425f;
+		float x0 = x;
+		float xC = x+width*0.5f;
+		float x1 = x+width;
+		float y0 = y;
+		float yA = y+height*0.6f;
+		float yB = y+height*0.25f;
+		float y1 = y+height;
+		
+		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo( x0, y1 );
+		path.quadTo( x0, yA, x0+xADelta, yA );
+		path.quadTo( x0+xADelta, yB, x0+xBDelta, yB );
+		path.quadTo( x0+xBDelta, y0, xC, y0 );
+		path.quadTo( x1-xBDelta, y0, x1-xBDelta, yB );
+		path.quadTo( x1-xADelta, yB, x1-xADelta, yA );
+		path.quadTo( x1, yA, x1, y1 );
+		path.closePath();
+	
+		float holeDiameter = holeRadius*2;
+		java.awt.geom.Area area = new java.awt.geom.Area( path );
+		area.subtract( new java.awt.geom.Area( new java.awt.geom.Ellipse2D.Float( xC-holeRadius, yB-holeDiameter, holeDiameter, holeDiameter ) ) );
+		
+		return area;
+	}
+	@Override
+	protected javax.swing.JComponent createAwtComponent() {
+		return new javax.swing.JComponent() {
+			@Override
+			protected void paintComponent( java.awt.Graphics g ) {
+				super.paintComponent( g );
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				
+				float width = this.getWidth();
+				float height = this.getHeight();
+				
+				float round = this.getWidth()*0.1f;
+				java.awt.geom.RoundRectangle2D board = new java.awt.geom.RoundRectangle2D.Float( 0.025f*width, 0.1f*height, 0.95f*width, 0.875f*height, round, round );
+				java.awt.Shape clip = createClip( 0.2f*width, 0.01f*height, 0.6f*width, 0.2f*height, 0.02f*height );
+				
+				g2.setPaint( java.awt.Color.ORANGE.darker() );
+				g2.fill( board );
+				g2.setPaint( java.awt.Color.BLACK );
+				g2.draw( board );
+
+				float x = width*0.1f;
+				float y = height*0.15f;
+				float w = width*0.8f;
+				float h = height*0.775f;
+				
+				final int SHADOW_SIZE = 4; 
+				
+				g2.setPaint( new java.awt.GradientPaint( x,y, java.awt.Color.LIGHT_GRAY, x+w, y+h, java.awt.Color.WHITE ) );
+				g2.fill( new java.awt.geom.Rectangle2D.Float( x, y, w, h ) );
+				
+				g2.translate(x, y);
+				g2.setPaint( java.awt.Color.DARK_GRAY );
+				java.awt.geom.GeneralPath pathShadow = new java.awt.geom.GeneralPath();
+				pathShadow.moveTo( w, 0 );
+				pathShadow.lineTo( w+SHADOW_SIZE, h+SHADOW_SIZE );
+				pathShadow.lineTo( 0, h );
+				pathShadow.lineTo( w, h );
+				pathShadow.closePath();
+				g2.fill( pathShadow );
+				g2.translate(-x, -y);
+
+				
+				g2.setPaint( new java.awt.GradientPaint( 0, height*0.1f, java.awt.Color.LIGHT_GRAY, 0, height*0.2f, java.awt.Color.DARK_GRAY ) );
+				g2.fill( clip );
+				g2.setPaint( java.awt.Color.BLACK );
+				g2.draw( clip );
+				
+				
+			}
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return new java.awt.Dimension( 240, 320 );
+			}
+		};
+	}
+	
+	public static void main( String[] args ) {
+		org.lgna.croquet.Application application = new org.lgna.croquet.Application() {
+			@Override
+			protected org.lgna.croquet.components.Component< ? > createContentPane() {
+				return new Clipboard();
+			}
+			@Override
+			public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
+				return null;
+			}
+			@Override
+			protected void handleAbout( org.lgna.croquet.triggers.Trigger trigger ) {
+			}
+			@Override
+			protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+			}
+			@Override
+			protected void handlePreferences( org.lgna.croquet.triggers.Trigger trigger ) {
+			}
+			@Override
+			protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+				System.exit( 0 );
+			}
+			@Override
+			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+			}
+		};
+		application.initialize( args );
+		application.getFrame().pack();
+		application.getFrame().setVisible( true );
+	}
+}
