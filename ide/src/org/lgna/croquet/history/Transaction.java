@@ -169,10 +169,8 @@ public class Transaction extends Node< TransactionHistory > {
 				} else if( menuElementI instanceof javax.swing.JMenuItem ) {
 					javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
 					org.lgna.croquet.components.Component< ? > component = org.lgna.croquet.components.Component.lookup( jMenuItem );
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleMenuSelectionStateChanged", i, component.getClass() );
 					if( component instanceof org.lgna.croquet.components.ViewController< ?, ? > ) {
 						org.lgna.croquet.components.ViewController< ?, ? > viewController = (org.lgna.croquet.components.ViewController< ?, ? >)component;
-						//edu.cmu.cs.dennisc.print.PrintUtilities.println( "viewController", i, viewController.getModel() );
 						org.lgna.croquet.Model model = viewController.getModel();
 						if( model != null ) {
 							org.lgna.croquet.MenuItemPrepModel menuItemPrepModel;
@@ -262,27 +260,29 @@ public class Transaction extends Node< TransactionHistory > {
 								BooleanStateMenuItemPrepStep.createAndAddToTransaction( Transaction.this, (org.lgna.croquet.BooleanStateMenuItemPrepModel)model, trigger );
 							} else if( model instanceof org.lgna.croquet.CascadeItem< ?, ? > ) {
 								org.lgna.croquet.CascadeItem< ?, ? > item = (org.lgna.croquet.CascadeItem< ?, ? >)model;
-//								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
-//									isLastPrep = false;
-//								}
-//								if( i < N-1 || isLastPrep ) {
-//									CascadeFillInPrepStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model );
-//								} else {
-//									CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadePopupOperation)this.dropCompletionModel, fillIn );
-//									rv = null;
-//								}
+								CascadeItemStep.createAndAddToTransaction( Transaction.this, item, null );
 
-//								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
-//									edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn cascadeInputDialogOperationFillIn = (edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn)fillIn;
-//									rv = InputDialogOperationStep.createAndAddToTransaction( Transaction.this, cascadeInputDialogOperationFillIn.getInputDialogOperation() );
-//								} else {
-									if( i < N-1 || isLastPrep ) {
-										CascadeItemStep.createAndAddToTransaction( Transaction.this, (org.lgna.croquet.CascadeFillIn< ?, ? >)model, trigger );
-									} else {
-										//CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, this.dropModel, trigger, fillIn );
-										rv = null;
-									}
-//								}
+////								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
+////									isLastPrep = false;
+////								}
+////								if( i < N-1 || isLastPrep ) {
+////									CascadeFillInPrepStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model );
+////								} else {
+////									CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadePopupOperation)this.dropCompletionModel, fillIn );
+////									rv = null;
+////								}
+//
+////								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
+////									edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn cascadeInputDialogOperationFillIn = (edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn)fillIn;
+////									rv = InputDialogOperationStep.createAndAddToTransaction( Transaction.this, cascadeInputDialogOperationFillIn.getInputDialogOperation() );
+////								} else {
+//									if( i < N-1 || isLastPrep ) {
+//										CascadeItemStep.createAndAddToTransaction( Transaction.this, (org.lgna.croquet.CascadeFillIn< ?, ? >)model, trigger );
+//									} else {
+//										//CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, this.dropModel, trigger, fillIn );
+//										rv = null;
+//									}
+////								}
 							} else if( model instanceof org.lgna.croquet.MenuModel ) {
 								//pass
 							} else {

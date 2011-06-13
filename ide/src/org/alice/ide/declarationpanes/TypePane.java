@@ -69,7 +69,7 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 	
 	private class TypeDropDownPane extends org.alice.ide.common.AbstractDropDownPane {
 		private org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
-		public TypeDropDownPane( org.lgna.croquet.PopupPrepModel< ? > model ) {
+		public TypeDropDownPane( org.lgna.croquet.PopupPrepModel model ) {
 			super( model );
 			this.addComponent( label );
 		}

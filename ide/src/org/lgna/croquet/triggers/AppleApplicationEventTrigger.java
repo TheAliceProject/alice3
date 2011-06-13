@@ -50,6 +50,9 @@ public class AppleApplicationEventTrigger extends EventTrigger< java.util.EventO
 	public AppleApplicationEventTrigger( java.util.EventObject event ) {
 		super( null, event );
 	}
+	public AppleApplicationEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;

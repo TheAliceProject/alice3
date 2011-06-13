@@ -114,7 +114,7 @@ public class BooleanState extends State< Boolean > {
 	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > step, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		assert originalEdit instanceof org.lgna.croquet.edits.BooleanStateEdit;
 		org.lgna.croquet.edits.BooleanStateEdit booleanStateEdit = (org.lgna.croquet.edits.BooleanStateEdit)originalEdit;
-		return org.lgna.croquet.history.TransactionManager.commitEdit( this, booleanStateEdit.getNextValue(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+		return org.lgna.croquet.history.TransactionManager.commitEdit( this, booleanStateEdit.getNextValue(), new org.lgna.croquet.triggers.SimulatedTrigger() );
 	}
 
 //	@Override

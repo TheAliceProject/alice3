@@ -51,7 +51,7 @@ public class CascadePopupCompletionStep< T > extends CompletionStep< org.lgna.cr
 		return new CascadePopupCompletionStep<T>( parent, model, trigger );
 	}
 	private CascadePopupCompletionStep( Transaction parent, org.lgna.croquet.CascadePopupCompletionModel< T > model, org.lgna.croquet.Trigger trigger ) {
-		super( parent, model, trigger, null );
+		super( parent, model, trigger, new TransactionHistory() );
 	}
 	public CascadePopupCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

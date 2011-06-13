@@ -47,7 +47,7 @@ import org.lgna.croquet.resolvers.CodableResolver;
 /**
  * @author Dennis Cosgrove
  */
-public final class StandardPopupPrepModel extends PopupPrepModel< org.lgna.croquet.history.StandardPopupPrepStep > {
+public final class StandardPopupPrepModel extends PopupPrepModel {
 	private MenuModel menuModel;
 	/*package-private*/ StandardPopupPrepModel( MenuModel menuModel ) {
 		super( java.util.UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
@@ -66,12 +66,7 @@ public final class StandardPopupPrepModel extends PopupPrepModel< org.lgna.croqu
 	public MenuModel getMenuModel() {
 		return this.menuModel;
 	}
-	
-	@Override
-	public org.lgna.croquet.history.StandardPopupPrepStep createAndPushStep( org.lgna.croquet.Trigger trigger ) {
-		return org.lgna.croquet.history.TransactionManager.addStandardPopupOperationStep( this, trigger );
-	}
-	
+		
 //	@Override
 //	public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
 //		SuccessfulCompletionEvent successfulCompletionEvent = modelContext != null ? modelContext.getSuccessfulCompletionEvent() : null;
@@ -116,9 +111,11 @@ public final class StandardPopupPrepModel extends PopupPrepModel< org.lgna.croqu
 		return new PopupMenuOperationResolver( this );
 	}
 	
+	
 	@Override
-	protected void perform( final org.lgna.croquet.history.StandardPopupPrepStep step, final org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
-		//note: do not call super
+	protected org.lgna.croquet.history.StandardPopupPrepStep perform( org.lgna.croquet.Trigger trigger, final org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
+		final org.lgna.croquet.history.StandardPopupPrepStep step = org.lgna.croquet.history.TransactionManager.addStandardPopupOperationStep( this, trigger );
+
 		final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this ) {
 			@Override
 			protected void handleDisplayable() {
@@ -183,5 +180,6 @@ public final class StandardPopupPrepModel extends PopupPrepModel< org.lgna.croqu
 		this.menuModel.handlePopupMenuPrologue( popupMenu, step );
 		
 		step.showPopupMenu( popupMenu );
+		return step;
 	}
 }

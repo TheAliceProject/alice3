@@ -53,6 +53,9 @@ public class InputEventTrigger extends ComponentEventTrigger< java.awt.event.Inp
 	public InputEventTrigger( java.awt.event.InputEvent inputEvent ) {
 		this( null, inputEvent );
 	}
+	public InputEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
 	protected java.awt.Point getPoint() {
 		java.awt.event.InputEvent inputEvent = this.getEvent();

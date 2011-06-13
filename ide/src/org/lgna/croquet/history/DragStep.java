@@ -392,7 +392,9 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 			this.setLatestMouseEvent( e );
 			if( this.currentDropReceptor != null ) {
 				org.lgna.croquet.Model model = this.currentDropReceptor.dragDropped( this );
-				org.lgna.croquet.history.TransactionManager.pendDrop( model, this.currentDropReceptor, this.currentPotentialDropSite );
+
+//				org.lgna.croquet.history.TransactionManager.pendDrop( model, this.currentDropReceptor, this.currentPotentialDropSite );
+//				
 				if( model != null ) {
 					//this.addChild( new DroppedEvent( e, this.currentDropReceptor ) );
 					org.lgna.croquet.components.JComponent<?> component = this.currentDropReceptor.getViewController();
@@ -402,7 +404,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 					} else {
 						viewController = null;
 					}
-					org.lgna.croquet.history.Step< ? > step = model.fire( new org.lgna.croquet.triggers.MouseEventTrigger( viewController, this.getLatestMouseEvent() ) );
+					org.lgna.croquet.history.Step< ? > step = model.fire( new org.lgna.croquet.triggers.DropTrigger( viewController, this.getLatestMouseEvent(), /*this.currentDropReceptor,*/ this.currentPotentialDropSite ) );
 				} else {
 					this.cancel( trigger );
 				}

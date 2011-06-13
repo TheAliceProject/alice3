@@ -112,12 +112,6 @@ public class TransactionManager {
 		
 		javax.swing.MenuElement[] menuElements = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
 		if( isCroquetMenuSelection( menuElements ) ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( menuElements.length );
-			for( javax.swing.MenuElement menuElement : menuElements ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.print( menuElement.getClass().getName() );
-				edu.cmu.cs.dennisc.print.PrintUtilities.print( ", " );
-			}
-			edu.cmu.cs.dennisc.print.PrintUtilities.println();
 			java.util.List< MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			org.lgna.croquet.components.MenuBar menuBar = getMenuBarOrigin( menuElements );
 			int i0;
@@ -148,7 +142,13 @@ public class TransactionManager {
 			} else {
 				i0 = 0;
 			}
-			if( i0 != -1 ) {
+			if( i0 != -1 && menuElements.length > 0 ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( menuElements.length );
+//				for( javax.swing.MenuElement menuElement : menuElements ) {
+//					edu.cmu.cs.dennisc.print.PrintUtilities.print( menuElement.getClass().getName() );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.print( ", " );
+//				}
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println();
 				getActiveTransaction().pendMenuSelection( e, menuElements, i0 );
 			}
 
@@ -262,11 +262,11 @@ public class TransactionManager {
 			handleMenuSelectionStateChanged( e );
 		}
 	};
-	public static void pendDrop( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-//		fireDropPending( model, dropReceptor, dropSite );
-		getLastTransaction().pendDrop( model, dropReceptor, dropSite );
-//		fireDropPended( model, dropReceptor, dropSite );
-	}
+//	public static void pendDrop( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+////		fireDropPending( model, dropReceptor, dropSite );
+//		getLastTransaction().pendDrop( model, dropReceptor, dropSite );
+////		fireDropPended( model, dropReceptor, dropSite );
+//	}
 	
 //	public static void handleMenuSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
 //		fireMenuItemsSelectionChanged( models );
@@ -375,8 +375,7 @@ public class TransactionManager {
 //			observer.menuItemsSelectionChanged( models );
 //		}
 //	}
-	
-	
+		
 	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.Trigger trigger ) {
 		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
@@ -411,8 +410,11 @@ public class TransactionManager {
 	public static StandardPopupPrepStep addStandardPopupOperationStep( org.lgna.croquet.StandardPopupPrepModel standardPopupOperation, org.lgna.croquet.Trigger trigger ) {
 		return StandardPopupPrepStep.createAndAddToTransaction( getActiveTransaction(), standardPopupOperation, trigger );
 	}
-	public static <T> CascadePopupPrepStep<T> addCascadePopupOperationStep( org.lgna.croquet.CascadePopupPrepModel<T> model, org.lgna.croquet.Trigger trigger ) {
+	public static <T> CascadePopupPrepStep<T> addCascadePopupPrepStep( org.lgna.croquet.CascadePopupPrepModel<T> model, org.lgna.croquet.Trigger trigger ) {
 		return CascadePopupPrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
+	}
+	public static <T> CascadePopupCompletionStep<T> addCascadePopupCompletionStep( org.lgna.croquet.CascadePopupCompletionModel<T> model, org.lgna.croquet.Trigger trigger ) {
+		return CascadePopupCompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
 
 	public static BooleanStateChangeStep addBooleanStateChangeStep( org.lgna.croquet.BooleanState model, org.lgna.croquet.Trigger trigger ) {
@@ -432,15 +434,15 @@ public class TransactionManager {
 	}
 
 
-	private static void popCompletionStepTransactionHistoryIfNecessary( org.lgna.croquet.Model model ) {
-		TransactionHistory transactionHistory = getActiveTransactionHistory();
-		CompletionStep< ? > completionStep = transactionHistory.getParent();
-		if( completionStep != null ) {
-			if( completionStep.getModel() == model ) {
-				completionStep.popTransactionHistoryIfNecessary();
-			}
-		}
-	}
+//	private static void popCompletionStepTransactionHistoryIfNecessary( org.lgna.croquet.Model model ) {
+//		TransactionHistory transactionHistory = getActiveTransactionHistory();
+//		CompletionStep< ? > completionStep = transactionHistory.getParent();
+//		if( completionStep != null ) {
+//			if( completionStep.getModel() == model ) {
+//				completionStep.popTransactionHistoryIfNecessary();
+//			}
+//		}
+//	}
 
 //	private static void finishPendingTransactionIfNecessary() {
 //		TransactionHistory activeTransactionHistory = getActiveTransactionHistory();
@@ -477,9 +479,9 @@ public class TransactionManager {
 	public static <E> Transaction createSimulatedTransaction( TransactionHistory transactionHistory, ListSelectionState< E > state, E prevValue, E nextValue, boolean isPrepStepDesired ) {
 		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
 		if( isPrepStepDesired ) {
-			org.lgna.croquet.history.ListSelectionStatePrepStep.createAndAddToTransaction( rv, state.getPrepModel(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+			org.lgna.croquet.history.ListSelectionStatePrepStep.createAndAddToTransaction( rv, state.getPrepModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
 		}
-		org.lgna.croquet.history.ListSelectionStateChangeStep completionStep = org.lgna.croquet.history.ListSelectionStateChangeStep.createAndAddToTransaction( rv, state, org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+		org.lgna.croquet.history.ListSelectionStateChangeStep completionStep = org.lgna.croquet.history.ListSelectionStateChangeStep.createAndAddToTransaction( rv, state, new org.lgna.croquet.triggers.SimulatedTrigger() );
 		org.lgna.croquet.edits.ListSelectionStateEdit edit = new org.lgna.croquet.edits.ListSelectionStateEdit( completionStep, prevValue, nextValue );
 		completionStep.setEdit( edit );
 		return rv;

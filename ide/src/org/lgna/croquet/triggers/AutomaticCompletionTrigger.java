@@ -46,19 +46,20 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class ActionEventTrigger extends EventTrigger<java.awt.event.ActionEvent> {
-	public ActionEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.ActionEvent actionEvent ) {
-		super( viewController, actionEvent );
+public class AutomaticCompletionTrigger implements org.lgna.croquet.Trigger {
+	private final transient org.lgna.croquet.Trigger previousTrigger;
+	public AutomaticCompletionTrigger( org.lgna.croquet.Trigger previousTrigger ) {
+		this.previousTrigger = previousTrigger;
 	}
-	public ActionEventTrigger( java.awt.event.ActionEvent actionEvent ) {
-		this( null, actionEvent );
+	public AutomaticCompletionTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.previousTrigger = null;
 	}
-	public ActionEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
-
-	@Override
-	protected java.awt.Point getPoint() {
-		return null;
+	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+		return this.previousTrigger.getViewController();
+	}
+	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
+		this.previousTrigger.showPopupMenu( popupMenu );
 	}
 }

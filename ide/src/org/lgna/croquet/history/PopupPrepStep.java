@@ -46,7 +46,7 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupPrepStep< M extends org.lgna.croquet.PopupPrepModel<?> > extends PrepStep< M > {
+public abstract class PopupPrepStep< M extends org.lgna.croquet.PopupPrepModel > extends PrepStep< M > {
 	private transient org.lgna.croquet.components.PopupMenu popupMenu;
 	public PopupPrepStep( Transaction parent, M model, org.lgna.croquet.Trigger trigger ) {
 		super( parent, model, trigger );

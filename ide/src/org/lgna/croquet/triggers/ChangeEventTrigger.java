@@ -50,6 +50,9 @@ public class ChangeEventTrigger extends EventTrigger< javax.swing.event.ChangeEv
 	public ChangeEventTrigger( javax.swing.event.ChangeEvent changeEvent ) {
 		super( null, changeEvent );
 	}
+	public ChangeEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;

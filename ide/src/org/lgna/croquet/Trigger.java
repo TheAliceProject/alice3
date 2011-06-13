@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface Trigger {
+public interface Trigger extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController();
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu );
 }

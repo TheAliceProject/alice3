@@ -47,7 +47,7 @@ package org.alice.ide.codeeditor;
  */
 public abstract class DropDownPane extends org.alice.ide.common.AbstractDropDownPane {
 	private org.lgna.croquet.components.Component< ? > mainComponent;
-	public DropDownPane( org.lgna.croquet.PopupPrepModel< ? > model, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.croquet.components.Component< ? > mainComponent, org.lgna.croquet.components.Component< ? > postfixPane ) {
+	public DropDownPane( org.lgna.croquet.PopupPrepModel model, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.croquet.components.Component< ? > mainComponent, org.lgna.croquet.components.Component< ? > postfixPane ) {
 		super( model );
 		if( prefixPane != null ) {
 			this.addComponent( prefixPane );

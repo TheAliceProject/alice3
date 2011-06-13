@@ -139,8 +139,8 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 	public org.lgna.croquet.components.ViewController< ?,? > createEditViewController()
     {
 		org.lgna.croquet.Model model = this.getEditModel();
-		if( model instanceof org.lgna.croquet.PopupPrepModel< ? > ) {
-			org.lgna.croquet.PopupPrepModel< ? > popupPrepModel = (org.lgna.croquet.PopupPrepModel< ? >)model;
+		if( model instanceof org.lgna.croquet.PopupPrepModel ) {
+			org.lgna.croquet.PopupPrepModel popupPrepModel = (org.lgna.croquet.PopupPrepModel)model;
 	        return popupPrepModel.createPopupButton();
 		} else if( model instanceof org.lgna.croquet.Operation< ? > ) {
 			org.lgna.croquet.Operation< ? > operation = (org.lgna.croquet.Operation< ? >)model;

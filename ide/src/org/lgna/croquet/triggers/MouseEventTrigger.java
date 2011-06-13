@@ -50,6 +50,9 @@ public class MouseEventTrigger extends ComponentEventTrigger<java.awt.event.Mous
 	public MouseEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent ) {
 		super( viewController, mouseEvent );
 	}
+	public MouseEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
 	protected java.awt.Point getPoint() {
 		return this.getEvent().getPoint();

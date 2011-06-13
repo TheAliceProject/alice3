@@ -96,7 +96,7 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 	public TransactionHistory getTransactionHistory() {
 		return this.transactionHistory;
 	}
-	/*package-private*/ void popTransactionHistoryIfNecessary() {
+	private void popTransactionHistoryIfNecessary() {
 		if( this.transactionHistory != null ) {
 			TransactionHistory pop = TransactionManager.popTransactionHistory();
 			assert pop == this.transactionHistory;
@@ -122,20 +122,26 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 	}
 	public void commitAndInvokeDo( org.lgna.croquet.edits.Edit edit ) {
 		this.getParent().reify();
+		org.lgna.croquet.history.event.EditCommittedEvent e = new org.lgna.croquet.history.event.EditCommittedEvent( this, edit );
+		this.fireChanging( e );
 		this.setEdit( edit );
 		edit.doOrRedo( true );
+		this.fireChanged( e );
+		this.popTransactionHistoryIfNecessary();
 	}
 	public void finish() {
 		this.getParent().reify();
 		this.isSuccessfullyCompleted = true;
 		this.edit = null;
 		this.isPending = false;
+		this.popTransactionHistoryIfNecessary();
 	}
 	public void cancel() {
 		this.getParent().reify();
 		this.isSuccessfullyCompleted = false;
 		this.edit = null;
 		this.isPending = false;
+		this.popTransactionHistoryIfNecessary();
 	}
 	
 

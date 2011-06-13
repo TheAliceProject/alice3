@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupPrepModel< S extends org.lgna.croquet.history.PopupPrepStep<? extends PopupPrepModel<?>>> extends PrepModel {
+public abstract class PopupPrepModel extends PrepModel {
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			PopupPrepModel.this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
@@ -87,19 +87,16 @@ public abstract class PopupPrepModel< S extends org.lgna.croquet.history.PopupPr
 	public static interface PerformObserver { 
 		public void handleFinally(); 
 	}
-	protected abstract S createAndPushStep( org.lgna.croquet.Trigger trigger );
-	protected abstract void perform( S step, PerformObserver performObserver );
+	protected abstract org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.Trigger trigger, PerformObserver performObserver );
 	
 	@Override
-	public S fire( org.lgna.croquet.Trigger trigger ) {
+	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.Trigger trigger ) {
 		if( this.isEnabled() ) {
-			final S step = this.createAndPushStep( trigger );
-			this.perform( step, new PerformObserver() {
+			return this.perform( trigger, new PerformObserver() {
 				public void handleFinally() {
 					//todo?
 				}
 			} );
-			return step;
 		} else {
 			return null;
 		}

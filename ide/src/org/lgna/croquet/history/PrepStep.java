@@ -59,10 +59,10 @@ public abstract class PrepStep<M extends org.lgna.croquet.PrepModel> extends Ste
 	}
 	
 	public void cancelTransaction( org.lgna.croquet.Trigger trigger ) {
-		throw new RuntimeException( "todo" );
+		CancelCompletionStep.createAndAddToTransaction( this.getParent(), null, trigger );
 	}
 	@Deprecated
 	public void cancelTransaction() {
-		this.cancelTransaction( org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+		this.cancelTransaction( new org.lgna.croquet.triggers.SimulatedTrigger() );
 	}
 }

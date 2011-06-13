@@ -46,7 +46,7 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDropDownPane extends org.lgna.croquet.components.PopupContainer {
-	public AbstractDropDownPane( org.lgna.croquet.PopupPrepModel< ? > model ) {
+	public AbstractDropDownPane( org.lgna.croquet.PopupPrepModel model ) {
 		super( model );
 		this.setBackgroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 230 ) );
 		this.setForegroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );

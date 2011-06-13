@@ -45,34 +45,33 @@ package org.lgna.croquet.cascade;
 
 import org.lgna.croquet.*;
 import org.lgna.croquet.components.*;
-import org.lgna.croquet.history.CascadePopupCompletionStep;
 /**
  * @author Dennis Cosgrove
  */
-abstract class RtElement<M extends Element, S extends org.lgna.croquet.history.Node< ? >> {
+abstract class RtElement<M extends Element> {
 	private M model;
-	private S step;
 
-	public RtElement( M model, S step ) {
+	public RtElement( M model ) {
 		assert model != null;
-		assert step != null : model;
 		this.model = model;
-		this.step = step;
 	}
 	public M getModel() {
 		return this.model;
 	}
-	public S getStep() {
-		return this.step;
-	}
 }
 
-abstract class RtNode<M extends Element, C extends org.lgna.croquet.history.Node< ? >> extends RtElement< M, C > {
+abstract class RtNode<M extends Element,S extends org.lgna.croquet.history.Node< ? >> extends RtElement< M > {
 	private RtNode< ?, ? > parent;
 	private RtNode< ?, ? > nextSibling;
+	private S step;
 
-	public RtNode( M model, C step ) {
-		super( model, step );
+	public RtNode( M model, S step ) {
+		super( model );
+		assert step != null : model;
+		this.step = step;
+	}
+	public S getStep() {
+		return this.step;
 	}
 	protected RtNode< ?, ? > getParent() {
 		return this.parent;
@@ -502,10 +501,10 @@ class RtCancel<F> extends RtItem< F, Void, CascadeCancel< F >, org.lgna.croquet.
 }
 
 class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, RootNode< T > > {
-	private final RtCascadePopupPrepModel< T > rtOperation;
+	private final RtCascadePopupPrepModel< T > rtPrepModel;
 	public RtRoot( CascadeRoot< T > model, RtCascadePopupPrepModel< T > rtOperation ) {
 		super( model, RootNode.createInstance( model ) );
-		this.rtOperation = rtOperation;
+		this.rtPrepModel = rtOperation;
 	}
 	@Override
 	public RtRoot< ? > getRtRoot() {
@@ -519,15 +518,15 @@ class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, RootNode< T > > 
 	public void select() {
 	}
 	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-		this.rtOperation.handleActionPerformed( e );
+		this.rtPrepModel.handleActionPerformed( e );
 	}
 }
 
-public class RtCascadePopupPrepModel<T> extends RtElement< CascadePopupPrepModel< T >, org.lgna.croquet.history.CascadePopupPrepStep< T > > {
+public class RtCascadePopupPrepModel<T> extends RtElement< CascadePopupPrepModel< T > > {
 	private final PopupPrepModel.PerformObserver performObserver;
 	private final RtRoot< T > rtRoot;
-	public RtCascadePopupPrepModel( CascadePopupPrepModel< T > model, org.lgna.croquet.history.CascadePopupPrepStep< T > step, PopupPrepModel.PerformObserver performObserver ) {
-		super( model, step );
+	public RtCascadePopupPrepModel( CascadePopupPrepModel< T > model, PopupPrepModel.PerformObserver performObserver ) {
+		super( model );
 		this.performObserver = performObserver;
 		this.rtRoot = new RtRoot< T >( model.getRoot(), this );
 	}
@@ -539,12 +538,31 @@ public class RtCascadePopupPrepModel<T> extends RtElement< CascadePopupPrepModel
 		}
 		return rv;
 	}
-	public void perform() {
-		if( this.rtRoot.isGoodToGo() ) {
-			T[] values = this.createValues( this.getModel().getComponentType() );
-			org.lgna.croquet.history.CascadePopupCompletionStep< T > completionStep = CascadePopupCompletionStep.createAndAddToTransaction( this.getStep().getParent(), this.getModel().getCompletionModel(), null );
+	
+	private org.lgna.croquet.history.CascadePopupCompletionStep< T > complete( Trigger trigger ) {
+		CascadePopupPrepModel< T > model = this.getModel();
+		org.lgna.croquet.history.CascadePopupCompletionStep< T > completionStep = org.lgna.croquet.history.TransactionManager.addCascadePopupCompletionStep( this.getModel().getCompletionModel(), trigger );
+		try {
+			T[] values = this.createValues( model.getComponentType() );
 			this.getModel().handleCompletion( completionStep, this.performObserver, values );
+			return completionStep;
+		} catch( CancelException ce ) {
+			this.cancel( completionStep, trigger, ce );
+			return null;
+		}
+	}
+	private void cancel( org.lgna.croquet.history.CascadePopupCompletionStep< T > completionStep, Trigger trigger, CancelException ce ) {
+		this.getModel().handleCancel( this.performObserver, completionStep, trigger, ce );
+	}
+	
+	/*package-private*/ void handleActionPerformed( java.awt.event.ActionEvent e ) {
+		this.complete( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
+	}
+	public org.lgna.croquet.history.Step< ? > perform( Trigger trigger ) {
+		if( this.rtRoot.isGoodToGo() ) {
+			return this.complete(  new org.lgna.croquet.triggers.AutomaticCompletionTrigger( trigger ) );
 		} else {
+			final org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep = org.lgna.croquet.history.TransactionManager.addCascadePopupPrepStep( this.getModel(), trigger );			
 			final PopupMenu popupMenu = new PopupMenu( this.getModel() );
 			//popupMenu.setLightWeightPopupEnabled( false );
 			popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
@@ -558,7 +576,7 @@ public class RtCascadePopupPrepModel<T> extends RtElement< CascadePopupPrepModel
 					//assert RtOperation.this.rtRoot.getContext() == step : step;
 				}
 				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-					RtCascadePopupPrepModel.this.handleCancel( e );
+					RtCascadePopupPrepModel.this.cancel( null, new org.lgna.croquet.triggers.PopupMenuEventTrigger( popupMenu, e ), null );
 				}
 			} );
 			popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
@@ -567,52 +585,13 @@ public class RtCascadePopupPrepModel<T> extends RtElement< CascadePopupPrepModel
 				public void componentMoved( java.awt.event.ComponentEvent e ) {
 				}
 				public void componentResized( java.awt.event.ComponentEvent e ) {
-					org.lgna.croquet.history.TransactionManager.firePopupMenuResized( getStep() );
+					org.lgna.croquet.history.TransactionManager.firePopupMenuResized( prepStep );
 				}
 				public void componentHidden( java.awt.event.ComponentEvent e ) {
 				}
 			} );
-			
-			org.lgna.croquet.Trigger trigger = this.getStep().getTrigger();
 			trigger.showPopupMenu( popupMenu );
+			return prepStep;
 		}
-	}
-	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-		CascadePopupPrepModel< T > model = this.getModel();
-		RtBlank< T >[] rtBlanks = this.rtRoot.getChildren();
-		T[] values = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( model.getComponentType(), rtBlanks.length );
-		boolean isReadyForCompletion;
-		try {
-			for( int i = 0; i < rtBlanks.length; i++ ) {
-				values[ i ] = rtBlanks[ i ].createValue();
-			}
-			isReadyForCompletion = true;
-		} catch( CancelException ce ) {
-			isReadyForCompletion = false;
-		}
-		if( isReadyForCompletion ) {
-			org.lgna.croquet.history.CascadePopupCompletionStep< T > completionStep = CascadePopupCompletionStep.createAndAddToTransaction( this.getStep().getParent(), this.getModel().getCompletionModel(), null );
-			model.handleCompletion( completionStep, this.performObserver, values );
-		} else {
-			this.handleCancel( e );
-		}
-		//		try {
-		//			Object value = this.getSelectedFillIn().getValue();
-		//			if( this.taskObserver != null ) {
-		//				this.taskObserver.handleCompletion( value );
-		//			} else {
-		//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleCompleted (no taskObserver):", this.getSelectedFillIn().getValue() );
-		//			}
-		//		} catch( CancelException ce ) {
-		//			if( this.taskObserver != null ) {
-		//				this.taskObserver.handleCancelation();
-		//			} else {
-		//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleCancelation (no taskObserver)" );
-		//			}
-		//		}
-	}
-	private void handleCancel( java.util.EventObject e ) {
-		org.lgna.croquet.history.CascadePopupCompletionStep< T > completionStep = CascadePopupCompletionStep.createAndAddToTransaction( this.getStep().getParent(), this.getModel().getCompletionModel(), null );
-		this.getModel().handleCancel( completionStep, this.performObserver );
 	}
 }

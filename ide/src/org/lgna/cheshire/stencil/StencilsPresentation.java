@@ -145,12 +145,12 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				case java.awt.event.KeyEvent.VK_SPACE:
 				case java.awt.event.KeyEvent.VK_RIGHT:
 				case java.awt.event.KeyEvent.VK_DOWN:
-					NextStepOperation.getInstance().fire( org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+					NextStepOperation.getInstance().fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
 					break;
 				case java.awt.event.KeyEvent.VK_BACK_SPACE:
 				case java.awt.event.KeyEvent.VK_LEFT:
 				case java.awt.event.KeyEvent.VK_UP:
-					prevOperation.fire( org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+					prevOperation.fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
 					break;
 				}
 			}

@@ -50,6 +50,9 @@ public class WindowEventTrigger extends ComponentEventTrigger< java.awt.event.Wi
 	public WindowEventTrigger( java.awt.event.WindowEvent windowEvent ) {
 		super( null, windowEvent );
 	}
+	public WindowEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;

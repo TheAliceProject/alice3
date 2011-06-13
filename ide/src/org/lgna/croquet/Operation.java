@@ -159,7 +159,7 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 	}
 	@Deprecated
 	public S fire() {
-		return fire( org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+		return fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
 	}
 	
 	public static interface PerformObserver { 

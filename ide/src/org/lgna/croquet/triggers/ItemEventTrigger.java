@@ -53,6 +53,9 @@ public class ItemEventTrigger extends EventTrigger<java.awt.event.ItemEvent> {
 	public ItemEventTrigger( java.awt.event.ItemEvent itemEvent ) {
 		this( null, itemEvent );
 	}
+	public ItemEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;

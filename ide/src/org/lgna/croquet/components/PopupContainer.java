@@ -1,7 +1,7 @@
 package org.lgna.croquet.components;
 
-public abstract class PopupContainer extends AbstractButton< javax.swing.AbstractButton, org.lgna.croquet.PopupPrepModel< ? > > {
-	public PopupContainer( org.lgna.croquet.PopupPrepModel< ? > model ) {
+public abstract class PopupContainer extends AbstractButton< javax.swing.AbstractButton, org.lgna.croquet.PopupPrepModel > {
+	public PopupContainer( org.lgna.croquet.PopupPrepModel model ) {
 		super( model );
 	}
 	@Override

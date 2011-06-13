@@ -46,19 +46,23 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class ActionEventTrigger extends EventTrigger<java.awt.event.ActionEvent> {
-	public ActionEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.ActionEvent actionEvent ) {
-		super( viewController, actionEvent );
+public class DropTrigger extends MouseEventTrigger {
+	//private final org.lgna.croquet.DropReceptor dropReceptor;
+	private final org.lgna.croquet.DropSite dropSite;
+	public DropTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent e, /*org.lgna.croquet.DropReceptor dropReceptor,*/ org.lgna.croquet.DropSite dropSite ) {
+		super( viewController, e );
+		//this.dropReceptor = dropReceptor;
+		this.dropSite = dropSite;
 	}
-	public ActionEventTrigger( java.awt.event.ActionEvent actionEvent ) {
-		this( null, actionEvent );
-	}
-	public ActionEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public DropTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+		//this.dropReceptor = null;
+		this.dropSite = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
-
-	@Override
-	protected java.awt.Point getPoint() {
-		return null;
+//	public org.lgna.croquet.DropReceptor getDropReceptor() {
+//		return this.dropReceptor;
+//	}
+	public org.lgna.croquet.DropSite getDropSite() {
+		return this.dropSite;
 	}
 }

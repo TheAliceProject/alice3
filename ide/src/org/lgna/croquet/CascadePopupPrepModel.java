@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadePopupPrepModel<B> extends PopupPrepModel<org.lgna.croquet.history.CascadePopupPrepStep< B > > {
+public abstract class CascadePopupPrepModel<B> extends PopupPrepModel {
 	private final CascadePopupCompletionModel<B> completionModel;
 	private final Class< B > componentType;
 	private final CascadeRoot< B > root;
@@ -64,10 +64,6 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel<org.lgna.c
 	@Override
 	public Iterable< ? extends Model > getChildren() {
 		return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( root );
-	}
-	@Override
-	public org.lgna.croquet.history.CascadePopupPrepStep< B > createAndPushStep( org.lgna.croquet.Trigger trigger ) {
-		return org.lgna.croquet.history.TransactionManager.addCascadePopupOperationStep( this, trigger );
 	}
 
 	@Override
@@ -103,18 +99,21 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel<org.lgna.c
 			this.handleFinally( performObserver );
 		}
 	}
-	public void handleCancel( org.lgna.croquet.history.CascadePopupCompletionStep< B > step, PerformObserver performObserver ) {
+	public void handleCancel( PerformObserver performObserver, org.lgna.croquet.history.CascadePopupCompletionStep< B > completionStep, Trigger trigger, CancelException ce ) {
 		try {
-			step.cancel();
+			if( completionStep != null ) {
+				completionStep.cancel();
+			} else {
+				org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( completionModel, trigger );
+			}
 		} finally {
 			this.handleFinally( performObserver );
 		}
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CascadePopupPrepStep< B > step, PerformObserver performObserver ) {
-		org.lgna.croquet.cascade.RtCascadePopupPrepModel< B > rt = new org.lgna.croquet.cascade.RtCascadePopupPrepModel< B >( this, step, performObserver );
-//		ContextManager.pushContext( ContextManager.createCascadeRootContext( this.root ) );
-		rt.perform();
+	protected org.lgna.croquet.history.Step< ? > perform( org.lgna.croquet.Trigger trigger, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
+		org.lgna.croquet.cascade.RtCascadePopupPrepModel< B > rt = new org.lgna.croquet.cascade.RtCascadePopupPrepModel< B >( this, performObserver );
+		return rt.perform( trigger );
 	}
 }

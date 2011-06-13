@@ -50,6 +50,12 @@ public class PopupMenuEventTrigger extends EventTrigger<javax.swing.event.PopupM
 	public PopupMenuEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
 		super( viewController, popupMenuEvent );
 	}
+	public PopupMenuEventTrigger( javax.swing.event.PopupMenuEvent popupMenuEvent ) {
+		this( null, popupMenuEvent );
+	}
+	public PopupMenuEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;

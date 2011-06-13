@@ -517,7 +517,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		assert originalEdit instanceof org.lgna.croquet.edits.ListSelectionStateEdit;
 		org.lgna.croquet.edits.ListSelectionStateEdit< E > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< E >)originalEdit;
-		this.commitEdit( listSelectionStateEdit.getPreviousValue(), listSelectionStateEdit.getNextValue(), org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
+		this.commitEdit( listSelectionStateEdit.getPreviousValue(), listSelectionStateEdit.getNextValue(), new org.lgna.croquet.triggers.SimulatedTrigger() );
 		return listSelectionStateEdit;
 	}
 

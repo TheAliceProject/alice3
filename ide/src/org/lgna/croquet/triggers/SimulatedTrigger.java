@@ -46,13 +46,17 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public enum SimulatedTrigger implements org.lgna.croquet.Trigger {
-	SINGLETON() {
-		public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
-			return null;
-		}
-		public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
-			edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
-		}
-	};
+public class SimulatedTrigger implements org.lgna.croquet.Trigger {
+	public SimulatedTrigger() {
+	}
+	public SimulatedTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+		return null;
+	}
+	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
+		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
+	}
 }
