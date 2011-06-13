@@ -47,8 +47,12 @@ package org.alice.ide.recyclebin;
  * @author Dennis Cosgrove
  */
 public class RecycleBin extends org.lgna.croquet.components.JComponent< javax.swing.JComponent > {
-	private static final java.awt.Image OPEN_IMAGE = new javax.swing.ImageIcon( RecycleBin.class.getResource( "images/open.png" ) ).getImage();
-	private static final java.awt.Image CLOSED_IMAGE = new javax.swing.ImageIcon( RecycleBin.class.getResource( "images/closed.png" ) ).getImage();
+	private static final java.awt.Image OPEN_IMAGE;
+	private static final java.awt.Image CLOSED_IMAGE;
+	static {
+		OPEN_IMAGE = new javax.swing.ImageIcon( RecycleBin.class.getResource( "images/open.png" ) ).getImage();
+		CLOSED_IMAGE = new javax.swing.ImageIcon( RecycleBin.class.getResource( "images/closed.png" ) ).getImage();
+	}
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
 		return new javax.swing.JComponent() {
