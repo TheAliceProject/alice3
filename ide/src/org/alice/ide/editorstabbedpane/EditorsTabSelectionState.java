@@ -504,10 +504,13 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 	}
 	private EditorTabCreator editorTabCreator = new EditorTabCreator();
 	private DropDownPanel dropDownPanel = new DropDownPanel();
+	private org.alice.ide.clipboard.Clipboard clipboard = new org.alice.ide.clipboard.Clipboard();
 	public org.lgna.croquet.components.FolderTabbedPane<CodeComposite> createEditorsFolderTabbedPane() {
 		assert this.singleton == null;
+		this.clipboard.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2,2,2,2 ) );
 		this.singleton = this.createFolderTabbedPane( this.editorTabCreator );
 		this.singleton.setHeaderLeadingComponent( this.dropDownPanel );
+		this.singleton.setHeaderTrailingComponent( this.clipboard );
 		return this.singleton;
 	}
 //	private void updateFocusedCode() {

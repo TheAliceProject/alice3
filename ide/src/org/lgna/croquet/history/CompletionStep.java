@@ -148,7 +148,12 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 	
 
 	public String getTutorialTransactionTitle( org.lgna.croquet.UserInformation userInformation ) {
-		return this.getModel().getTutorialTransactionTitle( this, userInformation );
+		org.lgna.croquet.CompletionModel model = this.getModel();
+		if( model != null ) {
+			return model.getTutorialTransactionTitle( this, userInformation );
+		} else {
+			return null;
+		}
 	}
 	@Override
 	protected StringBuilder updateRepr( StringBuilder rv ) {

@@ -293,7 +293,8 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 
 	private CardPanel cardPanel = new CardPanel();
 	private TitlesPanel titlesPanel = new TitlesPanel();
-	private BorderPanel headerPanel = new BorderPanel();
+	private BorderPanel innerHeaderPanel = new BorderPanel();
+	private BorderPanel outerHeaderPanel = new BorderPanel();
 
 	/*package-private*/ class FolderTabItemDetails extends AbstractTabbedPane.TabItemDetails {
 		private CardPanel.Key cardPanelKey;
@@ -388,10 +389,10 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	public FolderTabbedPane( ListSelectionState<E> model, TabSelectionState.TabCreator< E > tabCreator ) {
 		super( model, tabCreator );
 		this.cardPanel.setBackgroundColor( null );
-		this.headerPanel.setBackgroundColor( null );
-		this.headerPanel.getAwtComponent().setOpaque( false );
+		this.innerHeaderPanel.setBackgroundColor( null );
+		this.innerHeaderPanel.getAwtComponent().setOpaque( false );
 		this.titlesPanel.setBackgroundColor( null );
-		this.headerPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
+		this.innerHeaderPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
 		this.cardPanel.setBorder( new javax.swing.border.Border() {
 			public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 				return new java.awt.Insets( 1,1,0,0 );
@@ -408,7 +409,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 						if( component instanceof AbstractButton< ?, ? > ) {
 							AbstractButton< ?, ? > button = (AbstractButton< ?, ? >)component;
 							if( button.getAwtComponent().getModel().isSelected() ) {
-								java.awt.Rectangle bounds = button.getBounds( headerPanel );
+								java.awt.Rectangle bounds = button.getBounds( innerHeaderPanel );
 								g.setColor( button.getBackgroundColor() );
 								int x0;
 								if( c.getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
@@ -427,7 +428,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		this.getAwtComponent().setOpaque( true );
 
 		PopupOperation popupOperation = new PopupOperation();
-		this.setHeaderTrailingComponent( new PopupButton( popupOperation ) );
+		this.setInnerHeaderTrailingComponent( new PopupButton( popupOperation ) );
 	}
 
 	public void setHeaderLeadingComponent( JComponent< ? > component ) {
@@ -437,24 +438,35 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			component.setBackgroundColor( this.getBackgroundColor() );
 		}
 		component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
-		this.headerPanel.addComponent( component, BorderPanel.Constraint.LINE_START );
-		this.headerPanel.revalidateAndRepaint();
+		this.innerHeaderPanel.addComponent( component, BorderPanel.Constraint.LINE_START );
+		this.innerHeaderPanel.revalidateAndRepaint();
 	}
-	private void setHeaderTrailingComponent( JComponent< ? > component ) {
+	private void setInnerHeaderTrailingComponent( JComponent< ? > component ) {
 		if( component.isOpaque() ) {
 			//pass
 		} else {
 			component.setBackgroundColor( this.getBackgroundColor() );
 		}
 		component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
-		this.headerPanel.addComponent( component, BorderPanel.Constraint.LINE_END );
-		this.headerPanel.revalidateAndRepaint();
+		this.innerHeaderPanel.addComponent( component, BorderPanel.Constraint.LINE_END );
+		this.innerHeaderPanel.revalidateAndRepaint();
+	}
+	public void setHeaderTrailingComponent( JComponent< ? > component ) {
+		if( component.isOpaque() ) {
+			//pass
+		} else {
+			component.setBackgroundColor( this.getBackgroundColor() );
+		}
+		component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
+		this.outerHeaderPanel.addComponent( component, BorderPanel.Constraint.LINE_END );
+		this.outerHeaderPanel.revalidateAndRepaint();
 	}
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = super.createAwtComponent();
-		this.headerPanel.addComponent( this.titlesPanel, BorderPanel.Constraint.CENTER );
-		rv.add( this.headerPanel.getAwtComponent(), java.awt.BorderLayout.NORTH );
+		this.innerHeaderPanel.addComponent( this.titlesPanel, BorderPanel.Constraint.CENTER );
+		this.outerHeaderPanel.addComponent( this.innerHeaderPanel, BorderPanel.Constraint.CENTER );
+		rv.add( this.outerHeaderPanel.getAwtComponent(), java.awt.BorderLayout.NORTH );
 		rv.add( this.cardPanel.getAwtComponent(), java.awt.BorderLayout.CENTER );
 		return rv;
 	}

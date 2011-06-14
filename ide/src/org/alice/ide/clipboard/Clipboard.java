@@ -84,9 +84,11 @@ public class Clipboard extends org.lgna.croquet.components.JComponent< javax.swi
 
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 				
-				float width = this.getWidth();
-				float height = this.getHeight();
+				java.awt.Insets insets = this.getInsets();
+				float width = this.getWidth() - insets.left - insets.right;
+				float height = this.getHeight() - insets.top - insets.bottom;
 				
+				g2.translate( insets.left, insets.top );
 				float round = this.getWidth()*0.1f;
 				java.awt.geom.RoundRectangle2D board = new java.awt.geom.RoundRectangle2D.Float( 0.025f*width, 0.1f*height, 0.95f*width, 0.875f*height, round, round );
 				java.awt.Shape clip = createClip( 0.2f*width, 0.01f*height, 0.6f*width, 0.2f*height, 0.02f*height );
@@ -101,37 +103,37 @@ public class Clipboard extends org.lgna.croquet.components.JComponent< javax.swi
 				float w = width*0.8f;
 				float h = height*0.775f;
 				
-				final int SHADOW_SIZE = 4; 
 				
 				g2.setPaint( new java.awt.GradientPaint( x,y, java.awt.Color.LIGHT_GRAY, x+w, y+h, java.awt.Color.WHITE ) );
 				g2.fill( new java.awt.geom.Rectangle2D.Float( x, y, w, h ) );
 				
-				g2.translate(x, y);
-				g2.setPaint( java.awt.Color.DARK_GRAY );
-				java.awt.geom.GeneralPath pathShadow = new java.awt.geom.GeneralPath();
-				pathShadow.moveTo( w, 0 );
-				pathShadow.lineTo( w+SHADOW_SIZE, h+SHADOW_SIZE );
-				pathShadow.lineTo( 0, h );
-				pathShadow.lineTo( w, h );
-				pathShadow.closePath();
-				g2.fill( pathShadow );
-				g2.translate(-x, -y);
+				final int SHADOW_SIZE = this.getHeight()/50; 
+				if( SHADOW_SIZE > 2 ) {
+					g2.translate(x, y);
+					g2.setPaint( new java.awt.Color( 31, 31, 31, 127 ) );
+					java.awt.geom.GeneralPath pathShadow = new java.awt.geom.GeneralPath();
+					pathShadow.moveTo( w, 0 );
+					pathShadow.lineTo( w+SHADOW_SIZE, h+SHADOW_SIZE );
+					pathShadow.lineTo( 0, h );
+					pathShadow.lineTo( w, h );
+					pathShadow.closePath();
+					g2.fill( pathShadow );
+					g2.translate(-x, -y);
+				}
 
 				
 				g2.setPaint( new java.awt.GradientPaint( 0, height*0.1f, java.awt.Color.LIGHT_GRAY, 0, height*0.2f, java.awt.Color.DARK_GRAY ) );
 				g2.fill( clip );
 				g2.setPaint( java.awt.Color.BLACK );
 				g2.draw( clip );
-				
-				
+				g2.translate( -insets.left, -insets.top );
 			}
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return new java.awt.Dimension( 240, 320 );
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 40 );
 			}
 		};
 	}
-	
 	public static void main( String[] args ) {
 		org.lgna.croquet.Application application = new org.lgna.croquet.Application() {
 			@Override
