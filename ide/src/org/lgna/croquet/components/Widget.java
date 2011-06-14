@@ -42,9 +42,7 @@
  */
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.Model;
-
-public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
+public abstract class Widget extends ViewController<javax.swing.JPanel,org.lgna.croquet.Model> {
 	protected abstract int getInsetTop();
 	protected abstract int getInsetLeft();
 	protected abstract int getInsetBottom();
@@ -58,6 +56,7 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
 	private static boolean isWarningAlreadyPrinted = false;
 	public Widget() {
 		super( null );
+		this.setMaximumSizeClampedToPreferredSize( true );
 		if( isWarningAlreadyPrinted ) {
 			//pass
 		} else {
@@ -137,7 +136,15 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
 			}
 			@Override
 			public java.awt.Dimension getMaximumSize() {
-				return this.getPreferredSize();
+				if( Widget.this.isMaximumSizeClampedToPreferredSize() ) {
+					return this.getPreferredSize();
+				} else {
+					return super.getMaximumSize();
+				}
+			}
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return Widget.this.getPreferredSize( super.getPreferredSize() );
 			}
 			@Override
 			public void paint(java.awt.Graphics g) {
@@ -183,6 +190,9 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
 	
 	protected boolean contains( int x, int y, boolean jContains ) {
 		return jContains;
+	}
+	protected java.awt.Dimension getPreferredSize( java.awt.Dimension size ) {
+		return size;
 	}
 
 	

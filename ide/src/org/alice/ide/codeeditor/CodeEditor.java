@@ -418,10 +418,10 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			return null;
 		}
 	}
-	public final org.lgna.croquet.Model dragDropped( final org.lgna.croquet.history.DragStep context ) {
+	public final org.lgna.croquet.Model dragDropped( final org.lgna.croquet.history.DragStep step ) {
 		org.lgna.croquet.Model rv = null;
-		final org.lgna.croquet.components.DragComponent source = context.getDragSource();
-		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
+		final org.lgna.croquet.components.DragComponent source = step.getDragSource();
+		final java.awt.event.MouseEvent eSource = step.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
 		if( statementListPropertyPane != null ) {
 			final int index = statementListPropertyPane.calculateIndex( source.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
@@ -437,7 +437,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 //					EPIC_HACK_desiredStatementListPropertyPane = null;
 //					EPIC_HACK_desiredIndex = -1;
 //					source.hideDropProxyIfNecessary();
-					context.cancelTransaction();
+					step.cancelTransaction();
 					return null;
 				}
 			}
@@ -478,7 +478,18 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 						blockStatement = null;
 						//index = -1;
 					}
-					rv = statementTemplate.getDropModel( context, blockStatement, index );
+					rv = statementTemplate.getDropModel( step, blockStatement, index );
+				}
+			} else if( source instanceof org.alice.ide.clipboard.Clipboard ) {
+				//todo check for recursion
+				org.alice.ide.clipboard.Clipboard clipboard = (org.alice.ide.clipboard.Clipboard)source;
+				boolean isCopy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource );
+				if( this.currentUnder != null ) {
+					edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
+					if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
+						BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair( (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner, index );
+						rv = clipboard.getModel( blockStatementIndexPair, isCopy );
+					}
 				}
 			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
 				if( this.currentUnder != null ) {

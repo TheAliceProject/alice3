@@ -504,7 +504,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 	}
 	private EditorTabCreator editorTabCreator = new EditorTabCreator();
 	private DropDownPanel dropDownPanel = new DropDownPanel();
-	private org.alice.ide.clipboard.Clipboard clipboard = new org.alice.ide.clipboard.Clipboard();
+	private org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
 	public org.lgna.croquet.components.FolderTabbedPane<CodeComposite> createEditorsFolderTabbedPane() {
 		assert this.singleton == null;
 		this.clipboard.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2,2,2,2 ) );
