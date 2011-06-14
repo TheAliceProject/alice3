@@ -43,13 +43,13 @@
 
 package org.alice.stageide.croquet.models.personeditor;
 
-/*package-private*/ abstract class ContentTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
+/*package-private*/ abstract class ContentTab extends org.lgna.croquet.PredeterminedTab {
 	public ContentTab(java.util.UUID id, String title) {
 		super(id);
 		this.setTitleText( title );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
+	public org.lgna.croquet.components.ScrollPane createScrollPane() {
 		return null;
 	}
 }
@@ -59,24 +59,24 @@ package org.alice.stageide.croquet.models.personeditor;
 		super( java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ), "Body" );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
-		edu.cmu.cs.dennisc.croquet.List< ? > list = org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().createList();
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( list );
+	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
+		org.lgna.croquet.components.List< ? > list = org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().createList();
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
 		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
-		edu.cmu.cs.dennisc.croquet.Slider slider = FitnessModel.getInstance().createSlider();
-		slider.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		org.lgna.croquet.components.Slider slider = FitnessModel.getInstance().createSlider();
+		slider.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		
-		edu.cmu.cs.dennisc.croquet.BorderPanel fitnessLevelPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		fitnessLevelPane.addComponent( SetFitnessToOutOfShapeOperation.getInstance().createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START );
-		fitnessLevelPane.addComponent( slider, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-		fitnessLevelPane.addComponent( SetFitnessToInShapeOperation.getInstance().createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
+		org.lgna.croquet.components.BorderPanel fitnessLevelPane = new org.lgna.croquet.components.BorderPanel();
+		fitnessLevelPane.addComponent( SetFitnessToOutOfShapeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		fitnessLevelPane.addComponent( slider, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		fitnessLevelPane.addComponent( SetFitnessToInShapeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
 
-		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel( 8, 8 );
-		rv.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-		rv.addComponent( fitnessLevelPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_END );
-		rv.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel( 8, 8 );
+		rv.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		rv.addComponent( fitnessLevelPane, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
+		rv.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		rv.getAwtComponent().setOpaque( true );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 		return rv;
@@ -87,18 +87,18 @@ package org.alice.stageide.croquet.models.personeditor;
 		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), "Head" );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
-		edu.cmu.cs.dennisc.croquet.RowsSpringPanel rv = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
+	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
+		org.lgna.croquet.components.RowsSpringPanel rv = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
 			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "hair:", HairColorSelectionState.getInstance().createList() ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, HairSelectionState.getInstance().createList() ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "eye color:", BaseEyeColorSelectionState.getInstance().createList() ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() ) );
+			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "hair:", HairColorSelectionState.getInstance().createList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( null, HairSelectionState.getInstance().createList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "eye color:", BaseEyeColorSelectionState.getInstance().createList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( null, org.lgna.croquet.components.BoxUtilities.createGlue() ) );
 				return rv;
 			}
 		};
-		rv.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		rv.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 		return rv;
 	}
@@ -107,7 +107,7 @@ package org.alice.stageide.croquet.models.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class BodyHeadTabSelectionModel extends edu.cmu.cs.dennisc.croquet.PredeterminedTabSelectionState< ContentTab >{
+public class BodyHeadTabSelectionModel extends org.lgna.croquet.PredeterminedTabSelectionState< ContentTab >{
 	private static class SingletonHolder {
 		private static BodyHeadTabSelectionModel instance = new BodyHeadTabSelectionModel();
 	}
@@ -115,6 +115,6 @@ public class BodyHeadTabSelectionModel extends edu.cmu.cs.dennisc.croquet.Predet
 		return SingletonHolder.instance;
 	}
 	private BodyHeadTabSelectionModel() {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), null, 0, new BodyTab(), new HeadTab() );
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), null, 0, new BodyTab(), new HeadTab() );
 	}
 }

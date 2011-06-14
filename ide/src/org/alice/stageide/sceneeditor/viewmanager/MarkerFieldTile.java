@@ -49,10 +49,11 @@ import javax.swing.BorderFactory;
 import org.alice.apis.moveandturn.MarkerWithIcon;
 import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.LineAxisPanel;
+
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
 
 public class MarkerFieldTile extends LineAxisPanel
 {
@@ -107,6 +108,6 @@ public class MarkerFieldTile extends LineAxisPanel
 		}
 		this.addComponent( iconLabel );
 		this.addComponent( this.textLabel );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ) );
 	}
 }

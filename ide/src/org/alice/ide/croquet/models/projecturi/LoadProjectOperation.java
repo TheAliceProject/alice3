@@ -46,19 +46,19 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class LoadProjectOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class LoadProjectOperation extends org.lgna.croquet.ActionOperation {
 	private java.net.URI uri;
 	public LoadProjectOperation(java.net.URI uri) {
 		super(org.alice.ide.ProjectApplication.URI_GROUP, java.util.UUID.fromString("1fcc7ee4-06da-4554-ad13-ef7b4d92b66c"));
 		this.uri = uri;
 	}
 	@Override
-	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		if (this.uri != null) {
 			org.alice.ide.ProjectApplication.getSingleton().loadProjectFrom(this.uri);
-			context.finish();
+			step.finish();
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 }

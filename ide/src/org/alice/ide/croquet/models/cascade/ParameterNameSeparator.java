@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterNameSeparator extends edu.cmu.cs.dennisc.croquet.CascadeLabelSeparator {
+public class ParameterNameSeparator extends org.lgna.croquet.CascadeLabelSeparator {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, ParameterNameSeparator > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ParameterNameSeparator getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
 		assert parameter != null;

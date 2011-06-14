@@ -20,8 +20,8 @@
 	<classpathentry kind="lib" path="generated/gallery/mtwtGalleryLargeIcons.jar"/>
 	<classpathentry kind="lib" path="generated/gallery/mtwtGalleryBoxes.jar"/>
 	<classpathentry kind="lib" path="generated/gallery/stagePersonEditorLargeIcons.jar"/>
-	<classpathentry kind="lib" path="src/autotutorial/ecard/lib/substance.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry kind="lib" path="src/uist/ecard/lib/substance.jar"/>
 	<classpathentry kind="lib" path="lib/tools/tools.jar"/>
 	<classpathentry kind="lib" path="generated/gallery/assets/newAPI/Ogre.jar"/>
 	<classpathentry kind="output" path="bin"/>

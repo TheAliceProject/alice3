@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+public class TypeMenuModel extends org.lgna.croquet.MenuModel {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice, TypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized TypeMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		TypeMenuModel rv = map.get( type );
@@ -76,43 +76,43 @@ public class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 	}
 
 	@Override
-	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		super.handleShowing( menuItemContainer, e );
 
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleMenuSelected" );
 		
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.ast.EditTypeOperation.getInstance( this.type ).getMenuItemPrepModel() );
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.ast.rename.RenameTypeOperation.getInstance( this.type ).getMenuItemPrepModel() );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.ast.EditTypeOperation.getInstance( this.type ).getMenuItemPrepModel() );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.ast.rename.RenameTypeOperation.getInstance( this.type ).getMenuItemPrepModel() );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		if( ide.isInstanceCreationAllowableFor( this.type ) ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = ide.getSceneType();
-			edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ownerType, this.type ).getMenuItemPrepModel() );
+			org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ownerType, this.type ).getMenuItemPrepModel() );
 		}
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, TypeSaveAsOperation.getInstance( this.type ).getMenuItemPrepModel() );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, TypeSaveAsOperation.getInstance( this.type ).getMenuItemPrepModel() );
 		menuItemContainer.addSeparator();
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditConstructorOperation.getInstance( this.type.getDeclaredConstructor() ).getMenuItemPrepModel() );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditConstructorOperation.getInstance( this.type.getDeclaredConstructor() ).getMenuItemPrepModel() );
 		menuItemContainer.addSeparator();
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, DeclareProcedureOperation.getInstance( this.type ).getMenuItemPrepModel() );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, DeclareProcedureOperation.getInstance( this.type ).getMenuItemPrepModel() );
 		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
 			if( method.isProcedure() ) {
-				edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditMethodOperation.getInstance( method ).getMenuItemPrepModel() );
+				org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditMethodOperation.getInstance( method ).getMenuItemPrepModel() );
 			}
 		}
 		menuItemContainer.addSeparator();
 		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
 			if( method.isFunction() ) {
-				edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditMethodOperation.getInstance( method ).getMenuItemPrepModel() );
+				org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditMethodOperation.getInstance( method ).getMenuItemPrepModel() );
 			}
 		}
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, DeclareFunctionOperation.getInstance( this.type ).getMenuItemPrepModel() );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, DeclareFunctionOperation.getInstance( this.type ).getMenuItemPrepModel() );
 		menuItemContainer.addSeparator();
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( this.type ).getMenuItemPrepModel() );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( this.type ).getMenuItemPrepModel() );
 		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.type.fields ) {
-			edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new org.alice.ide.operations.ast.EditFieldOperation( field ).getMenuItemPrepModel() );
+			org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new org.alice.ide.operations.ast.EditFieldOperation( field ).getMenuItemPrepModel() );
 		}
 	}
 	@Override
-	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleHiding( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		menuItemContainer.forgetAndRemoveAllMenuItems();
 		super.handleHiding( menuItemContainer, e );
 	}

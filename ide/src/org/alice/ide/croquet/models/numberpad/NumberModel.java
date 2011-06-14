@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.numberpad;
  */
 public abstract class NumberModel< N extends edu.cmu.cs.dennisc.alice.ast.Expression > /* extends edu.cmu.cs.dennisc.croquet.StringState */ {
 	@Deprecated
-	/*package-private*/ final static edu.cmu.cs.dennisc.croquet.Group NUMBER_PAD_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
+	/*package-private*/ final static org.lgna.croquet.Group NUMBER_PAD_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
 	
 	private static String getInitialText() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
@@ -62,7 +62,7 @@ public abstract class NumberModel< N extends edu.cmu.cs.dennisc.alice.ast.Expres
 		return "";
 	}
 	private javax.swing.text.Document document;
-	public NumberModel( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id ) {
+	public NumberModel( org.lgna.croquet.Group group, java.util.UUID id ) {
 		//super( group, id, getInitialText() );
 		this.document = new javax.swing.text.PlainDocument();
 		try {
@@ -74,8 +74,8 @@ public abstract class NumberModel< N extends edu.cmu.cs.dennisc.alice.ast.Expres
 	private javax.swing.text.Document getDocument() {
 		return this.document;
 	}
-	public edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JTextField > createTextField() {
-		return new edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JTextField >() {
+	public org.lgna.croquet.components.JComponent< javax.swing.JTextField > createTextField() {
+		return new org.lgna.croquet.components.JComponent< javax.swing.JTextField >() {
 			@Override
 			protected javax.swing.JTextField createAwtComponent() {
 				javax.swing.JTextField jTextField = new javax.swing.JTextField();

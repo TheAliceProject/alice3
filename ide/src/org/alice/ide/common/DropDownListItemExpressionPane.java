@@ -45,15 +45,40 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class DropDownListItemExpressionPane extends AbstractDropDownListItemExpressionPane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType;
-	public DropDownListItemExpressionPane( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType ) {
-		super( index, expressionListProperty );
-		this.componentType = componentType;
+public class DropDownListItemExpressionPane extends AbstractDropDownPane {
+	private int index;
+	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.Expression > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		@Override
+		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+		}
+		@Override
+		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+			DropDownListItemExpressionPane.this.refresh();
+		}
+	};
+	public DropDownListItemExpressionPane( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fillInType ) {
+		super( new org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "dec13fc9-4b3f-4e4e-8b1f-21956e789b32" ), index, expressionListProperty, fillInType ) );
+		this.index = index;
+		this.expressionListProperty = expressionListProperty;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType() {
-		return this.componentType;
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.expressionListProperty.addListPropertyListener( this.listPropertyAdapter );
+		this.refresh();
+	}
+	@Override
+	protected void handleUndisplayable() {
+		this.expressionListProperty.removeListPropertyListener( this.listPropertyAdapter );
+		super.handleUndisplayable();
+	}
+	//protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType();
+	public void refresh() {
+		this.forgetAndRemoveAllComponents();
+		if( this.index < this.expressionListProperty.size() ) {
+			this.addComponent( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPane( this.expressionListProperty.get( this.index ) ) );
+		}
 	}
 }
 

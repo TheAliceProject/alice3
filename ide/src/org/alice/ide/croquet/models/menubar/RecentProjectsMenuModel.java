@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.menubar;
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectsMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 	private static class SingletonHolder {
 		private static RecentProjectsMenuModel instance = new RecentProjectsMenuModel();
 	}
@@ -57,21 +57,21 @@ public class RecentProjectsMenuModel extends edu.cmu.cs.dennisc.croquet.MenuMode
 	}
 	
 	@Override
-	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		java.util.List<String> paths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
 		final int N = paths.size();
-		edu.cmu.cs.dennisc.croquet.MenuItemPrepModel[] models = new edu.cmu.cs.dennisc.croquet.MenuItemPrepModel[ N ];
+		org.lgna.croquet.MenuItemPrepModel[] models = new org.lgna.croquet.MenuItemPrepModel[ N ];
 		for( int i=0; i<N; i++ ) {
 			String path = paths.get( i );
 			java.io.File file = new java.io.File( path );
 			models[ i ] = org.alice.ide.croquet.models.projecturi.OpenRecentProjectOperation.getInstance( file.toURI() ).getMenuItemPrepModel();
 		}
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( menuItemContainer, models );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( menuItemContainer, models );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: RecentProjectsMenuModel handleMenuSelected" );
 		super.handleShowing( menuItemContainer, e );
 	}
 	@Override
-	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleHiding( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		menuItemContainer.forgetAndRemoveAllMenuItems();
 		super.handleHiding( menuItemContainer, e );
 	}

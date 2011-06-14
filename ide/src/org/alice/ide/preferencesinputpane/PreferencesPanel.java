@@ -56,8 +56,8 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.DefaultM
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
+public class PreferencesPanel extends org.lgna.croquet.components.BorderPanel {
+	private org.lgna.croquet.components.HorizontalSplitPane splitPane = new org.lgna.croquet.components.HorizontalSplitPane();
 	//private edu.cmu.cs.dennisc.croquet.Tree<?> tree = new edu.cmu.cs.dennisc.croquet.Tree();
 	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.javax.swing.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane> {
 		@Override
@@ -87,9 +87,9 @@ public class PreferencesPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				this.setName( "Clear Recent Projects" );
 			}
 			@Override
-			protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+			protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 				org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
-				context.finish();
+				step.finish();
 			}
 		}
 		
@@ -105,7 +105,7 @@ public class PreferencesPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				}
 			}
 			@Override
-			protected void updateCenterComponent( edu.cmu.cs.dennisc.croquet.PageAxisPanel centerComponent, edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
+			protected void updateCenterComponent( org.lgna.croquet.components.PageAxisPanel centerComponent, edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
 				super.updateCenterComponent( centerComponent, collectionOfPreferences );
 				centerComponent.addComponent( new ClearRecentProjectsOperation().createButton() );
 			}
@@ -137,7 +137,7 @@ public class PreferencesPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //		this.tree.addTreeSelectionListener( new TreeSelectionAdapter() );
 //		this.splitPane.setLeftComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( this.tree ) );
 //		this.tree.setSelectionRow( 1 );
-		this.splitPane.setRightComponent( new edu.cmu.cs.dennisc.croquet.Label( "please select" ) );
+		this.splitPane.setRightComponent( new org.lgna.croquet.components.Label( "please select" ) );
 		this.splitPane.setDividerLocation( 200 );
 		this.addComponent( this.splitPane, Constraint.CENTER );
 	}

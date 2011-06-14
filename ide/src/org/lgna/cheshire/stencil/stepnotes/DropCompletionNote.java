@@ -46,17 +46,17 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class DropCompletionNote extends CompletionNote< org.lgna.croquet.steps.DropCompletionStep > {
-	public DropCompletionNote( org.lgna.croquet.steps.DropCompletionStep step ) {
+public class DropCompletionNote extends CompletionNote< org.lgna.croquet.history.DropCompletionStep > {
+	public DropCompletionNote( org.lgna.croquet.history.DropCompletionStep step ) {
 		super( step );
 	}
 	@Override
-	protected void addFeatures(org.lgna.croquet.steps.DropCompletionStep step) {
+	protected void addFeatures(org.lgna.croquet.history.DropCompletionStep step) {
 		this.addFeature( DropNoteUtilities.createHole( step ) );
 	}
 	
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
 		return DropNoteUtilities.isWhatWeveBeenWaitingFor( this.getStep(), event );
 	}
 	@Override

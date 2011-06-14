@@ -67,8 +67,8 @@ public class HairColorSelectionState extends AbstractListSelectionState< String 
 //		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<String> createList() {
-		edu.cmu.cs.dennisc.croquet.List<String> rv = super.createList();
+	public org.lgna.croquet.components.List<String> createList() {
+		org.lgna.croquet.components.List<String> rv = super.createList();
 		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}

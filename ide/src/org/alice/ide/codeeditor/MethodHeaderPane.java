@@ -53,7 +53,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( methodDeclaredInAlice.getReturnType() ) );
 //			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		} else {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new org.lgna.croquet.components.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			StringBuffer sb = new StringBuffer();
 			if( methodDeclaredInAlice.isProcedure() ) {
 				sb.append( "procedure " );
@@ -61,7 +61,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( methodDeclaredInAlice.getReturnType() ) );
 				sb.append( " function " );
 			}
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new org.lgna.croquet.components.Label( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 		}
 		
 		
@@ -73,9 +73,9 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		if( methodDeclaredInAlice.isSignatureLocked.getValue() ) {
 			this.addComponent( nameLabel );
 		} else {
-			class PopupPanel extends edu.cmu.cs.dennisc.croquet.ViewController<javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Model> {
-				private edu.cmu.cs.dennisc.croquet.Component<?> centerComponent;
-				public PopupPanel( edu.cmu.cs.dennisc.croquet.Component<?> centerComponent, edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation ) {
+			class PopupPanel extends org.lgna.croquet.components.ViewController<javax.swing.JPanel, org.lgna.croquet.Model> {
+				private org.lgna.croquet.components.Component<?> centerComponent;
+				public PopupPanel( org.lgna.croquet.components.Component<?> centerComponent, org.lgna.croquet.StandardPopupPrepModel popupMenuOperation ) {
 					super( null );
 					this.centerComponent = centerComponent;
 					this.setPopupMenuOperation( popupMenuOperation );
@@ -112,7 +112,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			if( declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
 				//pass
 			} else {
-				this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+				this.addComponent( new org.lgna.croquet.components.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( declaringType ) );
 			}
 		}

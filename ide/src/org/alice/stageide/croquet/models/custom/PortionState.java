@@ -46,7 +46,7 @@ package org.alice.stageide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class PortionState extends edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState {
+public class PortionState extends org.lgna.croquet.BoundedRangeIntegerState {
 	private static class SingletonHolder {
 		private static PortionState instance = new PortionState();
 	}
@@ -55,7 +55,7 @@ public class PortionState extends edu.cmu.cs.dennisc.croquet.BoundedRangeInteger
 	}
 	private PortionState() {
 		super(
-				edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP,
+				org.lgna.croquet.Application.INHERIT_GROUP,
 				java.util.UUID.fromString( "4c5552d0-d5c3-4f01-94b5-4920bd4be6fc" ),
 				0, 
 				100,

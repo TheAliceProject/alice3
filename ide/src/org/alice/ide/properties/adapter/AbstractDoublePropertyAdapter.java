@@ -48,10 +48,10 @@ import java.util.Locale;
 import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter.SetColorOperation;
 import org.alice.ide.properties.adapter.AbstractStringPropertyAdapter.SetStringOperation;
 import org.alice.ide.properties.uicontroller.DoublePropertyController;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.Operation;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.croquet.Model;
-import edu.cmu.cs.dennisc.croquet.Operation;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 
 public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstancePropertyAdapter<Double, O> 
@@ -65,7 +65,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 	}
 	
 	public static java.text.NumberFormat format = new java.text.DecimalFormat( "0.0" );
-	protected edu.cmu.cs.dennisc.croquet.StandardPopupOperation popupMenuOperation;
+	protected org.lgna.croquet.StandardPopupPrepModel popupMenuOperation;
 	protected java.util.List< SetDoubleOperation > defaultDoubleOperationModels;
 	
 	public AbstractDoublePropertyAdapter(String repr, O instance )
@@ -90,7 +90,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 	}
 	
 	@Override
-	public Operation getEditOperation() 
+	public org.lgna.croquet.PopupPrepModel getEditModel() 
 	{
 		if (this.popupMenuOperation == null)
 		{
@@ -103,9 +103,9 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 				this.defaultDoubleOperationModels.add(new SetDoubleOperation(new Double(d), format.format(d)));
 			}
 				
-			this.popupMenuOperation = new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "66435390-e900-44c7-b440-0789c31e5a7a" ) ) {
+			this.popupMenuOperation = new org.lgna.croquet.MenuModel( java.util.UUID.fromString( "66435390-e900-44c7-b440-0789c31e5a7a" ) ) {
 				@Override
-				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) {
+				public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 					super.handlePopupMenuPrologue( popupMenu, context );
 					
 					Double currentDouble = AbstractDoublePropertyAdapter.this.getValue();
@@ -113,13 +113,13 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 					
 					SetDoubleOperation currentDoubleOperation = new SetDoubleOperation(currentDouble, currentDoubleName);
 					
-					java.util.List<edu.cmu.cs.dennisc.croquet.MenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					java.util.List<org.lgna.croquet.MenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					models.add(currentDoubleOperation.getMenuItemPrepModel());
-					models.add(edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR);
+					models.add(org.lgna.croquet.MenuModel.SEPARATOR);
 					for( SetDoubleOperation operation : AbstractDoublePropertyAdapter.this.defaultDoubleOperationModels ) {
 						models.add(operation.getMenuItemPrepModel());
 					}
-					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
+					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
 			}.getPopupMenuOperation();
 		}

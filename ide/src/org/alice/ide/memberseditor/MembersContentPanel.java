@@ -45,14 +45,18 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
-		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+public abstract class MembersContentPanel extends org.lgna.croquet.components.PageAxisPanel {
+	private org.lgna.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible> fieldSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
+		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
 			MembersContentPanel.this.handleAccessibleSelection( nextValue );
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField> partSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField>() {
-		public void changed(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField nextValue) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField> partSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField>() {
+		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField nextValue, boolean isAdjusting ) {
 			MembersContentPanel.this.handlePartSelection( nextValue );
 		}
 	};

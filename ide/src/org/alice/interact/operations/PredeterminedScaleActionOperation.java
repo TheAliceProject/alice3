@@ -42,12 +42,12 @@
  */
 package org.alice.interact.operations;
 
-import edu.cmu.cs.dennisc.croquet.Group;
+import org.lgna.croquet.Group;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOperation {
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
 	private edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable;
@@ -96,8 +96,8 @@ public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.croque
 		
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				if( isDo && ( isDoRequired == false ) ) {

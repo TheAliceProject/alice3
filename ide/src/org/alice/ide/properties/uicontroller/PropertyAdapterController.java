@@ -44,8 +44,8 @@
 package org.alice.ide.properties.uicontroller;
 
 import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.lgna.croquet.components.Panel;
 
-import edu.cmu.cs.dennisc.croquet.Panel;
 
 public interface PropertyAdapterController<P>
 {

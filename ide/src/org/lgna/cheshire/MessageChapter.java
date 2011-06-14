@@ -61,10 +61,10 @@ public class MessageChapter extends Chapter {
 		return this.text;
 	}
 	@Override
-	public void complete( edu.cmu.cs.dennisc.croquet.Group completionGroup ) {
+	public void complete( org.lgna.croquet.Group completionGroup ) {
 	}
 	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 	}
 	@Override
 	public boolean isAutoAdvanceDesired() {

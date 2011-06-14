@@ -45,12 +45,13 @@ package org.alice.stageide.sceneeditor;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import edu.cmu.cs.dennisc.croquet.BooleanState;
+import org.lgna.croquet.BooleanState;
+
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.BooleanStateButton<javax.swing.AbstractButton> {
+/*package-private*/ class FieldTile extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> {
 	private edu.cmu.cs.dennisc.alice.ast.Accessible accessible;
 //	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 //		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -68,7 +69,7 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		this.accessible = accessible;
 		//this.setOpaque( false );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel( java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ), FieldTile.this.createPopupOperations() ).getPopupMenuOperation() );
+		this.setPopupMenuOperation( new org.lgna.croquet.PredeterminedMenuModel( java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ), FieldTile.this.createPopupOperations() ).getPopupMenuOperation() );
 		this.updateLabel();
 	}
 
@@ -80,10 +81,10 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		}
 	};
 	
-	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver valueObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-		public void changing(boolean nextValue) {
+	private org.lgna.croquet.State.ValueObserver< Boolean > valueObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed(boolean nextValue) {
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			FieldTile.this.updateLabel();
 		}
 	};
@@ -141,7 +142,7 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		};
 	}
 
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > rv ) {
+	protected java.util.List< org.lgna.croquet.MenuItemPrepModel > updatePopupOperations( java.util.List< org.lgna.croquet.MenuItemPrepModel > rv ) {
 		if( this.accessible instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.accessible;
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldType = fieldInAlice.getValueType();
@@ -191,8 +192,8 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		}
 		return rv;
 	}
-	private java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > createPopupOperations() {
-		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel >() );
+	private java.util.List< org.lgna.croquet.MenuItemPrepModel > createPopupOperations() {
+		return this.updatePopupOperations( new java.util.LinkedList< org.lgna.croquet.MenuItemPrepModel >() );
 	}
 
 	protected java.awt.Color calculateColor() {

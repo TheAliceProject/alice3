@@ -59,14 +59,14 @@ abstract class AbstractNumberChooser<N extends edu.cmu.cs.dennisc.alice.ast.Expr
 		return this.numberModel.getExpressionValue();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent() {
+	public org.lgna.croquet.components.Component< ? > createMainComponent() {
 		org.alice.ide.croquet.models.numberpad.PlusMinusOperation plusMinusOperation = org.alice.ide.croquet.models.numberpad.PlusMinusOperation.getInstance( this.numberModel );
 		if( this.numberModel.isDecimalPointSupported() ) {
 			org.alice.ide.croquet.models.numberpad.DecimalPointOperation decimalPointOperation = org.alice.ide.croquet.models.numberpad.DecimalPointOperation.getInstance( this.numberModel );
 			decimalPointOperation.setEnabled( this.numberModel.isDecimalPointSupported() );
 		}
 
-		edu.cmu.cs.dennisc.croquet.GridBagPanel gridBagPanel = new edu.cmu.cs.dennisc.croquet.GridBagPanel();
+		org.lgna.croquet.components.GridBagPanel gridBagPanel = new org.lgna.croquet.components.GridBagPanel();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.weightx = 1.0;
@@ -99,21 +99,21 @@ abstract class AbstractNumberChooser<N extends edu.cmu.cs.dennisc.alice.ast.Expr
 		}
 		gridBagPanel.addComponent( plusMinusOperation.createButton(), gbc );
 
-		edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JTextField > view = this.numberModel.createTextField();
+		org.lgna.croquet.components.JComponent< javax.swing.JTextField > view = this.numberModel.createTextField();
 		view.getAwtComponent().selectAll();
 
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel lineAxisPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
+		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel(
 				view, 
 				org.alice.ide.croquet.models.numberpad.BackspaceOperation.getInstance( this.numberModel ).createButton()
 		);
 
-		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		rv.addComponent( lineAxisPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
-		rv.addComponent( gridBagPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+		rv.addComponent( lineAxisPanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+		rv.addComponent( gridBagPanel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 
 		java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( gridBagPanel.getFont(), 3.0f );
 		view.setFont( font );
-		for( edu.cmu.cs.dennisc.croquet.Button button : edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( rv, edu.cmu.cs.dennisc.croquet.Button.class ) ) {
+		for( org.lgna.croquet.components.Button button : org.lgna.croquet.components.HierarchyUtilities.findAllMatches( rv, org.lgna.croquet.components.Button.class ) ) {
 			button.setFont( font );
 		}
 		return rv;

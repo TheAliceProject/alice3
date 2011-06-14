@@ -49,19 +49,19 @@ import org.lgna.cheshire.stencil.StencilsPresentation;
  * @author Dennis Cosgrove
  */
 public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation {
-	/*package-private*/static edu.cmu.cs.dennisc.croquet.Group IMPLEMENTATION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "90e2f36f-512c-41e4-8e7b-61e10c95cee6" ), "IMPLEMENTATION_GROUP" );
+	/*package-private*/static org.lgna.croquet.Group IMPLEMENTATION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "90e2f36f-512c-41e4-8e7b-61e10c95cee6" ), "IMPLEMENTATION_GROUP" );
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
 	@Override
-	protected org.lgna.cheshire.Chapter createChapter(org.lgna.croquet.steps.Transaction transaction) {
+	protected org.lgna.cheshire.Chapter createChapter(org.lgna.croquet.history.Transaction transaction) {
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
-	private final edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
+	private final org.lgna.croquet.components.Frame frame = new org.lgna.croquet.components.Frame();
 	private final PreviewComponent previewComponent = new PreviewComponent();
 	private final OffTrackPanel offTrackPanel = new OffTrackPanel();
-	private final edu.cmu.cs.dennisc.croquet.CardPanel cardPanel = new edu.cmu.cs.dennisc.croquet.CardPanel();
-	private final edu.cmu.cs.dennisc.croquet.CardPanel.Key previewKey;
-	private final edu.cmu.cs.dennisc.croquet.CardPanel.Key offTrackKey;
+	private final org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
+	private final org.lgna.croquet.components.CardPanel.Key previewKey;
+	private final org.lgna.croquet.components.CardPanel.Key offTrackKey;
 	private final javax.swing.JTree jTree;
 	private final BookTreeModel bookTreeModel;
 	private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
@@ -72,7 +72,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 				if( path.length > 1 ) {
 					if( path[ 1 ] instanceof org.lgna.cheshire.TransactionChapter  ) {
 						org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)path[ 1 ];
-						edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = transactionChapter.getReplacementAcceptability();
+						org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability = transactionChapter.getReplacementAcceptability();
 						if( replacementAcceptability != null ) {
 							if( replacementAcceptability.isAcceptable() ) {
 								if( replacementAcceptability.isDeviation() ) {
@@ -92,12 +92,12 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		}
 	};
 	public DocWizardsesquePresentation( 
-			edu.cmu.cs.dennisc.croquet.UserInformation userInformation, 
-			org.lgna.croquet.steps.TransactionHistory originalTransactionHistory,
-			org.lgna.croquet.steps.MigrationManager migrationManager,
+			org.lgna.croquet.UserInformation userInformation, 
+			org.lgna.croquet.history.TransactionHistory originalTransactionHistory,
+			org.lgna.croquet.migration.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
-			edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess
+			org.lgna.croquet.Group[] groupsTrackedForRandomAccess
 	) {
 		super( userInformation, org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess );
 		
@@ -132,14 +132,14 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 			
 		} );
 		
-		edu.cmu.cs.dennisc.croquet.BorderPanel contentPanel = this.frame.getContentPanel();
+		org.lgna.croquet.components.BorderPanel contentPanel = this.frame.getContentPanel();
 		
-		edu.cmu.cs.dennisc.croquet.FlowPanel flowPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel();
+		org.lgna.croquet.components.FlowPanel flowPanel = new org.lgna.croquet.components.FlowPanel();
 		flowPanel.addComponent( DoSingleStepOperation.getInstance().createButton() );
 		flowPanel.addComponent( DoAllStepsOperation.getInstance().createButton() );
 
-		edu.cmu.cs.dennisc.croquet.Label previewLabel = new edu.cmu.cs.dennisc.croquet.Label( "start with:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-		edu.cmu.cs.dennisc.croquet.PageAxisPanel previewPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel( previewLabel, this.previewComponent );
+		org.lgna.croquet.components.Label previewLabel = new org.lgna.croquet.components.Label( "start with:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		org.lgna.croquet.components.PageAxisPanel previewPanel = new org.lgna.croquet.components.PageAxisPanel( previewLabel, this.previewComponent );
 		
 		this.previewKey = cardPanel.createKey( previewPanel, java.util.UUID.randomUUID() ); 
 		this.offTrackKey = cardPanel.createKey( this.offTrackPanel, java.util.UUID.randomUUID() );
@@ -148,7 +148,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		cardPanel.setMinimumPreferredHeight( 50 );
 		cardPanel.show( this.previewKey );
 		
-		edu.cmu.cs.dennisc.croquet.VerticalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.VerticalSplitPane(flowPanel, this.cardPanel );
+		org.lgna.croquet.components.VerticalSplitPane splitPane = new org.lgna.croquet.components.VerticalSplitPane(flowPanel, this.cardPanel );
 		
 		this.bookTreeModel = new BookTreeModel( this.getBook() );
 		this.jTree = new javax.swing.JTree( this.bookTreeModel );
@@ -160,23 +160,23 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		this.jTree.setCellRenderer( new BookTreeCellRenderer() );
 		this.jTree.setRootVisible( false );
 		this.jTree.addMouseMotionListener( this.mouseMotionListener );
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( new edu.cmu.cs.dennisc.croquet.SwingAdapter( jTree ) );
-		contentPanel.addComponent( splitPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
-		contentPanel.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new org.lgna.croquet.components.SwingAdapter( jTree ) );
+		contentPanel.addComponent( splitPane, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+		contentPanel.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 	}
 	@Override
-	protected void handleTransactionCanceled( org.lgna.croquet.steps.Transaction transaction ) {
+	protected void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction ) {
 		this.restoreHistoryIndicesDueToCancel();
 	}
 	private boolean isIgnoringEvents;
 	
-	private final void handlePotentialReplacementEdit( org.lgna.cheshire.TransactionChapter transactionChapter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidateEdit ) {
-		edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = transactionChapter.getTransaction().getEdit();
-		edu.cmu.cs.dennisc.croquet.Group group = replacementCandidateEdit.getGroup();
+	private final void handlePotentialReplacementEdit( org.lgna.cheshire.TransactionChapter transactionChapter, org.lgna.croquet.edits.Edit< ? > replacementCandidateEdit ) {
+		org.lgna.croquet.edits.Edit< ? > originalEdit = transactionChapter.getTransaction().getEdit();
+		org.lgna.croquet.Group group = replacementCandidateEdit.getGroup();
 		if( group == DocWizardsesquePresentation.IMPLEMENTATION_GROUP ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidateEdit, this.getUserInformation() );
+			org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidateEdit, this.getUserInformation() );
 			if( replacementAcceptability.isAcceptable() ) {
 				transactionChapter.setReplacementAcceptability( replacementAcceptability );
 				this.incrementSelectedIndex();
@@ -186,7 +186,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		}
 	}
 	@Override
-	protected void handleEvent( org.lgna.cheshire.events.Event event ) {
+	protected void handleEvent( org.lgna.croquet.history.event.Event event ) {
 		this.jTree.repaint();
 		this.previewComponent.repaint();
 		if( isIgnoringEvents ) {
@@ -196,12 +196,12 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 			org.lgna.cheshire.Chapter chapter = book.getSelectedChapter();
 			if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
 				org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
-				if( event instanceof org.lgna.cheshire.events.EditCommittedEvent ) {
-					org.lgna.cheshire.events.EditCommittedEvent editCommittedEvent = (org.lgna.cheshire.events.EditCommittedEvent)event;
-					edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidateEdit = editCommittedEvent.getEdit();
-					org.lgna.croquet.steps.CompletionStep< ? > completionStep = replacementCandidateEdit.getCompletionStep();
-					org.lgna.croquet.steps.Transaction transaction = completionStep.getParent();
-					org.lgna.croquet.steps.TransactionHistory transactionHistory = transaction.getParent();
+				if( event instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+					org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)event;
+					org.lgna.croquet.edits.Edit< ? > replacementCandidateEdit = editCommittedEvent.getEdit();
+					org.lgna.croquet.history.CompletionStep< ? > completionStep = replacementCandidateEdit.getCompletionStep();
+					org.lgna.croquet.history.Transaction transaction = completionStep.getParent();
+					org.lgna.croquet.history.TransactionHistory transactionHistory = transaction.getParent();
 					if( transactionHistory.getParent() != null ) {
 						//pass
 					} else {
@@ -212,15 +212,16 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 							isIgnoringEvents = false;
 						}
 					}
-				} else if( event instanceof org.lgna.cheshire.events.FinishedEvent ) {
-					org.lgna.cheshire.events.FinishedEvent finishEvent = (org.lgna.cheshire.events.FinishedEvent)event;
-					org.lgna.croquet.steps.Transaction transaction = finishEvent.getTransaction();
-					org.lgna.croquet.steps.TransactionHistory transactionHistory = transaction.getParent();
+				} else if( event instanceof org.lgna.croquet.history.event.FinishedEvent ) {
+					org.lgna.croquet.history.event.FinishedEvent finishEvent = (org.lgna.croquet.history.event.FinishedEvent)event;
+					org.lgna.croquet.history.Node< ? > node = finishEvent.getNode();
+					org.lgna.croquet.history.Transaction transaction = node.getFirstAncestorAssignableTo( org.lgna.croquet.history.Transaction.class );
+					org.lgna.croquet.history.TransactionHistory transactionHistory = transaction.getParent();
 					if( transactionHistory.getParent() != null ) {
 						//pass
 					} else {
 						if( transaction.getCompletionStep().getModel() == org.alice.stageide.croquet.models.run.RunOperation.getInstance() ) {
-							transactionChapter.setReplacementAcceptability( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH );
+							transactionChapter.setReplacementAcceptability( org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH );
 							try { 
 								isIgnoringEvents = true;
 								this.incrementSelectedIndex();

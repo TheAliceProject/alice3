@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodTemplateMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
+public class MethodTemplateMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, MethodTemplateMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized MethodTemplateMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		MethodTemplateMenuModel rv = map.get( method );
@@ -63,13 +63,13 @@ public class MethodTemplateMenuModel extends edu.cmu.cs.dennisc.croquet.Predeter
 		super( java.util.UUID.fromString(  "96831579-1fb6-4c15-a509-ccdcc51458a8" ),
 				org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( method ).getMenuItemPrepModel(),
 				org.alice.ide.operations.ast.FocusCodeOperation.getInstance( method ).getMenuItemPrepModel(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( method ).getMenuItemPrepModel()
 		);
 		this.method = method;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CodableResolver< MethodTemplateMenuModel > createCodableResolver() {
+	protected org.lgna.croquet.resolvers.CodableResolver< MethodTemplateMenuModel > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateMenuModel >( this, this.method, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 	}
 }

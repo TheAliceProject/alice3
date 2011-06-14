@@ -50,6 +50,7 @@ public class ArrayBlank extends org.alice.ide.croquet.models.cascade.ExpressionB
 	private static class SingletonHolder {
 		private static ArrayBlank instance = new ArrayBlank();
 	}
+
 	public static ArrayBlank getInstance() {
 		return SingletonHolder.instance;
 	}
@@ -57,10 +58,8 @@ public class ArrayBlank extends org.alice.ide.croquet.models.cascade.ExpressionB
 		super( java.util.UUID.fromString( "afafc379-2254-41c1-9ce5-6515d1b04211" ), Object[].class );
 	}
 	@Override
-	protected java.util.List<edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren(
-			java.util.List<edu.cmu.cs.dennisc.croquet.CascadeItem> rv,
-			edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > blankNode ) {
 		rv.add( ArraySeparator.getInstance() );
-		return super.updateChildren(rv, context);
+		return super.updateChildren( rv, blankNode );
 	}
 }

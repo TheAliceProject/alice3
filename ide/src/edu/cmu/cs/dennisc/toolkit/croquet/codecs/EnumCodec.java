@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.toolkit.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public class EnumCodec< T extends Enum< T > > implements edu.cmu.cs.dennisc.croquet.Codec< T > {
+public class EnumCodec< T extends Enum< T > > implements org.lgna.croquet.ItemCodec< T > {
 	private static java.util.Map< Class<?>, EnumCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized < T extends Enum< T > > EnumCodec< T > getInstance( Class< T > valueCls ) {
 		EnumCodec< ? > rv = map.get( valueCls );

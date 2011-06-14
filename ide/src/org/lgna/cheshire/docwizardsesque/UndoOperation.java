@@ -46,7 +46,7 @@ package org.lgna.cheshire.docwizardsesque;
 /**
  * @author Dennis Cosgrove
  */
-public class UndoOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class UndoOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static UndoOperation instance = new UndoOperation();
 	}
@@ -59,9 +59,9 @@ public class UndoOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 		this.setSmallIcon( org.alice.ide.croquet.models.history.UndoOperation.getInstance().getSmallIcon() );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		DocWizardsesquePresentation docWizardsesquePresentation = (DocWizardsesquePresentation)org.lgna.cheshire.Presentation.getInstance();
 		docWizardsesquePresentation.getBackOnTrack();
-		context.finish();
+		step.finish();
 	}
 }

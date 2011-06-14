@@ -43,7 +43,7 @@
 
 package org.alice.stageide.sceneeditor.snap;
 
-import edu.cmu.cs.dennisc.croquet.BooleanState;
+import org.lgna.croquet.BooleanState;
 
 public class IsSnapToGridEnabledState extends BooleanState {
 	private static class SingletonHolder {

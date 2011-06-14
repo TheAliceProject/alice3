@@ -43,7 +43,7 @@
 
 package org.alice.stageide.sceneeditor.snap;
 
-import edu.cmu.cs.dennisc.croquet.BooleanState;
+import org.lgna.croquet.BooleanState;
 
 public class AreSnapDetailsExpandedState extends BooleanState
 {
@@ -55,6 +55,6 @@ public class AreSnapDetailsExpandedState extends BooleanState
     }
     private AreSnapDetailsExpandedState() {
         //TODO: Localize this
-        super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "5a13da16-1b32-4c50-85ae-1b62dc537876" ), false, "Snap details..." );
+        super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "5a13da16-1b32-4c50-85ae-1b62dc537876" ), false );
     }
 }

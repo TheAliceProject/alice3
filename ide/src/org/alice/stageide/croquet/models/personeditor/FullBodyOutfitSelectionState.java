@@ -55,7 +55,7 @@ public class FullBodyOutfitSelectionState extends AbstractListSelectionState<org
 		return SingletonHolder.instance;
 	}
 	private FullBodyOutfitSelectionState() {
-		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.apis.stage.FullBodyOutfit >(){
+		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new org.lgna.croquet.ItemCodec< org.alice.apis.stage.FullBodyOutfit >(){
 			public Class< org.alice.apis.stage.FullBodyOutfit > getValueClass() {
 				return org.alice.apis.stage.FullBodyOutfit.class;
 			}
@@ -86,8 +86,8 @@ public class FullBodyOutfitSelectionState extends AbstractListSelectionState<org
 		return -1;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> rv = super.createList();
+	public org.lgna.croquet.components.List<org.alice.apis.stage.FullBodyOutfit> createList() {
+		org.lgna.croquet.components.List<org.alice.apis.stage.FullBodyOutfit> rv = super.createList();
 		rv.setCellRenderer( new FullBodyOutfitListCellRenderer() );
 		return rv;
 	}

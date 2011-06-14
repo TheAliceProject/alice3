@@ -47,11 +47,11 @@ package org.alice.ide.openprojectpane;
  * @author Dennis Cosgrove
  */
 public abstract class ListContentPanel extends TabContentPanel {
-	private class UriSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState<java.net.URI> {
+	private class UriSelectionState extends org.lgna.croquet.ListSelectionState<java.net.URI> {
 		private boolean isRefreshRequired = true;
 		private java.net.URI[] uris = new java.net.URI[] {};
 		public UriSelectionState() {
-			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), org.alice.ide.croquet.codecs.UriCodec.SINGLETON, -1 );
+			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), org.alice.ide.croquet.codecs.UriCodec.SINGLETON, -1 );
 		}
 		
 		private void updateUrisIfNecessary() {
@@ -124,17 +124,17 @@ public abstract class ListContentPanel extends TabContentPanel {
 	
 	public ListContentPanel() {
 		this.refresh();
-		final edu.cmu.cs.dennisc.croquet.List<java.net.URI> list = this.uriSelection.createList();
+		final org.lgna.croquet.components.List<java.net.URI> list = this.uriSelection.createList();
 		list.setBackgroundColor( null );
 		list.setCellRenderer( new ProjectSnapshotListCellRenderer() );
-		list.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
+		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
 		list.setVisibleRowCount( -1 );
 		
 		edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 			@Override
 			protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
 				if( quoteClickCountUnquote == 2 ) {
-					edu.cmu.cs.dennisc.croquet.Button defaultButton = list.getRoot().getDefaultButton();
+					org.lgna.croquet.components.Button defaultButton = list.getRoot().getDefaultButton();
 					if( defaultButton != null ) {
 						defaultButton.doClick();
 					}

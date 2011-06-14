@@ -59,7 +59,7 @@ class CreateFieldFromPersonPane extends org.alice.ide.declarationpanes.CreateLar
 /**
  * @author Dennis Cosgrove
  */
-public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOperation< CreateFieldFromPersonPane > {
+public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOperation {
 	private static class SingletonHolder {
 		private static CreatePersonFieldOperation instance = new CreatePersonFieldOperation();
 	}
@@ -70,8 +70,8 @@ public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOpera
 		super( java.util.UUID.fromString( "84f3a391-4a6c-4a10-82da-6b6231937949" ) );
 	}
 	@Override
-	protected CreateFieldFromPersonPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< CreateFieldFromPersonPane > context ) {
-		CreatePersonOperation createPersonOperation = new CreatePersonOperation( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP );
+	protected CreateFieldFromPersonPane prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		CreatePersonOperation createPersonOperation = new CreatePersonOperation( org.lgna.croquet.Application.INHERIT_GROUP );
 		createPersonOperation.fire();
 		
 		org.alice.apis.stage.Person person = createPersonOperation.getPerson();
@@ -85,8 +85,8 @@ public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOpera
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.stage.Person > createFieldAndInstance(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< CreateFieldFromPersonPane > context ) {
-		CreateFieldFromPersonPane createFieldFromPersonPane = context.getMainPanel();
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.stage.Person > createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step ) {
+		CreateFieldFromPersonPane createFieldFromPersonPane = step.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.getInputValue();
 		if( field != null ) {
 			//ide.getSceneEditor().handleFieldCreation( declaringType, field, person );

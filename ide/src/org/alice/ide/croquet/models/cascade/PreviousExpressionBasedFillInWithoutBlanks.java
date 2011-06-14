@@ -53,19 +53,31 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends edu.
 	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		return org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
 	}
-	protected abstract boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,Void> context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
+//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,Void> context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
+//	@Override
+//	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,Void> context ) {
+//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+//		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
+//	}
+	private edu.cmu.cs.dennisc.alice.ast.Expression cleanExpression;
 	@Override
-	public final boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext<F,Void> context ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
+	protected void markClean() {
+		super.markClean();
+		this.cleanExpression = this.getPreviousExpression();
 	}
+	@Override
+	protected boolean isDirty() {
+		boolean isPrevExpressionChanged = this.cleanExpression != this.getPreviousExpression();
+		return super.isDirty() || isPrevExpressionChanged;
+	}
+
 	protected abstract F createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
 	@Override
-	public final F createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, Void > context ) {
+	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
 		return this.createValue( this.getPreviousExpression() );
 	}
 	@Override
-	public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, java.lang.Void > context ) {
+	public final F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
 		//todo?
 		return this.createValue( this.getPreviousExpression() );
 	}

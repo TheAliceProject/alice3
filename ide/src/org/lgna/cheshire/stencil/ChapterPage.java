@@ -60,7 +60,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 	}
 	private final org.lgna.cheshire.Chapter chapter;
 	private final java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final edu.cmu.cs.dennisc.croquet.JComponent< ? > card = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+	private final org.lgna.croquet.components.JComponent< ? > card = new org.lgna.croquet.components.BorderPanel();
 	public ChapterPage( org.lgna.cheshire.Chapter chapter ) {
 		this.chapter = chapter;
 		this.refreshNotes();
@@ -79,8 +79,8 @@ public class ChapterPage implements org.lgna.stencil.Page {
 			this.notes.add( new MessageNote( messageChapter.getText() ) );
 		} else if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
 			org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
-			org.lgna.croquet.steps.Transaction transaction = transactionChapter.getTransaction();
-			for( org.lgna.croquet.steps.Step< ? > step : transaction.getDescendantSteps() ) {
+			org.lgna.croquet.history.Transaction transaction = transactionChapter.getTransaction();
+			for( org.lgna.croquet.history.Step< ? > step : transaction.getDescendantSteps() ) {
 				this.notes.add( org.lgna.cheshire.stencil.stepnotes.StepNoteFactory.createNote( step ) );
 			}
 		}
@@ -159,7 +159,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 			}
 		}
 	}
-	private class PagePanel extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
+	private class PagePanel extends org.lgna.croquet.components.JComponent< javax.swing.JPanel > {
 		@Override
 		protected javax.swing.JPanel createAwtComponent() {
 			javax.swing.JPanel rv = new javax.swing.JPanel() {
@@ -277,11 +277,11 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		}
 	}
 	
-	protected java.awt.Point calculateLocationForNoteAt( edu.cmu.cs.dennisc.croquet.Container< ? > container, int index ) {
+	protected java.awt.Point calculateLocationForNoteAt( org.lgna.croquet.components.Container< ? > container, int index ) {
 		return this.notes.get( 0 ).calculateLocation( container );
 	}
 
-	public void adjustIfNecessary( org.lgna.cheshire.events.Event event ) {
+	public void adjustIfNecessary( org.lgna.croquet.history.event.Event event ) {
 //		Note note = this.getFirstActiveNote();
 //		if( note != null ) {
 //			note.adjustIfNecessary( event );
@@ -306,7 +306,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 	public boolean isAutoAdvanceDesired() {
 		return this.chapter.isAutoAdvanceDesired();
 	}
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
 		final int NOTE_COUNT = this.notes.size();
 		int activeNoteIndex = this.getIndexOfFirstActiveNote();
 		activeNoteIndex = Math.max( activeNoteIndex, 0 );
@@ -321,7 +321,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 						this.setActiveNote( activeNoteIndex );
 					}
 				}
-			} catch( edu.cmu.cs.dennisc.croquet.CancelException ce ) {
+			} catch( org.lgna.croquet.CancelException ce ) {
 				//this.reset();
 				org.lgna.cheshire.stencil.StencilsPresentation.getInstance().restoreHistoryIndicesDueToCancel();
 				this.reset();
@@ -339,7 +339,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 //		return this.getNotes().size();
 //	}
 
-	protected java.awt.Point calculateLocationOfFirstNote( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
+	protected java.awt.Point calculateLocationOfFirstNote( org.lgna.croquet.components.Container< ? > container ) {
 		return this.calculateLocationForNoteAt( container, 0 );
 	}
 
@@ -396,7 +396,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		this.setLayoutHint( new java.awt.Point( x, y ) );
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.Component< ? > getCard() {
+	public org.lgna.croquet.components.Component< ? > getCard() {
 		return this.stepPanel;
 	}
 

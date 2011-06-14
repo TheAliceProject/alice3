@@ -45,15 +45,15 @@ package org.lgna.cheshire.stencil;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class PresentationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+/*package-private*/abstract class PresentationOperation extends org.lgna.croquet.ActionOperation {
 	public PresentationOperation( java.util.UUID individualId, String name ) {
 		super( StencilsPresentation.IMPLEMENTATION_GROUP, individualId );
 		this.setName( name );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Button createButton() {
-		edu.cmu.cs.dennisc.croquet.Button rv = super.createButton();
+	public org.lgna.croquet.components.Button createButton() {
+		org.lgna.croquet.components.Button rv = super.createButton();
 		rv.setBackgroundColor( StencilsPresentation.CONTROL_COLOR );
 		return rv;
 	}

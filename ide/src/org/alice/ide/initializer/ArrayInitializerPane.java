@@ -44,7 +44,7 @@ package org.alice.ide.initializer;
 
 import edu.cmu.cs.dennisc.alice.ast.Expression;
 
-abstract class FauxItem extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.AbstractButton > {
+abstract class FauxItem extends org.lgna.croquet.components.JComponent< javax.swing.AbstractButton > {
 	//private static org.alice.ide.codeeditor.Factory factory = new org.alice.ide.codeeditor.Factory();
 	//javax.swing.UIManager.getColor("List.selectionBackground");
 	//javax.swing.UIManager.getColor("List[Selected].textBackground");
@@ -113,15 +113,10 @@ abstract class FauxItem extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swi
 //		rv.setOpaque( false );
 //		rv.setBackground( null );
 
-		org.alice.ide.common.AbstractDropDownListItemExpressionPane dropDownListItemExpressionPane = new org.alice.ide.common.AbstractDropDownListItemExpressionPane( this.index, this.expressionListProperty ) {
-			@Override
-			protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType() {
-				return FauxItem.this.getFillInType();
-			}
-		};
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel lineAxisPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
-				new edu.cmu.cs.dennisc.croquet.Label(  "[ " + index + " ]" ),
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ),
+		org.alice.ide.common.DropDownListItemExpressionPane dropDownListItemExpressionPane = new org.alice.ide.common.DropDownListItemExpressionPane( this.index, this.expressionListProperty, this.getFillInType() );
+		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel(
+				new org.lgna.croquet.components.Label(  "[ " + index + " ]" ),
+				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
 				dropDownListItemExpressionPane
 		);
 		rv.add( lineAxisPanel.getAwtComponent(), java.awt.BorderLayout.LINE_START );
@@ -130,7 +125,7 @@ abstract class FauxItem extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swi
 	}
 }
 
-class MutableList extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
+class MutableList extends org.lgna.croquet.components.PageAxisPanel {
 	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 	private int originalIndex = -1;
 	private int dropIndex = -1;
@@ -204,8 +199,8 @@ class MutableList extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 		}
 	};
 	
-	private edu.cmu.cs.dennisc.croquet.Button buttonToScrollToVisibleOnAdd;
-	public MutableList( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.croquet.Button buttonToScrollToVisibleOnAdd ) {
+	private org.lgna.croquet.components.ViewController< ?,? > buttonToScrollToVisibleOnAdd;
+	public MutableList( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, org.lgna.croquet.components.ViewController< ?,? > buttonToScrollToVisibleOnAdd ) {
         this.componentTypeProperty = componentTypeProperty;
         this.expressionListProperty = expressionListProperty;
         this.buttonToScrollToVisibleOnAdd = buttonToScrollToVisibleOnAdd;
@@ -403,17 +398,17 @@ class MutableList extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 //	}
 }
 
-public class ArrayInitializerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public class ArrayInitializerPane extends org.lgna.croquet.components.BorderPanel {
     public ArrayInitializerPane( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions ) {
-        org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation addExpressionOperation = new org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation( componentTypeProperty, arrayExpressions );
-        edu.cmu.cs.dennisc.croquet.Button button = addExpressionOperation.createButton();
+        org.alice.ide.croquet.models.ast.cascade.AddExpressionCascade model = new org.alice.ide.croquet.models.ast.cascade.AddExpressionCascade( componentTypeProperty, arrayExpressions );
+        org.lgna.croquet.components.PopupButton button = model.createPopupButton();
 
         MutableList mutableList = new MutableList( componentTypeProperty, arrayExpressions, button );
-        edu.cmu.cs.dennisc.croquet.PageAxisPanel pageAxisPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel( 
+        org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel( 
         		mutableList, 
-        		new edu.cmu.cs.dennisc.croquet.LineAxisPanel( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 14 ), button ) 
+        		new org.lgna.croquet.components.LineAxisPanel( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 14 ), button ) 
         );
-        edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( pageAxisPanel );
+        org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( pageAxisPanel );
         scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
         scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
         //pageAxisPanel.getAwtComponent().setOpaque( false );

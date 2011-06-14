@@ -81,10 +81,9 @@ import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.alice.stageide.sceneeditor.snap.SnapState;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.components.DragComponent;
 
-import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
-import edu.cmu.cs.dennisc.croquet.DragComponent;
-import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 
 import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.animation.Animator;
@@ -145,7 +144,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	}
 	
 	public ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.HandleStyle> handleStateValueObserver = new ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.HandleStyle>() {
-		public void changed( org.alice.stageide.sceneeditor.HandleStyle nextValue ) {
+		public void changing( org.lgna.croquet.State< org.alice.stageide.sceneeditor.HandleStyle > state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.stageide.sceneeditor.HandleStyle > state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
 			PrintUtilities.println( nextValue );
 			AbstractDragAdapter.this.setInteractionState( nextValue );
 		}
@@ -1044,14 +1045,14 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	private Point getDragAndDropPoint(DragAndDropContext dragAndDropContext)
+	private Point getDragAndDropPoint(org.lgna.croquet.history.DragStep dragAndDropContext)
 	{
 		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.getAWTComponent() );
 		return pointInLookingGlass;
 	}
 	
-	public void dragUpdated(DragAndDropContext dragAndDropContext) {
+	public void dragUpdated(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		this.currentInputState.setDragAndDropContext(dragAndDropContext);
 		this.currentInputState.setIsDragEvent(true);
 		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );
@@ -1060,7 +1061,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		handleStateChange();
 	}
 	
-	public void dragEntered(DragAndDropContext dragAndDropContext) {
+	public void dragEntered(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		this.currentInputState.setDragAndDropContext(dragAndDropContext);
 		this.currentInputState.setIsDragEvent(true);
 		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );
@@ -1069,7 +1070,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		handleStateChange();
 	}
 	
-	public void dragExited(DragAndDropContext dragAndDropContext) {		
+	public void dragExited(org.lgna.croquet.history.DragStep dragAndDropContext) {		
 		this.currentInputState.setDragAndDropContext(dragAndDropContext); //We need a valid dragAndDropContext when we handle the update
 		this.currentInputState.setIsDragEvent(false);
 		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );

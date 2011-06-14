@@ -46,40 +46,21 @@ package org.alice.ide.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends edu.cmu.cs.dennisc.croquet.OperationEdit< M > {
-	public static class DependentEditMemento<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends Memento<M> {
-		public DependentEditMemento( DependentEdit<M> edit ) {
-			super( edit );
-		}
-		public DependentEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit<M> createEdit() {
-			return new DependentEdit<M>( this );
-		}
-		@Override
-		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		}
-		@Override
-		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		}
+public final class DependentEdit<M extends org.lgna.croquet.Operation<?>> extends org.lgna.croquet.edits.OperationEdit< M > {
+	public DependentEdit( org.lgna.croquet.history.OperationStep completionStep ) {
+		super( completionStep );
 	}
-	
-	public DependentEdit() {
+	public DependentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 	}
-	private DependentEdit( DependentEditMemento<M> memento ) {
-		super( memento );
-	}
-
 	@Override
-	public Memento< M > createMemento() {
-		return new DependentEditMemento<M>( this );
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
 	}
 	private org.alice.ide.croquet.models.ResponsibleModel getResponsibleModel() {
-		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = this.getContext();
-		if( context != null ) {
-			edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
+		org.lgna.croquet.history.CompletionStep< ? > step = this.getCompletionStep();
+		if( step != null ) {
+			org.lgna.croquet.CompletionModel model = step.getModel();
 			if( model instanceof org.alice.ide.croquet.models.ResponsibleModel ) {
 				return (org.alice.ide.croquet.models.ResponsibleModel)model;
 			} else {
@@ -90,7 +71,7 @@ public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<
 		}
 	}
 	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
 		this.getResponsibleModel().retarget( retargeter );
 	}
@@ -110,11 +91,11 @@ public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<
 		return this.getResponsibleModel().updatePresentation( rv, locale );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
 		return this.getResponsibleModel().getReplacementAcceptability( replacementCandidate, userInformation );
 	}
 	@Override
-	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		this.getResponsibleModel().addKeyValuePairs( retargeter, edit );
 	}

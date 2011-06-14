@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
 /**
  * @author Dennis Cosgrove
  */
-public class VariableAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascadeOperation {
+public class VariableAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
 	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, VariableAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static synchronized VariableAccessOperation getInstance( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		assert variable != null;
@@ -66,7 +66,7 @@ public class VariableAccessOperation extends org.alice.ide.croquet.models.ast.ca
 		this.variable = variable;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
 		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
 	}
 }

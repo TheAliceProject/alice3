@@ -45,9 +45,9 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState<E> {
-	public AbstractItemSelectionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.croquet.Codec< E > codec, int selectedIndex, E... elements ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, codec, selectedIndex, elements );
+public abstract class AbstractItemSelectionOperation<E> extends org.lgna.croquet.DefaultListSelectionState<E> {
+	public AbstractItemSelectionOperation( java.util.UUID individualId, org.lgna.croquet.ItemCodec< E > codec, int selectedIndex, E... elements ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, individualId, codec, selectedIndex, elements );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();

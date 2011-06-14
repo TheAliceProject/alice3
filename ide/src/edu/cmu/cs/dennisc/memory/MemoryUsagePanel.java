@@ -42,9 +42,9 @@
  */
 package edu.cmu.cs.dennisc.memory;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
+import org.lgna.croquet.components.BorderPanel.Constraint;
 
-class MemoryUsageGraph extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComponent > {
+class MemoryUsageGraph extends org.lgna.croquet.components.JComponent< javax.swing.JComponent > {
 	private static final long K = 1024;
 	//private static final long M = K*K;
 	private java.util.List< java.lang.management.MemoryUsage > samples = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -104,20 +104,20 @@ class MemoryUsageGraph extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swin
 	}
 };
 
-class GarbageCollectAction extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	private static final edu.cmu.cs.dennisc.croquet.Group SYSTEM_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "7261a372-2b8d-4862-9669-852ba5e217e6" ), "SYSTEM_GROUP" );
+class GarbageCollectAction extends org.lgna.croquet.ActionOperation {
+	private static final org.lgna.croquet.Group SYSTEM_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "7261a372-2b8d-4862-9669-852ba5e217e6" ), "SYSTEM_GROUP" );
 	public GarbageCollectAction() {
 		super( SYSTEM_GROUP, java.util.UUID.fromString( "04dd2f4c-31d8-400e-8467-22a810e089b4" ) );
 		this.setName( "garbage collect" );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		System.gc();
-		context.finish();
+		step.finish();
 	}
 }
 
-public class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public class MemoryUsagePanel extends org.lgna.croquet.components.BorderPanel {
 	private GarbageCollectAction garbageCollectAction = new GarbageCollectAction();
 	private MemoryUsageGraph memoryUsageGraph = new MemoryUsageGraph();
 	private javax.swing.Timer timer = new javax.swing.Timer( 500, new java.awt.event.ActionListener() {
@@ -144,27 +144,30 @@ public class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 
 	public static void main(String[] args) {
-		edu.cmu.cs.dennisc.croquet.Application application = new edu.cmu.cs.dennisc.croquet.Application() {
+		org.lgna.croquet.Application application = new org.lgna.croquet.Application() {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.Component< ? > createContentPane() {
+			protected org.lgna.croquet.components.Component< ? > createContentPane() {
 				return new MemoryUsagePanel();
 			}
 			@Override
-			public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor( edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+			public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
 				return null;
 			}
 			@Override
-			protected void handleAbout( java.util.EventObject e ) {
+			protected void handleAbout( org.lgna.croquet.triggers.Trigger trigger ) {
 			}
 			@Override
-			protected void handlePreferences( java.util.EventObject e ) {
+			protected void handlePreferences( org.lgna.croquet.triggers.Trigger trigger ) {
 			}
 			@Override
-			protected void handleQuit( java.util.EventObject e ) {
+			protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
 				System.exit( 0 );
 			}
 			@Override
 			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+			}
+			@Override
+			protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
 			}
 		};
 		application.initialize( args );

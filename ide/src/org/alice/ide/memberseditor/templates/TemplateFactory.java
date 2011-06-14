@@ -49,18 +49,18 @@ public class TemplateFactory {
 	private TemplateFactory() {
 		throw new AssertionError();
 	}
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, edu.cmu.cs.dennisc.croquet.DragComponent > mapMethodToProcedureInvocationTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, edu.cmu.cs.dennisc.croquet.DragComponent > mapMethodToFunctionInvocationTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, org.lgna.croquet.components.DragComponent > mapMethodToProcedureInvocationTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, org.lgna.croquet.components.DragComponent > mapMethodToFunctionInvocationTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.croquet.DragComponent > mapMethodToAccessorTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.croquet.DragComponent > mapMethodToAccessArrayAtIndexTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.croquet.DragComponent > mapMethodToArrayLengthTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, org.lgna.croquet.components.DragComponent > mapMethodToAccessorTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, org.lgna.croquet.components.DragComponent > mapMethodToAccessArrayAtIndexTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, org.lgna.croquet.components.DragComponent > mapMethodToArrayLengthTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.croquet.DragComponent > mapMethodToMutatorTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.croquet.DragComponent > mapMethodToMutateArrayAtIndexTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, org.lgna.croquet.components.DragComponent > mapMethodToMutatorTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, org.lgna.croquet.components.DragComponent > mapMethodToMutateArrayAtIndexTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	public static edu.cmu.cs.dennisc.croquet.DragComponent getProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		edu.cmu.cs.dennisc.croquet.DragComponent rv = mapMethodToProcedureInvocationTemplate.get( method );
+	public static org.lgna.croquet.components.DragComponent getProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		org.lgna.croquet.components.DragComponent rv = mapMethodToProcedureInvocationTemplate.get( method );
 		if( rv != null ) {
 			//pass
 		} else {
@@ -69,8 +69,8 @@ public class TemplateFactory {
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.croquet.DragComponent getFunctionInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		edu.cmu.cs.dennisc.croquet.DragComponent rv = mapMethodToFunctionInvocationTemplate.get( method );
+	public static org.lgna.croquet.components.DragComponent getFunctionInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		org.lgna.croquet.components.DragComponent rv = mapMethodToFunctionInvocationTemplate.get( method );
 		if( rv != null ) {
 			
 		} else {
@@ -79,8 +79,8 @@ public class TemplateFactory {
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.croquet.DragComponent getAccessorTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		edu.cmu.cs.dennisc.croquet.DragComponent rv = mapMethodToAccessorTemplate.get( field );
+	public static org.lgna.croquet.components.DragComponent getAccessorTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		org.lgna.croquet.components.DragComponent rv = mapMethodToAccessorTemplate.get( field );
 		if( rv != null ) {
 			
 		} else {
@@ -89,8 +89,8 @@ public class TemplateFactory {
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.croquet.DragComponent getAccessArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		edu.cmu.cs.dennisc.croquet.DragComponent rv = mapMethodToAccessArrayAtIndexTemplate.get( field );
+	public static org.lgna.croquet.components.DragComponent getAccessArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		org.lgna.croquet.components.DragComponent rv = mapMethodToAccessArrayAtIndexTemplate.get( field );
 		if( rv != null ) {
 			
 		} else {
@@ -99,8 +99,8 @@ public class TemplateFactory {
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.croquet.DragComponent getArrayLengthTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		edu.cmu.cs.dennisc.croquet.DragComponent rv = mapMethodToArrayLengthTemplate.get( field );
+	public static org.lgna.croquet.components.DragComponent getArrayLengthTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		org.lgna.croquet.components.DragComponent rv = mapMethodToArrayLengthTemplate.get( field );
 		if( rv != null ) {
 			
 		} else {
@@ -110,8 +110,8 @@ public class TemplateFactory {
 		return rv;
 	}
 	
-	public static edu.cmu.cs.dennisc.croquet.DragComponent getMutatorTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		edu.cmu.cs.dennisc.croquet.DragComponent rv = mapMethodToMutatorTemplate.get( field );
+	public static org.lgna.croquet.components.DragComponent getMutatorTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		org.lgna.croquet.components.DragComponent rv = mapMethodToMutatorTemplate.get( field );
 		if( rv != null ) {
 			
 		} else {
@@ -120,8 +120,8 @@ public class TemplateFactory {
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.croquet.DragComponent getMutateArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		edu.cmu.cs.dennisc.croquet.DragComponent rv = mapMethodToMutateArrayAtIndexTemplate.get( field );
+	public static org.lgna.croquet.components.DragComponent getMutateArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		org.lgna.croquet.components.DragComponent rv = mapMethodToMutateArrayAtIndexTemplate.get( field );
 		if( rv != null ) {
 			
 		} else {

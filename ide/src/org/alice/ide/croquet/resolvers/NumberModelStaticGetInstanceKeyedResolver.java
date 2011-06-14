@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class NumberModelStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T > {
+public class NumberModelStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.croquet.models.numberpad.NumberModel.class };
 	private org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
 	public NumberModelStaticGetInstanceKeyedResolver( T instance, org.alice.ide.croquet.models.numberpad.NumberModel numberModel ) {

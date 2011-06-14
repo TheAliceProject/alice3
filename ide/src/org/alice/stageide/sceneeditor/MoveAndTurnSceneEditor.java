@@ -98,17 +98,7 @@ import edu.cmu.cs.dennisc.alice.ast.Accessible;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.croquet.AbstractButton;
-import edu.cmu.cs.dennisc.croquet.StandardPopupOperation;
-import edu.cmu.cs.dennisc.croquet.BooleanState;
-import edu.cmu.cs.dennisc.croquet.ComboBox;
-import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
-import edu.cmu.cs.dennisc.croquet.DragComponent;
-import edu.cmu.cs.dennisc.croquet.ListSelectionState;
-import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
-import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;
-import edu.cmu.cs.dennisc.croquet.Operation;
-import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
+import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
@@ -131,6 +121,13 @@ import org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelecti
 import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
 import org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState;
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.StandardPopupPrepModel;
+import org.lgna.croquet.components.AbstractButton;
+import org.lgna.croquet.components.ComboBox;
+import org.lgna.croquet.components.DragComponent;
 import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
 
 /**
@@ -151,7 +148,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	private java.util.List< SceneEditorFieldObserver > fieldObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createLightweightOnscreenLookingGlass();
-	private class LookingGlassPanel extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
+	private class LookingGlassPanel extends org.lgna.croquet.components.JComponent< javax.swing.JPanel > {
 		@Override
 		protected javax.swing.JPanel createAwtComponent() {
 			javax.swing.JPanel rv = MoveAndTurnSceneEditor.this.onscreenLookingGlass.getJPanel();
@@ -162,7 +159,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
-	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
+	private org.lgna.croquet.components.HorizontalSplitPane splitPane = new org.lgna.croquet.components.HorizontalSplitPane();
 	private SidePane sidePane;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 	private CameraMarker expandedViewSelectedMarker = null;
@@ -190,32 +187,42 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	//private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState.getInstance();
 	//private ListSelectionState<FieldDeclaredInAlice> objectMarkerFieldList = org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState.getInstance();
 
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-		public void changed( org.alice.ide.editorstabbedpane.CodeComposite next ) {
-			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( next != null ? next.getCode() : null );
+	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > codeSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( nextValue != null ? nextValue.getCode() : null );
 		}
 	};
 	
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<View> mainCameraViewSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<View>() {
-		public void changed(View nextValue) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver<View> mainCameraViewSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver<View>() {
+		public void changing( org.lgna.croquet.State< org.alice.stageide.sceneeditor.View > state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.stageide.sceneeditor.View > state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
 			MoveAndTurnSceneEditor.this.handleMainCameraViewSelection( mainCameraViewTracker.getCameraMarker( nextValue ) );
 		}
 	};
 	
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice> cameraMarkerFieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice>() {
-		public void changed(FieldDeclaredInAlice nextValue) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice> cameraMarkerFieldSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice>() {
+		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
 			MoveAndTurnSceneEditor.this.handleCameraMarkerFieldSelection( nextValue );
 		}
 	};
 	
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice> objectMarkerFieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice>() {
-		public void changed(FieldDeclaredInAlice nextValue) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice> objectMarkerFieldSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice>() {
+		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
 			MoveAndTurnSceneEditor.this.handleObjectMarkerFieldSelection( nextValue );
 		}
 	};
 	
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
-		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible> fieldSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
+		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
 			MoveAndTurnSceneEditor.this.handleAccessibleSelection( nextValue );
 		}
 	};
@@ -246,18 +253,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	};
 	
-	private BooleanState.ValueObserver showSnapGridObserver = new BooleanState.ValueObserver() {
-		public void changing(boolean nextValue) {
+	private org.lgna.croquet.State.ValueObserver<Boolean> showSnapGridObserver = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed(boolean nextValue) {
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			MoveAndTurnSceneEditor.this.setShowSnapGrid(nextValue);	
 		}
 	};
 	
-	private BooleanState.ValueObserver snapEnabledObserver = new BooleanState.ValueObserver() {
-        public void changing(boolean nextValue) {
-        }
-        public void changed(boolean nextValue) {
+	private org.lgna.croquet.State.ValueObserver<Boolean> snapEnabledObserver = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
             if (MoveAndTurnSceneEditor.this.snapState.isShowSnapGridEnabled())
             {
                 MoveAndTurnSceneEditor.this.setShowSnapGrid(nextValue);
@@ -279,7 +286,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	};
 	
-	private static class FieldRadioButtons extends edu.cmu.cs.dennisc.croquet.CustomRadioButtons< edu.cmu.cs.dennisc.alice.ast.Accessible > {
+	private static class FieldRadioButtons extends org.lgna.croquet.components.CustomRadioButtons< edu.cmu.cs.dennisc.alice.ast.Accessible > {
 		private static final int SUB_FIELD_LEFT_INSET = 10;
 		private static final int INTRA_FIELD_PAD = 1;
 		private javax.swing.SpringLayout springLayout;
@@ -312,12 +319,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 		
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.BooleanStateButton< ? > createBooleanStateButton( edu.cmu.cs.dennisc.alice.ast.Accessible item, BooleanState booleanState ) {
+		protected org.lgna.croquet.components.BooleanStateButton< ? > createBooleanStateButton( edu.cmu.cs.dennisc.alice.ast.Accessible item, BooleanState booleanState ) {
 			return new FieldTile( item, booleanState );
 		}
 		
-		private edu.cmu.cs.dennisc.croquet.Component<?> previousComponent;
-		private edu.cmu.cs.dennisc.croquet.Component<?> rootComponent;
+		private org.lgna.croquet.components.Component<?> previousComponent;
+		private org.lgna.croquet.components.Component<?> rootComponent;
 		@Override
 		protected void removeAllDetails() {
 			this.internalRemoveAllComponents();
@@ -328,7 +335,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.rootComponent = null;
 		}
 		@Override
-		protected void addItem( edu.cmu.cs.dennisc.croquet.ItemSelectablePanel.ItemDetails itemDetails) {
+		protected void addItem( org.lgna.croquet.components.ItemSelectablePanel.ItemDetails itemDetails) {
 			AbstractButton<?,?> button = itemDetails.getButton();
 			if( this.previousComponent != null ) {
 				this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, button.getAwtComponent(), INTRA_FIELD_PAD, javax.swing.SpringLayout.SOUTH, this.previousComponent.getAwtComponent() );
@@ -344,12 +351,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		protected void addEpilogue() {
 			this.previousComponent = null;
 			this.rootComponent = null;
-			this.getPopupMenuOperation();
+			this.getPopupMenuPrepModel();
 		}
 		
 		public FieldTile getFieldTileForField(FieldDeclaredInAlice field)
 		{
-			for (edu.cmu.cs.dennisc.croquet.ItemSelectablePanel.ItemDetails item : this.getAllItemDetails())
+			for (org.lgna.croquet.components.ItemSelectablePanel.ItemDetails item : this.getAllItemDetails())
 			{
 				FieldTile fieldTile = (FieldTile)item.getButton();
 				Accessible itemField = fieldTile.getAccessible();
@@ -375,10 +382,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.CodableResolver< MoveAndTurnSceneEditor > getCodableResolver() {
-		return new edu.cmu.cs.dennisc.croquet.SingletonResolver< MoveAndTurnSceneEditor >( this );
+	public org.lgna.croquet.resolvers.CodableResolver< MoveAndTurnSceneEditor > getCodableResolver() {
+		return new org.lgna.croquet.resolvers.SingletonResolver< MoveAndTurnSceneEditor >( this );
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.croquet.DropSite potentialDropSite ) {
+	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		return this;
 	}
 
@@ -1052,7 +1059,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			});
 			
 			org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState isSceneEditorExpandedState = org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance();
-			final edu.cmu.cs.dennisc.croquet.CheckBox isSceneEditorExpandedCheckBox = isSceneEditorExpandedState.createCheckBox();
+			final org.lgna.croquet.components.CheckBox isSceneEditorExpandedCheckBox = isSceneEditorExpandedState.createCheckBox();
 			isSceneEditorExpandedCheckBox.getAwtComponent().setUI( new IsExpandedCheckBoxUI() );
 			final int X_PAD = 16;
 			final int Y_PAD = 10;
@@ -1062,10 +1069,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			
 			PrintUtilities.println( "todo: addAndInvokeValueObserver" );
 			this.splitPane.setDividerSize( 0 );
-			isSceneEditorExpandedState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-				public void changing(boolean nextValue) {
+			isSceneEditorExpandedState.addValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
+				public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				}
-				public void changed(boolean nextValue) {
+				public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 					handleExpandContractChange( nextValue );
 				}
 			} );
@@ -1172,14 +1179,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		FieldTile fieldTile = this.getFieldTileForClick(clickState);
 		if (fieldTile != null)
 		{
-			StandardPopupOperation popUp = fieldTile.getPopupMenuOperation();
+			StandardPopupPrepModel popUp = fieldTile.getPopupMenuPrepModel();
 			if (popUp != null)
 			{
 				if( fieldTile.getAwtComponent().isShowing() ) {
 					MouseEvent convertedEvent = SwingUtilities.convertMouseEvent((Component)clickState.getInputEvent().getSource(), (MouseEvent)clickState.getInputEvent(), fieldTile.getAwtComponent());
-					popUp.fire(convertedEvent, fieldTile);
+					popUp.fire( new org.lgna.croquet.triggers.MouseEventTrigger( fieldTile, convertedEvent ) );
 				} else {
-					popUp.fire( clickState.getInputEvent() );
+					popUp.fire( new org.lgna.croquet.triggers.InputEventTrigger( clickState.getInputEvent() ) );
 				}
 			}
 		}
@@ -2024,38 +2031,38 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 	}
 
-	public void dragStarted(DragAndDropContext dragAndDropContext) {
+	public void dragStarted(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		dragSource.showDragProxy();
-		Operation<?> operation = dragSource.getLeftButtonClickOperation();
-		if (operation instanceof GalleryFileOperation)
+		org.lgna.croquet.Model model = dragSource.getLeftButtonClickModel();
+		if (model instanceof GalleryFileOperation)
 		{
-			((GalleryFileOperation)operation).setDesiredTransformation(null);
+			((GalleryFileOperation)model).setDesiredTransformation(null);
 		}
 	}
 
-	public void dragStopped(DragAndDropContext dragAndDropContext) 
+	public void dragStopped(org.lgna.croquet.history.DragStep dragAndDropContext) 
 	{
 		this.globalDragAdapter.dragExited(dragAndDropContext);
 	}
 
-	public void dragEntered(DragAndDropContext dragAndDropContext) 
+	public void dragEntered(org.lgna.croquet.history.DragStep dragAndDropContext) 
 	{
 	}
-	public void dragExited(DragAndDropContext dragAndDropContext, boolean isDropRecipient) 
+	public void dragExited(org.lgna.croquet.history.DragStep dragAndDropContext, boolean isDropRecipient) 
 	{
 	}
 
 	private boolean overLookingGlass = false;
 	
-	private boolean isDropLocationOverLookingGlass(DragAndDropContext dragAndDropContext)
+	private boolean isDropLocationOverLookingGlass(org.lgna.croquet.history.DragStep dragAndDropContext)
 	{
 		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.lookingGlassPanel.getAwtComponent() );
 		return this.lookingGlassPanel.getAwtComponent().contains(pointInLookingGlass);
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.DropSite dragUpdated(DragAndDropContext dragAndDropContext) {
+	public org.lgna.croquet.DropSite dragUpdated(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{
 			if (!overLookingGlass)
@@ -2076,7 +2083,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return null;
 	}
 
-	public edu.cmu.cs.dennisc.croquet.JComponent<?> getViewController() {
+	public org.lgna.croquet.components.JComponent<?> getViewController() {
 		return this;
 	}
 
@@ -2084,20 +2091,25 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent;
 	}
 	
-	public Operation<?> dragDropped(DragAndDropContext dragAndDropContext) {
+	public org.lgna.croquet.Model dragDropped(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{
-			Operation<?> operation = dragSource.getLeftButtonClickOperation();
-			if (operation instanceof GalleryFileOperation)
+			org.lgna.croquet.Model model = dragSource.getLeftButtonClickModel();
+			if (model instanceof GalleryFileOperation)
 			{
 				AffineMatrix4x4 dropTargetPosition = this.globalDragAdapter.getDropTargetTransformation();
-				((GalleryFileOperation)operation).setDesiredTransformation(dropTargetPosition);
+				((GalleryFileOperation)model).setDesiredTransformation(dropTargetPosition);
 			}
-			return operation;
+			return model;
 		}
 		return null;
 	}
 
+	@Override
+	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
+		this.initializeIfNecessary();
+		super.handleAddedTo( parent );
+	}
 	
 }

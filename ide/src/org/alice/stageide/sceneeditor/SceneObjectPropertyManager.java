@@ -63,16 +63,16 @@ import org.alice.stageide.properties.ModelOpacityAdapter;
 import org.alice.stageide.properties.ModelScaleAdapter;
 import org.alice.stageide.properties.TransformableTranslationAdapter;
 import org.alice.stageide.properties.TransformableVehicleAdapter;
+import org.lgna.croquet.components.BoxUtilities;
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.GridBagPanel;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.Panel;
+import org.lgna.croquet.components.ToolPalette;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
-import edu.cmu.cs.dennisc.croquet.BoxUtilities;
-import edu.cmu.cs.dennisc.croquet.Component;
-import edu.cmu.cs.dennisc.croquet.GridBagPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
-import edu.cmu.cs.dennisc.croquet.ToolPalette;
 
-public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>
+public class SceneObjectPropertyManager extends GridBagPanel implements org.lgna.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>
 {
 	private AbstractField selectedField;
 	private Object selectedObject;
@@ -193,9 +193,10 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 	{
 	    this.addNameAndControllerToPanel(propertyPair.label, propertyPair.controller.getPanel(), panel, index);
 	}
-	
-	public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) 
-	{
+
+	public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+	}
+	public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
 		this.selectedField = null;
 		this.selectedObject = null;
 		if( nextValue instanceof AbstractField ) {

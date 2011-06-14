@@ -56,15 +56,15 @@ public class ReduceToInnerOperandInPreviousLogicalComplementFillIn extends org.a
 	private ReduceToInnerOperandInPreviousLogicalComplementFillIn() {
 		super( java.util.UUID.fromString( "63c2c1bf-fc6a-439c-93df-d8135b5c5447" ) );
 	}
-	@Override
-	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
-			edu.cmu.cs.dennisc.alice.ast.LogicalComplement previousLogicalComplement = (edu.cmu.cs.dennisc.alice.ast.LogicalComplement)previousExpression;
-			return true;
-		} else {
-			return false;
-		}
-	}
+//	@Override
+//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+//		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
+//			edu.cmu.cs.dennisc.alice.ast.LogicalComplement previousLogicalComplement = (edu.cmu.cs.dennisc.alice.ast.LogicalComplement)previousExpression;
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
 		assert previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement;

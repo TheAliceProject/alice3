@@ -56,10 +56,10 @@ public class LogicalComplementOfPreviousExpressionFillIn extends org.alice.ide.c
 	private LogicalComplementOfPreviousExpressionFillIn() {
 		super( java.util.UUID.fromString( "53574545-8136-40f3-83cc-1483522dfd73" ) );
 	}
-	@Override
-	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
-	}
+//	@Override
+//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+//		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
+//	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.LogicalComplement createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
 		return new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( previousExpression );

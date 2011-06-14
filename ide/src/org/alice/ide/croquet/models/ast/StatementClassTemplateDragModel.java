@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class StatementClassTemplateDragModel extends TemplateDragModel {
+public class StatementClassTemplateDragModel extends VoidTemplateDragModel {
 	private static java.util.Map< Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement >, StatementClassTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized StatementClassTemplateDragModel getInstance( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		StatementClassTemplateDragModel rv = map.get( cls );
@@ -64,11 +64,11 @@ public class StatementClassTemplateDragModel extends TemplateDragModel {
 		this.cls = cls;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CodableResolver< StatementClassTemplateDragModel > createCodableResolver() {
+	protected org.lgna.croquet.resolvers.CodableResolver< StatementClassTemplateDragModel > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< StatementClassTemplateDragModel >( this, this.cls );
 	}
 	@Override
-	protected String getTutorialStepDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected String getTutorialStepDescription( org.lgna.croquet.UserInformation userInformation ) {
 		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.ubiquitouspane.Templates", userInformation.getLocale() );
 	}
 }

@@ -57,29 +57,29 @@ import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.ide.IDE;
 import org.alice.ide.swing.BasicTreeNodeViewerPanel;
 import org.alice.interact.handle.HandleSet;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.PredeterminedTab;
+import org.lgna.croquet.TabSelectionState.TabCreator;
+import org.lgna.croquet.components.BooleanStateButton;
+import org.lgna.croquet.components.DefaultRadioButtons;
+import org.lgna.croquet.components.GridBagPanel;
+import org.lgna.croquet.components.JComponent;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.PushButton;
+import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.components.ToolPaletteTabbedPane;
 
-import edu.cmu.cs.dennisc.croquet.ActionOperation;
-import edu.cmu.cs.dennisc.croquet.BooleanState;
-import edu.cmu.cs.dennisc.croquet.BooleanStateButton;
 
-import edu.cmu.cs.dennisc.croquet.DefaultRadioButtons;
-import edu.cmu.cs.dennisc.croquet.GridBagPanel;
-import edu.cmu.cs.dennisc.croquet.JComponent;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.PredeterminedTab;
-import edu.cmu.cs.dennisc.croquet.PushButton;
-import edu.cmu.cs.dennisc.croquet.ScrollPane;
-import edu.cmu.cs.dennisc.croquet.ToolPaletteTabbedPane;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory;
 import edu.cmu.cs.dennisc.lookingglass.opengl.SceneAdapter;
 import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.croquet.TabSelectionState.TabCreator;
 
 /**
  * @author Dennis Cosgrove
  */
-class SidePane extends edu.cmu.cs.dennisc.croquet.GridBagPanel {
+class SidePane extends org.lgna.croquet.components.GridBagPanel {
 	private boolean isExpanded = false;
 	private SnapControlPanel snapControlPanel = null;
 	private GridBagPanel mainPanel = null;
@@ -103,7 +103,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.GridBagPanel {
 			this.setName( "Show SceneGraph" );
 		}
 		@Override
-		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 			if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
 			{
 				if (SidePane.this.sceneGraphViewer == null)
@@ -142,7 +142,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.GridBagPanel {
 			this.setName( "Show Lookingglass Tree" );
 		}
 		@Override
-		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 			if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
 			{
 				if (SidePane.this.lookingglassViewer == null)
@@ -171,7 +171,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.GridBagPanel {
 		
 		//Set up the handle components
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
-		Label handleLabel = new edu.cmu.cs.dennisc.croquet.Label( resourceBundle.getString("handleStyleTitle"), 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD);
+		Label handleLabel = new org.lgna.croquet.components.Label( resourceBundle.getString("handleStyleTitle"), 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD);
 		DefaultRadioButtons<org.alice.stageide.sceneeditor.HandleStyle> handleRadioButtons = new DefaultRadioButtons<HandleStyle>(org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance(), false){
             @Override 
             protected BooleanStateButton<?> createBooleanStateButton(
@@ -192,7 +192,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.GridBagPanel {
             }
         };
         //Layout the handle panel
-		edu.cmu.cs.dennisc.croquet.GridBagPanel handleControlPanel = new edu.cmu.cs.dennisc.croquet.GridBagPanel();
+		org.lgna.croquet.components.GridBagPanel handleControlPanel = new org.lgna.croquet.components.GridBagPanel();
 		handleControlPanel.addComponent(handleLabel, new GridBagConstraints(
                 0, // gridX
                 0, // gridY
@@ -224,10 +224,10 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.GridBagPanel {
 		handleControlPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, org.alice.ide.IDE.getSingleton().getTheme().getSecondaryBackgroundColor()), 
 		        BorderFactory.createEmptyBorder(4, 0, 0, 0)));
 		//Construct the undo/redo panel
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel undoRedoPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
+		org.lgna.croquet.components.LineAxisPanel undoRedoPanel = new org.lgna.croquet.components.LineAxisPanel(
                 org.alice.ide.croquet.models.history.UndoOperation.getInstance().createButton(), 
                 org.alice.ide.croquet.models.history.RedoOperation.getInstance().createButton(),
-                edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue()
+                org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
         );
 		//Layout out the header panel with the undo/redo buttons, the handle controls, and the snap controls
         GridBagPanel headerPanel = new GridBagPanel();
@@ -330,7 +330,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.GridBagPanel {
 	        public final JComponent<?> createMainComponent(PredeterminedTab item) {
 	            return item.getMainComponent();
 	        }
-	        public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.croquet.PredeterminedTab item ) {
+	        public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.lgna.croquet.PredeterminedTab item ) {
 	            item.customizeTitleComponent( booleanState, button );
 	            button.scaleFont(1.2f);
 	            button.setFont(edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( button.getAwtComponent(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
@@ -339,7 +339,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.GridBagPanel {
 	        public final ScrollPane createScrollPane( PredeterminedTab item ) {
 	            return item.createScrollPane();
 	        }
-	        public final boolean isCloseable(edu.cmu.cs.dennisc.croquet.PredeterminedTab item) {
+	        public final boolean isCloseable(org.lgna.croquet.PredeterminedTab item) {
 	            return false;
 	        }
 	    };

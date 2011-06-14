@@ -46,23 +46,25 @@ package org.lgna.cheshire;
  * @author Dennis Cosgrove
  */
 public class TransactionChapter extends Chapter {
-	private final org.lgna.croquet.steps.Transaction transaction;
-	public TransactionChapter( org.lgna.croquet.steps.Transaction transaction ) {
+	private final org.lgna.croquet.history.Transaction transaction;
+	public TransactionChapter( org.lgna.croquet.history.Transaction transaction ) {
 		this.transaction = transaction;
 	}
-	public org.lgna.croquet.steps.Transaction getTransaction() {
+	public org.lgna.croquet.history.Transaction getTransaction() {
 		return this.transaction;
 	}
 	@Override
-	public final void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		this.transaction.retarget( retargeter );
 	}
 	@Override
-	public void complete( edu.cmu.cs.dennisc.croquet.Group completionGroup ) {
-		final edu.cmu.cs.dennisc.croquet.Edit<?> originalEdit = this.transaction.getEdit();
+	public void complete( org.lgna.croquet.Group completionGroup ) {
+		final org.lgna.croquet.edits.Edit<?> originalEdit = this.transaction.getEdit();
 		if( originalEdit != null ) {
-			edu.cmu.cs.dennisc.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getRetargeter();
-			edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( originalEdit, retargeter );
+			//todo
+			org.lgna.croquet.history.CompletionStep< ? > step = null;
+			org.lgna.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getRetargeter();
+			org.lgna.croquet.edits.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( step, originalEdit, retargeter );
 			if( replacementEdit != null ) {
 				//todo
 				org.lgna.cheshire.stencil.StencilsPresentation.getInstance().retargetAll( retargeter );
@@ -85,11 +87,11 @@ public class TransactionChapter extends Chapter {
 	
 	@Override
 	public boolean isAlreadyInTheDesiredState() {
-		org.lgna.croquet.steps.Transaction transaction = this.getTransaction();
-		org.lgna.croquet.steps.CompletionStep< ? > completionStep = transaction.getCompletionStep();
-		edu.cmu.cs.dennisc.croquet.Model model = completionStep.getModel();
+		org.lgna.croquet.history.Transaction transaction = this.getTransaction();
+		org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+		org.lgna.croquet.CompletionModel model = completionStep.getModel();
 		if( model != null ) {
-			edu.cmu.cs.dennisc.croquet.Edit< ? > edit = completionStep.getEdit();
+			org.lgna.croquet.edits.Edit< ? > edit = completionStep.getEdit();
 			return model.isAlreadyInState( edit );
 		} else {
 			return false;

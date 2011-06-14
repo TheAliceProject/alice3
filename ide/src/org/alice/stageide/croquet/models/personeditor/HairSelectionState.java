@@ -55,7 +55,7 @@ public class HairSelectionState extends AbstractListSelectionState<org.alice.api
 		return SingletonHolder.instance;
 	}
 	private HairSelectionState() {
-		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.apis.stage.Hair >(){
+		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new org.lgna.croquet.ItemCodec< org.alice.apis.stage.Hair >(){
 			public Class< org.alice.apis.stage.Hair > getValueClass() {
 				return org.alice.apis.stage.Hair.class;
 			}
@@ -91,8 +91,8 @@ public class HairSelectionState extends AbstractListSelectionState<org.alice.api
 		return -1;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Hair> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Hair> rv = super.createList();
+	public org.lgna.croquet.components.List<org.alice.apis.stage.Hair> createList() {
+		org.lgna.croquet.components.List<org.alice.apis.stage.Hair> rv = super.createList();
 		rv.setCellRenderer( new HairListCellRenderer() );
 		return rv;
 	}

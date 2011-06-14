@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionSeparator extends edu.cmu.cs.dennisc.croquet.CascadeLabelSeparator {
+public class ConditionSeparator extends org.lgna.croquet.CascadeLabelSeparator {
 	private static class SingletonHolder {
 		private static ConditionSeparator instance = new ConditionSeparator();
 	}

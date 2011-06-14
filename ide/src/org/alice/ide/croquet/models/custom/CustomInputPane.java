@@ -58,7 +58,7 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
+	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression;
 		try {
 			expression = this.getInputValue();
@@ -66,12 +66,12 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 			//re.printStackTrace();
 			expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
 		}
-		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		rv.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( expression ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START );
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+		rv.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		return rv;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent() {
+	protected org.lgna.croquet.components.Component< ? > createMainComponent() {
 		return this.chooser.createMainComponent();
 	}
 	public org.alice.ide.choosers.ValueChooser< E > getValueChooser() {

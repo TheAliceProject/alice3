@@ -50,7 +50,7 @@ public class ConditionalStatementTemplate extends CascadingUbiquitousStatementCl
 		super( edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteConditionalStatement() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.ConditionalStatementInsertOperation.getInstance( blockStatementIndexPair );
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.ConditionalStatementInsertCascade.getInstance( blockStatementIndexPair );
 	}
 }

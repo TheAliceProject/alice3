@@ -45,7 +45,7 @@ package org.alice.ide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >, edu.cmu.cs.dennisc.croquet.DropReceptor, FieldAndInstanceMapper {
+public abstract class AbstractSceneEditor extends org.lgna.croquet.components.BorderPanel implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >, org.lgna.croquet.DropReceptor, FieldAndInstanceMapper {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = null;
 	private org.alice.ide.ProjectApplication.ProjectObserver projectObserver = new org.alice.ide.ProjectApplication.ProjectObserver() { 
 		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
@@ -73,7 +73,7 @@ public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.Bor
 //		this.mapFieldToInstance.put( field, instance );
 //	}
 	
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		return "Drop...";
 	}
 	
@@ -134,17 +134,17 @@ public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.Bor
 	}
 
 	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
+	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
 		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.ProjectApplication.getSingleton().getProject();
 		if( project != null ) {
 			this.projectObserver.projectOpened(null, project);
 		}
 		org.alice.ide.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
+		super.handleAddedTo( parent );
 	}
 	@Override
-	protected void handleUndisplayable() {
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
+		super.handleRemovedFrom( parent );
 		org.alice.ide.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
-		super.handleUndisplayable();
 	}
 }

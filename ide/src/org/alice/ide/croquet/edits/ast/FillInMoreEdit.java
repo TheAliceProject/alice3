@@ -45,50 +45,29 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation > {
-	public static class FillInMoreEditMemento extends Memento<org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation> {
-		private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
-		public FillInMoreEditMemento( FillInMoreEdit edit ) {
-			super( edit );
-			this.argumentExpression = edit.argumentExpression;
-		}
-		public FillInMoreEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation > createEdit() {
-			return new FillInMoreEdit( this );
-		}
-		@Override
-		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-			java.util.UUID prevExpressionId = binaryDecoder.decodeId();
-			this.argumentExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, prevExpressionId );
-		}
-		@Override
-		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			binaryEncoder.encode( this.argumentExpression.getUUID() );
-		}
-	}
-
+public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.CascadePopupCompletionModel<edu.cmu.cs.dennisc.alice.ast.Expression> > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
 
-	public FillInMoreEdit( edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
+	public FillInMoreEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
+		super( completionStep );
 		this.argumentExpression = argumentExpression;
 	}
-	private FillInMoreEdit( FillInMoreEditMemento memento ) {
-		super( memento );
-		this.argumentExpression = memento.argumentExpression;
+	public FillInMoreEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		java.util.UUID prevExpressionId = binaryDecoder.decodeId();
+		this.argumentExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, prevExpressionId );
 	}
 	@Override
-	public Memento<org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation> createMemento() {
-		return new FillInMoreEditMemento( this );
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.argumentExpression.getUUID() );
 	}
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = this.getModel();
+		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 
@@ -107,7 +86,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.i
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = this.getModel();
+		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 		
@@ -129,7 +108,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.i
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation model = this.getModel();
+		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
 			rv.append( "more: " );

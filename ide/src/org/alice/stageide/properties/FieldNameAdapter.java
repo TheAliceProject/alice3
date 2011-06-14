@@ -49,9 +49,9 @@ import javax.swing.Action;
 
 import org.alice.ide.croquet.models.ast.rename.RenameFieldOperation;
 import org.alice.ide.properties.adapter.AbstractNamePropertyAdapter;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.components.Button;
 
-import edu.cmu.cs.dennisc.croquet.Button;
-import edu.cmu.cs.dennisc.croquet.Operation;
 
 public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
 	
@@ -94,16 +94,16 @@ public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.den
 	}
 	
 	@Override
-	public Operation getEditOperation() 
+	public Operation getEditModel() 
 	{
 		return RenameFieldOperation.getInstance( this.instance );
 		
 	}
 	
 	@Override
-    public Button createEditButton()
+    public Button createEditViewController()
 	{
-	    Button b = this.getEditOperation().createButton();
+	    Button b = this.getEditModel().createButton();
 	    //TODO: Localize This
 	    b.getAwtComponent().setText("Rename...");
 	    return b;

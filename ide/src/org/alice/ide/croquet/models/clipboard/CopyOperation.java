@@ -56,7 +56,7 @@ public class CopyOperation extends org.alice.ide.operations.InconsequentialActio
 		super( java.util.UUID.fromString( "4caee2f0-7d3c-427c-9816-f277bc2fcecb" ) );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 		String title = "Copy coming soon";
 		String message = "Copy is not yet implemented.  Apologies.";
 		message += "\n\nNOTE: one can copy by dragging with the ";
@@ -66,6 +66,6 @@ public class CopyOperation extends org.alice.ide.operations.InconsequentialActio
 			message += "Control";
 		}
 		message += " key pressed.";
-		this.getIDE().showMessageDialog( message, title, edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION );
+		this.getIDE().showMessageDialog( message, title, org.lgna.croquet.MessageType.INFORMATION );
 	}
 }

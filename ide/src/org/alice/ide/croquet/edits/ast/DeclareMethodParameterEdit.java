@@ -45,45 +45,23 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodParameterEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation > {
-	public static class DeclareMethodParameterEditMemento extends Memento<org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation> {
-		private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
-		public DeclareMethodParameterEditMemento( DeclareMethodParameterEdit edit ) {
-			super( edit );
-			this.parameter = edit.parameter;
-		}
-		public DeclareMethodParameterEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit<org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation> createEdit() {
-			return new DeclareMethodParameterEdit( this );
-		}
-		@Override
-		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.parameter = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice.class ).decodeValue( binaryDecoder );
-		}
-		@Override
-		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice.class ).encodeValue( binaryEncoder, this.parameter );
-		}
-	}
-
+public class DeclareMethodParameterEdit extends org.lgna.croquet.edits.OperationEdit< org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
-
 	private transient java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private transient int index;
 
-	public DeclareMethodParameterEdit( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+	public DeclareMethodParameterEdit( org.lgna.croquet.history.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		super( completionStep );
 		this.parameter = parameter;
 	}
-	private DeclareMethodParameterEdit( DeclareMethodParameterEditMemento memento ) {
-		super( memento );
-		this.parameter = memento.parameter;
+	public DeclareMethodParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.parameter = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice.class ).decodeValue( binaryDecoder );
 	}
 	@Override
-	public Memento<org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation> createMemento() {
-		return new DeclareMethodParameterEditMemento( this );
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice.class ).encodeValue( binaryEncoder, this.parameter );
 	}
 
 	@Override

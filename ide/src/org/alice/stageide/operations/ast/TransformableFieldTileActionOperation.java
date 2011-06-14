@@ -51,7 +51,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 	}
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable );
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final org.alice.apis.moveandturn.AbstractTransformable transformable;
 		final org.alice.apis.moveandturn.PointOfView prevPOV;
 		final org.alice.apis.moveandturn.PointOfView nextPOV;
@@ -61,9 +61,9 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 			nextPOV = new org.alice.apis.moveandturn.PointOfView( this.calculateNextAbsoluteTransformation( transformable ) );
 			if( nextPOV.getInternal().isNaN() ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TransformableFieldTileActionOperation isNaN" );
-				context.cancel();
+				step.cancel();
 			} else {
-				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
 						setAbsolutePOV( transformable, nextPOV );
@@ -82,7 +82,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TransformableFieldTileActionOperation" );
-			context.cancel();
+			step.cancel();
 		}
 	}
 	

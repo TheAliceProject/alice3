@@ -48,9 +48,9 @@ package org.alice.ide.ubiquitouspane.templates;
 public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTemplate {
 	private UbiquitousStatementImplementor implementor;
 	public DeclareLocalTemplate() {
-		super( new org.alice.ide.croquet.models.ToDoDragModel(), edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class );
+		super( org.alice.ide.croquet.models.ast.DeclareLocalDragModel.getInstance(), edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class );
 		this.implementor = new UbiquitousStatementImplementor( org.alice.ide.ast.NodeUtilities.createIncompleteVariableDeclarationStatement() );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( this.getLabelText() ) );
+		this.addComponent( new org.lgna.croquet.components.Label( this.getLabelText() ) );
 		this.setToolTipText( "" );
 	}
 	
@@ -58,7 +58,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 		return this.implementor.getLabelText();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? > getSubject() {
+	public org.lgna.croquet.components.Component< ? > getSubject() {
 		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override
@@ -78,7 +78,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 		super.handleUndisplayable();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public org.lgna.croquet.Operation< ? > getDropModel( org.lgna.croquet.history.DragStep context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		return new org.alice.ide.operations.ast.DeclareLocalOperation( blockStatementIndexPair );
 	}
 }

@@ -45,11 +45,11 @@ package org.alice.ide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<E,CustomInputPane< E >> {
+public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<E> {
 	private CustomInputPane< E > customInputPane;
 	
 	public CustomInputDialogOperation( java.util.UUID id, org.alice.ide.choosers.ValueChooser< E > chooser ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, id );
+		super( org.lgna.croquet.Application.INHERIT_GROUP, id );
 		this.customInputPane = new CustomInputPane< E >( chooser );
 	}
 	
@@ -60,15 +60,15 @@ public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.al
 		return this.customInputPane.getInputValue();
 	}
 	@Override
-	protected CustomInputPane< E > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {
+	protected CustomInputPane< E > prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
 		return this.customInputPane;
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			context.finish();
+			step.finish();
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 //	@Override

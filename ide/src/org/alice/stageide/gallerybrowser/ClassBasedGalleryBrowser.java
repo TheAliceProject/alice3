@@ -52,11 +52,24 @@ import org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperatio
 import org.alice.stageide.croquet.models.gallerybrowser.CreateTextbookInstanceOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.State;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.TreeSelectionState;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.BoxUtilities;
+import org.lgna.croquet.components.Button;
+import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.HorizontalTextPosition;
+import org.lgna.croquet.components.LineAxisPanel;
+import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.components.TextField;
+import org.lgna.croquet.components.VerticalTextPosition;
 import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceTreeNode;
 import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceUtilities;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
 
 /**
  * @author dculyba
@@ -64,8 +77,8 @@ import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
  */
 public class ClassBasedGalleryBrowser extends BorderPanel {
 
-	private static edu.cmu.cs.dennisc.croquet.ClassBasedPathControl.Initializer initializer = new edu.cmu.cs.dennisc.croquet.ClassBasedPathControl.Initializer() {
-		public edu.cmu.cs.dennisc.croquet.ActionOperation configure(edu.cmu.cs.dennisc.croquet.ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode) {
+	private static org.lgna.croquet.ClassBasedPathControl.Initializer initializer = new org.lgna.croquet.ClassBasedPathControl.Initializer() {
+		public ActionOperation configure(ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode) {
 			javax.swing.Icon icon;
 			Class<?> classValue = treeNode.getValue();
 			BufferedImage thumbnail = ModelResourceUtilities.getThumbnail(classValue);
@@ -78,7 +91,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 			rv.setName( GalleryBrowser.getTextFor(treeNode, false) );
 			return rv;
 		}
-		public edu.cmu.cs.dennisc.croquet.Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode) {
+		public Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode) {
 			return null;
 		}
 	};
@@ -99,15 +112,24 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 		public abstract boolean accept( String lcName, String lcFilter );
 	}
 
-	class DirectoryView extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
-		private edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>> selectionObserver = new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>>() {
+	class DirectoryView extends LineAxisPanel {
+		private org.lgna.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>> selectionObserver = new org.lgna.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>>() {
 			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> nextValue) {
 				DirectoryView.this.handleSelectionChanged( nextValue );
 			}
 		};
-		private edu.cmu.cs.dennisc.croquet.StringState.ValueObserver filterObserver = new edu.cmu.cs.dennisc.croquet.StringState.ValueObserver() {
-			public void changed(String nextValue) {
+		private org.lgna.croquet.StringState.ValueObserver<String> filterObserver = new org.lgna.croquet.StringState.ValueObserver<String>() {
+			@Override
+			public void changed(State<String> state, String prevValue,
+					String nextValue, boolean isAdjusting) {
 				DirectoryView.this.handleFilterChanged( nextValue );
+				
+			}
+			@Override
+			public void changing(State<String> state, String prevValue,
+					String nextValue, boolean isAdjusting) {
+				// TODO Auto-generated method stub
+				
 			}		
 		};
 		@Override
@@ -165,11 +187,11 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 						if( child.isLeaf() ) {
 							this.addComponent( ClassBasedGalleryDragComponent.getInstance( child ) );
 						} else {
-							edu.cmu.cs.dennisc.croquet.Operation<?> operation = edu.cmu.cs.dennisc.croquet.SelectClassActionOperation.getInstance(treeSelectionState, child, initializer );
+							org.lgna.croquet.Operation<?> operation = org.lgna.croquet.SelectClassActionOperation.getInstance(treeSelectionState, child, initializer );
 							if( operation != null ) {
-								edu.cmu.cs.dennisc.croquet.Button button = operation.createButton();
-								button.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
-								button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
+								Button button = operation.createButton();
+								button.setVerticalTextPosition( VerticalTextPosition.BOTTOM );
+								button.setHorizontalTextPosition( HorizontalTextPosition.CENTER );
 								button.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 								this.addComponent( button );
 							}
@@ -200,14 +222,14 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 	private static final javax.swing.ImageIcon FOLDER_LARGE_ICON = new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/folder.png"));
 	private static final javax.swing.ImageIcon FOLDER_SMALL_ICON = new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/folder24.png"));
 	
-	private edu.cmu.cs.dennisc.croquet.TreeSelectionState< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> > treeSelectionState;
-	private edu.cmu.cs.dennisc.croquet.StringState filterState;
+	private TreeSelectionState< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> > treeSelectionState;
+	private StringState filterState;
 
 	public ClassBasedGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> root ) {
 		//super(GAP * 2, 0);
 
 		edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<Class<?>> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<Class<?>>( root );
-		this.treeSelectionState = new edu.cmu.cs.dennisc.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>>( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "d374d9cd-fd27-46da-ba27-8ccdab4f2b67" ), new edu.cmu.cs.dennisc.croquet.Codec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> >() {
+		this.treeSelectionState = new TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>>( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "d374d9cd-fd27-46da-ba27-8ccdab4f2b67" ), new org.lgna.croquet.ItemCodec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> >() {
 			public Class getValueClass() {
 				return edu.cmu.cs.dennisc.javax.swing.models.TreeNode.class;
 			}
@@ -222,9 +244,9 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 			}
 		}, treeModel, treeModel.getRoot() );
 		
-		this.filterState = new edu.cmu.cs.dennisc.croquet.StringState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "62d9d56d-6145-4c58-a20c-4b5d9797ef39" ), "" );
+		this.filterState = new StringState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "62d9d56d-6145-4c58-a20c-4b5d9797ef39" ), "" );
 		
-		this.treeSelectionState.addSelectionObserver( new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>>() {
+		this.treeSelectionState.addSelectionObserver( new TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>>() {
 			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> nextValue) {
 				filterState.setValue( "" );
 			}
@@ -232,15 +254,20 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 
 		final DirectoryView directoryView = new DirectoryView();
 		
-		final edu.cmu.cs.dennisc.croquet.TextField filterTextField = this.filterState.createTextField();
+		final TextField filterTextField = this.filterState.createTextField();
 		filterTextField.setMinimumPreferredWidth( 320 );
 		filterTextField.setMaximumSizeClampedToPreferredSize( true );
 		filterTextField.getAwtComponent().setTextForBlankCondition( "search entire gallery" );
 		filterTextField.scaleFont( 1.5f );
-		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-			public void changing(boolean nextValue) {
+		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new BooleanState.ValueObserver<Boolean>() {
+			@Override
+			public void changing(State<Boolean> state, Boolean prevValue,
+					Boolean nextValue, boolean isAdjusting) {
+				// TODO Auto-generated method stub
+				
 			}
-			public void changed(boolean nextValue) {
+			@Override
+			public void changed(State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting) {
 				javax.swing.SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						filterTextField.requestFocus();
@@ -249,41 +276,41 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 			}
 		} );
 
-		edu.cmu.cs.dennisc.croquet.GridPanel fromFilePane = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 2, 1, 0, 4 );
+		GridPanel fromFilePane = GridPanel.createGridPane( 2, 1, 0, 4 );
 		fromFilePane.addComponent( CreateMyInstanceOperation.getInstance().createButton());
 		fromFilePane.addComponent( CreateTextbookInstanceOperation.getInstance().createButton());
 
-		edu.cmu.cs.dennisc.croquet.GridPanel bonusPane = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 2, 1, 0, 4 );
+		GridPanel bonusPane = GridPanel.createGridPane( 2, 1, 0, 4 );
 		bonusPane.addComponent(CreateBillboardOperation.getInstance().createButton());
 		bonusPane.addComponent(Create3dTextOperation.getInstance().createButton());
 
-		edu.cmu.cs.dennisc.croquet.BorderPanel buttonPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		buttonPane.addComponent(fromFilePane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START);
-		buttonPane.addComponent(bonusPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_END);
+		BorderPanel buttonPane = new BorderPanel();
+		buttonPane.addComponent(fromFilePane, BorderPanel.Constraint.PAGE_START);
+		buttonPane.addComponent(bonusPane, BorderPanel.Constraint.PAGE_END);
 
 		
 		this.setBackgroundColor(new java.awt.Color(220, 220, 255));
 
 		org.alice.stageide.croquet.models.gallerybrowser.CreatePersonFieldOperation createPersonFieldOperation = org.alice.stageide.croquet.models.gallerybrowser.CreatePersonFieldOperation.getInstance();
-		edu.cmu.cs.dennisc.croquet.Button createPersonButton = createPersonFieldOperation.createButton();
-		createPersonButton.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
-		createPersonButton.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
+		Button createPersonButton = createPersonFieldOperation.createButton();
+		createPersonButton.setHorizontalTextPosition( HorizontalTextPosition.CENTER );
+		createPersonButton.setVerticalTextPosition( VerticalTextPosition.BOTTOM );
 
 		createPersonFieldOperation.setSmallIcon(new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
 
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel pathControlPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+		LineAxisPanel pathControlPanel = new LineAxisPanel();
 		pathControlPanel.addComponent( this.treeSelectionState.createClassBasedPathControl( this.createInitializer() ) );
-		pathControlPanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
+		pathControlPanel.addComponent( BoxUtilities.createHorizontalGlue() );
 		pathControlPanel.addComponent( filterTextField );
 		
-		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel( 0, GAP );
+		BorderPanel borderPanel = new BorderPanel( 0, GAP );
 		borderPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
 		borderPanel.setBackgroundColor( null );
 		borderPanel.addComponent( pathControlPanel, Constraint.PAGE_START );
 
-		edu.cmu.cs.dennisc.croquet.BorderPanel clampSizePanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		BorderPanel clampSizePanel = new BorderPanel();
 		clampSizePanel.addComponent( directoryView, Constraint.LINE_START );
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( clampSizePanel );
+		ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( clampSizePanel );
 		scrollPane.getAwtComponent().getHorizontalScrollBar().setUnitIncrement( 16 );
 		scrollPane.setBorder( null );
 		scrollPane.setBackgroundColor( null );
@@ -329,9 +356,9 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 		}
 	}
 
-	private edu.cmu.cs.dennisc.croquet.ClassBasedPathControl.Initializer createInitializer() {
-		return new edu.cmu.cs.dennisc.croquet.ClassBasedPathControl.Initializer() {
-			public edu.cmu.cs.dennisc.croquet.ActionOperation configure(edu.cmu.cs.dennisc.croquet.ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode) {
+	private org.lgna.croquet.ClassBasedPathControl.Initializer createInitializer() {
+		return new org.lgna.croquet.ClassBasedPathControl.Initializer() {
+			public ActionOperation configure(ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode) {
 //				if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
 //					edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) treeNode;
 //					rv.setName( zipTreeNode.getName() );
@@ -342,10 +369,10 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 				rv.setSmallIcon( FOLDER_SMALL_ICON );
 				return rv;
 			}
-			public edu.cmu.cs.dennisc.croquet.Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode) {
+			public Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode) {
 				String name = GalleryBrowser.getTextFor(treeNode, true);
 				if( name != null ) {
-					edu.cmu.cs.dennisc.croquet.Operation<?> rv = GalleryClassOperation.getInstance( treeNode );
+					Operation<?> rv = GalleryClassOperation.getInstance( treeNode );
 					rv.setName( name );
 					
 					Class<?> classValue = treeNode.getValue();

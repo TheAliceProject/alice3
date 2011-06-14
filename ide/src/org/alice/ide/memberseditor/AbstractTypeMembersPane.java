@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
+public abstract class AbstractTypeMembersPane extends org.lgna.croquet.components.PageAxisPanel {
 	private static final int INDENT = 16;
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
@@ -74,10 +74,10 @@ public abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet
 			AbstractTypeMembersPane.this.refresh();
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isEmphasizingClassesObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-		public void changing( boolean nextValue ) {
+	private org.lgna.croquet.State.ValueObserver<Boolean> isEmphasizingClassesObserver = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( boolean nextValue ) {
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			AbstractTypeMembersPane.this.refresh();
 		}
 	};
@@ -123,19 +123,19 @@ public abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	protected abstract Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member );
+	protected abstract Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member );
 
-	protected abstract edu.cmu.cs.dennisc.croquet.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
-	protected abstract edu.cmu.cs.dennisc.croquet.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
+	protected abstract org.lgna.croquet.components.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
+	protected abstract org.lgna.croquet.components.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	protected void refresh() {
 		this.removeAllComponents();
-		edu.cmu.cs.dennisc.croquet.PageAxisPanel page = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
+		org.lgna.croquet.components.PageAxisPanel page = new org.lgna.croquet.components.PageAxisPanel();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
 			if( isInclusionDesired( field ) ) {
-				Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > templates = this.createTemplates( field );
+				Iterable< org.lgna.croquet.components.Component< ? > > templates = this.createTemplates( field );
 				if( templates != null ) {
-					for( edu.cmu.cs.dennisc.croquet.Component< ? > template : templates ) {
-						page.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 1 ) );
+					for( org.lgna.croquet.components.Component< ? > template : templates ) {
+						page.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 1 ) );
 						page.addComponent( template );
 					}
 				}
@@ -144,10 +144,10 @@ public abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method : type.getDeclaredMethods() ) {
 			if( isInclusionDesired( method ) ) {
 				method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getShortestInChain();
-				Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > templates = this.createTemplates( method );
+				Iterable< org.lgna.croquet.components.Component< ? > > templates = this.createTemplates( method );
 				if( templates != null ) {
-					for( edu.cmu.cs.dennisc.croquet.Component< ? > template : templates ) {
-						page.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 1 ) );
+					for( org.lgna.croquet.components.Component< ? > template : templates ) {
+						page.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 1 ) );
 						page.addComponent( template );
 					}
 				}
@@ -155,8 +155,8 @@ public abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet
 		}
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() == false && this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
-			edu.cmu.cs.dennisc.croquet.Button createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
-			edu.cmu.cs.dennisc.croquet.Button editConstructorButton = this.createEditConstructorButton( typeInAlice );
+			org.lgna.croquet.components.Button createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
+			org.lgna.croquet.components.Button editConstructorButton = this.createEditConstructorButton( typeInAlice );
 			if( createAndAddMemberButton != null ) {
 				page.addComponent( createAndAddMemberButton );
 			}
@@ -166,15 +166,15 @@ public abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet
 		}
 		int pad;
 		if( page.getComponentCount() > 0 ) {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
-					edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( INDENT ), 
+			this.addComponent( new org.lgna.croquet.components.LineAxisPanel( 
+					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( INDENT ), 
 					page 
 			) );
 			pad = 8;
 		} else {
 			pad = 2;
 		}
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( pad ) );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( pad ) );
 		this.revalidateAndRepaint();
 	}
 }

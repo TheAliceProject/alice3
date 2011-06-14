@@ -74,6 +74,8 @@ public abstract class ApplicationFrame extends javax.swing.JFrame {
 			public void handleQuit( java.util.EventObject e ) {
 				ApplicationFrame.this.handleQuit( e );
 			}
+			public void handleOpenFile( java.util.EventObject e ) {
+			}
 		} );
 		
 	}

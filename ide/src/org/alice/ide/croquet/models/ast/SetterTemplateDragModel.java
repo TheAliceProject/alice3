@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class SetterTemplateDragModel extends TemplateDragModel {
+public class SetterTemplateDragModel extends VoidTemplateDragModel {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, SetterTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized SetterTemplateDragModel getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		SetterTemplateDragModel rv = map.get( field );
@@ -64,11 +64,11 @@ public class SetterTemplateDragModel extends TemplateDragModel {
 		this.field = field;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CodableResolver< SetterTemplateDragModel > createCodableResolver() {
+	protected org.lgna.croquet.resolvers.CodableResolver< SetterTemplateDragModel > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< SetterTemplateDragModel >( this, this.field, edu.cmu.cs.dennisc.alice.ast.AbstractField.class );
 	}
 	@Override
-	protected String getTutorialStepDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected String getTutorialStepDescription( org.lgna.croquet.UserInformation userInformation ) {
 		return this.field.getName();
 	}
 }

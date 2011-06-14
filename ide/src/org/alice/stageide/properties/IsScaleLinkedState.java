@@ -43,7 +43,7 @@
 
 package org.alice.stageide.properties;
 
-import edu.cmu.cs.dennisc.croquet.BooleanState;
+import org.lgna.croquet.BooleanState;
 
 public class IsScaleLinkedState extends BooleanState 
 {

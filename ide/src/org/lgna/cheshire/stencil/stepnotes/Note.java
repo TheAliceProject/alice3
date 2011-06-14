@@ -46,7 +46,7 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Note<S extends org.lgna.croquet.steps.Step<?>> extends org.lgna.cheshire.stencil.Note {
+public abstract class Note<S extends org.lgna.croquet.history.Step<?>> extends org.lgna.cheshire.stencil.Note {
 	private final S step;
 	public Note( S step ) {
 		this.step = step;
@@ -58,15 +58,15 @@ public abstract class Note<S extends org.lgna.croquet.steps.Step<?>> extends org
 	}
 	@Override
 	protected String getText() {
-		org.lgna.croquet.steps.Transaction transaction = this.step.getParent();
-		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = transaction.getEdit();
-		edu.cmu.cs.dennisc.croquet.UserInformation userInformation = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getUserInformation();
+		org.lgna.croquet.history.Transaction transaction = this.step.getParent();
+		org.lgna.croquet.edits.Edit< ? > edit = transaction.getEdit();
+		org.lgna.croquet.UserInformation userInformation = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getUserInformation();
 		return this.step.getTutorialNoteText( edit, userInformation );
 	}
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
-		if( event instanceof org.lgna.cheshire.events.StepAddedEvent ) {
-			org.lgna.cheshire.events.StepAddedEvent stepAddedEvent = (org.lgna.cheshire.events.StepAddedEvent)event;
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
+		if( event instanceof org.lgna.croquet.history.event.AddStepEvent ) {
+			org.lgna.croquet.history.event.AddStepEvent stepAddedEvent = (org.lgna.croquet.history.event.AddStepEvent)event;
 			if( this.getStep().getModel() == stepAddedEvent.getStep().getModel() ) {
 				return true;
 			} else {

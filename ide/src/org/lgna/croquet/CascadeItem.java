@@ -1,0 +1,130 @@
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without 
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, 
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice, 
+ *    this list of conditions and the following disclaimer in the documentation 
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. Products derived from the software may not be called "Alice", nor may 
+ *    "Alice" appear in their name, without prior written permission of 
+ *    Carnegie Mellon University.
+ *
+ * 4. All advertising materials mentioning features or use of this software must
+ *    display the following acknowledgement: "This product includes software 
+ *    developed by Carnegie Mellon University"
+ *
+ * 5. The gallery of art assets and animations provided with this software is 
+ *    contributed by Electronic Arts Inc. and may be used for personal, 
+ *    non-commercial, and academic use only. Redistributions of any program 
+ *    source code that utilizes The Sims 2 Assets must also retain the copyright
+ *    notice, list of conditions and the disclaimer contained in 
+ *    The Alice 3.0 Art Gallery License.
+ * 
+ * DISCLAIMER:
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+package org.lgna.croquet;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
+	private transient boolean isDirty = true;
+	private transient javax.swing.JComponent menuProxy = null;
+	private transient javax.swing.Icon icon = null;
+	public CascadeItem( java.util.UUID id ) {
+		super( id );
+	}
+	public boolean isAutomaticallySelectedWhenSoleOption() {
+		return true;
+	}
+	
+	@Override
+	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
+		rv.addCascadeMenuItem( new org.lgna.croquet.components.CascadeMenuItem( this ) );
+		return rv;
+	}
+	public abstract F getTransientValue( org.lgna.croquet.cascade.ItemNode<? super F,B> step );
+	public abstract F createValue( org.lgna.croquet.cascade.ItemNode<? super F,B> step );
+	protected abstract javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F,B> step );
+	@Override
+	protected void localize() {
+		this.isDirty = true;
+	}
+	protected boolean isDirty() {
+		return this.isDirty;
+	}
+	protected void markClean() {
+		this.isDirty = false;
+	}
+	protected javax.swing.JComponent getMenuProxy( org.lgna.croquet.cascade.ItemNode<? super F,B> step ) {
+		if( this.menuProxy != null ) {
+			//pass
+		} else {
+			this.menuProxy = this.createMenuItemIconProxy( step );
+		}
+		return this.menuProxy;
+	}
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super F,B> step ) {
+		if( this.isDirty() ) {
+			this.icon = null;
+			this.menuProxy = null;
+		}
+		if( this.icon != null ) {
+			//pass
+		} else {
+			javax.swing.JComponent component = this.getMenuProxy( step );
+			if( component != null ) {
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( component );
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
+//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.validateTree( component );
+//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
+//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.revalidateTree( component );
+//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
+				java.awt.Dimension size = component.getPreferredSize();
+				if( size.width > 0 && size.height > 0 ) {
+					this.icon = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.createIcon( component );
+				} else {
+					this.icon = null;
+				}
+			} else {
+				this.icon = null;
+			}
+			this.markClean();
+		}
+		return this.icon;
+	}
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super F,B > step ) {
+		return null;
+	}
+	
+	protected String getTutorialItemText() {
+		return this.getDefaultLocalizedText();
+	}
+
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		rv.append( "Select <strong>" );
+		rv.append( this.getTutorialItemText() );
+		rv.append( "</strong>." );
+		return rv;
+	}
+}

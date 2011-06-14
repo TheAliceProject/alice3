@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation<org.alice.ide.declarationpanes.CreateFieldPane> {
+public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, DeclareFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static DeclareFieldOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ownerType ) {
 		DeclareFieldOperation rv = map.get( ownerType );
@@ -68,12 +68,12 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 		return this.ownerType;
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateFieldPane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateFieldPane> context) {
+	protected org.alice.ide.declarationpanes.CreateFieldPane prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
 		return new org.alice.ide.declarationpanes.CreateFieldPane( this.ownerType );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldPane > context ) {
-		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = context.getMainPanel();
+	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = step.getMainPanel();
 		return createFieldPane.getInputValue();
 	}
 	@Override

@@ -54,11 +54,11 @@ public abstract class ResourceExpressionFillIn extends org.alice.ide.croquet.mod
 	}
 	protected abstract <T extends org.alice.virtualmachine.Resource> Class< T > getResourceCls();
 	@Override
-	public final edu.cmu.cs.dennisc.alice.ast.ResourceExpression createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.ResourceExpression, Void > context ) {
+	public final edu.cmu.cs.dennisc.alice.ast.ResourceExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ResourceExpression,Void > step ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( this.getResourceCls(), resource );
 	}
 	@Override
-	public final edu.cmu.cs.dennisc.alice.ast.ResourceExpression getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.ResourceExpression, Void > context ) {
+	public final edu.cmu.cs.dennisc.alice.ast.ResourceExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ResourceExpression,Void > step ) {
 		return null;
 	}
 }

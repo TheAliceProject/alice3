@@ -56,8 +56,8 @@ public class ShowWarningOperation extends org.alice.ide.operations.Inconsequenti
 		super( java.util.UUID.fromString( "b868d8df-f743-4eab-a942-376a36f69218" ) );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 		org.alice.ide.warningpane.WarningPane warningPane = new org.alice.ide.warningpane.WarningPane( true );
-		this.getIDE().showMessageDialog( warningPane, "Alice3 is currently under development", edu.cmu.cs.dennisc.croquet.MessageType.WARNING ); 
+		this.getIDE().showMessageDialog( warningPane, "Alice3 is currently under development", org.lgna.croquet.MessageType.WARNING ); 
 	}
 }

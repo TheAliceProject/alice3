@@ -46,31 +46,27 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeDragModel extends edu.cmu.cs.dennisc.croquet.DragAndDropModel {
+public abstract class IdeDragModel extends org.lgna.croquet.DragModel {
 	public IdeDragModel( java.util.UUID id ) {
 		super( id );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-//	@Override
-//	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent dragSource ) {
-//		return getIDE().createListOfPotentialDropReceptors( dragSource );
-//	}
 	@Override
-	public void handleDragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragStarted( dragAndDropContext );
+	public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
+		getIDE().handleDragStarted( step );
 	}
 	@Override
-	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragEnteredDropReceptor( dragAndDropContext );
+	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
+		getIDE().handleDragEnteredDropReceptor( step );
 	}
 	@Override
-	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragExitedDropReceptor( dragAndDropContext );
+	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
+		getIDE().handleDragExitedDropReceptor( step );
 	}
 	@Override
-	public void handleDragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragStopped( dragAndDropContext );
+	public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
+		getIDE().handleDragStopped( step );
 	}
 }

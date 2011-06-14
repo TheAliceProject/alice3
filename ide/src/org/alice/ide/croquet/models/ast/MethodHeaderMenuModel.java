@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodHeaderMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
+public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, MethodHeaderMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized MethodHeaderMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		MethodHeaderMenuModel rv = map.get( method );

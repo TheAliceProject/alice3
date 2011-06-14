@@ -45,15 +45,15 @@ package org.alice.ide.croquet.models.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class HistoryOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public abstract class HistoryOperation extends org.lgna.croquet.ActionOperation {
 	public HistoryOperation( java.util.UUID id ) {
 		super( org.alice.ide.ProjectApplication.HISTORY_GROUP, id );
 	}
 	protected abstract void performInternal( edu.cmu.cs.dennisc.history.HistoryManager historyManager );
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		edu.cmu.cs.dennisc.history.HistoryManager historyManager = org.alice.ide.ProjectApplication.getSingleton().getProjectHistoryManager();
 		this.performInternal(historyManager);
-		context.finish();
+		step.finish();
 	}
 }

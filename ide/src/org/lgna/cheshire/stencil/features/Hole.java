@@ -69,7 +69,7 @@ public class Hole extends Feature {
 		}
 	};
 
-	public Hole( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
+	public Hole( org.lgna.croquet.resolvers.RuntimeResolver< ? extends org.lgna.croquet.components.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
 		super( trackableShapeResolver, connectionPreference );
 	}
 

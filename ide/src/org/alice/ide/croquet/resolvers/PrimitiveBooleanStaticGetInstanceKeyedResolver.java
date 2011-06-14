@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class PrimitiveBooleanStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver<T> {
+public class PrimitiveBooleanStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<T> {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { Boolean.TYPE };
 	private boolean value;
 	public PrimitiveBooleanStaticGetInstanceKeyedResolver( T instance, boolean value ) {

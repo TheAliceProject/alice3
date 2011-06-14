@@ -46,12 +46,12 @@ package org.lgna.cheshire.stencil.features;
  * @author Dennis Cosgrove
  */
 public class DialogCloseButtonFeature extends org.lgna.stencil.Feature {
-	public DialogCloseButtonFeature( final org.lgna.croquet.steps.PlainDialogCloseOperationStep step ) {
-		super( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
-			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
-				edu.cmu.cs.dennisc.croquet.PlainDialogOperation dialogOperation = step.getModel().getPlainDialogOperation();
+	public DialogCloseButtonFeature( final org.lgna.croquet.history.PlainDialogCloseOperationStep step ) {
+		super( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
+			public org.lgna.croquet.components.TrackableShape getResolved() {
+				org.lgna.croquet.PlainDialogOperation dialogOperation = step.getModel().getPlainDialogOperation();
 				if( dialogOperation != null ) {
-					edu.cmu.cs.dennisc.croquet.Dialog activeDialog = dialogOperation.getActiveDialog();
+					org.lgna.croquet.components.Dialog activeDialog = dialogOperation.getActiveDialog();
 					if( activeDialog != null ) {
 						return activeDialog.getCloseButtonTrackableShape();
 					} else {
@@ -84,11 +84,11 @@ public class DialogCloseButtonFeature extends org.lgna.stencil.Feature {
 		return null;
 	}
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForPaint(edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy) {
+	public java.awt.geom.Area getAreaToSubstractForPaint(org.lgna.croquet.components.Component<?> asSeenBy) {
 		return null;
 	}
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForContains(edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy) {
+	public java.awt.geom.Area getAreaToSubstractForContains(org.lgna.croquet.components.Component<?> asSeenBy) {
 		return null;
 	}
 	@Override

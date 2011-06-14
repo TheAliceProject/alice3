@@ -44,7 +44,7 @@ package org.alice.ide.ubiquitouspane;
 
 import org.alice.ide.ubiquitouspane.templates.*;
 
-class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
+class ReturnStatementWrapper extends org.lgna.croquet.components.LineAxisPanel {
 	private ReturnStatementTemplate re = new ReturnStatementTemplate();
 	public void refresh() {
 		this.removeAllComponents();
@@ -57,7 +57,7 @@ class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	}
 }
 
-class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
+class TransientStatementsWrapper extends org.lgna.croquet.components.LineAxisPanel {
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate > mapVariableToVariableAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate >();
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate > mapVariableToVariableArrayAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate >();
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate > mapParameterToParameterAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate >();
@@ -133,7 +133,7 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPane
 /**
  * @author Dennis Cosgrove
  */
-public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.View {
+public class UbiquitousPane extends org.lgna.croquet.components.ViewPanel {
 	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
 //	private LoopTemplate loopTemplate = new LoopTemplate();
 	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();
@@ -149,15 +149,17 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.View {
 	private ReturnStatementWrapper returnStatementWrapper = new ReturnStatementWrapper();
 	private TransientStatementsWrapper transientStatementsWrapper = new TransientStatementsWrapper();
 
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-		public void changed(org.alice.ide.editorstabbedpane.CodeComposite nextValue) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > selectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 			UbiquitousPane.this.refresh();
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isAlwaysShowingBlocksObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-		public void changing( boolean nextValue ) {
+	private org.lgna.croquet.State.ValueObserver< Boolean > isAlwaysShowingBlocksObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( boolean nextValue ) {
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			UbiquitousPane.this.removeAllComponents();
 			UbiquitousPane.this.getAwtComponent().setLayout( UbiquitousPane.this.createLayoutManager( UbiquitousPane.this.getAwtComponent() ) );
 			UbiquitousPane.this.addComponents();
@@ -168,7 +170,7 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.View {
 	public UbiquitousPane() {
 		super( org.alice.ide.croquet.models.templates.BlockTemplateComposite.getInstance() );
 		this.addComponents();
-		this.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 	}
 	private void addComponents() {
 		this.addComponent( this.doInOrderTemplate );
@@ -187,8 +189,8 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.View {
 		this.addComponent( this.declareLocalTemplate );
 		this.addComponent( this.transientStatementsWrapper );
 		this.addComponent( this.returnStatementWrapper );
-//		this.addSliver();
-//		this.addComponent( this.commentTemplate );
+		this.addSliver();
+		this.addComponent( this.commentTemplate );
 	}
 	
 	private boolean isHorizontal() {
@@ -202,17 +204,17 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.View {
 			return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 		}
 	}
-	public void addComponent( edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+	public void addComponent( org.lgna.croquet.components.Component<?> component ) {
 		this.internalAddComponent( component );
 	}
 
 	private static final int PAD = 6;
 	private void addSliver() {
-		edu.cmu.cs.dennisc.croquet.JComponent< ? > sliver;
+		org.lgna.croquet.components.JComponent< ? > sliver;
 		if( this.isHorizontal() ) {
-			sliver = edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD );
+			sliver = org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( PAD );
 		} else {
-			sliver = edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( PAD );
+			sliver = org.lgna.croquet.components.BoxUtilities.createVerticalSliver( PAD );
 		}
 		this.addComponent( sliver );
 	}

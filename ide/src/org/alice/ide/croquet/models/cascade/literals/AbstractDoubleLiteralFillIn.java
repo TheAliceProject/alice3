@@ -53,11 +53,11 @@ public abstract class AbstractDoubleLiteralFillIn extends org.alice.ide.croquet.
 		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.DoubleLiteral getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+	public edu.cmu.cs.dennisc.alice.ast.DoubleLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.DoubleLiteral,Void > step ) {
 		return this.transientValue;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.DoubleLiteral createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+	public edu.cmu.cs.dennisc.alice.ast.DoubleLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.DoubleLiteral,Void > step ) {
 		return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( this.transientValue.value.getValue() );
 	}
 	@Override

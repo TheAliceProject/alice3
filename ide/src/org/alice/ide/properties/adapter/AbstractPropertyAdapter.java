@@ -46,8 +46,9 @@ package org.alice.ide.properties.adapter;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.cmu.cs.dennisc.croquet.Button;
-import edu.cmu.cs.dennisc.croquet.Operation;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.components.Button;
+
 
 public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P, O> 
 {
@@ -133,11 +134,20 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 		}
 	}
 
-	public abstract Operation getEditOperation();
+	public abstract org.lgna.croquet.Model getEditModel();
 	
-	public Button createEditButton()
+	public org.lgna.croquet.components.ViewController< ?,? > createEditViewController()
     {
-        return this.getEditOperation().createButton();
+		org.lgna.croquet.Model model = this.getEditModel();
+		if( model instanceof org.lgna.croquet.PopupPrepModel ) {
+			org.lgna.croquet.PopupPrepModel popupPrepModel = (org.lgna.croquet.PopupPrepModel)model;
+	        return popupPrepModel.createPopupButton();
+		} else if( model instanceof org.lgna.croquet.Operation< ? > ) {
+			org.lgna.croquet.Operation< ? > operation = (org.lgna.croquet.Operation< ? >)model;
+	        return operation.createButton();
+		} else {
+			throw new RuntimeException( "todo" );
+		}
     }
 	
 	protected abstract void startListening();

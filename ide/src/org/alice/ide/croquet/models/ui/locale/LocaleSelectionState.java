@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ui.locale;
 /**
  * @author Dennis Cosgrove
  */
-public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultListSelectionState< java.util.Locale > {
+public class LocaleSelectionState extends org.lgna.croquet.DefaultListSelectionState< java.util.Locale > {
 	private static class SingletonHolder {
 		private static LocaleSelectionState instance = new LocaleSelectionState();
 	}
@@ -54,7 +54,7 @@ public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultList
 	}
 	private LocaleSelectionState() {
 		super( 
-				edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), 
+				org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), 
 				org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON,
 				0,
 				new java.util.Locale( "en", "US" ),
@@ -82,7 +82,9 @@ public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.DefaultList
 		);
 		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 		this.addValueObserver( new ValueObserver< java.util.Locale >() {
-			public void changed( java.util.Locale nextValue ) {
+			public void changing( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
 				org.alice.ide.croquet.models.information.RestartRequiredOperation.getInstance().fire();
 			}
 		} );

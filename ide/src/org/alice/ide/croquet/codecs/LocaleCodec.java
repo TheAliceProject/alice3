@@ -45,7 +45,7 @@ package org.alice.ide.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public enum LocaleCodec implements edu.cmu.cs.dennisc.croquet.Codec< java.util.Locale > {
+public enum LocaleCodec implements org.lgna.croquet.ItemCodec< java.util.Locale > {
 	SINGLETON;
 	public Class<java.util.Locale> getValueClass() {
 		return java.util.Locale.class;

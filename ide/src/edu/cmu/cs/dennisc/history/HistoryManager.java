@@ -42,24 +42,30 @@
  */
 package edu.cmu.cs.dennisc.history;
 
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-
+/**
+ * @author Dennis Cosgrove
+ */
 public class HistoryManager {
-	private static edu.cmu.cs.dennisc.croquet.ModelContext.CommitObserver commitObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.CommitObserver() {
-		public void committing(edu.cmu.cs.dennisc.croquet.Edit edit) {
+	private HistoryManager() {
+		throw new AssertionError();
+	}
+	private static org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
+		public void changing(org.lgna.croquet.history.event.Event e) {
 		}
-		public void committed(edu.cmu.cs.dennisc.croquet.Edit edit) {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "HistoryManager:", edit, edit.getGroup() );
-			HistoryManager.handleOperationPerformed( edit );
+		public void changed(org.lgna.croquet.history.event.Event e) {
+			if( e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+				org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)e;
+				HistoryManager.handleEditCommitted( editCommittedEvent.getEdit() );
+			}
 		}
 	};
 	static {
-		edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext().addCommitObserver( HistoryManager.commitObserver );
+		org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().addListener( HistoryManager.listener );
 	}
 
-	private static java.util.Map< edu.cmu.cs.dennisc.croquet.Group, HistoryManager > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< org.lgna.croquet.Group, HistoryManager > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static HistoryManager getInstance( edu.cmu.cs.dennisc.croquet.Group group ) {
+	public static HistoryManager getInstance( org.lgna.croquet.Group group ) {
 		HistoryManager rv;
 		if( group != null ) {
 			rv = HistoryManager.map.get( group );
@@ -75,7 +81,7 @@ public class HistoryManager {
 		}
 		return rv;
 	}
-	private static void handleOperationPerformed( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+	private static void handleEditCommitted( org.lgna.croquet.edits.Edit<?> edit ) {
 		assert edit != null;
 		HistoryManager historyManager = HistoryManager.getInstance( edit.getGroup() );
 		if( historyManager != null ) {
@@ -83,20 +89,20 @@ public class HistoryManager {
 		}
 	}
 
-	private java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit > stack = new java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit >();
+	private java.util.Stack< org.lgna.croquet.edits.Edit<?> > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private int insertionIndex = 0;
-	private edu.cmu.cs.dennisc.croquet.Group group;
+	private org.lgna.croquet.Group group;
 
-	private HistoryManager( edu.cmu.cs.dennisc.croquet.Group group ) {
+	private HistoryManager( org.lgna.croquet.Group group ) {
 		this.group = group;
 	}
-	public edu.cmu.cs.dennisc.croquet.Group getGroup() {
+	public org.lgna.croquet.Group getGroup() {
 		return this.group;
 	}
-	public java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit > getStack() {
+	public java.util.Stack< org.lgna.croquet.edits.Edit<?> > getStack() {
 		return this.stack;
 	}
-	private void push( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+	private void push( org.lgna.croquet.edits.Edit<?> edit ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroup(), this.group ) ) {
 			edu.cmu.cs.dennisc.history.event.HistoryPushEvent historyPushEvent = new edu.cmu.cs.dennisc.history.event.HistoryPushEvent( this, edit );
 			this.fireOperationPushing( historyPushEvent );
@@ -112,7 +118,7 @@ public class HistoryManager {
 	}
 	private void undo() {
 		if( this.insertionIndex > 0 ) {
-			edu.cmu.cs.dennisc.croquet.Edit edit = this.stack.get( this.insertionIndex - 1 );
+			org.lgna.croquet.edits.Edit<?> edit = this.stack.get( this.insertionIndex - 1 );
 			if( edit.canUndo() ) {
 				edit.undo();
 				this.insertionIndex--;
@@ -126,7 +132,7 @@ public class HistoryManager {
 	}
 	private void redo() {
 		if( this.insertionIndex < this.stack.size() ) {
-			edu.cmu.cs.dennisc.croquet.Edit edit = this.stack.get( this.insertionIndex );
+			org.lgna.croquet.edits.Edit<?> edit = this.stack.get( this.insertionIndex );
 			if( edit != null ) {
 				if( edit.canRedo() ) {
 					edit.doOrRedo( false );
@@ -253,7 +259,7 @@ public class HistoryManager {
 			}
 		}
 	}
-	public edu.cmu.cs.dennisc.croquet.Edit createDoIgnoringCompositeEdit( String presentation ) {
+	public org.lgna.croquet.edits.Edit<?> createDoIgnoringCompositeEdit( String presentation ) {
 //		synchronized( this.stack ) {
 //			final int N = this.insertionIndex;
 //			if( N > 0 ) {

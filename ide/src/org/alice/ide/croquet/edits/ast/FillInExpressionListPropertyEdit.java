@@ -45,64 +45,39 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel > {
-	public static class FillInExpressionListPropertyEditMemento extends Memento<org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel> {
-		private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
-		private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
-		public FillInExpressionListPropertyEditMemento( FillInExpressionListPropertyEdit edit ) {
-			super( edit );
-			this.prevExpression = edit.prevExpression;
-			this.nextExpression = edit.nextExpression;
-		}
-		public FillInExpressionListPropertyEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel > createEdit() {
-			return new FillInExpressionListPropertyEdit( this );
-		}
-		@Override
-		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-			java.util.UUID prevExpressionId = binaryDecoder.decodeId();
-			this.prevExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, prevExpressionId );
-			java.util.UUID nextExpressionId = binaryDecoder.decodeId();
-			this.nextExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, nextExpressionId );
-		}
-		@Override
-		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			binaryEncoder.encode( this.prevExpression.getUUID() );
-			binaryEncoder.encode( this.nextExpression.getUUID() );
-		}
-	}
-
+public class FillInExpressionListPropertyEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.CascadePopupCompletionModel<edu.cmu.cs.dennisc.alice.ast.Expression> > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
-
-	public FillInExpressionListPropertyEdit( edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
+	public FillInExpressionListPropertyEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
+		super( completionStep );
 		this.prevExpression = prevExpression;
 		this.nextExpression = nextExpression;
 	}
-	private FillInExpressionListPropertyEdit( FillInExpressionListPropertyEditMemento memento ) {
-		super( memento );
-		this.prevExpression = memento.prevExpression;
-		this.nextExpression = memento.nextExpression;
+	public FillInExpressionListPropertyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		java.util.UUID prevExpressionId = binaryDecoder.decodeId();
+		this.prevExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, prevExpressionId );
+		java.util.UUID nextExpressionId = binaryDecoder.decodeId();
+		this.nextExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, nextExpressionId );
 	}
 	@Override
-	public Memento<org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel> createMemento() {
-		return new FillInExpressionListPropertyEditMemento( this );
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.prevExpression.getUUID() );
+		binaryEncoder.encode( this.nextExpression.getUUID() );
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel model = this.getModel();
+		org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade model = (org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = model.getExpressionListProperty();
 		int index = model.getIndex();
 		expressionListProperty.set( index, this.nextExpression );
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.cascade.FillInExpressionListPropertyMenuModel model = this.getModel();
+		org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade model = (org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade)this.getModel().getPopupPrepModel();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = model.getExpressionListProperty();
 		int index = model.getIndex();
 		expressionListProperty.set( index, this.prevExpression );

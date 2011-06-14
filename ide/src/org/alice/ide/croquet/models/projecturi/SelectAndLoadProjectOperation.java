@@ -46,23 +46,23 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> {
+public abstract class SelectAndLoadProjectOperation extends org.lgna.croquet.InputDialogOperation {
 	private org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel;
 	public SelectAndLoadProjectOperation( java.util.UUID individualUUID ) {
 		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
 	}
 	protected abstract boolean isNew();
 	@Override
-	protected String getInternalExplanation(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context) {
+	protected String getInternalExplanation(org.lgna.croquet.history.InputDialogOperationStep step) {
 		if( org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedURI() != null ) {
-			return super.getInternalExplanation(context);
+			return super.getInternalExplanation(step);
 		} else {
 			return "must select project to open.";
 		}
 	}
 	
 	@Override
-	protected org.alice.ide.openprojectpane.SelectProjectToOpenPanel prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context) {
+	protected org.alice.ide.openprojectpane.SelectProjectToOpenPanel prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
 		if( this.selectProjectToOpenPanel != null ) {
 			//pass
 		} else {
@@ -73,22 +73,22 @@ public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.c
 		return this.selectProjectToOpenPanel;
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			//org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel = context.getMainPanel();
+			//org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel = step.getMainPanel();
 			java.net.URI uri = org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedURI();
 			if (uri != null) {
 				org.alice.ide.ProjectApplication.getSingleton().loadProjectFrom( uri );
-				context.finish();
+				step.finish();
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+	protected java.awt.Dimension getDesiredDialogSize( org.lgna.croquet.components.Dialog dialog ) {
 		return new java.awt.Dimension( 620, 480 );
 	}
 }

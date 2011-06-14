@@ -45,7 +45,7 @@ package org.lgna.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
+public abstract class Stencil extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
 	public static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
 	public static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
 	private static java.awt.Paint stencilPaint = null;
@@ -133,7 +133,7 @@ public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<java
 					menuSelectionManager.processMouseEvent( eSrc );
 				}
 			} else {
-				javax.swing.JFrame jFrame = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtComponent();
+				javax.swing.JFrame jFrame = org.lgna.croquet.Application.getSingleton().getFrame().getAwtComponent();
 				java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(jFrame.getContentPane(), pSrc.x, pSrc.y);
 				if (component != null) {
 					java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(componentSrc, pSrc, component);
@@ -170,7 +170,7 @@ public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<java
 	private java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
 		public void mouseWheelMoved(java.awt.event.MouseWheelEvent e) {
 			java.awt.Point p = e.getPoint();
-			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtComponent().getContentPane(), p.x, p.y);
+			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(org.lgna.croquet.Application.getSingleton().getFrame().getAwtComponent().getContentPane(), p.x, p.y);
 			if (component != null) {
 				java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(e.getComponent(), p, component);
 				component.dispatchEvent(new java.awt.event.MouseWheelEvent(component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()));
@@ -276,7 +276,7 @@ public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<java
 							for( Note note : page.getNotes() ) {
 								if( note.isActive() ) {
 									for( Feature feature : note.getFeatures() ) {
-										edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+										org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 										if( trackableShape != null ) {
 											if( trackableShape.isInView() ) {
 												java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
@@ -285,7 +285,7 @@ public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<java
 												}
 											} else {
 												if( feature.isPotentiallyScrollable() ) {
-													edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+													org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 													if( scrollPane != null ) {
 														javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
 														java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
@@ -333,7 +333,7 @@ public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<java
 						for( Note note : page.getNotes() ) {
 							if( note.isActive() ) {
 								for( Feature feature : note.getFeatures() ) {
-									edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+									org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 									if( trackableShape != null ) {
 										if( trackableShape.isInView() ) {
 											//pass
@@ -363,7 +363,7 @@ public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<java
 					for( Note note : page.getNotes() ) {
 						if( note.isActive() ) {
 							for( Feature feature : note.getFeatures() ) {
-								edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+								org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 								if( trackableShape != null ) {
 									if( trackableShape.isInView() ) {
 										java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );
@@ -372,7 +372,7 @@ public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<java
 										}
 									} else {
 										if( feature.isPotentiallyScrollable() ) {
-											edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+											org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 											if( scrollPane != null ) {
 												javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
 												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
@@ -401,5 +401,5 @@ public abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<java
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		return rv;
 	}
-	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation();
+	public abstract org.lgna.croquet.Operation< ? > getNextOperation();
 }

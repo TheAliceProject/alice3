@@ -58,7 +58,7 @@ public class RestartRequiredOperation extends org.alice.ide.operations.Inconsequ
 	}
 
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "Exiting and restarting Alice is required.", "Restart Is Required", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION, new javax.swing.ImageIcon( RestartRequiredOperation.class.getResource( "images/restartRequired.png" ) ) );
+	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
+		org.lgna.croquet.Application.getSingleton().showMessageDialog( "Exiting and restarting Alice is required.", "Restart Is Required", org.lgna.croquet.MessageType.INFORMATION, new javax.swing.ImageIcon( RestartRequiredOperation.class.getResource( "images/restartRequired.png" ) ) );
 	}
 }

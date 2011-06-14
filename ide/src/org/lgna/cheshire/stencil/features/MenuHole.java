@@ -50,7 +50,7 @@ public class MenuHole extends Hole {
 	private boolean isHoleRenderingDesired;
 	private boolean isCheckMarkRenderingDesired;
 	public MenuHole( 
-			edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, 
+			org.lgna.croquet.resolvers.RuntimeResolver< ? extends org.lgna.croquet.components.TrackableShape > trackableShapeResolver, 
 			ConnectionPreference connectionPreference, 
 			boolean isPathRenderingDesired, 
 			boolean isHoleRenderingDesired,
@@ -69,7 +69,7 @@ public class MenuHole extends Hole {
 		return this.isHoleRenderingDesired;
 	}
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy ) {
+	public java.awt.geom.Area getAreaToSubstractForContains( org.lgna.croquet.components.Component< ? > asSeenBy ) {
 		if( this.isHoleRenderingDesired() ) {
 			return super.getAreaToSubstractForContains( asSeenBy );
 		} else {
@@ -77,7 +77,7 @@ public class MenuHole extends Hole {
 		}
 	}
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForPaint( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy ) {
+	public java.awt.geom.Area getAreaToSubstractForPaint( org.lgna.croquet.components.Component< ? > asSeenBy ) {
 		if( this.isHoleRenderingDesired() ) {
 			return super.getAreaToSubstractForPaint( asSeenBy );
 		} else {

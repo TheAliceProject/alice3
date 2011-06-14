@@ -51,15 +51,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.BoxUtilities;
+import org.lgna.croquet.components.FlowPanel;
+import org.lgna.croquet.components.GridBagPanel;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.Panel;
+import org.lgna.croquet.components.SwingAdapter;
+import org.lgna.croquet.components.BorderPanel.Constraint;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.BoxUtilities;
-import edu.cmu.cs.dennisc.croquet.FlowPanel;
-import edu.cmu.cs.dennisc.croquet.GridBagPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
-import edu.cmu.cs.dennisc.croquet.SwingAdapter;
-import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 

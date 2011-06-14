@@ -49,15 +49,15 @@ package org.alice.ide.croquet.models.ast;
 /*package-private*/ abstract class EditCodeOperation<N extends edu.cmu.cs.dennisc.alice.ast.AbstractCode> extends org.alice.ide.operations.ActionOperation {
 	private N code;
 	public EditCodeOperation( java.util.UUID id, N code ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, id );
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, id );
 		this.code = code;
 	}
 	public N getCode() {
 		return this.code;
 	}
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		this.getIDE().setFocusedCode( this.code );
-		context.finish();
+		step.finish();
 	}
 }

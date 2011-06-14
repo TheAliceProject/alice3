@@ -51,7 +51,7 @@ public class StepNoteFactory {
 	private StepNoteFactory() {
 		throw new AssertionError();
 	}
-	public static Note<?> createNote( org.lgna.croquet.steps.Step< ? > step ) {
+	public static Note<?> createNote( org.lgna.croquet.history.Step< ? > step ) {
 		Class<?> stepCls = step.getClass();
 		String stepClsName = stepCls.getSimpleName();
 		String noteClsName = PACKAGE_NAME + "." + stepClsName.substring( 0, stepClsName.length()-4 ) + "Note";

@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.members;
 /**
  * @author Dennis Cosgrove
  */
-public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.PredeterminedTabSelectionState {
+public class MembersTabSelectionState extends org.lgna.croquet.PredeterminedTabSelectionState {
 	private static class SingletonHolder {
 		private static MembersTabSelectionState instance = new MembersTabSelectionState();
 	}
@@ -57,7 +57,7 @@ public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.Predete
 		super( 
 				org.alice.ide.IDE.UI_STATE_GROUP, 
 				java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ), 
-				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( edu.cmu.cs.dennisc.croquet.PredeterminedTab.class ), 
+				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.lgna.croquet.PredeterminedTab.class ), 
 				0,
 				ProceduresTab.getInstance(), FunctionsTab.getInstance(), FieldsTab.getInstance()
 		);

@@ -48,14 +48,16 @@ package org.alice.ide.common;
 public class ThisPane extends AccessiblePane {
 	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava TYPE_FOR_NULL = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Void.class );
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = TYPE_FOR_NULL;
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-		public void changed(org.alice.ide.editorstabbedpane.CodeComposite nextValue) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > codeSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 			ThisPane.this.updateBasedOnFocusedCode( nextValue != null ? nextValue.getCode() : null );
 		}
 	};
 
 	public ThisPane() {
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
+		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
 	}
 	@Override
@@ -87,7 +89,7 @@ public class ThisPane extends AccessiblePane {
 		return this.type;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.ThisOperation.getInstance( expressionProperty );
 	}
 
@@ -95,7 +97,7 @@ public class ThisPane extends AccessiblePane {
 	protected void paintEpilogue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
 		super.paintEpilogue(g2, x, y, width, height);
 		if( this.type == TYPE_FOR_NULL ) {
-			g2.setPaint( edu.cmu.cs.dennisc.croquet.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}

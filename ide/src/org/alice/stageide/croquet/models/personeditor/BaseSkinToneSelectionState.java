@@ -58,8 +58,8 @@ public class BaseSkinToneSelectionState extends AbstractListSelectionState< org.
 		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.apis.stage.BaseSkinTone.class ), org.alice.apis.stage.BaseSkinTone.values() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> rv = super.createList();
+	public org.lgna.croquet.components.List<org.alice.apis.stage.BaseSkinTone> createList() {
+		org.lgna.croquet.components.List<org.alice.apis.stage.BaseSkinTone> rv = super.createList();
 		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}

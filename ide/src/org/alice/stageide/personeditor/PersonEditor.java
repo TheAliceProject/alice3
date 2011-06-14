@@ -47,7 +47,7 @@ import org.alice.stageide.croquet.models.personeditor.PersonInfo;
 /**
  * @author Dennis Cosgrove
  */
-public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 	private static class SingletonHolder {
 		private static PersonEditor instance = new PersonEditor();
 	}
@@ -63,80 +63,96 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			person.getSGTransformable().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
 		}
 
-		org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.LifeStage>() {
-			public void changed(org.alice.apis.stage.LifeStage nextValue) {
+		org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.LifeStage>() {
+			public void changing( org.lgna.croquet.State< org.alice.apis.stage.LifeStage > state, org.alice.apis.stage.LifeStage prevValue, org.alice.apis.stage.LifeStage nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State< org.alice.apis.stage.LifeStage > state, org.alice.apis.stage.LifeStage prevValue, org.alice.apis.stage.LifeStage nextValue, boolean isAdjusting ) {
 				handleCataclysm( true, false, false );
 			}
 		} );
-		org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.Gender>() {
-			public void changed(org.alice.apis.stage.Gender nextValue) {
+		org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.Gender>() {
+			public void changing( org.lgna.croquet.State< org.alice.apis.stage.Gender > state, org.alice.apis.stage.Gender prevValue, org.alice.apis.stage.Gender nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State< org.alice.apis.stage.Gender > state, org.alice.apis.stage.Gender prevValue, org.alice.apis.stage.Gender nextValue, boolean isAdjusting ) {
 				handleCataclysm( false, true, false );
 			}
 		} );
-		org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<String>() {
-			public void changed(String nextValue) {
+		org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<String>() {
+			public void changing( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 				handleCataclysm( false, false, true );
 			}
 		} );
 		
-		org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.FullBodyOutfit>() {
-			public void changed(org.alice.apis.stage.FullBodyOutfit nextValue) {
+		org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.FullBodyOutfit>() {
+			public void changing( org.lgna.croquet.State< org.alice.apis.stage.FullBodyOutfit > state, org.alice.apis.stage.FullBodyOutfit prevValue, org.alice.apis.stage.FullBodyOutfit nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State< org.alice.apis.stage.FullBodyOutfit > state, org.alice.apis.stage.FullBodyOutfit prevValue, org.alice.apis.stage.FullBodyOutfit nextValue, boolean isAdjusting ) {
 				updatePerson();
 			}
 		} );
-		org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.Hair>() {
-			public void changed(org.alice.apis.stage.Hair nextValue) {
+		org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.Hair>() {
+			public void changing( org.lgna.croquet.State< org.alice.apis.stage.Hair > state, org.alice.apis.stage.Hair prevValue, org.alice.apis.stage.Hair nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State< org.alice.apis.stage.Hair > state, org.alice.apis.stage.Hair prevValue, org.alice.apis.stage.Hair nextValue, boolean isAdjusting ) {
 				updatePerson();
 			}
 		} );
-		org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState.ValueObserver() {
-			public void changed(int nextValue) {
+		org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().addValueObserver( new org.lgna.croquet.BoundedRangeIntegerState.ValueObserver<Integer>() {
+			public void changing( org.lgna.croquet.State< Integer > state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State< Integer > state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
 				updatePerson();
 			}
 		} );
-		org.alice.stageide.croquet.models.personeditor.BaseEyeColorSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseEyeColor>() {
-			public void changed(org.alice.apis.stage.BaseEyeColor nextValue) {
+		org.alice.stageide.croquet.models.personeditor.BaseEyeColorSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseEyeColor>() {
+			public void changing( org.lgna.croquet.State< org.alice.apis.stage.BaseEyeColor > state, org.alice.apis.stage.BaseEyeColor prevValue, org.alice.apis.stage.BaseEyeColor nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State< org.alice.apis.stage.BaseEyeColor > state, org.alice.apis.stage.BaseEyeColor prevValue, org.alice.apis.stage.BaseEyeColor nextValue, boolean isAdjusting ) {
 				updatePerson();
 			}
 		} );
 
 
-		final edu.cmu.cs.dennisc.croquet.FolderTabbedPane<?> tabbedPane = org.alice.stageide.croquet.models.personeditor.BodyHeadTabSelectionModel.getInstance().createDefaultFolderTabbedPane();
+		final org.lgna.croquet.components.FolderTabbedPane<?> tabbedPane = org.alice.stageide.croquet.models.personeditor.BodyHeadTabSelectionModel.getInstance().createDefaultFolderTabbedPane();
 		tabbedPane.scaleFont( 1.5f );
 
-		org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseSkinTone>() {
-			public void changed(org.alice.apis.stage.BaseSkinTone nextValue) {
+		org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseSkinTone>() {
+			public void changing( org.lgna.croquet.State< org.alice.apis.stage.BaseSkinTone > state, org.alice.apis.stage.BaseSkinTone prevValue, org.alice.apis.stage.BaseSkinTone nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State< org.alice.apis.stage.BaseSkinTone > state, org.alice.apis.stage.BaseSkinTone prevValue, org.alice.apis.stage.BaseSkinTone nextValue, boolean isAdjusting ) {
 				updatePerson();
 				tabbedPane.repaint();
 			}
 		} );
 		
 
-		edu.cmu.cs.dennisc.croquet.BorderPanel northPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		org.lgna.croquet.components.BorderPanel northPane = new org.lgna.croquet.components.BorderPanel();
 		northPane.addComponent( org.alice.stageide.croquet.models.personeditor.RandomPersonActionOperation.getInstance().createButton(), Constraint.PAGE_START );
-		edu.cmu.cs.dennisc.croquet.RowsSpringPanel ubiquitousPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
+		org.lgna.croquet.components.RowsSpringPanel ubiquitousPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
 			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "life stage:", org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().createList() ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "gender:", org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().createList() ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "skin tone:", org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().createList() ) );
+			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "life stage:", org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().createList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "gender:", org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().createList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "skin tone:", org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().createList() ) );
 				return rv;
 			}
 		};
-		ubiquitousPane.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		ubiquitousPane.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
 
-		edu.cmu.cs.dennisc.croquet.BorderPanel ingredientsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		org.lgna.croquet.components.BorderPanel ingredientsPanel = new org.lgna.croquet.components.BorderPanel();
 		ingredientsPanel.addComponent( northPane, Constraint.PAGE_START );
 		ingredientsPanel.addComponent( tabbedPane, Constraint.CENTER );
-		ingredientsPanel.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		ingredientsPanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 
 		//		this.personViewer.initializeValues( this.person );
-		edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane( PersonViewer.getSingleton(), ingredientsPanel );
+		org.lgna.croquet.components.HorizontalSplitPane splitPane = new org.lgna.croquet.components.HorizontalSplitPane( PersonViewer.getSingleton(), ingredientsPanel );
 		splitPane.setDividerLocation( 400 );
 		this.addComponent( splitPane, Constraint.CENTER );
 
-//		this.fitnessState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState.ValueObserver() {
+//		this.fitnessState.addValueObserver( new org.lgna.croquet.BoundedRangeIntegerState.ValueObserver() {
 //			public void changed(int nextValue) {
 //				PersonViewer.getSingleton().setFitnessLevel( nextValue*0.01 );
 //			}
@@ -144,8 +160,11 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 
 	private java.util.Map<org.alice.apis.stage.LifeStage, org.alice.apis.stage.Person> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab> tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab>() {
-		public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.croquet.PredeterminedTab> tabChangeAdapter = new org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.croquet.PredeterminedTab>() {
+		public void changing( org.lgna.croquet.State< org.lgna.croquet.PredeterminedTab > state, org.lgna.croquet.PredeterminedTab prevValue, org.lgna.croquet.PredeterminedTab nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.croquet.PredeterminedTab > state, org.lgna.croquet.PredeterminedTab prevValue, org.lgna.croquet.PredeterminedTab nextValue, boolean isAdjusting ) {
+			//todo
 		}
 	};
 	
@@ -183,7 +202,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 					org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().setSelectedItem( (org.alice.apis.stage.FullBodyOutfit)person.getOutfit() );
 				}
 				if( isLifeStageChange ) {
-					org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().setSelectedItem( hair.toString() );
+					org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().setSelectedItem( hair != null ? hair.toString() : null );
 				}
 			} finally {
 				this.isAlreadyHandlingCataclysm = false;
@@ -233,19 +252,20 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 					if( baseEyeColor != null ) {
 						person.setEyeColor( baseEyeColor );
 					}
-					
-					if( hair != null && org.alice.apis.stage.HairManager.getSingleton().isApplicable( hair, lifeStage, gender ) ) {
-						//pass
-					} else {
-						try {
-							Class<? extends org.alice.apis.stage.Hair> cls = org.alice.apis.stage.HairManager.getSingleton().getRandomClass(lifeStage, gender);
-							java.lang.reflect.Field field = cls.getField( hairColor );
-							hair = (org.alice.apis.stage.Hair)field.get( null );
-						} catch( Exception e ) {
-							hair = org.alice.apis.stage.HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender);
+					if( gender != null ) {
+						if( hair != null && org.alice.apis.stage.HairManager.getSingleton().isApplicable( hair, lifeStage, gender ) ) {
+							//pass
+						} else {
+							try {
+								Class<? extends org.alice.apis.stage.Hair> cls = org.alice.apis.stage.HairManager.getSingleton().getRandomClass(lifeStage, gender);
+								java.lang.reflect.Field field = cls.getField( hairColor );
+								hair = (org.alice.apis.stage.Hair)field.get( null );
+							} catch( Exception e ) {
+								hair = org.alice.apis.stage.HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender);
+							}
 						}
+						person.setHair( hair );
 					}
-					person.setHair( hair );
 					PersonViewer.getSingleton().setPerson( person );
 				}
 			} finally {

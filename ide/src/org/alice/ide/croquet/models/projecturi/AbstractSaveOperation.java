@@ -57,7 +57,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 	protected abstract String getInitialFilename();
 	
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		org.alice.ide.ProjectApplication application = this.getProjectApplication();
 		java.io.File filePrevious = application.getFile();
 		boolean isExceptionRaised = false;
@@ -74,15 +74,15 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 					this.save( application, fileNext );
 				} catch( java.io.IOException ioe ) {
 					isExceptionRaised = true;
-					application.showMessageDialog( ioe.getMessage(), "Unable to save file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+					application.showMessageDialog( ioe.getMessage(), "Unable to save file", org.lgna.croquet.MessageType.ERROR );
 				}
 				if( isExceptionRaised ) {
 					//pass
 				} else {
-					context.finish();
+					step.finish();
 				}
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		} while( isExceptionRaised );
 	}

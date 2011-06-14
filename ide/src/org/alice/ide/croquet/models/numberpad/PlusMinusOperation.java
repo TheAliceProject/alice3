@@ -68,8 +68,8 @@ public class PlusMinusOperation extends NumberPadOperation {
 		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation >( this, this.numberModel );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		this.numberModel.negate();
-		context.finish();
+		step.finish();
 	}
 }

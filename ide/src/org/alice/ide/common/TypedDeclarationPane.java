@@ -45,8 +45,8 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypedDeclarationPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel  {
-	public TypedDeclarationPane( edu.cmu.cs.dennisc.croquet.Component< ? >... components ) {
+public abstract class TypedDeclarationPane extends org.lgna.croquet.components.LineAxisPanel  {
+	public TypedDeclarationPane( org.lgna.croquet.components.Component< ? >... components ) {
 		super( components );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setForegroundColor( java.awt.Color.GRAY );

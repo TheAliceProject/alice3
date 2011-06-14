@@ -45,9 +45,9 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclareFieldInputDialogOperation<J extends org.alice.ide.preview.PanelWithPreview<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice>> extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice,J> {
+public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<J> context );
+	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep step );
 	protected abstract boolean isInstanceValid();
 	
 	public AbstractDeclareFieldInputDialogOperation( java.util.UUID individualId ) {
@@ -58,27 +58,27 @@ public abstract class AbstractDeclareFieldInputDialogOperation<J extends org.ali
 		return org.alice.ide.IDE.getSingleton();
 	}
 	@Override
-	protected final void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<J> context, boolean isOk) {
+	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> tuple = this.createFieldAndInstance( context );
+			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> tuple = this.createFieldAndInstance( step );
 			if( tuple != null ) {
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
 				if( field != null ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
 					if( ownerType != null ) {
 						int index = ownerType.fields.size();
-						context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+						step.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
 					} else {
-						context.cancel();
+						step.cancel();
 					}
 				} else {
-					context.cancel();
+					step.cancel();
 				}
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 }

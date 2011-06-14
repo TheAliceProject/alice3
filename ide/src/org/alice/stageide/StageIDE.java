@@ -249,11 +249,11 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+	public org.lgna.croquet.components.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 		javax.swing.Icon icon = getIconFor( field );
 		if( icon != null ) {
-			return new edu.cmu.cs.dennisc.croquet.Label( icon );
+			return new org.lgna.croquet.components.Label( icon );
 		}
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
@@ -279,7 +279,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new ThisFieldAccessNameLabel( field );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public org.lgna.croquet.components.JComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
 			edu.cmu.cs.dennisc.alice.ast.Expression fieldExpression = fieldAccess.expression.getValue();
@@ -305,7 +305,7 @@ public class StageIDE extends org.alice.ide.IDE {
 					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
 					edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 					if( constructor == REVOLUTIONS_CONSTRUCTOR ) {
-						return new edu.cmu.cs.dennisc.croquet.LineAxisPanel( factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ), new edu.cmu.cs.dennisc.croquet.Label( " revolutions" ) );
+						return new org.lgna.croquet.components.LineAxisPanel( factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ), new org.lgna.croquet.components.Label( " revolutions" ) );
 					} else if( constructor == PORTION_CONSTRUCTOR ) {
 						return factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() );
 					}
@@ -369,22 +369,22 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation<?> getRunOperation() {
+	public org.lgna.croquet.Operation<?> getRunOperation() {
 		return EPIC_HACK_getRunDialogOperation();
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.PlainDialogOperation EPIC_HACK_getRunDialogOperation() {
+	public org.lgna.croquet.PlainDialogOperation EPIC_HACK_getRunDialogOperation() {
 		return org.alice.stageide.croquet.models.run.RunOperation.getInstance();
 	}
 	
 	
 	
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getRestartOperation() {
+	public org.lgna.croquet.Operation< ? > getRestartOperation() {
 		return org.alice.stageide.croquet.models.run.RestartOperation.getInstance();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
+	public org.lgna.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		return new org.alice.stageide.croquet.models.run.PreviewMethodOperation( procedureInvocationTemplate );
 	}
 //	@Override
@@ -419,7 +419,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getAboutOperation() {
+	public org.lgna.croquet.Operation< ? > getAboutOperation() {
 		return org.alice.stageide.croquet.models.help.AboutOperation.getInstance();
 	}
 
@@ -623,7 +623,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.JComponent<?> createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> root ) {
+	protected org.lgna.croquet.components.JComponent<?> createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> root ) {
 		return new org.alice.stageide.gallerybrowser.ClassBasedGalleryBrowser( root );
 	}
 
@@ -646,7 +646,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.JComponent<?> createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
+	protected org.lgna.croquet.components.JComponent<?> createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
 		return new org.alice.stageide.gallerybrowser.GalleryBrowser( root );
 	}
 	

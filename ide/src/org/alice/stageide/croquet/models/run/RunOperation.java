@@ -107,7 +107,7 @@ class RunIcon implements javax.swing.Icon {
 /**
  * @author Dennis Cosgrove
  */
-public class RunOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperation {
+public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	private static class SingletonHolder {
 		private static RunOperation instance = new RunOperation();
 	}
@@ -120,29 +120,28 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperatio
 	}
 	
 	@Override
-	protected java.lang.StringBuilder updateTutorialTransactionTitle( java.lang.StringBuilder rv, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "Preview your program." );
 		return rv;
 	}
-	@Override
-	protected StringBuilder updateTutorialStepTitle( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		rv.append( "Preview your program." );
-		return rv;
-	}
+//	@Override
+//	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
+//		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
+//	}
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = null;
 	@Override
-	protected java.awt.Point getDesiredDialogLocation( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+	protected java.awt.Point getDesiredDialogLocation( org.lgna.croquet.components.Dialog dialog ) {
 		return this.location;
 	}
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+	protected java.awt.Dimension getDesiredDialogSize( org.lgna.croquet.components.Dialog dialog ) {
 		return this.size;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Container< ? > createContentPane( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {
 		org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getSingleton();
-		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		if( ide.getProject() != null ) {
 			ide.ensureProjectCodeUpToDate();
 			edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = ide.createVirtualMachineForRuntimeProgram();
@@ -161,17 +160,17 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperatio
 		return rv;
 	}
 	@Override
-	protected void releaseContentPane( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
+	protected void releaseContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		//todo: investigate		
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: releaseContentPane" );
-		context.finish();
+		step.finish();
 	}
 	
 	@Override
-	protected void handleFinally( edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
-		super.handleFinally( context, dialog, contentPane );
+	protected void handleFinally( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+		super.handleFinally( step, dialog, contentPane );
 		org.alice.ide.IDE.getSingleton().enableRendering();
 	}
 }

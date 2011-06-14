@@ -54,7 +54,7 @@ public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachin
 		super( id );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression createValue(edu.cmu.cs.dennisc.croquet.CascadeFillInContext<edu.cmu.cs.dennisc.alice.ast.ResourceExpression,Void> context) {
+	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ResourceExpression,Void > step ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		try {
 			E resource = getResourcePrompter().promptUserForResource( ide.getFrame() );
@@ -65,15 +65,15 @@ public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachin
 				}
 				return new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( getResourceClass(), resource );
 			} else {
-				throw new edu.cmu.cs.dennisc.croquet.CancelException();
+				throw new org.lgna.croquet.CancelException();
 			}
 		} catch( java.io.IOException ioe ) {
 			//todo
-			throw new edu.cmu.cs.dennisc.croquet.CancelException();
+			throw new org.lgna.croquet.CancelException();
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< edu.cmu.cs.dennisc.alice.ast.ResourceExpression, Void > context ) {
+	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ResourceExpression,Void > step ) {
 		return null;
 	}
 //	@Override

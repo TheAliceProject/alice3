@@ -50,8 +50,8 @@ package org.alice.ide.memberseditor;
 		super( factory, property );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( Object instance ) {
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel rv = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
+		org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
 		rv.setBackgroundColor( new java.awt.Color( 255, 255, 255, 127 ) );
 		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.OutlinedBorder( 1, 4, 1, 4, java.awt.Color.LIGHT_GRAY ) );
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
@@ -59,7 +59,7 @@ package org.alice.ide.memberseditor;
 		String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getNameForDeclaration( argument.parameter.getValue() );
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );
 		if( parameterName != null && parameterName.length() > 0 ) {
-			rv.addComponent( new edu.cmu.cs.dennisc.croquet.Label( parameterName + ": ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+			rv.addComponent( new org.lgna.croquet.components.Label( parameterName + ": ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 		}
 		rv.addComponent( new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)argument.expression.getValue() ) );
 		return rv;

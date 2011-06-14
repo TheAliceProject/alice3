@@ -46,57 +46,64 @@ package org.lgna.cheshire;
  * @author Dennis Cosgrove
  */
 public abstract class Presentation {
-	public static edu.cmu.cs.dennisc.croquet.Group COMPLETION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "d2f09b36-fb08-425d-825c-0075284e095b" ), "COMPLETION_GROUP" );
+	public static org.lgna.croquet.Group COMPLETION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "d2f09b36-fb08-425d-825c-0075284e095b" ), "COMPLETION_GROUP" );
 
 	private static Presentation instance;
 	public static Presentation getInstance() {
 		return instance;
 	}
 
-	private final edu.cmu.cs.dennisc.croquet.UserInformation userInformation;
+	private final org.lgna.croquet.UserInformation userInformation;
 	private final Recoverer recoverer;
 	private final Book book;
 	private boolean isResultOfNextOperation = false;
 
-	private final org.lgna.croquet.steps.TransactionManager.Observer observer = new org.lgna.croquet.steps.TransactionManager.Observer() {
-		public void addingStep( org.lgna.croquet.steps.Step< ? > step ) {
+	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
+		public void changing( org.lgna.croquet.history.event.Event e ) {
 		}
-		public void addedStep( org.lgna.croquet.steps.Step< ? > step ) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.StepAddedEvent( step ) );
-		}
-		public void editCommitting( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		}
-		public void editCommitted( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-			Presentation.this.handleEditCommitted( edit );
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.EditCommittedEvent( edit ) );
-		}
-		public void finishing(org.lgna.croquet.steps.Transaction transaction) {
-		}
-		public void finished(org.lgna.croquet.steps.Transaction transaction) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.FinishedEvent( transaction ) );
-		}
-		public void transactionCanceled( org.lgna.croquet.steps.Transaction transaction ) {
-			Presentation.this.handleTransactionCanceled( transaction );
-		}
-		public void dropPending( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
-		}
-		public void dropPended( edu.cmu.cs.dennisc.croquet.CompletionModel completionModel, edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor, edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.DropPendedEvent( completionModel, dropReceptor, dropSite ) );
-		}
-		public void popupMenuResized(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.PopupMenuResizedEvent( popupMenu ) );
-		}
-		public void dialogOpened(edu.cmu.cs.dennisc.croquet.Dialog dialog) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.DialogOpenedEvent( dialog ) );
-		}
-		public void menuItemsSelectionChanged( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
-			Presentation.this.handleEvent( new org.lgna.cheshire.events.MenuSelectionChangedEvent( models ) );
+		public void changed( org.lgna.croquet.history.event.Event e ) {
+			Presentation.this.handleEvent( e );
 		}
 	};
+//	private final org.lgna.croquet.history.TransactionManager.Observer observer = new org.lgna.croquet.history.TransactionManager.Observer() {
+//		public void addingStep( org.lgna.croquet.history.Step< ? > step ) {
+//		}
+//		public void addedStep( org.lgna.croquet.history.Step< ? > step ) {
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.AddStepEvent( step ) );
+//		}
+//		public void editCommitting( org.lgna.croquet.edits.Edit< ? > edit ) {
+//		}
+//		public void editCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
+//			Presentation.this.handleEditCommitted( edit );
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.EditCommittedEvent( edit ) );
+//		}
+//		public void finishing(org.lgna.croquet.history.Transaction transaction) {
+//		}
+//		public void finished(org.lgna.croquet.history.Transaction transaction) {
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.FinishedEvent( transaction ) );
+//		}
+//		public void transactionCanceled( org.lgna.croquet.history.Transaction transaction ) {
+//			Presentation.this.handleTransactionCanceled( transaction );
+//		}
+//		public void dropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+//		}
+//		public void dropPended( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.DropPendedEvent( model, dropReceptor, dropSite ) );
+//		}
+//		public void popupMenuResized(org.lgna.croquet.components.PopupMenu popupMenu ) {
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.PopupMenuResizedEvent( popupMenu ) );
+//		}
+//		public void dialogOpened(org.lgna.croquet.components.Dialog dialog) {
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.DialogOpenedEvent( dialog ) );
+//		}
+//		public void menuItemsSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
+//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.MenuSelectionChangedEvent( models ) );
+//		}
+//	};
 
 	private final edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
-	public Presentation( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory originalTransactionHistory, org.lgna.croquet.steps.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public Presentation( org.lgna.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
 		
 		assert instance == null;
 		instance = this;
@@ -113,14 +120,14 @@ public abstract class Presentation {
 			this.historyManagers[ i ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupsTrackedForRandomAccess[ i ] );
 		}
 		this.historyManagers[ N ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( COMPLETION_GROUP );
-		org.lgna.croquet.steps.TransactionManager.addObserver( this.observer );
+		org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().addListener( this.listener );
 	}
 
-	private void handleEditCommitted( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	private void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
 		this.book.handleEditCommitted( edit, this.userInformation );
 	}
-	protected abstract void handleTransactionCanceled( org.lgna.croquet.steps.Transaction transaction );
-	protected abstract void handleEvent( org.lgna.cheshire.events.Event event );
+	protected abstract void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction );
+	protected abstract void handleEvent( org.lgna.croquet.history.event.Event event );
 	private org.lgna.cheshire.Book.SelectionObserver selectionObserver = new org.lgna.cheshire.Book.SelectionObserver() {
 		public void selectionChanging( Book source, int fromIndex, int toIndex ) {
 		}
@@ -141,11 +148,11 @@ public abstract class Presentation {
 	public Recoverer getRecoverer() {
 		return this.recoverer;
 	}
-	protected abstract Chapter createChapter( org.lgna.croquet.steps.Transaction transaction );
-	private Book generateDraft( ChapterAccessPolicy accessPolicy, org.lgna.croquet.steps.TransactionHistory transactionHistory ) {
+	protected abstract Chapter createChapter( org.lgna.croquet.history.Transaction transaction );
+	private Book generateDraft( ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		Book rv = new Book();
 		rv.setAccessPolicy( accessPolicy );
-		for( org.lgna.croquet.steps.Transaction transaction : transactionHistory ) {
+		for( org.lgna.croquet.history.Transaction transaction : transactionHistory ) {
 			rv.addChapter( this.createChapter( transaction ) );
 		}
 		return rv;
@@ -215,17 +222,17 @@ public abstract class Presentation {
 		this.completeOrUndoIfNecessary();
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.UserInformation getUserInformation() {
+	public org.lgna.croquet.UserInformation getUserInformation() {
 		return this.userInformation;
 	}
 	public Book getBook() {
 		return this.book;
 	}
 	
-	protected void validate( org.lgna.croquet.steps.TransactionHistory transactionHistory ) {
-		java.util.ListIterator< org.lgna.croquet.steps.Transaction > transactionListIterator = transactionHistory.listIterator();
+	protected void validate( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		java.util.ListIterator< org.lgna.croquet.history.Transaction > transactionListIterator = transactionHistory.listIterator();
 		while( transactionListIterator.hasNext() ) {
-			org.lgna.croquet.steps.Transaction transaction = transactionListIterator.next();
+			org.lgna.croquet.history.Transaction transaction = transactionListIterator.next();
 			if( transaction.isValid() ) {
 				//pass
 			} else {
@@ -233,13 +240,13 @@ public abstract class Presentation {
 			}
 		}
 	}
-	private edu.cmu.cs.dennisc.croquet.CompletionModel huntForInMenus( java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > list, edu.cmu.cs.dennisc.croquet.MenuItemPrepModel menuModel, edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
-		if( menuModel instanceof edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel ) {
-			edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel defaultMenuModel = (edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel)menuModel;
-			for( edu.cmu.cs.dennisc.croquet.Model child : defaultMenuModel.getModels() ) {
-				if( child instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
-					edu.cmu.cs.dennisc.croquet.MenuModel childMenuModel = (edu.cmu.cs.dennisc.croquet.MenuModel)child;
-					edu.cmu.cs.dennisc.croquet.CompletionModel rv = this.huntForInMenus( list, childMenuModel, model );
+	private org.lgna.croquet.CompletionModel huntForInMenus( java.util.List< org.lgna.croquet.MenuItemPrepModel > list, org.lgna.croquet.MenuItemPrepModel menuModel, org.lgna.croquet.CompletionModel model ) {
+		if( menuModel instanceof org.lgna.croquet.PredeterminedMenuModel ) {
+			org.lgna.croquet.PredeterminedMenuModel defaultMenuModel = (org.lgna.croquet.PredeterminedMenuModel)menuModel;
+			for( org.lgna.croquet.Model child : defaultMenuModel.getModels() ) {
+				if( child instanceof org.lgna.croquet.MenuModel ) {
+					org.lgna.croquet.MenuModel childMenuModel = (org.lgna.croquet.MenuModel)child;
+					org.lgna.croquet.CompletionModel rv = this.huntForInMenus( list, childMenuModel, model );
 					if( rv != null ) {
 						list.add( 0, childMenuModel );
 					}
@@ -253,12 +260,12 @@ public abstract class Presentation {
 		}
 		return null;
 	}
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > huntForInMenus( edu.cmu.cs.dennisc.croquet.CompletionModel model ) {
-		edu.cmu.cs.dennisc.croquet.MenuBarModel menuBarModel = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getMenuBarModel();
+	protected java.util.List< org.lgna.croquet.MenuItemPrepModel > huntForInMenus( org.lgna.croquet.CompletionModel model ) {
+		org.lgna.croquet.MenuBarComposite menuBarModel = org.lgna.croquet.Application.getSingleton().getFrame().getMenuBarModel();
 		if( menuBarModel != null ) {
-			java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-			for( edu.cmu.cs.dennisc.croquet.MenuItemPrepModel child : menuBarModel.getChildren() ) {
-				edu.cmu.cs.dennisc.croquet.Model found = this.huntForInMenus( rv, child, model );
+			java.util.List< org.lgna.croquet.MenuItemPrepModel > rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+			for( org.lgna.croquet.MenuItemPrepModel child : menuBarModel.getChildren() ) {
+				org.lgna.croquet.Model found = this.huntForInMenus( rv, child, model );
 				if( found != null ) {
 					rv.add( 0, child );
 					//rv.add( 0, menuBarModel );
@@ -270,30 +277,26 @@ public abstract class Presentation {
 	}
 	
 	
-	protected org.lgna.croquet.steps.Transaction createTabSelectionRecoveryTransactionIfAppropriate( org.lgna.croquet.steps.Transaction transaction ) {
-		edu.cmu.cs.dennisc.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
-		for( edu.cmu.cs.dennisc.croquet.TabSelectionState< edu.cmu.cs.dennisc.croquet.Composite > tabSelectionState : edu.cmu.cs.dennisc.croquet.Manager.getRegisteredModels( edu.cmu.cs.dennisc.croquet.TabSelectionState.class ) ) {
-			for( edu.cmu.cs.dennisc.croquet.Composite item : tabSelectionState ) {
+	protected org.lgna.croquet.history.Transaction createTabSelectionRecoveryTransactionIfAppropriate( org.lgna.croquet.history.Transaction transaction ) {
+		org.lgna.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
+		for( org.lgna.croquet.TabSelectionState< org.lgna.croquet.Composite > tabSelectionState : org.lgna.croquet.Manager.getRegisteredModels( org.lgna.croquet.TabSelectionState.class ) ) {
+			for( org.lgna.croquet.Composite item : tabSelectionState ) {
 				if( item.contains( model ) ) {
-					org.lgna.croquet.steps.Transaction rv = new org.lgna.croquet.steps.Transaction( transaction.getParent() );
-					org.lgna.croquet.steps.CompletionStep< ? > completionStep = org.lgna.croquet.steps.ListSelectionStateChangeStep.createAndAddToTransaction( rv, tabSelectionState );
-					edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit( tabSelectionState.getValue(), item );
-					completionStep.commit( edit );
-					return rv;
+					return org.lgna.croquet.history.TransactionManager.createSimulatedTransaction( transaction.getParent(), tabSelectionState, tabSelectionState.getValue(), item, false );
 				}
 			}
 		}
 		return null;
 	}
-	private edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
-	public edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
+	private org.lgna.croquet.Retargeter retargeter;
+	public org.lgna.croquet.Retargeter getRetargeter() {
 		return this.retargeter;
 	}
-	public void setRetargeter( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void setRetargeter( org.lgna.croquet.Retargeter retargeter ) {
 		this.retargeter = retargeter;
 	}
 	
-	public void retargetAll( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retargetAll( org.lgna.croquet.Retargeter retargeter ) {
 		this.book.retargetAll( retargeter );
 	}
 	public void retargetForward() {
@@ -313,7 +316,7 @@ public abstract class Presentation {
 				this.isResultOfNextOperation = false;
 			}
 		} else {
-			edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "end of tutorial" );
+			org.lgna.croquet.Application.getSingleton().showMessageDialog( "end of tutorial" );
 		}
 	}
 	public void decrementSelectedIndex() {

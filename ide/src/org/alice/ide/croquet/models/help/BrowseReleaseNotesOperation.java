@@ -56,8 +56,8 @@ public class BrowseReleaseNotesOperation extends org.alice.ide.operations.Incons
 		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ) );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 		BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "7a93cf56-04ad-4159-a0e9-7047642d3b1e" ), "http://kenai.com/projects/alice/pages/ReleaseNotes" );
-		edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( browserOperation.createHyperlink(), this.getName(), edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
+		org.lgna.croquet.Application.getSingleton().showMessageDialog( browserOperation.createHyperlink(), this.getName(), org.lgna.croquet.MessageType.PLAIN );
 	}
 }

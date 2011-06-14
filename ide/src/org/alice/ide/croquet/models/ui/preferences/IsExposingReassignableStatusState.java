@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ui.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class IsExposingReassignableStatusState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+public class IsExposingReassignableStatusState extends org.lgna.croquet.BooleanState {
 	private static class SingletonHolder {
 		private static IsExposingReassignableStatusState instance = new IsExposingReassignableStatusState();
 	}
@@ -53,7 +53,7 @@ public class IsExposingReassignableStatusState extends edu.cmu.cs.dennisc.croque
 		return SingletonHolder.instance;
 	}
 	private IsExposingReassignableStatusState() {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "81c41ccf-657e-4e95-ae96-67c90b7075b5" ), false );
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "81c41ccf-657e-4e95-ae96-67c90b7075b5" ), false );
 		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 }

@@ -52,7 +52,7 @@ public class PreviewMethodOperation extends org.alice.ide.operations.ActionOpera
 		this.procedureInvocationTemplate = procedureInvocationTemplate;
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 //		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate.getAwtComponent(), 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
 //		edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( this.procedureInvocationTemplate.getAwtComponent(), null, mouseEvent );
 //		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {

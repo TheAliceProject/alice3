@@ -47,10 +47,10 @@ package org.alice.ide.croquet.models;
  * @author Dennis Cosgrove
  */
 public interface ResponsibleModel {
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter );
+	public void retarget( org.lgna.croquet.Retargeter retargeter );
 	public void doOrRedoInternal( boolean isDo );
 	public void undoInternal();
 	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale );
-	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
-	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit );	
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation );
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit );	
 }

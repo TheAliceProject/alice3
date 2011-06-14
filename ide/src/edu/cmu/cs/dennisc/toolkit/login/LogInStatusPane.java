@@ -101,7 +101,7 @@ class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane 
 			this.setName( "Log In" );
 		}
 		@Override
-		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 			try {
 				com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 				com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
@@ -188,9 +188,10 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 			this.setName( "Log In... (Optional)" );
 		}
 		@Override
-		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 			LogInPane pane = new LogInPane();
-			java.awt.Component owner = context.getViewController().getAwtComponent();
+			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+			java.awt.Component owner = trigger.getViewController().getAwtComponent();
 			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 			edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, javax.swing.SwingUtilities.getRoot( owner ) );
 			dialog.getRootPane().setDefaultButton( pane.getLogInButton() );
@@ -209,7 +210,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 			this.setName( "Log Out" );
 		}
 		@Override
-		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 			edu.cmu.cs.dennisc.login.AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 			LogInStatusPane.this.show( OFF_KEY );
 		}

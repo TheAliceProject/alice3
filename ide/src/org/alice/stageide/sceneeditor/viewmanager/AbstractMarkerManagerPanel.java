@@ -47,11 +47,12 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import org.lgna.croquet.components.BoxUtilities;
+import org.lgna.croquet.components.Button;
+import org.lgna.croquet.components.GridBagPanel;
+import org.lgna.croquet.components.MutableList;
+
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.croquet.BoxUtilities;
-import edu.cmu.cs.dennisc.croquet.Button;
-import edu.cmu.cs.dennisc.croquet.GridBagPanel;
-import edu.cmu.cs.dennisc.croquet.MutableList;
 
 public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
     
@@ -59,8 +60,8 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
     protected Button moveToObjectButton;
     protected MutableList<FieldDeclaredInAlice> fieldList;
     
-    protected abstract MutableList<FieldDeclaredInAlice> createMutableList(edu.cmu.cs.dennisc.croquet.MutableList.Factory<FieldDeclaredInAlice> factory);
-    protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> getAddItemOperation();
+    protected abstract MutableList<FieldDeclaredInAlice> createMutableList(org.lgna.croquet.components.MutableList.Factory<FieldDeclaredInAlice> factory);
+    protected abstract org.lgna.croquet.Operation<?> getAddItemOperation();
     protected abstract String getTitleString();
     
     protected abstract Button getMovetoMarkerButton();
@@ -71,27 +72,27 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
     public AbstractMarkerManagerPanel()
     {
         super();
-        edu.cmu.cs.dennisc.croquet.MutableList.Factory<FieldDeclaredInAlice> factory = new edu.cmu.cs.dennisc.croquet.MutableList.Factory<FieldDeclaredInAlice>() {
-                public edu.cmu.cs.dennisc.croquet.Component<?> createLeadingComponent() {
+        org.lgna.croquet.components.MutableList.Factory<FieldDeclaredInAlice> factory = new org.lgna.croquet.components.MutableList.Factory<FieldDeclaredInAlice>() {
+                public org.lgna.croquet.components.Component<?> createLeadingComponent() {
                     return null;
                 }
-                public edu.cmu.cs.dennisc.croquet.Component<?> createMainComponent() {
+                public org.lgna.croquet.components.Component<?> createMainComponent() {
                     return new MarkerFieldTile();
                 }
-                public edu.cmu.cs.dennisc.croquet.Component<?> createTrailingComponent() {
+                public org.lgna.croquet.components.Component<?> createTrailingComponent() {
                     return null;
                 }
-                public void update(edu.cmu.cs.dennisc.croquet.Component<?> leadingComponent, edu.cmu.cs.dennisc.croquet.Component<?> mainComponent, edu.cmu.cs.dennisc.croquet.Component<?> trailingComponent, int index, FieldDeclaredInAlice item) {
+                public void update(org.lgna.croquet.components.Component<?> leadingComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> trailingComponent, int index, FieldDeclaredInAlice item) {
                     ((MarkerFieldTile)mainComponent).setField(item);
                 }
-                public void updateSelection(edu.cmu.cs.dennisc.croquet.Component<?> leadingComponent, edu.cmu.cs.dennisc.croquet.Component<?> mainComponent, edu.cmu.cs.dennisc.croquet.Component<?> trailingComponent, boolean isSelected) {
+                public void updateSelection(org.lgna.croquet.components.Component<?> leadingComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> trailingComponent, boolean isSelected) {
                     ((MarkerFieldTile)mainComponent).setSelected( isSelected );
                 }
-                public edu.cmu.cs.dennisc.croquet.Operation<?> getAddItemOperation() {
+                public org.lgna.croquet.Operation<?> getAddItemOperation() {
                     return AbstractMarkerManagerPanel.this.getAddItemOperation();
                 }
         };
-        this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( getTitleString(), 1.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), new GridBagConstraints( 
+        this.addComponent( new org.lgna.croquet.components.Label( getTitleString(), 1.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), new GridBagConstraints( 
                 0, //gridX
                 0, //gridY
                 1, //gridWidth

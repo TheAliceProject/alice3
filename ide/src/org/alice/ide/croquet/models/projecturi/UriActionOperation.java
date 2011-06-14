@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public abstract class UriActionOperation extends org.lgna.croquet.ActionOperation {
 	public UriActionOperation( java.util.UUID individualUUID ) {
 		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
 	}

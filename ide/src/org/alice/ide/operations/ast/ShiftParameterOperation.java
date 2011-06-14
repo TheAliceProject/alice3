@@ -58,12 +58,12 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 		return this.isAppropriate( this.getIndex(), this.getParameterCount() );
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 		final int aIndex = this.getIndexA();
 		final int bIndex = aIndex + 1;
 		if( method != null ) {
-			context.commitAndInvokeDo(new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo(new org.alice.ide.ToDoEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					swap( method, aIndex, bIndex );

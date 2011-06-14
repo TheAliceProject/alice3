@@ -69,11 +69,11 @@ public class DeclareProcedureOperation extends DeclareMethodOperation {
 		return new org.alice.ide.declarationpanes.CreateProcedurePane( type );
 	}
 	@Override
-	protected String getMethodDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected String getMethodDescription( org.lgna.croquet.UserInformation userInformation ) {
 		return "Procedure";
 	}
 	@Override
-	protected StringBuilder appendTutorialFinishNoteText( StringBuilder rv, org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	protected StringBuilder appendTutorialFinishNoteText( StringBuilder rv, org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "a) Enter name: " );
 		rv.append( "<strong>" );
 		rv.append( declareMethodEdit.getMethod().getName() );

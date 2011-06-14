@@ -47,9 +47,9 @@ package org.alice.ide.declarationpanes;
  */
 public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.PanelWithPreview< T > {
 	private org.alice.ide.initializer.BogusNode bogusNode;
-	private edu.cmu.cs.dennisc.croquet.BooleanState isReassignableStateOperation;
+	private org.lgna.croquet.BooleanState isReassignableStateOperation;
 	private TypePane typePane;
-	private edu.cmu.cs.dennisc.croquet.TextField declarationNameTextField;
+	private org.lgna.croquet.components.TextField declarationNameTextField;
 	private org.alice.ide.initializer.InitializerPane initializerPane;
 
 	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
@@ -146,10 +146,10 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	protected boolean getIsReassignableInitialState() {
 		return true;
 	}
-	protected final edu.cmu.cs.dennisc.croquet.Component< ? > createIsReassignableComponent() {
-		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv;
+	protected final org.lgna.croquet.components.Component< ? > createIsReassignableComponent() {
+		org.lgna.croquet.components.JComponent< ? > rv;
 		if( isIsReassignableStateDesired() ) {
-			this.isReassignableStateOperation = new edu.cmu.cs.dennisc.croquet.BooleanState( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c95e177e-8fea-4916-a401-1b865594b135" ), this.getIsReassignableInitialState() );
+			this.isReassignableStateOperation = new org.lgna.croquet.BooleanState( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c95e177e-8fea-4916-a401-1b865594b135" ), this.getIsReassignableInitialState() );
 			 //"(is constant)", "(is variable)"
 			this.isReassignableStateOperation.setTextForTrueAndTextForFalse( "yes", "no" );
 			this.isReassignableStateOperation.setEnabled( this.isIsReassignableComponentEnabled() );
@@ -171,7 +171,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		return true;
 	}
 	protected abstract boolean isEditableValueTypeComponentDesired();
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createValueTypeComponent() {
+	protected org.lgna.croquet.components.Component< ? > createValueTypeComponent() {
 		if( this.isEditableValueTypeComponentDesired() ) {
 			boolean isEnabled = this.isValueTypeComponentEnabled();
 			this.typePane = new TypePane( bogusNode.componentType, bogusNode.isArray, isEnabled, isEnabled );
@@ -183,10 +183,10 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 
 
 
-	protected final edu.cmu.cs.dennisc.croquet.Component< ? >[] createIsReassignableRow() {
-		edu.cmu.cs.dennisc.croquet.Component< ? > component = this.createIsReassignableComponent();
+	protected final org.lgna.croquet.components.Component< ? >[] createIsReassignableRow() {
+		org.lgna.croquet.components.Component< ? > component = this.createIsReassignableComponent();
 		if( component != null ) {
-			return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "is re-assignable:" ), component );
+			return org.lgna.croquet.components.SpringUtilities.createRow( org.lgna.croquet.components.SpringUtilities.createTrailingLabel( "is re-assignable:" ), component );
 		} else {
 			return null;
 		}
@@ -200,11 +200,11 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		return true;
 	}
 	
-	protected final edu.cmu.cs.dennisc.croquet.Component< ? >[] createValueTypeRow() {
-		edu.cmu.cs.dennisc.croquet.Component< ? > component = this.createValueTypeComponent();
+	protected final org.lgna.croquet.components.Component< ? >[] createValueTypeRow() {
+		org.lgna.croquet.components.Component< ? > component = this.createValueTypeComponent();
 		if( component != null ) {
 			if( this.isValueTypeRowIncluded() ) {
-				return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( this.getValueTypeText() ), component );
+				return org.lgna.croquet.components.SpringUtilities.createRow( org.lgna.croquet.components.SpringUtilities.createTrailingLabel( this.getValueTypeText() ), component );
 			} else {
 				return null;
 			}
@@ -213,19 +213,19 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		}
 	}
 
-	protected final edu.cmu.cs.dennisc.croquet.Component< ? >[] createNameRow() {
+	protected final org.lgna.croquet.components.Component< ? >[] createNameRow() {
 		this.declarationNameTextField = org.alice.ide.croquet.models.ast.DeclarationNameState.getInstance().createTextField();
 		this.declarationNameTextField.setMinimumPreferredWidth( 240 );
 		//this.declarationNameTextField.setFontSize( 24.0f );
 		this.declarationNameTextField.scaleFont( 1.5f );
-		return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "name:" ), 
+		return org.lgna.croquet.components.SpringUtilities.createRow( 
+				org.lgna.croquet.components.SpringUtilities.createTrailingLabel( "name:" ), 
 				this.declarationNameTextField 
 		);
 	}
 	
 	protected abstract boolean isEditableInitializerComponentDesired();
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInitializerComponent() {
+	protected org.lgna.croquet.components.Component< ? > createInitializerComponent() {
 		if( this.isEditableInitializerComponentDesired() ) {
 			this.initializerPane = new org.alice.ide.initializer.InitializerPane( bogusNode );
 		} else {
@@ -236,11 +236,11 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	protected boolean isInitializerRowIncluded() {
 		return true;
 	}
-	protected final edu.cmu.cs.dennisc.croquet.Component< ? >[] createInitializerRow() {
-		edu.cmu.cs.dennisc.croquet.Component< ? > component = this.createInitializerComponent();
+	protected final org.lgna.croquet.components.Component< ? >[] createInitializerRow() {
+		org.lgna.croquet.components.Component< ? > component = this.createInitializerComponent();
 		if( component != null ) {
 			if( this.isInitializerRowIncluded() ) {
-				return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "initializer:" ), component );
+				return org.lgna.croquet.components.SpringUtilities.createRow( org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "initializer:" ), component );
 			} else {
 				return null;
 			}
@@ -248,41 +248,41 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 			return null;
 		}
 	}
-	protected edu.cmu.cs.dennisc.croquet.Component< ? >[] createWarningRow() {
+	protected org.lgna.croquet.components.Component< ? >[] createWarningRow() {
 		return null;
 	}
 
-	private static java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > addIfNecessary( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv, edu.cmu.cs.dennisc.croquet.Component< ? >... row ) {
+	private static java.util.List< org.lgna.croquet.components.Component< ? >[] > addIfNecessary( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, org.lgna.croquet.components.Component< ? >... row ) {
 		if( row != null ) {
-			for( edu.cmu.cs.dennisc.croquet.Component<?> component : row ) {
+			for( org.lgna.croquet.components.Component<?> component : row ) {
 				assert component != null;
 			}
 			rv.add( row );
 		}
 		return rv;
 	}
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
-		edu.cmu.cs.dennisc.croquet.Component< ? >[] isReassignableRow = createIsReassignableRow();
-		edu.cmu.cs.dennisc.croquet.Component< ? >[] valueTypeRow = createValueTypeRow();
-		edu.cmu.cs.dennisc.croquet.Component< ? >[] nameRow = createNameRow();
-		edu.cmu.cs.dennisc.croquet.Component< ? >[] initializerRow = createInitializerRow();
-		edu.cmu.cs.dennisc.croquet.Component< ? >[] warningRow = createWarningRow();
+	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+		org.lgna.croquet.components.Component< ? >[] isReassignableRow = createIsReassignableRow();
+		org.lgna.croquet.components.Component< ? >[] valueTypeRow = createValueTypeRow();
+		org.lgna.croquet.components.Component< ? >[] nameRow = createNameRow();
+		org.lgna.croquet.components.Component< ? >[] initializerRow = createInitializerRow();
+		org.lgna.croquet.components.Component< ? >[] warningRow = createWarningRow();
 		addIfNecessary( rv, isReassignableRow );
 		addIfNecessary( rv, valueTypeRow );
 		addIfNecessary( rv, nameRow );
 		addIfNecessary( rv, initializerRow );
 		if( warningRow != null ) {
-			addIfNecessary( rv, edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ), null ) );
+			addIfNecessary( rv, org.lgna.croquet.components.SpringUtilities.createRow( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ), null ) );
 			//addIfNecessary( rv, edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ), null );
 			addIfNecessary( rv, warningRow );
 		}
 		return rv;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent() {
-		edu.cmu.cs.dennisc.croquet.RowsSpringPanel rv = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel() {
+	protected org.lgna.croquet.components.Component< ? > createMainComponent() {
+		org.lgna.croquet.components.RowsSpringPanel rv = new org.lgna.croquet.components.RowsSpringPanel() {
 			@Override
-			protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
+			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
 				return AbstractDeclarationPane.this.updateComponentRows( rv );
 			}
 		};

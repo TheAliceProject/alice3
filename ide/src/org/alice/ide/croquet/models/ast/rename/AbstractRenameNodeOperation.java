@@ -45,24 +45,24 @@ package org.alice.ide.croquet.models.ast.rename;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.name.RenamePane> {
-	public AbstractRenameNodeOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId ) {
+public abstract class AbstractRenameNodeOperation extends org.lgna.croquet.InputDialogOperation {
+	public AbstractRenameNodeOperation( org.lgna.croquet.Group group, java.util.UUID individualId ) {
 		super( group, individualId );
 	}
 	@Override
-	protected org.alice.ide.name.RenamePane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.name.RenamePane> context) {
+	protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
 		org.alice.ide.name.RenamePane renamePane = new org.alice.ide.name.RenamePane();
 		renamePane.setAndSelectNameText( this.getNameProperty().getValue() );
 		return renamePane;
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.name.RenamePane> context, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			org.alice.ide.name.RenamePane renamePane = context.getMainPanel();
+			org.alice.ide.name.RenamePane renamePane = step.getMainPanel();
 			final String nextValue = renamePane.getNameText();
 			final edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNameProperty();
 			final String prevValue = nameProperty.getValue();
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					nameProperty.setValue( nextValue );
@@ -81,26 +81,26 @@ public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.cro
 				}
 			} );
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 	
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize(edu.cmu.cs.dennisc.croquet.Dialog dialog) {
+	protected java.awt.Dimension getDesiredDialogSize(org.lgna.croquet.components.Dialog dialog) {
 		return new java.awt.Dimension( 300, 150 );
 	}
 	protected abstract edu.cmu.cs.dennisc.property.StringProperty getNameProperty();
 	protected abstract org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator();
 	
 	@Override
-	protected String getInternalExplanation( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.name.RenamePane> context ) {
-		org.alice.ide.name.RenamePane renamePane = context.getMainPanel();
+	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		org.alice.ide.name.RenamePane renamePane = step.getMainPanel();
 		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = this.getNodeNameValidator();
 		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( renamePane.getNameText() );
 		if( rv != null ) {
 			return rv;
 		} else {
-			return super.getInternalExplanation( context );
+			return super.getInternalExplanation( step );
 		}
 	}
 }

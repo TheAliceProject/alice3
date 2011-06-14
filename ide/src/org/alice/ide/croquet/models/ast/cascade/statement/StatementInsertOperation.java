@@ -46,24 +46,23 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementInsertOperation extends org.alice.ide.croquet.models.ast.cascade.ExpressionsCascadeOperation {
+public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOperation {
 	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
-	public StatementInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id, blanks );
+	public StatementInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 	public org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement();
 	@Override
-	protected org.alice.ide.croquet.edits.ast.InsertStatementEdit createEdit( edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement( values );
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( this.blockStatementIndexPair, statement, values );
-	}
-
-	@Override
-	protected <M extends edu.cmu.cs.dennisc.croquet.Model> edu.cmu.cs.dennisc.croquet.CodableResolver< M > createCodableResolver() {
+	protected <M extends org.lgna.croquet.Element> org.lgna.croquet.resolvers.CodableResolver< M > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
+	}
+	@Override
+	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement();
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement, null ) );
 	}
 }

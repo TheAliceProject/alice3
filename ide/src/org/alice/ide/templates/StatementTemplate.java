@@ -46,14 +46,14 @@ package org.alice.ide.templates;
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
-	public StatementTemplate( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragModel, Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
+	public StatementTemplate( org.lgna.croquet.DragModel dragModel, Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
 		super(cls, javax.swing.BoxLayout.LINE_AXIS);
 		this.setDragModel( dragModel );
 	}
 	
-	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair );
-	public final edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
-		return this.getDropOperation( context, new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index ) );
+	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair );
+	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
+		return this.getDropModel( step, new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index ) );
 	}
 	
 	@Override
@@ -78,7 +78,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		if( this.isInScope() ) {
 			//pass
 		} else {
-			g2.setPaint(edu.cmu.cs.dennisc.croquet.PaintUtilities.getDisabledTexturePaint());
+			g2.setPaint(org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint());
 			this.fillBounds(g2);
 		}
 	}

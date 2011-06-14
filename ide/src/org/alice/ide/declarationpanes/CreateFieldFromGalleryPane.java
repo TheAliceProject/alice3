@@ -42,7 +42,8 @@
  */
 package org.alice.ide.declarationpanes;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
+import org.lgna.croquet.components.BorderPanel.Constraint;
+
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -72,7 +73,7 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 	private CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls, javax.swing.Icon icon, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
 		super( declaringType, cls, valueType );
 		if( icon != null ) {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( icon ), Constraint.LINE_END );
+			this.addComponent( new org.lgna.croquet.components.Label( icon ), Constraint.LINE_END );
 		}
 	}
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls ) {

@@ -47,7 +47,7 @@ package org.alice.ide.editorstabbedpane;
 /**
  * @author Dennis Cosgrove
  */
-public class CodeComposite extends edu.cmu.cs.dennisc.croquet.Composite {
+public class CodeComposite extends org.lgna.croquet.Composite {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, CodeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized CodeComposite getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		CodeComposite rv = map.get( code );
@@ -62,18 +62,20 @@ public class CodeComposite extends edu.cmu.cs.dennisc.croquet.Composite {
 
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	public CodeComposite( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		super( java.util.UUID.fromString( "db2c8eb1-cc2f-4a23-8836-59af43de82fb" ) );
 		this.code = code;
 	}
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
 		return this.code;
 	}
 	@Override
-	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
+	public boolean contains( org.lgna.croquet.Model model ) {
 		System.err.println( "todo: CodeComposite contains" );
 		return false;
 	}
 	@Override
-	public String toString() {
-		return this.code.getName();
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		rv.append( this.code.getName() );
+		return rv;
 	}
 }

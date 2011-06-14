@@ -55,28 +55,29 @@ public class BlockTemplateComposite extends TemplateComposite {
 	}
 	private final java.util.Set< Class<?> > clses = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 	private BlockTemplateComposite() {
-		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertOperation.class );
-		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.WhileLoopInsertOperation.class );
+		super( java.util.UUID.fromString( "c61a35cf-5378-44d1-ae4d-8efd7ab40fd3" ) );
+		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade.class );
+		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.WhileLoopInsertCascade.class );
 		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.DoInOrderInsertOperation.class );
 		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.DoTogetherInsertOperation.class );
 		//todo
 	}
 	@Override
-	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
+	public boolean contains( org.lgna.croquet.Model model ) {
 		if( clses.contains( model.getClass() ) ) {
 			return true;
 		}
 		return false;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
-		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.ubiquitouspane.UbiquitousPane();
+	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.ubiquitouspane.UbiquitousPane();
 		rv.setBackgroundColor( new java.awt.Color( 250, 150, 105 ) );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 		return rv;
 	}
 	@Override
-	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
 		super.customizeTitleComponent( booleanState, button );
 		button.getAwtComponent().setIcon( new javax.swing.Icon() {
 			public int getIconHeight() {
@@ -88,10 +89,9 @@ public class BlockTemplateComposite extends TemplateComposite {
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 			}
 		} );
-		booleanState.setTextForBothTrueAndFalse( this.toString() );
 	}
 	@Override
-	public String toString() {
+	protected String getTextForTabTitle() {
 		return "Action Ordering Boxes";
 	}
 }

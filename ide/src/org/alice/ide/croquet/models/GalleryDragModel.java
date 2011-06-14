@@ -51,7 +51,7 @@ public class GalleryDragModel extends IdeDragModel {
 		super( java.util.UUID.fromString( "377a4edf-e0ff-43f7-9c1b-ff4d6a3e8539" ) );
 	}
 	@Override
-	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent dragSource ) {
+	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
 		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( org.alice.ide.IDE.getSingleton().getSceneEditor() );
 	}
 }

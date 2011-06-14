@@ -50,6 +50,7 @@ public class CountBlank extends org.alice.ide.croquet.models.cascade.ExpressionB
 	private static class SingletonHolder {
 		private static CountBlank instance = new CountBlank();
 	}
+
 	public static CountBlank getInstance() {
 		return SingletonHolder.instance;
 	}
@@ -57,10 +58,8 @@ public class CountBlank extends org.alice.ide.croquet.models.cascade.ExpressionB
 		super( java.util.UUID.fromString( "8dde36e7-5d10-46fa-9539-c52ed6495661" ), Integer.class );
 	}
 	@Override
-	protected java.util.List<edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren(
-			java.util.List<edu.cmu.cs.dennisc.croquet.CascadeItem> rv,
-			edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > blankNode ) {
 		rv.add( CountSeparator.getInstance() );
-		return super.updateChildren(rv, context);
+		return super.updateChildren( rv, blankNode );
 	}
 }

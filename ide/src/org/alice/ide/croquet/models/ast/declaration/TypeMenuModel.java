@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+public class TypeMenuModel extends org.lgna.croquet.MenuModel {
 	private static class SingletonHolder {
 		private static TypeMenuModel instance = new TypeMenuModel();
 	}
@@ -56,20 +56,20 @@ public class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 		super( java.util.UUID.fromString( "a59df2b2-a55a-41b5-be05-60d10a615049" ) );
 	}
 	@Override
-	protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) {
+	public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< org.lgna.croquet.MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > javaTypes = org.alice.ide.IDE.getSingleton().getPrimeTimeSelectableTypesDeclaredInJava();
 		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava javaType : javaTypes ) {
 			models.add( SelectTypeOperation.getInstance( javaType ).getMenuItemPrepModel() );
 		}
 		
-		models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
+		models.add( org.lgna.croquet.MenuModel.SEPARATOR );
 		models.add( MyTypesMenuModel.getInstance() );
 
-		models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
+		models.add( org.lgna.croquet.MenuModel.SEPARATOR );
 		models.add( OtherTypesMenuModel.getInstance() );
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 	}
 }

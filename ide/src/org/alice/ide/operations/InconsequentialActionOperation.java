@@ -47,14 +47,14 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public abstract class InconsequentialActionOperation extends org.alice.ide.operations.ActionOperation {
-	private static final edu.cmu.cs.dennisc.croquet.Group INCONSEQUENTIAL_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "a3a6ebb5-e942-48df-b091-9aa461d68240" ), "INCONSEQUENTIAL_GROUP" );
+	private static final org.lgna.croquet.Group INCONSEQUENTIAL_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "a3a6ebb5-e942-48df-b091-9aa461d68240" ), "INCONSEQUENTIAL_GROUP" );
 	public InconsequentialActionOperation( java.util.UUID individualUUID ) {
 		super( INCONSEQUENTIAL_GROUP, individualUUID );
 	}
-	protected abstract void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context );
+	protected abstract void performInternal( org.lgna.croquet.history.ActionOperationStep step );
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		performInternal(context);
-		context.finish();
+	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		this.performInternal(step);
+		step.finish();
 	}
 }

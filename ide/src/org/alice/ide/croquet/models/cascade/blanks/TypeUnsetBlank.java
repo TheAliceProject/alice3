@@ -57,9 +57,9 @@ public class TypeUnsetBlank extends org.alice.ide.croquet.models.cascade.Express
 		super( java.util.UUID.fromString( "e3bc0668-0d5a-455e-b594-d0107794509c" ), Void.class );
 	}
 	@Override
-	protected java.util.List<edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren(
-			java.util.List<edu.cmu.cs.dennisc.croquet.CascadeItem> rv,
-			edu.cmu.cs.dennisc.croquet.CascadeBlankContext<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
+	protected java.util.List<org.lgna.croquet.CascadeItem> updateChildren(
+			java.util.List<org.lgna.croquet.CascadeItem> rv,
+			org.lgna.croquet.cascade.BlankNode<edu.cmu.cs.dennisc.alice.ast.Expression> context) {
 		//note: not invoking super
 		rv.add( org.alice.ide.croquet.models.cascade.cancels.TypeUnsetCancelFillIn.getInstance() );
 		return rv;

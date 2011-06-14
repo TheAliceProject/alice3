@@ -42,13 +42,17 @@
  */
 package org.alice.interact.operations;
 
+import org.lgna.croquet.Group;
+import org.lgna.croquet.components.Component;
+
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSetLocalTransformationActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public abstract class AbstractSetLocalTransformationActionOperation extends org.lgna.croquet.ActionOperation {
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
-	public AbstractSetLocalTransformationActionOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator ) {
+	public AbstractSetLocalTransformationActionOperation( Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator ) {
 		super( group, individualId );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
@@ -70,14 +74,14 @@ public abstract class AbstractSetLocalTransformationActionOperation extends edu.
 		}
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
 		assert prevLT != null;
 		assert nextLT != null;
 		assert prevLT.isNaN() == false;
 		assert nextLT.isNaN() == false;
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				if( isDo && ( isDoRequired == false ) ) {

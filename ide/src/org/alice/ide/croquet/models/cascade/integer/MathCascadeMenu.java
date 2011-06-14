@@ -57,7 +57,7 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 		super( java.util.UUID.fromString( "a7c69555-3232-4091-96f6-8f9b6ec2ee3a" ) );
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateBlankChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 //		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().createCopyOfPreviousExpression();
 //		final boolean isTop = blank.getParentFillIn() == null;
 //		
@@ -83,9 +83,9 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 		}
 		rv.add( IncompleteDivideRemainderCascadeMenu.getInstance() );
 
-		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "abs", Integer.TYPE ) );
-		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "min", Integer.TYPE, Integer.TYPE ) );
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "max", Integer.TYPE, Integer.TYPE ) );
 		return rv;

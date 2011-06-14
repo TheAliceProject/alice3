@@ -42,7 +42,6 @@
  */
 package org.alice.stageide.croquet.models.personeditor;
 
-import org.alice.stageide.personeditor.PersonEditor;
 import org.alice.stageide.personeditor.PersonViewer;
 
 

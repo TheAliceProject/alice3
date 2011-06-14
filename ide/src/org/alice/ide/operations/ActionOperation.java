@@ -45,8 +45,8 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	public ActionOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId ) {
+public abstract class ActionOperation extends org.lgna.croquet.ActionOperation {
+	public ActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId ) {
 		super( group, individualId );
 	}
 	protected final org.alice.ide.IDE getIDE() {

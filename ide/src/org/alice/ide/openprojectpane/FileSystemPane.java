@@ -47,7 +47,7 @@ package org.alice.ide.openprojectpane;
  * @author Dennis Cosgrove
  */
 public class FileSystemPane extends TabContentPanel {
-	private edu.cmu.cs.dennisc.croquet.StringState textState = new edu.cmu.cs.dennisc.croquet.StringState( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "a0051988-1f98-4401-a054-f87547d3faf3" ), "" );
+	private org.lgna.croquet.StringState textState = new org.lgna.croquet.StringState( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "a0051988-1f98-4401-a054-f87547d3faf3" ), "" );
 	public FileSystemPane() {
 //		this.textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 //			private void handleUpdate(javax.swing.event.DocumentEvent e) {
@@ -67,9 +67,9 @@ public class FileSystemPane extends TabContentPanel {
 //			}
 //		});
 
-		class BrowseOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+		class BrowseOperation extends org.lgna.croquet.ActionOperation {
 			public BrowseOperation() {
-				super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString("67936a64-be55-44d5-9441-4cc3cce5cc75"));
+				super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString("67936a64-be55-44d5-9441-4cc3cce5cc75"));
 			}
 			@Override
 			protected void localize() {
@@ -78,20 +78,20 @@ public class FileSystemPane extends TabContentPanel {
 			}
 
 			@Override
-			protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-				java.io.File file = edu.cmu.cs.dennisc.croquet.Application.getSingleton().showOpenFileDialog(org.alice.ide.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true);
+			protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+				java.io.File file = org.lgna.croquet.Application.getSingleton().showOpenFileDialog(org.alice.ide.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true);
 				if (file != null) {
 					FileSystemPane.this.textState.setValue(edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible(file));
 				}
-				context.finish();
+				step.finish();
 			}
 		}
 
 		BrowseOperation browseOperation = new BrowseOperation();
-		edu.cmu.cs.dennisc.croquet.BorderPanel pane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		pane.addComponent( new edu.cmu.cs.dennisc.croquet.Label("file:"), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START );
-		pane.addComponent( this.textState.createTextField(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-		pane.addComponent( browseOperation.createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
+		org.lgna.croquet.components.BorderPanel pane = new org.lgna.croquet.components.BorderPanel();
+		pane.addComponent( new org.lgna.croquet.components.Label("file:"), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		pane.addComponent( this.textState.createTextField(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		pane.addComponent( browseOperation.createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
 
 		this.addComponent(pane, Constraint.PAGE_START);
 	}

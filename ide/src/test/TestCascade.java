@@ -43,7 +43,7 @@
 
 package test;
 
-class EnumConstantFillIn<T extends Enum< T >> extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< T, Void > {
+class EnumConstantFillIn<T extends Enum< T >> extends org.lgna.croquet.CascadeFillIn< T, Void > {
 	private static java.util.Map< Object, EnumConstantFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static synchronized <T extends Enum< T >> EnumConstantFillIn< T > getInstance( T value ) {
@@ -65,32 +65,32 @@ class EnumConstantFillIn<T extends Enum< T >> extends edu.cmu.cs.dennisc.croquet
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T,Void > step ) {
 		return null;
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T,Void > step ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T,Void > step ) {
 		return this.value.name();
 	}
 
 	@Override
-	public T createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
+	public T createValue( org.lgna.croquet.cascade.ItemNode< ? super T,Void > step ) {
 		return this.value;
 	}
 
 	@Override
-	public T getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< T, Void > context ) {
+	public T getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super T,Void > step ) {
 		return this.value;
 	}
 }
 
-class EnumBlank<T extends Enum< T >> extends edu.cmu.cs.dennisc.croquet.CascadeBlank< T > {
+class EnumBlank<T extends Enum< T >> extends org.lgna.croquet.CascadeBlank< T > {
 	private final Class< T > cls;
 
 	public EnumBlank( Class< T > cls ) {
@@ -99,7 +99,7 @@ class EnumBlank<T extends Enum< T >> extends edu.cmu.cs.dennisc.croquet.CascadeB
 	}
 
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< T > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< T > blankNode ) {
 		for( T value : this.cls.getEnumConstants() ) {
 			rv.add( EnumConstantFillIn.getInstance( value ) );
 		}
@@ -107,7 +107,7 @@ class EnumBlank<T extends Enum< T >> extends edu.cmu.cs.dennisc.croquet.CascadeB
 	}
 }
 
-class IntegerLiteralFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Integer, Void > {
+class IntegerLiteralFillIn extends org.lgna.croquet.CascadeFillIn< Integer, Void > {
 	private static java.util.Map< Integer, IntegerLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static synchronized IntegerLiteralFillIn getInstance( Integer value ) {
@@ -129,32 +129,31 @@ class IntegerLiteralFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Int
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return null;
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return null;
 	}
-
 	@Override
-	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return Integer.toString( this.value );
 	}
 
 	@Override
-	public Integer createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public Integer createValue( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return this.value;
 	}
 
 	@Override
-	public Integer getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public Integer getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return this.value;
 	}
 }
 
-class CustomIntegerFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Integer, Void > {
+class CustomIntegerFillIn extends org.lgna.croquet.CascadeFillIn< Integer, Void > {
 	private static class SingletonHolder {
 		private static CustomIntegerFillIn instance = new CustomIntegerFillIn();
 	}
@@ -166,34 +165,33 @@ class CustomIntegerFillIn extends edu.cmu.cs.dennisc.croquet.CascadeFillIn< Inte
 	private CustomIntegerFillIn() {
 		super( java.util.UUID.fromString( "abfa96df-32be-4a94-8f5d-030f173b77e9" ) );
 	}
-
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return null;
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return "custom integer...";
 	}
 
 	@Override
-	public Integer createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public Integer createValue( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return 42;
 	}
 
 	@Override
-	public Integer getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< Integer, Void > context ) {
+	public Integer getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super Integer,Void > step ) {
 		return null;
 	}
 }
 
-class IntegerBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< Integer > {
+class IntegerBlank extends org.lgna.croquet.CascadeBlank< Integer > {
 	private static class SingletonHolder {
 		private static IntegerBlank instance = new IntegerBlank();
 	}
@@ -207,11 +205,11 @@ class IntegerBlank extends edu.cmu.cs.dennisc.croquet.CascadeBlank< Integer > {
 	}
 
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> updateChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem> rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< Integer > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem> updateChildren( java.util.List< org.lgna.croquet.CascadeItem> rv, org.lgna.croquet.cascade.BlankNode< Integer > blankNode ) {
 		for( Integer value : new int[] { 1, 2, 3, 4, 5 } ) {
 			rv.add( IntegerLiteralFillIn.getInstance( value ) );
 		}
-		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		rv.add( CustomIntegerFillIn.getInstance() );
 		return rv;
 	}
@@ -221,17 +219,17 @@ enum ZodiacSigns {
 	ARIES, TAURUS, GEMINI, CANCER, LEO, VIRGO, LIBRA, SCORPIO, SAGITARIUS, CAPRICORN, AQUARIUS, PISCES
 }
 
-class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupOperation< Object > {
+class MyCascade extends org.lgna.croquet.CascadePopupPrepModel< Object > {
 	private static class SingletonHolder {
-		private static MyCascadeOperation instance = new MyCascadeOperation();
+		private static MyCascade instance = new MyCascade();
 	}
 
-	public static MyCascadeOperation getInstance() {
+	public static MyCascade getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private MyCascadeOperation() {
-		super( null, java.util.UUID.fromString( "2c0ba898-1f06-48ff-bc15-65f6f350484b" ), Object.class, new edu.cmu.cs.dennisc.croquet.CascadeBlank[] { new EnumBlank( ZodiacSigns.class ), IntegerBlank.getInstance(), IntegerBlank.getInstance(),
+	private MyCascade() {
+		super( null, java.util.UUID.fromString( "2c0ba898-1f06-48ff-bc15-65f6f350484b" ), Object.class, new org.lgna.croquet.CascadeBlank[] { new EnumBlank( ZodiacSigns.class ), IntegerBlank.getInstance(), IntegerBlank.getInstance(),
 				new EnumBlank( ZodiacSigns.class ), IntegerBlank.getInstance() } );
 	}
 
@@ -242,22 +240,15 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupOperatio
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.CascadePopupOperation< Object >> createEdit( final Object[] values ) {
-		return new edu.cmu.cs.dennisc.croquet.Edit() {
-			@Override
-			public edu.cmu.cs.dennisc.croquet.Edit.Memento createMemento() {
-				return null;
-			}
-
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< Object > step, final java.lang.Object[] values ) {
+		return new org.lgna.croquet.edits.Edit< org.lgna.croquet.CascadePopupCompletionModel<Object> >( null ) {
 			@Override
 			protected void doOrRedoInternal( boolean isDo ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( values );
 			}
-
 			@Override
 			protected void undoInternal() {
 			}
-
 			@Override
 			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 				return null;
@@ -266,43 +257,47 @@ class MyCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadePopupOperatio
 	}
 }
 
-class CascadePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+class CascadePanel extends org.lgna.croquet.components.BorderPanel {
 	public CascadePanel() {
 		this.setMinimumPreferredWidth( 640 );
 		this.setMinimumPreferredHeight( 480 );
-		this.addComponent( MyCascadeOperation.getInstance().createButton(), Constraint.PAGE_START );
+		this.addComponent( MyCascade.getInstance().createPopupButton(), Constraint.PAGE_START );
 	}
 }
 
 /**
  * @author Dennis Cosgrove
  */
-public class TestCascade extends edu.cmu.cs.dennisc.croquet.Application {
+public class TestCascade extends org.lgna.croquet.Application {
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createContentPane() {
+	protected org.lgna.croquet.components.Component< ? > createContentPane() {
 		return new CascadePanel();
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.croquet.DropReceptor getDropReceptor( edu.cmu.cs.dennisc.croquet.DropSite dropSite ) {
+	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
 		return null;
 	}
 
 	@Override
-	protected void handleAbout( java.util.EventObject e ) {
+	protected void handleAbout( org.lgna.croquet.triggers.Trigger trigger ) {
 	}
 
 	@Override
-	protected void handlePreferences( java.util.EventObject e ) {
+	protected void handlePreferences( org.lgna.croquet.triggers.Trigger trigger ) {
 	}
 
 	@Override
-	protected void handleQuit( java.util.EventObject e ) {
+	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
 		System.exit( 0 );
 	}
 
 	@Override
 	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+	}
+
+	@Override
+	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
 	}
 
 	public static void main( String[] args ) {

@@ -45,7 +45,7 @@ package org.alice.ide.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageView extends edu.cmu.cs.dennisc.croquet.JComponent<edu.cmu.cs.dennisc.javax.swing.components.JImageView> {
+public class ImageView extends org.lgna.croquet.components.JComponent<edu.cmu.cs.dennisc.javax.swing.components.JImageView> {
 	private int desiredSize;
 	public ImageView( int desiredSize ) {
 		this.desiredSize = desiredSize;

@@ -57,12 +57,12 @@ public class BrowserOperation extends org.alice.ide.operations.InconsequentialAc
 		super.localize();
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 		try {
 			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( this.url );
 		} catch( Exception e ) {
 			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( this.url );
-			edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + this.url + "\n\nso that you may paste it into your web browser." );
+			org.lgna.croquet.Application.getSingleton().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + this.url + "\n\nso that you may paste it into your web browser." );
 		}
 	}
 }

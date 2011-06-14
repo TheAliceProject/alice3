@@ -55,14 +55,14 @@ public class RandomPersonActionOperation extends org.alice.ide.operations.Action
 		return SingletonHolder.instance;
 	}
 	private RandomPersonActionOperation() {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "9ea00a57-0ea7-4c53-ac53-1e07220e76b9" ) );
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "9ea00a57-0ea7-4c53-ac53-1e07220e76b9" ) );
 		this.setName( "Generate Random Selection" );
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final PersonInfo prevState = org.alice.stageide.personeditor.PersonEditor.getInstance().getPersonInfo();
 		final PersonInfo nextState = org.alice.stageide.croquet.models.personeditor.PersonInfo.createRandom();
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				org.alice.stageide.personeditor.PersonEditor.getInstance().setPersonInfo( nextState );

@@ -53,9 +53,13 @@ public class GraphicsDeviceUtilities {
 	public static java.awt.Rectangle getScreenDeviceDefaultConfigurationBounds( int screenDeviceIndex ) {
 		java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
 		java.awt.GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
-		java.awt.GraphicsDevice graphicsDevice = graphicsDevices[ screenDeviceIndex ];
-		java.awt.GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
-		return graphicsConfiguration.getBounds();
+		if( screenDeviceIndex < graphicsDevices.length ) {
+			java.awt.GraphicsDevice graphicsDevice = graphicsDevices[ screenDeviceIndex ];
+			java.awt.GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
+			return graphicsConfiguration.getBounds();
+		} else {
+			return null;
+		}
 	}
 //	public static void main( String[] args ) {
 //		java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();

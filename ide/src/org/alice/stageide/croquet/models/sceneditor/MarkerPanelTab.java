@@ -44,8 +44,8 @@
 package org.alice.stageide.croquet.models.sceneditor;
 
 import org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel;
+import org.lgna.croquet.PredeterminedTab;
 
-import edu.cmu.cs.dennisc.croquet.PredeterminedTab;
 
 public class MarkerPanelTab extends PredeterminedTab
 {
@@ -59,14 +59,14 @@ public class MarkerPanelTab extends PredeterminedTab
         super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ) );
     }
     @Override
-    protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+    protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
         return new MarkerManagerPanel();
     }
     
     @Override
     public MarkerManagerPanel getMainComponent()
     {
-        edu.cmu.cs.dennisc.croquet.JComponent< ? > c = super.getMainComponent();
+        org.lgna.croquet.components.JComponent< ? > c = super.getMainComponent();
         if ( c instanceof MarkerManagerPanel)
         {
             return (MarkerManagerPanel)c;

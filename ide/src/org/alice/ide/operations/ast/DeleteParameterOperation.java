@@ -54,7 +54,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 		this.setName( "Delete" );
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 		final int index = method.parameters.indexOf( this.getParameter() );
@@ -89,7 +89,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 				}
 				sb.append( " before you may delete the parameter.<br>Canceling.</body></html>" );
 				this.getIDE().showMessageDialog( sb.toString() );
-				context.cancel();
+				step.cancel();
 			} else {
 				if( N_INVOCATIONS > 0 ) {
 					String codeText;
@@ -116,18 +116,18 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 						sb.append( "invocations" );
 					}
 					sb.append( "<br>Would you like to continue with the deletion?</body></html>" );
-					edu.cmu.cs.dennisc.croquet.YesNoCancelOption result = this.getIDE().showYesNoCancelConfirmDialog(sb.toString(), "Delete Parameter");
-					if( result == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ){
+					org.lgna.croquet.YesNoCancelOption result = this.getIDE().showYesNoCancelConfirmDialog(sb.toString(), "Delete Parameter");
+					if( result == org.lgna.croquet.YesNoCancelOption.YES ){
 						//pass
 					} else {
-						context.cancel();
+						step.cancel();
 					}
 				}
 			}
-			if( context.isCanceled() ) {
+			if( step.isCanceled() ) {
 				//pass
 			} else {
-				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
 						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, getParameter(), index, getIDE().getMethodInvocations( method ) );
@@ -146,7 +146,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: DeleteParameterOperation" );
-			context.cancel();
+			step.cancel();
 		}
 	}
 }

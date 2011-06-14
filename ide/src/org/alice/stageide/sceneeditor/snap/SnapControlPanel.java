@@ -61,13 +61,13 @@ import org.alice.stageide.properties.ModelScaleAdapter;
 import org.alice.stageide.properties.TransformableTranslationAdapter;
 import org.alice.stageide.properties.TransformableVehicleAdapter;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.components.GridBagPanel;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.LineAxisPanel;
+import org.lgna.croquet.components.SwingAdapter;
+import org.lgna.croquet.components.ToolPalette;
 
-import edu.cmu.cs.dennisc.croquet.BooleanState;
-import edu.cmu.cs.dennisc.croquet.GridBagPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
-import edu.cmu.cs.dennisc.croquet.SwingAdapter;
-import edu.cmu.cs.dennisc.croquet.ToolPalette;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 
 public class SnapControlPanel extends GridBagPanel implements ChangeListener, ActionListener
@@ -90,11 +90,10 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 	
 	private boolean isInitializing = false;
 	
-	private BooleanState.ValueObserver snapStateValueObserver = new BooleanState.ValueObserver() {
-		public void changing(boolean nextValue) {
-			
+	private org.lgna.croquet.State.ValueObserver< Boolean > snapStateValueObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed(boolean nextValue) {
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			SnapControlPanel.this.updateUIFromSnapState();
 		}
 	};

@@ -56,7 +56,7 @@ public class ShowAllSystemPropertiesOperation extends org.alice.ide.operations.I
 		super( java.util.UUID.fromString( "db633e18-dd47-49ca-9406-cf4988d90960" ) );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 		java.util.Properties properties = System.getProperties();
 		java.util.Enumeration< String > nameEnum = (java.util.Enumeration< String >)properties.propertyNames();
 		java.util.SortedSet< String > names = new java.util.TreeSet< String >();
@@ -80,6 +80,6 @@ public class ShowAllSystemPropertiesOperation extends org.alice.ide.operations.I
 		textArea.setFont( new java.awt.Font( "Monospaced", font.getStyle(), font.getSize() ) );
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
 		scrollPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
-		this.getIDE().showMessageDialog( scrollPane, "System Properties", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
+		this.getIDE().showMessageDialog( scrollPane, "System Properties", org.lgna.croquet.MessageType.INFORMATION ); 
 	}
 }

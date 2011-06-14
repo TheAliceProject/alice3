@@ -72,7 +72,7 @@ public abstract class DeleteMemberOperation< N extends edu.cmu.cs.dennisc.alice.
 				Integer.TYPE
 		};
 	}
-	public static Object[] retargetArguments( Object[] rv, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public static Object[] retargetArguments( Object[] rv, org.lgna.croquet.Retargeter retargeter ) {
 		assert rv != null;
 		assert rv.length == 3;
 		rv[ 0 ] = retargeter.retarget( rv[ 0 ] );
@@ -116,18 +116,18 @@ public abstract class DeleteMemberOperation< N extends edu.cmu.cs.dennisc.alice.
 		}
 		owner.add( this.index, member );
 	}
-	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>>)edit;
 		DeleteMemberOperation<N> replacement = replacementEdit.getModel();
 		retargeter.addKeyValuePair( this.member, replacement.member );
 		retargeter.addKeyValuePair( this.delaringType, replacement.delaringType );
 	}
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		this.member = retargeter.retarget( this.member );
 		this.delaringType = retargeter.retarget( this.delaringType );
 	}
-	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
+		return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 	}
 	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "delete: " );
@@ -136,11 +136,11 @@ public abstract class DeleteMemberOperation< N extends edu.cmu.cs.dennisc.alice.
 	}
 	
 	@Override
-	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		if( this.isClearToDelete( this.member ) ) {
-			context.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< DeleteMemberOperation< N > >() );
+			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< DeleteMemberOperation< N > >( step ) );
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 }

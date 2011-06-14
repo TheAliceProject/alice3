@@ -57,7 +57,7 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 		super( java.util.UUID.fromString( "d6d9501b-2a63-4b72-9ceb-3046ff079ba1" ) );
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > updateBlankChildren( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.croquet.CascadeBlankContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 //		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
 //			rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Double.class, Number.class ) );
 //		}
@@ -88,7 +88,7 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 			rv.add( org.alice.ide.croquet.models.cascade.number.NumberArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
 		
-		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		rv.add( org.alice.ide.croquet.models.cascade.number.MinMaxCascadeMenu.getInstance() );
 		rv.add( FloorCeilingCascadeMenu.getInstance() );
 		rv.add( PowerCascadeMenu.getInstance() );

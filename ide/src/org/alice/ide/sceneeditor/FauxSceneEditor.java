@@ -42,20 +42,20 @@
  */
 package org.alice.ide.sceneeditor;
 
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.components.DragComponent;
+import org.lgna.croquet.components.ViewController;
+
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
-import edu.cmu.cs.dennisc.croquet.DragComponent;
-import edu.cmu.cs.dennisc.croquet.Operation;
-import edu.cmu.cs.dennisc.croquet.ViewController;
 
 /**
  * @author Dennis Cosgrove
  */
 public class FauxSceneEditor extends AbstractSceneEditor {
-	public <R extends edu.cmu.cs.dennisc.croquet.DropReceptor> edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.DropReceptor > getCodableResolver() {
+	public <R extends org.lgna.croquet.DropReceptor> org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.DropReceptor > getCodableResolver() {
 		return null;
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.croquet.DropSite potentialDropSite ) {
+	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		return null;
 	}
 	@Override
@@ -84,18 +84,18 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 		// TODO Auto-generated method stub
 		
 	}
-	public Operation<?> dragDropped(DragAndDropContext dragAndDropContext) {
+	public org.lgna.croquet.Model dragDropped(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		return null;
 	}
-	public void dragEntered(DragAndDropContext dragAndDropContext) {
+	public void dragEntered(org.lgna.croquet.history.DragStep dragAndDropContext) {
 	}
-	public void dragExited(DragAndDropContext dragAndDropContext, boolean isDropRecipient) {
+	public void dragExited(org.lgna.croquet.history.DragStep dragAndDropContext, boolean isDropRecipient) {
 	}
-	public void dragStarted(DragAndDropContext dragAndDropContext) {
+	public void dragStarted(org.lgna.croquet.history.DragStep dragAndDropContext) {
 	}
-	public void dragStopped(DragAndDropContext dragAndDropContext) {
+	public void dragStopped(org.lgna.croquet.history.DragStep dragAndDropContext) {
 	}
-	public edu.cmu.cs.dennisc.croquet.DropSite dragUpdated(DragAndDropContext dragAndDropContext) {
+	public org.lgna.croquet.DropSite dragUpdated(org.lgna.croquet.history.DragStep dragAndDropContext) {
 		return null;
 	}
 	public ViewController<?, ?> getViewController() {

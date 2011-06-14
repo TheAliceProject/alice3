@@ -60,7 +60,7 @@ public abstract class Note extends org.lgna.stencil.Note {
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
+	protected org.lgna.croquet.Operation< ? > getNextOperation() {
 		return NextStepOperation.getInstance();
 	}
 	public boolean isGoodToGo() {
@@ -81,8 +81,8 @@ public abstract class Note extends org.lgna.stencil.Note {
 		return isMouseEventInterceptedInAllCasesEvenPopups( e );
 	}
 	
-	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event );
-	private boolean moveOutOfTheWayIfNecessary( edu.cmu.cs.dennisc.croquet.ScreenElement screenElement ) {
+	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event );
+	private boolean moveOutOfTheWayIfNecessary( org.lgna.croquet.components.ScreenElement screenElement ) {
 		java.awt.Rectangle screenElementLocalBounds = screenElement.getLocalBounds();
 		java.awt.Rectangle bounds = this.getBounds( screenElement );
 		if( bounds.intersects( screenElementLocalBounds ) ) {
@@ -92,13 +92,13 @@ public abstract class Note extends org.lgna.stencil.Note {
 			return false;
 		}
 	}
-	public boolean moveOutOfTheWayIfNecessary( org.lgna.cheshire.events.Event event ) {
-		edu.cmu.cs.dennisc.croquet.ScreenElement screenElement;
-		if( event instanceof org.lgna.cheshire.events.PopupMenuResizedEvent ) {
-			org.lgna.cheshire.events.PopupMenuResizedEvent menuResizedEvent = (org.lgna.cheshire.events.PopupMenuResizedEvent)event;
-			screenElement = menuResizedEvent.getPopupMenu();
-		} else if( event instanceof org.lgna.cheshire.events.DialogOpenedEvent ) {
-			org.lgna.cheshire.events.DialogOpenedEvent dialogOpenedEvent = (org.lgna.cheshire.events.DialogOpenedEvent)event;
+	public boolean moveOutOfTheWayIfNecessary( org.lgna.croquet.history.event.Event event ) {
+		org.lgna.croquet.components.ScreenElement screenElement;
+		if( event instanceof org.lgna.croquet.history.event.PopupMenuResizedEvent ) {
+			org.lgna.croquet.history.event.PopupMenuResizedEvent menuResizedEvent = (org.lgna.croquet.history.event.PopupMenuResizedEvent)event;
+			screenElement = menuResizedEvent.getNode().getPopupMenu();
+		} else if( event instanceof org.lgna.croquet.history.event.DialogOpenedEvent ) {
+			org.lgna.croquet.history.event.DialogOpenedEvent dialogOpenedEvent = (org.lgna.croquet.history.event.DialogOpenedEvent)event;
 			screenElement = dialogOpenedEvent.getDialog();
 		} else {
 			screenElement = null;

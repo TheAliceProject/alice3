@@ -66,10 +66,6 @@ public class PreviousExpressionItselfFillIn extends PreviousExpressionBasedFillI
 		this.type = type;
 	}
 	@Override
-	protected boolean isInclusionDesired( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		return CascadeManager.isInclusionDesired( context, previousExpression, this.type );
-	}
-	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
 		return previousExpression;
 	}

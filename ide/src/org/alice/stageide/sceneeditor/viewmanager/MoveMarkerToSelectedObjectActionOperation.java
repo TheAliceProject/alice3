@@ -54,7 +54,6 @@ import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.croquet.ActionOperationContext;
 import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;
 
 public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
@@ -146,8 +145,7 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform(ActionOperationContext context) 
-	{
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		final MarkerWithIcon objectMarker;
 		final org.alice.apis.moveandturn.PointOfView prevPOV;
 		final org.alice.apis.moveandturn.PointOfView nextPOV;
@@ -162,9 +160,9 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 			nextPOV = selectedTransformable.getPointOfView(org.alice.apis.moveandturn.AsSeenBy.SCENE);
 			if( nextPOV.getInternal().isNaN() ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveMarkerToSelectedObjectActionOperation isNaN" );
-				context.cancel();
+				step.cancel();
 			} else {
-				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					public void doOrRedoInternal( boolean isDo ) {
 						setAbsolutePOV( objectMarker, nextPOV );
@@ -181,7 +179,7 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 				} );
 			}
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 		
 	}

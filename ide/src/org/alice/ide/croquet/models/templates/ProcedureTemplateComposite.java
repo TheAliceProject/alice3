@@ -50,25 +50,23 @@ public class ProcedureTemplateComposite extends MemberTemplateComposite {
 	private static class SingletonHolder {
 		private static ProcedureTemplateComposite instance = new ProcedureTemplateComposite();
 	}
+
 	public static ProcedureTemplateComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 	private ProcedureTemplateComposite() {
+		super( java.util.UUID.fromString( "724e651f-6b2a-4520-9cac-fe10ee8a4dbf" ) );
 	}
 	@Override
-	public boolean contains( edu.cmu.cs.dennisc.croquet.Model model ) {
-		return model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation;
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 		return new org.alice.ide.memberseditor.ProceduresContentPanel();
 	}
 	@Override
 	protected String getTextForTabTitle() {
-		return this.toString();
-	}
-	@Override
-	public String toString() {
 		return "Actions";
 	}
 }

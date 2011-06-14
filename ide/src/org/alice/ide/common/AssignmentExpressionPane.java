@@ -46,7 +46,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
+public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAxisPanel {
 	private edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression;
 	public AssignmentExpressionPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression ) {
 		this.assignmentExpression = assignmentExpression;
@@ -54,10 +54,10 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxi
 		
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType;
 		edu.cmu.cs.dennisc.alice.ast.Expression expression;
-		edu.cmu.cs.dennisc.croquet.AxisPanel parent;
+		org.lgna.croquet.components.AxisPanel parent;
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
-			parent = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+			parent = new org.lgna.croquet.components.LineAxisPanel();
 			this.addComponent( parent );
 			expression = arrayAccess.array.getValue();
 		} else {
@@ -76,17 +76,17 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxi
 			desiredValueType = field.getDesiredValueType();
 			parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, null, field.getDeclaringType() ) );
 			if( org.alice.ide.IDE.getSingleton().isJava() ) {
-				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " . " ) );
+				parent.addComponent( new org.lgna.croquet.components.Label( " . " ) );
 			} else {
-				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " " ) );
+				parent.addComponent( new org.lgna.croquet.components.Label( " " ) );
 			}
 			if( isSetter ) {
-				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "set" ) );
+				parent.addComponent( new org.lgna.croquet.components.Label( "set" ) );
 			}
 			parent.addComponent( nameLabel );
 			if( isSetter ) {
 				if( org.alice.ide.IDE.getSingleton().isJava() ) {
-					parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "( " ) );
+					parent.addComponent( new org.lgna.croquet.components.Label( "( " ) );
 				}
 			}
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
@@ -103,20 +103,20 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxi
 			parent.addComponent( new ParameterPane( null, (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter ) );
 		} else {
 			desiredValueType = null;
-			parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "TODO" ) );
+			parent.addComponent( new org.lgna.croquet.components.Label( "TODO" ) );
 		}
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
-			parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "[ " ) );
+			parent.addComponent( new org.lgna.croquet.components.Label( "[ " ) );
 			parent.addComponent( factory.createExpressionPropertyPane( arrayAccess.index, null ) );
-			parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " ]" ) );
+			parent.addComponent( new org.lgna.croquet.components.Label( " ]" ) );
 		}
 		
 		if( isSetter ) {
 			//pass
 		} else {
 			if( org.alice.ide.IDE.getSingleton().isJava() ) {
-				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " = " ) );
+				parent.addComponent( new org.lgna.croquet.components.Label( " = " ) );
 			} else {
 				parent.addComponent( new org.alice.ide.common.GetsPane( true ) );
 			}
@@ -124,7 +124,7 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxi
 		parent.addComponent( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, null, desiredValueType ) );
 		if( isSetter ) {
 			if( org.alice.ide.IDE.getSingleton().isJava() ) {
-				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " )" ) );
+				parent.addComponent( new org.lgna.croquet.components.Label( " )" ) );
 			}
 		}
 	}

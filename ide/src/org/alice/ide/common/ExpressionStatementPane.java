@@ -95,7 +95,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
 			this.addComponent( new AssignmentExpressionPane( this.getFactory(), (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression ) );
 		} else {
-			edu.cmu.cs.dennisc.croquet.JComponent< ? > expressionPane = this.getFactory().createComponent( expressionStatement.expression.getValue() );
+			org.lgna.croquet.components.JComponent< ? > expressionPane = this.getFactory().createComponent( expressionStatement.expression.getValue() );
 			this.addComponent( expressionPane );
 			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) { 
 				final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
@@ -112,10 +112,10 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractMember nextLonger = method.getNextLongerInChain();
 					if( nextLonger != null ) {
-						this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
-						edu.cmu.cs.dennisc.croquet.AbstractButton< ?, ? > button = new org.alice.ide.croquet.MenuButton( org.alice.ide.croquet.models.ast.cascade.FillInMoreOperation.getInstance( methodInvocation ) );
+						this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+						org.lgna.croquet.components.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupButton( org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation ) );
 						button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
-						button.setVerticalAlignment( edu.cmu.cs.dennisc.croquet.VerticalAlignment.CENTER );
+						button.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
 						button.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 						this.addComponent( button );
 					}
@@ -145,9 +145,9 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( ";" ) );
+			this.addComponent( new org.lgna.croquet.components.Label( ";" ) );
 		}
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.revalidateAndRepaint();
 	}
 //	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethodDeclaredInAlice() {

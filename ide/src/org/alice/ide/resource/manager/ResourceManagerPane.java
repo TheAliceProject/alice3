@@ -166,22 +166,22 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel {
 	abstract class ResourceOperation extends org.alice.ide.operations.ActionOperation {
 		public ResourceOperation( java.util.UUID individualId ) {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		}
-		protected abstract edu.cmu.cs.dennisc.croquet.Edit createEdit( org.alice.virtualmachine.Resource resource );
+		protected abstract org.lgna.croquet.edits.Edit createEdit( org.alice.virtualmachine.Resource resource );
 
 		//todo: better name
 		protected abstract org.alice.virtualmachine.Resource selectResource();
 		@Override
-		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 			org.alice.virtualmachine.Resource resource = this.selectResource();
 			if( resource != null ) {
-				context.commitAndInvokeDo( this.createEdit( resource ) );
+				step.commitAndInvokeDo( this.createEdit( resource ) );
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		}
 	}
@@ -236,7 +236,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 			}
 		}
 		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
+		public org.lgna.croquet.edits.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
 			return new AddOrRemoveResourceEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
@@ -266,7 +266,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 			return ResourceManagerPane.this.getSelectedResource();
 		}
 		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
+		public org.lgna.croquet.edits.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
 			return new AddOrRemoveResourceEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
@@ -298,12 +298,12 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		}
 		protected abstract javax.swing.JComponent createPreviewComponent();
 		@Override
-		protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
+		protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
 			rv = super.updateComponentRows( rv );
 			rv.add( 
-					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
-							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "preview:" ),
-							new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.createPreviewComponent() )
+					org.lgna.croquet.components.SpringUtilities.createRow(
+							org.lgna.croquet.components.SpringUtilities.createTrailingLabel( "preview:" ),
+							new org.lgna.croquet.components.SwingAdapter( this.createPreviewComponent() )
 					) 
 			);
 			return rv;
@@ -354,14 +354,14 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		}
 	}
 
-	class RenameResourceOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.name.RenamePane> {
+	class RenameResourceOperation extends org.lgna.croquet.InputDialogOperation {
 		private org.alice.virtualmachine.Resource resource;
 		public RenameResourceOperation() {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "da920b16-65fc-48a4-9203-b3c2979b0a59" ) );
 			this.setName( "Rename..." );
 		}
 		@Override
-		protected org.alice.ide.name.RenamePane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.name.RenamePane> context) {
+		protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
 			this.resource = ResourceManagerPane.this.getSelectedResource();
 			if( this.resource != null ) {
 				org.alice.ide.name.RenamePane rv;
@@ -382,13 +382,13 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 			}
 		}
 		@Override
-		protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.name.RenamePane> context, boolean isOk) {
+		protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 			if( isOk ) {
-				org.alice.ide.name.RenamePane renamePane = context.getMainPanel();
+				org.alice.ide.name.RenamePane renamePane = step.getMainPanel();
 				final String nextName = renamePane.getNameText();
 				if( nextName != null && nextName.length() > 0 ) {
 					final String prevName = this.resource.getName();
-					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+					step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 						@Override
 						protected final void doOrRedoInternal( boolean isDo ) {
 							resource.setName( nextName );
@@ -409,10 +409,10 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 						}
 					} );
 				} else {
-					context.cancel();
+					step.cancel();
 				}
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		}
 	}
@@ -477,7 +477,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 			this.setName( "Reload Content..." );
 		}
 		@Override
-		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 			final org.alice.virtualmachine.Resource resource = ResourceManagerPane.this.getSelectedResource();
 			if( resource != null ) {
 				final Capsule prevCapsule;
@@ -515,7 +515,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 					nextCapsule = null;
 				}
 				if( prevCapsule != null && nextCapsule != null ) {
-					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+					step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 						@Override
 						protected final void doOrRedoInternal( boolean isDo ) {
 							nextCapsule.update( resource );
@@ -531,10 +531,10 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 						}
 					} );
 				} else {
-					context.cancel();
+					step.cancel();
 				}
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		}
 	}
@@ -572,20 +572,20 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 
 		javax.swing.table.JTableHeader tableHeader = this.table.getTableHeader();
 		tableHeader.setReorderingAllowed( false );
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.table ) );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new org.lgna.croquet.components.SwingAdapter( this.table ) );
 		scrollPane.setPreferredSize( new java.awt.Dimension( 320, 240 ) );
 		//this.table.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		this.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		this.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 
-		edu.cmu.cs.dennisc.croquet.Panel pane = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane(  
+		org.lgna.croquet.components.Panel pane = org.lgna.croquet.components.GridPanel.createSingleColumnGridPane(  
 				this.addResourceOperation.createButton(),
 				this.removeResourceOperation.createButton(), 
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ), 
+				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ), 
 				this.renameResourceOperation.createButton(), 
 				this.replaceResourceOperation.createButton() 
 		);
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.PageAxisPanel( pane, edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
+		this.addComponent( new org.lgna.croquet.components.PageAxisPanel( pane, org.lgna.croquet.components.BoxUtilities.createGlue() ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
 		this.handleSelection();
 	}
 

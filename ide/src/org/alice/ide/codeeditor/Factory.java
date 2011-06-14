@@ -53,11 +53,11 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 		this.replacement = replacement;
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final int index = this.property.indexOf( this.original );
 		final edu.cmu.cs.dennisc.alice.ast.BlockStatement body = this.original.body.getValue();
 		if( index >= 0 ) {
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
@@ -121,7 +121,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 		this.setName( "Dissolve " + this.abstractStatementWithBody.getClass().getSimpleName() );
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final int index = this.property.indexOf( this.abstractStatementWithBody );
 		if( index >= 0 ) {
 			final int N = this.abstractStatementWithBody.body.getValue().statements.size();
@@ -129,7 +129,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 			final edu.cmu.cs.dennisc.alice.ast.Statement[] statements = new edu.cmu.cs.dennisc.alice.ast.Statement[ N ];
 			this.abstractStatementWithBody.body.getValue().statements.toArray( statements );
 			
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
@@ -179,10 +179,10 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 		this.setName( sb.toString() );
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final int index = this.property.indexOf( this.statement );
 		if( index >= 0 ) {
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
@@ -208,19 +208,20 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 	}
 }
 
-class StatementEnabledStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanState {
+class StatementEnabledStateOperation extends org.lgna.croquet.BooleanState {
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue(), "IsEnabled" );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue() );
 		this.statement = statement;
-		this.addValueObserver( new ValueObserver() {
-			public void changing( boolean nextValue ) {
+		this.addValueObserver( new ValueObserver<Boolean>() {
+			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( boolean nextValue ) {
+			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				StatementEnabledStateOperation.this.statement.isEnabled.setValue( nextValue );
 			}
 		} );
+		this.setTextForBothTrueAndFalse( "IsEnabled" );
 		//update();
 	}
 	//	private void update() {
@@ -239,34 +240,34 @@ class StatementEnabledStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanS
  */
 public class Factory extends org.alice.ide.common.Factory {
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
+	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType, edu.cmu.cs.dennisc.croquet.Group group ) {
+	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType, org.lgna.croquet.Group group ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
-		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
+		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
-			org.alice.ide.croquet.models.ast.DefaultFillInExpressionPropertyCascadeOperation model = org.alice.ide.croquet.models.ast.DefaultFillInExpressionPropertyCascadeOperation.getInstance( group, expressionProperty, desiredValueType );
+			org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade model = org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade.getInstance( group, expressionProperty, desiredValueType );
 			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty );
 			rv = expressionPropertyDropDownPane;
 		}
 		return rv;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType ) {
+	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType ) {
 		return this.createExpressionPropertyPane( expressionProperty, prefixPane, desiredValueType, edu.cmu.cs.dennisc.alice.Project.GROUP );
 	}
 	@Override
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
 		abstractStatementPane.setDragModel( new org.alice.ide.croquet.models.ToDoDragModel() );
-		abstractStatementPane.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel(
+		abstractStatementPane.setPopupMenuOperation( new org.lgna.croquet.PredeterminedMenuModel(
 				java.util.UUID.fromString( "6190553d-309e-453f-b9eb-ded8aaf7ce63" ),
 				this.createPopupOperations( abstractStatementPane ) 
 		).getPopupMenuOperation() );
 		return abstractStatementPane;
 	}
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+	protected java.util.List< org.lgna.croquet.MenuItemPrepModel > updatePopupOperations( java.util.List< org.lgna.croquet.MenuItemPrepModel > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		edu.cmu.cs.dennisc.alice.ast.StatementListProperty property = abstractStatementPane.getOwner();
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
@@ -285,7 +286,7 @@ public class Factory extends org.alice.ide.common.Factory {
 				}
 			}
 		}
-		rv.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
+		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
 		rv.add( new DeleteStatementActionOperation( property, statement ).getMenuItemPrepModel() );
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody = (edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)statement;
@@ -303,8 +304,8 @@ public class Factory extends org.alice.ide.common.Factory {
 		}
 		return rv;
 	}
-	private java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
-		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel >(), abstractStatementPane );
+	private java.util.List< org.lgna.croquet.MenuItemPrepModel > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+		return this.updatePopupOperations( new java.util.LinkedList< org.lgna.croquet.MenuItemPrepModel >(), abstractStatementPane );
 	}
 
 }

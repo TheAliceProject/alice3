@@ -62,11 +62,11 @@ public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( value );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.BooleanLiteral createValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+	public edu.cmu.cs.dennisc.alice.ast.BooleanLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.BooleanLiteral,Void > step ) {
 		return new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( this.transientValue.value.getValue() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.BooleanLiteral getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext context ) {
+	public edu.cmu.cs.dennisc.alice.ast.BooleanLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.BooleanLiteral,Void > step ) {
 		return this.transientValue;
 	}
 	@Override

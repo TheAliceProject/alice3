@@ -46,9 +46,9 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Application {
-	public static final edu.cmu.cs.dennisc.croquet.Group HISTORY_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
-	public static final edu.cmu.cs.dennisc.croquet.Group URI_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
+public abstract class ProjectApplication extends org.lgna.croquet.Application {
+	public static final org.lgna.croquet.Group HISTORY_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
+	public static final org.lgna.croquet.Group URI_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
 
 	private static ProjectApplication singleton;
 	public static ProjectApplication getSingleton() {
@@ -91,7 +91,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 		sb.append( ".\n\nLook for files with an " );
 		sb.append( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION );
 		sb.append( " extension." );
-		this.showMessageDialog( sb.toString(), "Cannot read file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+		this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 	}
 
 	private java.net.URI uri = null;
@@ -111,9 +111,9 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 		if( file.exists() ) {
 			String lcFilename = file.getName().toLowerCase();
 			if( lcFilename.endsWith( ".a2w" ) ) {
-				this.showMessageDialog( "Alice3 does not load Alice2 worlds", "Cannot read file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+				this.showMessageDialog( "Alice3 does not load Alice2 worlds", "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 			} else if( lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
-				this.showMessageDialog( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+				this.showMessageDialog( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", org.lgna.croquet.MessageType.ERROR );
 			} else {
 				boolean isWorthyOfException = lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase() );
 				java.util.zip.ZipFile zipFile;
@@ -166,7 +166,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 			sb.append( "Cannot read project from file:\n\t" );
 			sb.append( file.getAbsolutePath() );
 			sb.append( "\nIt does not exist." );
-			this.showMessageDialog( sb.toString(), "Cannot read file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+			this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 		}
 	}
 	

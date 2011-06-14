@@ -45,7 +45,7 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateIdeOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class CreateIdeOperation extends org.lgna.croquet.ActionOperation {
 	private static java.util.Map< Class<?>, CreateIdeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized CreateIdeOperation getInstance( Class<? extends IDE> cls ) {
 		CreateIdeOperation rv = map.get( cls );
@@ -59,16 +59,16 @@ public class CreateIdeOperation extends edu.cmu.cs.dennisc.croquet.ActionOperati
 	}
 	private Class<? extends IDE> cls;
 	private CreateIdeOperation( Class<? extends IDE> cls ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "3780661e-0bfe-4bc3-b8c8-a27f81b65632" ) );
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "3780661e-0bfe-4bc3-b8c8-a27f81b65632" ) );
 		this.cls = cls;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CodableResolver< CreateIdeOperation > createCodableResolver() {
+	protected org.lgna.croquet.resolvers.CodableResolver< CreateIdeOperation > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< CreateIdeOperation >( this, this.cls );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		IDE ide = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.cls );
-		context.finish();
+		step.finish();
 	}
 }

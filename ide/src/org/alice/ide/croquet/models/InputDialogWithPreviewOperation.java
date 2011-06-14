@@ -45,17 +45,17 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogWithPreviewOperation<T,J extends org.alice.ide.preview.PanelWithPreview<T>> extends edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperation<T,J> {
-	public InputDialogWithPreviewOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId ) {
+public abstract class InputDialogWithPreviewOperation<T> extends org.lgna.croquet.CascadeInputDialogOperation<T> {
+	public InputDialogWithPreviewOperation( org.lgna.croquet.Group group, java.util.UUID individualId ) {
 		super( group, individualId );
 	}
 	@Override
-	protected String getDialogTitle( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context ) {
+	protected String getDialogTitle( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		org.alice.ide.preview.PanelWithPreview<T> panelWithPreview = context.getMainPanel();
 		return panelWithPreview.getDialogTitle();
 	}
 	@Override
-	protected String getInternalExplanation( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context ) {
+	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		org.alice.ide.preview.PanelWithPreview<T> panelWithPreview = context.getMainPanel();
 		String rv = null;
 		if( panelWithPreview != null ) {

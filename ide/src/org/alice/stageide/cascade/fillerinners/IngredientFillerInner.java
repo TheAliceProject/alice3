@@ -47,11 +47,11 @@ package org.alice.stageide.cascade.fillerinners;
  */
 public abstract class IngredientFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
 	public IngredientFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+		super( type );
 	}
 	protected abstract Class<?>[] getClses( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender );
 	@Override
-	public java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > addItems( java.util.List< edu.cmu.cs.dennisc.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
+	public java.util.List< org.lgna.croquet.CascadeItem > addItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 //		org.alice.apis.stage.LifeStage[] lifeStages = { org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.LifeStage.CHILD }; 
 //		for( final org.alice.apis.stage.LifeStage lifeStage : lifeStages ) {
 //			for( final org.alice.apis.stage.Gender gender : org.alice.apis.stage.Gender.values() ) {

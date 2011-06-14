@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class MoveStatementActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
+public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
 	public static final Class<?>[] CONSTRUCTOR_PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.alice.ast.BlockStatement.class, Integer.TYPE, edu.cmu.cs.dennisc.alice.ast.Statement.class, edu.cmu.cs.dennisc.alice.ast.BlockStatement.class, Integer.TYPE };
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement fromBlockStatement;
 	private int fromIndex;
@@ -60,7 +60,7 @@ public class MoveStatementActionOperation extends edu.cmu.cs.dennisc.croquet.Act
 		this.toBlockStatement = toBlockStatement;
 		this.toIndex = toIndex;
 	}
-	public static Object[] retargetArguments( Object[] rv, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public static Object[] retargetArguments( Object[] rv, org.lgna.croquet.Retargeter retargeter ) {
 		assert rv != null;
 		assert rv.length == 5;
 		rv[ 0 ] = retargeter.retarget( rv[ 0 ] );
@@ -117,18 +117,18 @@ public class MoveStatementActionOperation extends edu.cmu.cs.dennisc.croquet.Act
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	protected org.lgna.croquet.edits.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		return originalEdit;
 	}
 
-	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<MoveStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<MoveStatementActionOperation>)edit;
 		MoveStatementActionOperation replacement = replacementEdit.getModel();
 		retargeter.addKeyValuePair( this.fromBlockStatement, replacement.fromBlockStatement );
 		retargeter.addKeyValuePair( this.statement, replacement.statement );
 		retargeter.addKeyValuePair( this.toBlockStatement, replacement.toBlockStatement );
 	}
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		this.fromBlockStatement = retargeter.retarget( this.fromBlockStatement );
 		this.statement = retargeter.retarget( this.statement );
 		this.toBlockStatement = retargeter.retarget( this.toBlockStatement );
@@ -142,20 +142,20 @@ public class MoveStatementActionOperation extends edu.cmu.cs.dennisc.croquet.Act
 		return rv;
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
 		if( replacementCandidate instanceof org.alice.ide.croquet.edits.DependentEdit ) {
-			return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
+			return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 		} else {
-			return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createRejection( "edit is not an instance of DependentEdit" );
+			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "edit is not an instance of DependentEdit" );
 		}
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CodableResolver< MoveStatementActionOperation > createCodableResolver() {
+	protected org.lgna.croquet.resolvers.CodableResolver< MoveStatementActionOperation > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.MoveStatementActionOperationNewInstanceResolver( this );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		context.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< MoveStatementActionOperation >() );
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< MoveStatementActionOperation >( step ) );
 	}
 }

@@ -45,48 +45,26 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class AddExpressionEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation > {
-	public static class AddExpressionEditMemento extends Memento<org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation> {
-		private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
-		private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-		public AddExpressionEditMemento( AddExpressionEdit edit ) {
-			super( edit );
-			this.expressionListProperty = edit.expressionListProperty;
-			this.expression = edit.expression;
-		}
-		public AddExpressionEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: decode expressionListProperty" );
-			this.expression = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).decodeValue( binaryDecoder );
-		}
-		@Override
-		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: encode expressionListProperty" );
-			org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).encodeValue( binaryEncoder, this.expression );
-		}
-		@Override
-		public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation > createEdit() {
-			return new AddExpressionEdit( this );
-		}
-	}
+public class AddExpressionEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.CascadePopupCompletionModel<edu.cmu.cs.dennisc.alice.ast.Expression> > {
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
 	private final edu.cmu.cs.dennisc.alice.ast.Expression expression;
 	private transient int index;
-	public AddExpressionEdit( edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public AddExpressionEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		super( completionStep );
 		this.expressionListProperty = expressionListProperty;
 		this.expression = expression;
 	}
-	private AddExpressionEdit( AddExpressionEditMemento memento ) {
-		super( memento );
-		this.expressionListProperty = memento.expressionListProperty;
-		this.expression = memento.expression;
+	public AddExpressionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: decode expressionListProperty" );
+		this.expressionListProperty = null;
+		this.expression = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).decodeValue( binaryDecoder );
 	}
 	@Override
-	public Memento< org.alice.ide.croquet.models.ast.cascade.AddExpressionCascadeOperation > createMemento() {
-		return new AddExpressionEditMemento( this );
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: encode expressionListProperty" );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).encodeValue( binaryEncoder, this.expression );
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {

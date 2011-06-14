@@ -42,18 +42,18 @@
  */
 package org.alice.ide.croquet.models.recursion;
 
-class RecursionPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 	private static final int SPACING = 16;
 	private static final float FONT_SCALE_FACTOR = 1.5f;
 	private static final int INDENT = 64;
-	private static class RecursionAccessPanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
-		private edu.cmu.cs.dennisc.croquet.Label label;
-		private edu.cmu.cs.dennisc.croquet.Button button = RecursionDialogOperation.getInstance().createButton();
-		private edu.cmu.cs.dennisc.croquet.CheckBox checkBox = IsRecursionAllowedState.getInstance().createCheckBox();
+	private static class RecursionAccessPanel extends org.lgna.croquet.components.PageAxisPanel {
+		private org.lgna.croquet.components.Label label;
+		private org.lgna.croquet.components.Button button = RecursionDialogOperation.getInstance().createButton();
+		private org.lgna.croquet.components.CheckBox checkBox = IsRecursionAllowedState.getInstance().createCheckBox();
 		public RecursionAccessPanel( String explanationB ) {
-			this.label = new edu.cmu.cs.dennisc.croquet.Label( explanationB, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+			this.label = new org.lgna.croquet.components.Label( explanationB, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 			//bottomPanel.addComponent( explanationBLabel );
-			edu.cmu.cs.dennisc.croquet.LineAxisPanel lineAxisPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
+			org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel(
 					label, button
 			);
 			//lineAxisPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( SPACING, 0, SPACING, 0 ) );
@@ -83,7 +83,7 @@ class RecursionPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 						java.awt.Paint prevPaint = g2.getPaint();
 						try {
-							g2.setPaint( edu.cmu.cs.dennisc.croquet.PaintUtilities.getDisabledTexturePaint() );
+							g2.setPaint( org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint() );
 							g2.fill( g2.getClipBounds() );
 						} finally {
 							g2.setPaint( prevPaint );
@@ -93,10 +93,10 @@ class RecursionPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				}
 			};
 		}
-		private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver valueObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-			public void changing(boolean nextValue) {
+		private org.lgna.croquet.State.ValueObserver< Boolean > valueObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed(boolean nextValue) {
+			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				if( nextValue ) {
 					//pass
 				} else {
@@ -123,28 +123,28 @@ class RecursionPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public RecursionPanel( String explanationA, String explanationB ) {
 		//todo
 		org.alice.ide.croquet.models.help.BrowserOperation browserOperation = new org.alice.ide.croquet.models.help.BrowserOperation( java.util.UUID.fromString( "30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d" ), "http://help.alice.org/recursion" );
-		edu.cmu.cs.dennisc.croquet.Hyperlink hyperlink = browserOperation.createHyperlink();
+		org.lgna.croquet.components.Hyperlink hyperlink = browserOperation.createHyperlink();
 		hyperlink.scaleFont( FONT_SCALE_FACTOR );
 		hyperlink.setBorder( javax.swing.BorderFactory.createEmptyBorder( SPACING, INDENT, SPACING, 0 ) );
 		
 		
-		edu.cmu.cs.dennisc.croquet.CheckBox checkBox = IsAccessToRecursionAllowedEnabledState.getInstance().createCheckBox(); 
+		org.lgna.croquet.components.CheckBox checkBox = IsAccessToRecursionAllowedEnabledState.getInstance().createCheckBox(); 
 		checkBox.scaleFont( FONT_SCALE_FACTOR );
 
 		
-		edu.cmu.cs.dennisc.croquet.PageAxisPanel pageAxisPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
-		pageAxisPanel.addComponent( new edu.cmu.cs.dennisc.croquet.Label( explanationA, FONT_SCALE_FACTOR ) );
+		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
+		pageAxisPanel.addComponent( new org.lgna.croquet.components.Label( explanationA, FONT_SCALE_FACTOR ) );
 		pageAxisPanel.addComponent( hyperlink );
 		pageAxisPanel.addComponent( checkBox );
 
 		
-		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel();
 		borderPanel.addComponent( pageAxisPanel, Constraint.PAGE_START );
 		borderPanel.addComponent( new RecursionAccessPanel( explanationB ), Constraint.CENTER );
 
 		borderPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder(0,16,0,0));
 		this.addComponent( borderPanel, Constraint.CENTER );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( new javax.swing.ImageIcon( RecursionPanel.class.getResource( "images/key.png" ) ) ), Constraint.LINE_START );
+		this.addComponent( new org.lgna.croquet.components.Label( new javax.swing.ImageIcon( RecursionPanel.class.getResource( "images/key.png" ) ) ), Constraint.LINE_START );
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 	}
@@ -153,7 +153,7 @@ class RecursionPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 /**
  * @author Dennis Cosgrove
  */
-public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.PlainDialogOperation {
+public class RecursionDialogOperation extends org.lgna.croquet.PlainDialogOperation {
 	private static class SingletonHolder {
 		private static RecursionDialogOperation instance = new RecursionDialogOperation();
 	}
@@ -161,28 +161,29 @@ public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.PlainDi
 		return SingletonHolder.instance;
 	}
 	private RecursionDialogOperation() {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "a5e1ded2-18c7-4ae5-8676-e6deca5650fe" ) );
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "a5e1ded2-18c7-4ae5-8676-e6deca5650fe" ) );
 	}
 	@Override
-	protected RecursionPanel createContentPane(edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog) {
+	protected RecursionPanel createContentPane(org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog) {
 		String explanationA = "<html>Recursion is disabled by default because otherwise many users unwittingly and mistakenly make recursive calls.<p><p>Recursion is a powerful tool in computer science.  It is not to be feared.  It simply needs to be understood.<p><p>For more information on recursion, please see:</html>";
 		String explanationB = "Hopefully, this button makes sense to you:  ";
 		return new RecursionPanel( explanationA, explanationB );
 	}
 	
-	private static int getDepth( edu.cmu.cs.dennisc.croquet.HistoryNode node, int depth ) {
-		edu.cmu.cs.dennisc.croquet.HistoryNode parent = node.getParent();
-		if( parent != null ) {
-			return getDepth( parent, depth+1 );
+	private static int getDepth( org.lgna.croquet.history.Transaction transaction, int depth ) {
+		org.lgna.croquet.history.TransactionHistory transactionHistory = transaction.getParent();
+		org.lgna.croquet.history.CompletionStep< ? > completionStep = transactionHistory.getParent();
+		if( completionStep != null ) {
+			return getDepth( completionStep.getParent(), depth+1 );
 		} else {
 			return depth;
 		}
 	}
 	
 	@Override
-	protected void tweakDialog(edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context ) {
-		super.tweakDialog(dialog, context);
-		int depth = getDepth( context, 1 );
+	protected void tweakDialog(org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.history.PlainDialogOperationStep step ) {
+		super.tweakDialog(dialog, step);
+		int depth = getDepth( step.getParent(), 1 );
 		int offset = (depth-5)*24;
 		java.awt.Point p = dialog.getLocation();
 		p.x += offset;
@@ -190,10 +191,10 @@ public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.PlainDi
 		dialog.setLocation( p );
 	}
 	@Override
-	protected void releaseContentPane(edu.cmu.cs.dennisc.croquet.PlainDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container<?> contentPane) {
+	protected void releaseContentPane(org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane) {
 	}
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize(edu.cmu.cs.dennisc.croquet.Dialog dialog) {
+	protected java.awt.Dimension getDesiredDialogSize(org.lgna.croquet.components.Dialog dialog) {
 		return new java.awt.Dimension( 760, 400 );
 	}
 //	public static void main(String[] args) {

@@ -61,7 +61,7 @@ import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
-public class CameraMarkerTracker implements PropertyListener, edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.View>
+public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.View>
 {
 	private SymmetricPerspectiveCamera perspectiveCamera = null;
 	private OrthographicCamera orthographicCamera = null;
@@ -181,8 +181,9 @@ public class CameraMarkerTracker implements PropertyListener, edu.cmu.cs.dennisc
 		this.sceneEditor.switchToPerspectiveCamera();
 	}
 	
-	public void changed(org.alice.stageide.sceneeditor.View nextValue)
-	{
+	public void changing( org.lgna.croquet.State< org.alice.stageide.sceneeditor.View > state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
+	}
+	public void changed( org.lgna.croquet.State< org.alice.stageide.sceneeditor.View > state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
 		if (this.perspectiveCamera == null || this.orthographicCamera == null)
 		{
 			return;

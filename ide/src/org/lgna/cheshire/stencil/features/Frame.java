@@ -67,7 +67,7 @@ package org.lgna.cheshire.stencil.features;
 	};
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 3.0f ); 
 
-	public Frame( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
+	public Frame( org.lgna.croquet.resolvers.RuntimeResolver< ? extends org.lgna.croquet.components.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
 		super( trackableShapeResolver, connectionPreference );
 	}
 	@Override
@@ -87,7 +87,7 @@ package org.lgna.cheshire.stencil.features;
 		return null;
 	}
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy ) {
+	public java.awt.geom.Area getAreaToSubstractForContains( org.lgna.croquet.components.Component< ? > asSeenBy ) {
 //		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
 //		java.awt.Rectangle bounds = this.getScrollBarBoundsIfNecessary( trackableShape, asSeenBy);
 //		if( bounds != null ) {

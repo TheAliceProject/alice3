@@ -58,8 +58,8 @@ public class BaseEyeColorSelectionState extends AbstractListSelectionState<org.a
 		super(java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.apis.stage.BaseEyeColor.class ), org.alice.apis.stage.BaseEyeColor.values() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseEyeColor> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseEyeColor> rv = super.createList();
+	public org.lgna.croquet.components.List<org.alice.apis.stage.BaseEyeColor> createList() {
+		org.lgna.croquet.components.List<org.alice.apis.stage.BaseEyeColor> rv = super.createList();
 		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}

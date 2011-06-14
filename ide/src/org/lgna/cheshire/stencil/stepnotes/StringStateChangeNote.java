@@ -46,12 +46,12 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class StringStateChangeNote extends StateChangeNote< org.lgna.croquet.steps.StringStateChangeStep > {
-	public StringStateChangeNote( org.lgna.croquet.steps.StringStateChangeStep step ) {
+public class StringStateChangeNote extends StateChangeNote< org.lgna.croquet.history.StringStateChangeStep > {
+	public StringStateChangeNote( org.lgna.croquet.history.StringStateChangeStep step ) {
 		super( step );
 	}
 	@Override
-	protected void addFeatures(org.lgna.croquet.steps.StringStateChangeStep step) {
+	protected void addFeatures(org.lgna.croquet.history.StringStateChangeStep step) {
 		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
 	}
 }

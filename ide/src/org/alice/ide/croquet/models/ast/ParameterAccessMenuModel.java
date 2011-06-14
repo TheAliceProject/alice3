@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterAccessMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
+public class ParameterAccessMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterAccessMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ParameterAccessMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
 		ParameterAccessMenuModel rv = map.get( parameter );

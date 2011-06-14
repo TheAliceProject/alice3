@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementActionOperationNewInstanceResolver extends edu.cmu.cs.dennisc.croquet.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
+public class InsertStatementActionOperationNewInstanceResolver extends org.lgna.croquet.resolvers.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
 	public InsertStatementActionOperationNewInstanceResolver( org.alice.ide.croquet.models.ast.InsertStatementActionOperation instance ) {
 		super( instance );
 	}
@@ -69,7 +69,7 @@ public class InsertStatementActionOperationNewInstanceResolver extends edu.cmu.c
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		this.getInstance().encodeArguments( binaryEncoder );
 	}
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		Object[] arguments = this.getArguments();
 		org.alice.ide.croquet.models.ast.InsertStatementActionOperation.retargetArguments( arguments, retargeter );
 	}

@@ -45,7 +45,7 @@ package org.lgna.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComponent > {
+public abstract class Note extends org.lgna.croquet.components.JComponent< javax.swing.JComponent > {
 	public class JNote extends javax.swing.JPanel {
 		public boolean isActive() {
 			return Note.this.isActive();
@@ -62,7 +62,7 @@ public abstract class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.
 	
 
 	protected abstract String getText();
-	protected abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation();
+	protected abstract org.lgna.croquet.Operation< ? > getNextOperation();
 	public String getLabel() {
 		return this.label;
 	}
@@ -75,7 +75,7 @@ public abstract class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.
 	public java.util.List< Feature > getFeatures() {
 		return this.features;
 	}
-	public java.awt.Point calculateLocation( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
+	public java.awt.Point calculateLocation( org.lgna.croquet.components.Container< ? > container ) {
 		java.awt.Point rv = new java.awt.Point( 20, 20 );
 		if( this.features.size() > 0 ) {
 			Feature feature = this.features.get( 0 );
@@ -119,7 +119,7 @@ public abstract class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.
 //		return false;
 //	}
 		
-	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability() {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability() {
 		return null;
 	}
 
@@ -244,11 +244,11 @@ public abstract class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.
 		rv.setCursor( java.awt.Cursor.getDefaultCursor() );
 		
 		//rv.setBackground( BASE_COLOR );
-		edu.cmu.cs.dennisc.croquet.BorderPanel southPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		org.lgna.croquet.components.BorderPanel southPanel = new org.lgna.croquet.components.BorderPanel();
 
-		edu.cmu.cs.dennisc.croquet.Hyperlink hyperlink = getNextOperation().createHyperlink();
+		org.lgna.croquet.components.Hyperlink hyperlink = getNextOperation().createHyperlink();
 		hyperlink.scaleFont( 1.4f );
-		southPanel.addComponent( hyperlink, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
+		southPanel.addComponent( hyperlink, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
 
 		rv.add( southPanel.getAwtComponent(), java.awt.BorderLayout.SOUTH );
 		final int X_BORDER_PAD = 16;
@@ -316,7 +316,7 @@ public abstract class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.
 			for( Feature feature : this.features ) {
 				feature.updateTrackableShapeIfNecessary();
 			}
-			edu.cmu.cs.dennisc.croquet.Container< ? > container = this.getParent();
+			org.lgna.croquet.components.Container< ? > container = this.getParent();
 			if( container != null ) {
 				container.repaint();
 			}

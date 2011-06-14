@@ -62,14 +62,14 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( Object parameter ) {
+	protected org.lgna.croquet.components.Component< ? > createComponent( Object parameter ) {
 		return new TypedParameterPane( getProperty(), (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter );
 	}
 	@Override
 	protected void addPrefixComponents() {
 		//super.addPrefixComponents();
 		if( getIDE().isJava() ) {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "( " ) );
+			this.addComponent( new org.lgna.croquet.components.Label( "( " ) );
 		} else {
 			int n = this.getProperty().size();
 			String text;
@@ -84,16 +84,16 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 				text = " with parameters: ";
 			}
 			if( text != null ) {
-				this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+				this.addComponent( new org.lgna.croquet.components.Label( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			}
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInterstitial( int i, int N ) {
+	protected org.lgna.croquet.components.Component< ? > createInterstitial( int i, int N ) {
 		if( i<N-1 ) {
-			return new edu.cmu.cs.dennisc.croquet.Label( ", " );
+			return new org.lgna.croquet.components.Label( ", " );
 		} else {
-			return edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 4 );
+			return org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 );
 		}
 	}
 	@Override
@@ -110,7 +110,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " )" ) );
+			this.addComponent( new org.lgna.croquet.components.Label( " )" ) );
 		}
 		//this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );
 	}

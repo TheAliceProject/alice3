@@ -55,12 +55,11 @@ import org.alice.interact.PlaneUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
+import org.lgna.croquet.components.DragComponent;
 import org.alice.stageide.gallerybrowser.ClassBasedGalleryDragComponent;
 import org.alice.stageide.gallerybrowser.GalleryDragComponent;
 import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceUtilities;
 
-import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
-import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;

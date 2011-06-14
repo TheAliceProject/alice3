@@ -70,7 +70,7 @@ public class DropPreviewHole extends org.lgna.cheshire.stencil.features.Hole {
 	private static final java.awt.Color SHADOW_COLOR = new java.awt.Color( 31, 31, 31 );
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 3.0f ); 
 
-	public DropPreviewHole( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
+	public DropPreviewHole( org.lgna.croquet.resolvers.RuntimeResolver< ? extends org.lgna.croquet.components.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
 		super( trackableShapeResolver, connectionPreference );
 		this.setHeightConstraint( 64 );
 	}
@@ -79,7 +79,7 @@ public class DropPreviewHole extends org.lgna.cheshire.stencil.features.Hole {
 		return false;
 	}
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy ) {
+	public java.awt.geom.Area getAreaToSubstractForContains( org.lgna.croquet.components.Component< ? > asSeenBy ) {
 		return null;
 	}
 	

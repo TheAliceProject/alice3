@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.property.InstanceProperty > extends edu.cmu.cs.dennisc.croquet.AxisPanel {
+public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.property.InstanceProperty > extends org.lgna.croquet.components.AxisPanel {
 	private Factory factory;
 	private E property;
 	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
@@ -63,12 +63,12 @@ public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.propert
 	}
 
 	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
 		super.handleAddedTo( parent );
 		this.refresh();
 	}
 	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
 		super.handleRemovedFrom( parent );
 	}
 	@Override

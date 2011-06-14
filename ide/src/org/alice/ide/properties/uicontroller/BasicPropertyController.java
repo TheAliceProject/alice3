@@ -49,20 +49,20 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.lgna.croquet.components.BoxUtilities;
+import org.lgna.croquet.components.Button;
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.GridBagPanel;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.Panel;
 
-import edu.cmu.cs.dennisc.croquet.BoxUtilities;
-import edu.cmu.cs.dennisc.croquet.Button;
-import edu.cmu.cs.dennisc.croquet.Component;
-import edu.cmu.cs.dennisc.croquet.GridBagPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
 
 public abstract class BasicPropertyController<P> extends AbstractAdapterController<P> implements MouseListener
 {
     protected static final String BLANK_STRING = "NO VALUE";
     
     protected Component<?> propertyComponent;
-    protected Button editButton;
+    protected org.lgna.croquet.components.ViewController< ?,? > editButton;
     
     public BasicPropertyController(PropertyAdapter<P, ?> propertyAdapter)
     {
@@ -100,7 +100,7 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
                 );
         if (this.propertyAdapter != null)
         {
-            this.editButton = this.propertyAdapter.createEditButton();
+            this.editButton = this.propertyAdapter.createEditViewController();
             this.mainPanel.addComponent(this.editButton, new GridBagConstraints(
                     xIndex++, // gridX
                     0, // gridY
@@ -132,7 +132,7 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
     
     public void mouseClicked(MouseEvent e)
     {
-        this.propertyAdapter.getEditOperation().fire(e, this.editButton);
+        this.propertyAdapter.getEditModel().fire( new org.lgna.croquet.triggers.MouseEventTrigger( this.editButton, e ) );
     }
     
     public void mouseEntered(MouseEvent e){}

@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractGalleryDeclareFieldOperation<J extends org.alice.ide.preview.PanelWithPreview<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice>> extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation<J> {
+public abstract class AbstractGalleryDeclareFieldOperation extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation {
 	public AbstractGalleryDeclareFieldOperation( java.util.UUID individualId ) {
 		super( individualId );
 	}

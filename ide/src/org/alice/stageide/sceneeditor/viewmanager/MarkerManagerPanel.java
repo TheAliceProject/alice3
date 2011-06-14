@@ -48,8 +48,9 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Label;
 
-import edu.cmu.cs.dennisc.croquet.BoxUtilities;
-import edu.cmu.cs.dennisc.croquet.GridBagPanel;
+import org.lgna.croquet.components.BoxUtilities;
+import org.lgna.croquet.components.GridBagPanel;
+
 
 public class MarkerManagerPanel extends GridBagPanel
 {
@@ -76,7 +77,7 @@ public class MarkerManagerPanel extends GridBagPanel
                 0, // ipadX
                 0) // ipadY
                 );
-        this.addComponent(new edu.cmu.cs.dennisc.croquet.HorizontalSeparator(), new GridBagConstraints(
+        this.addComponent(new org.lgna.croquet.components.HorizontalSeparator(), new GridBagConstraints(
                 0, // gridX
                 index++, // gridY
                 1, // gridWidth

@@ -55,13 +55,13 @@ public abstract class ShowPathPropertyOperation extends org.alice.ide.operations
 		return this.propertyName;
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		edu.cmu.cs.dennisc.croquet.RowsSpringPanel formPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 2 ) {
-			private edu.cmu.cs.dennisc.croquet.Component< ? >[][] createComponentRowsForSystemProperty( String name, String separator ) {
+	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
+		org.lgna.croquet.components.RowsSpringPanel formPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 2 ) {
+			private org.lgna.croquet.components.Component< ? >[][] createComponentRowsForSystemProperty( String name, String separator ) {
 				String value = System.getProperty( name );
 				assert value != null;
 				String[] array = value.split( separator );
-				edu.cmu.cs.dennisc.croquet.Component< ? >[][] rv = new edu.cmu.cs.dennisc.croquet.Component< ? >[ array.length ][];
+				org.lgna.croquet.components.Component< ? >[][] rv = new org.lgna.croquet.components.Component< ? >[ array.length ][];
 				for( int i=0; i<array.length; i++ ) {
 					String prefix;
 					if( i==0 ) {
@@ -69,19 +69,19 @@ public abstract class ShowPathPropertyOperation extends org.alice.ide.operations
 					} else {
 						prefix = "";
 					}
-					rv[ i ] = edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( prefix+"[" + i + "]:" ), new edu.cmu.cs.dennisc.croquet.Label( array[ i ] ) );
+					rv[ i ] = org.lgna.croquet.components.SpringUtilities.createRow( org.lgna.croquet.components.SpringUtilities.createTrailingLabel( prefix+"[" + i + "]:" ), new org.lgna.croquet.components.Label( array[ i ] ) );
 				}
 				return rv;
 			}
 			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
+			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
 				String pathSepartor = System.getProperty( "path.separator" );
-				for( edu.cmu.cs.dennisc.croquet.Component< ? >[] componentRow : createComponentRowsForSystemProperty( propertyName, pathSepartor ) ) {
+				for( org.lgna.croquet.components.Component< ? >[] componentRow : createComponentRowsForSystemProperty( propertyName, pathSepartor ) ) {
 					rv.add( componentRow );
 				}
 				return rv;
 			}
 		};
-		this.getIDE().showMessageDialog( formPane, "System Property: " + this.propertyName, edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
+		this.getIDE().showMessageDialog( formPane, "System Property: " + this.propertyName, org.lgna.croquet.MessageType.INFORMATION ); 
 	}
 }

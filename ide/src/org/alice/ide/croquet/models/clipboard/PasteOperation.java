@@ -56,9 +56,9 @@ public class PasteOperation extends org.alice.ide.operations.InconsequentialActi
 		super( java.util.UUID.fromString( "b6c8d189-3529-4244-9530-d71701c6e75f" ) );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 		String title = "Paste coming soon";
 		String message = "Paste is not yet implemented.  Apologies.";
-		this.getIDE().showMessageDialog( message, title, edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
+		this.getIDE().showMessageDialog( message, title, org.lgna.croquet.MessageType.INFORMATION ); 
 	}
 }

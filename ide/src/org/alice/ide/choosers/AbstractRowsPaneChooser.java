@@ -50,21 +50,21 @@ public abstract class AbstractRowsPaneChooser<E extends edu.cmu.cs.dennisc.alice
 	protected String[] getLabelTexts() {
 		return LABEL_TEXTS;
 	}
-	protected edu.cmu.cs.dennisc.croquet.Component<?> createLabel( String text ) {
-		return edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( text );
+	protected org.lgna.croquet.components.Component<?> createLabel( String text ) {
+		return org.lgna.croquet.components.SpringUtilities.createTrailingLabel( text );
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents();
-	public java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
+	protected abstract org.lgna.croquet.components.Component< ? >[] getComponents();
+	public java.util.List< org.lgna.croquet.components.Component< ? >[] > updateRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
 		String[] labelTexts = this.getLabelTexts();
-		edu.cmu.cs.dennisc.croquet.Component< ? >[] components = this.getComponents();
+		org.lgna.croquet.components.Component< ? >[] components = this.getComponents();
 		final int N = labelTexts.length;
 		for( int i=0; i<N; i++ ) {
 			rv.add( 
-					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+					org.lgna.croquet.components.SpringUtilities.createRow( 
 						this.createLabel( labelTexts[ i ] ), 
-						new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
+						new org.lgna.croquet.components.LineAxisPanel( 
 								components[ i ],
-								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue()
+								org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
 						)
 					) 
 			);
@@ -72,10 +72,10 @@ public abstract class AbstractRowsPaneChooser<E extends edu.cmu.cs.dennisc.alice
 		return rv;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent() {
-		edu.cmu.cs.dennisc.croquet.RowsSpringPanel rowsSpringPanel = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel() {
+	public org.lgna.croquet.components.Component< ? > createMainComponent() {
+		org.lgna.croquet.components.RowsSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowsSpringPanel() {
 			@Override
-			protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
+			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
 				return AbstractRowsPaneChooser.this.updateRows( rv );
 			}
 		};

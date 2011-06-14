@@ -48,7 +48,7 @@ package org.alice.ide.preferencesinputpane;
 public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.ide.preferences.programming.Configuration> {
 	class ConfigurationSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<org.alice.ide.preferences.programming.Configuration> {
 		public ConfigurationSelectionOperation( org.alice.ide.preferences.programming.Configuration... panes ) {
-			super( java.util.UUID.fromString( "68071aa4-895c-4d30-8b8a-5bbcc5262586" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.ide.preferences.programming.Configuration >() {
+			super( java.util.UUID.fromString( "68071aa4-895c-4d30-8b8a-5bbcc5262586" ), new org.lgna.croquet.ItemCodec< org.alice.ide.preferences.programming.Configuration >() {
 				public Class< org.alice.ide.preferences.programming.Configuration > getValueClass() {
 					return org.alice.ide.preferences.programming.Configuration.class;
 				}
@@ -78,35 +78,35 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 //		}
 //	}
 	
-	class ConfigurationPreview extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
-		private edu.cmu.cs.dennisc.croquet.Label isDefaultFieldNameGenerationDesiredLabel;
-		private edu.cmu.cs.dennisc.croquet.Label isSyntaxNoiseDesiredLabel;
+	class ConfigurationPreview extends org.lgna.croquet.components.RowsSpringPanel {
+		private org.lgna.croquet.components.Label isDefaultFieldNameGenerationDesiredLabel;
+		private org.lgna.croquet.components.Label isSyntaxNoiseDesiredLabel;
 		private void ensureLabelsExist() {
 			if( this.isDefaultFieldNameGenerationDesiredLabel != null ) {
 				//pass
 			} else {
-				this.isDefaultFieldNameGenerationDesiredLabel = new edu.cmu.cs.dennisc.croquet.Label();
+				this.isDefaultFieldNameGenerationDesiredLabel = new org.lgna.croquet.components.Label();
 				this.isDefaultFieldNameGenerationDesiredLabel.setForegroundColor( java.awt.Color.GRAY );
 			}
 			if( this.isSyntaxNoiseDesiredLabel != null ) {
 				//pass
 			} else {
-				this.isSyntaxNoiseDesiredLabel = new edu.cmu.cs.dennisc.croquet.Label();
+				this.isSyntaxNoiseDesiredLabel = new org.lgna.croquet.components.Label();
 				this.isSyntaxNoiseDesiredLabel.setForegroundColor( java.awt.Color.GRAY );
 			}
 		}
 		@Override
-		protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
+		protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
 			this.ensureLabelsExist();
 			rv.add( 
-					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "isDefaultFieldNameGenerationDesired:" ), 
+					org.lgna.croquet.components.SpringUtilities.createRow( 
+							org.lgna.croquet.components.SpringUtilities.createTrailingLabel( "isDefaultFieldNameGenerationDesired:" ), 
 							this.isDefaultFieldNameGenerationDesiredLabel 
 					) 
 			);
 			rv.add( 
-					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "isSyntaxNoiseDesired:" ), 
+					org.lgna.croquet.components.SpringUtilities.createRow( 
+							org.lgna.croquet.components.SpringUtilities.createTrailingLabel( "isSyntaxNoiseDesired:" ), 
 							this.isSyntaxNoiseDesiredLabel 
 					) 
 			);
@@ -119,7 +119,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.isSyntaxNoiseDesiredLabel.setText( Boolean.toString( value.isSyntaxNoiseDesired() ).toUpperCase() );
 		}
 	}
-	private edu.cmu.cs.dennisc.croquet.PageAxisPanel pane;
+	private org.lgna.croquet.components.PageAxisPanel pane;
 	private ConfigurationPreview preview;
 	
 	abstract class PreferencesActionOperation extends org.alice.ide.operations.ActionOperation {
@@ -137,7 +137,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "Edit..." );
 		}
 		@Override
-		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		}
 	}
 	class RemoveVariantOperation extends PreferencesActionOperation {
@@ -150,7 +150,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "Remove" );
 		}
 		@Override
-		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		}
 	}
 	class NewVariantOperation extends PreferencesActionOperation {
@@ -163,7 +163,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "New..." );
 		}
 		@Override
-		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		}
 	}
 	class ImportVariantOperation extends PreferencesActionOperation {
@@ -176,14 +176,14 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "Import..." );
 		}
 		@Override
-		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		}
 	}
 	public ConfigurationPreferencePaneProxy( edu.cmu.cs.dennisc.preference.Preference<org.alice.ide.preferences.programming.Configuration> preference ) {
 		super( preference );
 		org.alice.ide.preferences.programming.Configuration[] configurations = org.alice.ide.preferences.ProgrammingPreferences.getSingleton().getBuiltInPreferenceNodes();
 		ConfigurationSelectionOperation configurationSelectionOperation = new ConfigurationSelectionOperation( configurations );
-		edu.cmu.cs.dennisc.croquet.ComboBox<org.alice.ide.preferences.programming.Configuration> activeConfigurationComboBox = configurationSelectionOperation.getPrepModel().createComboBox();
+		org.lgna.croquet.components.ComboBox<org.alice.ide.preferences.programming.Configuration> activeConfigurationComboBox = configurationSelectionOperation.getPrepModel().createComboBox();
 		configurationSelectionOperation.setSelectedItem( configurations[ 0 ] );
 		EditVariantOperation editVariantOperation = new EditVariantOperation();
 		editVariantOperation.setEnabled( false );
@@ -199,24 +199,24 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		importVariantOperation.setEnabled( false );
 		importVariantOperation.setToolTipText( "coming soon" );
 
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel northTopPane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
+		org.lgna.croquet.components.LineAxisPanel northTopPane = new org.lgna.croquet.components.LineAxisPanel( 
 				activeConfigurationComboBox, 
 				editVariantOperation.createButton(), 
 				removeVariantOperation.createButton() );
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel northBottomPane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
+		org.lgna.croquet.components.LineAxisPanel northBottomPane = new org.lgna.croquet.components.LineAxisPanel( 
 				newVariantOperation.createButton(), 
 				importVariantOperation.createButton(), 
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
+				org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
 
 		this.preview = new ConfigurationPreview();
 		this.preview.updateValues( configurationSelectionOperation.getSelectedItem() );
-		this.pane = new edu.cmu.cs.dennisc.croquet.PageAxisPanel(
-				new edu.cmu.cs.dennisc.croquet.Label( "active variant:" ),
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 4 ),  
+		this.pane = new org.lgna.croquet.components.PageAxisPanel(
+				new org.lgna.croquet.components.Label( "active variant:" ),
+				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ),  
 				northTopPane, 
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 4 ),  
+				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ),  
 				northBottomPane,
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 32 ),
+				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 32 ),
 				//edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "preview:" ),
 				//javax.swing.Box.createVerticalStrut( 4 ),  
 				this.preview
@@ -224,7 +224,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		this.pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 4 ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
+	public org.lgna.croquet.components.Component< ? > getComponent() {
 		return this.pane;
 	}
 	@Override

@@ -57,11 +57,11 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, parameter );
 			final org.alice.ide.operations.ast.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.ForwardShiftParameterOperation( this.parametersProperty, parameter );
 			final org.alice.ide.operations.ast.BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.BackwardShiftParameterOperation( this.parametersProperty, parameter );
-			this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
+			this.setPopupMenuOperation( new org.lgna.croquet.MenuModel( java.util.UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
 				@Override
-				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.StandardPopupOperationContext context ) {
+				public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 					super.handlePopupMenuPrologue( popupMenu, context );
-					java.util.List< edu.cmu.cs.dennisc.croquet.MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					java.util.List< org.lgna.croquet.MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					models.add( org.alice.ide.croquet.models.ast.rename.RenameParameterOperation.getInstance( parameter ).getMenuItemPrepModel() );
 					if( forwardShiftCodeParameterOperation.isIndexAppropriate() ) {
 						models.add( forwardShiftCodeParameterOperation.getMenuItemPrepModel() );
@@ -69,9 +69,9 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 					if( backwardShiftCodeParameterOperation.isIndexAppropriate() ) {
 						models.add( backwardShiftCodeParameterOperation.getMenuItemPrepModel() );
 					}
-					models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
+					models.add( org.lgna.croquet.MenuModel.SEPARATOR );
 					models.add( deleteParameterOperation.getMenuItemPrepModel() );
-					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
+					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
 			}.getPopupMenuOperation() );
 		} else {
@@ -79,7 +79,7 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > getDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.ParameterAccessOperation.getInstance( this.getTransient(), expressionProperty );
 	}
 }

@@ -59,10 +59,10 @@ public enum DefaultScrollingRequiredRenderer implements ScrollingRequiredRendere
 		g2.drawRect( rect.x-2, rect.y-2, rect.width+4, rect.height+4 );
 		return new java.awt.geom.Area( new java.awt.Rectangle( rect.x-2, rect.y-2, rect.width+4 + 1, rect.height+4 + 1 ) );
 	}
-	public java.awt.Shape renderScrollIndicators( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.croquet.ScreenElement root, edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape ) {
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+	public java.awt.Shape renderScrollIndicators( java.awt.Graphics2D g2, org.lgna.croquet.components.ScreenElement root, org.lgna.croquet.components.TrackableShape trackableShape ) {
+		org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 		if( scrollPane != null ) {
-			edu.cmu.cs.dennisc.croquet.Component<?> view = scrollPane.getViewportView();
+			org.lgna.croquet.components.Component<?> view = scrollPane.getViewportView();
 			
 			java.awt.Shape shape = trackableShape.getShape( view, null);
 			if( shape != null ) {
