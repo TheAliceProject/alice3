@@ -524,6 +524,10 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 		throw new RuntimeException( propertyName );
 	}
 
+	protected Object convertPropertyValueIfNecessary( edu.cmu.cs.dennisc.property.Property property, Object value ) {
+		return value;
+	}
+	
 	protected final void decodeNode( Decoder decoder, org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
 		org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
 		for( int i = 0; i < nodeList.getLength(); i++ ) {
@@ -535,6 +539,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 				edu.cmu.cs.dennisc.property.Property property = this.getPropertyNamed( propertyName );
 				Object value = decoder.decodeValue( (org.w3c.dom.Element)xmlProperty.getFirstChild(), map );
 				if( property != null ) {
+					value = this.convertPropertyValueIfNecessary( property, value );
 					property.setValue( this, value );
 				} else {
 					this.handleMissingProperty( propertyName, value );

@@ -46,22 +46,11 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisExpression extends Expression {
-	@Override
-	public AbstractType<?,?,?> getType() {
-		AbstractType<?,?,?> rv = this.getFirstAncestorAssignableTo( AbstractType.class );
-		if( rv != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "ThisExpression cannot find type" );
-		}
-		return rv;
-//		//todo
-//		return TypeDeclaredInJava.OBJECT_TYPE;
+public class ConstructorBlockStatement extends BlockStatement {
+	public NodeProperty< ConstructorInvocationStatement > constructorInvocationStatement = new NodeProperty< ConstructorInvocationStatement >( this );
+	public ConstructorBlockStatement() {
 	}
-	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "this" );
-		return rv;
+	public ConstructorBlockStatement( ConstructorInvocationStatement constructorInvocationStatement, Statement... statements ) {
+		this.statements.add( statements );
 	}
 }

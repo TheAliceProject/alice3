@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public interface CodeDeclaredInAlice extends MemberDeclaredInAlice {
-	public NodeProperty< BlockStatement > getBodyProperty();
+	public NodeProperty< ? extends BlockStatement > getBodyProperty();
 	public NodeListProperty< ParameterDeclaredInAlice > getParamtersProperty();
 	//public boolean isSignatureLocked();
 }

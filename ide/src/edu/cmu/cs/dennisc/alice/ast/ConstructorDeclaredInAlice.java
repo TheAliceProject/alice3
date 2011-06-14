@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class ConstructorDeclaredInAlice extends AbstractConstructor implements CodeDeclaredInAlice {
 	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
 	public NodeListProperty< ParameterDeclaredInAlice > parameters = new NodeListProperty< ParameterDeclaredInAlice >( this );
-	public NodeProperty< BlockStatement > body = new NodeProperty< BlockStatement >( this );
+	public NodeProperty< ConstructorBlockStatement > body = new NodeProperty< ConstructorBlockStatement >( this );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 
@@ -58,13 +58,29 @@ public class ConstructorDeclaredInAlice extends AbstractConstructor implements C
 
 	public ConstructorDeclaredInAlice() {
 	}
-	public ConstructorDeclaredInAlice( ParameterDeclaredInAlice[] parameters, BlockStatement body ) {
+	public ConstructorDeclaredInAlice( ParameterDeclaredInAlice[] parameters, ConstructorBlockStatement body ) {
 		this.parameters.add( parameters );
 		this.body.setValue( body );
 	}
-	
 
-	public NodeProperty< BlockStatement > getBodyProperty() {
+	@Override
+	protected Object convertPropertyValueIfNecessary( edu.cmu.cs.dennisc.property.Property property, Object value ) {
+		value = super.convertPropertyValueIfNecessary( property, value );
+		if( property == this.body ) {
+			if( value instanceof BlockStatement ) {
+				if( value instanceof ConstructorBlockStatement ) {
+					//pass
+				} else {
+					BlockStatement prevBlockStatement = (BlockStatement)value;
+					Statement[] buffer = new Statement[ prevBlockStatement.statements.size() ];
+					value = new ConstructorBlockStatement( null, prevBlockStatement.statements.toArray( buffer ) );
+				}
+			}
+		}
+		return value;
+	}
+
+	public NodeProperty< ConstructorBlockStatement > getBodyProperty() {
 		return this.body;
 	}
 	public NodeListProperty< ParameterDeclaredInAlice > getParamtersProperty() {

@@ -46,22 +46,20 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisExpression extends Expression {
+public class SuperExpression extends Expression {
 	@Override
 	public AbstractType<?,?,?> getType() {
-		AbstractType<?,?,?> rv = this.getFirstAncestorAssignableTo( AbstractType.class );
-		if( rv != null ) {
-			//pass
+		AbstractType<?,?,?> type = this.getFirstAncestorAssignableTo( AbstractType.class );
+		if( type != null ) {
+			return type.getSuperType();
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "ThisExpression cannot find type" );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "SuperExpression cannot find type" );
+			return null;
 		}
-		return rv;
-//		//todo
-//		return TypeDeclaredInJava.OBJECT_TYPE;
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "this" );
+		rv.append( "super" );
 		return rv;
 	}
 }
