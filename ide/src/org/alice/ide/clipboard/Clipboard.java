@@ -165,19 +165,19 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent {
 	}
 	@Override
 	protected int getInsetBottom() {
-		return 0;
+		return 2;
 	}
 	@Override
 	protected int getInsetLeft() {
-		return 0;
+		return 2;
 	}
 	@Override
 	protected int getInsetRight() {
-		return 0;
+		return 2;
 	}
 	@Override
 	protected int getInsetTop() {
-		return 0;
+		return 2;
 	}
 
 	
