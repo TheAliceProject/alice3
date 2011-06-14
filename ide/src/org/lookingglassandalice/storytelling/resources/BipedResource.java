@@ -41,19 +41,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling.resources.monsters;
-
+package org.lookingglassandalice.storytelling.resources;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum Pig implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
-	STRIPED;
-	private final org.lookingglassandalice.storytelling.resources.monsters.PersonResource implementation;
-    private Pig() {
-    	this.implementation = org.lookingglassandalice.storytelling.resources.monsters.PersonResource.getInstance( "pig.a3r" );
-	}
-	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
-		return this.implementation.createImplementation( abstraction );
-	}
+@edu.cmu.cs.dennisc.alice.annotations.ResourceTemplate( modelClass=org.lookingglassandalice.storytelling.Biped.class )
+public interface BipedResource extends ModelResource{
+	public static enum BipedJointId implements JointId {
+		PELVIS_LOWER_BODY( null ),
+		
+		LEFT_HIP( PELVIS_LOWER_BODY ),
+		LEFT_KNEE( LEFT_HIP ),
+		LEFT_ANKLE( LEFT_KNEE ),
+		
+		RIGHT_HIP( PELVIS_LOWER_BODY ),
+		RIGHT_KNEE( RIGHT_HIP ),
+		RIGHT_ANKLE( RIGHT_KNEE ),
+		
+		PELVIS_UPPER_BODY( null ),
+		
+		SPINE_MIDDLE( PELVIS_UPPER_BODY ),
+		SPINE_UPPER( SPINE_MIDDLE ),
+		
+		NECK( SPINE_UPPER ),
+		HEAD( NECK ),
+		
+		RIGHT_CLAVICLE( SPINE_UPPER ),
+		RIGHT_SHOULDER( RIGHT_CLAVICLE ),
+		RIGHT_ELBOW( RIGHT_SHOULDER ),
+		RIGHT_WRIST( RIGHT_ELBOW ),
+		
+		LEFT_CLAVICLE( SPINE_UPPER ),
+		LEFT_SHOULDER( LEFT_CLAVICLE ),
+		LEFT_ELBOW( LEFT_SHOULDER ),
+		LEFT_WRIST( LEFT_ELBOW );
+		
+		private BipedJointId parent;
+		private java.util.List< JointId > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private BipedJointId( BipedJointId parent ) {
+			this.parent = parent;
+			if( this.parent != null ) {
+				this.parent.children.add( this );
+			}
+		}
+		public JointId getParent() {
+			return this.parent;
+		}
+		public Iterable< JointId > getChildren() {
+			return this.children;
+		}
+	};
+	public org.lookingglassandalice.storytelling.implementation.BipedImplementation createImplementation( org.lookingglassandalice.storytelling.Biped abstraction );
 }

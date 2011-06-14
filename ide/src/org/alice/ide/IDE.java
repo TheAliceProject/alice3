@@ -109,6 +109,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.getRunOperation().setEnabled( false );
 
 		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRoot() );
+		this.galleryBrowser = this.createClassGalleryBrowser(this.getClassGalleryRoot());
 		this.membersEditor = this.createClassMembersEditor();
 		this.ubiquitousPane = this.createUbiquitousPane();
 
@@ -455,6 +456,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > getGalleryRoot();
 	protected abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > root );
+	
+	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode< Class<?> > getClassGalleryRoot();
+	protected abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< Class<?> > root );
+	
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
 		return new org.alice.ide.memberseditor.MembersEditor();
 	}

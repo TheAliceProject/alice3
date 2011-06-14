@@ -55,12 +55,16 @@ import org.alice.interact.PlaneUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
+import org.alice.stageide.gallerybrowser.ClassBasedGalleryDragComponent;
+import org.alice.stageide.gallerybrowser.GalleryDragComponent;
+import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceUtilities;
 
 import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
 import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
@@ -215,10 +219,23 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			
 			DragComponent dragSource = startInput.getDragAndDropContext().getDragSource();
 			dragSource.hideDragProxy();
-			org.alice.stageide.gallerybrowser.GalleryDragComponent galleryDragComponent = (org.alice.stageide.gallerybrowser.GalleryDragComponent)dragSource;
-			edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode = galleryDragComponent.getTreeNode();
-			edu.cmu.cs.dennisc.math.AxisAlignedBox box = org.alice.stageide.gallerybrowser.ResourceManager.getAxisAlignedBox(treeNode);
-			
+			edu.cmu.cs.dennisc.math.AxisAlignedBox box = null;
+			if (dragSource instanceof GalleryDragComponent)
+			{
+				org.alice.stageide.gallerybrowser.GalleryDragComponent galleryDragComponent = (org.alice.stageide.gallerybrowser.GalleryDragComponent)dragSource;
+				edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode = galleryDragComponent.getTreeNode();
+				box = org.alice.stageide.gallerybrowser.ResourceManager.getAxisAlignedBox(treeNode);
+			}
+			else if (dragSource instanceof ClassBasedGalleryDragComponent)
+			{
+				ClassBasedGalleryDragComponent galleryDragComponent = (ClassBasedGalleryDragComponent)dragSource;
+				edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode = galleryDragComponent.getTreeNode();
+				box = ModelResourceUtilities.getBoundingBox(treeNode.getValue());
+			}
+			if (box == null)
+			{
+				box = new AxisAlignedBox(new Point3(-1, 0, -1), new Point3(1,1,1));
+			}
 			
 			AffineMatrix4x4 offsetTransform = AffineMatrix4x4.createIdentity();
 			if (this.sgAxes != null)

@@ -54,7 +54,6 @@ import org.alice.apis.moveandturn.Style;
 import org.alice.apis.moveandturn.TurnDirection;
 import org.alice.apis.moveandturn.gallery.GalleryModel;
 import org.alice.apis.moveandturn.gallery.GalleryRootUtilities;
-import org.lookingglassandalice.storytelling.resources.monsters.Ogre;
 
 import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;

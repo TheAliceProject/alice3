@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling.implementation.monsters;
+package org.lookingglassandalice.storytelling.implementation.alice;
 
 /**
  * @author Dennis Cosgrove

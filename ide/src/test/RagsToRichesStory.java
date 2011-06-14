@@ -43,17 +43,17 @@
 package test;
 
 import org.lookingglassandalice.storytelling.*;
-import org.lookingglassandalice.storytelling.resources.AdultPersonResource;
 import org.lookingglassandalice.storytelling.resources.PersonResource;
+import org.lookingglassandalice.storytelling.resources.BipedResource;
 
-abstract class CustomPerson extends Person {
-	public CustomPerson( PersonResource resource ) {
+abstract class CustomPerson extends Biped {
+	public CustomPerson( BipedResource resource ) {
 		super( resource );
 	}
 }
 
 class CustomAdult extends CustomPerson {
-	public CustomAdult( AdultPersonResource resource ) {
+	public CustomAdult( PersonResource resource ) {
 		super( resource );
 	}
 }
@@ -62,7 +62,7 @@ class DesertScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground desert = new Ground();
 	private final Sphere sphere = new Sphere();
-	private final CustomAdult fellowLaborer = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Ogre.GREEN );
+	private final CustomAdult fellowLaborer = new CustomAdult( org.lookingglassandalice.storytelling.resources.people.Ogre.BEAST_DIFFUSE );
 	private final Camera camera;
 	private final CustomAdult ogre;
 	public DesertScene( Camera camera, CustomAdult ogre ) {
@@ -210,7 +210,7 @@ class RagsToRichesStory extends Program {
 			org.alice.apis.stage.BaseSkinTone.getRandom(),
 			org.alice.apis.stage.FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
-	private final CustomAdult ogre = new CustomAdult( org.lookingglassandalice.storytelling.resources.monsters.Ogre.GREEN );
+	private final CustomAdult ogre = new CustomAdult( org.lookingglassandalice.storytelling.resources.people.Ogre.BEAST_DIFFUSE );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 	public void playOutStory() {

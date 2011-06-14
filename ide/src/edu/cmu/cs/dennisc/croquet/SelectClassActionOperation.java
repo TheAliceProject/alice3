@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,49 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lookingglassandalice.storytelling.resources.monsters;
-
-
+package edu.cmu.cs.dennisc.croquet;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-	public class PersonResource implements org.lookingglassandalice.storytelling.resources.PersonResource {
-	private static java.util.Map< String, PersonResource > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-    public static PersonResource getInstance( String path ) {
-    	synchronized( map ) {
-    		PersonResource rv = map.get( path );
-    		if( rv != null ) {
-    			//pass
-    		} else {
-    			rv = new PersonResource( path );
-    			map.put( path, rv );
-    		}
-    		return rv;
+public class SelectClassActionOperation extends ActionOperation {
+	private static edu.cmu.cs.dennisc.map.MapToMap<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>, ClassBasedPathControl.Initializer, SelectClassActionOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static SelectClassActionOperation getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode, ClassBasedPathControl.Initializer initializer ) {
+		assert initializer != null;
+		SelectClassActionOperation rv = mapToMap.get(treeNode, initializer);
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new SelectClassActionOperation(treeSelectionState, treeNode, initializer);
+			mapToMap.put( treeNode, initializer, rv );
 		}
-    }
-    
-    public static PersonResource getInstance( String resourceName, String textureKey ) {
-    	synchronized( map ) {
-    		PersonResource rv = map.get( resourceName );
-    		if( rv != null ) {
-    			//pass
-    		} else {
-    			rv = new PersonResource( resourceName );
-    			map.put( resourceName, rv );
-    		}
-    		return rv;
-		}
-    }
+		return rv;
+	}
 
-    private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal;
-    private PersonResource( String path ) {
-    	this.sgOriginal = MonsterUtilities.decode( path );
+	private TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>> treeSelectionState;
+	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode;
+	
+	private SelectClassActionOperation( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode, ClassBasedPathControl.Initializer initializer ) {
+		super( Application.INHERIT_GROUP, java.util.UUID.fromString( "e9d3ebc0-fa0f-4db4-9ce6-e795eab4e859" ) );
+		this.treeSelectionState = treeSelectionState;
+		this.treeNode = treeNode;
+		if( initializer != null ) {
+			initializer.configure( this, this.treeNode );
+		}
 	}
-	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
-	    edu.cmu.cs.dennisc.texture.Texture texture = MonsterUtilities.getTexture( this.sgOriginal );
-	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = MonsterUtilities.createCopy( this.sgOriginal );
-		return new org.lookingglassandalice.storytelling.implementation.monsters.MonsterImplementation( sgSkeletonVisual, abstraction, this, texture );
+
+	@Override
+	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		//todo: create edit
+		this.treeSelectionState.setSelection( this.treeNode );
+		context.finish();
 	}
+
 }

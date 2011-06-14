@@ -103,19 +103,18 @@ public class ModelResourceExporter {
 	}
 	
 	private String name;
-	private NamedFile model;
-	private List<NamedFile> textures = new LinkedList<NamedFile>();
+	private List<String> textures = new LinkedList<String>();
 	private AxisAlignedBox boundingBox;
 	private File xmlFile;
 	private Image thumbnail;
 	private String packageString;
 	
-	private Class rootResourceClass;
-	private Class rootImplementationClass;
-	private Class rootAbstractionClass;
+	private Class implementationFactoryClass;
+	private Class implementationClass;
+	private Class rootabstractionClass;
 	private Class superClass;
 	
-	public ModelResourceExporter(String name, String packageString, Class superClass, Class rootResourceClass, Class rootImplementationClass, Class rootAbstractionClass)
+	public ModelResourceExporter(String name, String packageString, Class superClass, Class implementationFactoryClass, Class implementationClass, Class abstractionClass)
 	{
 		this.name = name;
 		if (Character.isLowerCase(this.name.charAt(0)))
@@ -123,21 +122,16 @@ public class ModelResourceExporter {
 			this.name = this.name.substring(0, 1).toUpperCase() + this.name.substring(1);
 		}
 		this.packageString = packageString;
-		this.model = new NamedFile(this.name, null);
 		this.superClass = superClass;
-		this.rootResourceClass = rootResourceClass;
-		this.rootImplementationClass = rootImplementationClass;
-		this.rootAbstractionClass = rootAbstractionClass;
+		this.implementationFactoryClass = implementationFactoryClass;
+		this.implementationClass = implementationClass;
+		this.rootabstractionClass = abstractionClass;
 	}
 	
-	public void setModel(File modelFile)
-	{
-		this.model = new NamedFile(name, modelFile);
-	}
 	
-	public void addTexture(String textureName, File textureFile)
+	public void addTexture(String textureName)
 	{
-		this.textures.add(new NamedFile(textureName, textureFile));
+		this.textures.add(textureName);
 	}
 	
 	public void setBoundingBox( AxisAlignedBox boundingBox )
@@ -191,7 +185,7 @@ public class ModelResourceExporter {
         return null;
 	}
 	
-	private static String getDirectoryStringForPackage(String packageString)
+	public static String getDirectoryStringForPackage(String packageString)
 	{
 		StringBuilder sb = new StringBuilder();
 		String[] splitString = packageString.split("\\.");
@@ -214,8 +208,8 @@ public class ModelResourceExporter {
 		sb.append("public enum "+this.name+" implements "+this.superClass.getCanonicalName()+" {\n");
 		for (int i=0; i<this.textures.size(); i++)
 		{
-			NamedFile texture = this.textures.get(i);
-			sb.append("\t"+texture.name);
+			String texture = this.textures.get(i);
+			sb.append("\t"+texture);
 			if (i < this.textures.size() - 1)
 			{
 				sb.append(",\n");
@@ -225,17 +219,22 @@ public class ModelResourceExporter {
 				sb.append(";\n");
 			}
 		}
-		sb.append("\tprivate final "+this.rootResourceClass.getCanonicalName()+" implementation;\n");
+		sb.append("\tprivate final "+this.implementationFactoryClass.getCanonicalName()+" factory;\n");
 		sb.append("\tprivate "+this.name+"() {\n");
-		sb.append("\t\tthis.implementation = "+this.rootResourceClass.getCanonicalName()+".getInstance(this.getClass().getName(), this.toString());\n");
+		sb.append("\t\tthis.factory = "+this.implementationFactoryClass.getCanonicalName()+".getInstance(this);\n");
 		sb.append("\t}\n");
-		sb.append("\tpublic "+this.rootImplementationClass.getCanonicalName()+" createImplementation( "+this.rootAbstractionClass.getCanonicalName()+" abstraction ) {\n");
-		sb.append("\t\treturn this.implementation.createImplementation( abstraction );\n");
+		sb.append("\tpublic "+this.implementationClass.getCanonicalName()+" createImplementation( "+this.rootabstractionClass.getCanonicalName()+" abstraction ) {\n");
+		sb.append("\t\treturn this.factory.createImplementation( abstraction );\n");
 		sb.append("\t}\n");
 		sb.append("}\n");
 		return sb.toString();
 	}
 	
+	private void add(File source, JarOutputStream target) throws IOException
+	{
+		String root = source.getAbsolutePath().replace("\\", "/")+"/";
+		this.add(source, target, root);
+	}
 	private void add(File source, JarOutputStream target, String root) throws IOException
 	{
 	  BufferedInputStream in = null;
@@ -393,33 +392,32 @@ public class ModelResourceExporter {
         return null;
 	}
 	
-	public void export(String root)
+	public File export(String sourceDirectory, String outputDir)
 	{
-		String outputDir = root+"temp"+File.separator;
-		File javaFile = createJavaCode(outputDir);
+		File javaFile = createJavaCode(sourceDirectory);
 		
 		String[] args = new String[]{javaFile.getAbsolutePath(), "-classpath", System.getProperty("java.class.path")};
 		com.sun.tools.javac.Main javac = new com.sun.tools.javac.Main();
 		PrintWriter pw = new PrintWriter(System.out);
 		int status = javac.compile(args, pw);
 		
-		File xmlFile = createXMLFile(outputDir);
-		File thumbnailFile = createThumbnail(outputDir);
-		
+		File xmlFile = createXMLFile(sourceDirectory);
+		File thumbnailFile = createThumbnail(sourceDirectory);
+		File outputFile = new File(outputDir+this.name+".jar");
 		try
 		{
-			
-			FileOutputStream fos = new FileOutputStream(root+this.name+".jar");
+			FileOutputStream fos = new FileOutputStream(outputFile);
 			JarOutputStream jos = new JarOutputStream(fos);
-			add(new File(outputDir), jos, outputDir);
+			add(new File(sourceDirectory), jos);
 			jos.close();
-			FileUtilities.delete(outputDir);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
+			return null;
 		}
 		System.out.println("status: "+status);
+		return outputFile;
 	}
 	
 }

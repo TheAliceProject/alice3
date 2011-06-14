@@ -41,11 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling.resources.sims2;
+package org.lookingglassandalice.storytelling.implementation.alice;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PersonResource implements org.lookingglassandalice.storytelling.resources.PersonResource {
-	public abstract org.alice.apis.stage.LifeStage getLifeStage();
+public class AliceBipedImplementation extends org.lookingglassandalice.storytelling.implementation.BipedImplementation {
+	public AliceBipedImplementation( org.lookingglassandalice.storytelling.Biped abstraction, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual, edu.cmu.cs.dennisc.texture.Texture texture ) {
+		super( abstraction, sgSkeletonVisual );
+		this.getSgAppearance().setDiffuseColorTexture( texture );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getSgVisual() {
+		return (edu.cmu.cs.dennisc.scenegraph.SkeletonVisual)super.getSgVisual();
+	}
+	@Override
+	protected JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
+		String key = jointId.toString();
+		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = this.getSgVisual().skeleton.getValue();
+		edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( key );
+		return new JointImplementation( this, jointId, sgJoint );
+	}
 }

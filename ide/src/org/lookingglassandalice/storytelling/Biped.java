@@ -46,13 +46,13 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Person extends Model implements Walker, Toucher {
-	private final org.lookingglassandalice.storytelling.implementation.PersonImplementation implementation;
+public abstract class Biped extends Model implements Walker, Toucher {
+	private final org.lookingglassandalice.storytelling.implementation.BipedImplementation implementation;
 	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.PersonImplementation getImplementation() {
+	/*package-private*/ org.lookingglassandalice.storytelling.implementation.BipedImplementation getImplementation() {
 		return this.implementation;
 	}
-	public Person( org.lookingglassandalice.storytelling.resources.PersonResource resource ) {
+	public Biped( org.lookingglassandalice.storytelling.resources.BipedResource resource ) {
 		this.implementation = resource.createImplementation( this );
 	}
 	
@@ -75,67 +75,67 @@ public abstract class Person extends Model implements Walker, Toucher {
 	}
 
 	public Joint getPelvisForLowerBody() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.PELVIS_LOWER_BODY );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.PELVIS_LOWER_BODY );
 	}
 	public Joint getPelvisForUpperBody() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.PELVIS_LOWER_BODY );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.PELVIS_LOWER_BODY );
 	}
 
 	public Joint getSpineMiddle() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.SPINE_MIDDLE );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.SPINE_MIDDLE );
 	}
 	public Joint getSpineUpper() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.SPINE_UPPER );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.SPINE_UPPER );
 	}
 	public Joint getNeck() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.NECK );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.NECK );
 	}
 	public Joint getHead() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.HEAD );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.HEAD );
 	}
 	
 	public Joint getRightHip() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_HIP );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.RIGHT_HIP );
 	}
 	public Joint getRightKnee() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_KNEE );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.RIGHT_KNEE );
 	}
 	public Joint getRightAnkle() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_ANKLE );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.RIGHT_ANKLE );
 	}
 	public Joint getLeftHip() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_HIP );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.LEFT_HIP );
 	}
 	public Joint getLeftKnee() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_KNEE );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.LEFT_KNEE );
 	}
 	public Joint getLeftAnkle() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_ANKLE );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.LEFT_ANKLE );
 	}
 
 	
 	public Joint getRightClavicle() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_CLAVICLE );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.RIGHT_CLAVICLE );
 	}
 	public Joint getRightShoulder() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_SHOULDER );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.RIGHT_SHOULDER );
 	}
 	public Joint getRightElbow() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_ELBOW );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.RIGHT_ELBOW );
 	}
 	public Joint getRightWrist() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.RIGHT_WRIST );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.RIGHT_WRIST );
 	}
 	public Joint getLeftClavicle() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_CLAVICLE );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.LEFT_CLAVICLE );
 	}
 	public Joint getLeftShoulder() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_SHOULDER );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.LEFT_SHOULDER );
 	}
 	public Joint getLeftElbow() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_ELBOW );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.LEFT_ELBOW );
 	}
 	public Joint getLeftWrist() {
-		return this.getJoint( org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId.LEFT_WRIST );
+		return this.getJoint( org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId.LEFT_WRIST );
 	}
 }

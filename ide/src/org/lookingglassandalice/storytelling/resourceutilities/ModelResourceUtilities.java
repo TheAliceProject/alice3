@@ -42,17 +42,29 @@
  */
 package org.lookingglassandalice.storytelling.resourceutilities;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import javax.imageio.ImageIO;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice;
+import edu.cmu.cs.dennisc.alice.ast.PackageDeclaredInAlice;
+import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
@@ -61,23 +73,33 @@ import edu.cmu.cs.dennisc.xml.XMLUtilities;
  *
  */
 public class ModelResourceUtilities {
-
-	public static String getName(Class modelResource)
+	
+	public static String DEFAULT_PACKAGE = "";
+	
+	public static String getName(Class<?> modelResource)
 	{
 		return modelResource.getSimpleName();
 	}
 	
-	public static BufferedImage getThumbnail(Class modelResource)
+	public static BufferedImage getThumbnail(Class<?> modelResource)
 	{
 		String name = getName(modelResource);
-		try
+		URL resourceURL = modelResource.getResource("resources/"+ name+".png");
+		if (resourceURL != null)
 		{
-			BufferedImage image = ImageIO.read(modelResource.getResource("resources/"+ name+".png"));
-			return image;
+			try
+			{
+				BufferedImage image = ImageIO.read(resourceURL);
+				return image;
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
-		catch (Exception e)
+		else
 		{
-			e.printStackTrace();
+			return null;
 		}
 		return null;
 	}
@@ -106,7 +128,7 @@ public class ModelResourceUtilities {
 		return null;
 	}
 	
-	public static AxisAlignedBox getBoundingBox(Class modelResource)
+	public static AxisAlignedBox getBoundingBox(Class<?> modelResource)
 	{
 		String name = getName(modelResource);
 		try {
@@ -120,5 +142,174 @@ public class ModelResourceUtilities {
 		}
 		return null;
 	}
+	
+	public static List<Class<?>> loadResourceJarFile(File resourceJar)
+	{
+		List<Class<?>> classes = new LinkedList<Class<?>>();
+		List<String> classNames = new LinkedList<String>();
+		try
+		{
+			ZipFile zip = new ZipFile(resourceJar);
+			Enumeration<? extends ZipEntry> entries = zip.entries();
+			while (entries.hasMoreElements())
+			{
+				ZipEntry entry = entries.nextElement();
+				if (entry.getName().endsWith(".class"))
+				{
+					String className = entry.getName().replace('/', '.');
+					int lastDot = className.lastIndexOf(".");
+					String baseName = className.substring(0, lastDot);
+					classNames.add(baseName);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		try
+		{
+			URL url = resourceJar.toURI().toURL();  
+			URL[] urls = new URL[]{url};
+			ClassLoader cl = new URLClassLoader(urls);
+			
+			for (String className : classNames)
+			{
+				Class<?> cls = cl.loadClass(className);
+				classes.add(cls);
+			}
+			
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return classes;
+	}
+	
+	public static String getAliceClassName(Class<?> resourceClass)
+	{
+		String name = resourceClass.getSimpleName();
+		int resourceIndex = name.indexOf("Resource");
+		if (resourceIndex != -1)
+		{
+			name = name.substring(0, resourceIndex);
+		}
+		return name;
+	}
+	
+	public static PackageDeclaredInAlice getAlicePackage(Class<?> resourceClass, Class<?> rootClass)
+	{
+		String resourcePackage = resourceClass.getPackage().getName();
+		String rootPackage = rootClass.getPackage().getName();
+		int rootIndex = resourcePackage.indexOf(rootPackage);
+		if (rootIndex != 0)
+		{
+			resourcePackage = resourcePackage.substring(rootIndex+rootPackage.length());
+		}
+		resourcePackage = DEFAULT_PACKAGE + resourcePackage;
+		return new PackageDeclaredInAlice(resourcePackage);
+	}
+	
+	public static ConstructorDeclaredInAlice createConstructorForResourceClass(Class<?> resourceClass)
+	{
+		ParameterDeclaredInAlice parameter = new ParameterDeclaredInAlice("modelResource", resourceClass);
+//		ConstructorDeclaredInAlice constructor = new ConstructorDeclaredInAlice()
+		return null;
+	}
+	
+	//The Stack<Class<?>> classes is a stack of classes representing the hierarchy of the classes, with the parent class at the top of the stack
+	private static ModelResourceTreeNode addNodes(Stack<Class<?>> classes, ModelResourceTreeNode root)
+	{
+		Class<?> rootClass = null;
+		ModelResourceTreeNode currentNode = root;
+		while (!classes.isEmpty())
+		{
+			Class<?> currentClass = classes.pop();
+			//The root class is the one at the top of the stack, so grab it the first time around
+			if (rootClass == null)
+			{
+				rootClass = currentClass;
+			}
+			ModelResourceTreeNode parentNode = currentNode;
+			ModelResourceTreeNode classNode = null;
+			if (currentNode != null)
+			{
+				classNode = currentNode.getChildWithValue(currentClass);
+			}
+			//Build a new ModelResourceTreeNode for the current class
+			if (classNode == null)
+			{
+				classNode = new ModelResourceTreeNode(currentClass);
+				if (root == null) //if the root node passed in is null, assign it to be the node from the first class we process
+				{
+					root = classNode;
+				}
+				TypeDeclaredInAlice aliceType = null;
+				String aliceClassName = getAliceClassName(currentClass);
+				PackageDeclaredInAlice packageName = getAlicePackage(currentClass, rootClass);
+				if (parentNode == null)
+				{
+					Class<?> parentClass = getModelClassForResourceClass(currentClass);
+//					ConstructorDeclaredInAlice constructor = new Con
+				}
+				
+			}
+			classNode.setParent(parentNode);
+			currentNode = classNode;
+		}
+		return root;
+	}
+	
+	public static Map<Class<?>, Class<?>> resourceClassToModelClassMap = new HashMap<Class<?>, Class<?>>();
+	
+	public static Class<?> getModelClassForResourceClass(Class<?> resourceClass)
+	{
+		if( resourceClass.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.ResourceTemplate.class ) ) {
+			edu.cmu.cs.dennisc.alice.annotations.ResourceTemplate resourceTemplate = resourceClass.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.ResourceTemplate.class );
+			return resourceTemplate.modelClass();
+		}
+		return null;
+	}
+	
+	
+	public static ModelResourceTreeNode createClassTree(List<Class<?>> classes)
+	{
+		ModelResourceTreeNode top = null;
+		for (Class<?> cls : classes)
+		{
+			Class<?> currentClass = cls;
+			Stack<Class<?>> classStack = new Stack<Class<?>>();			
+			Class<?>[] interfaces = null;
+			while (currentClass != null)
+			{
+				classStack.push(currentClass);
+				Class<?> modelClass = getModelClassForResourceClass(currentClass);
+				if (modelClass != null)
+				{
+					if (!resourceClassToModelClassMap.containsKey(currentClass))
+					{
+						resourceClassToModelClassMap.put(currentClass, modelClass);
+					}
+				}
+				
+				interfaces = currentClass.getInterfaces();
+				if (interfaces != null && interfaces.length > 0)
+				{
+					currentClass = interfaces[0];
+				}
+				else
+				{
+					currentClass = null;
+				}
+			}
+			top = addNodes(classStack, top);
+		}
+		return top;
+	}
+	
+
 	
 }

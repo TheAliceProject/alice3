@@ -46,50 +46,6 @@ package org.lookingglassandalice.storytelling.resources;
 /**
  * @author Dennis Cosgrove
  */
-public interface PersonResource {
-	public static enum PersonJointId implements JointId {
-		PELVIS_LOWER_BODY( null ),
-		
-		LEFT_HIP( PELVIS_LOWER_BODY ),
-		LEFT_KNEE( LEFT_HIP ),
-		LEFT_ANKLE( LEFT_KNEE ),
-		
-		RIGHT_HIP( PELVIS_LOWER_BODY ),
-		RIGHT_KNEE( RIGHT_HIP ),
-		RIGHT_ANKLE( RIGHT_KNEE ),
-		
-		PELVIS_UPPER_BODY( null ),
-		
-		SPINE_MIDDLE( PELVIS_UPPER_BODY ),
-		SPINE_UPPER( SPINE_MIDDLE ),
-		
-		NECK( SPINE_UPPER ),
-		HEAD( NECK ),
-		
-		RIGHT_CLAVICLE( SPINE_UPPER ),
-		RIGHT_SHOULDER( RIGHT_CLAVICLE ),
-		RIGHT_ELBOW( RIGHT_SHOULDER ),
-		RIGHT_WRIST( RIGHT_ELBOW ),
-		
-		LEFT_CLAVICLE( SPINE_UPPER ),
-		LEFT_SHOULDER( LEFT_CLAVICLE ),
-		LEFT_ELBOW( LEFT_SHOULDER ),
-		LEFT_WRIST( LEFT_ELBOW );
-		
-		private PersonJointId parent;
-		private java.util.List< JointId > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private PersonJointId( PersonJointId parent ) {
-			this.parent = parent;
-			if( this.parent != null ) {
-				this.parent.children.add( this );
-			}
-		}
-		public JointId getParent() {
-			return this.parent;
-		}
-		public Iterable< JointId > getChildren() {
-			return this.children;
-		}
-	};
-	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createImplementation( org.lookingglassandalice.storytelling.Person abstraction );
+public interface PersonResource extends BipedResource {
+
 }

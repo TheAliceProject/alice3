@@ -41,34 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling.implementation.sims2;
+package org.lookingglassandalice.storytelling.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AdultImplementation extends org.lookingglassandalice.storytelling.implementation.PersonImplementation {
-	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
-	public AdultImplementation( org.lookingglassandalice.storytelling.Person abstraction, org.lookingglassandalice.storytelling.resources.AdultPersonResource resource, org.alice.apis.stage.Gender gender, org.alice.apis.stage.SkinTone skinTone, org.alice.apis.stage.AdultFullBodyOutfit outfit ) {
-		super( new edu.cmu.cs.dennisc.scenegraph.Visual(), abstraction, resource );
-		try {
-			org.alice.apis.stage.Adult temp = new org.alice.apis.stage.Adult();
-			this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( temp );
-			this.nebPerson.setGender( gender );
-			this.nebPerson.setOutfit( outfit );
-			this.nebPerson.setSkinTone( skinTone );
-			this.nebPerson.setFitnessLevel( 0.5 );
-			this.nebPerson.setHair( org.alice.apis.stage.FemaleAdultHairBraids.BLACK );
-			this.nebPerson.setEyeColor( org.alice.apis.stage.BaseEyeColor.getRandom() );
-		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
-			throw new RuntimeException( lre );
-		}
-		this.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebPerson } );
+public abstract class BipedImplementation extends JointedModelImplementation {
+	private final org.lookingglassandalice.storytelling.Biped abstraction;
+	public BipedImplementation( org.lookingglassandalice.storytelling.Biped abstraction, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual) {
+		super( sgVisual );
+		this.abstraction = abstraction;
 	}
-	public void setGender( org.alice.apis.stage.Gender gender ) {
-	}
-	
 	@Override
-	protected JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
-		return new JointImplementation( this, new NebulousJoint( this.nebPerson, jointId ) );
+	public org.lookingglassandalice.storytelling.Biped getAbstraction() {
+		return this.abstraction;
 	}
+//	public void setResource( org.lookingglassandalice.storytelling.resources.PersonResource resource ) {
+//		if( this.resource != null ) {
+//			this.resource.removePerson( this );
+//		}
+//		this.resource = resource;
+//		if( this.resource != null ) {
+//			this.resource.addPerson( this );
+//		}
+//	}
 }

@@ -41,11 +41,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling.resources.monsters;
+package org.lookingglassandalice.storytelling.resources.alice;
+
+import org.lookingglassandalice.storytelling.resources.BipedResource;
+
+
 
 /**
  * @author Dennis Cosgrove
  */
-public enum Dalmation implements org.lookingglassandalice.storytelling.resources.DogResource {
-	SPOTTED;
+public class BipedImplementationFactory {
+	private static java.util.Map< BipedResource, BipedImplementationFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
+    public static BipedImplementationFactory getInstance( BipedResource resource ) {
+    	synchronized( map ) {
+    		BipedImplementationFactory rv = map.get( resource );
+    		if( rv != null ) {
+    			//pass
+    		} else {
+    			rv = new BipedImplementationFactory( resource );
+    			map.put( resource, rv );
+    		}
+    		return rv;
+		}
+    }
+	
+    private final BipedResource resource;
+    
+    private BipedImplementationFactory( BipedResource resource ) {
+    	this.resource = resource;
+	}
+    
+	public org.lookingglassandalice.storytelling.implementation.BipedImplementation createImplementation( org.lookingglassandalice.storytelling.Biped abstraction ) {
+	    edu.cmu.cs.dennisc.texture.Texture texture = AliceResourceUtilties.getTexture( this.resource );
+	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = AliceResourceUtilties.getVisualCopy( this.resource );
+		return new org.lookingglassandalice.storytelling.implementation.alice.AliceBipedImplementation( abstraction, sgSkeletonVisual, texture );
+	}
 }

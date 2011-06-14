@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lookingglassandalice.storytelling.resources.monsters;
-
+package org.lookingglassandalice.storytelling.resources;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public enum Penguin implements org.lookingglassandalice.storytelling.resources.AdultPersonResource {
-	EMPEROR;
-	private final PersonResource implementation;
-    private Penguin() {
-    	this.implementation = org.lookingglassandalice.storytelling.resources.monsters.PersonResource.getInstance( "penguin.a3r" );
-	}
-	public org.lookingglassandalice.storytelling.implementation.PersonImplementation createImplementation( org.lookingglassandalice.storytelling.Person abstraction ) {
-		return this.implementation.createImplementation( abstraction );
-	}
+public interface ModelResource {
+
 }

@@ -42,6 +42,15 @@
  */
 package org.alice.stageide;
 
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceTreeNode;
+import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceUtilities;
+
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+
 public class StageIDE extends org.alice.ide.IDE {
 	private org.alice.ide.cascade.CascadeManager cascadeManager = new org.alice.stageide.cascade.CascadeManager();
 	public StageIDE() {
@@ -614,10 +623,33 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
+	protected edu.cmu.cs.dennisc.croquet.JComponent<?> createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> root ) {
+		return new org.alice.stageide.gallerybrowser.ClassBasedGalleryBrowser( root );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> getClassGalleryRoot() {
+		try {
+			String rootGalleryPath = org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory() + "/assets/newAPI";
+
+			File[] jarFiles = FileUtilities.listDescendants(rootGalleryPath, "jar");
+			List<Class<?>> galleryClasses = new LinkedList<Class<?>>();
+			for (File f : jarFiles)
+			{
+				galleryClasses.addAll( ModelResourceUtilities.loadResourceJarFile(f) );
+			}
+			
+			ModelResourceTreeNode galleryTree = ModelResourceUtilities.createClassTree(galleryClasses);
+			return galleryTree;
+		} catch( Exception e ) {
+			throw new RuntimeException( e );
+		}
+	}
+	@Override
 	protected edu.cmu.cs.dennisc.croquet.JComponent<?> createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
 		return new org.alice.stageide.gallerybrowser.GalleryBrowser( root );
 	}
-
+	
 //	@Override
 //	public boolean isDeclareFieldOfPredeterminedTypeSupported( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
 //		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();

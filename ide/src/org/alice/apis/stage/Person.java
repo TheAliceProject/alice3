@@ -539,7 +539,7 @@ public abstract class Person extends Model {
     
     @MethodTemplate( visibility=Visibility.PRIME_TIME )
     public void turnJoint( 
-            org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId joint,
+            org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId joint,
             TurnDirection direction, 
             @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
             Number amount, 
@@ -551,7 +551,7 @@ public abstract class Person extends Model {
     }
     @MethodTemplate( visibility=Visibility.CHAINED )
     public void turnJoint(
-    		org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId joint,
+    		org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId joint,
             TurnDirection direction, 
             @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
             Number amount,
@@ -562,7 +562,7 @@ public abstract class Person extends Model {
     
     @MethodTemplate( visibility=Visibility.CHAINED )
     public void turnJoint( 
-    		org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId joint,
+    		org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId joint,
             TurnDirection direction, 
             @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
             Number amount 
@@ -572,7 +572,7 @@ public abstract class Person extends Model {
     
     @MethodTemplate( visibility=Visibility.PRIME_TIME )
     public void rollJoint( 
-    		org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId joint,
+    		org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId joint,
             RollDirection direction, 
             @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
             Number amount, 
@@ -583,7 +583,7 @@ public abstract class Person extends Model {
     }
     @MethodTemplate( visibility=Visibility.CHAINED )
     public void rollJoint( 
-    		org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId joint,
+    		org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId joint,
             RollDirection direction, 
             @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
             Number amount, 
@@ -593,7 +593,7 @@ public abstract class Person extends Model {
     }
     @MethodTemplate( visibility=Visibility.CHAINED )
     public void rollJoint( 
-    		org.lookingglassandalice.storytelling.resources.PersonResource.PersonJointId joint,
+    		org.lookingglassandalice.storytelling.resources.BipedResource.BipedJointId joint,
             RollDirection direction, 
             @edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=AngleInRevolutions.class )
             Number amount 
