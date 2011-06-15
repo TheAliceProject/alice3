@@ -750,12 +750,12 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		}
 		return null;
 	}
-	public org.lgna.croquet.StandardPopupPrepModel getPopupMenuOperationForStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	public org.lgna.croquet.PopupPrepModel getPopupMenuOperationForStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		if( statement != null ) {
 			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
 			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
 				if( statementPane.getStatement() == statement ) {
-					return statementPane.getPopupMenuPrepModel();
+					return statementPane.getPopupPrepModel();
 				}
 			}
 		}

@@ -438,16 +438,8 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 			
 			java.awt.Shape paper = new java.awt.geom.Rectangle2D.Float( 0, 0, w, h );
 			
-			if( this.dragReceptorState == DragReceptorState.IDLE ) {
-				java.awt.Shape prevClip = g2.getClip();
-				g2.setClip( paper );
-				final float SCALE = 0.4f;
-				java.awt.geom.AffineTransform prevTransform = g2.getTransform();
-				g2.scale( SCALE, SCALE );
-				this.subject.getAwtComponent().print( g2 );
-				g2.setTransform( prevTransform );
-				g2.setClip( prevClip );
-			} else {
+			final boolean IS_SIMPLE = true;
+			if( IS_SIMPLE || this.dragReceptorState != DragReceptorState.IDLE ) {
 				g2.setPaint( new java.awt.GradientPaint( x,y, java.awt.Color.LIGHT_GRAY, x+w, y+h, java.awt.Color.WHITE ) );
 				g2.fill( paper );
 				final int SHADOW_SIZE = this.getHeight()/50; 
@@ -461,6 +453,15 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 					pathShadow.closePath();
 					g2.fill( pathShadow );
 				}
+			} else {
+				java.awt.Shape prevClip = g2.getClip();
+				g2.setClip( paper );
+				final float SCALE = 0.4f;
+				java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+				g2.scale( SCALE, SCALE );
+				this.subject.getAwtComponent().print( g2 );
+				g2.setTransform( prevTransform );
+				g2.setClip( prevClip );
 			}
 			g2.translate(-x, -y);
 		}

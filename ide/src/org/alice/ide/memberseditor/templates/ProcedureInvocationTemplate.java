@@ -61,7 +61,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 		this.method = method;
 		
 		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			this.setPopupMenuOperation( org.alice.ide.croquet.models.ast.MethodTemplateMenuModel.getInstance( (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method ).getPopupMenuOperation() );
+			this.setPopupPrepModel( org.alice.ide.croquet.models.ast.MethodTemplateMenuModel.getInstance( (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method ).getPopupMenuOperation() );
 		}
 	}
 	@Override

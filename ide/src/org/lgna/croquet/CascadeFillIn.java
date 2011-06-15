@@ -50,4 +50,45 @@ public abstract class CascadeFillIn<F,B> extends CascadeBlankOwner< F, B > {
 	public CascadeFillIn( java.util.UUID id ) {
 		super( id );
 	}
+	//todo: better name
+	protected static enum BlankActor {
+		CREATE_VALUES() {
+			@Override
+			public <F> F act( org.lgna.croquet.cascade.ItemNode< F,? > step ) {
+				return step.createValue();
+			}
+		},
+		GET_TRANSIENT_VALUES() {
+			@Override
+			public <F> F act( org.lgna.croquet.cascade.ItemNode< F,? > step ) {
+				if( step != null ) {
+					return step.getTransientValue();
+				} else {
+					return null;
+				}
+			}
+		};
+		public abstract <F> F act( org.lgna.croquet.cascade.ItemNode< F,? > step );
+	}
+	protected B[] runBlanks( org.lgna.croquet.cascade.ItemNode< ? super F,B> step, BlankActor blankActor, Class<B> cls ) { 
+		org.lgna.croquet.CascadeBlank< B >[] blanks = this.getBlanks();
+		B[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( cls, blanks.length );
+		for( int i=0; i<rv.length; i++ ) {
+			org.lgna.croquet.cascade.BlankNode< B > blankStep = step.getBlankStepAt( i );
+			org.lgna.croquet.cascade.AbstractItemNode< B,?,? > selectedFillInContext = blankStep.getSelectedFillInContext();
+			rv[ i ] = (B)blankActor.act( selectedFillInContext );
+//			if( rv[ i ] == null ) {
+//				if( this.cls == edu.cmu.cs.dennisc.alice.ast.Expression.class ) {
+//					edu.cmu.cs.dennisc.croquet.CascadeBlank< B > blank = blankContext.getModel();
+//					if( blank instanceof ExpressionBlank ) {
+//						ExpressionBlank expressionBlank = (ExpressionBlank)blank;
+//						//todo:
+//						//this cast is very, very wrong
+//						rv[ i ] = (B)new org.alice.ide.ast.EmptyExpression( expressionBlank.getValueType() );
+//					}
+//				}
+//			}
+		}
+		return rv;
+	}
 }

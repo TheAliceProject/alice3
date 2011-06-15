@@ -52,50 +52,10 @@ public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.a
 		super( id );
 		this.cls = cls;
 	}
-	private enum BlankOperation {
-		CREATE_VALUES() {
-			@Override
-			public <F> F operate( org.lgna.croquet.cascade.ItemNode< F,? > step ) {
-				return step.createValue();
-			}
-		},
-		GET_TRANSIENT_VALUES() {
-			@Override
-			public <F> F operate( org.lgna.croquet.cascade.ItemNode< F,? > step ) {
-				if( step != null ) {
-					return step.getTransientValue();
-				} else {
-					return null;
-				}
-			}
-		};
-		public abstract <F> F operate( org.lgna.croquet.cascade.ItemNode< F,? > step );
-	}
-	private B[] runBlanks( org.lgna.croquet.cascade.ItemNode< ? super F,B> step, BlankOperation blankOperation ) { 
-		org.lgna.croquet.CascadeBlank< B >[] blanks = this.getBlanks();
-		B[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( this.cls, blanks.length );
-		for( int i=0; i<rv.length; i++ ) {
-			org.lgna.croquet.cascade.BlankNode< B > blankStep = step.getBlankStepAt( i );
-			org.lgna.croquet.cascade.AbstractItemNode< B,?,? > selectedFillInContext = blankStep.getSelectedFillInContext();
-			rv[ i ] = (B)blankOperation.operate( selectedFillInContext );
-//			if( rv[ i ] == null ) {
-//				if( this.cls == edu.cmu.cs.dennisc.alice.ast.Expression.class ) {
-//					edu.cmu.cs.dennisc.croquet.CascadeBlank< B > blank = blankContext.getModel();
-//					if( blank instanceof ExpressionBlank ) {
-//						ExpressionBlank expressionBlank = (ExpressionBlank)blank;
-//						//todo:
-//						//this cast is very, very wrong
-//						rv[ i ] = (B)new org.alice.ide.ast.EmptyExpression( expressionBlank.getValueType() );
-//					}
-//				}
-//			}
-		}
-		return rv;
-	}
 	protected abstract F createValue( B[] expressions );
 	@Override
 	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,B > step ) {
-		return this.createValue( runBlanks( step, BlankOperation.CREATE_VALUES ) );
+		return this.createValue( this.runBlanks( step, BlankActor.CREATE_VALUES, this.cls ) );
 	}
 //	protected abstract F getTransientValue( B[] expressions );
 //	@Override
