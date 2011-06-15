@@ -42,14 +42,16 @@
  */
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+
 
 /**
  * @author dculyba
  *
  */
 public class SelectClassActionOperation extends ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>, ClassBasedPathControl.Initializer, SelectClassActionOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static SelectClassActionOperation getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode, ClassBasedPathControl.Initializer initializer ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>, ClassBasedPathControl.Initializer, SelectClassActionOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static SelectClassActionOperation getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode, ClassBasedPathControl.Initializer initializer ) {
 		assert initializer != null;
 		SelectClassActionOperation rv = mapToMap.get(treeNode, initializer);
 		if( rv != null ) {
@@ -61,10 +63,10 @@ public class SelectClassActionOperation extends ActionOperation {
 		return rv;
 	}
 
-	private TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>> treeSelectionState;
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode;
+	private TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>> treeSelectionState;
+	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode;
 	
-	private SelectClassActionOperation( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode, ClassBasedPathControl.Initializer initializer ) {
+	private SelectClassActionOperation( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode, ClassBasedPathControl.Initializer initializer ) {
 		super( Application.INHERIT_GROUP, java.util.UUID.fromString( "e9d3ebc0-fa0f-4db4-9ce6-e795eab4e859" ) );
 		this.treeSelectionState = treeSelectionState;
 		this.treeNode = treeNode;

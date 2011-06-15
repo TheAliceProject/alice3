@@ -44,8 +44,10 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 
 import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceTreeNode;
 import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceUtilities;
 
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
@@ -55,8 +57,8 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation {
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 desiredTransformation = null;
 	
-	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>, GalleryClassOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static GalleryClassOperation getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode ) {
+	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>, GalleryClassOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static GalleryClassOperation getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode ) {
 		GalleryClassOperation rv = map.get( treeNode );
 		if( rv != null ) {
 			//pass
@@ -67,8 +69,8 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 		return rv;
 	}
 
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode;
-	private GalleryClassOperation(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode) {
+	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode;
+	private GalleryClassOperation(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode) {
 		super( java.util.UUID.fromString( "98886117-99d3-4c9a-b08d-78a2c95acb2d" ) );
 		this.treeNode = treeNode;
 	}
@@ -101,13 +103,17 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 				}
 				else
 				{
-					edu.cmu.cs.dennisc.math.AxisAlignedBox box = ModelResourceUtilities.getBoundingBox(this.treeNode.getValue());
-					if (box.isNaN())
-                    {
-                        System.err.println("TODO: fix broken bounding box for "+this.treeNode.getValue());
-                    }
-					AffineMatrix4x4 goodOrientation = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getGoodPointOfViewInSceneForObject(box);
-					((org.alice.apis.moveandturn.Transformable)fieldObject).setLocalTransformation(goodOrientation);
+					if (this.treeNode instanceof ModelResourceTreeNode)
+					{
+						Class<?> resourceClass = ((ModelResourceTreeNode)this.treeNode).getResourceClass();
+						edu.cmu.cs.dennisc.math.AxisAlignedBox box = ModelResourceUtilities.getBoundingBox(resourceClass);
+						if (box.isNaN())
+	                    {
+	                        System.err.println("TODO: fix broken bounding box for "+this.treeNode.getValue());
+	                    }
+						AffineMatrix4x4 goodOrientation = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getGoodPointOfViewInSceneForObject(box);
+						((org.alice.apis.moveandturn.Transformable)fieldObject).setLocalTransformation(goodOrientation);
+					}
 				}
 			}
 			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, fieldObject );

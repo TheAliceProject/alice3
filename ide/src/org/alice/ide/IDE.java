@@ -44,6 +44,8 @@ package org.alice.ide;
 
 import org.lgna.croquet.components.JComponent;
 
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -461,8 +463,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > getGalleryRoot();
 	protected abstract org.lgna.croquet.components.JComponent< ? > createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > root );
 	
-	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode< Class<?> > getClassGalleryRoot();
-	protected abstract JComponent< ? > createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< Class<?> > root );
+	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> getClassGalleryRoot();
+	protected abstract JComponent< ? > createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> root );
 	
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
 		return new org.alice.ide.memberseditor.MembersEditor();

@@ -49,6 +49,7 @@ import java.util.List;
 import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceTreeNode;
 import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceUtilities;
 
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 
 public class StageIDE extends org.alice.ide.IDE {
@@ -623,12 +624,12 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> root ) {
+	protected org.lgna.croquet.components.JComponent<?> createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> root ) {
 		return new org.alice.stageide.gallerybrowser.ClassBasedGalleryBrowser( root );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> getClassGalleryRoot() {
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> getClassGalleryRoot() {
 		try {
 			String rootGalleryPath = org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory() + "/assets/newAPI";
 

@@ -58,8 +58,10 @@ import org.alice.interact.handle.HandleSet;
 import org.lgna.croquet.components.DragComponent;
 import org.alice.stageide.gallerybrowser.ClassBasedGalleryDragComponent;
 import org.alice.stageide.gallerybrowser.GalleryDragComponent;
+import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceTreeNode;
 import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceUtilities;
 
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -228,8 +230,12 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			else if (dragSource instanceof ClassBasedGalleryDragComponent)
 			{
 				ClassBasedGalleryDragComponent galleryDragComponent = (ClassBasedGalleryDragComponent)dragSource;
-				edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> treeNode = galleryDragComponent.getTreeNode();
-				box = ModelResourceUtilities.getBoundingBox(treeNode.getValue());
+				edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode = galleryDragComponent.getTreeNode();
+				if (treeNode instanceof ModelResourceTreeNode)
+				{
+					Class<?> resourceClass = ((ModelResourceTreeNode)treeNode).getResourceClass();
+					box = ModelResourceUtilities.getBoundingBox(resourceClass);
+				}
 			}
 			if (box == null)
 			{

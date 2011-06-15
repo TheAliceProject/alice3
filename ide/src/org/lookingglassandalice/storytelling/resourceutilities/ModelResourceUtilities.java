@@ -45,6 +45,7 @@ package org.lookingglassandalice.storytelling.resourceutilities;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
@@ -58,13 +59,35 @@ import java.util.zip.ZipFile;
 
 import javax.imageio.ImageIO;
 
+import org.alice.ide.ast.NodeUtilities;
+import org.lgna.croquet.components.AbstractTabbedPane;
+import org.lookingglassandalice.storytelling.resources.ModelResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import edu.cmu.cs.dennisc.alice.annotations.Visibility;
+import edu.cmu.cs.dennisc.alice.ast.AbstractMember;
+import edu.cmu.cs.dennisc.alice.ast.AbstractParameter;
+import edu.cmu.cs.dennisc.alice.ast.AbstractType;
+import edu.cmu.cs.dennisc.alice.ast.Access;
+import edu.cmu.cs.dennisc.alice.ast.Argument;
+import edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement;
 import edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice;
+import edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava;
+import edu.cmu.cs.dennisc.alice.ast.ConstructorInvocationStatement;
+import edu.cmu.cs.dennisc.alice.ast.FieldAccess;
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJava;
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField;
+import edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.PackageDeclaredInAlice;
+import edu.cmu.cs.dennisc.alice.ast.ParameterAccess;
 import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
+import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava;
+import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaConstructor;
+import edu.cmu.cs.dennisc.alice.ast.SuperConstructorInvocationStatement;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
@@ -197,6 +220,7 @@ public class ModelResourceUtilities {
 		{
 			name = name.substring(0, resourceIndex);
 		}
+		name = getClassNameFromName(name);
 		return name;
 	}
 	
@@ -205,19 +229,90 @@ public class ModelResourceUtilities {
 		String resourcePackage = resourceClass.getPackage().getName();
 		String rootPackage = rootClass.getPackage().getName();
 		int rootIndex = resourcePackage.indexOf(rootPackage);
-		if (rootIndex != 0)
+		if (rootIndex != -1)
 		{
 			resourcePackage = resourcePackage.substring(rootIndex+rootPackage.length());
+			if (resourcePackage.startsWith("."))
+			{
+				resourcePackage = resourcePackage.substring(1);
+			}
 		}
 		resourcePackage = DEFAULT_PACKAGE + resourcePackage;
 		return new PackageDeclaredInAlice(resourcePackage);
 	}
 	
-	public static ConstructorDeclaredInAlice createConstructorForResourceClass(Class<?> resourceClass)
+	public static ConstructorDeclaredInAlice createConstructorForResourceClass(Class<?> resourceClass, AbstractParameter superParameter)
 	{
 		ParameterDeclaredInAlice parameter = new ParameterDeclaredInAlice("modelResource", resourceClass);
-//		ConstructorDeclaredInAlice constructor = new ConstructorDeclaredInAlice()
+		ParameterAccess parameterAccessor = new ParameterAccess(parameter);
+		Argument superArgument = new Argument(superParameter, parameterAccessor);
+		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement(superArgument);
+		ConstructorBlockStatement blockStatement = new ConstructorBlockStatement(superInvocation);
+		ParameterDeclaredInAlice[] parameters = {parameter};
+		ConstructorDeclaredInAlice constructor = new ConstructorDeclaredInAlice(parameters, blockStatement);
+		return constructor ;
+	}
+	
+	public static ConstructorDeclaredInAlice createConstructorForResourceField(Field resourceField, AbstractParameter superParameter)
+	{
+		FieldDeclaredInJavaWithField javaField = FieldDeclaredInJavaWithField.get(resourceField);
+		FieldAccess fieldAccess = NodeUtilities.createStaticFieldAccess(javaField);
+		Argument superArgument = new Argument(superParameter, fieldAccess);
+		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement(superArgument);
+		ConstructorBlockStatement blockStatement = new ConstructorBlockStatement(superInvocation);
+		ParameterDeclaredInAlice[] parameters = {};
+		ConstructorDeclaredInAlice constructor = new ConstructorDeclaredInAlice(parameters, blockStatement);
+		return constructor ;
+	}
+	
+	private static ParameterDeclaredInAlice getConstructorParameterForAliceClass(TypeDeclaredInAlice aliceType)
+	{
+		for (int i=0; i<aliceType.constructors.size(); i++)
+		{
+			ConstructorDeclaredInAlice constructor = aliceType.constructors.get(i);
+			if (constructor.parameters.size() == 1)
+			{
+				ParameterDeclaredInAlice parameter = constructor.parameters.get(0);
+				if (parameter.getValueType().isAssignableTo(ModelResource.class))
+				{
+					return parameter;
+				}
+			}
+		}
 		return null;
+	}
+	
+	private static ParameterDeclaredInJavaConstructor getConstructorParameterForJavaClass(Class<?> javaClass)
+	{
+		TypeDeclaredInJava javeType = TypeDeclaredInJava.get(javaClass);
+		List<ConstructorDeclaredInJava> constructors = javeType.getDeclaredConstructors();
+		for (ConstructorDeclaredInJava constructor : constructors)
+		{
+			List<ParameterDeclaredInJavaConstructor> parameters = (List<ParameterDeclaredInJavaConstructor>) constructor.getParameters();
+			if (parameters.size() == 1)
+			{
+				ParameterDeclaredInJavaConstructor parameter = parameters.get(0);
+				TypeDeclaredInJava javaType = parameter.getValueTypeDeclaredInJava();
+				if (javaType.isAssignableTo(ModelResource.class))
+				{
+					return parameter;
+				}
+			}
+		}
+		return null;
+	}
+	
+	private static String getClassNameFromName(String name)
+	{
+		StringBuilder sb = new StringBuilder();
+		String[] nameParts = name.split("[_ ]");
+		for (String part : nameParts)
+		{
+			sb.append(part.substring(0, 1).toUpperCase());
+			sb.append(part.substring(1).toLowerCase());
+		}
+		return sb.toString();
+		
 	}
 	
 	//The Stack<Class<?>> classes is a stack of classes representing the hierarchy of the classes, with the parent class at the top of the stack
@@ -235,25 +330,56 @@ public class ModelResourceUtilities {
 			}
 			ModelResourceTreeNode parentNode = currentNode;
 			ModelResourceTreeNode classNode = null;
-			if (currentNode != null)
+			if (resourceClassToNodeMap.containsKey(currentClass))
 			{
-				classNode = currentNode.getChildWithValue(currentClass);
+				classNode = resourceClassToNodeMap.get(currentClass);
 			}
 			//Build a new ModelResourceTreeNode for the current class
 			if (classNode == null)
 			{
-				classNode = new ModelResourceTreeNode(currentClass);
+				TypeDeclaredInAlice aliceType = null;
+				String aliceClassName = getAliceClassName(currentClass);
+				PackageDeclaredInAlice packageName = getAlicePackage(currentClass, rootClass);
+				MethodDeclaredInAlice[] methods = {};
+				FieldDeclaredInAlice[] fields = {};
+				if (parentNode == null || parentNode.getTypeDeclaredInAlice() == null)
+				{
+					Class<?> parentClass = getModelClassForResourceClass(currentClass);
+					ParameterDeclaredInJavaConstructor parentConstructorParameter = getConstructorParameterForJavaClass(parentClass);
+					ConstructorDeclaredInAlice constructor = createConstructorForResourceClass(currentClass, parentConstructorParameter);
+					ConstructorDeclaredInAlice[] constructors = {constructor};
+					aliceType = new TypeDeclaredInAlice(aliceClassName, packageName, parentClass, constructors, methods, fields);
+				}
+				else
+				{
+					TypeDeclaredInAlice parentType = parentNode.getTypeDeclaredInAlice();
+					ParameterDeclaredInAlice parentConstructorParameter = getConstructorParameterForAliceClass(parentType);
+					ConstructorDeclaredInAlice constructor = createConstructorForResourceClass(currentClass, parentConstructorParameter);
+					ConstructorDeclaredInAlice[] constructors = {constructor};
+					aliceType = new TypeDeclaredInAlice(aliceClassName, packageName, parentType, constructors, methods, fields);
+				}
+				classNode = new ModelResourceTreeNode(aliceType, currentClass);
+				resourceClassToNodeMap.put(currentClass, classNode);
 				if (root == null) //if the root node passed in is null, assign it to be the node from the first class we process
 				{
 					root = classNode;
 				}
-				TypeDeclaredInAlice aliceType = null;
-				String aliceClassName = getAliceClassName(currentClass);
-				PackageDeclaredInAlice packageName = getAlicePackage(currentClass, rootClass);
-				if (parentNode == null)
+				Field[] resourceConstants = currentClass.getFields();
+				if (resourceConstants.length != 0)
 				{
-					Class<?> parentClass = getModelClassForResourceClass(currentClass);
-//					ConstructorDeclaredInAlice constructor = new Con
+					for (Field f : resourceConstants)
+					{
+						String fieldClassName = getClassNameFromName(f.getName())+aliceClassName;
+						TypeDeclaredInAlice parentType = classNode.getTypeDeclaredInAlice();
+						ParameterDeclaredInAlice parentConstructorParameter = getConstructorParameterForAliceClass(parentType);
+						ConstructorDeclaredInAlice constructor = createConstructorForResourceField(f, parentConstructorParameter);
+						ConstructorDeclaredInAlice[] constructors = {constructor};
+						TypeDeclaredInAlice fieldType = new TypeDeclaredInAlice(fieldClassName, packageName, parentType, constructors, methods, fields);
+						ModelResourceTreeNode fieldNode = new ModelResourceTreeNode(fieldType, currentClass);
+						
+						fieldNode.setParent(classNode);
+						resourceClassToNodeMap.put(f, fieldNode);
+					}
 				}
 				
 			}
@@ -263,7 +389,8 @@ public class ModelResourceUtilities {
 		return root;
 	}
 	
-	public static Map<Class<?>, Class<?>> resourceClassToModelClassMap = new HashMap<Class<?>, Class<?>>();
+	private static Map<Class<?>, Class<?>> resourceClassToModelClassMap = new HashMap<Class<?>, Class<?>>();
+	private static Map<Object, ModelResourceTreeNode> resourceClassToNodeMap = new HashMap<Object, ModelResourceTreeNode>();
 	
 	public static Class<?> getModelClassForResourceClass(Class<?> resourceClass)
 	{
@@ -277,7 +404,7 @@ public class ModelResourceUtilities {
 	
 	public static ModelResourceTreeNode createClassTree(List<Class<?>> classes)
 	{
-		ModelResourceTreeNode top = null;
+		ModelResourceTreeNode classNodes = null;
 		for (Class<?> cls : classes)
 		{
 			Class<?> currentClass = cls;
@@ -293,6 +420,7 @@ public class ModelResourceUtilities {
 					{
 						resourceClassToModelClassMap.put(currentClass, modelClass);
 					}
+					break;
 				}
 				
 				interfaces = currentClass.getInterfaces();
@@ -305,9 +433,11 @@ public class ModelResourceUtilities {
 					currentClass = null;
 				}
 			}
-			top = addNodes(classStack, top);
+			classNodes = addNodes(classStack, null);
 		}
-		return top;
+		ModelResourceTreeNode topNode = new ModelResourceTreeNode(null, null);
+		classNodes.setParent(topNode);
+		return topNode;
 	}
 	
 

@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+
 
 /**
  * @author Dennis Cosgrove
@@ -128,7 +130,7 @@ public class TreeSelectionState<E> extends State<E> {
 	
 	public ClassBasedPathControl createClassBasedPathControl( ClassBasedPathControl.Initializer initializer ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: createPathControl" );
-		ClassBasedPathControl rv = new ClassBasedPathControl( (TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>>)this, initializer );
+		ClassBasedPathControl rv = new ClassBasedPathControl( (TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>>)this, initializer );
 		rv.setSwingTreeModel( this.treeModel );
 		rv.setSwingTreeSelectionModel( this.treeSelectionModel );
 		return rv;

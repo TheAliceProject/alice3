@@ -82,6 +82,7 @@ import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
+import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
@@ -2100,6 +2101,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			{
 				AffineMatrix4x4 dropTargetPosition = this.globalDragAdapter.getDropTargetTransformation();
 				((GalleryFileOperation)model).setDesiredTransformation(dropTargetPosition);
+			}
+			else if (model instanceof GalleryClassOperation)
+			{
+				AffineMatrix4x4 dropTargetPosition = this.globalDragAdapter.getDropTargetTransformation();
+				((GalleryClassOperation)model).setDesiredTransformation(dropTargetPosition);
 			}
 			return model;
 		}

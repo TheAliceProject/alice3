@@ -45,6 +45,8 @@ package org.lookingglassandalice.storytelling.resourceutilities;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import org.lookingglassandalice.storytelling.resources.ModelResource;
+
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 
 
@@ -52,34 +54,29 @@ import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
  * @author dculyba
  *
  */
-public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>>, Comparable<ModelResourceTreeNode>  {
+public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>, Comparable<ModelResourceTreeNode>  {
 
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> parent;
+	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> parent;
 	private java.util.List< ModelResourceTreeNode > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private Class<?> resourceClass;
 	private TypeDeclaredInAlice aliceClass;
+	private Class<?> resourceClass;
+	private ModelResource modelResource;
 	private String name;
 	private boolean isSorted = false;
-	private java.util.List<String> constants = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	
-	public ModelResourceTreeNode( Class<?> resourceClass ) {
-		this.resourceClass = resourceClass;
-		this.name = this.resourceClass.getSimpleName();
-		
-		if (this.resourceClass.isEnum())
+	public ModelResourceTreeNode( TypeDeclaredInAlice aliceClass, Class<?> resourceClass ) {
+		this.aliceClass = aliceClass;
+		if (this.aliceClass != null)
 		{
-			Field[] textureOptions = this.resourceClass.getFields();
-			for (Field f : textureOptions)
-			{
-				this.constants.add(f.getName());
-			}
+			this.name = this.aliceClass.getName();
 		}
+		this.resourceClass = resourceClass;
 		
 	}
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> getParent() {
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> getParent() {
 		return this.parent;
 	}
-	public void setParent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> parent ) {
+	public void setParent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> parent ) {
 		if( this.parent instanceof ModelResourceTreeNode ) {
 			ModelResourceTreeNode parentNode = (ModelResourceTreeNode)this.parent;
 			parentNode.removeChild( this );
@@ -101,15 +98,10 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		this.aliceClass = type;
 	}
 	
-	public List<String> getConstantNames()
-	{
-		return this.constants;
-	}
-	
 	public boolean getAllowsChildren() {
 		return true;
 	}
-	private java.util.List< ? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> > getSortedChildren() {
+	private java.util.List< ? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> > getSortedChildren() {
 		if( this.isSorted ) {
 			//pass
 		} else {
@@ -118,13 +110,13 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		}
 		return this.children;
 	}
-	public java.util.Enumeration< ? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> > children() {
+	public java.util.Enumeration< ? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> > children() {
 		return java.util.Collections.enumeration( this.getSortedChildren() );
 	}
 	public java.util.Iterator iterator() {
 		return this.children.iterator();
 	}
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class<?>> getChildAt(int childIndex) {
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> getChildAt(int childIndex) {
 		return this.getSortedChildren().get( childIndex );
 	}
 	public int getChildCount() {
@@ -146,7 +138,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		this.children.remove( node );
 	}
 	
-	public ModelResourceTreeNode getChildWithValue( Class<?> resourceClass ) {
+	public ModelResourceTreeNode getChildWithValue( TypeDeclaredInAlice resourceClass ) {
 		for( ModelResourceTreeNode child : this.children ) {
 			if( resourceClass.equals( child.getValue() ) ) {
 				return child;
@@ -154,7 +146,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		}
 		return null;
 	}
-	public ModelResourceTreeNode getDescendant( Class<?> resourceClass ) {
+	public ModelResourceTreeNode getDescendant( TypeDeclaredInAlice resourceClass ) {
 		ModelResourceTreeNode rv = this.getChildWithValue(resourceClass);
 		if (rv != null)
 		{
@@ -174,11 +166,26 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return null;
 	}
 	
-	public Class<?> getValue() {
-		return this.resourceClass;
+	public TypeDeclaredInAlice getValue() {
+		return this.aliceClass;
 	}
 	public String getName() {
 		return this.name;
+	}
+	
+	public Class<?> getResourceClass()
+	{
+		return this.resourceClass;
+	}
+	
+	public void setModelResource(ModelResource modelResource)
+	{
+		this.modelResource = modelResource;
+	}
+	
+	public ModelResource getModelResource()
+	{
+		return this.modelResource;
 	}
 	
 	public int compareTo(ModelResourceTreeNode other) {
@@ -198,7 +205,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 	}
 	@Override
 	public String toString() {
-		return this.getValue().toString();
+		return this.getValue().getName();
 	}
 	
 	public void printTree()
@@ -208,11 +215,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 	
 	private void printTree(String indent)
 	{
-		System.out.println(indent+"+"+this.name+" : "+this.resourceClass.toString());
-		for (String s : this.constants)
-		{
-			System.out.println(indent+"  "+s);
-		}
+		System.out.println(indent+"+"+this.name+" : "+this.aliceClass);
 		indent += "  ";
 		for (ModelResourceTreeNode child : this.children)
 		{
