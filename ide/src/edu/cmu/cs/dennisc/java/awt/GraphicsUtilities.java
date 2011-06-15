@@ -145,9 +145,12 @@ public class GraphicsUtilities {
 		 rv.closePath();
 		 return rv;
 	}
-	private static java.awt.Shape createClip( java.awt.Shape shape, boolean isTopLeft ) {
+	private static java.awt.Shape createClip( java.awt.Shape prevClip, java.awt.Shape shape, boolean isTopLeft ) {
 		java.awt.geom.Rectangle2D bounds = shape.getBounds2D();
 		java.awt.geom.Area rv = new java.awt.geom.Area( shape );
+		if( prevClip != null ) {
+			rv.intersect( new java.awt.geom.Area( prevClip ) );
+		}
 		rv.subtract( new java.awt.geom.Area( createPath( (float)bounds.getX(), (float)bounds.getY(), (float)bounds.getWidth(), (float)bounds.getHeight(), isTopLeft==false ) ) );
 		return rv;
 	}
@@ -160,11 +163,11 @@ public class GraphicsUtilities {
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		
 		g2.setStroke( stroke );
-		g2.setClip( createClip( rr, true ) );
+		g2.setClip( createClip( prevClip, rr, true ) );
 		g2.setPaint( topLeftPaint );
 		g2.draw( rr );
 		
-		g2.setClip( createClip( rr, false ) );
+		g2.setClip( createClip( prevClip, rr, false ) );
 		g2.setPaint( bottomRightPaint );
 		g2.draw( rr );
 
@@ -183,11 +186,11 @@ public class GraphicsUtilities {
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		
 		g2.setStroke( stroke );
-		g2.setClip( createClip( shape, true ) );
+		g2.setClip( createClip( prevClip, shape, true ) );
 		g2.setPaint( topLeftPaint );
 		g2.draw( shape );
 		
-		g2.setClip( createClip( shape, false ) );
+		g2.setClip( createClip( prevClip, shape, false ) );
 		g2.setPaint( bottomRightPaint );
 		g2.draw( shape );
 

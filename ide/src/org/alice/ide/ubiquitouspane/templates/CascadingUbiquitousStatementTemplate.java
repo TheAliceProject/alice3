@@ -75,9 +75,7 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 		if( this.label != null ) {
 			//pass
 		} else {
-			//this.label = zoot.ZLabel.acquire( "<html><body>" + this.getLabelText() + "</body></html>" );
 			this.label = new org.lgna.croquet.components.Label( this.getLabelText() );
-			//this.label = zoot.ZLabel.acquire( "<html><body>\u2334</body></html>" );
 			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
 				this.label.setForegroundColor( getIDE().getTheme().getCommentForegroundColor() );
 			}

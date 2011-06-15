@@ -43,49 +43,64 @@
 
 package org.alice.ide.clipboard;
 
-abstract class ClipboardOperation extends org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation { 
-	public ClipboardOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation { 
+	private final boolean isCopy;
+	public FromClipboardOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, boolean isCopy ) {
 		super( id, blockStatementIndexPair );
+		this.isCopy = isCopy;
 	}
+
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement() {
-		return org.alice.ide.ast.NodeUtilities.createDoInOrder();
+		edu.cmu.cs.dennisc.alice.ast.Node node = Clipboard.getInstance().peek();
+		//todo: recast if necessary
+		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
+			edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
+			if( isCopy ) {
+				return org.alice.ide.IDE.getSingleton().createCopy( statement );
+			} else {
+				Clipboard.getInstance().pop();
+				return statement;
+			}
+		} else {
+			return null;
+		}
 	}
 }
 
-class CopyClipboardOperation extends ClipboardOperation {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, CopyClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CopyClipboardOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+class CopyFromClipboardOperation extends FromClipboardOperation {
+	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, CopyFromClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CopyFromClipboardOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
-		CopyClipboardOperation rv = map.get( blockStatementIndexPair );
+		CopyFromClipboardOperation rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new CopyClipboardOperation( blockStatementIndexPair );
+			rv = new CopyFromClipboardOperation( blockStatementIndexPair );
 			map.put( blockStatementIndexPair, rv );
 		}
 		return rv;
 	}
-	private CopyClipboardOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "fc162a45-2175-4ccf-a5f2-d3de969692c3" ), blockStatementIndexPair );
+	private CopyFromClipboardOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "fc162a45-2175-4ccf-a5f2-d3de969692c3" ), blockStatementIndexPair, true );
 	}
 }
 
-class PasteClipboardOperation extends ClipboardOperation {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, PasteClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized PasteClipboardOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+class PasteFromClipboardOperation extends FromClipboardOperation {
+	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, PasteFromClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized PasteFromClipboardOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
-		PasteClipboardOperation rv = map.get( blockStatementIndexPair );
+		PasteFromClipboardOperation rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new PasteClipboardOperation( blockStatementIndexPair );
+			rv = new PasteFromClipboardOperation( blockStatementIndexPair );
 			map.put( blockStatementIndexPair, rv );
 		}
 		return rv;
 	}
-	private PasteClipboardOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "4dea691b-af8f-4991-80e2-3db880f1883f" ), blockStatementIndexPair );
+	private PasteFromClipboardOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "4dea691b-af8f-4991-80e2-3db880f1883f" ), blockStatementIndexPair, false );
 	}
 }
 
@@ -102,27 +117,6 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent {
 		protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getExpressionType() {
 			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 		}
-//		@Override
-//		public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
-//			if( Clipboard.this.stack.isEmpty() ) {
-//				return java.util.Collections.emptyList();
-//			} else {
-//				org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-//				if( ide != null ) {
-//					org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
-//					if( codeEditor != null ) {
-//						java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//						rv.add( codeEditor );
-//						return rv;
-//					} else {
-//						//todo: investigate
-//						return java.util.Collections.emptyList();
-//					}
-//				} else {
-//					return java.util.Collections.emptyList();
-//				}
-//			}
-//		}
 	}
 
 	private final java.util.Stack< edu.cmu.cs.dennisc.alice.ast.Node > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
@@ -132,13 +126,50 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent {
 	public static Clipboard getInstance() {
 		return SingletonHolder.instance;
 	}
-	//private org.lgna.croquet.components.Component< ? > subject = new org.lgna.croquet.components.SwingAdapter( new javax.swing.JButton( "todo" ) );
 	private org.lgna.croquet.components.FlowPanel subject = new org.lgna.croquet.components.FlowPanel();
 	private Clipboard() {
-		subject.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( org.alice.ide.ast.NodeUtilities.createDoInOrder() ) );
+		stack.push( org.alice.ide.ast.NodeUtilities.createWhileLoop( new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( true ) ) );
+		stack.push( org.alice.ide.ast.NodeUtilities.createDoTogether() );
+		stack.push( org.alice.ide.ast.NodeUtilities.createDoInOrder() );
+//		edu.cmu.cs.dennisc.alice.ast.DoInOrder dio = org.alice.ide.ast.NodeUtilities.createDoInOrder();
+//		dio.body.getValue().statements.add(  org.alice.ide.ast.NodeUtilities.createDoTogether() );
+//		stack.push( dio );
+		
 		org.alice.ide.IDE.getSingleton().addToConcealedBin( this.subject );
 		this.setDragModel( new ClipboardDragModel() );
 		this.setMinimumPreferredWidth( 40 );
+		this.refresh();
+	}
+	
+	@Override
+	protected javax.swing.JToolTip createToolTip( javax.swing.JToolTip jToolTip ) {
+		return new edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip( this.subject.getAwtComponent() );
+	}
+	private void refresh() {
+		this.subject.forgetAndRemoveAllComponents();
+		if( this.stack.isEmpty() ) {
+			this.setToolTipText( null );
+		} else {
+			this.setToolTipText( "" );
+			edu.cmu.cs.dennisc.alice.ast.Node node = this.stack.peek();
+			if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
+				edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
+				subject.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( statement ) );
+			}
+		}
+		this.repaint();
+	}
+	public edu.cmu.cs.dennisc.alice.ast.Node peek() {
+		return this.stack.peek();
+	}
+	public void push( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+		this.stack.push( node );
+		this.refresh();
+	}
+	public edu.cmu.cs.dennisc.alice.ast.Node pop() {
+		edu.cmu.cs.dennisc.alice.ast.Node rv = this.stack.pop();
+		this.refresh();
+		return rv;
 	}
 	
 	@Override
@@ -148,12 +179,11 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent {
 	
 	public org.lgna.croquet.Model getModel( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, boolean isCopy ) {
 		if( isCopy ) {
-			return CopyClipboardOperation.getInstance( blockStatementIndexPair );
+			return CopyFromClipboardOperation.getInstance( blockStatementIndexPair );
 		} else {
-			return PasteClipboardOperation.getInstance( blockStatementIndexPair );
+			return PasteFromClipboardOperation.getInstance( blockStatementIndexPair );
 		}
 	}
-	
 	@Override
 	protected java.awt.Dimension getPreferredSize( java.awt.Dimension size ) {
 		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( size, 40 );
@@ -202,11 +232,14 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent {
 		path.quadTo( x1, yA, x1, y1 );
 		path.closePath();
 	
-		float holeDiameter = holeRadius*2;
-		java.awt.geom.Area area = new java.awt.geom.Area( path );
-		area.subtract( new java.awt.geom.Area( new java.awt.geom.Ellipse2D.Float( xC-holeRadius, yB-holeDiameter, holeDiameter, holeDiameter ) ) );
-		
-		return area;
+		if( holeRadius > 2 ) {
+			float holeDiameter = holeRadius*2;
+			java.awt.geom.Area area = new java.awt.geom.Area( path );
+			area.subtract( new java.awt.geom.Area( new java.awt.geom.Ellipse2D.Float( xC-holeRadius, yB-holeDiameter, holeDiameter, holeDiameter ) ) );
+			return area;
+		} else {
+			return path;
+		}
 	}
 	private void paintClipboard( java.awt.Graphics2D g2 ) {
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
@@ -225,30 +258,45 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent {
 		g2.setPaint( java.awt.Color.BLACK );
 		g2.draw( board );
 
-		float x = width*0.1f;
-		float y = height*0.15f;
-		float w = width*0.8f;
-		float h = height*0.775f;
-		
-		
-		g2.setPaint( new java.awt.GradientPaint( x,y, java.awt.Color.LIGHT_GRAY, x+w, y+h, java.awt.Color.WHITE ) );
-		g2.fill( new java.awt.geom.Rectangle2D.Float( x, y, w, h ) );
-		
-		final int SHADOW_SIZE = this.getHeight()/50; 
-		if( SHADOW_SIZE > 2 ) {
+		if( this.stack.isEmpty() ) {
+			//pass
+		} else {
+
+			float x = width*0.1f;
+			float y = height*0.2f;
+			float w = width*0.8f;
+			float h = height*0.725f;
+			
 			g2.translate(x, y);
-			g2.setPaint( new java.awt.Color( 31, 31, 31, 127 ) );
-			java.awt.geom.GeneralPath pathShadow = new java.awt.geom.GeneralPath();
-			pathShadow.moveTo( w, 0 );
-			pathShadow.lineTo( w+SHADOW_SIZE, h+SHADOW_SIZE );
-			pathShadow.lineTo( 0, h );
-			pathShadow.lineTo( w, h );
-			pathShadow.closePath();
-			g2.fill( pathShadow );
+			
+			java.awt.Shape paper = new java.awt.geom.Rectangle2D.Float( 0, 0, w, h );
+			
+			if( true ) {
+				java.awt.Shape prevClip = g2.getClip();
+				g2.setClip( paper );
+				final float SCALE = 0.4f;
+				final float INV_SCALE = 1.0f/SCALE;
+				g2.scale( SCALE, SCALE );
+				this.subject.getAwtComponent().print( g2 );
+				g2.scale( INV_SCALE, INV_SCALE );
+				g2.setClip( prevClip );
+			} else {
+				g2.setPaint( new java.awt.GradientPaint( x,y, java.awt.Color.LIGHT_GRAY, x+w, y+h, java.awt.Color.WHITE ) );
+				g2.fill( paper );
+				final int SHADOW_SIZE = this.getHeight()/50; 
+				if( SHADOW_SIZE > 2 ) {
+					g2.setPaint( new java.awt.Color( 31, 31, 31, 127 ) );
+					java.awt.geom.GeneralPath pathShadow = new java.awt.geom.GeneralPath();
+					pathShadow.moveTo( w, 0 );
+					pathShadow.lineTo( w+SHADOW_SIZE, h+SHADOW_SIZE );
+					pathShadow.lineTo( 0, h );
+					pathShadow.lineTo( w, h );
+					pathShadow.closePath();
+					g2.fill( pathShadow );
+				}
+			}
 			g2.translate(-x, -y);
 		}
-
-		
 		g2.setPaint( new java.awt.GradientPaint( 0, height*0.1f, java.awt.Color.LIGHT_GRAY, 0, height*0.2f, java.awt.Color.DARK_GRAY ) );
 		g2.fill( clip );
 		g2.setPaint( java.awt.Color.BLACK );
