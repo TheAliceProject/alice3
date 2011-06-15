@@ -52,7 +52,7 @@ abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.c
 
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement() {
-		edu.cmu.cs.dennisc.alice.ast.Node node = Clipboard.getInstance().peek();
+		edu.cmu.cs.dennisc.alice.ast.AbstractNode node = Clipboard.getInstance().peek();
 		//todo: recast if necessary
 		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 			edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
@@ -105,10 +105,116 @@ class PasteFromClipboardOperation extends FromClipboardOperation {
 }
 
 
+class CopyToClipboardOperation extends org.alice.ide.operations.ActionOperation {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractNode, CopyToClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CopyToClipboardOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractNode node ) {
+		assert node != null;
+		CopyToClipboardOperation rv = map.get( node );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new CopyToClipboardOperation( node );
+			map.put( node, rv );
+		}
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractNode node;
+	private CopyToClipboardOperation( edu.cmu.cs.dennisc.alice.ast.AbstractNode node ) {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
+		this.node = org.alice.ide.IDE.getSingleton().createCopy( node );
+	}
+	@Override
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		Clipboard.getInstance().push( this.node );
+		step.finish();
+	}
+}
+
+class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
+	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	private edu.cmu.cs.dennisc.alice.ast.BlockStatement originalBlockStatement;
+	private int originalIndex;
+	public CutToClipboardEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		super( completionStep );
+		this.statement = statement;
+		this.originalBlockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)this.statement.getParent();;
+		assert this.originalBlockStatement != null;
+		this.originalIndex = this.originalBlockStatement.statements.indexOf( this.statement );
+		assert this.originalIndex != -1;
+	}
+	public CutToClipboardEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		java.util.UUID statementId = binaryDecoder.decodeId();
+		this.statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, statementId );
+		java.util.UUID blockStatementId = binaryDecoder.decodeId();
+		this.originalBlockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, blockStatementId );
+		this.originalIndex = binaryDecoder.decodeInt();
+	}
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.statement.getUUID() );
+		binaryEncoder.encode( this.originalBlockStatement.getUUID() );
+		binaryEncoder.encode( this.originalIndex );
+	}
+	@Override
+	protected void doOrRedoInternal( boolean isDo ) {
+		Clipboard.getInstance().push( this.statement );
+		this.originalBlockStatement.statements.remove( this.originalIndex );
+	}
+	@Override
+	protected void undoInternal() {
+		Clipboard.getInstance().pop();
+		this.originalBlockStatement.statements.add( this.originalIndex, this.statement );
+	}
+	@Override
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+		rv.append( "cut to clipboard" );
+		return rv;
+	}
+}
+
+class CutToClipboardOperation extends org.alice.ide.operations.ActionOperation {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.Statement, CutToClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CutToClipboardOperation getInstance( edu.cmu.cs.dennisc.alice.ast.Statement node ) {
+		assert node != null;
+		CutToClipboardOperation rv = map.get( node );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new CutToClipboardOperation( node );
+			map.put( node, rv );
+		}
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	private CutToClipboardOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
+		this.statement = statement;
+	}
+	@Override
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		step.commitAndInvokeDo( new CutToClipboardEdit( step, statement ) );
+	}
+}
+
+
+//todo
+class ClipboardDropSite implements org.lgna.croquet.DropSite {
+	public ClipboardDropSite() {
+	}
+	public ClipboardDropSite( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
-public class Clipboard extends org.lgna.croquet.components.DragComponent {
+public class Clipboard extends org.lgna.croquet.components.DragComponent implements org.lgna.croquet.DropReceptor {
 	class ClipboardDragModel extends org.alice.ide.croquet.models.CodeDragModel {
 		public ClipboardDragModel() {
 			super( java.util.UUID.fromString( "d6c25f14-7ed2-4cb8-90dd-f621af830060" ) );
@@ -119,22 +225,34 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent {
 		}
 	}
 
-	private final java.util.Stack< edu.cmu.cs.dennisc.alice.ast.Node > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.Stack< edu.cmu.cs.dennisc.alice.ast.AbstractNode > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private static class SingletonHolder {
 		private static Clipboard instance = new Clipboard();
 	}
 	public static Clipboard getInstance() {
 		return SingletonHolder.instance;
 	}
+	private ClipboardDropSite dropSite = new ClipboardDropSite();
 	private org.lgna.croquet.components.FlowPanel subject = new org.lgna.croquet.components.FlowPanel();
-	private Clipboard() {
-		stack.push( org.alice.ide.ast.NodeUtilities.createWhileLoop( new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( true ) ) );
-		stack.push( org.alice.ide.ast.NodeUtilities.createDoTogether() );
-		stack.push( org.alice.ide.ast.NodeUtilities.createDoInOrder() );
-//		edu.cmu.cs.dennisc.alice.ast.DoInOrder dio = org.alice.ide.ast.NodeUtilities.createDoInOrder();
-//		dio.body.getValue().statements.add(  org.alice.ide.ast.NodeUtilities.createDoTogether() );
-//		stack.push( dio );
+	
+	private static enum DragReceptorState {
+		IDLE( java.awt.Color.ORANGE.darker() ),
+		STARTED( java.awt.Color.YELLOW ),
+		ENTERED( java.awt.Color.GREEN );
+		private final java.awt.Paint paint;
+		private DragReceptorState( java.awt.Paint paint ) {
+			this.paint = paint;
+		}
+		public java.awt.Paint getPaint() {
+			return this.paint;
+		}
 		
+	};
+	private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
+	private Clipboard() {
+//		stack.push( org.alice.ide.ast.NodeUtilities.createWhileLoop( new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( true ) ) );
+//		stack.push( org.alice.ide.ast.NodeUtilities.createDoTogether() );
+//		stack.push( org.alice.ide.ast.NodeUtilities.createDoInOrder() );		
 		org.alice.ide.IDE.getSingleton().addToConcealedBin( this.subject );
 		this.setDragModel( new ClipboardDragModel() );
 		this.setMinimumPreferredWidth( 40 );
@@ -151,7 +269,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent {
 			this.setToolTipText( null );
 		} else {
 			this.setToolTipText( "" );
-			edu.cmu.cs.dennisc.alice.ast.Node node = this.stack.peek();
+			edu.cmu.cs.dennisc.alice.ast.AbstractNode node = this.stack.peek();
 			if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 				edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
 				subject.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( statement ) );
@@ -159,18 +277,67 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent {
 		}
 		this.repaint();
 	}
-	public edu.cmu.cs.dennisc.alice.ast.Node peek() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractNode peek() {
 		return this.stack.peek();
 	}
-	public void push( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+	public void push( edu.cmu.cs.dennisc.alice.ast.AbstractNode node ) {
 		this.stack.push( node );
 		this.refresh();
 	}
-	public edu.cmu.cs.dennisc.alice.ast.Node pop() {
-		edu.cmu.cs.dennisc.alice.ast.Node rv = this.stack.pop();
+	public edu.cmu.cs.dennisc.alice.ast.AbstractNode pop() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractNode rv = this.stack.pop();
 		this.refresh();
 		return rv;
 	}
+	
+	private void setDragReceptorState( DragReceptorState dragReceptorState ) {
+		this.dragReceptorState = dragReceptorState;
+		this.repaint();
+	}
+	public void dragStarted( org.lgna.croquet.history.DragStep step ) {
+		this.setDragReceptorState( DragReceptorState.STARTED );
+	}
+	public void dragEntered( org.lgna.croquet.history.DragStep step ) {
+		this.setDragReceptorState( DragReceptorState.ENTERED );
+//		step.getDragSource().hideDragProxy();
+	}
+	public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
+		return this.dropSite;
+	}
+	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source ) {
+		return source instanceof org.alice.ide.common.AbstractStatementPane;
+	}
+	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep step ) {
+		org.alice.ide.common.AbstractStatementPane pane = (org.alice.ide.common.AbstractStatementPane)step.getDragSource();
+		edu.cmu.cs.dennisc.alice.ast.Statement statement = pane.getStatement();
+		boolean isCopy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( step.getLatestMouseEvent() );
+		if( isCopy ) {
+			return CopyToClipboardOperation.getInstance( statement );
+		} else {
+			return CutToClipboardOperation.getInstance( statement );
+		}
+	}
+	public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
+//		step.getDragSource().showDragProxy();
+		this.setDragReceptorState( DragReceptorState.STARTED );
+	}
+	public void dragStopped( org.lgna.croquet.history.DragStep step ) {
+		this.setDragReceptorState( DragReceptorState.IDLE );
+	}
+	
+	public <R extends org.lgna.croquet.DropReceptor> org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.DropReceptor > getCodableResolver() {
+		return new org.lgna.croquet.resolvers.SingletonResolver( this );
+	}
+	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+		return this;
+	}
+	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		return "clipboard";
+	}
+	public org.lgna.croquet.components.JComponent< ? > getViewController() {
+		return this;
+	}
+	
 	
 	@Override
 	public org.lgna.croquet.components.Component< ? > getSubject() {
@@ -253,7 +420,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent {
 		java.awt.geom.RoundRectangle2D board = new java.awt.geom.RoundRectangle2D.Float( 0.025f*width, 0.1f*height, 0.95f*width, 0.875f*height, round, round );
 		java.awt.Shape clip = createClip( 0.2f*width, 0.01f*height, 0.6f*width, 0.2f*height, 0.02f*height );
 		
-		g2.setPaint( java.awt.Color.ORANGE.darker() );
+		g2.setPaint( this.dragReceptorState.getPaint() );
 		g2.fill( board );
 		g2.setPaint( java.awt.Color.BLACK );
 		g2.draw( board );
@@ -271,14 +438,14 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent {
 			
 			java.awt.Shape paper = new java.awt.geom.Rectangle2D.Float( 0, 0, w, h );
 			
-			if( true ) {
+			if( this.dragReceptorState == DragReceptorState.IDLE ) {
 				java.awt.Shape prevClip = g2.getClip();
 				g2.setClip( paper );
 				final float SCALE = 0.4f;
-				final float INV_SCALE = 1.0f/SCALE;
+				java.awt.geom.AffineTransform prevTransform = g2.getTransform();
 				g2.scale( SCALE, SCALE );
 				this.subject.getAwtComponent().print( g2 );
-				g2.scale( INV_SCALE, INV_SCALE );
+				g2.setTransform( prevTransform );
 				g2.setClip( prevClip );
 			} else {
 				g2.setPaint( new java.awt.GradientPaint( x,y, java.awt.Color.LIGHT_GRAY, x+w, y+h, java.awt.Color.WHITE ) );

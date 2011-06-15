@@ -53,34 +53,35 @@ public abstract class CodeDragModel extends IdeDragModel {
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getExpressionType();
 	@Override
 	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
+		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		if( ide != null ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
 			if( codeEditor != null ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > expressionType = this.getExpressionType();
 				if( expressionType != null ) {
-					return codeEditor.createListOfPotentialDropReceptors( expressionType );
+					codeEditor.addPotentialDropReceptors( rv, expressionType );
 				} else {
 					if( dragSource.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
 						org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)dragSource.getSubject();
-						return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
+						codeEditor.addPotentialDropReceptors( rv, expressionLikeSubstance.getExpressionType() );
 					} else {
-						java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 						rv.add( codeEditor );
 						//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
 						//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
 						//					rv.add( dropReceptor );
 						//				}
 						//			}
-						return rv;
 					}
 				}
 			} else {
 				//todo: investigate
-				return java.util.Collections.emptyList();
 			}
-		} else {
-			return java.util.Collections.emptyList();
 		}
+		org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
+		if( clipboard.isPotentiallyAcceptingOf( dragSource ) ) {
+			rv.add( clipboard );
+		}
+		return rv;
 	}
 }

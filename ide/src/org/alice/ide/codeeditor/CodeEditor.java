@@ -211,13 +211,11 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public java.util.List< org.lgna.croquet.DropReceptor > addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > rv, final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE ) {
-			java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			rv.add( this );
-			return rv;
 		} else {
-			return org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
+			java.util.List< ExpressionPropertyDropDownPane > list = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
 				public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
 					if( expressionType.isAssignableFrom( type ) ) {
@@ -238,7 +236,9 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 					return false;
 				}
 			} );
+			rv.addAll( list );
 		}
+		return rv;
 	}
 	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source ) {
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
@@ -262,11 +262,11 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			}
 		}
 	}
-	public final void dragStarted( org.lgna.croquet.history.DragStep context ) {
+	public final void dragStarted( org.lgna.croquet.history.DragStep step ) {
 	}
 
-	public final void dragEntered( org.lgna.croquet.history.DragStep context ) {
-		org.lgna.croquet.components.DragComponent source = context.getDragSource();
+	public final void dragEntered( org.lgna.croquet.history.DragStep step ) {
+		org.lgna.croquet.components.DragComponent source = step.getDragSource();
 		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
 		this.repaint();
 	}
@@ -318,10 +318,10 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		}
 		return rv;
 	}
-	public final BlockStatementIndexPair dragUpdated( org.lgna.croquet.history.DragStep context ) {
-		org.lgna.croquet.components.DragComponent source = context.getDragSource();
+	public final BlockStatementIndexPair dragUpdated( org.lgna.croquet.history.DragStep step ) {
+		org.lgna.croquet.components.DragComponent source = step.getDragSource();
 		if( source != null ) {
-			java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
+			java.awt.event.MouseEvent eSource = step.getLatestMouseEvent();
 			java.awt.event.MouseEvent eAsSeenBy = source.convertMouseEvent( eSource, this.getAsSeenBy() );
 			StatementListPropertyPane nextUnder = getStatementListPropertyPaneUnder( eAsSeenBy, this.statementListPropertyPaneInfos );
 			this.setCurrentUnder( nextUnder, source.getDropProxySize() );
@@ -407,7 +407,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 
 		if( this.currentUnder != null ) {
 			edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)this.currentUnder.getProperty().getOwner();
-			java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
+			java.awt.event.MouseEvent eSource = step.getLatestMouseEvent();
 			java.awt.event.MouseEvent eAsSeenBy = source.convertMouseEvent( eSource, this.getAsSeenBy() );
 			java.awt.event.MouseEvent eUnder = this.getAsSeenBy().convertMouseEvent( eAsSeenBy, this.currentUnder );
 			int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
@@ -525,15 +525,15 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			}
 		} );
 	}
-	public final void dragExited( org.lgna.croquet.history.DragStep context, boolean isDropRecipient ) {
+	public final void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
-		//todo: listen to context
+		//todo: listen to step
 		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = true;
 		this.setCurrentUnder( null, null );
 		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = false;
 		this.repaint();
 	}
-	public final void dragStopped( org.lgna.croquet.history.DragStep context ) {
+	public final void dragStopped( org.lgna.croquet.history.DragStep step ) {
 		EPIC_HACK_desiredStatementListPropertyPane = null;
 		EPIC_HACK_desiredIndex = -1;
 	}
