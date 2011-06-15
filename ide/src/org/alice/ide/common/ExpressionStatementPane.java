@@ -101,7 +101,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
 				assert methodInvocation.getParent() == expressionStatement;
 				
-				if( methodInvocation.isValid() ) {
+				if( this.getFactory() == org.alice.ide.IDE.getSingleton().getPreviewFactory() || methodInvocation.isValid() ) {
 					//pass
 				} else {
 					this.setBackgroundColor( java.awt.Color.RED );

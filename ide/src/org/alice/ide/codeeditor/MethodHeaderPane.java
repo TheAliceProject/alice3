@@ -78,7 +78,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 				public PopupPanel( org.lgna.croquet.components.Component<?> centerComponent, org.lgna.croquet.StandardPopupPrepModel popupMenuOperation ) {
 					super( null );
 					this.centerComponent = centerComponent;
-					this.setPopupMenuOperation( popupMenuOperation );
+					this.setPopupPrepModel( popupMenuOperation );
 				}
 				@Override
 				protected javax.swing.JPanel createAwtComponent() {

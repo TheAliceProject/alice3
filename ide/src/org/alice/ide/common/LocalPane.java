@@ -49,6 +49,6 @@ public abstract class LocalPane< N extends edu.cmu.cs.dennisc.alice.ast.LocalDec
 	public LocalPane( N local ) {
 		super( local );
 		this.addComponent( new org.alice.ide.common.LocalNameLabel( this.getTransient() ) );
-		this.setPopupMenuOperation( org.alice.ide.croquet.models.ast.LocalMenuModel.getInstance( local ).getPopupMenuOperation() );
+		this.setPopupPrepModel( org.alice.ide.croquet.models.ast.LocalMenuModel.getInstance( local ).getPopupMenuOperation() );
 	}
 }

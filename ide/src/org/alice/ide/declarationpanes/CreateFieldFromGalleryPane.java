@@ -86,8 +86,11 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 		this( declaringType, null, org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconForGalleryClassName( valueType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName() ), valueType );
 	}
 
-	public Object createInstanceInJava() {
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
+	public Object createInstanceInJava( Class<?>[] parameterClses, Object... argumentValues ) {
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification(), parameterClses, argumentValues );
+	}
+	public Object createInstanceInJavaForArguments( Object... argumentValues ) {
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstanceForArguments( this.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification(), argumentValues );
 	}
 	
 	

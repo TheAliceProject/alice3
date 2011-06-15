@@ -87,7 +87,7 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = step.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();
 		if (field != null) {
-			Object fieldObject = createFieldFromGalleryPane.createInstanceInJava();
+			Object fieldObject = createFieldFromGalleryPane.createInstanceInJavaForArguments();
 			
 			if (fieldObject instanceof org.alice.apis.moveandturn.Transformable)
 			{

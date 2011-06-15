@@ -119,7 +119,7 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 		//todo: dialog title: "Create New Instance"
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.getInputValue();
 		if( field != null ) {
-			Object instanceInJava = createFieldPane.createInstanceInJava();
+			Object instanceInJava = createFieldPane.createInstanceInJavaForArguments();
 			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, instanceInJava );
 		} else {
 			return null;

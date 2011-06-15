@@ -352,7 +352,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		protected void addEpilogue() {
 			this.previousComponent = null;
 			this.rootComponent = null;
-			this.getPopupMenuPrepModel();
 		}
 		
 		public FieldTile getFieldTileForField(FieldDeclaredInAlice field)
@@ -1180,7 +1179,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		FieldTile fieldTile = this.getFieldTileForClick(clickState);
 		if (fieldTile != null)
 		{
-			StandardPopupPrepModel popUp = fieldTile.getPopupMenuPrepModel();
+			org.lgna.croquet.PopupPrepModel popUp = fieldTile.getPopupPrepModel();
 			if (popUp != null)
 			{
 				if( fieldTile.getAwtComponent().isShowing() ) {
