@@ -173,7 +173,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 					}
 					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, setVehicleOperations );
 				}
-			}.getPopupMenuOperation();
+			}.getPopupPrepModel();
 		}
 		
 		// TODO Auto-generated method stub

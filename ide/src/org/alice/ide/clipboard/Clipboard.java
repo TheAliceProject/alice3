@@ -250,10 +250,10 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 	};
 	private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
 	private Clipboard() {
-//		stack.push( org.alice.ide.ast.NodeUtilities.createWhileLoop( new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( true ) ) );
-//		stack.push( org.alice.ide.ast.NodeUtilities.createDoTogether() );
-//		stack.push( org.alice.ide.ast.NodeUtilities.createDoInOrder() );		
-		org.alice.ide.IDE.getSingleton().addToConcealedBin( this.subject );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		if( ide != null ) {
+			ide.addToConcealedBin( this.subject );
+		}
 		this.setDragModel( new ClipboardDragModel() );
 		this.setMinimumPreferredWidth( 40 );
 		this.refresh();
@@ -273,6 +273,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 			if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 				edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
 				subject.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( statement ) );
+				subject.revalidateAndRepaint();
 			}
 		}
 		this.repaint();
@@ -436,12 +437,19 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 			
 			g2.translate(x, y);
 			
-			java.awt.Shape paper = new java.awt.geom.Rectangle2D.Float( 0, 0, w, h );
+			java.awt.geom.Rectangle2D.Float paper = new java.awt.geom.Rectangle2D.Float( 0, 0, w, h );
 			
-			final boolean IS_SIMPLE = true;
+			final boolean IS_SIMPLE = false;
 			if( IS_SIMPLE || this.dragReceptorState != DragReceptorState.IDLE ) {
 				g2.setPaint( new java.awt.GradientPaint( x,y, java.awt.Color.LIGHT_GRAY, x+w, y+h, java.awt.Color.WHITE ) );
 				g2.fill( paper );
+				
+				g2.setPaint( java.awt.Color.DARK_GRAY );
+
+				if( this.stack.size() > 1 ) {
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, Integer.toString( this.stack.size() ), paper );
+				}
+				
 				final int SHADOW_SIZE = this.getHeight()/50; 
 				if( SHADOW_SIZE > 2 ) {
 					g2.setPaint( new java.awt.Color( 31, 31, 31, 127 ) );
@@ -483,21 +491,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		this.paintClipboard( g2 );
 	}
-//	@Override
-//	protected javax.swing.JComponent createAwtComponent() {
-//		return new javax.swing.JComponent() {
-//			@Override
-//			protected void paintComponent( java.awt.Graphics g ) {
-//				super.paintComponent( g );
-//				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-//				Clipboard.this.paintClipboard( g2 );
-//			}
-//			@Override
-//			public java.awt.Dimension getPreferredSize() {
-//				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 40 );
-//			}
-//		};
-//	}
+
 //	public static void main( String[] args ) {
 //		org.lgna.croquet.Application application = new org.lgna.croquet.Application() {
 //			@Override

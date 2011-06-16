@@ -42,43 +42,33 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.MenuItemContainer;
-import org.lgna.croquet.components.MenuTextSeparator;
-
 /**
  * @author Dennis Cosgrove
  */
-public final class MenuSeparatorModel extends MenuItemPrepModel {
-	private String name;
+public abstract class LabelMenuSeparatorModel extends MenuItemPrepModel {
 	private javax.swing.Icon icon;
-	public MenuSeparatorModel( String name, javax.swing.Icon icon ) {
-		super( java.util.UUID.fromString( "09dcff27-6027-48ba-b436-8a7317ae2760" ) );
-		this.name = name;
-		this.icon = icon;
-	}
-	public MenuSeparatorModel() {
-		this( null, null );
-	}
-	@Override
-	protected void localize() {
+	public LabelMenuSeparatorModel( java.util.UUID id ) {
+		super( id );
+		this.setEnabled( false );
 	}
 	@Override
 	public Iterable< ? extends Model > getChildren() {
 		return java.util.Collections.emptyList();
 	}
 	public String getName() {
-		return this.name;
+		return this.getDefaultLocalizedText();
 	}
 	public javax.swing.Icon getIcon() {
 		return this.icon;
 	}
-	private MenuTextSeparator createMenuTextSeparator() {
-		return new MenuTextSeparator( this );
-	};
+	public void setIcon( javax.swing.Icon icon ) {
+		this.icon = icon;
+	}
 	@Override
-	public MenuItemContainer createMenuItemAndAddTo( MenuItemContainer rv ) {
-		if( this.name != null || this.icon != null ) {
-			rv.addSeparator( this.createMenuTextSeparator() );
+	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
+		String name = this.getName();
+		if( name != null || this.icon != null ) {
+			rv.addSeparator( new org.lgna.croquet.components.MenuTextSeparator( this ) );
 		} else {
 			rv.addSeparator();
 		}

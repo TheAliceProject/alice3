@@ -449,7 +449,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 	private static class DropDownPanel extends org.lgna.croquet.components.BorderPanel {
 		private javax.swing.ButtonModel buttonModel;
 		public DropDownPanel() {
-			org.lgna.croquet.components.PopupButton button = TypeRootMenuModel.getInstance().getPopupMenuOperation().createPopupButton();
+			org.lgna.croquet.components.PopupButton button = TypeRootMenuModel.getInstance().getPopupPrepModel().createPopupButton();
 			button.getAwtComponent().setFocusable( false );
 			this.buttonModel = button.getAwtComponent().getModel();
 			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
@@ -493,10 +493,10 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 			if( type != null ) {
 				final boolean IS_ICON_DESIRED = false;
 				if( IS_ICON_DESIRED ) {
-					TypeRootMenuModel.getInstance().getPopupMenuOperation().setName( "class:" );
-					TypeRootMenuModel.getInstance().getPopupMenuOperation().setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
+					TypeRootMenuModel.getInstance().getPopupPrepModel().setName( "class:" );
+					TypeRootMenuModel.getInstance().getPopupPrepModel().setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
 				} else {
-					TypeRootMenuModel.getInstance().getPopupMenuOperation().setName( "class: " + type.getName() );
+					TypeRootMenuModel.getInstance().getPopupPrepModel().setName( "class: " + type.getName() );
 				}
 			}
 			this.revalidateAndRepaint();

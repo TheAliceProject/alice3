@@ -70,7 +70,10 @@ import org.lgna.croquet.BooleanState;
 		//this.setOpaque( false );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
 		//this.setPopupMenuOperation( new org.lgna.croquet.PredeterminedMenuModel( java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ), FieldTile.this.createPopupOperations() ).getPopupMenuOperation() );
-		this.setPopupPrepModel( org.alice.stageide.operations.ast.OneShotCascade.getInstance() );
+		if( this.accessible instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.accessible;
+			this.setPopupPrepModel( org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( field ).getPopupPrepModel() );
+		}
 		this.updateLabel();
 	}
 

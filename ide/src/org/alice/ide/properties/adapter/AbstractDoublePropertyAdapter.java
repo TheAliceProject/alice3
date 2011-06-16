@@ -121,7 +121,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 					}
 					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
-			}.getPopupMenuOperation();
+			}.getPopupPrepModel();
 		}
 		return this.popupMenuOperation;
 	}

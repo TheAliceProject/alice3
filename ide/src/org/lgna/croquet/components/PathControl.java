@@ -112,7 +112,7 @@ import org.lgna.croquet.TreeSelectionState;
 	}
 
 	private DirectoryControl( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
-		PopupButton selectChildButton = SelectChildDirectoryMenuModel.getInstance( treeSelectionState, treeNode, initializer ).getPopupMenuOperation().createPopupButton();
+		PopupButton selectChildButton = SelectChildDirectoryMenuModel.getInstance( treeSelectionState, treeNode, initializer ).getPopupPrepModel().createPopupButton();
 		if( javax.swing.UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
 			selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 2 ) );
 		} else {

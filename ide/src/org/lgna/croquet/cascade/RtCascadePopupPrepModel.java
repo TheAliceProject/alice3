@@ -233,15 +233,15 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 				baseRtFillIns.add( rtItem );
 			}
 
-			java.util.ListIterator< RtItem > listIterator = baseRtFillIns.listIterator();
-			while( listIterator.hasNext() ) {
-				RtItem rtItem = listIterator.next();
-				if( rtItem.isInclusionDesired() ) {
-					//pass
-				} else {
-					listIterator.remove();
-				}
-			}
+//			java.util.ListIterator< RtItem > listIterator = baseRtFillIns.listIterator();
+//			while( listIterator.hasNext() ) {
+//				RtItem rtItem = listIterator.next();
+//				if( rtItem.isInclusionDesired() ) {
+//					//pass
+//				} else {
+//					listIterator.remove();
+//				}
+//			}
 
 			//todo
 			cleanUpSeparators( (java.util.List)baseRtFillIns );
@@ -344,11 +344,6 @@ abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.cro
 			}
 		}
 		return true;
-	}
-	//todo: remove
-	@Deprecated
-	/*package-private*/ boolean isInclusionDesired() {
-		return true;//this.getModel().isInclusionDesired( this.getStep() );
 	}
 	@Override
 	protected RtNode< ? extends Element, ? extends org.lgna.croquet.cascade.CascadeNode< ?,? > > getNextNode() {

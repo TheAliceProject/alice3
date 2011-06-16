@@ -73,9 +73,9 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 					models.add( deleteParameterOperation.getMenuItemPrepModel() );
 					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
-			}.getPopupMenuOperation() );
+			}.getPopupPrepModel() );
 		} else {
-			this.setPopupPrepModel( org.alice.ide.croquet.models.ast.ParameterAccessMenuModel.getInstance( parameter ).getPopupMenuOperation() );
+			this.setPopupPrepModel( org.alice.ide.croquet.models.ast.ParameterAccessMenuModel.getInstance( parameter ).getPopupPrepModel() );
 		}
 	}
 	@Override

@@ -264,7 +264,7 @@ public class Factory extends org.alice.ide.common.Factory {
 		abstractStatementPane.setPopupPrepModel( new org.lgna.croquet.PredeterminedMenuModel(
 				java.util.UUID.fromString( "6190553d-309e-453f-b9eb-ded8aaf7ce63" ),
 				this.createPopupOperations( abstractStatementPane ) 
-		).getPopupMenuOperation() );
+		).getPopupPrepModel() );
 		return abstractStatementPane;
 	}
 	protected java.util.List< org.lgna.croquet.MenuItemPrepModel > updatePopupOperations( java.util.List< org.lgna.croquet.MenuItemPrepModel > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {

@@ -98,7 +98,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( 
 					new PopupPanel( 
 							nameLabel, 
-							org.alice.ide.croquet.models.ast.MethodHeaderMenuModel.getInstance( methodDeclaredInAlice ).getPopupMenuOperation()
+							org.alice.ide.croquet.models.ast.MethodHeaderMenuModel.getInstance( methodDeclaredInAlice ).getPopupPrepModel()
 					) 
 			);
 		}

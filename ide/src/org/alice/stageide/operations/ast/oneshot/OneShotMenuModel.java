@@ -41,26 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.operations.ast.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeSeparator extends CascadeItem< Void, Void > {
-	public CascadeSeparator( java.util.UUID id ) {
-		super( id );
-		this.setEnabled( false );
+public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, OneShotMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static OneShotMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice value ) {
+		synchronized( map ) {
+			OneShotMenuModel rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new OneShotMenuModel( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
 	}
-	@Override
-	public final Void createValue( org.lgna.croquet.cascade.ItemNode< ? super Void,Void > step ) {
-		throw new AssertionError();
-	}
-	@Override
-	public final Void getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super Void,Void > step ) {
-		throw new AssertionError();
-	}
-	@Override
-	public Iterable< ? extends Model > getChildren() {
-		return java.util.Collections.emptyList();
+	private OneShotMenuModel( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		super( java.util.UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ),
+				FieldLabelSeparatorModel.getInstance( field ),	
+				org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ).getMenuItemPrepModel()	
+		);
 	}
 }

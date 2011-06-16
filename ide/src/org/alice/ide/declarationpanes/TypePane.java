@@ -65,7 +65,7 @@ class IsArrayState extends org.lgna.croquet.BooleanState {
 public class TypePane extends org.lgna.croquet.components.BorderPanel {
 	private edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty;
 	private IsArrayState isArrayStateState;
-	private org.lgna.croquet.StandardPopupPrepModel popupMenuOperation = org.alice.ide.croquet.models.ast.declaration.TypeMenuModel.getInstance().getPopupMenuOperation();
+	private org.lgna.croquet.StandardPopupPrepModel popupMenuOperation = org.alice.ide.croquet.models.ast.declaration.TypeMenuModel.getInstance().getPopupPrepModel();
 	
 	private class TypeDropDownPane extends org.alice.ide.common.AbstractDropDownPane {
 		private org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();

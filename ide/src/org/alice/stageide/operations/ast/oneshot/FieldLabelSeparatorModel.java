@@ -41,26 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.operations.ast.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeSeparator extends CascadeItem< Void, Void > {
-	public CascadeSeparator( java.util.UUID id ) {
-		super( id );
-		this.setEnabled( false );
+public class FieldLabelSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, FieldLabelSeparatorModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static FieldLabelSeparatorModel getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField value ) {
+		synchronized( map ) {
+			FieldLabelSeparatorModel rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new FieldLabelSeparatorModel( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	private FieldLabelSeparatorModel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( java.util.UUID.fromString( "9a7e4f27-4e46-42a4-ab64-7702deefb5a1" ) );
+		this.field = field;
 	}
 	@Override
-	public final Void createValue( org.lgna.croquet.cascade.ItemNode< ? super Void,Void > step ) {
-		throw new AssertionError();
+	protected String getDefaultLocalizedText() {
+		return this.field.getName();
 	}
 	@Override
-	public final Void getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super Void,Void > step ) {
-		throw new AssertionError();
-	}
-	@Override
-	public Iterable< ? extends Model > getChildren() {
-		return java.util.Collections.emptyList();
+	protected void localize() {
 	}
 }

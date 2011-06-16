@@ -41,26 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.operations.ast.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeSeparator extends CascadeItem< Void, Void > {
-	public CascadeSeparator( java.util.UUID id ) {
-		super( id );
-		this.setEnabled( false );
+public class ProceduresMenu extends org.lgna.croquet.CascadeMenu< org.lgna.croquet.Operation< ? > > {
+	private static class SingletonHolder {
+		private static ProceduresMenu instance = new ProceduresMenu();
+	}
+	public static ProceduresMenu getInstance() {
+		return SingletonHolder.instance;
+	}
+	private ProceduresMenu() {
+		super( java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ) );
 	}
 	@Override
-	public final Void createValue( org.lgna.croquet.cascade.ItemNode< ? super Void,Void > step ) {
-		throw new AssertionError();
-	}
-	@Override
-	public final Void getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super Void,Void > step ) {
-		throw new AssertionError();
-	}
-	@Override
-	public Iterable< ? extends Model > getChildren() {
-		return java.util.Collections.emptyList();
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.croquet.Operation< ? > > step ) {
+		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "move", org.alice.apis.moveandturn.MoveDirection.class, Number.class ) );
+		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "turn", org.alice.apis.moveandturn.TurnDirection.class, Number.class ) );
+		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "roll", org.alice.apis.moveandturn.RollDirection.class, Number.class ) );
+		return rv;
 	}
 }

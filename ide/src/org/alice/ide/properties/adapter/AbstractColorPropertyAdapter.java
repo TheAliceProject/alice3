@@ -128,7 +128,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 					
 					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
-			}.getPopupMenuOperation();
+			}.getPopupPrepModel();
 		}
 		return this.popupMenuOperation;
 	}

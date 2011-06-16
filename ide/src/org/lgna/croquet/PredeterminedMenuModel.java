@@ -42,8 +42,6 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.MenuItemContainerUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -65,12 +63,12 @@ public class PredeterminedMenuModel extends MenuModel {
 	@Override
 	public org.lgna.croquet.components.Menu createMenu() {
 		org.lgna.croquet.components.Menu rv = super.createMenu();
-		MenuItemContainerUtilities.addMenuElements( rv, this.models );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( rv, this.models );
 		return rv;
 	}
 	@Override
 	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
 	}
 }

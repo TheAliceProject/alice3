@@ -46,27 +46,22 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuTextSeparator extends ViewController< javax.swing.JMenuItem, org.lgna.croquet.MenuSeparatorModel > {
-	public MenuTextSeparator( org.lgna.croquet.MenuSeparatorModel model ) {
+public class MenuTextSeparator extends ViewController< javax.swing.JMenuItem, org.lgna.croquet.LabelMenuSeparatorModel > {
+	public MenuTextSeparator( org.lgna.croquet.LabelMenuSeparatorModel model ) {
 		super( model );
 	}
 	@Override
 	protected javax.swing.JMenuItem createAwtComponent() {
 		javax.swing.JMenuItem rv = new javax.swing.JMenuItem();
-		rv.setEnabled( false );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 		return rv;
 	}
-	
 	@Override
-	protected void handleDisplayable() {
-		org.lgna.croquet.MenuSeparatorModel model = this.getModel();
-		this.getAwtComponent().setText( model.getName() );
+	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
+		org.lgna.croquet.LabelMenuSeparatorModel model = this.getModel();
+		this.getAwtComponent().setText( model.getName() + ":" );
 		this.getAwtComponent().setIcon( model.getIcon() );
 		this.getAwtComponent().setDisabledIcon( model.getIcon() );
-		super.handleDisplayable();
-	}
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
+		super.handleAddedTo( parent );
 	}
 }

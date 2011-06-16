@@ -60,7 +60,7 @@ package org.alice.ide.memberseditor.templates;
 		this.method = method;
 		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
-			this.setPopupPrepModel( new MethodPopupMenuModel( methodInAlice ).getPopupMenuOperation() );
+			this.setPopupPrepModel( new MethodPopupMenuModel( methodInAlice ).getPopupPrepModel() );
 		}
 	}
 	@Override

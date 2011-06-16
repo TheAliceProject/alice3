@@ -96,7 +96,7 @@ public final class StandardPopupPrepModel extends PopupPrepModel {
 		public PopupMenuOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			CodableResolver<MenuModel> menuModelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 			MenuModel menuModel = menuModelResolver.getResolved();
-			this.popupMenuOperation = menuModel.getPopupMenuOperation();
+			this.popupMenuOperation = menuModel.getPopupPrepModel();
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			CodableResolver<MenuModel> menuModelResolver = this.popupMenuOperation.menuModel.getCodableResolver();

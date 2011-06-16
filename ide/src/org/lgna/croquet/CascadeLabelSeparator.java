@@ -61,7 +61,6 @@ public abstract class CascadeLabelSeparator extends CascadeSeparator {
 			javax.swing.JLabel rv = new javax.swing.JLabel();
 			rv.setText( text + ":" );
 			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-			rv.setEnabled( false );
 //			rv.setVerticalTextPosition( javax.swing.JLabel.LEADING );
 //			rv.setSize( new java.awt.Dimension( 300, 200 ) );
 			return rv;
