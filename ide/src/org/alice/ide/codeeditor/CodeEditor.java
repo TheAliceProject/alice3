@@ -180,30 +180,67 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;
 			ParametersPane parametersPane = new ParametersPane( this.getIDE().getCodeFactory(), codeDeclaredInAlice );
 			AbstractCodeHeaderPane header;
+//			org.lgna.croquet.components.Component< ? > superInvocationPane = null;
 			if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
 				header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane, false );
 			} else if( code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
 				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)code;
 				header = new ConstructorHeaderPane( constructorDeclaredInAlice, parametersPane, false );
+//				superInvocationPane = new org.lgna.croquet.components.Label( "super()" );
 			} else {
 				throw new RuntimeException();
 			}
 			class RootStatementListPropertyPane extends StatementListPropertyPane {
+				private final org.lgna.croquet.components.Component< ? > superInvocationComponent;
 				public RootStatementListPropertyPane() {
 					super( getIDE().getCodeFactory(), codeDeclaredInAlice.getBodyProperty().getValue().statements );
 					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 48, 0 ) );
+					edu.cmu.cs.dennisc.alice.ast.BlockStatement body = codeDeclaredInAlice.getBodyProperty().getValue();
+					if( body instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement ) {
+						edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement constructorBlockStatement = (edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement)body;
+						edu.cmu.cs.dennisc.alice.ast.ConstructorInvocationStatement	constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
+						
+						edu.cmu.cs.dennisc.alice.ast.ConstructorInvocationStatement	previewStatement;
+						if( constructorInvocationStatement != null ) {
+							previewStatement = constructorInvocationStatement;
+						} else {
+							//todo
+							previewStatement = new edu.cmu.cs.dennisc.alice.ast.SuperConstructorInvocationStatement();
+						}
+						superInvocationComponent = org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( previewStatement );
+					} else {
+						superInvocationComponent = null;
+					}
+				}
+				@Override
+				protected void addPrefixComponents() {
+					super.addPrefixComponents();
+					if( this.superInvocationComponent != null ) {
+						this.addComponent( this.superInvocationComponent );
+					}
 				}
 			}
+			
+//			org.lgna.croquet.components.Component< ? > scrollView;
 			org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( new RootStatementListPropertyPane() );
+			this.internalAddComponent( header, java.awt.BorderLayout.NORTH );
+//			if( superInvocationPane != null ) {
+//				this.internalAddComponent( header, java.awt.BorderLayout.NORTH );
+//				org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel();
+//				borderPanel.addComponent( superInvocationPane, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+//				borderPanel.addComponent( bodyPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+//				scrollView = borderPanel;
+//			} else {
+//				scrollView = bodyPane;
+//			}
 			this.scrollPane = new org.lgna.croquet.components.ScrollPane( bodyPane );
 			this.scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 			this.scrollPane.setBorder( null );
 			this.scrollPane.setBackgroundColor( null );
 			this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
 			this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
-			this.internalAddComponent( header, java.awt.BorderLayout.NORTH );
-			this.internalAddComponent( scrollPane, java.awt.BorderLayout.CENTER );
+			this.internalAddComponent( this.scrollPane, java.awt.BorderLayout.CENTER );
 		}
 
 		this.revalidateAndRepaint();

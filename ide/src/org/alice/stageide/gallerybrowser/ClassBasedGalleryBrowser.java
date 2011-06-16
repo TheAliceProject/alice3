@@ -126,13 +126,11 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 			}
 		};
 		private org.lgna.croquet.StringState.ValueObserver<String> filterObserver = new org.lgna.croquet.StringState.ValueObserver<String>() {
-			@Override
 			public void changed(State<String> state, String prevValue,
 					String nextValue, boolean isAdjusting) {
 				DirectoryView.this.handleFilterChanged( nextValue );
 				
 			}
-			@Override
 			public void changing(State<String> state, String prevValue,
 					String nextValue, boolean isAdjusting) {
 				// TODO Auto-generated method stub
@@ -267,13 +265,11 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 		filterTextField.getAwtComponent().setTextForBlankCondition( "search entire gallery" );
 		filterTextField.scaleFont( 1.5f );
 		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new BooleanState.ValueObserver<Boolean>() {
-			@Override
 			public void changing(State<Boolean> state, Boolean prevValue,
 					Boolean nextValue, boolean isAdjusting) {
 				// TODO Auto-generated method stub
 				
 			}
-			@Override
 			public void changed(State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting) {
 				javax.swing.SwingUtilities.invokeLater(new Runnable() {
 					public void run() {

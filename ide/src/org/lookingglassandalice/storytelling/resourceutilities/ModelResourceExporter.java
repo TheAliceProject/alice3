@@ -243,7 +243,7 @@ public class ModelResourceExporter {
 	    if (source.isDirectory())
 	    {
 	      String name = source.getPath().replace("\\", "/");
-	      if (!name.isEmpty())
+	      if (name.length() > 0 )
 	      {
 	        if (!name.endsWith("/"))
 	          name += "/";
@@ -399,7 +399,7 @@ public class ModelResourceExporter {
 		String[] args = new String[]{javaFile.getAbsolutePath(), "-classpath", System.getProperty("java.class.path")};
 		com.sun.tools.javac.Main javac = new com.sun.tools.javac.Main();
 		PrintWriter pw = new PrintWriter(System.out);
-		int status = javac.compile(args, pw);
+		int status = com.sun.tools.javac.Main.compile(args, pw);
 		
 		File xmlFile = createXMLFile(sourceDirectory);
 		File thumbnailFile = createThumbnail(sourceDirectory);

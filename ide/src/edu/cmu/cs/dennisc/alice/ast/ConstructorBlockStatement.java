@@ -51,6 +51,7 @@ public class ConstructorBlockStatement extends BlockStatement {
 	public ConstructorBlockStatement() {
 	}
 	public ConstructorBlockStatement( ConstructorInvocationStatement constructorInvocationStatement, Statement... statements ) {
-		this.statements.add( statements );
+		super( statements );
+		this.constructorInvocationStatement.setValue( constructorInvocationStatement );
 	}
 }
