@@ -46,21 +46,18 @@ package org.alice.stageide.operations.ast.oneshot;
 /**
  * @author Dennis Cosgrove
  */
-public class ProceduresMenu extends org.lgna.croquet.CascadeMenu< org.lgna.croquet.Operation< ? > > {
+public class ProceduresCascade extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
 	private static class SingletonHolder {
-		private static ProceduresMenu instance = new ProceduresMenu();
+		private static ProceduresCascade instance = new ProceduresCascade();
 	}
-	public static ProceduresMenu getInstance() {
+	public static ProceduresCascade getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ProceduresMenu() {
-		super( java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ) );
+	private ProceduresCascade() {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class, MethodInvocationBlank.getInstance() );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.croquet.Operation< ? > > step ) {
-		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "move", org.alice.apis.moveandturn.MoveDirection.class, Number.class ) );
-		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "turn", org.alice.apis.moveandturn.TurnDirection.class, Number.class ) );
-		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "roll", org.alice.apis.moveandturn.RollDirection.class, Number.class ) );
-		return rv;
+	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.CascadePopupCompletionModel< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >> createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > step, edu.cmu.cs.dennisc.alice.ast.MethodInvocation[] values ) {
+		return null;
 	}
 }

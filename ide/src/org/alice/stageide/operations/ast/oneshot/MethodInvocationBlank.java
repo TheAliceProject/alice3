@@ -43,56 +43,24 @@
 
 package org.alice.stageide.operations.ast.oneshot;
 
-class CascadeOperationAdapter extends org.lgna.croquet.CascadeFillIn< Object, Void > {
-	private final org.lgna.croquet.Operation< ? > operation;
-	public CascadeOperationAdapter( org.lgna.croquet.Operation< ? > operation ) {
-		super( java.util.UUID.fromString( "117148c1-8f40-474f-9d6b-eadbccc6adc9" ) );
-		this.operation = operation;
-	}
-	@Override
-	protected String getDefaultLocalizedText() {
-		return this.operation.getName();
-	}
-	@Override
-	public java.lang.Object createValue( org.lgna.croquet.cascade.ItemNode< ? super java.lang.Object, java.lang.Void > step ) {
-		return this.operation;
-	}
-	@Override
-	public java.lang.Object getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super java.lang.Object, java.lang.Void > step ) {
-		return this.operation;
-	}
-	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super java.lang.Object, java.lang.Void > step ) {
-		return new javax.swing.JLabel( this.getDefaultLocalizedText() );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public class TopLevelBlank extends org.lgna.croquet.CascadeBlank< org.lgna.croquet.Operation< ? > > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, TopLevelBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static TopLevelBlank getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice value ) {
-		synchronized( map ) {
-			TopLevelBlank rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new TopLevelBlank( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
+public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+	private static class SingletonHolder {
+		private static MethodInvocationBlank instance = new MethodInvocationBlank();
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-	private TopLevelBlank( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		super( java.util.UUID.fromString( "4d0d6ad3-0b1c-4bf8-a5da-cdbf59bf2cf1" ) );
-		this.field = field;
+	public static MethodInvocationBlank getInstance() {
+		return SingletonHolder.instance;
+	}
+	private MethodInvocationBlank() {
+		super( java.util.UUID.fromString( "3c5f528b-340b-4bcc-8094-3475867d2f6e" ) );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.croquet.Operation< ? > > blankNode ) {
-		rv.add( ProceduresMenu.getInstance() );
-		rv.add( new CascadeOperationAdapter( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( this.field ) ) );
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > blankNode ) {
+		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "move", org.alice.apis.moveandturn.MoveDirection.class, Number.class ) );
+		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "turn", org.alice.apis.moveandturn.TurnDirection.class, Number.class ) );
+		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "roll", org.alice.apis.moveandturn.RollDirection.class, Number.class ) );
 		return rv;
 	}
 }

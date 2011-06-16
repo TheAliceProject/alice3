@@ -63,6 +63,9 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel {
 			root.addBlank( blanks[ i ] );
 		}
 	}
+	public CascadePopupPrepModel( Group completionGroup, java.util.UUID id, Class< B > componentType, CascadeBlank< B > blank ) {
+		this( completionGroup, id, componentType, new CascadeBlank[] { blank } );
+	}
 	@Override
 	public Iterable< ? extends Model > getChildren() {
 		return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( root );
