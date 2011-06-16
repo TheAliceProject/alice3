@@ -43,27 +43,22 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.CheckBoxMenuItem;
-import org.lgna.croquet.components.JComponent;
-import org.lgna.croquet.components.MenuItemContainer;
-import org.lgna.croquet.resolvers.CodableResolver;
-
 /**
  * @author Dennis Cosgrove
  */
 public class BooleanStateMenuItemPrepModel extends MenuItemPrepModel {
-	public static class BooleanStateMenuPrepModelResolver<E> implements CodableResolver< BooleanStateMenuItemPrepModel > {
+	public static class BooleanStateMenuPrepModelResolver<E> implements org.lgna.croquet.resolvers.CodableResolver< BooleanStateMenuItemPrepModel > {
 		private final BooleanStateMenuItemPrepModel model;
 		public BooleanStateMenuPrepModelResolver( BooleanStateMenuItemPrepModel model ) {
 			this.model = model;
 		}
 		public BooleanStateMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			CodableResolver<BooleanState> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			org.lgna.croquet.resolvers.CodableResolver<BooleanState> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 			BooleanState booleanState = resolver.getResolved();
 			this.model = booleanState.getMenuItemPrepModel();
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			CodableResolver<BooleanState> resolver = this.model.booleanState.getCodableResolver();
+			org.lgna.croquet.resolvers.CodableResolver<BooleanState> resolver = this.model.booleanState.getCodableResolver();
 			binaryEncoder.encode( resolver );
 		}
 		public BooleanStateMenuItemPrepModel getResolved() {
@@ -91,14 +86,14 @@ public class BooleanStateMenuItemPrepModel extends MenuItemPrepModel {
 		return new BooleanStateMenuPrepModelResolver( this );
 	}
 	@Override
-	public JComponent< ? > getFirstComponent() {
+	public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
 		return this.booleanState.getFirstComponent();
 	}
-	private CheckBoxMenuItem createCheckBoxMenuItem() {
-		return new CheckBoxMenuItem( this.getBooleanState() );
+	private org.lgna.croquet.components.CheckBoxMenuItem createCheckBoxMenuItem() {
+		return new org.lgna.croquet.components.CheckBoxMenuItem( this.getBooleanState() );
 	}
 	@Override
-	public MenuItemContainer createMenuItemAndAddTo( MenuItemContainer rv ) {
+	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
 		rv.addCheckBoxMenuItem( this.createCheckBoxMenuItem() );
 		return rv;
 	}

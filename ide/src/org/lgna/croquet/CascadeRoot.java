@@ -53,6 +53,11 @@ public final class CascadeRoot<B> extends CascadeBlankOwner< B[], B > {
 		this.prepModel = prepModel;
 	}
 	@Override
+	protected String getDefaultLocalizedText() {
+		return this.prepModel.getDefaultLocalizedText();
+	}
+	
+	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super B[],B > step) {
 		return null;
 	}
