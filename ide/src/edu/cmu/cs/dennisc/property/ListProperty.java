@@ -198,7 +198,7 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 	//	}
 	//	public boolean removeAll( java.util.Collection<?> c ) {
 	//		assert isLocked() == false;
-	//		return getValue().removeAll( c );
+	//		return getValue().removeAll( c ); 
 	//	}
 	//	public boolean retainAll( java.util.Collection<?> c ) {
 	//		assert isLocked() == false;

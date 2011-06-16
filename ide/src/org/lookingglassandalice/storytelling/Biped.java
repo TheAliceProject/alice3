@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Biped extends Model implements Walker, Toucher {
+public class Biped extends Model implements Walker, Toucher {
 	private final org.lookingglassandalice.storytelling.implementation.BipedImplementation implementation;
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.BipedImplementation getImplementation() {

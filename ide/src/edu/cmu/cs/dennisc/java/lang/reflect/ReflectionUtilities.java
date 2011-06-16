@@ -96,10 +96,18 @@ public final class ReflectionUtilities {
 	
 	public static <T> T newInstance( java.lang.reflect.Constructor< T > cnstrctr, Object... arguments ) {
 		try {
+			System.out.println("Instantiating class: "+cnstrctr.getDeclaringClass());
+			System.out.println("args:");
+			for (Object o : arguments)
+			{
+				System.out.println("   "+o+": "+o.getClass());
+			}
 			return cnstrctr.newInstance( arguments );
 		} catch( java.lang.reflect.InvocationTargetException ite ) {
 			throw new RuntimeException( cnstrctr.toString(), ite );
 		} catch( InstantiationException ie ) {
+			System.out.println(cnstrctr);
+			ie.printStackTrace();
 			throw new RuntimeException( cnstrctr.toString(), ie );
 		} catch( IllegalAccessException iae ) {
 			throw new RuntimeException( cnstrctr.toString(), iae );

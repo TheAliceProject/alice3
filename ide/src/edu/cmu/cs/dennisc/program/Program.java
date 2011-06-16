@@ -120,7 +120,12 @@ public abstract class Program extends javax.swing.JApplet {
 				try {
 					initialize();
 					Program.this.isInitializationSuccessful = true;
-				} finally {
+				} 
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+				finally {
 					getContentPane().validate();
 					postInitialize( Program.this.isInitializationSuccessful );
 					Program.this.semaphore.release();

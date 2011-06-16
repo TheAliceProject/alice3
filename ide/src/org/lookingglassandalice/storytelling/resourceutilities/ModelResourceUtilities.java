@@ -376,7 +376,15 @@ public class ModelResourceUtilities {
 						ConstructorDeclaredInAlice[] constructors = {constructor};
 						TypeDeclaredInAlice fieldType = new TypeDeclaredInAlice(fieldClassName, packageName, parentType, constructors, methods, fields);
 						ModelResourceTreeNode fieldNode = new ModelResourceTreeNode(fieldType, currentClass);
-						
+						try
+						{
+							ModelResource resource = (ModelResource)f.get(null);
+							fieldNode.setModelResource(resource);
+						}
+						catch (Exception e)
+						{
+							e.printStackTrace();
+						}
 						fieldNode.setParent(classNode);
 						resourceClassToNodeMap.put(f, fieldNode);
 					}

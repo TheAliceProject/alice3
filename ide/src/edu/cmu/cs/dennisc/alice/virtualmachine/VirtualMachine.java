@@ -465,6 +465,7 @@ public abstract class VirtualMachine {
 		return booleanLiteral.value.getValue();
 	}
 	protected Object evaluateInstanceCreation( edu.cmu.cs.dennisc.alice.ast.InstanceCreation classInstanceCreation ) {
+//		AbstractType classType =classInstanceCreation.constructor.getValue().getDeclaringType();
 		Object[] arguments = this.evaluateArguments( classInstanceCreation.constructor.getValue().getParameters(), classInstanceCreation.arguments );
 		return this.createInstance( classInstanceCreation.constructor.getValue(), arguments );
 	}

@@ -129,6 +129,9 @@ import org.lgna.croquet.StandardPopupPrepModel;
 import org.lgna.croquet.components.AbstractButton;
 import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.DragComponent;
+import org.lookingglassandalice.storytelling.ImplementationAccessor;
+import org.lookingglassandalice.storytelling.Model;
+import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
 import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
 
 /**
@@ -673,7 +676,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private void handleFieldAdded(final FieldDeclaredInAlice addedField)
 	{
 		Object instance = this.getInstanceInJavaVMForField( addedField );
-		if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
+		if (instance instanceof org.lookingglassandalice.storytelling.Model)
+		{
+			org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)instance;
+			EntityImplementation implementation = ImplementationAccessor.getImplementation(model);
+			this.scene.getSGComposite().addComponent(implementation.getSgComposite());
+		}
+		else if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
 			final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
 
 			this.putInstanceForField( addedField, transformable );

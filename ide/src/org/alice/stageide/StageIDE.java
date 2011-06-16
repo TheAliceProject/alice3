@@ -243,7 +243,9 @@ public class StageIDE extends org.alice.ide.IDE {
 			if( accessible.getValueType().isAssignableTo( org.alice.apis.moveandturn.Marker.class) ) {
 				return false;
 			} else {
-				return accessible.getValueType().isAssignableTo( org.alice.apis.moveandturn.AbstractTransformable.class );
+				boolean isMoveAndTurn = accessible.getValueType().isAssignableTo( org.alice.apis.moveandturn.AbstractTransformable.class );
+				boolean isStorytelling = accessible.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Model.class );
+				return isMoveAndTurn || isStorytelling;
 			}
 		} else {
 			return false;
