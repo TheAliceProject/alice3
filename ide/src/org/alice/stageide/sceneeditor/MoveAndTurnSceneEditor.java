@@ -116,8 +116,6 @@ import org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelecti
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.Operation;
-import org.lgna.croquet.StandardPopupPrepModel;
 import org.lgna.croquet.components.AbstractButton;
 import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.DragComponent;
@@ -1144,34 +1142,17 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.sidePane.revalidateAndRepaint();
 		this.revalidateAndRepaint();
 	}
-
-	private FieldTile getFieldTileForClick(InputState input)
-	{
-		edu.cmu.cs.dennisc.scenegraph.Transformable t = input.getClickPickTransformable();
-		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement(t);
-		FieldDeclaredInAlice clickedJavaField = (FieldDeclaredInAlice)this.getFieldForInstanceInJavaVM(element);
-		FieldTile tile = this.fieldRadioButtons.getFieldTileForField(clickedJavaField);
-		if (tile != null)
-		{
-			return tile;
-		}
-		return null;
-	}
-	
 	private void showRightClickMenuForModel( InputState clickState )
 	{
-		FieldTile fieldTile = this.getFieldTileForClick(clickState);
-		if (fieldTile != null)
+		edu.cmu.cs.dennisc.scenegraph.Transformable t = clickState.getClickPickTransformable();
+		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement(t);
+		FieldDeclaredInAlice clickedJavaField = (FieldDeclaredInAlice)this.getFieldForInstanceInJavaVM(element);
+		if (clickedJavaField != null)
 		{
-			org.lgna.croquet.PopupPrepModel popUp = fieldTile.getPopupPrepModel();
-			if (popUp != null)
+			org.lgna.croquet.MenuModel menuModel = org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( clickedJavaField );
+			if (menuModel != null)
 			{
-				if( fieldTile.getAwtComponent().isShowing() ) {
-					MouseEvent convertedEvent = SwingUtilities.convertMouseEvent((Component)clickState.getInputEvent().getSource(), (MouseEvent)clickState.getInputEvent(), fieldTile.getAwtComponent());
-					popUp.fire( new org.lgna.croquet.triggers.MouseEventTrigger( fieldTile, convertedEvent ) );
-				} else {
-					popUp.fire( new org.lgna.croquet.triggers.InputEventTrigger( clickState.getInputEvent() ) );
-				}
+				menuModel.getPopupPrepModel().fire( new org.lgna.croquet.triggers.InputEventTrigger( clickState.getInputEvent() ) );
 			}
 		}
 	}

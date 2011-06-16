@@ -89,8 +89,8 @@ public class DeleteFieldOperation extends DeleteMemberOperation< edu.cmu.cs.denn
 				sb.append( "an access refrence" );
 			} else {
 				sb.append( N );
+				sb.append( " access refrences" );
 			}
-			sb.append( " access refrences" );
 			sb.append( " to it.\nYou must remove " );
 			if( N == 1 ) {
 				sb.append( "this reference" );

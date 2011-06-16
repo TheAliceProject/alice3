@@ -91,8 +91,8 @@ public class DeleteMethodOperation extends DeleteMemberOperation< edu.cmu.cs.den
 				sb.append( "an invocation reference" );
 			} else {
 				sb.append( N );
+				sb.append( " invocation references" );
 			}
-			sb.append( " invocation references" );
 			sb.append( " to it.\nYou must remove " );
 			if( N == 1 ) {
 				sb.append( "this reference" );

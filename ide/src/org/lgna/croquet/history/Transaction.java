@@ -285,6 +285,9 @@ public class Transaction extends Node< TransactionHistory > {
 ////								}
 							} else if( model instanceof org.lgna.croquet.MenuModel ) {
 								//pass
+							} else if( model instanceof org.lgna.croquet.LabelMenuSeparatorModel ) {
+								//pass
+								System.err.println( "TODO: investigate selectiong of " + model );
 							} else {
 								assert false : model;
 							}

@@ -62,8 +62,9 @@ public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	}
 	private OneShotMenuModel( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		super( java.util.UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ),
-				FieldLabelSeparatorModel.getInstance( field ),	
-				org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ).getMenuItemPrepModel()	
+				FieldLabelSeparatorModel.getInstance( field ),
+				org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ).getMenuItemPrepModel(),	
+				org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel()
 		);
 	}
 }
