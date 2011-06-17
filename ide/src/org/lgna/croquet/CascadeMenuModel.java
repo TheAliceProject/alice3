@@ -58,26 +58,25 @@ public abstract class CascadeMenuModel< FB > extends CascadeBlankOwner< FB, FB >
 		}
 	}
 	private final InternalBlank blank = new InternalBlank();
-	private transient boolean isDirty;
 	public CascadeMenuModel( java.util.UUID id ) {
 		super( id );
 		this.addBlank( this.blank );
 	}
-	protected abstract java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< FB > step );
-	private org.lgna.croquet.cascade.AbstractItemNode< FB,FB,? > getSelectedFillInContext( org.lgna.croquet.cascade.ItemNode< ? super FB,? > step ) {
-		org.lgna.croquet.cascade.BlankNode< ? > blankContext = step.getBlankStepAt( 0 );
-		return blankContext.getSelectedFillInContext();
+	protected abstract java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< FB > blankNode );
+	private org.lgna.croquet.cascade.AbstractItemNode< FB,FB,? > getSelectedFillInContext( org.lgna.croquet.cascade.ItemNode< ? super FB,? > itemNode ) {
+		org.lgna.croquet.cascade.BlankNode< ? > blankNode = itemNode.getBlankStepAt( 0 );
+		return blankNode.getSelectedFillInContext();
 	}
 	@Override
-	public FB getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > step ) {
-		return this.getSelectedFillInContext( step ).getTransientValue();
+	public FB getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > itemNode ) {
+		return this.getSelectedFillInContext( itemNode ).getTransientValue();
 	}
 	@Override
-	public FB createValue( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > step ) {
-		return this.getSelectedFillInContext( step ).createValue();
+	public FB createValue( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > itemNode ) {
+		return this.getSelectedFillInContext( itemNode ).createValue();
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > itemNode ) {
 		return new javax.swing.JLabel( this.getDefaultLocalizedText() );
 	}
 }

@@ -43,8 +43,6 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.triggers.Trigger;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -104,7 +102,7 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel {
 			this.handleFinally( performObserver );
 		}
 	}
-	public void handleCancel( PerformObserver performObserver, org.lgna.croquet.history.CascadePopupOperationStep< B > completionStep, Trigger trigger, CancelException ce ) {
+	public void handleCancel( PerformObserver performObserver, org.lgna.croquet.history.CascadePopupOperationStep< B > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
 		try {
 			if( completionStep != null ) {
 				completionStep.cancel();
