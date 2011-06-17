@@ -173,7 +173,13 @@ public class SetUpMethodGenerator {
 			org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)instance;
 			EntityImplementation implementation = ImplementationAccessor.getImplementation(model);
 			Composite sgComposite = implementation.getSgComposite();
-			PointOfView pov = new PointOfView(sgComposite.getTransformation(sgComposite.getParent()));
+			Composite sgParent = sgComposite.getParent();
+			org.alice.apis.moveandturn.Composite vehicle = (org.alice.apis.moveandturn.Composite)org.alice.apis.moveandturn.Element.getElement( sgParent );
+			boolean isVehicleScene = (vehicle instanceof Scene);
+			edu.cmu.cs.dennisc.alice.ast.AbstractField vehicleField = mapper.getFieldForInstanceInJavaVM(vehicle);
+			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setVehicle", org.alice.apis.moveandturn.Composite.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
+			
+			PointOfView pov = new PointOfView(sgComposite.getTransformation(sgParent));
 			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( pov ) ) );
 		}
 		else if( instance instanceof org.alice.apis.moveandturn.Element ) {
