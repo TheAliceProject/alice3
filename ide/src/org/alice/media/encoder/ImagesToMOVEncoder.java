@@ -111,6 +111,8 @@ import edu.cmu.cs.dennisc.movie.MovieEncoder;
 public class ImagesToMOVEncoder implements ControllerListener,
         DataSinkListener, MovieEncoder
 {
+	private static boolean DEBUG_DUMP_FRAMES = true;
+	
     private int frameRate = 30;
     private BlockingQueue<BufferedImage> images = new LinkedBlockingQueue<BufferedImage>();
     private Object waitSync = new Object();
@@ -182,6 +184,22 @@ public class ImagesToMOVEncoder implements ControllerListener,
     public void setOutputFile(File outputFile)
     {
         this.outputFile = outputFile;
+        if (this.outputFile != null && DEBUG_DUMP_FRAMES)
+        {
+        	String fileName = outputFile.getName();
+        	int dotIndex = fileName.lastIndexOf(".");
+        	if (dotIndex != -1)
+        	{
+        		fileName = fileName.substring(0, dotIndex);
+        	}
+        	File frameDumpDir = new File(this.outputFile.getParentFile(), fileName+"_frames");
+        	if (frameDumpDir.exists())
+        	{
+        		frameDumpDir.delete();
+        	}
+        	frameDumpDir.mkdirs();
+        	this.setFrameOutputDirectory(frameDumpDir.getAbsolutePath());
+        }
     }
 
     public File getOutputFile()

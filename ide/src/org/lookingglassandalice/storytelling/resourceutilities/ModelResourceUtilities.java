@@ -66,6 +66,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
+import edu.cmu.cs.dennisc.alice.ast.AbstractConstructor;
 import edu.cmu.cs.dennisc.alice.ast.AbstractMember;
 import edu.cmu.cs.dennisc.alice.ast.AbstractParameter;
 import edu.cmu.cs.dennisc.alice.ast.AbstractType;
@@ -241,33 +242,31 @@ public class ModelResourceUtilities {
 		return new PackageDeclaredInAlice(resourcePackage);
 	}
 	
-	public static ConstructorDeclaredInAlice createConstructorForResourceClass(Class<?> resourceClass, AbstractParameter superParameter)
+	public static ConstructorDeclaredInAlice createConstructorForResourceClass(Class<?> resourceClass, ConstructorParameterPair constructorAndParameter)
 	{
 		ParameterDeclaredInAlice parameter = new ParameterDeclaredInAlice("modelResource", resourceClass);
 		ParameterAccess parameterAccessor = new ParameterAccess(parameter);
-		Argument superArgument = new Argument(superParameter, parameterAccessor);
-		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor superConstructor = null; //todo
-		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement(superConstructor, superArgument);
+		Argument superArgument = new Argument(constructorAndParameter.getParameter(), parameterAccessor);
+		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement(constructorAndParameter.getConstructor(), superArgument);
 		ConstructorBlockStatement blockStatement = new ConstructorBlockStatement(superInvocation);
 		ParameterDeclaredInAlice[] parameters = {parameter};
 		ConstructorDeclaredInAlice constructor = new ConstructorDeclaredInAlice(parameters, blockStatement);
 		return constructor ;
 	}
 	
-	public static ConstructorDeclaredInAlice createConstructorForResourceField(Field resourceField, AbstractParameter superParameter)
+	public static ConstructorDeclaredInAlice createConstructorForResourceField(Field resourceField, ConstructorParameterPair constructorAndParameter)
 	{
 		FieldDeclaredInJavaWithField javaField = FieldDeclaredInJavaWithField.get(resourceField);
 		FieldAccess fieldAccess = NodeUtilities.createStaticFieldAccess(javaField);
-		Argument superArgument = new Argument(superParameter, fieldAccess);
-		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor superConstructor = null; //todo
-		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement(superConstructor, superArgument);
+		Argument superArgument = new Argument(constructorAndParameter.getParameter(), fieldAccess);
+		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement(constructorAndParameter.getConstructor(), superArgument);
 		ConstructorBlockStatement blockStatement = new ConstructorBlockStatement(superInvocation);
 		ParameterDeclaredInAlice[] parameters = {};
 		ConstructorDeclaredInAlice constructor = new ConstructorDeclaredInAlice(parameters, blockStatement);
 		return constructor ;
 	}
 	
-	private static ParameterDeclaredInAlice getConstructorParameterForAliceClass(TypeDeclaredInAlice aliceType)
+	private static ConstructorParameterPair getConstructorAndParameterForAliceClass(TypeDeclaredInAlice aliceType)
 	{
 		for (int i=0; i<aliceType.constructors.size(); i++)
 		{
@@ -277,14 +276,14 @@ public class ModelResourceUtilities {
 				ParameterDeclaredInAlice parameter = constructor.parameters.get(0);
 				if (parameter.getValueType().isAssignableTo(ModelResource.class))
 				{
-					return parameter;
+					return new ConstructorParameterPair(constructor, parameter);
 				}
 			}
 		}
 		return null;
 	}
 	
-	private static ParameterDeclaredInJavaConstructor getConstructorParameterForJavaClass(Class<?> javaClass)
+	private static ConstructorParameterPair getConstructorAndParameterForJavaClass(Class<?> javaClass)
 	{
 		TypeDeclaredInJava javeType = TypeDeclaredInJava.get(javaClass);
 		List<ConstructorDeclaredInJava> constructors = javeType.getDeclaredConstructors();
@@ -297,7 +296,7 @@ public class ModelResourceUtilities {
 				TypeDeclaredInJava javaType = parameter.getValueTypeDeclaredInJava();
 				if (javaType.isAssignableTo(ModelResource.class))
 				{
-					return parameter;
+					return new ConstructorParameterPair(constructor, parameter);
 				}
 			}
 		}
@@ -347,16 +346,16 @@ public class ModelResourceUtilities {
 				if (parentNode == null || parentNode.getTypeDeclaredInAlice() == null)
 				{
 					Class<?> parentClass = getModelClassForResourceClass(currentClass);
-					ParameterDeclaredInJavaConstructor parentConstructorParameter = getConstructorParameterForJavaClass(parentClass);
-					ConstructorDeclaredInAlice constructor = createConstructorForResourceClass(currentClass, parentConstructorParameter);
+					ConstructorParameterPair parentConstructorAndParameter = getConstructorAndParameterForJavaClass(parentClass);
+					ConstructorDeclaredInAlice constructor = createConstructorForResourceClass(currentClass, parentConstructorAndParameter);
 					ConstructorDeclaredInAlice[] constructors = {constructor};
 					aliceType = new TypeDeclaredInAlice(aliceClassName, packageName, parentClass, constructors, methods, fields);
 				}
 				else
 				{
 					TypeDeclaredInAlice parentType = parentNode.getTypeDeclaredInAlice();
-					ParameterDeclaredInAlice parentConstructorParameter = getConstructorParameterForAliceClass(parentType);
-					ConstructorDeclaredInAlice constructor = createConstructorForResourceClass(currentClass, parentConstructorParameter);
+					ConstructorParameterPair parentConstructorAndParameter = getConstructorAndParameterForAliceClass(parentType);
+					ConstructorDeclaredInAlice constructor = createConstructorForResourceClass(currentClass, parentConstructorAndParameter);
 					ConstructorDeclaredInAlice[] constructors = {constructor};
 					aliceType = new TypeDeclaredInAlice(aliceClassName, packageName, parentType, constructors, methods, fields);
 				}
@@ -373,8 +372,8 @@ public class ModelResourceUtilities {
 					{
 						String fieldClassName = getClassNameFromName(f.getName())+aliceClassName;
 						TypeDeclaredInAlice parentType = classNode.getTypeDeclaredInAlice();
-						ParameterDeclaredInAlice parentConstructorParameter = getConstructorParameterForAliceClass(parentType);
-						ConstructorDeclaredInAlice constructor = createConstructorForResourceField(f, parentConstructorParameter);
+						ConstructorParameterPair parentConstructorAndParameter = getConstructorAndParameterForAliceClass(parentType);
+						ConstructorDeclaredInAlice constructor = createConstructorForResourceField(f, parentConstructorAndParameter);
 						ConstructorDeclaredInAlice[] constructors = {constructor};
 						TypeDeclaredInAlice fieldType = new TypeDeclaredInAlice(fieldClassName, packageName, parentType, constructors, methods, fields);
 						ModelResourceTreeNode fieldNode = new ModelResourceTreeNode(fieldType, currentClass);
