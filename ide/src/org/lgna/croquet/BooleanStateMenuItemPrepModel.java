@@ -46,8 +46,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanStateMenuItemPrepModel extends MenuItemPrepModel {
-	public static class BooleanStateMenuPrepModelResolver<E> implements org.lgna.croquet.resolvers.CodableResolver< BooleanStateMenuItemPrepModel > {
+public final class BooleanStateMenuItemPrepModel extends StandardMenuItemPrepModel {
+	public static class BooleanStateMenuPrepModelResolver implements org.lgna.croquet.resolvers.CodableResolver< BooleanStateMenuItemPrepModel > {
 		private final BooleanStateMenuItemPrepModel model;
 		public BooleanStateMenuPrepModelResolver( BooleanStateMenuItemPrepModel model ) {
 			this.model = model;
@@ -89,12 +89,9 @@ public class BooleanStateMenuItemPrepModel extends MenuItemPrepModel {
 	public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
 		return this.booleanState.getFirstComponent();
 	}
-	private org.lgna.croquet.components.CheckBoxMenuItem createCheckBoxMenuItem() {
-		return new org.lgna.croquet.components.CheckBoxMenuItem( this.getBooleanState() );
-	}
 	@Override
 	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-		rv.addCheckBoxMenuItem( this.createCheckBoxMenuItem() );
+		rv.addCheckBoxMenuItem( new org.lgna.croquet.components.CheckBoxMenuItem( this.getBooleanState() ) );
 		return rv;
 	}
 }

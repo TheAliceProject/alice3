@@ -61,7 +61,7 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 				@Override
 				public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 					super.handlePopupMenuPrologue( popupMenu, context );
-					java.util.List< org.lgna.croquet.MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					models.add( org.alice.ide.croquet.models.ast.rename.RenameParameterOperation.getInstance( parameter ).getMenuItemPrepModel() );
 					if( forwardShiftCodeParameterOperation.isIndexAppropriate() ) {
 						models.add( forwardShiftCodeParameterOperation.getMenuItemPrepModel() );

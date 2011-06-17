@@ -197,7 +197,7 @@ public class Transaction extends Node< TransactionHistory > {
 		public int getMenuItemPrepModelCount() {
 			return this.menuItemPrepModels.size();
 		}
-		public org.lgna.croquet.MenuItemPrepModel getMenuItemPrepModelAt( int index ) {
+		public org.lgna.croquet.PrepModel getMenuItemPrepModelAt( int index ) {
 			return this.menuItemPrepModels.get( index );
 		}
 	}
@@ -250,7 +250,7 @@ public class Transaction extends Node< TransactionHistory > {
 					if( this.lastMenuSelection != null && this.lastMenuSelection.getMenuItemPrepModelCount() > 0 ) {
 						final int N = this.lastMenuSelection.getMenuItemPrepModelCount();
 						for( int i=0; i<N; i++ ) {
-							org.lgna.croquet.MenuItemPrepModel model = this.lastMenuSelection.getMenuItemPrepModelAt( i );
+							org.lgna.croquet.PrepModel model = this.lastMenuSelection.getMenuItemPrepModelAt( i );
 							
 //							if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
 //								MenuModelStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.MenuModel)model );

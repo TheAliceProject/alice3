@@ -46,12 +46,12 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInCompletionStep<F,B> extends CompletionStep< org.lgna.croquet.CascadePopupCompletionModel< F > > {
-	public static < F, B > CascadeFillInCompletionStep< F, B > createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadePopupCompletionModel< F > model, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.CascadeFillIn< F, B > fillIn ) {
+public class CascadeFillInCompletionStep<F,B> extends CompletionStep< org.lgna.croquet.CascadeCompletionModel< F > > {
+	public static < F, B > CascadeFillInCompletionStep< F, B > createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadeCompletionModel< F > model, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.CascadeFillIn< F, B > fillIn ) {
 		return new CascadeFillInCompletionStep< F, B >( parent, model, trigger, fillIn );
 	}
 	private final org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.CascadeFillIn< F, B > > fillInResolver; 
-	private CascadeFillInCompletionStep( Transaction parent, org.lgna.croquet.CascadePopupCompletionModel< F > model, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.CascadeFillIn< F, B > fillIn ) {
+	private CascadeFillInCompletionStep( Transaction parent, org.lgna.croquet.CascadeCompletionModel< F > model, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.CascadeFillIn< F, B > fillIn ) {
 		super( parent, model, trigger, null );
 		this.fillInResolver = fillIn.getCodableResolver();
 	}

@@ -49,12 +49,12 @@ import org.lgna.croquet.triggers.Trigger;
  * @author Dennis Cosgrove
  */
 public abstract class CascadePopupPrepModel<B> extends PopupPrepModel {
-	private final CascadePopupCompletionModel<B> completionModel;
+	private final CascadeCompletionModel<B> completionModel;
 	private final Class< B > componentType;
 	private final CascadeRoot< B > root;
 	public CascadePopupPrepModel( Group completionGroup, java.util.UUID id, Class< B > componentType, CascadeBlank< B >[] blanks ) {
 		super( id );
-		this.completionModel = new CascadePopupCompletionModel<B>( completionGroup, this );
+		this.completionModel = new CascadeCompletionModel<B>( completionGroup, this );
 		this.componentType = componentType;
 		this.root = new CascadeRoot< B >( this );
 		assert blanks != null;
@@ -88,23 +88,23 @@ public abstract class CascadePopupPrepModel<B> extends PopupPrepModel {
 		return this.componentType;
 	}
 
-	public CascadePopupCompletionModel< B > getCompletionModel() {
+	public CascadeCompletionModel< B > getCompletionModel() {
 		return this.completionModel;
 	}
-	protected abstract org.lgna.croquet.edits.Edit< ? extends CascadePopupCompletionModel< B > > createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< B > step, B[] values );
+	protected abstract org.lgna.croquet.edits.Edit< ? extends CascadeCompletionModel< B > > createEdit( org.lgna.croquet.history.CascadePopupOperationStep< B > step, B[] values );
 
 	protected void handleFinally( PerformObserver performObserver ) {
 		performObserver.handleFinally();
 	}
-	public void handleCompletion( org.lgna.croquet.history.CascadePopupCompletionStep< B > step, PerformObserver performObserver, B[] values ) {
+	public void handleCompletion( org.lgna.croquet.history.CascadePopupOperationStep< B > step, PerformObserver performObserver, B[] values ) {
 		try {
-			org.lgna.croquet.edits.Edit< ? extends CascadePopupCompletionModel< B > > edit = this.createEdit( step, values );
+			org.lgna.croquet.edits.Edit< ? extends CascadeCompletionModel< B > > edit = this.createEdit( step, values );
 			step.commitAndInvokeDo( edit );
 		} finally {
 			this.handleFinally( performObserver );
 		}
 	}
-	public void handleCancel( PerformObserver performObserver, org.lgna.croquet.history.CascadePopupCompletionStep< B > completionStep, Trigger trigger, CancelException ce ) {
+	public void handleCancel( PerformObserver performObserver, org.lgna.croquet.history.CascadePopupOperationStep< B > completionStep, Trigger trigger, CancelException ce ) {
 		try {
 			if( completionStep != null ) {
 				completionStep.cancel();

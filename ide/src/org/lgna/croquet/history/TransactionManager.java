@@ -132,7 +132,7 @@ public class TransactionManager {
 	private static void handleMenuSelectionStateChanged( javax.swing.event.ChangeEvent e ) {
 		javax.swing.MenuElement[] menuElements = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
 		if( isCroquetMenuSelection( menuElements ) ) {
-			java.util.List< MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List< PrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			org.lgna.croquet.components.MenuBar menuBar = getMenuBarOrigin( menuElements );
 			int i0;
 			if( menuBar != null ) {
@@ -152,7 +152,7 @@ public class TransactionManager {
 					org.lgna.croquet.components.Menu menu = (org.lgna.croquet.components.Menu)org.lgna.croquet.components.Component.lookup( jMenu );
 					assert menu != null;
 
-					MenuItemPrepModel menuModel = menu.getModel();
+					PrepModel menuModel = menu.getModel();
 					assert menuModel != null;
 					models.add( menuModel );
 					i0 = 3;
@@ -422,8 +422,8 @@ public class TransactionManager {
 	public static <T> CascadePopupPrepStep<T> addCascadePopupPrepStep( org.lgna.croquet.CascadePopupPrepModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return CascadePopupPrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
-	public static <T> CascadePopupCompletionStep<T> addCascadePopupCompletionStep( org.lgna.croquet.CascadePopupCompletionModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return CascadePopupCompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
+	public static <T> CascadePopupOperationStep<T> addCascadePopupCompletionStep( org.lgna.croquet.CascadeCompletionModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return CascadePopupOperationStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
 
 	public static BooleanStateChangeStep addBooleanStateChangeStep( org.lgna.croquet.BooleanState model, org.lgna.croquet.triggers.Trigger trigger ) {

@@ -45,8 +45,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuModel extends MenuItemPrepModel {
-	public static final MenuItemPrepModel SEPARATOR = null;
+public abstract class MenuModel extends StandardMenuItemPrepModel {
+	public static final StandardMenuItemPrepModel SEPARATOR = null;
 	private Class<?> clsForI18N;
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -179,31 +179,7 @@ public abstract class MenuModel extends MenuItemPrepModel {
 	
 	
 	public org.lgna.croquet.components.Menu createMenu() {
-		org.lgna.croquet.components.Menu rv = new org.lgna.croquet.components.Menu( this ) {
-			@Override
-			protected void handleDisplayable() {
-				super.handleDisplayable();
-				MenuModel.this.addPopupMenuListener( this );
-			}
-
-			@Override
-			protected void handleUndisplayable() {
-				MenuModel.this.removePopupMenuListener( this );
-				super.handleUndisplayable();
-			}
-			
-			@Override
-			protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
-				this.getAwtComponent().setAction( MenuModel.this.action );
-				super.handleAddedTo( parent );
-			}
-			@Override
-			protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
-				super.handleRemovedFrom( parent );
-				this.getAwtComponent().setAction( null );
-			}
-		};
-		return rv;
+		return new org.lgna.croquet.components.Menu( this );
 	};
 	
 	@Override

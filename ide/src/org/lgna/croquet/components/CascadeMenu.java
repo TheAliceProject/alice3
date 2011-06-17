@@ -41,43 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeMenu< FB > extends CascadeBlankOwner< FB, FB > {
-	private class InternalBlank extends CascadeBlank< FB > {
-		public InternalBlank() {
-			super(java.util.UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
-		}
-		@Override
-		protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< FB > blankNode ) {
-			CascadeMenu.this.updateBlankChildren( rv, blankNode );
-			return rv;
-		}
-	}
-	private final InternalBlank blank = new InternalBlank();
-	private transient boolean isDirty;
-	public CascadeMenu( java.util.UUID id ) {
-		super( id );
-		this.addBlank( this.blank );
-	}
-	protected abstract java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< FB > step );
-	private org.lgna.croquet.cascade.AbstractItemNode< FB,FB,? > getSelectedFillInContext( org.lgna.croquet.cascade.ItemNode< ? super FB,? > step ) {
-		org.lgna.croquet.cascade.BlankNode< ? > blankContext = step.getBlankStepAt( 0 );
-		return blankContext.getSelectedFillInContext();
+public class CascadeMenu extends ViewController< javax.swing.JMenu, org.lgna.croquet.CascadeItem< ?,? > > {
+	public CascadeMenu( org.lgna.croquet.CascadeItem< ?,? > model ) {
+		super( model );
 	}
 	@Override
-	public FB getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > step ) {
-		return this.getSelectedFillInContext( step ).getTransientValue();
-	}
-	@Override
-	public FB createValue( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > step ) {
-		return this.getSelectedFillInContext( step ).createValue();
-	}
-	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > step ) {
-		return new javax.swing.JLabel( this.getDefaultLocalizedText() );
+	protected javax.swing.JMenu createAwtComponent() {
+		return new javax.swing.JMenu();
 	}
 }

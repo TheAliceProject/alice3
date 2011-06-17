@@ -240,8 +240,8 @@ class MyCascade extends org.lgna.croquet.CascadePopupPrepModel< Object > {
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< Object > step, final java.lang.Object[] values ) {
-		return new org.lgna.croquet.edits.Edit< org.lgna.croquet.CascadePopupCompletionModel<Object> >( null ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CascadePopupOperationStep< Object > step, final java.lang.Object[] values ) {
+		return new org.lgna.croquet.edits.Edit< org.lgna.croquet.CascadeCompletionModel<Object> >( null ) {
 			@Override
 			protected void doOrRedoInternal( boolean isDo ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( values );

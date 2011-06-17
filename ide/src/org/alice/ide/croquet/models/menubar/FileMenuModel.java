@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.menubar;
  * @author Dennis Cosgrove
  */
 public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.MenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List< org.lgna.croquet.MenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
+	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
+		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
 				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(), 
 				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(), 
 				org.lgna.croquet.MenuModel.SEPARATOR, 
@@ -68,7 +68,7 @@ public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 			list.add(org.lgna.croquet.MenuModel.SEPARATOR);
 			list.add(org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel());
 		}
-		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( list, org.lgna.croquet.MenuItemPrepModel.class );
+		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}
 	private static class SingletonHolder {
 		private static FileMenuModel instance = new FileMenuModel();

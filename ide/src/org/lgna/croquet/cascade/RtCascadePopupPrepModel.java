@@ -212,8 +212,8 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 			java.util.List< RtItem > baseRtFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( CascadeItem item : this.getModel().getChildren( this.getStep() ) ) {
 				RtItem rtItem;
-				if( item instanceof CascadeMenu ) {
-					CascadeMenu menu = (CascadeMenu)item;
+				if( item instanceof CascadeMenuModel ) {
+					CascadeMenuModel menu = (CascadeMenuModel)item;
 					rtItem = new RtMenu< B >( menu );
 				} else if( item instanceof CascadeFillIn ) {
 					CascadeFillIn fillIn = (CascadeFillIn)item;
@@ -398,7 +398,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.cro
 			jMenuItem = menuItem.getAwtComponent();
 			rv = menuItem;
 		} else {
-			Menu menu = new Menu( item );
+			CascadeMenu menu = new CascadeMenu( item );
 			menu.getAwtComponent().addMenuListener( this.menuListener );
 			jMenuItem = menu.getAwtComponent();
 			rv = menu;
@@ -451,8 +451,8 @@ class RtFillIn<F, B> extends RtBlankOwner< F, B, CascadeFillIn< F, B >, org.lgna
 	}
 }
 
-class RtMenu<FB> extends RtBlankOwner< FB, FB, CascadeMenu< FB >, org.lgna.croquet.cascade.MenuNode< FB >> {
-	public RtMenu( CascadeMenu< FB > model ) {
+class RtMenu<FB> extends RtBlankOwner< FB, FB, CascadeMenuModel< FB >, org.lgna.croquet.cascade.MenuNode< FB >> {
+	public RtMenu( CascadeMenuModel< FB > model ) {
 		super( model, MenuNode.createInstance( model ) );
 	}
 }
@@ -535,9 +535,9 @@ public class RtCascadePopupPrepModel<T> extends RtElement< CascadePopupPrepModel
 		return rv;
 	}
 	
-	private org.lgna.croquet.history.CascadePopupCompletionStep< T > complete( Trigger trigger ) {
+	private org.lgna.croquet.history.CascadePopupOperationStep< T > complete( Trigger trigger ) {
 		CascadePopupPrepModel< T > model = this.getModel();
-		org.lgna.croquet.history.CascadePopupCompletionStep< T > completionStep = org.lgna.croquet.history.TransactionManager.addCascadePopupCompletionStep( this.getModel().getCompletionModel(), trigger );
+		org.lgna.croquet.history.CascadePopupOperationStep< T > completionStep = org.lgna.croquet.history.TransactionManager.addCascadePopupCompletionStep( this.getModel().getCompletionModel(), trigger );
 		try {
 			T[] values = this.createValues( model.getComponentType() );
 			this.getModel().handleCompletion( completionStep, this.performObserver, values );
@@ -547,7 +547,7 @@ public class RtCascadePopupPrepModel<T> extends RtElement< CascadePopupPrepModel
 			return null;
 		}
 	}
-	private void cancel( org.lgna.croquet.history.CascadePopupCompletionStep< T > completionStep, Trigger trigger, CancelException ce ) {
+	private void cancel( org.lgna.croquet.history.CascadePopupOperationStep< T > completionStep, Trigger trigger, CancelException ce ) {
 		this.getModel().handleCancel( this.performObserver, completionStep, trigger, ce );
 	}
 	

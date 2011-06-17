@@ -57,14 +57,10 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
 		return true;
 	}
 	
-	@Override
-	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-		rv.addCascadeMenuItem( new org.lgna.croquet.components.CascadeMenuItem( this ) );
-		return rv;
-	}
 	public abstract F getTransientValue( org.lgna.croquet.cascade.ItemNode<? super F,B> step );
 	public abstract F createValue( org.lgna.croquet.cascade.ItemNode<? super F,B> step );
 	protected abstract javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F,B> step );
+	
 	@Override
 	protected void localize() {
 		this.isDirty = true;

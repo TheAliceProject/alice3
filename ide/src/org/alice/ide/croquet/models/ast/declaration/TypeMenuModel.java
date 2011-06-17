@@ -58,7 +58,7 @@ public class TypeMenuModel extends org.lgna.croquet.MenuModel {
 	@Override
 	public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		java.util.List< org.lgna.croquet.MenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > javaTypes = org.alice.ide.IDE.getSingleton().getPrimeTimeSelectableTypesDeclaredInJava();
 		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava javaType : javaTypes ) {

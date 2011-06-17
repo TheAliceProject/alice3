@@ -75,4 +75,12 @@ public final class CascadeRoot<B> extends CascadeBlankOwner< B[], B > {
 		//handled elsewhere for now
 		throw new AssertionError();
 	}
+	@Override
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super B[], B > step ) {
+		return this.getDefaultLocalizedText();
+	}
+	@Override
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super B[], B > step ) {
+		return null;
+	}
 }

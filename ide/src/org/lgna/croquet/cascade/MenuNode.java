@@ -46,11 +46,11 @@ package org.lgna.croquet.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuNode< FB > extends BlankOwnerNode< FB, FB, org.lgna.croquet.CascadeMenu< FB > > {
-	public static <FB> MenuNode< FB > createInstance( org.lgna.croquet.CascadeMenu< FB > model ) {
+public class MenuNode< FB > extends BlankOwnerNode< FB, FB, org.lgna.croquet.CascadeMenuModel< FB > > {
+	public static <FB> MenuNode< FB > createInstance( org.lgna.croquet.CascadeMenuModel< FB > model ) {
 		return new MenuNode< FB >( model );
 	}
-	private MenuNode( org.lgna.croquet.CascadeMenu< FB > model ) {
+	private MenuNode( org.lgna.croquet.CascadeMenuModel< FB > model ) {
 		super( model );
 	}
 	public MenuNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

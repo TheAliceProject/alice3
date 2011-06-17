@@ -60,7 +60,7 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		java.util.List<String> paths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
 		final int N = paths.size();
-		org.lgna.croquet.MenuItemPrepModel[] models = new org.lgna.croquet.MenuItemPrepModel[ N ];
+		org.lgna.croquet.StandardMenuItemPrepModel[] models = new org.lgna.croquet.StandardMenuItemPrepModel[ N ];
 		for( int i=0; i<N; i++ ) {
 			String path = paths.get( i );
 			java.io.File file = new java.io.File( path );

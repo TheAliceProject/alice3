@@ -113,7 +113,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 					
 					SetDoubleOperation currentDoubleOperation = new SetDoubleOperation(currentDouble, currentDoubleName);
 					
-					java.util.List<org.lgna.croquet.MenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					models.add(currentDoubleOperation.getMenuItemPrepModel());
 					models.add(org.lgna.croquet.MenuModel.SEPARATOR);
 					for( SetDoubleOperation operation : AbstractDoublePropertyAdapter.this.defaultDoubleOperationModels ) {

@@ -50,9 +50,8 @@ public abstract class MenuItemPrepModel extends PrepModel {
 	public MenuItemPrepModel( java.util.UUID id ) {
 		super( id );
 	}
-	public abstract org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv );
 	@Override
-	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
+	public final org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
 		throw new RuntimeException();
 	}
 }

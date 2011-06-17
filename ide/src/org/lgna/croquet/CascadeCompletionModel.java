@@ -46,59 +46,28 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class OperationMenuItemPrepModel extends StandardMenuItemPrepModel {
-	public static class OperationMenuPrepModelResolver<E> implements org.lgna.croquet.resolvers.CodableResolver< OperationMenuItemPrepModel > {
-		private final OperationMenuItemPrepModel model;
-		public OperationMenuPrepModelResolver( OperationMenuItemPrepModel model ) {
-			this.model = model;
-		}
-		public OperationMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.lgna.croquet.resolvers.CodableResolver<Operation<?>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			Operation<?> operation = resolver.getResolved();
-			this.model = operation.getMenuItemPrepModel();
-		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			org.lgna.croquet.resolvers.CodableResolver<Operation<?>> resolver = this.model.operation.getCodableResolver();
-			binaryEncoder.encode( resolver );
-		}
-		public OperationMenuItemPrepModel getResolved() {
-			return this.model;
-		}
+public final class CascadeCompletionModel<B> extends CompletionModel {
+	private final CascadePopupPrepModel<B> popupPrepModel;
+	/*package-private*/ CascadeCompletionModel( Group group, CascadePopupPrepModel<B> popupPrepModel ) {
+		super( group, java.util.UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
+		this.popupPrepModel = popupPrepModel;
 	}
-	
-	private final Operation<?> operation;
-	/*package-private*/ OperationMenuItemPrepModel( Operation<?> operation ) {
-		super( java.util.UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
-		assert operation != null;
-		this.operation = operation;
+	public CascadePopupPrepModel<B> getPopupPrepModel() {
+		return this.popupPrepModel;
 	}
 	@Override
-	public Iterable< ? extends Model > getChildren() {
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.operation );
+	protected String getDefaultLocalizedText() {
+		return this.popupPrepModel.getDefaultLocalizedText();
 	}
 	@Override
 	protected void localize() {
 	}
-	public Operation<?> getOperation() {
-		return this.operation;
+	@Override
+	public org.lgna.croquet.history.Step< ? > fire( org.lgna.croquet.triggers.Trigger trigger ) {
+		return null;
 	}
 	@Override
-	protected OperationMenuPrepModelResolver createCodableResolver() {
-		return new OperationMenuPrepModelResolver( this );
-	}
-	@Override
-	public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
-		return this.operation.getFirstComponent();
-	}
-	@Override
-	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-		Operation< ? > operation = this.getOperation();
-		if( operation instanceof CascadeCompletionModel< ? > ) {
-			CascadeCompletionModel< ? > cascadePopupOperation = (CascadeCompletionModel< ? >)operation;
-			rv.addMenu( new org.lgna.croquet.components.Menu( this ) );
-		} else {
-			rv.addMenuItem( new org.lgna.croquet.components.MenuItem( this.getOperation() ) );
-		}
-		return rv;
+	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
+		return false;
 	}
 }

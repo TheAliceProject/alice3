@@ -267,7 +267,7 @@ public class Factory extends org.alice.ide.common.Factory {
 		).getPopupPrepModel() );
 		return abstractStatementPane;
 	}
-	protected java.util.List< org.lgna.croquet.MenuItemPrepModel > updatePopupOperations( java.util.List< org.lgna.croquet.MenuItemPrepModel > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+	protected java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > updatePopupOperations( java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		edu.cmu.cs.dennisc.alice.ast.StatementListProperty property = abstractStatementPane.getOwner();
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
@@ -304,8 +304,8 @@ public class Factory extends org.alice.ide.common.Factory {
 		}
 		return rv;
 	}
-	private java.util.List< org.lgna.croquet.MenuItemPrepModel > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
-		return this.updatePopupOperations( new java.util.LinkedList< org.lgna.croquet.MenuItemPrepModel >(), abstractStatementPane );
+	private java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+		return this.updatePopupOperations( new java.util.LinkedList< org.lgna.croquet.StandardMenuItemPrepModel >(), abstractStatementPane );
 	}
 
 }

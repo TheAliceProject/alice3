@@ -46,24 +46,38 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class CascadePopupCompletionModel<B> extends CompletionModel {
-	private final CascadePopupPrepModel<B> popupPrepModel;
-	public CascadePopupCompletionModel( Group group, CascadePopupPrepModel<B> popupPrepModel ) {
-		super( group, java.util.UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
-		this.popupPrepModel = popupPrepModel;
+public abstract class CascadeMenuModel< FB > extends CascadeBlankOwner< FB, FB > {
+	private class InternalBlank extends CascadeBlank< FB > {
+		public InternalBlank() {
+			super(java.util.UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
+		}
+		@Override
+		protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< FB > blankNode ) {
+			CascadeMenuModel.this.updateBlankChildren( rv, blankNode );
+			return rv;
+		}
 	}
-	public CascadePopupPrepModel<B> getPopupPrepModel() {
-		return this.popupPrepModel;
+	private final InternalBlank blank = new InternalBlank();
+	private transient boolean isDirty;
+	public CascadeMenuModel( java.util.UUID id ) {
+		super( id );
+		this.addBlank( this.blank );
+	}
+	protected abstract java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< FB > step );
+	private org.lgna.croquet.cascade.AbstractItemNode< FB,FB,? > getSelectedFillInContext( org.lgna.croquet.cascade.ItemNode< ? super FB,? > step ) {
+		org.lgna.croquet.cascade.BlankNode< ? > blankContext = step.getBlankStepAt( 0 );
+		return blankContext.getSelectedFillInContext();
 	}
 	@Override
-	protected void localize() {
+	public FB getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > step ) {
+		return this.getSelectedFillInContext( step ).getTransientValue();
 	}
 	@Override
-	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
-		throw new RuntimeException();
+	public FB createValue( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > step ) {
+		return this.getSelectedFillInContext( step ).createValue();
 	}
 	@Override
-	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
-		return false;
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > step ) {
+		return new javax.swing.JLabel( this.getDefaultLocalizedText() );
 	}
 }

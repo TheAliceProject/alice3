@@ -46,11 +46,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class Menu extends ViewController< javax.swing.JMenu, org.lgna.croquet.MenuItemPrepModel > implements MenuItemContainer {
-	public Menu( org.lgna.croquet.MenuModel model ) {
-		super( model );
-	}
-	public Menu( org.lgna.croquet.CascadeItem< ?,? > model ) {
+public class Menu extends ViewController< javax.swing.JMenu, org.lgna.croquet.StandardMenuItemPrepModel > implements MenuItemContainer {
+	public Menu( org.lgna.croquet.StandardMenuItemPrepModel model ) {
 		super( model );
 	}
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
@@ -67,6 +64,29 @@ public class Menu extends ViewController< javax.swing.JMenu, org.lgna.croquet.Me
 	@Override
 	protected javax.swing.JMenu createAwtComponent() {
 		return new javax.swing.JMenu();
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getModel().addPopupMenuListener( this );
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		this.getModel().removePopupMenuListener( this );
+		super.handleUndisplayable();
+	}
+	
+	@Override
+	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
+		this.getAwtComponent().setAction( this.getModel().getAction() );
+		super.handleAddedTo( parent );
+	}
+	@Override
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
+		super.handleRemovedFrom( parent );
+		this.getAwtComponent().setAction( null );
 	}
 	
 //	/*package-private*/ void setText( String text ) {

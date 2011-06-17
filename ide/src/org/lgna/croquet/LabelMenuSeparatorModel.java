@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LabelMenuSeparatorModel extends MenuItemPrepModel {
+public abstract class LabelMenuSeparatorModel extends StandardMenuItemPrepModel {
 	private javax.swing.Icon icon;
 	public LabelMenuSeparatorModel( java.util.UUID id ) {
 		super( id );

@@ -41,19 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadePopupCompletionStep< T > extends CompletionStep< org.lgna.croquet.CascadePopupCompletionModel< T > >{
-	public static <T> CascadePopupCompletionStep<T> createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadePopupCompletionModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new CascadePopupCompletionStep<T>( parent, model, trigger );
+public abstract class StandardMenuItemPrepModel extends MenuItemPrepModel {
+	public StandardMenuItemPrepModel( java.util.UUID id ) {
+		super( id );
 	}
-	private CascadePopupCompletionStep( Transaction parent, org.lgna.croquet.CascadePopupCompletionModel< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
-		super( parent, model, trigger, new TransactionHistory() );
-	}
-	public CascadePopupCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
+	public abstract org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv );
 }
