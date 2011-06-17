@@ -73,7 +73,7 @@ public class ConstructorDeclaredInAlice extends AbstractConstructor implements C
 				} else {
 					BlockStatement prevBlockStatement = (BlockStatement)value;
 					Statement[] buffer = new Statement[ prevBlockStatement.statements.size() ];
-					ConstructorBlockStatement constructorBlockStatement = new ConstructorBlockStatement( null, prevBlockStatement.statements.toArray( buffer ) );
+					ConstructorBlockStatement constructorBlockStatement = new ConstructorBlockStatement( new SuperConstructorInvocationStatement(), prevBlockStatement.statements.toArray( buffer ) );
 					constructorBlockStatement.isEnabled.setValue( prevBlockStatement.isEnabled.getValue() );
 					value = constructorBlockStatement;
 				}

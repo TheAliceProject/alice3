@@ -47,10 +47,18 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public abstract class ConstructorInvocationStatement extends Statement {
+	public DeclarationProperty< AbstractConstructor > contructor = new DeclarationProperty< AbstractConstructor >( this ) {
+		@Override
+		public boolean isReference() {
+			return true;
+		}
+	};
 	public ArgumentListProperty arguments = new ArgumentListProperty( this );
 	public ConstructorInvocationStatement() {
 	}
-	public ConstructorInvocationStatement( Argument[] arguments ){
+	public ConstructorInvocationStatement( AbstractConstructor constructor, Argument[] arguments ){
+		assert constructor != null;
+		this.contructor.setValue( constructor );
 		this.arguments.add( arguments );
 	}
 }

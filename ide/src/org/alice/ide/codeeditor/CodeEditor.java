@@ -200,15 +200,8 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 					if( body instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement ) {
 						edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement constructorBlockStatement = (edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement)body;
 						edu.cmu.cs.dennisc.alice.ast.ConstructorInvocationStatement	constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
-						
-						edu.cmu.cs.dennisc.alice.ast.ConstructorInvocationStatement	previewStatement;
-						if( constructorInvocationStatement != null ) {
-							previewStatement = constructorInvocationStatement;
-						} else {
-							//todo
-							previewStatement = new edu.cmu.cs.dennisc.alice.ast.SuperConstructorInvocationStatement();
-						}
-						superInvocationComponent = org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( previewStatement );
+						assert constructorInvocationStatement != null;
+						superInvocationComponent = org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( constructorInvocationStatement );
 					} else {
 						superInvocationComponent = null;
 					}
