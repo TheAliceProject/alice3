@@ -44,8 +44,13 @@ package org.alice.stageide.sceneeditor;
 
 import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.CameraMarker;
+import org.alice.apis.moveandturn.PointOfView;
 import org.alice.apis.moveandturn.Scene;
 import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
+import org.lookingglassandalice.storytelling.ImplementationAccessor;
+import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
+
+import edu.cmu.cs.dennisc.scenegraph.Composite;
 
 /**
  * @author Dennis Cosgrove
@@ -125,6 +130,7 @@ public class SetUpMethodGenerator {
 		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cnstrctr );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( q.x ), createExpression( q.y ), createExpression( q.z ), createExpression( q.w ) );
 	}
+	
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.PointOfView pointOfView ) {
 		Class< ? > cls = org.alice.apis.moveandturn.PointOfView.class;
 		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, org.alice.apis.moveandturn.Orientation.class, org.alice.apis.moveandturn.Position.class );
@@ -162,7 +168,15 @@ public class SetUpMethodGenerator {
 	}
 	
 	public static void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance, FieldAndInstanceMapper mapper ) {
-		if( instance instanceof org.alice.apis.moveandturn.Element ) {
+		if (instance instanceof org.lookingglassandalice.storytelling.Model)
+		{
+			org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)instance;
+			EntityImplementation implementation = ImplementationAccessor.getImplementation(model);
+			Composite sgComposite = implementation.getSgComposite();
+			PointOfView pov = new PointOfView(sgComposite.getTransformation(sgComposite.getParent()));
+			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( pov ) ) );
+		}
+		else if( instance instanceof org.alice.apis.moveandturn.Element ) {
 			org.alice.apis.moveandturn.Element element = (org.alice.apis.moveandturn.Element)instance;
 			bodyStatementsProperty.add( createStatement( edu.cmu.cs.dennisc.pattern.AbstractElement.class, "setName", String.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( field.getName() ) ) );
 			if( instance instanceof org.alice.apis.moveandturn.Transformable ) {

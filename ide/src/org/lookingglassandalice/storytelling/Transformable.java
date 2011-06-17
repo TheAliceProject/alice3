@@ -43,6 +43,9 @@
 
 package org.lookingglassandalice.storytelling;
 
+import org.alice.apis.moveandturn.PointOfView;
+
+
 /**
  * @author Dennis Cosgrove
  */
@@ -69,5 +72,9 @@ public abstract class Transformable extends Entity implements MutableRider, Move
 	}
 	public void roll( RollDirection direction, Number amount, VantagePointAnimationDetails details ) {
 		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
+	}
+	
+	public void setLocalPointOfView( PointOfView pointOfView ) {
+		this.getImplementation().getSgComposite().setLocalTransformation(pointOfView.getInternal());
 	}
 }
