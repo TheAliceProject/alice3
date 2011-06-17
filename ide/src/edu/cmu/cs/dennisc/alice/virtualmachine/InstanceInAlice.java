@@ -50,44 +50,30 @@ import edu.cmu.cs.dennisc.alice.ast.*;
  */
 public class InstanceInAlice {
 	public static InstanceInAlice createInstance( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments, boolean isBodyExcutionDesired ) {
-		return new InstanceInAlice( vm, constructor, arguments, isBodyExcutionDesired );
+		return new InstanceInAlice( vm, constructor, arguments, isBodyExcutionDesired, new java.util.HashMap< FieldDeclaredInAlice, Object >() );
 	}
 	
 	private final Object nextInstance;
 	private final AbstractTypeDeclaredInAlice<?> type;
-	private final java.util.Map< FieldDeclaredInAlice, Object > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public InstanceInAlice( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments, boolean isBodyExcutionDesired ) {
+	private final java.util.Map< FieldDeclaredInAlice, Object > fieldMap;
+	public InstanceInAlice( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments, boolean isBodyExcutionDesired, java.util.Map< FieldDeclaredInAlice, Object > fieldMap ) {
+		this.type = constructor.getDeclaringType();
+		this.fieldMap = fieldMap;
+
+		
+
 		ConstructorBlockStatement constructorBlockStatement = constructor.body.getValue();
 		ConstructorInvocationStatement constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
-		this.type = constructor.getDeclaringType();
 		AbstractConstructor nextConstructor = constructorInvocationStatement.contructor.getValue();
+		java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> stackMap = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, Object >();
+		for( int i=0; i<arguments.length; i++ ) {
+			stackMap.put( constructor.parameters.get( i ), arguments[ i ] );
+		}
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)constructor.getDeclaringType();
+		vm.pushConstructorFrame( type, stackMap );
 		Object[] nextArguments = vm.evaluateArguments( nextConstructor.getParameters(), constructorInvocationStatement.arguments );
 		if( nextConstructor.isDeclaredInAlice() ) {
-			
-			java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, Object >();
-			for( int i=0; i<arguments.length; i++ ) {
-				map.put( constructor.parameters.get( i ), arguments[ i ] );
-			}
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)constructor.getDeclaringType();
-			vm.pushConstructorFrame( type, map );
-			try {
-				this.nextInstance = new InstanceInAlice( vm, (ConstructorDeclaredInAlice)nextConstructor, nextArguments, isBodyExcutionDesired );
-				vm.setConstructorFrameInstanceInAlice( this );
-				for( AbstractField field : this.type.getDeclaredFields() ) {
-					assert field instanceof FieldDeclaredInAlice;
-					FieldDeclaredInAlice fieldDeclaredInAlice = (FieldDeclaredInAlice)field;
-					set( fieldDeclaredInAlice, vm.evaluate( fieldDeclaredInAlice.initializer.getValue() ) );
-				}
-				if( isBodyExcutionDesired ) {
-					try {
-						vm.executeBlockStatement( constructorBlockStatement );
-					} catch( ReturnException re ) {
-						throw new RuntimeException( re );
-					}
-				}
-			} finally {
-				vm.popFrame();
-			}
+			this.nextInstance = new InstanceInAlice( vm, (ConstructorDeclaredInAlice)nextConstructor, nextArguments, isBodyExcutionDesired, fieldMap );
 		} else {
 			ConstructorDeclaredInJava nextConstructorDeclaredInJava = (ConstructorDeclaredInJava)nextConstructor;
 			ConstructorReflectionProxy constructorReflectionProxy =  nextConstructorDeclaredInJava.getConstructorReflectionProxy();
@@ -95,6 +81,20 @@ public class InstanceInAlice {
 			assert cnstrctr != null : constructorReflectionProxy.getDeclaringClassReflectionProxy().getName();
 			this.nextInstance = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, nextArguments );
 		}
+		vm.setConstructorFrameInstanceInAlice( this );
+		for( AbstractField field : this.type.getDeclaredFields() ) {
+			assert field instanceof FieldDeclaredInAlice;
+			FieldDeclaredInAlice fieldDeclaredInAlice = (FieldDeclaredInAlice)field;
+			set( fieldDeclaredInAlice, vm.evaluate( fieldDeclaredInAlice.initializer.getValue() ) );
+		}
+		if( isBodyExcutionDesired ) {
+			try {
+				vm.executeBlockStatement( constructorBlockStatement );
+			} catch( ReturnException re ) {
+				throw new RuntimeException( re );
+			}
+		}
+		vm.popFrame();
 	}
 //	public void initialize( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments ) {
 //		this.type = constructor.getDeclaringType();
@@ -132,7 +132,7 @@ public class InstanceInAlice {
 	}
 	public Object getInstanceInJava() {
 		if( this.nextInstance instanceof InstanceInAlice ) {
-			return ((InstanceInAlice)this.nextInstance).nextInstance;
+			return ((InstanceInAlice)this.nextInstance).getInstanceInJava();
 		} else {
 			return this.nextInstance;
 		}
@@ -141,10 +141,10 @@ public class InstanceInAlice {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.nextInstance, cls );
 	}
 	public Object get( FieldDeclaredInAlice field ) {
-		return this.map.get( field );
+		return this.fieldMap.get( field );
 	}
 	public void set( FieldDeclaredInAlice field, Object value ) {
-		this.map.put( field, value );
+		this.fieldMap.put( field, value );
 	}
 
 	@Override
