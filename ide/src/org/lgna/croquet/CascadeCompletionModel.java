@@ -70,4 +70,14 @@ public final class CascadeCompletionModel<B> extends CompletionModel {
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
 		return false;
 	}
+	private CascadeMenuItemPrepModel menuPrepModel;
+	public synchronized CascadeMenuItemPrepModel getMenuItemPrepModel() {
+		if( this.menuPrepModel != null ) {
+			//pass
+		} else {
+			this.menuPrepModel = new CascadeMenuItemPrepModel( this );
+		}
+		return this.menuPrepModel;
+	}
+	
 }

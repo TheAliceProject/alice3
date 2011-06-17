@@ -46,53 +46,36 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class OperationMenuItemPrepModel extends StandardMenuItemPrepModel {
-	public static class OperationMenuPrepModelResolver<E> implements org.lgna.croquet.resolvers.CodableResolver< OperationMenuItemPrepModel > {
-		private final OperationMenuItemPrepModel model;
-		public OperationMenuPrepModelResolver( OperationMenuItemPrepModel model ) {
+public class CascadeMenuItemPrepModel extends AbstractMenuModel {
+	public static class CascadeMenuPrepModelResolver implements org.lgna.croquet.resolvers.CodableResolver< CascadeMenuItemPrepModel > {
+		private final CascadeMenuItemPrepModel model;
+		public CascadeMenuPrepModelResolver( CascadeMenuItemPrepModel model ) {
 			this.model = model;
 		}
-		public OperationMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.lgna.croquet.resolvers.CodableResolver<Operation<?>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			Operation<?> operation = resolver.getResolved();
-			this.model = operation.getMenuItemPrepModel();
+		public CascadeMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			org.lgna.croquet.resolvers.CodableResolver<CascadeCompletionModel> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			CascadeCompletionModel model = resolver.getResolved();
+			this.model = model.getMenuItemPrepModel();
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			org.lgna.croquet.resolvers.CodableResolver<Operation<?>> resolver = this.model.operation.getCodableResolver();
+			org.lgna.croquet.resolvers.CodableResolver<CascadeCompletionModel> resolver = this.model.completionModel.getCodableResolver();
 			binaryEncoder.encode( resolver );
 		}
-		public OperationMenuItemPrepModel getResolved() {
+		public CascadeMenuItemPrepModel getResolved() {
 			return this.model;
 		}
 	}
-	
-	private final Operation<?> operation;
-	/*package-private*/ OperationMenuItemPrepModel( Operation<?> operation ) {
-		super( java.util.UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
-		assert operation != null;
-		this.operation = operation;
+	private final CascadeCompletionModel completionModel;
+	/*package-private*/ CascadeMenuItemPrepModel( CascadeCompletionModel closingModel ) {
+		super( java.util.UUID.fromString( "a6d47082-8859-4b7c-b654-37e928aa67ed" ), closingModel.getPopupPrepModel().getClass() );
+		assert closingModel != null;
+		this.completionModel = closingModel;
+	}
+	public CascadeCompletionModel getCascadeCompletionModel() {
+		return this.completionModel;
 	}
 	@Override
-	public Iterable< ? extends Model > getChildren() {
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.operation );
-	}
-	@Override
-	protected void localize() {
-	}
-	public Operation<?> getOperation() {
-		return this.operation;
-	}
-	@Override
-	protected OperationMenuPrepModelResolver createCodableResolver() {
-		return new OperationMenuPrepModelResolver( this );
-	}
-	@Override
-	public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
-		return this.operation.getFirstComponent();
-	}
-	@Override
-	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-		rv.addMenuItem( new org.lgna.croquet.components.MenuItem( this.getOperation() ) );
-		return rv;
+	protected CascadeMenuPrepModelResolver createCodableResolver() {
+		return new CascadeMenuPrepModelResolver( this );
 	}
 }

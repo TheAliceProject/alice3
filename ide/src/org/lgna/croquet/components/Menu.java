@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class Menu extends ViewController< javax.swing.JMenu, org.lgna.croquet.StandardMenuItemPrepModel > implements MenuItemContainer {
-	public Menu( org.lgna.croquet.StandardMenuItemPrepModel model ) {
+public class Menu extends ViewController< javax.swing.JMenu, org.lgna.croquet.AbstractMenuModel > implements MenuItemContainer {
+	public Menu( org.lgna.croquet.AbstractMenuModel model ) {
 		super( model );
 	}
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {

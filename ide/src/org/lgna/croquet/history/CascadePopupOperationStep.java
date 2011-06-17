@@ -46,7 +46,7 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadePopupOperationStep< T > extends SingleThreadOperationStep< org.lgna.croquet.CascadeCompletionModel< T > >{
+public class CascadePopupOperationStep< T > extends CompletionStep< org.lgna.croquet.CascadeCompletionModel< T > >{
 	public static <T> CascadePopupOperationStep<T> createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadeCompletionModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new CascadePopupOperationStep<T>( parent, model, trigger );
 	}

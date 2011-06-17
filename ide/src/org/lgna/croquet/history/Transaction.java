@@ -283,7 +283,7 @@ public class Transaction extends Node< TransactionHistory > {
 //										rv = null;
 //									}
 ////								}
-							} else if( model instanceof org.lgna.croquet.MenuModel ) {
+							} else if( model instanceof org.lgna.croquet.AbstractMenuModel ) {
 								//pass
 							} else if( model instanceof org.lgna.croquet.LabelMenuSeparatorModel ) {
 								//pass
