@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class SuperConstructorInvocationStatement extends ConstructorInvocationStatement {
 	public SuperConstructorInvocationStatement() {
 	}
-	public SuperConstructorInvocationStatement( Argument... arguments ){
-		super( arguments );
+	public SuperConstructorInvocationStatement( AbstractConstructor constructor, Argument... arguments ){
+		super( constructor, arguments );
 	}
 }

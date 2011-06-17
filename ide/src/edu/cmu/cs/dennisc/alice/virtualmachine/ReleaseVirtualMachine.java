@@ -94,8 +94,8 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		public abstract Object lookup( AbstractParameter parameter );
 	}
 
-	protected static class InvocationFrame extends AbstractFrame {
-		private InstanceInAlice m_instance;
+	protected static abstract class InvocationFrame extends AbstractFrame {
+		protected InstanceInAlice m_instance;
 		private java.util.Map< AbstractParameter, Object > m_mapParameterToValue;
 		public InvocationFrame( Frame owner, InstanceInAlice instance, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
 			super( owner );
@@ -116,7 +116,31 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			return m_mapParameterToValue.get( parameter );
 		}
 	}
+	
+	protected static class MethodInvocationFrame extends InvocationFrame {
+		public MethodInvocationFrame( Frame owner, InstanceInAlice instance, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
+			super( owner, instance, mapParameterToValue );
+		}
+		public MethodInvocationFrame( Frame owner, MethodInvocationFrame other ) {
+			super( owner, other );
+		}
+	}
+	protected static class ConstructorInvocationFrame extends InvocationFrame {
+		private final TypeDeclaredInAlice type;
+		public ConstructorInvocationFrame( Frame owner, TypeDeclaredInAlice type, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
+			super( owner, null, mapParameterToValue );
+			this.type = type;
+		}
+		public ConstructorInvocationFrame( Frame owner, ConstructorInvocationFrame other ) {
+			super( owner, other );
+			this.type = other.type;
+		}
+		public void setThis( InstanceInAlice instance ) {
+			m_instance = instance;
+		}
+	}
 
+	
 	protected static class ThreadFrame extends AbstractFrame {
 		public ThreadFrame( Frame owner ) {
 			super( owner );
@@ -166,8 +190,10 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			ownerCopy = null;
 		}
 		Frame rv;
-		if( frame instanceof InvocationFrame ) {
-			rv = new InvocationFrame( ownerCopy, (InvocationFrame)frame );
+		if( frame instanceof MethodInvocationFrame ) {
+			rv = new MethodInvocationFrame( ownerCopy, (MethodInvocationFrame)frame );
+		} else if( frame instanceof MethodInvocationFrame ) {
+			rv = new ConstructorInvocationFrame( ownerCopy, (ConstructorInvocationFrame)frame );
 		} else if( frame instanceof ThreadFrame ) {
 			rv = new ThreadFrame( ownerCopy, (ThreadFrame)frame );
 		} else {
@@ -186,9 +212,21 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		return getCurrentFrame().getThis();
 	}
 	@Override
-	protected void pushFrame( InstanceInAlice instance, java.util.Map< AbstractParameter, Object > map ) {
+	protected void pushConstructorFrame( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, java.util.Map< AbstractParameter, Object > map ) {
 		Frame owner = getCurrentFrame();
-		setCurrentFrame( new InvocationFrame( owner, instance, map ) );
+		setCurrentFrame( new ConstructorInvocationFrame( owner, type, map ) );
+	}
+	@Override
+	protected void setConstructorFrameInstanceInAlice( edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instance ) {
+		Frame currentFrame = getCurrentFrame();
+		assert currentFrame instanceof ConstructorInvocationFrame;
+		ConstructorInvocationFrame constructorInvocationFrame = (ConstructorInvocationFrame)currentFrame;
+		constructorInvocationFrame.setThis( instance );
+	}
+	@Override
+	protected void pushMethodFrame( InstanceInAlice instance, java.util.Map< AbstractParameter, Object > map ) {
+		Frame owner = getCurrentFrame();
+		setCurrentFrame( new MethodInvocationFrame( owner, instance, map ) );
 	}
 	@Override
 	protected void pushLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local, Object value ) {

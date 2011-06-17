@@ -246,7 +246,8 @@ public class ModelResourceUtilities {
 		ParameterDeclaredInAlice parameter = new ParameterDeclaredInAlice("modelResource", resourceClass);
 		ParameterAccess parameterAccessor = new ParameterAccess(parameter);
 		Argument superArgument = new Argument(superParameter, parameterAccessor);
-		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement(superArgument);
+		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor superConstructor = null; //todo
+		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement(superConstructor, superArgument);
 		ConstructorBlockStatement blockStatement = new ConstructorBlockStatement(superInvocation);
 		ParameterDeclaredInAlice[] parameters = {parameter};
 		ConstructorDeclaredInAlice constructor = new ConstructorDeclaredInAlice(parameters, blockStatement);
@@ -258,7 +259,8 @@ public class ModelResourceUtilities {
 		FieldDeclaredInJavaWithField javaField = FieldDeclaredInJavaWithField.get(resourceField);
 		FieldAccess fieldAccess = NodeUtilities.createStaticFieldAccess(javaField);
 		Argument superArgument = new Argument(superParameter, fieldAccess);
-		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement(superArgument);
+		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor superConstructor = null; //todo
+		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement(superConstructor, superArgument);
 		ConstructorBlockStatement blockStatement = new ConstructorBlockStatement(superInvocation);
 		ParameterDeclaredInAlice[] parameters = {};
 		ConstructorDeclaredInAlice constructor = new ConstructorDeclaredInAlice(parameters, blockStatement);

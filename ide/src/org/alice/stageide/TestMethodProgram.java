@@ -54,9 +54,18 @@ public class TestMethodProgram extends org.alice.apis.moveandturn.Program {
 			return super.evaluateArguments( parameters, arguments );
 		}
 		@Override
-		public void pushFrame( edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instance, java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, Object > map ) {
-			super.pushFrame( instance, map );
+		protected void pushConstructorFrame( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, java.lang.Object > map ) {
+			super.pushConstructorFrame( type, map );
 		}
+		@Override
+		protected void pushMethodFrame( edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instance, java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, java.lang.Object > map ) {
+			super.pushMethodFrame( instance, map );
+		}
+		@Override
+		protected void pushLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local, java.lang.Object value ) {
+			super.pushLocal( local, value );
+		}
+		
 		@Override
 		public void popFrame() {
 			super.popFrame();
@@ -119,7 +128,7 @@ public class TestMethodProgram extends org.alice.apis.moveandturn.Program {
 		Object[] arguments;
 		this.vm.pushCurrentThread( null );
 		try {
-			this.vm.pushFrame( this.sceneInstance, null );
+			this.vm.pushMethodFrame( this.sceneInstance, null );
 			try {
 				arguments = this.vm.evaluateArguments( this.emptyExpressionMethodInvocation.method.getValue().getParameters(), this.emptyExpressionMethodInvocation.arguments );
 			} finally {

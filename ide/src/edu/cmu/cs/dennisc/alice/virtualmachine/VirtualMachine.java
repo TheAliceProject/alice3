@@ -65,7 +65,9 @@ public abstract class VirtualMachine {
 	
 	protected abstract Object getThis();
 
-	protected abstract void pushFrame( InstanceInAlice instance, java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map );
+	protected abstract void pushConstructorFrame( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map );
+	protected abstract void setConstructorFrameInstanceInAlice( InstanceInAlice instance );
+	protected abstract void pushMethodFrame( InstanceInAlice instance, java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map );
 	protected abstract void popFrame();
 
 	protected abstract Object lookup( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter );
@@ -91,12 +93,12 @@ public abstract class VirtualMachine {
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType;
-	public Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType ) {
+	public Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType, Object... arguments ) {
 		assert entryPointType != null;
 		this.setEntryPointType( entryPointType );
 		pushCurrentThread( null );
 		try {
-			return this.createInstance( this.entryPointType.getDeclaredConstructor() );
+			return this.createInstance( this.entryPointType.getDeclaredConstructor(), arguments );
 		} finally {
 			popCurrentThread();
 		}
@@ -114,27 +116,8 @@ public abstract class VirtualMachine {
 	public void setConstructorBodyExecutionDesired(boolean isConstructorBodyExecutionDesired) {
 		this.isConstructorBodyExecutionDesired = isConstructorBodyExecutionDesired;
 	}
-	
 	private Object createInstanceFromConstructorDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor, Object[] arguments ) {
-		InstanceInAlice instanceInAlice = new InstanceInAlice();
-		java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, Object >();
-		for( int i=0; i<arguments.length; i++ ) {
-			map.put( constructor.parameters.get( i ), arguments[ i ] );
-		}
-		this.pushFrame( instanceInAlice, map );
-		try {
-			instanceInAlice.initialize( this, constructor, arguments );
-			if( this.isConstructorBodyExecutionDesired ) {
-				try {
-					this.executeBlockStatement( constructor.body.getValue() );
-				} catch( ReturnException re ) {
-					throw new RuntimeException( re );
-				}
-			}
-		} finally {
-			this.popFrame();
-		}
-		return instanceInAlice;
+		return InstanceInAlice.createInstance( this, constructor, arguments, this.isConstructorBodyExecutionDesired );
 	}
 	private Object createInstanceFromConstructorDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor, Object[] arguments ) {
 		//todo
@@ -390,7 +373,7 @@ public abstract class VirtualMachine {
 		for( int i=0; i<arguments.length; i++ ) {
 			map.put( method.parameters.get( i ), arguments[ i ] );
 		}
-		this.pushFrame( instanceInAlice, map );
+		this.pushMethodFrame( instanceInAlice, map );
 		try {
 			this.execute( method.body.getValue() );
 			if( method.isProcedure() ) {

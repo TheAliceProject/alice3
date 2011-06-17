@@ -49,6 +49,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class ConstructorBlockStatement extends BlockStatement {
 	public NodeProperty< ConstructorInvocationStatement > constructorInvocationStatement = new NodeProperty< ConstructorInvocationStatement >( this );
 	public ConstructorBlockStatement() {
+		this.constructorInvocationStatement.setValue( new SuperConstructorInvocationStatement() );
 	}
 	public ConstructorBlockStatement( ConstructorInvocationStatement constructorInvocationStatement, Statement... statements ) {
 		super( statements );
