@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class MenuModel extends AbstractMenuModel {
-	public MenuModel( java.util.UUID individualId, Class<?> clsForI18N ) {
+	public MenuModel( java.util.UUID individualId, Class<? extends Model> clsForI18N ) {
 		super( individualId, clsForI18N );
 	}
 	public MenuModel( java.util.UUID individualId ) {

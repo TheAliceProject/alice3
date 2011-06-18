@@ -55,6 +55,12 @@ public abstract class PopupPrepModel extends PrepModel {
 	public PopupPrepModel( java.util.UUID id ) {
 		super( id );
 	}
+	
+	@Override
+	protected void localize() {
+		this.setName( this.getDefaultLocalizedText() );
+	}
+	
 	public javax.swing.Action getAction() {
 		return this.action;
 	}

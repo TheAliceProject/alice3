@@ -67,7 +67,7 @@ public final class CascadeInputDialogOperationFillIn<F> extends CascadeFillIn< F
 		}
 	}
 	private final CascadeInputDialogOperation<F> inputDialogOperation;
-	public CascadeInputDialogOperationFillIn( CascadeInputDialogOperation<F> inputDialogOperation ) {
+	/*package-private*/ CascadeInputDialogOperationFillIn( CascadeInputDialogOperation<F> inputDialogOperation ) {
 		super( java.util.UUID.fromString( "f2c75b9f-aa0d-487c-a161-46cb23ff3e76" ) );
 		this.inputDialogOperation = inputDialogOperation;
 	}

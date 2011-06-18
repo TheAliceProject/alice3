@@ -46,11 +46,11 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadePopupOperationStep< T > extends CompletionStep< org.lgna.croquet.CascadeCompletionModel< T > >{
-	public static <T> CascadePopupOperationStep<T> createAndAddToTransaction( Transaction parent, org.lgna.croquet.CascadeCompletionModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
+public class CascadePopupOperationStep< T > extends CompletionStep< org.lgna.croquet.Cascade< T > >{
+	public static <T> CascadePopupOperationStep<T> createAndAddToTransaction( Transaction parent, org.lgna.croquet.Cascade<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new CascadePopupOperationStep<T>( parent, model, trigger );
 	}
-	private CascadePopupOperationStep( Transaction parent, org.lgna.croquet.CascadeCompletionModel< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
+	private CascadePopupOperationStep( Transaction parent, org.lgna.croquet.Cascade< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger, new TransactionHistory() );
 	}
 	public CascadePopupOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

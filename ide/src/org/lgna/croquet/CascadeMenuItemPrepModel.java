@@ -53,25 +53,25 @@ public class CascadeMenuItemPrepModel extends AbstractMenuModel {
 			this.model = model;
 		}
 		public CascadeMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.lgna.croquet.resolvers.CodableResolver<CascadeCompletionModel> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			CascadeCompletionModel model = resolver.getResolved();
+			org.lgna.croquet.resolvers.CodableResolver<Cascade> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			Cascade model = resolver.getResolved();
 			this.model = model.getMenuItemPrepModel();
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			org.lgna.croquet.resolvers.CodableResolver<CascadeCompletionModel> resolver = this.model.completionModel.getCodableResolver();
+			org.lgna.croquet.resolvers.CodableResolver<Cascade> resolver = this.model.completionModel.getCodableResolver();
 			binaryEncoder.encode( resolver );
 		}
 		public CascadeMenuItemPrepModel getResolved() {
 			return this.model;
 		}
 	}
-	private final CascadeCompletionModel completionModel;
-	/*package-private*/ CascadeMenuItemPrepModel( CascadeCompletionModel closingModel ) {
+	private final Cascade completionModel;
+	/*package-private*/ CascadeMenuItemPrepModel( Cascade closingModel ) {
 		super( java.util.UUID.fromString( "a6d47082-8859-4b7c-b654-37e928aa67ed" ), closingModel.getPopupPrepModel().getClass() );
 		assert closingModel != null;
 		this.completionModel = closingModel;
 	}
-	public CascadeCompletionModel getCascadeCompletionModel() {
+	public Cascade getCascadeCompletionModel() {
 		return this.completionModel;
 	}
 	@Override

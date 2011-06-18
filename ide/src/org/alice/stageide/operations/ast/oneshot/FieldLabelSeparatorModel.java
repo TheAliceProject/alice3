@@ -66,10 +66,7 @@ public class FieldLabelSeparatorModel extends org.lgna.croquet.LabelMenuSeparato
 		this.field = field;
 	}
 	@Override
-	protected String getDefaultLocalizedText() {
+	public String getName() {
 		return this.field.getName();
-	}
-	@Override
-	protected void localize() {
 	}
 }

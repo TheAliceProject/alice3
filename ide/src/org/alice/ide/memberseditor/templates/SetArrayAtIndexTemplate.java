@@ -71,6 +71,6 @@ package org.alice.ide.memberseditor.templates;
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		//todo
-		return new org.alice.ide.croquet.models.ast.cascade.statement.FieldArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, this.field );
+		return new org.alice.ide.croquet.models.ast.cascade.statement.FieldArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, this.field ).getPopupPrepModel();
 	}
 }

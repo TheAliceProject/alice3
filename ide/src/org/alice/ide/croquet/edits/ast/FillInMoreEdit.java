@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.CascadeCompletionModel<edu.cmu.cs.dennisc.alice.ast.Expression> > {
+public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.Cascade<edu.cmu.cs.dennisc.alice.ast.Expression> > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
 
 	public FillInMoreEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
@@ -67,7 +67,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel().getPopupPrepModel();
+		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 
@@ -86,7 +86,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel().getPopupPrepModel();
+		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 		
@@ -108,7 +108,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel().getPopupPrepModel();
+		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
 			rv.append( "more: " );

@@ -40,28 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class SetterTemplate extends ExpressionStatementTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public SetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.ide.croquet.models.ast.SetterTemplateDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
-			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
+public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends ViewController< javax.swing.JMenu, M > implements MenuItemContainer {
+	public AbstractMenu( M model ) {
+		super( model );
+	}
+	public final org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+		return this;
+	}
+	@Override
+	protected final javax.swing.JMenu createAwtComponent() {
+		return new javax.swing.JMenu();
+	}
+	public void addPopupMenuListener(javax.swing.event.PopupMenuListener listener) {
+		this.getAwtComponent().getPopupMenu().addPopupMenuListener( listener );
+	}
+	public void removePopupMenuListener(javax.swing.event.PopupMenuListener listener) {
+		this.getAwtComponent().getPopupMenu().removePopupMenuListener( listener );
+	}
+	public void addMenu( Menu menu ) {
+		this.getAwtComponent().add( menu.getAwtComponent() );
+	}
+	public void addMenuItem( MenuItem menuItem ) {
+		this.getAwtComponent().add( menuItem.getAwtComponent() );
+	}
+	public void addCascadeMenu( CascadeMenu cascadeMenu ) {
+		this.getAwtComponent().add( cascadeMenu.getAwtComponent() );
+	}
+	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
+		this.getAwtComponent().add( cascadeMenuItem.getAwtComponent() );
+	}
+	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
+		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );
+	}
+	public void addSeparator() {
+		this.addSeparator( null );
+	}
+	public void addSeparator( MenuTextSeparator menuTextSeparator ) {
+		if( menuTextSeparator != null ) {
+			this.getAwtComponent().add( menuTextSeparator.getAwtComponent() );
+		} else {
+			this.getAwtComponent().addSeparator();
 		}
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( this.field );
+	
+	public void removeAllMenuItems() {
+		//this.internalRemoveAllComponents();
+		this.getAwtComponent().removeAll();
 	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		//todo
-		return new org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade( blockStatementIndexPair, this.field ).getPopupPrepModel();
+	public void forgetAndRemoveAllMenuItems() {
+		//this.internalForgetAndRemoveAllComponents();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "forgetAndRemoveAllMenuItems" );
+		this.getAwtComponent().removeAll();
 	}
 }

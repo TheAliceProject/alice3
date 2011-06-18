@@ -61,7 +61,7 @@ public abstract class Factory {
 		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
 			org.alice.ide.croquet.models.ast.cascade.ArgumentCascade model = org.alice.ide.croquet.models.ast.cascade.ArgumentCascade.getInstance( argument );
-			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty );
+			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model.getPopupPrepModel(), prefixPane, rv, expressionProperty );
 			rv = expressionPropertyDropDownPane;
 		}
 		return rv;

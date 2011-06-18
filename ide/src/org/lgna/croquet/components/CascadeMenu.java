@@ -46,12 +46,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeMenu extends ViewController< javax.swing.JMenu, org.lgna.croquet.CascadeItem< ?,? > > {
+public class CascadeMenu extends AbstractMenu< org.lgna.croquet.CascadeItem< ?,? > > {
 	public CascadeMenu( org.lgna.croquet.CascadeItem< ?,? > model ) {
 		super( model );
-	}
-	@Override
-	protected javax.swing.JMenu createAwtComponent() {
-		return new javax.swing.JMenu();
 	}
 }

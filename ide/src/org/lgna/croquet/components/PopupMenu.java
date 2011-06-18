@@ -80,6 +80,9 @@ public class PopupMenu extends ViewController< javax.swing.JPopupMenu, org.lgna.
 	public void addMenuItem( MenuItem menuItem ) {
 		this.getAwtComponent().add( menuItem.getAwtComponent() );
 	}
+	public void addCascadeMenu( CascadeMenu cascadeMenu ) {
+		this.getAwtComponent().add( cascadeMenu.getAwtComponent() );
+	}
 	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
 		this.getAwtComponent().add( cascadeMenuItem.getAwtComponent() );
 	}

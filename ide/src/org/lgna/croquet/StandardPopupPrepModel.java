@@ -42,8 +42,6 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.resolvers.CodableResolver;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -59,10 +57,9 @@ public final class StandardPopupPrepModel extends PopupPrepModel {
 		return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( this.menuModel );
 	}
 	@Override
-	protected void localize() {
-		this.setName( this.menuModel.getLocalizedText( "popupMenuOperation" ) );
+	protected Class< ? extends org.lgna.croquet.Model > getClassUsedForLocalization() {
+		return this.menuModel.getClassUsedForLocalization();
 	}
-	
 	public MenuModel getMenuModel() {
 		return this.menuModel;
 	}
@@ -88,27 +85,27 @@ public final class StandardPopupPrepModel extends PopupPrepModel {
 //		}
 //	}
 	
-	public static class PopupMenuOperationResolver implements CodableResolver< StandardPopupPrepModel > {
-		private final StandardPopupPrepModel popupMenuOperation;
-		public PopupMenuOperationResolver( StandardPopupPrepModel popupMenuOperation ) {
-			this.popupMenuOperation = popupMenuOperation;
+	public static class FromOwnerResolver implements org.lgna.croquet.resolvers.CodableResolver< StandardPopupPrepModel > {
+		private final StandardPopupPrepModel model;
+		public FromOwnerResolver( StandardPopupPrepModel model ) {
+			this.model = model;
 		}
-		public PopupMenuOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			CodableResolver<MenuModel> menuModelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		public FromOwnerResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			org.lgna.croquet.resolvers.CodableResolver<MenuModel> menuModelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 			MenuModel menuModel = menuModelResolver.getResolved();
-			this.popupMenuOperation = menuModel.getPopupPrepModel();
+			this.model = menuModel.getPopupPrepModel();
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			CodableResolver<MenuModel> menuModelResolver = this.popupMenuOperation.menuModel.getCodableResolver();
+			org.lgna.croquet.resolvers.CodableResolver<MenuModel> menuModelResolver = this.model.menuModel.getCodableResolver();
 			binaryEncoder.encode( menuModelResolver );
 		}
 		public StandardPopupPrepModel getResolved() {
-			return this.popupMenuOperation;
+			return this.model;
 		}
 	}
 	@Override
-	protected CodableResolver< StandardPopupPrepModel > createCodableResolver() {
-		return new PopupMenuOperationResolver( this );
+	protected org.lgna.croquet.resolvers.CodableResolver< StandardPopupPrepModel > createCodableResolver() {
+		return new FromOwnerResolver( this );
 	}
 	
 	

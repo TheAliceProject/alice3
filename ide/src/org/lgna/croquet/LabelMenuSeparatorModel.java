@@ -55,6 +55,9 @@ public abstract class LabelMenuSeparatorModel extends StandardMenuItemPrepModel 
 	public Iterable< ? extends Model > getChildren() {
 		return java.util.Collections.emptyList();
 	}
+	@Override
+	protected void localize() {
+	}
 	public String getName() {
 		return this.getDefaultLocalizedText();
 	}

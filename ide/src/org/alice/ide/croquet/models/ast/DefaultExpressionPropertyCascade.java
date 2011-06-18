@@ -55,7 +55,7 @@ public class DefaultExpressionPropertyCascade extends org.alice.ide.croquet.mode
 		}
 		DefaultExpressionPropertyCascade rv = map.get( expressionProperty );
 		if( rv != null ) {
-			assert rv.getCompletionModel().getGroup() == group;
+			assert rv.getGroup() == group;
 			assert rv.desiredType == desiredType : " " + rv.desiredType + " " + desiredType;
 			//pass
 		} else {

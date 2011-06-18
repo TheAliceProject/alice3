@@ -111,15 +111,18 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 		}
 	}
 
-	protected String getLocalizedText( String subKey ) {
-		return getLocalizedText( this.getClass(), subKey );
+	protected Class<? extends Model> getClassUsedForLocalization() {
+		return this.getClass();
+	}
+	protected final String getLocalizedText( String subKey ) {
+		return getLocalizedText( this.getClassUsedForLocalization(), subKey );
 	}
 	
 	protected static String getDefaultLocalizedText( Class<?> cls ) {
 		return getLocalizedText( cls, null );
 	}
-	protected String getDefaultLocalizedText() {
-		return getDefaultLocalizedText( this.getClass() );
+	protected final String getDefaultLocalizedText() {
+		return getDefaultLocalizedText( this.getClassUsedForLocalization() );
 	}
 
 	private static int getField( Class<?> cls, String fieldName, int nullValue ) {

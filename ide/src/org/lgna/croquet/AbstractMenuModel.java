@@ -48,12 +48,12 @@ package org.lgna.croquet;
  */
 public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	public static final StandardMenuItemPrepModel SEPARATOR = null;
-	private Class<?> clsForI18N;
+	private Class<? extends org.lgna.croquet.Model> clsForI18N;
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
 		}
 	};
-	public AbstractMenuModel( java.util.UUID individualId, Class<?> clsForI18N ) {
+	public AbstractMenuModel( java.util.UUID individualId, Class<? extends org.lgna.croquet.Model> clsForI18N ) {
 		super( individualId );
 		this.clsForI18N = clsForI18N;
 	}
@@ -63,15 +63,18 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	}
 	
 	@Override
-	protected void localize() {
-		if( clsForI18N != null ) {
-			//pass
+	protected Class< ? extends org.lgna.croquet.Model > getClassUsedForLocalization() {
+		if( this.clsForI18N != null ) {
+			return this.clsForI18N;
 		} else {
-			clsForI18N = this.getClass();
+			return this.getClass();
 		}
-		this.setName( getDefaultLocalizedText( clsForI18N ) );
-		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, getLocalizedMnemonicKey( clsForI18N ) );
-		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, getLocalizedAcceleratorKeyStroke( clsForI18N ) );
+	}
+	@Override
+	protected void localize() {
+		this.setName( this.getDefaultLocalizedText() );
+		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, this.getLocalizedMnemonicKey() );
+		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, this.getLocalizedAcceleratorKeyStroke() );
 	}
 	protected String getTutorialNoteName() {
 		return this.getName();

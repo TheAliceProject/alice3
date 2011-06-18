@@ -46,18 +46,27 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class CascadeCompletionModel<B> extends CompletionModel {
+public abstract class Cascade<B> extends CompletionModel {
+	private final Class< B > componentType;
+	private final CascadeRoot< B > root;
+
 	private final CascadePopupPrepModel<B> popupPrepModel;
-	/*package-private*/ CascadeCompletionModel( Group group, CascadePopupPrepModel<B> popupPrepModel ) {
-		super( group, java.util.UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
-		this.popupPrepModel = popupPrepModel;
+	public Cascade( Group group, java.util.UUID id, Class< B > componentType, CascadeBlank< B >[] blanks ) {
+		super( group, id );
+		this.componentType = componentType;
+		this.root = new CascadeRoot< B >( this );
+		assert blanks != null;
+		for( int i=0; i<blanks.length; i++ ) {
+			assert blanks[ i ] != null : this;
+			root.addBlank( blanks[ i ] );
+		}
+		this.popupPrepModel = new CascadePopupPrepModel<B>( this );
+	}
+	public Cascade( Group group, java.util.UUID id, Class< B > componentType, CascadeBlank< B > blank ) {
+		this( group, id, componentType, new CascadeBlank[] { blank } );
 	}
 	public CascadePopupPrepModel<B> getPopupPrepModel() {
 		return this.popupPrepModel;
-	}
-	@Override
-	protected String getDefaultLocalizedText() {
-		return this.popupPrepModel.getDefaultLocalizedText();
 	}
 	@Override
 	protected void localize() {
@@ -70,6 +79,17 @@ public final class CascadeCompletionModel<B> extends CompletionModel {
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
 		return false;
 	}
+	public CascadeRoot< B > getRoot() {
+		return this.root;
+	}
+	public Class< B > getComponentType() {
+		return this.componentType;
+	}
+	protected void prologue() {
+	}
+	protected void epilogue() {
+	}
+	protected abstract org.lgna.croquet.edits.Edit< ? extends Cascade< B > > createEdit( org.lgna.croquet.history.CascadePopupOperationStep< B > step, B[] values );
 	private CascadeMenuItemPrepModel menuPrepModel;
 	public synchronized CascadeMenuItemPrepModel getMenuItemPrepModel() {
 		if( this.menuPrepModel != null ) {
