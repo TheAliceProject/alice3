@@ -46,26 +46,26 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Cascade<B> extends CompletionModel {
-	private final Class< B > componentType;
-	private final CascadeRoot< B > root;
+public abstract class Cascade<T> extends CompletionModel {
+	private final Class< T > componentType;
+	private final CascadeRoot< T > root;
 
-	private final CascadePopupPrepModel<B> popupPrepModel;
-	public Cascade( Group group, java.util.UUID id, Class< B > componentType, CascadeBlank< B >[] blanks ) {
+	private final CascadePopupPrepModel<T> popupPrepModel;
+	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T >[] blanks ) {
 		super( group, id );
 		this.componentType = componentType;
-		this.root = new CascadeRoot< B >( this );
+		this.root = new CascadeRoot< T >( this );
 		assert blanks != null;
 		for( int i=0; i<blanks.length; i++ ) {
 			assert blanks[ i ] != null : this;
 			root.addBlank( blanks[ i ] );
 		}
-		this.popupPrepModel = new CascadePopupPrepModel<B>( this );
+		this.popupPrepModel = new CascadePopupPrepModel<T>( this );
 	}
-	public Cascade( Group group, java.util.UUID id, Class< B > componentType, CascadeBlank< B > blank ) {
+	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T > blank ) {
 		this( group, id, componentType, new CascadeBlank[] { blank } );
 	}
-	public CascadePopupPrepModel<B> getPopupPrepModel() {
+	public CascadePopupPrepModel<T> getPopupPrepModel() {
 		return this.popupPrepModel;
 	}
 	@Override
@@ -79,36 +79,36 @@ public abstract class Cascade<B> extends CompletionModel {
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
 		return false;
 	}
-	public CascadeRoot< B > getRoot() {
+	public CascadeRoot< T > getRoot() {
 		return this.root;
 	}
-	public Class< B > getComponentType() {
+	public Class< T > getComponentType() {
 		return this.componentType;
 	}
 	protected void prologue() {
 	}
 	protected void epilogue() {
 	}
-	protected abstract org.lgna.croquet.edits.Edit< ? extends Cascade< B > > createEdit( org.lgna.croquet.history.CascadeCompletionStep< B > step, B[] values );
-	private CascadeMenuItemPrepModel menuPrepModel;
-	public synchronized CascadeMenuItemPrepModel getMenuItemPrepModel() {
-		if( this.menuPrepModel != null ) {
+	protected abstract org.lgna.croquet.edits.Edit< ? extends Cascade< T > > createEdit( org.lgna.croquet.history.CascadeCompletionStep< T > step, T[] values );
+	private CascadeMenuItemPrepModel<T> menuItemPrepModel;
+	public synchronized CascadeMenuItemPrepModel<T> getMenuItemPrepModel() {
+		if( this.menuItemPrepModel != null ) {
 			//pass
 		} else {
-			this.menuPrepModel = new CascadeMenuItemPrepModel( this );
+			this.menuItemPrepModel = new CascadeMenuItemPrepModel<T>( this );
 		}
-		return this.menuPrepModel;
+		return this.menuItemPrepModel;
 	}
 	
-	public void handleCompletion( org.lgna.croquet.history.CascadeCompletionStep< B > step, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver, B[] values ) {
+	public void handleCompletion( org.lgna.croquet.history.CascadeCompletionStep< T > step, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver, T[] values ) {
 		try {
-			org.lgna.croquet.edits.Edit< ? extends Cascade< B > > edit = this.createEdit( step, values );
+			org.lgna.croquet.edits.Edit< ? extends Cascade< T > > edit = this.createEdit( step, values );
 			step.commitAndInvokeDo( edit );
 		} finally {
 			this.getPopupPrepModel().handleFinally( performObserver );
 		}
 	}
-	public void handleCancel( org.lgna.croquet.PopupPrepModel.PerformObserver performObserver, org.lgna.croquet.history.CascadeCompletionStep< B > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
+	public void handleCancel( org.lgna.croquet.PopupPrepModel.PerformObserver performObserver, org.lgna.croquet.history.CascadeCompletionStep< T > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
 		try {
 			if( completionStep != null ) {
 				completionStep.cancel();

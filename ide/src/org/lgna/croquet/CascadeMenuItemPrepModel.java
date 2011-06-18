@@ -46,36 +46,61 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeMenuItemPrepModel extends AbstractMenuModel {
-	public static class CascadeMenuPrepModelResolver implements org.lgna.croquet.resolvers.CodableResolver< CascadeMenuItemPrepModel > {
-		private final CascadeMenuItemPrepModel model;
-		public CascadeMenuPrepModelResolver( CascadeMenuItemPrepModel model ) {
+public class CascadeMenuItemPrepModel<T> extends AbstractMenuModel {
+	public static class CascadeMenuPrepModelResolver<T> implements org.lgna.croquet.resolvers.CodableResolver< CascadeMenuItemPrepModel<T> > {
+		private final CascadeMenuItemPrepModel<T> model;
+		public CascadeMenuPrepModelResolver( CascadeMenuItemPrepModel<T> model ) {
 			this.model = model;
 		}
 		public CascadeMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.lgna.croquet.resolvers.CodableResolver<Cascade> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			Cascade model = resolver.getResolved();
+			org.lgna.croquet.resolvers.CodableResolver<Cascade<T>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			Cascade<T> model = resolver.getResolved();
 			this.model = model.getMenuItemPrepModel();
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			org.lgna.croquet.resolvers.CodableResolver<Cascade> resolver = this.model.completionModel.getCodableResolver();
+			org.lgna.croquet.resolvers.CodableResolver<Cascade<T>> resolver = this.model.cascade.getCodableResolver();
 			binaryEncoder.encode( resolver );
 		}
-		public CascadeMenuItemPrepModel getResolved() {
+		public CascadeMenuItemPrepModel<T> getResolved() {
 			return this.model;
 		}
 	}
-	private final Cascade completionModel;
-	/*package-private*/ CascadeMenuItemPrepModel( Cascade closingModel ) {
-		super( java.util.UUID.fromString( "a6d47082-8859-4b7c-b654-37e928aa67ed" ), closingModel.getPopupPrepModel().getClass() );
-		assert closingModel != null;
-		this.completionModel = closingModel;
+	private final Cascade<T> cascade;
+	/*package-private*/ CascadeMenuItemPrepModel( Cascade<T> cascade ) {
+		super( java.util.UUID.fromString( "a6d47082-8859-4b7c-b654-37e928aa67ed" ), cascade.getPopupPrepModel().getClass() );
+		assert cascade != null;
+		this.cascade = cascade;
 	}
-	public Cascade getCascadeCompletionModel() {
-		return this.completionModel;
+	public Cascade<T> getCompletionModel() {
+		return this.cascade;
 	}
 	@Override
-	protected CascadeMenuPrepModelResolver createCodableResolver() {
-		return new CascadeMenuPrepModelResolver( this );
+	protected CascadeMenuPrepModelResolver<T> createCodableResolver() {
+		return new CascadeMenuPrepModelResolver<T>( this );
+	}
+	public void handleMenuSelectionStateChanged( javax.swing.MenuElement menuElement ) {
+		if( menuElement instanceof javax.swing.JMenu ) {
+			javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElement;
+			org.lgna.croquet.components.MenuItemContainer menuItemContainer = (org.lgna.croquet.components.MenuItemContainer)org.lgna.croquet.components.Component.lookup( jMenu );
+			final org.lgna.croquet.cascade.RtRoot< T > rtRoot = new org.lgna.croquet.cascade.RtRoot< T >( this.getCompletionModel().getRoot(), null );
+			if( rtRoot.isGoodToGo() ) {
+				throw new RuntimeException( "todo" );
+			} else {
+				final org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep = org.lgna.croquet.history.TransactionManager.addCascadePopupPrepStep( cascade.getPopupPrepModel(), null );			
+				jMenu.getPopupMenu().addComponentListener( new java.awt.event.ComponentListener() {
+					public void componentShown( java.awt.event.ComponentEvent e ) {
+					}
+					public void componentMoved( java.awt.event.ComponentEvent e ) {
+					}
+					public void componentResized( java.awt.event.ComponentEvent e ) {
+						org.lgna.croquet.history.TransactionManager.firePopupMenuResized( prepStep );
+					}
+					public void componentHidden( java.awt.event.ComponentEvent e ) {
+					}
+				} );
+				jMenu.getPopupMenu().addPopupMenuListener( rtRoot.createPopupMenuListener( menuItemContainer ) );
+				this.cascade.prologue();
+			}
+		}
 	}
 }

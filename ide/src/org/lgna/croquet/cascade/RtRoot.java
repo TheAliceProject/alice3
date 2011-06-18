@@ -548,23 +548,41 @@ public class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, RootNode<
 		this.complete( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
 	}
 	
-	private javax.swing.event.PopupMenuListener popupMenuListener = new javax.swing.event.PopupMenuListener() {
-		private MenuItemContainer getPopupMenu( javax.swing.event.PopupMenuEvent e ) {
-			return (MenuItemContainer)Component.lookup( (java.awt.Component)e.getSource() );
-		}
-		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-			MenuItemContainer menuItemContainer = this.getPopupMenu( e );
-			RtRoot.this.addNextNodeMenuItems( menuItemContainer );
-		}
-		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-			MenuItemContainer menuItemContainer = this.getPopupMenu( e );
-			RtRoot.this.removeAll( menuItemContainer );
-		}
-		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-			RtRoot.this.cancel( null, new org.lgna.croquet.triggers.PopupMenuEventTrigger( e ), null );
-		}
-	};
-	public javax.swing.event.PopupMenuListener getPopupMenuListener() {
-		return this.popupMenuListener;
+//	private javax.swing.event.PopupMenuListener popupMenuListener = new javax.swing.event.PopupMenuListener() {
+//		private MenuItemContainer getMenuItemContainer( javax.swing.event.PopupMenuEvent e ) {
+//			Component< ? > component = Component.lookup( (java.awt.Component)e.getSource() );
+//			if( component instanceof MenuItemContainer ) {
+//				return (MenuItemContainer)component;
+//			} else {
+//				return null;
+//			}
+//		}
+//		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+//			MenuItemContainer menuItemContainer = this.getMenuItemContainer( e );
+//			RtRoot.this.addNextNodeMenuItems( menuItemContainer );
+//		}
+//		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+//			MenuItemContainer menuItemContainer = this.getMenuItemContainer( e );
+//			RtRoot.this.removeAll( menuItemContainer );
+//		}
+//		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+//			RtRoot.this.cancel( null, new org.lgna.croquet.triggers.PopupMenuEventTrigger( e ), null );
+//		}
+//	};
+//	public javax.swing.event.PopupMenuListener getPopupMenuListener() {
+//		return this.popupMenuListener;
+//	}
+	public javax.swing.event.PopupMenuListener createPopupMenuListener( final MenuItemContainer menuItemContainer ) {
+		return new javax.swing.event.PopupMenuListener() {
+			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+				RtRoot.this.addNextNodeMenuItems( menuItemContainer );
+			}
+			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+				RtRoot.this.removeAll( menuItemContainer );
+			}
+			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+				RtRoot.this.cancel( null, new org.lgna.croquet.triggers.PopupMenuEventTrigger( e ), null );
+			}
+		};
 	}
 }

@@ -91,7 +91,7 @@ public final class CascadePopupPrepModel<T> extends PopupPrepModel {
 				public void componentHidden( java.awt.event.ComponentEvent e ) {
 				}
 			} );
-			popupMenu.addPopupMenuListener( rtRoot.getPopupMenuListener() );
+			popupMenu.addPopupMenuListener( rtRoot.createPopupMenuListener( popupMenu ) );
 			this.cascade.prologue();
 			trigger.showPopupMenu( popupMenu );
 			rv = prepStep;
