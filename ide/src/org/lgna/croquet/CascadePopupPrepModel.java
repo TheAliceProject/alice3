@@ -46,9 +46,9 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class CascadePopupPrepModel<B> extends PopupPrepModel {
-	private final Cascade<B> cascade;
-	/*package-private*/ CascadePopupPrepModel( Cascade< B > cascade ) {
+public final class CascadePopupPrepModel<T> extends PopupPrepModel {
+	private final Cascade<T> cascade;
+	/*package-private*/ CascadePopupPrepModel( Cascade< T > cascade ) {
 		super( java.util.UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
 		this.cascade = cascade;
 	}
@@ -62,38 +62,18 @@ public final class CascadePopupPrepModel<B> extends PopupPrepModel {
 		return this.cascade.getClassUsedForLocalization();
 	}
 	
-	public Cascade< B > getCompletionModel() {
+	public Cascade< T > getCompletionModel() {
 		return this.cascade;
 	}
 	protected void handleFinally( PerformObserver performObserver ) {
 		this.cascade.epilogue();
 		performObserver.handleFinally();
 	}
-
-	public void handleCompletion( org.lgna.croquet.history.CascadePopupOperationStep< B > step, PerformObserver performObserver, B[] values ) {
-		try {
-			org.lgna.croquet.edits.Edit< ? extends Cascade< B > > edit = this.cascade.createEdit( step, values );
-			step.commitAndInvokeDo( edit );
-		} finally {
-			this.handleFinally( performObserver );
-		}
-	}
-	public void handleCancel( PerformObserver performObserver, org.lgna.croquet.history.CascadePopupOperationStep< B > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
-		try {
-			if( completionStep != null ) {
-				completionStep.cancel();
-			} else {
-				org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( this.cascade, trigger );
-			}
-		} finally {
-			this.handleFinally( performObserver );
-		}
-	}
 	
 	@Override
 	protected org.lgna.croquet.history.Step< ? > perform( org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
-		org.lgna.croquet.cascade.RtCascadePopupPrepModel< B > rt = new org.lgna.croquet.cascade.RtCascadePopupPrepModel< B >( this, performObserver );
+		final org.lgna.croquet.cascade.RtRoot< T > rtRoot = new org.lgna.croquet.cascade.RtRoot< T >( this.getCompletionModel().getRoot(), performObserver );
 		this.cascade.prologue();
-		return rt.perform( trigger );
+		return rtRoot.perform( trigger );
 	}
 }

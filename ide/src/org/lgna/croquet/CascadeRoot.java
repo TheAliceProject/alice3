@@ -52,6 +52,29 @@ public final class CascadeRoot<B> extends CascadeBlankOwner< B[], B > {
 		super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ) );
 		this.cascade = cascade;
 	}
+	public Cascade< B > getCascade() {
+		return this.cascade;
+	}
+	public void handleCompletion( org.lgna.croquet.history.CascadePopupOperationStep< B > step, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver, B[] values ) {
+		try {
+			org.lgna.croquet.edits.Edit< ? extends Cascade< B > > edit = this.cascade.createEdit( step, values );
+			step.commitAndInvokeDo( edit );
+		} finally {
+			this.cascade.getPopupPrepModel().handleFinally( performObserver );
+		}
+	}
+	public void handleCancel( org.lgna.croquet.PopupPrepModel.PerformObserver performObserver, org.lgna.croquet.history.CascadePopupOperationStep< B > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
+		try {
+			if( completionStep != null ) {
+				completionStep.cancel();
+			} else {
+				org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( this.cascade, trigger );
+			}
+		} finally {
+			this.cascade.getPopupPrepModel().handleFinally( performObserver );
+		}
+	}
+	
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super B[],B > step) {
 		return null;
