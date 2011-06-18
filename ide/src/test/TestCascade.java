@@ -233,11 +233,11 @@ class MyCascade extends org.lgna.croquet.Cascade< Object > {
 				new EnumBlank( ZodiacSigns.class ), IntegerBlank.getInstance() } );
 	}
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.getPopupPrepModel().setName( "test cascade" );
-	}
+//	@Override
+//	protected void localize() {
+//		super.localize();
+//		this.getPopupPrepModel().setName( "test cascade" );
+//	}
 
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CascadePopupOperationStep< Object > step, final java.lang.Object[] values ) {

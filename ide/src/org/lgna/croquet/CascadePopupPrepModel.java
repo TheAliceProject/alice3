@@ -62,19 +62,11 @@ public final class CascadePopupPrepModel<B> extends PopupPrepModel {
 		return this.cascade.getClassUsedForLocalization();
 	}
 	
-	@Override
-	protected void localize() {
-		String name = this.getDefaultLocalizedText();
-		if( name != null ) {
-			this.setName( name );
-			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
-			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
-		}
-	}
 	public Cascade< B > getCompletionModel() {
 		return this.cascade;
 	}
 	protected void handleFinally( PerformObserver performObserver ) {
+		this.cascade.epilogue();
 		performObserver.handleFinally();
 	}
 
@@ -101,6 +93,7 @@ public final class CascadePopupPrepModel<B> extends PopupPrepModel {
 	@Override
 	protected org.lgna.croquet.history.Step< ? > perform( org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
 		org.lgna.croquet.cascade.RtCascadePopupPrepModel< B > rt = new org.lgna.croquet.cascade.RtCascadePopupPrepModel< B >( this, performObserver );
+		this.cascade.prologue();
 		return rt.perform( trigger );
 	}
 }

@@ -493,10 +493,10 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 			if( type != null ) {
 				final boolean IS_ICON_DESIRED = false;
 				if( IS_ICON_DESIRED ) {
-					TypeRootMenuModel.getInstance().getPopupPrepModel().setName( "class:" );
-					TypeRootMenuModel.getInstance().getPopupPrepModel().setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
+					TypeRootMenuModel.getInstance().setName( "class:" );
+					TypeRootMenuModel.getInstance().setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
 				} else {
-					TypeRootMenuModel.getInstance().getPopupPrepModel().setName( "class: " + type.getName() );
+					TypeRootMenuModel.getInstance().setName( "class: " + type.getName() );
 				}
 			}
 			this.revalidateAndRepaint();
