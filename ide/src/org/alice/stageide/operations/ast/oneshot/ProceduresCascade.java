@@ -57,7 +57,7 @@ public class ProceduresCascade extends org.lgna.croquet.Cascade< edu.cmu.cs.denn
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class, MethodInvocationBlank.getInstance() );
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >> createEdit( org.lgna.croquet.history.CascadePopupOperationStep< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > step, edu.cmu.cs.dennisc.alice.ast.MethodInvocation[] values ) {
+	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > step, edu.cmu.cs.dennisc.alice.ast.MethodInvocation[] values ) {
 		return null;
 	}
 }

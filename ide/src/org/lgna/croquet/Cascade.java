@@ -89,7 +89,7 @@ public abstract class Cascade<B> extends CompletionModel {
 	}
 	protected void epilogue() {
 	}
-	protected abstract org.lgna.croquet.edits.Edit< ? extends Cascade< B > > createEdit( org.lgna.croquet.history.CascadePopupOperationStep< B > step, B[] values );
+	protected abstract org.lgna.croquet.edits.Edit< ? extends Cascade< B > > createEdit( org.lgna.croquet.history.CascadeCompletionStep< B > step, B[] values );
 	private CascadeMenuItemPrepModel menuPrepModel;
 	public synchronized CascadeMenuItemPrepModel getMenuItemPrepModel() {
 		if( this.menuPrepModel != null ) {
@@ -99,5 +99,26 @@ public abstract class Cascade<B> extends CompletionModel {
 		}
 		return this.menuPrepModel;
 	}
+	
+	public void handleCompletion( org.lgna.croquet.history.CascadeCompletionStep< B > step, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver, B[] values ) {
+		try {
+			org.lgna.croquet.edits.Edit< ? extends Cascade< B > > edit = this.createEdit( step, values );
+			step.commitAndInvokeDo( edit );
+		} finally {
+			this.getPopupPrepModel().handleFinally( performObserver );
+		}
+	}
+	public void handleCancel( org.lgna.croquet.PopupPrepModel.PerformObserver performObserver, org.lgna.croquet.history.CascadeCompletionStep< B > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
+		try {
+			if( completionStep != null ) {
+				completionStep.cancel();
+			} else {
+				org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( this, trigger );
+			}
+		} finally {
+			this.getPopupPrepModel().handleFinally( performObserver );
+		}
+	}
+	
 	
 }

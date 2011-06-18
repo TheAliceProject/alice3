@@ -67,7 +67,7 @@ public class AddExpressionCascade extends ExpressionsCascade {
     }
 	
 	@Override
-	protected org.alice.ide.croquet.edits.ast.AddExpressionEdit createEdit( org.lgna.croquet.history.CascadePopupOperationStep< edu.cmu.cs.dennisc.alice.ast.Expression > step, edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
+	protected org.alice.ide.croquet.edits.ast.AddExpressionEdit createEdit( org.lgna.croquet.history.CascadeCompletionStep< edu.cmu.cs.dennisc.alice.ast.Expression > step, edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
 		return new org.alice.ide.croquet.edits.ast.AddExpressionEdit( step, this.expressionListProperty, values[ 0 ] );
 	}
 

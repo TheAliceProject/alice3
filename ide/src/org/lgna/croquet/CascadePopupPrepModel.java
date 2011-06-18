@@ -73,7 +73,29 @@ public final class CascadePopupPrepModel<T> extends PopupPrepModel {
 	@Override
 	protected org.lgna.croquet.history.Step< ? > perform( org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
 		final org.lgna.croquet.cascade.RtRoot< T > rtRoot = new org.lgna.croquet.cascade.RtRoot< T >( this.getCompletionModel().getRoot(), performObserver );
-		this.cascade.prologue();
-		return rtRoot.perform( trigger );
+		org.lgna.croquet.history.Step< ? > rv;
+		if( rtRoot.isGoodToGo() ) {
+			rv = rtRoot.complete( new org.lgna.croquet.triggers.AutomaticCompletionTrigger( trigger ) );
+			performObserver.handleFinally();
+		} else {
+			final org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep = org.lgna.croquet.history.TransactionManager.addCascadePopupPrepStep( cascade.getPopupPrepModel(), trigger );			
+			final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( cascade.getPopupPrepModel() );
+			popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
+				public void componentShown( java.awt.event.ComponentEvent e ) {
+				}
+				public void componentMoved( java.awt.event.ComponentEvent e ) {
+				}
+				public void componentResized( java.awt.event.ComponentEvent e ) {
+					org.lgna.croquet.history.TransactionManager.firePopupMenuResized( prepStep );
+				}
+				public void componentHidden( java.awt.event.ComponentEvent e ) {
+				}
+			} );
+			popupMenu.addPopupMenuListener( rtRoot.getPopupMenuListener() );
+			this.cascade.prologue();
+			trigger.showPopupMenu( popupMenu );
+			rv = prepStep;
+		}
+		return rv;
 	}
 }
