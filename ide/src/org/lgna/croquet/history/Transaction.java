@@ -190,13 +190,13 @@ public class Transaction extends Node< TransactionHistory > {
 					}
 				}
 			}
-			if( menuItemPrepModels.size() > 0 ) {
-				org.lgna.croquet.MenuItemPrepModel lastPrepModel = menuItemPrepModels.get( menuItemPrepModels.size()-1 );
-				if( lastPrepModel instanceof org.lgna.croquet.CascadeMenuItemPrepModel ) {
-					org.lgna.croquet.CascadeMenuItemPrepModel cascadeMenuItemPrepModel = (org.lgna.croquet.CascadeMenuItemPrepModel)lastPrepModel;
-					cascadeMenuItemPrepModel.handleMenuSelectionStateChanged( menuElements[ menuElements.length-1 ] );
-				}
-			}
+//			if( menuItemPrepModels.size() > 0 ) {
+//				org.lgna.croquet.MenuItemPrepModel lastPrepModel = menuItemPrepModels.get( menuItemPrepModels.size()-1 );
+//				if( lastPrepModel instanceof org.lgna.croquet.CascadeMenuItemPrepModel ) {
+//					org.lgna.croquet.CascadeMenuItemPrepModel cascadeMenuItemPrepModel = (org.lgna.croquet.CascadeMenuItemPrepModel)lastPrepModel;
+//					cascadeMenuItemPrepModel.handleMenuSelectionStateChanged( menuElements[ menuElements.length-1 ] );
+//				}
+//			}
 			
 		}
 //		public edu.cmu.cs.dennisc.croquet.MenuBarComposite getMenuBarComposite() {
