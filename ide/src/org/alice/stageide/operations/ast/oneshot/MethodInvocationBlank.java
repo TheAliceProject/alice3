@@ -58,9 +58,21 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< MethodInvocationEditFactory > blankNode ) {
-		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "move", org.alice.apis.moveandturn.MoveDirection.class, Number.class ) );
-		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "turn", org.alice.apis.moveandturn.TurnDirection.class, Number.class ) );
-		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "roll", org.alice.apis.moveandturn.RollDirection.class, Number.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "move", org.alice.apis.moveandturn.MoveDirection.class, Number.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "turn", org.alice.apis.moveandturn.TurnDirection.class, Number.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "roll", org.alice.apis.moveandturn.RollDirection.class, Number.class ) );
+		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "moveTo", org.alice.apis.moveandturn.ReferenceFrame.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "moveToward", Number.class, org.alice.apis.moveandturn.Composite.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "moveAwayFrom", Number.class, org.alice.apis.moveandturn.Composite.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "orientTo", org.alice.apis.moveandturn.ReferenceFrame.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "turnToFace", org.alice.apis.moveandturn.ReferenceFrame.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "pointAt", org.alice.apis.moveandturn.ReferenceFrame.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "moveAndOrientTo", org.alice.apis.moveandturn.ReferenceFrame.class ) );
+		//rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "standUp" ) );
+		
+		//rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		//rv.add( ColorMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.Model.class, "setColor", org.alice.apis.moveandturn.Color.class ) );
 		return rv;
 	}
 }
