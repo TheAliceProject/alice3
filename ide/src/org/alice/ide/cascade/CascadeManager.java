@@ -59,25 +59,19 @@ public abstract class CascadeManager {
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = null;
-	private edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent = null;
-	private int dropIndex = -1;
+	private org.alice.ide.codeeditor.BlockStatementIndexPair contextBlockStatementIndexPair = null;
+//	private edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent = null;
+//	private int dropIndex = -1;
 
 	public void pushContext( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		this.previousExpression = previousExpression;
-		if( blockStatementIndexPair != null ) {
-			this.dropParent = blockStatementIndexPair.getBlockStatement();
-			this.dropIndex = blockStatementIndexPair.getIndex();
-		} else {
-			this.dropParent = null;
-			this.dropIndex = -1;
-		}
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "pushContext", previousExpression, blockStatementIndexPair );
+		this.contextBlockStatementIndexPair = blockStatementIndexPair;
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "pushContext", previousExpression, blockStatementIndexPair );
 	}
 	public void popContext() {
 		this.previousExpression = null;
-		this.dropParent = null;
-		this.dropIndex = -1;
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "popContext" );
+		this.contextBlockStatementIndexPair = null;
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "popContext" );
 	}
 	
 	protected void addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner ) {
@@ -217,14 +211,14 @@ public abstract class CascadeManager {
 //			edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = this.getPreviousExpression();
 //			if( prevExpression != null ) {
 //				edu.cmu.cs.dennisc.alice.ast.Statement statement = prevExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
-				if( this.dropParent != null && this.dropIndex != -1 ) {
+				if( this.contextBlockStatementIndexPair != null ) {
 					for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : codeInFocus.getParameters() ) {
 						if( type.isAssignableFrom( parameter.getValueType() ) ) {
 							//isNecessary = this.addSeparatorIfNecessary( rv, "in scope", isNecessary );
 							this.addFillInAndPossiblyPartFillIns( rv, new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
 						}
 					}
-					for( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local : this.getAccessibleLocals( this.dropParent, this.dropIndex ) ) {
+					for( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local : this.getAccessibleLocals( this.contextBlockStatementIndexPair.getBlockStatement(), this.contextBlockStatementIndexPair.getIndex() ) ) {
 						if( type.isAssignableFrom( local.valueType.getValue() ) ) {
 							edu.cmu.cs.dennisc.alice.ast.Expression expression;
 							if( local instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
