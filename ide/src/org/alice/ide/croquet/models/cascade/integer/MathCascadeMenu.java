@@ -84,10 +84,10 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 		rv.add( IncompleteDivideRemainderCascadeMenu.getInstance() );
 
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "abs", Integer.TYPE ) );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "abs", Integer.TYPE ) );
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "min", Integer.TYPE, Integer.TYPE ) );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationArgumentsFillIn.getInstance( Math.class, "max", Integer.TYPE, Integer.TYPE ) );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "min", Integer.TYPE, Integer.TYPE ) );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "max", Integer.TYPE, Integer.TYPE ) );
 		return rv;
 	}
 }

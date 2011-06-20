@@ -164,28 +164,29 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	}
 
 	@Override
-	protected void addFillInAndPossiblyPartFillIns( org.lgna.croquet.CascadeBlank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
-		super.addFillInAndPossiblyPartFillIns( blank, expression, type, type2 );
+	protected java.util.List< org.lgna.croquet.CascadeItem > addFillInAndPossiblyPartFillIns(  java.util.List< org.lgna.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type2 ) {
+		super.addFillInAndPossiblyPartFillIns( rv, expression, type, type2 );
 		System.err.println( "TODO: addFillInAndPossiblyPartFills" );
-//		if( type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel.class ) ) {
-//			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = null;
-//			Class< ? > paramCls = null;
-//			if( type2.isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
-//				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-//				Class< ? > cls = typeInJava.getClassReflectionProxy().getReification();
-//				for( Class innerCls : cls.getDeclaredClasses() ) {
-//					if( innerCls.getSimpleName().equals( "Part" ) ) {
-//						paramCls = innerCls;
-//					}
-//				}
-//			}
-//			if( paramCls != null ) {
-//				edu.cmu.cs.dennisc.alice.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
-//				if( getPartMethod != null ) {
-//					blank.addFillIn( new org.alice.ide.cascade.IncompleteMethodInvocationFillIn( expression, getPartMethod ) );
-//				}
-//			}
-//		}
+		if( type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel.class ) ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = null;
+			Class< ? > paramCls = null;
+			if( type2.isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
+				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
+				Class< ? > cls = typeInJava.getClassReflectionProxy().getReification();
+				for( Class innerCls : cls.getDeclaredClasses() ) {
+					if( innerCls.getSimpleName().equals( "Part" ) ) {
+						paramCls = innerCls;
+					}
+				}
+			}
+			if( paramCls != null ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
+				if( getPartMethod != null ) {
+					rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, getPartMethod ) );
+				}
+			}
+		}
+		return rv;
 	}
 	
 }

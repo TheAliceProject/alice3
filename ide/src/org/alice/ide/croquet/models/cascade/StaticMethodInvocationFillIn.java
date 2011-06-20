@@ -46,37 +46,33 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class StaticMethodInvocationArgumentsFillIn extends ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, StaticMethodInvocationArgumentsFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static StaticMethodInvocationArgumentsFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, StaticMethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static StaticMethodInvocationFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		synchronized( map ) {
-			StaticMethodInvocationArgumentsFillIn rv = map.get( method );
+			StaticMethodInvocationFillIn rv = map.get( method );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new StaticMethodInvocationArgumentsFillIn( method );
+				rv = new StaticMethodInvocationFillIn( method );
 				map.put( method, rv );
 			}
 			return rv;
 		}
 	}
-	public static StaticMethodInvocationArgumentsFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
+	public static StaticMethodInvocationFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 		return getInstance( method );
 	}
-	public static StaticMethodInvocationArgumentsFillIn getInstance( Class<?> cls, String methodName, Class<?>... parameterClses ) {
+	public static StaticMethodInvocationFillIn getInstance( Class<?> cls, String methodName, Class<?>... parameterClses ) {
 		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), methodName, parameterClses );
 	}
 	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation transientValue;
-	private StaticMethodInvocationArgumentsFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private StaticMethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ) );
 		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteStaticMethodInvocation( method );
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
-//			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType = parameter.getDesiredValueType();
-//			edu.cmu.cs.dennisc.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression > blank = CascadeManager.getBlankForType( desiredType );
-//			assert blank != null : desiredType;
-//			this.addBlank( blank );
 			this.addBlank( ParameterBlank.getInstance( parameter ) );
 		}
 	}

@@ -41,26 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.number;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExponentCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	private static class SingletonHolder {
-		private static ExponentCascadeMenu instance = new ExponentCascadeMenu();
-	}
-	public static ExponentCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ExponentCascadeMenu() {
-		super( java.util.UUID.fromString( "53e6ac46-5f75-4a6e-8149-9161b2e330d1" ) );
+@Deprecated
+public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< E > {
+	private final E transientValue;
+	public SimpleExpressionFillIn( E value ) {
+		super( java.util.UUID.fromString( "7479f074-b5f1-4c72-96da-5ebc3c547db5" ) );
+		this.transientValue = value;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "exp", java.lang.Double.TYPE ) );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "log", java.lang.Double.TYPE ) );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( Math.class, "E" ) );
-		return rv;
+	public E createValue( org.lgna.croquet.cascade.ItemNode< ? super E,Void > step ) {
+		return this.transientValue;
+	}
+	@Override
+	public E getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super E,Void > step ) {
+		return this.transientValue;
 	}
 }

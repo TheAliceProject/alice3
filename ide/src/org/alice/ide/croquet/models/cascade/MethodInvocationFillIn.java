@@ -41,26 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.number;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExponentCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	private static class SingletonHolder {
-		private static ExponentCascadeMenu instance = new ExponentCascadeMenu();
+@Deprecated
+public class MethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation transientValue;
+	public MethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "4efeb642-4a7c-4de7-a736-9f8950f2836a" ) );
+		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( expression, method );
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
+			this.addBlank( ParameterBlank.getInstance( parameter ) );
+		}
 	}
-	public static ExponentCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ExponentCascadeMenu() {
-		super( java.util.UUID.fromString( "53e6ac46-5f75-4a6e-8149-9161b2e330d1" ) );
+	
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( this.transientValue.expression.getValue(), this.transientValue.method.getValue(), expressions );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "exp", java.lang.Double.TYPE ) );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "log", java.lang.Double.TYPE ) );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( Math.class, "E" ) );
-		return rv;
+	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+		return this.transientValue;
 	}
 }
