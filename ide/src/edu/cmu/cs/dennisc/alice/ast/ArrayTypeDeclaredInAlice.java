@@ -112,14 +112,15 @@ public class ArrayTypeDeclaredInAlice extends AbstractType {
 	}
 	@Override
 	public AbstractType<?,?,?> getSuperType() {
-		AbstractType<?,?,?> superType = m_leafType.getSuperType();
-		if( superType instanceof AbstractTypeDeclaredInAlice<?> ) {
-			return ArrayTypeDeclaredInAlice.get( ((AbstractTypeDeclaredInAlice<?>)superType), m_dimensionCount );
+		AbstractType<?,?,?> leafSuperType = m_leafType.getSuperType();
+		if( leafSuperType instanceof AbstractTypeDeclaredInAlice<?> ) {
+			return ArrayTypeDeclaredInAlice.get( ((AbstractTypeDeclaredInAlice<?>)leafSuperType), m_dimensionCount );
 		} else {
-			assert superType instanceof TypeDeclaredInJava;
-			return TypeDeclaredInJava.get( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( superType.getClass(), m_dimensionCount ) );
+			assert leafSuperType instanceof TypeDeclaredInJava;
+			Class<?> leafSuperCls = ((TypeDeclaredInJava)leafSuperType).getClassReflectionProxy().getReification();
+			Class<?> superCls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( leafSuperCls, m_dimensionCount );
+			return TypeDeclaredInJava.get( superCls );
 		}
-		//todo: investigate
 	}
 	@Override
 	public boolean isFollowToSuperClassDesired() {
