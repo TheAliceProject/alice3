@@ -104,13 +104,16 @@ public abstract class InputDialogOperation extends GatedCommitDialogOperation<or
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createMainPanel( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Label explanationLabel ) {
 		JComponent< ? > child = this.prologue( step );
-		assert child != null;
-		step.setMainPanel( child );
-		BorderPanel rv = new BorderPanel();
-		rv.setBackgroundColor( child.getBackgroundColor() );
-		rv.addComponent( child, BorderPanel.Constraint.CENTER );
-		rv.addComponent( explanationLabel, BorderPanel.Constraint.PAGE_END );
-		return rv;
+		if( child != null ) {
+			step.setMainPanel( child );
+			BorderPanel rv = new BorderPanel();
+			rv.setBackgroundColor( child.getBackgroundColor() );
+			rv.addComponent( child, BorderPanel.Constraint.CENTER );
+			rv.addComponent( explanationLabel, BorderPanel.Constraint.PAGE_END );
+			return rv;
+		} else {
+			return null;
+		}
 	}
 	@Override
 	protected void release( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, boolean isCompleted ) {

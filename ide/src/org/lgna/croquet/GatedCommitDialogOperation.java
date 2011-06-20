@@ -221,27 +221,31 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 	@Override
 	protected final org.lgna.croquet.components.Container< ? > createContentPane( S step, org.lgna.croquet.components.Dialog dialog ) {
 		org.lgna.croquet.components.Component< ? > mainPanel = this.createMainPanel( step, dialog, this.explanationLabel );
-		org.lgna.croquet.components.Component< ? > controlPanel = this.createControlsPanel( step, dialog );
-		org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel();
-		rv.setBackgroundColor( mainPanel.getBackgroundColor() );
+		if( mainPanel != null ) {
+			org.lgna.croquet.components.Component< ? > controlPanel = this.createControlsPanel( step, dialog );
+			org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel();
+			rv.setBackgroundColor( mainPanel.getBackgroundColor() );
 
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		gbc.weightx = 1.0;
-		gbc.weighty = 1.0;
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		rv.addComponent( mainPanel, gbc );
-		gbc.weighty = 0.0;
-		rv.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), gbc );
-		rv.addComponent( controlPanel, gbc );
+			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+			gbc.fill = java.awt.GridBagConstraints.BOTH;
+			gbc.weightx = 1.0;
+			gbc.weighty = 1.0;
+			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+			rv.addComponent( mainPanel, gbc );
+			gbc.weighty = 0.0;
+			rv.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), gbc );
+			rv.addComponent( controlPanel, gbc );
 
-		step.addListener( this.listener );
-		this.updateExplanation( step );
+			step.addListener( this.listener );
+			this.updateExplanation( step );
 
-		this.getCompleteOperation().setDialog( dialog );
-		this.getCancelOperation().setDialog( dialog );
-		this.isCompleted = false;
-		return rv;
+			this.getCompleteOperation().setDialog( dialog );
+			this.getCancelOperation().setDialog( dialog );
+			this.isCompleted = false;
+			return rv;
+		} else {
+			return null;
+		}
 	}
 	@Override
 	protected final void releaseContentPane( S step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
