@@ -46,7 +46,7 @@ package org.alice.stageide.operations.ast.oneshot;
 /**
  * @author Dennis Cosgrove
  */
-public class ProceduresCascade extends org.lgna.croquet.Cascade< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+public class ProceduresCascade extends org.lgna.croquet.Cascade< MethodInvocationEditFactory > {
 	private static class SingletonHolder {
 		private static ProceduresCascade instance = new ProceduresCascade();
 	}
@@ -54,10 +54,11 @@ public class ProceduresCascade extends org.lgna.croquet.Cascade< edu.cmu.cs.denn
 		return SingletonHolder.instance;
 	}
 	private ProceduresCascade() {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class, MethodInvocationBlank.getInstance() );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance() );
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > step, edu.cmu.cs.dennisc.alice.ast.MethodInvocation[] values ) {
-		return null;
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CascadeCompletionStep< MethodInvocationEditFactory > step, MethodInvocationEditFactory[] values ) {
+		assert values.length == 1;
+		return values[ 0 ].createEdit( step );
 	}
 }

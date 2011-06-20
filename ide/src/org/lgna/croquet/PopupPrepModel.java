@@ -95,19 +95,11 @@ public abstract class PopupPrepModel extends PrepModel {
 		return new org.lgna.croquet.components.PopupButton( this );
 	}
 
-	public static interface PerformObserver { 
-		public void handleFinally(); 
-	}
-	protected abstract org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.triggers.Trigger trigger, PerformObserver performObserver );
-	
+	protected abstract org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.triggers.Trigger trigger );
 	@Override
 	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
 		if( this.isEnabled() ) {
-			return this.perform( trigger, new PerformObserver() {
-				public void handleFinally() {
-					//todo?
-				}
-			} );
+			return this.perform( trigger );
 		} else {
 			return null;
 		}

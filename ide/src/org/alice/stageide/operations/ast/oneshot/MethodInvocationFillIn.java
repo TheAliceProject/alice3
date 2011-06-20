@@ -46,7 +46,7 @@ package org.alice.stageide.operations.ast.oneshot;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInvocationFillIn  extends org.lgna.croquet.CascadeFillIn< org.lgna.croquet.Operation< ? >, edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class MethodInvocationFillIn extends org.lgna.croquet.CascadeFillIn< MethodInvocationEditFactory, edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, MethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static MethodInvocationFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod value ) {
 		synchronized( map ) {
@@ -72,6 +72,7 @@ public class MethodInvocationFillIn  extends org.lgna.croquet.CascadeFillIn< org
 	private MethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "955cb8c1-3861-4ac7-b76f-72ca93b1289b" ) );
 		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method );
+		this.transientValue.expression.setValue( org.alice.ide.IDE.getSingleton().createInstanceExpression() );
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
 			this.addBlank( org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( parameter ) );
 		}
@@ -80,16 +81,19 @@ public class MethodInvocationFillIn  extends org.lgna.croquet.CascadeFillIn< org
 		return this.transientValue.method.getValue();
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.croquet.Operation< ? >, edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
-		return new javax.swing.JLabel( this.getMethod().getName() );
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super MethodInvocationEditFactory, edu.cmu.cs.dennisc.alice.ast.Expression > itemNode ) {
+		return org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( this.transientValue ) ).getAwtComponent();
+		//return new javax.swing.JLabel( this.getMethod().getName() );
 	}
 	@Override
-	public org.lgna.croquet.Operation< ? > createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.croquet.Operation< ? >, edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
-		//return this.transientValue;
-		return null;
+	public MethodInvocationEditFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super MethodInvocationEditFactory, edu.cmu.cs.dennisc.alice.ast.Expression > itemNode ) {
+		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem(); 
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)accessible;
+		edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions = this.createFromBlanks( itemNode, edu.cmu.cs.dennisc.alice.ast.Expression.class );
+		return new LocalTransformationMethodInvocationEditFactory( field, this.getMethod(), argumentExpressions );
 	}
 	@Override
-	public org.lgna.croquet.Operation< ? > getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.croquet.Operation< ? >, edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	public MethodInvocationEditFactory getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super MethodInvocationEditFactory, edu.cmu.cs.dennisc.alice.ast.Expression > itemNode ) {
 //		edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = org.alice.ide.IDE.getSingleton().createInstanceExpression();
 //		edu.cmu.cs.dennisc.alice.ast.Expression[] argumentValues = this.runBlanks( step, BlankActor.CREATE_VALUES, edu.cmu.cs.dennisc.alice.ast.Expression.class );
 //		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( instanceExpression, this.getMethod(), argumentValues );

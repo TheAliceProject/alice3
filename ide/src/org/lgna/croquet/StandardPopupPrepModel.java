@@ -110,7 +110,7 @@ public final class StandardPopupPrepModel extends PopupPrepModel {
 	
 	
 	@Override
-	protected org.lgna.croquet.history.StandardPopupPrepStep perform( org.lgna.croquet.triggers.Trigger trigger, final org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
+	protected org.lgna.croquet.history.StandardPopupPrepStep perform( org.lgna.croquet.triggers.Trigger trigger ) {
 		final org.lgna.croquet.history.StandardPopupPrepStep step = org.lgna.croquet.history.TransactionManager.addStandardPopupOperationStep( this, trigger );
 
 		final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this ) {
@@ -146,7 +146,9 @@ public final class StandardPopupPrepModel extends PopupPrepModel {
 					//step.getParent().finish();
 				}
 				StandardPopupPrepModel.this.menuModel.handlePopupMenuEpilogue( popupMenu, step );
-				performObserver.handleFinally();
+				
+				System.err.println( "TODO: handleFinally?" );
+//				performObserver.handleFinally();
 			}
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 				this.cancelEvent = e;

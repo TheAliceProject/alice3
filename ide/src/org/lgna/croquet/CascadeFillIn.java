@@ -51,30 +51,30 @@ public abstract class CascadeFillIn<F,B> extends CascadeBlankOwner< F, B > {
 		super( id );
 	}
 	//todo: better name
-	protected static enum BlankActor {
+	private static enum BlankActor {
 		CREATE_VALUES() {
 			@Override
-			public <F> F act( org.lgna.croquet.cascade.ItemNode< F,? > step ) {
-				return step.createValue();
+			public <F> F act( org.lgna.croquet.cascade.ItemNode< F,? > itemNode ) {
+				return itemNode.createValue();
 			}
 		},
 		GET_TRANSIENT_VALUES() {
 			@Override
-			public <F> F act( org.lgna.croquet.cascade.ItemNode< F,? > step ) {
-				if( step != null ) {
-					return step.getTransientValue();
+			public <F> F act( org.lgna.croquet.cascade.ItemNode< F,? > itemNode ) {
+				if( itemNode != null ) {
+					return itemNode.getTransientValue();
 				} else {
 					return null;
 				}
 			}
 		};
-		public abstract <F> F act( org.lgna.croquet.cascade.ItemNode< F,? > step );
+		public abstract <F> F act( org.lgna.croquet.cascade.ItemNode< F,? > itemNode );
 	}
-	protected B[] runBlanks( org.lgna.croquet.cascade.ItemNode< ? super F,B> step, BlankActor blankActor, Class<B> cls ) { 
+	private B[] runBlanks( org.lgna.croquet.cascade.ItemNode< ? super F,B> itemNode, BlankActor blankActor, Class<B> cls ) { 
 		org.lgna.croquet.CascadeBlank< B >[] blanks = this.getBlanks();
 		B[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( cls, blanks.length );
 		for( int i=0; i<rv.length; i++ ) {
-			org.lgna.croquet.cascade.BlankNode< B > blankStep = step.getBlankStepAt( i );
+			org.lgna.croquet.cascade.BlankNode< B > blankStep = itemNode.getBlankStepAt( i );
 			org.lgna.croquet.cascade.AbstractItemNode< B,?,? > selectedFillInContext = blankStep.getSelectedFillInContext();
 			rv[ i ] = (B)blankActor.act( selectedFillInContext );
 //			if( rv[ i ] == null ) {
@@ -90,5 +90,11 @@ public abstract class CascadeFillIn<F,B> extends CascadeBlankOwner< F, B > {
 //			}
 		}
 		return rv;
+	}
+	protected B[] createFromBlanks( org.lgna.croquet.cascade.ItemNode< ? super F,B> itemNode, Class<B> cls ) {
+		return runBlanks( itemNode, BlankActor.CREATE_VALUES, cls );
+	}
+	protected B[] getTransientFromBlanks( org.lgna.croquet.cascade.ItemNode< ? super F,B> itemNode, Class<B> cls ) {
+		return runBlanks( itemNode, BlankActor.GET_TRANSIENT_VALUES, cls );
 	}
 }

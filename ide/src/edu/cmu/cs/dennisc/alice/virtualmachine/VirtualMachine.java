@@ -81,6 +81,17 @@ public abstract class VirtualMachine {
 	protected abstract void pushCurrentThread( Frame frame );
 	protected abstract void popCurrentThread();
 
+	public Object evaluateEntryPoint( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		return this.evaluate( expression );
+	}
+	public Object[] evaluateEntryPoint( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		Object[] rv = new Object[ expressions.length ];
+		for( int i=0; i<expressions.length; i++ ) {
+			rv[ i ] = this.evaluate( expressions[ i ] );
+		}
+		return rv;
+	} 
+	
 	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object instance, Object... arguments ) {
 		pushCurrentThread( null );
 		try {

@@ -46,7 +46,7 @@ package org.alice.stageide.operations.ast.oneshot;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< MethodInvocationEditFactory > {
 	private static class SingletonHolder {
 		private static MethodInvocationBlank instance = new MethodInvocationBlank();
 	}
@@ -57,7 +57,7 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< edu.cm
 		super( java.util.UUID.fromString( "3c5f528b-340b-4bcc-8094-3475867d2f6e" ) );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > blankNode ) {
+	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< MethodInvocationEditFactory > blankNode ) {
 		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "move", org.alice.apis.moveandturn.MoveDirection.class, Number.class ) );
 		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "turn", org.alice.apis.moveandturn.TurnDirection.class, Number.class ) );
 		rv.add( MethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "roll", org.alice.apis.moveandturn.RollDirection.class, Number.class ) );

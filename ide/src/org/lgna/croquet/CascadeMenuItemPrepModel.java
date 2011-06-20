@@ -120,7 +120,7 @@ public class CascadeMenuItemPrepModel<T> extends AbstractMenuModel {
 		javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)e.getSource();
 		//javax.swing.JMenu jMenu = (javax.swing.JMenu)jPopupMenu.getInvoker();
 		//org.lgna.croquet.components.MenuItemContainer menuItemContainer = (org.lgna.croquet.components.MenuItemContainer)org.lgna.croquet.components.Component.lookup( jMenu );
-		final org.lgna.croquet.cascade.RtRoot< T > rtRoot = new org.lgna.croquet.cascade.RtRoot< T >( this.getCompletionModel().getRoot(), null );
+		final org.lgna.croquet.cascade.RtRoot< T > rtRoot = new org.lgna.croquet.cascade.RtRoot< T >( this.getCompletionModel().getRoot() );
 		if( rtRoot.isGoodToGo() ) {
 			throw new RuntimeException( "todo" );
 		} else {

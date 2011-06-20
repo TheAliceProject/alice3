@@ -41,60 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.operations.ast.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class CascadePopupPrepModel<T> extends PopupPrepModel {
-	private final Cascade<T> cascade;
-	/*package-private*/ CascadePopupPrepModel( Cascade< T > cascade ) {
-		super( java.util.UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
-		this.cascade = cascade;
-	}
-	@Override
-	public Iterable< ? extends Model > getChildren() {
-		return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( this.cascade.getRoot() );
-	}
-
-	@Override
-	protected Class< ? extends org.lgna.croquet.Model > getClassUsedForLocalization() {
-		return this.cascade.getClassUsedForLocalization();
-	}
-	
-	public Cascade< T > getCompletionModel() {
-		return this.cascade;
-	}
-	protected void handleFinally() {
-		this.cascade.epilogue();
-	}
-	
-	@Override
-	protected org.lgna.croquet.history.Step< ? > perform( org.lgna.croquet.triggers.Trigger trigger ) {
-		final org.lgna.croquet.cascade.RtRoot< T > rtRoot = new org.lgna.croquet.cascade.RtRoot< T >( this.getCompletionModel().getRoot() );
-		org.lgna.croquet.history.Step< ? > rv;
-		if( rtRoot.isGoodToGo() ) {
-			rv = rtRoot.complete( new org.lgna.croquet.triggers.AutomaticCompletionTrigger( trigger ) );
-			this.handleFinally();
-		} else {
-			final org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep = org.lgna.croquet.history.TransactionManager.addCascadePopupPrepStep( cascade.getPopupPrepModel(), trigger );			
-			final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( cascade.getPopupPrepModel() );
-			popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
-				public void componentShown( java.awt.event.ComponentEvent e ) {
-				}
-				public void componentMoved( java.awt.event.ComponentEvent e ) {
-				}
-				public void componentResized( java.awt.event.ComponentEvent e ) {
-					org.lgna.croquet.history.TransactionManager.firePopupMenuResized( prepStep );
-				}
-				public void componentHidden( java.awt.event.ComponentEvent e ) {
-				}
-			} );
-			popupMenu.addPopupMenuListener( rtRoot.createPopupMenuListener( popupMenu ) );
-			this.cascade.prologue();
-			trigger.showPopupMenu( popupMenu );
-			rv = prepStep;
-		}
-		return rv;
-	}
+public interface MethodInvocationEditFactory {
+	public org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CascadeCompletionStep< MethodInvocationEditFactory > step );
 }

@@ -100,15 +100,15 @@ public abstract class Cascade<T> extends CompletionModel {
 		return this.menuItemPrepModel;
 	}
 	
-	public void handleCompletion( org.lgna.croquet.history.CascadeCompletionStep< T > step, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver, T[] values ) {
+	public void handleCompletion( org.lgna.croquet.history.CascadeCompletionStep< T > step, T[] values ) {
 		try {
 			org.lgna.croquet.edits.Edit< ? extends Cascade< T > > edit = this.createEdit( step, values );
 			step.commitAndInvokeDo( edit );
 		} finally {
-			this.getPopupPrepModel().handleFinally( performObserver );
+			this.getPopupPrepModel().handleFinally();
 		}
 	}
-	public void handleCancel( org.lgna.croquet.PopupPrepModel.PerformObserver performObserver, org.lgna.croquet.history.CascadeCompletionStep< T > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
+	public void handleCancel( org.lgna.croquet.history.CascadeCompletionStep< T > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
 		try {
 			if( completionStep != null ) {
 				completionStep.cancel();
@@ -116,7 +116,7 @@ public abstract class Cascade<T> extends CompletionModel {
 				org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( this, trigger );
 			}
 		} finally {
-			this.getPopupPrepModel().handleFinally( performObserver );
+			this.getPopupPrepModel().handleFinally();
 		}
 	}
 	
