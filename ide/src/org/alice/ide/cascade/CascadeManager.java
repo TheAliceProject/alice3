@@ -214,8 +214,8 @@ public abstract class CascadeManager {
 					}
 				}
 			}
-			edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = this.getPreviousExpression();
-			if( prevExpression != null ) {
+//			edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = this.getPreviousExpression();
+//			if( prevExpression != null ) {
 //				edu.cmu.cs.dennisc.alice.ast.Statement statement = prevExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
 				if( this.dropParent != null && this.dropIndex != -1 ) {
 					for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : codeInFocus.getParameters() ) {
@@ -242,7 +242,7 @@ public abstract class CascadeManager {
 						}
 					}
 				}
-			}
+//			}
 		}
 		return rv;
 	}

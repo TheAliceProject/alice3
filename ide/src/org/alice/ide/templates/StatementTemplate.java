@@ -52,9 +52,9 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	}
 	
 	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair );
-	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
-		return this.getDropModel( step, new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index ) );
-	}
+//	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
+//		return this.getDropModel( step, new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index ) );
+//	}
 	
 	@Override
 	protected boolean isPressed() {

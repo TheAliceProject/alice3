@@ -471,14 +471,15 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 				}
 				if( this.currentUnder != null ) {
 					edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
-					edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
+					BlockStatementIndexPair blockStatementIndexPair;
 					if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
-						blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner;
+						blockStatementIndexPair = new BlockStatementIndexPair( (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner, index );
 					} else {
-						blockStatement = null;
-						//index = -1;
+						blockStatementIndexPair = null;
 					}
-					rv = statementTemplate.getDropModel( step, blockStatement, index );
+					rv = statementTemplate.getDropModel( step, blockStatementIndexPair );
+					org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( null, blockStatementIndexPair );
+					System.err.println( "todo: handle finally" );
 				}
 			} else if( source instanceof org.alice.ide.clipboard.Clipboard ) {
 				//todo check for recursion
