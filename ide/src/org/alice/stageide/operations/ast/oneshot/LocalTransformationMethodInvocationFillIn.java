@@ -47,29 +47,30 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class LocalTransformationMethodInvocationFillIn extends MethodInvocationFillIn {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static LocalTransformationMethodInvocationFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod value ) {
+	//private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static LocalTransformationMethodInvocationFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		synchronized( map ) {
-			LocalTransformationMethodInvocationFillIn rv = map.get( value );
+			LocalTransformationMethodInvocationFillIn rv = map.get( field, method );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new LocalTransformationMethodInvocationFillIn( value );
-				map.put( value, rv );
+				rv = new LocalTransformationMethodInvocationFillIn( field, method );
+				map.put( field, method, rv );
 			}
 			return rv;
 		}
 	}
-	public static LocalTransformationMethodInvocationFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
+	public static LocalTransformationMethodInvocationFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null;
-		return getInstance( method );
+		return getInstance( field, method );
 	}
-	public static LocalTransformationMethodInvocationFillIn getInstance( Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), methodName, parameterClses );
+	public static LocalTransformationMethodInvocationFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Class<?> cls, String methodName, Class<?>... parameterClses ) {
+		return getInstance( field, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), methodName, parameterClses );
 	}
-	private LocalTransformationMethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "955cb8c1-3861-4ac7-b76f-72ca93b1289b" ), method );
+	private LocalTransformationMethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "955cb8c1-3861-4ac7-b76f-72ca93b1289b" ), field, method );
 	}
 	@Override
 	protected org.alice.stageide.operations.ast.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions ) {

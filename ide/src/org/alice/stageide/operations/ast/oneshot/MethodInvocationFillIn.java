@@ -48,16 +48,19 @@ package org.alice.stageide.operations.ast.oneshot;
  */
 public abstract class MethodInvocationFillIn extends org.lgna.croquet.CascadeFillIn< MethodInvocationEditFactory, edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation transientValue;
-	public MethodInvocationFillIn( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	public MethodInvocationFillIn( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		super( id );
 		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method );
-		this.transientValue.expression.setValue( org.alice.ide.IDE.getSingleton().createInstanceExpression() );
+		this.transientValue.expression.setValue( new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field ) );
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
 			this.addBlank( org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( parameter ) );
 		}
 	}
 	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod getMethod() {
 		return this.transientValue.method.getValue();
+	}
+	private edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {
+		return ((edu.cmu.cs.dennisc.alice.ast.FieldAccess)this.transientValue.expression.getValue()).field.getValue();
 	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super MethodInvocationEditFactory, edu.cmu.cs.dennisc.alice.ast.Expression > itemNode ) {
@@ -66,10 +69,8 @@ public abstract class MethodInvocationFillIn extends org.lgna.croquet.CascadeFil
 	protected abstract MethodInvocationEditFactory createMethodInvocationEditFactory( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions );
 	@Override
 	public MethodInvocationEditFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super MethodInvocationEditFactory, edu.cmu.cs.dennisc.alice.ast.Expression > itemNode ) {
-		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem(); 
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)accessible;
 		edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions = this.createFromBlanks( itemNode, edu.cmu.cs.dennisc.alice.ast.Expression.class );
-		return this.createMethodInvocationEditFactory( field, this.getMethod(), argumentExpressions );
+		return this.createMethodInvocationEditFactory( this.getField(), this.getMethod(), argumentExpressions );
 	}
 	@Override
 	public MethodInvocationEditFactory getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super MethodInvocationEditFactory, edu.cmu.cs.dennisc.alice.ast.Expression > itemNode ) {

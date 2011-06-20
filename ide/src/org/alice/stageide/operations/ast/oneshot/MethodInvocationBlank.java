@@ -47,28 +47,37 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< MethodInvocationEditFactory > {
-	private static class SingletonHolder {
-		private static MethodInvocationBlank instance = new MethodInvocationBlank();
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, MethodInvocationBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static MethodInvocationBlank getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice value ) {
+		synchronized( map ) {
+			MethodInvocationBlank rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new MethodInvocationBlank( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
 	}
-	public static MethodInvocationBlank getInstance() {
-		return SingletonHolder.instance;
-	}
-	private MethodInvocationBlank() {
+	private final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
+	private MethodInvocationBlank( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		super( java.util.UUID.fromString( "3c5f528b-340b-4bcc-8094-3475867d2f6e" ) );
+		this.field = field;
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< MethodInvocationEditFactory > blankNode ) {
-		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "move", org.alice.apis.moveandturn.MoveDirection.class, Number.class ) );
-		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "turn", org.alice.apis.moveandturn.TurnDirection.class, Number.class ) );
-		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "roll", org.alice.apis.moveandturn.RollDirection.class, Number.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.alice.apis.moveandturn.AbstractTransformable.class, "move", org.alice.apis.moveandturn.MoveDirection.class, Number.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.alice.apis.moveandturn.AbstractTransformable.class, "turn", org.alice.apis.moveandturn.TurnDirection.class, Number.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.alice.apis.moveandturn.AbstractTransformable.class, "roll", org.alice.apis.moveandturn.RollDirection.class, Number.class ) );
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "moveTo", org.alice.apis.moveandturn.ReferenceFrame.class ) );
-		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "moveToward", Number.class, org.alice.apis.moveandturn.Composite.class ) );
-		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "moveAwayFrom", Number.class, org.alice.apis.moveandturn.Composite.class ) );
-		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "orientTo", org.alice.apis.moveandturn.ReferenceFrame.class ) );
-		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "turnToFace", org.alice.apis.moveandturn.ReferenceFrame.class ) );
-		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "pointAt", org.alice.apis.moveandturn.ReferenceFrame.class ) );
-		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "moveAndOrientTo", org.alice.apis.moveandturn.ReferenceFrame.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.alice.apis.moveandturn.AbstractTransformable.class, "moveTo", org.alice.apis.moveandturn.ReferenceFrame.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.alice.apis.moveandturn.AbstractTransformable.class, "moveToward", Number.class, org.alice.apis.moveandturn.Composite.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.alice.apis.moveandturn.AbstractTransformable.class, "moveAwayFrom", Number.class, org.alice.apis.moveandturn.Composite.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.alice.apis.moveandturn.AbstractTransformable.class, "orientTo", org.alice.apis.moveandturn.ReferenceFrame.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.alice.apis.moveandturn.AbstractTransformable.class, "turnToFace", org.alice.apis.moveandturn.ReferenceFrame.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.alice.apis.moveandturn.AbstractTransformable.class, "pointAt", org.alice.apis.moveandturn.ReferenceFrame.class ) );
+		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.alice.apis.moveandturn.AbstractTransformable.class, "moveAndOrientTo", org.alice.apis.moveandturn.ReferenceFrame.class ) );
 		//rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.alice.apis.moveandturn.AbstractTransformable.class, "standUp" ) );
 		
 		//rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );

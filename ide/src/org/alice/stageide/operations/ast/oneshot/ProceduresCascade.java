@@ -47,14 +47,21 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class ProceduresCascade extends org.lgna.croquet.Cascade< MethodInvocationEditFactory > {
-	private static class SingletonHolder {
-		private static ProceduresCascade instance = new ProceduresCascade();
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ProceduresCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ProceduresCascade getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		synchronized( map ) {
+			ProceduresCascade rv = map.get( field );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ProceduresCascade( field );
+				map.put( field, rv );
+			}
+			return rv;
+		}
 	}
-	public static ProceduresCascade getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ProceduresCascade() {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance() );
+	private ProceduresCascade( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance( field ) );
 	}
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CascadeCompletionStep< MethodInvocationEditFactory > step, MethodInvocationEditFactory[] values ) {

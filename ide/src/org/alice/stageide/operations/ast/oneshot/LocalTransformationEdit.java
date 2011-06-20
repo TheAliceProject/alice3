@@ -50,7 +50,7 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
 	private final edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions;
-	private transient org.alice.apis.moveandturn.AbstractTransformable transformable;
+	private transient org.alice.apis.moveandturn.Transformable transformable;
 	private transient org.alice.apis.moveandturn.PointOfView pointOfView;
 	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions ) {
 		super( completionStep );
@@ -78,9 +78,11 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = ide.getVirtualMachineForSceneEditor();
-		this.transformable = (org.alice.apis.moveandturn.AbstractTransformable)sceneEditor.getInstanceInJavaVMForField( this.field );
+		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneInstanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)sceneEditor.getInstanceInAliceVMForField( sceneEditor.getSceneField() );
+		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)sceneEditor.getInstanceInAliceVMForField( this.field );
+		this.transformable = (org.alice.apis.moveandturn.Transformable)sceneEditor.getInstanceInJavaVMForField( this.field );
 		this.pointOfView = this.transformable.getLocalPointOfView();
-		vm.invokeEntryPoint( this.method, this.transformable, vm.evaluateEntryPoint( this.argumentExpressions ) );
+		vm.invokeEntryPoint( this.method, instanceInAlice, vm.evaluateEntryPoint( sceneInstanceInAlice, this.argumentExpressions ) );
 	}
 	@Override
 	protected void undoInternal() {

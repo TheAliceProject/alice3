@@ -89,7 +89,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	protected edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine getVM() {
 		return this.getIDE().getVirtualMachineForSceneEditor();
 	}
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
+	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
 		return this.sceneField;
 	}
 	protected void setSceneField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
