@@ -62,7 +62,7 @@ public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade
 		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.expressionProperty.getOwner();
 		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
 			edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)owner;
-			edu.cmu.cs.dennisc.alice.ast.Statement statement = node.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
+			edu.cmu.cs.dennisc.alice.ast.Statement statement = node.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class, true );
 			if( statement != null ) {
 				edu.cmu.cs.dennisc.alice.ast.Node parent = statement.getParent();
 				if( parent instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
@@ -77,13 +77,13 @@ public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade
 
 	@Override
 	protected void prologue() {
-		super.prologue();
 		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementIndexPair() );
+		super.prologue();
 	}
 	@Override
 	protected void epilogue() {
-		org.alice.ide.IDE.getSingleton().getCascadeManager().popContext();
 		super.epilogue();
+		org.alice.ide.IDE.getSingleton().getCascadeManager().popContext();
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions );
 	@Override
