@@ -61,4 +61,10 @@ public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expr
 	public E getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super E,Void > step ) {
 		return this.transientValue;
 	}
+	@Override
+	protected java.lang.StringBuilder appendRepr( java.lang.StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( this.transientValue );
+		return rv;
+	}
 }

@@ -53,11 +53,14 @@ public abstract class CascadeLabelSeparator extends CascadeSeparator {
 	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
 		return this.getDefaultLocalizedText();
 	}
+	public boolean isValid() {
+		String text = this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
+		return text != null && text.length() > 0 && "null".equals( text )==false;
+	}
 	@Override
 	protected final javax.swing.JComponent createMenuItemIconProxy(org.lgna.croquet.cascade.ItemNode< ? super Void,Void > step) {
-		String text = this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
-		//todo
-		if( text != null && text.length() > 0 && "null".equals( text )==false ) {
+		if( this.isValid() ) {
+			String text = this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
 			javax.swing.JLabel rv = new javax.swing.JLabel();
 			rv.setText( text + ":" );
 			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
