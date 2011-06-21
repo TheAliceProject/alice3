@@ -54,6 +54,6 @@ public class RelationalIntegerCascadeMenu extends AbstractRelationalCascadeMenu 
 		return SingletonHolder.instance;
 	}
 	private RelationalIntegerCascadeMenu() {
-		super( java.util.UUID.fromString( "d527e85d-de5c-4a0a-a1e6-e51253893779" ), Number.class );
+		super( java.util.UUID.fromString( "d527e85d-de5c-4a0a-a1e6-e51253893779" ), Integer.class );
 	}
 }

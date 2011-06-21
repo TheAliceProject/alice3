@@ -98,6 +98,11 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 			}
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		}
+
+		if( isTop && prevExpression != null ) {
+			rv.add( org.alice.ide.croquet.models.cascade.RelationalNumberCascadeMenu.getInstance() );
+			rv.add( org.alice.ide.croquet.models.cascade.RelationalIntegerCascadeMenu.getInstance() );
+		}
 		
 //		rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (Real Number) { ==, !=, <, <=, >=, > }" ) {
 //			@Override

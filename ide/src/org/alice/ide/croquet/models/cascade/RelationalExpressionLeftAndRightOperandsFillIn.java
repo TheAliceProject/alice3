@@ -64,6 +64,8 @@ public class RelationalExpressionLeftAndRightOperandsFillIn extends ExpressionFi
 	private RelationalExpressionLeftAndRightOperandsFillIn( Class<?> operandCls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ) );
 		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteRelationalInfixExpression( operandCls, operator, operandCls );
+		this.addBlank( CascadeManager.getBlankForType( operandCls ) );
+		this.addBlank( CascadeManager.getBlankForType( operandCls ) );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
