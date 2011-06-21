@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.croquet.models.personeditor;
 
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -93,7 +91,7 @@ public class HairSelectionState extends AbstractListSelectionState<org.alice.api
 	@Override
 	public org.lgna.croquet.components.List<org.alice.apis.stage.Hair> createList() {
 		org.lgna.croquet.components.List<org.alice.apis.stage.Hair> rv = super.createList();
-		rv.setCellRenderer( new HairListCellRenderer() );
+		rv.setCellRenderer( new org.alice.stageide.personeditor.HairListCellRenderer() );
 		return rv;
 	}
 }

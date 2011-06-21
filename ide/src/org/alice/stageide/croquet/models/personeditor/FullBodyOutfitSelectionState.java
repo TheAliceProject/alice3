@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.croquet.models.personeditor;
 
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -88,7 +86,7 @@ public class FullBodyOutfitSelectionState extends AbstractListSelectionState<org
 	@Override
 	public org.lgna.croquet.components.List<org.alice.apis.stage.FullBodyOutfit> createList() {
 		org.lgna.croquet.components.List<org.alice.apis.stage.FullBodyOutfit> rv = super.createList();
-		rv.setCellRenderer( new FullBodyOutfitListCellRenderer() );
+		rv.setCellRenderer( new org.alice.stageide.personeditor.FullBodyOutfitListCellRenderer() );
 		return rv;
 	}
 }

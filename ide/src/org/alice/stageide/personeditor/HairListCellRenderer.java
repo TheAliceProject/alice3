@@ -40,15 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.personeditor;
-
+package org.alice.stageide.personeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-class FullBodyOutfitListCellRenderer extends IngredientListCellRenderer {
+public class HairListCellRenderer extends IngredientListCellRenderer {
 	@Override
 	protected String getSubPath() {
-		return "fullbodyoutfit_pictures";
+		return "hair_pictures";
 	}
 }

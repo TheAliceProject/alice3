@@ -40,73 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.personeditor;
+package org.alice.stageide.personeditor;
 
-import org.alice.stageide.personeditor.PersonViewer;
+import org.alice.stageide.croquet.models.personeditor.PersonInfo;
 
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< E > {
-	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
-	protected abstract String getSubPath();
-	private java.net.URL getIngredientResourceName( org.alice.apis.stage.SkinTone skinTone, String clsName, String enumConstantName ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "images/" );
-		sb.append( this.getSubPath() );
-		sb.append( "/" );
-		sb.append( skinTone );
-		sb.append( "/" );
-		sb.append( clsName );
-		sb.append( "." );
-		sb.append( enumConstantName );
-		sb.append( ".png" );
-		java.net.URL rv = IngredientListCellRenderer.class.getResource( sb.toString() );
-		assert rv != null : sb;
-		return rv;
+public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
+	SINGLETON;
+	private edu.cmu.cs.dennisc.javax.swing.components.JBorderPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
+	private javax.swing.JLabel label = new javax.swing.JLabel();
+	private SimpleListCellRenderer() {
+		label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
+		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8, 2, 8 ) );
+		label.setOpaque( true );
+		pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
+		pane.setOpaque( false );
+		pane.add( label, java.awt.BorderLayout.CENTER );
 	}
-
-	private org.alice.apis.stage.BaseSkinTone getBaseSkinTone() {
-		org.alice.apis.stage.Person person = PersonViewer.getSingleton().getPerson();
-		if( person != null ) {
-			org.alice.apis.stage.SkinTone skinTone = person.getSkinTone();
-			if( skinTone instanceof org.alice.apis.stage.BaseSkinTone ) {
-				return (org.alice.apis.stage.BaseSkinTone)skinTone;
-			}
-		}
-		return org.alice.apis.stage.BaseSkinTone.DARK;
-	}
-
-	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E value, int index, boolean isSelected, boolean cellHasFocus ) {
-		assert rv != null;
-		if( value != null ) {
-			String clsName = value.getClass().getSimpleName();
-			String enumConstantName = value.toString();
-			
-			org.alice.apis.stage.SkinTone baseSkinTone = this.getBaseSkinTone();
-
-			java.net.URL urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
-			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
-			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
-
-			rv.setOpaque( isSelected );
-			if( isSelected ) {
-				rv.setBackground( PersonInfo.SELECTED_COLOR );
-			}
-			
-			javax.swing.Icon icon = new javax.swing.ImageIcon( urlForIcon );
-			if( icon != null ) {
-				rv.setIcon( icon );
-				rv.setText( "" );
-			} else {
-				rv.setText( "image not found" );
-			}
-			rv.setBorder( this.border );
+	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+		this.label.setText( value.toString() );
+		if( isSelected ) {
+			this.label.setBackground( PersonInfo.SELECTED_COLOR );
 		} else {
-			rv.setText( "null" );
+			this.label.setBackground( PersonInfo.UNSELECTED_COLOR );
 		}
-		return rv;
+		return this.pane;
 	}
 }

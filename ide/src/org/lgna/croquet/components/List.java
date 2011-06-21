@@ -71,6 +71,7 @@ public class List<E> extends ItemSelectable<javax.swing.JList, E > {
 				}
 				public void mouseReleased( java.awt.event.MouseEvent e ) {
 	                list.setValueIsAdjusting( false );
+	                list.repaint();
 				}
 				public void mouseMoved( java.awt.event.MouseEvent e ) {
 				}

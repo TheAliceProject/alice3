@@ -112,15 +112,29 @@ public final class ListSelectionStateEdit<E> extends StateEdit<org.lgna.croquet.
 	@Override
 	public StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "select " );
-		this.getModel().getCodec().appendRepresentation( rv, this.nextValue, userInformation.getLocale() );
+		org.lgna.croquet.ItemCodec< E > itemCodec = this.getModel().getCodec();
+		if( itemCodec != null ) {
+			itemCodec.appendRepresentation( rv, this.nextValue, userInformation.getLocale() );
+		} else {
+			rv.append( this.nextValue );
+		}
 		return rv;
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "select " );
-		this.getModel().getCodec().appendRepresentation( rv, this.prevValue, locale );
+		org.lgna.croquet.ItemCodec< E > itemCodec = this.getModel().getCodec();
+		if( itemCodec != null ) {
+			itemCodec.appendRepresentation( rv, this.prevValue, locale );
+		} else {
+			rv.append( this.prevValue );
+		}
 		rv.append( " ===> " );
-		this.getModel().getCodec().appendRepresentation( rv, this.nextValue, locale );
+		if( itemCodec != null ) {
+			itemCodec.appendRepresentation( rv, this.nextValue, locale );
+		} else {
+			rv.append( this.nextValue );
+		}
 		return rv;
 	}
 }
