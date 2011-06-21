@@ -121,7 +121,7 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 	protected static String getDefaultLocalizedText( Class<?> cls ) {
 		return getLocalizedText( cls, null );
 	}
-	protected final String getDefaultLocalizedText() {
+	protected /*final*/ String getDefaultLocalizedText() {
 		return getDefaultLocalizedText( this.getClassUsedForLocalization() );
 	}
 

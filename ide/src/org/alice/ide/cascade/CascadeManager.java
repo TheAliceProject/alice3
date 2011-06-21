@@ -46,18 +46,25 @@ package org.alice.ide.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeManager {
-	private java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner assumingStringConcatenationObjectFillerInner = new org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner();
+	private final org.alice.ide.cascade.fillerinners.BooleanFillerInner booleanFillerInner = new org.alice.ide.cascade.fillerinners.BooleanFillerInner();
+	private final java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner assumingStringConcatenationObjectFillerInner = new org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner();
 
 	public CascadeManager() {
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.NumberFillerInner() );
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.IntegerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.BooleanFillerInner() );
+		this.addExpressionFillerInner( this.booleanFillerInner );
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.StringFillerInner() );
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.AudioResourceFillerInner() );
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.ImageResourceFillerInner() );
 	}
 
+	public void addRelationalTypeToBooleanFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > operandType ) {
+		this.booleanFillerInner.addRelationalType( operandType );
+	}
+	public void addRelationalTypeToBooleanFillerInner( Class<?> operandCls ) {
+		addRelationalTypeToBooleanFillerInner( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( operandCls ) );
+	}
 	private edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = null;
 	private org.alice.ide.codeeditor.BlockStatementIndexPair contextBlockStatementIndexPair = null;
 //	private edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent = null;

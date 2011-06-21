@@ -46,9 +46,14 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public class BooleanFillerInner extends ExpressionFillerInner {
+	private final java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > > relationalTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public BooleanFillerInner() {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
 	}
+	public void addRelationalType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
+		this.relationalTypes.add( type );
+	}
+
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 		if( isTop && prevExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
@@ -102,6 +107,9 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		if( isTop && prevExpression != null ) {
 			rv.add( org.alice.ide.croquet.models.cascade.RelationalNumberCascadeMenu.getInstance() );
 			rv.add( org.alice.ide.croquet.models.cascade.RelationalIntegerCascadeMenu.getInstance() );
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type : this.relationalTypes ) {
+				rv.add( new org.alice.ide.croquet.models.cascade.RelationalObjectCascadeMenu( type ) );
+			}
 		}
 		
 //		rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (Real Number) { ==, !=, <, <=, >=, > }" ) {

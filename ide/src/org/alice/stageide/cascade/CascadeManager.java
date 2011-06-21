@@ -58,6 +58,8 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.KeyListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
+		
+		this.addRelationalTypeToBooleanFillerInner( org.alice.apis.moveandturn.PolygonalModel.class );
 	}
 
 	@Override

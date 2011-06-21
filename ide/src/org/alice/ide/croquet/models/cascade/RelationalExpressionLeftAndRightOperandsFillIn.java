@@ -47,25 +47,28 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class RelationalExpressionLeftAndRightOperandsFillIn extends ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
-	private static edu.cmu.cs.dennisc.map.MapToMap< Class<?>, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( Class<?> operandCls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > operandType, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
 		synchronized( mapToMap ) {
-			RelationalExpressionLeftAndRightOperandsFillIn rv = mapToMap.get( operandCls, operator );
+			RelationalExpressionLeftAndRightOperandsFillIn rv = mapToMap.get( operandType, operator );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new RelationalExpressionLeftAndRightOperandsFillIn( operandCls, operator );
-				mapToMap.put( operandCls, operator, rv );
+				rv = new RelationalExpressionLeftAndRightOperandsFillIn( operandType, operator );
+				mapToMap.put( operandType, operator, rv );
 			}
 			return rv;
 		}
 	}
+	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( Class<?> operandCls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
+		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( operandCls ), operator );
+	}
 	private final edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression transientValue;
-	private RelationalExpressionLeftAndRightOperandsFillIn( Class<?> operandCls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
+	private RelationalExpressionLeftAndRightOperandsFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > operandType, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ) );
-		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteRelationalInfixExpression( operandCls, operator, operandCls );
-		this.addBlank( CascadeManager.getBlankForType( operandCls ) );
-		this.addBlank( CascadeManager.getBlankForType( operandCls ) );
+		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteRelationalInfixExpression( operandType, operator, operandType );
+		this.addBlank( CascadeManager.getBlankForType( operandType ) );
+		this.addBlank( CascadeManager.getBlankForType( operandType ) );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
