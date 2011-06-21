@@ -58,6 +58,10 @@ public class MethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks
 	}
 	
 	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+		return new javax.swing.JLabel( "part" );
+	}
+	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( this.transientValue.expression.getValue(), this.transientValue.method.getValue(), expressions );
 	}

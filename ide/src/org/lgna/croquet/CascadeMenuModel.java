@@ -52,7 +52,7 @@ public abstract class CascadeMenuModel< FB > extends CascadeBlankOwner< FB, FB >
 			super(java.util.UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
 		}
 		@Override
-		protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< FB > blankNode ) {
+		protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< FB > blankNode ) {
 			CascadeMenuModel.this.updateBlankChildren( rv, blankNode );
 			return rv;
 		}
@@ -62,7 +62,7 @@ public abstract class CascadeMenuModel< FB > extends CascadeBlankOwner< FB, FB >
 		super( id );
 		this.addBlank( this.blank );
 	}
-	protected abstract java.util.List< org.lgna.croquet.CascadeItem > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< FB > blankNode );
+	protected abstract java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< FB > blankNode );
 	private org.lgna.croquet.cascade.AbstractItemNode< FB,FB,? > getSelectedFillInContext( org.lgna.croquet.cascade.ItemNode< ? super FB,? > itemNode ) {
 		org.lgna.croquet.cascade.BlankNode< ? > blankNode = itemNode.getBlankStepAt( 0 );
 		return blankNode.getSelectedFillInContext();

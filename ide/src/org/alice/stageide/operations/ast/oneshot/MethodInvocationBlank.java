@@ -66,7 +66,7 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 		this.field = field;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > updateChildren( java.util.List< org.lgna.croquet.CascadeItem > rv, org.lgna.croquet.cascade.BlankNode< MethodInvocationEditFactory > blankNode ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< MethodInvocationEditFactory > blankNode ) {
 		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.alice.apis.moveandturn.AbstractTransformable.class, "move", org.alice.apis.moveandturn.MoveDirection.class, Number.class ) );
 		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.alice.apis.moveandturn.AbstractTransformable.class, "turn", org.alice.apis.moveandturn.TurnDirection.class, Number.class ) );
 		rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.alice.apis.moveandturn.AbstractTransformable.class, "roll", org.alice.apis.moveandturn.RollDirection.class, Number.class ) );

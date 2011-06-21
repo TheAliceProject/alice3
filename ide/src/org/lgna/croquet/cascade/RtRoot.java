@@ -45,33 +45,225 @@ package org.lgna.croquet.cascade;
 
 import org.lgna.croquet.*;
 import org.lgna.croquet.components.*;
+
+import javax.swing.*;
+
+/**
+ * A 1.4 file that provides utility methods for
+ * creating form- or grid-style layouts with SpringLayout.
+ * These utilities are used by several programs, such as
+ * SpringBox and SpringCompactGrid.
+ */
+class SpringUtilities {
+    /**
+     * A debugging utility that prints to stdout the component's
+     * minimum, preferred, and maximum sizes.
+     */
+    public static void printSizes(java.awt.Component c) {
+        System.out.println("minimumSize = " + c.getMinimumSize());
+        System.out.println("preferredSize = " + c.getPreferredSize());
+        System.out.println("maximumSize = " + c.getMaximumSize());
+    }
+
+    /**
+     * Aligns the first <code>rows</code> * <code>cols</code>
+     * components of <code>parent</code> in
+     * a grid. Each component is as big as the maximum
+     * preferred width and height of the components.
+     * The parent is made just big enough to fit them all.
+     *
+     * @param rows number of rows
+     * @param cols number of columns
+     * @param initialX x location to start the grid at
+     * @param initialY y location to start the grid at
+     * @param xPad x padding between cells
+     * @param yPad y padding between cells
+     */
+    public static void makeGrid(java.awt.Container parent,
+                                int rows, int cols,
+                                int initialX, int initialY,
+                                int xPad, int yPad) {
+        SpringLayout layout;
+        try {
+            layout = (SpringLayout)parent.getLayout();
+        } catch (ClassCastException exc) {
+            System.err.println("The first argument to makeGrid must use SpringLayout.");
+            return;
+        }
+
+        Spring xPadSpring = Spring.constant(xPad);
+        Spring yPadSpring = Spring.constant(yPad);
+        Spring initialXSpring = Spring.constant(initialX);
+        Spring initialYSpring = Spring.constant(initialY);
+        int max = rows * cols;
+
+        //Calculate Springs that are the max of the width/height so that all
+        //cells have the same size.
+        Spring maxWidthSpring = layout.getConstraints(parent.getComponent(0)).
+                                    getWidth();
+        Spring maxHeightSpring = layout.getConstraints(parent.getComponent(0)).
+                                    getWidth();
+        for (int i = 1; i < max; i++) {
+            SpringLayout.Constraints cons = layout.getConstraints(
+                                            parent.getComponent(i));
+
+            maxWidthSpring = Spring.max(maxWidthSpring, cons.getWidth());
+            maxHeightSpring = Spring.max(maxHeightSpring, cons.getHeight());
+        }
+
+        //Apply the new width/height Spring. This forces all the
+        //components to have the same size.
+        for (int i = 0; i < max; i++) {
+            SpringLayout.Constraints cons = layout.getConstraints(
+                                            parent.getComponent(i));
+
+            cons.setWidth(maxWidthSpring);
+            cons.setHeight(maxHeightSpring);
+        }
+
+        //Then adjust the x/y constraints of all the cells so that they
+        //are aligned in a grid.
+        SpringLayout.Constraints lastCons = null;
+        SpringLayout.Constraints lastRowCons = null;
+        for (int i = 0; i < max; i++) {
+            SpringLayout.Constraints cons = layout.getConstraints(
+                                                 parent.getComponent(i));
+            if (i % cols == 0) { //start of new row
+                lastRowCons = lastCons;
+                cons.setX(initialXSpring);
+            } else { //x position depends on previous component
+                cons.setX(Spring.sum(lastCons.getConstraint(SpringLayout.EAST),
+                                     xPadSpring));
+            }
+
+            if (i / cols == 0) { //first row
+                cons.setY(initialYSpring);
+            } else { //y position depends on previous row
+                cons.setY(Spring.sum(lastRowCons.getConstraint(SpringLayout.SOUTH),
+                                     yPadSpring));
+            }
+            lastCons = cons;
+        }
+
+        //Set the parent's size.
+        SpringLayout.Constraints pCons = layout.getConstraints(parent);
+        pCons.setConstraint(SpringLayout.SOUTH,
+                            Spring.sum(
+                                Spring.constant(yPad),
+                                lastCons.getConstraint(SpringLayout.SOUTH)));
+        pCons.setConstraint(SpringLayout.EAST,
+                            Spring.sum(
+                                Spring.constant(xPad),
+                                lastCons.getConstraint(SpringLayout.EAST)));
+    }
+
+    /* Used by makeCompactGrid. */
+    private static SpringLayout.Constraints getConstraintsForCell(
+                                                int row, int col,
+                                                java.awt.Container parent,
+                                                int cols) {
+        SpringLayout layout = (SpringLayout) parent.getLayout();
+        java.awt.Component c = parent.getComponent(row * cols + col);
+        return layout.getConstraints(c);
+    }
+
+    /**
+     * Aligns the first <code>rows</code> * <code>cols</code>
+     * components of <code>parent</code> in
+     * a grid. Each component in a column is as wide as the maximum
+     * preferred width of the components in that column;
+     * height is similarly determined for each row.
+     * The parent is made just big enough to fit them all.
+     *
+     * @param rows number of rows
+     * @param cols number of columns
+     * @param initialX x location to start the grid at
+     * @param initialY y location to start the grid at
+     * @param xPad x padding between cells
+     * @param yPad y padding between cells
+     */
+    public static void makeCompactGrid(java.awt.Container parent,
+                                       int rows, int cols,
+                                       int initialX, int initialY,
+                                       int xPad, int yPad) {
+        SpringLayout layout;
+        try {
+            layout = (SpringLayout)parent.getLayout();
+        } catch (ClassCastException exc) {
+            System.err.println("The first argument to makeCompactGrid must use SpringLayout.");
+            return;
+        }
+
+        //Align all cells in each column and make them the same width.
+        Spring x = Spring.constant(initialX);
+        for (int c = 0; c < cols; c++) {
+            Spring width = Spring.constant(0);
+            for (int r = 0; r < rows; r++) {
+                width = Spring.max(width,
+                                   getConstraintsForCell(r, c, parent, cols).
+                                       getWidth());
+            }
+            for (int r = 0; r < rows; r++) {
+                SpringLayout.Constraints constraints =
+                        getConstraintsForCell(r, c, parent, cols);
+                constraints.setX(x);
+                constraints.setWidth(width);
+            }
+            x = Spring.sum(x, Spring.sum(width, Spring.constant(xPad)));
+        }
+
+        //Align all cells in each row and make them the same height.
+        Spring y = Spring.constant(initialY);
+        for (int r = 0; r < rows; r++) {
+            Spring height = Spring.constant(0);
+            for (int c = 0; c < cols; c++) {
+                height = Spring.max(height,
+                                    getConstraintsForCell(r, c, parent, cols).
+                                        getHeight());
+            }
+            for (int c = 0; c < cols; c++) {
+                SpringLayout.Constraints constraints =
+                        getConstraintsForCell(r, c, parent, cols);
+                constraints.setY(y);
+                constraints.setHeight(height);
+            }
+            y = Spring.sum(y, Spring.sum(height, Spring.constant(yPad)));
+        }
+
+        //Set the parent's size.
+        SpringLayout.Constraints pCons = layout.getConstraints(parent);
+        pCons.setConstraint(SpringLayout.SOUTH, y);
+        pCons.setConstraint(SpringLayout.EAST, x);
+    }
+}
+
 /**
  * @author Dennis Cosgrove
  */
-abstract class RtElement<M extends Element> {
-	private M model;
+abstract class RtElement<E extends Element> {
+	private final E element;
 
-	public RtElement( M model ) {
-		assert model != null;
-		this.model = model;
+	public RtElement( E element ) {
+		assert element != null;
+		this.element = element;
 	}
-	public M getModel() {
-		return this.model;
+	public E getModel() {
+		return this.element;
 	}
 }
 
-abstract class RtNode<M extends Element,S extends org.lgna.croquet.history.Node< ? >> extends RtElement< M > {
+abstract class RtNode< M extends Element, N extends org.lgna.croquet.history.Node< ? > > extends RtElement< M > {
+	private final N node;
 	private RtNode< ?, ? > parent;
 	private RtNode< ?, ? > nextSibling;
-	private S step;
 
-	public RtNode( M model, S step ) {
-		super( model );
-		assert step != null : model;
-		this.step = step;
+	public RtNode( M element, N node ) {
+		super( element );
+		assert node != null : element;
+		this.node = node;
 	}
-	public S getStep() {
-		return this.step;
+	public N getNode() {
+		return this.node;
 	}
 	protected RtNode< ?, ? > getParent() {
 		return this.parent;
@@ -121,10 +313,19 @@ abstract class RtNode<M extends Element,S extends org.lgna.croquet.history.Node<
 		}
 	}
 	protected void addNextNodeMenuItems( MenuItemContainer parent ) {
-		for( RtNode child : this.getNextNode().getChildren() ) {
+		RtNode[] children = this.getNextNode().getChildren();
+		
+		int maxColumnCount = 1;
+		for( RtNode child : children ) {
+			RtItem< ?, ?, ?, ? > rtItem = (RtItem< ?, ?, ?, ? >)child;
+			CascadeBlankChild owner = rtItem.getOwner();
+			maxColumnCount = Math.max( maxColumnCount, owner.getItemCount() );
+		}
+		for( RtNode child : children ) {
 			assert child instanceof RtBlank == false;
-			RtItem< ?, ?, ?, ? > rtFillIn = (RtItem< ?, ?, ?, ? >)child;
-			ViewController<?,?> menuItem = rtFillIn.getMenuItem();
+			RtItem< ?, ?, ?, ? > rtItem = (RtItem< ?, ?, ?, ? >)child;
+			CascadeBlankChild owner = rtItem.getOwner();
+			ViewController<?,?> menuItem = rtItem.getMenuItem();
 			if( menuItem != null ) {
 				if( menuItem instanceof CascadeMenu ) {
 					parent.addCascadeMenu( (CascadeMenu)menuItem );
@@ -136,6 +337,13 @@ abstract class RtNode<M extends Element,S extends org.lgna.croquet.history.Node<
 			} else {
 				parent.addSeparator();
 			}
+			if( maxColumnCount == 2 && owner.getItemCount() == 1 ) {
+				parent.getViewController().getAwtComponent().add( new javax.swing.JComponent() {} );
+			}
+		}
+		if( maxColumnCount > 1 ) {
+			//parent.getViewController().getAwtComponent().setLayout( new java.awt.GridLayout( 0, maxColumnCount ) );
+			SpringUtilities.makeCompactGrid( parent.getViewController().getAwtComponent(), children.length, maxColumnCount, 10, 10, 10, 10  );
 		}
 	}
 	protected void removeAll( MenuItemContainer parent ) {
@@ -176,7 +384,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 			}
 		}
 	}
-	private static boolean isDevoidOfNonSeparators( java.util.List< RtItem> rtItems ) {
+	private static boolean isDevoidOfNonSeparators( java.util.List< RtItem > rtItems ) {
 		for( RtItem rtItem : rtItems ) {
 			if( rtItem instanceof RtSeparator ) {
 				//pass
@@ -187,17 +395,17 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 		return true;
 	}
 
-	private RtItem[] rtFillIns;
+	private RtItem[] rtItems;
 	private RtItem< B, ?, ?, ? > rtSelectedFillIn;
 
-	public RtBlank( CascadeBlank< B > model ) {
-		super( model, BlankNode.createInstance( model ) );
-		this.getStep().setRtBlank( this );
+	public RtBlank( CascadeBlank< B > element ) {
+		super( element, BlankNode.createInstance( element ) );
+		this.getNode().setRtBlank( this );
 	}
 
 	public org.lgna.croquet.cascade.AbstractItemNode getSelectedFillInContext() {
 		if( this.rtSelectedFillIn != null ) {
-			return this.rtSelectedFillIn.getStep();
+			return this.rtSelectedFillIn.getNode();
 		} else {
 			return null;
 		}
@@ -205,31 +413,35 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 
 	@Override
 	protected RtItem[] getChildren() {
-		if( this.rtFillIns != null ) {
+		if( this.rtItems != null ) {
 			//pass
 		} else {
-			java.util.List< RtItem > baseRtFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( CascadeItem item : this.getModel().getChildren( this.getStep() ) ) {
-				RtItem rtItem;
-				if( item instanceof CascadeMenuModel ) {
-					CascadeMenuModel menu = (CascadeMenuModel)item;
-					rtItem = new RtMenu< B >( menu );
-				} else if( item instanceof CascadeFillIn ) {
-					CascadeFillIn fillIn = (CascadeFillIn)item;
-					rtItem = new RtFillIn( fillIn );
-//				} else if( item instanceof CascadeRoot ) {
-//					CascadeRoot root = (CascadeRoot)item;
-//					rtItem = new RtRoot( root );
-				} else if( item instanceof CascadeSeparator ) {
-					CascadeSeparator separator = (CascadeSeparator)item;
-					rtItem = new RtSeparator( separator );
-				} else if( item instanceof CascadeCancel ) {
-					CascadeCancel cancel = (CascadeCancel)item;
-					rtItem = new RtCancel( cancel );
-				} else {
-					rtItem = null;
+			java.util.List< RtItem > baseRtItems = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( CascadeBlankChild blankChild : this.getModel().getChildren( this.getNode() ) ) {
+				final int N = blankChild.getItemCount();
+				for( int i=0; i<N; i++ ) {
+					CascadeItem item = blankChild.getItemAt( i );
+					RtItem rtItem;
+					if( item instanceof CascadeMenuModel ) {
+						CascadeMenuModel menu = (CascadeMenuModel)item;
+						rtItem = new RtMenu< B >( menu, blankChild, i );
+					} else if( item instanceof CascadeFillIn ) {
+						CascadeFillIn fillIn = (CascadeFillIn)item;
+						rtItem = new RtFillIn( fillIn, blankChild, i );
+//					} else if( item instanceof CascadeRoot ) {
+//						CascadeRoot root = (CascadeRoot)item;
+//						rtItem = new RtRoot( root );
+					} else if( item instanceof CascadeSeparator ) {
+						CascadeSeparator separator = (CascadeSeparator)item;
+						rtItem = new RtSeparator( separator, blankChild, i );
+					} else if( item instanceof CascadeCancel ) {
+						CascadeCancel cancel = (CascadeCancel)item;
+						rtItem = new RtCancel( cancel, blankChild, i );
+					} else {
+						rtItem = null;
+					}
+					baseRtItems.add( rtItem );
 				}
-				baseRtFillIns.add( rtItem );
 			}
 
 //			java.util.ListIterator< RtItem > listIterator = baseRtFillIns.listIterator();
@@ -243,16 +455,16 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 //			}
 
 			//todo
-			cleanUpSeparators( (java.util.List)baseRtFillIns );
+			cleanUpSeparators( (java.util.List)baseRtItems );
 
-			if( isDevoidOfNonSeparators( baseRtFillIns ) ) {
-				baseRtFillIns.add( new RtCancel( CascadeUnfilledInCancel.getInstance() ) );
+			if( isDevoidOfNonSeparators( baseRtItems ) ) {
+				baseRtItems.add( new RtCancel( CascadeUnfilledInCancel.getInstance(), null, -1 ) );
 			}
 
-			this.rtFillIns = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( (java.util.List)baseRtFillIns, RtItem.class );
-			this.updateParentsAndNextSiblings( this.rtFillIns );
+			this.rtItems = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( (java.util.List)baseRtItems, RtItem.class );
+			this.updateParentsAndNextSiblings( this.rtItems );
 		}
-		return this.rtFillIns;
+		return this.rtItems;
 	}
 	@Override
 	protected RtNode< ? extends Element, ? extends org.lgna.croquet.cascade.CascadeNode< ?,? > > getNextNode() {
@@ -294,12 +506,16 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 
 abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.cascade.AbstractItemNode< F,B,M > > extends RtNode< M, C > {
 	private final RtBlank< B >[] rtBlanks;
+	private final CascadeBlankChild< F > owner;
+	private final int index;
 //	private javax.swing.JMenuItem menuItem = null;
 	private ViewController<?,?> menuItem = null;
 	private boolean wasLast = false;
 
-	public RtItem( M model, C step ) {
-		super( model, step );
+	public RtItem( M element, C node, CascadeBlankChild< F > owner, int index ) {
+		super( element, node );
+		this.owner = owner;
+		this.index = index;
 		CascadeBlank< B >[] blanks = this.getModelBlanks();
 		final int N;
 		if( blanks != null ) {
@@ -315,13 +531,19 @@ abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.cro
 		this.updateParentsAndNextSiblings( this.rtBlanks );
 	}
 
+	public CascadeBlankChild< F > getOwner() {
+		return this.owner;
+	}
+	public int getIndex() {
+		return this.index;
+	}
 	protected abstract CascadeBlank< B >[] getModelBlanks();
 	
 	public int getBlankStepCount() {
 		return this.rtBlanks.length;
 	}
 	public org.lgna.croquet.cascade.BlankNode< B > getBlankStepAt( int i ) {
-		return this.rtBlanks[ i ].getStep();
+		return this.rtBlanks[ i ].getNode();
 	}
 	@Override
 	public RtBlank< ? > getNearestBlank() {
@@ -353,7 +575,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.cro
 		}
 	}
 	public F createValue() {
-		return this.getModel().createValue( this.getStep() );
+		return this.getModel().createValue( this.getNode() );
 	}
 	protected boolean isLast() {
 		return this.getNextNode() == null;
@@ -404,8 +626,8 @@ abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.cro
 		}
 //		String text = item.getMenuItemText( this.getStep() );
 //		jMenuItem.setText( text != null ? text : "" );
-		jMenuItem.setText( item.getMenuItemText( this.getStep() ) );
-		jMenuItem.setIcon( item.getMenuItemIcon( this.getStep() ) );
+		jMenuItem.setText( item.getMenuItemText( this.getNode() ) );
+		jMenuItem.setIcon( item.getMenuItemIcon( this.getNode() ) );
 		return rv;
 	}
 	public ViewController<?,?> getMenuItem() {
@@ -435,9 +657,9 @@ abstract class RtItem<F, B, M extends CascadeItem< F,B >, C extends org.lgna.cro
 }
 
 abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner< F, B >, C extends org.lgna.croquet.cascade.BlankOwnerNode< F, B, M > > extends RtItem< F, B, M, C > {
-	public RtBlankOwner( M model, C step ) {
-		super( model, step );
-		this.getStep().setRtBlankOwner( this );
+	public RtBlankOwner( M element, C step, CascadeBlankChild< F > owner, int index ) {
+		super( element, step, owner, index );
+		this.getNode().setRtBlankOwner( this );
 	}
 	@Override
 	protected final CascadeBlank< B >[] getModelBlanks() {
@@ -445,20 +667,20 @@ abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner< F, B >, C extends
 	}
 }
 class RtFillIn<F, B> extends RtBlankOwner< F, B, CascadeFillIn< F, B >, org.lgna.croquet.cascade.FillInNode< F, B > > {
-	public RtFillIn( CascadeFillIn< F, B > model ) {
-		super( model, FillInNode.createInstance( model ) );
+	public RtFillIn( CascadeFillIn< F, B > element, CascadeBlankChild< F > owner, int index ) {
+		super( element, FillInNode.createInstance( element ), owner, index );
 	}
 }
 
 class RtMenu<FB> extends RtBlankOwner< FB, FB, CascadeMenuModel< FB >, org.lgna.croquet.cascade.MenuNode< FB >> {
-	public RtMenu( CascadeMenuModel< FB > model ) {
-		super( model, MenuNode.createInstance( model ) );
+	public RtMenu( CascadeMenuModel< FB > element, CascadeBlankChild< FB > owner, int index ) {
+		super( element, MenuNode.createInstance( element ), owner, index );
 	}
 }
 
 class RtSeparator extends RtItem< Void, Void, CascadeSeparator, org.lgna.croquet.cascade.SeparatorNode > {
-	public RtSeparator( CascadeSeparator model ) {
-		super( model, SeparatorNode.createInstance( model ) );
+	public RtSeparator( CascadeSeparator element, CascadeBlankChild< Void > owner, int index ) {
+		super( element, SeparatorNode.createInstance( element ), owner, index );
 	}
 	@Override
 	protected CascadeBlank<Void>[] getModelBlanks() {
@@ -486,8 +708,8 @@ class RtSeparator extends RtItem< Void, Void, CascadeSeparator, org.lgna.croquet
 }
 
 class RtCancel<F> extends RtItem< F, Void, CascadeCancel< F >, org.lgna.croquet.cascade.CancelNode< F > > {
-	public RtCancel( CascadeCancel< F > model ) {
-		super( model, CancelNode.createInstance( model ) );
+	public RtCancel( CascadeCancel< F > element, CascadeBlankChild< F > owner, int index ) {
+		super( element, CancelNode.createInstance( element ), owner, index );
 	}
 	@Override
 	protected CascadeBlank<Void>[] getModelBlanks() {
@@ -499,8 +721,8 @@ class RtCancel<F> extends RtItem< F, Void, CascadeCancel< F >, org.lgna.croquet.
  * @author Dennis Cosgrove
  */
 public class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, RootNode< T > > {
-	public RtRoot( CascadeRoot< T > model ) {
-		super( model, RootNode.createInstance( model ) );
+	public RtRoot( CascadeRoot< T > element ) {
+		super( element, RootNode.createInstance( element ), null, -1 );
 	}
 	@Override
 	public RtRoot< ? > getRtRoot() {

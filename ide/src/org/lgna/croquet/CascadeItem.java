@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
+public abstract class CascadeItem< F,B > extends MenuItemPrepModel implements CascadeBlankChild< F > {
 	private transient boolean isDirty = true;
 	private transient javax.swing.JComponent menuProxy = null;
 	private transient javax.swing.Icon icon = null;
@@ -55,6 +55,14 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
 	}
 	public boolean isAutomaticallySelectedWhenSoleOption() {
 		return true;
+	}
+	
+	public int getItemCount() {
+		return 1;
+	}
+	public org.lgna.croquet.CascadeItem< F, B > getItemAt( int index ) {
+		assert index == 0;
+		return this;
 	}
 	
 	public abstract F getTransientValue( org.lgna.croquet.cascade.ItemNode<? super F,B> step );

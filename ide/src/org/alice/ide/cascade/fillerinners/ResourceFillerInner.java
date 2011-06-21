@@ -52,7 +52,7 @@ public abstract class ResourceFillerInner extends org.alice.ide.cascade.fillerin
 	protected abstract org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.ResourceExpression,? > getResourceExpressionFillIn( org.alice.virtualmachine.Resource resource );
 	protected abstract org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.Expression,? > getImportNewResourceFillIn();
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeItem > addItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
+	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		java.util.Set< org.alice.virtualmachine.Resource > resources = ide.getResources();
 		if( resources != null && resources.isEmpty() == false ) {

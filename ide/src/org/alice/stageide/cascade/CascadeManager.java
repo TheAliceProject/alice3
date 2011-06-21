@@ -106,7 +106,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		}
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > addCustomFillIns( java.util.List< org.lgna.croquet.CascadeItem > rv,
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addCustomFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv,
 			org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > context, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
 		rv = super.addCustomFillIns( rv, context, type );
 		System.err.println( "TODO: addCustomFillIns handle listeners" );
@@ -164,9 +164,8 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	}
 
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem > addFillInAndPossiblyPartFillIns(  java.util.List< org.lgna.croquet.CascadeItem > rv, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type2 ) {
-		super.addFillInAndPossiblyPartFillIns( rv, expression, type, type2 );
-		System.err.println( "TODO: addFillInAndPossiblyPartFills" );
+	protected org.lgna.croquet.CascadeBlankChild createBlankChildForFillInAndPossiblyPartFillIns( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type2 ) {
+		org.lgna.croquet.CascadeFillIn fillIn = (org.lgna.croquet.CascadeFillIn)super.createBlankChildForFillInAndPossiblyPartFillIns( expression, type, type2 );
 		if( type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel.class ) ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = null;
 			Class< ? > paramCls = null;
@@ -182,11 +181,35 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 			if( paramCls != null ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
 				if( getPartMethod != null ) {
-					rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, getPartMethod ) );
+					return new org.lgna.croquet.CascadeFillInMenuCombo( fillIn, new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, getPartMethod ) );
 				}
 			}
 		}
-		return rv;
-	}
-	
+		return fillIn;
+	}	
+//	@Override
+//	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addFillInAndPossiblyPartFillIns(  java.util.List< org.lgna.croquet.CascadeBlankChild > rv, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type2 ) {
+//		super.addFillInAndPossiblyPartFillIns( rv, expression, type, type2 );
+//		System.err.println( "TODO: addFillInAndPossiblyPartFills" );
+//		if( type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel.class ) ) {
+//			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = null;
+//			Class< ? > paramCls = null;
+//			if( type2.isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
+//				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
+//				Class< ? > cls = typeInJava.getClassReflectionProxy().getReification();
+//				for( Class innerCls : cls.getDeclaredClasses() ) {
+//					if( innerCls.getSimpleName().equals( "Part" ) ) {
+//						paramCls = innerCls;
+//					}
+//				}
+//			}
+//			if( paramCls != null ) {
+//				edu.cmu.cs.dennisc.alice.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
+//				if( getPartMethod != null ) {
+//					rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, getPartMethod ) );
+//				}
+//			}
+//		}
+//		return rv;
+//	}
 }

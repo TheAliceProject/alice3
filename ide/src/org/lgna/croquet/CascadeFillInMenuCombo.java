@@ -41,26 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.arithmetic;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ReplaceOperatorDivideRemainderCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
-	private static class SingletonHolder {
-		private static ReplaceOperatorDivideRemainderCascadeMenu instance = new ReplaceOperatorDivideRemainderCascadeMenu();
+public class CascadeFillInMenuCombo<F> implements CascadeBlankChild< F > {
+	private final CascadeItem< F, ? > item;
+	private final CascadeItem< F, ? > menu;
+	public CascadeFillInMenuCombo( CascadeFillIn< F, ? > item, CascadeItem< F, ? > menu ) {
+		this.item = item;
+		this.menu = menu;
 	}
-	public static ReplaceOperatorDivideRemainderCascadeMenu getInstance() {
-		return SingletonHolder.instance;
+	public int getItemCount() {
+		return 2;
 	}
-	private ReplaceOperatorDivideRemainderCascadeMenu() {
-		super( java.util.UUID.fromString( "9a3b8406-e78e-44e7-997c-6584bc8b35f9" ) );
-	}
-	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > context ) {
-		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
-			rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
+	public org.lgna.croquet.CascadeItem< F, ? > getItemAt( int index ) {
+		switch( index ) {
+		case 0:
+			return this.item;
+		case 1:
+			return this.menu;
+		default:
+			throw new AssertionError();
 		}
-		return rv;
 	}
 }
