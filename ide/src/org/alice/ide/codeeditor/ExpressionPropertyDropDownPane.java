@@ -95,7 +95,6 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 	public void dragStarted( org.lgna.croquet.history.DragStep context ) {
 	}
 	public void dragEntered( org.lgna.croquet.history.DragStep context ) {
-//		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		context.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height, -1 );
 	}
 	public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep context ) {

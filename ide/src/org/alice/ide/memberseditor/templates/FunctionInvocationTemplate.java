@@ -93,6 +93,6 @@ package org.alice.ide.memberseditor.templates;
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.FunctionInvocationCascade.getInstance( this.method, expressionProperty );
+		return org.alice.ide.croquet.models.ast.cascade.expression.FunctionInvocationCascade.getInstance( this.method, expressionProperty ).getPopupPrepModel();
 	}
 }
