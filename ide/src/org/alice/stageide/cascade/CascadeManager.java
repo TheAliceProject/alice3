@@ -59,7 +59,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
 		
-		this.addRelationalTypeToBooleanFillerInner( org.alice.apis.moveandturn.PolygonalModel.class );
+		this.addRelationalTypeToBooleanFillerInner( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel.class );
 	}
 
 	@Override
@@ -168,10 +168,10 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	@Override
 	protected org.lgna.croquet.CascadeBlankChild createBlankChildForFillInAndPossiblyPartFillIns( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type2 ) {
 		org.lgna.croquet.CascadeFillIn fillIn = (org.lgna.croquet.CascadeFillIn)super.createBlankChildForFillInAndPossiblyPartFillIns( expression, type, type2 );
-		if( type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel.class ) ) {
+		if( type.isAssignableTo( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel.class ) ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = null;
 			Class< ? > paramCls = null;
-			if( type2.isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
+			if( type2.isAssignableFrom( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel.class ) ) {
 				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
 				Class< ? > cls = typeInJava.getClassReflectionProxy().getReification();
 				for( Class innerCls : cls.getDeclaredClasses() ) {

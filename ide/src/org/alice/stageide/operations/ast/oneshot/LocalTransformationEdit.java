@@ -79,10 +79,15 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = ide.getVirtualMachineForSceneEditor();
 		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneInstanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)sceneEditor.getInstanceInAliceVMForField( sceneEditor.getSceneField() );
-		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)sceneEditor.getInstanceInAliceVMForField( this.field );
-		this.transformable = (org.alice.apis.moveandturn.Transformable)sceneEditor.getInstanceInJavaVMForField( this.field );
-		this.pointOfView = this.transformable.getLocalPointOfView();
-		vm.invokeEntryPoint( this.method, instanceInAlice, vm.evaluateEntryPoint( sceneInstanceInAlice, this.argumentExpressions ) );
+		Object instance = sceneEditor.getInstanceInAliceVMForField( this.field );
+		if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
+			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
+			this.transformable = (org.alice.apis.moveandturn.Transformable)sceneEditor.getInstanceInJavaVMForField( this.field );
+			this.pointOfView = this.transformable.getLocalPointOfView();
+			vm.invokeEntryPoint( this.method, instanceInAlice, vm.evaluateEntryPoint( sceneInstanceInAlice, this.argumentExpressions ) );
+		} else {
+			org.lgna.croquet.Application.getSingleton().showMessageDialog( "cannot perform " + this.method.getName() + " for " + instance, "failure", org.lgna.croquet.MessageType.ERROR );
+		}
 	}
 	@Override
 	protected void undoInternal() {
