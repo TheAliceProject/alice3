@@ -51,16 +51,9 @@ public abstract class CascadeBlank< B > extends Element {
 		super( id );
 	}
 	protected abstract java.util.List< CascadeBlankChild > updateChildren( java.util.List< CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<B> blankNode );
-	private final Iterable< CascadeBlankChild > getChildren( org.lgna.croquet.cascade.BlankNode<B> blankNode ) {
-		java.util.List< CascadeBlankChild > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.updateChildren( rv, blankNode );
-		return rv;
-	}
-
 	private static boolean isEmptySeparator( CascadeBlankChild child ) {
 		return child instanceof CascadeLineSeparator || ( (child instanceof CascadeLabelSeparator) && ((CascadeLabelSeparator)child).isValid() == false );
 	}
-
 	public final CascadeBlankChild[] getFilteredChildren( org.lgna.croquet.cascade.BlankNode<B> blankNode ) {
 		java.util.List< CascadeBlankChild > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.updateChildren( rv, blankNode );

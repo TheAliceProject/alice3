@@ -142,88 +142,96 @@ abstract class RtNode<M extends Element, N extends org.lgna.croquet.history.Node
 			}
 		}
 
-		javax.swing.SpringLayout springLayout = null;
-		for( RtNode child : children ) {
-			RtItem< ?, ?, ?, ? > rtItem = (RtItem< ?, ?, ?, ? >)child;
-			CascadeBlankChild owner = rtItem.getOwner();
-			int itemCount = owner.getItemCount();
-			if( itemCount > 1 ) {
-				springLayout = new javax.swing.SpringLayout();
-				break;
+		final boolean IS_SPRING_LAYOUT_ATTEMPT_DESIRED = true;
+		if( IS_SPRING_LAYOUT_ATTEMPT_DESIRED ) {
+			javax.swing.SpringLayout springLayout = null;
+			for( RtNode child : children ) {
+				RtItem< ?, ?, ?, ? > rtItem = (RtItem< ?, ?, ?, ? >)child;
+				CascadeBlankChild owner = rtItem.getOwner();
+				int itemCount = owner.getItemCount();
+				if( itemCount > 1 ) {
+					springLayout = new javax.swing.SpringLayout();
+					break;
+				}
 			}
-		}
-		javax.swing.JComponent jParent = parent.getViewController().getAwtComponent();
-		if( springLayout != null ) {
-			jParent.setLayout( springLayout );
+			javax.swing.JComponent jParent = parent.getViewController().getAwtComponent();
+			if( jParent instanceof javax.swing.JMenu ) {
+				javax.swing.JMenu jMenu = (javax.swing.JMenu)jParent;
+				jParent = jMenu.getPopupMenu();
+			}
+			assert jParent instanceof javax.swing.JPopupMenu : jParent;
+			if( springLayout != null ) {
+				jParent.setLayout( springLayout );
 
-			CascadeBlank blank = (CascadeBlank)nextNode.getModel();
-			CascadeBlankChild[] blankChildren = blank.getFilteredChildren( (BlankNode)nextNode.getNode() );
+				CascadeBlank blank = (CascadeBlank)nextNode.getModel();
+				CascadeBlankChild[] blankChildren = blank.getFilteredChildren( (BlankNode)nextNode.getNode() );
 
-			Spring widthA = Spring.constant( 0 );
-			Spring widthB = Spring.constant( 0 );
-			int index;
+				Spring widthA = Spring.constant( 0 );
+				Spring widthB = Spring.constant( 0 );
+				int index;
 
-			index = 0;
-			for( CascadeBlankChild child : blankChildren ) {
-				java.awt.Component componentA = jParent.getComponent( index + 0 );
-				javax.swing.SpringLayout.Constraints contraintsA = springLayout.getConstraints( componentA );
-				widthA = Spring.max( widthA, contraintsA.getWidth() );
-				int itemCount = child.getItemCount();
-				if( itemCount == 2 ) {
-					java.awt.Component componentB = jParent.getComponent( index + 1 );
-					javax.swing.SpringLayout.Constraints contraintsB = springLayout.getConstraints( componentB );
+				index = 0;
+				for( CascadeBlankChild child : blankChildren ) {
+					java.awt.Component componentA = jParent.getComponent( index + 0 );
+					javax.swing.SpringLayout.Constraints contraintsA = springLayout.getConstraints( componentA );
+					widthA = Spring.max( widthA, contraintsA.getWidth() );
+					int itemCount = child.getItemCount();
+					if( itemCount == 2 ) {
+						java.awt.Component componentB = jParent.getComponent( index + 1 );
+						javax.swing.SpringLayout.Constraints contraintsB = springLayout.getConstraints( componentB );
 
-					widthB = Spring.max( widthB, contraintsB.getWidth() );
-					//todo: try to find a better way to account for the wasted icon/text space
-					if( componentB instanceof javax.swing.JMenu ) {
-						javax.swing.JMenu jMenu = (javax.swing.JMenu)componentB;
-						if( jMenu.getText() != null || jMenu.getIcon() != null ) {
-							//pass
-						} else {
-							//widthB = Spring.constant( 24 );
-							widthB = contraintsA.getHeight();
+						widthB = Spring.max( widthB, contraintsB.getWidth() );
+						//todo: try to find a better way to account for the wasted icon/text space
+						if( componentB instanceof javax.swing.JMenu ) {
+							javax.swing.JMenu jMenu = (javax.swing.JMenu)componentB;
+							if( jMenu.getText() != null || jMenu.getIcon() != null ) {
+								//pass
+							} else {
+								//widthB = Spring.constant( 24 );
+								widthB = contraintsA.getHeight();
+							}
 						}
 					}
+					index += itemCount;
 				}
-				index += itemCount;
-			}
-			Spring xA = Spring.constant( 0 );
-			Spring xB = Spring.sum( xA, widthA );
-			Spring widthAB = Spring.sum( xB, widthB );
+				Spring xA = Spring.constant( 0 );
+				Spring xB = Spring.sum( xA, widthA );
+				Spring widthAB = Spring.sum( xB, widthB );
 
-			Spring y = Spring.constant( 0 );
-			index = 0;
-			for( CascadeBlankChild child : blankChildren ) {
+				Spring y = Spring.constant( 0 );
+				index = 0;
+				for( CascadeBlankChild child : blankChildren ) {
 
-				java.awt.Component componentA = jParent.getComponent( index + 0 );
-				javax.swing.SpringLayout.Constraints contraintsA = springLayout.getConstraints( componentA );
+					java.awt.Component componentA = jParent.getComponent( index + 0 );
+					javax.swing.SpringLayout.Constraints contraintsA = springLayout.getConstraints( componentA );
 
-				contraintsA.setX( xA );
-				contraintsA.setY( y );
+					contraintsA.setX( xA );
+					contraintsA.setY( y );
 
-				Spring height;
-				int itemCount = child.getItemCount();
-				if( itemCount == 1 ) {
-					contraintsA.setWidth( widthAB );
-					height = contraintsA.getHeight();
-				} else {
-					assert itemCount == 2;
-					contraintsA.setWidth( widthA );
-					java.awt.Component componentB = jParent.getComponent( index + 1 );
-					javax.swing.SpringLayout.Constraints contraintsB = springLayout.getConstraints( componentB );
-					contraintsB.setX( xB );
-					contraintsB.setY( y );
-					contraintsB.setWidth( widthB );
-					height = Spring.max( contraintsA.getHeight(), contraintsB.getHeight() );
-					contraintsA.setHeight( height );
-					contraintsB.setHeight( height );
+					Spring height;
+					int itemCount = child.getItemCount();
+					if( itemCount == 1 ) {
+						contraintsA.setWidth( widthAB );
+						height = contraintsA.getHeight();
+					} else {
+						assert itemCount == 2;
+						contraintsA.setWidth( widthA );
+						java.awt.Component componentB = jParent.getComponent( index + 1 );
+						javax.swing.SpringLayout.Constraints contraintsB = springLayout.getConstraints( componentB );
+						contraintsB.setX( xB );
+						contraintsB.setY( y );
+						contraintsB.setWidth( widthB );
+						height = Spring.max( contraintsA.getHeight(), contraintsB.getHeight() );
+						contraintsA.setHeight( height );
+						contraintsB.setHeight( height );
+					}
+					y = Spring.sum( y, height );
+					index += itemCount;
 				}
-				y = Spring.sum( y, height );
-				index += itemCount;
+				javax.swing.SpringLayout.Constraints pCons = springLayout.getConstraints( jParent );
+				pCons.setConstraint( javax.swing.SpringLayout.SOUTH, y );
+				pCons.setConstraint( javax.swing.SpringLayout.EAST, widthAB );
 			}
-			javax.swing.SpringLayout.Constraints pCons = springLayout.getConstraints( jParent );
-			pCons.setConstraint( javax.swing.SpringLayout.SOUTH, y );
-			pCons.setConstraint( javax.swing.SpringLayout.EAST, widthAB );
 		}
 	}
 	protected void removeAll( MenuItemContainer parent ) {
