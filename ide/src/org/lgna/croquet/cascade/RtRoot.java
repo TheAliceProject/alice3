@@ -639,7 +639,7 @@ public class RtRoot<T,CS extends org.lgna.croquet.history.CompletionStep<?>> ext
 		this.getModel().handleCancel( completionStep, trigger, ce );
 	}
 
-	public  CS complete( org.lgna.croquet.triggers.Trigger trigger ) {
+	public CS complete( org.lgna.croquet.triggers.Trigger trigger ) {
 		CascadeRoot< T,CS > root = this.getModel();
 		CS completionStep = root.createCompletionStep( trigger );
 		try {

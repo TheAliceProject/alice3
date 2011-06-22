@@ -48,8 +48,8 @@ package org.lgna.croquet;
  */
 public final class CascadeStandardRoot<T> extends CascadeRoot< T, org.lgna.croquet.history.CascadeCompletionStep< T > > {
 	private final Cascade< T > cascade;
-	/*package-private*/CascadeStandardRoot( Cascade< T > cascade ) {
-		super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ) );
+	/*package-private*/CascadeStandardRoot( Cascade< T > cascade, CascadeBlank< T >[] blanks ) {
+		super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ), blanks );
 		this.cascade = cascade;
 	}
 	@Override
@@ -74,25 +74,7 @@ public final class CascadeStandardRoot<T> extends CascadeRoot< T, org.lgna.croqu
 		return org.lgna.croquet.history.TransactionManager.addCascadeCompletionStep( this.cascade, trigger );
 	}
 	@Override
-	public void handleCompletion( org.lgna.croquet.history.CascadeCompletionStep< T > completionStep, T[] values ) {
-		try {
-			org.lgna.croquet.edits.Edit< ? extends Cascade< T > > edit = this.cascade.createEdit( completionStep, values );
-			completionStep.commitAndInvokeDo( edit );
-		} finally {
-			this.getPopupPrepModel().handleFinally();
-		}
+	protected org.lgna.croquet.edits.Edit createEdit(org.lgna.croquet.history.CascadeCompletionStep<T> completionStep, T[] values) {
+		return this.cascade.createEdit( completionStep, values );
 	}
-	@Override
-	public void handleCancel( org.lgna.croquet.history.CascadeCompletionStep< T > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
-		try {
-			if( completionStep != null ) {
-				completionStep.cancel();
-			} else {
-				org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( this.cascade, trigger );
-			}
-		} finally {
-			this.getPopupPrepModel().handleFinally();
-		}
-	}
-
 }

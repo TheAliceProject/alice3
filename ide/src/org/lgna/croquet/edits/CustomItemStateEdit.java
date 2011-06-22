@@ -46,6 +46,20 @@ package org.lgna.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomItemStateEdit {
+public class CustomItemStateEdit<T> extends ItemStateEdit< org.lgna.croquet.CustomItemState< T >, T > {
+	public CustomItemStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.CustomItemState<T> > completionStep, T prevValue, T nextValue ) {
+		super( completionStep, prevValue, nextValue );
+	}
+	public CustomItemStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+	}
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.getModel().setValue( this.getNextValue() );
+	}
+	@Override
+	protected final void undoInternal() {
+		this.getModel().setValue( this.getPreviousValue() );
+	}
 
 }

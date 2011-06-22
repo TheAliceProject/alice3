@@ -53,12 +53,7 @@ public abstract class Cascade<T> extends CompletionModel {
 	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T >[] blanks ) {
 		super( group, id );
 		this.componentType = componentType;
-		this.root = new CascadeStandardRoot< T >( this );
-		assert blanks != null;
-		for( int i=0; i<blanks.length; i++ ) {
-			assert blanks[ i ] != null : this;
-			root.addBlank( blanks[ i ] );
-		}
+		this.root = new CascadeStandardRoot< T >( this, blanks );
 	}
 	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T > blank ) {
 		this( group, id, componentType, new CascadeBlank[] { blank } );

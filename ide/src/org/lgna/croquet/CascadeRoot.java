@@ -48,9 +48,14 @@ package org.lgna.croquet;
  */
 public abstract class CascadeRoot<T,CS extends org.lgna.croquet.history.CompletionStep< ? > > extends CascadeBlankOwner< T[], T > {
 	private final CascadePopupPrepModel<T> popupPrepModel;
-	public CascadeRoot( java.util.UUID id ) {
+	public CascadeRoot( java.util.UUID id, CascadeBlank< T >[] blanks ) {
 		super( id );
 		this.popupPrepModel = new CascadePopupPrepModel<T>( this );
+		assert blanks != null;
+		for( int i=0; i<blanks.length; i++ ) {
+			assert blanks[ i ] != null : this;
+			this.addBlank( blanks[ i ] );
+		}
 	}
 	public CascadePopupPrepModel<T> getPopupPrepModel() {
 		return this.popupPrepModel;
@@ -85,12 +90,34 @@ public abstract class CascadeRoot<T,CS extends org.lgna.croquet.history.Completi
 	public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {
 		return null;
 	}
-	public abstract void prologue();
-	public abstract void epilogue();
 
 	public abstract CompletionModel getCompletionModel();
 	public abstract Class< T > getComponentType();
 	public abstract CS createCompletionStep( org.lgna.croquet.triggers.Trigger trigger );
-	public abstract void handleCompletion( CS completionStep, T[] values );
-	public abstract void handleCancel( CS completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce );
+	protected abstract org.lgna.croquet.edits.Edit createEdit( CS completionStep, T[] values );
+	
+	public abstract void prologue();
+	public abstract void epilogue();
+	public final void handleCompletion( CS completionStep, T[] values ) {
+		try {
+			org.lgna.croquet.edits.Edit edit = this.createEdit( completionStep, values );
+			completionStep.commitAndInvokeDo( edit );
+		} finally {
+			this.getPopupPrepModel().handleFinally();
+		}
+	}
+	public final void handleCancel( CS completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
+		try {
+			if( completionStep != null ) {
+				completionStep.cancel();
+			} else {
+				org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( this.getCompletionModel(), trigger );
+			}
+		} finally {
+			this.getPopupPrepModel().handleFinally();
+		}
+	}
+//
+//	public abstract void handleCompletion( CS completionStep, T[] values );
+//	public abstract void handleCancel( CS completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce );
 }

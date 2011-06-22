@@ -57,8 +57,8 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 		}
 	}
 	public class CascadeCustomRoot extends org.lgna.croquet.CascadeRoot< T, org.lgna.croquet.history.CustomItemStateChangeStep< T > > {
-		public CascadeCustomRoot() {
-			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ) );
+		public CascadeCustomRoot( CascadeBlank< T >[] blanks ) {
+			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ), blanks );
 		}
 		@Override
 		public org.lgna.croquet.history.CustomItemStateChangeStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
@@ -79,16 +79,14 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 		public void epilogue() {
 		}
 		@Override
-		public void handleCompletion( org.lgna.croquet.history.CustomItemStateChangeStep< T > completionStep, T[] values) {
-		}
-		@Override
-		public void handleCancel( org.lgna.croquet.history.CustomItemStateChangeStep< T > completionStep, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.CancelException ce ) {
+		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CustomItemStateChangeStep< T > completionStep, T[] values) {
+			return new org.lgna.croquet.edits.CustomItemStateEdit( completionStep, CustomItemState.this.getValue(), values[ 0 ] );
 		}
 	}
 	private final CascadeCustomRoot root;
 	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< T > itemCodec ) {
 		super( group, id, itemCodec );
-		this.root = new CascadeCustomRoot();
+		this.root = new CascadeCustomRoot( new org.lgna.croquet.CascadeBlank[] { new CustomBlank() } );
 	}
 	public CascadeCustomRoot getCascadeRoot() {
 		return this.root;

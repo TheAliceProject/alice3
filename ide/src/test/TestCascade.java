@@ -331,9 +331,7 @@ class EnumState<T extends Enum<T>> extends org.lgna.croquet.CustomItemState< T >
 	}
 	@Override
 	public void setValue(T value) {
-		
 	}
-	
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< T > blankNode ) {
 		for( T value : this.getItemCodec().getValueClass().getEnumConstants() ) {
@@ -343,15 +341,15 @@ class EnumState<T extends Enum<T>> extends org.lgna.croquet.CustomItemState< T >
 	}
 }
 
-class CustomStateDropDown extends org.lgna.croquet.components.ViewController< javax.swing.AbstractButton, org.lgna.croquet.Cascade<?> > {
-	public CustomStateDropDown( org.lgna.croquet.Cascade<?> cascade ) {
-		super( cascade );
+class CustomStateDropDown extends org.lgna.croquet.components.ViewController< javax.swing.AbstractButton, org.lgna.croquet.PopupPrepModel > {
+	public CustomStateDropDown( org.lgna.croquet.PopupPrepModel model ) {
+		super( model );
 	}
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {
 		class JDropDown extends javax.swing.AbstractButton {
 			public JDropDown() {
-//				this.setAction( CustomStateDropDown.this.getModel().getAction() );
+				this.setAction( CustomStateDropDown.this.getModel().getAction() );
 				this.setModel( new javax.swing.DefaultButtonModel() );
 			}
 		}
