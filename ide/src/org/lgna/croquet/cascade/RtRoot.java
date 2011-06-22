@@ -103,7 +103,7 @@ abstract class RtNode<M extends Element, N extends org.lgna.croquet.history.Node
 		}
 	}
 
-	public RtRoot< ? > getRtRoot() {
+	public RtRoot< ?,? > getRtRoot() {
 		return this.parent.getRtRoot();
 	}
 
@@ -610,12 +610,12 @@ class RtCancel<F> extends RtItem< F, Void, CascadeCancel< F >, org.lgna.croquet.
 /**
  * @author Dennis Cosgrove
  */
-public class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, RootNode< T > > {
-	public RtRoot( CascadeRoot< T > element ) {
+public class RtRoot<T,CS extends org.lgna.croquet.history.CompletionStep<?>> extends RtBlankOwner< T[], T, CascadeRoot< T, CS >, RootNode< T,CS > > {
+	public RtRoot( CascadeRoot< T,CS > element ) {
 		super( element, RootNode.createInstance( element ), null, -1 );
 	}
 	@Override
-	public RtRoot< ? > getRtRoot() {
+	public RtRoot< T,CS > getRtRoot() {
 		return this;
 	}
 	@Override
@@ -635,14 +635,13 @@ public class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, RootNode<
 		return rv;
 	}
 
-	public void cancel( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
-		CascadeRoot< T > root = this.getModel();
+	public void cancel( CS completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
 		this.getModel().handleCancel( completionStep, trigger, ce );
 	}
 
-	public org.lgna.croquet.history.CompletionStep< ? > complete( org.lgna.croquet.triggers.Trigger trigger ) {
-		CascadeRoot< T > root = this.getModel();
-		org.lgna.croquet.history.CompletionStep< ? > completionStep = root.createCompletionStep( trigger );
+	public  CS complete( org.lgna.croquet.triggers.Trigger trigger ) {
+		CascadeRoot< T,CS > root = this.getModel();
+		CS completionStep = root.createCompletionStep( trigger );
 		try {
 			T[] values = this.createValues( root.getComponentType() );
 			root.handleCompletion( completionStep, values );

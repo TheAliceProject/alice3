@@ -48,13 +48,13 @@ package org.lgna.croquet;
  */
 public abstract class Cascade<T> extends CompletionModel {
 	private final Class< T > componentType;
-	private final CascadeRoot< T > root;
+	private final CascadeStandardRoot< T > root;
 
 	private final CascadePopupPrepModel<T> popupPrepModel;
 	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T >[] blanks ) {
 		super( group, id );
 		this.componentType = componentType;
-		this.root = new CascadeRoot< T >( this );
+		this.root = new CascadeStandardRoot< T >( this );
 		assert blanks != null;
 		for( int i=0; i<blanks.length; i++ ) {
 			assert blanks[ i ] != null : this;
@@ -79,7 +79,7 @@ public abstract class Cascade<T> extends CompletionModel {
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
 		return false;
 	}
-	public CascadeRoot< T > getRoot() {
+	public CascadeStandardRoot< T > getRoot() {
 		return this.root;
 	}
 	public Class< T > getComponentType() {

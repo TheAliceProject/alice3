@@ -46,11 +46,11 @@ package org.lgna.croquet.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class RootNode<T> extends BlankOwnerNode< T[], T, org.lgna.croquet.CascadeRoot<T> > {
-	public static <T> RootNode< T > createInstance( org.lgna.croquet.CascadeRoot< T > model ) {
-		return new RootNode< T >( model );
+public class RootNode<T,CS extends org.lgna.croquet.history.CompletionStep< ? >> extends BlankOwnerNode< T[], T, org.lgna.croquet.CascadeRoot<T,CS> > {
+	public static <T,CS extends org.lgna.croquet.history.CompletionStep< ? >> RootNode< T,CS > createInstance( org.lgna.croquet.CascadeRoot< T,CS > model ) {
+		return new RootNode< T,CS >( model );
 	}
-	private RootNode( org.lgna.croquet.CascadeRoot<T> model ) {
+	private RootNode( org.lgna.croquet.CascadeRoot<T,CS> model ) {
 		super( model );
 	}
 	public RootNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
