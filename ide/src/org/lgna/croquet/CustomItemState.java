@@ -40,17 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ubiquitouspane.templates;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EachInArrayTogetherTemplate extends CascadingUbiquitousStatementClassTemplate {
-	public EachInArrayTogetherTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class, org.alice.ide.ast.NodeUtilities.createIncompleteEachInArrayTogether() );
+public abstract class CustomItemState< T > extends ItemState< T > {
+	private class CustomBlank extends org.lgna.croquet.CascadeBlank<T> {
+		public CustomBlank() {
+			super( java.util.UUID.fromString( "3fa6c08f-550d-4d80-b4a9-71c35c0fd186" ) );
+		}
+		@Override
+		protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode< T > blankNode ) {
+			return CustomItemState.this.updateBlankChildren( rv, blankNode );
+		}
+	}
+	public class CascadeCustomRoot extends org.lgna.croquet.CascadeRoot< T, org.lgna.croquet.history.CustomItemStateChangeStep< T > > {
+		public CascadeCustomRoot() {
+			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ) );
+		}
+		@Override
+		public org.lgna.croquet.history.CustomItemStateChangeStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
+			return org.lgna.croquet.history.TransactionManager.addCustomItemStateChangeStep( CustomItemState.this, trigger );
+		}
+		@Override
+		public java.lang.Class< T > getComponentType() {
+			return CustomItemState.this.getItemCodec().getValueClass();
+		}
+		@Override
+		public CustomItemState< T > getCompletionModel() {
+			return CustomItemState.this;
+		}
+		@Override
+		public void prologue() {
+		}
+		@Override
+		public void epilogue() {
+		}
+		@Override
+		public void handleCompletion( org.lgna.croquet.history.CustomItemStateChangeStep< T > completionStep, T[] values) {
+		}
+		@Override
+		public void handleCancel( org.lgna.croquet.history.CustomItemStateChangeStep< T > completionStep, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.CancelException ce ) {
+		}
+	}
+	private final CascadeCustomRoot root;
+	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< T > itemCodec ) {
+		super( group, id, itemCodec );
+		this.root = new CascadeCustomRoot();
+	}
+	public CascadeCustomRoot getCascadeRoot() {
+		return this.root;
 	}
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertCascade.getInstance( blockStatementIndexPair ).getRoot().getPopupPrepModel();
+	protected void localize() {
 	}
+	protected abstract java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode< T > blankNode );
+	public abstract void setValue( T value );
 }

@@ -40,17 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ubiquitouspane.templates;
+
+package org.lgna.croquet.history;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EachInArrayTogetherTemplate extends CascadingUbiquitousStatementClassTemplate {
-	public EachInArrayTogetherTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class, org.alice.ide.ast.NodeUtilities.createIncompleteEachInArrayTogether() );
+public abstract class ItemStateChangeStep< T, M extends org.lgna.croquet.ItemState< T > > extends StateChangeStep< M >{
+	public ItemStateChangeStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
+		super( parent, model, trigger );
 	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertCascade.getInstance( blockStatementIndexPair ).getRoot().getPopupPrepModel();
+	public ItemStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public final T getItem() {
+		org.lgna.croquet.edits.Edit< ? > edit = this.getEdit();
+		if( edit instanceof org.lgna.croquet.edits.ItemStateEdit ) {
+			org.lgna.croquet.edits.ItemStateEdit<?,T> itemStateEdit = (org.lgna.croquet.edits.ItemStateEdit<?,T>)edit;
+			return itemStateEdit.getNextValue();
+		} else {
+			//todo: throw Exception?
+			return null;
+		}
 	}
 }

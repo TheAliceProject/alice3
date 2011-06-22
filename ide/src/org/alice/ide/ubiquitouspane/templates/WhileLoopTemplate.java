@@ -51,6 +51,6 @@ public class WhileLoopTemplate extends CascadingUbiquitousStatementClassTemplate
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.WhileLoopInsertCascade.getInstance( blockStatementIndexPair ).getPopupPrepModel();
+		return org.alice.ide.croquet.models.ast.cascade.statement.WhileLoopInsertCascade.getInstance( blockStatementIndexPair ).getRoot().getPopupPrepModel();
 	}
 }

@@ -47,8 +47,17 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeRoot<T,CS extends org.lgna.croquet.history.CompletionStep< ? > > extends CascadeBlankOwner< T[], T > {
+	private final CascadePopupPrepModel<T> popupPrepModel;
 	public CascadeRoot( java.util.UUID id ) {
 		super( id );
+		this.popupPrepModel = new CascadePopupPrepModel<T>( this );
+	}
+	public CascadePopupPrepModel<T> getPopupPrepModel() {
+		return this.popupPrepModel;
+	}
+	@Override
+	protected Class< ? extends org.lgna.croquet.Model > getClassUsedForLocalization() {
+		return this.getCompletionModel().getClass();
 	}
 	@Override
 	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {
@@ -76,7 +85,10 @@ public abstract class CascadeRoot<T,CS extends org.lgna.croquet.history.Completi
 	public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {
 		return null;
 	}
+	public abstract void prologue();
+	public abstract void epilogue();
 
+	public abstract CompletionModel getCompletionModel();
 	public abstract Class< T > getComponentType();
 	public abstract CS createCompletionStep( org.lgna.croquet.triggers.Trigger trigger );
 	public abstract void handleCompletion( CS completionStep, T[] values );

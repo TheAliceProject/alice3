@@ -248,7 +248,7 @@ public class Factory extends org.alice.ide.common.Factory {
 		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
 			org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade model = org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade.getInstance( group, expressionProperty, desiredValueType );
-			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model.getPopupPrepModel(), prefixPane, rv, expressionProperty );
+			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), prefixPane, rv, expressionProperty );
 			rv = expressionPropertyDropDownPane;
 		}
 		return rv;

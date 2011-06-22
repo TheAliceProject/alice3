@@ -53,10 +53,22 @@ public final class CascadeStandardRoot<T> extends CascadeRoot< T, org.lgna.croqu
 		this.cascade = cascade;
 	}
 	@Override
+	public Cascade< T > getCompletionModel() {
+		return this.cascade;
+	}
+	@Override
 	public Class< T > getComponentType() {
 		return this.cascade.getComponentType();
 	}
 
+	@Override
+	public void prologue() {
+		this.cascade.prologue();
+	}
+	@Override
+	public void epilogue() {
+		this.cascade.epilogue();
+	}
 	@Override
 	public org.lgna.croquet.history.CascadeCompletionStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
 		return org.lgna.croquet.history.TransactionManager.addCascadeCompletionStep( this.cascade, trigger );
@@ -67,7 +79,7 @@ public final class CascadeStandardRoot<T> extends CascadeRoot< T, org.lgna.croqu
 			org.lgna.croquet.edits.Edit< ? extends Cascade< T > > edit = this.cascade.createEdit( completionStep, values );
 			completionStep.commitAndInvokeDo( edit );
 		} finally {
-			this.cascade.getPopupPrepModel().handleFinally();
+			this.getPopupPrepModel().handleFinally();
 		}
 	}
 	@Override
@@ -79,7 +91,7 @@ public final class CascadeStandardRoot<T> extends CascadeRoot< T, org.lgna.croqu
 				org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( this.cascade, trigger );
 			}
 		} finally {
-			this.cascade.getPopupPrepModel().handleFinally();
+			this.getPopupPrepModel().handleFinally();
 		}
 	}
 

@@ -50,7 +50,6 @@ public abstract class Cascade<T> extends CompletionModel {
 	private final Class< T > componentType;
 	private final CascadeStandardRoot< T > root;
 
-	private final CascadePopupPrepModel<T> popupPrepModel;
 	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T >[] blanks ) {
 		super( group, id );
 		this.componentType = componentType;
@@ -60,13 +59,9 @@ public abstract class Cascade<T> extends CompletionModel {
 			assert blanks[ i ] != null : this;
 			root.addBlank( blanks[ i ] );
 		}
-		this.popupPrepModel = new CascadePopupPrepModel<T>( this );
 	}
 	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T > blank ) {
 		this( group, id, componentType, new CascadeBlank[] { blank } );
-	}
-	public CascadePopupPrepModel<T> getPopupPrepModel() {
-		return this.popupPrepModel;
 	}
 	@Override
 	protected void localize() {

@@ -124,7 +124,7 @@ public class CascadeMenuItemPrepModel<T> extends AbstractMenuModel {
 		if( rtRoot.isGoodToGo() ) {
 			throw new RuntimeException( "todo" );
 		} else {
-			final org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep = org.lgna.croquet.history.TransactionManager.addCascadePopupPrepStep( cascade.getPopupPrepModel(), null );
+			final org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep = org.lgna.croquet.history.TransactionManager.addCascadePopupPrepStep( cascade.getRoot().getPopupPrepModel(), null );
 
 			Listeners listeners = map.get( menuItemContainer );
 			if( listeners != null ) {

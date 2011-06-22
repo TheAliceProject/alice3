@@ -40,17 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ubiquitouspane.templates;
+
+package org.lgna.croquet.history;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EachInArrayTogetherTemplate extends CascadingUbiquitousStatementClassTemplate {
-	public EachInArrayTogetherTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class, org.alice.ide.ast.NodeUtilities.createIncompleteEachInArrayTogether() );
+public class CustomItemStateChangeStep<T> extends ItemStateChangeStep< T, org.lgna.croquet.CustomItemState< T > >{
+	/*package-private*/ static <T> CustomItemStateChangeStep<T> createAndAddToTransaction( Transaction transaction, org.lgna.croquet.CustomItemState<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return new CustomItemStateChangeStep<T>( transaction, model, trigger );
 	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertCascade.getInstance( blockStatementIndexPair ).getRoot().getPopupPrepModel();
+	private CustomItemStateChangeStep( Transaction parent, org.lgna.croquet.CustomItemState< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
+		super( parent, model, trigger );
+	}
+	public CustomItemStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

@@ -47,38 +47,38 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public final class CascadePopupPrepModel<T> extends PopupPrepModel {
-	private final Cascade<T> cascade;
-	/*package-private*/ CascadePopupPrepModel( Cascade< T > cascade ) {
+	private final CascadeRoot< T,? > root;
+	/*package-private*/ CascadePopupPrepModel( CascadeRoot< T,? > root ) {
 		super( java.util.UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
-		this.cascade = cascade;
+		this.root = root;
 	}
 	@Override
 	public Iterable< ? extends Model > getChildren() {
-		return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( this.cascade.getRoot() );
+		return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( this.root );
 	}
 
 	@Override
 	protected Class< ? extends org.lgna.croquet.Model > getClassUsedForLocalization() {
-		return this.cascade.getClassUsedForLocalization();
+		return this.root.getClassUsedForLocalization();
 	}
 	
-	public Cascade< T > getCompletionModel() {
-		return this.cascade;
+	public CompletionModel getCompletionModel() {
+		return this.root.getCompletionModel();
 	}
 	protected void handleFinally() {
-		this.cascade.epilogue();
+		this.root.epilogue();
 	}
 	
 	@Override
 	protected org.lgna.croquet.history.Step< ? > perform( org.lgna.croquet.triggers.Trigger trigger ) {
-		final org.lgna.croquet.cascade.RtRoot< T,org.lgna.croquet.history.CascadeCompletionStep< T > > rtRoot = new org.lgna.croquet.cascade.RtRoot< T,org.lgna.croquet.history.CascadeCompletionStep< T > >( this.getCompletionModel().getRoot() );
+		final org.lgna.croquet.cascade.RtRoot< T,? > rtRoot = new org.lgna.croquet.cascade.RtRoot( this.root );
 		org.lgna.croquet.history.Step< ? > rv;
 		if( rtRoot.isGoodToGo() ) {
 			rv = rtRoot.complete( new org.lgna.croquet.triggers.AutomaticCompletionTrigger( trigger ) );
 			this.handleFinally();
 		} else {
-			final org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep = org.lgna.croquet.history.TransactionManager.addCascadePopupPrepStep( cascade.getPopupPrepModel(), trigger );			
-			final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( cascade.getPopupPrepModel() );
+			final org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep = org.lgna.croquet.history.TransactionManager.addCascadePopupPrepStep( this, trigger );			
+			final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this );
 			popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
 				public void componentShown( java.awt.event.ComponentEvent e ) {
 				}
@@ -91,7 +91,7 @@ public final class CascadePopupPrepModel<T> extends PopupPrepModel {
 				}
 			} );
 			popupMenu.addPopupMenuListener( rtRoot.createPopupMenuListener( popupMenu ) );
-			this.cascade.prologue();
+			this.root.prologue();
 			trigger.showPopupMenu( popupMenu );
 			rv = prepStep;
 		}

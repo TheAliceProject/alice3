@@ -401,7 +401,7 @@ class MutableList extends org.lgna.croquet.components.PageAxisPanel {
 public class ArrayInitializerPane extends org.lgna.croquet.components.BorderPanel {
     public ArrayInitializerPane( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions ) {
         org.alice.ide.croquet.models.ast.cascade.AddExpressionCascade model = new org.alice.ide.croquet.models.ast.cascade.AddExpressionCascade( componentTypeProperty, arrayExpressions );
-        org.lgna.croquet.components.PopupButton button = model.getPopupPrepModel().createPopupButton();
+        org.lgna.croquet.components.PopupButton button = model.getRoot().getPopupPrepModel().createPopupButton();
 
         MutableList mutableList = new MutableList( componentTypeProperty, arrayExpressions, button );
         org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel( 

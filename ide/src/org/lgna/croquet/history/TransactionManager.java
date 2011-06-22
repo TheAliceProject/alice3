@@ -435,7 +435,11 @@ public class TransactionManager {
 	public static <E> ListSelectionStatePrepStep<E> addListSelectionPrepStep( org.lgna.croquet.ListSelectionStatePrepModel< E > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	public static <E> CancelCompletionStep addCancelCompletionStep( org.lgna.croquet.CompletionModel model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static <T> CustomItemStateChangeStep<T> addCustomItemStateChangeStep( org.lgna.croquet.CustomItemState< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return CustomItemStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
+	}
+	
+	public static CancelCompletionStep addCancelCompletionStep( org.lgna.croquet.CompletionModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
 
