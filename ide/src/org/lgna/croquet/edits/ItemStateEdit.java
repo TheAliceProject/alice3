@@ -40,41 +40,77 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.croquet.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ListSelectionStateEdit<E> extends ItemStateEdit<org.lgna.croquet.ListSelectionState<E>,E> {
-	public ListSelectionStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.ListSelectionState<E> > completionStep, E prevValue, E nextValue ) {
-		super( completionStep, prevValue, nextValue );
+public abstract class ItemStateEdit<M extends org.lgna.croquet.ItemState<T>,T> extends StateEdit<M, T> {
+	private T prevValue;
+	private T nextValue;
+	public ItemStateEdit( org.lgna.croquet.history.CompletionStep< M > completionStep, T prevValue, T nextValue ) {
+		super( completionStep );
+		this.prevValue = prevValue;
+		this.nextValue = nextValue;
 	}
-	public ListSelectionStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public ItemStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
+		org.lgna.croquet.ItemState< T > itemState = this.getModel();
+		org.lgna.croquet.ItemCodec<T> codec = itemState.getItemCodec();
+		this.prevValue = codec.decodeValue( binaryDecoder );
+		this.nextValue = codec.decodeValue( binaryDecoder );
 	}
 	@Override
-	public boolean canRedo() {
-		return this.getModel() != null;
+	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.lgna.croquet.ItemState< T > itemState = this.getModel();
+		org.lgna.croquet.ItemCodec<T> codec = itemState.getItemCodec();
+		codec.encodeValue( binaryEncoder, this.prevValue );
+		codec.encodeValue( binaryEncoder, this.nextValue );
 	}
 	@Override
-	public boolean canUndo() {
-		return this.getModel() != null;
-	}
-
-//	@Override
-//	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit ) {
-//		super.addKeyValuePairs( retargeter, replacementEdit );
-//		ListSelectionStateEdit listSelectionStateEdit = (ListSelectionStateEdit)replacementEdit;
-//		retargeter.addKeyValuePair( this.prevValue, listSelectionStateEdit.prevValue );
-//		retargeter.addKeyValuePair( this.nextValue, listSelectionStateEdit.nextValue );
-//	}
-
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.getModel().setSelectedItem( this.getNextValue() );
+	public final T getPreviousValue() {
+		return this.prevValue;
 	}
 	@Override
-	protected final void undoInternal() {
-		this.getModel().setSelectedItem( this.getPreviousValue() );
+	public final T getNextValue() {
+		return this.nextValue;
+	}
+	
+	@Override
+	public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		super.retarget( retargeter );
+		this.prevValue = retargeter.retarget( this.prevValue );
+		this.nextValue = retargeter.retarget( this.nextValue );
+	}
+	
+	@Override
+	public final StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.UserInformation userInformation ) {
+		rv.append( "select " );
+		org.lgna.croquet.ItemCodec< T > itemCodec = this.getModel().getItemCodec();
+		if( itemCodec != null ) {
+			itemCodec.appendRepresentation( rv, this.nextValue, userInformation.getLocale() );
+		} else {
+			rv.append( this.nextValue );
+		}
+		return rv;
+	}
+	@Override
+	protected final StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+		rv.append( "select " );
+		org.lgna.croquet.ItemCodec< T > itemCodec = this.getModel().getItemCodec();
+		if( itemCodec != null ) {
+			itemCodec.appendRepresentation( rv, this.prevValue, locale );
+		} else {
+			rv.append( this.prevValue );
+		}
+		rv.append( " ===> " );
+		if( itemCodec != null ) {
+			itemCodec.appendRepresentation( rv, this.nextValue, locale );
+		} else {
+			rv.append( this.nextValue );
+		}
+		return rv;
 	}
 }

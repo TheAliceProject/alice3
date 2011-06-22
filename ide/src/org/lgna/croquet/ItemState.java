@@ -40,41 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.edits;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ListSelectionStateEdit<E> extends ItemStateEdit<org.lgna.croquet.ListSelectionState<E>,E> {
-	public ListSelectionStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.ListSelectionState<E> > completionStep, E prevValue, E nextValue ) {
-		super( completionStep, prevValue, nextValue );
+public abstract class ItemState<T> extends State<T> {
+	private final ItemCodec< T > itemCodec;
+	public ItemState( Group group, java.util.UUID id, ItemCodec< T > itemCodec ) {
+		super( group, id );
+		//assert itemCodec != null;
+		if( itemCodec != null ) {
+			//pass
+		} else {
+			System.err.println( "itemCodec is null for " + this );
+		}
+		this.itemCodec = itemCodec;
 	}
-	public ListSelectionStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
-	@Override
-	public boolean canRedo() {
-		return this.getModel() != null;
-	}
-	@Override
-	public boolean canUndo() {
-		return this.getModel() != null;
-	}
-
-//	@Override
-//	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit ) {
-//		super.addKeyValuePairs( retargeter, replacementEdit );
-//		ListSelectionStateEdit listSelectionStateEdit = (ListSelectionStateEdit)replacementEdit;
-//		retargeter.addKeyValuePair( this.prevValue, listSelectionStateEdit.prevValue );
-//		retargeter.addKeyValuePair( this.nextValue, listSelectionStateEdit.nextValue );
-//	}
-
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.getModel().setSelectedItem( this.getNextValue() );
-	}
-	@Override
-	protected final void undoInternal() {
-		this.getModel().setSelectedItem( this.getPreviousValue() );
+	public ItemCodec< T > getItemCodec() {
+		return this.itemCodec;
 	}
 }

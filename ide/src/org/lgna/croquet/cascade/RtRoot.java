@@ -635,24 +635,21 @@ public class RtRoot<T> extends RtBlankOwner< T[], T, CascadeRoot< T >, RootNode<
 		return rv;
 	}
 
-	public void cancel( org.lgna.croquet.history.CascadeCompletionStep< T > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
+	public void cancel( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
 		CascadeRoot< T > root = this.getModel();
-		Cascade< T > cascade = root.getCascade();
-		cascade.handleCancel( completionStep, trigger, ce );
+		this.getModel().handleCancel( completionStep, trigger, ce );
 	}
 
-	public org.lgna.croquet.history.CascadeCompletionStep< T > complete( org.lgna.croquet.triggers.Trigger trigger ) {
+	public org.lgna.croquet.history.CompletionStep< ? > complete( org.lgna.croquet.triggers.Trigger trigger ) {
 		CascadeRoot< T > root = this.getModel();
-		Cascade< T > cascade = root.getCascade();
-		org.lgna.croquet.history.CascadeCompletionStep< T > completionStep = org.lgna.croquet.history.TransactionManager.addCascadeCompletionStep( cascade, trigger );
+		org.lgna.croquet.history.CompletionStep< ? > completionStep = root.createCompletionStep( trigger );
 		try {
-			T[] values = this.createValues( cascade.getComponentType() );
-			cascade.handleCompletion( completionStep, values );
-			return completionStep;
+			T[] values = this.createValues( root.getComponentType() );
+			root.handleCompletion( completionStep, values );
 		} catch( CancelException ce ) {
 			this.cancel( completionStep, trigger, ce );
-			return null;
 		}
+		return completionStep;
 	}
 	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
 		this.complete( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );

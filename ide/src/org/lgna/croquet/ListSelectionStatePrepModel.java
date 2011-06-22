@@ -107,11 +107,11 @@ public class ListSelectionStatePrepModel<E> extends PrepModel {
 			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
 			rv.append( "First press on " );
 			rv.append( "<strong>" );
-			this.getListSelectionState().getCodec().appendRepresentation( rv, listSelectionStateEdit.getPreviousValue(), java.util.Locale.getDefault() );
+			this.getListSelectionState().getItemCodec().appendRepresentation( rv, listSelectionStateEdit.getPreviousValue(), java.util.Locale.getDefault() );
 			rv.append( "</strong>" );
 			rv.append( " in order to change it to " );
 			rv.append( "<strong>" );
-			this.getListSelectionState().getCodec().appendRepresentation( rv, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+			this.getListSelectionState().getItemCodec().appendRepresentation( rv, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
 			rv.append( "</strong>." );
 		}
 		return rv;

@@ -45,7 +45,7 @@ package org.lgna.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StateEdit<M extends org.lgna.croquet.State<?>,T> extends org.lgna.croquet.edits.Edit<M> {
+public abstract class StateEdit<M extends org.lgna.croquet.State<T>,T> extends org.lgna.croquet.edits.Edit<M> {
 	public StateEdit( org.lgna.croquet.history.CompletionStep< M > completionStep ) {
 		super( completionStep );
 	}

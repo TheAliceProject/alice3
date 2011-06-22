@@ -89,7 +89,7 @@ public abstract class Cascade<T> extends CompletionModel {
 	}
 	protected void epilogue() {
 	}
-	protected abstract org.lgna.croquet.edits.Edit< ? extends Cascade< T > > createEdit( org.lgna.croquet.history.CascadeCompletionStep< T > step, T[] values );
+	protected abstract org.lgna.croquet.edits.Edit< ? extends Cascade< T > > createEdit( org.lgna.croquet.history.CascadeCompletionStep< T > completionStep, T[] values );
 	private CascadeMenuItemPrepModel<T> menuItemPrepModel;
 	public synchronized CascadeMenuItemPrepModel<T> getMenuItemPrepModel() {
 		if( this.menuItemPrepModel != null ) {
@@ -99,26 +99,4 @@ public abstract class Cascade<T> extends CompletionModel {
 		}
 		return this.menuItemPrepModel;
 	}
-	
-	public void handleCompletion( org.lgna.croquet.history.CascadeCompletionStep< T > step, T[] values ) {
-		try {
-			org.lgna.croquet.edits.Edit< ? extends Cascade< T > > edit = this.createEdit( step, values );
-			step.commitAndInvokeDo( edit );
-		} finally {
-			this.getPopupPrepModel().handleFinally();
-		}
-	}
-	public void handleCancel( org.lgna.croquet.history.CascadeCompletionStep< T > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
-		try {
-			if( completionStep != null ) {
-				completionStep.cancel();
-			} else {
-				org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( this, trigger );
-			}
-		} finally {
-			this.getPopupPrepModel().handleFinally();
-		}
-	}
-	
-	
 }

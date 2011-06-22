@@ -46,40 +46,68 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class CascadeRoot<B> extends CascadeBlankOwner< B[], B > {
-	private final Cascade< B > cascade;
-	/*package-private*/ CascadeRoot( Cascade< B > cascade ) {
+public final class CascadeRoot<T> extends CascadeBlankOwner< T[], T > {
+	private final Cascade< T > cascade;
+
+	/*package-private*/CascadeRoot( Cascade< T > cascade ) {
 		super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ) );
 		this.cascade = cascade;
 	}
-	public Cascade< B > getCascade() {
-		return this.cascade;
-	}
-	
+	//	public Cascade< B > getCascade() {
+	//		return this.cascade;
+	//	}
+
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super B[],B > step) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {
 		return null;
 	}
 	@Override
-	public B[] createValue( org.lgna.croquet.cascade.ItemNode< ? super B[],B > step ) {
+	public T[] createValue( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {
 		//todo
 		//this.cascade.getComponentType();
 		//handled elsewhere for now
 		throw new AssertionError();
 	}
 	@Override
-	public B[] getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super B[],B > step ) {
+	public T[] getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {
 		//todo
 		//this.cascade.getComponentType();
 		//handled elsewhere for now
 		throw new AssertionError();
 	}
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super B[], B > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {
 		return this.getDefaultLocalizedText();
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super B[], B > step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {
 		return null;
+	}
+
+	public Class< T > getComponentType() {
+		return this.cascade.getComponentType();
+	}
+
+	public org.lgna.croquet.history.CompletionStep createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
+		return org.lgna.croquet.history.TransactionManager.addCascadeCompletionStep( this.cascade, trigger );
+	}
+	public void handleCompletion( org.lgna.croquet.history.CompletionStep completionStep, T[] values ) {
+		try {
+			org.lgna.croquet.edits.Edit< ? extends Cascade< T > > edit = this.cascade.createEdit( (org.lgna.croquet.history.CascadeCompletionStep< T >)completionStep, values );
+			completionStep.commitAndInvokeDo( edit );
+		} finally {
+			this.cascade.getPopupPrepModel().handleFinally();
+		}
+	}
+	public void handleCancel( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
+		try {
+			if( completionStep != null ) {
+				completionStep.cancel();
+			} else {
+				org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( this.cascade, trigger );
+			}
+		} finally {
+			this.cascade.getPopupPrepModel().handleFinally();
+		}
 	}
 }

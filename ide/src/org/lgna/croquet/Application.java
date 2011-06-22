@@ -43,11 +43,6 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.AbstractWindow;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.Frame;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -67,32 +62,32 @@ public abstract class Application {
 		org.lgna.croquet.history.TransactionManager.startListeningToMenuSelection();
 	}
 
-	protected abstract Component< ? > createContentPane();
+	protected abstract org.lgna.croquet.components.Component< ? > createContentPane();
 
-	private Frame frame = new Frame();
-	private java.util.Stack< AbstractWindow< ? > > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new AbstractWindow< ? >[] { frame } );
+	private org.lgna.croquet.components.Frame frame = new org.lgna.croquet.components.Frame();
+	private java.util.Stack< org.lgna.croquet.components.AbstractWindow< ? > > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new org.lgna.croquet.components.AbstractWindow< ? >[] { frame } );
 	
-	public void pushWindow( AbstractWindow< ? > window ) {
+	public void pushWindow( org.lgna.croquet.components.AbstractWindow< ? > window ) {
 		this.stack.push( window );
 	}
-	public AbstractWindow< ? > popWindow() {
-		AbstractWindow< ? > rv = this.stack.peek();
+	public org.lgna.croquet.components.AbstractWindow< ? > popWindow() {
+		org.lgna.croquet.components.AbstractWindow< ? > rv = this.stack.peek();
 		this.stack.pop();
 		return rv;
 	}
 	
-	public AbstractWindow< ? > getOwnerWindow() {
+	public org.lgna.croquet.components.AbstractWindow< ? > getOwnerWindow() {
 		return this.stack.peek();
 	}
 	
-	public Frame getFrame() {
+	public org.lgna.croquet.components.Frame getFrame() {
 		return this.frame;
 	}
 	
 	public abstract DropReceptor getDropReceptor( DropSite dropSite );
 	public void initialize( String[] args ) {
-		this.frame.getContentPanel().addComponent( this.createContentPane(), BorderPanel.Constraint.CENTER );
-		this.frame.setDefaultCloseOperation( Frame.DefaultCloseOperation.DO_NOTHING );
+		this.frame.getContentPanel().addComponent( this.createContentPane(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		this.frame.setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.DO_NOTHING );
 		this.frame.addWindowListener( new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				Application.this.handleWindowOpened( e );
@@ -169,8 +164,8 @@ public abstract class Application {
 	protected abstract void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger );
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-		if( message instanceof Component<?> ) {
-			message = ((Component<?>)message).getAwtComponent();
+		if( message instanceof org.lgna.croquet.components.Component<?> ) {
+			message = ((org.lgna.croquet.components.Component<?>)message).getAwtComponent();
 		}
 		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtComponent(), message, title, messageType.internal, icon );
 	}
