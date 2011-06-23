@@ -40,20 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet;
+
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PopupButton< M extends org.lgna.croquet.PopupPrepModel > extends org.lgna.croquet.components.DropDown< M > {
-	public PopupButton(M model, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent) {
-		super(model, prefixComponent, mainComponent, postfixComponent);
-	}
-	public PopupButton(M model) {
-		this(model, null, null, null);
+public class ItemDropDown<T, M extends org.lgna.croquet.CustomItemState< T >> extends DropDown< M > {
+	public ItemDropDown( M model ) {
+		super( model, null, new Label( "hello" ), null );
 	}
 	@Override
 	protected javax.swing.Action getAction() {
-		return this.getModel().getAction();
+		return this.getModel().getCascadeRoot().getPopupPrepModel().getAction();
+	}
+
+	private final org.lgna.croquet.State.ValueObserver< T > valueObserver = new org.lgna.croquet.State.ValueObserver< T >() {
+		public void changing( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting ) {
+			Label label = (Label)ItemDropDown.this.getMainComponent();
+			label.setText( "" + nextValue );
+			label.revalidateAndRepaint();
+		}
+	};
+
+	@Override
+	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
+		this.getModel().addAndInvokeValueObserver( this.valueObserver );
+		super.handleAddedTo( parent );
+	}
+	@Override
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
+		super.handleRemovedFrom( parent );
+		this.getModel().removeValueObserver( this.valueObserver );
 	}
 }

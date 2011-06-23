@@ -320,17 +320,19 @@ class MyCascade extends org.lgna.croquet.Cascade< Object > {
 //	}
 //}
 
-class EnumState<T extends Enum<T>> extends org.lgna.croquet.CustomItemState< T > { 
+class EnumState<T extends Enum<T>> extends org.lgna.croquet.CustomItemState< T > {
+	private T value;
 	public EnumState( org.lgna.croquet.Group group, java.util.UUID id, Class<T> cls ) {
 		super( group, id, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( cls ) );
 	}
 
 	@Override
 	public T getValue() {
-		return null;
+		return this.value;
 	}
 	@Override
 	public void setValue(T value) {
+		this.value = value;
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< T > blankNode ) {
@@ -341,20 +343,20 @@ class EnumState<T extends Enum<T>> extends org.lgna.croquet.CustomItemState< T >
 	}
 }
 
-class CustomStateDropDown extends org.lgna.croquet.components.ViewController< javax.swing.AbstractButton, org.lgna.croquet.PopupPrepModel > {
+class CustomStateDropDown extends org.alice.ide.croquet.PopupButton< org.lgna.croquet.PopupPrepModel > {
 	public CustomStateDropDown( org.lgna.croquet.PopupPrepModel model ) {
-		super( model );
+		super( model, null, new org.lgna.croquet.components.Label( "hello" ), null );
 	}
-	@Override
-	protected javax.swing.AbstractButton createAwtComponent() {
-		class JDropDown extends javax.swing.AbstractButton {
-			public JDropDown() {
-				this.setAction( CustomStateDropDown.this.getModel().getAction() );
-				this.setModel( new javax.swing.DefaultButtonModel() );
-			}
-		}
-		return new JDropDown();
-	}
+//	@Override
+//	protected javax.swing.AbstractButton createAwtComponent() {
+//		class JDropDown extends javax.swing.AbstractButton {
+//			public JDropDown() {
+//				this.setAction( CustomStateDropDown.this.getModel().getAction() );
+//				this.setModel( new javax.swing.DefaultButtonModel() );
+//			}
+//		}
+//		return new JDropDown();
+//	}
 }
 
 
@@ -364,7 +366,8 @@ class CascadePanel extends org.lgna.croquet.components.BorderPanel {
 		this.setMinimumPreferredHeight( 480 );
 		this.addComponent( MyCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton(), Constraint.PAGE_START );
 		EnumState< ZodiacSigns > customState = new EnumState< ZodiacSigns >( null, java.util.UUID.fromString( "03338045-ede5-4e09-bfc0-db74335055a6" ), ZodiacSigns.class );
-		this.addComponent( customState.getCascadeRoot().getPopupPrepModel().createPopupButton(), Constraint.PAGE_END );
+		//this.addComponent( customState.getCascadeRoot().getPopupPrepModel().createPopupButton(), Constraint.PAGE_END );
+		this.addComponent( new org.lgna.croquet.components.ItemDropDown( customState ), Constraint.PAGE_END );
 	}
 }
 

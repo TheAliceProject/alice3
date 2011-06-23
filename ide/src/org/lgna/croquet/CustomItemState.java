@@ -95,5 +95,10 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 	protected void localize() {
 	}
 	protected abstract java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode< T > blankNode );
-	public abstract void setValue( T value );
+	protected abstract void setValue( T value );
+	public final void changeValue( T prevValue, T nextValue, boolean isAdjusting ) {
+		this.fireChanging( prevValue, nextValue, isAdjusting );
+		this.setValue( nextValue );
+		this.fireChanged( prevValue, nextValue, isAdjusting );
+	}
 }

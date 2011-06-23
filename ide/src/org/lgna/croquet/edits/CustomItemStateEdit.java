@@ -55,11 +55,11 @@ public class CustomItemStateEdit<T> extends ItemStateEdit< org.lgna.croquet.Cust
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		this.getModel().setValue( this.getNextValue() );
+		this.getModel().changeValue( this.getPreviousValue(), this.getNextValue(), false );
 	}
 	@Override
 	protected final void undoInternal() {
-		this.getModel().setValue( this.getPreviousValue() );
+		this.getModel().changeValue( this.getNextValue(), this.getPreviousValue(), false );
 	}
 
 }
