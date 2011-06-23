@@ -76,6 +76,7 @@ import javax.swing.filechooser.FileFilter;
 
 import org.alice.media.encoder.EncoderListener;
 import org.alice.media.encoder.ImagesToMOVEncoder;
+import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.jdesktop.swingworker.SwingWorker;
 
 import edu.cmu.cs.dennisc.alice.Project;
@@ -180,7 +181,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	private JTextField fileNameField;
 	private JLabel pathLabel;
 	private JButton browseButton;
-	private ImagesToMOVEncoder encoder;
+	private ImagesToQuickTimeEncoder encoder;
 	private JLabel statusLabel;
 	private JLabel statusLabel2;
 	private JPanel youTubeControlPanel;
@@ -241,7 +242,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 		this.youTubeUploaderPane = new UploadToYouTubePane(frame);
 		youTubeInitialized = this.youTubeUploaderPane.init();
 		
-		this.encoder = new ImagesToMOVEncoder(this.frameRate);
+		this.encoder = new ImagesToQuickTimeEncoder(this.frameRate);
 		this.encoder.addListener( this );
 		//this.encoder = new SeriesOfImagesMovieEncoder("C:/movie_dump", "test", "0000", "png");
 		
@@ -754,7 +755,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 					videoFile.delete();
 				}
 				
-				VideoCapturePane.this.encoder.setOutputFile( videoFile );
+				VideoCapturePane.this.encoder.setOutput( videoFile );
 				
 				if (VideoCapturePane.this.isRestart)
 				{
@@ -895,7 +896,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 		}
 		if (videoFile != null)
 		{
-			this.youTubeUploaderPane.setVideo(videoFile, this.encoder.getFirstFrame().getScaledInstance( 400, 300, Image.SCALE_FAST ));
+			this.youTubeUploaderPane.setVideo(videoFile, this.encoder.getThumbnailImage().getScaledInstance( 400, 300, Image.SCALE_FAST ));
 			this.youTubeUploaderPane.pack();
 			SwingWorker< Boolean, Void > worker = new SwingWorker< Boolean, Void >(){
 				@Override

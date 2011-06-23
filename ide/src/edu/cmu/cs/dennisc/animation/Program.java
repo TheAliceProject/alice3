@@ -153,6 +153,9 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 	@Override
 	protected void postRun() {
 		super.postRun();
+		
+		//TODO: add audio track
+		
 		setMovieEncoder( null );
 	}
 
