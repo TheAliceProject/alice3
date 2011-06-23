@@ -61,11 +61,25 @@ class IsArrayState extends org.lgna.croquet.BooleanState {
 	}
 }
 
+class TypePropertyItemState extends org.lgna.croquet.CustomItemState< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+	private final edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty;
+	public TypePropertyItemState( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "1818f209-d305-431c-8fea-bcb8698ba908" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType.class ), org.alice.ide.croquet.models.ast.declaration.TypeBlank.getInstance() );
+		this.typeProperty = typeProperty;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValue() {
+		return this.typeProperty.getValue();
+	}
+	@Override
+	protected void setValue( edu.cmu.cs.dennisc.alice.ast.AbstractType value ) {
+		this.typeProperty.setValue( value );
+	}
+}
 
 public class TypePane extends org.lgna.croquet.components.BorderPanel {
 	private edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty;
 	private IsArrayState isArrayStateState;
-	private org.lgna.croquet.StandardPopupPrepModel popupMenuOperation = org.alice.ide.croquet.models.ast.declaration.TypeMenuModel.getInstance().getPopupPrepModel();
 	
 	private class TypeDropDownPane extends org.alice.ide.common.AbstractDropDownPane {
 		private org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
@@ -115,7 +129,7 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 //			componentType = null;
 //		}
 
-		final TypeDropDownPane typeDropDownPane = new TypeDropDownPane( popupMenuOperation );
+		final TypeDropDownPane typeDropDownPane = new TypeDropDownPane( new TypePropertyItemState( typeProperty ).getCascadeRoot().getPopupPrepModel() );
 		typeDropDownPane.getAwtComponent().setEnabled( isTypeComboBoxEnabled );
 ////		this.typeSelectionState.setSelectedItem( componentType );
 //		if( isTypeComboBoxEnabled ) {

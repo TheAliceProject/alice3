@@ -45,31 +45,45 @@ package org.alice.ide.croquet.models.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeMenuModel extends org.lgna.croquet.MenuModel {
-	private static class SingletonHolder {
-		private static TypeMenuModel instance = new TypeMenuModel();
+public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.AbstractType, Void > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, TypeFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized TypeFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		TypeFillIn rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new TypeFillIn( type );
+			map.put( type, rv );
+		}
+		return rv;
 	}
-	public static TypeMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private TypeMenuModel() {
-		super( java.util.UUID.fromString( "a59df2b2-a55a-41b5-be05-60d10a615049" ) );
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
+	private TypeFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		super( java.util.UUID.fromString( "8f3e1f74-d1fd-4484-98e0-bc37da452005" ) );
+		this.type = type;
 	}
 	@Override
-	public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
-		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > javaTypes = org.alice.ide.IDE.getSingleton().getPrimeTimeSelectableTypesDeclaredInJava();
-		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava javaType : javaTypes ) {
-			models.add( SelectTypeOperation.getInstance( javaType ).getMenuItemPrepModel() );
-		}
-		
-		models.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		models.add( MyTypesMenuModel.getInstance() );
-
-		models.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		models.add( OtherTypesMenuModel.getInstance() );
-		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeFillIn > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeFillIn >( this, this.type, edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.AbstractType, java.lang.Void > step ) {
+		return this.type;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.AbstractType, java.lang.Void > step ) {
+		return this.type;
+	}
+	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.AbstractType, java.lang.Void > step ) {
+		throw new AssertionError();
+	}
+	@Override
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.AbstractType, java.lang.Void > step ) {
+		return org.alice.ide.common.TypeIcon.getInstance( this.type );
+	}
+	@Override
+	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.AbstractType, java.lang.Void > step ) {
+		return org.alice.ide.IDE.getSingleton().getTextFor( type );
 	}
 }

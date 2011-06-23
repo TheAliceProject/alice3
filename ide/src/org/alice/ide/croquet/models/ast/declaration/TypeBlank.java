@@ -45,37 +45,28 @@ package org.alice.ide.croquet.models.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class SelectTypeOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, SelectTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized SelectTypeOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		SelectTypeOperation rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SelectTypeOperation( type );
-			map.put( type, rv );
+public class TypeBlank extends org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+	private static class SingletonHolder {
+		private static TypeBlank instance = new TypeBlank();
+	}
+	public static TypeBlank getInstance() {
+		return SingletonHolder.instance;
+	}
+	private TypeBlank() {
+		super( java.util.UUID.fromString( "a59df2b2-a55a-41b5-be05-60d10a615049" ) );
+	}
+	@Override
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.AbstractType > blankNode ) {
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > javaTypes = org.alice.ide.IDE.getSingleton().getPrimeTimeSelectableTypesDeclaredInJava();
+		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava javaType : javaTypes ) {
+			rv.add( TypeFillIn.getInstance( javaType ) );
 		}
+		
+		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( MyTypesMenuModel.getInstance() );
+
+		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( OtherTypesMenuModel.getInstance() );
 		return rv;
-	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
-	private SelectTypeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8f3e1f74-d1fd-4484-98e0-bc37da452005" ) );
-		this.type = type;
-		this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( this.type ) );
-		this.setName( org.alice.ide.IDE.getSingleton().getTextFor( type ) );
-	}
-	
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< SelectTypeOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< SelectTypeOperation >( this, this.type, edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
-	}
-	
-	@Override
-	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		//typeProperty.setValue( this.type );
-		org.lgna.croquet.history.InputDialogOperationStep inputDialogOperationContext = (org.lgna.croquet.history.InputDialogOperationStep)step.getParent().getParent().getParent();
-		org.alice.ide.declarationpanes.AbstractDeclarationPane createDeclarationPane = inputDialogOperationContext.getMainPanel();
-		createDeclarationPane.EPIC_HACK_setComponentType( this.type );
-		step.finish();
 	}
 }
