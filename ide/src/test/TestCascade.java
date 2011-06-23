@@ -257,70 +257,22 @@ class MyCascade extends org.lgna.croquet.Cascade< Object > {
 	}
 }
 
-//abstract class CustomState< T > extends org.lgna.croquet.ItemState< T > {
-//	private class CustomBlank extends org.lgna.croquet.CascadeBlank<T> {
-//		public CustomBlank() {
-//			super( java.util.UUID.fromString( "3fa6c08f-550d-4d80-b4a9-71c35c0fd186" ) );
-//		}
-//		@Override
-//		protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode< T > blankNode ) {
-//			return CustomState.this.updateBlankChildren( rv, blankNode );
-//		}
+//class EnumState<T extends Enum<T>> extends org.lgna.croquet.CustomItemState< T > {
+//	private T value;
+//	public EnumState( org.lgna.croquet.Group group, java.util.UUID id, Class<T> cls ) {
+//		super( group, id, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( cls ), new EnumBlank< T >( cls ) );
 //	}
-//	private class CascadeCustomRoot extends org.lgna.croquet.CascadeRoot< T, org.lgna.croquet.history.StateChangeStep< ? > > {
-//		public CascadeCustomRoot() {
-//			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ) );
-//		}
-//		@Override
-//		public org.lgna.croquet.history.StateChangeStep< ? > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
-//			return new ItemSt;
-//		}
-//		@Override
-//		public java.lang.Class< T > getComponentType() {
-//			return CustomState.this.getItemCodec().getValueClass();
-//		}
-//		@Override
-//		public void handleCancel( org.lgna.croquet.history.StateChangeStep< ? > completionStep, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.CancelException ce ) {
-//		}
-//		@Override
-//		public void handleCompletion(org.lgna.croquet.history.StateChangeStep<?> completionStep, T[] values) {
-//			
-//		}
-//	}
-//	private final CascadeCustomRoot root;
-//	private final T value;
-//	public CustomState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< T > itemCodec ) {
-//		super( group, id, itemCodec );
-//		this.root = new CascadeCustomRoot();
-//		this.value = null;
-//	}
-//	@Override
-//	protected void localize() {
-//	}
-//	protected abstract org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<T>> createEdit( org.lgna.croquet.history.CascadeCompletionStep<T> step, T prevValue, T nextValue );
-//	protected abstract java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode< T > blankNode );
 //	@Override
 //	public T getValue() {
 //		return this.value;
 //	}
-//}
-
-//class CustomItemStateEdit<T> extends org.lgna.croquet.edits.ItemStateEdit< org.lgna.croquet.ItemState< T >, T > {
-//	public CustomItemStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.ItemState<T> > completionStep, T prevValue, T nextValue ) {
-//		super( completionStep, prevValue, nextValue );
-//	}
-//	public CustomItemStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-//		super( binaryDecoder, step );
-//	}
 //	@Override
-//	protected void doOrRedoInternal( boolean isDo ) {
-//	}
-//	@Override
-//	protected void undoInternal() {
+//	public void setValue(T value) {
+//		this.value = value;
 //	}
 //}
 
-class EnumState<T extends Enum<T>> extends org.lgna.croquet.CustomItemState< T > {
+class EnumState<T extends Enum<T>> extends org.lgna.croquet.CustomItemStateWithInternalBlank< T > {
 	private T value;
 	public EnumState( org.lgna.croquet.Group group, java.util.UUID id, Class<T> cls ) {
 		super( group, id, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( cls ) );
@@ -343,30 +295,12 @@ class EnumState<T extends Enum<T>> extends org.lgna.croquet.CustomItemState< T >
 	}
 }
 
-class CustomStateDropDown extends org.alice.ide.croquet.PopupButton< org.lgna.croquet.PopupPrepModel > {
-	public CustomStateDropDown( org.lgna.croquet.PopupPrepModel model ) {
-		super( model, null, new org.lgna.croquet.components.Label( "hello" ), null );
-	}
-//	@Override
-//	protected javax.swing.AbstractButton createAwtComponent() {
-//		class JDropDown extends javax.swing.AbstractButton {
-//			public JDropDown() {
-//				this.setAction( CustomStateDropDown.this.getModel().getAction() );
-//				this.setModel( new javax.swing.DefaultButtonModel() );
-//			}
-//		}
-//		return new JDropDown();
-//	}
-}
-
-
 class CascadePanel extends org.lgna.croquet.components.BorderPanel {
 	public CascadePanel() {
 		this.setMinimumPreferredWidth( 640 );
 		this.setMinimumPreferredHeight( 480 );
 		this.addComponent( MyCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton(), Constraint.PAGE_START );
 		EnumState< ZodiacSigns > customState = new EnumState< ZodiacSigns >( null, java.util.UUID.fromString( "03338045-ede5-4e09-bfc0-db74335055a6" ), ZodiacSigns.class );
-		//this.addComponent( customState.getCascadeRoot().getPopupPrepModel().createPopupButton(), Constraint.PAGE_END );
 		this.addComponent( new org.lgna.croquet.components.ItemDropDown( customState ), Constraint.PAGE_END );
 	}
 }
