@@ -46,9 +46,12 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ItemDropDown<T, M extends org.lgna.croquet.CustomItemState< T >> extends DropDown< M > {
+public abstract class ItemDropDown<T, M extends org.lgna.croquet.CustomItemState< T >> extends DropDown< M > {
+	public ItemDropDown( M model, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent ) {
+		super( model, prefixComponent, mainComponent, postfixComponent );
+	}
 	public ItemDropDown( M model ) {
-		super( model, null, new Label( "hello" ), null );
+		this( model, null, null, null );
 	}
 	@Override
 	protected javax.swing.Action getAction() {
@@ -59,12 +62,11 @@ public class ItemDropDown<T, M extends org.lgna.croquet.CustomItemState< T >> ex
 		public void changing( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting ) {
-			Label label = (Label)ItemDropDown.this.getMainComponent();
-			label.setText( "" + nextValue );
-			label.revalidateAndRepaint();
+			ItemDropDown.this.handleChanged( state, prevValue, nextValue, isAdjusting );
 		}
 	};
 
+	protected abstract void handleChanged( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting );
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
 		this.getModel().addAndInvokeValueObserver( this.valueObserver );

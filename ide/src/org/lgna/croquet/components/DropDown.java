@@ -54,16 +54,34 @@ public abstract class DropDown< M extends org.lgna.croquet.Model >  extends org.
 	private org.lgna.croquet.components.Component<?> prefixComponent;
 	private org.lgna.croquet.components.Component<?> mainComponent;
 	private org.lgna.croquet.components.Component<?> postfixComponent;
-	public DropDown(M model, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent) {
+	public DropDown( M model, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent ) {
 		super(model);
 		this.prefixComponent = prefixComponent;
 		this.mainComponent = mainComponent;
 		this.postfixComponent = postfixComponent;
 		this.setMaximumSizeClampedToPreferredSize( true );
 	}
+	public DropDown( M model ) {
+		this( model, null, null, null );
+	}
 
+	public org.lgna.croquet.components.Component< ? > getPrefixComponent() {
+		return this.prefixComponent;
+	}
+	public void setPrefixComponent( org.lgna.croquet.components.Component< ? > prefixComponent ) {
+		this.prefixComponent = prefixComponent;
+	}
 	public org.lgna.croquet.components.Component<?> getMainComponent() {
 		return this.mainComponent;
+	}
+	public void setMainComponent( org.lgna.croquet.components.Component< ? > mainComponent ) {
+		this.mainComponent = mainComponent;
+	}
+	public org.lgna.croquet.components.Component< ? > getPostfixComponent() {
+		return this.postfixComponent;
+	}
+	public void setPostfixComponent( org.lgna.croquet.components.Component< ? > postfixComponent ) {
+		this.postfixComponent = postfixComponent;
 	}
 
 	protected abstract javax.swing.Action getAction();

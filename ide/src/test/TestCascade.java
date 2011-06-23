@@ -301,7 +301,14 @@ class CascadePanel extends org.lgna.croquet.components.BorderPanel {
 		this.setMinimumPreferredHeight( 480 );
 		this.addComponent( MyCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton(), Constraint.PAGE_START );
 		EnumState< ZodiacSigns > customState = new EnumState< ZodiacSigns >( null, java.util.UUID.fromString( "03338045-ede5-4e09-bfc0-db74335055a6" ), ZodiacSigns.class );
-		this.addComponent( new org.lgna.croquet.components.ItemDropDown( customState ), Constraint.PAGE_END );
+		final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
+		this.addComponent( new org.lgna.croquet.components.ItemDropDown( customState, null, label, null ) {
+			@Override
+			protected void handleChanged( org.lgna.croquet.State state, java.lang.Object prevValue, java.lang.Object nextValue, boolean isAdjusting ) {
+				label.setText( "" + nextValue );
+				label.revalidateAndRepaint();
+			}
+		}, Constraint.PAGE_END );
 	}
 }
 
