@@ -250,10 +250,6 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 	};
 	private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
 	private Clipboard() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		if( ide != null ) {
-			ide.addToConcealedBin( this.subject );
-		}
 		this.setDragModel( new ClipboardDragModel() );
 		this.setMinimumPreferredWidth( 40 );
 		this.refresh();

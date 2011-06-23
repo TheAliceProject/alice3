@@ -240,38 +240,6 @@ abstract class RtNode<M extends Element, N extends org.lgna.croquet.history.Node
 }
 
 class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.BlankNode< B > > {
-	//	private static <F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.cascade.AbstractItemNode< F, B, M > > boolean isEmptySeparator( RtItem< F, B, M, C > rtItem ) {
-	//		return rtItem instanceof RtSeparator && ((RtSeparator)rtItem).getMenuItem() == null;
-	//	}
-	//	private static <F, B, M extends CascadeItem< F,B >, C extends org.lgna.croquet.cascade.AbstractItemNode< F, B, M >> void cleanUpSeparators( java.util.List< RtItem< F, B, M, C >> rtItems ) {
-	//		java.util.ListIterator< RtItem< F, B, M, C > > listIterator = rtItems.listIterator();
-	//		boolean isLineSeparatorAcceptable = false;
-	//		while( listIterator.hasNext() ) {
-	//			RtItem< F, B, M, C > rtItem = listIterator.next();
-	//			if( isEmptySeparator( rtItem ) ) {
-	//				if( isLineSeparatorAcceptable ) {
-	//					//pass 
-	//				} else {
-	//					listIterator.remove();
-	//				}
-	//				isLineSeparatorAcceptable = false;
-	//			} else {
-	//				isLineSeparatorAcceptable = true;
-	//			}
-	//		}
-	//
-	//		//remove separators at the end
-	//		//there should be a maximum of only 1 but we loop anyway 
-	//		final int N = rtItems.size();
-	//		for( int i = 0; i < N; i++ ) {
-	//			int index = N - i - 1;
-	//			if( isEmptySeparator( rtItems.get( index ) ) ) {
-	//				rtItems.remove( index );
-	//			} else {
-	//				break;
-	//			}
-	//		}
-	//	}
 	private static boolean isDevoidOfNonSeparators( java.util.List< RtItem > rtItems ) {
 		for( RtItem rtItem : rtItems ) {
 			if( rtItem instanceof RtSeparator ) {
@@ -331,19 +299,6 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 					baseRtItems.add( rtItem );
 				}
 			}
-
-			//			java.util.ListIterator< RtItem > listIterator = baseRtFillIns.listIterator();
-			//			while( listIterator.hasNext() ) {
-			//				RtItem rtItem = listIterator.next();
-			//				if( rtItem.isInclusionDesired() ) {
-			//					//pass
-			//				} else {
-			//					listIterator.remove();
-			//				}
-			//			}
-
-			//todo
-			//cleanUpSeparators( (java.util.List)baseRtItems );
 
 			if( isDevoidOfNonSeparators( baseRtItems ) ) {
 				baseRtItems.add( new RtCancel( CascadeUnfilledInCancel.getInstance(), null, -1 ) );
@@ -654,30 +609,6 @@ public class RtRoot<T,CS extends org.lgna.croquet.history.CompletionStep<?>> ext
 		this.complete( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
 	}
 
-	//	private javax.swing.event.PopupMenuListener popupMenuListener = new javax.swing.event.PopupMenuListener() {
-	//		private MenuItemContainer getMenuItemContainer( javax.swing.event.PopupMenuEvent e ) {
-	//			Component< ? > component = Component.lookup( (java.awt.Component)e.getSource() );
-	//			if( component instanceof MenuItemContainer ) {
-	//				return (MenuItemContainer)component;
-	//			} else {
-	//				return null;
-	//			}
-	//		}
-	//		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-	//			MenuItemContainer menuItemContainer = this.getMenuItemContainer( e );
-	//			RtRoot.this.addNextNodeMenuItems( menuItemContainer );
-	//		}
-	//		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-	//			MenuItemContainer menuItemContainer = this.getMenuItemContainer( e );
-	//			RtRoot.this.removeAll( menuItemContainer );
-	//		}
-	//		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-	//			RtRoot.this.cancel( null, new org.lgna.croquet.triggers.PopupMenuEventTrigger( e ), null );
-	//		}
-	//	};
-	//	public javax.swing.event.PopupMenuListener getPopupMenuListener() {
-	//		return this.popupMenuListener;
-	//	}
 	public javax.swing.event.PopupMenuListener createPopupMenuListener( final MenuItemContainer menuItemContainer ) {
 		return new javax.swing.event.PopupMenuListener() {
 			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {

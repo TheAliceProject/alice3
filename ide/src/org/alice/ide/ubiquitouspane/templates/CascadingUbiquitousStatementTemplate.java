@@ -82,14 +82,12 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 			//this.label.setFontToScaledFont( 1.2f );
 			this.addComponent( this.label );
 			this.setToolTipText( "" );
-			this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
 		}
 	}
 	
 	@Override
 	protected void handleUndisplayable() {
 //		this.removeAllComponents();
-//		this.getIDE().removeFromConcealedBin( this.implementor.getIncompleteStatementPane() );
 		super.handleUndisplayable();
 	}
 	

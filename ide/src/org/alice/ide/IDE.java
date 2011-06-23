@@ -152,7 +152,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private int rootDividerLocation = 340;
 	private int leftDividerLocation = 240;
 
-	private edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin concealedBin = new edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin();
 	private org.lgna.croquet.components.JComponent< ? > galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
@@ -173,8 +172,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		rv.addMouseWheelListener( new edu.cmu.cs.dennisc.javax.swing.plaf.metal.FontMouseWheelAdapter() );
 		rv.addComponent( this.root, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		rv.addComponent( new org.lgna.croquet.components.SwingAdapter( this.concealedBin ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-
 		this.setSceneEditorExpanded( false );
 		return rv;
 	}
@@ -490,15 +487,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	};
 
 	public abstract org.alice.ide.cascade.CascadeManager getCascadeManager();
-
-	public void addToConcealedBin( org.lgna.croquet.components.Component< ? > component ) {
-		this.concealedBin.add( component.getAwtComponent() );
-		this.concealedBin.revalidate();
-	}
-	public void removeFromConcealedBin( org.lgna.croquet.components.Component< ? > component ) {
-		this.concealedBin.remove( component.getAwtComponent() );
-	}
-
 	public boolean isJava() {
 		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem() == org.alice.ide.formatter.JavaFormatter.getInstance();
 	}

@@ -65,18 +65,6 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
 		return this.implementor.getToolTip();
 	}
-	
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
-	}
-
-	@Override
-	protected void handleUndisplayable() {
-		this.getIDE().removeFromConcealedBin( this.implementor.getIncompleteStatementPane() );
-		super.handleUndisplayable();
-	}
 	@Override
 	public org.lgna.croquet.Operation< ? > getDropModel( org.lgna.croquet.history.DragStep context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		return new org.alice.ide.operations.ast.DeclareLocalOperation( blockStatementIndexPair );
