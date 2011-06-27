@@ -40,45 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+
+package org.lgna.croquet.history;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep step );
-	protected abstract boolean isInstanceValid();
-	
-	public AbstractDeclareFieldInputDialogOperation( java.util.UUID individualId ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
+public class MenuStep extends PrepStep< org.lgna.croquet.AbstractMenuModel > {
+	public static MenuStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.AbstractMenuModel model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return new MenuStep( parent, model, trigger );
 	}
-	
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+	private MenuStep( Transaction parent, org.lgna.croquet.AbstractMenuModel model, org.lgna.croquet.triggers.Trigger trigger ) {
+		super( parent, model, trigger );
 	}
-	@Override
-	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
-		if( isOk ) {
-			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> tuple = this.createFieldAndInstance( step );
-			if( tuple != null ) {
-				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
-				if( field != null ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
-					if( ownerType != null ) {
-						int index = ownerType.fields.size();
-						step.commitAndInvokeDo( new DeclareFieldEdit( step, ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
-					} else {
-						step.cancel();
-					}
-				} else {
-					step.cancel();
-				}
-			} else {
-				step.cancel();
-			}
-		} else {
-			step.cancel();
-		}
+	public MenuStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

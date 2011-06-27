@@ -47,10 +47,34 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public final class CascadeStandardRoot<T> extends CascadeRoot< T, org.lgna.croquet.history.CascadeCompletionStep< T > > {
+	public static class CascadeStandardRootResolver<T> implements org.lgna.croquet.resolvers.CodableResolver< CascadeStandardRoot< T > > {
+		private final CascadeStandardRoot< T > model;
+
+		public CascadeStandardRootResolver( CascadeStandardRoot< T > model ) {
+			this.model = model;
+		}
+		public CascadeStandardRootResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			org.lgna.croquet.resolvers.CodableResolver< Cascade< T >> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			Cascade< T > cascade = resolver.getResolved();
+			this.model = cascade.getRoot();
+		}
+		public CascadeStandardRoot< T > getResolved() {
+			return this.model;
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			org.lgna.croquet.resolvers.CodableResolver< CascadeInputDialogOperation< T >> resolver = this.model.cascade.getCodableResolver();
+			binaryEncoder.encode( resolver );
+		}
+	}
+
 	private final Cascade< T > cascade;
 	/*package-private*/CascadeStandardRoot( Cascade< T > cascade, CascadeBlank< T >[] blanks ) {
 		super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ), blanks );
 		this.cascade = cascade;
+	}
+	@Override
+	protected CascadeStandardRootResolver<T> createCodableResolver() {
+		return new CascadeStandardRootResolver<T>( this );
 	}
 	@Override
 	public Cascade< T > getCompletionModel() {

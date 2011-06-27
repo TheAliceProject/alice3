@@ -47,10 +47,33 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public final class CascadePopupPrepModel<T> extends PopupPrepModel {
+	public static class CascadePopupPrepModelResolver<T> implements org.lgna.croquet.resolvers.CodableResolver< CascadePopupPrepModel<T> > {
+		private final CascadePopupPrepModel<T> model;
+		public CascadePopupPrepModelResolver( CascadePopupPrepModel<T> model ) {
+			this.model = model;
+		}
+		public CascadePopupPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			org.lgna.croquet.resolvers.CodableResolver< CascadeRoot<T,?>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			CascadeRoot<T,?> root = resolver.getResolved();
+			this.model = root.getPopupPrepModel();
+		}
+		public org.lgna.croquet.CascadePopupPrepModel<T> getResolved() {
+			return this.model;
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			org.lgna.croquet.resolvers.CodableResolver< CascadeInputDialogOperation<T>> resolver = this.model.root.getCodableResolver();
+			binaryEncoder.encode( resolver );
+		}
+	}
+
 	private final CascadeRoot< T,? > root;
 	/*package-private*/ CascadePopupPrepModel( CascadeRoot< T,? > root ) {
 		super( java.util.UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
 		this.root = root;
+	}
+	@Override
+	protected CascadePopupPrepModelResolver<T> createCodableResolver() {
+		return new CascadePopupPrepModelResolver<T>( this );
 	}
 	@Override
 	public Iterable< ? extends Model > getChildren() {

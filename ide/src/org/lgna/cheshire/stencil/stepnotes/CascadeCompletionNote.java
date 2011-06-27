@@ -46,8 +46,15 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadePopupOperationNote extends PopupPrepNote< org.lgna.croquet.history.CascadePopupPrepStep< ? > > {
-	public CascadePopupOperationNote( org.lgna.croquet.history.CascadePopupPrepStep< ? > step ) {
+public class CascadeCompletionNote extends CompletionNote< org.lgna.croquet.history.CascadeCompletionStep< ? > > {
+	public CascadeCompletionNote( org.lgna.croquet.history.CascadeCompletionStep< ? > step ) {
 		super( step );
 	}
+	@Override
+	protected void addFeatures( org.lgna.croquet.history.CascadeCompletionStep< ? > step ) {
+	}
+//	@Override
+//	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
+//		return CascadeNoteUtilities.isWhatWeveBeenWaitingFor( this.getStep(), event );
+//	}
 }

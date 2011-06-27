@@ -64,6 +64,10 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 		this.ownerType = ownerType;
 	}
 	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFieldOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFieldOperation >( this, this.ownerType, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class );
+	}
+	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getOwnerType() {
 		return this.ownerType;
 	}

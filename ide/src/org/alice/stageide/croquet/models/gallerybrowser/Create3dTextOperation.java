@@ -372,23 +372,23 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	}
 	
 	@Override
-	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep context, boolean isOk) {
+	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.moveandturn.Text> tuple = this.createFieldAndInstance( context );
+			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.moveandturn.Text> tuple = this.createFieldAndInstance( step );
 			if( tuple != null ) {
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
 				if( field != null ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
 					int index = ownerType.fields.size();
-					context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+					step.commitAndInvokeDo( new DeclareFieldEdit( step, ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
 				} else {
-					context.cancel();
+					step.cancel();
 				}
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 }

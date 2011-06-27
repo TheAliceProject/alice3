@@ -46,18 +46,19 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeRoot<T,CS extends org.lgna.croquet.history.CompletionStep< ? > > extends CascadeBlankOwner< T[], T > {
-	private final CascadePopupPrepModel<T> popupPrepModel;
+public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> extends CascadeBlankOwner< T[], T > {
+	private final CascadePopupPrepModel< T > popupPrepModel;
+
 	public CascadeRoot( java.util.UUID id, CascadeBlank< T >[] blanks ) {
 		super( id );
-		this.popupPrepModel = new CascadePopupPrepModel<T>( this );
+		this.popupPrepModel = new CascadePopupPrepModel< T >( this );
 		assert blanks != null;
-		for( int i=0; i<blanks.length; i++ ) {
+		for( int i = 0; i < blanks.length; i++ ) {
 			assert blanks[ i ] != null : this;
 			this.addBlank( blanks[ i ] );
 		}
 	}
-	public CascadePopupPrepModel<T> getPopupPrepModel() {
+	public CascadePopupPrepModel< T > getPopupPrepModel() {
 		return this.popupPrepModel;
 	}
 	@Override
@@ -95,7 +96,7 @@ public abstract class CascadeRoot<T,CS extends org.lgna.croquet.history.Completi
 	public abstract Class< T > getComponentType();
 	public abstract CS createCompletionStep( org.lgna.croquet.triggers.Trigger trigger );
 	protected abstract org.lgna.croquet.edits.Edit createEdit( CS completionStep, T[] values );
-	
+
 	public abstract void prologue();
 	public abstract void epilogue();
 	public final void handleCompletion( CS completionStep, T[] values ) {
@@ -117,7 +118,7 @@ public abstract class CascadeRoot<T,CS extends org.lgna.croquet.history.Completi
 			this.getPopupPrepModel().handleFinally();
 		}
 	}
-//
-//	public abstract void handleCompletion( CS completionStep, T[] values );
-//	public abstract void handleCancel( CS completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce );
+	//
+	//	public abstract void handleCompletion( CS completionStep, T[] values );
+	//	public abstract void handleCancel( CS completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce );
 }

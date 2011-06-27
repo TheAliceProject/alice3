@@ -75,8 +75,8 @@ public final class CascadeInputDialogOperationFillIn<F> extends CascadeFillIn< F
 		return this.inputDialogOperation;
 	}
 	@Override
-	protected CascadeInputDialogOperationFillInResolver createCodableResolver() {
-		return new CascadeInputDialogOperationFillInResolver( this );
+	protected CascadeInputDialogOperationFillInResolver<F> createCodableResolver() {
+		return new CascadeInputDialogOperationFillInResolver<F>( this );
 	}
 	@Override
 	protected String getTutorialItemText() {

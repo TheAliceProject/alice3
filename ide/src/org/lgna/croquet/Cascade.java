@@ -58,6 +58,9 @@ public abstract class Cascade<T> extends CompletionModel {
 	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T > blank ) {
 		this( group, id, componentType, new CascadeBlank[] { blank } );
 	}
+	public CascadeStandardRoot< T > getRoot() {
+		return this.root;
+	}
 	@Override
 	protected void localize() {
 	}
@@ -68,9 +71,6 @@ public abstract class Cascade<T> extends CompletionModel {
 	@Override
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
 		return false;
-	}
-	public CascadeStandardRoot< T > getRoot() {
-		return this.root;
 	}
 	public Class< T > getComponentType() {
 		return this.componentType;

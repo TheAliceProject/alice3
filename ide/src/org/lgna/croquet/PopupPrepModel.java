@@ -91,6 +91,13 @@ public abstract class PopupPrepModel extends PrepModel {
 //		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 //	}
 	
+	
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		rv.append( "Click " );
+		rv.append( this.getDefaultLocalizedText() );
+		return rv;
+	}
 	public org.lgna.croquet.components.PopupButton createPopupButton() {
 		return new org.lgna.croquet.components.PopupButton( this );
 	}

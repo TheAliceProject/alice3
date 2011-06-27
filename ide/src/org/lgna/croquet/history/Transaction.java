@@ -292,7 +292,8 @@ public class Transaction extends Node< TransactionHistory > {
 //									}
 ////								}
 							} else if( model instanceof org.lgna.croquet.AbstractMenuModel ) {
-								//pass
+								org.lgna.croquet.AbstractMenuModel menuModel = (org.lgna.croquet.AbstractMenuModel)model;
+								MenuStep.createAndAddToTransaction( Transaction.this, menuModel, null );
 							} else if( model instanceof org.lgna.croquet.LabelMenuSeparatorModel ) {
 								//pass
 								System.err.println( "TODO: investigate selectiong of " + model );

@@ -491,7 +491,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 				type = null;
 			}
 			if( type != null ) {
-				final boolean IS_ICON_DESIRED = false;
+				final boolean IS_ICON_DESIRED = true;
 				if( IS_ICON_DESIRED ) {
 					TypeRootMenuModel.getInstance().setName( "class:" );
 					TypeRootMenuModel.getInstance().setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );

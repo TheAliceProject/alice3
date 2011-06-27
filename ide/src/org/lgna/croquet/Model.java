@@ -339,6 +339,8 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 	}
 
 	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
-		return "todo getTutorialNoteText";
+		StringBuilder sb = new StringBuilder();
+		this.updateTutorialStepText( sb, step, edit, userInformation );
+		return sb.toString();
 	}
 }

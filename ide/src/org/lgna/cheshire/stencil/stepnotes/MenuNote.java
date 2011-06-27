@@ -40,45 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+
+package org.lgna.cheshire.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep step );
-	protected abstract boolean isInstanceValid();
-	
-	public AbstractDeclareFieldInputDialogOperation( java.util.UUID individualId ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
+public class MenuNote< S extends org.lgna.croquet.history.MenuStep > extends PrepNote< S > {
+	public MenuNote( S step ) {
+		super( step );
 	}
 	
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+	@Override
+	protected void addFeatures( S step ) {
+		this.addFeature( new org.lgna.cheshire.stencil.features.MenuHole( 
+				new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), 
+				org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH,
+				true,
+				true,
+				false
+		) ) ;
 	}
 	@Override
-	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
-		if( isOk ) {
-			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> tuple = this.createFieldAndInstance( step );
-			if( tuple != null ) {
-				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
-				if( field != null ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
-					if( ownerType != null ) {
-						int index = ownerType.fields.size();
-						step.commitAndInvokeDo( new DeclareFieldEdit( step, ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
-					} else {
-						step.cancel();
-					}
-				} else {
-					step.cancel();
-				}
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
+		if( event instanceof org.lgna.croquet.history.event.MenuSelectionChangedEvent ) {
+			org.lgna.croquet.history.event.MenuSelectionChangedEvent menuSelectionChangedEvent = (org.lgna.croquet.history.event.MenuSelectionChangedEvent)event;
+			java.util.List< org.lgna.croquet.Model > models = menuSelectionChangedEvent.getModels();
+			final int N = models.size();
+			if( N > 0 ) {
+				return models.get( N-1 ) == this.getStep().getModel();
 			} else {
-				step.cancel();
+				return false;
 			}
 		} else {
-			step.cancel();
+			return false;
 		}
+	}
+	@Override
+	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+		return isMouseEventInterceptedInAllCasesEvenPopups( e );
 	}
 }

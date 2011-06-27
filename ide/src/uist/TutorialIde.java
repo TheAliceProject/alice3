@@ -160,11 +160,14 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 
 		} else {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
-			this.isOriginalProjectLive = true;
-//			edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH+CONTEXT_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
-			this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH+TRANSACTION_HISTORY_PATH, org.lgna.croquet.history.TransactionHistory.class );
-			this.isOriginalProjectLive = false;
-			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
+			try {
+				this.isOriginalProjectLive = true;
+//				edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH+CONTEXT_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
+				this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH+TRANSACTION_HISTORY_PATH, org.lgna.croquet.history.TransactionHistory.class );
+				this.isOriginalProjectLive = false;
+			} finally {
+				edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
+			}
 		}
 
 		org.lgna.cheshire.Filterer filterer = new uist.filterers.TutorialFilterer();
@@ -225,20 +228,22 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //			}
 
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
-			
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory(), ROOT_PATH+TRANSACTION_HISTORY_PATH );
-			
-//			edu.cmu.cs.dennisc.croquet.RootContext rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
-//			System.err.println( "todo: remove filtering" );
-//			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
-//					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
-//			};
-//			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
-//				rootContext = filter.filter( rootContext );
-//			}
-//			
-//			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext(), ROOT_PATH+CONTEXT_PATH );
-			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
+			try {
+				edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory(), ROOT_PATH+TRANSACTION_HISTORY_PATH );
+				
+//				edu.cmu.cs.dennisc.croquet.RootContext rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
+//				System.err.println( "todo: remove filtering" );
+//				edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
+//						edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
+//				};
+//				for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
+//					rootContext = filter.filter( rootContext );
+//				}
+//				
+//				edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext(), ROOT_PATH+CONTEXT_PATH );
+			} finally {
+				edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
+			}
 
 			try {
 				edu.cmu.cs.dennisc.alice.project.ProjectUtilities.writeProject( ROOT_PATH+POST_PROJECT_PATH, this.getProject() );
