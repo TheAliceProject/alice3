@@ -63,7 +63,8 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 	}
 	protected Animator createAnimator() {
 		if( this.movieEncoder != null ) {
-			return new FrameBasedAnimator();
+			Animator animator = new FrameBasedAnimator();
+			return animator;
 		} else {
 			return new ClockBasedAnimator();
 		}
@@ -148,6 +149,10 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 			//pass
 		} else {
 			setAnimator( createAnimator() );
+		}
+		if (this.movieEncoder != null)
+		{
+			this.animator.setMediaPlayerObserver(this.movieEncoder.getMediaPlayerObserver());
 		}
 	}
 	@Override

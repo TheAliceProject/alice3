@@ -59,6 +59,8 @@ public interface Animator {
 	public void removeFrameObserver( FrameObserver runnable );
 	public Iterable< FrameObserver > getFrameObservers();
 
+	public void setMediaPlayerObserver(edu.cmu.cs.dennisc.animation.MediaPlayerObserver mediaPlayerObserver);
+	
 	public void completeAnimations( AnimationObserver animationObserver );
 	public void completeFrameObservers();
 	public void completeAll( AnimationObserver animationObserver );

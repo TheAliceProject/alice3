@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.animation;
 
+import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -83,7 +85,16 @@ public abstract class AbstractAnimator implements Animator {
 					java.util.Iterator< WaitingAnimation > iterator = this.waitingAnimations.iterator();
 					while( iterator.hasNext() ) {
 						WaitingAnimation waitingAnimation = iterator.next();
-						double tRemaining = waitingAnimation.getAnimation().update( tCurrent, waitingAnimation.getAnimationObserver() );
+						edu.cmu.cs.dennisc.animation.AnimationObserver observer = waitingAnimation.getAnimationObserver();
+						edu.cmu.cs.dennisc.animation.Animation animation = waitingAnimation.getAnimation();
+						if (animation instanceof edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation)
+						{
+							if (this.mediaPlayerObserver != null && observer == null)
+							{
+								observer = this.mediaPlayerObserver;
+							}
+						}
+						double tRemaining = animation.update( tCurrent, observer);
 						if( tRemaining > 0.0 ) {
 							//pass
 						} else {
@@ -163,6 +174,14 @@ public abstract class AbstractAnimator implements Animator {
 			this.frameObservers.remove( frameObserver );
 		}
 	}
+	
+	private edu.cmu.cs.dennisc.animation.MediaPlayerObserver mediaPlayerObserver = null;
+	
+	public void setMediaPlayerObserver(edu.cmu.cs.dennisc.animation.MediaPlayerObserver mediaPlayerObserver)
+	{
+		this.mediaPlayerObserver = mediaPlayerObserver;
+	}
+	
 
 	public void cancelAnimation() {
 		synchronized( this.waitingAnimations ) {

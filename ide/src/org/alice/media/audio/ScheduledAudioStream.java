@@ -69,42 +69,54 @@ public class ScheduledAudioStream implements Comparable<ScheduledAudioStream>
 	
 	private double bytesPerSecond;
 	private long bytesRead = 0;
+	private boolean initialized = false;
 	
 	
 	public ScheduledAudioStream(AudioResource audioResource, double startTime, double entryPoint, double endPoint, double volume)
 	{
-		this.audioResource = audioResource;
-		
-		ByteArrayInputStream dataStream = new ByteArrayInputStream(this.audioResource.getData());
-		
-		try
-		{
-			this.audioStream = AudioSystem.getAudioInputStream(dataStream);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
 		this.startTime = startTime;
 		this.volume = volume;
 		this.entryPoint = entryPoint;
 		this.endPoint = endPoint;
+		this.setAudioResource(audioResource);
+	}
+	
+	public void setAudioResource(AudioResource resource)
+	{
+		this.audioResource = resource;
+	}
 		
-		AudioFormat af = this.audioStream.getFormat();
 		
-		double frameRate = af.getFrameRate(); //frames per second
-		int frameSize = af.getFrameSize(); //bytes per frame
-		this.bytesPerSecond = frameRate * frameSize;
-		
-		try
+	
+	private void initializeIfNecessary()
+	{
+		if (!this.initialized)
 		{
-			this.audioStream.skip((long)(this.bytesPerSecond*this.entryPoint));
+			ByteArrayInputStream dataStream = new ByteArrayInputStream(this.audioResource.getData());
+			
+			try
+			{
+				this.audioStream = AudioSystem.getAudioInputStream(dataStream);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			
+			AudioFormat af = this.audioStream.getFormat();
+			double frameRate = af.getFrameRate(); //frames per second
+			int frameSize = af.getFrameSize(); //bytes per frame
+			this.bytesPerSecond = frameRate * frameSize;
+			try
+			{
+				this.audioStream.skip((long)(this.bytesPerSecond*this.entryPoint));
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			this.initialized = true;
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		
 	}
 	
 	public ScheduledAudioStream(AudioResource audioResource, double startTime, double entryPoint, double endPoint)
@@ -121,9 +133,15 @@ public class ScheduledAudioStream implements Comparable<ScheduledAudioStream>
 	{
 		this(audioResource, startTime, 0);
 	}
+	
+	public AudioResource getAudioResource()
+	{
+		return this.audioResource;
+	}
 		
 	public AudioInputStream getAudioStream()
 	{
+		this.initializeIfNecessary();
 		return this.audioStream;
 	}
 	

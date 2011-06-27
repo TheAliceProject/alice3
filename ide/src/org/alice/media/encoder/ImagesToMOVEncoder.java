@@ -66,6 +66,8 @@ import javax.swing.JPanel;
 
 import org.alice.media.YouTubeUploader;
 
+import edu.cmu.cs.dennisc.animation.AnimationObserver;
+import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.movie.MovieEncoder;
@@ -821,5 +823,10 @@ public class ImagesToMOVEncoder implements ControllerListener,
             this.doneReadingImages = true;
         }
     }
+
+	@Override
+	public MediaPlayerObserver getMediaPlayerObserver() {
+		return null;
+	}
 
 }

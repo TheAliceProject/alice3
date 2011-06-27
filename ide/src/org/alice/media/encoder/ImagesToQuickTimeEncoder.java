@@ -49,129 +49,213 @@ import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
+import org.alice.media.audio.AudioTrackMixer;
+import org.alice.media.audio.ScheduledAudioStream;
+
+import ch.randelshofer.media.mp3.MP3AudioInputStream;
 import ch.randelshofer.media.quicktime.QuickTimeWriter;
 import ch.randelshofer.media.quicktime.QuickTimeWriter.VideoFormat;
 
+import edu.cmu.cs.dennisc.animation.Animation;
+import edu.cmu.cs.dennisc.animation.AnimationObserver;
+import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 import edu.cmu.cs.dennisc.movie.MovieEncoder;
 
 /**
  * @author dculyba
  *
  */
-public class ImagesToQuickTimeEncoder implements MovieEncoder
+public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserver
 {
-	private QuickTimeWriter qtWriter;
-	
-	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat(22050f, 16, 1, true, false);
+//	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat(22050f, 16, 1, true, false);
+	private static float RATE_22 = 22050f;
+	private static float RATE_44 = 44100f;
+	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false);
 	private static VideoFormat QUICKTIME_VIDEO_FORMAT = VideoFormat.JPG;
-	private static long TIME_SCALE = 1000;
 	
 	private float framesPerSecond;
-	private int currentTrackIndex;
-	private int audioTrackIndex;
-	private int videoTrackIndex;
-	private boolean initializedVideo = false;
 	private int width = -1;
 	private int height = -1;
-
-	private ProcessImagesRunnable imageProcessingRunnable = null;
-	private Queue<BufferedImage> images = new LinkedList<BufferedImage>();
-	private Object imageQueueLock = new Object();
-	
+	private File outputFile = null;
+	private File frameDirectory;
 	private BufferedImage thumbnailImage = null;
-	private BufferedImage imageBuffer = null;
-	private Graphics2D bufferGraphics = null;
-	
 	boolean isRunning = false;
-	
-	private int imageCount;
+	private int frameCount;
+	private List<ScheduledAudioStream> audioStreams = new LinkedList<ScheduledAudioStream>();
 	
 	private List<EncoderListener> listeners = new LinkedList<EncoderListener>();
+
 	
-	private File outputFile = null;
-	
-	private class ProcessImagesRunnable implements Runnable
-	{
-		private boolean isRunning;
-		private boolean forceStop = false;
-		private boolean isStopped = true;
-		
-		public void stop()
-		{
-			this.isRunning = false;
+	public static File createTempDirectory() throws IOException {
+		final File temp;
+
+		temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+
+		if (!(temp.delete())) {
+			throw new IOException("Could not delete temp file: "
+					+ temp.getAbsolutePath());
 		}
-		
-		public void forceStop()
-		{
-			this.forceStop = true;
+
+		if (!(temp.mkdir())) {
+			throw new IOException("Could not create temp directory: "
+					+ temp.getAbsolutePath());
 		}
-		
-		public void waitUntilStopped()
-		{
-			while (!this.isStopped)
-			{
-				try { Thread.sleep(20); } catch (Exception e) {}
-			}
-		}
-		
-		@Override
-		public void run() {
-			this.isRunning = true;
-			this.isStopped = false;
-			//Loop while we are running and there are images in the queue
-			while (true){
-				if (this.forceStop)
-				{
-					break;
-				}
-				//process all the available images
-				while (true){
-					if (this.forceStop)
-					{
-						break;
-					}
-					BufferedImage nextImage = null;
-					synchronized (ImagesToQuickTimeEncoder.this.imageQueueLock) {
-						if (ImagesToQuickTimeEncoder.this.images.isEmpty()){
-							break;
-						}
-						else{
-							nextImage = ImagesToQuickTimeEncoder.this.images.remove();
-						}
-					}
-					ImagesToQuickTimeEncoder.this.addImageToMovie(nextImage);
-				}
-				//No more images to process
-				//If we're not running anymore, break out
-				if (this.forceStop || !this.isRunning){
-					break;
-				}
-				//Else sleep to wait for more images
-				else{
-					try{
-						Thread.sleep(50);
-					}
-					catch (Exception e){}
-				}
-			}
-			this.isStopped = true;
-		}
+
+		return (temp);
 	}
 	
 	public ImagesToQuickTimeEncoder(float framesPerSecond)
 	{
 		this.framesPerSecond = framesPerSecond;
-		this.imageCount = 0;
+		this.frameCount = 0;
 	}
+	
+	private void initializeFrameDirectory()
+	{
+		try
+		{
+			this.frameDirectory = createTempDirectory();
+		}
+		catch (Exception e)
+		{
+			this.frameDirectory = null;
+		}
+	}
+	
+	private void writeVideoAndAudio(File[] imgFiles, File audioFile, QuickTimeWriter.VideoFormat videoFormat, boolean passThrough, String streaming) throws IOException {
+        File tmpFile = streaming.equals("none") ? this.outputFile : new File(this.outputFile.getPath() + ".tmp");
+        AudioInputStream audioIn = null;
+        QuickTimeWriter qtOut = null;
+        BufferedImage imgBuffer = null;
+        Graphics2D g = null;
+
+        try {
+            // Determine audio format
+            if (audioFile.getName().toLowerCase().endsWith(".mp3")) {
+                audioIn = new MP3AudioInputStream(audioFile);
+            } else {
+                audioIn = AudioSystem.getAudioInputStream(audioFile);
+            }
+            AudioFormat audioFormat = audioIn.getFormat();
+            boolean isVBR = false;
+
+            // Determine duration of a single sample
+            int asDuration = (int) (audioFormat.getSampleRate() / audioFormat.getFrameRate());
+            int vsDuration = 100;
+            // Create writer
+            qtOut = new QuickTimeWriter(videoFormat == QuickTimeWriter.VideoFormat.RAW ? this.outputFile : tmpFile);
+            qtOut.addAudioTrack(audioFormat); // audio in track 0
+            qtOut.addVideoTrack(videoFormat, (int) (this.framesPerSecond * vsDuration), this.width, this.height);  // video in track 1
+
+            // Create audio buffer
+            int asSize;
+            byte[] audioBuffer;
+            if (isVBR) {
+                // => variable bit rate: create audio buffer for a single frame
+                asSize = audioFormat.getFrameSize();
+                audioBuffer = new byte[asSize];
+            } else {
+                // => fixed bit rate: create audio buffer for half a second
+                asSize = audioFormat.getChannels() * audioFormat.getSampleSizeInBits() / 8;
+                audioBuffer = new byte[(int) (qtOut.getMediaTimeScale(0) / 2 * asSize)];
+            }
+
+            // Create video buffer
+            if (!passThrough) {
+                imgBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+                g = imgBuffer.createGraphics();
+                g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            } // Main loop
+            int movieTime = 0;
+            int imgIndex = 0;
+            boolean isAudioDone = false;
+            while ((imgIndex < imgFiles.length || !isAudioDone)) {
+                // Advance movie time by half a second (we interleave twice per second)
+                movieTime += qtOut.getMovieTimeScale() / 2;
+
+                // Advance audio to movie time + 1 second (audio must be ahead of video by 1 second)
+                while (!isAudioDone && qtOut.getTrackDuration(0) < movieTime + qtOut.getMovieTimeScale()) {
+                    int len = audioIn.read(audioBuffer);
+                    if (len == -1) {
+                        isAudioDone = true;
+                    } else {
+                        qtOut.writeSamples(0, len / asSize, audioBuffer, 0, len, asDuration);
+                    }
+                    if (isVBR) {
+                        // => variable bit rate: format can change at any time
+                        audioFormat = audioIn.getFormat();
+                        if (audioFormat == null) {
+                            break;
+                        }
+                        asSize = audioFormat.getFrameSize();
+                        asDuration = (int) (audioFormat.getSampleRate() / audioFormat.getFrameRate());
+                        if (audioBuffer.length < asSize) {
+                            audioBuffer = new byte[asSize];
+                        }
+                    }
+                }
+
+                // Advance video to movie time
+                while (imgIndex < imgFiles.length && qtOut.getTrackDuration(1) < movieTime) {
+                    // catch up with video time
+                    if (passThrough) {
+                        qtOut.writeSample(1, imgFiles[imgIndex], vsDuration);
+                    } else {
+                        BufferedImage fImg = ImageIO.read(imgFiles[imgIndex]);
+                        if (fImg == null) {
+                            continue;
+                        }
+                        g.drawImage(fImg, 0, 0, width, height, null);
+                        fImg.flush();
+                        qtOut.writeFrame(1, imgBuffer, vsDuration);
+                    }
+                    ++imgIndex;
+                }
+            }
+            if (streaming.equals("fastStart")) {
+                qtOut.toWebOptimizedMovie(this.outputFile, false);
+                tmpFile.delete();
+            } else if (streaming.equals("fastStartCompressed")) {
+                qtOut.toWebOptimizedMovie(this.outputFile, true);
+                tmpFile.delete();
+            }
+                qtOut.close();
+                qtOut = null;
+        } catch (UnsupportedAudioFileException e) {
+            IOException ioe = new IOException(e.getMessage());
+            ioe.initCause(e);
+            throw ioe;
+        } finally {
+            if (qtOut != null) {
+                qtOut.close();
+            }
+            if (audioIn != null) {
+                audioIn.close();
+            }
+            if (g != null) {
+                g.dispose();
+            }
+            if (imgBuffer != null) {
+                imgBuffer.flush();
+            }
+        }
+    }
 	
 	
 	public ImagesToQuickTimeEncoder(float framesPerSecond, File out) throws IOException
@@ -189,20 +273,6 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder
 	{
 		this.width = width;
 		this.height = height;
-	}
-	
-	private void initializeVideo() throws IOException
-	{
-		if (!this.initializedVideo)
-		{
-			this.qtWriter.addVideoTrack(QUICKTIME_VIDEO_FORMAT, (long)(TIME_SCALE*this.framesPerSecond), this.width, this.height);
-			this.videoTrackIndex = this.currentTrackIndex++;
-			this.initializedVideo = true;
-			
-            this.imageBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-            this.bufferGraphics = this.imageBuffer.createGraphics();
-            this.bufferGraphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		}
 	}
 	
 	private static BufferedImage deepCopy(BufferedImage bi)
@@ -226,27 +296,43 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder
 		return this.isRunning;
 	}
 	
+	protected static String getFileNameForFrame(int frame, String extension)
+    {
+		return "frame_" + String.format("%05d", frame) + "." + extension;
+	}
+	
 	private void addImageToMovie(BufferedImage bufferedImage)
 	{
 		try
 		{
-			if (!this.initializedVideo)
+			if (this.width == -1 || this.height == -1)
 			{
-				int width = bufferedImage.getWidth();
-				int height = bufferedImage.getHeight();
-				setDimensions(width, height);
-				initializeVideo();
+				this.width = bufferedImage.getWidth();
+				this.height = bufferedImage.getHeight();
 			}
-			this.bufferGraphics.drawImage(bufferedImage, 0, 0, width, height, null);
-			this.qtWriter.writeFrame(this.videoTrackIndex, this.imageBuffer, TIME_SCALE);
-			if (this.imageCount == 0)
+			if (ImagesToQuickTimeEncoder.this.frameDirectory != null)
+            {
+                try
+                {
+                    ImageIO.write(
+                            bufferedImage,
+                            "png",
+                            new File(ImagesToQuickTimeEncoder.this.frameDirectory,
+                                    getFileNameForFrame(this.frameCount,
+                                            "png")));
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+			if (this.frameCount == 0)
 			{
 				this.thumbnailImage = deepCopy(bufferedImage);
 			}
-			this.imageCount++;
+			this.frameCount++;
 			for (EncoderListener l : this.listeners)
             {
-                l.frameUpdate(this.imageCount);
+                l.frameUpdate(this.frameCount);
             }
 		}
 		catch (Exception e)
@@ -259,9 +345,11 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder
     {
 		try
 		{
-			synchronized (this.imageQueueLock) {
-				this.images.add(deepCopy(bufferedImage));
-			}
+			addImageToMovie(deepCopy(bufferedImage));
+			
+//			synchronized (this.imageQueueLock) {
+//				this.images.add(deepCopy(bufferedImage));
+//			}
 		}
 		catch (Exception e)
 		{
@@ -274,34 +362,46 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder
 		return this.thumbnailImage;
 	}
 	
-	public void addAudioTrack(AudioInputStream audioStream, double length) throws IOException
-	{ 
-		this.qtWriter.addAudioTrack(QUICKTIME_AUDIO_FORMAT);
-		this.audioTrackIndex = this.currentTrackIndex++;
-		this.qtWriter.writeSample(this.audioTrackIndex, audioStream, (long)(length*TIME_SCALE));
-	}
-	
-	public void close() throws IOException
-	{
-		this.qtWriter.close();
-	}
 
 	private void initializeWriter() throws IOException
 	{
-		if (this.imageProcessingRunnable != null)
+		if (this.frameDirectory != null)
 		{
-			this.imageProcessingRunnable.forceStop();
+			FileUtilities.delete(this.frameDirectory);
 		}
-		this.qtWriter = new QuickTimeWriter(this.outputFile);
-		this.currentTrackIndex = 0;
-		this.initializedVideo = false;
-		if (this.width != -1 && this.height != -1)
+		initializeFrameDirectory();
+		this.audioStreams.clear();
+	}
+	
+	private double movieLength()
+	{
+		double totalTime = this.frameCount / this.framesPerSecond;
+		return totalTime;
+	}
+	
+	private File createAudioFile()
+	{
+		if (this.audioStreams.size() > 0)
 		{
-			this.initializeVideo();
+			AudioTrackMixer mixer = new AudioTrackMixer(QUICKTIME_AUDIO_FORMAT, movieLength());
+			for (ScheduledAudioStream stream : this.audioStreams)
+			{
+				mixer.addScheduledStream(stream);
+			}
+			try
+			{
+				File tempFile = File.createTempFile("TEMP_soundTrack", ".wav");
+				FileOutputStream out = new FileOutputStream(tempFile);
+				mixer.write(out);
+				out.close();
+				return tempFile;
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
-		this.imageProcessingRunnable = new ProcessImagesRunnable();
-		Thread t = new Thread(this.imageProcessingRunnable);
-		t.start();
+		return null;
 	}
 	
 	/* (non-Javadoc)
@@ -310,7 +410,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder
 	@Override
 	public void start() {
 		this.isRunning = true;
-		this.imageCount = 0;
+		this.frameCount = 0;
 		try
 		{
 			initializeWriter();
@@ -324,32 +424,75 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder
             l.encodingStarted();
         }
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see edu.cmu.cs.dennisc.movie.MovieEncoder#stop()
 	 */
 	@Override
 	public void stop() {
-		if (this.imageProcessingRunnable != null)
-		{
-			this.imageProcessingRunnable.stop();
-			this.imageProcessingRunnable.waitUntilStopped();
-		}
 		this.isRunning = false;
 		boolean success = false;
+		File audioFile = null;
 		try
 		{
-			this.close();
+			audioFile = this.createAudioFile();
+			File[] imgFiles = this.frameDirectory.listFiles();
+			writeVideoAndAudio(imgFiles, audioFile, QUICKTIME_VIDEO_FORMAT, false, "none");
 			success = true;
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
+			success = false;
+		}
+		finally
+		{
+			if (audioFile != null)
+			{
+				FileUtilities.delete(audioFile);
+			}
+			if (this.frameDirectory != null)
+			{
+				FileUtilities.delete(this.frameDirectory);
+			}
 		}
 		for (EncoderListener l : this.listeners)
         {
             l.encodingFinished(success);
         }
+		
+	}
+
+
+	@Override
+	public MediaPlayerObserver getMediaPlayerObserver() {
+		return this;
+//		return null;
+	}
+
+
+	@Override
+	public void playerStarted(MediaPlayerAnimation playerAnimation, double playTime) {
+		edu.cmu.cs.dennisc.media.Player player = playerAnimation.getPlayer();
+		if (player instanceof edu.cmu.cs.dennisc.media.jmf.Player)
+		{
+			edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
+			ScheduledAudioStream audioStream = new ScheduledAudioStream(jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel());
+			this.audioStreams.add(audioStream);
+		}
+	}
+
+
+	@Override
+	public void started(Animation animation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void finished(Animation animation) {
+		// TODO Auto-generated method stub
 		
 	}
 }

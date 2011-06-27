@@ -42,6 +42,9 @@
  */
 package edu.cmu.cs.dennisc.movie.seriesofimages;
 
+import edu.cmu.cs.dennisc.animation.AnimationObserver;
+import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -90,5 +93,10 @@ public class SeriesOfImagesMovieEncoder implements edu.cmu.cs.dennisc.movie.Movi
 	}
 	public void stop() {
 		m_index = -1;
+	}
+
+	@Override
+	public MediaPlayerObserver getMediaPlayerObserver(){
+		return null;
 	}
 }

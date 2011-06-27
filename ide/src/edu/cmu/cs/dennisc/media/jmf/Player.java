@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.media.jmf;
 
+import org.alice.virtualmachine.resources.AudioResource;
+
 abstract class BarrierControllerListener implements javax.media.ControllerListener {
 	private java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
 	public void await() {
@@ -124,12 +126,15 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 	private double volumeLevel;
 	private double startTime;
 	private double stopTime;
-	/*package private*/ Player( javax.media.Player player, double volumeLevel, double startTime, double stopTime ) {
+	private org.alice.virtualmachine.resources.AudioResource audioResource;
+	
+	/*package private*/ Player( javax.media.Player player, double volumeLevel, double startTime, double stopTime, org.alice.virtualmachine.resources.AudioResource resourceReference) {
 		//assert player.getState() >= javax.media.Controller.Realized;
 		this.player = player;
 		this.volumeLevel = volumeLevel;
 		this.startTime = startTime;
 		this.stopTime = stopTime;
+		this.audioResource = resourceReference;
 	}
 	@Override
 	public void realize() {
@@ -262,6 +267,26 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		}.start();
 		dialog.setVisible( true );
 		this.stop();
+	}
+	
+	public double getVolumeLevel()
+	{
+		return this.volumeLevel;
+	}
+	
+	public double getStartTime()
+	{
+		return this.startTime;
+	}
+	
+	public double getStopTime()
+	{
+		return this.stopTime;
+	}
+	
+	public org.alice.virtualmachine.resources.AudioResource getAudioResource()
+	{
+		return this.audioResource;
 	}
 	
 }

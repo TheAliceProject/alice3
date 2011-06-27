@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.media.animation;
 
+import org.alice.media.audio.ScheduledAudioStream;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,6 +52,8 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 	private edu.cmu.cs.dennisc.media.Player player;
 	private boolean isStarted = false;
 
+	private double startTime = 0;
+	
 	public MediaPlayerAnimation( edu.cmu.cs.dennisc.media.Player player ) {
 		this.player = player;
 		this.isStarted = false;
@@ -58,14 +62,47 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 		this.isStarted = false;
 	}
 	public double update( double tCurrent, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+		boolean hasMediaObserver = animationObserver != null && animationObserver instanceof edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
 		if( this.isStarted ) {
 			//pass
 		} else {
 			//this.player.prefetch();
-			this.player.start();
 			this.isStarted = true;
+			if (hasMediaObserver)
+			{
+				((edu.cmu.cs.dennisc.animation.MediaPlayerObserver)animationObserver).playerStarted(this, tCurrent);
+				this.startTime = tCurrent;
+			}
+			else
+			{
+				this.player.start();
+			}
 		}
-		double timeRemaining = this.player.getTimeRemaining();
+		
+		double timeRemaining = 0;
+		if (hasMediaObserver)
+		{
+			if (this.player instanceof edu.cmu.cs.dennisc.media.jmf.Player)
+			{
+				edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
+				double startTime = Double.isNaN(jmfPlayer.getStartTime()) ? 0 : jmfPlayer.getStartTime();
+				double endTime = Double.isNaN(jmfPlayer.getStopTime()) ? jmfPlayer.getDuration() : jmfPlayer.getStopTime();
+				double totalTime = endTime - startTime;
+				double timeElapsed = tCurrent - this.startTime;
+				if (timeElapsed >= totalTime)
+				{
+					timeRemaining = 0;
+				}
+				else
+				{
+					timeRemaining = totalTime - timeElapsed;
+				}
+			}
+		}
+		else
+		{
+			timeRemaining = this.player.getTimeRemaining();
+		}
 //		if( timeRemaining < CLOSE_ENOUGH_TO_ZERO ) {
 //			timeRemaining = 0.0;
 //		}
@@ -73,5 +110,13 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 	}
 	public void complete( edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		this.player.stop();
+		if( animationObserver != null ) {
+			animationObserver.finished( this );
+		}
+	}
+	
+	public edu.cmu.cs.dennisc.media.Player getPlayer()
+	{
+		return this.player;
 	}
 }

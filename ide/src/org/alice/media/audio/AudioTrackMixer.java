@@ -75,7 +75,7 @@ public class AudioTrackMixer {
 		this.convertedResourceMap = new HashMap<AudioResource, AudioResource>();
 	}
 	
-	public void addAudioResource(AudioResource resource, double startTime, double entryPoint, double endPoint, double volume)
+	private AudioResource convertResourceIfNecessary(AudioResource resource)
 	{
 		AudioResource convertedResource = null;
 		if (this.convertedResourceMap.containsKey(resource))
@@ -93,14 +93,25 @@ public class AudioTrackMixer {
 				convertedResource = resource;
 			}
 			this.convertedResourceMap.put(resource, convertedResource);
-		} 
+		}
+		return convertedResource;
+	}
+	
+	public void addAudioResource(AudioResource resource, double startTime, double entryPoint, double endPoint, double volume)
+	{
+		AudioResource convertedResource = convertResourceIfNecessary(resource);
 		ScheduledAudioStream scheduledStream = new ScheduledAudioStream(convertedResource, startTime, entryPoint, endPoint, volume);
 		addScheduledStream(scheduledStream);
 	}
 	
 	public void addScheduledStream(ScheduledAudioStream scheduledStream)
 	{
-		int index = 0;
+		AudioResource convertedResource = convertResourceIfNecessary(scheduledStream.getAudioResource());
+		if (convertedResource != scheduledStream.getAudioResource())
+		{
+			scheduledStream.setAudioResource(convertedResource);
+		}
+		int index = scheduledStreams.size();
 		for (int i=0; i<scheduledStreams.size(); i++)
 		{
 			if (scheduledStreams.get(i).compareTo(scheduledStream) > 0)
@@ -112,9 +123,15 @@ public class AudioTrackMixer {
 		scheduledStreams.add(index, scheduledStream);
 	}
 	
-	public void write(OutputStream out) throws IOException
+	public AudioInputStream createAudioStream()
 	{
 		AudioInputStream audioInputStream = new MixingFloatAudioInputStream(this.targetFormat, this.scheduledStreams, this.trackLength);
+		return audioInputStream;
+	}
+	
+	public void write(OutputStream out) throws IOException
+	{
+		AudioInputStream audioInputStream = createAudioStream();
 		AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, out);
 	}
 	

@@ -42,14 +42,17 @@
  */
 package edu.cmu.cs.dennisc.movie;
 
+import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface MovieEncoder {
+public interface MovieEncoder{
 	
 	//todo: getFPS()
 	
 	public void start();
 	public void addBufferedImage( java.awt.image.BufferedImage bufferedImage );
 	public void stop();
+	public MediaPlayerObserver getMediaPlayerObserver();
 }
