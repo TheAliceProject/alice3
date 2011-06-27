@@ -148,7 +148,7 @@ abstract class RtNode<M extends Element, N extends org.lgna.croquet.history.Node
 			for( RtNode child : children ) {
 				RtItem< ?, ?, ?, ? > rtItem = (RtItem< ?, ?, ?, ? >)child;
 				CascadeBlankChild owner = rtItem.getOwner();
-				int itemCount = owner.getItemCount();
+				int itemCount = owner != null ? owner.getItemCount() : 0;
 				if( itemCount > 1 ) {
 					springLayout = new javax.swing.SpringLayout();
 					break;
