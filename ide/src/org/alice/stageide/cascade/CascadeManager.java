@@ -108,60 +108,59 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		}
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addCustomFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv,
-			org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > context, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
-		rv = super.addCustomFillIns( rv, context, type );
-		System.err.println( "TODO: addCustomFillIns handle listeners" );
-//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-//		if( previousExpression != null ) {
-//			if( type.isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
-//				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice enclosingMethod = previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
-//				if( enclosingMethod != null ) {
-//					for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
-//						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeMouseButtonEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonEvent.class );
-//						if( parameter.getValueType() == typeMouseButtonEvent ) {
-//							String[] methodNames = new String[] { "getModelAtMouseLocation", "getPartAtMouseLocation" };
-//							for( String methodName : methodNames ) {
-//								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodName );
-//								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
-//								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
-//								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
-//							}
-//						}
-//					}
-//				}
-//			} else if( type.isAssignableFrom( Boolean.class ) ) {
-//				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice enclosingMethod = previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
-//				if( enclosingMethod != null ) {
-//					for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
-//						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeKeyEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyEvent.class );
-//						if( parameter.getValueType() == typeKeyEvent ) {
-//							//							String[] methodNames = new String[] { "isKey", "isLetter", "isDigit" };
-//							//							Class<?>[][] parameterClses = new Class<?>[][] { new Class<?>[]{ org.alice.apis.moveandturn.Key.class }, new Class<?>[]{}, new Class<?>[]{} };
-//							//							for( int i=0; i<methodNames.length; i++ ) {
-//							//								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( methodNames[ i ], parameterClses[ i ] );
-//							//								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
-//							//								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
-//							//								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
-//							//							}
-//
-//							{
-//								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( "isKey", org.alice.apis.moveandturn.Key.class );
-//								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addCustomFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > blankNode, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
+		rv = super.addCustomFillIns( rv, blankNode, type );
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+		if( previousExpression != null ) {
+			if( type.isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
+				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice enclosingMethod = previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+				if( enclosingMethod != null ) {
+					for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
+						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeMouseButtonEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonEvent.class );
+						if( parameter.getValueType() == typeMouseButtonEvent ) {
+							String[] methodNames = new String[] { "getModelAtMouseLocation", "getPartAtMouseLocation" };
+							for( String methodName : methodNames ) {
+								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodName );
+								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
+								rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, method ) );
+							}
+						}
+					}
+				}
+			} else if( type.isAssignableFrom( Boolean.class ) ) {
+				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice enclosingMethod = previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+				if( enclosingMethod != null ) {
+					for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
+						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeKeyEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyEvent.class );
+						if( parameter.getValueType() == typeKeyEvent ) {
+							//							String[] methodNames = new String[] { "isKey", "isLetter", "isDigit" };
+							//							Class<?>[][] parameterClses = new Class<?>[][] { new Class<?>[]{ org.alice.apis.moveandturn.Key.class }, new Class<?>[]{}, new Class<?>[]{} };
+							//							for( int i=0; i<methodNames.length; i++ ) {
+							//								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( methodNames[ i ], parameterClses[ i ] );
+							//								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
+							//								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
+							//								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
+							//							}
+
+							{
+								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( "isKey", org.alice.apis.moveandturn.Key.class );
+								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
+								rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, method ) );
 //								blank.addFillIn( new org.alice.ide.cascade.IncompleteMethodInvocationFillIn( expression, method ) );
-//							}
-//							String[] methodNames = new String[] { "isLetter", "isDigit" };
-//							for( String methodName : methodNames ) {
-//								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( methodName );
-//								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
+							}
+							String[] methodNames = new String[] { "isLetter", "isDigit" };
+							for( String methodName : methodNames ) {
+								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( methodName );
+								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
 //								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
+								rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, method ) );
 //								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
+							}
+						}
+					}
+				}
+			}
+		}
 		return rv;
 	}
 
@@ -183,7 +182,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 			if( paramCls != null ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
 				if( getPartMethod != null ) {
-					return new org.lgna.croquet.CascadeFillInMenuCombo( fillIn, new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, getPartMethod ) );
+					return new org.lgna.croquet.CascadeFillInMenuCombo( fillIn, new org.alice.ide.croquet.models.cascade.TrimmedMethodInvocationFillIn( expression, getPartMethod ) );
 				}
 			}
 		}

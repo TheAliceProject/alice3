@@ -218,6 +218,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			java.util.List< ExpressionPropertyDropDownPane > list = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
 				public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
+					assert expressionType != null : expressionPropertyDropDownPane.getExpressionProperty();
 					if( expressionType.isAssignableFrom( type ) ) {
 						return true;
 					} else {
