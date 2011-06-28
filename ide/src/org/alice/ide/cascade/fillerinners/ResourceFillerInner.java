@@ -45,11 +45,11 @@ package org.alice.ide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public ResourceFillerInner( Class< ? extends org.alice.virtualmachine.Resource> cls ) {
+public abstract class ResourceFillerInner< R extends org.alice.virtualmachine.Resource > extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	public ResourceFillerInner( Class< R> cls ) {
 		super( cls );
 	}
-	protected abstract org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.ResourceExpression,? > getResourceExpressionFillIn( org.alice.virtualmachine.Resource resource );
+	protected abstract org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.ResourceExpression,? > getResourceExpressionFillIn( R resource );
 	protected abstract org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.Expression,? > getImportNewResourceFillIn();
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
@@ -58,8 +58,8 @@ public abstract class ResourceFillerInner extends org.alice.ide.cascade.fillerin
 		if( resources != null && resources.isEmpty() == false ) {
 			synchronized( resources ) {
 				for( org.alice.virtualmachine.Resource resource : resources ) {
-					if( this.getType().isAssignableTo( resource.getClass() ) ) {
-						rv.add( this.getResourceExpressionFillIn( resource ) ); 
+					if( this.getType().isAssignableFrom( resource.getClass() ) ) {
+						rv.add( this.getResourceExpressionFillIn( (R)resource ) ); 
 					}
 				}
 			}

@@ -45,33 +45,25 @@ package org.alice.stageide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceFillerInner extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
+public class AudioSourceFillerInner extends SourceFillerInner< org.alice.virtualmachine.resources.AudioResource > {
 	public AudioSourceFillerInner() {
-		super( org.alice.apis.moveandturn.AudioSource.class );
+		super( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.resources.AudioResource.class );
+	}
+	@Override
+	protected org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, ? > getImportFillIn() {
+		return new org.alice.stageide.croquet.models.cascade.source.ImportNewAudioSourceFillIn();
+	}
+	@Override
+	protected org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, ? > getResourceFillIn( org.alice.virtualmachine.resources.AudioResource resource ) {
+		return new org.alice.stageide.croquet.models.cascade.source.AudioSourceFillIn( resource );
 	}
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-//		Iterable< org.alice.virtualmachine.Resource > resources = ide.getResources();
-//		assert resources != null;
-//		synchronized( resources ) {
-//			for( org.alice.virtualmachine.Resource resource : resources ) {
-//				if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
-//					org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
-//					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.resources.AudioResource.class );
-//					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, audioResource );
-//					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
-//					edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
-//					blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 ) ) ); 
-//				}
-//			}
-//		}
-//		blank.addSeparator();
-//		blank.addFillIn( new org.alice.stageide.cascade.customfillin.ImportNewAudioSourceFillIn() );
-//		if( ide.getCascadeManager().isPreviousExpressionSet() ) {
-//			blank.addSeparator();
-//			blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomAudioSourceFillIn() );
-//		}
+		super.addItems( rv, isTop, prevExpression );
+		if( org.alice.ide.IDE.getSingleton().getCascadeManager().isPreviousExpressionSet() ) {
+			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			rv.add( org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation.getInstance().getFillIn() );
+		}
 		return rv;
 	}
 }

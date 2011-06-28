@@ -46,16 +46,17 @@ package org.alice.ide.croquet.models.ast.cascade.resource;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceExpressionFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.ResourceExpression > {
-	private final org.alice.virtualmachine.Resource resource;
-	public ResourceExpressionFillIn( java.util.UUID id, org.alice.virtualmachine.Resource resource ) {
+public abstract class ResourceExpressionFillIn<T extends org.alice.virtualmachine.Resource> extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.ResourceExpression > {
+	private final T resource;
+	private final Class<T> resourceCls;
+	public ResourceExpressionFillIn( java.util.UUID id, T resource, Class<T> resourceCls ) {
 		super( java.util.UUID.fromString( "760a1c2d-45cf-4c66-b0bf-104bda9b87ad" ) );
 		this.resource = resource;
+		this.resourceCls = resourceCls;
 	}
-	protected abstract <T extends org.alice.virtualmachine.Resource> Class< T > getResourceCls();
 	@Override
 	public final edu.cmu.cs.dennisc.alice.ast.ResourceExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ResourceExpression,Void > step ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( this.getResourceCls(), resource );
+		return new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( this.resourceCls, resource );
 	}
 	@Override
 	public final edu.cmu.cs.dennisc.alice.ast.ResourceExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ResourceExpression,Void > step ) {

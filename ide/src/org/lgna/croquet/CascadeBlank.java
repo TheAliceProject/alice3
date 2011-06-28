@@ -55,10 +55,13 @@ public abstract class CascadeBlank< B > extends Element {
 		return child instanceof CascadeLineSeparator || ( (child instanceof CascadeLabelSeparator) && ((CascadeLabelSeparator)child).isValid() == false );
 	}
 	public final CascadeBlankChild[] getFilteredChildren( org.lgna.croquet.cascade.BlankNode<B> blankNode ) {
-		java.util.List< CascadeBlankChild > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.updateChildren( rv, blankNode );
+		java.util.List< CascadeBlankChild > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.updateChildren( children, blankNode );
+		for( CascadeBlankChild child : children ) {
+			assert child != null;
+		}
 
-		java.util.ListIterator< CascadeBlankChild > listIterator = rv.listIterator();
+		java.util.ListIterator< CascadeBlankChild > listIterator = children.listIterator();
 		boolean isLineSeparatorAcceptable = false;
 		while( listIterator.hasNext() ) {
 			CascadeBlankChild child = listIterator.next();
@@ -76,16 +79,16 @@ public abstract class CascadeBlank< B > extends Element {
 
 		//remove separators at the end
 		//there should be a maximum of only 1 but we loop anyway 
-		final int N = rv.size();
+		final int N = children.size();
 		for( int i = 0; i < N; i++ ) {
 			int index = N - i - 1;
-			if( isEmptySeparator( rv.get( index ) ) ) {
-				rv.remove( index );
+			if( isEmptySeparator( children.get( index ) ) ) {
+				children.remove( index );
 			} else {
 				break;
 			}
 		}
 
-		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( rv, CascadeBlankChild.class );
+		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( children, CascadeBlankChild.class );
 	}
 }

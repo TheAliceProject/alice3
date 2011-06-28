@@ -46,10 +46,10 @@ package org.alice.ide.croquet.models.ast.cascade.resource;
 /**
  * @author Dennis Cosgrove
  */
-public class AudioResourceExpressionFillIn extends ResourceExpressionFillIn {
-	private static java.util.Map< org.alice.virtualmachine.Resource, AudioResourceExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class AudioResourceExpressionFillIn extends ResourceExpressionFillIn< org.alice.virtualmachine.resources.AudioResource > {
+	private static java.util.Map< org.alice.virtualmachine.resources.AudioResource, AudioResourceExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static synchronized AudioResourceExpressionFillIn getInstance( org.alice.virtualmachine.Resource resource ) {
+	public static synchronized AudioResourceExpressionFillIn getInstance( org.alice.virtualmachine.resources.AudioResource resource ) {
 		assert resource != null;
 		AudioResourceExpressionFillIn rv = map.get( resource );
 		if( rv != null ) {
@@ -60,11 +60,7 @@ public class AudioResourceExpressionFillIn extends ResourceExpressionFillIn {
 		}
 		return rv;
 	}
-	private AudioResourceExpressionFillIn( org.alice.virtualmachine.Resource resource ) {
-		super( java.util.UUID.fromString( "760a1c2d-45cf-4c66-b0bf-104bda9b87ad" ), resource );
-	}
-	@Override
-	protected Class< org.alice.virtualmachine.resources.AudioResource > getResourceCls() {
-		return org.alice.virtualmachine.resources.AudioResource.class;
+	private AudioResourceExpressionFillIn( org.alice.virtualmachine.resources.AudioResource resource ) {
+		super( java.util.UUID.fromString( "760a1c2d-45cf-4c66-b0bf-104bda9b87ad" ), resource, org.alice.virtualmachine.resources.AudioResource.class );
 	}
 }

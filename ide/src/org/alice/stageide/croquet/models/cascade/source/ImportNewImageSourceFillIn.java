@@ -40,12 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.cascade.customfillin;
+package org.alice.stageide.croquet.models.cascade.source;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ImportNewImageSourceFillIn extends ImportNewSourceFillIn< org.alice.apis.moveandturn.ImageSource, org.alice.virtualmachine.resources.ImageResource > {
+	public ImportNewImageSourceFillIn() {
+		super( java.util.UUID.fromString( "dc0d114b-50c1-45d9-8ed5-9bdc0ea96326" ) );
+	}
 	@Override
 	protected String getMenuText() {
 		return "Import New Image Source...";

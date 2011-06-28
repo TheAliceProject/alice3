@@ -45,29 +45,17 @@ package org.alice.stageide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageSourceFillerInner extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
+public class ImageSourceFillerInner extends SourceFillerInner< org.alice.virtualmachine.resources.ImageResource > {
 	public ImageSourceFillerInner() {
-		super( org.alice.apis.moveandturn.ImageSource.class );
+		super( org.alice.apis.moveandturn.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
+	}
+
+	@Override
+	protected org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, ? > getImportFillIn() {
+		return new org.alice.stageide.croquet.models.cascade.source.ImportNewImageSourceFillIn();
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-//		Iterable< org.alice.virtualmachine.Resource > resources = ide.getResources();
-//		assert resources != null;
-//		synchronized( resources ) {
-//			for( org.alice.virtualmachine.Resource resource : resources ) {
-//				if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
-//					org.alice.virtualmachine.resources.ImageResource imageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
-//					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
-//					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.ImageResource.class, imageResource );
-//					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
-//					edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
-//					blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 ) ) ); 
-//				}
-//			}
-//		}
-//		blank.addSeparator();
-//		blank.addFillIn( new org.alice.stageide.cascade.customfillin.ImportNewImageSourceFillIn() );
-		return rv;
+	protected org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, ? > getResourceFillIn( org.alice.virtualmachine.resources.ImageResource resource ) {
+		return new org.alice.stageide.croquet.models.cascade.source.ImageSourceFillIn( resource );
 	}
 }

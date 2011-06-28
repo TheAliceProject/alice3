@@ -45,12 +45,12 @@ package org.alice.ide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class AudioResourceFillerInner extends ResourceFillerInner {
+public class AudioResourceFillerInner extends ResourceFillerInner< org.alice.virtualmachine.resources.AudioResource > {
 	public AudioResourceFillerInner() {
 		super( org.alice.virtualmachine.resources.AudioResource.class );
 	}
 	@Override
-	protected org.alice.ide.croquet.models.ast.cascade.resource.AudioResourceExpressionFillIn getResourceExpressionFillIn( org.alice.virtualmachine.Resource resource ) {
+	protected org.alice.ide.croquet.models.ast.cascade.resource.AudioResourceExpressionFillIn getResourceExpressionFillIn( org.alice.virtualmachine.resources.AudioResource resource ) {
 		return org.alice.ide.croquet.models.ast.cascade.resource.AudioResourceExpressionFillIn.getInstance( resource );
 	}
 	@Override

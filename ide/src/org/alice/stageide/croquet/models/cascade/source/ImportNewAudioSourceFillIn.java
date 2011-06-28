@@ -40,49 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.cascade.customfillin;
+package org.alice.stageide.croquet.models.cascade.source;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImportNewSourceFillIn< E, F extends org.alice.virtualmachine.Resource > extends edu.cmu.cs.dennisc.cascade.FillIn<edu.cmu.cs.dennisc.alice.ast.InstanceCreation> {
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getTransientValue() {
-		return null;
-	}
-	
-	protected abstract Class< E > getSourceClass();
-	protected abstract Class< F > getResourceClass();
-	protected abstract org.alice.ide.resource.prompter.ResourcePrompter<F> getResourcePrompter();
-	protected abstract String getMenuText();
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getValue() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		try {
-			F resource = this.getResourcePrompter().promptUserForResource( ide.getFrame() );
-			if( resource != null ) {
-				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-				if( project != null ) {
-					project.addResource( resource );
-				}
-				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( getSourceClass(), getResourceClass() );
-				edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( getResourceClass(), resource );
-				edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
-				edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
-				return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 );
-			} else {
-				throw new edu.cmu.cs.dennisc.cascade.CancelException( "" );
-			}
-		} catch( java.io.IOException ioe ) {
-			//todo
-			throw new edu.cmu.cs.dennisc.cascade.CancelException( "" );
-		}
+public class ImportNewAudioSourceFillIn extends ImportNewSourceFillIn< org.alice.apis.moveandturn.AudioSource, org.alice.virtualmachine.resources.AudioResource > {
+	public ImportNewAudioSourceFillIn() {
+		super( java.util.UUID.fromString( "e0860b35-06fb-4116-be94-b2240def9d55" ) );
 	}
 	@Override
-	protected void addChildren() {
+	protected String getMenuText() {
+		return "Import New Audio Source...";
 	}
 	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		return edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.getMenuText() );
+	protected org.alice.ide.resource.prompter.ResourcePrompter<org.alice.virtualmachine.resources.AudioResource> getResourcePrompter() {
+		return org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton();
+	}
+	@Override
+	protected Class<org.alice.virtualmachine.resources.AudioResource> getResourceClass() {
+		return org.alice.virtualmachine.resources.AudioResource.class;
+	}
+	@Override
+	protected Class<org.alice.apis.moveandturn.AudioSource> getSourceClass() {
+		return org.alice.apis.moveandturn.AudioSource.class;
 	}
 }

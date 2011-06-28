@@ -40,39 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.cascade.fillerinners;
+package org.alice.stageide.croquet.models.cascade.source;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SourceFillerInner< R extends org.alice.virtualmachine.Resource > extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
-	private final Class<R> resourceCls;
-	public SourceFillerInner( Class<?> cls, Class<R> resourceCls ) {
-		super( cls );
-		this.resourceCls = resourceCls;
+public abstract class ImportNewSourceFillIn< E, R extends org.alice.virtualmachine.Resource > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.InstanceCreation > {
+	private final edu.cmu.cs.dennisc.alice.ast.InstanceCreation transientValue;
+	public ImportNewSourceFillIn( java.util.UUID id ) {
+		super( id );
+		this.transientValue = this.createValue( new org.alice.ide.ast.EmptyExpression( this.getResourceClass() ) );
 	}
-	protected abstract org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation,? > getResourceFillIn( R resource );
-	protected abstract org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation,? > getImportFillIn();
+	
+	private edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( getSourceClass(), getResourceClass() );
+		edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
+		edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, expression );
+		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 );
+	}
+	
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		java.util.Set< org.alice.virtualmachine.Resource > resources = ide.getResources();
-		if( resources != null && resources.isEmpty() == false ) {
-			int prevRvSize = rv.size();
-			synchronized( resources ) {
-				for( org.alice.virtualmachine.Resource resource : resources ) {
-					if( this.resourceCls.isAssignableFrom( resource.getClass() ) ) {
-						R r = (R)resource;
-						rv.add( this.getResourceFillIn( r ) ); 
-					}
-				}
-			}
-			if( prevRvSize < rv.size() ) {
-				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			}
-		}
-		rv.add( this.getImportFillIn() );
-		return rv;
+	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > step ) {
+		return this.transientValue;
 	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > step ) {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		try {
+			R resource = this.getResourcePrompter().promptUserForResource( ide.getFrame() );
+			if( resource != null ) {
+				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+				if( project != null ) {
+					project.addResource( resource );
+				}
+				edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( getResourceClass(), resource );
+				return this.createValue( resourceExpression );
+			} else {
+				throw new org.lgna.croquet.CancelException( "" );
+			}
+		} catch( java.io.IOException ioe ) {
+			//todo
+			throw new org.lgna.croquet.CancelException( "" );
+		}
+	}
+	
+	protected abstract Class< E > getSourceClass();
+	protected abstract Class< R > getResourceClass();
+	protected abstract org.alice.ide.resource.prompter.ResourcePrompter<R> getResourcePrompter();
+	protected abstract String getMenuText();
 }
