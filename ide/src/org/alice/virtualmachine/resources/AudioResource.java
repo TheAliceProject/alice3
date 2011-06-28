@@ -91,17 +91,19 @@ public class AudioResource extends org.alice.virtualmachine.Resource {
 		return get( java.util.UUID.fromString( s ) );
 	}
 	private double duration = Double.NaN;
-	public AudioResource( java.util.UUID uuid ) {
+	private AudioResource( java.util.UUID uuid ) {
 		super( uuid );
 	}
 	public AudioResource( Class<?> cls, String resourceName, String contentType ) {
 		super( cls, resourceName, contentType );
+		uuidToResourceMap.put( this.getUUID(), this );
 	}
 	public AudioResource( Class<?> cls, String resourceName ) {
 		this( cls, resourceName, getContentType( resourceName ) );
 	}
 	public AudioResource( java.io.File file, String contentType ) throws java.io.IOException {
 		super( file, contentType );
+		uuidToResourceMap.put( this.getUUID(), this );
 	}
 	public AudioResource( java.io.File file ) throws java.io.IOException {
 		this( file, getContentType( file ) );

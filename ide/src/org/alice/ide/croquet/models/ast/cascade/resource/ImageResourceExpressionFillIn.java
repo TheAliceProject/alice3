@@ -61,6 +61,6 @@ public class ImageResourceExpressionFillIn extends ResourceExpressionFillIn< org
 		return rv;
 	}
 	private ImageResourceExpressionFillIn( org.alice.virtualmachine.resources.ImageResource resource ) {
-		super( java.util.UUID.fromString( "760a1c2d-45cf-4c66-b0bf-104bda9b87ad" ), resource, org.alice.virtualmachine.resources.ImageResource.class );
+		super( java.util.UUID.fromString( "760a1c2d-45cf-4c66-b0bf-104bda9b87ad" ), org.alice.virtualmachine.resources.ImageResource.class, resource );
 	}
 }

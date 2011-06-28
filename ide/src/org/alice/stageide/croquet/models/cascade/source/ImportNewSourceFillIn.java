@@ -60,11 +60,15 @@ public abstract class ImportNewSourceFillIn< E, R extends org.alice.virtualmachi
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > step ) {
+		return new javax.swing.JLabel( this.getMenuText() );
+	}
+	@Override
+	public final edu.cmu.cs.dennisc.alice.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > step ) {
 		return this.transientValue;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > step ) {
+	public final edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > step ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		try {
 			R resource = this.getResourcePrompter().promptUserForResource( ide.getFrame() );
@@ -73,8 +77,7 @@ public abstract class ImportNewSourceFillIn< E, R extends org.alice.virtualmachi
 				if( project != null ) {
 					project.addResource( resource );
 				}
-				edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( getResourceClass(), resource );
-				return this.createValue( resourceExpression );
+				return this.createValue( new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( getResourceClass(), resource ) );
 			} else {
 				throw new org.lgna.croquet.CancelException( "" );
 			}

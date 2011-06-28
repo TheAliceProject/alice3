@@ -5,11 +5,11 @@ public abstract class SourceFillIn<T extends org.alice.virtualmachine.Resource> 
 	private final T resource;
 	private final Class<T> resourceCls;
 	private final edu.cmu.cs.dennisc.alice.ast.InstanceCreation transientValue;
-	public SourceFillIn( java.util.UUID id, Class<?> sourceCls, T resource, Class<T> resourceCls ) {
+	public SourceFillIn( java.util.UUID id, Class<?> sourceCls, Class<T> resourceCls, T resource ) {
 		super( java.util.UUID.fromString( "c5d40d9e-b7a9-45d7-8784-1a0bdfc05b90" ) );
 		this.sourceCls = sourceCls;
-		this.resource = resource;
 		this.resourceCls = resourceCls;
+		this.resource = resource;
 		this.transientValue = this.createValue();
 	}
 	private final edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue() {

@@ -61,6 +61,6 @@ public class AudioResourceExpressionFillIn extends ResourceExpressionFillIn< org
 		return rv;
 	}
 	private AudioResourceExpressionFillIn( org.alice.virtualmachine.resources.AudioResource resource ) {
-		super( java.util.UUID.fromString( "760a1c2d-45cf-4c66-b0bf-104bda9b87ad" ), resource, org.alice.virtualmachine.resources.AudioResource.class );
+		super( java.util.UUID.fromString( "760a1c2d-45cf-4c66-b0bf-104bda9b87ad" ), org.alice.virtualmachine.resources.AudioResource.class, resource );
 	}
 }
