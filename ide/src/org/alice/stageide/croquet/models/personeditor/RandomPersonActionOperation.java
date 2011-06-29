@@ -60,7 +60,7 @@ public class RandomPersonActionOperation extends org.alice.ide.operations.Action
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final PersonInfo prevState = org.alice.stageide.personeditor.PersonEditor.getInstance().getPersonInfo();
 		final PersonInfo nextState = org.alice.stageide.croquet.models.personeditor.PersonInfo.createRandom();
-		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				org.alice.stageide.personeditor.PersonEditor.getInstance().setPersonInfo( nextState );

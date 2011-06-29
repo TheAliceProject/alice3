@@ -149,7 +149,7 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 	protected final String getExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
 		//org.lgna.croquet.steps.InputDialogOperationStep step = (org.lgna.croquet.steps.InputDialogOperationStep)child.findContextFor( InputDialogOperation.this );
 //		String text;
-		if( step != null ) {
+//		if( step != null ) {
 			String explanation = this.getInternalExplanation( step );
 			if( this.externalCommitButtonDisabler != null ) {
 				String externalExplanation = this.externalCommitButtonDisabler.getExplanationIfCommitButtonShouldBeDisabled( step );
@@ -165,11 +165,11 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 //			}
 //			this.getCompleteOperation().setEnabled( text == NULL_EXPLANATION );
 //			this.explanationLabel.setText( text );
-		} else {
-//			this.explanationLabel.setText( "todo: updateOperationAndExplanation step==null" );
-			this.getCompleteOperation().setEnabled( true );
-			return "todo: updateOperationAndExplanation step==null";
-		}
+//		} else {
+////			this.explanationLabel.setText( "todo: updateOperationAndExplanation step==null" );
+//			this.getCompleteOperation().setEnabled( true );
+//			return "todo: updateOperationAndExplanation step==null";
+//		}
 	}
 
 	public String getTutorialFinishNoteText( org.lgna.croquet.history.InputDialogOperationStep inputDialogOperationContext, UserInformation userInformation ) {

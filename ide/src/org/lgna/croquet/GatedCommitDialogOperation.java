@@ -203,20 +203,24 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 			explanation = NULL_EXPLANATION;
 		}
 		this.explanationLabel.setText( explanation );
+		this.getCompleteOperation().setEnabled( explanation == NULL_EXPLANATION );
 	}
 
 	public void handleFiredEvent( org.lgna.croquet.history.event.Event event ) {
 		//System.err.println( "handleFiredEvent: " + event );
-		org.lgna.croquet.history.Node< ? > node = event.getNode();
-		if( node != null ) {
-			org.lgna.croquet.history.GatedCommitDialogOperationStep gatedCommitDialogOperationStep = node.getFirstAncestorAssignableTo( org.lgna.croquet.history.GatedCommitDialogOperationStep.class );
-			try {
-				S s = (S)gatedCommitDialogOperationStep;
-				this.updateExplanation( s );
-			} catch( Throwable t ) {
-				t.printStackTrace();
+		S s = null;
+		if( event != null ) {
+			org.lgna.croquet.history.Node< ? > node = event.getNode();
+			if( node != null ) {
+				org.lgna.croquet.history.GatedCommitDialogOperationStep gatedCommitDialogOperationStep = node.getFirstAncestorAssignableTo( org.lgna.croquet.history.GatedCommitDialogOperationStep.class );
+				try {
+					s = (S)gatedCommitDialogOperationStep;
+				} catch( Throwable t ) {
+					t.printStackTrace();
+				}
 			}
 		}
+		this.updateExplanation( s );
 	}
 	@Override
 	protected final org.lgna.croquet.components.Container< ? > createContentPane( S step, org.lgna.croquet.components.Dialog dialog ) {

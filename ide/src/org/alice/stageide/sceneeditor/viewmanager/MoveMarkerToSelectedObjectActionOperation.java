@@ -162,7 +162,7 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveMarkerToSelectedObjectActionOperation isNaN" );
 				step.cancel();
 			} else {
-				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 					@Override
 					public void doOrRedoInternal( boolean isDo ) {
 						setAbsolutePOV( objectMarker, nextPOV );
