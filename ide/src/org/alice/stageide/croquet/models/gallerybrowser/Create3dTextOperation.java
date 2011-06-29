@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.croquet.models.gallerybrowser;
 
-import org.alice.ide.operations.ast.DeclareFieldEdit;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -137,7 +135,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 
 //	public CreateTextPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 //		super( declaringType, org.alice.apis.moveandturn.Billboard.class, null );
-	public CreateTextPane() {
+	public CreateTextPane( final Create3dTextOperation operation ) {
 		final int INSET = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getTheme().getFieldColor() );
@@ -169,7 +167,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 //		this.instanceNameVC.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
 //			@Override
 //			protected void updated( javax.swing.event.DocumentEvent e ) {
-//				CreateTextPane.this.updateOKButton();
+//				operation.handleFiredEvent( null );
 //			}
 //		} );
 		//this.instanceNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( this.handleInstanceNameChange ) );
@@ -271,12 +269,12 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		) );
 		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
 				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "family:" ), 
-				this.familySelection.createList(), 
+				this.familySelection.getPrepModel().createComboBox(), 
 				null 
 		) );
 		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
 				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "style:" ), 
-				this.styleSelection.createList(), 
+				this.styleSelection.getPrepModel().createComboBox(), 
 				null 
 		) );
 		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
@@ -313,6 +311,9 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		}
 	}
 
+//	/*package-private*/ String getInstanceNameText() {
+//		return this.textVC.getText();
+//	}
 	protected org.alice.apis.moveandturn.Text createText() {
 		org.alice.apis.moveandturn.Text rv = new org.alice.apis.moveandturn.Text();
 		org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute = this.familySelection.getFamilyAttribute();
@@ -342,10 +343,22 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "37c0a6d6-a21b-4abb-829b-bd3621cada8d" ) );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: extend AbstractGalleryDeclareFieldOperation" );
 	}
+	
+//	@Override
+//	protected java.lang.String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
+//		CreateTextPane pane = step.getMainPanel();
+//		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = new org.alice.ide.name.validators.FieldNameValidator( org.alice.ide.IDE.getSingleton().getSceneType() );
+//		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( pane.getInstanceNameText() );
+//		if( rv != null ) {
+//			return rv;
+//		} else {
+//			return super.getInternalExplanation( step );
+//		}
+//	}
 
 	@Override
 	protected org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane prologue( org.lgna.croquet.history.InputDialogOperationStep context ) {
-		return new CreateTextPane(); 
+		return new CreateTextPane( this ); 
 	}
 	
 	private edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.moveandturn.Text > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
@@ -380,7 +393,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 				if( field != null ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
 					int index = ownerType.fields.size();
-					step.commitAndInvokeDo( new DeclareFieldEdit( step, ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+					step.commitAndInvokeDo( new org.alice.ide.operations.ast.DeclareFieldEdit( step, ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
 				} else {
 					step.cancel();
 				}

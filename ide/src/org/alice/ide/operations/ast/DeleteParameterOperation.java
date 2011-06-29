@@ -127,7 +127,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 			if( step.isCanceled() ) {
 				//pass
 			} else {
-				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
 						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, getParameter(), index, getIDE().getMethodInvocations( method ) );

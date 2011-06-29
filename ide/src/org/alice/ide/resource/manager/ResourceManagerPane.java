@@ -171,7 +171,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		public ResourceOperation( java.util.UUID individualId ) {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		}
-		protected abstract org.lgna.croquet.edits.Edit createEdit( org.alice.virtualmachine.Resource resource );
+		protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.OperationStep< ? > step, org.alice.virtualmachine.Resource resource );
 
 		//todo: better name
 		protected abstract org.alice.virtualmachine.Resource selectResource();
@@ -179,7 +179,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 			org.alice.virtualmachine.Resource resource = this.selectResource();
 			if( resource != null ) {
-				step.commitAndInvokeDo( this.createEdit( resource ) );
+				step.commitAndInvokeDo( this.createEdit( step, resource ) );
 			} else {
 				step.cancel();
 			}
@@ -187,6 +187,9 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 	}
 
 	abstract class AddOrRemoveResourceEdit extends org.alice.ide.ToDoEdit {
+		public AddOrRemoveResourceEdit( org.lgna.croquet.history.OperationStep<?> step ) {
+			super( step );
+		}
 		protected void addResource( org.alice.virtualmachine.Resource resource ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 			if( ide != null ) {
@@ -236,8 +239,8 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			}
 		}
 		@Override
-		public org.lgna.croquet.edits.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
-			return new AddOrRemoveResourceEdit() {
+		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.OperationStep< ? > step, final org.alice.virtualmachine.Resource resource ) {
+			return new AddOrRemoveResourceEdit( step ) {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					this.addResource( resource );
@@ -266,8 +269,8 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			return ResourceManagerPane.this.getSelectedResource();
 		}
 		@Override
-		public org.lgna.croquet.edits.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
-			return new AddOrRemoveResourceEdit() {
+		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.OperationStep< ? > step, final org.alice.virtualmachine.Resource resource ) {
+			return new AddOrRemoveResourceEdit( step ) {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					this.removeResource( resource );
@@ -388,7 +391,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 				final String nextName = renamePane.getNameText();
 				if( nextName != null && nextName.length() > 0 ) {
 					final String prevName = this.resource.getName();
-					step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+					step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 						@Override
 						protected final void doOrRedoInternal( boolean isDo ) {
 							resource.setName( nextName );
@@ -515,7 +518,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 					nextCapsule = null;
 				}
 				if( prevCapsule != null && nextCapsule != null ) {
-					step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+					step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 						@Override
 						protected final void doOrRedoInternal( boolean isDo ) {
 							nextCapsule.update( resource );

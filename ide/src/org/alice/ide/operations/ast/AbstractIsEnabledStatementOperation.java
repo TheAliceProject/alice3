@@ -59,7 +59,7 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final boolean nextValue = this.getDesiredValue();
 		final boolean prevValue = this.statement.isEnabled.getValue();
-		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				statement.isEnabled.setValue( nextValue );

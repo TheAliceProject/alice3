@@ -54,11 +54,13 @@ public class MoveStatementEdit extends org.alice.ide.ToDoEdit {
 	private int nextActualIndex;
 
 	public MoveStatementEdit(
+			org.lgna.croquet.history.OperationStep< ? > step,
 			edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner,
 			int prevIndex, 
 			edu.cmu.cs.dennisc.alice.ast.Statement statement,
 			edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner,
 			int nextIndex) {
+		super( step );
 		this.prevOwner = prevOwner;
 		this.prevActualIndex = prevIndex;
 		assert this.prevActualIndex >= 0;

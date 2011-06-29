@@ -47,7 +47,7 @@ package org.alice.ide;
  */
 @Deprecated
 public abstract class ToDoEdit<M extends org.lgna.croquet.Operation<?>> extends org.lgna.croquet.edits.OperationEdit< M > {
-	public ToDoEdit() {
-		super( null );
+	public ToDoEdit( org.lgna.croquet.history.OperationStep<M> step) {
+		super( step );
 	}
 }

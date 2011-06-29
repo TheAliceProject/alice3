@@ -57,7 +57,7 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 		final int index = this.property.indexOf( this.original );
 		final edu.cmu.cs.dennisc.alice.ast.BlockStatement body = this.original.body.getValue();
 		if( index >= 0 ) {
-			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
@@ -129,7 +129,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 			final edu.cmu.cs.dennisc.alice.ast.Statement[] statements = new edu.cmu.cs.dennisc.alice.ast.Statement[ N ];
 			this.abstractStatementWithBody.body.getValue().statements.toArray( statements );
 			
-			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
@@ -182,7 +182,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final int index = this.property.indexOf( this.statement );
 		if( index >= 0 ) {
-			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
