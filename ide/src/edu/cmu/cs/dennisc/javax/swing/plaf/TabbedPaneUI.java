@@ -413,6 +413,7 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 	}
 	@Override
 	protected void paintText( java.awt.Graphics g, int tabPlacement, java.awt.Font font, java.awt.FontMetrics metrics, int tabIndex, String title, java.awt.Rectangle textRect, boolean isSelected ) {
+		((java.awt.Graphics2D) g).setRenderingHint(java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		java.awt.Color prev = g.getColor();
 		try {
 			g.setColor( java.awt.Color.BLACK );
