@@ -62,7 +62,7 @@ public final class CascadeStandardRoot<T> extends CascadeRoot< T, org.lgna.croqu
 			return this.model;
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			org.lgna.croquet.resolvers.CodableResolver< CascadeInputDialogOperation< T >> resolver = this.model.cascade.getCodableResolver();
+			org.lgna.croquet.resolvers.CodableResolver< InputDialogOperation< T >> resolver = this.model.cascade.getCodableResolver();
 			binaryEncoder.encode( resolver );
 		}
 	}

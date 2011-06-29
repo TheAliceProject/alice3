@@ -61,7 +61,7 @@ public final class CascadePopupPrepModel<T> extends PopupPrepModel {
 			return this.model;
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			org.lgna.croquet.resolvers.CodableResolver< CascadeInputDialogOperation<T>> resolver = this.model.root.getCodableResolver();
+			org.lgna.croquet.resolvers.CodableResolver< InputDialogOperation<T>> resolver = this.model.root.getCodableResolver();
 			binaryEncoder.encode( resolver );
 		}
 	}
