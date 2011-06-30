@@ -46,13 +46,18 @@ package org.alice.ide.croquet.models.custom;
  * @author Dennis Cosgrove
  */
 public class CustomArrayInputDialogOperation extends CustomInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > {
-	private static class SingletonHolder {
-		private static CustomArrayInputDialogOperation instance = new CustomArrayInputDialogOperation();
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >, CustomArrayInputDialogOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CustomArrayInputDialogOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > componentType ) {
+		CustomArrayInputDialogOperation rv = map.get( componentType );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new CustomArrayInputDialogOperation( componentType );
+			map.put( componentType, rv );
+		}
+		return rv;
 	}
-	public static CustomArrayInputDialogOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private CustomArrayInputDialogOperation() {
-		super( java.util.UUID.fromString( "e4101f45-9c74-478e-b406-f8726a7b706a" ), new org.alice.ide.choosers.ArrayChooser() );
+	private CustomArrayInputDialogOperation( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > componentType ) {
+		super( java.util.UUID.fromString( "e4101f45-9c74-478e-b406-f8726a7b706a" ), new org.alice.ide.choosers.ArrayChooser( componentType ) );
 	}
 }
