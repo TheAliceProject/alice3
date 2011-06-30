@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public interface Node extends edu.cmu.cs.dennisc.pattern.Nameable {
+public interface Node extends edu.cmu.cs.dennisc.pattern.Nameable, edu.cmu.cs.dennisc.property.PropertyOwner {
 	public java.util.UUID getUUID();
 	public Node getParent();
 	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch );
