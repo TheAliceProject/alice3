@@ -52,11 +52,20 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 	private static final String[] LABEL_TEXTS = { "type:", "value:" };
 	private org.lgna.croquet.components.Component< ? >[] components;
 	
-	public ArrayChooser() {
+	public ArrayChooser(edu.cmu.cs.dennisc.alice.ast.AbstractType<?, ?, ?> arrayComponentType) {
 		bogusNode.isArray.setValue( true );
 		this.typePane = new org.alice.ide.declarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, true, false );
 		this.arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.componentType, bogusNode.arrayExpressions );
-		this.components = new org.lgna.croquet.components.Component< ? >[] { this.typePane, this.arrayInitializerPane };
+		
+		if (arrayComponentType.isAssignableFrom(Object.class)) {
+			this.components = new org.lgna.croquet.components.Component< ? >[] { this.typePane, this.arrayInitializerPane };
+		} else {
+			bogusNode.componentType.setValue(arrayComponentType);
+			org.lgna.croquet.components.Label typeLabel = new org.lgna.croquet.components.Label(arrayComponentType.getName());
+			
+			this.components = new org.lgna.croquet.components.Component< ? >[] { typeLabel, this.arrayInitializerPane };
+		}
+		
 //		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 //			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 //			}
