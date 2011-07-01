@@ -48,8 +48,6 @@ public abstract class OverHeadTextGraphicAdapter< E extends edu.wustl.cse.lookin
 	protected abstract void render( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, String s, int x1, int y1, int num, int min, int max);
 	@Override
 	protected void render( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		//g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		//g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
 		int tempx = m_element.top.x;
 		int tempy = m_element.top.y;
 		render( g2, lookingGlass, sgCamera, m_element.str, tempx, tempy - 10, m_element.num, m_element.xmin, m_element.xmax );
@@ -57,16 +55,4 @@ public abstract class OverHeadTextGraphicAdapter< E extends edu.wustl.cse.lookin
 	@Override
 	protected void forget( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2 ) {
 	}
-	//
-	//	public void forgetIfNecessary( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2 ) {
-	//	
-	//	}
-	//	public final void paint( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-	//
-	//		//g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-	//		//g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-	//		int tempx= top.x;
-	//		int tempy= top.y;
-	//		paint( g2, lookingGlass, sgCamera, str, tempx, tempy-10, num, xmin, xmax);
-	//	}
 }
