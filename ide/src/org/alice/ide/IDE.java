@@ -1265,7 +1265,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return null;
 	}
 
-	public java.awt.Component getComponentForNode( edu.cmu.cs.dennisc.alice.ast.Node node, boolean scrollToVisible ) {
+	public org.lgna.croquet.components.Component< ? > getComponentForNode( edu.cmu.cs.dennisc.alice.ast.Node node, boolean scrollToVisible ) {
 		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 			final edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
 			ensureNodeVisible( node );
@@ -1281,15 +1281,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					}
 				} );
 			}
-			return rv.getAwtComponent();
+			return rv;
 		} else {
 			return null;
 		}
 	}
-	public java.awt.Component getComponentForNode( java.util.UUID uuid, boolean scrollToVisible ) {
+	public org.lgna.croquet.components.Component< ? > getComponentForNode( java.util.UUID uuid, boolean scrollToVisible ) {
 		return getComponentForNode( getNodeForUUID( uuid ), scrollToVisible );
 	}
-	public java.awt.Component getComponentForNode( java.util.UUID uuid ) {
+	public org.lgna.croquet.components.Component< ? > getComponentForNode( java.util.UUID uuid ) {
 		return getComponentForNode( uuid, false );
 	}
 
