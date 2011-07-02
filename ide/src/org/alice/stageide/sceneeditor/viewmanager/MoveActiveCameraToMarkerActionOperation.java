@@ -145,7 +145,7 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveActiveCameraToMarkerActionOperation isNaN" );
 				step.cancel();
 			} else {
-				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
 						setAbsolutePOV( camera, nextPOV );

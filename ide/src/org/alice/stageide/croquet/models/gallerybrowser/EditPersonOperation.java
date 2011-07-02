@@ -80,7 +80,7 @@ public class EditPersonOperation extends PersonOperation {
 		final org.alice.stageide.personeditor.PersonEditor personEditor = step.getMainPanel();
 		final org.alice.stageide.croquet.models.personeditor.PersonInfo prevPersonInfo = this.getInitialPersonInfo();
 		final org.alice.stageide.croquet.models.personeditor.PersonInfo nextPersonInfo = personEditor.getPersonInfo();
-		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				nextPersonInfo.update( person );

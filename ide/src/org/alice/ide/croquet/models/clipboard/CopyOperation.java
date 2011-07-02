@@ -57,15 +57,21 @@ public class CopyOperation extends org.alice.ide.operations.InconsequentialActio
 	}
 	@Override
 	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
-		String title = "Copy coming soon";
-		String message = "Copy is not yet implemented.  Apologies.";
-		message += "\n\nNOTE: one can copy by dragging with the ";
+		String modifierText;
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			message += "Alt";
+			modifierText = "<b>Alt</b>";
 		} else {
-			message += "Control";
+			modifierText = "<b>Control</b>";
 		}
-		message += " key pressed.";
-		this.getIDE().showMessageDialog( message, title, org.lgna.croquet.MessageType.INFORMATION );
+		String title = "Copy coming soon";
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>Selection is not yet implemented.  Copy is limited to:<br>" );
+		sb.append( "<ol><li> dragging statements to and from the clipboard in the top right corner with the " );
+		sb.append( modifierText );
+		sb.append( " key pressed.</li><br>" );
+		sb.append( "<li> dragging statements with the " );
+		sb.append( modifierText );
+		sb.append( " key pressed within the code editor.</li></ol></html>" );
+		this.getIDE().showMessageDialog( sb.toString(), title, org.lgna.croquet.MessageType.INFORMATION );
 	}
 }

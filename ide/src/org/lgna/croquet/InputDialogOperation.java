@@ -53,7 +53,7 @@ import org.lgna.croquet.components.LineAxisPanel;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogOperation extends GatedCommitDialogOperation<org.lgna.croquet.history.InputDialogOperationStep> {
+public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation<org.lgna.croquet.history.InputDialogOperationStep> {
 	protected static class OkOperation extends CompleteOperation {
 		private static class SingletonHolder {
 			private static OkOperation instance = new OkOperation();
@@ -81,6 +81,16 @@ public abstract class InputDialogOperation extends GatedCommitDialogOperation<or
 	public org.lgna.croquet.history.InputDialogOperationStep createAndPushStep( org.lgna.croquet.triggers.Trigger trigger ) {
 		return org.lgna.croquet.history.TransactionManager.addInputDialogOperationStep( this, trigger );
 	}
+	private CascadeInputDialogOperationFillIn<T> cascadeFillIn;
+	public synchronized CascadeInputDialogOperationFillIn<T> getFillIn() {
+		if( this.cascadeFillIn != null ) {
+			//pass
+		} else {
+			this.cascadeFillIn = new CascadeInputDialogOperationFillIn<T>( this );
+		}
+		return this.cascadeFillIn;
+	}
+	
 	
 	@Override
 	protected Component< ? > createControlsPanel( org.lgna.croquet.history.InputDialogOperationStep step, Dialog dialog ) {
