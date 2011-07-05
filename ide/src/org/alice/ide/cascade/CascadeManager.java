@@ -197,28 +197,25 @@ public abstract class CascadeManager {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> selectedType = org.alice.ide.IDE.getSingleton().getTypeInScope();
 			//boolean isNecessary = true;
 			if( type.isAssignableFrom( selectedType ) ) {
-				//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
 				this.addFillInAndPossiblyPartFillIns( rv, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), selectedType, type );
 			}
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : selectedType.getDeclaredFields() ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldType = field.getValueType();
 				if( type.isAssignableFrom( fieldType ) ) {
-					//isNecessary = this.addSeparatorIfNecessary( rv, "in scope", isNecessary );
 					edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
 					this.addFillInAndPossiblyPartFillIns( rv, fieldAccess, fieldType, type );
 				}
 				if( fieldType.isArray() ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldComponentType = fieldType.getComponentType();
 					if( type.isAssignableFrom( fieldComponentType ) ) {
-						//isNecessary = this.addSeparatorIfNecessary( rv, "in scope", isNecessary );
 						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
 						//rv.add( new ArrayAccessFillIn( fieldType, fieldAccess ) );
 					}
 					if( type.isAssignableFrom( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) ) {
-						//isNecessary = this.addSeparatorIfNecessary( rv, "in scope", isNecessary );
-						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
-						edu.cmu.cs.dennisc.alice.ast.ArrayLength arrayLength = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( fieldAccess );
-						rv.add( new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.ArrayLength >( arrayLength ) );
+//						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
+//						edu.cmu.cs.dennisc.alice.ast.ArrayLength arrayLength = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( fieldAccess );
+//						rv.add( new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.ArrayLength >( arrayLength ) );
+						rv.add( org.alice.ide.croquet.models.cascade.array.ThisFieldArrayLengthFillIn.getInstance( field ) );
 					}
 				}
 			}
