@@ -172,8 +172,8 @@ public abstract class DragComponent extends Control {
 
 	private void updateProxySizes() {
 		if( isActuallyPotentiallyDraggable() ) {
-			dragProxy.setSize( dragProxy.getProxyWidth(), dragProxy.getProxyHeight() );
-			dropProxy.setSize( dropProxy.getProxyWidth(), dropProxy.getProxyHeight() );
+			dragProxy.setSize( dragProxy.getProxySize() );
+			dropProxy.setSize( dropProxy.getProxySize() );
 		}
 	}
 	private synchronized void updateProxyPosition( java.awt.event.MouseEvent e ) {

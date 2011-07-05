@@ -72,12 +72,22 @@ package org.lgna.croquet.components;
 		return this.dragComponent.getSubject();
 	}
 
-	public int getProxyWidth() {
-		return this.getSubject().getWidth();
+	public java.awt.Dimension getProxySize() {
+		java.awt.Component subject = this.getSubject().getAwtComponent();
+		if( subject.getParent() != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( subject );
+			edu.cmu.cs.dennisc.javax.swing.SwingUtilities.setSizeToPreferredSizeTree( subject );
+		}
+		return subject.getSize();
 	}
-	public int getProxyHeight() {
-		return this.getSubject().getHeight();
-	}
+//	public int getProxyWidth() {
+//		return this.getSubject().getWidth();
+//	}
+//	public int getProxyHeight() {
+//		return this.getSubject().getHeight();
+//	}
 	
 	protected void fillBounds( java.awt.Graphics2D g2 ) {
 		Component<?> subject = this.getSubject();
@@ -98,10 +108,9 @@ package org.lgna.croquet.components;
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
-		int width = this.getProxyWidth();
-		int height = this.getProxyHeight();
-		if( width > 0 && height > 0 ) {
-			java.awt.image.BufferedImage image = Proxy.getOffscreenImage( width, height );
+		java.awt.Dimension size = this.getProxySize();
+		if( size.width > 0 && size.height > 0 ) {
+			java.awt.image.BufferedImage image = Proxy.getOffscreenImage( size.width, size.height );
 			//todo: synchronize
 			//if( LayeredPaneProxy.image == null || LayeredPaneProxy.image.getWidth() < width || LayeredPaneProxy.image.getHeight() < height ) {
 			java.awt.Graphics2D g2Image = (java.awt.Graphics2D)image.getGraphics();
@@ -122,10 +131,10 @@ package org.lgna.croquet.components;
 			//java.awt.Color bgColor = new java.awt.Color( 0, 0, 0, 0 );
 			//g2.drawImage( LayeredPaneimage, 0, 0, width, height, 0, 0, width, height, bgColor, this );
 			int availableHeight = this.getAvailableHeight();
-			if( availableHeight != -1 && availableHeight < height ) {
-				g2.drawImage( image, 0, 0, width, availableHeight, 0, 0, width, height, this );
+			if( availableHeight != -1 && availableHeight < size.height ) {
+				g2.drawImage( image, 0, 0, size.width, availableHeight, 0, 0, size.width, size.height, this );
 			} else {
-				g2.drawImage( image, 0, 0, width, height, this );
+				g2.drawImage( image, 0, 0, size.width, size.height, this );
 			}
 			g2.dispose();
 			g2.setComposite( prevComposite );
@@ -133,7 +142,7 @@ package org.lgna.croquet.components;
 	}
 	
 	public int getAvailableHeight() {
-		return this.getProxyHeight();
+		return this.getProxySize().height;
 	}
 
 	public boolean isOverDropAcceptor() {

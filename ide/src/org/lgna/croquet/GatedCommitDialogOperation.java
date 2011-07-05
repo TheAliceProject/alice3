@@ -47,6 +47,7 @@ package org.lgna.croquet;
  */
 public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.history.GatedCommitDialogOperationStep< ? >> extends DialogOperation< S > {
 	private static final String NULL_EXPLANATION = "good to go";
+	private static final String NULL_STEP_EXPLANATION = "null step";
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "35b47d9d-d17b-4862-ac22-5ece4e317242" ), "DIALOG_IMPLEMENTATION_GROUP" );
 	protected static final Group ENCLOSING_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_DIALOG_GROUP" );
 
@@ -196,14 +197,20 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 
 	protected abstract String getExplanation( S step );
 	protected void updateExplanation( S step ) {
-		String explanation = this.getExplanation( step );
-		if( explanation != null ) {
-			//pass
+		String explanation;
+		if( step != null ) {
+			explanation = this.getExplanation( step );
+			if( explanation != null ) {
+				//pass
+			} else {
+				explanation = NULL_EXPLANATION;
+			}
 		} else {
-			explanation = NULL_EXPLANATION;
+			explanation = NULL_STEP_EXPLANATION;
 		}
 		this.explanationLabel.setText( explanation );
-		this.getCompleteOperation().setEnabled( explanation == NULL_EXPLANATION );
+		boolean isEnabled = explanation == NULL_EXPLANATION || explanation == NULL_STEP_EXPLANATION;
+		this.getCompleteOperation().setEnabled( isEnabled );
 	}
 
 	public void handleFiredEvent( org.lgna.croquet.history.event.Event event ) {
