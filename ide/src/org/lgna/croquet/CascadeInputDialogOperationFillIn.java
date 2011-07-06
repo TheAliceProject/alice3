@@ -89,8 +89,12 @@ public final class CascadeInputDialogOperationFillIn<F> extends CascadeFillIn< F
 	@Override
 	public F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
 		org.lgna.croquet.history.InputDialogOperationStep inputDialogStep = this.inputDialogOperation.fire();
-		org.lgna.croquet.components.CascadeInputDialogPanel<F> panel = inputDialogStep.getMainPanel();
-		return panel.getInputValue();
+		if( inputDialogStep.isSuccessfullyCompleted() ) {
+			org.lgna.croquet.components.CascadeInputDialogPanel<F> panel = inputDialogStep.getMainPanel();
+			return panel.getInputValue();
+		} else {
+			throw new CancelException();
+		}
 	}
 	@Override
 	public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
