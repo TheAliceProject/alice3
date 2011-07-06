@@ -42,11 +42,16 @@
  */
 package org.alice.ide.cascade.fillerinners;
 
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InstanceCreationFillerInner extends ExpressionFillerInner {
-	public InstanceCreationFillerInner( Class<?> cls ) {
-		super( cls );
+public class DoubleFillerInner extends AbstractDoubleFillerInner {
+	public DoubleFillerInner() {
+		super( Double.class, new double[] { 0.0, 0.25, 0.5, 1.0, 2.0, 10.0 } );
+	}
+	@Override
+	protected org.lgna.croquet.CascadeItem getCustomItem() {
+		return org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn();
 	}
 }
