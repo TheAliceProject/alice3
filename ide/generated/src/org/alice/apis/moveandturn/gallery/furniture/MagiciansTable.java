@@ -44,7 +44,7 @@ package org.alice.apis.moveandturn.gallery.furniture;
 	
 public class MagiciansTable extends org.alice.apis.moveandturn.gallery.GalleryModel {
 	public MagiciansTable() {
-		super( "Furniture/Magician's_Table" );
+		super( "Furniture/Magicians_Table" );
 	}
 	public enum Part {
 		Table( "table" ),

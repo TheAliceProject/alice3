@@ -44,7 +44,7 @@ package org.alice.apis.moveandturn.gallery.objects;
 	
 public class MagiciansWand extends org.alice.apis.moveandturn.gallery.GalleryModel {
 	public MagiciansWand() {
-		super( "Objects/Magician'sWand" );
+		super( "Objects/MagiciansWand" );
 	}
 
 }
