@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldEdit extends org.lgna.croquet.edits.OperationEdit {
+public class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 	private int index;
@@ -53,7 +53,7 @@ public class DeclareFieldEdit extends org.lgna.croquet.edits.OperationEdit {
 	private transient Object instance;
 	private transient boolean isInstanceValid;
 	
-	public DeclareFieldEdit( org.lgna.croquet.history.OperationStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, int index, Object instance, boolean isInstanceValid) {
+	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, int index, Object instance, boolean isInstanceValid) {
 		super( step );
 		this.declaringType = ownerType;
 		this.field = field;

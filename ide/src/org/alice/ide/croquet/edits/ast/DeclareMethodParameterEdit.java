@@ -45,12 +45,12 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodParameterEdit extends org.lgna.croquet.edits.OperationEdit< org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation > {
+public class DeclareMethodParameterEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
 	private transient java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private transient int index;
 
-	public DeclareMethodParameterEdit( org.lgna.croquet.history.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+	public DeclareMethodParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
 		super( completionStep );
 		this.parameter = parameter;
 	}

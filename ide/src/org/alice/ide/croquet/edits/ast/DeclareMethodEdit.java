@@ -45,13 +45,13 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodEdit extends org.lgna.croquet.edits.OperationEdit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
+public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	
 	private transient edu.cmu.cs.dennisc.alice.ast.AbstractCode prevFocusedCode;
 
-	public DeclareMethodEdit( org.lgna.croquet.history.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+	public DeclareMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		super( completionStep );
 		this.declaringType = declaringType;
 		this.method = method;
