@@ -46,26 +46,14 @@ package org.alice.ide.croquet.models.cascade.array;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayLengthFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.ArrayLength  > {
-	private edu.cmu.cs.dennisc.alice.ast.ArrayLength transientValue;
-	public ArrayLengthFillIn( java.util.UUID id ) {
-		super( id );
+public class ArrayLengthSeparator extends org.lgna.croquet.CascadeLabelSeparator {
+	private static class SingletonHolder {
+		private static ArrayLengthSeparator instance = new ArrayLengthSeparator();
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression();
-	private edu.cmu.cs.dennisc.alice.ast.ArrayLength createValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayLength( this.createAccessExpression() );
+	public static ArrayLengthSeparator getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ArrayLength createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ArrayLength, java.lang.Void > step ) {
-		return this.createValue();
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ArrayLength getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ArrayLength, java.lang.Void > step ) {
-		if( this.transientValue != null ) {
-			//pass
-		} else {
-			this.transientValue = this.createValue();
-		}
-		return this.transientValue;
+	private ArrayLengthSeparator() {
+		super( java.util.UUID.fromString( "a011ac89-a965-4518-a02e-055c1737cd57" ) );
 	}
 }

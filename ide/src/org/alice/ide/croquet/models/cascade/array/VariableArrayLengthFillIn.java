@@ -46,26 +46,26 @@ package org.alice.ide.croquet.models.cascade.array;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayLengthFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.ArrayLength  > {
-	private edu.cmu.cs.dennisc.alice.ast.ArrayLength transientValue;
-	public ArrayLengthFillIn( java.util.UUID id ) {
-		super( id );
-	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression();
-	private edu.cmu.cs.dennisc.alice.ast.ArrayLength createValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayLength( this.createAccessExpression() );
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ArrayLength createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ArrayLength, java.lang.Void > step ) {
-		return this.createValue();
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ArrayLength getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ArrayLength, java.lang.Void > step ) {
-		if( this.transientValue != null ) {
+public class VariableArrayLengthFillIn extends ArrayLengthFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized VariableArrayLengthFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		assert variable != null;
+		VariableArrayLengthFillIn rv = map.get( variable );
+		if( rv != null ) {
 			//pass
 		} else {
-			this.transientValue = this.createValue();
+			rv = new VariableArrayLengthFillIn( variable );
+			map.put( variable, rv );
 		}
-		return this.transientValue;
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
+	private VariableArrayLengthFillIn( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		super( java.util.UUID.fromString( "007ec992-c623-4a2b-afcc-5642dfd7be75" ) );
+		this.variable = variable;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
 	}
 }

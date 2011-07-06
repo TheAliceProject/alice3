@@ -46,26 +46,26 @@ package org.alice.ide.croquet.models.cascade.array;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayLengthFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.ArrayLength  > {
-	private edu.cmu.cs.dennisc.alice.ast.ArrayLength transientValue;
-	public ArrayLengthFillIn( java.util.UUID id ) {
-		super( id );
-	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression();
-	private edu.cmu.cs.dennisc.alice.ast.ArrayLength createValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayLength( this.createAccessExpression() );
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ArrayLength createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ArrayLength, java.lang.Void > step ) {
-		return this.createValue();
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ArrayLength getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ArrayLength, java.lang.Void > step ) {
-		if( this.transientValue != null ) {
+public class ParameterArrayLengthFillIn extends ArrayLengthFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, ParameterArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ParameterArrayLengthFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+		assert parameter != null;
+		ParameterArrayLengthFillIn rv = map.get( parameter );
+		if( rv != null ) {
 			//pass
 		} else {
-			this.transientValue = this.createValue();
+			rv = new ParameterArrayLengthFillIn( parameter );
+			map.put( parameter, rv );
 		}
-		return this.transientValue;
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter;
+	private ParameterArrayLengthFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+		super( java.util.UUID.fromString( "92eaae4a-7f4c-466a-8e0b-1f31b63a7d66" ) );
+		this.parameter = parameter;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.parameter );
 	}
 }

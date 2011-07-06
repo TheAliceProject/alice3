@@ -46,26 +46,26 @@ package org.alice.ide.croquet.models.cascade.array;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayLengthFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.ArrayLength  > {
-	private edu.cmu.cs.dennisc.alice.ast.ArrayLength transientValue;
-	public ArrayLengthFillIn( java.util.UUID id ) {
-		super( id );
-	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression();
-	private edu.cmu.cs.dennisc.alice.ast.ArrayLength createValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayLength( this.createAccessExpression() );
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ArrayLength createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ArrayLength, java.lang.Void > step ) {
-		return this.createValue();
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ArrayLength getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ArrayLength, java.lang.Void > step ) {
-		if( this.transientValue != null ) {
+public class ConstantArrayLengthFillIn extends ArrayLengthFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice, ConstantArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ConstantArrayLengthFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant ) {
+		assert constant != null;
+		ConstantArrayLengthFillIn rv = map.get( constant );
+		if( rv != null ) {
 			//pass
 		} else {
-			this.transientValue = this.createValue();
+			rv = new ConstantArrayLengthFillIn( constant );
+			map.put( constant, rv );
 		}
-		return this.transientValue;
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant;
+	private ConstantArrayLengthFillIn( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant ) {
+		super( java.util.UUID.fromString( "b9ef605a-403e-4b18-b495-c4cf5782870a" ) );
+		this.constant = constant;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.constant );
 	}
 }
