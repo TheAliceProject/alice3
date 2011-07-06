@@ -503,26 +503,16 @@ public class TransactionManager {
 		}
 	}
 
-//	public static CascadeBlankStep createCascadeBlankStep( CascadeBlank model ) {
-//		return null;
-//	}
-//	public static CascadeCancelStep createCascadeCancelStep( CascadeCancel model ) {
-//		return null;
-//	}
-//	public static CascadeFillInPrepStep createCascadeFillInPrepStep( CascadeFillIn model ) {
-//		return null;
-//	}
-//	public static CascadeMenuStep createCascadeMenuStep( CascadeMenu model ) {
-//		return null;
-//	}
-//	public static CascadeRootStep createCascadeRootStep( CascadeRoot model ) {
-//		return null;
-//	}
-//	public static CascadeSeparatorStep createCascadeSeparatorStep( CascadeSeparator model ) {
-//		return new CascadeSeparatorStep( model, null );
-//	}
-
-	public static void handleStateChanged( BoundedRangeIntegerState boundedRangeIntegerState, javax.swing.event.ChangeEvent e ) {
+	public static void handleBoundedRangeIntegerStateChanged( BoundedRangeIntegerState boundedRangeIntegerState, javax.swing.event.ChangeEvent changeEvent, int value, boolean isAdjusting ) {
+		TransactionHistory transactionHistory = getActiveTransactionHistory();
+		Transaction transaction = transactionHistory.getActiveTransaction();
+		if( isAdjusting ) {
+			org.lgna.croquet.history.event.AdjustValueStateEvent adjustEvent = new org.lgna.croquet.history.event.AdjustValueStateEvent( transaction );
+			transaction.fireChanging( adjustEvent );
+			transaction.fireChanged( adjustEvent );
+		} else {
+			BoundedRangeIntegerStateChangeStep.createAndAddToTransaction( transaction, boundedRangeIntegerState, new org.lgna.croquet.triggers.ChangeEventTrigger( changeEvent ) );
+		}
 //		org.lgna.croquet.steps.TransactionManager.handleStateChanged( BoundedRangeIntegerState.this, e );
 //		org.lgna.croquet.steps.BoundedRangeIntegerStateChangeStep step;
 //		if( this.previousValueIsAdjusting ) {
