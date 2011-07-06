@@ -79,6 +79,8 @@ public class MoveStatementEdit extends org.alice.ide.ToDoEdit {
 				this.prevOwner.remove(this.prevActualIndex);
 				this.nextOwner.add(this.nextActualIndex, this.statement);
 			}
+			//todo: remove
+			org.alice.ide.IDE.getSingleton().refreshUbiquitousPane();
 		} else {
 			throw new javax.swing.undo.CannotRedoException();
 		}
@@ -93,6 +95,8 @@ public class MoveStatementEdit extends org.alice.ide.ToDoEdit {
 				this.nextOwner.remove(this.nextActualIndex);
 				this.prevOwner.add(this.prevActualIndex, this.statement);
 			}
+			//todo: remove
+			org.alice.ide.IDE.getSingleton().refreshUbiquitousPane();
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}

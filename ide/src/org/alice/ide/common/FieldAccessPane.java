@@ -92,8 +92,16 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
-		if( this.fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-			return super.isExpressionTypeFeedbackDesired();
+		if( this.fieldAccess != null ) {
+			if( this.fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+				return super.isExpressionTypeFeedbackDesired();
+			} else {
+				if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.fieldAccess ) ) {
+					return false;
+				} else {
+					return super.isExpressionTypeFeedbackDesired();
+				}
+			}
 		} else {
 			return true;
 		}

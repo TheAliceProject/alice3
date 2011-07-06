@@ -40,54 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.croquet.models.cascade.array;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance  {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression, org.lgna.croquet.components.Component< ? > component ) {
-		this.expression = expression;
-		this.addComponent( component );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( expression ) );
-	}
-	
-	@Override
-	protected boolean isExpressionTypeFeedbackDesired() {
-		if( this.expression != null ) {
-			if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.expression ) ) {
-				return false;
-			} else {
-				return super.isExpressionTypeFeedbackDesired();
-			}
-		} else {
-			return true;
-		}
-	}
-	
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-		if( this.expression != null ) {
-			return this.expression.getType();
-		} else {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
-		}
+public class ArrayAccessFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.ArrayAccess > {
+	private final edu.cmu.cs.dennisc.alice.ast.ArrayAccess transientValue;
+	public ArrayAccessFillIn( edu.cmu.cs.dennisc.alice.ast.Expression arrayExpression ) {
+		super( java.util.UUID.fromString( "a626aca1-094f-4618-af7b-2dcb4f63fa96" ) );
+		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Integer.class ) );
+		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.ArrayAccess();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> arrayType = arrayExpression.getType();
+		this.transientValue.arrayType.setValue( arrayType );
+		this.transientValue.array.setValue( arrayExpression );
+		this.transientValue.index.setValue( new org.alice.ide.ast.EmptyExpression( Integer.class ) );
 	}
 	@Override
-	protected int getInsetTop() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
-			return 0;
-		} else {
-			return super.getInsetTop();
-		}
+	protected edu.cmu.cs.dennisc.alice.ast.ArrayAccess createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		return new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( this.transientValue.arrayType.getValue(), this.transientValue.array.getValue(), expressions[ 0 ] );
 	}
 	@Override
-	protected int getInsetBottom() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
-			return 0;
-		} else {
-			return super.getInsetTop();
-		}
+	public edu.cmu.cs.dennisc.alice.ast.ArrayAccess getTransientValue(org.lgna.croquet.cascade.ItemNode<? super edu.cmu.cs.dennisc.alice.ast.ArrayAccess, edu.cmu.cs.dennisc.alice.ast.Expression> step) {
+		return this.transientValue;
 	}
 }
