@@ -152,7 +152,7 @@ public abstract class CascadeManager {
 		if( codeInFocus != null ) {
 
 			java.util.List< org.alice.ide.croquet.models.cascade.array.ArrayLengthFillIn > arrayLengthFillIns;
-			if( type.isAssignableFrom( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) ) {
+			if( type.isAssignableFrom( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) && blankNode.isTop() ) {
 				arrayLengthFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			} else {
 				arrayLengthFillIns = null;
@@ -162,7 +162,6 @@ public abstract class CascadeManager {
 			type = this.getActualTypeForDesiredParameterType( type );
 
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> selectedType = org.alice.ide.IDE.getSingleton().getTypeInScope();
-			//boolean isNecessary = true;
 			if( type.isAssignableFrom( selectedType ) ) {
 				this.addFillInAndPossiblyPartFillIns( rv, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), selectedType, type );
 			}
@@ -176,7 +175,7 @@ public abstract class CascadeManager {
 					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldComponentType = fieldType.getComponentType();
 					if( type.isAssignableFrom( fieldComponentType ) ) {
 						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
-						//rv.add( new ArrayAccessFillIn( fieldType, fieldAccess ) );
+						rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( fieldAccess ) );
 					}
 					if( arrayLengthFillIns != null ) {
 						arrayLengthFillIns.add( org.alice.ide.croquet.models.cascade.array.ThisFieldArrayLengthFillIn.getInstance( field ) );
@@ -187,12 +186,12 @@ public abstract class CascadeManager {
 				for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : codeInFocus.getParameters() ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> parameterType = parameter.getValueType();
 					if( type.isAssignableFrom( parameterType ) ) {
-						//isNecessary = this.addSeparatorIfNecessary( rv, "in scope", isNecessary );
 						this.addFillInAndPossiblyPartFillIns( rv, new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
 					}
 					if( parameterType.isArray() ) {
-						if( arrayLengthFillIns != null ) {
-							arrayLengthFillIns.add( org.alice.ide.croquet.models.cascade.array.ParameterArrayLengthFillIn.getInstance( parameter ) );
+						edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> parameterArrayComponentType = parameterType.getComponentType();
+						if( type.isAssignableFrom( parameterArrayComponentType ) ) {
+							rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ) ) );
 						}
 					}
 				}
@@ -214,8 +213,12 @@ public abstract class CascadeManager {
 						}
 					}
 					if( localType.isArray() ) {
+						edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> localArrayComponentType = localType.getComponentType();
 						if( local instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
 							edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)local;
+							if( type.isAssignableFrom( localArrayComponentType ) ) {
+								rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable ) ) );
+							}
 							if( localType.isArray() ) {
 								if( arrayLengthFillIns != null ) {
 									arrayLengthFillIns.add( org.alice.ide.croquet.models.cascade.array.VariableArrayLengthFillIn.getInstance( variable ) );
@@ -223,6 +226,9 @@ public abstract class CascadeManager {
 							}
 						} else if( local instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
 							edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant = (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)local;
+							if( type.isAssignableFrom( localArrayComponentType ) ) {
+								rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( constant ) ) );
+							}
 							if( arrayLengthFillIns != null ) {
 								arrayLengthFillIns.add( org.alice.ide.croquet.models.cascade.array.ConstantArrayLengthFillIn.getInstance( constant ) );
 							}
