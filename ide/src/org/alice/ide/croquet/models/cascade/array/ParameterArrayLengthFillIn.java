@@ -40,54 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.croquet.models.cascade.array;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance  {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression, org.lgna.croquet.components.Component< ? > component ) {
-		this.expression = expression;
-		this.addComponent( component );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( expression ) );
-	}
-	
-	@Override
-	protected boolean isExpressionTypeFeedbackDesired() {
-		if( this.expression != null ) {
-			if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.expression ) ) {
-				return false;
-			} else {
-				return super.isExpressionTypeFeedbackDesired();
-			}
+public class ParameterArrayLengthFillIn extends ArrayLengthFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, ParameterArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ParameterArrayLengthFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+		assert parameter != null;
+		ParameterArrayLengthFillIn rv = map.get( parameter );
+		if( rv != null ) {
+			//pass
 		} else {
-			return true;
+			rv = new ParameterArrayLengthFillIn( parameter );
+			map.put( parameter, rv );
 		}
+		return rv;
 	}
-	
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-		if( this.expression != null ) {
-			return this.expression.getType();
-		} else {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
-		}
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter;
+	private ParameterArrayLengthFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+		super( java.util.UUID.fromString( "92eaae4a-7f4c-466a-8e0b-1f31b63a7d66" ) );
+		this.parameter = parameter;
 	}
 	@Override
-	protected int getInsetTop() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
-			return 0;
-		} else {
-			return super.getInsetTop();
-		}
-	}
-	@Override
-	protected int getInsetBottom() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
-			return 0;
-		} else {
-			return super.getInsetTop();
-		}
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.parameter );
 	}
 }

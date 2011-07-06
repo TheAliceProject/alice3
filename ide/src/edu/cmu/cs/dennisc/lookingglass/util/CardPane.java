@@ -67,8 +67,6 @@ class SnapshotPane extends javax.swing.JComponent {
 		int x = getWidth() / 8;
 		int y = getHeight() / 2;
 
-		((java.awt.Graphics2D)g).setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-
 		g.setColor( java.awt.Color.BLACK );
 		g.drawString( text, x + 1, y + 1 );
 		g.setColor( java.awt.Color.YELLOW );

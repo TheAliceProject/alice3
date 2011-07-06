@@ -40,54 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.croquet.models.cascade.array;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance  {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression, org.lgna.croquet.components.Component< ? > component ) {
-		this.expression = expression;
-		this.addComponent( component );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( expression ) );
-	}
-	
-	@Override
-	protected boolean isExpressionTypeFeedbackDesired() {
-		if( this.expression != null ) {
-			if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.expression ) ) {
-				return false;
-			} else {
-				return super.isExpressionTypeFeedbackDesired();
-			}
+public class VariableArrayLengthFillIn extends ArrayLengthFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized VariableArrayLengthFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		assert variable != null;
+		VariableArrayLengthFillIn rv = map.get( variable );
+		if( rv != null ) {
+			//pass
 		} else {
-			return true;
+			rv = new VariableArrayLengthFillIn( variable );
+			map.put( variable, rv );
 		}
+		return rv;
 	}
-	
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-		if( this.expression != null ) {
-			return this.expression.getType();
-		} else {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
-		}
+	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
+	private VariableArrayLengthFillIn( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		super( java.util.UUID.fromString( "007ec992-c623-4a2b-afcc-5642dfd7be75" ) );
+		this.variable = variable;
 	}
 	@Override
-	protected int getInsetTop() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
-			return 0;
-		} else {
-			return super.getInsetTop();
-		}
-	}
-	@Override
-	protected int getInsetBottom() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
-			return 0;
-		} else {
-			return super.getInsetTop();
-		}
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
 	}
 }

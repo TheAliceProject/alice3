@@ -40,54 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.croquet.models.cascade.array;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance  {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression, org.lgna.croquet.components.Component< ? > component ) {
-		this.expression = expression;
-		this.addComponent( component );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( expression ) );
-	}
-	
-	@Override
-	protected boolean isExpressionTypeFeedbackDesired() {
-		if( this.expression != null ) {
-			if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.expression ) ) {
-				return false;
-			} else {
-				return super.isExpressionTypeFeedbackDesired();
-			}
+public class ThisFieldArrayLengthFillIn extends ArrayLengthFillIn {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, ThisFieldArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ThisFieldArrayLengthFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		assert field != null;
+		ThisFieldArrayLengthFillIn rv = map.get( field );
+		if( rv != null ) {
+			//pass
 		} else {
-			return true;
+			rv = new ThisFieldArrayLengthFillIn( field );
+			map.put( field, rv );
 		}
+		return rv;
 	}
-	
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-		if( this.expression != null ) {
-			return this.expression.getType();
-		} else {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
-		}
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	private ThisFieldArrayLengthFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( java.util.UUID.fromString( "1aa9aa94-fd7f-47e9-99a6-2556d7871f28" ) );
+		this.field = field;
 	}
 	@Override
-	protected int getInsetTop() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
-			return 0;
-		} else {
-			return super.getInsetTop();
-		}
-	}
-	@Override
-	protected int getInsetBottom() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
-			return 0;
-		} else {
-			return super.getInsetTop();
-		}
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), this.field );
 	}
 }

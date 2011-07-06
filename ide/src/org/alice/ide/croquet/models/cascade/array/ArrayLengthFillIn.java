@@ -40,54 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.croquet.models.cascade.array;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance  {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression, org.lgna.croquet.components.Component< ? > component ) {
-		this.expression = expression;
-		this.addComponent( component );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( expression ) );
+public abstract class ArrayLengthFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.ArrayLength  > {
+	private edu.cmu.cs.dennisc.alice.ast.ArrayLength transientValue;
+	public ArrayLengthFillIn( java.util.UUID id ) {
+		super( id );
 	}
-	
-	@Override
-	protected boolean isExpressionTypeFeedbackDesired() {
-		if( this.expression != null ) {
-			if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.expression ) ) {
-				return false;
-			} else {
-				return super.isExpressionTypeFeedbackDesired();
-			}
-		} else {
-			return true;
-		}
-	}
-	
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-		if( this.expression != null ) {
-			return this.expression.getType();
-		} else {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
-		}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression();
+	private edu.cmu.cs.dennisc.alice.ast.ArrayLength createValue() {
+		return new edu.cmu.cs.dennisc.alice.ast.ArrayLength( this.createAccessExpression() );
 	}
 	@Override
-	protected int getInsetTop() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
-			return 0;
-		} else {
-			return super.getInsetTop();
-		}
+	public edu.cmu.cs.dennisc.alice.ast.ArrayLength createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ArrayLength, java.lang.Void > step ) {
+		return this.createValue();
 	}
 	@Override
-	protected int getInsetBottom() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
-			return 0;
+	public edu.cmu.cs.dennisc.alice.ast.ArrayLength getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ArrayLength, java.lang.Void > step ) {
+		if( this.transientValue != null ) {
+			//pass
 		} else {
-			return super.getInsetTop();
+			this.transientValue = this.createValue();
 		}
+		return this.transientValue;
 	}
 }
