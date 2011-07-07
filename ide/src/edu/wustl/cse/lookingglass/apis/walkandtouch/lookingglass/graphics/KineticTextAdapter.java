@@ -89,9 +89,9 @@ public class KineticTextAdapter extends OverHeadTextGraphicAdapter< edu.wustl.cs
 		m_element.currentY = tempY;
 
 		at.setToIdentity();
-		at.translate( (double)(tempX - m_element.moveX), (double)tempY - m_element.moveY );
+		at.translate( tempX - m_element.moveX, tempY - m_element.moveY );
 
-		at.rotate( Math.toRadians( m_element.degree ), (double)shape.getBounds2D().getWidth() / 2, (double)shape.getBounds2D().getHeight() / 2 ); //315 = -45 degrees angle as 0=360
+		at.rotate( Math.toRadians( m_element.degree ), shape.getBounds2D().getWidth() / 2, shape.getBounds2D().getHeight() / 2 ); //315 = -45 degrees angle as 0=360
 		g2.transform( at );
 
 		//Not Implemented will work when dennis implements it

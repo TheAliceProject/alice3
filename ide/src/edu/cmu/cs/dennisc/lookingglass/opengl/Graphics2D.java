@@ -615,6 +615,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 					switch( pi.currentSegment( segment ) ) {
 					case java.awt.geom.PathIterator.SEG_MOVETO:
 						this.renderContext.gl.glBegin( GL.GL_LINE_STRIP );
+						//note: no break
 					case java.awt.geom.PathIterator.SEG_LINETO:
 						this.renderContext.gl.glVertex2f( segment[ 0 ], segment[ 1 ] );
 						break;

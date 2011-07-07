@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.animation;
 
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-
 /**
  * @author Dennis Cosgrove
  */

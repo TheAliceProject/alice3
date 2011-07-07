@@ -42,8 +42,6 @@
  */
 package org.alice.ide.operations.ast;
 
-import org.lgna.croquet.components.Component;
-
 /**
  * @author Dennis Cosgrove
  */

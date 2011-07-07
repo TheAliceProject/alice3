@@ -42,7 +42,6 @@
  */
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.MutableList;

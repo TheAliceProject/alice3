@@ -43,12 +43,11 @@
 package org.alice.ide.sceneeditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEditor implements FieldAndInstanceMapper{
+public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEditor {
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, Object > mapFieldToInstance = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, Object >();
 	private java.util.Map< Object, edu.cmu.cs.dennisc.alice.ast.AbstractField > mapInstanceToField = new java.util.HashMap< Object, edu.cmu.cs.dennisc.alice.ast.AbstractField >();
 	private java.util.Map< Object, edu.cmu.cs.dennisc.alice.ast.AbstractField > mapInstanceInJavaToField = new java.util.HashMap< Object, edu.cmu.cs.dennisc.alice.ast.AbstractField >();

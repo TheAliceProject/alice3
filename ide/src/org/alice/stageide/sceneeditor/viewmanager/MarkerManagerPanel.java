@@ -46,7 +46,6 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.Label;
 
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.GridBagPanel;

@@ -42,10 +42,6 @@
  */
 package edu.cmu.cs.dennisc.alice;
 
-import org.alice.virtualmachine.Resource;
-import org.lgna.croquet.Group;
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -201,9 +197,9 @@ public class Project {
 	}
 	
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = null;
-	private java.util.Set< Resource > resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
+	private java.util.Set< org.alice.virtualmachine.Resource > resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
 	private Properties properties = new Properties();
-	public Project( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType, java.util.Set< Resource > resources ) {
+	public Project( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType, java.util.Set< org.alice.virtualmachine.Resource > resources ) {
 		this( programType );
 		this.resources.addAll( resources );
 	}
@@ -276,7 +272,7 @@ public class Project {
 		this.properties.write( bos );
 	}
 	
-	public void addResource( Resource resource ) {
+	public void addResource( org.alice.virtualmachine.Resource resource ) {
 		synchronized( this.resources ) {
 			if( this.resources.contains( resource ) ) {
 				//todo
@@ -286,12 +282,12 @@ public class Project {
 			}
 		}
 	}
-	public void removeResource( Resource resource ) {
+	public void removeResource( org.alice.virtualmachine.Resource resource ) {
 		synchronized( this.resources ) {
 			this.resources.remove( resource );
 		}
 	}
-	public java.util.Set< Resource > getResources() {
+	public java.util.Set< org.alice.virtualmachine.Resource > getResources() {
 		return this.resources;
 	}
 }

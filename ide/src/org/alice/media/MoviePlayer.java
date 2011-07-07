@@ -45,7 +45,6 @@ package org.alice.media;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.io.File;
-import java.net.URL;
 
 import javax.media.CachingControl;
 import javax.media.CachingControlEvent;
@@ -58,7 +57,6 @@ import javax.media.EndOfMediaEvent;
 import javax.media.Manager;
 import javax.media.MediaLocator;
 import javax.media.Player;
-import javax.media.PrefetchCompleteEvent;
 import javax.media.RealizeCompleteEvent;
 import javax.media.Time;
 import javax.swing.JPanel;

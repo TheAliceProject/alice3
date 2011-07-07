@@ -47,11 +47,8 @@ import java.awt.Point;
 
 import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
-import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
-
-import com.google.gdata.util.common.io.LineReader;
 
 import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.math.Vector3;

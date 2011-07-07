@@ -46,7 +46,6 @@ package org.lgna.croquet.components;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.TabSelectionState;
-import org.lgna.croquet.TabSelectionState.TabCreator;
 
 /**
  * @author Dennis Cosgrove

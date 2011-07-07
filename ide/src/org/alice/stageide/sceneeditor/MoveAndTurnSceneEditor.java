@@ -43,10 +43,8 @@
 package org.alice.stageide.sceneeditor;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,9 +54,9 @@ import javax.swing.Icon;
 import org.alice.apis.moveandturn.AngleInDegrees;
 import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.CameraMarker;
+import org.alice.apis.moveandturn.Element;
 import org.alice.apis.moveandturn.Marker;
 import org.alice.apis.moveandturn.MarkerWithIcon;
-import org.alice.apis.moveandturn.Element;
 import org.alice.apis.moveandturn.ObjectMarker;
 import org.alice.apis.moveandturn.OrthographicCameraMarker;
 import org.alice.apis.moveandturn.PerspectiveCameraMarker;
@@ -67,15 +65,19 @@ import org.alice.apis.moveandturn.Transformable;
 import org.alice.ide.name.validators.MarkerColorValidator;
 import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
 import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.SnapGrid;
-import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
+import org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState;
+import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
+import org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState;
+import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 import org.alice.stageide.sceneeditor.viewmanager.CreateCameraMarkerActionOperation;
@@ -85,13 +87,18 @@ import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraAction
 import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.components.AbstractButton;
+import org.lgna.croquet.components.ComboBox;
+import org.lgna.croquet.components.DragComponent;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.alice.ast.Accessible;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
+import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
@@ -110,15 +117,6 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState;
-import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
-import org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState;
-import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.components.AbstractButton;
-import org.lgna.croquet.components.ComboBox;
-import org.lgna.croquet.components.DragComponent;
 
 /**
  * @author Dennis Cosgrove

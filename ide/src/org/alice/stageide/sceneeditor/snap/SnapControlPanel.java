@@ -43,7 +43,6 @@
 
 package org.alice.stageide.sceneeditor.snap;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -56,12 +55,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.alice.stageide.properties.ModelOpacityAdapter;
-import org.alice.stageide.properties.ModelScaleAdapter;
-import org.alice.stageide.properties.TransformableTranslationAdapter;
-import org.alice.stageide.properties.TransformableVehicleAdapter;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
-import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;

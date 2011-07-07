@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.memory;
 
-import org.lgna.croquet.components.BorderPanel.Constraint;
-
 class MemoryUsageGraph extends org.lgna.croquet.components.JComponent< javax.swing.JComponent > {
 	private static final long K = 1024;
 	//private static final long M = K*K;
@@ -78,7 +76,7 @@ class MemoryUsageGraph extends org.lgna.croquet.components.JComponent< javax.swi
 			}
 			x += xDelta;
 		}
-		if( this.samples.size() > 1 ) {
+		if( N-i0 > 1 ) {
 			g2.draw( path );
 		}
 	}

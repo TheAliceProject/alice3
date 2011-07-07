@@ -55,7 +55,6 @@ import org.alice.apis.moveandturn.HowMuch;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.pattern.Criterion;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.wustl.cse.lookingglass.apis.walkandtouch.Person;
 /**
  * @author caitlin

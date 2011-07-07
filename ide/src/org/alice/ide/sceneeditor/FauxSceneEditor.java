@@ -42,7 +42,6 @@
  */
 package org.alice.ide.sceneeditor;
 
-import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.DragComponent;
 import org.lgna.croquet.components.ViewController;
 

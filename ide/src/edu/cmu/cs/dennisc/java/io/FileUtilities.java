@@ -300,6 +300,7 @@ public class FileUtilities {
 	}
 	public static java.io.File[] listDescendants( java.io.File root, final String extension ) {
 		assert root.exists() : root;
+		assert extension != null;
 		assert extension.charAt( 0 ) != '.';
 		return listDescendants( root, new java.io.FileFilter() {
 			public boolean accept( java.io.File file ) {
