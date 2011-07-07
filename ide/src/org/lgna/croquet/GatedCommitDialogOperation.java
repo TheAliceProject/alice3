@@ -214,7 +214,6 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 	}
 
 	public void handleFiredEvent( org.lgna.croquet.history.event.Event event ) {
-		//System.err.println( "handleFiredEvent: " + event );
 		S s = null;
 		if( event != null ) {
 			org.lgna.croquet.history.Node< ? > node = event.getNode();

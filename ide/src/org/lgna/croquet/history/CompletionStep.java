@@ -134,8 +134,11 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 	public void finish() {
 		this.getParent().reifyIfNecessary();
 		this.isSuccessfullyCompleted = true;
+		org.lgna.croquet.history.event.FinishedEvent e = new org.lgna.croquet.history.event.FinishedEvent( this );
+		this.fireChanging( e );
 		this.edit = null;
 		this.isPending = false;
+		this.fireChanged( e );
 		this.popTransactionHistoryIfNecessary();
 	}
 	public void cancel() {
