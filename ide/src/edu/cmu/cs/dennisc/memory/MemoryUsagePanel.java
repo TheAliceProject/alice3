@@ -138,7 +138,7 @@ public class MemoryUsagePanel extends org.lgna.croquet.components.BorderPanel {
 	
 	public MemoryUsagePanel() {
 		this.addComponent( this.memoryUsageGraph, Constraint.CENTER );
-		this.addComponent( this.garbageCollectAction.createButton(), Constraint.LINE_END );
+		this.addComponent( this.garbageCollectAction.createButton(), Constraint.PAGE_END );
 	}
 
 	public static void main(String[] args) {

@@ -42,30 +42,10 @@
  */
 package org.alice.ide.croquet.models.ui;
 
-import org.alice.ide.croquet.models.IsFrameShowingState;
-
-class MemoryUsagePanel extends org.lgna.croquet.components.BorderPanel {
-	private javax.swing.Timer timer = new javax.swing.Timer( 50, new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-		}
-	} );
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.timer.start();
-	}
-	@Override
-	protected void handleUndisplayable() {
-		this.timer.stop();
-		super.handleUndisplayable();
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public class IsMemoryUsageShowingState extends IsFrameShowingState {
+public class IsMemoryUsageShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
 	private static class SingletonHolder {
 		private static IsMemoryUsageShowingState instance = new IsMemoryUsageShowingState();
 	}
