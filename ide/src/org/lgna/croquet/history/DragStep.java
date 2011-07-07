@@ -399,12 +399,11 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 					//this.addChild( new DroppedEvent( e, this.currentDropReceptor ) );
 					org.lgna.croquet.components.JComponent<?> component = this.currentDropReceptor.getViewController();
 					org.lgna.croquet.components.ViewController<?,?> viewController;
-					//todo: investigate why viewController messes up expression property popup menu location
-//					if( component instanceof org.lgna.croquet.components.ViewController<?,?> ) {
-//						viewController = (org.lgna.croquet.components.ViewController<?,?>)component;
-//					} else {
+					if( component instanceof org.lgna.croquet.components.ViewController<?,?> ) {
+						viewController = (org.lgna.croquet.components.ViewController<?,?>)component;
+					} else {
 						viewController = null;
-//					}
+					}
 					org.lgna.croquet.history.Step< ? > step = model.fire( new org.lgna.croquet.triggers.DropTrigger( viewController, this.getLatestMouseEvent(), /*this.currentDropReceptor,*/ this.currentPotentialDropSite ) );
 				} else {
 					this.cancel( trigger );
