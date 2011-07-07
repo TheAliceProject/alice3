@@ -62,7 +62,6 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 			return transactionHistory.getTransactionCount();
 		} else if( parent instanceof org.lgna.croquet.history.Transaction ) {
 			org.lgna.croquet.history.Transaction transaction = (org.lgna.croquet.history.Transaction)parent;
-			org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
 			return transaction.getChildStepCount();
 		} else if( parent instanceof org.lgna.croquet.history.CompletionStep< ? > ) {
 			org.lgna.croquet.history.CompletionStep< ? > completionStep = (org.lgna.croquet.history.CompletionStep< ? >)parent;

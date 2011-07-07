@@ -52,7 +52,7 @@ public class CascadeUnfilledInCancel<F> extends CascadeCancel< F > {
 	}
 
 	public static <F> CascadeUnfilledInCancel< F > getInstance() {
-		return (CascadeUnfilledInCancel< F >)SingletonHolder.instance;
+		return SingletonHolder.instance;
 	}
 	private CascadeUnfilledInCancel() {
 		super( null );

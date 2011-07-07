@@ -411,7 +411,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				this.selectedCameraMarker.setOpacity(1f, MARKER_SELECTION_DURATION);
 				if (this.sceneEditor != null && this.selectedCameraMarker instanceof PerspectiveCameraMarker)
 				{
-					boolean isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive((PerspectiveCameraMarker)this.selectedCameraMarker);
+					boolean isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive(this.selectedCameraMarker);
 					if (!isNewSelectedActiveCameraMarker)
 					{
 						((PerspectiveCameraMarker)this.selectedCameraMarker).setDetailedViewShowing(true);
