@@ -67,6 +67,9 @@ public abstract class Formatter {
 		} else if( declaration instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava ) {
 			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava parameterInJava = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava)declaration;
 			return this.getTextForParameterDeclaredInJava( parameterInJava );
+		} else if( declaration instanceof edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = (edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>)declaration;
+			return this.getTextForType( type );
 		} else {
 			return declaration.getName();
 		}
@@ -82,12 +85,16 @@ public abstract class Formatter {
 	protected abstract String getTextForCls( Class<?> cls );
 	public String getTextForType(edu.cmu.cs.dennisc.alice.ast.AbstractType<?, ?, ?> type) {
 		if( type != null ) {
-			if (type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava) {
-				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava) type;
-				Class<?> cls = typeInJava.getClassReflectionProxy().getReification();
-				return this.getTextForCls( cls );
+			if( type.isArray() ) {
+				return this.getTextForType( type.getComponentType() ) + "[]";
 			} else {
-				return type.getName();
+				if (type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava) {
+					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava) type;
+					Class<?> cls = typeInJava.getClassReflectionProxy().getReification();
+					return this.getTextForCls( cls );
+				} else {
+					return type.getName();
+				}
 			}
 		} else {
 			return this.getTextForNull();

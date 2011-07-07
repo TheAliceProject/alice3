@@ -319,7 +319,7 @@ public abstract class CascadeManager {
 			this.addExpressionBonusFillInsForType( rv, blankNode, type );
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			if( type.isArray() ) {
-				//rv.add( new org.alice.ide.cascade.customfillin.CustomArrayFillIn() );
+				rv.add( org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance( type.getComponentType() ).getFillIn() );
 			}
 
 //			if( blank.isEmpty() ) {
