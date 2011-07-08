@@ -1,0 +1,1 @@
+MacOSx comes with Java 1.5 preinstalled and does not need an auxiliary JRE.
