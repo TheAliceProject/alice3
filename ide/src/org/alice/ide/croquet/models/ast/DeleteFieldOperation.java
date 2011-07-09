@@ -66,7 +66,7 @@ public class DeleteFieldOperation extends DeleteMemberOperation< edu.cmu.cs.denn
 	//in the case where it is undone across sessions, it will not know what to pass to the scene editor
 	private transient Object instance = null;
 	private DeleteFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
-		super( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ), field, declaringType );
+		super( java.util.UUID.fromString( "29e5416c-c0c4-4b6d-9146-5461d5c73c42" ), field, declaringType );
 	}
 	@Override
 	protected java.lang.Class< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > getNodeParameterType() {

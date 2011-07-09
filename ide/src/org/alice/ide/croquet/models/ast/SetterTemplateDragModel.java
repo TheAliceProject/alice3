@@ -60,7 +60,7 @@ public class SetterTemplateDragModel extends VoidTemplateDragModel {
 	}
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	private SetterTemplateDragModel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "3aed4ad9-5a20-4209-982b-5fea07e966d9" ) );
+		super( java.util.UUID.fromString( "c2116770-a3e7-44cc-ad48-e52d22404d35" ) );
 		this.field = field;
 	}
 	@Override

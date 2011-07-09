@@ -60,7 +60,7 @@ public class StatementClassTemplateDragModel extends VoidTemplateDragModel {
 	}
 	private Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls;
 	private StatementClassTemplateDragModel( Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
-		super( java.util.UUID.fromString( "3aed4ad9-5a20-4209-982b-5fea07e966d9" ) );
+		super( java.util.UUID.fromString( "cd416904-2217-4de7-8bb2-c85c9b29d323" ) );
 		this.cls = cls;
 	}
 	@Override

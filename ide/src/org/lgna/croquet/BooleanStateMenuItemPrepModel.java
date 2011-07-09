@@ -67,7 +67,7 @@ public final class BooleanStateMenuItemPrepModel extends StandardMenuItemPrepMod
 	}
 	private final BooleanState booleanState;
 	/*package-private*/ BooleanStateMenuItemPrepModel( BooleanState booleanState ) {
-		super( java.util.UUID.fromString( "a6d47082-8859-4b7c-b654-37e928aa67ed" ) );
+		super( java.util.UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );
 		assert booleanState != null;
 		this.booleanState = booleanState;
 	}

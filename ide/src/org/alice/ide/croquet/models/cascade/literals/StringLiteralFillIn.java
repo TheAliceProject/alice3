@@ -62,7 +62,7 @@ public class StringLiteralFillIn extends org.alice.ide.croquet.models.cascade.Ex
 	}
 	private final edu.cmu.cs.dennisc.alice.ast.StringLiteral transientValue;
 	private StringLiteralFillIn( String value ) {
-		super( java.util.UUID.fromString( "c0c8bc11-ed5b-4541-8e4a-45579e05b0d2" ) );
+		super( java.util.UUID.fromString( "06ad5690-dccf-4e7d-bfff-fe9bf1fd5499" ) );
 		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.StringLiteral( value );
 	}
 	@Override

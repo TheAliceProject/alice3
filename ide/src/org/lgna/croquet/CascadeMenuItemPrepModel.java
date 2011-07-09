@@ -67,7 +67,7 @@ public class CascadeMenuItemPrepModel<T> extends AbstractMenuModel {
 	}
 	private final Cascade<T> cascade;
 	/*package-private*/ CascadeMenuItemPrepModel( Cascade<T> cascade ) {
-		super( java.util.UUID.fromString( "a6d47082-8859-4b7c-b654-37e928aa67ed" ), cascade.getClass() );
+		super( java.util.UUID.fromString( "d5ac0f5a-6f04-4c68-94c3-96d32775fd4e" ), cascade.getClass() );
 		assert cascade != null;
 		this.cascade = cascade;
 	}
