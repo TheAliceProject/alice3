@@ -41,19 +41,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.cheshire.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MenuItemSelectStep extends PrepStep< org.lgna.croquet.MenuItemPrepModel > {
-	public static MenuItemSelectStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.triggers.MenuSelectionTrigger trigger ) {
-		return new MenuItemSelectStep( parent, trigger );
+public class MenuItemSelectNote extends PrepNote< org.lgna.croquet.history.MenuItemSelectStep > {
+	public MenuItemSelectNote( org.lgna.croquet.history.MenuItemSelectStep step ) {
+		super( step );
 	}
-	private MenuItemSelectStep( Transaction parent, org.lgna.croquet.triggers.MenuSelectionTrigger trigger ) {
-		super( parent, trigger.getLastMenuItemPrepModel(), trigger );
+	
+	@Override
+	protected void addFeatures( org.lgna.croquet.history.MenuItemSelectStep step ) {
+		this.addFeature( new org.lgna.cheshire.stencil.features.MenuHole( 
+				new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), 
+				org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH,
+				true,
+				true,
+				false
+		) ) ;
 	}
-	public MenuItemSelectStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	@Override
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
+		if( event instanceof org.lgna.croquet.history.event.MenuSelectionChangedEvent ) {
+			org.lgna.croquet.history.event.MenuSelectionChangedEvent menuSelectionChangedEvent = (org.lgna.croquet.history.event.MenuSelectionChangedEvent)event;
+			java.util.List< org.lgna.croquet.Model > models = menuSelectionChangedEvent.getModels();
+			final int N = models.size();
+			if( N > 0 ) {
+				return models.get( N-1 ) == this.getStep().getModel();
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	@Override
+	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+		return isMouseEventInterceptedInAllCasesEvenPopups( e );
 	}
 }

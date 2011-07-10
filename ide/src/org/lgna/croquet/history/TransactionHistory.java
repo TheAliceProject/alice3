@@ -112,7 +112,7 @@ public class TransactionHistory extends Node< CompletionStep<?> > implements Ite
 		Transaction lastTransaction = this.getLastTransaction();
 		Transaction rv = null;
 		if( lastTransaction != null ) {
-			lastTransaction.reifyIfNecessary();
+//			lastTransaction.reifyIfNecessary();
 			if( lastTransaction.isPending() ) {
 				rv = lastTransaction;
 			}
