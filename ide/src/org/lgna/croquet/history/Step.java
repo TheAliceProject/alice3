@@ -62,11 +62,12 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		this.trigger = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.id = binaryDecoder.decodeId();
-		this.trigger = null;
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.modelResolver );
+		binaryEncoder.encode( this.trigger );
 		binaryEncoder.encode( this.id );
 	}
 
