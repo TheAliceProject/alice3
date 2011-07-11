@@ -52,14 +52,28 @@ public class StepNoteFactory {
 		throw new AssertionError();
 	}
 	public static Note<?> createNote( org.lgna.croquet.history.Step< ? > step ) {
-		Class<?> stepCls = step.getClass();
-		String stepClsName = stepCls.getSimpleName();
-		String noteClsName = PACKAGE_NAME + "." + stepClsName.substring( 0, stepClsName.length()-4 ) + "Note";
-		try {
-			Class<? extends Note<?>> noteCls = (Class<? extends Note<?>>)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( noteClsName );
-			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( noteCls, new Class<?>[] { stepCls }, step );
-		} catch( ClassNotFoundException cnfe ) {
-			throw new RuntimeException( noteClsName, cnfe );
+		org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+		if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
+			org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
+			if( step instanceof org.lgna.croquet.history.PrepStep< ? > ) {
+				org.lgna.croquet.history.PrepStep< ? > prepStep = (org.lgna.croquet.history.PrepStep< ? >)step;
+				return new DropPrepNote( prepStep );
+			} else if( step instanceof org.lgna.croquet.history.CompletionStep< ? > ) {
+				org.lgna.croquet.history.CompletionStep< ? > completionStep = (org.lgna.croquet.history.CompletionStep< ? >)step;
+				return new DropCompletionNote( completionStep );
+			} else {
+				throw new RuntimeException();
+			}
+		} else {
+			Class<?> stepCls = step.getClass();
+			String stepClsName = stepCls.getSimpleName();
+			String noteClsName = PACKAGE_NAME + "." + stepClsName.substring( 0, stepClsName.length()-4 ) + "Note";
+			try {
+				Class<? extends Note<?>> noteCls = (Class<? extends Note<?>>)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( noteClsName );
+				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( noteCls, new Class<?>[] { stepCls }, step );
+			} catch( ClassNotFoundException cnfe ) {
+				throw new RuntimeException( noteClsName, cnfe );
+			}
 		}
 	}
 }

@@ -53,7 +53,7 @@ public class TypeBlank extends org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc
 		return SingletonHolder.instance;
 	}
 	private TypeBlank() {
-		super( java.util.UUID.fromString( "a59df2b2-a55a-41b5-be05-60d10a615049" ) );
+		super( java.util.UUID.fromString( "524081bf-4026-481a-b602-f13eac149ced" ) );
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.AbstractType > blankNode ) {

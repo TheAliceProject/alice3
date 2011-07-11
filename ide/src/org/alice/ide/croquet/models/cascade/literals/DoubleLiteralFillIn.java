@@ -61,6 +61,6 @@ public class DoubleLiteralFillIn extends AbstractDoubleLiteralFillIn {
 		}
 	}
 	private DoubleLiteralFillIn( double value ) {
-		super( java.util.UUID.fromString( "c0c8bc11-ed5b-4541-8e4a-45579e05b0d2" ), value );
+		super( java.util.UUID.fromString( "5ecebce8-0957-404e-9168-38eb06f7866c" ), value );
 	}
 }

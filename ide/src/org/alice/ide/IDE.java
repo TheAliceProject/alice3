@@ -1028,7 +1028,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {
 		edu.cmu.cs.dennisc.alice.Project project = this.getProject();
 		if( project != null ) {
-			return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType();
+			return project.getProgramType();
 		} else {
 			return null;
 		}

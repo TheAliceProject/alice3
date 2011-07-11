@@ -46,10 +46,25 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public class Element {
+	private static java.util.Map<java.util.UUID, Class<? extends Element>> map;
+	static {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.lgna.croquet.Element.isIdCheckDesired" ) ) {
+			map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			System.err.println( "org.lgna.croquet.Element.isIdCheckDesired==true" );
+		}
+	}
 	private final java.util.UUID id;
 	private org.lgna.croquet.resolvers.CodableResolver<Element> codableResolver;
 	public Element( java.util.UUID id ) {
 		this.id = id;
+		if( map != null ) {
+			Class<? extends Element> cls = map.get( id );
+			if( cls != null ) {
+				assert cls == this.getClass() : id;
+			} else {
+				map.put( id, this.getClass() );
+			}
+		}
 	}
 	public java.util.UUID getId() {
 		return this.id;

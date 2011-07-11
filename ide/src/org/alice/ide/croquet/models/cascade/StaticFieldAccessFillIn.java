@@ -68,7 +68,7 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< edu.
 	}
 	private final edu.cmu.cs.dennisc.alice.ast.FieldAccess transientValue;
 	private StaticFieldAccessFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "c0c8bc11-ed5b-4541-8e4a-45579e05b0d2" ) );
+		super( java.util.UUID.fromString( "dff6296d-9651-4c0a-98a1-57cd62ea2010" ) );
 		this.transientValue = this.createValue( field );
 	}
 	private edu.cmu.cs.dennisc.alice.ast.FieldAccess createValue( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {

@@ -53,7 +53,7 @@ public class PrintAllOperation extends PrintOperation {
 		return SingletonHolder.instance;
 	}
 	private PrintAllOperation() {
-		super( java.util.UUID.fromString( "a59df2b2-a55a-41b5-be05-60d10a615049" ) );
+		super( java.util.UUID.fromString( "6a205070-e8e0-48a7-a059-fff15b7350a3" ) );
 	}
 	@Override
 	protected java.awt.print.Printable getPrintable() {

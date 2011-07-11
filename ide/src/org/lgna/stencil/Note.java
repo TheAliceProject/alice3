@@ -234,7 +234,6 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 			public java.awt.Dimension getPreferredSize() {
 				java.awt.Dimension rv = super.getPreferredSize();
 				rv.width = 270;
-				rv.width *= 2;
 				rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, rv.width );
 				return rv;
 			}

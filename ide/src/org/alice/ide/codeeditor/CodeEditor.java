@@ -505,7 +505,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 					edu.cmu.cs.dennisc.alice.ast.BlockStatement prevBlockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)prevOwner.getOwner();
 					edu.cmu.cs.dennisc.alice.ast.BlockStatement nextBlockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)nextOwner.getOwner();
 					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-						edu.cmu.cs.dennisc.alice.ast.Statement copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
+						edu.cmu.cs.dennisc.alice.ast.Statement copy = getIDE().createCopy( statement );
 						rv = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( nextBlockStatement, nextIndex, copy );
 					} else {
 						if( prevOwner == nextOwner && ( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) ) {

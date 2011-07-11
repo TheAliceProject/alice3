@@ -47,27 +47,11 @@ package org.alice.ide.cascade.fillerinners;
  */
 public class IntegerFillerInner extends AbstractNumberFillerInner {
 	public IntegerFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
+		super( Integer.class );
 	}
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-		if( isTop && prevExpression != null ) {
-			if( prevExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression ) {
-				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression prevArithmeticInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)prevExpression;
-				final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator prevOperator = prevArithmeticInfixExpression.operator.getValue();
-				for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
-					if( operator != prevOperator ) {
-						rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
-					}
-				}
-				rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorDivideRemainderCascadeMenu.getInstance() );
-				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-				rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToLeftOperandInPreviousArithmeticExpressionFillIn.getInstance() );
-				rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToRightOperandInPreviousArithmeticExpressionFillIn.getInstance() );
-				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			}
-		}
-		
+		super.addItems( rv, isTop, prevExpression );
 		for( int i=0; i<4; i++ ) {
 			rv.add( org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn.getInstance( i ) );
 		}
@@ -80,7 +64,6 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 			rv.add( org.alice.ide.croquet.models.cascade.integer.MathCascadeMenu.getInstance() );
 		}
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		//rv.add( org.alice.ide.croquet.models.cascade.custom.CustomIntegerLiteralFillIn.getInstance() );
 		rv.add( org.alice.ide.croquet.models.custom.CustomIntegerInputDialogOperation.getInstance().getFillIn() );
  		return rv;
 	}

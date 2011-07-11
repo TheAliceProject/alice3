@@ -306,7 +306,7 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 			numberOfSteps = java.lang.Math.round(distanceToMove/stepLength);
 		}
 	
-		return distanceToMove/((double)numberOfSteps);
+		return distanceToMove/numberOfSteps;
 	
 	}
 }

@@ -304,7 +304,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 				baseRtItems.add( new RtCancel( CascadeUnfilledInCancel.getInstance(), null, -1 ) );
 			}
 
-			this.rtItems = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( (java.util.List)baseRtItems, RtItem.class );
+			this.rtItems = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( baseRtItems, RtItem.class );
 			this.updateParentsAndNextSiblings( this.rtItems );
 		}
 		return this.rtItems;

@@ -40,32 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.cascade.fillerinners;
 
-package org.lgna.cheshire.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeItemNote extends PrepNote< org.lgna.croquet.history.CascadeItemStep< ?,? > > {
-	public CascadeItemNote( org.lgna.croquet.history.CascadeItemStep< ?,? > step ) {
-		super( step );
+public class DoubleFillerInner extends AbstractDoubleFillerInner {
+	public DoubleFillerInner() {
+		super( Double.class, new double[] { 0.0, 0.25, 0.5, 1.0, 2.0, 10.0 } );
 	}
 	@Override
-	protected void addFeatures( org.lgna.croquet.history.CascadeItemStep< ?,? > step ) {
-	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
-		if( event instanceof org.lgna.croquet.history.event.MenuSelectionChangedEvent ) {
-			org.lgna.croquet.history.event.MenuSelectionChangedEvent menuSelectionChangedEvent = (org.lgna.croquet.history.event.MenuSelectionChangedEvent)event;
-			java.util.List< org.lgna.croquet.Model > models = menuSelectionChangedEvent.getModels();
-			final int N = models.size();
-			if( N > 0 ) {
-				return models.get( N-1 ) == this.getStep().getModel();
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+	protected org.lgna.croquet.CascadeItem getCustomItem() {
+		return org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn();
 	}
 }

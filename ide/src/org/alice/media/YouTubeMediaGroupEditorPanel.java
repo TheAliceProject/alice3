@@ -43,8 +43,6 @@
 package org.alice.media;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -53,8 +51,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -64,19 +60,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentListener;
 
 import com.google.gdata.data.media.mediarss.MediaCategory;
-import com.google.gdata.data.media.mediarss.MediaCredit;
 import com.google.gdata.data.media.mediarss.MediaDescription;
 import com.google.gdata.data.media.mediarss.MediaKeywords;
-import com.google.gdata.data.media.mediarss.MediaRating;
 import com.google.gdata.data.media.mediarss.MediaTitle;
-import com.google.gdata.data.MediaContent;
 import com.google.gdata.data.youtube.YouTubeMediaGroup;
 import com.google.gdata.data.youtube.YouTubeNamespace;
-import com.google.gdata.data.youtube.YtAspectRatio;
 
 /**
  * @author David Culyba

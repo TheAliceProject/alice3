@@ -44,12 +44,8 @@
 package org.alice.ide.properties.adapter;
 
 import java.util.Locale;
-
 import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.swing.icons.ColorIcon;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.Operation;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 
 public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, O> 

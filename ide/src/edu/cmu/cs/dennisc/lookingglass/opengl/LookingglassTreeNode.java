@@ -46,7 +46,6 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 import org.alice.apis.moveandturn.Transformable;
 import org.alice.ide.swing.BasicTreeNode;
 
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.toolkit.scenegraph.SceneGraphTreeNode;

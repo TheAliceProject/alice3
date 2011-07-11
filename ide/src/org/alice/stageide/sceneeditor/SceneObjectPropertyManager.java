@@ -43,8 +43,6 @@
 
 package org.alice.stageide.sceneeditor;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.lang.reflect.Constructor;
@@ -67,7 +65,6 @@ import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.Panel;
 import org.lgna.croquet.components.ToolPalette;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;

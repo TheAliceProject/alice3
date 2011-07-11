@@ -43,17 +43,10 @@
  */
 package edu.wustl.cse.lookingglass.apis.walkandtouch;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedList;
 
-import org.alice.apis.moveandturn.SceneOwner;
-import org.alice.apis.moveandturn.graphic.animation.OverlayGraphicAnimation;
-
-import edu.cmu.cs.dennisc.animation.AnimationObserver;
-import edu.wustl.cse.lookingglass.apis.walkandtouch.scenegraph.graphics.CharacterFrameOverlay;
+import edu.cmu.cs.dennisc.scenegraph.Graphic;
 import edu.wustl.cse.lookingglass.apis.walkandtouch.scenegraph.graphics.CharactersFrameOverlay;
-import edu.cmu.cs.dennisc.scenegraph.Graphic;;
 
 
 class CharacterFrameOverlayDirectAccess {

@@ -62,7 +62,6 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 			return transactionHistory.getTransactionCount();
 		} else if( parent instanceof org.lgna.croquet.history.Transaction ) {
 			org.lgna.croquet.history.Transaction transaction = (org.lgna.croquet.history.Transaction)parent;
-			org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
 			return transaction.getChildStepCount();
 		} else if( parent instanceof org.lgna.croquet.history.CompletionStep< ? > ) {
 			org.lgna.croquet.history.CompletionStep< ? > completionStep = (org.lgna.croquet.history.CompletionStep< ? >)parent;
@@ -225,12 +224,11 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 	@Override
 	protected void localize() {
 		super.localize();
-		this.setTextForBothTrueAndFalse( "Transaction Tree" );
+		this.setTextForBothTrueAndFalse( "Transaction History" );
 	}
 	@Override
 	protected javax.swing.JFrame createFrame() {
 		javax.swing.JFrame rv = super.createFrame();
-		rv.setTitle( "Transaction History" );
 		final int SCREEN_INDEX = 1;
 		java.awt.Rectangle bounds = edu.cmu.cs.dennisc.java.awt.GraphicsDeviceUtilities.getScreenDeviceDefaultConfigurationBounds( SCREEN_INDEX );
 		if( bounds != null ) {

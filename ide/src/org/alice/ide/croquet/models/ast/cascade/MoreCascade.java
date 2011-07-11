@@ -69,7 +69,7 @@ public class MoreCascade extends org.lgna.croquet.Cascade< edu.cmu.cs.dennisc.al
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
 	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
 	private MoreCascade( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), edu.cmu.cs.dennisc.alice.ast.Expression.class, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "7ed06ae1-3704-4745-afd2-47dc21366412" ), edu.cmu.cs.dennisc.alice.ast.Expression.class, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) );
 		assert methodInvocation != null;
 		this.methodInvocation = methodInvocation;
 		this.expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)this.methodInvocation.getParent();

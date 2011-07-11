@@ -45,9 +45,10 @@ package org.alice.apis.moveandturn;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
 
-import edu.cmu.cs.dennisc.alice.annotations.*;
+import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
+import edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate;
+import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
-import edu.cmu.cs.dennisc.program.Program;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**

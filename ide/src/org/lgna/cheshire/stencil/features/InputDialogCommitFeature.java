@@ -43,8 +43,6 @@
 package org.lgna.cheshire.stencil.features;
 
 import org.lgna.stencil.Feature;
-import org.lgna.stencil.Feature.Connection;
-import org.lgna.stencil.Feature.ConnectionPreference;
 
 
 /**

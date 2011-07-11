@@ -43,24 +43,16 @@
 package org.alice.interact.handle;
 
 import org.alice.apis.moveandturn.TraditionalStyle;
-import org.alice.interact.DoubleTargetBasedAnimation;
-import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.MovementDirection;
-import org.alice.interact.MovementType;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
 
-import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Sphere;

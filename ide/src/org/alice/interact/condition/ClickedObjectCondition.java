@@ -44,7 +44,6 @@ package org.alice.interact.condition;
 
 import org.alice.interact.InputState;
 import org.alice.interact.ModifierMask;
-import org.alice.interact.PickHint;
 
 /**
  * @author David Culyba

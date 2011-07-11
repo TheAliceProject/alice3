@@ -51,7 +51,7 @@ public abstract class CascadeManager {
 	private final org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner assumingStringConcatenationObjectFillerInner = new org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner();
 
 	public CascadeManager() {
-		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.NumberFillerInner() );
+		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.DoubleFillerInner() );
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.IntegerFillerInner() );
 		this.addExpressionFillerInner( this.booleanFillerInner );
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.StringFillerInner() );
@@ -319,7 +319,7 @@ public abstract class CascadeManager {
 			this.addExpressionBonusFillInsForType( rv, blankNode, type );
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			if( type.isArray() ) {
-				//rv.add( new org.alice.ide.cascade.customfillin.CustomArrayFillIn() );
+				rv.add( org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance( type.getComponentType() ).getFillIn() );
 			}
 
 //			if( blank.isEmpty() ) {

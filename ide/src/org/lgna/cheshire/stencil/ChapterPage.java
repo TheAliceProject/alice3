@@ -60,7 +60,6 @@ public class ChapterPage implements org.lgna.stencil.Page {
 	}
 	private final org.lgna.cheshire.Chapter chapter;
 	private final java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final org.lgna.croquet.components.JComponent< ? > card = new org.lgna.croquet.components.BorderPanel();
 	public ChapterPage( org.lgna.cheshire.Chapter chapter ) {
 		this.chapter = chapter;
 		this.refreshNotes();
