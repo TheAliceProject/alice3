@@ -49,7 +49,7 @@ package org.alice.ide.croquet.models.ast.cascade.resource;
 public abstract class ResourceExpressionFillIn<T extends org.alice.virtualmachine.Resource> extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.ResourceExpression > {
 	private final edu.cmu.cs.dennisc.alice.ast.ResourceExpression transientValue;
 	public ResourceExpressionFillIn( java.util.UUID id, Class<T> resourceCls, T resource ) {
-		super( java.util.UUID.fromString( "760a1c2d-45cf-4c66-b0bf-104bda9b87ad" ) );
+		super( java.util.UUID.fromString( "5e4bec2b-83f7-4702-832f-ec38f0b61828" ) );
 		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( resourceCls, resource );
 	}
 	@Override
