@@ -55,7 +55,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		super( factory, javax.swing.BoxLayout.PAGE_AXIS, property );
 //		this.addMouseListener( new java.awt.event.MouseListener() {
 //			public void mouseClicked( final java.awt.event.MouseEvent e ) {
-//				final alice.ide.IDE ide = alice.ide.IDE.getSingleton();
+//				final alice.ide.IDE ide = alice.ide.IDE.getActiveInstance();
 //				if( ide != null ) {
 //					//final StatementListPropertyPane statementListPropertyPane = getStatementListPropertyPaneUnder( e, createStatementListPropertyPaneInfos( null ) );
 //					final StatementListPropertyPane statementListPropertyPane = StatementListPropertyPane.this;

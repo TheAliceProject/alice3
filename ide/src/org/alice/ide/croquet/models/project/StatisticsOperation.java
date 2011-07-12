@@ -57,7 +57,7 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 	}
 	@Override
 	protected org.lgna.croquet.components.Container<?> createContentPane(org.lgna.croquet.history.InformationDialogOperationStep step, org.lgna.croquet.components.Dialog dialog) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = ide.getStrippedProgramType();
 		if( programType != null ) {
 			class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {

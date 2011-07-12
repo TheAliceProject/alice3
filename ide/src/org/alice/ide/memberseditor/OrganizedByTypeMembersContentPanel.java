@@ -75,7 +75,7 @@ abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 				if( type.isConsumptionBySubClassDesired() ) {
 					//pass
 				} else {
-					if( /*org.alice.ide.IDE.getSingleton().isEmphasizingClasses() ||*/ type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
+					if( /*org.alice.ide.IDE.getActiveInstance().isEmphasizingClasses() ||*/ type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
 						this.addComponent( MembersEditor.getComponentFor( this.getClass(), type ) );
 					}
 				}

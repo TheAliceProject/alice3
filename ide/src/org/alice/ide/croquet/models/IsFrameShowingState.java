@@ -103,7 +103,7 @@ public abstract class IsFrameShowingState extends org.lgna.croquet.BooleanState 
 
 		rv.pack();
 		
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getSingleton();
+		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		if( application != null ) {
 			org.lgna.croquet.components.Frame frame = application.getFrame();
 			if( frame != null ) {

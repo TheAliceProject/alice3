@@ -63,7 +63,7 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 	}
 	public InsertStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 		java.util.UUID blockStatementId = binaryDecoder.decodeId();
 		this.blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, blockStatementId );
@@ -103,7 +103,7 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		int actualIndex = this.getActualIndex();
 		this.blockStatement.statements.add( actualIndex, this.statement );
 		//todo: remove
-		org.alice.ide.IDE.getSingleton().refreshUbiquitousPane();
+		org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		if( this.blockStatement.statements.get( actualIndex ) == this.statement ) {
 			this.blockStatement.statements.remove( actualIndex );
 			//todo: remove
-			org.alice.ide.IDE.getSingleton().refreshUbiquitousPane();
+			org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}

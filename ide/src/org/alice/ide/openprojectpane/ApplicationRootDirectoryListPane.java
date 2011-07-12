@@ -51,7 +51,7 @@ abstract class ApplicationRootDirectoryListPane extends DirectoryListContentPane
 
 	@Override
 	public java.io.File getDirectory() {
-		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getSingleton();
+		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getActiveInstance();
 		if (application != null) {
 			return new java.io.File(application.getApplicationRootDirectory(), this.getSubPath());
 		} else {

@@ -59,7 +59,7 @@ public class PreviousValueExpression extends edu.cmu.cs.dennisc.alice.ast.Expres
 	}
 //	@Override
 //	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getType() {
-//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
+//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
 //		if( previousExpression != null ) {
 //			return previousExpression.getType();
 //		} else {

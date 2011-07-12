@@ -60,7 +60,7 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 	}
 	public LocalTransformationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getSingleton().getProject();
+		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
 		this.field = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.decodeNode( project, binaryDecoder );
 		this.method = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.decodeNode( project, binaryDecoder );
 		this.argumentExpressions = null;
@@ -75,7 +75,7 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 	}
 	@Override
 	protected void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = ide.getVirtualMachineForSceneEditor();
 		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneInstanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)sceneEditor.getInstanceInAliceVMForField( sceneEditor.getSceneField() );
@@ -86,7 +86,7 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 			this.pointOfView = this.transformable.getLocalPointOfView();
 			vm.invokeEntryPoint( this.method, instanceInAlice, vm.evaluateEntryPoint( sceneInstanceInAlice, this.argumentExpressions ) );
 		} else {
-			org.lgna.croquet.Application.getSingleton().showMessageDialog( "cannot perform " + this.method.getName() + " for " + instance, "failure", org.lgna.croquet.MessageType.ERROR );
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "cannot perform " + this.method.getName() + " for " + instance, "failure", org.lgna.croquet.MessageType.ERROR );
 		}
 	}
 	@Override

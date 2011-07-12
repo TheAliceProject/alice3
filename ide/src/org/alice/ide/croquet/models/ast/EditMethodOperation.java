@@ -81,13 +81,13 @@ public class EditMethodOperation extends EditCodeOperation< edu.cmu.cs.dennisc.a
 		sb.append( "Edit " );
 		sb.append( "<strong>" );
 		sb.append( method.getName() );
-		if( method == org.alice.ide.IDE.getSingleton().getFocusedCode() ) {
+		if( method == org.alice.ide.IDE.getActiveInstance().getFocusedCode() ) {
 			sb.append( " <font color=007F00>&#x2713;</font>" );
 		}
 		sb.append( "</strong>" );
 		sb.append( "</html>" );
 		this.setName( sb.toString() );
-//		if( this.method == org.alice.ide.IDE.getSingleton().getFocusedCode() ) {
+//		if( this.method == org.alice.ide.IDE.getActiveInstance().getFocusedCode() ) {
 //			this.setSmallIcon( checkMarkIcon );
 //		} else {
 //			this.setSmallIcon( null );

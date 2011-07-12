@@ -55,7 +55,7 @@ public enum CodeCompositeCodec implements org.lgna.croquet.ItemCodec< CodeCompos
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
 			java.util.UUID id = binaryDecoder.decodeId();
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			edu.cmu.cs.dennisc.alice.ast.AbstractCode code = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id );
 			return CodeComposite.getInstance( code );
 		} else {

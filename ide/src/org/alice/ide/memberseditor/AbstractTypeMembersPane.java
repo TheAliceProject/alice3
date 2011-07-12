@@ -121,7 +121,7 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 		}
 	}
 	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 	protected abstract Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member );
 

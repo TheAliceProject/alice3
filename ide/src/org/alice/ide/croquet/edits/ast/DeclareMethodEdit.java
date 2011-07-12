@@ -78,7 +78,7 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		this.declaringType.methods.add( this.method );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		this.prevFocusedCode = ide.getFocusedCode();
 		ide.setFocusedCode( method );
 	}
@@ -87,7 +87,7 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 		int index = this.declaringType.methods.indexOf( method );
 		if( index != -1 ) {
 			this.declaringType.methods.remove( index );
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			ide.setFocusedCode( this.prevFocusedCode );
 		} else {
 			throw new javax.swing.undo.CannotUndoException();

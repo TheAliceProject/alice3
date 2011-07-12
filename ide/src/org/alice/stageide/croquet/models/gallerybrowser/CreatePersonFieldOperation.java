@@ -77,7 +77,7 @@ public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOpera
 		org.alice.apis.stage.Person person = createPersonOperation.getPerson();
 		
 		if( person != null ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getSceneType();
 			return new CreateFieldFromPersonPane( declaringType, person );
 		} else {

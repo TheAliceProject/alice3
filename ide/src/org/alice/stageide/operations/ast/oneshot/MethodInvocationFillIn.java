@@ -64,7 +64,7 @@ public abstract class MethodInvocationFillIn extends org.lgna.croquet.CascadeFil
 	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super MethodInvocationEditFactory, edu.cmu.cs.dennisc.alice.ast.Expression > itemNode ) {
-		return org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( this.transientValue ) ).getAwtComponent();
+		return org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createStatementPane( new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( this.transientValue ) ).getAwtComponent();
 	}
 	protected abstract MethodInvocationEditFactory createMethodInvocationEditFactory( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions );
 	@Override

@@ -123,7 +123,7 @@ public abstract class Feature {
 	}
 
 	private static void repaintAll() {
-		org.lgna.croquet.Application.getSingleton().getFrame().getContentPanel().repaint();
+		org.lgna.croquet.Application.getActiveInstance().getFrame().getContentPanel().repaint();
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "repaintAll" );
 	}
 	private java.awt.event.HierarchyBoundsListener hierarchyBoundsListener = new java.awt.event.HierarchyBoundsListener() {

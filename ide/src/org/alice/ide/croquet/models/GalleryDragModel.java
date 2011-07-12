@@ -52,6 +52,6 @@ public class GalleryDragModel extends IdeDragModel {
 	}
 	@Override
 	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( org.alice.ide.IDE.getSingleton().getSceneEditor() );
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( org.alice.ide.IDE.getActiveInstance().getSceneEditor() );
 	}
 }

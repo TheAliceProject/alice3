@@ -64,7 +64,7 @@ public class EditPersonOperation extends PersonOperation {
 		this.field = field;
 	}
 	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor getMoveAndTurnSceneEditor() {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.alice.ide.IDE.getSingleton().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.alice.ide.IDE.getActiveInstance().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );
 	}
 	private org.alice.apis.stage.Person getSceneEditorPerson() {
 		return this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.field, org.alice.apis.stage.Person.class );
@@ -110,7 +110,7 @@ public class EditPersonOperation extends PersonOperation {
 //	}
 //	
 //	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor getMoveAndTurnSceneEditor() {
-//		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.alice.ide.IDE.getSingleton().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );
+//		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.alice.ide.IDE.getActiveInstance().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );
 //	}
 //	
 //	private org.alice.stageide.personeditor.PersonEditor personEditor;

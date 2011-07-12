@@ -83,11 +83,11 @@ public class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		if (this.isInstanceValid) {
-			org.alice.ide.IDE.getSingleton().getSceneEditor().putInstanceForInitializingPendingField( this.field, this.instance );
+			org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( this.field, this.instance );
 		}
 		this.declaringType.fields.add(this.index, this.field);
 //		if (this.isInstanceValid) {
-//			org.alice.ide.IDE.getSingleton().getSceneEditor().handleFieldCreation(ownerType, this.field, this.instance, isDo);
+//			org.alice.ide.IDE.getActiveInstance().getSceneEditor().handleFieldCreation(ownerType, this.field, this.instance, isDo);
 //		}
 	}
 

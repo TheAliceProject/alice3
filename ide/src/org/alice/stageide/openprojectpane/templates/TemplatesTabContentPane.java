@@ -58,7 +58,7 @@ public class TemplatesTabContentPane extends org.alice.ide.openprojectpane.ListC
 	}
 
 	private static java.net.URI getURI( String resourceName ) {
-		java.io.File applicationRootDirectory = org.alice.ide.IDE.getSingleton().getApplicationRootDirectory();
+		java.io.File applicationRootDirectory = org.alice.ide.IDE.getActiveInstance().getApplicationRootDirectory();
 		//java.io.File applicationRootDirectory = new java.io.File( "c:/Program Files/Alice3Beta" );
 		java.io.File file = new java.io.File( applicationRootDirectory, "projects/templates/" + resourceName );
 		if( file != null ) {

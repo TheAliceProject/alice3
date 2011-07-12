@@ -209,7 +209,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		this.revalidateAndRepaint();
 	}
 	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 	public java.util.List< org.lgna.croquet.DropReceptor > addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > rv, final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE ) {
@@ -465,7 +465,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 								sb.append( "<p><p>For more information on recursion see the Window -> Preferences menu." );
 							}
 							sb.append( "</html>" );
-							org.alice.ide.IDE.getSingleton().showMessageDialog( sb.toString(), "Recursion is disabled.", org.lgna.croquet.MessageType.ERROR );
+							org.alice.ide.IDE.getActiveInstance().showMessageDialog( sb.toString(), "Recursion is disabled.", org.lgna.croquet.MessageType.ERROR );
 							return null;
 						}
 					}
@@ -479,7 +479,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 						blockStatementIndexPair = null;
 					}
 					rv = statementTemplate.getDropModel( step, blockStatementIndexPair );
-					org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( null, blockStatementIndexPair );
+					org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( null, blockStatementIndexPair );
 					System.err.println( "todo: handle finally" );
 				}
 			} else if( source instanceof org.alice.ide.clipboard.Clipboard ) {
@@ -647,7 +647,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		if( statementListProperty != null ) {
 			//choose any non-ancestor
 			
-			org.lgna.croquet.components.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getSingleton().getSceneEditor();
+			org.lgna.croquet.components.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
 			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.createStatementListPropertyPaneInfos( arbitrarilyChosenSource );
 			final int N = statementListPropertyPaneInfos.length;
 			for( int i=0; i<N; i++ ) {

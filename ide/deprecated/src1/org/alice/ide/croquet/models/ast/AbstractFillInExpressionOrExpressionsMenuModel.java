@@ -91,12 +91,12 @@ public abstract class AbstractFillInExpressionOrExpressionsMenuModel extends edu
 	
 	@Override
 	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
-		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementIndexPair() );
+		org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementIndexPair() );
 		super.handlePopupMenuPrologue( popupMenu, context );
 	}
 	@Override
 	protected void handlePopupMenuEpilogue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
 		super.handlePopupMenuEpilogue( popupMenu, context );
-		org.alice.ide.IDE.getSingleton().getCascadeManager().popContext();
+		org.alice.ide.IDE.getActiveInstance().getCascadeManager().popContext();
 	}
 }

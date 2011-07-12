@@ -853,9 +853,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				if( CameraMarkerFieldListSelectionState.getInstance().containsItem( field ) || ObjectMarkerFieldListSelectionState.getInstance().containsItem( field ) ) {
 					//pass
 				} else {
-					int index = org.alice.ide.IDE.getSingleton().getSceneType().fields.indexOf( field );
+					int index = org.alice.ide.IDE.getActiveInstance().getSceneType().fields.indexOf( field );
 					assert index != -1;
-					org.alice.ide.IDE.getSingleton().getSceneType().fields.remove( index );
+					org.alice.ide.IDE.getActiveInstance().getSceneType().fields.remove( index );
 				}
 			}
 		}
@@ -1850,8 +1850,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	public List< FieldDeclaredInAlice > getDeclaredFields() {
 		List< FieldDeclaredInAlice > declaredFields = new LinkedList< FieldDeclaredInAlice >();
-		if( org.alice.ide.IDE.getSingleton().getSceneType() != null ) {
-			declaredFields.addAll( org.alice.ide.IDE.getSingleton().getSceneType().getDeclaredFields() );
+		if( org.alice.ide.IDE.getActiveInstance().getSceneType() != null ) {
+			declaredFields.addAll( org.alice.ide.IDE.getActiveInstance().getSceneType().getDeclaredFields() );
 		}
 		return declaredFields;
 	}

@@ -14,7 +14,7 @@ public class ThoughtBubbleEffectModel extends org.lgna.croquet.ActionOperation {
 	}
 	@Override
 	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		ECardApplication.getSingleton().getCardPanel().setImage(ECardPanel.CardState.BUBBLE_PHOTO);
+		ECardApplication.getActiveInstance().getCardPanel().setImage(ECardPanel.CardState.BUBBLE_PHOTO);
 		step.finish();
 	}
 	@Override

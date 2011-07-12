@@ -144,11 +144,11 @@ public class SplitSceneEditor extends org.lgna.croquet.components.BorderPanel {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
+		org.alice.ide.ProjectApplication.getActiveInstance().addProjectObserver( this.projectObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
+		org.alice.ide.ProjectApplication.getActiveInstance().removeProjectObserver( this.projectObserver );
 		super.handleUndisplayable();
 	}
 }

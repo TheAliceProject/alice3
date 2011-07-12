@@ -71,7 +71,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
 		//nodeNameLabel.scaleFont( 1.2f );
 		//nodeNameLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getSingleton().getAccessorAndMutatorDisplayStyle( field );
+		org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle( field );
 		boolean isGetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 		if( isExpressionDesired ) {
 			if( isGetter ) {
@@ -84,7 +84,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		this.addComponent( nodeNameLabel );
 		if( isExpressionDesired ) {
 			if( isGetter ) {
-				if( org.alice.ide.IDE.getSingleton().isJava() ) {
+				if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
 					this.addComponent( new org.lgna.croquet.components.Label( "()" ) );
 				}
 			}

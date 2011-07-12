@@ -81,6 +81,6 @@ public class ExpressionBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 			this.addSeparator();
 		}
 		System.err.println( "ExpressionBlank addChildren removed addFillIns" );
-		//org.alice.ide.IDE.getSingleton().getCascadeManager().addFillIns( this, this.type );
+		//org.alice.ide.IDE.getActiveInstance().getCascadeManager().addFillIns( this, this.type );
 	}
 }

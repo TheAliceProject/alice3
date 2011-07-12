@@ -57,7 +57,7 @@ abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.c
 		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 			edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
 			if( isCopy ) {
-				return org.alice.ide.IDE.getSingleton().createCopy( statement );
+				return org.alice.ide.IDE.getActiveInstance().createCopy( statement );
 			} else {
 				Clipboard.getInstance().pop();
 				return statement;
@@ -121,7 +121,7 @@ class CopyToClipboardOperation extends org.alice.ide.operations.ActionOperation 
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractNode node;
 	private CopyToClipboardOperation( edu.cmu.cs.dennisc.alice.ast.AbstractNode node ) {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
-		this.node = org.alice.ide.IDE.getSingleton().createCopy( node );
+		this.node = org.alice.ide.IDE.getActiveInstance().createCopy( node );
 	}
 	@Override
 	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
@@ -144,7 +144,7 @@ class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
 	}
 	public CutToClipboardEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 		java.util.UUID statementId = binaryDecoder.decodeId();
 		this.statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, statementId );
@@ -268,7 +268,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 			edu.cmu.cs.dennisc.alice.ast.AbstractNode node = this.stack.peek();
 			if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 				edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
-				subject.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( statement ) );
+				subject.addComponent( org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createStatementPane( statement ) );
 				subject.revalidateAndRepaint();
 			}
 		}
