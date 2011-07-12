@@ -48,24 +48,29 @@ package org.alice.stageide.operations.ast.oneshot;
  */
 public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, OneShotMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static OneShotMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice value ) {
+
+	public static OneShotMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		synchronized( map ) {
-			OneShotMenuModel rv = map.get( value );
+			OneShotMenuModel rv = map.get( field );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new OneShotMenuModel( value );
-				map.put( value, rv );
+				java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				models.add( FieldLabelSeparatorModel.getInstance( field ) );
+				models.add( ProceduresCascade.getInstance( field ).getMenuItemPrepModel() );
+				models.add( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+				if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.AbstractCamera.class ) || field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) )  {
+					//pass
+				} else {
+					models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+				}
+				rv = new OneShotMenuModel( field, models );
+				map.put( field, rv );
 			}
 			return rv;
 		}
 	}
-	private OneShotMenuModel( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		super( java.util.UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ),
-				FieldLabelSeparatorModel.getInstance( field ),
-				ProceduresCascade.getInstance( field ).getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ).getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel()
-		);
+	private OneShotMenuModel( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models ) {
+		super( java.util.UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ), models );
 	}
 }
