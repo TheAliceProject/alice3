@@ -46,7 +46,7 @@ public class PictureEffectsRibbonModel extends org.lgna.croquet.PredeterminedTab
 		jButton = button.getAwtComponent();
 		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/rotate-counter-clockwise.png") ));
+		jButton.setIcon(new ImageIcon(uist.ecard.ECardApplication.class.getResource( "resources/ribbon/rotate-counter-clockwise.png") ));
 		rv.addComponent( button, gbc );
 //		rotatePanel.addComponent(button);
 
@@ -54,7 +54,7 @@ public class PictureEffectsRibbonModel extends org.lgna.croquet.PredeterminedTab
 		jButton = button.getAwtComponent();
 		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/rotate-clockwise.png") ));
+		jButton.setIcon(new ImageIcon(uist.ecard.ECardApplication.class.getResource( "resources/ribbon/rotate-clockwise.png") ));
 		rv.addComponent( button, gbc );
 //		rotatePanel.addComponent(button);
 
@@ -87,7 +87,7 @@ public class PictureEffectsRibbonModel extends org.lgna.croquet.PredeterminedTab
 		jButton = button.getAwtComponent();
 		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/drop-shadow.png") ));
+		jButton.setIcon(new ImageIcon(uist.ecard.ECardApplication.class.getResource( "resources/ribbon/drop-shadow.png") ));
 //		shadowPanel.addComponent(button);
 		rv.addComponent( button, gbc );
 

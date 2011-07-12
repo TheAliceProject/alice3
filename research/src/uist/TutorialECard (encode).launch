@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/ide/src/uist/TutorialECard.java"/>
+<listEntry value="/ccat/src/uist/TutorialECard.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="uist.TutorialECard"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="0 0 1280 720 2007 ${workspace_loc}/ecard-tutorial"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ide"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="0 0 1280 720 2003 &quot;${project_loc:ccat}/src/uist/ecard&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ccat"/>
 </launchConfiguration>

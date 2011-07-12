@@ -35,20 +35,20 @@ public class HomeRibbonModel extends org.lgna.croquet.PredeterminedTab {
 		jButton = new javax.swing.JButton("Paste");
 		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-paste.png") ));
+		jButton.setIcon(new ImageIcon(uist.ecard.ECardApplication.class.getResource("resources/ribbon/edit-paste.png") ));
 		rv.addComponent(new org.lgna.croquet.components.SwingAdapter(jButton), gbc);
 		
 		org.lgna.croquet.components.GridPanel panel2 = org.lgna.croquet.components.GridPanel.createSingleColumnGridPane();
 		rv.addComponent(panel2, gbc);
 		
 		jButton = new JButton("Copy");
-		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-copy.png") ));
+		jButton.setIcon(new ImageIcon( uist.ecard.ECardApplication.class.getResource("resources/ribbon/edit-copy.png") ));
 		jButton.setHorizontalAlignment( SwingConstants.LEADING );
 		
 		panel2.addComponent(new org.lgna.croquet.components.SwingAdapter(jButton));
 		
 		jButton = new JButton("Cut");
-		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-cut.png") ));
+		jButton.setIcon(new ImageIcon(uist.ecard.ECardApplication.class.getResource("resources/ribbon/edit-cut.png") ));
 		jButton.setHorizontalAlignment( SwingConstants.LEADING );
 		panel2.addComponent(new org.lgna.croquet.components.SwingAdapter(jButton));
 		
@@ -68,12 +68,12 @@ public class HomeRibbonModel extends org.lgna.croquet.PredeterminedTab {
 		rv.addComponent(panel2, gbc);
 		
 		jButton = new JButton("Select All");
-		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-select-all.png") ));
+		jButton.setIcon(new ImageIcon(uist.ecard.ECardApplication.class.getResource("resources/ribbon/edit-select-all.png") ));
 		jButton.setHorizontalAlignment( SwingConstants.LEADING );
 		panel2.addComponent(new org.lgna.croquet.components.SwingAdapter(jButton));
 		
 		jButton = new JButton("Find");
-		jButton.setIcon(new ImageIcon(getClass().getResource("/autotutorial/ecard/resources/ribbon/edit-find.png") ));
+		jButton.setIcon(new ImageIcon(uist.ecard.ECardApplication.class.getResource("resources/ribbon/edit-find.png") ));
 		jButton.setHorizontalAlignment( SwingConstants.LEADING );
 		panel2.addComponent(new org.lgna.croquet.components.SwingAdapter(jButton));
 		
