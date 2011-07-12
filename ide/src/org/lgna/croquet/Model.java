@@ -75,18 +75,15 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 	
 	public abstract org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
 
-	protected static String getLocalizedText( Class<?> cls, String subKey ) {
+	private static String getLocalizedTextUpTo( Class<? extends Model> cls, Class<? extends Model> clsRoot, String subKey ) {
 		String bundleName = cls.getPackage().getName() + ".croquet";
 		try {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
-			String key;
+			String key = cls.getSimpleName();
 			
 			//todo?
-			if( cls.isMemberClass() ) {
-				key = cls.getSimpleName();
-			} else {
-				key = cls.getSimpleName();
-			}
+			//if( cls.isMemberClass() ) {
+			//}
 			
 			
 			if( subKey != null ) {
@@ -97,15 +94,17 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 				key = sb.toString();
 			}
 			String rv = resourceBundle.getString( key );
-			if( rv != null ) {
-				//pass
-			} else {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: localize", key );
-			}
 			return rv;
 		} catch( java.util.MissingResourceException mre ) {
-			return null;
+			if( cls == clsRoot ) {
+				return null;
+			} else {
+				return getLocalizedTextUpTo( (Class<? extends Model>)cls.getSuperclass(), clsRoot, subKey );
+			}
 		}
+	}
+	private static String getLocalizedText( Class<? extends Model> cls, String subKey ) {
+		return getLocalizedTextUpTo( cls, cls, subKey );
 	}
 
 	protected Class<? extends Model> getClassUsedForLocalization() {
@@ -114,8 +113,11 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 	protected final String getLocalizedText( String subKey ) {
 		return getLocalizedText( this.getClassUsedForLocalization(), subKey );
 	}
+	protected final String getLocalizedTextUpTo( String subKey, Class<? extends Model> clsRoot ) {
+		return getLocalizedTextUpTo( this.getClassUsedForLocalization(), clsRoot, subKey );
+	}
 	
-	protected static String getDefaultLocalizedText( Class<?> cls ) {
+	protected static String getDefaultLocalizedText( Class<? extends Model> cls ) {
 		return getLocalizedText( cls, null );
 	}
 	protected /*final*/ String getDefaultLocalizedText() {
@@ -149,13 +151,13 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 		}
 	}
 	
-	protected static int getLocalizedMnemonicKey( Class<?> cls ) {
+	protected static int getLocalizedMnemonicKey( Class<? extends Model> cls ) {
 		return getKeyCode( getLocalizedText( cls, "mnemonic" ) );
 	}
 	protected int getLocalizedMnemonicKey() {
 		return getLocalizedMnemonicKey( this.getClass() );
 	}
-	protected static javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke( Class<?> cls ) {
+	protected static javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke( Class<? extends Model> cls ) {
 		String acceleratorText = getLocalizedText( cls, "accelerator" );
 		if( acceleratorText != null ) {
 			String[] array = acceleratorText.split(",");
