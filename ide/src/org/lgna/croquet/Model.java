@@ -75,7 +75,7 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 	
 	public abstract org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
 
-	private static String getLocalizedTextUpTo( Class<? extends Model> cls, Class<? extends Model> clsRoot, String subKey ) {
+	private static String findLocalizedText( Class<? extends Model> cls, Class<? extends Model> clsRoot, String subKey ) {
 		String bundleName = cls.getPackage().getName() + ".croquet";
 		try {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
@@ -99,12 +99,12 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 			if( cls == clsRoot ) {
 				return null;
 			} else {
-				return getLocalizedTextUpTo( (Class<? extends Model>)cls.getSuperclass(), clsRoot, subKey );
+				return findLocalizedText( (Class<? extends Model>)cls.getSuperclass(), clsRoot, subKey );
 			}
 		}
 	}
 	private static String getLocalizedText( Class<? extends Model> cls, String subKey ) {
-		return getLocalizedTextUpTo( cls, cls, subKey );
+		return findLocalizedText( cls, cls, subKey );
 	}
 
 	protected Class<? extends Model> getClassUsedForLocalization() {
@@ -113,8 +113,8 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 	protected final String getLocalizedText( String subKey ) {
 		return getLocalizedText( this.getClassUsedForLocalization(), subKey );
 	}
-	protected final String getLocalizedTextUpTo( String subKey, Class<? extends Model> clsRoot ) {
-		return getLocalizedTextUpTo( this.getClassUsedForLocalization(), clsRoot, subKey );
+	protected final String findLocalizedText( String subKey, Class<? extends Model> clsRoot ) {
+		return findLocalizedText( this.getClassUsedForLocalization(), clsRoot, subKey );
 	}
 	
 	protected static String getDefaultLocalizedText( Class<? extends Model> cls ) {

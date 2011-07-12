@@ -61,22 +61,6 @@ import org.lgna.croquet.components.SpringUtilities;
  * @author Dennis Cosgrove
  */
 public abstract class WizardDialogOperation extends GatedCommitDialogOperation<org.lgna.croquet.history.WizardDialogOperationStep> {
-	protected static class FinishOperation extends CompleteOperation {
-		private static class SingletonHolder {
-			private static FinishOperation instance = new FinishOperation();
-		}
-		public static FinishOperation getInstance() {
-			return SingletonHolder.instance;
-		}
-		private FinishOperation() {
-			super( java.util.UUID.fromString( "687d90a2-4bdd-4b85-83f8-11b8a3cb0f6a" ) );
-		}
-	}
-	@Override
-	protected org.lgna.croquet.GatedCommitDialogOperation.CompleteOperation getCompleteOperation() {
-		return FinishOperation.getInstance();
-	}
-
 	private static abstract class WizardOperation extends ActionOperation {
 		public WizardOperation( java.util.UUID id ) {
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
