@@ -54,25 +54,36 @@ import org.lgna.croquet.components.LineAxisPanel;
  * @author Dennis Cosgrove
  */
 public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation<org.lgna.croquet.history.InputDialogOperationStep> {
-	protected static class OkOperation extends CompleteOperation {
-		private static class SingletonHolder {
-			private static OkOperation instance = new OkOperation();
+	public static class OkOperationResolver<T> extends IndirectResolver< OkOperation<T>, InputDialogOperation<T> > {
+		public OkOperationResolver( OkOperation<T> model ) {
+			super( model.getInputDialogOperation() );
 		}
-		public static OkOperation getInstance() {
-			return SingletonHolder.instance;
-		}
-		private OkOperation() {
-			super( java.util.UUID.fromString( "fc908f6f-4b72-48b6-9b65-352dc9f2e18b" ) );
+		public OkOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
 		}
 		@Override
-		protected void localize() {
-			super.localize();
-			this.setName( "OK" );
+		protected OkOperation<T> getDirect( InputDialogOperation<T> indirect ) {
+			return indirect.getCompleteOperation();
 		}
 	}
+	private static class OkOperation<T> extends CompleteOperation {
+		private final InputDialogOperation<T> inputDialogOperation;
+		public OkOperation( InputDialogOperation<T> inputDialogOperation ) {
+			super( java.util.UUID.fromString( "fc908f6f-4b72-48b6-9b65-352dc9f2e18b" ) );
+			this.inputDialogOperation = inputDialogOperation;
+		}
+		public InputDialogOperation< T > getInputDialogOperation() {
+			return this.inputDialogOperation;
+		}
+		@Override
+		protected OkOperationResolver<T> createCodableResolver() {
+			return new OkOperationResolver<T>( this );
+		}
+	}
+	private final OkOperation<T> okOperation = new OkOperation<T>( this );
 	@Override
-	protected org.lgna.croquet.GatedCommitDialogOperation.CompleteOperation getCompleteOperation() {
-		return OkOperation.getInstance();
+	protected OkOperation<T> getCompleteOperation() {
+		return this.okOperation;
 	}
 	public InputDialogOperation(Group group, java.util.UUID individualId) {
 		super(group, individualId);
@@ -90,7 +101,6 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 		}
 		return this.cascadeFillIn;
 	}
-	
 	
 	@Override
 	protected Component< ? > createControlsPanel( org.lgna.croquet.history.InputDialogOperationStep step, Dialog dialog ) {

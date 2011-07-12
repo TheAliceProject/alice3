@@ -191,6 +191,12 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 		return CancelOperation.getInstance();
 	}
 
+	@Override
+	protected final void localize() {
+		super.localize();
+		String commitName = this.getLocalizedTextUpTo( "commit", GatedCommitDialogOperation.class );
+		this.getCompleteOperation().setName( commitName );
+	}
 	protected abstract org.lgna.croquet.components.Component< ? > createMainPanel( S step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Label explanationLabel );
 	protected abstract org.lgna.croquet.components.Component< ? > createControlsPanel( S step, org.lgna.croquet.components.Dialog dialog );
 	protected abstract void release( S step, org.lgna.croquet.components.Dialog dialog, boolean isCompleted );
