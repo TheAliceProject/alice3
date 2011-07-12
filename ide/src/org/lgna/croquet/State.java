@@ -42,20 +42,15 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.edits.Edit;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class State<T> extends CompletionModel {
 	public static interface ValueObserver<T> {
-//		public void changing( T nextValue );
-//		public void changed( T nextValue );
 		public void changing( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
 		public void changed( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
 	};
 	private final java.util.List< ValueObserver<T> > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	
 
 	public State( Group group, java.util.UUID id ) {
 		super(group, id);
@@ -89,7 +84,7 @@ public abstract class State<T> extends CompletionModel {
 	
 	public abstract T getValue();
 	@Override
-	public boolean isAlreadyInState( Edit< ? > edit ) {
+	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
 		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
 			org.lgna.croquet.edits.StateEdit< ?, T > stateEdit = (org.lgna.croquet.edits.StateEdit< ?, T >)edit;
 			T a = this.getValue();

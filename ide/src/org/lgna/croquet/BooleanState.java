@@ -47,7 +47,7 @@ import org.lgna.croquet.edits.Edit;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanState extends State< Boolean > {
+public abstract class BooleanState extends State< Boolean > {
 	private boolean value;
 	private String trueText;
 	private String falseText;

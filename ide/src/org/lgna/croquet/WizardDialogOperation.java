@@ -347,8 +347,8 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 		}
 		org.alice.stageide.StageIDE stageIDE = new org.alice.stageide.StageIDE();
 		WizardDialogOperation wizardDialogOperation = new WizardDialogOperation( null, null ) {
-			private StringState name = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "63245276-7fba-4905-8ac1-34629ed258e5" ), "" );
-			private StringState description = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "18c58e94-7155-45c3-b158-82d299a0f5c9" ), "" );
+			private StringState name = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "63245276-7fba-4905-8ac1-34629ed258e5" ), "" ) {};
+			private StringState description = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "18c58e94-7155-45c3-b158-82d299a0f5c9" ), "" ) {};
 			@Override
 			protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
 				return new java.awt.Dimension( 640, 480 );
