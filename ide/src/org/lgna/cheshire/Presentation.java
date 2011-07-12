@@ -59,9 +59,9 @@ public abstract class Presentation {
 	private boolean isResultOfNextOperation = false;
 
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
-		public void changing( org.lgna.croquet.history.event.Event e ) {
+		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
-		public void changed( org.lgna.croquet.history.event.Event e ) {
+		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
 			Presentation.this.handleEvent( e );
 		}
 	};
@@ -123,11 +123,11 @@ public abstract class Presentation {
 		org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().addListener( this.listener );
 	}
 
-	private void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
-		this.book.handleEditCommitted( edit, this.userInformation );
-	}
+//	private void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
+//		this.book.handleEditCommitted( edit, this.userInformation );
+//	}
 	protected abstract void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction );
-	protected abstract void handleEvent( org.lgna.croquet.history.event.Event event );
+	protected abstract void handleEvent( org.lgna.croquet.history.event.Event<?> event );
 	private org.lgna.cheshire.Book.SelectionObserver selectionObserver = new org.lgna.cheshire.Book.SelectionObserver() {
 		public void selectionChanging( Book source, int fromIndex, int toIndex ) {
 		}

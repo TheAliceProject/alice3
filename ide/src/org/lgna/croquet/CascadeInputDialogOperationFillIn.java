@@ -100,4 +100,13 @@ public final class CascadeInputDialogOperationFillIn<F> extends CascadeFillIn< F
 	public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
 		return null;
 	}
+	
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "[" );
+		rv.append( this.getInputDialogOperation() );
+		rv.append( "]" );
+		return rv;
+	}
 }

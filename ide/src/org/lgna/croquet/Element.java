@@ -53,6 +53,31 @@ public class Element {
 			System.err.println( "org.lgna.croquet.Element.isIdCheckDesired==true" );
 		}
 	}
+	
+	protected static abstract class IndirectResolver<D extends Element, I extends Element> implements org.lgna.croquet.resolvers.RetargetableResolver< D > {
+		private final org.lgna.croquet.resolvers.CodableResolver<I> resolver;
+		public IndirectResolver( I indirect ) {
+			this.resolver = indirect.getCodableResolver();
+		}
+		public IndirectResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			this.resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		}
+		public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			binaryEncoder.encode( this.resolver );
+		}
+		protected abstract D getDirect( I indirect );
+		public final D getResolved() {
+			return this.getDirect( this.resolver.getResolved() );
+		}
+		public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
+			if( this.resolver instanceof org.lgna.croquet.resolvers.RetargetableResolver ) {
+				org.lgna.croquet.resolvers.RetargetableResolver<I> retargetableResolver = (org.lgna.croquet.resolvers.RetargetableResolver<I>)this.resolver;
+				retargetableResolver.retarget( retargeter );
+			}
+		}
+	}
+
+	
 	private final java.util.UUID id;
 	private org.lgna.croquet.resolvers.CodableResolver<Element> codableResolver;
 	public Element( java.util.UUID id ) {

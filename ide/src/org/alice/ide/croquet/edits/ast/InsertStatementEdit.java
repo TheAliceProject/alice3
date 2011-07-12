@@ -42,6 +42,9 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 	public static final int AT_END = Short.MAX_VALUE;
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;

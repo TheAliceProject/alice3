@@ -41,56 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.alice.ide.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MenuItemSelectNote extends PrepNote< org.lgna.croquet.history.MenuItemSelectStep > {
-	public MenuItemSelectNote( org.lgna.croquet.history.MenuItemSelectStep step ) {
-		super( step );
+public class StringStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<T> {
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { String.class };
+	private String value;
+	public StringStaticGetInstanceKeyedResolver( T instance, String value ) {
+		super( instance );
+		this.value = value;
 	}
-	
-	@Override
-	protected void addFeatures( org.lgna.croquet.history.MenuItemSelectStep step ) {
-		this.addFeature( new org.lgna.cheshire.stencil.features.MenuHole( 
-				new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), 
-				org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH,
-				true,
-				true,
-				false
-		) ) ;
+	public StringStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
-		if( event instanceof org.lgna.croquet.history.event.AddStepEvent ) {
-			org.lgna.croquet.history.event.AddStepEvent addStepEvent = (org.lgna.croquet.history.event.AddStepEvent)event;
-			org.lgna.croquet.history.Step< ? > step = addStepEvent.getStep();
-			if( step instanceof org.lgna.croquet.history.MenuItemSelectStep ) {
-				org.lgna.croquet.history.MenuItemSelectStep menuItemSelectStep = (org.lgna.croquet.history.MenuItemSelectStep)step;
-				if( menuItemSelectStep.getModel() == this.getStep().getModel() ) {
-					return true;
-				} else {
-					System.err.println( menuItemSelectStep.getModel() + " != " + this.getStep().getModel() );
-				}
-			}
-		}
-		return false;
-//		if( event instanceof org.lgna.croquet.history.event.MenuSelectionChangedEvent ) {
-//			org.lgna.croquet.history.event.MenuSelectionChangedEvent menuSelectionChangedEvent = (org.lgna.croquet.history.event.MenuSelectionChangedEvent)event;
-//			java.util.List< org.lgna.croquet.Model > models = menuSelectionChangedEvent.getModels();
-//			final int N = models.size();
-//			if( N > 0 ) {
-//				return models.get( N-1 ) == this.getStep().getModel();
-//			} else {
-//				return false;
-//			}
-//		} else {
-//			return false;
-//		}
+	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return PARAMETER_TYPES;
 	}
 	@Override
-	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
-		return isMouseEventInterceptedInAllCasesEvenPopups( e );
+	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		String value = binaryDecoder.decodeString();
+		return new Object[] { value };
+	}
+	@Override
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.value );
 	}
 }

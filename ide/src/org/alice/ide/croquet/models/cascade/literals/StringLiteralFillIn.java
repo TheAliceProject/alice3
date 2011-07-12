@@ -73,4 +73,9 @@ public class StringLiteralFillIn extends org.alice.ide.croquet.models.cascade.Ex
 	public edu.cmu.cs.dennisc.alice.ast.StringLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.StringLiteral,Void > step ) {
 		return new edu.cmu.cs.dennisc.alice.ast.StringLiteral( this.transientValue.value.getValue() );
 	}
+	
+	@Override
+	protected org.alice.ide.croquet.resolvers.StringStaticGetInstanceKeyedResolver<StringLiteralFillIn> createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.StringStaticGetInstanceKeyedResolver<StringLiteralFillIn>( this, this.transientValue.value.getValue() );
+	}
 }
