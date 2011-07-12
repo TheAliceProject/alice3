@@ -74,7 +74,7 @@ public class DeclareMethodParameterOperation extends org.alice.ide.croquet.model
 	@Override
 	protected org.alice.ide.declarationpanes.CreateMethodParameterPane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
 		//todo: create before hand and refresh at this point
-		return new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+		return new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method ) );
 	}
 	@Override
 	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {

@@ -74,7 +74,7 @@ public class StressTestTutorial {
 						
 						org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate = (org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate)dragComponent;
 
-						edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = org.alice.ide.IDE.getSingleton().createInstanceExpression();
+						edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = org.alice.ide.IDE.getActiveInstance().createInstanceExpression();
 						edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = procedureInvocationTemplate.getMethod();
 						edu.cmu.cs.dennisc.alice.ast.Statement statement = org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement(
 								instanceExpression, 
@@ -209,7 +209,7 @@ public class StressTestTutorial {
 						
 						org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate = (org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate)dragComponent;
 
-						edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = org.alice.ide.IDE.getSingleton().createInstanceExpression();
+						edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = org.alice.ide.IDE.getActiveInstance().createInstanceExpression();
 						edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = procedureInvocationTemplate.getMethod();
 						edu.cmu.cs.dennisc.alice.ast.ExpressionStatement statement = org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement(
 								instanceExpression, 

@@ -138,7 +138,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 	public CreateTextPane( final Create3dTextOperation operation ) {
 		final int INSET = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getTheme().getFieldColor() );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 		class TextField extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField {
 			public TextField( String text, String textForBlankCondition ) {
 				this.setText( text );
@@ -347,7 +347,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 //	@Override
 //	protected java.lang.String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
 //		CreateTextPane pane = step.getMainPanel();
-//		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = new org.alice.ide.name.validators.FieldNameValidator( org.alice.ide.IDE.getSingleton().getSceneType() );
+//		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = new org.alice.ide.name.validators.FieldNameValidator( org.alice.ide.IDE.getActiveInstance().getSceneType() );
 //		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( pane.getInstanceNameText() );
 //		if( rv != null ) {
 //			return rv;
@@ -366,7 +366,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 		CreateTextPane createTextPane = context.getMainPanel();
 		org.alice.apis.moveandturn.Text text = createTextPane.createText();
 		if( text != null ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = org.alice.ide.IDE.getSingleton().getTypeDeclaredInAliceFor( org.alice.apis.moveandturn.Text.class );
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = org.alice.ide.IDE.getActiveInstance().getTypeDeclaredInAliceFor( org.alice.apis.moveandturn.Text.class );
 			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( type );
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( text.getName(), type, initializer );
 			field.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
@@ -378,7 +378,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	}
 	
 	private final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
-		return org.alice.ide.IDE.getSingleton().getSceneType();
+		return org.alice.ide.IDE.getActiveInstance().getSceneType();
 	}
 	private boolean isInstanceValid() {
 		return true;

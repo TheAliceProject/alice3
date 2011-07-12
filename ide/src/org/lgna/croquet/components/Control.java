@@ -165,14 +165,14 @@ public abstract class Control extends Widget {
 		}
 	}
 	public void handleMouseEntered( java.awt.event.MouseEvent e ) {
-		if( org.lgna.croquet.Application.getSingleton().isDragInProgress() ) {
+		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
 			//pass
 		} else {
 			this.setActive( true );
 		}
 	}
 	public void handleMouseExited( java.awt.event.MouseEvent e ) {
-		if( org.lgna.croquet.Application.getSingleton().isDragInProgress() ) {
+		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
 			//pass
 		} else {
 			this.setActive( false );

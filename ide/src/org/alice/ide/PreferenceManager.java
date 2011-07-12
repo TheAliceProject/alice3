@@ -101,7 +101,7 @@ public class PreferenceManager {
 	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > listSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 	public static void registerAndInitializePreference( org.lgna.croquet.BooleanState booleanState ) {
-		IDE ide = IDE.getSingleton();
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
 			clearAllPreferencesIfRequested( userPreferences );
@@ -114,7 +114,7 @@ public class PreferenceManager {
 		}
 	}
 	public static void registerAndInitializePreference( org.lgna.croquet.ListSelectionState< ? > listSelectionState ) {
-		IDE ide = IDE.getSingleton();
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
 			clearAllPreferencesIfRequested( userPreferences );
@@ -129,7 +129,7 @@ public class PreferenceManager {
 		}
 	}
 	/*package-private*/ static void preservePreferences() {
-		IDE ide = IDE.getSingleton();
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
 			for( org.lgna.croquet.BooleanState booleanState : booleanStatePreferences ) {

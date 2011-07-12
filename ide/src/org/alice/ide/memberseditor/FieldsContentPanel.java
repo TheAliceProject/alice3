@@ -47,7 +47,7 @@ package org.alice.ide.memberseditor;
  */
 public class FieldsContentPanel extends OrganizedByTypeMembersContentPanel {
 	public FieldsContentPanel() {
-		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getTheme().getFieldColor() );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {

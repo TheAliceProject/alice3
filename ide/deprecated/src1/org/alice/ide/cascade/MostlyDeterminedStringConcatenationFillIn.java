@@ -54,7 +54,7 @@ public class MostlyDeterminedStringConcatenationFillIn extends edu.cmu.cs.dennis
 		super( binaryDecoder );
 	}
 	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 	@Override
 	protected void addChildren() {
@@ -62,7 +62,7 @@ public class MostlyDeterminedStringConcatenationFillIn extends edu.cmu.cs.dennis
 	}
 	@Override
 	protected final javax.swing.JComponent createMenuProxy() {
-		return org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( org.alice.ide.ast.NodeUtilities.createIncompleteStringConcatenation( this.leftOperand ) ).getAwtComponent();
+		return org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( org.alice.ide.ast.NodeUtilities.createIncompleteStringConcatenation( this.leftOperand ) ).getAwtComponent();
 	}
 	@Override
 	public final edu.cmu.cs.dennisc.alice.ast.StringConcatenation getValue() {

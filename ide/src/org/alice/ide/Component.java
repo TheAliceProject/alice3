@@ -47,7 +47,7 @@ package org.alice.ide;
  */
 public abstract class Component extends org.lgna.croquet.components.DragComponent {
 	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 	public void fillBounds( java.awt.Graphics2D g2 ) {
 		this.fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );

@@ -261,7 +261,7 @@ public abstract class Presentation {
 		return null;
 	}
 	protected java.util.List< org.lgna.croquet.MenuItemPrepModel > huntForInMenus( org.lgna.croquet.CompletionModel model ) {
-		org.lgna.croquet.MenuBarComposite menuBarModel = org.lgna.croquet.Application.getSingleton().getFrame().getMenuBarModel();
+		org.lgna.croquet.MenuBarComposite menuBarModel = org.lgna.croquet.Application.getActiveInstance().getFrame().getMenuBarModel();
 		if( menuBarModel != null ) {
 			java.util.List< org.lgna.croquet.MenuItemPrepModel > rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 			for( org.lgna.croquet.MenuItemPrepModel child : menuBarModel.getChildren() ) {
@@ -316,7 +316,7 @@ public abstract class Presentation {
 				this.isResultOfNextOperation = false;
 			}
 		} else {
-			org.lgna.croquet.Application.getSingleton().showMessageDialog( "end of tutorial" );
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "end of tutorial" );
 		}
 	}
 	public void decrementSelectedIndex() {

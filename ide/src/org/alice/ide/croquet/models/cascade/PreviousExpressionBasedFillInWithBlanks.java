@@ -51,7 +51,7 @@ public abstract class PreviousExpressionBasedFillInWithBlanks< F extends edu.cmu
 		super( id, cls );
 	}
 	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-		return org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
+		return org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
 	}
 	private edu.cmu.cs.dennisc.alice.ast.Expression cleanExpression;
 	@Override

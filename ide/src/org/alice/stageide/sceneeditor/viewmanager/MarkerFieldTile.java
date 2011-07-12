@@ -79,7 +79,7 @@ public class MarkerFieldTile extends LineAxisPanel
 	}
 	
 	public void setSelected( boolean isSelected ) {
-		MarkerWithIcon marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getMarkerForField(field);
+		MarkerWithIcon marker = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getMarkerForField(field);
 		java.awt.Color foregroundColor = java.awt.Color.BLACK;
 		if( marker != null ) {
 			foregroundColor = marker.getMarkerColor().getAsAWTColor();
@@ -99,7 +99,7 @@ public class MarkerFieldTile extends LineAxisPanel
 		
 		this.textLabel.setText( this.field.getName() );
 		
-		MarkerWithIcon marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getMarkerForField(field);
+		MarkerWithIcon marker = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getMarkerForField(field);
 		if (marker != null)
 		{
 			Color4f color = marker.getMarkerColor();

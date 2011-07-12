@@ -78,7 +78,7 @@ public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperati
 		java.util.UUID statementId = binaryDecoder.decodeId();
 		java.util.UUID toBlockStatementId = binaryDecoder.decodeId();
 		int toIndex = binaryDecoder.decodeInt();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement fromBlockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), fromBlockStatementId );
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement toBlockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), toBlockStatementId );

@@ -68,12 +68,12 @@ public class DeclareMethodParameterEdit extends org.lgna.croquet.edits.Edit< org
 	protected final void doOrRedoInternal( boolean isDo ) {
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = this.getModel().getMethod();
 		this.index = method.parameters.size();
-		org.alice.ide.ast.NodeUtilities.addParameter( map, method, this.parameter, this.index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+		org.alice.ide.ast.NodeUtilities.addParameter( map, method, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method ) );
 	}
 	@Override
 	protected final void undoInternal() {
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = this.getModel().getMethod();
-		org.alice.ide.ast.NodeUtilities.removeParameter( map, method, this.parameter, this.index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+		org.alice.ide.ast.NodeUtilities.removeParameter( map, method, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method ) );
 	}
 	@Override
 	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {

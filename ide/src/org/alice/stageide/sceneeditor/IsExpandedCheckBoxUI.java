@@ -156,7 +156,7 @@ class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 //	private final int Y_PAD = 10;
 //
 //	public IsExpandedCheckBox() {
-//		super( org.alice.ide.IDE.getSingleton().getIsSceneEditorExpandedOperation() );
+//		super( org.alice.ide.IDE.getActiveInstance().getIsSceneEditorExpandedOperation() );
 //		this.setOpaque( false );
 //		this.setFont( this.getFont().deriveFont( 18.0f ) );
 //		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( Y_PAD, X_PAD, Y_PAD, X_PAD ) );

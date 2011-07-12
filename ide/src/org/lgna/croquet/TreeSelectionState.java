@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class TreeSelectionState<E> extends ItemState<E> {
+public abstract class TreeSelectionState<E> extends ItemState<E> {
 	public static interface SelectionObserver<E> {
 		public void selectionChanged(E nextValue);
 	};

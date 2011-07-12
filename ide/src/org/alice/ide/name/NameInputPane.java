@@ -50,7 +50,7 @@ public abstract class NameInputPane extends org.lgna.croquet.components.RowsSpri
 			org.lgna.croquet.Application.INHERIT_GROUP,
 			java.util.UUID.fromString( "482c237a-c2b3-48dc-a8e2-380edfdfffe3" ),
 			""
-	);
+	) {};
 	private org.lgna.croquet.components.TextField textField;
 //	private javax.swing.JTextField textField = new javax.swing.JTextField( 10 );
 

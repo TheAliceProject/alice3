@@ -122,7 +122,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 			org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
 			final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getInputValue();
 			if( method != null ) {
-				final org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+				final org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 				final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = ide.getFocusedCode();
 //				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 //					@Override

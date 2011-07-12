@@ -130,7 +130,7 @@ public abstract class PanelWithPreview< F > extends org.lgna.croquet.components.
 	}
 
 	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 	
 	public abstract String getExplanationIfOkButtonShouldBeDisabled();

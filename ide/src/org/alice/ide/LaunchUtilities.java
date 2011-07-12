@@ -138,7 +138,7 @@ public class LaunchUtilities {
 	private static Runnable createRunnable( final java.awt.Window splashScreen, final String[] args, final boolean isVisible ) {
 		return new Runnable() {
 			public void run() {
-				IDE ide = IDE.getSingleton();
+				IDE ide = IDE.getActiveInstance();
 				final int DEFAULT_WIDTH = 1000;
 				final int DEFAULT_HEIGHT = 740;
 				int xLocation = 0;
@@ -208,7 +208,7 @@ public class LaunchUtilities {
 		IDE ide = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
 		Runnable runnable = createRunnable( splashScreen, args, isVisible );
 		javax.swing.SwingUtilities.invokeAndWait( runnable );
-		return cls.cast( IDE.getSingleton() );
+		return cls.cast( IDE.getActiveInstance() );
 	}
 	
 }

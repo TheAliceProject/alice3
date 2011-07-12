@@ -54,7 +54,7 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 		this.cls = cls;
 	}
 	public edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent() {
-		org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane = org.alice.ide.IDE.getSingleton().getUbiquitousPane();
+		org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane = org.alice.ide.IDE.getActiveInstance().getUbiquitousPane();
 		return this.cls.cast(edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findFirstMatch(ubiquitousPane, this.cls));
 	}
 	public edu.cmu.cs.dennisc.croquet.DragAndDropModel getResolved() {

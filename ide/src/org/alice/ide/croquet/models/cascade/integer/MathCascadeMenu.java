@@ -58,7 +58,7 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
-//		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().createCopyOfPreviousExpression();
+//		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getCascadeManager().createCopyOfPreviousExpression();
 //		final boolean isTop = blank.getParentFillIn() == null;
 //		
 //		if( previousExpression != null ) {

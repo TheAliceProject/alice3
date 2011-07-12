@@ -26,9 +26,9 @@ class ECardPanel extends javax.swing.JComponent {
 		if (state == CardState.EMPTY) {
 			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/e-card.png")).getImage();
 		} else if (state == CardState.PHOTO) {
-			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/e-card-photo-" + ECardApplication.getSingleton().getYear() + ".png")).getImage();
+			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/e-card-photo-" + ECardApplication.getActiveInstance().getYear() + ".png")).getImage();
 		} else if (state == CardState.BUBBLE_PHOTO) {
-			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/e-card-photo-bubble-" + ECardApplication.getSingleton().getYear() + ".png")).getImage();
+			this.image = new javax.swing.ImageIcon(ECardPanel.class.getResource("resources/e-card-photo-bubble-" + ECardApplication.getActiveInstance().getYear() + ".png")).getImage();
 		}
 		this.revalidate();
 		this.repaint();

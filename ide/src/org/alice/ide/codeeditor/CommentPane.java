@@ -64,15 +64,15 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 				CommentLine.this.handleUpdate();
 			}
 		} );
-		this.setBackground( org.alice.ide.IDE.getSingleton().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.Comment.class ) );
-		this.setForeground( org.alice.ide.IDE.getSingleton().getTheme().getCommentForegroundColor() );
+		this.setBackground( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.Comment.class ) );
+		this.setForeground( org.alice.ide.IDE.getActiveInstance().getTheme().getCommentForegroundColor() );
 		//this.setMargin( new java.awt.Insets( 2, 4, 2, 32 ) );
 		this.handleUpdate();
-		if( org.alice.ide.IDE.getSingleton().getCommentThatWantsFocus() == this.comment ) {
+		if( org.alice.ide.IDE.getActiveInstance().getCommentThatWantsFocus() == this.comment ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
 					CommentLine.this.requestFocus();
-					org.alice.ide.IDE.getSingleton().setCommentThatWantsFocus( null );
+					org.alice.ide.IDE.getActiveInstance().setCommentThatWantsFocus( null );
 				}
 			} ); 
 		}

@@ -47,12 +47,12 @@ package org.alice.ide.cascade;
  */
 public abstract class IncompleteExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.cascade.FillIn< E > {
 	protected final org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 	
 	protected abstract E createIncomplete();
 	@Override
 	protected final javax.swing.JComponent createMenuProxy() {
-		return org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( this.createIncomplete() ).getAwtComponent();
+		return org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( this.createIncomplete() ).getAwtComponent();
 	}
 }

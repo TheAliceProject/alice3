@@ -40,39 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+
+package org.lgna.croquet.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeRootMenuModel extends org.lgna.croquet.MenuModel {
-	private static class SingletonHolder {
-		private static TypeRootMenuModel instance = new TypeRootMenuModel();
-	}
-	public static TypeRootMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private TypeRootMenuModel() {
-		super( java.util.UUID.fromString( "259dfcc5-dd20-4890-8104-a34a075734d0" ) );
-	}
-	@Override
-	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		super.handleShowing( menuItemContainer, e );
-		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
-		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
-		programType.crawl( crawler, true );
-		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type : crawler.getList() ) {
-			if( type == programType ) {
-				//pass
-			} else {
-				org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, TypeMenuModel.getInstance( type ) );
-			}
-		}
-	}
-	@Override
-	protected void handleHiding( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		menuItemContainer.forgetAndRemoveAllMenuItems();
-		super.handleHiding( menuItemContainer, e );
+public class StateChangeEvent< T > extends Event< org.lgna.croquet.history.StateChangeStep > {
+	public StateChangeEvent( org.lgna.croquet.history.StateChangeStep step ) {
+		super( step );
 	}
 }

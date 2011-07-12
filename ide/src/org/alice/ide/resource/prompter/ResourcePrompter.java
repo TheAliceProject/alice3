@@ -54,7 +54,7 @@ public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resour
 	protected abstract java.io.FilenameFilter createFilenameFilter();
 	public E promptUserForResource( org.lgna.croquet.components.Frame owner ) throws java.io.IOException {
 		java.io.File initialDirectory = null;
-		java.io.File file = org.alice.ide.IDE.getSingleton().showOpenFileDialog( initialDirectory, this.getInitialFileText(), edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory().getAbsolutePath(), true );
+		java.io.File file = org.alice.ide.IDE.getActiveInstance().showOpenFileDialog( initialDirectory, this.getInitialFileText(), edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory().getAbsolutePath(), true );
 		if( file != null ) {
 			String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
 			java.util.Set< String > set = this.getLowercaseSupportedExtensions();
@@ -72,7 +72,7 @@ public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resour
 					prefix = ", ";
 				}
 				sb.append( " }." );
-				org.alice.ide.IDE.getSingleton().showMessageDialog( sb.toString(), "Content Type Not Supported", org.lgna.croquet.MessageType.ERROR );
+				org.alice.ide.IDE.getActiveInstance().showMessageDialog( sb.toString(), "Content Type Not Supported", org.lgna.croquet.MessageType.ERROR );
 				return null;
 			}
 		} else {

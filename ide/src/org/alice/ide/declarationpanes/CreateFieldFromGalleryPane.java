@@ -122,7 +122,7 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 //			if( clsName.startsWith( prefix ) ) {
 //				String post = clsName.substring( prefix.length() );
 //				String path = prefix + post.replaceAll( "\\.", "/" ) + ".png";
-//				java.io.File rootDirectory = new java.io.File( org.alice.ide.IDE.getSingleton().getGalleryRootDirectory(), "thumbnails" );
+//				java.io.File rootDirectory = new java.io.File( org.alice.ide.IDE.getActiveInstance().getGalleryRootDirectory(), "thumbnails" );
 //				return new java.io.File( rootDirectory, path );
 //			}
 //		}

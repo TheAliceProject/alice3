@@ -67,7 +67,7 @@ class AbstractCodeHeaderPane extends org.lgna.croquet.components.Panel {
 		if( this.parametersPane != null ) {
 			this.addComponent( parametersPane );
 		}
-//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 //		boolean isInstanceLineDesired = ide.isEmphasizingClasses() && ide.isInstanceLineDesired();
 //		if( isInstanceLineDesired ) {
 //			this.addComponent( new InstanceLine( this.codeDeclarationInAlice ) );

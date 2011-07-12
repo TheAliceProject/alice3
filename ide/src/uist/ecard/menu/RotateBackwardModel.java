@@ -14,7 +14,7 @@ public class RotateBackwardModel extends org.lgna.croquet.ActionOperation {
 	}
 	private RotateBackwardModel() {
 		super( null, java.util.UUID.fromString( "88d087c4-a144-4418-9727-9ad752df5a6a" ) );
-		if (ECardApplication.getSingleton().isRibbonBased()) {
+		if (ECardApplication.getActiveInstance().isRibbonBased()) {
 			this.setSmallIcon( new ImageIcon(getClass().getResource("../resources/ribbon/rotate-counter-clockwise.png") ) );
 		} else {
 			this.setSmallIcon( new ImageIcon(getClass().getResource("../resources/menu/rotate-counter-clockwise.png") ) );

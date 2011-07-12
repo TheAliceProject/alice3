@@ -70,7 +70,7 @@ public class CollectionOfPreferencesPane extends org.lgna.croquet.components.Bor
 		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 			String name = CollectionOfPreferencesPane.this.getTitle();
 			
-			java.awt.Component parentComponent = org.alice.ide.IDE.getSingleton().getFrame().getAwtComponent();
+			java.awt.Component parentComponent = org.alice.ide.IDE.getActiveInstance().getFrame().getAwtComponent();
 			String message = "To what extent would you like to restore defaults?";
 			String title = "Restore Defaults";
 			int optionType = javax.swing.JOptionPane.YES_NO_CANCEL_OPTION;

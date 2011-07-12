@@ -111,7 +111,7 @@ public abstract class CascadeManager {
 				this.updateAccessibleLocalsForBlockStatementAndIndex(rv, blockStatementParent, index);
 			} else if( statementParent instanceof edu.cmu.cs.dennisc.alice.ast.CountLoop ) {
 				edu.cmu.cs.dennisc.alice.ast.CountLoop countLoopParent = (edu.cmu.cs.dennisc.alice.ast.CountLoop)statementParent;
-				boolean areCountLoopLocalsViewable = org.alice.ide.IDE.getSingleton().isJava();
+				boolean areCountLoopLocalsViewable = org.alice.ide.IDE.getActiveInstance().isJava();
 				if( areCountLoopLocalsViewable ) {
 					rv.add( countLoopParent.variable.getValue() );
 					rv.add( countLoopParent.constant.getValue() );
@@ -148,7 +148,7 @@ public abstract class CascadeManager {
 //	}
 
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addExpressionBonusFillInsForType( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<edu.cmu.cs.dennisc.alice.ast.Expression> blankNode, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getSingleton().getFocusedCode();
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
 		if( codeInFocus != null ) {
 
 			java.util.List< org.alice.ide.croquet.models.cascade.array.ArrayLengthFillIn > arrayLengthFillIns;
@@ -161,7 +161,7 @@ public abstract class CascadeManager {
 			//todo: fix
 			type = this.getActualTypeForDesiredParameterType( type );
 
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> selectedType = org.alice.ide.IDE.getSingleton().getTypeInScope();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> selectedType = org.alice.ide.IDE.getActiveInstance().getTypeInScope();
 			if( type.isAssignableFrom( selectedType ) ) {
 				this.addFillInAndPossiblyPartFillIns( rv, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), selectedType, type );
 			}
@@ -254,7 +254,7 @@ public abstract class CascadeManager {
 	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression createCopyOfPreviousExpression() {
 		if( this.previousExpression != null ) {
-			return org.alice.ide.IDE.getSingleton().createCopy( this.previousExpression );
+			return org.alice.ide.IDE.getActiveInstance().createCopy( this.previousExpression );
 		} else {
 			return null;
 		}

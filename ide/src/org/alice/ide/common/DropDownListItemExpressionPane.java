@@ -77,7 +77,7 @@ public class DropDownListItemExpressionPane extends AbstractDropDownPane {
 	public void refresh() {
 		this.forgetAndRemoveAllComponents();
 		if( this.index < this.expressionListProperty.size() ) {
-			this.addComponent( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPane( this.expressionListProperty.get( this.index ) ) );
+			this.addComponent( org.alice.ide.IDE.getActiveInstance().getCodeFactory().createExpressionPane( this.expressionListProperty.get( this.index ) ) );
 		}
 	}
 }

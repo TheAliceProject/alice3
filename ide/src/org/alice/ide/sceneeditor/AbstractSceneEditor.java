@@ -84,7 +84,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	public abstract void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, FieldAndInstanceMapper fieldAndInstanceMapper );
 	
 	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 	protected edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine getVM() {
 		return this.getIDE().getVirtualMachineForSceneEditor();
@@ -135,16 +135,16 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
-		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.ProjectApplication.getSingleton().getProject();
+		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.ProjectApplication.getActiveInstance().getProject();
 		if( project != null ) {
 			this.projectObserver.projectOpened(null, project);
 		}
-		org.alice.ide.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
+		org.alice.ide.ProjectApplication.getActiveInstance().addProjectObserver( this.projectObserver );
 		super.handleAddedTo( parent );
 	}
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
 		super.handleRemovedFrom( parent );
-		org.alice.ide.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
+		org.alice.ide.ProjectApplication.getActiveInstance().removeProjectObserver( this.projectObserver );
 	}
 }

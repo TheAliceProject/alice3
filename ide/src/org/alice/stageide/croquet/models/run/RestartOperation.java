@@ -59,7 +59,7 @@ public class RestartOperation extends org.alice.ide.operations.ActionOperation {
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				org.alice.ide.IDE.getSingleton().getRunOperation().fire();
+				org.alice.ide.IDE.getActiveInstance().getRunOperation().fire();
 			}
 		} );
 	}

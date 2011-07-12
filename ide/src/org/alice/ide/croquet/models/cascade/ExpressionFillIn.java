@@ -58,7 +58,7 @@ public abstract class ExpressionFillIn< F extends edu.cmu.cs.dennisc.alice.ast.E
 	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,B > step ) {
-		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getSingleton().getPreviewFactory();
+		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getActiveInstance().getPreviewFactory();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.getTransientValue( step );
 		javax.swing.JComponent expressionPane = factory.createExpressionPane( expression ).getAwtComponent();
 		if( this.text != null && this.text.length() > 0 ) {

@@ -140,7 +140,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	}
 	@Override
 	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {
-		org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getSingleton();
+		org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		if( ide.getProject() != null ) {
 			ide.ensureProjectCodeUpToDate();
@@ -171,6 +171,6 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	@Override
 	protected void handleFinally( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		super.handleFinally( step, dialog, contentPane );
-		org.alice.ide.IDE.getSingleton().enableRendering();
+		org.alice.ide.IDE.getActiveInstance().enableRendering();
 	}
 }

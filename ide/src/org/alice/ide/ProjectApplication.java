@@ -50,13 +50,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	public static final org.lgna.croquet.Group HISTORY_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
 	public static final org.lgna.croquet.Group URI_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
 
-	private static ProjectApplication singleton;
-	public static ProjectApplication getSingleton() {
-		return ProjectApplication.singleton;
+	public static ProjectApplication getActiveInstance() {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), ProjectApplication.class );
 	}
 	public ProjectApplication() {
-		assert ProjectApplication.singleton == null;
-		ProjectApplication.singleton = this;
 		this.getProjectHistoryManager().addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
 			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
 			}
