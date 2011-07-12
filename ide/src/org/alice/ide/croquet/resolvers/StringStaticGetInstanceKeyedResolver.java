@@ -41,20 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.alice.ide.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInCompletionNote extends CompletionNote< org.lgna.croquet.history.CascadeFillInCompletionStep< ?, ? > > {
-	public CascadeFillInCompletionNote( org.lgna.croquet.history.CascadeFillInCompletionStep< ?, ? > step ) {
-		super( step );
+public class StringStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<T> {
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { String.class };
+	private String value;
+	public StringStaticGetInstanceKeyedResolver( T instance, String value ) {
+		super( instance );
+		this.value = value;
+	}
+	public StringStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	protected void addFeatures( org.lgna.croquet.history.CascadeFillInCompletionStep< ?, ? > step ) {
+	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return PARAMETER_TYPES;
 	}
-//	@Override
-//	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
-//		return CascadeFillInNoteUtilities.isWhatWeveBeenWaitingFor( this.getStep(), event );
-//	}
+	@Override
+	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		String value = binaryDecoder.decodeString();
+		return new Object[] { value };
+	}
+	@Override
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.value );
+	}
 }

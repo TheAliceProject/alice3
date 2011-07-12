@@ -44,10 +44,6 @@ package org.alice.ide.declarationpanes;
 
 import org.lgna.croquet.components.BorderPanel.Constraint;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-
 //class GalleryLabel extends edu.cmu.cs.dennisc.croquet.Label {
 //	public GalleryLabel( java.net.URL url ) {
 //		this.setIcon( new javax.swing.ImageIcon( url ) );

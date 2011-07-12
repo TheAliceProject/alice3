@@ -186,7 +186,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		}
 	}
 	@Override
-	protected void handleEvent( org.lgna.croquet.history.event.Event event ) {
+	protected void handleEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		this.jTree.repaint();
 		this.previewComponent.repaint();
 		if( isIgnoringEvents ) {

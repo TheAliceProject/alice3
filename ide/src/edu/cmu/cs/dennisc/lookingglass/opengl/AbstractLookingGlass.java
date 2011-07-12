@@ -46,8 +46,6 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-
 //class TextureGraphicsCommit {
 //	private TextureAdapter m_textureAdapter;
 //	private java.awt.Graphics2D m_g;

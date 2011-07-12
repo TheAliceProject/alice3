@@ -54,8 +54,6 @@ import org.alice.apis.moveandturn.HowMuch;
 
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
-import edu.cmu.cs.dennisc.pattern.Criterion;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.wustl.cse.lookingglass.apis.walkandtouch.Person;
 /**
  * @author caitlin
@@ -192,7 +190,6 @@ public abstract class AbstractBodyPositionAnimation extends edu.cmu.cs.dennisc.a
 	}
 
 	public void findArms() {
-		Criterion<?> c = new edu.wustl.cse.lookingglass.apis.walkandtouch.pattern.NameContainsCriterion("rightUpperArm", true );
 		rightUpperArm = m_subject.findFirstMatch( HowMuch.DESCENDANT_PARTS_ONLY, edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel.class, new edu.wustl.cse.lookingglass.apis.walkandtouch.pattern.NameContainsCriterion("rightUpperArm", true ) );
 		rightLowerArm = m_subject.findFirstMatch( HowMuch.DESCENDANT_PARTS_ONLY, edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel.class, new edu.wustl.cse.lookingglass.apis.walkandtouch.pattern.NameContainsCriterion(
 				"rightLowerArm", true ) );

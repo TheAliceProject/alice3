@@ -42,6 +42,9 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 	public static final int AT_END = Short.MAX_VALUE;
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
@@ -99,6 +102,8 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 	protected final void doOrRedoInternal( boolean isDo ) {
 		int actualIndex = this.getActualIndex();
 		this.blockStatement.statements.add( actualIndex, this.statement );
+		//todo: remove
+		org.alice.ide.IDE.getSingleton().refreshUbiquitousPane();
 	}
 
 	@Override
@@ -106,6 +111,8 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		int actualIndex = this.getActualIndex();
 		if( this.blockStatement.statements.get( actualIndex ) == this.statement ) {
 			this.blockStatement.statements.remove( actualIndex );
+			//todo: remove
+			org.alice.ide.IDE.getSingleton().refreshUbiquitousPane();
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}

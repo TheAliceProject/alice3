@@ -48,22 +48,17 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
-
 import org.alice.apis.moveandturn.Model;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.alice.ide.properties.uicontroller.AbstractAdapterController;
 import org.alice.ide.properties.uicontroller.DoubleTextField;
-
 import org.alice.stageide.properties.IsScaleLinkedState;
 import org.alice.stageide.properties.LinkScaleButton;
 import org.alice.stageide.utilities.BoundingBoxUtilities;
 import org.lgna.croquet.components.BooleanStateButton;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Button;
-import org.lgna.croquet.components.FlowPanel;
-import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.Panel;
 import org.lgna.croquet.components.SwingAdapter;

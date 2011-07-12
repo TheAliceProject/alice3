@@ -1,17 +1,10 @@
 package edu.cmu.cs.dennisc.toolkit.scenegraph;
 
-import java.awt.Color;
-
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.alice.ide.swing.BasicTreeNode;
 import org.alice.interact.handle.ManipulationHandle3D;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Element;

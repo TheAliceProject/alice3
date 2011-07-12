@@ -259,7 +259,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 		}
 	}
 	@Override
-	public void handleFiredEvent( org.lgna.croquet.history.event.Event event ) {
+	public void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		super.handleFiredEvent( event );
 		this.handleCardChange( this.cardSelectionState.getSelectedItem() );
 	}

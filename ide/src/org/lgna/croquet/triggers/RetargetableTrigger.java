@@ -41,31 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeItemNote extends PrepNote< org.lgna.croquet.history.CascadeItemStep< ?,? > > {
-	public CascadeItemNote( org.lgna.croquet.history.CascadeItemStep< ?,? > step ) {
-		super( step );
-	}
-	@Override
-	protected void addFeatures( org.lgna.croquet.history.CascadeItemStep< ?,? > step ) {
-	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
-		if( event instanceof org.lgna.croquet.history.event.MenuSelectionChangedEvent ) {
-			org.lgna.croquet.history.event.MenuSelectionChangedEvent menuSelectionChangedEvent = (org.lgna.croquet.history.event.MenuSelectionChangedEvent)event;
-			java.util.List< org.lgna.croquet.Model > models = menuSelectionChangedEvent.getModels();
-			final int N = models.size();
-			if( N > 0 ) {
-				return models.get( N-1 ) == this.getStep().getModel();
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
+public interface RetargetableTrigger extends Trigger {
+	public void retarget( org.lgna.croquet.Retargeter retargeter );
 }

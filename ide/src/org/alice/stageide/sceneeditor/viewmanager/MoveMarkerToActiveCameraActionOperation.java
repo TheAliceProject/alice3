@@ -43,10 +43,8 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.util.HashMap;
-
-import org.alice.apis.moveandturn.MarkerWithIcon;
 import org.alice.apis.moveandturn.Element;
+import org.alice.apis.moveandturn.MarkerWithIcon;
 import org.alice.apis.moveandturn.OrthographicCameraMarker;
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;

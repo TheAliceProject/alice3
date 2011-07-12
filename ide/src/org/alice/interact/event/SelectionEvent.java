@@ -42,7 +42,6 @@
  */
 package org.alice.interact.event;
 
-import org.alice.apis.moveandturn.Element;
 import org.alice.interact.AbstractDragAdapter;
 
 import edu.cmu.cs.dennisc.pattern.event.Event;

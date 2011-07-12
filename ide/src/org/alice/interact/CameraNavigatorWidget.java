@@ -42,9 +42,6 @@
  */
 package org.alice.interact;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
-
 import javax.swing.JPanel;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
@@ -61,14 +58,8 @@ import org.alice.interact.handle.ManipulationHandle2DCameraTurnUpDown;
 import org.alice.interact.manipulator.Camera2DDragDriveManipulator;
 import org.alice.interact.manipulator.Camera2DDragStrafeManipulator;
 import org.alice.interact.manipulator.Camera2DDragUpDownRotateManipulator;
-import org.alice.interact.manipulator.CameraInformedManipulator;
-import org.alice.interact.manipulator.ObjectGlobalHandleDragManipulator;
 import org.alice.interact.manipulator.OrthographicCameraDragStrafeManipulator;
 import org.alice.interact.manipulator.OrthographicCameraDragZoomManipulator;
-
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author David Culyba

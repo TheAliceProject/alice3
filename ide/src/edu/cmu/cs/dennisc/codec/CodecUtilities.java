@@ -51,7 +51,7 @@ public abstract class CodecUtilities {
 	}
 	public static <T extends BinaryEncodableAndDecodable > java.lang.reflect.Constructor< T > getPublicDecodeConstructor( String className, Class<?>[] parameterTypes ) throws ClassNotFoundException, NoSuchMethodException{
 		Class<T> cls = (Class<T>)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( className );
-		return (java.lang.reflect.Constructor< T >)getPublicDecodeConstructor( cls, parameterTypes );
+		return getPublicDecodeConstructor( cls, parameterTypes );
 	}
 //	public static <T extends BinaryEncodableAndDecodable > java.lang.reflect.Constructor< T > getPublicDecodeConstructor( T instance ) throws NoSuchMethodException {
 //		return getPublicDecodeConstructor( (Class<T>)instance.getClass() );

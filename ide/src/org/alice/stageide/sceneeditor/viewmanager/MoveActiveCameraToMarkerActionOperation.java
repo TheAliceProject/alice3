@@ -44,7 +44,6 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.MarkerWithIcon;
 import org.alice.apis.moveandturn.Element;
 import org.alice.apis.moveandturn.OrthographicCameraMarker;
 import org.alice.ide.IDE;

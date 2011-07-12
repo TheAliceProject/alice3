@@ -206,6 +206,9 @@ class MutableList extends org.lgna.croquet.components.PageAxisPanel {
         this.buttonToScrollToVisibleOnAdd = buttonToScrollToVisibleOnAdd;
     	this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
     	this.getAwtComponent().setFocusable( true );
+    	for( int i=0; i<expressionListProperty.size(); i++ ) {
+    		this.addTileFor( i );
+    	}
     }
     @Override
     protected javax.swing.JPanel createJPanel() {

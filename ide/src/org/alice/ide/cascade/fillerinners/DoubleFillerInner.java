@@ -40,44 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.cascade.fillerinners;
 
-package org.lgna.cheshire.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuItemPrepNote< S extends org.lgna.croquet.history.MenuItemPrepStep > extends PrepNote< S > {
-	public MenuItemPrepNote( S step ) {
-		super( step );
-	}
-	
-	@Override
-	protected void addFeatures( S step ) {
-		this.addFeature( new org.lgna.cheshire.stencil.features.MenuHole( 
-				new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), 
-				org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH,
-				true,
-				true,
-				false
-		) ) ;
+public class DoubleFillerInner extends AbstractDoubleFillerInner {
+	public DoubleFillerInner() {
+		super( Double.class, new double[] { 0.0, 0.25, 0.5, 1.0, 2.0, 10.0 } );
 	}
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
-		if( event instanceof org.lgna.croquet.history.event.MenuSelectionChangedEvent ) {
-			org.lgna.croquet.history.event.MenuSelectionChangedEvent menuSelectionChangedEvent = (org.lgna.croquet.history.event.MenuSelectionChangedEvent)event;
-			java.util.List< org.lgna.croquet.Model > models = menuSelectionChangedEvent.getModels();
-			final int N = models.size();
-			if( N > 0 ) {
-				return models.get( N-1 ) == this.getStep().getModel();
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-	@Override
-	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
-		return isMouseEventInterceptedInAllCasesEvenPopups( e );
+	protected org.lgna.croquet.CascadeItem getCustomItem() {
+		return org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn();
 	}
 }

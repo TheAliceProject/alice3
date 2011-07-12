@@ -62,7 +62,7 @@ public class DeleteMethodOperation extends DeleteMemberOperation< edu.cmu.cs.den
 	}
 
 	private DeleteMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
-		super( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ), method, declaringType );
+		super( java.util.UUID.fromString( "ed56c9b9-3eed-48d0-9bbc-f6e251fdd3b5" ), method, declaringType );
 	}
 	@Override
 	protected java.lang.Class< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > getNodeParameterType() {

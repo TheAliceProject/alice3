@@ -46,7 +46,7 @@ package org.alice.stageide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SourceFillerInner< R extends org.alice.virtualmachine.Resource > extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
+public abstract class SourceFillerInner< R extends org.alice.virtualmachine.Resource > extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
 	private final Class<R> resourceCls;
 	public SourceFillerInner( Class<?> cls, Class<R> resourceCls ) {
 		super( cls );

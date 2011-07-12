@@ -58,10 +58,6 @@ import javax.swing.border.Border;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-import edu.cmu.cs.dennisc.toolkit.scenegraph.SceneGraphTreeNode;
-
-
 public class BasicTreeNodeRenderer implements TreeCellRenderer 
 {
 	private final static Color SELECTED_BORDER_COLOR = Color.GREEN;

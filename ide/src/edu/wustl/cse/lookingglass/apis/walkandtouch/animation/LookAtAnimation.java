@@ -46,7 +46,6 @@ package edu.wustl.cse.lookingglass.apis.walkandtouch.animation;
 import org.alice.apis.moveandturn.HowMuch;
 
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
-import edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel;
 
 /**
  * @author caitlin

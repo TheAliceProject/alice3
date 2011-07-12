@@ -43,28 +43,20 @@
  */
 package edu.wustl.cse.lookingglass.apis.walkandtouch;
 
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.Vector;
-
-import edu.cmu.cs.dennisc.alice.annotations.*;
 
 import org.alice.apis.moveandturn.Color;
 import org.alice.apis.moveandturn.Font;
 import org.alice.apis.moveandturn.Scene;
 import org.alice.apis.moveandturn.Transformable;
-import org.alice.apis.moveandturn.TurnDirection;
 
-
+import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
+import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.wustl.cse.lookingglass.apis.walkandtouch.animation.ExampleCameraPathAnimation;
 import edu.wustl.cse.lookingglass.apis.walkandtouch.animation.KineticTextAnimation;
-
-
-
 import edu.wustl.cse.lookingglass.apis.walkandtouch.scenegraph.graphics.CharacterFrameOverlay;
 import edu.wustl.cse.lookingglass.apis.walkandtouch.scenegraph.graphics.KineticText;
 

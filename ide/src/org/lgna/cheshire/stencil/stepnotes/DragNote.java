@@ -53,18 +53,12 @@ public class DragNote extends PrepNote< org.lgna.croquet.history.DragStep > {
 	@Override
 	protected void addFeatures( org.lgna.croquet.history.DragStep step ) {
 		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
-
 		org.lgna.croquet.history.Transaction transaction = step.getParent();
-		org.lgna.croquet.history.DropStep dropStep = null;
-		for( org.lgna.croquet.history.Step< ? > siblingStep : transaction.getChildSteps() ) {
-			if( siblingStep instanceof org.lgna.croquet.history.DropStep ) {
-				dropStep = (org.lgna.croquet.history.DropStep)siblingStep;
-				break;
-			}
-		}
-		//assert dropStep != null : step;
-		if( dropStep != null ) {
-			this.addFeature( DropNoteUtilities.createPreviewHole( dropStep ) );
+		int i = transaction.getIndexOfChildStep( step );
+		org.lgna.croquet.history.Step< ? > siblingStep = transaction.getChildStepAt( i+1 );
+		org.lgna.croquet.triggers.Trigger trigger = siblingStep.getTrigger();
+		if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
+			this.addFeature( DropNoteUtilities.createPreviewHole( siblingStep ) );
 		}
 	}
 }

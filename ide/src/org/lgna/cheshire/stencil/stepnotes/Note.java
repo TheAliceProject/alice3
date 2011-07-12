@@ -64,7 +64,7 @@ public abstract class Note<S extends org.lgna.croquet.history.Step<?>> extends o
 		return this.step.getTutorialNoteText( edit, userInformation );
 	}
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
 		if( event instanceof org.lgna.croquet.history.event.AddStepEvent ) {
 			org.lgna.croquet.history.event.AddStepEvent stepAddedEvent = (org.lgna.croquet.history.event.AddStepEvent)event;
 			if( this.getStep().getModel() == stepAddedEvent.getStep().getModel() ) {

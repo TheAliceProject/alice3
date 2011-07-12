@@ -45,18 +45,8 @@ package edu.wustl.cse.lookingglass.apis.walkandtouch.lookingglass.graphics;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.util.Vector;
 
-import org.alice.apis.moveandturn.Model;
-import org.alice.apis.moveandturn.ReferenceFrame;
-import edu.cmu.cs.dennisc.scenegraph.Graphic;
-
-import edu.cmu.cs.dennisc.lookingglass.Graphics2D;
-import edu.cmu.cs.dennisc.lookingglass.LookingGlass;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel;
 
 public class CharactersFrameOverlayAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.GraphicAdapter< edu.wustl.cse.lookingglass.apis.walkandtouch.scenegraph.graphics.CharactersFrameOverlay > {
 	@Override

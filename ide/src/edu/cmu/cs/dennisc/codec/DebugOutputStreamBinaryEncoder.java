@@ -46,8 +46,6 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public class DebugOutputStreamBinaryEncoder extends OutputStreamBinaryEncoder {
-	private java.io.ObjectOutputStream m_oos;
-
 	public DebugOutputStreamBinaryEncoder( java.io.OutputStream os ) {
 		super( os );
 	}

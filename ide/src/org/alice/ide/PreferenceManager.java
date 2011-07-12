@@ -68,14 +68,14 @@ public class PreferenceManager {
 		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
 		return codec.decodeValue( decoder );
 	}
-	private static <T> byte[] encode( T value, org.lgna.croquet.ItemCodec< T > codec ) throws java.io.IOException {
+	private static <T> byte[] encode( T value, org.lgna.croquet.ItemCodec< T > codec ) {
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
 		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
 		codec.encodeValue( encoder, value );
 		encoder.flush();
 		return baos.toByteArray();
 	}
-	private static <E> org.lgna.croquet.ListSelectionState< E > decode( org.lgna.croquet.ListSelectionState< E > rv, java.util.prefs.Preferences userPreferences ) throws java.io.IOException {
+	private static <E> org.lgna.croquet.ListSelectionState< E > decode( org.lgna.croquet.ListSelectionState< E > rv, java.util.prefs.Preferences userPreferences ) {
 		org.lgna.croquet.ItemCodec< E > codec = rv.getItemCodec();
 		E defaultValue = rv.getSelectedItem();
 		byte[] defaultEncoding = encode( defaultValue, codec );
@@ -89,7 +89,7 @@ public class PreferenceManager {
 		}
 		return rv;
 	}
-	private static <E> void encode( org.lgna.croquet.ListSelectionState< E > listSelectionState, java.util.prefs.Preferences userPreferences ) throws java.io.IOException {
+	private static <E> void encode( org.lgna.croquet.ListSelectionState< E > listSelectionState, java.util.prefs.Preferences userPreferences ) {
 		org.lgna.croquet.ItemCodec< E > codec = listSelectionState.getItemCodec();
 		E value = listSelectionState.getSelectedItem();
 		byte[] encoding = encode( value, codec );

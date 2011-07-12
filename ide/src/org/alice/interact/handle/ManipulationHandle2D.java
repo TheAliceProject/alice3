@@ -43,7 +43,7 @@
 package org.alice.interact.handle;
 
 import java.awt.Dimension;
-import java.awt.Point;
+
 import javax.swing.JLabel;
 
 import org.alice.interact.AbstractDragAdapter;

@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.lookingglass.opengl.graphics;
 
-import java.awt.Color;
-
 import edu.cmu.cs.dennisc.scenegraph.graphics.OnscreenBubble;
 
 public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble > {
