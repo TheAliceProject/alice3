@@ -54,7 +54,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 	}
 	private static class FamilySelectionOperation extends TextAttributeSelectionOperation {
 		public FamilySelectionOperation() {
-			super( java.util.UUID.fromString( "a5678cc6-78b0-4cc1-adbb-e90969d42823" ), 0, "Serif", "SansSerif" );
+			super( java.util.UUID.fromString( "592061c5-2b39-4e03-87b4-3832473ffca2" ), 0, "Serif", "SansSerif" );
 		}
 		public org.alice.apis.moveandturn.font.FamilyAttribute getFamilyAttribute() {
 			Object value = this.getSelectedItem();
@@ -77,7 +77,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 
 	private static class StyleSelectionOperation extends TextAttributeSelectionOperation {
 		public StyleSelectionOperation() {
-			super( java.util.UUID.fromString( "a5678cc6-78b0-4cc1-adbb-e90969d42823" ), 0, "Regular", "Bold", "Italic", "Bold Italic" );
+			super( java.util.UUID.fromString( "a7fa1996-526d-4599-bca8-84fd198fa823" ), 0, "Regular", "Bold", "Italic", "Bold Italic" );
 		}
 		public org.alice.apis.moveandturn.font.WeightAttribute getWeightAttribute() {
 			Object value = this.getSelectedItem();
