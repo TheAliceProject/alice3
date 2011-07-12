@@ -1300,6 +1300,32 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
+	@Override
+	protected void putInstanceForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
+		try {
+			//this EPIC HACK was added to support one shots.  should be unnecessary when the storytelling api and its scene editor go live.
+			if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneInstanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)this.getInstanceInAliceVMForField( this.getSceneField() );
+				if( field instanceof FieldDeclaredInAlice ) {
+					FieldDeclaredInAlice fieldInAlice = (FieldDeclaredInAlice)field;
+					Object instanceInAlice = this.getVM().EPIC_HACK_FOR_SCENE_EDITOR_getAccess( fieldInAlice, sceneInstanceInAlice );
+					if( instanceInAlice instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
+						//pass
+					} else {
+						instanceInAlice = this.getVM().EPIC_HACK_FOR_SCENE_EDITOR_createInstanceForField( sceneInstanceInAlice, fieldInAlice, instance );
+					}
+					if( instanceInAlice != null ) {
+						instance = instanceInAlice;
+					}
+				}
+			}
+		} catch( Throwable t ) {
+			t.printStackTrace();
+		}
+		super.putInstanceForField( field, instance );
+	}
 	private void setCameraMarkerVisibility(boolean isShowing)
 	{
 		for (AbstractField field : this.sceneType.fields)

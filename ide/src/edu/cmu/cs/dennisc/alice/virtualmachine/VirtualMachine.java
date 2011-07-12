@@ -47,11 +47,11 @@ package edu.cmu.cs.dennisc.alice.virtualmachine;
  */
 public abstract class VirtualMachine {
 	@Deprecated
-	public Object getAccessForSceneEditor( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
+	public Object EPIC_HACK_FOR_SCENE_EDITOR_getAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
 		return get( field, instance );
 	}
 	@Deprecated
-	public Object createInstanceForSceneEditor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType ) {
+	public Object EPIC_HACK_FOR_SCENE_EDITOR_createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType ) {
 		pushCurrentThread( null );
 		try {
 			return this.createInstance( this.entryPointType.getDeclaredConstructor() );
@@ -59,10 +59,20 @@ public abstract class VirtualMachine {
 			popCurrentThread();
 		}
 	}
+	
+	@Deprecated
+	public InstanceInAlice EPIC_HACK_FOR_SCENE_EDITOR_createInstanceForField( InstanceInAlice sceneInstanceInAlice, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instanceInJava ) {
+		pushCurrentThread( null );
+		try {
+			InstanceInAlice rv = new InstanceInAlice();
+			rv.EPIC_HACK_FOR_SCENE_EDITOR_setInstanceInJava( instanceInJava );
+			sceneInstanceInAlice.set( field, rv );
+			return rv;
+		} finally {
+			popCurrentThread();
+		}
+	}
 
-	
-	
-	
 	protected abstract Object getThis();
 
 	protected abstract void pushFrame( InstanceInAlice instance, java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map );

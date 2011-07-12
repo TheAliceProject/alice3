@@ -136,7 +136,7 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 			Object rv = getVM().createInstanceEntryPoint( sceneType );
 			putInstanceForField( sceneField, rv );
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
-				Object value = this.getVM().getAccessForSceneEditor( field, rv );
+				Object value = this.getVM().EPIC_HACK_FOR_SCENE_EDITOR_getAccess( field, rv );
 				putInstanceForField( field, value );
 			}
 			return rv;
