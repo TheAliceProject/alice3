@@ -46,30 +46,39 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class DropTrigger extends MouseEventTrigger {
-	private final org.lgna.croquet.DropReceptor dropReceptor;
-	private final org.lgna.croquet.DropSite dropSite;
+public class DropTrigger extends MouseEventTrigger implements RetargetableTrigger {
+	private final org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
+	private org.lgna.croquet.DropSite dropSite;
 	public DropTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		super( viewController, e );
-		this.dropReceptor = dropReceptor;
+		this.dropReceptorResolver = dropReceptor.getCodableResolver();
 		this.dropSite = dropSite;
 	}
 	public DropTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-		org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.DropReceptor > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.dropReceptor = resolver.getResolved();
+		this.dropReceptorResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.dropSite = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 	@Override
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 		super.encode(binaryEncoder);
-		binaryEncoder.encode( this.dropReceptor.getCodableResolver() );
+		binaryEncoder.encode( this.dropReceptorResolver );
 		binaryEncoder.encode( this.dropSite );
 	}
 	public org.lgna.croquet.DropReceptor getDropReceptor() {
-		return this.dropReceptor;
+		return this.dropReceptorResolver.getResolved();
 	}
 	public org.lgna.croquet.DropSite getDropSite() {
 		return this.dropSite;
+	}
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		if( this.dropReceptorResolver instanceof org.lgna.croquet.resolvers.RetargetableResolver<?> ) {
+			org.lgna.croquet.resolvers.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.resolvers.RetargetableResolver<?>)this.dropReceptorResolver;
+			retargetableResolver.retarget( retargeter );
+		}
+		if( this.dropSite instanceof org.lgna.croquet.RetargetableDropSite ) {
+			org.lgna.croquet.RetargetableDropSite retargetableDropSite = (org.lgna.croquet.RetargetableDropSite)this.dropSite;
+			this.dropSite = retargetableDropSite.createReplacement( retargeter );
+		}
 	}
 }

@@ -56,7 +56,7 @@ public class DropCompletionNote extends CompletionNote< org.lgna.croquet.history
 	}
 	
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
 		return DropNoteUtilities.isWhatWeveBeenWaitingFor( event, this );
 	}
 	@Override

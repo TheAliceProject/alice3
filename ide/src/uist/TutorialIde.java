@@ -56,8 +56,6 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	
 	private static String ROOT_PATH;
 	private static final String TRANSACTION_HISTORY_PATH = "/transactionHistory.bin";
-	//note: we encode and decode the root context temporarily while models (ListSelectionState (Edit) ) still rely on context (for things like getCodec())
-	private static final String CONTEXT_PATH = "/context.bin";
 	private static final String AST_MIMIC_PATH = "/astMimic1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
 	
@@ -191,8 +189,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
 
 //					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK
-//					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK
-					org.lgna.stencil.MenuPolicy.BELOW_STENCIL
+					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK
+//					org.lgna.stencil.MenuPolicy.BELOW_STENCIL
 			);
 		} else {
 			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.FinishFilterer.INSTANCE, recoverer, new org.lgna.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
@@ -208,6 +206,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 				//org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance().setValue( true );
 				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState isInteractionTreeShowingState = org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.createInstance( originalTransactionHistory );
 				isInteractionTreeShowingState.setValue( true );
+				//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 500 );
 				presentation.setSelectedIndex( 0 );
 			}
 		} );
@@ -270,6 +269,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			IS_STENCILS = false;
 			IS_BASED_ON_INTERACTION_AST = false;
 		} else {
+			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.IS_SIDE_DOCKING_DESIRED = true;
 			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = Boolean.parseBoolean( args[ 7 ] );
 			IS_MONKEY_WRENCH_DESIRED = Boolean.parseBoolean( args[ 8 ] );
 			IS_STENCILS  = Boolean.parseBoolean( args[ 9 ] );

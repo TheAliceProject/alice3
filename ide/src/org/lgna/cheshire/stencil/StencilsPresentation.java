@@ -259,7 +259,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		}
 	}
 	@Override
-	protected void handleEvent( org.lgna.croquet.history.event.Event event ) {
+	protected void handleEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		if( this.isIgnoringEvents ) {
 			//pass
 		} else {

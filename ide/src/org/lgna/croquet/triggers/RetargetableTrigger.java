@@ -41,56 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MenuItemSelectNote extends PrepNote< org.lgna.croquet.history.MenuItemSelectStep > {
-	public MenuItemSelectNote( org.lgna.croquet.history.MenuItemSelectStep step ) {
-		super( step );
-	}
-	
-	@Override
-	protected void addFeatures( org.lgna.croquet.history.MenuItemSelectStep step ) {
-		this.addFeature( new org.lgna.cheshire.stencil.features.MenuHole( 
-				new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), 
-				org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH,
-				true,
-				true,
-				false
-		) ) ;
-	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
-		if( event instanceof org.lgna.croquet.history.event.AddStepEvent ) {
-			org.lgna.croquet.history.event.AddStepEvent addStepEvent = (org.lgna.croquet.history.event.AddStepEvent)event;
-			org.lgna.croquet.history.Step< ? > step = addStepEvent.getStep();
-			if( step instanceof org.lgna.croquet.history.MenuItemSelectStep ) {
-				org.lgna.croquet.history.MenuItemSelectStep menuItemSelectStep = (org.lgna.croquet.history.MenuItemSelectStep)step;
-				if( menuItemSelectStep.getModel() == this.getStep().getModel() ) {
-					return true;
-				} else {
-					System.err.println( menuItemSelectStep.getModel() + " != " + this.getStep().getModel() );
-				}
-			}
-		}
-		return false;
-//		if( event instanceof org.lgna.croquet.history.event.MenuSelectionChangedEvent ) {
-//			org.lgna.croquet.history.event.MenuSelectionChangedEvent menuSelectionChangedEvent = (org.lgna.croquet.history.event.MenuSelectionChangedEvent)event;
-//			java.util.List< org.lgna.croquet.Model > models = menuSelectionChangedEvent.getModels();
-//			final int N = models.size();
-//			if( N > 0 ) {
-//				return models.get( N-1 ) == this.getStep().getModel();
-//			} else {
-//				return false;
-//			}
-//		} else {
-//			return false;
-//		}
-	}
-	@Override
-	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
-		return isMouseEventInterceptedInAllCasesEvenPopups( e );
-	}
+public interface RetargetableTrigger extends Trigger {
+	public void retarget( org.lgna.croquet.Retargeter retargeter );
 }

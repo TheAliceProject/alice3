@@ -277,10 +277,10 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 					}
 				} );
 			}
-			public void changing(org.lgna.croquet.history.event.Event e) {
+			public void changing(org.lgna.croquet.history.event.Event<?> e) {
 				
 			}
-			public void changed(org.lgna.croquet.history.event.Event e) {
+			public void changed(org.lgna.croquet.history.event.Event<?> e) {
 				if( e instanceof org.lgna.croquet.history.event.AddStepEvent ) {
 					this.reload();
 				} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
