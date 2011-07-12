@@ -71,7 +71,7 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 	}
 	@Override
 	protected void initialize() {
-		//this.vm.setResources( org.alice.ide.IDE.getSingleton().getResources() );
+		//this.vm.setResources( org.alice.ide.IDE.getActiveInstance().getResources() );
 		this.sceneInstance = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)this.vm.createInstanceEntryPoint( this.sceneType );
 		org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)this.sceneInstance.getInstanceInJava();
 		this.setScene( scene );
@@ -83,7 +83,7 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 	}
 	
 	private org.lgna.croquet.Operation getRestartOperation() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
 			return ide.getRestartOperation();
 		} else {

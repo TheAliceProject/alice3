@@ -63,7 +63,7 @@ public class ThisPane extends AccessiblePane {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.updateBasedOnFocusedCode( org.alice.ide.IDE.getSingleton().getFocusedCode() );
+		this.updateBasedOnFocusedCode( org.alice.ide.IDE.getActiveInstance().getFocusedCode() );
 		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( this.codeSelectionObserver );
 	}
 	@Override

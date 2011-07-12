@@ -50,6 +50,6 @@ public abstract class UriCompositeOperation extends org.lgna.croquet.SerialOpera
 		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
 	}
 	protected org.alice.ide.ProjectApplication getProjectApplication() {
-		return org.alice.ide.ProjectApplication.getSingleton();
+		return org.alice.ide.ProjectApplication.getActiveInstance();
 	}
 }

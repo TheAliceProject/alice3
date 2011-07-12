@@ -102,7 +102,7 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 					//rv.setEnabled( true );
 					if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
 						edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)accessible;
-						edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = org.alice.ide.IDE.getSingleton().getFocusedCode();
+						edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
 						if( focusedCode != null ) {
 							edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> scopeType = focusedCode.getDeclaringType();
 							if( field.getValueType() == scopeType ) {

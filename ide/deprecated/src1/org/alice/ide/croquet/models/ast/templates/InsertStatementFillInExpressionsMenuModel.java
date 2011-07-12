@@ -59,7 +59,7 @@ abstract class InsertStatementFillInExpressionsMenuModel extends org.alice.ide.c
 	protected edu.cmu.cs.dennisc.cascade.Blank createCascadeBlank() {
 		java.util.Locale locale = java.util.Locale.getDefault();
 		if( this.desiredValueTypes.length > 1 ) {
-			final edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = org.alice.ide.IDE.getSingleton().getCascadeManager().createExpressionsFillIn( this.desiredValueTypes, false );
+			final edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = org.alice.ide.IDE.getActiveInstance().getCascadeManager().createExpressionsFillIn( this.desiredValueTypes, false );
 			final int N = fillIn.getChildren().size();
 			for( int i=0; i<N; i++ ) {
 				edu.cmu.cs.dennisc.cascade.Blank blank = fillIn.getBlankAt( i );

@@ -191,7 +191,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			super( step );
 		}
 		protected void addResource( org.alice.virtualmachine.Resource resource ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			if( ide != null ) {
 				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 				if( ide != null ) {
@@ -201,7 +201,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			}
 		}
 		protected void removeResource( org.alice.virtualmachine.Resource resource ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			if( ide != null ) {
 				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 				if( ide != null ) {
@@ -601,7 +601,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		}
 	}
 	private void resetModel() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
 			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 			if( project != null ) {

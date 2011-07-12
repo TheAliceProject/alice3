@@ -58,7 +58,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 //	@Override
 //	protected int getInsetLeft() {
 //		int rv = super.getInsetLeft();
-//		if( org.alice.ide.IDE.getSingleton().getExpressionTypeFeedbackDesiredState().getValue() ) {
+//		if( org.alice.ide.IDE.getActiveInstance().getExpressionTypeFeedbackDesiredState().getValue() ) {
 //			//pass
 //		} else {
 //			edu.cmu.cs.dennisc.croquet.Component< ? > mainComponent = this.getMainComponent();

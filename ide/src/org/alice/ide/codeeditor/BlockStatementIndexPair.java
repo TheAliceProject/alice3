@@ -54,7 +54,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.Retargeta
 		this.index = index;
 	}
 	public BlockStatementIndexPair( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 		java.util.UUID id = binaryDecoder.decodeId();
 		this.blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, id );

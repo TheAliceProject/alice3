@@ -52,7 +52,7 @@ public abstract class Application {
 	public static final Group INHERIT_GROUP = Group.getInstance( java.util.UUID.fromString( "488f8cf9-30cd-49fc-ab72-7fd6a3e13c3f" ), "INHERIT_GROUP" );
 	private static Application singleton;
 
-	public static Application getSingleton() {
+	public static Application getActiveInstance() {
 		return singleton;
 	}
 

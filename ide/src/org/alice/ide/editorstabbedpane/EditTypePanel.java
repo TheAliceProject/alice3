@@ -357,7 +357,7 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 		@Override
 		protected org.lgna.croquet.Operation<?> getDoubleClickOperation(edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice item) {
 			if( item.isSignatureLocked.getValue() ) {
-				org.lgna.croquet.Application.getSingleton().showMessageDialog( item.getName() + " is locked and therefore cannot be renamed." );
+				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( item.getName() + " is locked and therefore cannot be renamed." );
 				return null;
 			} else {
 				return org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item );
@@ -373,7 +373,7 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 		protected org.lgna.croquet.Operation<?> getDoubleClickOperation(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice item) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = item.getValueType();
 			if( valueType.isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class ) ) {
-				org.lgna.croquet.Application.getSingleton().showMessageDialog( "Currently, camera markers cannot be renamed." );
+				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Currently, camera markers cannot be renamed." );
 				return null;
 			} else {
 				return new org.alice.ide.operations.ast.EditFieldOperation( item );
@@ -432,7 +432,7 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 			}
 		};
 		
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		MethodList proceduresList = new MethodList();
 		MethodList functionsList = new MethodList();
 		FieldList fieldsList = new FieldList();

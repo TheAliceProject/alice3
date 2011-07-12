@@ -61,7 +61,7 @@ public class UbiquitousStatementImplementor { //todo: needs a better name
 		if( this.incompleteStatementPane != null ) {
 			//pass
 		} else {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			this.incompleteStatementPane = ide.getTemplatesFactory().createStatementPane( incompleteStatement );
 		}
 		return this.incompleteStatementPane;

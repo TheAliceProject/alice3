@@ -53,6 +53,6 @@ public abstract class SelectedExpressionBasedStatmentInsertCascade extends State
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.IDE.getSingleton().createInstanceExpression(), expressions );
+		return this.createStatement( org.alice.ide.IDE.getActiveInstance().createInstanceExpression(), expressions );
 	}
 }

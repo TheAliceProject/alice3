@@ -14,7 +14,7 @@ public class RotateForwardModel extends org.lgna.croquet.ActionOperation {
 	}
 	private RotateForwardModel() {
 		super( null, java.util.UUID.fromString( "510dd64d-ce22-41a2-adeb-73ad8285187b" ) );
-		if (ECardApplication.getSingleton().isRibbonBased()) {
+		if (ECardApplication.getActiveInstance().isRibbonBased()) {
 			this.setSmallIcon( new ImageIcon(getClass().getResource("../resources/ribbon/rotate-clockwise.png") ) );
 		} else {
 			this.setSmallIcon( new ImageIcon(getClass().getResource("../resources/menu/rotate-clockwise.png") ) );

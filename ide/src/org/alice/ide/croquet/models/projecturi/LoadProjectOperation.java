@@ -55,7 +55,7 @@ public class LoadProjectOperation extends org.lgna.croquet.ActionOperation {
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		if (this.uri != null) {
-			org.alice.ide.ProjectApplication.getSingleton().loadProjectFrom(this.uri);
+			org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom(this.uri);
 			step.finish();
 		} else {
 			step.cancel();

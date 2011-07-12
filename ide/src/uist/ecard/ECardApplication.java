@@ -10,18 +10,9 @@ public class ECardApplication extends org.lgna.croquet.Application {
 	protected String year = "2003";
 	protected ECardPanel cardPanel;
 
-	protected ECardApplication() {
-		singleton = this;
+	public static ECardApplication getActiveInstance() {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), ECardApplication.class );
 	}
-
-	private static ECardApplication singleton;
-	public static ECardApplication getSingleton() {
-		if (singleton == null) {
-			singleton = new ECardApplication();
-		}
-		return ECardApplication.singleton;
-	}
-
 	@Override
 	public void initialize( String args[] ) {
 		int x = Integer.parseInt( args[ 0 ] );

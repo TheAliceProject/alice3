@@ -60,7 +60,7 @@ public class AudioSourceFillerInner extends SourceFillerInner< org.alice.virtual
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 		super.addItems( rv, isTop, prevExpression );
-		if( org.alice.ide.IDE.getSingleton().getCascadeManager().isPreviousExpressionSet() ) {
+		if( org.alice.ide.IDE.getActiveInstance().getCascadeManager().isPreviousExpressionSet() ) {
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			rv.add( org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation.getInstance().getFillIn() );
 		}

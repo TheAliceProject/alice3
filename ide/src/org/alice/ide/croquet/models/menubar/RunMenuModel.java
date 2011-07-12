@@ -54,7 +54,7 @@ public class RunMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	}
 	private RunMenuModel() {
 		super( java.util.UUID.fromString( "e441d150-d53b-4bc1-9dbf-a61843a53a34" ),
-				org.alice.ide.IDE.getSingleton().getRunOperation().getMenuItemPrepModel()
+				org.alice.ide.IDE.getActiveInstance().getRunOperation().getMenuItemPrepModel()
 		);
 	}
 }

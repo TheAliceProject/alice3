@@ -1060,7 +1060,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 		}
 		else if (e.getSource() == this.saveButton)
 		{
-			File selectedFile = org.lgna.croquet.Application.getSingleton().showSaveFileDialog(getDefaultDirectory(), getDefaultFilename(), "mov", true);
+			File selectedFile = org.lgna.croquet.Application.getActiveInstance().showSaveFileDialog(getDefaultDirectory(), getDefaultFilename(), "mov", true);
 			if (selectedFile != null)
 			{
 				copyRecordedFile( this.recordedMovieFile, selectedFile );

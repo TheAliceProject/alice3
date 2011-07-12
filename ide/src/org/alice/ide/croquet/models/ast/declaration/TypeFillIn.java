@@ -84,6 +84,6 @@ public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< edu.cmu.cs.denni
 	}
 	@Override
 	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.AbstractType, java.lang.Void > step ) {
-		return org.alice.ide.IDE.getSingleton().getTextFor( type );
+		return org.alice.ide.IDE.getActiveInstance().getTextFor( type );
 	}
 }

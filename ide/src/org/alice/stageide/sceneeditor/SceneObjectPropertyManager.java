@@ -199,7 +199,7 @@ public class SceneObjectPropertyManager extends GridBagPanel implements org.lgna
 		if( nextValue instanceof AbstractField ) {
 			AbstractField field = (AbstractField)nextValue;
 			this.selectedField = field;
-			Object instance = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getInstanceInAliceVMForField( field );
+			Object instance = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getInstanceInAliceVMForField( field );
 			if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
 				edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
 				instance = instanceInAlice.getInstanceInJava();

@@ -50,6 +50,6 @@ public abstract class ActionOperation extends org.lgna.croquet.ActionOperation {
 		super( group, individualId );
 	}
 	protected final org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 }

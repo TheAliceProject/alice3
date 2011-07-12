@@ -154,7 +154,7 @@ class AlgConstructionGuide extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction
 
 		if( IS_MONKEY_WRENCH_DESIRED ) {
 			final int N = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getItemCount();
-			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem( org.alice.ide.IDE.getSingleton().getSceneField() );
+			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem( org.alice.ide.IDE.getActiveInstance().getSceneField() );
 			//org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedIndex( N-2 );
 		}
 		

@@ -92,7 +92,7 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 	{
 		if (this.sceneGraphViewer != null)
 		{
-			Component root = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getScene().getSGComposite();
+			Component root = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getScene().getSGComposite();
 			SidePane.this.sceneGraphViewer.setRoot(root);
 		}
 	}
@@ -131,7 +131,7 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 	{
 		if (this.lookingglassViewer != null)
 		{
-			SceneAdapter root = (SceneAdapter)AdapterFactory.getAdapterFor( ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getScene().getSGComposite() );
+			SceneAdapter root = (SceneAdapter)AdapterFactory.getAdapterFor( ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getScene().getSGComposite() );
 			SidePane.this.lookingglassViewer.setRoot(root);
 		}
 	}
@@ -186,8 +186,8 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
                     booleanState.setToolTipText(item.getToolTipText());
                 }
                 PushButton b = booleanState.createPushButton();
-                b.setSelectedColor(org.alice.ide.IDE.getSingleton().getTheme().getSelectedColor());
-                b.setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getPrimaryBackgroundColor());
+                b.setSelectedColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor());
+                b.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor());
                 return b;
             }
         };
@@ -221,7 +221,7 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
                 );
 		//This is to create a line separator between the undo/redo panel and the handle controls
 		//edu.cmu.cs.dennisc.croquet.HorizontalSeparator() doesn't provide good color control
-		handleControlPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, org.alice.ide.IDE.getSingleton().getTheme().getSecondaryBackgroundColor()), 
+		handleControlPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor()), 
 		        BorderFactory.createEmptyBorder(4, 0, 0, 0)));
 		//Construct the undo/redo panel
 		org.lgna.croquet.components.LineAxisPanel undoRedoPanel = new org.lgna.croquet.components.LineAxisPanel(
@@ -362,15 +362,15 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
                 );
 		
 		//Set up colors
-		this.setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getPrimaryBackgroundColor());
-		this.mainPanel.setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getSecondaryBackgroundColor());
-        this.snapControlPanel.setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getPrimaryBackgroundColor());
+		this.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor());
+		this.mainPanel.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor());
+        this.snapControlPanel.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor());
         
-        ObjectPropertiesTab.getInstance().getMainComponent().setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getSecondaryBackgroundColor());
-        MarkerPanelTab.getInstance().getMainComponent().setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getSecondaryBackgroundColor());
-        MarkerPanelTab.getInstance().getMainComponent().setSelectedItemColor(org.alice.ide.IDE.getSingleton().getTheme().getSelectedColor());
+        ObjectPropertiesTab.getInstance().getMainComponent().setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor());
+        MarkerPanelTab.getInstance().getMainComponent().setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor());
+        MarkerPanelTab.getInstance().getMainComponent().setSelectedItemColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor());
         
-        headerPanel.setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getPrimaryBackgroundColor());
+        headerPanel.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor());
 	        
 		Dimension minSize = new Dimension(this.getAwtComponent().getMinimumSize());
 		minSize.width = 300;

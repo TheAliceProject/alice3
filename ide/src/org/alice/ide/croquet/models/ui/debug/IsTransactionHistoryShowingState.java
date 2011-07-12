@@ -234,7 +234,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 		if( bounds != null ) {
 			rv.setBounds( bounds );
 		} else {
-			org.lgna.croquet.Application application = org.lgna.croquet.Application.getSingleton();
+			org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 			if( application != null ) {
 				org.lgna.croquet.components.Frame frame = application.getFrame();
 				if( frame != null ) {
