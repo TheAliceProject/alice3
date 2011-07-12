@@ -449,17 +449,17 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 		functionsList.setBackgroundColor( null );
 		fieldsList.setBackgroundColor( null );
 
-		org.lgna.croquet.BooleanState proceduresToolPaletteState = new org.lgna.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "4236c740-8881-4cf1-82e3-e3aef61c13dd" ), true );
+		org.lgna.croquet.BooleanState proceduresToolPaletteState = new org.lgna.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "4236c740-8881-4cf1-82e3-e3aef61c13dd" ), true ) {};
 		proceduresToolPaletteState.setTextForBothTrueAndFalse( "procedures" );
 		org.lgna.croquet.components.ToolPalette proceduresToolPalette = proceduresToolPaletteState.createToolPalette( createMembersPanel( proceduresList, org.alice.ide.croquet.models.ast.DeclareProcedureOperation.getInstance( type ) ) );
 		proceduresToolPalette.setBackgroundColor( ide.getTheme().getProcedureColor() );
 
-		org.lgna.croquet.BooleanState functionsToolPaletteState = new org.lgna.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "ea7e601f-255b-41aa-bccd-af181c6b3bf0" ), true );
+		org.lgna.croquet.BooleanState functionsToolPaletteState = new org.lgna.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "ea7e601f-255b-41aa-bccd-af181c6b3bf0" ), true ) {};
 		functionsToolPaletteState.setTextForBothTrueAndFalse( "functions" );
 		org.lgna.croquet.components.ToolPalette functionsToolPalette = functionsToolPaletteState.createToolPalette( createMembersPanel( functionsList, org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( type ) ) );
 		functionsToolPalette.setBackgroundColor( ide.getTheme().getFunctionColor() );
 
-		org.lgna.croquet.BooleanState fieldsToolPaletteState = new org.lgna.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7176c895-4e0f-4ebe-98a2-f820b27c9206" ), true );
+		org.lgna.croquet.BooleanState fieldsToolPaletteState = new org.lgna.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7176c895-4e0f-4ebe-98a2-f820b27c9206" ), true ) {};
 		fieldsToolPaletteState.setTextForBothTrueAndFalse( "properties" );
 		org.lgna.croquet.components.ToolPalette fieldsToolPalette = fieldsToolPaletteState.createToolPalette( createMembersPanel( fieldsList, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type ) ) );
 		fieldsToolPalette.setBackgroundColor( ide.getTheme().getFieldColor() );

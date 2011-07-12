@@ -216,9 +216,9 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 					public StringBuilder appendRepresentation( StringBuilder rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > value, java.util.Locale locale ) {
 						throw new RuntimeException( "todo" );
 					}
-				}, treeModel, treeModel.getRoot() );
+				}, treeModel, treeModel.getRoot() ) {};
 
-		this.filterState = new org.lgna.croquet.StringState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "8648d640-5676-4627-a002-44db06ce58ce" ), "" );
+		this.filterState = new org.lgna.croquet.StringState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "8648d640-5676-4627-a002-44db06ce58ce" ), "" ) {};
 
 		this.treeSelectionState.addSelectionObserver( new org.lgna.croquet.TreeSelectionState.SelectionObserver< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String >>() {
 			public void selectionChanged( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > nextValue ) {

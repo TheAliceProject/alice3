@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class StringState extends State<String> {
+public abstract class StringState extends State<String> {
 	private javax.swing.text.Document document;
 	private javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
 		private void handleUpdate( javax.swing.event.DocumentEvent e ) {

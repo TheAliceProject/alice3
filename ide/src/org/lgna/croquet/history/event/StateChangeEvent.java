@@ -40,30 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.preferencesinputpane;
+
+package org.lgna.croquet.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanPreferenceCheckBoxProxy extends PreferenceProxy<Boolean> {
-	private org.lgna.croquet.BooleanState operation;
-	private org.lgna.croquet.components.CheckBox checkBox;
-	public BooleanPreferenceCheckBoxProxy( edu.cmu.cs.dennisc.preference.Preference<Boolean> preference ) {
-		super( preference );
-		this.operation = new org.lgna.croquet.BooleanState( 
-				org.alice.ide.operations.preferences.PreferencesOperation.PREFERENCES_GROUP, 
-				java.util.UUID.fromString( "033f4377-4b05-42d3-8e4d-167b4704be7e" ), 
-				this.getPreference().getValue()
-		) {};
-		this.operation.setTextForBothTrueAndFalse( this.getPreference().getKey() );
-		this.checkBox = this.operation.createCheckBox();
-	}
-	@Override
-	public org.lgna.croquet.components.Component< ? > getComponent() {
-		return this.checkBox;
-	}
-	@Override
-	public void setAndCommitValue() {
-		this.getPreference().setAndCommitValue( this.operation.getValue() );
+public class StateChangeEvent< T > extends Event< org.lgna.croquet.history.StateChangeStep > {
+	public StateChangeEvent( org.lgna.croquet.history.StateChangeStep step ) {
+		super( step );
 	}
 }
