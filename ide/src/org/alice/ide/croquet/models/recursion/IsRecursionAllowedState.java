@@ -53,7 +53,7 @@ public class IsRecursionAllowedState extends org.lgna.croquet.BooleanState {
 		return SingletonHolder.instance;
 	}
 	private IsRecursionAllowedState() {
-		super( org.alice.ide.IDE.PROGRAMMING_LANGUAGE_GROUP, java.util.UUID.fromString( "a5e1ded2-18c7-4ae5-8676-e6deca5650fe" ), false );
+		super( org.alice.ide.IDE.PROGRAMMING_LANGUAGE_GROUP, java.util.UUID.fromString( "d3bbfe60-166d-4fa0-a98b-5992998dfca9" ), false );
 		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 }

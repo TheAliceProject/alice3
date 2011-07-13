@@ -78,7 +78,7 @@ public abstract class SelectAndLoadProjectOperation extends org.lgna.croquet.Inp
 			//org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel = step.getMainPanel();
 			java.net.URI uri = org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedURI();
 			if (uri != null) {
-				org.alice.ide.ProjectApplication.getSingleton().loadProjectFrom( uri );
+				org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( uri );
 				step.finish();
 			} else {
 				step.cancel();

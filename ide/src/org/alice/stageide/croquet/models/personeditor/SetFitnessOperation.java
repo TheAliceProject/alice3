@@ -48,11 +48,17 @@ package org.alice.stageide.croquet.models.personeditor;
  */
 public class SetFitnessOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private int value;
+
 	public SetFitnessOperation( int value, String name ) {
-		super( java.util.UUID.fromString( "979d9be8-c24c-4921-93d4-23747bdf079d" ) );
+		this(value, name, java.util.UUID.fromString( "979d9be8-c24c-4921-93d4-23747bdf079d" ));
+	}
+	
+	protected SetFitnessOperation( int value, String name, java.util.UUID uuid ) {
+		super( uuid );
 		this.value = value;
 		this.setName( name );
 	}
+	
 	@Override
 	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 		FitnessModel.getInstance().setValue( this.value );

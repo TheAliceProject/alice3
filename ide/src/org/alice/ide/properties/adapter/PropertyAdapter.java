@@ -43,10 +43,6 @@
 
 package org.alice.ide.properties.adapter;
 
-import org.lgna.croquet.Operation;
-import org.lgna.croquet.components.Button;
-
-
 public interface PropertyAdapter <P, O>
 {
 	public static interface ValueChangeObserver<P>

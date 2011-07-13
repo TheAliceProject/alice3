@@ -90,7 +90,7 @@ public class FieldNamePropertyController extends BasicPropertyController<String>
                 };
             }
         };
-        this.label.setBackgroundColor(org.alice.ide.IDE.getSingleton().getTheme().getSelectedColor());
+        this.label.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor());
         this.label.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         return this.label;
     }

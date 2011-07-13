@@ -104,7 +104,7 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation {
                     {
                         System.err.println("TODO: fix broken bounding box for "+this.treeNode.getValue());
                     }
-					AffineMatrix4x4 goodOrientation = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getGoodPointOfViewInSceneForObject(box);
+					AffineMatrix4x4 goodOrientation = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getGoodPointOfViewInSceneForObject(box);
 					((org.alice.apis.moveandturn.Transformable)fieldObject).setLocalTransformation(goodOrientation);
 				}
 			}

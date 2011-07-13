@@ -149,7 +149,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	protected final org.lgna.croquet.components.Component< ? > createIsReassignableComponent() {
 		org.lgna.croquet.components.JComponent< ? > rv;
 		if( isIsReassignableStateDesired() ) {
-			this.isReassignableStateOperation = new org.lgna.croquet.BooleanState( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c95e177e-8fea-4916-a401-1b865594b135" ), this.getIsReassignableInitialState() );
+			this.isReassignableStateOperation = new org.lgna.croquet.BooleanState( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c95e177e-8fea-4916-a401-1b865594b135" ), this.getIsReassignableInitialState() ) {};
 			 //"(is constant)", "(is variable)"
 			this.isReassignableStateOperation.setTextForTrueAndTextForFalse( "yes", "no" );
 			this.isReassignableStateOperation.setEnabled( this.isIsReassignableComponentEnabled() );

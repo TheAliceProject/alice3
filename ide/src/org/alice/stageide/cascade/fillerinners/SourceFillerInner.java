@@ -46,7 +46,7 @@ package org.alice.stageide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SourceFillerInner< R extends org.alice.virtualmachine.Resource > extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
+public abstract class SourceFillerInner< R extends org.alice.virtualmachine.Resource > extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
 	private final Class<R> resourceCls;
 	public SourceFillerInner( Class<?> cls, Class<R> resourceCls ) {
 		super( cls );
@@ -56,7 +56,7 @@ public abstract class SourceFillerInner< R extends org.alice.virtualmachine.Reso
 	protected abstract org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation,? > getImportFillIn();
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		java.util.Set< org.alice.virtualmachine.Resource > resources = ide.getResources();
 		if( resources != null && resources.isEmpty() == false ) {
 			int prevRvSize = rv.size();

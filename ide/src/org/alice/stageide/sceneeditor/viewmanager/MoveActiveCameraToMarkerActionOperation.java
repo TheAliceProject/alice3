@@ -44,7 +44,6 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.MarkerWithIcon;
 import org.alice.apis.moveandturn.Element;
 import org.alice.apis.moveandturn.OrthographicCameraMarker;
 import org.alice.ide.IDE;
@@ -105,7 +104,7 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 		this.markerField = markerField;
 		if (this.markerField != null)
 		{
-			CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(this.markerField);
+			CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getCameraMarkerForField(this.markerField);
 			if (marker != null)
 			{
 				this.imageIcon.setRightImage(marker.getIcon());
@@ -133,7 +132,7 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 		final org.alice.apis.moveandturn.PointOfView prevPOV;
 		final org.alice.apis.moveandturn.PointOfView nextPOV;
 		
-		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor());
+		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor());
 		
 		cameraMarker = sceneEditor.getInstanceInJavaForField(this.markerField, org.alice.apis.moveandturn.CameraMarker.class);
 		AbstractCamera sgCamera = sceneEditor.getSGPerspectiveCamera();

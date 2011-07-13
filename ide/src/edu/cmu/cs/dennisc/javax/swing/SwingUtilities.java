@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.javax.swing;
  */
 public class SwingUtilities {
 	public static void doLayoutTree( java.awt.Component c ) {
-//		c.doLayout();
+		//c.doLayout();
 		if( c instanceof java.awt.Container ) {
 			java.awt.Container container = (java.awt.Container)c;
 			for( java.awt.Component component : container.getComponents() ) {
@@ -55,8 +55,6 @@ public class SwingUtilities {
 			}
 		}
 		c.doLayout();
-		c.setSize( c.getPreferredSize() );
-		//c.getPreferredSize();
 	}
 	public static void setSizeToPreferredSizeTree( java.awt.Component c ) {
 		if( c instanceof java.awt.Container ) {

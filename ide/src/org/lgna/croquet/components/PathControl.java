@@ -44,10 +44,9 @@
 package org.lgna.croquet.components;
 
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.StandardMenuItemPrepModel;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.PredeterminedMenuModel;
 import org.lgna.croquet.SelectDirectoryActionOperation;
+import org.lgna.croquet.StandardMenuItemPrepModel;
 import org.lgna.croquet.TreeSelectionState;
 
 /*package-private*/ class SelectChildDirectoryMenuModel extends org.lgna.croquet.PredeterminedMenuModel {

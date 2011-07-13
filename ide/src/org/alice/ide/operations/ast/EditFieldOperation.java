@@ -53,7 +53,7 @@ public class EditFieldOperation extends AbstractEditFieldOperation {
 	protected org.alice.ide.declarationpanes.EditFieldPane prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
 		final java.util.Set< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > referencedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		final java.util.Set< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > reassignedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 		if( project != null ) {
 			final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = this.getField();

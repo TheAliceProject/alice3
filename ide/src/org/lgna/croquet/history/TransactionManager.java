@@ -130,149 +130,9 @@ public class TransactionManager {
 
 	private static javax.swing.MenuElement[] previousMenuElements = {};
 	private static void handleMenuSelectionStateChanged( javax.swing.event.ChangeEvent e ) {
-		javax.swing.MenuElement[] menuElements = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
-		if( isCroquetMenuSelection( menuElements ) ) {
-			java.util.List< PrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			org.lgna.croquet.components.MenuBar menuBar = getMenuBarOrigin( menuElements );
-			int i0;
-			if( menuBar != null ) {
-				javax.swing.JPopupMenu jPreviousPopupMenu;
-				if( previousMenuElements.length >= 3 ) {
-					jPreviousPopupMenu = (javax.swing.JPopupMenu)previousMenuElements[ 2 ];
-				} else {
-					jPreviousPopupMenu = null;
-				}
-				if( menuElements.length >= 3 ) {
-					assert menuElements.length >= 3;
-					assert menuElements[ 1 ] instanceof javax.swing.JMenu;
-					assert menuElements[ 2 ] instanceof javax.swing.JPopupMenu;
-					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
-					
-					javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElements[ 1 ];
-					org.lgna.croquet.components.Menu menu = (org.lgna.croquet.components.Menu)org.lgna.croquet.components.Component.lookup( jMenu );
-					assert menu != null;
-
-					PrepModel menuModel = menu.getModel();
-					assert menuModel != null;
-					models.add( menuModel );
-					i0 = 3;
-				} else {
-					i0 = -1;
-				}
-			} else {
-				i0 = 0;
-			}
-			if( i0 != -1 && menuElements.length > 0 ) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( menuElements.length );
-//				for( javax.swing.MenuElement menuElement : menuElements ) {
-//					edu.cmu.cs.dennisc.print.PrintUtilities.print( menuElement.getClass().getName() );
-//					edu.cmu.cs.dennisc.print.PrintUtilities.print( ", " );
-//				}
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println();
-				getActiveTransaction().pendMenuSelection( e, menuElements, i0 );
-			}
-
-//			if( previousMenuElements.length > 0 ) {
-//				if( menuElements.length > 0 ) {
-//					java.util.List< Model > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//					MenuBar menuBar = getMenuBarOrigin( menuElements );
-//					int i0;
-//					if( menuBar != null ) {
-//						models.add( menuBar.getModel() );
-//						javax.swing.JPopupMenu jPreviousPopupMenu;
-//						if( previousMenuElements.length >= 3 ) {
-//							jPreviousPopupMenu = (javax.swing.JPopupMenu)previousMenuElements[ 2 ];
-//						} else {
-//							jPreviousPopupMenu = null;
-//						}
-//						
-//						assert menuElements.length >= 3;
-//						assert menuElements[ 1 ] instanceof javax.swing.JMenu;
-//						assert menuElements[ 2 ] instanceof javax.swing.JPopupMenu;
-//						javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
-//						
-//						javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElements[ 1 ];
-//						Menu menu = (Menu)Component.lookup( jMenu );
-//						assert menu != null;
-//
-//						Model menuModel = menu.getModel();
-//						assert menuModel != null;
-//						models.add( menuModel );
-//
-//						if( jPreviousPopupMenu != jPopupMenu ) {
-//							if( jPreviousPopupMenu != null ) {
-//								ModelContext< ? > popupContext = ContextManager.popContext();
-//								assert popupContext instanceof PopupOperationContext;
-//							}
-//							
-//							if( menuModel instanceof MenuModel ) {
-//								/*AbstractPopupMenuOperationContext popupContext =*/ ContextManager.createAndPushStandardPopupOperationContext( ((MenuModel)menuModel).getPopupMenuOperation(), e, null );
-//							} else {
-//								System.err.println( "handleMenuSelectionStateChanged: " + menuModel );
-//							}
-//							
-//						}
-//						i0 = 3;
-//					} else {
-//						i0 = 0;
-//					}
-//					for( int i=i0; i<menuElements.length; i++ ) {
-//						javax.swing.MenuElement menuElementI = menuElements[ i ];
-//						if( menuElementI instanceof javax.swing.JPopupMenu ) {
-//							javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElementI;
-//							//pass
-//						} else if( menuElementI instanceof javax.swing.JMenuItem ) {
-//							javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
-//							Component< ? > component = Component.lookup( jMenuItem );
-//							//edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleMenuSelectionStateChanged", i, component.getClass() );
-//							if( component instanceof ViewController< ?, ? > ) {
-//								ViewController< ?, ? > viewController = (ViewController< ?, ? >)component;
-//								//edu.cmu.cs.dennisc.print.PrintUtilities.println( "viewController", i, viewController.getModel() );
-//								models.add( viewController.getModel() );
-//							}
-//						}
-//					}
-//					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-//					if( modelContext instanceof PopupOperationContext ) {
-//						PopupOperationContext popupContext = (PopupOperationContext)modelContext;
-//						popupContext.handleMenuSelectionChanged( e, models );
-//					} else {
-//						System.err.println( "WARNING: handleMenuSelectionStateChanged not PopupMenuOperationContext " + modelContext );
-//					}
-//					TransactionManager.handleMenuSelectionChanged( models );
-//				} else {
-//					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
-//					if( menuBarModel != null ) {
-//						ModelContext< ? > popupContext = ContextManager.popContext();
-//						assert popupContext instanceof StandardPopupOperationContext;
-//
-//						ModelContext< ? > menuBarContext = ContextManager.popContext();
-//						assert menuBarContext instanceof MenuBarModelContext;
-//					}
-//				}
-//			} else {
-//				if( menuElements.length > 0 ) {
-//					MenuBar menuBar = getMenuBarOrigin( menuElements );
-//					if( menuBar != null ) {
-//						/*MenuBarModelContext childContext =*/ ContextManager.createAndPushMenuBarModelContext( menuBar.getModel(), e, menuBar );
-//						assert menuElements.length == 2;
-//					} else {
-//						ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-//						if( modelContext instanceof StandardPopupOperationContext ) {
-//							//pass
-//						} else {
-//							System.err.println( "combo box? " + menuElements.length + " " + java.util.Arrays.toString( menuElements ) );
-//							System.err.println( "modelContext: " + modelContext );
-//						}
-//					}
-//				} else {
-//					//assert false;
-//					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-//					System.err.println( "both prev and current menu selection length 0" );
-//					System.err.println( "modelContext: " + modelContext );
-//				}
-//			}
-//			previousMenuElements = menuElements;
+		org.lgna.croquet.triggers.MenuSelectionTrigger trigger = new org.lgna.croquet.triggers.MenuSelectionTrigger( e );
+		if( trigger.isValid() ) {
+			getActiveTransaction().addMenuSelection( trigger );
 		} else {
 			System.err.println( "warning: not croquet menu selection." );
 		}
@@ -282,27 +142,6 @@ public class TransactionManager {
 			handleMenuSelectionStateChanged( e );
 		}
 	};
-//	public static void pendDrop( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-////		fireDropPending( model, dropReceptor, dropSite );
-//		getLastTransaction().pendDrop( model, dropReceptor, dropSite );
-////		fireDropPended( model, dropReceptor, dropSite );
-//	}
-	
-//	public static void handleMenuSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
-//		fireMenuItemsSelectionChanged( models );
-//	}
-
-//	public static <E> void addListSelectionPopupMenuWillBecomeVisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
-//		ListSelectionStateContext<E> listSelectionStateContext = createAndPushItemSelectionStateContext( model, e, itemSelectable );
-//		listSelectionStateContext.handlePopupMenuWillBecomeVisibleEvent( e );
-//		TransactionManager.addListSelectionPrepStep( model.getPrepModel() );
-//	}
-//	public static <E> void addListSelectionPopupMenuWillBecomeInvisible( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
-//	}
-//	public static <E> void addListSelectionPopupMenuCanceled( ListSelectionState<E> model, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
-//		TransactionManager.addCancelCompletionStep( model );
-//	}
-
 	public static void startListeningToMenuSelection() {
 		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( menuSelectionChangeListener );
 	}
@@ -503,26 +342,16 @@ public class TransactionManager {
 		}
 	}
 
-//	public static CascadeBlankStep createCascadeBlankStep( CascadeBlank model ) {
-//		return null;
-//	}
-//	public static CascadeCancelStep createCascadeCancelStep( CascadeCancel model ) {
-//		return null;
-//	}
-//	public static CascadeFillInPrepStep createCascadeFillInPrepStep( CascadeFillIn model ) {
-//		return null;
-//	}
-//	public static CascadeMenuStep createCascadeMenuStep( CascadeMenu model ) {
-//		return null;
-//	}
-//	public static CascadeRootStep createCascadeRootStep( CascadeRoot model ) {
-//		return null;
-//	}
-//	public static CascadeSeparatorStep createCascadeSeparatorStep( CascadeSeparator model ) {
-//		return new CascadeSeparatorStep( model, null );
-//	}
-
-	public static void handleStateChanged( BoundedRangeIntegerState boundedRangeIntegerState, javax.swing.event.ChangeEvent e ) {
+	public static void handleBoundedRangeIntegerStateChanged( BoundedRangeIntegerState boundedRangeIntegerState, javax.swing.event.ChangeEvent changeEvent, int value, boolean isAdjusting ) {
+		TransactionHistory transactionHistory = getActiveTransactionHistory();
+		Transaction transaction = transactionHistory.getActiveTransaction();
+		if( isAdjusting ) {
+			org.lgna.croquet.history.event.AdjustValueStateEvent adjustEvent = new org.lgna.croquet.history.event.AdjustValueStateEvent( transaction );
+			transaction.fireChanging( adjustEvent );
+			transaction.fireChanged( adjustEvent );
+		} else {
+			BoundedRangeIntegerStateChangeStep.createAndAddToTransaction( transaction, boundedRangeIntegerState, new org.lgna.croquet.triggers.ChangeEventTrigger( changeEvent ) );
+		}
 //		org.lgna.croquet.steps.TransactionManager.handleStateChanged( BoundedRangeIntegerState.this, e );
 //		org.lgna.croquet.steps.BoundedRangeIntegerStateChangeStep step;
 //		if( this.previousValueIsAdjusting ) {

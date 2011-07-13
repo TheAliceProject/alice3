@@ -42,32 +42,46 @@
  */
 package org.alice.media.encoder;
 
-import java.io.*;
-import java.io.ObjectInputStream.GetField;
-import java.util.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
-import java.awt.image.ImageObserver;
 import java.awt.image.WritableRaster;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.imageio.ImageIO;
-import javax.media.*;
-import javax.media.control.*;
-import javax.media.protocol.*;
-import javax.media.datasink.*;
+import javax.media.Buffer;
+import javax.media.ConfigureCompleteEvent;
+import javax.media.Controller;
+import javax.media.ControllerEvent;
+import javax.media.ControllerListener;
+import javax.media.DataSink;
+import javax.media.EndOfMediaEvent;
+import javax.media.Format;
+import javax.media.Manager;
+import javax.media.MediaLocator;
+import javax.media.PrefetchCompleteEvent;
+import javax.media.Processor;
+import javax.media.RealizeCompleteEvent;
+import javax.media.ResourceUnavailableEvent;
+import javax.media.Time;
+import javax.media.control.TrackControl;
+import javax.media.datasink.DataSinkErrorEvent;
+import javax.media.datasink.DataSinkEvent;
+import javax.media.datasink.DataSinkListener;
+import javax.media.datasink.EndOfStreamEvent;
 import javax.media.format.VideoFormat;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.media.protocol.ContentDescriptor;
+import javax.media.protocol.DataSource;
+import javax.media.protocol.FileTypeDescriptor;
+import javax.media.protocol.PullBufferDataSource;
+import javax.media.protocol.PullBufferStream;
 
-import org.alice.media.YouTubeUploader;
-
-import edu.cmu.cs.dennisc.image.ImageUtilities;
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.movie.MovieEncoder;
 
 /**

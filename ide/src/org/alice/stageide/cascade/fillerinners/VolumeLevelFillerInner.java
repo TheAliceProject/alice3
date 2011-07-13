@@ -45,17 +45,12 @@ package org.alice.stageide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class VolumeLevelFillerInner extends org.alice.ide.cascade.fillerinners.AbstractNumberFillerInner {
+public class VolumeLevelFillerInner extends org.alice.ide.cascade.fillerinners.AbstractDoubleFillerInner {
 	public VolumeLevelFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.VolumeLevel.class ) );
+		super( org.alice.apis.moveandturn.VolumeLevel.class, new double[] { 0.0, 0.25, 0.5, 1.0, 2.0 } );
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-		for( double d : new double[] { 0.0, 0.25, 0.5, 1.0, 2.0 } ) {
-			rv.add( org.alice.stageide.croquet.models.cascade.values.VolumeLevelValueFillIn.getInstance( d ) ); 
-		}
-		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.stageide.croquet.models.custom.CustomVolumeLevelInputDialogOperation.getInstance().getFillIn() );
-		return rv;
+	protected org.lgna.croquet.CascadeItem getCustomItem() {
+		return org.alice.stageide.croquet.models.custom.CustomVolumeLevelInputDialogOperation.getInstance().getFillIn();
 	}
 }

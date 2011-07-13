@@ -62,11 +62,12 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		this.trigger = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.id = binaryDecoder.decodeId();
-		this.trigger = null;
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.modelResolver );
+		binaryEncoder.encode( this.trigger );
 		binaryEncoder.encode( this.id );
 	}
 
@@ -101,12 +102,18 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 			org.lgna.croquet.resolvers.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.resolvers.RetargetableResolver<?>)this.modelResolver;
 			retargetableResolver.retarget( retargeter );
 		}
+		if( this.trigger instanceof org.lgna.croquet.triggers.RetargetableTrigger ) {
+			org.lgna.croquet.triggers.RetargetableTrigger retargetableTrigger = (org.lgna.croquet.triggers.RetargetableTrigger)this.trigger;
+			retargetableTrigger.retarget( retargeter );
+		}
 	}
 	
 	protected StringBuilder updateRepr( StringBuilder rv ) {
 		org.lgna.croquet.Model model = this.getModel();
 		if( model != null ) {
-			rv.append( this.getModel().getClass().getName() );
+			rv.append( model.getClass().getName() );
+			rv.append( ";" );
+			rv.append( model.getTutorialNoteText( this, null, null ) );
 		}
 		return rv;
 	}

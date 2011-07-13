@@ -47,11 +47,11 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class MenuItemSelectStep extends PrepStep< org.lgna.croquet.MenuItemPrepModel > {
-	public static MenuItemSelectStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.MenuItemPrepModel model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new MenuItemSelectStep( parent, model, trigger );
+	public static MenuItemSelectStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.triggers.MenuSelectionTrigger trigger ) {
+		return new MenuItemSelectStep( parent, trigger );
 	}
-	private MenuItemSelectStep( Transaction parent, org.lgna.croquet.MenuItemPrepModel model, org.lgna.croquet.triggers.Trigger trigger ) {
-		super( parent, model, trigger );
+	private MenuItemSelectStep( Transaction parent, org.lgna.croquet.triggers.MenuSelectionTrigger trigger ) {
+		super( parent, trigger.getLastMenuItemPrepModel(), trigger );
 	}
 	public MenuItemSelectStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

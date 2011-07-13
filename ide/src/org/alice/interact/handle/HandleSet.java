@@ -44,8 +44,6 @@ package org.alice.interact.handle;
 
 import java.util.BitSet;
 
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
-
 /**
  * @author David Culyba
  */

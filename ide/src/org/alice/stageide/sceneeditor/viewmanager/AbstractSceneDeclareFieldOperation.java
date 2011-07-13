@@ -43,7 +43,6 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.ide.operations.ast.AbstractDeclareFieldActionOperation;
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 /**
  * @author David Culyba

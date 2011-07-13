@@ -170,13 +170,7 @@ public class FontChooser extends javax.swing.JPanel {
 	private FamilyPane m_familyPane = new FamilyPane();
 	private StylePane m_stylePane = new StylePane();
 	private SizePane m_sizePane = new SizePane();
-	private javax.swing.JLabel m_sample = new javax.swing.JLabel() {
-		@Override
-		public void paint( java.awt.Graphics g ) {
-			((java.awt.Graphics2D)g).setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-			super.paint( g );
-		}
-	};
+	private javax.swing.JLabel m_sample = new javax.swing.JLabel();
 	public FontChooser() {
 		this( new org.alice.apis.moveandturn.Font() );
 	}

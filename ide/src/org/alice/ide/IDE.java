@@ -52,7 +52,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
 
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
-	private static IDE singleton;
 	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
 
 	public static final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
@@ -71,10 +70,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		performSceneEditorGeneratedSetUpMethodNameSet.add( GENERATED_SET_UP_METHOD_NAME );
 	}
 
-	public static IDE getSingleton() {
-		return IDE.singleton;
-	}
-
 	private org.lgna.croquet.State.ValueObserver< Boolean > isAlwaysShowingBlocksObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
@@ -88,18 +83,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 
+	public static IDE getActiveInstance() {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), IDE.class );
+	}
+
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
-		assert IDE.singleton == null;
-		IDE.singleton = this;
-
 		//initialize locale
 		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver< java.util.Locale >() {
 			public void changing( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
-				org.lgna.croquet.Application.getSingleton().setLocale( nextValue );
+				org.lgna.croquet.Application.getActiveInstance().setLocale( nextValue );
 			}
 		} );
 
@@ -255,7 +251,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			return new edu.cmu.cs.dennisc.alice.ast.Expression[] {};
 		} else {
 			if( types.length == 1 ) {
-				edu.cmu.cs.dennisc.alice.ast.Expression predeterminedExpression = org.alice.ide.IDE.getSingleton().createPredeterminedExpressionIfAppropriate( types[ 0 ] );
+				edu.cmu.cs.dennisc.alice.ast.Expression predeterminedExpression = org.alice.ide.IDE.getActiveInstance().createPredeterminedExpressionIfAppropriate( types[ 0 ] );
 				if( predeterminedExpression != null ) {
 					return new edu.cmu.cs.dennisc.alice.ast.Expression[] { predeterminedExpression };
 				} else {
@@ -1028,7 +1024,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {
 		edu.cmu.cs.dennisc.alice.Project project = this.getProject();
 		if( project != null ) {
-			return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType();
+			return project.getProgramType();
 		} else {
 			return null;
 		}

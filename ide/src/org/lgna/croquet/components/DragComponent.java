@@ -172,8 +172,8 @@ public abstract class DragComponent extends Control {
 
 	private void updateProxySizes() {
 		if( isActuallyPotentiallyDraggable() ) {
-			dragProxy.setSize( dragProxy.getProxyWidth(), dragProxy.getProxyHeight() );
-			dropProxy.setSize( dropProxy.getProxyWidth(), dropProxy.getProxyHeight() );
+			dragProxy.setSize( dragProxy.getProxySize() );
+			dropProxy.setSize( dropProxy.getProxySize() );
 		}
 	}
 	private synchronized void updateProxyPosition( java.awt.event.MouseEvent e ) {
@@ -204,7 +204,7 @@ public abstract class DragComponent extends Control {
 	private org.lgna.croquet.history.DragStep step;
 
 	private void handleLeftMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
-		Application application = Application.getSingleton();
+		Application application = Application.getActiveInstance();
 		application.setDragInProgress( true );
 		this.updateProxySizes();
 		this.updateProxyPosition( e );
@@ -220,7 +220,7 @@ public abstract class DragComponent extends Control {
 		this.showDragProxy();
 	}
 	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {
-		if( Application.getSingleton().isDragInProgress() ) {
+		if( Application.getActiveInstance().isDragInProgress() ) {
 			this.updateProxyPosition( e );
 			this.step.handleMouseDragged( e );
 		}
@@ -253,7 +253,7 @@ public abstract class DragComponent extends Control {
 	public void handleMousePressed( java.awt.event.MouseEvent e ) {
 		super.handleMousePressed( e );
 		if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-			if( Application.getSingleton().isDragInProgress() ) {
+			if( Application.getActiveInstance().isDragInProgress() ) {
 				this.handleCancel( e );
 			}
 		}
@@ -265,7 +265,7 @@ public abstract class DragComponent extends Control {
 				if( this.isWithinClickThreshold() ) {
 					//pass
 				} else {
-					Application.getSingleton().setDragInProgress( false );
+					Application.getActiveInstance().setDragInProgress( false );
 					this.setActive( this.getAwtComponent().contains( e.getPoint() ) );
 					javax.swing.JLayeredPane layeredPane = getLayeredPane();
 					java.awt.Rectangle bounds = this.dragProxy.getBounds();
@@ -325,7 +325,7 @@ public abstract class DragComponent extends Control {
 		}
 	}
 	public void handleCancel( java.util.EventObject e ) {
-		Application.getSingleton().setDragInProgress( false );
+		Application.getActiveInstance().setDragInProgress( false );
 		this.setActive( false );
 		javax.swing.JLayeredPane layeredPane = getLayeredPane();
 		if( layeredPane != null ) {

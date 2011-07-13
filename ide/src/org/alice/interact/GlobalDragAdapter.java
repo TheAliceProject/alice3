@@ -43,24 +43,21 @@
 
 package org.alice.interact;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.condition.AndInputCondition;
-import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.DoubleClickedObjectCondition;
 import org.alice.interact.condition.DragAndDropCondition;
+import org.alice.interact.condition.InvertedSelectedObjectCondition;
 import org.alice.interact.condition.KeyPressCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseCondition;
-import org.alice.interact.condition.MousePressCondition;
 import org.alice.interact.condition.MouseDragCondition;
+import org.alice.interact.condition.MousePressCondition;
 import org.alice.interact.condition.MouseWheelCondition;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.condition.SelectedObjectCondition;
-import org.alice.interact.condition.InvertedSelectedObjectCondition;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.handle.HandleSet;
@@ -69,7 +66,6 @@ import org.alice.interact.handle.LinearTranslateHandle;
 import org.alice.interact.handle.ManipulationHandleIndirection;
 import org.alice.interact.handle.RotationRingHandle;
 import org.alice.interact.handle.StoodUpRotationRingHandle;
-import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraMoveDragManipulator;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraPanDragManipulator;
@@ -80,10 +76,8 @@ import org.alice.interact.manipulator.CameraZoomMouseWheelManipulator;
 import org.alice.interact.manipulator.GetAGoodLookAtManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.LinearDragManipulator;
-import org.alice.interact.manipulator.MouseRelativeObjectDragManipulator;
 import org.alice.interact.manipulator.ObjectGlobalHandleDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
-import org.alice.interact.manipulator.ObjectTranslateDragManipulator;
 import org.alice.interact.manipulator.ObjectTranslateKeyManipulator;
 import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.alice.interact.manipulator.OmniDirectionalBoundingBoxManipulator;
@@ -93,17 +87,9 @@ import org.alice.interact.manipulator.ScaleDragManipulator;
 import org.alice.interact.manipulator.SelectObjectDragManipulator;
 import org.alice.interact.manipulator.TargetManipulator;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
-import org.lgna.croquet.components.DragComponent;
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.pattern.Tuple2;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 
 /**
  * @author David Culyba

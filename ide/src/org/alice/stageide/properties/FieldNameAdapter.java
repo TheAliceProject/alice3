@@ -45,8 +45,6 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
-import javax.swing.Action;
-
 import org.alice.ide.croquet.models.ast.rename.RenameFieldOperation;
 import org.alice.ide.properties.adapter.AbstractNamePropertyAdapter;
 import org.lgna.croquet.Operation;

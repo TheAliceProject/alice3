@@ -299,8 +299,8 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 				ListSelectionState.this.listSelectionModel.fireListSelectionChanged( ListSelectionState.this.index, ListSelectionState.this.index, ListSelectionState.this.listSelectionModel.getValueIsAdjusting() );
 			}
 		};
-		action.putValue( javax.swing.Action.NAME, getMenuText( (E)item ) );
-		action.putValue( javax.swing.Action.SMALL_ICON, getMenuSmallIcon( (E)item ) );
+		action.putValue( javax.swing.Action.NAME, getMenuText( item ) );
+		action.putValue( javax.swing.Action.SMALL_ICON, getMenuSmallIcon( item ) );
 		return action;
 	}
 	public javax.swing.ComboBoxModel getComboBoxModel() {

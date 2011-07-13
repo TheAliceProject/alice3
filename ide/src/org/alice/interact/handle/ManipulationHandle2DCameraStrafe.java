@@ -45,7 +45,6 @@ package org.alice.interact.handle;
 import javax.swing.ImageIcon;
 
 import org.alice.interact.MovementDirection;
-import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;

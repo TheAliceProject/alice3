@@ -66,7 +66,7 @@ public class DefaultExpressionPropertyCascade extends org.alice.ide.croquet.mode
 	}
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
 	private DefaultExpressionPropertyCascade( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
-		super( group, java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( desiredType ) );
+		super( group, java.util.UUID.fromString( "77532795-0674-4ba4-ad18-989ee9ca0507" ), expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( desiredType ) );
 		this.desiredType = desiredType;
 	}
 	@Override

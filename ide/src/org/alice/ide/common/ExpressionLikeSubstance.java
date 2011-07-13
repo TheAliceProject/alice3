@@ -60,6 +60,18 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	protected boolean isExpressionTypeFeedbackDesired() {
 		return org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() || isKnurlDesired();
 	}
+	protected static boolean isExpressionTypeFeedbackSurpressedBasedOnParentClass( edu.cmu.cs.dennisc.alice.ast.Expression e ) {
+		if( e != null ) {
+			edu.cmu.cs.dennisc.alice.ast.Node parent = e.getParent();
+			if( parent != null ) {
+				if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( parent.getClass(), edu.cmu.cs.dennisc.alice.ast.ArrayAccess.class, edu.cmu.cs.dennisc.alice.ast.ArrayLength.class ) ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	protected int getInsetTop() {
 		if( this.isVoid() ) {
@@ -153,7 +165,8 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		return false;
 	}
 
-	public abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType();	
+	public abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType();
+	
 	//	@Override
 	//	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
 	//		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET+DOCKING_BAY_INSET_LEFT, INSET, (float)getWidth()-2*INSET-DOCKING_BAY_INSET_LEFT, (float)getHeight()-2*INSET, 8, 8 );

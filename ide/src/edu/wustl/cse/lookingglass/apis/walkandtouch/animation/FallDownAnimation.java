@@ -48,7 +48,6 @@ import org.alice.apis.moveandturn.StandIn;
 
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.wustl.cse.lookingglass.apis.walkandtouch.FallDirection;
 import edu.wustl.cse.lookingglass.apis.walkandtouch.Person;
 import edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities;

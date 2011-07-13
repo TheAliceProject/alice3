@@ -201,7 +201,7 @@ import org.lgna.croquet.BooleanState;
 	}
 
 	protected java.awt.Color calculateColor() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		java.awt.Color color = ide.getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 		if( this.accessible == org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem() ) {
 			color = java.awt.Color.YELLOW;
@@ -222,14 +222,14 @@ import org.lgna.croquet.BooleanState;
 	}
 	
 //	protected boolean isInScope() {
-//		return org.alice.ide.IDE.getSingleton().isAccessibleInScope( accessible );
+//		return org.alice.ide.IDE.getActiveInstance().isAccessibleInScope( accessible );
 //	}
 	
 	/*package-private*/ void updateLabel() {
 		String prevText = this.getModel().getTrueText();
 		String nextText;
 		if( this.accessible != null ) {
-			nextText = this.accessible.getValidName();//org.alice.ide.IDE.getSingleton().getInstanceTextForAccessible( this.accessible );
+			nextText = this.accessible.getValidName();//org.alice.ide.IDE.getActiveInstance().getInstanceTextForAccessible( this.accessible );
 			this.setBackgroundColor( this.calculateColor() );
 		} else {
 			this.setBackgroundColor( java.awt.Color.RED );

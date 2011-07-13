@@ -133,7 +133,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 //				edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.EQUALS,
 //				edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.NOT_EQUALS,
 //		};
-//		for( final edu.cmu.cs.dennisc.pattern.Tuple2< String, Class<?> > tuple : org.alice.ide.IDE.getSingleton().getNameClsPairsForRelationalFillIns() ) {
+//		for( final edu.cmu.cs.dennisc.pattern.Tuple2< String, Class<?> > tuple : org.alice.ide.IDE.getActiveInstance().getNameClsPairsForRelationalFillIns() ) {
 //			rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (" + tuple.getA() + ") { ==, != }" ) {
 //				@Override
 //				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {

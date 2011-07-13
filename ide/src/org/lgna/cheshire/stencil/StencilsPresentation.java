@@ -55,7 +55,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 //	}
 	
 	public static javax.swing.JLayeredPane getLayeredPane( org.lgna.croquet.components.AbstractWindow< ? > window ) {
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getSingleton();
+		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		javax.swing.JFrame frame = application.getFrame().getAwtComponent();
 		javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
 		final int PAD = 4;
@@ -221,7 +221,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		super( userInformation, transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess );
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
 		
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getSingleton();
+		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		this.stencil = new Stencil( application.getFrame(), scrollingRequiredRenderer, menuPolicy );
 		this.isInterceptingEvents.addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -259,7 +259,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		}
 	}
 	@Override
-	protected void handleEvent( org.lgna.croquet.history.event.Event event ) {
+	protected void handleEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		if( this.isIgnoringEvents ) {
 			//pass
 		} else {
@@ -345,7 +345,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 							if( applicationRecoveryTransaction != null ) {
 								this.insertRecoveryTransactionChapter( applicationRecoveryTransaction );
 							} else {
-								org.lgna.croquet.Application.getSingleton().showMessageDialog( "unable to recover" );
+								org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
 							}
 						}
 					}

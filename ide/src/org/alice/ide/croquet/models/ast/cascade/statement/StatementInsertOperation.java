@@ -63,6 +63,6 @@ public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOp
 	@Override
 	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement();
-		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement, null ) );
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement ) );
 	}
 }

@@ -43,8 +43,6 @@
 
 package org.alice.interact.condition;
 
-import java.awt.Point;
-
 import org.alice.interact.InputState;
 
 public class DragAndDropCondition extends InputCondition {
