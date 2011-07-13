@@ -54,6 +54,6 @@ public class SetFitnessToOutOfShapeOperation extends SetFitnessOperation {
 		return SingletonHolder.instance;
 	}
 	private SetFitnessToOutOfShapeOperation() {
-		super( FitnessModel.getInstance().getMinimum(), "out of shape" );
+		super( FitnessModel.getInstance().getMinimum(), "out of shape", java.util.UUID.fromString( "bf8fedb3-15cf-4729-ba43-ca92940674e3" ) );
 	}
 }

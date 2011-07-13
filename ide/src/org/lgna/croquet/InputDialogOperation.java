@@ -54,37 +54,6 @@ import org.lgna.croquet.components.LineAxisPanel;
  * @author Dennis Cosgrove
  */
 public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation<org.lgna.croquet.history.InputDialogOperationStep> {
-	public static class OkOperationResolver<T> extends IndirectResolver< OkOperation<T>, InputDialogOperation<T> > {
-		public OkOperationResolver( OkOperation<T> model ) {
-			super( model.getInputDialogOperation() );
-		}
-		public OkOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		protected OkOperation<T> getDirect( InputDialogOperation<T> indirect ) {
-			return indirect.getCompleteOperation();
-		}
-	}
-	private static class OkOperation<T> extends CompleteOperation {
-		private final InputDialogOperation<T> inputDialogOperation;
-		public OkOperation( InputDialogOperation<T> inputDialogOperation ) {
-			super( java.util.UUID.fromString( "fc908f6f-4b72-48b6-9b65-352dc9f2e18b" ) );
-			this.inputDialogOperation = inputDialogOperation;
-		}
-		public InputDialogOperation< T > getInputDialogOperation() {
-			return this.inputDialogOperation;
-		}
-		@Override
-		protected OkOperationResolver<T> createCodableResolver() {
-			return new OkOperationResolver<T>( this );
-		}
-	}
-	private final OkOperation<T> okOperation = new OkOperation<T>( this );
-	@Override
-	protected OkOperation<T> getCompleteOperation() {
-		return this.okOperation;
-	}
 	public InputDialogOperation(Group group, java.util.UUID individualId) {
 		super(group, individualId);
 	}
