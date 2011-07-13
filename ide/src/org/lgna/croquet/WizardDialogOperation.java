@@ -54,8 +54,6 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.PageAxisPanel;
-import org.lgna.croquet.components.RowsSpringPanel;
-import org.lgna.croquet.components.SpringUtilities;
 
 /**
  * @author Dennis Cosgrove
@@ -283,7 +281,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 		return rv;
 	}
 	@Override
-	protected Component< ? > createMainPanel( org.lgna.croquet.history.WizardDialogOperationStep step, Dialog dialog, Label explanationLabel ) {
+	protected Component< ? > createMainPanel( org.lgna.croquet.history.WizardDialogOperationStep step, Dialog dialog, org.lgna.croquet.components.JComponent< javax.swing.JLabel > explanationLabel ) {
 		WizardStage[] stages = this.createSteps( step );
 
 		java.util.ArrayList< Card > cards = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
