@@ -128,41 +128,35 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 	}
 
 	@Override
-	public S fire( org.lgna.croquet.triggers.Trigger trigger ) {
+	public final S fire( org.lgna.croquet.triggers.Trigger trigger ) {
 		if( this.isEnabled() ) {
 			return this.handleFire( trigger );
 		} else {
 			return null;
 		}
 	}
-	public S fire( java.awt.event.ActionEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
-		if( this.isEnabled() ) {
-			return this.handleFire( new org.lgna.croquet.triggers.ActionEventTrigger( viewController, e ) );
-		} else {
-			return null;
-		}
+	public final S fire( java.awt.event.ActionEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
+		return this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( viewController, e ) );
 	}
-	public S fire( java.awt.event.MouseEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
-		if( this.isEnabled() ) {
-			return this.handleFire( new org.lgna.croquet.triggers.MouseEventTrigger( viewController, e ) );
-		} else {
-			return null;
-		}
+	public final S fire( java.awt.event.MouseEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
+		return this.fire( new org.lgna.croquet.triggers.MouseEventTrigger( viewController, e ) );
 	}
 	@Deprecated
-	public S fire( java.awt.event.MouseEvent e ) {
+	public final S fire( java.awt.event.MouseEvent e ) {
 		return fire( e, null );
 	}
 	@Deprecated
-	public S fire( java.awt.event.ActionEvent e ) {
+	public final S fire( java.awt.event.ActionEvent e ) {
 		return fire( e, null );
 	}
 	@Deprecated
-	public S fire() {
+	public final S fire() {
 		return fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
 	}
 	
 	/*package-private*/ final S handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
+		//todo: move up to Model
+		this.initializeIfNecessary();
 		final S step = this.createAndPushStep( trigger );
 		this.perform( step );
 		return step;
