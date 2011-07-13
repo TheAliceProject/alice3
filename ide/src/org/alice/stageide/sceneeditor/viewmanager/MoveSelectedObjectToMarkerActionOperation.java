@@ -100,7 +100,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 		this.markerField = markerField;
 		if (this.markerField != null)
 		{
-			ObjectMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getObjectMarkerForField(this.markerField);
+			ObjectMarker marker = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getObjectMarkerForField(this.markerField);
 			if (marker != null)
 			{
 				this.imageIcon.setRightImage(marker.getIcon());
@@ -149,7 +149,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 		final org.alice.apis.moveandturn.PointOfView prevPOV;
 		final org.alice.apis.moveandturn.PointOfView nextPOV;
 		
-		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor());
+		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor());
 		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
 		final Transformable selectedTransformable = sceneEditor.getTransformableForField(selectedField);
 		objectMarker = sceneEditor.getInstanceInJavaForField(this.markerField, org.alice.apis.moveandturn.ObjectMarker.class);
@@ -160,7 +160,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveSelectedObjectToMarkerActionOperation isNaN" );
 				step.cancel();
 			} else {
-				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 					@Override
 					public void doOrRedoInternal( boolean isDo ) {
 						setAbsolutePOV( selectedTransformable, nextPOV );

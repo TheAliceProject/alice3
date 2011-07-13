@@ -72,7 +72,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		java.util.UUID blockStatementId = binaryDecoder.decodeId();
 		int index = binaryDecoder.decodeInt();
 		java.util.UUID statementId = binaryDecoder.decodeId();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), blockStatementId );
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
 		return new Object[] { blockStatement, index, statement };

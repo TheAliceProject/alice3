@@ -317,7 +317,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	}
 	@Deprecated
 	public final <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable( Class< E > cls, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map ) {
-		E rv = decodeReferenceableBinaryEncodableAndDecodable( map );
+		E rv = (E)decodeReferenceableBinaryEncodableAndDecodable( map );
 		assert cls.isInstance( rv );
 		return rv;
 	}

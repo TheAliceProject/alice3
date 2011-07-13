@@ -45,13 +45,13 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodEdit extends org.lgna.croquet.edits.OperationEdit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
+public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	
 	private transient edu.cmu.cs.dennisc.alice.ast.AbstractCode prevFocusedCode;
 
-	public DeclareMethodEdit( org.lgna.croquet.history.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+	public DeclareMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		super( completionStep );
 		this.declaringType = declaringType;
 		this.method = method;
@@ -78,7 +78,7 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.OperationEdit<org.
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		this.declaringType.methods.add( this.method );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		this.prevFocusedCode = ide.getFocusedCode();
 		ide.setFocusedCode( method );
 	}
@@ -87,7 +87,7 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.OperationEdit<org.
 		int index = this.declaringType.methods.indexOf( method );
 		if( index != -1 ) {
 			this.declaringType.methods.remove( index );
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			ide.setFocusedCode( this.prevFocusedCode );
 		} else {
 			throw new javax.swing.undo.CannotUndoException();

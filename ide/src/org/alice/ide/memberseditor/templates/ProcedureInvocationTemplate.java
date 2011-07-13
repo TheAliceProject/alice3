@@ -61,7 +61,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 		this.method = method;
 		
 		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			this.setPopupPrepModel( org.alice.ide.croquet.models.ast.MethodTemplateMenuModel.getInstance( (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method ).getPopupMenuOperation() );
+			this.setPopupPrepModel( org.alice.ide.croquet.models.ast.MethodTemplateMenuModel.getInstance( (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method ).getPopupPrepModel() );
 		}
 	}
 	@Override
@@ -90,6 +90,6 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade.getInstance( blockStatementIndexPair, this.method );
+		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade.getInstance( blockStatementIndexPair, this.method ).getRoot().getPopupPrepModel();
 	}
 }

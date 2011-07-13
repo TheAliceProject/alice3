@@ -45,37 +45,56 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldEdit extends org.alice.ide.ToDoEdit {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType;
+public class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 	private int index;
 
-	private Object instance;
-	private boolean isInstanceValid;
+	private transient Object instance;
+	private transient boolean isInstanceValid;
 	
-	public DeclareFieldEdit(edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, int index, Object instance, boolean isInstanceValid) {
-		this.ownerType = ownerType;
+	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, int index, Object instance, boolean isInstanceValid) {
+		super( step );
+		this.declaringType = ownerType;
 		this.field = field;
 		this.index = index;
 		this.instance = instance;
 		this.isInstanceValid = isInstanceValid;
 	}
+	public DeclareFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).decodeValue( binaryDecoder );
+		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class ).decodeValue( binaryDecoder );
+		this.index = binaryDecoder.decodeInt();
+		
+		//todo
+		this.isInstanceValid = false;
+		this.instance = null;
+	}
+	
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).encodeValue( binaryEncoder, this.declaringType );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class ).encodeValue( binaryEncoder, this.field );
+		binaryEncoder.encode( this.index );
+	}
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		if (this.isInstanceValid) {
-			org.alice.ide.IDE.getSingleton().getSceneEditor().putInstanceForInitializingPendingField( this.field, this.instance );
+			org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( this.field, this.instance );
 		}
-		this.ownerType.fields.add(this.index, this.field);
+		this.declaringType.fields.add(this.index, this.field);
 //		if (this.isInstanceValid) {
-//			org.alice.ide.IDE.getSingleton().getSceneEditor().handleFieldCreation(ownerType, this.field, this.instance, isDo);
+//			org.alice.ide.IDE.getActiveInstance().getSceneEditor().handleFieldCreation(ownerType, this.field, this.instance, isDo);
 //		}
 	}
 
 	@Override
 	protected final void undoInternal() {
-		if (this.ownerType.fields.get(this.index) == this.field) {
-			this.ownerType.fields.remove(this.index);
+		if (this.declaringType.fields.get(this.index) == this.field) {
+			this.declaringType.fields.remove(this.index);
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}

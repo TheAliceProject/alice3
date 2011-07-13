@@ -46,8 +46,6 @@ package org.alice.stageide.utilities;
 import org.alice.interact.GlobalDragAdapter;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
 
 public class BoundingBoxUtilities {

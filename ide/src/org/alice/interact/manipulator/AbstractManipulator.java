@@ -286,7 +286,7 @@ public abstract class AbstractManipulator {
 	
 	public boolean isUndoable()
 	{
-		return this.dragAdapter.hasSceneEditor() && this.hasUpdated();
+		return this.dragAdapter != null && this.dragAdapter.hasSceneEditor() && this.hasUpdated();
 	}
 	
 	public abstract boolean doStartManipulator( InputState startInput );

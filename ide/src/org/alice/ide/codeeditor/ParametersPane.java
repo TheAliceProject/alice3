@@ -54,7 +54,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	}
 	
 	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
@@ -118,6 +118,6 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	@Override
 	protected void refresh() {
 		super.refresh();
-		org.alice.ide.IDE.getSingleton().refreshAccessibles();
+		org.alice.ide.IDE.getActiveInstance().refreshAccessibles();
 	}
 }

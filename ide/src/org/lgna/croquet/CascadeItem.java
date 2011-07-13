@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
+public abstract class CascadeItem< F,B > extends MenuItemPrepModel implements CascadeBlankChild< F > {
 	private transient boolean isDirty = true;
 	private transient javax.swing.JComponent menuProxy = null;
 	private transient javax.swing.Icon icon = null;
@@ -57,14 +57,18 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
 		return true;
 	}
 	
-	@Override
-	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-		rv.addCascadeMenuItem( new org.lgna.croquet.components.CascadeMenuItem( this ) );
-		return rv;
+	public int getItemCount() {
+		return 1;
 	}
+	public org.lgna.croquet.CascadeItem< F, B > getItemAt( int index ) {
+		assert index == 0;
+		return this;
+	}
+	
 	public abstract F getTransientValue( org.lgna.croquet.cascade.ItemNode<? super F,B> step );
 	public abstract F createValue( org.lgna.croquet.cascade.ItemNode<? super F,B> step );
 	protected abstract javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F,B> step );
+	
 	@Override
 	protected void localize() {
 		this.isDirty = true;
@@ -95,10 +99,8 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel {
 			if( component != null ) {
 				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( component );
 				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
-//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.validateTree( component );
-//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
-//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.revalidateTree( component );
-//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.setSizeToPreferredSizeTree( component );
+				
 				java.awt.Dimension size = component.getPreferredSize();
 				if( size.width > 0 && size.height > 0 ) {
 					this.icon = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.createIcon( component );

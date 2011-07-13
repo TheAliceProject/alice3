@@ -53,7 +53,7 @@ public class GetterTemplate extends org.alice.ide.templates.CascadingExpressions
 		this.field = field;
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
-			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupMenuOperation() );
+			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
 		}
 	}
 	@Override

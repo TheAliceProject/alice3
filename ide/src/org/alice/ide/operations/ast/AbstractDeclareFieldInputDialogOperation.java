@@ -55,7 +55,7 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 	}
 	
 	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 	@Override
 	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
@@ -67,7 +67,7 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
 					if( ownerType != null ) {
 						int index = ownerType.fields.size();
-						step.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+						step.commitAndInvokeDo( new DeclareFieldEdit( step, ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
 					} else {
 						step.cancel();
 					}

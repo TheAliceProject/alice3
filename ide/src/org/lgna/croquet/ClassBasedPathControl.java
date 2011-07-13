@@ -62,8 +62,8 @@ public static SelectChildClassMenuModel getInstance( org.lgna.croquet.TreeSelect
 
 private static final int ARROW_SIZE = 10;
 private static final int ARROW_BORDER_HALF_SIZE = 3;
-private static java.util.List< org.lgna.croquet.MenuItemPrepModel > createModels( org.lgna.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode, ClassBasedPathControl.Initializer initializer ) {
-	java.util.List< org.lgna.croquet.MenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+private static java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > createModels( org.lgna.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode, ClassBasedPathControl.Initializer initializer ) {
+	java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	java.util.Enumeration< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> > enumeration = treeNode.children();
 	if( enumeration != null ) {
 		while( enumeration.hasMoreElements() ) {
@@ -116,7 +116,7 @@ public static ClassBasedDirectoryControl getInstance( TreeSelectionState<edu.cmu
 }
 
 private ClassBasedDirectoryControl( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode, ClassBasedPathControl.Initializer initializer ) {
-	PopupButton selectChildButton = SelectChildClassMenuModel.getInstance( treeSelectionState, treeNode, initializer ).getPopupMenuOperation().createPopupButton();
+	PopupButton selectChildButton = SelectChildClassMenuModel.getInstance( treeSelectionState, treeNode, initializer ).getPopupPrepModel().createPopupButton();
 	if( javax.swing.UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
 			selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 2 ) );
 		} else {

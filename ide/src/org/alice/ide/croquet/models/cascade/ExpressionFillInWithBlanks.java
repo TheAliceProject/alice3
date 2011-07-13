@@ -55,7 +55,7 @@ public abstract class ExpressionFillInWithBlanks< F extends edu.cmu.cs.dennisc.a
 	protected abstract F createValue( B[] expressions );
 	@Override
 	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,B > step ) {
-		return this.createValue( this.runBlanks( step, BlankActor.CREATE_VALUES, this.cls ) );
+		return this.createValue( this.createFromBlanks( step, this.cls ) );
 	}
 //	protected abstract F getTransientValue( B[] expressions );
 //	@Override

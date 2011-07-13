@@ -105,12 +105,14 @@ public class ImageResource extends org.alice.virtualmachine.Resource {
 	}
 	public ImageResource( Class<?> cls, String resourceName, String contentType ) {
 		super( cls, resourceName, contentType );
+		uuidToResourceMap.put( this.getUUID(), this );
 	}
 	public ImageResource( Class<?> cls, String resourceName ) {
 		this( cls, resourceName, getContentType( resourceName ) );
 	}
 	public ImageResource( java.io.File file, String contentType ) throws java.io.IOException {
 		super( file, contentType );
+		uuidToResourceMap.put( this.getUUID(), this );
 	}
 	public ImageResource( java.io.File file ) throws java.io.IOException {
 		this( file, getContentType( file ) );

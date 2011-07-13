@@ -51,15 +51,12 @@ import java.util.List;
 import org.jdesktop.swingworker.SwingWorker;
 
 import com.google.gdata.client.youtube.YouTubeService;
-import com.google.gdata.data.DateTime;
-import com.google.gdata.data.Link;
 import com.google.gdata.data.extensions.Rating;
 import com.google.gdata.data.geo.impl.GeoRssWhere;
 import com.google.gdata.data.media.mediarss.MediaKeywords;
 import com.google.gdata.data.media.mediarss.MediaPlayer;
 import com.google.gdata.data.media.mediarss.MediaThumbnail;
 import com.google.gdata.data.youtube.VideoEntry;
-import com.google.gdata.data.youtube.VideoFeed;
 import com.google.gdata.data.youtube.YouTubeMediaContent;
 import com.google.gdata.data.youtube.YouTubeMediaGroup;
 import com.google.gdata.data.youtube.YouTubeMediaRating;

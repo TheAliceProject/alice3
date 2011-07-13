@@ -67,7 +67,13 @@ public class ParameterNameSeparator extends org.lgna.croquet.CascadeLabelSeparat
 	
 	@Override
 	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
-		return this.parameter.getRepr( locale );
+		String rv = this.parameter.getRepr( locale );
+//		if( rv != null && rv.length() > 0 && "null".equals( rv )==false ) {
+//			//pass
+//		} else {
+//			rv = "part";
+//		}
+		return rv;
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterNameSeparator > createCodableResolver() {

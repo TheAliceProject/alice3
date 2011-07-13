@@ -44,10 +44,9 @@
 package org.lgna.croquet.components;
 
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.MenuItemPrepModel;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.PredeterminedMenuModel;
 import org.lgna.croquet.SelectDirectoryActionOperation;
+import org.lgna.croquet.StandardMenuItemPrepModel;
 import org.lgna.croquet.TreeSelectionState;
 
 /*package-private*/ class SelectChildDirectoryMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
@@ -58,8 +57,8 @@ import org.lgna.croquet.TreeSelectionState;
 
 	private static final int ARROW_SIZE = 10;
 	private static final int ARROW_BORDER_HALF_SIZE = 3;
-	private static java.util.List< MenuItemPrepModel > createModels( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
-		java.util.List< MenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List< StandardMenuItemPrepModel > createModels( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+		java.util.List< StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.Enumeration< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > enumeration = treeNode.children();
 		if( enumeration != null ) {
 			while( enumeration.hasMoreElements() ) {
@@ -112,7 +111,7 @@ import org.lgna.croquet.TreeSelectionState;
 	}
 
 	private DirectoryControl( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
-		PopupButton selectChildButton = SelectChildDirectoryMenuModel.getInstance( treeSelectionState, treeNode, initializer ).getPopupMenuOperation().createPopupButton();
+		PopupButton selectChildButton = SelectChildDirectoryMenuModel.getInstance( treeSelectionState, treeNode, initializer ).getPopupPrepModel().createPopupButton();
 		if( javax.swing.UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
 			selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 2 ) );
 		} else {

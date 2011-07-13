@@ -49,6 +49,7 @@ package org.lgna.croquet;
 public abstract class CascadeSeparator extends CascadeItem< Void, Void > {
 	public CascadeSeparator( java.util.UUID id ) {
 		super( id );
+		this.setEnabled( false );
 	}
 	@Override
 	public final Void createValue( org.lgna.croquet.cascade.ItemNode< ? super Void,Void > step ) {

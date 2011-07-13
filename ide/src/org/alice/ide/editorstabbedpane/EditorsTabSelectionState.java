@@ -110,7 +110,7 @@ class Cycle< E > {
 //	public EditorsTabbedPaneUI( EditorsTabbedPane editorsTabbedPane ) {
 //		super( editorsTabbedPane.getContentAreaColor() );
 //		this.editorsTabbedPane = editorsTabbedPane;
-//		if( org.alice.ide.IDE.getSingleton().isEmphasizingClasses() ) {
+//		if( org.alice.ide.IDE.getActiveInstance().isEmphasizingClasses() ) {
 //			this.declarationsUIResource = new DeclarationsUIResource();
 //		}
 //		this.backUIResource = new BackUIResource( editorsTabbedPane );
@@ -215,7 +215,7 @@ class Cycle< E > {
 ////	@Override
 ////	protected int calculateTabAreaHeight( int tabPlacement, int horizRunCount, int maxTabHeight ) {
 ////		int rv = super.calculateTabAreaHeight( tabPlacement, horizRunCount, maxTabHeight );
-////		org.alice.ide.declarationseditor.DeclarationsUIResource declarationsUIResource = org.alice.ide.IDE.getSingleton().getDeclarationsUIResource();
+////		org.alice.ide.declarationseditor.DeclarationsUIResource declarationsUIResource = org.alice.ide.IDE.getActiveInstance().getDeclarationsUIResource();
 ////		rv = Math.max( rv, declarationsUIResource.getHeight() );
 ////		return rv;
 ////	}	
@@ -251,8 +251,8 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 	private EditorsTabSelectionState() {
 		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "846ef10d-b22b-44a7-8fdd-a6b5d459948d" ), CodeCompositeCodec.SINGLETON );
 //		this.addSelectionObserver( this.selectionObserver );
-		org.alice.ide.IDE.getSingleton().addProjectObserver( this.projectObserver );
-//		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
+		org.alice.ide.IDE.getActiveInstance().addProjectObserver( this.projectObserver );
+//		org.alice.ide.IDE.getActiveInstance().addCodeInFocusObserver( this.codeInFocusObserver );
 	}
 	private static final boolean IS_RUN_BUTTON_DESIRED = false;
 	private class EditorTabCreator implements TabCreator< CodeComposite > {
@@ -268,7 +268,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 		
 		private boolean isEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 			if( "run".equals( code.getName() ) ) { 
-				return code.getDeclaringType() == org.alice.ide.IDE.getSingleton().getSceneType();
+				return code.getDeclaringType() == org.alice.ide.IDE.getActiveInstance().getSceneType();
 			}
 			return false;
 		}
@@ -292,7 +292,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 			
 			if( IS_RUN_BUTTON_DESIRED ) {
 				if( isEntryPoint(code) ) {
-					org.lgna.croquet.Operation<?> runOperation = org.alice.ide.IDE.getSingleton().getRunOperation();
+					org.lgna.croquet.Operation<?> runOperation = org.alice.ide.IDE.getActiveInstance().getRunOperation();
 					org.lgna.croquet.components.Button runButton = runOperation.createButton();
 					edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( button.getAwtComponent(), runButton.getAwtComponent(), edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 1 );
 					runButton.getAwtComponent().setText( null );
@@ -449,7 +449,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 	private static class DropDownPanel extends org.lgna.croquet.components.BorderPanel {
 		private javax.swing.ButtonModel buttonModel;
 		public DropDownPanel() {
-			org.lgna.croquet.components.PopupButton button = TypeRootMenuModel.getInstance().getPopupMenuOperation().createPopupButton();
+			org.lgna.croquet.components.PopupButton button = TypeRootMenuModel.getInstance().getPopupPrepModel().createPopupButton();
 			button.getAwtComponent().setFocusable( false );
 			this.buttonModel = button.getAwtComponent().getModel();
 			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
@@ -491,12 +491,12 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 				type = null;
 			}
 			if( type != null ) {
-				final boolean IS_ICON_DESIRED = false;
+				final boolean IS_ICON_DESIRED = true;
 				if( IS_ICON_DESIRED ) {
-					TypeRootMenuModel.getInstance().getPopupMenuOperation().setName( "class:" );
-					TypeRootMenuModel.getInstance().getPopupMenuOperation().setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
+					TypeRootMenuModel.getInstance().getPopupPrepModel().getAction().putValue( javax.swing.Action.NAME, "class:" );
+					TypeRootMenuModel.getInstance().getPopupPrepModel().getAction().putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
 				} else {
-					TypeRootMenuModel.getInstance().getPopupMenuOperation().setName( "class: " + type.getName() );
+					TypeRootMenuModel.getInstance().getPopupPrepModel().getAction().putValue( javax.swing.Action.NAME, "class: " + type.getName() );
 				}
 			}
 			this.revalidateAndRepaint();
@@ -523,7 +523,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 //			} else {
 //				nextFocusedCode = null;
 //			}
-//			org.alice.ide.IDE.getSingleton().setFocusedCode( nextFocusedCode );
+//			org.alice.ide.IDE.getActiveInstance().setFocusedCode( nextFocusedCode );
 //		}
 //	}
 
@@ -666,7 +666,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 //				}
 ////				@Override
 ////				public boolean isCloseButtonDesiredAt( int index ) {
-////					return index > 0 || org.alice.ide.IDE.getSingleton().isEmphasizingClasses();
+////					return index > 0 || org.alice.ide.IDE.getActiveInstance().isEmphasizingClasses();
 ////				}
 //				@Override
 //				protected org.lgna.croquet.JComponent<?> createSingletonView() {
@@ -748,11 +748,11 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 //	@Override
 //	protected void adding() {
 //		super.adding();
-//		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
+//		org.alice.ide.IDE.getActiveInstance().addCodeInFocusObserver( this.codeInFocusObserver );
 //	}
 //	@Override
 //	protected void removed() {
-//		org.alice.ide.IDE.getSingleton().removeCodeInFocusObserver( this.codeInFocusObserver );
+//		org.alice.ide.IDE.getActiveInstance().removeCodeInFocusObserver( this.codeInFocusObserver );
 //		super.removed();
 //	}
 }

@@ -43,9 +43,6 @@
  */
 package edu.wustl.cse.lookingglass.apis.walkandtouch.animation;
 
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-
-
 import edu.wustl.cse.lookingglass.apis.walkandtouch.scenegraph.graphics.KineticText;
 
 public class KineticTextAnimation extends org.alice.apis.moveandturn.graphic.animation.OpenUpdateCloseOverlayGraphicAnimation{

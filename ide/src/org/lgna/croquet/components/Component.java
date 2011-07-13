@@ -243,7 +243,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 
 	protected void release() {
 		if( this.awtComponent != null ) {
-			System.err.println( "release: " + this.hashCode() );
+			//System.err.println( "release: " + this.hashCode() );
 			this.awtComponent.removeHierarchyListener( this.hierarchyListener );
 			this.trackDisplayability();
 			Component.map.remove( this.awtComponent );

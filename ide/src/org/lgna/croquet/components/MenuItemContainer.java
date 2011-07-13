@@ -60,6 +60,7 @@ public interface MenuItemContainer {
 	public Container< ? > getParent();
 	public void addMenu( Menu menu );
 	public void addMenuItem( MenuItem menuItem );
+	public void addCascadeMenu( CascadeMenu cascadeMenu );
 	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem );
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
 	public void addSeparator();

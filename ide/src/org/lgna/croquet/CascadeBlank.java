@@ -50,10 +50,45 @@ public abstract class CascadeBlank< B > extends Element {
 	public CascadeBlank( java.util.UUID id ) {
 		super( id );
 	}
-	protected abstract java.util.List< CascadeItem > updateChildren( java.util.List< CascadeItem > rv, org.lgna.croquet.cascade.BlankNode<B> blankNode );
-	public final Iterable< CascadeItem > getChildren( org.lgna.croquet.cascade.BlankNode<B> blankNode ) {
-		java.util.List< CascadeItem > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.updateChildren( rv, blankNode );
-		return rv;
+	protected abstract java.util.List< CascadeBlankChild > updateChildren( java.util.List< CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<B> blankNode );
+	private static boolean isEmptySeparator( CascadeBlankChild child ) {
+		return child instanceof CascadeLineSeparator || ( (child instanceof CascadeLabelSeparator) && ((CascadeLabelSeparator)child).isValid() == false );
+	}
+	public final CascadeBlankChild[] getFilteredChildren( org.lgna.croquet.cascade.BlankNode<B> blankNode ) {
+		java.util.List< CascadeBlankChild > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.updateChildren( children, blankNode );
+		for( CascadeBlankChild child : children ) {
+			assert child != null;
+		}
+
+		java.util.ListIterator< CascadeBlankChild > listIterator = children.listIterator();
+		boolean isLineSeparatorAcceptable = false;
+		while( listIterator.hasNext() ) {
+			CascadeBlankChild child = listIterator.next();
+			if( isEmptySeparator( child ) ) {
+				if( isLineSeparatorAcceptable ) {
+					//pass 
+				} else {
+					listIterator.remove();
+				}
+				isLineSeparatorAcceptable = false;
+			} else {
+				isLineSeparatorAcceptable = true;
+			}
+		}
+
+		//remove separators at the end
+		//there should be a maximum of only 1 but we loop anyway 
+		final int N = children.size();
+		for( int i = 0; i < N; i++ ) {
+			int index = N - i - 1;
+			if( isEmptySeparator( children.get( index ) ) ) {
+				children.remove( index );
+			} else {
+				break;
+			}
+		}
+
+		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( children, CascadeBlankChild.class );
 	}
 }

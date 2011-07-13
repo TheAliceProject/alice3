@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class MoreCascade extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class MoreCascade extends org.lgna.croquet.Cascade< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, MoreCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized MoreCascade getInstance( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 		MoreCascade rv = map.get( methodInvocation );
@@ -69,7 +69,7 @@ public class MoreCascade extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
 	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
 	private MoreCascade( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), edu.cmu.cs.dennisc.alice.ast.Expression.class, new org.lgna.croquet.CascadeBlank[] { org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) } );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "7ed06ae1-3704-4745-afd2-47dc21366412" ), edu.cmu.cs.dennisc.alice.ast.Expression.class, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) );
 		assert methodInvocation != null;
 		this.methodInvocation = methodInvocation;
 		this.expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)this.methodInvocation.getParent();
@@ -129,7 +129,7 @@ public class MoreCascade extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu
 //		return lastParameter.getDesiredValueType();
 //	}
 	@Override
-	protected org.alice.ide.croquet.edits.ast.FillInMoreEdit createEdit(org.lgna.croquet.history.CascadePopupCompletionStep<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.Expression[] values) {
+	protected org.alice.ide.croquet.edits.ast.FillInMoreEdit createEdit(org.lgna.croquet.history.CascadeCompletionStep<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.Expression[] values) {
 		return new org.alice.ide.croquet.edits.ast.FillInMoreEdit( step, values[ 0 ] );
 	}
 }

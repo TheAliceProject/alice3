@@ -101,7 +101,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
 				assert methodInvocation.getParent() == expressionStatement;
 				
-				if( this.getFactory() == org.alice.ide.IDE.getSingleton().getPreviewFactory() || methodInvocation.isValid() ) {
+				if( this.getFactory() == org.alice.ide.IDE.getActiveInstance().getPreviewFactory() || methodInvocation.isValid() ) {
 					//pass
 				} else {
 					this.setBackgroundColor( java.awt.Color.RED );
@@ -113,7 +113,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 					edu.cmu.cs.dennisc.alice.ast.AbstractMember nextLonger = method.getNextLongerInChain();
 					if( nextLonger != null ) {
 						this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-						org.lgna.croquet.components.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupButton( org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation ) );
+						org.lgna.croquet.components.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupButton< org.lgna.croquet.PopupPrepModel >( org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation ).getRoot().getPopupPrepModel() );
 						button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 						button.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
 						button.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );

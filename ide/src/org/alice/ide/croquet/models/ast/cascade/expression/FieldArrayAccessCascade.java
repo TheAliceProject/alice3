@@ -68,7 +68,7 @@ public class FieldArrayAccessCascade extends ArrayAccessCascade {
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
 		return org.alice.ide.ast.NodeUtilities.createFieldAccess( 
-				org.alice.ide.IDE.getSingleton().createInstanceExpression(), 
+				org.alice.ide.IDE.getActiveInstance().createInstanceExpression(), 
 				this.field
 		);
 	}

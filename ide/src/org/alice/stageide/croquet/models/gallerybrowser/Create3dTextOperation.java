@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.croquet.models.gallerybrowser;
 
-import org.alice.ide.operations.ast.DeclareFieldEdit;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -56,7 +54,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 	}
 	private static class FamilySelectionOperation extends TextAttributeSelectionOperation {
 		public FamilySelectionOperation() {
-			super( java.util.UUID.fromString( "a5678cc6-78b0-4cc1-adbb-e90969d42823" ), 0, "Serif", "SansSerif" );
+			super( java.util.UUID.fromString( "592061c5-2b39-4e03-87b4-3832473ffca2" ), 0, "Serif", "SansSerif" );
 		}
 		public org.alice.apis.moveandturn.font.FamilyAttribute getFamilyAttribute() {
 			Object value = this.getSelectedItem();
@@ -79,7 +77,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 
 	private static class StyleSelectionOperation extends TextAttributeSelectionOperation {
 		public StyleSelectionOperation() {
-			super( java.util.UUID.fromString( "a5678cc6-78b0-4cc1-adbb-e90969d42823" ), 0, "Regular", "Bold", "Italic", "Bold Italic" );
+			super( java.util.UUID.fromString( "a7fa1996-526d-4599-bca8-84fd198fa823" ), 0, "Regular", "Bold", "Italic", "Bold Italic" );
 		}
 		public org.alice.apis.moveandturn.font.WeightAttribute getWeightAttribute() {
 			Object value = this.getSelectedItem();
@@ -137,10 +135,10 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 
 //	public CreateTextPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 //		super( declaringType, org.alice.apis.moveandturn.Billboard.class, null );
-	public CreateTextPane() {
+	public CreateTextPane( final Create3dTextOperation operation ) {
 		final int INSET = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getTheme().getFieldColor() );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 		class TextField extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField {
 			public TextField( String text, String textForBlankCondition ) {
 				this.setText( text );
@@ -169,7 +167,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 //		this.instanceNameVC.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
 //			@Override
 //			protected void updated( javax.swing.event.DocumentEvent e ) {
-//				CreateTextPane.this.updateOKButton();
+//				operation.handleFiredEvent( null );
 //			}
 //		} );
 		//this.instanceNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( this.handleInstanceNameChange ) );
@@ -271,12 +269,12 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		) );
 		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
 				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "family:" ), 
-				this.familySelection.createList(), 
+				this.familySelection.getPrepModel().createComboBox(), 
 				null 
 		) );
 		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
 				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "style:" ), 
-				this.styleSelection.createList(), 
+				this.styleSelection.getPrepModel().createComboBox(), 
 				null 
 		) );
 		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
@@ -313,6 +311,9 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		}
 	}
 
+//	/*package-private*/ String getInstanceNameText() {
+//		return this.textVC.getText();
+//	}
 	protected org.alice.apis.moveandturn.Text createText() {
 		org.alice.apis.moveandturn.Text rv = new org.alice.apis.moveandturn.Text();
 		org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute = this.familySelection.getFamilyAttribute();
@@ -342,10 +343,22 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "37c0a6d6-a21b-4abb-829b-bd3621cada8d" ) );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: extend AbstractGalleryDeclareFieldOperation" );
 	}
+	
+//	@Override
+//	protected java.lang.String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
+//		CreateTextPane pane = step.getMainPanel();
+//		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = new org.alice.ide.name.validators.FieldNameValidator( org.alice.ide.IDE.getActiveInstance().getSceneType() );
+//		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( pane.getInstanceNameText() );
+//		if( rv != null ) {
+//			return rv;
+//		} else {
+//			return super.getInternalExplanation( step );
+//		}
+//	}
 
 	@Override
 	protected org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane prologue( org.lgna.croquet.history.InputDialogOperationStep context ) {
-		return new CreateTextPane(); 
+		return new CreateTextPane( this ); 
 	}
 	
 	private edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.moveandturn.Text > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
@@ -353,7 +366,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 		CreateTextPane createTextPane = context.getMainPanel();
 		org.alice.apis.moveandturn.Text text = createTextPane.createText();
 		if( text != null ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = org.alice.ide.IDE.getSingleton().getTypeDeclaredInAliceFor( org.alice.apis.moveandturn.Text.class );
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = org.alice.ide.IDE.getActiveInstance().getTypeDeclaredInAliceFor( org.alice.apis.moveandturn.Text.class );
 			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( type );
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( text.getName(), type, initializer );
 			field.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
@@ -365,30 +378,30 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	}
 	
 	private final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
-		return org.alice.ide.IDE.getSingleton().getSceneType();
+		return org.alice.ide.IDE.getActiveInstance().getSceneType();
 	}
 	private boolean isInstanceValid() {
 		return true;
 	}
 	
 	@Override
-	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep context, boolean isOk) {
+	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.moveandturn.Text> tuple = this.createFieldAndInstance( context );
+			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.moveandturn.Text> tuple = this.createFieldAndInstance( step );
 			if( tuple != null ) {
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
 				if( field != null ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
 					int index = ownerType.fields.size();
-					context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+					step.commitAndInvokeDo( new org.alice.ide.operations.ast.DeclareFieldEdit( step, ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
 				} else {
-					context.cancel();
+					step.cancel();
 				}
 			} else {
-				context.cancel();
+				step.cancel();
 			}
 		} else {
-			context.cancel();
+			step.cancel();
 		}
 	}
 }

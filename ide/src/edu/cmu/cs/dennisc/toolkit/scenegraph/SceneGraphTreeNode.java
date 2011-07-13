@@ -2,7 +2,6 @@ package edu.cmu.cs.dennisc.toolkit.scenegraph;
 
 import org.alice.ide.swing.BasicTreeNode;
 import org.alice.interact.handle.ManipulationHandle3D;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Matrix3x3;

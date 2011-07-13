@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionPropertyCascade extends org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 	public ExpressionPropertyCascade( org.lgna.croquet.Group group, java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
 		super( group, id, edu.cmu.cs.dennisc.alice.ast.Expression.class, blanks );
@@ -62,7 +62,7 @@ public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade
 		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.expressionProperty.getOwner();
 		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
 			edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)owner;
-			edu.cmu.cs.dennisc.alice.ast.Statement statement = node.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
+			edu.cmu.cs.dennisc.alice.ast.Statement statement = node.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class, true );
 			if( statement != null ) {
 				edu.cmu.cs.dennisc.alice.ast.Node parent = statement.getParent();
 				if( parent instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
@@ -76,18 +76,18 @@ public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade
 	}
 
 	@Override
-	protected void handleFinally( org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
-		org.alice.ide.IDE.getSingleton().getCascadeManager().popContext();
-		super.handleFinally( performObserver );
+	protected void prologue() {
+		org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementIndexPair() );
+		super.prologue();
 	}
 	@Override
-	protected org.lgna.croquet.history.Step< ? > perform( org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
-		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementIndexPair() );
-		return super.perform( trigger, performObserver );
+	protected void epilogue() {
+		super.epilogue();
+		org.alice.ide.IDE.getActiveInstance().getCascadeManager().popContext();
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions );
 	@Override
-	protected org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< edu.cmu.cs.dennisc.alice.ast.Expression > step, edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
-		return new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, this.expressionProperty, this.getPreviousExpression(), values[ 0 ] );
+	protected org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createEdit( org.lgna.croquet.history.CascadeCompletionStep< edu.cmu.cs.dennisc.alice.ast.Expression > step, edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
+		return new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, this.expressionProperty, this.getPreviousExpression(), this.createExpression( values ) );
 	}
 }

@@ -57,7 +57,7 @@ abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.c
 		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 			edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
 			if( isCopy ) {
-				return org.alice.ide.IDE.getSingleton().createCopy( statement );
+				return org.alice.ide.IDE.getActiveInstance().createCopy( statement );
 			} else {
 				Clipboard.getInstance().pop();
 				return statement;
@@ -121,7 +121,7 @@ class CopyToClipboardOperation extends org.alice.ide.operations.ActionOperation 
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractNode node;
 	private CopyToClipboardOperation( edu.cmu.cs.dennisc.alice.ast.AbstractNode node ) {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
-		this.node = org.alice.ide.IDE.getSingleton().createCopy( node );
+		this.node = org.alice.ide.IDE.getActiveInstance().createCopy( node );
 	}
 	@Override
 	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
@@ -144,7 +144,7 @@ class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
 	}
 	public CutToClipboardEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 		java.util.UUID statementId = binaryDecoder.decodeId();
 		this.statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, statementId );
@@ -250,10 +250,6 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 	};
 	private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
 	private Clipboard() {
-//		stack.push( org.alice.ide.ast.NodeUtilities.createWhileLoop( new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( true ) ) );
-//		stack.push( org.alice.ide.ast.NodeUtilities.createDoTogether() );
-//		stack.push( org.alice.ide.ast.NodeUtilities.createDoInOrder() );		
-		org.alice.ide.IDE.getSingleton().addToConcealedBin( this.subject );
 		this.setDragModel( new ClipboardDragModel() );
 		this.setMinimumPreferredWidth( 40 );
 		this.refresh();
@@ -272,7 +268,8 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 			edu.cmu.cs.dennisc.alice.ast.AbstractNode node = this.stack.peek();
 			if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 				edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
-				subject.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( statement ) );
+				subject.addComponent( org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createStatementPane( statement ) );
+				subject.revalidateAndRepaint();
 			}
 		}
 		this.repaint();
@@ -436,12 +433,19 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 			
 			g2.translate(x, y);
 			
-			java.awt.Shape paper = new java.awt.geom.Rectangle2D.Float( 0, 0, w, h );
+			java.awt.geom.Rectangle2D.Float paper = new java.awt.geom.Rectangle2D.Float( 0, 0, w, h );
 			
-			final boolean IS_SIMPLE = true;
+			final boolean IS_SIMPLE = false;
 			if( IS_SIMPLE || this.dragReceptorState != DragReceptorState.IDLE ) {
 				g2.setPaint( new java.awt.GradientPaint( x,y, java.awt.Color.LIGHT_GRAY, x+w, y+h, java.awt.Color.WHITE ) );
 				g2.fill( paper );
+				
+				g2.setPaint( java.awt.Color.DARK_GRAY );
+
+				if( this.stack.size() > 1 ) {
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, Integer.toString( this.stack.size() ), paper );
+				}
+				
 				final int SHADOW_SIZE = this.getHeight()/50; 
 				if( SHADOW_SIZE > 2 ) {
 					g2.setPaint( new java.awt.Color( 31, 31, 31, 127 ) );
@@ -483,21 +487,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		this.paintClipboard( g2 );
 	}
-//	@Override
-//	protected javax.swing.JComponent createAwtComponent() {
-//		return new javax.swing.JComponent() {
-//			@Override
-//			protected void paintComponent( java.awt.Graphics g ) {
-//				super.paintComponent( g );
-//				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-//				Clipboard.this.paintClipboard( g2 );
-//			}
-//			@Override
-//			public java.awt.Dimension getPreferredSize() {
-//				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 40 );
-//			}
-//		};
-//	}
+
 //	public static void main( String[] args ) {
 //		org.lgna.croquet.Application application = new org.lgna.croquet.Application() {
 //			@Override

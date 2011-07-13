@@ -45,19 +45,15 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
-import org.alice.apis.moveandturn.Model;
 import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.AbstractScaleAdapter;
 import org.alice.interact.handle.ManipulationHandle3D;
-import org.alice.interact.operations.PredeterminedScaleActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.lgna.croquet.Operation;
 
 import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
-import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
 
 public class ModelScaleAdapter extends AbstractScaleAdapter<org.alice.apis.moveandturn.Model>
 {
@@ -104,7 +100,7 @@ public class ModelScaleAdapter extends AbstractScaleAdapter<org.alice.apis.movea
 			Matrix3x3 oldScale = edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities.getTransformableScale(this.instance.getSGTransformable());
 			Vector3 oldScaleVector = edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleVector3(oldScale);
 			final Vector3 scaleToApply = new Vector3(scaleVector.x / oldScaleVector.x, scaleVector.y / oldScaleVector.y, scaleVector.z / oldScaleVector.z);
-			if( ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getAnimator() != null ) {
+			if( ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getAnimator() != null ) {
 				class ScaleAnimation extends edu.cmu.cs.dennisc.math.animation.Vector3Animation {
 					private edu.cmu.cs.dennisc.math.Vector3 m_vPrev = new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 );
 					private edu.cmu.cs.dennisc.math.Vector3 m_vBuffer = new edu.cmu.cs.dennisc.math.Vector3();
@@ -118,7 +114,7 @@ public class ModelScaleAdapter extends AbstractScaleAdapter<org.alice.apis.movea
 						m_vPrev.set( v );
 					}
 				}
-				((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getAnimator().invokeLater( new ScaleAnimation(), null );
+				((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getAnimator().invokeLater( new ScaleAnimation(), null );
 			} else {
 				edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities.applyScale( ModelScaleAdapter.this.instance.getSGComposite(), scaleToApply, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
 			}

@@ -60,7 +60,7 @@ public class DeclareMethodParameterOperation extends org.alice.ide.croquet.model
 	}
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	private DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "108b8040-92e1-4792-b61e-594bd5eeb0bb" ) );
 		this.method = method;
 	}
 	
@@ -74,7 +74,7 @@ public class DeclareMethodParameterOperation extends org.alice.ide.croquet.model
 	@Override
 	protected org.alice.ide.declarationpanes.CreateMethodParameterPane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
 		//todo: create before hand and refresh at this point
-		return new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+		return new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method ) );
 	}
 	@Override
 	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {

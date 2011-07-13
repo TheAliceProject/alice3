@@ -49,7 +49,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType ) {
 		super( methodDeclaredInAlice, parametersPane, isPreview );
 //		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
-		if( org.alice.ide.IDE.getSingleton().isJava() ) {
+		if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( methodDeclaredInAlice.getReturnType() ) );
 //			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		} else {
@@ -98,7 +98,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( 
 					new PopupPanel( 
 							nameLabel, 
-							org.alice.ide.croquet.models.ast.MethodHeaderMenuModel.getInstance( methodDeclaredInAlice ).getPopupMenuOperation()
+							org.alice.ide.croquet.models.ast.MethodHeaderMenuModel.getInstance( methodDeclaredInAlice ).getPopupPrepModel()
 					) 
 			);
 		}

@@ -96,36 +96,10 @@ public class InstanceInAlice {
 		}
 		vm.popFrame();
 	}
-//	public void initialize( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments ) {
-//		this.type = constructor.getDeclaringType();
-//		this.map = new java.util.HashMap< FieldDeclaredInAlice, Object >();
-//		assert this.type != null;
-//		assert this.type instanceof TypeDeclaredInAlice;
-//
-//		AbstractType<?,?,?> t = this.type;
-//		while( t instanceof TypeDeclaredInAlice ) {
-//			for( AbstractField field : t.getDeclaredFields() ) {
-//				assert field instanceof FieldDeclaredInAlice;
-//				FieldDeclaredInAlice fieldDeclaredInAlice = (FieldDeclaredInAlice)field;
-//				set( fieldDeclaredInAlice, vm.evaluate( fieldDeclaredInAlice.initializer.getValue() ) );
-//			}
-//			t = t.getSuperType();
-//		}
-//		assert t instanceof TypeDeclaredInJava;
-//		TypeDeclaredInJava typeDeclaredInJava = (TypeDeclaredInJava)t;
-//
-//		
-////		ConstructorBlockStatement constructorBlockStatement = constructor.body.getValue();
-////		ConstructorInvocationStatement invocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
-////		if( invocationStatement != null ) {
-////			Object[] arguments2 = vm.evaluateArguments( null, invocationStatement.arguments );
-////		}
-//
-//		ClassReflectionProxy classReflectionProxy = typeDeclaredInJava.getClassReflectionProxy();
-//		assert classReflectionProxy != null;
-//		Class<?> cls = classReflectionProxy.getReification();
-//		assert cls != null : classReflectionProxy.getName();
-//		this.instanceInJava = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
+	
+//	@Deprecated
+//	public void EPIC_HACK_FOR_SCENE_EDITOR_setInstanceInJava( Object instanceInJava ) {
+//		m_instanceInJava = instanceInJava;
 //	}
 	public AbstractTypeDeclaredInAlice<?> getType() {
 		return this.type;

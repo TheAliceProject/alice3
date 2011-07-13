@@ -201,7 +201,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 						edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement constructorBlockStatement = (edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement)body;
 						edu.cmu.cs.dennisc.alice.ast.ConstructorInvocationStatement	constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
 						assert constructorInvocationStatement != null;
-						superInvocationComponent = org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( constructorInvocationStatement );
+						superInvocationComponent = org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createStatementPane( constructorInvocationStatement );
 					} else {
 						superInvocationComponent = null;
 					}
@@ -239,7 +239,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		this.revalidateAndRepaint();
 	}
 	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 	public java.util.List< org.lgna.croquet.DropReceptor > addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > rv, final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE ) {
@@ -248,6 +248,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			java.util.List< ExpressionPropertyDropDownPane > list = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
 				public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
+					assert expressionType != null : expressionPropertyDropDownPane.getExpressionProperty();
 					if( expressionType.isAssignableFrom( type ) ) {
 						return true;
 					} else {
@@ -494,21 +495,22 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 								sb.append( "<p><p>For more information on recursion see the Window -> Preferences menu." );
 							}
 							sb.append( "</html>" );
-							org.alice.ide.IDE.getSingleton().showMessageDialog( sb.toString(), "Recursion is disabled.", org.lgna.croquet.MessageType.ERROR );
+							org.alice.ide.IDE.getActiveInstance().showMessageDialog( sb.toString(), "Recursion is disabled.", org.lgna.croquet.MessageType.ERROR );
 							return null;
 						}
 					}
 				}
 				if( this.currentUnder != null ) {
 					edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
-					edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
+					BlockStatementIndexPair blockStatementIndexPair;
 					if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
-						blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner;
+						blockStatementIndexPair = new BlockStatementIndexPair( (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner, index );
 					} else {
-						blockStatement = null;
-						//index = -1;
+						blockStatementIndexPair = null;
 					}
-					rv = statementTemplate.getDropModel( step, blockStatement, index );
+					rv = statementTemplate.getDropModel( step, blockStatementIndexPair );
+					org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( null, blockStatementIndexPair );
+					System.err.println( "todo: handle finally" );
 				}
 			} else if( source instanceof org.alice.ide.clipboard.Clipboard ) {
 				//todo check for recursion
@@ -533,7 +535,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 					edu.cmu.cs.dennisc.alice.ast.BlockStatement prevBlockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)prevOwner.getOwner();
 					edu.cmu.cs.dennisc.alice.ast.BlockStatement nextBlockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)nextOwner.getOwner();
 					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-						edu.cmu.cs.dennisc.alice.ast.Statement copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
+						edu.cmu.cs.dennisc.alice.ast.Statement copy = getIDE().createCopy( statement );
 						rv = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( nextBlockStatement, nextIndex, copy );
 					} else {
 						if( prevOwner == nextOwner && ( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) ) {
@@ -675,7 +677,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		if( statementListProperty != null ) {
 			//choose any non-ancestor
 			
-			org.lgna.croquet.components.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getSingleton().getSceneEditor();
+			org.lgna.croquet.components.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
 			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.createStatementListPropertyPaneInfos( arbitrarilyChosenSource );
 			final int N = statementListPropertyPaneInfos.length;
 			for( int i=0; i<N; i++ ) {

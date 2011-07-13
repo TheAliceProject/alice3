@@ -81,7 +81,7 @@ public abstract class Note extends org.lgna.stencil.Note {
 		return isMouseEventInterceptedInAllCasesEvenPopups( e );
 	}
 	
-	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event );
+	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event );
 	private boolean moveOutOfTheWayIfNecessary( org.lgna.croquet.components.ScreenElement screenElement ) {
 		java.awt.Rectangle screenElementLocalBounds = screenElement.getLocalBounds();
 		java.awt.Rectangle bounds = this.getBounds( screenElement );
@@ -92,7 +92,7 @@ public abstract class Note extends org.lgna.stencil.Note {
 			return false;
 		}
 	}
-	public boolean moveOutOfTheWayIfNecessary( org.lgna.croquet.history.event.Event event ) {
+	public boolean moveOutOfTheWayIfNecessary( org.lgna.croquet.history.event.Event<?> event ) {
 		org.lgna.croquet.components.ScreenElement screenElement;
 		if( event instanceof org.lgna.croquet.history.event.PopupMenuResizedEvent ) {
 			org.lgna.croquet.history.event.PopupMenuResizedEvent menuResizedEvent = (org.lgna.croquet.history.event.PopupMenuResizedEvent)event;

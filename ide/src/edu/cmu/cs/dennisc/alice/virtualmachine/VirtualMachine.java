@@ -47,11 +47,11 @@ package edu.cmu.cs.dennisc.alice.virtualmachine;
  */
 public abstract class VirtualMachine {
 	@Deprecated
-	public Object getAccessForSceneEditor( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
+	public Object EPIC_HACK_FOR_SCENE_EDITOR_getAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
 		return get( field, instance );
 	}
 	@Deprecated
-	public Object createInstanceForSceneEditor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType ) {
+	public Object EPIC_HACK_FOR_SCENE_EDITOR_createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType ) {
 		pushCurrentThread( null );
 		try {
 			return this.createInstance( this.entryPointType.getDeclaredConstructor() );
@@ -59,10 +59,20 @@ public abstract class VirtualMachine {
 			popCurrentThread();
 		}
 	}
+	
+//	@Deprecated
+//	public InstanceInAlice EPIC_HACK_FOR_SCENE_EDITOR_createInstanceForField( InstanceInAlice sceneInstanceInAlice, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instanceInJava ) {
+//		pushCurrentThread( null );
+//		try {
+//			InstanceInAlice rv = new InstanceInAlice();
+//			rv.EPIC_HACK_FOR_SCENE_EDITOR_setInstanceInJava( instanceInJava );
+//			sceneInstanceInAlice.set( field, rv );
+//			return rv;
+//		} finally {
+//			popCurrentThread();
+//		}
+//	}
 
-	
-	
-	
 	protected abstract Object getThis();
 
 	protected abstract void pushConstructorFrame( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map );
@@ -83,6 +93,27 @@ public abstract class VirtualMachine {
 	protected abstract void pushCurrentThread( Frame frame );
 	protected abstract void popCurrentThread();
 
+	public Object[] evaluateEntryPoint( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		pushCurrentThread( null );
+		try {
+			assert false;
+			//TODO: this
+			//this.pushFrame( instance, (java.util.Map)java.util.Collections.emptyMap() );
+			try {
+				Object[] rv = new Object[ expressions.length ];
+				for( int i=0; i<expressions.length; i++ ) {
+					rv[ i ] = this.evaluate( expressions[ i ] );
+					System.err.println( "evaluateEntryPoint: " + i + " " + rv[ i ] );
+				}
+				return rv;
+			} finally {
+				this.popFrame();
+			}
+		} finally {
+			popCurrentThread();
+		}
+	} 
+	
 	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object instance, Object... arguments ) {
 		pushCurrentThread( null );
 		try {

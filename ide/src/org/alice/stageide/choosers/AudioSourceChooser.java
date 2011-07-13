@@ -204,7 +204,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 		this.startTimeSlider.setTime( startTime );
 		this.stopTimeSlider.setTime( stopTime );
 
-		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getSingleton().getCodeFactory();
+		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getActiveInstance().getCodeFactory();
 		this.dropDown = factory.createExpressionPropertyPane( bogusNode.bogusProperty, null );
 		
 		if( audioResource != null ) {
@@ -285,7 +285,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 		if( audioSource != null ) {
 			org.alice.virtualmachine.resources.AudioResource audioResource = audioSource.getAudioResource();
 
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 			if( project != null ) {
 				project.addResource( audioResource );

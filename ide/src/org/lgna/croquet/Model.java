@@ -43,10 +43,7 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.resolvers.CodableResolver;
 import org.lgna.croquet.resolvers.RuntimeResolver;
-import org.lgna.croquet.resolvers.SingletonResolver;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -78,18 +75,15 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 	
 	public abstract org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
 
-	protected static String getLocalizedText( Class<?> cls, String subKey ) {
+	private static String findLocalizedText( Class<? extends Model> cls, Class<? extends Model> clsRoot, String subKey ) {
 		String bundleName = cls.getPackage().getName() + ".croquet";
 		try {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
-			String key;
+			String key = cls.getSimpleName();
 			
 			//todo?
-			if( cls.isMemberClass() ) {
-				key = cls.getSimpleName();
-			} else {
-				key = cls.getSimpleName();
-			}
+			//if( cls.isMemberClass() ) {
+			//}
 			
 			
 			if( subKey != null ) {
@@ -100,26 +94,34 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 				key = sb.toString();
 			}
 			String rv = resourceBundle.getString( key );
-			if( rv != null ) {
-				//pass
-			} else {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: localize", key );
-			}
 			return rv;
 		} catch( java.util.MissingResourceException mre ) {
-			return null;
+			if( cls == clsRoot ) {
+				return null;
+			} else {
+				return findLocalizedText( (Class<? extends Model>)cls.getSuperclass(), clsRoot, subKey );
+			}
 		}
 	}
+	private static String getLocalizedText( Class<? extends Model> cls, String subKey ) {
+		return findLocalizedText( cls, cls, subKey );
+	}
 
-	protected String getLocalizedText( String subKey ) {
-		return getLocalizedText( this.getClass(), subKey );
+	protected Class<? extends Model> getClassUsedForLocalization() {
+		return this.getClass();
+	}
+	protected final String getLocalizedText( String subKey ) {
+		return getLocalizedText( this.getClassUsedForLocalization(), subKey );
+	}
+	protected final String findLocalizedText( String subKey, Class<? extends Model> clsRoot ) {
+		return findLocalizedText( this.getClassUsedForLocalization(), clsRoot, subKey );
 	}
 	
-	protected static String getDefaultLocalizedText( Class<?> cls ) {
+	protected static String getDefaultLocalizedText( Class<? extends Model> cls ) {
 		return getLocalizedText( cls, null );
 	}
-	protected String getDefaultLocalizedText() {
-		return getDefaultLocalizedText( this.getClass() );
+	protected /*final*/ String getDefaultLocalizedText() {
+		return getDefaultLocalizedText( this.getClassUsedForLocalization() );
 	}
 
 	private static int getField( Class<?> cls, String fieldName, int nullValue ) {
@@ -149,13 +151,13 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 		}
 	}
 	
-	protected static int getLocalizedMnemonicKey( Class<?> cls ) {
+	protected static int getLocalizedMnemonicKey( Class<? extends Model> cls ) {
 		return getKeyCode( getLocalizedText( cls, "mnemonic" ) );
 	}
 	protected int getLocalizedMnemonicKey() {
 		return getLocalizedMnemonicKey( this.getClass() );
 	}
-	protected static javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke( Class<?> cls ) {
+	protected static javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke( Class<? extends Model> cls ) {
 		String acceleratorText = getLocalizedText( cls, "accelerator" );
 		if( acceleratorText != null ) {
 			String[] array = acceleratorText.split(",");
@@ -336,6 +338,8 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 	}
 
 	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
-		return "todo getTutorialNoteText";
+		StringBuilder sb = new StringBuilder();
+		this.updateTutorialStepText( sb, step, edit, userInformation );
+		return sb.toString();
 	}
 }

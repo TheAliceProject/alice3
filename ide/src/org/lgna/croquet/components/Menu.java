@@ -46,77 +46,30 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class Menu extends ViewController< javax.swing.JMenu, org.lgna.croquet.MenuItemPrepModel > implements MenuItemContainer {
-	public Menu( org.lgna.croquet.MenuModel model ) {
+public class Menu extends AbstractMenu< org.lgna.croquet.AbstractMenuModel > {
+	public Menu( org.lgna.croquet.AbstractMenuModel model ) {
 		super( model );
 	}
-	public Menu( org.lgna.croquet.CascadeItem< ?,? > model ) {
-		super( model );
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getModel().addPopupMenuListener( this );
 	}
-	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
-		return this;
-	}
-	
-	public void addPopupMenuListener(javax.swing.event.PopupMenuListener listener) {
-		this.getAwtComponent().getPopupMenu().addPopupMenuListener( listener );
-	}
-	public void removePopupMenuListener(javax.swing.event.PopupMenuListener listener) {
-		this.getAwtComponent().getPopupMenu().removePopupMenuListener( listener );
+
+	@Override
+	protected void handleUndisplayable() {
+		this.getModel().removePopupMenuListener( this );
+		super.handleUndisplayable();
 	}
 	
 	@Override
-	protected javax.swing.JMenu createAwtComponent() {
-		return new javax.swing.JMenu();
+	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
+		this.getAwtComponent().setAction( this.getModel().getAction() );
+		super.handleAddedTo( parent );
 	}
-	
-//	/*package-private*/ void setText( String text ) {
-//		this.getAwtComponent().setText( text );
-//	}
-//	/*package-private*/ void setIcon( javax.swing.Icon icon ) {
-//		this.getAwtComponent().setIcon( icon );
-//	}
-	
-//	public void setText( String text ) {
-//		if( text != null ) {
-//			this.getAwtComponent().setText( text );
-//		} else {
-//			//todo
-//		}
-//	}
-//	public void setMnemonic( int mnemonic ) {
-//		this.getAwtComponent().setMnemonic( mnemonic );
-//	}
-
-	public void addMenu( Menu menu ) {
-		this.getAwtComponent().add( menu.getAwtComponent() );
-	}
-	public void addMenuItem( MenuItem menuItem ) {
-		this.getAwtComponent().add( menuItem.getAwtComponent() );
-	}
-	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
-		this.getAwtComponent().add( cascadeMenuItem.getAwtComponent() );
-	}
-	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
-		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );
-	}
-	public void addSeparator() {
-		this.addSeparator( null );
-	}
-	public void addSeparator( MenuTextSeparator menuTextSeparator ) {
-		if( menuTextSeparator != null ) {
-			this.getAwtComponent().add( menuTextSeparator.getAwtComponent() );
-		} else {
-			this.getAwtComponent().addSeparator();
-		}
-	}
-	
-	public void removeAllMenuItems() {
-		//this.internalRemoveAllComponents();
-		this.getAwtComponent().removeAll();
-	}
-	public void forgetAndRemoveAllMenuItems() {
-		//this.internalForgetAndRemoveAllComponents();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "forgetAndRemoveAllMenuItems" );
-		this.getAwtComponent().removeAll();
+	@Override
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
+		super.handleRemovedFrom( parent );
+		this.getAwtComponent().setAction( null );
 	}
 }

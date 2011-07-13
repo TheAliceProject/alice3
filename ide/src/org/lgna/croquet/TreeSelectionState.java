@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-public class TreeSelectionState<E> extends State<E> {
+public abstract class TreeSelectionState<E> extends ItemState<E> {
 	public static interface SelectionObserver<E> {
 		public void selectionChanged(E nextValue);
 	};
@@ -75,10 +75,8 @@ public class TreeSelectionState<E> extends State<E> {
 	}
 	private final SingleTreeSelectionModel treeSelectionModel;
 	private final edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel;
-	private final ItemCodec< E > codec;
-	public TreeSelectionState(Group group, java.util.UUID id, ItemCodec< E > codec, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel, E initialSelection ) {
-		super(group, id);
-		this.codec = codec;
+	public TreeSelectionState(Group group, java.util.UUID id, ItemCodec< E > itemCodec, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel, E initialSelection ) {
+		super(group, id, itemCodec);
 		this.treeSelectionModel = new SingleTreeSelectionModel();
 		this.treeModel = treeModel;
 		this.setSelection( initialSelection );
@@ -87,10 +85,6 @@ public class TreeSelectionState<E> extends State<E> {
 				fireValueChanged( getSelection() );
 			}
 		} );
-	}
-
-	public ItemCodec<E> getCodec() {
-		return this.codec;
 	}
 
 	@Override

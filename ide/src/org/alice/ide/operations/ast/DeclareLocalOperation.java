@@ -48,7 +48,7 @@ package org.alice.ide.operations.ast;
 public class DeclareLocalOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement> {
 	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
 	public DeclareLocalOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "09dfabbc-eda3-4a92-8a44-6d013c9c2a92" ) );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 	@Override

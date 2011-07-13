@@ -60,7 +60,7 @@ package org.alice.ide.memberseditor.templates;
 		this.method = method;
 		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
-			this.setPopupPrepModel( new MethodPopupMenuModel( methodInAlice ).getPopupMenuOperation() );
+			this.setPopupPrepModel( new MethodPopupMenuModel( methodInAlice ).getPopupPrepModel() );
 		}
 	}
 	@Override
@@ -93,6 +93,6 @@ package org.alice.ide.memberseditor.templates;
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.FunctionInvocationCascade.getInstance( this.method, expressionProperty );
+		return org.alice.ide.croquet.models.ast.cascade.expression.FunctionInvocationCascade.getInstance( this.method, expressionProperty ).getRoot().getPopupPrepModel();
 	}
 }

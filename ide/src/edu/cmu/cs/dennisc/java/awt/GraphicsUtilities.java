@@ -71,6 +71,9 @@ public class GraphicsUtilities {
 	public static void drawCenteredText( java.awt.Graphics g, String s, java.awt.Rectangle rect ) {
 		drawCenteredText( g, s, rect.x, rect.y, rect.width, rect.height );
 	}
+	public static void drawCenteredText( java.awt.Graphics g, String s, java.awt.geom.Rectangle2D rect ) {
+		drawCenteredText( g, s, (int)rect.getX(), (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight() );
+	}
 	
 	private static void renderTriangle( java.awt.Graphics g, Heading heading, int x, int y, int width, int height, boolean isFill ) {
 		if( heading != null ) {

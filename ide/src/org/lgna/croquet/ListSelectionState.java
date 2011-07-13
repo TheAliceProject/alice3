@@ -174,8 +174,7 @@ import org.lgna.croquet.resolvers.CodableResolver;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListSelectionState<E> extends State< E > implements Iterable< E >/*, java.util.List<E>*/{
-	private final ItemCodec< E > codec;
+public abstract class ListSelectionState<E> extends ItemState< E > implements Iterable< E >/*, java.util.List<E>*/{
 	private final ComboBoxModel< E > comboBoxModel = new ComboBoxModel< E >( this );
 	private final ListSelectionModel< E > listSelectionModel = new ListSelectionModel< E >( this );
 	
@@ -276,18 +275,8 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 //	}
 
 	public ListSelectionState( Group group, java.util.UUID id, ItemCodec< E > codec, int selectionIndex ) {
-		super( group, id );
-		//assert codec != null;
-		if( codec != null ) {
-			//pass
-		} else {
-			System.err.println( "codec is null for " + this );
-		}
-		this.codec = codec;
+		super( group, id, codec );
 		this.index = selectionIndex;
-	}
-	public ItemCodec< E > getCodec() {
-		return this.codec;
 	}
 	@Override
 	protected void localize() {
@@ -310,8 +299,8 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 				ListSelectionState.this.listSelectionModel.fireListSelectionChanged( ListSelectionState.this.index, ListSelectionState.this.index, ListSelectionState.this.listSelectionModel.getValueIsAdjusting() );
 			}
 		};
-		action.putValue( javax.swing.Action.NAME, getMenuText( (E)item ) );
-		action.putValue( javax.swing.Action.SMALL_ICON, getMenuSmallIcon( (E)item ) );
+		action.putValue( javax.swing.Action.NAME, getMenuText( item ) );
+		action.putValue( javax.swing.Action.SMALL_ICON, getMenuSmallIcon( item ) );
 		return action;
 	}
 	public javax.swing.ComboBoxModel getComboBoxModel() {
@@ -366,7 +355,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 	public abstract int getItemCount();
 	public abstract E[] toArray( Class< E > componentType );
 	public final E[] toArray() {
-		return this.toArray( this.codec.getValueClass() );
+		return this.toArray( this.getItemCodec().getValueClass() );
 	}
 	
 	public abstract int indexOf( E item );
@@ -527,7 +516,7 @@ public abstract class ListSelectionState<E> extends State< E > implements Iterab
 			org.lgna.croquet.edits.ListSelectionStateEdit< E > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< E >)edit;
 			rv.append( "Select " );
 			rv.append( "<strong>" );
-			this.codec.appendRepresentation( rv, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+			this.getItemCodec().appendRepresentation( rv, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
 			rv.append( "</strong>." );
 		}
 		return rv;

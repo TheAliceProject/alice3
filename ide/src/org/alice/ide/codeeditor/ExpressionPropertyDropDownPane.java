@@ -58,7 +58,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 //	@Override
 //	protected int getInsetLeft() {
 //		int rv = super.getInsetLeft();
-//		if( org.alice.ide.IDE.getSingleton().getExpressionTypeFeedbackDesiredState().getValue() ) {
+//		if( org.alice.ide.IDE.getActiveInstance().getExpressionTypeFeedbackDesiredState().getValue() ) {
 //			//pass
 //		} else {
 //			edu.cmu.cs.dennisc.croquet.Component< ? > mainComponent = this.getMainComponent();
@@ -95,7 +95,6 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 	public void dragStarted( org.lgna.croquet.history.DragStep context ) {
 	}
 	public void dragEntered( org.lgna.croquet.history.DragStep context ) {
-//		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		context.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height, -1 );
 	}
 	public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep context ) {
@@ -104,21 +103,8 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep context ) {
 		org.lgna.croquet.Model rv;
 		org.lgna.croquet.components.DragComponent source = context.getDragSource();
-//		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		if( source instanceof org.alice.ide.common.ExpressionCreatorPane ) {
 			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source;
-//<<<<<<< HEAD
-//			class DropOperation extends org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation {
-//				public DropOperation() {
-//					super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "43bbcede-3da7-4597-a093-9727e5b63f29" ), ExpressionPropertyDropDownPane.this.expressionProperty );
-//				}
-//				@Override
-//				protected void initializeInternal(edu.cmu.cs.dennisc.croquet.ModelContext<?> context, java.util.UUID id, edu.cmu.cs.dennisc.croquet.ViewController<?, ?> viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver,
-//						edu.cmu.cs.dennisc.alice.ast.Expression prevExpression) {
-//					expressionCreatorPane.createExpression( context, this.getExpressionProperty(), taskObserver );
-//				}
-//			}
-			
 			rv = expressionCreatorPane.getDropModel( context, this.expressionProperty );
 		} else {
 			rv = null;

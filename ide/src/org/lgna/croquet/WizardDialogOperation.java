@@ -54,34 +54,11 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.PageAxisPanel;
-import org.lgna.croquet.components.RowsSpringPanel;
-import org.lgna.croquet.components.SpringUtilities;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class WizardDialogOperation extends GatedCommitDialogOperation<org.lgna.croquet.history.WizardDialogOperationStep> {
-	protected static class FinishOperation extends CompleteOperation {
-		private static class SingletonHolder {
-			private static FinishOperation instance = new FinishOperation();
-		}
-		public static FinishOperation getInstance() {
-			return SingletonHolder.instance;
-		}
-		private FinishOperation() {
-			super( java.util.UUID.fromString( "687d90a2-4bdd-4b85-83f8-11b8a3cb0f6a" ) );
-		}
-		@Override
-		protected void localize() {
-			super.localize();
-			this.setName( "Finish" );
-		}
-	}
-	@Override
-	protected org.lgna.croquet.GatedCommitDialogOperation.CompleteOperation getCompleteOperation() {
-		return FinishOperation.getInstance();
-	}
-
 	private static abstract class WizardOperation extends ActionOperation {
 		public WizardOperation( java.util.UUID id ) {
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
@@ -259,7 +236,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 		}
 	}
 	@Override
-	public void handleFiredEvent( org.lgna.croquet.history.event.Event event ) {
+	public void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		super.handleFiredEvent( event );
 		this.handleCardChange( this.cardSelectionState.getSelectedItem() );
 	}
@@ -304,7 +281,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 		return rv;
 	}
 	@Override
-	protected Component< ? > createMainPanel( org.lgna.croquet.history.WizardDialogOperationStep step, Dialog dialog, Label explanationLabel ) {
+	protected Component< ? > createMainPanel( org.lgna.croquet.history.WizardDialogOperationStep step, Dialog dialog, org.lgna.croquet.components.JComponent< javax.swing.JLabel > explanationLabel ) {
 		WizardStage[] stages = this.createSteps( step );
 
 		java.util.ArrayList< Card > cards = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
@@ -336,128 +313,128 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 		rv.addComponent( centerPanel, BorderPanel.Constraint.CENTER );
 		return rv;
 	}
-	public static void main( String[] args ) {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			try {
-				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
-			} catch( Throwable t ) {
-				t.printStackTrace();
-			}
-		}
-		org.alice.stageide.StageIDE stageIDE = new org.alice.stageide.StageIDE();
-		WizardDialogOperation wizardDialogOperation = new WizardDialogOperation( null, null ) {
-			private StringState name = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "63245276-7fba-4905-8ac1-34629ed258e5" ), "" );
-			private StringState description = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "18c58e94-7155-45c3-b158-82d299a0f5c9" ), "" );
-			@Override
-			protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
-				return new java.awt.Dimension( 640, 480 );
-			}
-			@Override
-			protected void localize() {
-				super.localize();
-				this.setName( "Action Script" );
-			}
-			@Override
-			protected WizardStage[] createSteps( org.lgna.croquet.history.WizardDialogOperationStep step ) {
-				class ReviewPanel extends PageAxisPanel implements WizardStage {
-					public ReviewPanel() {
-						this.addComponent( new Label( "please review your animation" ) );
-					}
-					public String getTitle() {
-						return "Review";
-					}
-					public Component< ? > getComponent() {
-						return this;
-					}
-					public String getExplanationIfProcedeButtonShouldBeDisabled() {
-						return null;
-					}
-					public boolean isFinishPotentiallyEnabled() {
-						return false;
-					}
-				};
-				class NamePanel extends RowsSpringPanel implements WizardStage {
-					public String getTitle() {
-						return "Name/Description";
-					}
-					@Override
-					protected java.util.List< Component< ? >[] > updateComponentRows( java.util.List< Component< ? >[] > rv ) {
-						rv.add( SpringUtilities.createLabeledRow( "name:", name.createTextField() ) );
-						rv.add( SpringUtilities.createTopLabeledRow( "description:", description.createTextArea() ) );
-						return rv;
-					}
-					public Component< ? > getComponent() {
-						return this;
-					}
-					public String getExplanationIfProcedeButtonShouldBeDisabled() {
-						boolean isNameAcceptable = name.getValue().length() > 0;
-						boolean isDescriptionAcceptable = description.getValue().length() > 0;
-						if( isNameAcceptable ) {
-							if( isDescriptionAcceptable ) {
-								return null;
-							} else {
-								return "enter description";
-							}
-						} else {
-							if( isDescriptionAcceptable ) {
-								return "enter name";
-							} else {
-								return "enter name and description";
-							}
-						}
-					}
-					public boolean isFinishPotentiallyEnabled() {
-						return true;
-					}
-				};
-				class CharactersPanel extends BorderPanel implements WizardStage {
-					public CharactersPanel() {
-						this.addComponent( new Label( "todo" ), Constraint.CENTER );
-					}
-					public String getTitle() {
-						return "Characters";
-					}
-					public Component< ? > getComponent() {
-						return this;
-					}
-					public String getExplanationIfProcedeButtonShouldBeDisabled() {
-						return null;
-					}
-					public boolean isFinishPotentiallyEnabled() {
-						return true;
-					}
-				};
-				return new WizardStage[] {
-					new ReviewPanel(),
-					new NamePanel(), 
-					new CharactersPanel()
-				};
-			}
-			@Override
-			protected void release( org.lgna.croquet.history.WizardDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, boolean isCompleted ) {
-				if( isCompleted ) {
-					step.commitAndInvokeDo( new org.lgna.croquet.edits.Edit( step ) {
-						@Override
-						protected void doOrRedoInternal( boolean isDo ) {
-							edu.cmu.cs.dennisc.print.PrintUtilities.println( "do", name.getValue() );
-						}
-						@Override
-						protected void undoInternal() {
-							edu.cmu.cs.dennisc.print.PrintUtilities.println( "undo", name.getValue() );
-						}
-						@Override
-						protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-							rv.append( "todo" );
-							return rv;
-						}
-					} );
-				} else {
-					step.cancel();
-				}
-			}
-		};
-		wizardDialogOperation.fire();
-		System.exit( 0 );
-	}
+//	public static void main( String[] args ) {
+//		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+//		if( lookAndFeelInfo != null ) {
+//			try {
+//				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
+//			} catch( Throwable t ) {
+//				t.printStackTrace();
+//			}
+//		}
+//		org.alice.stageide.StageIDE stageIDE = new org.alice.stageide.StageIDE();
+//		WizardDialogOperation wizardDialogOperation = new WizardDialogOperation( null, null ) {
+//			private StringState name = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "63245276-7fba-4905-8ac1-34629ed258e5" ), "" ) {};
+//			private StringState description = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "18c58e94-7155-45c3-b158-82d299a0f5c9" ), "" ) {};
+//			@Override
+//			protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
+//				return new java.awt.Dimension( 640, 480 );
+//			}
+//			@Override
+//			protected void localize() {
+//				super.localize();
+//				this.setName( "Action Script" );
+//			}
+//			@Override
+//			protected WizardStage[] createSteps( org.lgna.croquet.history.WizardDialogOperationStep step ) {
+//				class ReviewPanel extends PageAxisPanel implements WizardStage {
+//					public ReviewPanel() {
+//						this.addComponent( new Label( "please review your animation" ) );
+//					}
+//					public String getTitle() {
+//						return "Review";
+//					}
+//					public Component< ? > getComponent() {
+//						return this;
+//					}
+//					public String getExplanationIfProcedeButtonShouldBeDisabled() {
+//						return null;
+//					}
+//					public boolean isFinishPotentiallyEnabled() {
+//						return false;
+//					}
+//				};
+//				class NamePanel extends RowsSpringPanel implements WizardStage {
+//					public String getTitle() {
+//						return "Name/Description";
+//					}
+//					@Override
+//					protected java.util.List< Component< ? >[] > updateComponentRows( java.util.List< Component< ? >[] > rv ) {
+//						rv.add( SpringUtilities.createLabeledRow( "name:", name.createTextField() ) );
+//						rv.add( SpringUtilities.createTopLabeledRow( "description:", description.createTextArea() ) );
+//						return rv;
+//					}
+//					public Component< ? > getComponent() {
+//						return this;
+//					}
+//					public String getExplanationIfProcedeButtonShouldBeDisabled() {
+//						boolean isNameAcceptable = name.getValue().length() > 0;
+//						boolean isDescriptionAcceptable = description.getValue().length() > 0;
+//						if( isNameAcceptable ) {
+//							if( isDescriptionAcceptable ) {
+//								return null;
+//							} else {
+//								return "enter description";
+//							}
+//						} else {
+//							if( isDescriptionAcceptable ) {
+//								return "enter name";
+//							} else {
+//								return "enter name and description";
+//							}
+//						}
+//					}
+//					public boolean isFinishPotentiallyEnabled() {
+//						return true;
+//					}
+//				};
+//				class CharactersPanel extends BorderPanel implements WizardStage {
+//					public CharactersPanel() {
+//						this.addComponent( new Label( "todo" ), Constraint.CENTER );
+//					}
+//					public String getTitle() {
+//						return "Characters";
+//					}
+//					public Component< ? > getComponent() {
+//						return this;
+//					}
+//					public String getExplanationIfProcedeButtonShouldBeDisabled() {
+//						return null;
+//					}
+//					public boolean isFinishPotentiallyEnabled() {
+//						return true;
+//					}
+//				};
+//				return new WizardStage[] {
+//					new ReviewPanel(),
+//					new NamePanel(), 
+//					new CharactersPanel()
+//				};
+//			}
+//			@Override
+//			protected void release( org.lgna.croquet.history.WizardDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, boolean isCompleted ) {
+//				if( isCompleted ) {
+//					step.commitAndInvokeDo( new org.lgna.croquet.edits.Edit( step ) {
+//						@Override
+//						protected void doOrRedoInternal( boolean isDo ) {
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "do", name.getValue() );
+//						}
+//						@Override
+//						protected void undoInternal() {
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "undo", name.getValue() );
+//						}
+//						@Override
+//						protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+//							rv.append( "todo" );
+//							return rv;
+//						}
+//					} );
+//				} else {
+//					step.cancel();
+//				}
+//			}
+//		};
+//		wizardDialogOperation.fire();
+//		System.exit( 0 );
+//	}
 }

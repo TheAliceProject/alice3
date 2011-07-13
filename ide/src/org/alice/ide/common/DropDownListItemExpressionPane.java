@@ -58,7 +58,7 @@ public class DropDownListItemExpressionPane extends AbstractDropDownPane {
 		}
 	};
 	public DropDownListItemExpressionPane( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fillInType ) {
-		super( new org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "dec13fc9-4b3f-4e4e-8b1f-21956e789b32" ), index, expressionListProperty, fillInType ) );
+		super( new org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "dec13fc9-4b3f-4e4e-8b1f-21956e789b32" ), index, expressionListProperty, fillInType ).getRoot().getPopupPrepModel() );
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;
 	}
@@ -77,7 +77,7 @@ public class DropDownListItemExpressionPane extends AbstractDropDownPane {
 	public void refresh() {
 		this.forgetAndRemoveAllComponents();
 		if( this.index < this.expressionListProperty.size() ) {
-			this.addComponent( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPane( this.expressionListProperty.get( this.index ) ) );
+			this.addComponent( org.alice.ide.IDE.getActiveInstance().getCodeFactory().createExpressionPane( this.expressionListProperty.get( this.index ) ) );
 		}
 	}
 }

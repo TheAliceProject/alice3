@@ -44,13 +44,6 @@
 package org.alice.ide.properties.adapter;
 
 import java.util.Locale;
-
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter.SetColorOperation;
-import org.alice.ide.properties.adapter.AbstractStringPropertyAdapter.SetStringOperation;
-import org.alice.ide.properties.uicontroller.DoublePropertyController;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.Operation;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 
@@ -113,7 +106,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 					
 					SetDoubleOperation currentDoubleOperation = new SetDoubleOperation(currentDouble, currentDoubleName);
 					
-					java.util.List<org.lgna.croquet.MenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					models.add(currentDoubleOperation.getMenuItemPrepModel());
 					models.add(org.lgna.croquet.MenuModel.SEPARATOR);
 					for( SetDoubleOperation operation : AbstractDoublePropertyAdapter.this.defaultDoubleOperationModels ) {
@@ -121,7 +114,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 					}
 					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
-			}.getPopupMenuOperation();
+			}.getPopupPrepModel();
 		}
 		return this.popupMenuOperation;
 	}

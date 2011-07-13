@@ -70,7 +70,7 @@ public class CompositePropertyController extends LabelBasedPropertyController<Co
 	{
 		super.initializeComponents();
 		this.label.setBorder(BorderFactory.createCompoundBorder(
-		        BorderFactory.createLineBorder(org.alice.ide.IDE.getSingleton().getTheme().getPrimaryBackgroundColor(), 2), 
+		        BorderFactory.createLineBorder(org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor(), 2), 
                 BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		this.label.getAwtComponent().setOpaque(true);
 		this.label.setBackgroundColor(Color.WHITE);

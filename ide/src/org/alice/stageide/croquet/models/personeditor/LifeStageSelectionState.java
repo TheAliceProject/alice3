@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.croquet.models.personeditor;
 
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -60,7 +58,7 @@ public class LifeStageSelectionState extends AbstractListSelectionState< org.ali
 	@Override
 	public org.lgna.croquet.components.List<org.alice.apis.stage.LifeStage> createList() {
 		org.lgna.croquet.components.List<org.alice.apis.stage.LifeStage> rv = super.createList();
-		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
+		rv.setCellRenderer( org.alice.stageide.personeditor.SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}
 }

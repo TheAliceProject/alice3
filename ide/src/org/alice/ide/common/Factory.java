@@ -59,9 +59,9 @@ public abstract class Factory {
 		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = argument.expression;
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
 		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
-		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
+		if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
 			org.alice.ide.croquet.models.ast.cascade.ArgumentCascade model = org.alice.ide.croquet.models.ast.cascade.ArgumentCascade.getInstance( argument );
-			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty );
+			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), prefixPane, rv, expressionProperty );
 			rv = expressionPropertyDropDownPane;
 		}
 		return rv;
@@ -343,7 +343,7 @@ public abstract class Factory {
 	protected org.lgna.croquet.components.JComponent< ? > createFieldAccessPane( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		org.lgna.croquet.components.JComponent< ? > rv;
 		FieldAccessPane fieldAccessPane = new FieldAccessPane( this, fieldAccess );
-		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getSingleton().getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
+		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 		if( prefixPane != null ) {
 			rv = new org.lgna.croquet.components.LineAxisPanel( prefixPane, fieldAccessPane );
 		} else {
@@ -369,7 +369,7 @@ public abstract class Factory {
 //		} else {
 //			rv = new ExpressionPane( this, expression );
 //		}
-		org.lgna.croquet.components.JComponent< ? > rv = org.alice.ide.IDE.getSingleton().getOverrideComponent( this, expression );
+		org.lgna.croquet.components.JComponent< ? > rv = org.alice.ide.IDE.getActiveInstance().getOverrideComponent( this, expression );
 		if( rv != null ) {
 			//pass
 		} else {

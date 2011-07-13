@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.croquet.models.personeditor;
 
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -60,7 +58,7 @@ public class BaseEyeColorSelectionState extends AbstractListSelectionState<org.a
 	@Override
 	public org.lgna.croquet.components.List<org.alice.apis.stage.BaseEyeColor> createList() {
 		org.lgna.croquet.components.List<org.alice.apis.stage.BaseEyeColor> rv = super.createList();
-		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
+		rv.setCellRenderer( org.alice.stageide.personeditor.SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}
 }

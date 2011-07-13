@@ -100,7 +100,7 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 		if( viewController != null ) {
 			owner = viewController;
 		} else {
-			owner = Application.getSingleton().getFrame().getContentPanel();
+			owner = Application.getActiveInstance().getFrame().getContentPanel();
 		}
 		final Dialog dialog = new Dialog( owner );
 //		dialog.getAwtComponent().setUndecorated( true );
@@ -147,7 +147,7 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 				if( location != null ) {
 					dialog.setLocation( location );
 				} else {
-					edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getSingleton().getFrame().getAwtComponent() ); 
+					edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getActiveInstance().getFrame().getAwtComponent() ); 
 				}
 				this.tweakDialog( dialog, step );
 				

@@ -47,7 +47,7 @@ package org.alice.ide.memberseditor;
  */
 public class FunctionsContentPanel extends MethodsContentPanel {
 	public FunctionsContentPanel() {
-		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getTheme().getFunctionColor() );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFunctionColor() );
 	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {

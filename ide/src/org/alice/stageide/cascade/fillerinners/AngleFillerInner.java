@@ -47,17 +47,12 @@ package org.alice.stageide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class AngleFillerInner extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
+public class AngleFillerInner extends org.alice.ide.cascade.fillerinners.AbstractDoubleFillerInner {
 	public AngleFillerInner() {
-		super( org.alice.apis.moveandturn.AngleInRevolutions.class );
+		super( org.alice.apis.moveandturn.AngleInRevolutions.class, new double[] { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0 } );
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeItem > addItems( java.util.List< org.lgna.croquet.CascadeItem > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-		for( double d : new double[] { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0 } ) {
-			rv.add( org.alice.stageide.croquet.models.cascade.values.AngleValueFillIn.getInstance( d ) ); 
-		}
-		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.stageide.croquet.models.custom.CustomAngleInputDialogOperation.getInstance().getFillIn() );
-		return rv;
+	protected org.lgna.croquet.CascadeItem getCustomItem() {
+		return org.alice.stageide.croquet.models.custom.CustomAngleInputDialogOperation.getInstance().getFillIn();
 	}
 }

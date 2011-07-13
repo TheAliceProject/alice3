@@ -59,7 +59,7 @@ public class ArgumentCascade extends ProjectExpressionPropertyCascade {
 	}
 	private final edu.cmu.cs.dennisc.alice.ast.Argument argument;
 	private ArgumentCascade( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
-		super( java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ), argument.expression, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( argument.parameter.getValue() ) );
+		super( java.util.UUID.fromString( "c60b0eec-d8ac-4256-a8be-54b16605fc0e" ), argument.expression, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( argument.parameter.getValue() ) );
 		this.argument = argument;
 	}
 //	@Override

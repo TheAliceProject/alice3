@@ -57,7 +57,7 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 		final int index = this.property.indexOf( this.original );
 		final edu.cmu.cs.dennisc.alice.ast.BlockStatement body = this.original.body.getValue();
 		if( index >= 0 ) {
-			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
@@ -129,7 +129,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 			final edu.cmu.cs.dennisc.alice.ast.Statement[] statements = new edu.cmu.cs.dennisc.alice.ast.Statement[ N ];
 			this.abstractStatementWithBody.body.getValue().statements.toArray( statements );
 			
-			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
@@ -182,7 +182,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final int index = this.property.indexOf( this.statement );
 		if( index >= 0 ) {
-			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
@@ -246,9 +246,9 @@ public class Factory extends org.alice.ide.common.Factory {
 	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType, org.lgna.croquet.Group group ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
 		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
-		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
+		if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
 			org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade model = org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade.getInstance( group, expressionProperty, desiredValueType );
-			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty );
+			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), prefixPane, rv, expressionProperty );
 			rv = expressionPropertyDropDownPane;
 		}
 		return rv;
@@ -264,10 +264,10 @@ public class Factory extends org.alice.ide.common.Factory {
 		abstractStatementPane.setPopupPrepModel( new org.lgna.croquet.PredeterminedMenuModel(
 				java.util.UUID.fromString( "6190553d-309e-453f-b9eb-ded8aaf7ce63" ),
 				this.createPopupOperations( abstractStatementPane ) 
-		).getPopupMenuOperation() );
+		).getPopupPrepModel() );
 		return abstractStatementPane;
 	}
-	protected java.util.List< org.lgna.croquet.MenuItemPrepModel > updatePopupOperations( java.util.List< org.lgna.croquet.MenuItemPrepModel > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+	protected java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > updatePopupOperations( java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		edu.cmu.cs.dennisc.alice.ast.StatementListProperty property = abstractStatementPane.getOwner();
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
@@ -304,8 +304,8 @@ public class Factory extends org.alice.ide.common.Factory {
 		}
 		return rv;
 	}
-	private java.util.List< org.lgna.croquet.MenuItemPrepModel > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
-		return this.updatePopupOperations( new java.util.LinkedList< org.lgna.croquet.MenuItemPrepModel >(), abstractStatementPane );
+	private java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+		return this.updatePopupOperations( new java.util.LinkedList< org.lgna.croquet.StandardMenuItemPrepModel >(), abstractStatementPane );
 	}
 
 }

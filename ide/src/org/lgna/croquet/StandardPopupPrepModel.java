@@ -42,8 +42,6 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.resolvers.CodableResolver;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -59,10 +57,9 @@ public final class StandardPopupPrepModel extends PopupPrepModel {
 		return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( this.menuModel );
 	}
 	@Override
-	protected void localize() {
-		this.setName( this.menuModel.getLocalizedText( "popupMenuOperation" ) );
+	protected Class< ? extends org.lgna.croquet.Model > getClassUsedForLocalization() {
+		return this.menuModel.getClassUsedForLocalization();
 	}
-	
 	public MenuModel getMenuModel() {
 		return this.menuModel;
 	}
@@ -88,32 +85,32 @@ public final class StandardPopupPrepModel extends PopupPrepModel {
 //		}
 //	}
 	
-	public static class PopupMenuOperationResolver implements CodableResolver< StandardPopupPrepModel > {
-		private final StandardPopupPrepModel popupMenuOperation;
-		public PopupMenuOperationResolver( StandardPopupPrepModel popupMenuOperation ) {
-			this.popupMenuOperation = popupMenuOperation;
+	public static class FromOwnerResolver implements org.lgna.croquet.resolvers.CodableResolver< StandardPopupPrepModel > {
+		private final StandardPopupPrepModel model;
+		public FromOwnerResolver( StandardPopupPrepModel model ) {
+			this.model = model;
 		}
-		public PopupMenuOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			CodableResolver<MenuModel> menuModelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		public FromOwnerResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			org.lgna.croquet.resolvers.CodableResolver<MenuModel> menuModelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 			MenuModel menuModel = menuModelResolver.getResolved();
-			this.popupMenuOperation = menuModel.getPopupMenuOperation();
+			this.model = menuModel.getPopupPrepModel();
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			CodableResolver<MenuModel> menuModelResolver = this.popupMenuOperation.menuModel.getCodableResolver();
+			org.lgna.croquet.resolvers.CodableResolver<MenuModel> menuModelResolver = this.model.menuModel.getCodableResolver();
 			binaryEncoder.encode( menuModelResolver );
 		}
 		public StandardPopupPrepModel getResolved() {
-			return this.popupMenuOperation;
+			return this.model;
 		}
 	}
 	@Override
-	protected CodableResolver< StandardPopupPrepModel > createCodableResolver() {
-		return new PopupMenuOperationResolver( this );
+	protected org.lgna.croquet.resolvers.CodableResolver< StandardPopupPrepModel > createCodableResolver() {
+		return new FromOwnerResolver( this );
 	}
 	
 	
 	@Override
-	protected org.lgna.croquet.history.StandardPopupPrepStep perform( org.lgna.croquet.triggers.Trigger trigger, final org.lgna.croquet.PopupPrepModel.PerformObserver performObserver ) {
+	protected org.lgna.croquet.history.StandardPopupPrepStep perform( org.lgna.croquet.triggers.Trigger trigger ) {
 		final org.lgna.croquet.history.StandardPopupPrepStep step = org.lgna.croquet.history.TransactionManager.addStandardPopupOperationStep( this, trigger );
 
 		final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this ) {
@@ -149,7 +146,9 @@ public final class StandardPopupPrepModel extends PopupPrepModel {
 					//step.getParent().finish();
 				}
 				StandardPopupPrepModel.this.menuModel.handlePopupMenuEpilogue( popupMenu, step );
-				performObserver.handleFinally();
+				
+				System.err.println( "TODO: handleFinally?" );
+//				performObserver.handleFinally();
 			}
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 				this.cancelEvent = e;

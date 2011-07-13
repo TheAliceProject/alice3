@@ -42,19 +42,17 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.MenuItemContainerUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
 public class PredeterminedMenuModel extends MenuModel {
-	private MenuItemPrepModel[] models;
-	public PredeterminedMenuModel( java.util.UUID individualId, MenuItemPrepModel... models ) {
+	private StandardMenuItemPrepModel[] models;
+	public PredeterminedMenuModel( java.util.UUID individualId, StandardMenuItemPrepModel... models ) {
 		super( individualId );
 		this.models = models;
 	}
-	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List< MenuItemPrepModel > models ) {
-		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, MenuItemPrepModel.class) );
+	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List< StandardMenuItemPrepModel > models ) {
+		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, StandardMenuItemPrepModel.class) );
 	}
 	
 	public Model[] getModels() {
@@ -65,12 +63,14 @@ public class PredeterminedMenuModel extends MenuModel {
 	@Override
 	public org.lgna.croquet.components.Menu createMenu() {
 		org.lgna.croquet.components.Menu rv = super.createMenu();
-		MenuItemContainerUtilities.addMenuElements( rv, this.models );
+		System.err.println( "todo: createMenu" );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( rv, this.models );
 		return rv;
 	}
 	@Override
 	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
+		System.err.println( "todo: handlePopupMenuPrologue" );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
 	}
 }

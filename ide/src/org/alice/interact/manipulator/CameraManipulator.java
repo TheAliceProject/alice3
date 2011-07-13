@@ -43,11 +43,10 @@
 package org.alice.interact.manipulator;
 
 
-import org.alice.interact.InputState;
 import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 

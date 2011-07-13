@@ -50,24 +50,4 @@ public abstract class SingleThreadOperation< S extends org.lgna.croquet.history.
 	public SingleThreadOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
-	//protected abstract Edit< ? > createEdit() throws CancelException;
-	protected abstract void perform( S step );
-	@Override
-	protected final void perform( S step, PerformObserver performObserver ) {
-		try {
-//			try {
-//				Edit< ? > edit = this.createEdit();
-//				if( edit != null ) {
-//					step.commitAndInvokeDo( edit );
-//				} else {
-//					step.finish();
-//				}
-//			} catch( CancelException ce ) {
-//				step.cancel();
-//			}
-			this.perform( step );
-		} finally {
-			performObserver.handleFinally();
-		}
-	}
 }

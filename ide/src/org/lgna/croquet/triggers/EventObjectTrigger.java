@@ -82,16 +82,16 @@ public abstract class EventObjectTrigger< E extends java.util.EventObject > impl
 		}
 	}
 	protected java.awt.Component getComponent() {
-		if( this.viewController != null ) {
-			return this.viewController.getAwtComponent();
-		} else {
+//		if( this.viewController != null ) {
+//			return this.viewController.getAwtComponent();
+//		} else {
 			Object source = this.event.getSource();
 			if( source instanceof java.awt.Component ) {
 				return (java.awt.Component)source;
 			} else {
 				return null;
 			}
-		}
+//		}
 	}
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		java.awt.Point pt = this.getPoint();

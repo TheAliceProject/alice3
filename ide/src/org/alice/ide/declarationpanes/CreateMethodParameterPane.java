@@ -70,7 +70,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 //			}
 			
 			String text = "I understand that I need to update the invocations to this " + codeText + ".";
-			org.lgna.croquet.BooleanState isUnderstandingConfirmed = new org.lgna.croquet.BooleanState( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "21efac8d-c2dd-451f-8065-d2e284a3e244" ), false );
+			org.lgna.croquet.BooleanState isUnderstandingConfirmed = new org.lgna.croquet.BooleanState( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "21efac8d-c2dd-451f-8065-d2e284a3e244" ), false ) {};
 			isUnderstandingConfirmed.setTextForBothTrueAndFalse( text );
 			org.lgna.croquet.components.CheckBox checkBox = isUnderstandingConfirmed.createCheckBox();
 			checkBox.setBackgroundColor( null );
@@ -103,7 +103,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 			org.lgna.croquet.components.PageAxisPanel pane = new org.lgna.croquet.components.PageAxisPanel();
 			pane.addComponent( new org.lgna.croquet.components.Label( sb.toString() ) );
 			pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
-			pane.addComponent( new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
+			pane.addComponent( new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( "Tip: look for " ), org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
 			pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
 			pane.addComponent( checkBox );
 			return new org.lgna.croquet.components.Component< ? >[] { new org.lgna.croquet.components.Label( "WARNING:" ), pane };

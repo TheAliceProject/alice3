@@ -115,7 +115,7 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
                     {
                         System.err.println("TODO: fix broken bounding box for "+this.treeNode.getValue());
                     }
-					objectTransform = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getGoodPointOfViewInSceneForObject(box);
+					objectTransform = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getGoodPointOfViewInSceneForObject(box);
 					
 				}
 			}

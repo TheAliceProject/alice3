@@ -43,8 +43,6 @@
 
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.MenuItemPrepModel;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -70,40 +68,22 @@ public class MenuItemContainerUtilities {
 //		return rv;
 //	}
 	
-	public static MenuItemContainer addMenuElement( MenuItemContainer rv, MenuItemPrepModel model ) {
+	public static MenuItemContainer addMenuElement( MenuItemContainer rv, org.lgna.croquet.StandardMenuItemPrepModel model ) {
 		if( model != null ) {
 			model.createMenuItemAndAddTo( rv );
-//			if( model instanceof MenuModel ) {
-//				MenuModel menuOperation = (MenuModel)model;
-//				rv.addMenu( menuOperation.createMenu() );
-//			} else if( model instanceof ListSelectionState< ? > ) {
-//				ListSelectionState< ? > itemSelectionOperation = (ListSelectionState< ? >)model;
-//				rv.addMenu( itemSelectionOperation.getMenuModel().createMenu() );
-//			} else if( model instanceof MenuSeparatorModel ) {
-//				MenuSeparatorModel menuSeparatorModel = (MenuSeparatorModel)model;
-//				rv.addSeparator( menuSeparatorModel.createMenuTextSeparator() );
-//			} else if( model instanceof Operation<?> ) {
-//				Operation<?> operation = (Operation<?>)model;
-//				rv.addMenuItem( operation.createMenuItem() );
-//			} else if( model instanceof BooleanState ) {
-//				BooleanState booleanState = (BooleanState)model;
-//				rv.addCheckBoxMenuItem( booleanState.createCheckBoxMenuItem() );
-//			} else {
-//				throw new RuntimeException();
-//			}
 		} else {
 			rv.addSeparator();
 		}
 		return rv;
 	}
-	public static MenuItemContainer addMenuElements( MenuItemContainer rv, java.util.List<MenuItemPrepModel> models ) {
-		for( MenuItemPrepModel model : models ) {
+	public static MenuItemContainer addMenuElements( MenuItemContainer rv, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
+		for( org.lgna.croquet.StandardMenuItemPrepModel model : models ) {
 			addMenuElement( rv, model );
 		}
 		return rv;
 	}
-	public static MenuItemContainer addMenuElements( MenuItemContainer rv, MenuItemPrepModel[] models ) {
-		for( MenuItemPrepModel model : models ) {
+	public static MenuItemContainer addMenuElements( MenuItemContainer rv, org.lgna.croquet.StandardMenuItemPrepModel[] models ) {
+		for( org.lgna.croquet.StandardMenuItemPrepModel model : models ) {
 			addMenuElement( rv, model );
 		}
 		return rv;

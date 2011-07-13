@@ -57,7 +57,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public static final String DEBUG_DRAW_PROPERTY_KEY = "org.alice.ide.DebugDrawMode";
 
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
-	private static IDE singleton;
 	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
 
 	public static final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
@@ -76,10 +75,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		performSceneEditorGeneratedSetUpMethodNameSet.add( GENERATED_SET_UP_METHOD_NAME );
 	}
 
-	public static IDE getSingleton() {
-		return IDE.singleton;
-	}
-
 	private org.lgna.croquet.State.ValueObserver< Boolean > isAlwaysShowingBlocksObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
@@ -93,18 +88,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 
+	public static IDE getActiveInstance() {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), IDE.class );
+	}
+
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
-		assert IDE.singleton == null;
-		IDE.singleton = this;
-
 		//initialize locale
 		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver< java.util.Locale >() {
 			public void changing( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
-				org.lgna.croquet.Application.getSingleton().setLocale( nextValue );
+				org.lgna.croquet.Application.getActiveInstance().setLocale( nextValue );
 			}
 		} );
 
@@ -158,7 +154,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private int rootDividerLocation = 340;
 	private int leftDividerLocation = 240;
 
-	private edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin concealedBin = new edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin();
 	private org.lgna.croquet.components.JComponent< ? > galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
@@ -179,8 +174,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		rv.addMouseWheelListener( new edu.cmu.cs.dennisc.javax.swing.plaf.metal.FontMouseWheelAdapter() );
 		rv.addComponent( this.root, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		rv.addComponent( new org.lgna.croquet.components.SwingAdapter( this.concealedBin ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-
 		this.setSceneEditorExpanded( false );
 		return rv;
 	}
@@ -264,7 +257,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			return new edu.cmu.cs.dennisc.alice.ast.Expression[] {};
 		} else {
 			if( types.length == 1 ) {
-				edu.cmu.cs.dennisc.alice.ast.Expression predeterminedExpression = org.alice.ide.IDE.getSingleton().createPredeterminedExpressionIfAppropriate( types[ 0 ] );
+				edu.cmu.cs.dennisc.alice.ast.Expression predeterminedExpression = org.alice.ide.IDE.getActiveInstance().createPredeterminedExpressionIfAppropriate( types[ 0 ] );
 				if( predeterminedExpression != null ) {
 					return new edu.cmu.cs.dennisc.alice.ast.Expression[] { predeterminedExpression };
 				} else {
@@ -500,15 +493,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	};
 
 	public abstract org.alice.ide.cascade.CascadeManager getCascadeManager();
-
-	public void addToConcealedBin( org.lgna.croquet.components.Component< ? > component ) {
-		this.concealedBin.add( component.getAwtComponent() );
-		this.concealedBin.revalidate();
-	}
-	public void removeFromConcealedBin( org.lgna.croquet.components.Component< ? > component ) {
-		this.concealedBin.remove( component.getAwtComponent() );
-	}
-
 	public boolean isJava() {
 		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem() == org.alice.ide.formatter.JavaFormatter.getInstance();
 	}
@@ -1069,7 +1053,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {
 		edu.cmu.cs.dennisc.alice.Project project = this.getProject();
 		if( project != null ) {
-			return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType();
+			return project.getProgramType();
 		} else {
 			return null;
 		}
@@ -1306,7 +1290,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return null;
 	}
 
-	public java.awt.Component getComponentForNode( edu.cmu.cs.dennisc.alice.ast.Node node, boolean scrollToVisible ) {
+	public org.lgna.croquet.components.Component< ? > getComponentForNode( edu.cmu.cs.dennisc.alice.ast.Node node, boolean scrollToVisible ) {
 		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 			final edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
 			ensureNodeVisible( node );
@@ -1322,15 +1306,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					}
 				} );
 			}
-			return rv.getAwtComponent();
+			return rv;
 		} else {
 			return null;
 		}
 	}
-	public java.awt.Component getComponentForNode( java.util.UUID uuid, boolean scrollToVisible ) {
+	public org.lgna.croquet.components.Component< ? > getComponentForNode( java.util.UUID uuid, boolean scrollToVisible ) {
 		return getComponentForNode( getNodeForUUID( uuid ), scrollToVisible );
 	}
-	public java.awt.Component getComponentForNode( java.util.UUID uuid ) {
+	public org.lgna.croquet.components.Component< ? > getComponentForNode( java.util.UUID uuid ) {
 		return getComponentForNode( uuid, false );
 	}
 

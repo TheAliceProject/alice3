@@ -47,11 +47,12 @@ package org.lgna.croquet;
  */
 public abstract class BoundedRangeIntegerState extends State< Integer > {
 	private int previousValue;
-	private javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
-	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
-		private boolean previousValueIsAdjusting = false;
+	private final javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
+	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		//private boolean previousValueIsAdjusting = false;
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			org.lgna.croquet.history.TransactionManager.handleStateChanged( BoundedRangeIntegerState.this, e );
+			org.lgna.croquet.history.TransactionManager.handleBoundedRangeIntegerStateChanged( BoundedRangeIntegerState.this, e, boundedRangeModel.getValue(), boundedRangeModel.getValueIsAdjusting() );
+			fireChanged( previousValue, boundedRangeModel.getValue(), boundedRangeModel.getValueIsAdjusting() );
 		}
 	};
 	javax.swing.SpinnerModel spinnerModel = new javax.swing.AbstractSpinnerModel() {

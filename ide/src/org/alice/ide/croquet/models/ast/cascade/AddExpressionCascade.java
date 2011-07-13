@@ -49,8 +49,8 @@ class AddExpressionBlank extends org.lgna.croquet.CascadeBlank< edu.cmu.cs.denni
 		this.componentTypeProperty = componentTypeProperty;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeItem> updateChildren( java.util.List< org.lgna.croquet.CascadeItem> rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > blankNode ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > blankNode ) {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		ide.getCascadeManager().updateChildren( rv, blankNode, this.componentTypeProperty.getValue() );
 		return rv;
 	}
@@ -64,11 +64,10 @@ public class AddExpressionCascade extends ExpressionsCascade {
 	public AddExpressionCascade( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
         super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "4f3ccba2-c44f-49b3-b20e-c9e847e90db2" ), new AddExpressionBlank( componentTypeProperty ) );
         this.expressionListProperty = expressionListProperty;
-        this.setName( "Add" );
     }
 	
 	@Override
-	protected org.alice.ide.croquet.edits.ast.AddExpressionEdit createEdit( org.lgna.croquet.history.CascadePopupCompletionStep< edu.cmu.cs.dennisc.alice.ast.Expression > step, edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
+	protected org.alice.ide.croquet.edits.ast.AddExpressionEdit createEdit( org.lgna.croquet.history.CascadeCompletionStep< edu.cmu.cs.dennisc.alice.ast.Expression > step, edu.cmu.cs.dennisc.alice.ast.Expression[] values ) {
 		return new org.alice.ide.croquet.edits.ast.AddExpressionEdit( step, this.expressionListProperty, values[ 0 ] );
 	}
 
@@ -123,18 +122,18 @@ public class AddExpressionCascade extends ExpressionsCascade {
 ////			}
 ////			public AddExpressionEdit initialize(AddExpressionEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 ////				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = componentTypeProperty.getValue();
-////				org.alice.ide.IDE.getSingleton().getCascadeManager().promptUserForExpression( type, rv.expression, viewController, p, taskObserver );
+////				org.alice.ide.IDE.getActiveInstance().getCascadeManager().promptUserForExpression( type, rv.expression, viewController, p, taskObserver );
 ////				return rv;
 ////			}
 ////			public AddExpressionEdit handleCompletion( AddExpressionEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 ////				//todo: remove?
-////				org.alice.ide.IDE.getSingleton().getCascadeManager().unsetPreviousExpressionAndDropStatement();
+////				org.alice.ide.IDE.getActiveInstance().getCascadeManager().unsetPreviousExpressionAndDropStatement();
 ////				rv.expression = expression;
 ////				return rv;
 ////			}
 ////			public void handleCancelation() {
 ////				//todo: remove?
-////				org.alice.ide.IDE.getSingleton().getCascadeManager().unsetPreviousExpressionAndDropStatement();
+////				org.alice.ide.IDE.getActiveInstance().getCascadeManager().unsetPreviousExpressionAndDropStatement();
 ////			}
 ////		} );
 ////	}

@@ -102,6 +102,8 @@ public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennis
 			sb.append( "<html>" );
 			//sb.append( "<b>" );
 			sb.append( nextResource.getName() );
+//			sb.append( ";" );
+//			sb.append( nextResource.getUUID() );
 			//sb.append( "</b>" );
 			if( nextResource instanceof org.alice.virtualmachine.resources.AudioResource ) {
 				org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)nextResource;

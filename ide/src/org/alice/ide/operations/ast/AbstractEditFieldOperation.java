@@ -86,7 +86,7 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.m
 				final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> nextValueType = tempField.valueType.getValue();
 				final String nextName = tempField.getName();
 				final edu.cmu.cs.dennisc.alice.ast.Expression nextInitializer = tempField.initializer.getValue();
-				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
 						field.finalVolatileOrNeither.setValue( nextFinalVolatileOrNeither );

@@ -265,7 +265,7 @@ public class NodeUtilities {
 		return rv;
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation completeMethodInvocation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
-		return completeMethodInvocation( rv, org.alice.ide.IDE.getSingleton().createInstanceExpression(), argumentExpressions );
+		return completeMethodInvocation( rv, org.alice.ide.IDE.getActiveInstance().createInstanceExpression(), argumentExpressions );
 	}
 	
 	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createMethodInvocation( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {

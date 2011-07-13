@@ -152,7 +152,15 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		splitPane.setDividerLocation( 400 );
 		this.addComponent( splitPane, Constraint.CENTER );
 
-//		this.fitnessState.addValueObserver( new org.lgna.croquet.BoundedRangeIntegerState.ValueObserver() {
+		org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<Integer>() {
+			public void changing( org.lgna.croquet.State< Integer > state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State< Integer > state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+				PersonViewer.getSingleton().getPerson().setFitnessLevel( nextValue*0.01 );
+			}
+		} );
+
+//		this.fitnessState.addValueObserver( new org.lgna.croquet.BoundedRangeIntegerState.ValueObserver< Integer >() {
 //			public void changed(int nextValue) {
 //				PersonViewer.getSingleton().setFitnessLevel( nextValue*0.01 );
 //			}

@@ -45,10 +45,6 @@ package org.alice.apis.moveandturn;
 
 import javax.swing.Icon;
 
-import org.alice.ide.IDE;
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
-
-
 /**
  * @author Dennis Cosgrove
  */

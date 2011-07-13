@@ -45,38 +45,12 @@ package org.lgna.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public final class ListSelectionStateEdit<E> extends StateEdit<org.lgna.croquet.ListSelectionState<E>,E> {
-	private E prevValue;
-	private E nextValue;
-	
+public final class ListSelectionStateEdit<E> extends ItemStateEdit<org.lgna.croquet.ListSelectionState<E>,E> {
 	public ListSelectionStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.ListSelectionState<E> > completionStep, E prevValue, E nextValue ) {
-		super( completionStep );
-		this.prevValue = prevValue;
-		this.nextValue = nextValue;
+		super( completionStep, prevValue, nextValue );
 	}
 	public ListSelectionStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		org.lgna.croquet.ListSelectionState< E > listSelectionState = this.getModel();
-		org.lgna.croquet.ItemCodec<E> codec = listSelectionState.getCodec();
-		this.prevValue = codec.decodeValue( binaryDecoder );
-		this.nextValue = codec.decodeValue( binaryDecoder );
-	}
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		org.lgna.croquet.ListSelectionState< E > listSelectionState = this.getModel();
-		org.lgna.croquet.ItemCodec<E> codec = listSelectionState.getCodec();
-		codec.encodeValue( binaryEncoder, this.prevValue );
-		codec.encodeValue( binaryEncoder, this.nextValue );
-	}
-	
-	@Override
-	public E getPreviousValue() {
-		return this.prevValue;
-	}
-	@Override
-	public E getNextValue() {
-		return this.nextValue;
 	}
 	@Override
 	public boolean canRedo() {
@@ -87,12 +61,6 @@ public final class ListSelectionStateEdit<E> extends StateEdit<org.lgna.croquet.
 		return this.getModel() != null;
 	}
 
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		this.prevValue = retargeter.retarget( this.prevValue );
-		this.nextValue = retargeter.retarget( this.nextValue );
-	}
 //	@Override
 //	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit ) {
 //		super.addKeyValuePairs( retargeter, replacementEdit );
@@ -103,24 +71,10 @@ public final class ListSelectionStateEdit<E> extends StateEdit<org.lgna.croquet.
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		this.getModel().setSelectedItem( this.nextValue );
+		this.getModel().setSelectedItem( this.getNextValue() );
 	}
 	@Override
 	protected final void undoInternal() {
-		this.getModel().setSelectedItem( this.prevValue );
-	}
-	@Override
-	public StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.UserInformation userInformation ) {
-		rv.append( "select " );
-		this.getModel().getCodec().appendRepresentation( rv, this.nextValue, userInformation.getLocale() );
-		return rv;
-	}
-	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "select " );
-		this.getModel().getCodec().appendRepresentation( rv, this.prevValue, locale );
-		rv.append( " ===> " );
-		this.getModel().getCodec().appendRepresentation( rv, this.nextValue, locale );
-		return rv;
+		this.getModel().setSelectedItem( this.getPreviousValue() );
 	}
 }

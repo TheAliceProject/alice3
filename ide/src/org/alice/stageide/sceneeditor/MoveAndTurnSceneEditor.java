@@ -43,10 +43,8 @@
 package org.alice.stageide.sceneeditor;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,9 +54,9 @@ import javax.swing.Icon;
 import org.alice.apis.moveandturn.AngleInDegrees;
 import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.CameraMarker;
+import org.alice.apis.moveandturn.Element;
 import org.alice.apis.moveandturn.Marker;
 import org.alice.apis.moveandturn.MarkerWithIcon;
-import org.alice.apis.moveandturn.Element;
 import org.alice.apis.moveandturn.ObjectMarker;
 import org.alice.apis.moveandturn.OrthographicCameraMarker;
 import org.alice.apis.moveandturn.PerspectiveCameraMarker;
@@ -74,16 +72,20 @@ import org.alice.ide.name.validators.FieldNameValidator;
 import org.alice.ide.name.validators.MarkerColorValidator;
 import org.alice.ide.operations.ast.DeclareFieldEdit;
 import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.SnapGrid;
-import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
+import org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState;
+import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
+import org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState;
+import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 import org.alice.stageide.sceneeditor.viewmanager.CreateCameraMarkerActionOperation;
@@ -93,13 +95,18 @@ import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraAction
 import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.components.AbstractButton;
+import org.lgna.croquet.components.ComboBox;
+import org.lgna.croquet.components.DragComponent;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.alice.ast.Accessible;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
+import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
@@ -118,17 +125,6 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState;
-import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
-import org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState;
-import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.Operation;
-import org.lgna.croquet.StandardPopupPrepModel;
-import org.lgna.croquet.components.AbstractButton;
-import org.lgna.croquet.components.ComboBox;
-import org.lgna.croquet.components.DragComponent;
 import org.lookingglassandalice.storytelling.ImplementationAccessor;
 import org.lookingglassandalice.storytelling.Model;
 import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
@@ -875,9 +871,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				if( CameraMarkerFieldListSelectionState.getInstance().containsItem( field ) || ObjectMarkerFieldListSelectionState.getInstance().containsItem( field ) ) {
 					//pass
 				} else {
-					int index = org.alice.ide.IDE.getSingleton().getSceneType().fields.indexOf( field );
+					int index = org.alice.ide.IDE.getActiveInstance().getSceneType().fields.indexOf( field );
 					assert index != -1;
-					org.alice.ide.IDE.getSingleton().getSceneType().fields.remove( index );
+					org.alice.ide.IDE.getActiveInstance().getSceneType().fields.remove( index );
 				}
 			}
 		}
@@ -1006,7 +1002,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.TOP, this.topOrthoMarker );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.SIDE, this.sideOrthoMarker );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.FRONT, this.frontOrthoMarker );
-			List<CameraMarker> cameraMarkerFieldsAndOrthoOptions =  edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//			List<CameraMarker> cameraMarkerFieldsAndOrthoOptions =  edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 //			cameraMarkerFieldsAndOrthoOptions.add(this.openingSceneMarker);
 //			cameraMarkerFieldsAndOrthoOptions.add(this.sceneViewMarker);
 //			cameraMarkerFieldsAndOrthoOptions.addAll(this.orthographicCameraMarkers);
@@ -1169,34 +1165,17 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.sidePane.revalidateAndRepaint();
 		this.revalidateAndRepaint();
 	}
-
-	private FieldTile getFieldTileForClick(InputState input)
-	{
-		edu.cmu.cs.dennisc.scenegraph.Transformable t = input.getClickPickTransformable();
-		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement(t);
-		FieldDeclaredInAlice clickedJavaField = (FieldDeclaredInAlice)this.getFieldForInstanceInJavaVM(element);
-		FieldTile tile = this.fieldRadioButtons.getFieldTileForField(clickedJavaField);
-		if (tile != null)
-		{
-			return tile;
-		}
-		return null;
-	}
-	
 	private void showRightClickMenuForModel( InputState clickState )
 	{
-		FieldTile fieldTile = this.getFieldTileForClick(clickState);
-		if (fieldTile != null)
+		edu.cmu.cs.dennisc.scenegraph.Transformable t = clickState.getClickPickTransformable();
+		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement(t);
+		FieldDeclaredInAlice clickedJavaField = (FieldDeclaredInAlice)this.getFieldForInstanceInJavaVM(element);
+		if (clickedJavaField != null)
 		{
-			org.lgna.croquet.PopupPrepModel popUp = fieldTile.getPopupPrepModel();
-			if (popUp != null)
+			org.lgna.croquet.MenuModel menuModel = org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( clickedJavaField );
+			if (menuModel != null)
 			{
-				if( fieldTile.getAwtComponent().isShowing() ) {
-					MouseEvent convertedEvent = SwingUtilities.convertMouseEvent((Component)clickState.getInputEvent().getSource(), (MouseEvent)clickState.getInputEvent(), fieldTile.getAwtComponent());
-					popUp.fire( new org.lgna.croquet.triggers.MouseEventTrigger( fieldTile, convertedEvent ) );
-				} else {
-					popUp.fire( new org.lgna.croquet.triggers.InputEventTrigger( clickState.getInputEvent() ) );
-				}
+				menuModel.getPopupPrepModel().fire( new org.lgna.croquet.triggers.InputEventTrigger( clickState.getInputEvent() ) );
 			}
 		}
 	}
@@ -1346,6 +1325,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
+	
 	private void setCameraMarkerVisibility(boolean isShowing)
 	{
 		for (AbstractField field : this.sceneType.fields)
@@ -1860,7 +1840,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		penguinModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 		penguinModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
 		
-		org.alice.ide.IDE.getSingleton().getSceneEditor().putInstanceForInitializingPendingField( penguinModelField, penguinModel );
+		org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( penguinModelField, penguinModel );
 		this.sceneType.fields.add(penguinModelField);
 	}
 	
@@ -1877,7 +1857,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
         colladaModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
         colladaModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
         
-        org.alice.ide.IDE.getSingleton().getSceneEditor().putInstanceForInitializingPendingField( colladaModelField, colladaModel );
+        org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( colladaModelField, colladaModel );
         this.sceneType.fields.add(colladaModelField);
     }
 	
@@ -1894,7 +1874,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		ogreModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 		ogreModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
 		
-		org.alice.ide.IDE.getSingleton().getSceneEditor().putInstanceForInitializingPendingField( ogreModelField, ogreModel );
+		org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( ogreModelField, ogreModel );
 		this.sceneType.fields.add(ogreModelField);
 	}
 	
@@ -1950,8 +1930,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	public List< FieldDeclaredInAlice > getDeclaredFields() {
 		List< FieldDeclaredInAlice > declaredFields = new LinkedList< FieldDeclaredInAlice >();
-		if( org.alice.ide.IDE.getSingleton().getSceneType() != null ) {
-			declaredFields.addAll( org.alice.ide.IDE.getSingleton().getSceneType().getDeclaredFields() );
+		if( org.alice.ide.IDE.getActiveInstance().getSceneType() != null ) {
+			declaredFields.addAll( org.alice.ide.IDE.getActiveInstance().getSceneType().getDeclaredFields() );
 		}
 		return declaredFields;
 	}

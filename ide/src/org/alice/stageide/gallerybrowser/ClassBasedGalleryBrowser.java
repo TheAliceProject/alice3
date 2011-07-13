@@ -247,9 +247,9 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 			public StringBuilder appendRepresentation( StringBuilder rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< TypeDeclaredInAlice > value, java.util.Locale locale ) {
 				throw new RuntimeException( "todo" );
 			}
-		}, treeModel, treeModel.getRoot() );
+		}, treeModel, treeModel.getRoot() ){};
 		
-		this.filterState = new StringState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "62d9d56d-6145-4c58-a20c-4b5d9797ef39" ), "" );
+		this.filterState = new StringState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "62d9d56d-6145-4c58-a20c-4b5d9797ef39" ), "" ) {};
 		
 		this.treeSelectionState.addSelectionObserver( new TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>>() {
 			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> nextValue) {

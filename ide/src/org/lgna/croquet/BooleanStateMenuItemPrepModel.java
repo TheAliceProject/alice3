@@ -43,36 +43,25 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.CheckBoxMenuItem;
-import org.lgna.croquet.components.JComponent;
-import org.lgna.croquet.components.MenuItemContainer;
-import org.lgna.croquet.resolvers.CodableResolver;
-
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanStateMenuItemPrepModel extends MenuItemPrepModel {
-	public static class BooleanStateMenuPrepModelResolver<E> implements CodableResolver< BooleanStateMenuItemPrepModel > {
-		private final BooleanStateMenuItemPrepModel model;
+public final class BooleanStateMenuItemPrepModel extends StandardMenuItemPrepModel {
+	public static class BooleanStateMenuPrepModelResolver extends IndirectResolver< BooleanStateMenuItemPrepModel, BooleanState > {
 		public BooleanStateMenuPrepModelResolver( BooleanStateMenuItemPrepModel model ) {
-			this.model = model;
+			super( model.getBooleanState() );
 		}
 		public BooleanStateMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			CodableResolver<BooleanState> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			BooleanState booleanState = resolver.getResolved();
-			this.model = booleanState.getMenuItemPrepModel();
+			super( binaryDecoder );
 		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			CodableResolver<BooleanState> resolver = this.model.booleanState.getCodableResolver();
-			binaryEncoder.encode( resolver );
-		}
-		public BooleanStateMenuItemPrepModel getResolved() {
-			return this.model;
+		@Override
+		protected BooleanStateMenuItemPrepModel getDirect( BooleanState indirect ) {
+			return indirect.getMenuItemPrepModel();
 		}
 	}
 	private final BooleanState booleanState;
 	/*package-private*/ BooleanStateMenuItemPrepModel( BooleanState booleanState ) {
-		super( java.util.UUID.fromString( "a6d47082-8859-4b7c-b654-37e928aa67ed" ) );
+		super( java.util.UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );
 		assert booleanState != null;
 		this.booleanState = booleanState;
 	}
@@ -91,15 +80,12 @@ public class BooleanStateMenuItemPrepModel extends MenuItemPrepModel {
 		return new BooleanStateMenuPrepModelResolver( this );
 	}
 	@Override
-	public JComponent< ? > getFirstComponent() {
+	public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
 		return this.booleanState.getFirstComponent();
 	}
-	private CheckBoxMenuItem createCheckBoxMenuItem() {
-		return new CheckBoxMenuItem( this.getBooleanState() );
-	}
 	@Override
-	public MenuItemContainer createMenuItemAndAddTo( MenuItemContainer rv ) {
-		rv.addCheckBoxMenuItem( this.createCheckBoxMenuItem() );
+	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
+		rv.addCheckBoxMenuItem( new org.lgna.croquet.components.CheckBoxMenuItem( this.getBooleanState() ) );
 		return rv;
 	}
 }

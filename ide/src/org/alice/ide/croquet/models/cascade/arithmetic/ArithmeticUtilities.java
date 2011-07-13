@@ -71,5 +71,4 @@ public class ArithmeticUtilities {
 		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.INTEGER_DIVIDE, 	
 		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.INTEGER_REMAINDER 	
 	};
-	
 }

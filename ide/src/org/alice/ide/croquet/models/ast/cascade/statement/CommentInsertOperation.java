@@ -65,7 +65,7 @@ public class CommentInsertOperation extends StatementInsertOperation {
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement() {
 		edu.cmu.cs.dennisc.alice.ast.Comment rv = org.alice.ide.ast.NodeUtilities.createComment();
-		org.alice.ide.IDE.getSingleton().setCommentThatWantsFocus( rv );
+		org.alice.ide.IDE.getActiveInstance().setCommentThatWantsFocus( rv );
 		return rv;
 	}
 }

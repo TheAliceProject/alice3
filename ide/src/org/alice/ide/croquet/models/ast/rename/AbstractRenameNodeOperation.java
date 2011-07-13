@@ -62,7 +62,7 @@ public abstract class AbstractRenameNodeOperation extends org.lgna.croquet.Input
 			final String nextValue = renamePane.getNameText();
 			final edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNameProperty();
 			final String prevValue = nameProperty.getValue();
-			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					nameProperty.setValue( nextValue );

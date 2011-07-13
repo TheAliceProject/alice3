@@ -154,168 +154,24 @@ public class Transaction extends Node< TransactionHistory > {
 			return null;
 		}
 	}
-	
-	private static class MenuSelection { 
-//		private final edu.cmu.cs.dennisc.croquet.MenuBarComposite menuBarComposite;
-		private final java.util.List< org.lgna.croquet.MenuItemPrepModel > menuItemPrepModels;
-		public MenuSelection( javax.swing.MenuElement[] menuElements, int i0 ) {
-//			this.menuBarComposite = null;
-			this.menuItemPrepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( int i=i0; i<menuElements.length; i++ ) {
-				javax.swing.MenuElement menuElementI = menuElements[ i ];
-				if( menuElementI instanceof javax.swing.JPopupMenu ) {
-					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElementI;
-					//pass
-				} else if( menuElementI instanceof javax.swing.JMenuItem ) {
-					javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
-					org.lgna.croquet.components.Component< ? > component = org.lgna.croquet.components.Component.lookup( jMenuItem );
-					if( component instanceof org.lgna.croquet.components.ViewController< ?, ? > ) {
-						org.lgna.croquet.components.ViewController< ?, ? > viewController = (org.lgna.croquet.components.ViewController< ?, ? >)component;
-						org.lgna.croquet.Model model = viewController.getModel();
-						if( model != null ) {
-							org.lgna.croquet.MenuItemPrepModel menuItemPrepModel;
-							if( model instanceof org.lgna.croquet.MenuItemPrepModel ) {
-								menuItemPrepModel = (org.lgna.croquet.MenuItemPrepModel)model;
-							} else if( model instanceof org.lgna.croquet.Operation<?> ) {
-								menuItemPrepModel = ((org.lgna.croquet.Operation< ? >)model).getMenuItemPrepModel();
-							} else if( model instanceof org.lgna.croquet.BooleanState ) {
-								menuItemPrepModel = ((org.lgna.croquet.BooleanState)model).getMenuItemPrepModel();
-							} else {
-								throw new RuntimeException( model.toString() );
-							}
-							this.menuItemPrepModels.add( menuItemPrepModel );
-						} else {
-							throw new NullPointerException();
-						}
-					}
+	/*package-private*/ void addMenuSelection( org.lgna.croquet.triggers.MenuSelectionTrigger trigger ) {
+		java.util.ListIterator< PrepStep<?> > iterator = this.prepSteps.listIterator( this.prepSteps.size() );
+		while( iterator.hasPrevious() ) {
+			PrepStep<?> prepStep = iterator.previous();
+			if (prepStep instanceof MenuItemSelectStep) {
+				MenuItemSelectStep menuItemSelectStep = (MenuItemSelectStep) prepStep;
+				org.lgna.croquet.triggers.MenuSelectionTrigger menuSelectionTrigger = (org.lgna.croquet.triggers.MenuSelectionTrigger)menuItemSelectStep.getTrigger();
+				if( menuSelectionTrigger.isPrevious( trigger ) ) {
+					break;
+				} else {
+					iterator.remove();
 				}
-			}
-		}
-//		public edu.cmu.cs.dennisc.croquet.MenuBarComposite getMenuBarComposite() {
-//			return this.menuBarComposite;
-//		}
-		public int getMenuItemPrepModelCount() {
-			return this.menuItemPrepModels.size();
-		}
-		public org.lgna.croquet.MenuItemPrepModel getMenuItemPrepModelAt( int index ) {
-			return this.menuItemPrepModels.get( index );
-		}
-	}
-	private class PendingSteps {
-		private org.lgna.croquet.Model dropModel;
-		private org.lgna.croquet.DropReceptor dropReceptor;
-		private org.lgna.croquet.DropSite dropSite;
-		private MenuSelection lastMenuSelection;
-		private javax.swing.event.ChangeEvent lastChangeEvent;
-		public void pendDrop( org.lgna.croquet.Model dropModel, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-			this.dropModel = dropModel;
-			this.dropReceptor = dropReceptor;
-			this.dropSite = dropSite;
-		}
-		public void pendMenuSelection( javax.swing.event.ChangeEvent changeEvent, MenuSelection menuSelection ) {
-			this.lastChangeEvent = changeEvent;
-			this.lastMenuSelection = menuSelection;
-		}
-//		private boolean isDropPrepStepAlreadyAdded() {
-//			for( PrepStep< ? > prepStep : Transaction.this.getPrepSteps() ) {
-//				if( prepStep instanceof DropPrepStep ) {
-//					return true;
-//				}
-//			}
-//			return false;
-//		}
-		private boolean isReifying;
-		public Step<?> reify( Step<?> step, boolean isLastPrep ) {
-			Step<?> rv = step;
-			if( this.isReifying ) {
-				//pass
 			} else {
-				this.isReifying = true;
-				org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.ChangeEventTrigger( this.lastChangeEvent );
-				try {
-					boolean isDropPrep;
-					if( this.lastMenuSelection != null && this.lastMenuSelection.getMenuItemPrepModelCount() > 0 ) {
-						isDropPrep = true;
-					} else {
-						isDropPrep = isLastPrep;
-					}
-					if( this.dropModel != null ) {
-						if( isDropPrep ) {
-							//DropPrepStep.createAndAddToTransaction( Transaction.this, this.dropModel, trigger, this.dropReceptor, this.dropSite );
-						} else {
-							//DropCompletionStep.createAndAddToTransaction( Transaction.this, this.dropModel, trigger, this.dropReceptor, this.dropSite );
-							rv = null;
-						}
-					}
-					if( this.lastMenuSelection != null && this.lastMenuSelection.getMenuItemPrepModelCount() > 0 ) {
-						final int N = this.lastMenuSelection.getMenuItemPrepModelCount();
-						for( int i=0; i<N; i++ ) {
-							org.lgna.croquet.MenuItemPrepModel model = this.lastMenuSelection.getMenuItemPrepModelAt( i );
-							
-//							if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
-//								MenuModelStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.MenuModel)model );
-							if( model instanceof org.lgna.croquet.OperationMenuItemPrepModel ) {
-								OperationMenuItemPrepStep.createAndAddToTransaction( Transaction.this, (org.lgna.croquet.OperationMenuItemPrepModel)model, trigger );
-							} else if( model instanceof org.lgna.croquet.BooleanStateMenuItemPrepModel ) {
-								BooleanStateMenuItemPrepStep.createAndAddToTransaction( Transaction.this, (org.lgna.croquet.BooleanStateMenuItemPrepModel)model, trigger );
-							} else if( model instanceof org.lgna.croquet.CascadeItem< ?, ? > ) {
-								org.lgna.croquet.CascadeItem< ?, ? > item = (org.lgna.croquet.CascadeItem< ?, ? >)model;
-								CascadeItemStep.createAndAddToTransaction( Transaction.this, item, null );
-
-////								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
-////									isLastPrep = false;
-////								}
-////								if( i < N-1 || isLastPrep ) {
-////									CascadeFillInPrepStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadeFillIn< ?, ? >)model );
-////								} else {
-////									CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, (edu.cmu.cs.dennisc.croquet.CascadePopupOperation)this.dropCompletionModel, fillIn );
-////									rv = null;
-////								}
-//
-////								if( fillIn instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
-////									edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn cascadeInputDialogOperationFillIn = (edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn)fillIn;
-////									rv = InputDialogOperationStep.createAndAddToTransaction( Transaction.this, cascadeInputDialogOperationFillIn.getInputDialogOperation() );
-////								} else {
-//									if( i < N-1 || isLastPrep ) {
-//										CascadeItemStep.createAndAddToTransaction( Transaction.this, (org.lgna.croquet.CascadeFillIn< ?, ? >)model, trigger );
-//									} else {
-//										//CascadeFillInCompletionStep.createAndAddToTransaction( Transaction.this, this.dropModel, trigger, fillIn );
-//										rv = null;
-//									}
-////								}
-							} else if( model instanceof org.lgna.croquet.MenuModel ) {
-								//pass
-							} else {
-								assert false : model;
-							}
-						}
-					}
-					this.dropModel = null;
-					this.dropReceptor = null;
-					this.dropSite = null;
-					this.lastChangeEvent = null;
-					this.lastMenuSelection = null;
-				} finally {
-					this.isReifying = false;
-				}
+				break;
 			}
-			return rv;
 		}
+		MenuItemSelectStep.createAndAddToTransaction( this, trigger );
 	}
-//	
-//	/*package-private*/ <F> edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F > getPendingCascadePopupOperation() {
-//		return (edu.cmu.cs.dennisc.croquet.CascadePopupOperation< F >)this.pendingDrop.dropCompletionModel;
-//	}
-	private PendingSteps pendingSteps = new PendingSteps();
-	/*package-private*/ void pendDrop( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-		this.pendingSteps.pendDrop( model, dropReceptor, dropSite );
-	}
-
-	
-	/*package-private*/ void pendMenuSelection( javax.swing.event.ChangeEvent changeEvent, javax.swing.MenuElement[] menuElements, int i0 ) {
-		this.pendingSteps.pendMenuSelection( changeEvent, new MenuSelection( menuElements, i0 ) );
-	}
-	
 	public org.lgna.croquet.edits.Edit< ? > getEdit() {
 		if( this.completionStep != null ) {
 			return this.completionStep.getEdit();
@@ -324,42 +180,6 @@ public class Transaction extends Node< TransactionHistory > {
 		}
 	}
 
-	//todo
-	private boolean isInTheMidstOfReification = false;
-	/*package-private*/ void reifyIfNecessary() {
-		if( isInTheMidstOfReification ) {
-			//pass
-		} else {
-			this.isInTheMidstOfReification = true;
-			try {
-				this.pendingSteps.reify( null, false );
-				if( this.completionStep != null ) {
-					this.completionStep.reifyIfNecessary();
-				}
-			} finally {
-				this.isInTheMidstOfReification = false;
-			}
-		}
-	}
-//	public void commit( edu.cmu.cs.dennisc.croquet.Edit edit ) {
-//		this.pendingSteps.reify( null, false );
-//		assert this.completionStep != null;
-//		this.completionStep.commit( edit );
-//	}
-//	public void finish() {
-//		this.pendingSteps.reify( null, false );
-//		assert this.completionStep != null;
-//		this.completionStep.finish();
-//	}
-//	public void cancel( org.lgna.croquet.Trigger trigger ) {
-//		this.pendingSteps.reify( null, false );
-//		if( this.completionStep != null ) {
-//			this.completionStep.cancel();
-//			TransactionManager.fireTransactionCanceled( this );
-//		} else {
-//			CancelCompletionStep.createAndAddToTransaction( this, null, trigger );
-//		}
-//	}
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		for( PrepStep< ? > prepStep : this.prepSteps ) {
 			prepStep.retarget( retargeter );
@@ -416,7 +236,7 @@ public class Transaction extends Node< TransactionHistory > {
 
 	private void addStep( Step<?> step ) {
 		assert step != null;
-		step = this.pendingSteps.reify( step, true );
+//		step = this.pendingSteps.reify( step, true );
 		org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddStepEvent( this, step );
 		step.fireChanging( e );
 		if( step instanceof PrepStep< ? > ) {

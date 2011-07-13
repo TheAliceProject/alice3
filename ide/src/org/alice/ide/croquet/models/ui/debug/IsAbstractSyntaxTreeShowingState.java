@@ -46,7 +46,7 @@ import org.alice.ide.croquet.models.IsFrameShowingState;
 
 class ASTModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< Object > {
 	public Object getRoot() {
-		return org.alice.ide.IDE.getSingleton().getProject();
+		return org.alice.ide.IDE.getActiveInstance().getProject();
 	}
 	public boolean isLeaf( Object node ) {
 		if( node instanceof edu.cmu.cs.dennisc.property.Property<?> ) {
@@ -57,7 +57,7 @@ class ASTModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTree
 	}
 	public int getChildCount(Object parent) {
 		if( parent instanceof edu.cmu.cs.dennisc.alice.Project ) {
-			return org.alice.ide.IDE.getSingleton().getTypesDeclaredInAlice().size();
+			return org.alice.ide.IDE.getActiveInstance().getTypesDeclaredInAlice().size();
 		} else if( parent instanceof edu.cmu.cs.dennisc.alice.ast.AbstractNode ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractNode node = (edu.cmu.cs.dennisc.alice.ast.AbstractNode)parent;
 			return node.getProperties().size();
@@ -71,7 +71,7 @@ class ASTModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTree
 	public Object getChild(Object parent, int index) {
 		if( parent instanceof edu.cmu.cs.dennisc.alice.Project ) {
 			//edu.cmu.cs.dennisc.alice.Project project = (edu.cmu.cs.dennisc.alice.Project)parent;
-			return org.alice.ide.IDE.getSingleton().getTypesDeclaredInAlice().get( index );
+			return org.alice.ide.IDE.getActiveInstance().getTypesDeclaredInAlice().get( index );
 		} else if( parent instanceof edu.cmu.cs.dennisc.alice.ast.AbstractNode ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractNode node = (edu.cmu.cs.dennisc.alice.ast.AbstractNode)parent;
 			return node.getProperties().get( index );

@@ -93,7 +93,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit originalDeclareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
 		//todo
-		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( (org.lgna.croquet.history.OperationStep)step, originalDeclareMethodEdit.getDeclaringType(), originalDeclareMethodEdit.getMethod() );
+		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( step, originalDeclareMethodEdit.getDeclaringType(), originalDeclareMethodEdit.getMethod() );
 	}
 	protected String getDeclarationName(org.lgna.croquet.history.InputDialogOperationStep step) {
 		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
@@ -122,7 +122,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 			org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
 			final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getInputValue();
 			if( method != null ) {
-				final org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+				final org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 				final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = ide.getFocusedCode();
 //				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 //					@Override

@@ -57,7 +57,7 @@ public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 		}
 	}
 	private final edu.cmu.cs.dennisc.alice.ast.BooleanLiteral transientValue;
-	public BooleanLiteralFillIn( boolean value ) {
+	private BooleanLiteralFillIn( boolean value ) {
 		super( java.util.UUID.fromString( "85b65750-aded-4a5f-a41d-d30fa2914115" ) );
 		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( value );
 	}

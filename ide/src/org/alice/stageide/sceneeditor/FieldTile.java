@@ -70,7 +70,10 @@ import org.lgna.croquet.BooleanState;
 		//this.setOpaque( false );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
 		//this.setPopupMenuOperation( new org.lgna.croquet.PredeterminedMenuModel( java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ), FieldTile.this.createPopupOperations() ).getPopupMenuOperation() );
-		this.setPopupPrepModel( org.alice.stageide.operations.ast.OneShotCascade.getInstance() );
+		if( this.accessible instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.accessible;
+			this.setPopupPrepModel( org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( field ).getPopupPrepModel() );
+		}
 		this.updateLabel();
 	}
 
@@ -198,7 +201,7 @@ import org.lgna.croquet.BooleanState;
 	}
 
 	protected java.awt.Color calculateColor() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		java.awt.Color color = ide.getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 		if( this.accessible == org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem() ) {
 			color = java.awt.Color.YELLOW;
@@ -219,14 +222,14 @@ import org.lgna.croquet.BooleanState;
 	}
 	
 //	protected boolean isInScope() {
-//		return org.alice.ide.IDE.getSingleton().isAccessibleInScope( accessible );
+//		return org.alice.ide.IDE.getActiveInstance().isAccessibleInScope( accessible );
 //	}
 	
 	/*package-private*/ void updateLabel() {
 		String prevText = this.getModel().getTrueText();
 		String nextText;
 		if( this.accessible != null ) {
-			nextText = this.accessible.getValidName();//org.alice.ide.IDE.getSingleton().getInstanceTextForAccessible( this.accessible );
+			nextText = this.accessible.getValidName();//org.alice.ide.IDE.getActiveInstance().getInstanceTextForAccessible( this.accessible );
 			this.setBackgroundColor( this.calculateColor() );
 		} else {
 			this.setBackgroundColor( java.awt.Color.RED );

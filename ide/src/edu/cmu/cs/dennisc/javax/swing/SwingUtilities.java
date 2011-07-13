@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.javax.swing;
  */
 public class SwingUtilities {
 	public static void doLayoutTree( java.awt.Component c ) {
-//		c.doLayout();
+		//c.doLayout();
 		if( c instanceof java.awt.Container ) {
 			java.awt.Container container = (java.awt.Container)c;
 			for( java.awt.Component component : container.getComponents() ) {
@@ -55,7 +55,15 @@ public class SwingUtilities {
 			}
 		}
 		c.doLayout();
-		//c.getPreferredSize();
+	}
+	public static void setSizeToPreferredSizeTree( java.awt.Component c ) {
+		if( c instanceof java.awt.Container ) {
+			java.awt.Container container = (java.awt.Container)c;
+			for( java.awt.Component component : container.getComponents() ) {
+				setSizeToPreferredSizeTree( component );
+			}
+		}
+		c.setSize( c.getPreferredSize() );
 	}
 	public static void invalidateTree( java.awt.Component c ) {
 		c.invalidate();
@@ -67,7 +75,7 @@ public class SwingUtilities {
 		}
 	}
 	public static void validateTree( java.awt.Component c ) {
-		c.invalidate();
+		c.validate();
 		if( c instanceof java.awt.Container ) {
 			java.awt.Container container = (java.awt.Container)c;
 			for( java.awt.Component component : container.getComponents() ) {
@@ -87,33 +95,15 @@ public class SwingUtilities {
 			}
 		}
 	}
-	private static void paint( java.awt.Graphics g, java.awt.Component c, java.awt.Container p, int x, int y ) {
-		java.awt.Dimension size = c.getPreferredSize();
-		g.translate( x, y );
-		javax.swing.SwingUtilities.paintComponent( g, c, p, 0, 0, size.width, size.height );
-		if( c instanceof java.awt.Container ) {
-			java.awt.Container container = (java.awt.Container)c;
-			for( java.awt.Component component : container.getComponents() ) {
-				paint( g, component, p, component.getX(), component.getY() );
-			}
-		}
-		g.translate( -x, -y );
-	}
-	private static void paint( java.awt.Graphics g, java.awt.Component c, java.awt.Container p ) {
-		//doLayout( c );
-		paint( g, c, p, 0, 0 );
-	}
-
-	private static java.awt.Container container = new java.awt.Container();
+	
+	private static java.awt.Container privateContainer = new java.awt.Container();
 	public static javax.swing.Icon createIcon( java.awt.Component component ) {
 		javax.swing.Icon rv;
 		java.awt.Dimension size = component.getPreferredSize();
 		if( size.width > 0 && size.height > 0 ) {
 			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( size.width, size.height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
 			java.awt.Graphics g = image.getGraphics();
-//			g.setColor( java.awt.Color.RED );
-//			g.fillRect( 0, 0, size.width, size.height );
-			SwingUtilities.paint( g, component, container );
+			javax.swing.SwingUtilities.paintComponent( g, component, privateContainer, 0, 0, size.width, size.height );
 			g.dispose();
 			rv = new javax.swing.ImageIcon( image );
 		} else {

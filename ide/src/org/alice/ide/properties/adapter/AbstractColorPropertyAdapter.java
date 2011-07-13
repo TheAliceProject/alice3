@@ -44,12 +44,8 @@
 package org.alice.ide.properties.adapter;
 
 import java.util.Locale;
-
 import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.swing.icons.ColorIcon;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.Operation;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 
 public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, O> 
@@ -119,7 +115,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 					
 					SetColorOperation currentColorOperation = new SetColorOperation(currentColor, currentColorName);
 					
-					java.util.List<org.lgna.croquet.MenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					models.add(currentColorOperation.getMenuItemPrepModel());
 					models.add(org.lgna.croquet.MenuModel.SEPARATOR);
 					for( SetColorOperation operation : AbstractColorPropertyAdapter.this.defaultColorOperationModels ) {
@@ -128,7 +124,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 					
 					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
-			}.getPopupMenuOperation();
+			}.getPopupPrepModel();
 		}
 		return this.popupMenuOperation;
 	}

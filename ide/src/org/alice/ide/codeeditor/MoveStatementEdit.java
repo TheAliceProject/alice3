@@ -54,11 +54,13 @@ public class MoveStatementEdit extends org.alice.ide.ToDoEdit {
 	private int nextActualIndex;
 
 	public MoveStatementEdit(
+			org.lgna.croquet.history.OperationStep< ? > step,
 			edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner,
 			int prevIndex, 
 			edu.cmu.cs.dennisc.alice.ast.Statement statement,
 			edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner,
 			int nextIndex) {
+		super( step );
 		this.prevOwner = prevOwner;
 		this.prevActualIndex = prevIndex;
 		assert this.prevActualIndex >= 0;
@@ -77,6 +79,8 @@ public class MoveStatementEdit extends org.alice.ide.ToDoEdit {
 				this.prevOwner.remove(this.prevActualIndex);
 				this.nextOwner.add(this.nextActualIndex, this.statement);
 			}
+			//todo: remove
+			org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
 		} else {
 			throw new javax.swing.undo.CannotRedoException();
 		}
@@ -91,6 +95,8 @@ public class MoveStatementEdit extends org.alice.ide.ToDoEdit {
 				this.nextOwner.remove(this.nextActualIndex);
 				this.prevOwner.add(this.prevActualIndex, this.statement);
 			}
+			//todo: remove
+			org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}

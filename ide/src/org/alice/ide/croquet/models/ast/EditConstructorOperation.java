@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
 * @author Dennis Cosgrove
 */
-class EditConstructorOperation extends EditCodeOperation< edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice > {
+public class EditConstructorOperation extends EditCodeOperation< edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice > {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice, EditConstructorOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized EditConstructorOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor ) {
 		EditConstructorOperation rv = map.get( constructor );
