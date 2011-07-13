@@ -91,7 +91,7 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 	protected abstract void epilogue( org.lgna.croquet.history.InputDialogOperationStep step, boolean isCommit );
 	
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createMainPanel( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Label explanationLabel ) {
+	protected org.lgna.croquet.components.Component< ? > createMainPanel( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.JComponent< javax.swing.JLabel > explanationLabel ) {
 		JComponent< ? > child = this.prologue( step );
 		if( child != null ) {
 			step.setMainPanel( child );
