@@ -156,7 +156,11 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			this.renderContext.actuallyForgetDisplayListsIfNecessary();
 			if( this.isDisplayIgnoredDueToPreviousException ) {
 				//pass
-			} else {
+			} else if (this.width == 0 || this.height == 0)
+			{
+				//pass
+			}
+			else {
 				try {
 					//todo: separate clearing and rendering
 					this.reusableLookingGlassRenderEvent.prologue();
@@ -194,6 +198,8 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 					if( this.rvColorBuffer != null || this.rvDepthBuffer != null ) {
 						this.renderContext.captureBuffers( this.rvColorBuffer, this.rvDepthBuffer );
 					}
+					
+					
 				} catch( RuntimeException re ) {
 					System.err.println( "rendering will be disabled due to exception" );
 					this.isDisplayIgnoredDueToPreviousException = true;
@@ -530,6 +536,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		assert drawable == this.drawable;
 		this.width = width;
 		this.height = height;
+		
 		this.lookingGlass.fireResized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent( this.lookingGlass, width, height ) );
 	}
 	public void displayChanged( javax.media.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
