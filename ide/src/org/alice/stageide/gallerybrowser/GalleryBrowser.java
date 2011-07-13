@@ -247,7 +247,7 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 
 		org.lgna.croquet.components.GridPanel fromFilePane = org.lgna.croquet.components.GridPanel.createGridPane( 2, 1, 0, 4 );
 		fromFilePane.addComponent( CreateMyInstanceOperation.getInstance().createButton() );
-		fromFilePane.addComponent( CreateTextbookInstanceOperation.getInstance().createButton() );
+		//fromFilePane.addComponent( CreateTextbookInstanceOperation.getInstance().createButton() );
 
 		org.lgna.croquet.components.GridPanel bonusPane = org.lgna.croquet.components.GridPanel.createGridPane( 2, 1, 0, 4 );
 		bonusPane.addComponent( CreateBillboardOperation.getInstance().createButton() );
