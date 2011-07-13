@@ -221,4 +221,13 @@ public class Billboard extends AbstractModel {
 		rv.add( this.sgBackFace, trans );
 		return rv;
 	}
+	
+	@Override
+	protected void applyScale( edu.cmu.cs.dennisc.math.Vector3 axis, boolean isScootDesired ) {
+		super.applyScale( axis, isScootDesired );
+		edu.cmu.cs.dennisc.math.Matrix3x3 scale = sgFrontFace.scale.getValue();
+		edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
+		sgFrontFace.scale.setValue( scale );
+		sgBackFace.scale.setValue( scale );
+	}
 }

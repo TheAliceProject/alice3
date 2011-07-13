@@ -101,7 +101,7 @@ public class FileDialogUtilities {
 			}
 		}
 		public void setFile( String filename ) {
-			//this.jFileChooser.setFile( filename );
+			this.jFileChooser.setSelectedFile( new java.io.File(filename) );
 		}
 		public String getDirectory() {
 			java.io.File file = this.jFileChooser.getCurrentDirectory();
@@ -113,7 +113,7 @@ public class FileDialogUtilities {
 		}
 		public void setDirectory( String path ) {
 			if( path != null ) {
-				this.jFileChooser.setSelectedFile( new java.io.File( path ) );
+				this.jFileChooser.setCurrentDirectory( new java.io.File( path ) );
 			}
 		}
 		public void show() {
@@ -128,7 +128,6 @@ public class FileDialogUtilities {
 	private static edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, FileDialog> mapPathToLoadFileDialog = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	private static edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, FileDialog> mapPathToSaveFileDialog = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	private static java.util.Map<String, String> mapSecondaryKeyToPath = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	
 	
 	private static FileDialog createFileDialog( java.awt.Component root, String title, int mode ) {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
