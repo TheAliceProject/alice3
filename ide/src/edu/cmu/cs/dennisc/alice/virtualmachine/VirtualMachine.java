@@ -96,14 +96,11 @@ public abstract class VirtualMachine {
 	public Object[] evaluateEntryPoint( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
 		pushCurrentThread( null );
 		try {
-			assert false;
-			//TODO: this
-			//this.pushFrame( instance, (java.util.Map)java.util.Collections.emptyMap() );
+			this.pushMethodFrame( instance, (java.util.Map)java.util.Collections.emptyMap() );
 			try {
 				Object[] rv = new Object[ expressions.length ];
 				for( int i=0; i<expressions.length; i++ ) {
 					rv[ i ] = this.evaluate( expressions[ i ] );
-					System.err.println( "evaluateEntryPoint: " + i + " " + rv[ i ] );
 				}
 				return rv;
 			} finally {
