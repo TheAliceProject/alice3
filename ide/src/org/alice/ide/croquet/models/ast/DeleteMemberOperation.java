@@ -86,7 +86,7 @@ public abstract class DeleteMemberOperation< N extends edu.cmu.cs.dennisc.alice.
 		java.util.UUID memberId = binaryDecoder.decodeId();
 		java.util.UUID declaringTypeId = binaryDecoder.decodeId();
 		int index = binaryDecoder.decodeInt();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement member = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), memberId );
 		edu.cmu.cs.dennisc.alice.ast.Statement declaringType = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), declaringTypeId );
 		return new Object[] { member, declaringType, index };

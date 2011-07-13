@@ -53,7 +53,7 @@ public class ResourceNameValidator extends org.alice.ide.name.NameValidator {
 	}
 	@Override
 	protected boolean isNameAvailable( String name ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
 			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 			if( project != null ) {

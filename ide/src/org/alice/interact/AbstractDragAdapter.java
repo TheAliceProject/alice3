@@ -53,14 +53,12 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.apis.moveandturn.ObjectMarker;
 import org.alice.apis.moveandturn.PerspectiveCameraMarker;
-import org.alice.ide.ProjectApplication;
 import org.alice.interact.condition.InputCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;
@@ -73,21 +71,15 @@ import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.AnimatorDependentManipulator;
-import org.alice.interact.manipulator.Camera2DDragManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
-import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.ClickAdapterManipulator;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.components.DragComponent;
 
-
-import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.history.HistoryManager;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
@@ -419,7 +411,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				this.selectedCameraMarker.setOpacity(1f, MARKER_SELECTION_DURATION);
 				if (this.sceneEditor != null && this.selectedCameraMarker instanceof PerspectiveCameraMarker)
 				{
-					boolean isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive((PerspectiveCameraMarker)this.selectedCameraMarker);
+					boolean isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive(this.selectedCameraMarker);
 					if (!isNewSelectedActiveCameraMarker)
 					{
 						((PerspectiveCameraMarker)this.selectedCameraMarker).setDetailedViewShowing(true);

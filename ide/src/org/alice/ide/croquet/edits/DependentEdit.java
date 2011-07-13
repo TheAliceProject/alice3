@@ -46,8 +46,8 @@ package org.alice.ide.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public final class DependentEdit<M extends org.lgna.croquet.Operation<?>> extends org.lgna.croquet.edits.OperationEdit< M > {
-	public DependentEdit( org.lgna.croquet.history.OperationStep completionStep ) {
+public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.Edit< M > {
+	public DependentEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
 		super( completionStep );
 	}
 	public DependentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {

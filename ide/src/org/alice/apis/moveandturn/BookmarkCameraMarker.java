@@ -43,11 +43,6 @@
 
 package org.alice.apis.moveandturn;
 
-import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
-
 public class BookmarkCameraMarker extends PerspectiveCameraMarker {
 
 	public BookmarkCameraMarker()

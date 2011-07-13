@@ -60,7 +60,6 @@ public class ChapterPage implements org.lgna.stencil.Page {
 	}
 	private final org.lgna.cheshire.Chapter chapter;
 	private final java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final org.lgna.croquet.components.JComponent< ? > card = new org.lgna.croquet.components.BorderPanel();
 	public ChapterPage( org.lgna.cheshire.Chapter chapter ) {
 		this.chapter = chapter;
 		this.refreshNotes();
@@ -281,7 +280,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		return this.notes.get( 0 ).calculateLocation( container );
 	}
 
-	public void adjustIfNecessary( org.lgna.croquet.history.event.Event event ) {
+	public void adjustIfNecessary( org.lgna.croquet.history.event.Event<?> event ) {
 //		Note note = this.getFirstActiveNote();
 //		if( note != null ) {
 //			note.adjustIfNecessary( event );
@@ -306,7 +305,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 	public boolean isAutoAdvanceDesired() {
 		return this.chapter.isAutoAdvanceDesired();
 	}
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event event ) {
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
 		final int NOTE_COUNT = this.notes.size();
 		int activeNoteIndex = this.getIndexOfFirstActiveNote();
 		activeNoteIndex = Math.max( activeNoteIndex, 0 );

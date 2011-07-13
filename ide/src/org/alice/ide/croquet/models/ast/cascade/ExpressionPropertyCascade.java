@@ -77,13 +77,13 @@ public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade
 
 	@Override
 	protected void prologue() {
-		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementIndexPair() );
+		org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementIndexPair() );
 		super.prologue();
 	}
 	@Override
 	protected void epilogue() {
 		super.epilogue();
-		org.alice.ide.IDE.getSingleton().getCascadeManager().popContext();
+		org.alice.ide.IDE.getActiveInstance().getCascadeManager().popContext();
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions );
 	@Override

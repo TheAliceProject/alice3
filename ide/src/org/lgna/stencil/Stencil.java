@@ -133,7 +133,7 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 					menuSelectionManager.processMouseEvent( eSrc );
 				}
 			} else {
-				javax.swing.JFrame jFrame = org.lgna.croquet.Application.getSingleton().getFrame().getAwtComponent();
+				javax.swing.JFrame jFrame = org.lgna.croquet.Application.getActiveInstance().getFrame().getAwtComponent();
 				java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(jFrame.getContentPane(), pSrc.x, pSrc.y);
 				if (component != null) {
 					java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(componentSrc, pSrc, component);
@@ -170,7 +170,7 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 	private java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
 		public void mouseWheelMoved(java.awt.event.MouseWheelEvent e) {
 			java.awt.Point p = e.getPoint();
-			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(org.lgna.croquet.Application.getSingleton().getFrame().getAwtComponent().getContentPane(), p.x, p.y);
+			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(org.lgna.croquet.Application.getActiveInstance().getFrame().getAwtComponent().getContentPane(), p.x, p.y);
 			if (component != null) {
 				java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(e.getComponent(), p, component);
 				component.dispatchEvent(new java.awt.event.MouseWheelEvent(component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()));

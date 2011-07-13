@@ -56,24 +56,24 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	private static final java.awt.Font DEFAULT_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 12 );
 	private static final java.awt.Stroke DEFAULT_STROKE = new java.awt.BasicStroke( 1 );
 
-	private RenderContext m_renderContext;
-	private java.awt.Paint m_paint = DEFAULT_PAINT;
-	private java.awt.Color m_background = DEFAULT_BACKGROUND;
-	private java.awt.Font m_font = DEFAULT_FONT;
-	private java.awt.Stroke m_stroke = DEFAULT_STROKE;
+	private RenderContext renderContext;
+	private java.awt.Paint paint = DEFAULT_PAINT;
+	private java.awt.Color background = DEFAULT_BACKGROUND;
+	private java.awt.Font font = DEFAULT_FONT;
+	private java.awt.Stroke stroke = DEFAULT_STROKE;
 
-	private java.awt.RenderingHints m_renderingHints;
+	private java.awt.RenderingHints renderingHints;
 
-	private java.awt.geom.AffineTransform m_affineTransform = new java.awt.geom.AffineTransform();
-	private double[] m_glTransform = new double[ 16 ];
-	private java.nio.DoubleBuffer m_glTransformBuffer = java.nio.DoubleBuffer.wrap( m_glTransform );
+	private java.awt.geom.AffineTransform affineTransform = new java.awt.geom.AffineTransform();
+	private double[] glTransform = new double[ 16 ];
+	private java.nio.DoubleBuffer glTransformBuffer = java.nio.DoubleBuffer.wrap( glTransform );
 
-	private int m_width = -1;
-	private int m_height = -1;
+	private int width = -1;
+	private int height = -1;
 
 	public Graphics2D( RenderContext renderContext ) {
 		assert renderContext != null;
-		m_renderContext = renderContext;
+		this.renderContext = renderContext;
 		java.util.Map< java.awt.RenderingHints.Key, Object > map = new java.util.HashMap< java.awt.RenderingHints.Key, Object >();
 		map.put( java.awt.RenderingHints.KEY_ALPHA_INTERPOLATION, java.awt.RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT );
 		map.put( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_DEFAULT );
@@ -87,59 +87,65 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 		map.put( java.awt.RenderingHints.KEY_RENDERING, java.awt.RenderingHints.VALUE_RENDER_DEFAULT );
 		map.put( java.awt.RenderingHints.KEY_STROKE_CONTROL, java.awt.RenderingHints.VALUE_STROKE_DEFAULT );
-		map.put( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT );
-		m_renderingHints = new java.awt.RenderingHints( map );
+		Object antialiasTextValue;
+		if( Boolean.getBoolean( "swing.aatext" ) ) {
+			antialiasTextValue = java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
+		} else {
+			antialiasTextValue = java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT;
+		}
+		map.put( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, antialiasTextValue );
+		this.setRenderingHints( map );
 	}
 
 	public void initialize( int width, int height ) {
-		assert m_renderContext.gl != null;
-		assert m_renderContext.glu != null;
-		m_width = width;
-		m_height = height;
+		assert this.renderContext.gl != null;
+		assert this.renderContext.glu != null;
+		this.width = width;
+		this.height = height;
 
 		setPaint( DEFAULT_PAINT );
 		setBackground( DEFAULT_BACKGROUND );
 		setFont( DEFAULT_FONT );
 
-		m_renderContext.gl.glMatrixMode( GL.GL_PROJECTION );
-		m_renderContext.gl.glPushMatrix();
-		m_renderContext.gl.glLoadIdentity();
-		m_renderContext.gl.glOrtho( 0, m_width - 1, m_height - 1, 0, -1, 1 );
-		//m_renderContext.gl.glViewport( 0, 0, width, height );
-		m_renderContext.gl.glMatrixMode( GL.GL_MODELVIEW );
-		m_renderContext.gl.glPushMatrix();
-		m_renderContext.gl.glLoadIdentity();
+		this.renderContext.gl.glMatrixMode( GL.GL_PROJECTION );
+		this.renderContext.gl.glPushMatrix();
+		this.renderContext.gl.glLoadIdentity();
+		this.renderContext.gl.glOrtho( 0, this.width - 1, this.height - 1, 0, -1, 1 );
+		//this.renderContext.gl.glViewport( 0, 0, width, height );
+		this.renderContext.gl.glMatrixMode( GL.GL_MODELVIEW );
+		this.renderContext.gl.glPushMatrix();
+		this.renderContext.gl.glLoadIdentity();
 
-		m_affineTransform.setToIdentity();
+		this.affineTransform.setToIdentity();
 
-		m_renderContext.gl.glDisable( GL.GL_DEPTH_TEST );
-		m_renderContext.gl.glDisable( GL.GL_LIGHTING );
-		m_renderContext.gl.glDisable( GL.GL_CULL_FACE );
+		this.renderContext.gl.glDisable( GL.GL_DEPTH_TEST );
+		this.renderContext.gl.glDisable( GL.GL_LIGHTING );
+		this.renderContext.gl.glDisable( GL.GL_CULL_FACE );
 
-		m_renderContext.setDiffuseColorTextureAdapter( null, false );
-		m_renderContext.setBumpTextureAdapter( null );
+		this.renderContext.setDiffuseColorTextureAdapter( null, false );
+		this.renderContext.setBumpTextureAdapter( null );
 
-		m_renderContext.gl.glPolygonMode( GL.GL_FRONT_AND_BACK, GL.GL_FILL );
+		this.renderContext.gl.glPolygonMode( GL.GL_FRONT_AND_BACK, GL.GL_FILL );
 	}
 
 	// java.awt.Graphics
 
 	@Override
 	public void dispose() {
-		m_renderContext.gl.glFlush();
+		this.renderContext.gl.glFlush();
 		if( isValid() ) {
-			m_renderContext.gl.glMatrixMode( GL.GL_MODELVIEW );
-			m_renderContext.gl.glPopMatrix();
-			m_renderContext.gl.glMatrixMode( GL.GL_PROJECTION );
-			m_renderContext.gl.glPopMatrix();
-			m_width = -1;
-			m_height = -1;
+			this.renderContext.gl.glMatrixMode( GL.GL_MODELVIEW );
+			this.renderContext.gl.glPopMatrix();
+			this.renderContext.gl.glMatrixMode( GL.GL_PROJECTION );
+			this.renderContext.gl.glPopMatrix();
+			this.width = -1;
+			this.height = -1;
 		}
 	}
 
 	@Override
 	public boolean isValid() {
-		return m_width != -1 && m_height != -1;
+		return this.width != -1 && this.height != -1;
 	}
 
 	@Override
@@ -148,8 +154,8 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	}
 	@Override
 	public java.awt.Color getColor() {
-		if( m_paint instanceof java.awt.Color ) {
-			return (java.awt.Color)m_paint;
+		if( this.paint instanceof java.awt.Color ) {
+			return (java.awt.Color)this.paint;
 		} else {
 			throw new RuntimeException( "use getPaint()" );
 		}
@@ -169,11 +175,11 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public java.awt.Font getFont() {
-		return m_font;
+		return this.font;
 	}
 	@Override
 	public void setFont( java.awt.Font font ) {
-		m_font = font;
+		this.font = font;
 	}
 	@Override
 	public java.awt.FontMetrics getFontMetrics( java.awt.Font f ) {
@@ -205,30 +211,30 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	}
 	@Override
 	public void drawLine( int x1, int y1, int x2, int y2 ) {
-		m_renderContext.gl.glBegin( GL.GL_LINES );
-		m_renderContext.gl.glVertex2i( x1, y1 );
-		m_renderContext.gl.glVertex2i( x2, y2 );
-		m_renderContext.gl.glEnd();
+		this.renderContext.gl.glBegin( GL.GL_LINES );
+		this.renderContext.gl.glVertex2i( x1, y1 );
+		this.renderContext.gl.glVertex2i( x2, y2 );
+		this.renderContext.gl.glEnd();
 	}
 	@Override
 	public void fillRect( int x, int y, int width, int height ) {
-		m_renderContext.gl.glBegin( GL.GL_POLYGON );
-		m_renderContext.gl.glVertex2i( x, y );
-		m_renderContext.gl.glVertex2i( x + width, y );
-		m_renderContext.gl.glVertex2i( x + width, y + height );
-		m_renderContext.gl.glVertex2i( x, y + height );
-		m_renderContext.gl.glEnd();
+		this.renderContext.gl.glBegin( GL.GL_POLYGON );
+		this.renderContext.gl.glVertex2i( x, y );
+		this.renderContext.gl.glVertex2i( x + width, y );
+		this.renderContext.gl.glVertex2i( x + width, y + height );
+		this.renderContext.gl.glVertex2i( x, y + height );
+		this.renderContext.gl.glEnd();
 	}
 	@Override
 	public void clearRect( int x, int y, int width, int height ) {
-		glSetColor( m_background );
-		m_renderContext.gl.glBegin( GL.GL_POLYGON );
-		m_renderContext.gl.glVertex2i( x, y );
-		m_renderContext.gl.glVertex2i( x + width, y );
-		m_renderContext.gl.glVertex2i( x + width, y + height );
-		m_renderContext.gl.glVertex2i( x, y + height );
-		m_renderContext.gl.glEnd();
-		glSetPaint( m_paint );
+		glSetColor( this.background );
+		this.renderContext.gl.glBegin( GL.GL_POLYGON );
+		this.renderContext.gl.glVertex2i( x, y );
+		this.renderContext.gl.glVertex2i( x + width, y );
+		this.renderContext.gl.glVertex2i( x + width, y + height );
+		this.renderContext.gl.glVertex2i( x, y + height );
+		this.renderContext.gl.glEnd();
+		glSetPaint( this.paint );
 	}
 
 	private void glQuarterOval( double centerX, double centerY, double radiusX, double radiusY, int quadrant ) {
@@ -238,7 +244,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 			int i = max - lcv;
 			double cos = s_sineCosineCache.getCosine( quadrant, i );
 			double sin = s_sineCosineCache.getSine( quadrant, i );
-			m_renderContext.gl.glVertex2d( centerX + cos * radiusX, centerY + sin * radiusY );
+			this.renderContext.gl.glVertex2d( centerX + cos * radiusX, centerY + sin * radiusY );
 		}
 	}
 
@@ -260,15 +266,15 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	}
 	@Override
 	public void drawRoundRect( int x, int y, int width, int height, int arcWidth, int arcHeight ) {
-		m_renderContext.gl.glBegin( GL.GL_LINE_LOOP );
+		this.renderContext.gl.glBegin( GL.GL_LINE_LOOP );
 		glRoundRect( x, y, width, height, arcWidth, arcHeight );
-		m_renderContext.gl.glEnd();
+		this.renderContext.gl.glEnd();
 	}
 	@Override
 	public void fillRoundRect( int x, int y, int width, int height, int arcWidth, int arcHeight ) {
-		m_renderContext.gl.glBegin( GL.GL_TRIANGLE_FAN );
+		this.renderContext.gl.glBegin( GL.GL_TRIANGLE_FAN );
 		glRoundRect( x, y, width, height, arcWidth, arcHeight );
-		m_renderContext.gl.glEnd();
+		this.renderContext.gl.glEnd();
 	}
 
 	private void glOval( int x, int y, int width, int height ) {
@@ -284,15 +290,15 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public void drawOval( int x, int y, int width, int height ) {
-		m_renderContext.gl.glBegin( GL.GL_LINE_LOOP );
+		this.renderContext.gl.glBegin( GL.GL_LINE_LOOP );
 		glOval( x, y, width, height );
-		m_renderContext.gl.glEnd();
+		this.renderContext.gl.glEnd();
 	}
 	@Override
 	public void fillOval( int x, int y, int width, int height ) {
-		m_renderContext.gl.glBegin( GL.GL_TRIANGLE_FAN );
+		this.renderContext.gl.glBegin( GL.GL_TRIANGLE_FAN );
 		glOval( x, y, width, height );
-		m_renderContext.gl.glEnd();
+		this.renderContext.gl.glEnd();
 	}
 	@Override
 	public void drawArc( int x, int y, int width, int height, int startAngle, int arcAngle ) {
@@ -304,26 +310,26 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	}
 	private void glPoly( int xPoints[], int yPoints[], int nPoints ) {
 		for( int i = 0; i < nPoints; i++ ) {
-			m_renderContext.gl.glVertex2i( xPoints[ i ], yPoints[ i ] );
+			this.renderContext.gl.glVertex2i( xPoints[ i ], yPoints[ i ] );
 		}
 	}
 	@Override
 	public void drawPolyline( int xPoints[], int yPoints[], int nPoints ) {
-		m_renderContext.gl.glBegin( GL.GL_LINE_STRIP );
+		this.renderContext.gl.glBegin( GL.GL_LINE_STRIP );
 		glPoly( xPoints, yPoints, nPoints );
-		m_renderContext.gl.glEnd();
+		this.renderContext.gl.glEnd();
 	}
 	@Override
 	public void drawPolygon( int xPoints[], int yPoints[], int nPoints ) {
-		m_renderContext.gl.glBegin( GL.GL_LINE_LOOP );
+		this.renderContext.gl.glBegin( GL.GL_LINE_LOOP );
 		glPoly( xPoints, yPoints, nPoints );
-		m_renderContext.gl.glEnd();
+		this.renderContext.gl.glEnd();
 	}
 	@Override
 	public void fillPolygon( int xPoints[], int yPoints[], int nPoints ) {
-		m_renderContext.gl.glBegin( GL.GL_POLYGON );
+		this.renderContext.gl.glBegin( GL.GL_POLYGON );
 		glPoly( xPoints, yPoints, nPoints );
-		m_renderContext.gl.glEnd();
+		this.renderContext.gl.glEnd();
 	}
 	@Override
 	public void drawString( String str, int x, int y ) {
@@ -350,7 +356,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 			remember( image );
 		}
 		try {
-			this.paint( m_imageToImageGeneratorMap.get( image ), x, y, 1.0f );
+			this.paint( this.imageToImageGeneratorMap.get( image ), x, y, 1.0f );
 		} finally {
 			if( isRemembered ) {
 				//pass
@@ -419,24 +425,24 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public void drawString( String text, float x, float y ) {
-		ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > referencedObject = m_activeFontToTextRendererMap.get( m_font );
+		ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > referencedObject = this.activeFontToTextRendererMap.get( this.font );
 		//todo?
 		if( referencedObject == null ) {
-			remember( m_font );
-			referencedObject = m_activeFontToTextRendererMap.get( m_font );
+			remember( this.font );
+			referencedObject = this.activeFontToTextRendererMap.get( this.font );
 		}
 		assert referencedObject != null;
 		com.sun.opengl.util.j2d.TextRenderer glTextRenderer = referencedObject.getObject();
-		glTextRenderer.beginRendering( m_width, m_height );
-		if( m_paint instanceof java.awt.Color ) {
-			java.awt.Color color = (java.awt.Color)m_paint;
+		glTextRenderer.beginRendering( this.width, this.height );
+		if( this.paint instanceof java.awt.Color ) {
+			java.awt.Color color = (java.awt.Color)this.paint;
 			glTextRenderer.setColor( color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f );
 		} else {
 			//todo?
 		}
-		int xPixel = (int)(x + m_affineTransform.getTranslateX());
-		int yPixel = (int)(y + m_affineTransform.getTranslateY());
-		glTextRenderer.draw( text, xPixel, m_height - yPixel );
+		int xPixel = (int)(x + this.affineTransform.getTranslateX());
+		int yPixel = (int)(y + this.affineTransform.getTranslateY());
+		glTextRenderer.draw( text, xPixel, this.height - yPixel );
 		glTextRenderer.endRendering();
 	}
 
@@ -468,24 +474,24 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	private void fill( java.awt.geom.PathIterator pi ) {
 		
 		class MyTessAdapter implements javax.media.opengl.glu.GLUtessellatorCallback {
-			private GL m_gl;
+			private GL gl;
 
 			public MyTessAdapter( GL gl ) {
-				m_gl = gl;
+				this.gl = gl;
 			}
 			public void begin( int primitiveType ) {
-				m_gl.glBegin( primitiveType );
+				this.gl.glBegin( primitiveType );
 			}
 			public void beginData( int primitiveType, Object data ) {
 			}
 			public void vertex( Object data ) {
 				double[] a = (double[])data;
-				m_gl.glVertex2d( a[ 0 ], a[ 1 ] );
+				this.gl.glVertex2d( a[ 0 ], a[ 1 ] );
 			}
 			public void vertexData( Object arg0, Object arg1 ) {
 			}
 			public void end() {
-				m_gl.glEnd();
+				this.gl.glEnd();
 			}
 			public void endData( Object arg0 ) {
 			}
@@ -519,7 +525,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "tesselator error" );
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "\tn:", n );
 				try {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "\tgluErrorString:", m_renderContext.glu.gluErrorString( n ) );
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "\tgluErrorString:", Graphics2D.this.renderContext.glu.gluErrorString( n ) );
 				} catch( ArrayIndexOutOfBoundsException aioobe ) {
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "\tgluErrorString: unknown" );
 				}
@@ -527,35 +533,35 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 			}
 		}
 
-		javax.media.opengl.glu.GLUtessellatorCallback adapter = new MyTessAdapter( m_renderContext.gl );
-		javax.media.opengl.glu.GLUtessellator tesselator = m_renderContext.glu.gluNewTess();
+		javax.media.opengl.glu.GLUtessellatorCallback adapter = new MyTessAdapter( this.renderContext.gl );
+		javax.media.opengl.glu.GLUtessellator tesselator = this.renderContext.glu.gluNewTess();
 		try {
-			m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, adapter );
-			m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, adapter );
-			m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_END, adapter );
-			m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_EDGE_FLAG, adapter );
-			m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, adapter );
-			m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, adapter );
+			this.renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, adapter );
+			this.renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, adapter );
+			this.renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_END, adapter );
+			this.renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_EDGE_FLAG, adapter );
+			this.renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, adapter );
+			this.renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, adapter );
 
 			double[] segment = new double[ 6 ];
 
-//			m_renderContext.gl.glDisable( GL.GL_CULL_FACE );
+//			this.renderContext.gl.glDisable( GL.GL_CULL_FACE );
 //			try {
-				m_renderContext.glu.gluBeginPolygon( tesselator );
+				this.renderContext.glu.gluBeginPolygon( tesselator );
 				try {
 					while( !pi.isDone() ) {
 						double[] xyz = new double[ 3 ];
 						switch( pi.currentSegment( segment ) ) {
 						case java.awt.geom.PathIterator.SEG_MOVETO:
-							m_renderContext.glu.gluTessBeginContour( tesselator );
+							this.renderContext.glu.gluTessBeginContour( tesselator );
 							//note: no break
 						case java.awt.geom.PathIterator.SEG_LINETO:
 							xyz[ 0 ] = segment[ 0 ];
 							xyz[ 1 ] = segment[ 1 ];
-							m_renderContext.glu.gluTessVertex( tesselator, xyz, 0, xyz );
+							this.renderContext.glu.gluTessVertex( tesselator, xyz, 0, xyz );
 							break;
 						case java.awt.geom.PathIterator.SEG_CLOSE:
-							m_renderContext.glu.gluTessEndContour( tesselator );
+							this.renderContext.glu.gluTessEndContour( tesselator );
 							break;
 			
 						case java.awt.geom.PathIterator.SEG_QUADTO:
@@ -568,13 +574,13 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 						pi.next();
 					}
 				} finally {
-					m_renderContext.glu.gluTessEndPolygon( tesselator );
+					this.renderContext.glu.gluTessEndPolygon( tesselator );
 				}
 //			} finally {
-//				m_renderContext.gl.glEnable( GL.GL_CULL_FACE );
+//				this.renderContext.gl.glEnable( GL.GL_CULL_FACE );
 //			}
 		} finally {
-			m_renderContext.glu.gluDeleteTess( tesselator );
+			this.renderContext.glu.gluDeleteTess( tesselator );
 		}
 	}
 
@@ -582,14 +588,14 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public void draw( java.awt.Shape s ) {
-		//boolean isLine = m_stroke.equals( DEFAULT_STROKE );
+		//boolean isLine = this.stroke.equals( DEFAULT_STROKE );
 		boolean isLine;
-		if( m_stroke instanceof java.awt.BasicStroke ) {
-			java.awt.BasicStroke basicStroke = (java.awt.BasicStroke)m_stroke;
+		if( this.stroke instanceof java.awt.BasicStroke ) {
+			java.awt.BasicStroke basicStroke = (java.awt.BasicStroke)this.stroke;
 			if( basicStroke.getDashArray() != null ) {
 				//todo
-				m_renderContext.gl.glLineStipple( 1, (short)0x00FF );
-				m_renderContext.gl.glEnable( GL.GL_LINE_STIPPLE );
+				this.renderContext.gl.glLineStipple( 1, (short)0x00FF );
+				this.renderContext.gl.glEnable( GL.GL_LINE_STIPPLE );
 			}
 			isLine = true;
 		} else {
@@ -603,17 +609,18 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 			java.awt.Shape outlinesShape = LINE_STROKE.createStrokedShape( s );
 			java.awt.geom.PathIterator pi = outlinesShape.getPathIterator( null, FLATNESS );
 			float[] segment = new float[ 6 ];
-			m_renderContext.gl.glLineWidth( ((java.awt.BasicStroke)m_stroke).getLineWidth() );
+			this.renderContext.gl.glLineWidth( ((java.awt.BasicStroke)this.stroke).getLineWidth() );
 			try {
 				while( !pi.isDone() ) {
 					switch( pi.currentSegment( segment ) ) {
 					case java.awt.geom.PathIterator.SEG_MOVETO:
-						m_renderContext.gl.glBegin( GL.GL_LINE_STRIP );
+						this.renderContext.gl.glBegin( GL.GL_LINE_STRIP );
+						//note: no break
 					case java.awt.geom.PathIterator.SEG_LINETO:
-						m_renderContext.gl.glVertex2f( segment[ 0 ], segment[ 1 ] );
+						this.renderContext.gl.glVertex2f( segment[ 0 ], segment[ 1 ] );
 						break;
 					case java.awt.geom.PathIterator.SEG_CLOSE:
-						m_renderContext.gl.glEnd();
+						this.renderContext.gl.glEnd();
 						break;
 
 					case java.awt.geom.PathIterator.SEG_QUADTO:
@@ -626,12 +633,12 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 					pi.next();
 				}
 			} finally {
-				m_renderContext.gl.glDisable( GL.GL_LINE_STIPPLE );
-				m_renderContext.gl.glLineWidth( 1 );
+				this.renderContext.gl.glDisable( GL.GL_LINE_STIPPLE );
+				this.renderContext.gl.glLineWidth( 1 );
 			}
 		} else {
 			//todo: investigate
-			java.awt.Shape outlinesShape = m_stroke.createStrokedShape( s );
+			java.awt.Shape outlinesShape = this.stroke.createStrokedShape( s );
 			java.awt.geom.PathIterator pi = outlinesShape.getPathIterator( null, FLATNESS );
 			fill( pi );
 		}
@@ -663,24 +670,24 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public java.awt.Color getBackground() {
-		return m_background;
+		return this.background;
 	}
 	@Override
 	public void setBackground( java.awt.Color color ) {
-		m_background = color;
+		this.background = color;
 	}
 
 	private void glSetColor( java.awt.Color color ) {
 		assert color != null;
-		//m_renderContext.gl.glColor3ub( (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue() );
-		m_renderContext.gl.glColor4ub( (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue(), (byte)color.getAlpha() );
+		//this.renderContext.gl.glColor3ub( (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue() );
+		this.renderContext.gl.glColor4ub( (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue(), (byte)color.getAlpha() );
 		if( color.getAlpha() != 255 ) {
-			m_renderContext.gl.glEnable( javax.media.opengl.GL.GL_BLEND );
-			m_renderContext.gl.glBlendFunc( javax.media.opengl.GL.GL_SRC_ALPHA, javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA );
-			m_renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, color.getAlpha() / 255.0f );
+			this.renderContext.gl.glEnable( javax.media.opengl.GL.GL_BLEND );
+			this.renderContext.gl.glBlendFunc( javax.media.opengl.GL.GL_SRC_ALPHA, javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA );
+			this.renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, color.getAlpha() / 255.0f );
 		} else {
-			m_renderContext.gl.glDisable( javax.media.opengl.GL.GL_BLEND );
-			m_renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, 1.0f );
+			this.renderContext.gl.glDisable( javax.media.opengl.GL.GL_BLEND );
+			this.renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, 1.0f );
 		}
 	}
 	private void glSetPaint( java.awt.Paint paint ) {
@@ -693,13 +700,13 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public java.awt.Paint getPaint() {
-		return m_paint;
+		return this.paint;
 	}
 	@Override
 	public void setPaint( java.awt.Paint paint ) {
 		if( paint instanceof java.awt.Color ) {
 			glSetColor( (java.awt.Color)paint );
-			m_paint = paint;
+			this.paint = paint;
 		} else {
 			throw new RuntimeException( "not implemented" );
 		}
@@ -707,111 +714,111 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public java.awt.Stroke getStroke() {
-		return m_stroke;
+		return this.stroke;
 	}
 	@Override
 	public void setStroke( java.awt.Stroke stroke ) {
-		m_stroke = stroke;
+		this.stroke = stroke;
 	}
 
 	@Override
 	public Object getRenderingHint( java.awt.RenderingHints.Key hintKey ) {
-		return m_renderingHints.get( hintKey );
+		return this.renderingHints.get( hintKey );
 	}
 	@Override
 	public java.awt.RenderingHints getRenderingHints() {
-		return m_renderingHints;
+		return this.renderingHints;
 	}
 	@Override
-	public void addRenderingHints( java.util.Map hints ) {
-		m_renderingHints.add( new java.awt.RenderingHints( hints ) );
+	public void addRenderingHints( java.util.Map< ?,? > hints ) {
+		this.renderingHints.add( new java.awt.RenderingHints( (java.util.Map< java.awt.RenderingHints.Key,? >)hints ) );
 	}
 	@Override
 	public void setRenderingHint( java.awt.RenderingHints.Key hintKey, Object hintValue ) {
-		m_renderingHints.put( hintKey, hintValue );
+		this.renderingHints.put( hintKey, hintValue );
 	}
 	@Override
-	public void setRenderingHints( java.util.Map hints ) {
-		m_renderingHints = new java.awt.RenderingHints( hints );
+	public void setRenderingHints( java.util.Map< ?,? > hints ) {
+		this.renderingHints = new java.awt.RenderingHints( (java.util.Map< java.awt.RenderingHints.Key,? >)hints );
 	}
 
 	private static double[] s_matrix = new double[ 6 ];
 
 	private void glUpdateTransform() {
 		synchronized( s_matrix ) {
-			m_affineTransform.getMatrix( s_matrix );
+			this.affineTransform.getMatrix( s_matrix );
 
-			if( s_matrix[ 4 ] != m_affineTransform.getTranslateX() ) {
-				System.err.println( "WARNING: translate x: " + s_matrix[ 4 ] + " != " + m_affineTransform.getTranslateX() );
+			if( s_matrix[ 4 ] != this.affineTransform.getTranslateX() ) {
+				System.err.println( "WARNING: translate x: " + s_matrix[ 4 ] + " != " + this.affineTransform.getTranslateX() );
 			}
-			if( s_matrix[ 5 ] != m_affineTransform.getTranslateY() ) {
-				System.err.println( "WARNING: translate y: " + s_matrix[ 5 ] + " != " + m_affineTransform.getTranslateY() );
+			if( s_matrix[ 5 ] != this.affineTransform.getTranslateY() ) {
+				System.err.println( "WARNING: translate y: " + s_matrix[ 5 ] + " != " + this.affineTransform.getTranslateY() );
 			}
 
-			m_glTransform[ 0 ] = s_matrix[ 0 ];
-			m_glTransform[ 4 ] = s_matrix[ 2 ];
-			m_glTransform[ 8 ] = 0;
-			m_glTransform[ 12 ] = s_matrix[ 4 ];
-			m_glTransform[ 1 ] = s_matrix[ 1 ];
-			m_glTransform[ 5 ] = s_matrix[ 3 ];
-			m_glTransform[ 9 ] = 0;
-			m_glTransform[ 13 ] = s_matrix[ 5 ];
-			m_glTransform[ 2 ] = 0;
-			m_glTransform[ 6 ] = 0;
-			m_glTransform[ 10 ] = 1;
-			m_glTransform[ 14 ] = 0;
-			m_glTransform[ 3 ] = 0;
-			m_glTransform[ 7 ] = 0;
-			m_glTransform[ 11 ] = 0;
-			m_glTransform[ 15 ] = 1;
+			this.glTransform[ 0 ] = s_matrix[ 0 ];
+			this.glTransform[ 4 ] = s_matrix[ 2 ];
+			this.glTransform[ 8 ] = 0;
+			this.glTransform[ 12 ] = s_matrix[ 4 ];
+			this.glTransform[ 1 ] = s_matrix[ 1 ];
+			this.glTransform[ 5 ] = s_matrix[ 3 ];
+			this.glTransform[ 9 ] = 0;
+			this.glTransform[ 13 ] = s_matrix[ 5 ];
+			this.glTransform[ 2 ] = 0;
+			this.glTransform[ 6 ] = 0;
+			this.glTransform[ 10 ] = 1;
+			this.glTransform[ 14 ] = 0;
+			this.glTransform[ 3 ] = 0;
+			this.glTransform[ 7 ] = 0;
+			this.glTransform[ 11 ] = 0;
+			this.glTransform[ 15 ] = 1;
 		}
-		m_renderContext.gl.glLoadMatrixd( m_glTransformBuffer );
+		this.renderContext.gl.glLoadMatrixd( this.glTransformBuffer );
 	}
 	@Override
 	public void translate( int x, int y ) {
-		m_affineTransform.translate( x, y );
+		this.affineTransform.translate( x, y );
 		glUpdateTransform();
 	}
 	@Override
 	public void translate( double x, double y ) {
-		m_affineTransform.translate( x, y );
+		this.affineTransform.translate( x, y );
 		glUpdateTransform();
 	}
 
 	@Override
 	public void rotate( double theta ) {
-		m_affineTransform.rotate( theta );
+		this.affineTransform.rotate( theta );
 		glUpdateTransform();
 	}
 	@Override
 	public void rotate( double theta, double x, double y ) {
-		m_affineTransform.rotate( theta, x, y );
+		this.affineTransform.rotate( theta, x, y );
 		glUpdateTransform();
 	}
 
 	@Override
 	public void scale( double sx, double sy ) {
-		m_affineTransform.scale( sx, sy );
+		this.affineTransform.scale( sx, sy );
 		glUpdateTransform();
 	}
 	@Override
 	public void shear( double shx, double shy ) {
-		m_affineTransform.shear( shx, shy );
+		this.affineTransform.shear( shx, shy );
 		glUpdateTransform();
 	}
 
 	@Override
 	public void transform( java.awt.geom.AffineTransform Tx ) {
-		m_affineTransform.concatenate( Tx );
+		this.affineTransform.concatenate( Tx );
 		glUpdateTransform();
 	}
 	@Override
 	public java.awt.geom.AffineTransform getTransform() {
-		return new java.awt.geom.AffineTransform( m_affineTransform );
+		return new java.awt.geom.AffineTransform( this.affineTransform );
 	}
 	@Override
 	public void setTransform( java.awt.geom.AffineTransform Tx ) {
-		m_affineTransform.setTransform( Tx );
+		this.affineTransform.setTransform( Tx );
 		glUpdateTransform();
 	}
 
@@ -829,54 +836,54 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	// edu.cmu.cs.dennisc.lookingglass.Graphics2D
 
 	class ReferencedObject<E extends Object> {
-		private E m_object;
-		private int m_referenceCount;
+		private E object;
+		private int referenceCount;
 
 		public ReferencedObject( E object, int referenceCount ) {
-			m_object = object;
-			m_referenceCount = referenceCount;
+			this.object = object;
+			this.referenceCount = referenceCount;
 		}
 		public E getObject() {
-			return m_object;
+			return this.object;
 		}
 		public boolean isReferenced() {
-			return m_referenceCount > 0;
+			return this.referenceCount > 0;
 		}
 		public void addReference() {
-			m_referenceCount++;
+			this.referenceCount++;
 		}
 		public void removeReference() {
-			m_referenceCount--;
+			this.referenceCount--;
 		}
 	}
 
-	private java.util.Map< java.awt.Font, ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > > m_activeFontToTextRendererMap = new java.util.HashMap< java.awt.Font, ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > >();
-	private java.util.Map< java.awt.Font, ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > > m_forgottenFontToTextRendererMap = new java.util.HashMap< java.awt.Font, ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > >();
+	private java.util.Map< java.awt.Font, ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > > activeFontToTextRendererMap = new java.util.HashMap< java.awt.Font, ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > >();
+	private java.util.Map< java.awt.Font, ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > > forgottenFontToTextRendererMap = new java.util.HashMap< java.awt.Font, ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > >();
 
 	@Override
 	public boolean isRemembered( java.awt.Font font ) {
-		return m_activeFontToTextRendererMap.containsKey( font );
+		return this.activeFontToTextRendererMap.containsKey( font );
 	}
 	@Override
 	public void remember( java.awt.Font font ) {
-		ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > referencedObject = m_activeFontToTextRendererMap.get( font );
+		ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > referencedObject = this.activeFontToTextRendererMap.get( font );
 		if( referencedObject != null ) {
 			//pass
 		} else {
-			referencedObject = m_forgottenFontToTextRendererMap.get( font );
+			referencedObject = this.forgottenFontToTextRendererMap.get( font );
 			if( referencedObject != null ) {
-				m_forgottenFontToTextRendererMap.remove( font );
+				this.forgottenFontToTextRendererMap.remove( font );
 			} else {
 				com.sun.opengl.util.j2d.TextRenderer glTextRenderer = new com.sun.opengl.util.j2d.TextRenderer( font );
 				referencedObject = new ReferencedObject< com.sun.opengl.util.j2d.TextRenderer >( glTextRenderer, 0 );
 			}
-			m_activeFontToTextRendererMap.put( font, referencedObject );
+			this.activeFontToTextRendererMap.put( font, referencedObject );
 		}
 		referencedObject.addReference();
 	}
 	@Override
 	public java.awt.geom.Rectangle2D getBounds( String text, java.awt.Font font ) {
-		ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > referencedObject = m_activeFontToTextRendererMap.get( font );
+		ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > referencedObject = this.activeFontToTextRendererMap.get( font );
 		assert referencedObject != null;
 		assert referencedObject.isReferenced();
 		java.awt.geom.Rectangle2D bounds = referencedObject.getObject().getBounds( text );
@@ -886,47 +893,47 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public void forget( java.awt.Font font ) {
-		ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > referencedObject = m_activeFontToTextRendererMap.get( font );
+		ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > referencedObject = this.activeFontToTextRendererMap.get( font );
 		assert referencedObject != null;
 		assert referencedObject.isReferenced();
 		referencedObject.removeReference();
 		if( referencedObject.isReferenced() ) {
 			//pass
 		} else {
-			m_activeFontToTextRendererMap.remove( font );
-			m_forgottenFontToTextRendererMap.put( font, referencedObject );
+			this.activeFontToTextRendererMap.remove( font );
+			this.forgottenFontToTextRendererMap.put( font, referencedObject );
 		}
 	}
 	@Override
 	public void disposeForgottenFonts() {
-		synchronized( m_forgottenFontToTextRendererMap ) {
-			for( java.awt.Font font : m_forgottenFontToTextRendererMap.keySet() ) {
-				ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > referencedObject = m_forgottenFontToTextRendererMap.get( font );
+		synchronized( this.forgottenFontToTextRendererMap ) {
+			for( java.awt.Font font : this.forgottenFontToTextRendererMap.keySet() ) {
+				ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > referencedObject = this.forgottenFontToTextRendererMap.get( font );
 				referencedObject.getObject().dispose();
 			}
-			m_forgottenFontToTextRendererMap.clear();
+			this.forgottenFontToTextRendererMap.clear();
 		}
 	}
 
-	private java.util.Map< java.awt.Image, edu.cmu.cs.dennisc.image.ImageGenerator > m_imageToImageGeneratorMap = new java.util.HashMap< java.awt.Image, edu.cmu.cs.dennisc.image.ImageGenerator >();
+	private java.util.Map< java.awt.Image, edu.cmu.cs.dennisc.image.ImageGenerator > imageToImageGeneratorMap = new java.util.HashMap< java.awt.Image, edu.cmu.cs.dennisc.image.ImageGenerator >();
 
-	private java.util.Map< edu.cmu.cs.dennisc.image.ImageGenerator, ReferencedObject< Pixels > > m_activeImageGeneratorToPixelsMap = new java.util.HashMap< edu.cmu.cs.dennisc.image.ImageGenerator, ReferencedObject< Pixels > >();
-	private java.util.Map< edu.cmu.cs.dennisc.image.ImageGenerator, ReferencedObject< Pixels > > m_forgottenImageGeneratorToPixelsMap = new java.util.HashMap< edu.cmu.cs.dennisc.image.ImageGenerator, ReferencedObject< Pixels > >();
+	private java.util.Map< edu.cmu.cs.dennisc.image.ImageGenerator, ReferencedObject< Pixels > > activeImageGeneratorToPixelsMap = new java.util.HashMap< edu.cmu.cs.dennisc.image.ImageGenerator, ReferencedObject< Pixels > >();
+	private java.util.Map< edu.cmu.cs.dennisc.image.ImageGenerator, ReferencedObject< Pixels > > forgottenImageGeneratorToPixelsMap = new java.util.HashMap< edu.cmu.cs.dennisc.image.ImageGenerator, ReferencedObject< Pixels > >();
 
 	@Override
 	public boolean isRemembered( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator ) {
-		return m_activeImageGeneratorToPixelsMap.containsKey( imageGenerator );
+		return this.activeImageGeneratorToPixelsMap.containsKey( imageGenerator );
 	}
 	@Override
 	public void remember( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator ) {
 		assert imageGenerator != null;
-		ReferencedObject< Pixels > referencedObject = m_activeImageGeneratorToPixelsMap.get( imageGenerator );
+		ReferencedObject< Pixels > referencedObject = this.activeImageGeneratorToPixelsMap.get( imageGenerator );
 		if( referencedObject != null ) {
 			//pass
 		} else {
-			referencedObject = m_forgottenImageGeneratorToPixelsMap.get( imageGenerator );
+			referencedObject = this.forgottenImageGeneratorToPixelsMap.get( imageGenerator );
 			if( referencedObject != null ) {
-				m_forgottenImageGeneratorToPixelsMap.remove( imageGenerator );
+				this.forgottenImageGeneratorToPixelsMap.remove( imageGenerator );
 			} else {
 				if( imageGenerator instanceof edu.cmu.cs.dennisc.texture.Texture ) {
 					//					sgTexture.addReleaseListener( new edu.cmu.cs.dennisc.pattern.event.ReleaseListener() {
@@ -949,14 +956,14 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 					throw new RuntimeException( "TODO" );
 				}
 			}
-			m_activeImageGeneratorToPixelsMap.put( imageGenerator, referencedObject );
+			this.activeImageGeneratorToPixelsMap.put( imageGenerator, referencedObject );
 		}
 		referencedObject.addReference();
 	}
 
 	@Override
 	public void paint( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator, float x, float y, float alpha ) {
-		ReferencedObject< Pixels > referencedObject = m_activeImageGeneratorToPixelsMap.get( imageGenerator );
+		ReferencedObject< Pixels > referencedObject = this.activeImageGeneratorToPixelsMap.get( imageGenerator );
 		assert referencedObject != null;
 		assert referencedObject.isReferenced();
 
@@ -964,59 +971,59 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 		if( imageGenerator.isAnimated() ) {
 			pixels.textureChanged( null );
 		}
-		m_renderContext.gl.glEnable( javax.media.opengl.GL.GL_BLEND );
-		m_renderContext.gl.glBlendFunc( javax.media.opengl.GL.GL_SRC_ALPHA, javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA );
-		m_renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, alpha );
+		this.renderContext.gl.glEnable( javax.media.opengl.GL.GL_BLEND );
+		this.renderContext.gl.glBlendFunc( javax.media.opengl.GL.GL_SRC_ALPHA, javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA );
+		this.renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, alpha );
 
 		int xPixel = (int)x;
 		int yPixel = (int)y + pixels.getHeight();
-		m_renderContext.gl.glRasterPos2i( 0, 0 );
-		m_renderContext.gl.glBitmap( 0, 0, 0, 0, xPixel, -yPixel, null );
-		m_renderContext.gl.glDrawPixels( pixels.getWidth(), pixels.getHeight(), javax.media.opengl.GL.GL_RGBA, javax.media.opengl.GL.GL_UNSIGNED_BYTE, pixels.getRGBA() );
-		m_renderContext.gl.glDisable( javax.media.opengl.GL.GL_BLEND );
-		m_renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, 1.0f );
+		this.renderContext.gl.glRasterPos2i( 0, 0 );
+		this.renderContext.gl.glBitmap( 0, 0, 0, 0, xPixel, -yPixel, null );
+		this.renderContext.gl.glDrawPixels( pixels.getWidth(), pixels.getHeight(), javax.media.opengl.GL.GL_RGBA, javax.media.opengl.GL.GL_UNSIGNED_BYTE, pixels.getRGBA() );
+		this.renderContext.gl.glDisable( javax.media.opengl.GL.GL_BLEND );
+		this.renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, 1.0f );
 	}
 	@Override
 	public void forget( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator ) {
-		ReferencedObject< Pixels > referencedObject = m_activeImageGeneratorToPixelsMap.get( imageGenerator );
+		ReferencedObject< Pixels > referencedObject = this.activeImageGeneratorToPixelsMap.get( imageGenerator );
 		assert referencedObject != null;
 		assert referencedObject.isReferenced();
 		referencedObject.removeReference();
 		if( referencedObject.isReferenced() ) {
 			//pass
 		} else {
-			m_activeImageGeneratorToPixelsMap.remove( imageGenerator );
-			m_forgottenImageGeneratorToPixelsMap.put( imageGenerator, referencedObject );
+			this.activeImageGeneratorToPixelsMap.remove( imageGenerator );
+			this.forgottenImageGeneratorToPixelsMap.put( imageGenerator, referencedObject );
 		}
 	}
 
 	private void disposeImageGenerator( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator ) {
-		ReferencedObject< Pixels > referencedObject = m_forgottenImageGeneratorToPixelsMap.get( imageGenerator );
+		ReferencedObject< Pixels > referencedObject = this.forgottenImageGeneratorToPixelsMap.get( imageGenerator );
 		referencedObject.getObject().release();
 	}
 
 	@Override
 	public void disposeForgottenImageGenerators() {
-		synchronized( m_forgottenImageGeneratorToPixelsMap ) {
-			for( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator : m_forgottenImageGeneratorToPixelsMap.keySet() ) {
+		synchronized( this.forgottenImageGeneratorToPixelsMap ) {
+			for( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator : this.forgottenImageGeneratorToPixelsMap.keySet() ) {
 				disposeImageGenerator( imageGenerator );
 			}
-			m_forgottenFontToTextRendererMap.clear();
+			this.forgottenFontToTextRendererMap.clear();
 		}
 	}
 
 	//	class DefaultImageGenerator implements edu.cmu.cs.dennisc.image.ImageGenerator {
-	//		private java.awt.Image m_image;
+	//		private java.awt.Image this.image;
 	//		public DefaultImageGenerator( java.awt.Image image ) {
-	//			m_image = image;
+	//			this.image = image;
 	//		}
 	//		@Override
 	//		public int getWidth() {
-	//			return edu.cmu.cs.dennisc.image.ImageUtilities.getWidth( m_image );
+	//			return edu.cmu.cs.dennisc.image.ImageUtilities.getWidth( this.image );
 	//		}
 	//		@Override
 	//		public int getHeight() {
-	//			return edu.cmu.cs.dennisc.image.ImageUtilities.getHeight( m_image );
+	//			return edu.cmu.cs.dennisc.image.ImageUtilities.getHeight( this.image );
 	//		}		
 	//		@Override
 	//		public edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy getMipMapGenerationPolicy() {
@@ -1036,13 +1043,13 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	//		}
 	//		@Override
 	//		public void paint( java.awt.Graphics2D g, int width, int height ) {
-	//			g.drawImage( m_image, 0, 0, null );
+	//			g.drawImage( this.image, 0, 0, null );
 	//		}
 	//	}
 
 	@Override
 	public boolean isRemembered( java.awt.Image image ) {
-		edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator = m_imageToImageGeneratorMap.get( image );
+		edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator = this.imageToImageGeneratorMap.get( image );
 		if( imageGenerator != null ) {
 			return isRemembered( imageGenerator );
 		} else {
@@ -1051,7 +1058,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	}
 	@Override
 	public void remember( java.awt.Image image ) {
-		edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator = m_imageToImageGeneratorMap.get( image );
+		edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator = this.imageToImageGeneratorMap.get( image );
 		if( imageGenerator != null ) {
 			//pass
 		} else {
@@ -1064,22 +1071,22 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 			} else {
 				throw new RuntimeException( "todo" );
 			}
-			m_imageToImageGeneratorMap.put( image, imageGenerator );
+			this.imageToImageGeneratorMap.put( image, imageGenerator );
 		}
 		remember( imageGenerator );
 	}
 	@Override
 	public void forget( java.awt.Image image ) {
-		edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator = m_imageToImageGeneratorMap.get( image );
+		edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator = this.imageToImageGeneratorMap.get( image );
 		forget( imageGenerator );
 	}
 	@Override
 	public void disposeForgottenImages() {
 		//todo
-		for( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator : m_imageToImageGeneratorMap.values() ) {
-			if( m_forgottenImageGeneratorToPixelsMap.containsKey( imageGenerator ) ) {
+		for( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator : this.imageToImageGeneratorMap.values() ) {
+			if( this.forgottenImageGeneratorToPixelsMap.containsKey( imageGenerator ) ) {
 				disposeImageGenerator( imageGenerator );
-				m_forgottenImageGeneratorToPixelsMap.remove( imageGenerator );
+				this.forgottenImageGeneratorToPixelsMap.remove( imageGenerator );
 			}
 		}
 	}
@@ -1087,6 +1094,6 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	// edu.cmu.cs.dennisc.lookingglass.opengl.Graphics2D
 
 	public javax.media.opengl.GL getGL() {
-		return m_renderContext.gl;
+		return this.renderContext.gl;
 	}
 }

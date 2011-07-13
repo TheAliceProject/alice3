@@ -79,6 +79,11 @@ public class InstanceInAlice {
 		assert cls != null : classReflectionProxy.getName();
 		m_instanceInJava = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
 	}
+	
+	@Deprecated
+	public void EPIC_HACK_FOR_SCENE_EDITOR_setInstanceInJava( Object instanceInJava ) {
+		m_instanceInJava = instanceInJava;
+	}
 	public AbstractTypeDeclaredInAlice<?> getType() {
 		return m_type;
 	}

@@ -52,12 +52,17 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 		this.addComponent( component );
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( expression ) );
 	}
+	
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
-		if( this.expression == null || edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( this.expression.getClass(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class, edu.cmu.cs.dennisc.alice.ast.ThisExpression.class )  ) {
-			return true;
+		if( this.expression != null ) {
+			if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.expression ) ) {
+				return false;
+			} else {
+				return super.isExpressionTypeFeedbackDesired();
+			}
 		} else {
-			return super.isExpressionTypeFeedbackDesired();
+			return true;
 		}
 	}
 	

@@ -50,9 +50,9 @@ public class HistoryManager {
 		throw new AssertionError();
 	}
 	private static org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
-		public void changing(org.lgna.croquet.history.event.Event e) {
+		public void changing(org.lgna.croquet.history.event.Event<?> e) {
 		}
-		public void changed(org.lgna.croquet.history.event.Event e) {
+		public void changed(org.lgna.croquet.history.event.Event<?> e) {
 			if( e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
 				org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)e;
 				HistoryManager.handleEditCommitted( editCommittedEvent.getEdit() );

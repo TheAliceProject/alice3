@@ -55,7 +55,7 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 	}
 	
 	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 	@Override
 	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {

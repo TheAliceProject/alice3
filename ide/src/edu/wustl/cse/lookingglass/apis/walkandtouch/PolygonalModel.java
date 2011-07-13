@@ -44,12 +44,17 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch;
 
 import org.alice.apis.moveandturn.AsSeenBy;
-import org.alice.apis.moveandturn.ReferenceFrame;
 import org.alice.apis.moveandturn.StandIn;
 import org.alice.apis.moveandturn.gallery.environments.Ground;
-import org.alice.apis.moveandturn.gallery.environments.grounds.*;
+import org.alice.apis.moveandturn.gallery.environments.grounds.DirtGround;
+import org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround;
+import org.alice.apis.moveandturn.gallery.environments.grounds.MoonSurface;
+import org.alice.apis.moveandturn.gallery.environments.grounds.SandyGround;
+import org.alice.apis.moveandturn.gallery.environments.grounds.SeaSurface;
+import org.alice.apis.moveandturn.gallery.environments.grounds.SnowyGround;
 
-import edu.cmu.cs.dennisc.alice.annotations.*;
+import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
+import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 
 public class PolygonalModel extends org.alice.apis.moveandturn.PolygonalModel {
 //	

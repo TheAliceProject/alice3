@@ -44,10 +44,6 @@ package org.alice.ide.declarationpanes;
 
 import org.lgna.croquet.components.BorderPanel.Constraint;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-
 //class GalleryLabel extends edu.cmu.cs.dennisc.croquet.Label {
 //	public GalleryLabel( java.net.URL url ) {
 //		this.setIcon( new javax.swing.ImageIcon( url ) );
@@ -126,7 +122,7 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 //			if( clsName.startsWith( prefix ) ) {
 //				String post = clsName.substring( prefix.length() );
 //				String path = prefix + post.replaceAll( "\\.", "/" ) + ".png";
-//				java.io.File rootDirectory = new java.io.File( org.alice.ide.IDE.getSingleton().getGalleryRootDirectory(), "thumbnails" );
+//				java.io.File rootDirectory = new java.io.File( org.alice.ide.IDE.getActiveInstance().getGalleryRootDirectory(), "thumbnails" );
 //				return new java.io.File( rootDirectory, path );
 //			}
 //		}

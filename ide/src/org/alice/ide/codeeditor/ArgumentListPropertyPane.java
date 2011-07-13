@@ -77,7 +77,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
 		org.lgna.croquet.components.Component< ? > prefixPane;
-		if( org.alice.ide.IDE.getSingleton().isJava() ) {
+		if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
 			prefixPane = null;
 		} else {
 			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = argument.parameter.getValue();

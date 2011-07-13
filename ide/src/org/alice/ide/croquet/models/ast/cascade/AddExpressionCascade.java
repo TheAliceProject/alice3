@@ -50,7 +50,7 @@ class AddExpressionBlank extends org.lgna.croquet.CascadeBlank< edu.cmu.cs.denni
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > blankNode ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		ide.getCascadeManager().updateChildren( rv, blankNode, this.componentTypeProperty.getValue() );
 		return rv;
 	}
@@ -122,18 +122,18 @@ public class AddExpressionCascade extends ExpressionsCascade {
 ////			}
 ////			public AddExpressionEdit initialize(AddExpressionEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 ////				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = componentTypeProperty.getValue();
-////				org.alice.ide.IDE.getSingleton().getCascadeManager().promptUserForExpression( type, rv.expression, viewController, p, taskObserver );
+////				org.alice.ide.IDE.getActiveInstance().getCascadeManager().promptUserForExpression( type, rv.expression, viewController, p, taskObserver );
 ////				return rv;
 ////			}
 ////			public AddExpressionEdit handleCompletion( AddExpressionEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 ////				//todo: remove?
-////				org.alice.ide.IDE.getSingleton().getCascadeManager().unsetPreviousExpressionAndDropStatement();
+////				org.alice.ide.IDE.getActiveInstance().getCascadeManager().unsetPreviousExpressionAndDropStatement();
 ////				rv.expression = expression;
 ////				return rv;
 ////			}
 ////			public void handleCancelation() {
 ////				//todo: remove?
-////				org.alice.ide.IDE.getSingleton().getCascadeManager().unsetPreviousExpressionAndDropStatement();
+////				org.alice.ide.IDE.getActiveInstance().getCascadeManager().unsetPreviousExpressionAndDropStatement();
 ////			}
 ////		} );
 ////	}

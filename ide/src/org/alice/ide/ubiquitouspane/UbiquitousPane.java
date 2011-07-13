@@ -48,7 +48,7 @@ class ReturnStatementWrapper extends org.lgna.croquet.components.LineAxisPanel {
 	private ReturnStatementTemplate re = new ReturnStatementTemplate();
 	public void refresh() {
 		this.removeAllComponents();
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getSingleton().getFocusedCode();
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( code, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class );
 		if( method != null && method.isFunction() ) {
 			this.addComponent( re );
@@ -94,7 +94,7 @@ class TransientStatementsWrapper extends org.lgna.croquet.components.LineAxisPan
 	
 	public void refresh() {
 		this.removeAllComponents();
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getSingleton().getFocusedCode();
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
 		if( code != null ) {
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : code.getParameters() ) {
 				if( parameter instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice ) {
@@ -233,7 +233,7 @@ public class UbiquitousPane extends org.lgna.croquet.components.ViewPanel {
 	}
 
 	public void refresh() {
-		org.alice.ide.IDE.getSingleton().refreshAccessibles();
+		org.alice.ide.IDE.getActiveInstance().refreshAccessibles();
 		this.returnStatementWrapper.refresh();
 		this.transientStatementsWrapper.refresh();
 		this.revalidateAndRepaint();

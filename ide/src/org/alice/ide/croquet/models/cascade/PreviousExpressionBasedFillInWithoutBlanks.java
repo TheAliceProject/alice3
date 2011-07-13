@@ -51,7 +51,7 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends edu.
 		super( id );
 	}
 	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-		return org.alice.ide.IDE.getSingleton().getCascadeManager().getPreviousExpression();
+		return org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
 	}
 //	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,Void> context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
 //	@Override

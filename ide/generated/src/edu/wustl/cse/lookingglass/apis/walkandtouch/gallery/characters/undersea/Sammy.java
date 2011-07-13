@@ -43,8 +43,6 @@
  */
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.undersea;
 
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-
 public class Sammy extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryCharacter { 
 	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> InsideShell= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>(Boolean.FALSE);  
 	public Sammy() {

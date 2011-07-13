@@ -44,13 +44,6 @@
 package org.alice.ide.properties.adapter;
 
 import java.util.Locale;
-
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter.SetColorOperation;
-import org.alice.ide.properties.adapter.AbstractStringPropertyAdapter.SetStringOperation;
-import org.alice.ide.properties.uicontroller.DoublePropertyController;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.Operation;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 

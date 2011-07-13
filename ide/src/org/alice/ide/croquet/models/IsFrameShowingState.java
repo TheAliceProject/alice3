@@ -85,7 +85,8 @@ public abstract class IsFrameShowingState extends org.lgna.croquet.BooleanState 
 			public void windowClosed(java.awt.event.WindowEvent e) {
 			}
 		} );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
+		boolean isInternalTesting = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" );
+		if( isInternalTesting ) {
 			rv.addComponentListener( new java.awt.event.ComponentListener() {
 				public void componentShown( java.awt.event.ComponentEvent e ) {
 				}
@@ -98,8 +99,19 @@ public abstract class IsFrameShowingState extends org.lgna.croquet.BooleanState 
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getComponent().getSize() );
 				}
 			} );
-		} else {
-			rv.pack();
+		}
+
+		rv.pack();
+		
+		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+		if( application != null ) {
+			org.lgna.croquet.components.Frame frame = application.getFrame();
+			if( frame != null ) {
+				java.awt.Rectangle bounds = frame.getBounds();
+				//bounds.x += bounds.width;
+				bounds.width = 300;
+				rv.setBounds( bounds );
+			}
 		}
 		return rv;
 	}

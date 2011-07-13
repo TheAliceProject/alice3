@@ -83,8 +83,7 @@ class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 		java.awt.Paint forePaint = this.getForegroundPaint( model );
 		java.awt.Paint backPaint = this.getBackgroundPaint( model );
 		java.awt.Graphics2D g2 = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( g, java.awt.Graphics2D.class );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-
+		//assert g2.getRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING ) == java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
 		java.awt.FontMetrics fm = g.getFontMetrics();
 		int x = textRect.x + getTextShiftOffset();
 		int y = textRect.y + fm.getAscent() + getTextShiftOffset();
@@ -128,17 +127,24 @@ class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 		javax.swing.AbstractButton button = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( c, javax.swing.AbstractButton.class );
 		javax.swing.ButtonModel model = button.getModel();
 		java.awt.Graphics2D g2 = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( g, java.awt.Graphics2D.class );
+		java.awt.Stroke prevStroke = g2.getStroke();
+		java.awt.Paint prevPaint = g2.getPaint();
 		g2.setStroke( new java.awt.BasicStroke( 3.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND ) );
-		java.awt.Paint forePaint = this.getForegroundPaint( model );
-		java.awt.Paint backPaint = this.getBackgroundPaint( model );
-		if( backPaint != null ) {
-			g2.setPaint( backPaint );
-			g2.translate( 2, 2 );
+		try {
+			java.awt.Paint forePaint = this.getForegroundPaint( model );
+			java.awt.Paint backPaint = this.getBackgroundPaint( model );
+			if( backPaint != null ) {
+				g2.setPaint( backPaint );
+				g2.translate( 2, 2 );
+				this.paintLines( g2, model.isSelected(), c.getWidth(), c.getHeight() );
+				g2.translate( -2, -2 );
+			}
+			g2.setPaint( forePaint );
 			this.paintLines( g2, model.isSelected(), c.getWidth(), c.getHeight() );
-			g2.translate( -2, -2 );
+		} finally {
+			g2.setStroke( prevStroke );
+			g2.setPaint( prevPaint );
 		}
-		g2.setPaint( forePaint );
-		this.paintLines( g2, model.isSelected(), c.getWidth(), c.getHeight() );
 	}
 }
 //
@@ -150,7 +156,7 @@ class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 //	private final int Y_PAD = 10;
 //
 //	public IsExpandedCheckBox() {
-//		super( org.alice.ide.IDE.getSingleton().getIsSceneEditorExpandedOperation() );
+//		super( org.alice.ide.IDE.getActiveInstance().getIsSceneEditorExpandedOperation() );
 //		this.setOpaque( false );
 //		this.setFont( this.getFont().deriveFont( 18.0f ) );
 //		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( Y_PAD, X_PAD, Y_PAD, X_PAD ) );

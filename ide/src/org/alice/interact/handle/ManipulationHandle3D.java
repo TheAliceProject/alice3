@@ -44,7 +44,6 @@ package org.alice.interact.handle;
 
 import org.alice.apis.moveandturn.TraditionalStyle;
 import org.alice.interact.AbstractDragAdapter;
-import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.condition.PickCondition;
@@ -65,7 +64,6 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.pattern.Criterion;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -76,14 +74,13 @@ import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
-//import org.alice.apis.moveandturn.Model;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 /**
  * @author David Culyba
  */
-public abstract class ManipulationHandle3D extends Transformable implements ManipulationHandle, ManipulationListener, Cloneable{
+public abstract class ManipulationHandle3D extends Transformable implements ManipulationHandle, ManipulationListener {
 
 	public static final String VIRTUAL_PARENT_KEY = "VIRTUAL_PARENT_KEY";
 	

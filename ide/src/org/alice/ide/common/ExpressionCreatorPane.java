@@ -78,7 +78,7 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 //		
 //		
 //		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types = this.getBlankExpressionTypes();
-//		edu.cmu.cs.dennisc.alice.ast.Expression[] predeterminedExpressions = org.alice.ide.IDE.getSingleton().createPredeterminedExpressionsIfAppropriate( types );
+//		edu.cmu.cs.dennisc.alice.ast.Expression[] predeterminedExpressions = org.alice.ide.IDE.getActiveInstance().createPredeterminedExpressionsIfAppropriate( types );
 //		if( predeterminedExpressions != null ) {
 //			edu.cmu.cs.dennisc.alice.ast.Expression expression = this.createExpression( predeterminedExpressions ); 
 //			//return new org.alice.ide.croquet.models.ast.SetExpressionPropertyActionOperation( expressionProperty, expression );

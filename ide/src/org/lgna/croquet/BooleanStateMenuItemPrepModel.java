@@ -47,27 +47,21 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public final class BooleanStateMenuItemPrepModel extends StandardMenuItemPrepModel {
-	public static class BooleanStateMenuPrepModelResolver implements org.lgna.croquet.resolvers.CodableResolver< BooleanStateMenuItemPrepModel > {
-		private final BooleanStateMenuItemPrepModel model;
+	public static class BooleanStateMenuPrepModelResolver extends IndirectResolver< BooleanStateMenuItemPrepModel, BooleanState > {
 		public BooleanStateMenuPrepModelResolver( BooleanStateMenuItemPrepModel model ) {
-			this.model = model;
+			super( model.getBooleanState() );
 		}
 		public BooleanStateMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.lgna.croquet.resolvers.CodableResolver<BooleanState> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			BooleanState booleanState = resolver.getResolved();
-			this.model = booleanState.getMenuItemPrepModel();
+			super( binaryDecoder );
 		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			org.lgna.croquet.resolvers.CodableResolver<BooleanState> resolver = this.model.booleanState.getCodableResolver();
-			binaryEncoder.encode( resolver );
-		}
-		public BooleanStateMenuItemPrepModel getResolved() {
-			return this.model;
+		@Override
+		protected BooleanStateMenuItemPrepModel getDirect( BooleanState indirect ) {
+			return indirect.getMenuItemPrepModel();
 		}
 	}
 	private final BooleanState booleanState;
 	/*package-private*/ BooleanStateMenuItemPrepModel( BooleanState booleanState ) {
-		super( java.util.UUID.fromString( "a6d47082-8859-4b7c-b654-37e928aa67ed" ) );
+		super( java.util.UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );
 		assert booleanState != null;
 		this.booleanState = booleanState;
 	}

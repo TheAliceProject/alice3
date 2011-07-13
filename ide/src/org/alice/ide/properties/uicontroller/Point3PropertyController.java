@@ -43,25 +43,21 @@
 
 package org.alice.ide.properties.uicontroller;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
-import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.BoxUtilities;
-import org.lgna.croquet.components.FlowPanel;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.Panel;
 import org.lgna.croquet.components.SwingAdapter;
-import org.lgna.croquet.components.BorderPanel.Constraint;
 
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 
 public class Point3PropertyController extends AbstractAdapterController<Point3>
 {	

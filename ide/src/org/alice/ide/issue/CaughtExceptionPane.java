@@ -55,12 +55,6 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 		sb.append( "Please press the \"submit bug report\" button." );
 		
 		javax.swing.JTextArea message = new javax.swing.JTextArea( sb.toString() ) {
-//			@Override
-//			public void paint( java.awt.Graphics g ) {
-//				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-//				g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-//				super.paint( g );
-//			}
 			@Override
 			public java.awt.Dimension getMaximumSize() {
 				return this.getPreferredSize();

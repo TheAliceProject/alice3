@@ -64,7 +64,7 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
 		java.util.UUID nextExpressionId = binaryDecoder.decodeId();
 
 		
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 		edu.cmu.cs.dennisc.alice.ast.AbstractNode node = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, expressionPropertyNodeId );
 		this.expressionProperty = (edu.cmu.cs.dennisc.alice.ast.ExpressionProperty)node.getPropertyNamed( propertyName );

@@ -77,8 +77,8 @@ public class ExampleCameraPathAnimation extends AbstractAnimation {
 		
 		double elapsedTime = deltaSincePrologue;
 		
-		if (elapsedTime > ((double)transformations.size()) * durationPerSegment) {
-			elapsedTime = ((double)transformations.size()) * durationPerSegment;
+		if (elapsedTime > transformations.size() * durationPerSegment) {
+			elapsedTime = transformations.size() * durationPerSegment;
 		}
 
 		// figure out which piece of the path we're in
@@ -86,7 +86,7 @@ public class ExampleCameraPathAnimation extends AbstractAnimation {
 		int endingIndex = startingIndex + 1;
 		// edge case
 		if (endingIndex >= transformations.size()) endingIndex = startingIndex;
-		double timeInSegment = elapsedTime - (durationPerSegment * (double)startingIndex);
+		double timeInSegment = elapsedTime - (durationPerSegment * startingIndex);
 		double segmentPortion = timeInSegment / durationPerSegment;
 		
 		// get the start and end 4x4s

@@ -60,7 +60,7 @@ public class MethodTemplateDragModel extends TemplateDragModel {
 	}
 	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
 	private MethodTemplateDragModel( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "3aed4ad9-5a20-4209-982b-5fea07e966d9" ) );
+		super( java.util.UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ) );
 		this.method = method;
 	}
 	@Override

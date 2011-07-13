@@ -51,7 +51,7 @@ public abstract class IdeDragModel extends org.lgna.croquet.DragModel {
 		super( id );
 	}
 	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 	@Override
 	public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {

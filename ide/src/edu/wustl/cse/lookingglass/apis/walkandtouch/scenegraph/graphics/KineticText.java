@@ -43,19 +43,9 @@
  */
 package edu.wustl.cse.lookingglass.apis.walkandtouch.scenegraph.graphics;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.Shape;
-import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.awt.*;
-
-import edu.cmu.cs.dennisc.lookingglass.Graphics2D;
-import edu.cmu.cs.dennisc.lookingglass.LookingGlass;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import java.awt.Point;
 
 public class KineticText extends OverHeadTextGraphic {
 
@@ -123,13 +113,8 @@ public class KineticText extends OverHeadTextGraphic {
 	}
 
 	public void moveToward( double p ) {
-		int xInc = -(int)(((endPoint.x - startPoint.x) * p));
-		int yInc = -(int)(((endPoint.y - startPoint.y) * p));
-		moveX = (int)(xInc);
-		moveY = (int)(yInc);
-		System.out.println( moveX );
-		System.out.println( moveY );
-
+		moveX = -(int)(((endPoint.x - startPoint.x) * p));
+		moveY = -(int)(((endPoint.y - startPoint.y) * p));
 	}
 
 	private AlphaComposite makeComposite( float alpha ) {

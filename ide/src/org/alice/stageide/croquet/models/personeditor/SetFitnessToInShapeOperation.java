@@ -54,6 +54,6 @@ public class SetFitnessToInShapeOperation extends SetFitnessOperation {
 		return SingletonHolder.instance;
 	}
 	private SetFitnessToInShapeOperation() {
-		super( FitnessModel.getInstance().getMaximum(), "in shape" );
+		super( FitnessModel.getInstance().getMaximum(), "in shape", java.util.UUID.fromString( "692a245e-41b0-4639-992e-7016f4631d9b" ) );
 	}
 }

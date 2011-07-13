@@ -44,13 +44,9 @@
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
 import java.awt.geom.Rectangle2D;
-import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map.Entry;
-
-import edu.cmu.cs.dennisc.pattern.AbstractElement;
 import edu.cmu.cs.dennisc.scenegraph.graphics.OnscreenBubble.PositionPreference;
 
 public class BubbleManager 

@@ -54,26 +54,6 @@ import org.lgna.croquet.components.LineAxisPanel;
  * @author Dennis Cosgrove
  */
 public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation<org.lgna.croquet.history.InputDialogOperationStep> {
-	protected static class OkOperation extends CompleteOperation {
-		private static class SingletonHolder {
-			private static OkOperation instance = new OkOperation();
-		}
-		public static OkOperation getInstance() {
-			return SingletonHolder.instance;
-		}
-		private OkOperation() {
-			super( java.util.UUID.fromString( "fc908f6f-4b72-48b6-9b65-352dc9f2e18b" ) );
-		}
-		@Override
-		protected void localize() {
-			super.localize();
-			this.setName( "OK" );
-		}
-	}
-	@Override
-	protected org.lgna.croquet.GatedCommitDialogOperation.CompleteOperation getCompleteOperation() {
-		return OkOperation.getInstance();
-	}
 	public InputDialogOperation(Group group, java.util.UUID individualId) {
 		super(group, individualId);
 	}
@@ -90,7 +70,6 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 		}
 		return this.cascadeFillIn;
 	}
-	
 	
 	@Override
 	protected Component< ? > createControlsPanel( org.lgna.croquet.history.InputDialogOperationStep step, Dialog dialog ) {
@@ -147,29 +126,14 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 	
 	@Override
 	protected final String getExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		//org.lgna.croquet.steps.InputDialogOperationStep step = (org.lgna.croquet.steps.InputDialogOperationStep)child.findContextFor( InputDialogOperation.this );
-//		String text;
-//		if( step != null ) {
-			String explanation = this.getInternalExplanation( step );
-			if( this.externalCommitButtonDisabler != null ) {
-				String externalExplanation = this.externalCommitButtonDisabler.getExplanationIfCommitButtonShouldBeDisabled( step );
-				if( externalExplanation != null ) {
-					explanation = externalExplanation;
-				}
+		String explanation = this.getInternalExplanation( step );
+		if( this.externalCommitButtonDisabler != null ) {
+			String externalExplanation = this.externalCommitButtonDisabler.getExplanationIfCommitButtonShouldBeDisabled( step );
+			if( externalExplanation != null ) {
+				explanation = externalExplanation;
 			}
-			return explanation;
-//			if( explanation != null ) {
-//				text = explanation;
-//			} else {
-//				text = NULL_EXPLANATION;
-//			}
-//			this.getCompleteOperation().setEnabled( text == NULL_EXPLANATION );
-//			this.explanationLabel.setText( text );
-//		} else {
-////			this.explanationLabel.setText( "todo: updateOperationAndExplanation step==null" );
-//			this.getCompleteOperation().setEnabled( true );
-//			return "todo: updateOperationAndExplanation step==null";
-//		}
+		}
+		return explanation;
 	}
 
 	public String getTutorialFinishNoteText( org.lgna.croquet.history.InputDialogOperationStep inputDialogOperationContext, UserInformation userInformation ) {

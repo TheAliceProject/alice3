@@ -55,7 +55,7 @@ public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachin
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ResourceExpression,Void > step ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		try {
 			E resource = getResourcePrompter().promptUserForResource( ide.getFrame() );
 			if( resource != null ) {

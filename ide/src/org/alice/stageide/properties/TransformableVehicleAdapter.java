@@ -54,7 +54,6 @@ import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.lgna.croquet.Model;
-import org.lgna.croquet.Operation;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
@@ -69,7 +68,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	{
 		public SetVehicleOperation( Composite value, String name) {
 			super( TransformableVehicleAdapter.this, value, name, java.util.UUID.fromString( "981768b7-f40b-4363-b64f-34264be73651" ) );
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getSingleton().getSceneEditor()).getFieldForInstanceInJavaVM(value);
+			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getFieldForInstanceInJavaVM(value);
 			if (field != null)
 			{
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
@@ -147,7 +146,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 					{
 						if (field instanceof FieldDeclaredInAlice)
 						{
-							Composite objectInJava = ((MoveAndTurnSceneEditor)IDE.getSingleton().getSceneEditor()).getInstanceInJavaForField((FieldDeclaredInAlice)field, Composite.class);
+							Composite objectInJava = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getInstanceInJavaForField((FieldDeclaredInAlice)field, Composite.class);
 							boolean canBeVehicle = false;
 							if (objectInJava != null)
 							{
@@ -190,7 +189,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	{
 		if (vehicle != null)
 		{
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getSingleton().getSceneEditor()).getFieldForInstanceInJavaVM(vehicle);
+			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getFieldForInstanceInJavaVM(vehicle);
 			if (field != null)
 			{
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
@@ -211,7 +210,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	{
 		if (vehicle != null)
 		{
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getSingleton().getSceneEditor()).getFieldForInstanceInJavaVM(vehicle);
+			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getFieldForInstanceInJavaVM(vehicle);
 			if (field != null)
 			{
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();

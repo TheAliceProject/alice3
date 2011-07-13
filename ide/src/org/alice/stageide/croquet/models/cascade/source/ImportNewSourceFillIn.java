@@ -69,7 +69,7 @@ public abstract class ImportNewSourceFillIn< E, R extends org.alice.virtualmachi
 	}
 	@Override
 	public final edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > step ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		try {
 			R resource = this.getResourcePrompter().promptUserForResource( ide.getFrame() );
 			if( resource != null ) {

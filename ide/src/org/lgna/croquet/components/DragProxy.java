@@ -65,12 +65,11 @@ public class DragProxy extends Proxy {
 	}
 	private final int DROP_SHADOW_SIZE = 6;
 	@Override
-	public int getProxyWidth() {
-		return super.getProxyWidth() + DROP_SHADOW_SIZE;
-	}
-	@Override
-	public int getProxyHeight() {
-		return super.getProxyHeight() + DROP_SHADOW_SIZE;
+	public java.awt.Dimension getProxySize() {
+		java.awt.Dimension rv = super.getProxySize();
+		rv.width += DROP_SHADOW_SIZE;
+		rv.height += DROP_SHADOW_SIZE;
+		return rv;
 	}
 	@Override
 	protected float getAlpha() {

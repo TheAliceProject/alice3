@@ -42,7 +42,6 @@
  */
 package org.alice.interact.manipulator;
 
-import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.handle.ManipulationHandle2D;
 
 /**

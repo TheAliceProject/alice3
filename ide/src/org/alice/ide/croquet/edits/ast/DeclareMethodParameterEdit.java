@@ -45,12 +45,12 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodParameterEdit extends org.lgna.croquet.edits.OperationEdit< org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation > {
+public class DeclareMethodParameterEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
 	private transient java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private transient int index;
 
-	public DeclareMethodParameterEdit( org.lgna.croquet.history.OperationStep completionStep, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+	public DeclareMethodParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
 		super( completionStep );
 		this.parameter = parameter;
 	}
@@ -68,12 +68,12 @@ public class DeclareMethodParameterEdit extends org.lgna.croquet.edits.Operation
 	protected final void doOrRedoInternal( boolean isDo ) {
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = this.getModel().getMethod();
 		this.index = method.parameters.size();
-		org.alice.ide.ast.NodeUtilities.addParameter( map, method, this.parameter, this.index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+		org.alice.ide.ast.NodeUtilities.addParameter( map, method, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method ) );
 	}
 	@Override
 	protected final void undoInternal() {
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = this.getModel().getMethod();
-		org.alice.ide.ast.NodeUtilities.removeParameter( map, method, this.parameter, this.index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+		org.alice.ide.ast.NodeUtilities.removeParameter( map, method, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method ) );
 	}
 	@Override
 	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {

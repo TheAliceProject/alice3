@@ -57,7 +57,7 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 	}
 	@Override
 	protected java.awt.print.Printable getPrintable() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
 		return codeEditor;
 	}

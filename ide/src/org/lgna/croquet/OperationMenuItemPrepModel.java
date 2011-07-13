@@ -47,25 +47,18 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public final class OperationMenuItemPrepModel extends StandardMenuItemPrepModel {
-	public static class OperationMenuPrepModelResolver<E> implements org.lgna.croquet.resolvers.CodableResolver< OperationMenuItemPrepModel > {
-		private final OperationMenuItemPrepModel model;
+	public static class OperationMenuPrepModelResolver extends IndirectResolver< OperationMenuItemPrepModel, Operation< ? > > {
 		public OperationMenuPrepModelResolver( OperationMenuItemPrepModel model ) {
-			this.model = model;
+			super( model.getOperation() );
 		}
 		public OperationMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.lgna.croquet.resolvers.CodableResolver<Operation<?>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			Operation<?> operation = resolver.getResolved();
-			this.model = operation.getMenuItemPrepModel();
+			super( binaryDecoder );
 		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			org.lgna.croquet.resolvers.CodableResolver<Operation<?>> resolver = this.model.operation.getCodableResolver();
-			binaryEncoder.encode( resolver );
-		}
-		public OperationMenuItemPrepModel getResolved() {
-			return this.model;
+		@Override
+		protected OperationMenuItemPrepModel getDirect( Operation< ? > indirect ) {
+			return indirect.getMenuItemPrepModel();
 		}
 	}
-	
 	private final Operation<?> operation;
 	/*package-private*/ OperationMenuItemPrepModel( Operation<?> operation ) {
 		super( java.util.UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
@@ -93,6 +86,14 @@ public final class OperationMenuItemPrepModel extends StandardMenuItemPrepModel 
 	@Override
 	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
 		rv.addMenuItem( new org.lgna.croquet.components.MenuItem( this.getOperation() ) );
+		return rv;
+	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "[" );
+		rv.append( this.getOperation() );
+		rv.append( "]" );
 		return rv;
 	}
 }

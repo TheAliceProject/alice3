@@ -53,7 +53,7 @@ public class PrintAllOperation extends PrintOperation {
 		return SingletonHolder.instance;
 	}
 	private PrintAllOperation() {
-		super( java.util.UUID.fromString( "a59df2b2-a55a-41b5-be05-60d10a615049" ) );
+		super( java.util.UUID.fromString( "6a205070-e8e0-48a7-a059-fff15b7350a3" ) );
 	}
 	@Override
 	protected java.awt.print.Printable getPrintable() {
@@ -63,7 +63,7 @@ public class PrintAllOperation extends PrintOperation {
 					return NO_SUCH_PAGE;
 				} else {
 					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					org.lgna.croquet.components.Frame frame = org.lgna.croquet.Application.getSingleton().getFrame();
+					org.lgna.croquet.components.Frame frame = org.lgna.croquet.Application.getActiveInstance().getFrame();
 					int width = frame.getWidth();
 					int height = frame.getHeight();
 					double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);

@@ -57,7 +57,7 @@ public class ProjectMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 				org.alice.ide.croquet.models.project.ManageResourcesOperation.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.project.StatisticsOperation.getInstance().getMenuItemPrepModel()
 //				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-//				org.alice.ide.IDE.getSingleton().getRunOperation().getMenuItemPrepModel()
+//				org.alice.ide.IDE.getActiveInstance().getRunOperation().getMenuItemPrepModel()
 //				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 //				org.alice.ide.croquet.models.ast.TypeRootMenuModel.getInstance()
 		);

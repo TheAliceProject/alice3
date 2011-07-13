@@ -45,11 +45,9 @@ package org.alice.interact.manipulator;
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
-import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
 
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**

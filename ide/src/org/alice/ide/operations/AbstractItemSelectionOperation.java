@@ -50,7 +50,7 @@ public abstract class AbstractItemSelectionOperation<E> extends org.lgna.croquet
 		super( org.lgna.croquet.Application.INHERIT_GROUP, individualId, codec, selectedIndex, elements );
 	}
 	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+		return org.alice.ide.IDE.getActiveInstance();
 	}
 	@Deprecated
 	protected abstract void handleSelectionChange(E value);
