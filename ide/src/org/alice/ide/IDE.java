@@ -1289,16 +1289,16 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return getComponentForNode( uuid, false );
 	}
 
-	//todo: remove
-	private String getSubPath() {
+	public String getApplicationSubPath() {
 		String rv = getApplicationName();
 		if( "Alice".equals( rv ) ) {
 			rv = "Alice3";
 		}
 		return rv.replaceAll( " ", "" );
 	}
+
 	public java.io.File getMyTypesDirectory() {
-		return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyTypesDirectory( this.getSubPath() );
+		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryPreference.getInstance().getDirectory();
 	}
 
 	public boolean isInstanceLineDesired() {
