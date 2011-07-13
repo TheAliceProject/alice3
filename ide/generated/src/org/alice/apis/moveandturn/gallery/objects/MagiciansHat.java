@@ -44,7 +44,7 @@ package org.alice.apis.moveandturn.gallery.objects;
 	
 public class MagiciansHat extends org.alice.apis.moveandturn.gallery.GalleryModel {
 	public MagiciansHat() {
-		super( "Objects/Magician's_Hat" );
+		super( "Objects/Magicians_Hat" );
 	}
 
 }
