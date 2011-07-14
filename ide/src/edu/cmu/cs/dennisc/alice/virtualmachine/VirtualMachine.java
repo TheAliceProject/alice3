@@ -282,12 +282,12 @@ public abstract class VirtualMachine {
 		assert instance != null;
 		assert instance instanceof InstanceInAlice;
 		InstanceInAlice instanceInAlice = (InstanceInAlice)instance;
-		return instanceInAlice.get( field );
+		return instanceInAlice.getFieldValue( field );
 	}
 	protected void setFieldDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, Object value ) {
 		assert instance instanceof InstanceInAlice;
 		InstanceInAlice instanceInAlice = (InstanceInAlice)instance;
-		instanceInAlice.set( field, value );
+		instanceInAlice.setFieldValue( field, value );
 	}
 	protected Object getFieldDeclaredInJavaWithField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field, Object instance ) {
 		if( instance instanceof InstanceInAlice ) {

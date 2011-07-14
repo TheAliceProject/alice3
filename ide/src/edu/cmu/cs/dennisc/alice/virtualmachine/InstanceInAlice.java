@@ -49,6 +49,13 @@ import edu.cmu.cs.dennisc.alice.ast.*;
  * @author Dennis Cosgrove
  */
 public class InstanceInAlice {
+	public static Object getInstanceInJava( Object instance ) {
+		if( instance instanceof InstanceInAlice ) {
+			return ((InstanceInAlice)instance).getInstanceInJava();
+		} else {
+			return instance;
+		}
+	}
 	public static InstanceInAlice createInstance( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments ) {
 		return new InstanceInAlice( vm, constructor, arguments, new java.util.HashMap< FieldDeclaredInAlice, Object >(), null );
 	}
@@ -88,7 +95,7 @@ public class InstanceInAlice {
 		for( AbstractField field : this.type.getDeclaredFields() ) {
 			assert field instanceof FieldDeclaredInAlice;
 			FieldDeclaredInAlice fieldDeclaredInAlice = (FieldDeclaredInAlice)field;
-			set( fieldDeclaredInAlice, vm.evaluate( fieldDeclaredInAlice.initializer.getValue() ) );
+			this.setFieldValue( fieldDeclaredInAlice, vm.evaluate( fieldDeclaredInAlice.initializer.getValue() ) );
 		}
 		if( vm.isConstructorBodyExecutionDesired() ) {
 			try {
@@ -104,29 +111,25 @@ public class InstanceInAlice {
 		return this.type;
 	}
 	public Object getInstanceInJava() {
-		if( this.nextInstance instanceof InstanceInAlice ) {
-			return ((InstanceInAlice)this.nextInstance).getInstanceInJava();
-		} else {
-			return this.nextInstance;
-		}
+		return getInstanceInJava( this.nextInstance );
 	}
 	public <E> E getInstanceInJava( Class<E> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getInstanceInJava(), cls );
 	}
-	public Object get( FieldDeclaredInAlice field ) {
+	
+	public Object getFieldValue( FieldDeclaredInAlice field ) {
 		return this.fieldMap.get( field );
 	}
-	public void set( FieldDeclaredInAlice field, Object value ) {
+	public Object getFieldValueInstanceInJava( FieldDeclaredInAlice field ) {
+		return getInstanceInJava( this.getFieldValue( field ) );
+	}
+	public <E> E getFieldValueInstanceInJava( FieldDeclaredInAlice field, Class<E> cls ) {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getFieldValueInstanceInJava( field ), cls );
+	}
+	public void setFieldValue( FieldDeclaredInAlice field, Object value ) {
 		this.fieldMap.put( field, value );
 		if( this.inverseFieldMap != null ) {
-			Object valueInJava;
-			if( value instanceof InstanceInAlice ) {
-				InstanceInAlice valueInAlice = (InstanceInAlice)value;
-				valueInJava = valueInAlice.getInstanceInJava();
-			} else {
-				valueInJava = value;
-			}
-			this.inverseFieldMap.put( valueInJava, field );
+			this.inverseFieldMap.put( getInstanceInJava( value ), field );
 		}
 	}
 	

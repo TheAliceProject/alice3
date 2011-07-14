@@ -133,7 +133,7 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice rv = getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMapWithoutExcutingConstructorBody( sceneType );
 		putInstanceForField( sceneField, rv );
 		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : sceneType.getDeclaredFields() ) {
-			Object value = rv.get( field );
+			Object value = rv.getFieldValue( field );
 			putInstanceForField( field, value );
 		}
 		return rv;
