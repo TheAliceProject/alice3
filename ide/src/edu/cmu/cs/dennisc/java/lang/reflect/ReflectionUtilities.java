@@ -61,19 +61,23 @@ public final class ReflectionUtilities {
 	private ReflectionUtilities() {
 	}
 	
-	//todo: rename
-	private static boolean isMask( java.lang.reflect.Member mmbr, int mask ) {
-		return ( mmbr.getModifiers() & mask ) == mask;
-	}
 	public static boolean isPublic( java.lang.reflect.Member mmbr ) {
-		return isMask( mmbr, java.lang.reflect.Modifier.PUBLIC );
+		return java.lang.reflect.Modifier.isPublic( mmbr.getModifiers() );
 	}
 	public static boolean isProtected( java.lang.reflect.Member mmbr ) {
-		return isMask( mmbr, java.lang.reflect.Modifier.PROTECTED );
+		return java.lang.reflect.Modifier.isProtected( mmbr.getModifiers() );
 	}
 	public static boolean isPrivate( java.lang.reflect.Member mmbr ) {
-		return isMask( mmbr, java.lang.reflect.Modifier.PRIVATE );
+		return java.lang.reflect.Modifier.isPrivate( mmbr.getModifiers() );
 	}
+	public static boolean isAbstract( java.lang.reflect.Member mmbr ) {
+		return java.lang.reflect.Modifier.isAbstract( mmbr.getModifiers() );
+	}
+	public static boolean isAbstract( java.lang.Class<?> cls ) {
+		return java.lang.reflect.Modifier.isAbstract( cls.getModifiers() );
+	}
+	//todo: add the rest of the modifiers
+	
 	@Deprecated
 	public static Class< ? > getClassForName( String className ) {
 		try {
