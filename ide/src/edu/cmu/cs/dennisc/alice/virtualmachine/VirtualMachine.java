@@ -413,7 +413,11 @@ public abstract class VirtualMachine {
 		}
 	}
 	protected Object invokeMethodDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, Object instance, Object... arguments ) {
-		assert instance instanceof InstanceInAlice;
+		if( method.isStatic() ) {
+			assert instance == null;
+		} else {
+			assert instance instanceof InstanceInAlice;
+		}
 		InstanceInAlice instanceInAlice = (InstanceInAlice)instance;
 		java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, Object >();
 		for( int i=0; i<arguments.length; i++ ) {

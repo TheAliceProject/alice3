@@ -41,12 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package test;
+package org.alice.stageide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CreateBootstrap {
+public class BootstrapUtilties {
 	private static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createType( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > superType ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice();
 		rv.setName( name );
@@ -95,12 +95,17 @@ public class CreateBootstrap {
 	private static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createMethodInvocationStatement( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( expression, method, argumentExpressions );
 	}
+
+	private static edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement createVariableDeclarationStatementInitializedByInstanceCreation( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+		edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( name, type );
+		return org.alice.ide.ast.NodeUtilities.createVariableDeclarationStatement( variable, new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( type.getDeclaredConstructor() ) );
+	}
 	
 	private static edu.cmu.cs.dennisc.alice.ast.FieldAccess createFieldAccess( Enum<?> value ) {
 		return org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( value.getClass(), value.name() );
 	}
 	
-	private static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createProgramType( org.lookingglassandalice.storytelling.Ground.Appearance appearance ) {
+	public static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createProgramType( org.lookingglassandalice.storytelling.Ground.Appearance appearance ) {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = createPrivateFinalField( org.lookingglassandalice.storytelling.Camera.class, "camera" );
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sunField = createPrivateFinalField( org.lookingglassandalice.storytelling.Sun.class, "sun" );
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice groundField = createPrivateFinalField( org.lookingglassandalice.storytelling.Ground.class, "ground" );
@@ -196,18 +201,27 @@ public class CreateBootstrap {
 				)
 		);
 		
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = createType( "MyProgram", org.lookingglassandalice.storytelling.Program.class );
-		programType.fields.add( sceneField );
-		programType.methods.add( playOutStoryMethod );
-		return programType;
-	}
-	
-	public static void main( String[] args ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = createProgramType( org.lookingglassandalice.storytelling.Ground.Appearance.GRASS );
-		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
-		vm.registerAnonymousAdapter( org.lookingglassandalice.storytelling.Scene.class, SceneAdapter.class );
-		Object programInstance = vm.createInstanceEntryPoint( programType );
-		vm.invokeEntryPoint( programType.findMethod( "initializeInFrame", String[].class ), programInstance, (Object)args );
-		vm.invokeEntryPoint( programType.methods.get( 0 ), programInstance );
+		
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = createType( "MyProgram", org.lookingglassandalice.storytelling.Program.class );
+		rv.fields.add( sceneField );
+		rv.methods.add( playOutStoryMethod );
+
+		
+		
+		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice argsParameter = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "args", String[].class );
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice mainMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PUBLIC, Void.TYPE, "main" );
+		mainMethod.parameters.add( argsParameter );
+		edu.cmu.cs.dennisc.alice.ast.BlockStatement mainBody = mainMethod.body.getValue();
+
+		mainMethod.isStatic.setValue( true );
+		
+		edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement variableDeclarationStatement = createVariableDeclarationStatementInitializedByInstanceCreation( "story", rv );
+		edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice storyVariable = variableDeclarationStatement.variable.getValue();
+		mainBody.statements.add( variableDeclarationStatement );
+		mainBody.statements.add( createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.VariableAccess( storyVariable ), rv.findMethod( "initializeInFrame", String[].class ), new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( argsParameter ) ) );
+		mainBody.statements.add( createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.VariableAccess( storyVariable ), playOutStoryMethod ) );
+		rv.methods.add( mainMethod );
+		
+		return rv;
 	}
 }

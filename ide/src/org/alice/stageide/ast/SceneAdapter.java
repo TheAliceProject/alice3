@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package test;
+package org.alice.stageide.ast;
 
 /**
  * @author Dennis Cosgrove
