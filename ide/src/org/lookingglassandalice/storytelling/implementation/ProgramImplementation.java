@@ -49,7 +49,7 @@ package org.lookingglassandalice.storytelling.implementation;
 public class ProgramImplementation {
 	private final org.lookingglassandalice.storytelling.Program abstraction;
 	private final edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
-	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
+	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
 	
 	private double simulationSpeedFactor = 1.0; 
 	public ProgramImplementation( org.lookingglassandalice.storytelling.Program abstraction ) {
@@ -60,7 +60,15 @@ public class ProgramImplementation {
 		return this.abstraction;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+		if( this.onscreenLookingGlass != null ) {
+			//pass
+		} else {
+			this.onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
+		}
 		return this.onscreenLookingGlass;
+	}
+	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
+		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
 	
 	public double getSimulationSpeedFactor() {
@@ -76,17 +84,19 @@ public class ProgramImplementation {
 		}
 	};
 	private void startAnimator() {
-		this.onscreenLookingGlass.getLookingGlassFactory().addAutomaticDisplayListener( this.automaticDisplayListener );
-		this.onscreenLookingGlass.getLookingGlassFactory().incrementAutomaticDisplayCount();
+		edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory = this.getOnscreenLookingGlass().getLookingGlassFactory();
+		lookingGlassFactory.addAutomaticDisplayListener( this.automaticDisplayListener );
+		lookingGlassFactory.incrementAutomaticDisplayCount();
 	}
 	private void stopAnimator() {
-		this.onscreenLookingGlass.getLookingGlassFactory().decrementAutomaticDisplayCount();
-		this.onscreenLookingGlass.getLookingGlassFactory().removeAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory = this.getOnscreenLookingGlass().getLookingGlassFactory();
+		lookingGlassFactory.decrementAutomaticDisplayCount();
+		lookingGlassFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 	public void initializeInFrame( final javax.swing.JFrame frame, final Runnable runnable ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				frame.getContentPane().add( ProgramImplementation.this.onscreenLookingGlass.getAWTComponent() );
+				frame.getContentPane().add( ProgramImplementation.this.getOnscreenLookingGlass().getAWTComponent() );
 				frame.setVisible( true );
 				runnable.run();
 			}
@@ -115,7 +125,7 @@ public class ProgramImplementation {
 		this.startAnimator();
 	}
 	public void initializeInApplet( javax.swing.JApplet applet ) {
-		applet.getContentPane().add( this.onscreenLookingGlass.getAWTComponent(), java.awt.BorderLayout.CENTER );
+		applet.getContentPane().add( this.getOnscreenLookingGlass().getAWTComponent(), java.awt.BorderLayout.CENTER );
 		this.startAnimator();
 	}
 	public void shutDown() {
