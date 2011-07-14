@@ -40,16 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.apis.moveandturn.event;
 
-public class KeyAdapter implements org.alice.apis.moveandturn.event.KeyListener {
-	private edu.cmu.cs.dennisc.alice.virtualmachine.Context context;
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-	public KeyAdapter( edu.cmu.cs.dennisc.alice.virtualmachine.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type, Object[] arguments ) {
-		this.context = context;
-		this.method = type.getDeclaredMethod( "keyPressed", org.alice.apis.moveandturn.event.KeyEvent.class );
+package test;
+
+import org.lookingglassandalice.storytelling.*;
+
+class MyScene extends Scene {
+	private final Camera camera = new Camera();
+	private final Sun sun = new Sun();
+	private final Ground snow = new Ground();
+	private void performGeneratedSetup() {
+		// this code is automatically generated
+		// edit performCustomSetup instead
+		this.snow.setVehicle( this );
+		this.sun.setVehicle( this );
+		this.camera.setVehicle( this );
+		this.snow.setAppearance( Ground.Appearance.SNOW );
 	}
-	public void keyPressed( org.alice.apis.moveandturn.event.KeyEvent e ) {
-		this.context.invokeEntryPoint( this.method, e );
+	private void performCustomSetup() {
+	}
+	@Override
+	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
+		if( isActive ) {
+			if( activeCount == 1 ) {
+				this.performGeneratedSetup();
+				this.performCustomSetup();
+			} else {
+				this.restoreVehiclesAndVantagePoints();
+			}
+		} else {
+			this.preserveVehiclesAndVantagePoints();
+		}
+	}
+}
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class BootStrapStory extends Program {
+	private final MyScene myScene = new MyScene();
+	public void playOutStory() {
+		this.setActiveScene( this.myScene );
+	}
+	public static void main( String[] args ) {
+		BootStrapStory story = new BootStrapStory();
+		story.initializeInFrame( args );
+		story.playOutStory();
 	}
 }

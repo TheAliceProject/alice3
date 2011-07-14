@@ -212,8 +212,12 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		}
 		return rv;
 	}
+	public AbstractField findField( Class<?> valueCls, String name ) {
+		return findField( TypeDeclaredInJava.get( valueCls ), name );
+		
+	}
 	public AbstractField findField( String name ) {
-		return findField( null, name );
+		return findField( (AbstractType<?,?,?>)null, name );
 	}
 	
 	public AbstractMethod findMethod( String name, AbstractType<?,?,?>... parameterTypes ) {
@@ -244,5 +248,11 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 //		}
 //		java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( clsDeclaredInJava, this.getName(), parameterClses );
 //		return mthd != null;
+	}
+	public AbstractMethod findMethod( String name, Class<?>... parameterClses ) {
+		return findMethod( name, TypeDeclaredInJava.get( parameterClses ) );
+	}
+	public AbstractMethod findMethod( String name ) {
+		return findMethod( name, new AbstractType<?,?,?>[] {} );
 	}
 }

@@ -40,16 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.apis.moveandturn.event;
 
-public class KeyAdapter implements org.alice.apis.moveandturn.event.KeyListener {
-	private edu.cmu.cs.dennisc.alice.virtualmachine.Context context;
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-	public KeyAdapter( edu.cmu.cs.dennisc.alice.virtualmachine.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type, Object[] arguments ) {
+package test;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class SceneAdapter extends org.lookingglassandalice.storytelling.Scene {
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Context context;
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type; 
+	public SceneAdapter( edu.cmu.cs.dennisc.alice.virtualmachine.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type, Object[] arguments ) {
 		this.context = context;
-		this.method = type.getDeclaredMethod( "keyPressed", org.alice.apis.moveandturn.event.KeyEvent.class );
+		this.type = type;
+		assert arguments.length == 0;
 	}
-	public void keyPressed( org.alice.apis.moveandturn.event.KeyEvent e ) {
-		this.context.invokeEntryPoint( this.method, e );
+	@Override
+	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = type.getDeclaredMethod( "handleActiveChanged", Boolean.class, Integer.class );
+		this.context.invokeEntryPoint( method, isActive, activeCount );
+	}
+	@Override
+	public void preserveVehiclesAndVantagePoints() {
+		super.preserveVehiclesAndVantagePoints();
+	}
+	@Override
+	public void restoreVehiclesAndVantagePoints() {
+		super.restoreVehiclesAndVantagePoints();
 	}
 }

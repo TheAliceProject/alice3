@@ -164,6 +164,23 @@ public abstract class VirtualMachine {
 		this.mapAnonymousClsToAdapterCls.put( anonymousCls, adapterCls );
 	}
 	
+	/*package-private*/Object createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type, final InstanceInAlice instanceInAlice, java.lang.reflect.Constructor< ? > cnstrctr, Object... arguments ) {
+		Class<?> cls = cnstrctr.getDeclaringClass();
+		Class<?> adapterCls = this.mapAnonymousClsToAdapterCls.get( cls );
+		if( adapterCls != null ) {
+			Context context = new Context() {
+				public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, final Object... arguments ) {
+					VirtualMachine.this.invokeEntryPoint( method, instanceInAlice, arguments );
+				}
+			};
+			Class< ? >[] parameterTypes = { Context.class, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class, Object[].class };
+			Object[] args = { context, type, arguments };
+			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
+		} else {
+			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, arguments );
+		}
+	}
+	
 	protected Object createInstanceFromAnonymousConstructor( edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor, Object[] arguments ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = constructor.getDeclaringType();
 		if( type instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
@@ -184,7 +201,7 @@ public abstract class VirtualMachine {
 //							}.start();
 						}
 					};
-					Class< ? >[] parameterTypes = { Context.class, edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice.class, Object[].class };
+					Class< ? >[] parameterTypes = { Context.class, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class, Object[].class };
 					Object[] args = { context, anonymousType, arguments };
 					return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
 				} else {
@@ -250,6 +267,7 @@ public abstract class VirtualMachine {
 	protected Object[] evaluateArguments( java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.Argument > arguments ) {
 		final int N = parameters.size();
 		final int M = arguments.size();
+		assert N == M;
 		Object[] rv = new Object[ N ];
 		if( N>0 ) {
 			for( int i=0; i<N-1; i++ ) {
@@ -407,7 +425,7 @@ public abstract class VirtualMachine {
 			if( method.isProcedure() ) {
 				return null;
 			} else {
-				throw new RuntimeException( "no return value" );
+				throw new RuntimeException( "no return value: " + method.getName() );
 			}
 		} catch( ReturnException re ) {
 			return re.getValue();
@@ -561,7 +579,9 @@ public abstract class VirtualMachine {
 
 	protected Object evaluateMethodInvocation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 		if( methodInvocation.isValid() ) {
-			return this.invoke( methodInvocation.method.getValue(), this.evaluate( methodInvocation.expression.getValue() ), this.evaluateArguments( methodInvocation.method.getValue().getParameters(), methodInvocation.arguments ) );
+			assert methodInvocation.method.getValue().getParameters().size() == methodInvocation.arguments.size() : methodInvocation.method.getValue().getName();
+			Object[] arguments = this.evaluateArguments( methodInvocation.method.getValue().getParameters(), methodInvocation.arguments );
+			return this.invoke( methodInvocation.method.getValue(), this.evaluate( methodInvocation.expression.getValue() ), arguments );
 		} else {
 			javax.swing.JOptionPane.showMessageDialog( null, "skipping invalid methodInvocation: " + methodInvocation.method.getValue().getName() );
 			return null;

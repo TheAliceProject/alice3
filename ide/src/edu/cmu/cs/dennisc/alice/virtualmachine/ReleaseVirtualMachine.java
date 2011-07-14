@@ -174,7 +174,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 
 	private Frame getCurrentFrame() {
 		Frame rv = m_mapThreadToFrame.get( Thread.currentThread() );
-		assert rv != null;
+		//assert rv != null;
 		return rv;
 	}
 	private void setCurrentFrame( Frame currentFrame ) {
@@ -248,7 +248,11 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	@Override
 	protected void popFrame() {
 		Frame frame = this.getCurrentFrame();
-		setCurrentFrame( frame.getOwner() );
+		if( frame != null ) {
+			setCurrentFrame( frame.getOwner() );
+		} else {
+			System.err.println( "investigate: popFrame, getCurrentFrame() == null" );
+		}
 	}
 	@Override
 	protected Object lookup( AbstractParameter parameter ) {

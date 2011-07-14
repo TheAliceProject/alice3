@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Program {
+public /*abstract*/ class Program {
 	private final org.lookingglassandalice.storytelling.implementation.ProgramImplementation implementation = new org.lookingglassandalice.storytelling.implementation.ProgramImplementation( this );
 	private Scene activeScene;
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.ProgramImplementation getImplementation() {

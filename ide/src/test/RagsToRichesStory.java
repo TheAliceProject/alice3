@@ -90,7 +90,7 @@ class DesertScene extends Scene {
 	private void performCustomSetup() {
 	}
 	@Override
-	protected void handleActiveChanged( boolean isActive, int activeCount ) {
+	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
 		if( isActive ) {
 			if( activeCount == 1 ) {
 				this.performGeneratedSetup();
@@ -159,7 +159,7 @@ class SnowScene extends Scene {
 	}
 	
 	@Override
-	protected void handleActiveChanged( boolean isActive, int activeCount ) {
+	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
 		if( isActive ) {
 			if( activeCount == 1 ) {
 				this.performGeneratedSetup();

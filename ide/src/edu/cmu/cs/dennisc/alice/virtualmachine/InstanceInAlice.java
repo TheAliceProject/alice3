@@ -79,7 +79,7 @@ public class InstanceInAlice {
 			ConstructorReflectionProxy constructorReflectionProxy =  nextConstructorDeclaredInJava.getConstructorReflectionProxy();
 			java.lang.reflect.Constructor<?> cnstrctr = constructorReflectionProxy.getReification();
 			assert cnstrctr != null : constructorReflectionProxy.getDeclaringClassReflectionProxy().getName();
-			this.nextInstance = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, nextArguments );
+			this.nextInstance = vm.createInstance( this.type, this, cnstrctr, nextArguments );
 		}
 		vm.setConstructorFrameInstanceInAlice( this );
 		for( AbstractField field : this.type.getDeclaredFields() ) {
