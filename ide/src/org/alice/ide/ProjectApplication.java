@@ -104,66 +104,72 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		}
 	}
 	public void setUri( java.net.URI uri ) {
-		java.io.File file = new java.io.File( uri );
-		if( file.exists() ) {
-			String lcFilename = file.getName().toLowerCase();
-			if( lcFilename.endsWith( ".a2w" ) ) {
-				this.showMessageDialog( "Alice3 does not load Alice2 worlds", "Cannot read file", org.lgna.croquet.MessageType.ERROR );
-			} else if( lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
-				this.showMessageDialog( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", org.lgna.croquet.MessageType.ERROR );
-			} else {
-				boolean isWorthyOfException = lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase() );
-				java.util.zip.ZipFile zipFile;
-				try {
-					zipFile = new java.util.zip.ZipFile( file );
-				} catch( java.io.IOException ioe ) {
-					if( isWorthyOfException ) {
-						throw new RuntimeException( file.getAbsolutePath(), ioe );
-					} else {
-						this.showUnableToOpenProjectMessageDialog( file, false );
-						zipFile = null;
-					}
-				}
-				if( zipFile != null ) {
-					edu.cmu.cs.dennisc.alice.Project project;
+		if( uri.isAbsolute() ) {
+			java.io.File file = new java.io.File( uri );
+			if( file.exists() ) {
+				String lcFilename = file.getName().toLowerCase();
+				if( lcFilename.endsWith( ".a2w" ) ) {
+					this.showMessageDialog( "Alice3 does not load Alice2 worlds", "Cannot read file", org.lgna.croquet.MessageType.ERROR );
+				} else if( lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
+					this.showMessageDialog( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", org.lgna.croquet.MessageType.ERROR );
+				} else {
+					boolean isWorthyOfException = lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase() );
+					java.util.zip.ZipFile zipFile;
 					try {
-						project = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( zipFile );
+						zipFile = new java.util.zip.ZipFile( file );
 					} catch( java.io.IOException ioe ) {
 						if( isWorthyOfException ) {
 							throw new RuntimeException( file.getAbsolutePath(), ioe );
 						} else {
-							this.showUnableToOpenProjectMessageDialog( file, true );
-							project = null;
+							this.showUnableToOpenProjectMessageDialog( file, false );
+							zipFile = null;
 						}
 					}
-					if( project != null ) {
-						this.setProject( project );
-						this.uri = uri;
+					if( zipFile != null ) {
+						edu.cmu.cs.dennisc.alice.Project project;
 						try {
-//							long t0 = System.currentTimeMillis();
-							if( file != null && file.canWrite() ) {
-								int desiredRecentProjectCount = org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.getValue();
-								org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.add( file, desiredRecentProjectCount );
+							project = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( zipFile );
+						} catch( java.io.IOException ioe ) {
+							if( isWorthyOfException ) {
+								throw new RuntimeException( file.getAbsolutePath(), ioe );
+							} else {
+								this.showUnableToOpenProjectMessageDialog( file, true );
+								project = null;
 							}
-//							long tDelta = System.currentTimeMillis() - t0;
-//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "time to store preference (msec):", tDelta );
-						} catch( Throwable throwable ) {
-							throwable.printStackTrace();
 						}
-						this.updateTitle();
+						if( project != null ) {
+							this.setProject( project );
+							this.uri = uri;
+							try {
+//								long t0 = System.currentTimeMillis();
+								if( file != null && file.canWrite() ) {
+									int desiredRecentProjectCount = org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.getValue();
+									org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.add( file, desiredRecentProjectCount );
+								}
+//								long tDelta = System.currentTimeMillis() - t0;
+//								edu.cmu.cs.dennisc.print.PrintUtilities.println( "time to store preference (msec):", tDelta );
+							} catch( Throwable throwable ) {
+								throwable.printStackTrace();
+							}
+							this.updateTitle();
+						} else {
+							//actionContext.cancel();
+						}
 					} else {
 						//actionContext.cancel();
 					}
-				} else {
-					//actionContext.cancel();
 				}
+			} else {
+				StringBuffer sb = new StringBuffer();
+				sb.append( "Cannot read project from file:\n\t" );
+				sb.append( file.getAbsolutePath() );
+				sb.append( "\nIt does not exist." );
+				this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 			}
 		} else {
-			StringBuffer sb = new StringBuffer();
-			sb.append( "Cannot read project from file:\n\t" );
-			sb.append( file.getAbsolutePath() );
-			sb.append( "\nIt does not exist." );
-			this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lookingglassandalice.storytelling.Ground.Appearance.valueOf( uri.toString() ) );
+			edu.cmu.cs.dennisc.alice.Project project = new edu.cmu.cs.dennisc.alice.Project( programType );
+			this.setProject( project );
 		}
 	}
 	

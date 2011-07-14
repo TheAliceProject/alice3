@@ -49,12 +49,18 @@ import edu.cmu.cs.dennisc.alice.ast.*;
  * @author Dennis Cosgrove
  */
 public class InstanceInAlice {
-	public static Object getInstanceInJava( Object instance ) {
+	public static Object getInstanceInJavaIfNecessary( Object instance ) {
 		if( instance instanceof InstanceInAlice ) {
 			return ((InstanceInAlice)instance).getInstanceInJava();
 		} else {
 			return instance;
 		}
+	}
+	public static Object[] updateArrayWithInstancesInJavaIfNecessary( Object[] rv ) {
+		for( int i=0; i<rv.length; i++ ) {
+			rv[ i ] = getInstanceInJavaIfNecessary( rv[ i ] );
+		}
+		return rv;
 	}
 	public static InstanceInAlice createInstance( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments ) {
 		return new InstanceInAlice( vm, constructor, arguments, new java.util.HashMap< FieldDeclaredInAlice, Object >(), null );
@@ -111,7 +117,7 @@ public class InstanceInAlice {
 		return this.type;
 	}
 	public Object getInstanceInJava() {
-		return getInstanceInJava( this.nextInstance );
+		return getInstanceInJavaIfNecessary( this.nextInstance );
 	}
 	public <E> E getInstanceInJava( Class<E> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getInstanceInJava(), cls );
@@ -121,7 +127,7 @@ public class InstanceInAlice {
 		return this.fieldMap.get( field );
 	}
 	public Object getFieldValueInstanceInJava( FieldDeclaredInAlice field ) {
-		return getInstanceInJava( this.getFieldValue( field ) );
+		return getInstanceInJavaIfNecessary( this.getFieldValue( field ) );
 	}
 	public <E> E getFieldValueInstanceInJava( FieldDeclaredInAlice field, Class<E> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getFieldValueInstanceInJava( field ), cls );
@@ -129,7 +135,7 @@ public class InstanceInAlice {
 	public void setFieldValue( FieldDeclaredInAlice field, Object value ) {
 		this.fieldMap.put( field, value );
 		if( this.inverseFieldMap != null ) {
-			this.inverseFieldMap.put( getInstanceInJava( value ), field );
+			this.inverseFieldMap.put( getInstanceInJavaIfNecessary( value ), field );
 		}
 	}
 	

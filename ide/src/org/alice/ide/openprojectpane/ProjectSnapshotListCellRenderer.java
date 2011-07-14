@@ -83,52 +83,56 @@ class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCe
 	@Override
 	protected javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value ) {
 		java.net.URI uri = (java.net.URI)value;
-		java.io.File file = new java.io.File( uri );
-
 		String text;
 		javax.swing.Icon icon;
+		if( uri.isAbsolute() ) {
+			java.io.File file = new java.io.File( uri );
 
-		if( file != null ) {
-			text = file.getName();
-			if( file.exists() ) {
-				//todo: remove
-				String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file );
-				if( path != null ) {
-					String snapshotPath = path.substring( 0, path.length()-3 ) + "png";
-					if( edu.cmu.cs.dennisc.java.io.FileUtilities.existsAndHasLengthGreaterThanZero( snapshotPath ) ) {
-						icon = new javax.swing.ImageIcon( snapshotPath );
+			if( file != null ) {
+				text = file.getName();
+				if( file.exists() ) {
+					//todo: remove
+					String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file );
+					if( path != null ) {
+						String snapshotPath = path.substring( 0, path.length()-3 ) + "png";
+						if( edu.cmu.cs.dennisc.java.io.FileUtilities.existsAndHasLengthGreaterThanZero( snapshotPath ) ) {
+							icon = new javax.swing.ImageIcon( snapshotPath );
+						} else {
+							icon = null;
+						}
 					} else {
 						icon = null;
 					}
-				} else {
-					icon = null;
-				}
-				
-				
-				
-				if( icon != null ) {
-					//pass
-				} else {
-					try {
-						java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file );
-						java.util.zip.ZipEntry zipEntry = zipFile.getEntry( "thumbnail.png" );
-						if( zipEntry != null ) {
-							java.io.InputStream is = zipFile.getInputStream( zipEntry );
-							java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
-							icon = new javax.swing.ImageIcon( image );
-						} else {
+					
+					
+					
+					if( icon != null ) {
+						//pass
+					} else {
+						try {
+							java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file );
+							java.util.zip.ZipEntry zipEntry = zipFile.getEntry( "thumbnail.png" );
+							if( zipEntry != null ) {
+								java.io.InputStream is = zipFile.getInputStream( zipEntry );
+								java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
+								icon = new javax.swing.ImageIcon( image );
+							} else {
+								icon = SNAPSHOT_NOT_AVAILABLE_ICON;
+							}
+							zipFile.close();
+						} catch( Throwable t ) {
 							icon = SNAPSHOT_NOT_AVAILABLE_ICON;
 						}
-						zipFile.close();
-					} catch( Throwable t ) {
-						icon = SNAPSHOT_NOT_AVAILABLE_ICON;
 					}
+				} else {
+					icon = FILE_DOES_NOT_EXIST_ICON;
 				}
 			} else {
+				text = null;
 				icon = FILE_DOES_NOT_EXIST_ICON;
 			}
 		} else {
-			text = null;
+			text = uri.toString();
 			icon = FILE_DOES_NOT_EXIST_ICON;
 		}
 		

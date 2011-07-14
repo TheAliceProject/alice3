@@ -44,42 +44,35 @@ package org.alice.stageide.openprojectpane.templates;
 
 public class TemplatesTabContentPane extends org.alice.ide.openprojectpane.ListContentPanel {
 	private static java.net.URI[] uris;
-	static {
-		java.util.List< java.net.URI > list = new java.util.LinkedList< java.net.URI >();
-		String[] resourceNames = { "DirtProject.a3p", "GrassyProject.a3p", "MoonProject.a3p", "SandyProject.a3p", "SeaProject.a3p", "SnowyProject.a3p" };
-		for( String resourceName : resourceNames ) {
-			java.net.URI uri = getURI( resourceName );
-			if( uri != null ) {
-				list.add( uri );
-			}
-		}
-		TemplatesTabContentPane.uris = new java.net.URI[ list.size() ];
-		list.toArray( TemplatesTabContentPane.uris );
-	}
-
-	private static java.net.URI getURI( String resourceName ) {
-		java.io.File applicationRootDirectory = org.alice.ide.IDE.getActiveInstance().getApplicationRootDirectory();
-		//java.io.File applicationRootDirectory = new java.io.File( "c:/Program Files/Alice3Beta" );
-		java.io.File file = new java.io.File( applicationRootDirectory, "projects/templates/" + resourceName );
-		if( file != null ) {
-			if( file.exists() ) {
-				return file.toURI();
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-//		java.net.URL url = TemplatesTabContentPane.class.getResource( resourceName );
-//		if( url != null ) {
-//			try {
-//				return url.toURI();
-//			} catch( java.net.URISyntaxException urise ) {
-//				return null;
+	private static enum Template {
+		GRASS,
+		DIRT,
+		SAND,
+		SNOW,
+		WATER,
+		MOON;
+//		private org.lookingglassandalice.storytelling.Ground.Appearance getAppearance() {
+//			for( java.lang.reflect.Field fld : this.getClass().getFields() ) {
+//				if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, null ) == this ) {
+//					return org.lookingglassandalice.storytelling.Ground.Appearance.valueOf( fld.getName() );
+//				}
 //			}
-//		} else {
 //			return null;
 //		}
+		public java.net.URI getUri() {
+			try {
+				return new java.net.URI( this.name() );
+			} catch( java.net.URISyntaxException urise ) {
+				throw new RuntimeException( urise );
+			}
+		}
+	};
+	static {
+		Template[] templates = Template.values();
+		TemplatesTabContentPane.uris = new java.net.URI[ templates.length ];
+		for( int i=0; i<templates.length; i++ ) {
+			uris[ i ] = templates[ i ].getUri();
+		}
 	}
 	@Override
 	protected String getTextForZeroProjects() {
