@@ -119,11 +119,18 @@ public class InstanceInAlice {
 	public void set( FieldDeclaredInAlice field, Object value ) {
 		this.fieldMap.put( field, value );
 		if( this.inverseFieldMap != null ) {
-			this.inverseFieldMap.put( value, field );
+			Object valueInJava;
+			if( value instanceof InstanceInAlice ) {
+				InstanceInAlice valueInAlice = (InstanceInAlice)value;
+				valueInJava = valueInAlice.getInstanceInJava();
+			} else {
+				valueInJava = value;
+			}
+			this.inverseFieldMap.put( valueInJava, field );
 		}
 	}
 	
-	public FieldDeclaredInAlice ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getField( Object key ) {
+	public FieldDeclaredInAlice ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( Object key ) {
 		assert this.inverseFieldMap != null;
 		return this.inverseFieldMap.get( key );
 	}

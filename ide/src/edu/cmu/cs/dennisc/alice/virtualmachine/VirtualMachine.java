@@ -66,48 +66,6 @@ public abstract class VirtualMachine {
 	protected abstract void pushCurrentThread( Frame frame );
 	protected abstract void popCurrentThread();
 
-//	public Object[] evaluateEntryPoint( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-//		pushCurrentThread( null );
-//		try {
-//			this.pushMethodFrame( instance, (java.util.Map)java.util.Collections.emptyMap() );
-//			try {
-//				Object[] rv = new Object[ expressions.length ];
-//				for( int i=0; i<expressions.length; i++ ) {
-//					rv[ i ] = this.evaluate( expressions[ i ] );
-//				}
-//				return rv;
-//			} finally {
-//				this.popFrame();
-//			}
-//		} finally {
-//			popCurrentThread();
-//		}
-//	} 
-//	
-//	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object instance, Object... arguments ) {
-//		pushCurrentThread( null );
-//		try {
-//			invoke( method, instance, arguments );
-//		} finally {
-//			popCurrentThread();
-//		}
-//	}
-//
-//	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType;
-//	public void setEntryPointType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType ) {
-//		this.entryPointType = entryPointType;
-//	}
-//	public Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType, Object... arguments ) {
-//		assert entryPointType != null;
-//		this.setEntryPointType( entryPointType );
-//		pushCurrentThread( null );
-//		try {
-//			return this.createInstance( this.entryPointType.getDeclaredConstructor(), arguments );
-//		} finally {
-//			popCurrentThread();
-//		}
-//	}
-	
 	public Object[] evaluateEntryPoint( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
 		pushCurrentThread( null );
 		try {
@@ -133,13 +91,25 @@ public abstract class VirtualMachine {
 			popCurrentThread();
 		}
 	}
-
 	public Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType, Object... arguments ) {
 		pushCurrentThread( null );
 		try {
 			return (InstanceInAlice)this.createInstance( entryPointType.getDeclaredConstructor(), arguments );
 		} finally {
 			popCurrentThread();
+		}
+	}
+	public InstanceInAlice ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMapWithoutExcutingConstructorBody( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice entryPointType, Object... arguments ) {
+		this.isConstructorBodyExecutionDesired = false;
+		try {
+			pushCurrentThread( null );
+			try {
+				return InstanceInAlice.createInstanceWithInverseMap( this, entryPointType.getDeclaredConstructor(), arguments );
+			} finally {
+				popCurrentThread();
+			}
+		} finally {
+			this.isConstructorBodyExecutionDesired = true;
 		}
 	}
 		
@@ -154,19 +124,6 @@ public abstract class VirtualMachine {
 	}
 	private Object createInstanceFromConstructorDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor, Object[] arguments ) {
 		return InstanceInAlice.createInstance( this, constructor, arguments );
-	}
-	public InstanceInAlice ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithoutExcutingConstructorBody( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice entryPointType, Object... arguments ) {
-		this.isConstructorBodyExecutionDesired = false;
-		try {
-			pushCurrentThread( null );
-			try {
-				return InstanceInAlice.createInstanceWithInverseMap( this, entryPointType.getDeclaredConstructor(), arguments );
-			} finally {
-				popCurrentThread();
-			}
-		} finally {
-			this.isConstructorBodyExecutionDesired = true;
-		}
 	}
 	private Object createInstanceFromConstructorDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor, Object[] arguments ) {
 		//todo
@@ -242,8 +199,6 @@ public abstract class VirtualMachine {
 		} else {
 			throw new RuntimeException();
 		}
-//		java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getDeclaredMethod( VirtualMachine.class, "createInstanceActual", constructor.getClass(), Object[].class );
-//		return this.invokeMthd( mthd, constructor, arguments );
 	}
 
 	private Object createArrayInstanceFromTypeDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice type, int[] lengths, Object[] values ) {

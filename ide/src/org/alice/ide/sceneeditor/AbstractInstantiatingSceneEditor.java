@@ -130,7 +130,7 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 	
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneField.getValueType();
-		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice rv = getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithoutExcutingConstructorBody( sceneType );
+		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice rv = getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMapWithoutExcutingConstructorBody( sceneType );
 		putInstanceForField( sceneField, rv );
 		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : sceneType.getDeclaredFields() ) {
 			Object value = rv.get( field );
