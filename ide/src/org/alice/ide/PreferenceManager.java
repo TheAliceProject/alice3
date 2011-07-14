@@ -142,7 +142,7 @@ public class PreferenceManager {
 			System.err.println( "registerAndInitializePreference: " + listSelectionState );
 		}
 	}
-	/*package-private*/ static void preservePreferences() {
+	/*package-private*/ static void preservePreferences() throws java.util.prefs.BackingStoreException {
 		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
@@ -159,6 +159,7 @@ public class PreferenceManager {
 					t.printStackTrace();
 				}
 			}
+			userPreferences.flush();
 		}
 	}
 }
