@@ -1302,7 +1302,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public java.io.File getMyTypesDirectory() {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryPreference.getInstance().getDirectory();
+		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectory();
 	}
 
 	public boolean isInstanceLineDesired() {
