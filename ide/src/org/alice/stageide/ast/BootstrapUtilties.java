@@ -169,9 +169,9 @@ public class BootstrapUtilties {
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), performGeneratedSetupMethod ) );
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), performGeneratedSetupMethod ) );
 
-		//Class< ? > sceneCls = org.lookingglassandalice.storytelling.Scene.class;
-		Class< ? > sceneCls = SceneAdapter.class;
-		System.err.println( "todo: add vm support for protected methods via adapter?" );
+		Class< ? > sceneCls = org.lookingglassandalice.storytelling.Scene.class;
+		//Class< ? > sceneCls = SceneAdapter.class;
+		//System.err.println( "todo: add vm support for protected methods via adapter?" );
 		
 		
 		

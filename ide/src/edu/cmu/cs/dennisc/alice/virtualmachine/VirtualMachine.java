@@ -383,8 +383,15 @@ public abstract class VirtualMachine {
 	protected Object invokeMethodDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava method, Object instance, Object... arguments ) {
 		instance = InstanceInAlice.getInstanceInJavaIfNecessary( instance );
 		InstanceInAlice.updateArrayWithInstancesInJavaIfNecessary( arguments );
+		java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
+		if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isProtected( mthd ) ) {
+			Class<?> adapterCls = mapAnonymousClsToAdapterCls.get( mthd.getDeclaringClass() );
+			assert adapterCls != null;
+			mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( adapterCls, mthd.getName(), mthd.getParameterTypes() );
+		}
+		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isPublic( mthd );
 //		try {
-			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, method.getMethodReflectionProxy().getReification(), arguments );
+			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, mthd, arguments );
 //		} catch( RuntimeException re ) {
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: could not invoke ", method );
 //			for( Object argument : arguments ) {

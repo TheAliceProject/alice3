@@ -70,7 +70,7 @@ public class MethodDeclaredInJava extends AbstractMethod {
 		return get( new MethodReflectionProxy( mthd ) );
 	}
 	public static MethodDeclaredInJava get( Class< ? > declaringCls, String name, Class< ? >... parameterClses ) {
-		return get( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( declaringCls, name, parameterClses ) );
+		return get( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( declaringCls, name, parameterClses ) );
 	}
 
 	private MethodDeclaredInJava( MethodReflectionProxy methodReflectionProxy ) {
