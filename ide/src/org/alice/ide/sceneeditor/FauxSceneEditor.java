@@ -100,22 +100,26 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 	public boolean isPotentiallyAcceptingOf(DragComponent source) {
 		return false;
 	}
-	
+
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getFieldForInstanceInAliceVM(Object instance)
 	{
 		return null;
 	}
 	
+	@Override
 	public Object getInstanceInAliceVMForField(edu.cmu.cs.dennisc.alice.ast.AbstractField field)
 	{
 		return null;
 	}
 	
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getFieldForInstanceInJavaVM(Object instance)
 	{
 		return null;
 	}
 	
+	@Override
 	public Object getInstanceInJavaVMForField(edu.cmu.cs.dennisc.alice.ast.AbstractField field)
 	{
 		return null;
