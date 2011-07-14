@@ -110,7 +110,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		this.getRunOperation().setEnabled( false );
 
-		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRoot() );
+		//this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRoot() );
 		this.galleryBrowser = this.createClassGalleryBrowser(this.getClassGalleryRoot());
 		this.membersEditor = this.createClassMembersEditor();
 		this.ubiquitousPane = this.createUbiquitousPane();
