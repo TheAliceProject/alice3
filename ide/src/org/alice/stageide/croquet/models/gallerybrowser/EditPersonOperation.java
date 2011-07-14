@@ -67,7 +67,9 @@ public class EditPersonOperation extends PersonOperation {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.alice.ide.IDE.getActiveInstance().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );
 	}
 	private org.alice.apis.stage.Person getSceneEditorPerson() {
-		return this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.field, org.alice.apis.stage.Person.class );
+		return null;
+		//TODO: fix this 
+//		return this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.field, org.alice.apis.stage.Person.class );
 	}
 	@Override
 	protected org.alice.stageide.croquet.models.personeditor.PersonInfo getInitialPersonInfo() {

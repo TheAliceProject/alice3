@@ -146,7 +146,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 					{
 						if (field instanceof FieldDeclaredInAlice)
 						{
-							Composite objectInJava = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getInstanceInJavaForField((FieldDeclaredInAlice)field, Composite.class);
+							Composite objectInJava = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getInstanceInJavaVMForField((FieldDeclaredInAlice)field, Composite.class);
 							boolean canBeVehicle = false;
 							if (objectInJava != null)
 							{

@@ -44,6 +44,8 @@ package org.alice.ide;
 
 import org.lgna.croquet.components.JComponent;
 
+import com.sun.jdi.VirtualMachine;
+
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 
 /**
@@ -1010,11 +1012,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	protected edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine createVirtualMachineForSceneEditor() {
 		return new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
 	}
+	protected abstract void registerAdapters( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm );
 	public final edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine getVirtualMachineForSceneEditor() {
 		if( this.vmForSceneEditor != null ) {
 			//pass
 		} else {
 			this.vmForSceneEditor = this.createVirtualMachineForSceneEditor();
+			this.registerAdapters( this.vmForSceneEditor );
 		}
 		return this.vmForSceneEditor;
 	}
@@ -1046,7 +1050,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
 		bodyStatementsProperty.clear();
 		bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( GENERATED_CODE_WARNING ) );
-		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty, this.getSceneEditor() );
+		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
 	}
 
 	@Deprecated

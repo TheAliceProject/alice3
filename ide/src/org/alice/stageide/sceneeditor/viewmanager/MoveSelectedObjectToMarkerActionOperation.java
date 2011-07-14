@@ -152,7 +152,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor());
 		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
 		final Transformable selectedTransformable = sceneEditor.getTransformableForField(selectedField);
-		objectMarker = sceneEditor.getInstanceInJavaForField(this.markerField, org.alice.apis.moveandturn.ObjectMarker.class);
+		objectMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.alice.apis.moveandturn.ObjectMarker.class);
 		if( objectMarker != null ) {
 			nextPOV = objectMarker.getPointOfView( org.alice.apis.moveandturn.AsSeenBy.SCENE );
 			prevPOV = selectedTransformable.getPointOfView(org.alice.apis.moveandturn.AsSeenBy.SCENE);

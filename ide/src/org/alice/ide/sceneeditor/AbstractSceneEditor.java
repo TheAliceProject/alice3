@@ -42,11 +42,20 @@
  */
 package org.alice.ide.sceneeditor;
 
+import edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice;
+
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSceneEditor extends org.lgna.croquet.components.BorderPanel implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >, org.lgna.croquet.DropReceptor, FieldAndInstanceMapper {
-	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = null;
+public abstract class AbstractSceneEditor extends org.lgna.croquet.components.BorderPanel {
+	
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice > mapSceneFieldToInstance = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice >();
+	private java.util.Map< edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > mapSceneInstanceToField = new java.util.HashMap< edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >();
+	
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType;
+	private edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice programInstance;
+	
 	private org.alice.ide.ProjectApplication.ProjectObserver projectObserver = new org.alice.ide.ProjectApplication.ProjectObserver() { 
 		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
 		}
@@ -55,33 +64,64 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 			AbstractSceneEditor.this.revalidateAndRepaint();
 		}
 	};
+	
 	public abstract void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
 	public abstract void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
-	public abstract void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses );
-	
-//	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object > mapFieldToInstance = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-//	protected Object getAndRemoveInstanceForInitializingPendingField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-//		if( this.mapFieldToInstance.containsKey( field ) ) {
-//			Object rv = this.mapFieldToInstance.get( field );
-//			this.mapFieldToInstance.remove( field );
-//			return rv;
-//		} else {
-//			return null;
-//		}
-//	}
+
 	public abstract void putInstanceForInitializingPendingField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance );
-//		this.mapFieldToInstance.put( field, instance );
-//	}
-	
-	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		return "Drop...";
-	}
-	
-//	@Deprecated
-//	public abstract void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired );
 	public abstract Object getInstanceInJavaForUndo( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field );
 	
-	public abstract void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, FieldAndInstanceMapper fieldAndInstanceMapper );
+	public abstract void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty );
+	
+	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
+		return SceneFieldListSelectionState.getInstance().getSelectedItem();
+	}
+
+	@Deprecated
+	public Object getInstanceInAliceVMForField(
+			edu.cmu.cs.dennisc.alice.ast.AbstractField field) {
+		return null;
+	}
+
+	@Deprecated
+	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getFieldForInstanceInAliceVM(
+			Object instance) {
+		return null;
+	}
+
+	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getFieldForInstanceInJavaVM(
+			Object instanceInJava) {
+		return getActiveSceneInstance().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(instanceInJava);
+	}
+
+	public Object getInstanceInJavaVMForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field) {
+		
+		assert field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+		
+		return getActiveSceneInstance().getFieldValueInstanceInJava((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field);
+	}
+
+	public <E> E getInstanceInJavaVMForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Class<E> cls) {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(
+				getInstanceInJavaVMForField(field), cls);
+	}
+	
+	public void removeField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.Statement... statements ){
+	}
+	
+	public void addField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.Statement... statements ){
+	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActiveSceneField()
+	{
+		return SceneFieldListSelectionState.getInstance().getSelectedItem();
+	}
+	
+	public edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice getActiveSceneInstance()
+	{
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice activeSceneField = SceneFieldListSelectionState.getInstance().getSelectedItem();
+		return this.mapSceneFieldToInstance.get(activeSceneField);
+	}
 	
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getActiveInstance();
@@ -89,50 +129,63 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	protected edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine getVM() {
 		return this.getIDE().getVirtualMachineForSceneEditor();
 	}
-	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
-		return this.sceneField;
+	
+	protected void addScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice) sceneField.getValueType();
+		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice rv = getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMapWithoutExcutingConstructorBody(sceneType);
+		mapSceneFieldToInstance.put(sceneField, rv);
+		mapSceneInstanceToField.put(rv, sceneField);
+		SceneFieldListSelectionState.getInstance().addItem(sceneField);
+		SceneFieldListSelectionState.getInstance().setSelectedItem(sceneField);
 	}
-	protected void setSceneField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
-		if( this.sceneField != null ) {
-			this.sceneField.removeListPropertyListener( this );
-		}
-		this.sceneField = sceneField;
-		if( this.sceneField != null ) {
-			this.sceneField.addListPropertyListener( this );
-		}
+	
+	protected void setActiveScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
+		SceneFieldListSelectionState.getInstance().setSelectedItem(sceneField);
+
+		//Run the "setActiveScene" call on the program to get the active scene set in the right state
+		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneAliceInstance = getActiveSceneInstance();
+		org.lookingglassandalice.storytelling.Scene sceneJavaInstance = (org.lookingglassandalice.storytelling.Scene)sceneAliceInstance.getInstanceInJava();
+		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
 	}
+	
+	protected edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice getProgramInstanceInAlice()
+	{
+		return this.programInstance;
+	}
+	
+	protected org.lookingglassandalice.storytelling.Program getProgramInstanceInJava()
+	{
+		return  (org.lookingglassandalice.storytelling.Program)this.programInstance.getInstanceInJava();
+	}
+	
+	protected void setProgramInstance(edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice programInstance)
+	{
+		this.programInstance = programInstance;
+	}
+	
 	protected void setProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice;
-		if( programType != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = programType.getDeclaredFields().get( 0 );
-			if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-				fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field;
-			} else {
-				fieldInAlice = null;
+		this.programType = programType;
+		SceneFieldListSelectionState.getInstance().clear();
+		mapSceneFieldToInstance.clear();
+		mapSceneInstanceToField.clear();
+		if( this.programType != null ) {
+			setProgramInstance((edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)getVM().createInstanceEntryPoint(this.programType));
+			for (edu.cmu.cs.dennisc.alice.ast.AbstractField programField : this.programType.getDeclaredFields())
+			{
+				if( programField.getDesiredValueType().isAssignableTo(org.lookingglassandalice.storytelling.Scene.class)) 
+				{
+					this.addScene((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)programField);
+				}
 			}
 		} else {
-			fieldInAlice = null;
+			setProgramInstance( null );
 		}
-		setSceneField( fieldInAlice );
+		if (SceneFieldListSelectionState.getInstance().getItemCount() > 0)
+		{
+			setActiveScene(SceneFieldListSelectionState.getInstance().getItemAt(0));
+		}
 	}
-
-	public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-	}
-	public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-	}
-	public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-	}
-	public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-	}
-	public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-	}
-	public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-	}
-	public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-	}
-	public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-	}
-
+	
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
 		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.ProjectApplication.getActiveInstance().getProject();
@@ -142,9 +195,12 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		org.alice.ide.ProjectApplication.getActiveInstance().addProjectObserver( this.projectObserver );
 		super.handleAddedTo( parent );
 	}
+	
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
 		super.handleRemovedFrom( parent );
 		org.alice.ide.ProjectApplication.getActiveInstance().removeProjectObserver( this.projectObserver );
 	}
+	
+	
 }

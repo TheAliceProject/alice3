@@ -46,10 +46,13 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.alice.stageide.ast.SceneAdapter;
+import org.lookingglassandalice.storytelling.Scene;
 import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceTreeNode;
 import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceUtilities;
 
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+import edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 
 public class StageIDE extends org.alice.ide.IDE {
@@ -156,6 +159,10 @@ public class StageIDE extends org.alice.ide.IDE {
 //		} );
 	}
 	
+	@Override
+	protected void registerAdapters(VirtualMachine vm) {
+		vm.registerAnonymousAdapter( Scene.class, SceneAdapter.class );
+	}
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava MOUSE_BUTTON_LISTENER_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonListener.class );
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava KEY_LISTENER_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyListener.class );
 	@Override
@@ -418,7 +425,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	@Override
 	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
-		return org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.getInstance();
+		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
 	}
 	
 	@Override

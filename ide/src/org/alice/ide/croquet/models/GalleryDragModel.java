@@ -42,6 +42,8 @@
  */
 package org.alice.ide.croquet.models;
 
+import javax.activation.UnsupportedDataTypeException;
+
 
 /**
  * @author Dennis Cosgrove
@@ -52,6 +54,15 @@ public class GalleryDragModel extends IdeDragModel {
 	}
 	@Override
 	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( org.alice.ide.IDE.getActiveInstance().getSceneEditor() );
+		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
+		if (sceneEditor instanceof org.alice.stageide.sceneeditor.StorytellingSceneEditor)
+		{
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( (org.alice.stageide.sceneeditor.StorytellingSceneEditor)sceneEditor );
+		}
+		else
+		{
+			return null;
+//			throw new UnsupportedDataTypeException("Active scene editor type does not support Drag and Drop");
+		}
 	}
 }

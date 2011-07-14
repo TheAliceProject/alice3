@@ -58,7 +58,7 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 		return null;
 	}
 	@Override
-	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, FieldAndInstanceMapper fieldAndInstanceMapper ) {
+	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty ) {
 		throw new RuntimeException();
 	}
 //	@Override
@@ -69,9 +69,6 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 	}
 	@Override
 	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
-	}
-	@Override
-	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
 	}
 	@Override
 	public Object getInstanceInJavaForUndo( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
@@ -104,7 +101,7 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 		return false;
 	}
 	
-	public edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstanceInAliceVM(Object instance)
+	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getFieldForInstanceInAliceVM(Object instance)
 	{
 		return null;
 	}
@@ -114,7 +111,7 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 		return null;
 	}
 	
-	public edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstanceInJavaVM(Object instance)
+	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getFieldForInstanceInJavaVM(Object instance)
 	{
 		return null;
 	}

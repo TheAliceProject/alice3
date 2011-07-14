@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.operations.ast;
 
+import org.alice.ide.IDE;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,7 +57,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 		final org.alice.apis.moveandturn.AbstractTransformable transformable;
 		final org.alice.apis.moveandturn.PointOfView prevPOV;
 		final org.alice.apis.moveandturn.PointOfView nextPOV;
-		transformable = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.getField(), org.alice.apis.moveandturn.AbstractTransformable.class );
+		transformable = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( this.getField(), org.alice.apis.moveandturn.AbstractTransformable.class );
 		if( transformable != null ) {
 			prevPOV = transformable.getPointOfView( org.alice.apis.moveandturn.AsSeenBy.SCENE );
 			nextPOV = new org.alice.apis.moveandturn.PointOfView( this.calculateNextAbsoluteTransformation( transformable ) );

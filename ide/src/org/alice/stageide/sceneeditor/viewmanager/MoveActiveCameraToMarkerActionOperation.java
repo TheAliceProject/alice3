@@ -134,7 +134,7 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 		
 		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor());
 		
-		cameraMarker = sceneEditor.getInstanceInJavaForField(this.markerField, org.alice.apis.moveandturn.CameraMarker.class);
+		cameraMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.alice.apis.moveandturn.CameraMarker.class);
 		AbstractCamera sgCamera = sceneEditor.getSGPerspectiveCamera();
 		camera = (org.alice.apis.moveandturn.AbstractCamera)Element.getElement(sgCamera);
 		if( cameraMarker != null ) {

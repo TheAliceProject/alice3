@@ -154,7 +154,7 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 		
 		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
 		final Transformable selectedTransformable = sceneEditor.getTransformableForField(selectedField);
-		objectMarker = sceneEditor.getInstanceInJavaForField(this.markerField, org.alice.apis.moveandturn.ObjectMarker.class);
+		objectMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.alice.apis.moveandturn.ObjectMarker.class);
 		if( objectMarker != null ) {
 			prevPOV = objectMarker.getPointOfView( org.alice.apis.moveandturn.AsSeenBy.SCENE );
 			nextPOV = selectedTransformable.getPointOfView(org.alice.apis.moveandturn.AsSeenBy.SCENE);
