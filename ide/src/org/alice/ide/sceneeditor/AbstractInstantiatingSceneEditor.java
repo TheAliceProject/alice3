@@ -129,20 +129,14 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 	
 	
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
-		getVM().setConstructorBodyExecutionDesired( false );
-		try {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType = sceneField.getValueType();
-			assert sceneType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-			Object rv = getVM().createInstanceEntryPoint( sceneType );
-			putInstanceForField( sceneField, rv );
-			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
-				Object value = this.getVM().EPIC_HACK_FOR_SCENE_EDITOR_getAccess( field, rv );
-				putInstanceForField( field, value );
-			}
-			return rv;
-		} finally {
-			getVM().setConstructorBodyExecutionDesired( true );
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneField.getValueType();
+		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice rv = getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithoutExcutingConstructorBody( sceneType );
+		putInstanceForField( sceneField, rv );
+		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : sceneType.getDeclaredFields() ) {
+			Object value = rv.get( field );
+			putInstanceForField( field, value );
 		}
+		return rv;
 	}
 	@Override
 	protected void setSceneField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {

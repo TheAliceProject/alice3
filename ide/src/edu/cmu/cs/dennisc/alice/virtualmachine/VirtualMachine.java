@@ -46,20 +46,20 @@ package edu.cmu.cs.dennisc.alice.virtualmachine;
  * @author Dennis Cosgrove
  */
 public abstract class VirtualMachine {
-	@Deprecated
-	public Object EPIC_HACK_FOR_SCENE_EDITOR_getAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
-		return get( field, instance );
-	}
-	@Deprecated
-	public Object EPIC_HACK_FOR_SCENE_EDITOR_createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType ) {
-		pushCurrentThread( null );
-		try {
-			return this.createInstance( this.entryPointType.getDeclaredConstructor() );
-		} finally {
-			popCurrentThread();
-		}
-	}
-	
+//	@Deprecated
+//	public Object EPIC_HACK_FOR_SCENE_EDITOR_getAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
+//		return get( field, instance );
+//	}
+//	@Deprecated
+//	public Object EPIC_HACK_FOR_SCENE_EDITOR_createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType ) {
+//		pushCurrentThread( null );
+//		try {
+//			return this.createInstance( this.entryPointType.getDeclaredConstructor() );
+//		} finally {
+//			popCurrentThread();
+//		}
+//	}
+//	
 //	@Deprecated
 //	public InstanceInAlice EPIC_HACK_FOR_SCENE_EDITOR_createInstanceForField( InstanceInAlice sceneInstanceInAlice, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instanceInJava ) {
 //		pushCurrentThread( null );
@@ -72,7 +72,7 @@ public abstract class VirtualMachine {
 //			popCurrentThread();
 //		}
 //	}
-
+	
 	protected abstract Object getThis();
 
 	protected abstract void pushConstructorFrame( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map );
@@ -136,16 +136,32 @@ public abstract class VirtualMachine {
 		this.entryPointType = entryPointType;
 	}
 		
-	// special functionality added for the scene editor
+	private java.util.Map< Class<?>, Class<?> > mapAnonymousClsToAdapterCls = new java.util.HashMap< Class<?>, Class<?> >();
+	public void registerAnonymousAdapter( Class<?> anonymousCls, Class<?> adapterCls ) {
+		this.mapAnonymousClsToAdapterCls.put( anonymousCls, adapterCls );
+	}
+
 	private boolean isConstructorBodyExecutionDesired = true;
-	public boolean isConstructorBodyExecutionDesired() {
+	/*package-private*/ boolean isConstructorBodyExecutionDesired() {
 		return this.isConstructorBodyExecutionDesired;
 	}
-	public void setConstructorBodyExecutionDesired(boolean isConstructorBodyExecutionDesired) {
-		this.isConstructorBodyExecutionDesired = isConstructorBodyExecutionDesired;
-	}
 	private Object createInstanceFromConstructorDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor, Object[] arguments ) {
-		return InstanceInAlice.createInstance( this, constructor, arguments, this.isConstructorBodyExecutionDesired );
+		return InstanceInAlice.createInstance( this, constructor, arguments );
+	}
+	public InstanceInAlice ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithoutExcutingConstructorBody( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice entryPointType, Object... arguments ) {
+		this.isConstructorBodyExecutionDesired = false;
+		try {
+			assert entryPointType != null;
+			this.setEntryPointType( entryPointType );
+			pushCurrentThread( null );
+			try {
+				return InstanceInAlice.createInstanceWithInverseMap( this, entryPointType.getDeclaredConstructor(), arguments );
+			} finally {
+				popCurrentThread();
+			}
+		} finally {
+			this.isConstructorBodyExecutionDesired = true;
+		}
 	}
 	private Object createInstanceFromConstructorDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor, Object[] arguments ) {
 		//todo
@@ -159,10 +175,6 @@ public abstract class VirtualMachine {
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( constructor.getConstructorReflectionProxy().getReification(), arguments );
 	}
 	
-	private java.util.Map< Class<?>, Class<?> > mapAnonymousClsToAdapterCls = new java.util.HashMap< Class<?>, Class<?> >();
-	public void registerAnonymousAdapter( Class<?> anonymousCls, Class<?> adapterCls ) {
-		this.mapAnonymousClsToAdapterCls.put( anonymousCls, adapterCls );
-	}
 	
 	/*package-private*/Object createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type, final InstanceInAlice instanceInAlice, java.lang.reflect.Constructor< ? > cnstrctr, Object... arguments ) {
 		Class<?> cls = cnstrctr.getDeclaringClass();

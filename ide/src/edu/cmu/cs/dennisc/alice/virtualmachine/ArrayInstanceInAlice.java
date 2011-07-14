@@ -47,9 +47,9 @@ package edu.cmu.cs.dennisc.alice.virtualmachine;
  * @author Dennis Cosgrove
  */
 public class ArrayInstanceInAlice {
-	private edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice type;
-	private int[] lengths;
-	private Object[] values;
+	private final edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice type;
+	private final int[] lengths;
+	private final Object[] values;
 	public ArrayInstanceInAlice( edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice type, int[] lengths, Object[] values ) {
 		assert lengths.length == 1;
 		this.type = type;
@@ -62,6 +62,9 @@ public class ArrayInstanceInAlice {
 				this.values[ i ] = values[ i ];
 			}
 		}
+	}
+	public edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice getType() {
+		return this.type;
 	}
 	public Object get( int index ) {
 		return this.values[ index ];

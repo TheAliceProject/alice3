@@ -45,6 +45,7 @@ package edu.cmu.cs.dennisc.alice.virtualmachine;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class Variable<E> {
 	public Variable() {
 	}

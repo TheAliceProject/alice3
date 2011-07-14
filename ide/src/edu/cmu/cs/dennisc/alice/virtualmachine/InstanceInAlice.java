@@ -49,19 +49,22 @@ import edu.cmu.cs.dennisc.alice.ast.*;
  * @author Dennis Cosgrove
  */
 public class InstanceInAlice {
-	public static InstanceInAlice createInstance( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments, boolean isBodyExcutionDesired ) {
-		return new InstanceInAlice( vm, constructor, arguments, isBodyExcutionDesired, new java.util.HashMap< FieldDeclaredInAlice, Object >() );
+	public static InstanceInAlice createInstance( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments ) {
+		return new InstanceInAlice( vm, constructor, arguments, new java.util.HashMap< FieldDeclaredInAlice, Object >(), null );
+	}
+	public static InstanceInAlice createInstanceWithInverseMap( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments ) {
+		return new InstanceInAlice( vm, constructor, arguments, new java.util.HashMap< FieldDeclaredInAlice, Object >(), new java.util.HashMap< Object, FieldDeclaredInAlice >() );
 	}
 	
 	private final Object nextInstance;
 	private final AbstractTypeDeclaredInAlice<?> type;
 	private final java.util.Map< FieldDeclaredInAlice, Object > fieldMap;
-	public InstanceInAlice( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments, boolean isBodyExcutionDesired, java.util.Map< FieldDeclaredInAlice, Object > fieldMap ) {
+	private final java.util.Map< Object, FieldDeclaredInAlice > inverseFieldMap;
+	private InstanceInAlice( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments, java.util.Map< FieldDeclaredInAlice, Object > fieldMap, java.util.Map< Object, FieldDeclaredInAlice > inverseFieldMap ) {
 		this.type = constructor.getDeclaringType();
 		this.fieldMap = fieldMap;
-
+		this.inverseFieldMap = inverseFieldMap;
 		
-
 		ConstructorBlockStatement constructorBlockStatement = constructor.body.getValue();
 		ConstructorInvocationStatement constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
 		AbstractConstructor nextConstructor = constructorInvocationStatement.contructor.getValue();
@@ -73,7 +76,7 @@ public class InstanceInAlice {
 		vm.pushConstructorFrame( type, stackMap );
 		Object[] nextArguments = vm.evaluateArguments( nextConstructor.getParameters(), constructorInvocationStatement.arguments );
 		if( nextConstructor.isDeclaredInAlice() ) {
-			this.nextInstance = new InstanceInAlice( vm, (ConstructorDeclaredInAlice)nextConstructor, nextArguments, isBodyExcutionDesired, fieldMap );
+			this.nextInstance = new InstanceInAlice( vm, (ConstructorDeclaredInAlice)nextConstructor, nextArguments, fieldMap, inverseFieldMap );
 		} else {
 			ConstructorDeclaredInJava nextConstructorDeclaredInJava = (ConstructorDeclaredInJava)nextConstructor;
 			ConstructorReflectionProxy constructorReflectionProxy =  nextConstructorDeclaredInJava.getConstructorReflectionProxy();
@@ -87,7 +90,7 @@ public class InstanceInAlice {
 			FieldDeclaredInAlice fieldDeclaredInAlice = (FieldDeclaredInAlice)field;
 			set( fieldDeclaredInAlice, vm.evaluate( fieldDeclaredInAlice.initializer.getValue() ) );
 		}
-		if( isBodyExcutionDesired ) {
+		if( vm.isConstructorBodyExecutionDesired() ) {
 			try {
 				vm.executeBlockStatement( constructorBlockStatement );
 			} catch( ReturnException re ) {
@@ -96,11 +99,7 @@ public class InstanceInAlice {
 		}
 		vm.popFrame();
 	}
-	
-//	@Deprecated
-//	public void EPIC_HACK_FOR_SCENE_EDITOR_setInstanceInJava( Object instanceInJava ) {
-//		m_instanceInJava = instanceInJava;
-//	}
+
 	public AbstractTypeDeclaredInAlice<?> getType() {
 		return this.type;
 	}
@@ -112,13 +111,21 @@ public class InstanceInAlice {
 		}
 	}
 	public <E> E getInstanceInJava( Class<E> cls ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.nextInstance, cls );
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getInstanceInJava(), cls );
 	}
 	public Object get( FieldDeclaredInAlice field ) {
 		return this.fieldMap.get( field );
 	}
 	public void set( FieldDeclaredInAlice field, Object value ) {
 		this.fieldMap.put( field, value );
+		if( this.inverseFieldMap != null ) {
+			this.inverseFieldMap.put( value, field );
+		}
+	}
+	
+	public FieldDeclaredInAlice ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getField( Object key ) {
+		assert this.inverseFieldMap != null;
+		return this.inverseFieldMap.get( key );
 	}
 
 	@Override
