@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class GroundImplementation extends ModelImplementation {
+public class GroundImplementation extends SimpleModelImplementation {
 	private final org.lookingglassandalice.storytelling.Ground abstraction;
 	private org.lookingglassandalice.storytelling.Ground.Appearance appearance = null;
 	public GroundImplementation( org.lookingglassandalice.storytelling.Ground abstraction ) {

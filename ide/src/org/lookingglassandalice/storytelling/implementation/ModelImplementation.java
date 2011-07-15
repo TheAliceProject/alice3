@@ -46,8 +46,38 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ModelImplementation extends SingleVisualModelImplementation {
-	public ModelImplementation() {
-		super( new edu.cmu.cs.dennisc.scenegraph.Visual() );
+public abstract class ModelImplementation extends TransformableImplementation {
+	protected abstract edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] getSgAppearances();
+	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
+	public final void setColor( edu.cmu.cs.dennisc.color.Color4f color ) {
+		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
+			sgAppearance.diffuseColor.setValue( color );
+		}
 	}
+	public final void setOpacity( float opacity ) {
+		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
+			sgAppearance.opacity.setValue( opacity );
+		}
+	}
+	public final void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
+		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
+			sgAppearance.diffuseColorTexture.setValue( diffuseColorTexture );
+		}
+	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans, boolean isOriginIncluded ) {
+//		super.updateCumulativeBound( rv, trans, isOriginIncluded );
+//		rv.add( this.sgFrontFace, trans );
+//		rv.add( this.sgBackFace, trans );
+//		return rv;
+//	}
+//	
+//	@Override
+//	protected void applyScale( edu.cmu.cs.dennisc.math.Vector3 axis, boolean isScootDesired ) {
+//		super.applyScale( axis, isScootDesired );
+//		edu.cmu.cs.dennisc.math.Matrix3x3 scale = sgFrontFace.scale.getValue();
+//		edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
+//		sgFrontFace.scale.setValue( scale );
+//		sgBackFace.scale.setValue( scale );
+//	}
 }

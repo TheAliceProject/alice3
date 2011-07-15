@@ -46,9 +46,9 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model extends Transformable implements Resizable {
+public abstract class Model extends MovableTurnable implements Resizable {
 	@Override
-	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.AbstractModelImplementation getImplementation();
+	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.ModelImplementation getImplementation();
 	public Color getColor() {
 		edu.cmu.cs.dennisc.color.Color4f internal = this.getImplementation().getColor();
 		return internal != null ? new Color( internal ) : null;

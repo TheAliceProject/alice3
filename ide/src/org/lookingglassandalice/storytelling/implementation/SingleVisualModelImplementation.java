@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleVisualModelImplementation extends AbstractModelImplementation {
+public abstract class SingleVisualModelImplementation extends ModelImplementation {
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
 	private final edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] { new edu.cmu.cs.dennisc.scenegraph.SingleAppearance() };
 	public SingleVisualModelImplementation( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {

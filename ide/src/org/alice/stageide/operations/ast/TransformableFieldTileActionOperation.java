@@ -52,7 +52,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lookingglassandalice.storytelling.implementation.TransformableImplementation transformableImp );
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		org.lookingglassandalice.storytelling.Transformable transformable = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( this.getField(), org.lookingglassandalice.storytelling.Transformable.class );
+		org.lookingglassandalice.storytelling.Turnable transformable = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( this.getField(), org.lookingglassandalice.storytelling.Turnable.class );
 		final org.lookingglassandalice.storytelling.implementation.TransformableImplementation transformableImp = org.lookingglassandalice.storytelling.ImplementationAccessor.getImplementation( transformable );
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevPOV;
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextPOV;

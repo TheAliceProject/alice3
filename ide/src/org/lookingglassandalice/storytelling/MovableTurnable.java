@@ -40,31 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PointOfView implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	//todo: should be immutable
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal = new edu.cmu.cs.dennisc.math.AffineMatrix4x4();
-	public PointOfView() {
-		this.internal.setIdentity();
+public abstract class MovableTurnable extends Turnable {
+	public void move( MoveDirection direction, Number amount ) {
+		this.move( direction, amount, new VantagePointAnimationDetails() );
 	}
-	public PointOfView( edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal ) {
-		this.internal.set( internal );
-	}
-	public PointOfView( Orientation orientation, Position position ) {
-		orientation.get( this.internal.orientation );
-		position.get( this.internal.translation );
-	}
-	public PointOfView(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		this.internal.decode( binaryDecoder );
-	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		this.internal.encode( binaryEncoder );
-	}
-	/*package-private*/ edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInternal() {
-		return this.internal;
+	public void move( MoveDirection direction, Number amount, VantagePointAnimationDetails details ) {
+		this.getImplementation().animateTranslation( direction.createTranslation( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
 }

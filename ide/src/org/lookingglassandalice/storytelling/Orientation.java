@@ -45,6 +45,18 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public interface Orientation {
-	public edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 get( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 rv );
+public class Orientation {
+	private final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 internal;
+	public Orientation() {
+		this.internal = edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createIdentity();
+	}
+	public Orientation( Number x, Number y, Number z, Number w ) {
+		this.internal = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3( new edu.cmu.cs.dennisc.math.UnitQuaternion( x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue() ) );
+	}
+	/*package-private*/ Orientation( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 internal ) {
+		this.internal = internal;
+	}
+	/*package-private*/ edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getInternal() {
+		return this.internal;
+	}
 }

@@ -41,43 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling.implementation;
+package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractModelImplementation extends TransformableImplementation {
-	protected abstract edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] getSgAppearances();
-	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
-	public final void setColor( edu.cmu.cs.dennisc.color.Color4f color ) {
-		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
-			sgAppearance.diffuseColor.setValue( color );
-		}
+public abstract class Turnable extends Entity implements MutableRider {
+	@Override
+	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.AbstractTransformableImplementation getImplementation();
+	public void setVehicle( Entity vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
-	public final void setOpacity( float opacity ) {
-		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
-			sgAppearance.opacity.setValue( opacity );
-		}
+
+	public void turn( TurnDirection direction, Number amount ) {
+		this.turn( direction, amount, new VantagePointAnimationDetails() );
 	}
-	public final void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
-		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
-			sgAppearance.diffuseColorTexture.setValue( diffuseColorTexture );
-		}
+	public void turn( TurnDirection direction, Number amount, VantagePointAnimationDetails details ) {
+		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans, boolean isOriginIncluded ) {
-//		super.updateCumulativeBound( rv, trans, isOriginIncluded );
-//		rv.add( this.sgFrontFace, trans );
-//		rv.add( this.sgBackFace, trans );
-//		return rv;
-//	}
-//	
-//	@Override
-//	protected void applyScale( edu.cmu.cs.dennisc.math.Vector3 axis, boolean isScootDesired ) {
-//		super.applyScale( axis, isScootDesired );
-//		edu.cmu.cs.dennisc.math.Matrix3x3 scale = sgFrontFace.scale.getValue();
-//		edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
-//		sgFrontFace.scale.setValue( scale );
-//		sgBackFace.scale.setValue( scale );
-//	}
+	public void roll( RollDirection direction, Number amount ) {
+		this.roll( direction, amount, new VantagePointAnimationDetails() );
+	}
+	public void roll( RollDirection direction, Number amount, VantagePointAnimationDetails details ) {
+		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
+	}
+	
+	//TEMPORARY
+	public void setLocalPointOfView( VantagePoint pointOfView ) {
+		this.getImplementation().getSgComposite().setLocalTransformation(pointOfView.getInternal());
+	}
 }

@@ -41,14 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Turner {
-	void turn( TurnDirection direction, Number amount );
-	void turn( TurnDirection direction, Number amount, VantagePointAnimationDetails details );
-	void roll( RollDirection direction, Number amount );
-	void roll( RollDirection direction, Number amount, VantagePointAnimationDetails details );
+public abstract class SimpleModelImplementation extends SingleVisualModelImplementation {
+	public SimpleModelImplementation() {
+		super( new edu.cmu.cs.dennisc.scenegraph.Visual() );
+	}
 }

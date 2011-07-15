@@ -59,7 +59,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Marker extends Transformable 
+public abstract class Marker extends MovableTurnable 
 {
 	protected SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
 	

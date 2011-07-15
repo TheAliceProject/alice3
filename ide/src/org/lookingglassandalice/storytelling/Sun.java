@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Sun extends Transformable implements MutableRider {
+public class Sun extends Turnable implements MutableRider {
 	private final org.lookingglassandalice.storytelling.implementation.SunImplementation implementation = new org.lookingglassandalice.storytelling.implementation.SunImplementation( this );
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.SunImplementation getImplementation() {

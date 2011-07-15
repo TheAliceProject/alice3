@@ -44,7 +44,7 @@ package org.alice.stageide.sceneeditor;
 
 import org.lookingglassandalice.storytelling.AsSeenBy;
 import org.lookingglassandalice.storytelling.CameraMarker;
-import org.lookingglassandalice.storytelling.PointOfView;
+import org.lookingglassandalice.storytelling.VantagePoint;
 import org.lookingglassandalice.storytelling.Scene;
 import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
 import org.lookingglassandalice.storytelling.ImplementationAccessor;
@@ -125,14 +125,14 @@ public class SetUpMethodGenerator {
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createQuaternionExpression( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation ) {
 		edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( orientation );
-		Class< ? > cls = org.lookingglassandalice.storytelling.Quaternion.class;
+		Class< ? > cls = org.lookingglassandalice.storytelling.Orientation.class;
 		java.lang.reflect.Constructor< ? > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls, Number.class, Number.class, Number.class, Number.class );
 		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cnstrctr );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( q.x ), createExpression( q.y ), createExpression( q.z ), createExpression( q.w ) );
 	}
 	
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.PointOfView pointOfView ) {
-		Class< ? > cls = org.lookingglassandalice.storytelling.PointOfView.class;
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.VantagePoint pointOfView ) {
+		Class< ? > cls = org.lookingglassandalice.storytelling.VantagePoint.class;
 		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, org.lookingglassandalice.storytelling.Orientation.class, org.lookingglassandalice.storytelling.Position.class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createQuaternionExpression( pointOfView.getInternal().orientation ), createPositionExpression( pointOfView.getInternal().translation ) );
 	}
@@ -155,7 +155,7 @@ public class SetUpMethodGenerator {
 	{
 		if (pointOfViewField != null)
 		{
-			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "moveAndOrientTo", new Class< ? >[] {org.lookingglassandalice.storytelling.Entity.class, Number.class}, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( false, pointOfViewField ), createExpression( 0.0 ) ) );
+			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "moveAndOrientTo", new Class< ? >[] {org.lookingglassandalice.storytelling.Entity.class, Number.class}, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( false, pointOfViewField ), createExpression( 0.0 ) ) );
 		}
 	}
 	
@@ -163,7 +163,7 @@ public class SetUpMethodGenerator {
 	{
 		if (vehicleField != null)
 		{
-			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "setVehicle", org.lookingglassandalice.storytelling.Entity.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
+			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "setVehicle", org.lookingglassandalice.storytelling.Entity.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
 		}
 	}
 	
@@ -179,14 +179,14 @@ public class SetUpMethodGenerator {
 			edu.cmu.cs.dennisc.alice.ast.AbstractField vehicleField = mapper.getFieldForInstanceInJavaVM(vehicle);
 			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setVehicle", org.lookingglassandalice.storytelling.Entity.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
 			
-			PointOfView pov = new PointOfView(sgComposite.getTransformation(sgParent));
-			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( pov ) ) );
+			VantagePoint pov = new VantagePoint(sgComposite.getTransformation(sgParent));
+			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.VantagePoint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( pov ) ) );
 		}
 		else if( instance instanceof org.lookingglassandalice.storytelling.Entity ) {
 			org.lookingglassandalice.storytelling.Entity element = (org.lookingglassandalice.storytelling.Entity)instance;
 			bodyStatementsProperty.add( createStatement( edu.cmu.cs.dennisc.pattern.AbstractElement.class, "setName", String.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( field.getName() ) ) );
-			if( instance instanceof org.lookingglassandalice.storytelling.Transformable ) {
-				org.lookingglassandalice.storytelling.Transformable transformable = (org.lookingglassandalice.storytelling.Transformable)element;
+			if( instance instanceof org.lookingglassandalice.storytelling.Turnable ) {
+				org.lookingglassandalice.storytelling.Turnable transformable = (org.lookingglassandalice.storytelling.Turnable)element;
 				
 				boolean isVehicleScene = (transformable.getVehicle() instanceof Scene);
 				SetUpMethodGenerator.fillInAutomaticVehicleAssignment(bodyStatementsProperty, field, mapper.getFieldForInstanceInJavaVM(transformable.getVehicle()), isVehicleScene);
@@ -195,13 +195,13 @@ public class SetUpMethodGenerator {
 				{
 					CameraMarker marker = (CameraMarker)transformable;
 					//CameraMarkers are all fields of the Scene but may be parented to the camera while being edited in the scene editor. Because of this, make sure to get their LocalPointOfView as seen by the Scene
-					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getPointOfView(AsSeenBy.SCENE) ) ) );
+					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.VantagePoint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getPointOfView(AsSeenBy.SCENE) ) ) );
 					org.lookingglassandalice.storytelling.Color markerColor = marker.getColor();
 					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Marker.class, "setColor", new Class< ? >[] { org.lookingglassandalice.storytelling.Color.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( markerColor ) ) );
 				}
 				else
 				{
-					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getLocalPointOfView() ) ) );
+					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.VantagePoint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getLocalPointOfView() ) ) );
 				}
 				if( instance instanceof org.lookingglassandalice.storytelling.Resizable ) {
 					org.lookingglassandalice.storytelling.Resizable resizable = (org.lookingglassandalice.storytelling.Resizable)transformable;
@@ -210,19 +210,19 @@ public class SetUpMethodGenerator {
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( widthFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "resizeWidth", new Class< ? >[] { Number.class, Number.class, org.lookingglassandalice.storytelling.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( widthFactor ), createExpression( 0.0 ), createExpression( org.lookingglassandalice.storytelling.ResizePolicy.PRESERVE_NOTHING ) ) );
+						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "resizeWidth", new Class< ? >[] { Number.class, Number.class, org.lookingglassandalice.storytelling.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( widthFactor ), createExpression( 0.0 ), createExpression( org.lookingglassandalice.storytelling.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
 					double heightFactor = resizable.getResizeHeightAmount();
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( heightFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "resizeHeight", new Class< ? >[] { Number.class, Number.class, org.lookingglassandalice.storytelling.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( heightFactor ), createExpression( 0.0 ), createExpression( org.lookingglassandalice.storytelling.ResizePolicy.PRESERVE_NOTHING ) ) );
+						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "resizeHeight", new Class< ? >[] { Number.class, Number.class, org.lookingglassandalice.storytelling.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( heightFactor ), createExpression( 0.0 ), createExpression( org.lookingglassandalice.storytelling.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
 					double depthFactor = resizable.getResizeDepthAmount();
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( depthFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "resizeDepth", new Class< ? >[] { Number.class, Number.class, org.lookingglassandalice.storytelling.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( depthFactor ), createExpression( 0.0 ), createExpression( org.lookingglassandalice.storytelling.ResizePolicy.PRESERVE_NOTHING ) ) );
+						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "resizeDepth", new Class< ? >[] { Number.class, Number.class, org.lookingglassandalice.storytelling.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( depthFactor ), createExpression( 0.0 ), createExpression( org.lookingglassandalice.storytelling.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
 					if( instance instanceof org.lookingglassandalice.storytelling.Model ) {
 						org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)transformable;

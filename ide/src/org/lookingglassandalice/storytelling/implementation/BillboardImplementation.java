@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class BillboardImplementation extends AbstractModelImplementation {
+public class BillboardImplementation extends ModelImplementation {
 	private class Face extends edu.cmu.cs.dennisc.scenegraph.Visual {
 		private edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
 		private edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();

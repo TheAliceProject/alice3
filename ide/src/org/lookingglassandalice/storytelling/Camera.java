@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Camera extends Transformable {
+public class Camera extends MovableTurnable {
 	private final org.lookingglassandalice.storytelling.implementation.CameraImplementation implementation = new org.lookingglassandalice.storytelling.implementation.CameraImplementation( this );
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.CameraImplementation getImplementation() {

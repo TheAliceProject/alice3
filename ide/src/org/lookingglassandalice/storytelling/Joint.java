@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Joint extends Transformable {
+public class Joint extends Turnable {
 	/*package-private*/ static Joint getInstance( org.lookingglassandalice.storytelling.implementation.JointedModelImplementation jointedModelImplementation, org.lookingglassandalice.storytelling.resources.JointId jointId ) {
 		org.lookingglassandalice.storytelling.implementation.JointImplementation implementation = jointedModelImplementation.getJointImplementation( jointId );
 		Joint rv = implementation.getAbstraction();

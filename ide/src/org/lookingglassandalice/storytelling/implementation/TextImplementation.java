@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class TextImplementation extends ModelImplementation {
+public class TextImplementation extends SimpleModelImplementation {
 	private final org.lookingglassandalice.storytelling.Text abstraction;
 	private final edu.cmu.cs.dennisc.scenegraph.Text sgText = new edu.cmu.cs.dennisc.scenegraph.Text();
 	private double letterHeight = 1.0;

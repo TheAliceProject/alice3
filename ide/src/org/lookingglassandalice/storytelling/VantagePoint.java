@@ -40,40 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Transformable extends Entity implements MutableRider, Mover, Turner {
-	@Override
-	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.AbstractTransformableImplementation getImplementation();
-	public void setVehicle( Entity vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
+public class VantagePoint {
+	private final edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal;
+	public VantagePoint() {
+		this.internal = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
 	}
-
-	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, new VantagePointAnimationDetails() );
+	public VantagePoint( Orientation orientation, Position position ) {
+		this.internal = new edu.cmu.cs.dennisc.math.AffineMatrix4x4( orientation.getInternal(), position.getInternal() );
 	}
-	public void move( MoveDirection direction, Number amount, VantagePointAnimationDetails details ) {
-		this.getImplementation().animateTranslation( direction.createTranslation( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
+	/*package-private*/ VantagePoint( edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal ) {
+		this.internal = internal;
 	}
-	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, new VantagePointAnimationDetails() );
-	}
-	public void turn( TurnDirection direction, Number amount, VantagePointAnimationDetails details ) {
-		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
-	}
-	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, new VantagePointAnimationDetails() );
-	}
-	public void roll( RollDirection direction, Number amount, VantagePointAnimationDetails details ) {
-		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
-	}
-	
-	//TEMPORARY
-	public void setLocalPointOfView( PointOfView pointOfView ) {
-		this.getImplementation().getSgComposite().setLocalTransformation(pointOfView.getInternal());
+	/*package-private*/ edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInternal() {
+		return this.internal;
 	}
 }

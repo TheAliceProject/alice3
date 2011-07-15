@@ -151,7 +151,7 @@ import org.lgna.croquet.BooleanState;
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.accessible;
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldType = fieldInAlice.getValueType();
 			rv.add( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( fieldInAlice ).getMenuItemPrepModel() );
-			if( fieldType.isAssignableTo( org.lookingglassandalice.storytelling.Transformable.class ) ) {
+			if( fieldType.isAssignableTo( org.lookingglassandalice.storytelling.Turnable.class ) ) {
 				if( fieldType.isAssignableTo( org.lookingglassandalice.storytelling.Camera.class ) ) {
 					//pass
 				} else {

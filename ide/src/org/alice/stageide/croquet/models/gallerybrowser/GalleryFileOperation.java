@@ -89,11 +89,11 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation {
 		if (field != null) {
 			Object fieldObject = createFieldFromGalleryPane.createInstanceInJavaForArguments();
 			
-			if (fieldObject instanceof org.lookingglassandalice.storytelling.Transformable)
+			if (fieldObject instanceof org.lookingglassandalice.storytelling.Turnable)
 			{
 				if (this.desiredTransformation != null)
 				{
-					((org.lookingglassandalice.storytelling.Transformable)fieldObject).setLocalTransformation(new edu.cmu.cs.dennisc.math.AffineMatrix4x4(this.desiredTransformation));
+					((org.lookingglassandalice.storytelling.Turnable)fieldObject).setLocalTransformation(new edu.cmu.cs.dennisc.math.AffineMatrix4x4(this.desiredTransformation));
 					//Reset the desired transform after using it
 					this.desiredTransformation = null;
 				}
@@ -105,7 +105,7 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation {
                         System.err.println("TODO: fix broken bounding box for "+this.treeNode.getValue());
                     }
 					AffineMatrix4x4 goodOrientation = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getGoodPointOfViewInSceneForObject(box);
-					((org.lookingglassandalice.storytelling.Transformable)fieldObject).setLocalTransformation(goodOrientation);
+					((org.lookingglassandalice.storytelling.Turnable)fieldObject).setLocalTransformation(goodOrientation);
 				}
 			}
 			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, fieldObject );
