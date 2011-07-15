@@ -84,11 +84,17 @@ public class LaunchUtilities {
 		}
 		return null;
 	}
+	private static final String NIMBUS_LOOK_AND_FEEL_NAME = "Nimbus";
+	private static final String MENU_BAR_UI_NAME = "MenuBarUI";
 	private static void preLaunch( final java.awt.Window splashScreen ) {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.isInstalledLookAndFeelNamed( NIMBUS_LOOK_AND_FEEL_NAME ) ) {
+			final Object macMenuBarUI;
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+				macMenuBarUI = javax.swing.UIManager.get(MENU_BAR_UI_NAME);;
+			} else {
+				macMenuBarUI = null;
+			}
+			javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( NIMBUS_LOOK_AND_FEEL_NAME );
 			if( lookAndFeelInfo != null ) {
 //				javax.swing.LookAndFeel laf = javax.swing.UIManager.getLookAndFeel();
 				try {
@@ -96,6 +102,9 @@ public class LaunchUtilities {
 				} catch( Throwable t ) {
 					t.printStackTrace();
 				}
+			}
+			if( macMenuBarUI != null ) {
+				javax.swing.UIManager.put(MENU_BAR_UI_NAME, macMenuBarUI);
 			}
 		}
 		
