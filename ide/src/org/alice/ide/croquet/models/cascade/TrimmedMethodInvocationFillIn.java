@@ -57,10 +57,14 @@ public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillI
 			this.addBlank( parameterBlank );
 		}
 	}
+	private static final String MAC_LOOK_AND_FEEL_DESCRIPTION = "Aqua Look and Feel for Mac OS X";
 	@Override
 	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
-//		return this.transientValue.method.getValue().getName();
-		return null;
+		if( MAC_LOOK_AND_FEEL_DESCRIPTION.equals( javax.swing.UIManager.getLookAndFeel().getDescription() ) ) {
+			return this.transientValue.method.getValue().getName();
+		} else {
+			return null;
+		}
 	}
 	@Override
 	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode step ) {
