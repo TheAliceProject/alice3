@@ -49,7 +49,7 @@ package org.lookingglassandalice.storytelling;
 @Deprecated
 public class Person extends Model {
 	@Override
-	org.lookingglassandalice.storytelling.implementation.AbstractModelImplementation getImplementation() {
+	org.lookingglassandalice.storytelling.implementation.ModelImplementation getImplementation() {
 		return null;
 	}
 }

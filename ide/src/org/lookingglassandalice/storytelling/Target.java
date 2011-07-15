@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Target extends Transformable {
+public class Target extends MovableTurnable {
 	private final org.lookingglassandalice.storytelling.implementation.TargetImplementation implementation = new org.lookingglassandalice.storytelling.implementation.TargetImplementation( this );
 	@Override
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.TargetImplementation getImplementation() {

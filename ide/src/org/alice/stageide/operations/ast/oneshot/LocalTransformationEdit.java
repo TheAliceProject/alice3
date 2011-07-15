@@ -50,8 +50,8 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
 	private final edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions;
-	private transient org.lookingglassandalice.storytelling.Transformable transformable;
-	private transient org.lookingglassandalice.storytelling.PointOfView pointOfView;
+	private transient org.lookingglassandalice.storytelling.Turnable transformable;
+	private transient org.lookingglassandalice.storytelling.VantagePoint pointOfView;
 	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions ) {
 		super( completionStep );
 		this.field = field;
@@ -82,7 +82,7 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 		Object instance = sceneEditor.getInstanceInAliceVMForField( this.field );
 		if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
 			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
-			this.transformable = (org.lookingglassandalice.storytelling.Transformable)sceneEditor.getInstanceInJavaVMForField( this.field );
+			this.transformable = (org.lookingglassandalice.storytelling.Turnable)sceneEditor.getInstanceInJavaVMForField( this.field );
 			this.pointOfView = this.transformable.getLocalPointOfView();
 			vm.invokeEntryPoint( this.method, instanceInAlice, vm.evaluateEntryPoint( sceneInstanceInAlice, this.argumentExpressions ) );
 		} else {

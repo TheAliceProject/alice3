@@ -46,17 +46,17 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public class Position {
-	private edu.cmu.cs.dennisc.math.Point3 internal = new edu.cmu.cs.dennisc.math.Point3();
+	private final edu.cmu.cs.dennisc.math.Point3 internal;
 	public Position() {
-	}
-	public Position( edu.cmu.cs.dennisc.math.Point3 internal ) {
-		this.internal.set( internal );
+		this.internal = new edu.cmu.cs.dennisc.math.Point3();
 	}
 	public Position( Number x, Number y, Number z ) {
-		this.internal.set( x.doubleValue(), y.doubleValue(), z.doubleValue() );
+		this.internal = new edu.cmu.cs.dennisc.math.Point3( x.doubleValue(), y.doubleValue(), z.doubleValue() );
 	}
-	public edu.cmu.cs.dennisc.math.Point3 get( edu.cmu.cs.dennisc.math.Point3 rv ) {
-		rv.set( this.internal );
-		return rv;
+	/*package-private*/ Position( edu.cmu.cs.dennisc.math.Point3 internal ) {
+		this.internal = internal;
+	}
+	/*package-private*/ edu.cmu.cs.dennisc.math.Point3 getInternal() {
+		return this.internal;
 	}
 }

@@ -284,7 +284,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
 				if( declaringType != null && declaringType.isAssignableTo( org.lookingglassandalice.storytelling.Scene.class ) ) {
-					if( field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Transformable.class ) ) {
+					if( field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Turnable.class ) ) {
 						return new org.alice.ide.common.ExpressionPane( expression, this.createDeclarationNameLabel( field ) ) {
 							@Override
 							protected boolean isExpressionTypeFeedbackDesired() {
@@ -323,7 +323,7 @@ public class StageIDE extends org.alice.ide.IDE {
 					if( constructor != null ) {
 						edu.cmu.cs.dennisc.alice.ast.AbstractType type = constructor.getDeclaringType();
 						if( type != null ) {
-							if( type.isAssignableTo( org.lookingglassandalice.storytelling.Transformable.class ) ) {
+							if( type.isAssignableTo( org.lookingglassandalice.storytelling.Turnable.class ) ) {
 								return false;
 							}
 						}
@@ -353,7 +353,7 @@ public class StageIDE extends org.alice.ide.IDE {
 						assert field != null;
 						edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
 						if( declaringType != null && declaringType.isAssignableTo( org.lookingglassandalice.storytelling.Scene.class ) ) {
-							if( field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Transformable.class ) ) {
+							if( field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Turnable.class ) ) {
 								return false;
 							}
 						}

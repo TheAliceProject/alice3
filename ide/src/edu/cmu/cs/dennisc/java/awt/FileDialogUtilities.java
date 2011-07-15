@@ -87,15 +87,20 @@ public class FileDialogUtilities {
 		private final java.awt.Component root;
 		private final String title;
 		private final int mode;
+		private int result = javax.swing.JFileChooser.CANCEL_OPTION;
 		public SwingFileDialog( java.awt.Component root, String title, int mode ) {
 			this.root = root;
 			this.title = title;
 			this.mode = mode;
 		}
 		public String getFile() {
-			java.io.File file = this.jFileChooser.getSelectedFile();
-			if( file != null ) {
-				return file.getName();
+			if( this.result != javax.swing.JFileChooser.CANCEL_OPTION ) {
+				java.io.File file = this.jFileChooser.getSelectedFile();
+				if( file != null ) {
+					return file.getName();
+				} else {
+					return null;
+				}
 			} else {
 				return null;
 			}
@@ -104,9 +109,13 @@ public class FileDialogUtilities {
 			this.jFileChooser.setSelectedFile( new java.io.File(filename) );
 		}
 		public String getDirectory() {
-			java.io.File file = this.jFileChooser.getCurrentDirectory();
-			if( file != null ) {
-				return file.getAbsolutePath();
+			if( this.result != javax.swing.JFileChooser.CANCEL_OPTION ) {
+				java.io.File file = this.jFileChooser.getCurrentDirectory();
+				if( file != null ) {
+					return file.getAbsolutePath();
+				} else {
+					return null;
+				}
 			} else {
 				return null;
 			}
@@ -117,11 +126,14 @@ public class FileDialogUtilities {
 			}
 		}
 		public void show() {
+			//todo: use this.title
+			this.result = javax.swing.JFileChooser.CANCEL_OPTION;
 			if( mode == java.awt.FileDialog.LOAD ) {
-				this.jFileChooser.showOpenDialog( this.root );
+				this.result = this.jFileChooser.showOpenDialog( this.root );
 			} else {
-				this.jFileChooser.showSaveDialog( this.root );
+				this.result = this.jFileChooser.showSaveDialog( this.root );
 			}
+			
 		}
 	}
 	

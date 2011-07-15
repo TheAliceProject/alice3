@@ -947,7 +947,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.getPreferencesOperation().fire( trigger );
 	}
 	protected void preservePreferences() {
-		PreferenceManager.preservePreferences();
+		try {
+			PreferenceManager.preservePreferences();
+		} catch( java.util.prefs.BackingStoreException bse ) {
+			bse.printStackTrace();
+		}
 	}
 	@Override
 	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {

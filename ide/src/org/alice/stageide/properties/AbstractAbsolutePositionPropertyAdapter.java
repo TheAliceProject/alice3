@@ -43,13 +43,13 @@
 
 package org.alice.stageide.properties;
 
-import org.lookingglassandalice.storytelling.Transformable;
+import org.lookingglassandalice.storytelling.Turnable;
 import org.alice.ide.properties.adapter.AbstractPoint3PropertyAdapter;
 
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
-public abstract class AbstractAbsolutePositionPropertyAdapter<O extends Transformable> extends AbstractPoint3PropertyAdapter<O>
+public abstract class AbstractAbsolutePositionPropertyAdapter<O extends Turnable> extends AbstractPoint3PropertyAdapter<O>
 {
 	private AbsoluteTransformationListener absoluteTransformationListener;
 	

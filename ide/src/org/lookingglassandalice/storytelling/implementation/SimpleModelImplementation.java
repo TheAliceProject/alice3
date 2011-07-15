@@ -41,45 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Transformable extends Entity implements MutableRider, Mover, Turner {
-	@Override
-	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.AbstractTransformableImplementation getImplementation();
-	public void setVehicle( Entity vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
-	}
-	
-//	//TEMPORARY
-//	public void setVehicle( org.alice.apis.moveandturn.Composite vehicle ) {
-//		edu.cmu.cs.dennisc.scenegraph.Composite sgObject = this.getImplementation().getSgComposite();
-//		sgObject.setParent((vehicle != null ? vehicle.getSGComposite() : null));
-//	}
-	
-	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, new VantagePointAnimationDetails() );
-	}
-	public void move( MoveDirection direction, Number amount, VantagePointAnimationDetails details ) {
-		this.getImplementation().animateTranslation( direction.createTranslation( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
-	}
-	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, new VantagePointAnimationDetails() );
-	}
-	public void turn( TurnDirection direction, Number amount, VantagePointAnimationDetails details ) {
-		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
-	}
-	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, new VantagePointAnimationDetails() );
-	}
-	public void roll( RollDirection direction, Number amount, VantagePointAnimationDetails details ) {
-		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
-	}
-	
-	//TEMPORARY
-	public void setLocalPointOfView( PointOfView pointOfView ) {
-		this.getImplementation().getSgComposite().setLocalTransformation(pointOfView.getInternal());
+public abstract class SimpleModelImplementation extends SingleVisualModelImplementation {
+	public SimpleModelImplementation() {
+		super( new edu.cmu.cs.dennisc.scenegraph.Visual() );
 	}
 }

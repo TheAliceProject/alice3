@@ -46,6 +46,6 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Marker extends Transformable 
+public abstract class Marker extends MovableTurnable 
 {
 }

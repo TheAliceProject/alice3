@@ -62,7 +62,7 @@ public class Adapter implements com.apple.eawt.ApplicationListener {
 	}
 	public void handleQuit( com.apple.eawt.ApplicationEvent e ) {
 		this.listener.handleQuit( e );
-		e.setHandled(true);
+		e.setHandled(false); //setting this to false does not make sense to me.  dennisc
 	}
 	public void handleAbout( com.apple.eawt.ApplicationEvent e ) {
 		this.listener.handleAbout( e );

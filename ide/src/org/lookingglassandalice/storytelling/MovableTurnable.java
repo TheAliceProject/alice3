@@ -40,31 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PointOfView implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	//todo: should be immutable
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal = new edu.cmu.cs.dennisc.math.AffineMatrix4x4();
-	public PointOfView() {
-		this.internal.setIdentity();
+public abstract class MovableTurnable extends Turnable {
+	public void move( MoveDirection direction, Number amount ) {
+		this.move( direction, amount, new VantagePointRelativeAnimationDetails() );
 	}
-	public PointOfView( edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal ) {
-		this.internal.set( internal );
+	public void move( MoveDirection direction, Number amount, VantagePointRelativeAnimationDetails details ) {
+		this.getImplementation().animateTranslate( direction.createTranslation( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
-	public PointOfView( Orientation orientation, Position position ) {
-		orientation.get( this.internal.orientation );
-		position.get( this.internal.translation );
+	public void moveToward( Entity target, Number amount ) {
+		this.moveToward( target, amount, new VantagePointRelativeAnimationDetails() );
 	}
-	public PointOfView(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		this.internal.decode( binaryDecoder );
+	public void moveToward( Entity target, Number amount, VantagePointRelativeAnimationDetails details ) {
+		edu.cmu.cs.dennisc.math.Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation;
+		edu.cmu.cs.dennisc.math.Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation;
+		edu.cmu.cs.dennisc.math.Vector3 v = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( tTarget, tThis );
+		double length = v.calculateMagnitude();
+		if( length > 0 ) {
+			v.multiply( amount.doubleValue() / length );
+		} else {
+			v.set( 0, 0, amount.doubleValue() );
+		}
+		this.getImplementation().animateApplyTranslation( v.x, v.y, v.z, details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		this.internal.encode( binaryEncoder );
+	public void moveAwayFrom( Entity target, Number amount ) {
+		this.moveAwayFrom( target, amount, new VantagePointRelativeAnimationDetails() );
 	}
-	/*package-private*/ edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInternal() {
-		return this.internal;
+	public void moveAwayFrom( Entity target, Number amount, VantagePointRelativeAnimationDetails details ) {
+		this.moveToward( target, -amount.doubleValue(), details );
+	}
+	public void moveTo( Entity target ) {
+		this.moveTo( target, new AnimationDetails() );
+	}
+	public void moveTo( Entity target, AnimationDetails details ) {
+		this.getImplementation().animateSetTranslation( target.getImplementation(), details.getDuration(), details.getStyle() );
+	}
+	public void moveAndOrientTo( Entity target ) {
+		this.moveAndOrientTo( target, new AnimationDetails() );
+	}
+	public void moveAndOrientTo( Entity target, AnimationDetails details ) {
+		this.getImplementation().animateSetTransformation( target.getImplementation(), details.getDuration(), details.getStyle() );
 	}
 }

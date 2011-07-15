@@ -124,9 +124,9 @@ public class LookingglassTreeNode extends BasicTreeNode{
 	
 	private void setElementAdapterBasedData(ElementAdapter lgElement)
 	{
-		if (lgElement.m_element instanceof Transformable)
+		if (lgElement.m_element instanceof Turnable)
 		{
-			edu.cmu.cs.dennisc.scenegraph.Transformable t = ((Transformable)lgElement.m_element).getSGTransformable();
+			edu.cmu.cs.dennisc.scenegraph.Transformable t = ((Turnable)lgElement.m_element).getSGTransformable();
 			this.add(new SceneGraphTreeNode(t));
 		}
 		else if (lgElement.m_element instanceof edu.cmu.cs.dennisc.scenegraph.Element)

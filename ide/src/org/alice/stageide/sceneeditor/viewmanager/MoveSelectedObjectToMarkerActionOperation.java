@@ -47,7 +47,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.lookingglassandalice.storytelling.ObjectMarker;
-import org.lookingglassandalice.storytelling.Transformable;
+import org.lookingglassandalice.storytelling.Turnable;
 import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.lgna.croquet.ActionOperation;
@@ -146,12 +146,12 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final ObjectMarker objectMarker;
-		final org.lookingglassandalice.storytelling.PointOfView prevPOV;
-		final org.lookingglassandalice.storytelling.PointOfView nextPOV;
+		final org.lookingglassandalice.storytelling.VantagePoint prevPOV;
+		final org.lookingglassandalice.storytelling.VantagePoint nextPOV;
 		
 		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor());
 		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
-		final Transformable selectedTransformable = sceneEditor.getTransformableForField(selectedField);
+		final Turnable selectedTransformable = sceneEditor.getTransformableForField(selectedField);
 		objectMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.lookingglassandalice.storytelling.ObjectMarker.class);
 		if( objectMarker != null ) {
 			nextPOV = objectMarker.getPointOfView( org.lookingglassandalice.storytelling.AsSeenBy.SCENE );
@@ -181,7 +181,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 		}
 	}
 	
-	private static void setAbsolutePOV( org.lookingglassandalice.storytelling.Transformable transformable, org.lookingglassandalice.storytelling.PointOfView pov ) {
+	private static void setAbsolutePOV( org.lookingglassandalice.storytelling.Turnable transformable, org.lookingglassandalice.storytelling.VantagePoint pov ) {
 		org.lookingglassandalice.storytelling.Scene scene = transformable.getScene();
 		assert scene != null;
 		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );

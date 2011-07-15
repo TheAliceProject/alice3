@@ -46,22 +46,28 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class VantagePointAnimationDetails extends AbstractAnimationDetails {
-	protected Entity asSeenBy = null;
-	/*package-private*/ Entity getAsSeenBy( Entity valueIfNull ) {
-		return this.asSeenBy != null ? this.asSeenBy : valueIfNull;
+public abstract class Turnable extends Entity implements MutableRider {
+	@Override
+	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.AbstractTransformableImplementation getImplementation();
+	public void setVehicle( Entity vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 
-	public VantagePointAnimationDetails duration( Number value ) {
-		this.duration = value.doubleValue();
-		return this;
+	public void turn( TurnDirection direction, Number amount ) {
+		this.turn( direction, amount, new VantagePointRelativeAnimationDetails() );
 	}
-	public VantagePointAnimationDetails asSeenBy( Entity value ) {
-		this.asSeenBy = value;
-		return this;
+	public void turn( TurnDirection direction, Number amount, VantagePointRelativeAnimationDetails details ) {
+		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
-	public VantagePointAnimationDetails style( Style value ) {
-		this.style = value;
-		return this;
+	public void roll( RollDirection direction, Number amount ) {
+		this.roll( direction, amount, new VantagePointRelativeAnimationDetails() );
+	}
+	public void roll( RollDirection direction, Number amount, VantagePointRelativeAnimationDetails details ) {
+		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
+	}
+	
+	//TEMPORARY
+	public void setLocalPointOfView( VantagePoint pointOfView ) {
+		this.getImplementation().getSgComposite().setLocalTransformation(pointOfView.getInternal());
 	}
 }

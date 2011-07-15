@@ -51,9 +51,9 @@ import org.lgna.croquet.Operation;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 
-public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.lookingglassandalice.storytelling.Transformable> {
+public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.lookingglassandalice.storytelling.Turnable> {
 	
-	public TransformableTranslationAdapter(org.lookingglassandalice.storytelling.Transformable instance) {
+	public TransformableTranslationAdapter(org.lookingglassandalice.storytelling.Turnable instance) {
 		super(instance);
 	}
 

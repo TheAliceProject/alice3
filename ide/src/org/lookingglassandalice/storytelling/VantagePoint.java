@@ -40,44 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lookingglassandalice.storytelling.implementation;
+package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractModelImplementation extends TransformableImplementation {
-	protected abstract edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] getSgAppearances();
-	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
-	public final void setColor( edu.cmu.cs.dennisc.color.Color4f color ) {
-		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
-			sgAppearance.diffuseColor.setValue( color );
-		}
+public class VantagePoint {
+	private final edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal;
+	public VantagePoint() {
+		this.internal = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
 	}
-	public final void setOpacity( float opacity ) {
-		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
-			sgAppearance.opacity.setValue( opacity );
-		}
+	public VantagePoint( Orientation orientation, Position position ) {
+		this.internal = new edu.cmu.cs.dennisc.math.AffineMatrix4x4( orientation.getInternal(), position.getInternal() );
 	}
-	public final void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
-		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
-			sgAppearance.diffuseColorTexture.setValue( diffuseColorTexture );
-		}
+	/*package-private*/ VantagePoint( edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal ) {
+		this.internal = internal;
 	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans, boolean isOriginIncluded ) {
-//		super.updateCumulativeBound( rv, trans, isOriginIncluded );
-//		rv.add( this.sgFrontFace, trans );
-//		rv.add( this.sgBackFace, trans );
-//		return rv;
-//	}
-//	
-//	@Override
-//	protected void applyScale( edu.cmu.cs.dennisc.math.Vector3 axis, boolean isScootDesired ) {
-//		super.applyScale( axis, isScootDesired );
-//		edu.cmu.cs.dennisc.math.Matrix3x3 scale = sgFrontFace.scale.getValue();
-//		edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
-//		sgFrontFace.scale.setValue( scale );
-//		sgBackFace.scale.setValue( scale );
-//	}
+	/*package-private*/ edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInternal() {
+		return this.internal;
+	}
 }

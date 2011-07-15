@@ -129,8 +129,8 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 		
 		final CameraMarker cameraMarker;
 		final org.lookingglassandalice.storytelling.Camera camera;
-		final org.lookingglassandalice.storytelling.PointOfView prevPOV;
-		final org.lookingglassandalice.storytelling.PointOfView nextPOV;
+		final org.lookingglassandalice.storytelling.VantagePoint prevPOV;
+		final org.lookingglassandalice.storytelling.VantagePoint nextPOV;
 		
 		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor());
 		
@@ -166,7 +166,7 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 		
 	}
 	
-	private static void setAbsolutePOV( org.lookingglassandalice.storytelling.Transformable transformable, org.lookingglassandalice.storytelling.PointOfView pov ) {
+	private static void setAbsolutePOV( org.lookingglassandalice.storytelling.Turnable transformable, org.lookingglassandalice.storytelling.VantagePoint pov ) {
 		org.lookingglassandalice.storytelling.Scene scene = transformable.getScene();
 		assert scene != null;
 		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );

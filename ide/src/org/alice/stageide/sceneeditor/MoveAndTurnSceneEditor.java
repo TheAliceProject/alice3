@@ -61,7 +61,7 @@ import org.lookingglassandalice.storytelling.ObjectMarker;
 import org.lookingglassandalice.storytelling.OrthographicCameraMarker;
 import org.lookingglassandalice.storytelling.PerspectiveCameraMarker;
 import org.lookingglassandalice.storytelling.Scene;
-import org.lookingglassandalice.storytelling.Transformable;
+import org.lookingglassandalice.storytelling.Turnable;
 import org.lookingglassandalice.storytelling.Collada;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectApplication;
@@ -689,8 +689,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 			EntityImplementation implementation = ImplementationAccessor.getImplementation(model);
 			this.scene.getSGComposite().addComponent(implementation.getSgComposite());
 		}
-		else if( instance instanceof org.lookingglassandalice.storytelling.Transformable ) {
-			final org.lookingglassandalice.storytelling.Transformable transformable = (org.lookingglassandalice.storytelling.Transformable)instance;
+		else if( instance instanceof org.lookingglassandalice.storytelling.Turnable ) {
+			final org.lookingglassandalice.storytelling.Turnable transformable = (org.lookingglassandalice.storytelling.Turnable)instance;
 
 			final org.lookingglassandalice.storytelling.Camera camera = this.scene.findFirstMatch( org.lookingglassandalice.storytelling.Camera.class );
 			boolean isAnimationDesired = true;
@@ -736,8 +736,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		PrintUtilities.println( "todo: have handleFieldRemoved just remove the passed in field rather than check for inconsistencies." );
 
 		Object instance = this.getInstanceInJavaVMForField( removedField );
-		if( instance instanceof org.lookingglassandalice.storytelling.Transformable ) {
-			final org.lookingglassandalice.storytelling.Transformable transformable = (org.lookingglassandalice.storytelling.Transformable)instance;
+		if( instance instanceof org.lookingglassandalice.storytelling.Turnable ) {
+			final org.lookingglassandalice.storytelling.Turnable transformable = (org.lookingglassandalice.storytelling.Turnable)instance;
 			this.scene.removeComponent( transformable );
 			this.removeField(removedField);
 		} else {
@@ -947,9 +947,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		return marker;
 	}
 	
-	public Transformable getTransformableForField( FieldDeclaredInAlice field )
+	public Turnable getTransformableForField( FieldDeclaredInAlice field )
 	{
-		Transformable transformable = this.getInstanceInJavaVMForField( field, org.lookingglassandalice.storytelling.Transformable.class );
+		Turnable transformable = this.getInstanceInJavaVMForField( field, org.lookingglassandalice.storytelling.Turnable.class );
 		return transformable;
 	}
 	
@@ -1192,7 +1192,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		
 	private void getGoodLookAtShowInstanceAndReturnCamera( org.lookingglassandalice.storytelling.Camera camera, org.lookingglassandalice.storytelling.Model model ) {
 		model.setOpacity( 0.0, org.lookingglassandalice.storytelling.Entity.RIGHT_NOW );
-		org.lookingglassandalice.storytelling.PointOfView pov = camera.getPointOfView( this.scene );
+		org.lookingglassandalice.storytelling.VantagePoint pov = camera.getPointOfView( this.scene );
 		camera.getGoodLookAt( model, 0.5 );
 		this.scene.addComponent( model );
 		model.setOpacity( 1.0 );
@@ -1219,7 +1219,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		boolean wasShowing = marker.isShowing();
 		marker.setShowing(true);
 		marker.setOpacity( 0.0, org.lookingglassandalice.storytelling.Entity.RIGHT_NOW );
-		org.lookingglassandalice.storytelling.PointOfView pov = camera.getPointOfView( this.scene );
+		org.lookingglassandalice.storytelling.VantagePoint pov = camera.getPointOfView( this.scene );
 		camera.moveAndOrientTo(this.scene.createOffsetStandIn( calculateMarkerGoodLookAt(edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), marker) ), .5);
 		marker.setVehicle( this.scene );
 		marker.setOpacity( 1.0 );
@@ -1327,8 +1327,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	protected void putFieldForInstanceInJava( Object instanceInJava, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 //		super.putFieldForInstanceInJava( instanceInJava, field );
-		if( instanceInJava instanceof org.lookingglassandalice.storytelling.Transformable ) {
-			org.lookingglassandalice.storytelling.Transformable transformable = (org.lookingglassandalice.storytelling.Transformable)instanceInJava;
+		if( instanceInJava instanceof org.lookingglassandalice.storytelling.Turnable ) {
+			org.lookingglassandalice.storytelling.Turnable transformable = (org.lookingglassandalice.storytelling.Turnable)instanceInJava;
 			transformable.realizeIfNecessary();
 			org.lookingglassandalice.storytelling.PickHintUtilities.setPickHint( transformable );
 		}
@@ -1796,12 +1796,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	public void addCameraMarkersToScene(Scene sceneToAddTo)
 	{
-		Transformable[] existingComponents = sceneToAddTo.getComponents();
+		Turnable[] existingComponents = sceneToAddTo.getComponents();
 		for (View view : this.mainCameraMarkerList)
 		{
 			MarkerWithIcon marker = this.mainCameraViewTracker.getCameraMarker( view );
 			boolean alreadyHasIt = false;
-			for (Transformable t : existingComponents)
+			for (Turnable t : existingComponents)
 			{
 				if (t == marker)
 				{
@@ -1891,7 +1891,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		CreateObjectMarkerActionOperation.getInstance().setEnabled(false);
 		
 		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
-		Transformable selectedTransformable = this.getTransformableForField(selectedField);
+		Turnable selectedTransformable = this.getTransformableForField(selectedField);
 		String markerName = getNameForObjectMarker( ownerType, selectedField );
 
 		org.lookingglassandalice.storytelling.ObjectMarker objectMarker = new org.lookingglassandalice.storytelling.ObjectMarker();

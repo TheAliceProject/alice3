@@ -46,5 +46,5 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShapeImplementation extends ModelImplementation {
+public abstract class ShapeImplementation extends SimpleModelImplementation {
 }

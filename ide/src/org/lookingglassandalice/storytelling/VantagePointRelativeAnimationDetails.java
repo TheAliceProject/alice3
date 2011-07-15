@@ -46,9 +46,22 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public interface Turner {
-	void turn( TurnDirection direction, Number amount );
-	void turn( TurnDirection direction, Number amount, VantagePointAnimationDetails details );
-	void roll( RollDirection direction, Number amount );
-	void roll( RollDirection direction, Number amount, VantagePointAnimationDetails details );
+public class VantagePointRelativeAnimationDetails extends AbstractAnimationDetails {
+	protected Entity asSeenBy = null;
+	/*package-private*/ Entity getAsSeenBy( Entity valueIfNull ) {
+		return this.asSeenBy != null ? this.asSeenBy : valueIfNull;
+	}
+
+	public VantagePointRelativeAnimationDetails duration( Number value ) {
+		this.duration = value.doubleValue();
+		return this;
+	}
+	public VantagePointRelativeAnimationDetails asSeenBy( Entity value ) {
+		this.asSeenBy = value;
+		return this;
+	}
+	public VantagePointRelativeAnimationDetails style( Style value ) {
+		this.style = value;
+		return this;
+	}
 }

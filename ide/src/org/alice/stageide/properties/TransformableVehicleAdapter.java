@@ -48,7 +48,7 @@ import java.util.Locale;
 import org.lookingglassandalice.storytelling.Entity;
 import org.lookingglassandalice.storytelling.Light;
 import org.lookingglassandalice.storytelling.Scene;
-import org.lookingglassandalice.storytelling.Transformable;
+import org.lookingglassandalice.storytelling.Turnable;
 import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
@@ -59,7 +59,7 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 
-public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity, Transformable> {
+public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity, Turnable> {
 
 	private HierarchyListener hierarchyListener;
 	private org.lgna.croquet.StandardPopupPrepModel popupMenuOperation;
@@ -77,7 +77,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 		}
 	}
 	
-	public TransformableVehicleAdapter(Transformable instance) 
+	public TransformableVehicleAdapter(Turnable instance) 
 	{
 		super("Vehicle", instance);
 	}
@@ -114,8 +114,8 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 			if( o == null ) {
 				break;
 			}
-			if( o instanceof Transformable ) {
-				o = ((Transformable)o).getVehicle();
+			if( o instanceof Turnable ) {
+				o = ((Turnable)o).getVehicle();
 			} else {
 				break;
 			}
@@ -154,7 +154,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 								{
 									canBeVehicle = false;
 								}
-								else if (objectInJava instanceof Transformable && TransformableVehicleAdapter.this.isValidVehicle(objectInJava))
+								else if (objectInJava instanceof Turnable && TransformableVehicleAdapter.this.isValidVehicle(objectInJava))
 								{
 									canBeVehicle = true;
 								}
