@@ -55,7 +55,7 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 	public void translate( edu.cmu.cs.dennisc.math.Point3 translation, EntityImplementation asSeenBy ) {
 		this.translate( translation.x, translation.y, translation.z, asSeenBy );
 	}
-	public void animateTranslation( edu.cmu.cs.dennisc.math.Point3 translation, double duration, EntityImplementation asSeenBy, edu.cmu.cs.dennisc.animation.Style style ) {
+	public void animateTranslate( edu.cmu.cs.dennisc.math.Point3 translation, double duration, EntityImplementation asSeenBy, edu.cmu.cs.dennisc.animation.Style style ) {
 		assert translation.isNaN() == false;
 		assert duration >= 0 : "Invalid argument: duration " + duration + " must be >= 0";
 		assert style != null;
@@ -109,14 +109,14 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 			this.perform( new TranslateAnimation( duration, style, translation, asSeenBy ) );
 		}
 	}
-	public void animateTranslation( edu.cmu.cs.dennisc.math.Point3 translation, double duration, EntityImplementation asSeenBy ) {
-		this.animateTranslation( translation, duration, asSeenBy, DEFAULT_STYLE );
+	public void animateTranslate( edu.cmu.cs.dennisc.math.Point3 translation, double duration, EntityImplementation asSeenBy ) {
+		this.animateTranslate( translation, duration, asSeenBy, DEFAULT_STYLE );
 	}
-	public void animateTranslation( edu.cmu.cs.dennisc.math.Point3 translation, double duration ) {
-		this.animateTranslation( translation, duration, this );
+	public void animateTranslate( edu.cmu.cs.dennisc.math.Point3 translation, double duration ) {
+		this.animateTranslate( translation, duration, this );
 	}
-	public void animateTranslation( edu.cmu.cs.dennisc.math.Point3 translation ) {
-		this.animateTranslation( translation, DEFAULT_DURATION );
+	public void animateTranslate( edu.cmu.cs.dennisc.math.Point3 translation ) {
+		this.animateTranslate( translation, DEFAULT_DURATION );
 	}
 
 	public void rotateInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, EntityImplementation asSeenBy ) {

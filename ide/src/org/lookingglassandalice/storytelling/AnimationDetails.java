@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class AnimationDetails extends AbstractAnimationDetails {
+public class AnimationDetails extends AbstractAnimationDetails {
 	public AnimationDetails duration( Number value ) {
 		this.duration = value.doubleValue();
 		return this;

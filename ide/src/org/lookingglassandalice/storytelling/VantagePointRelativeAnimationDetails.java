@@ -46,21 +46,21 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class VantagePointAnimationDetails extends AbstractAnimationDetails {
+public class VantagePointRelativeAnimationDetails extends AbstractAnimationDetails {
 	protected Entity asSeenBy = null;
 	/*package-private*/ Entity getAsSeenBy( Entity valueIfNull ) {
 		return this.asSeenBy != null ? this.asSeenBy : valueIfNull;
 	}
 
-	public VantagePointAnimationDetails duration( Number value ) {
+	public VantagePointRelativeAnimationDetails duration( Number value ) {
 		this.duration = value.doubleValue();
 		return this;
 	}
-	public VantagePointAnimationDetails asSeenBy( Entity value ) {
+	public VantagePointRelativeAnimationDetails asSeenBy( Entity value ) {
 		this.asSeenBy = value;
 		return this;
 	}
-	public VantagePointAnimationDetails style( Style value ) {
+	public VantagePointRelativeAnimationDetails style( Style value ) {
 		this.style = value;
 		return this;
 	}

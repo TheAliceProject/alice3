@@ -48,9 +48,42 @@ package org.lookingglassandalice.storytelling;
  */
 public abstract class MovableTurnable extends Turnable {
 	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, new VantagePointAnimationDetails() );
+		this.move( direction, amount, new VantagePointRelativeAnimationDetails() );
 	}
-	public void move( MoveDirection direction, Number amount, VantagePointAnimationDetails details ) {
-		this.getImplementation().animateTranslation( direction.createTranslation( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
+	public void move( MoveDirection direction, Number amount, VantagePointRelativeAnimationDetails details ) {
+		this.getImplementation().animateTranslate( direction.createTranslation( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
+	}
+	public void moveToward( Entity target, Number amount ) {
+		this.moveToward( target, amount, new VantagePointRelativeAnimationDetails() );
+	}
+	public void moveToward( Entity target, Number amount, VantagePointRelativeAnimationDetails details ) {
+		edu.cmu.cs.dennisc.math.Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation;
+		edu.cmu.cs.dennisc.math.Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation;
+		edu.cmu.cs.dennisc.math.Vector3 v = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( tTarget, tThis );
+		double length = v.calculateMagnitude();
+		if( length > 0 ) {
+			v.multiply( amount.doubleValue() / length );
+		} else {
+			v.set( 0, 0, amount.doubleValue() );
+		}
+		this.getImplementation().animateApplyTranslation( v.x, v.y, v.z, details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
+	}
+	public void moveAwayFrom( Entity target, Number amount ) {
+		this.moveAwayFrom( target, amount, new VantagePointRelativeAnimationDetails() );
+	}
+	public void moveAwayFrom( Entity target, Number amount, VantagePointRelativeAnimationDetails details ) {
+		this.moveToward( target, -amount.doubleValue(), details );
+	}
+	public void moveTo( Entity target ) {
+		this.moveTo( target, new AnimationDetails() );
+	}
+	public void moveTo( Entity target, AnimationDetails details ) {
+		this.getImplementation().animateSetTranslation( target.getImplementation(), details.getDuration(), details.getStyle() );
+	}
+	public void moveAndOrientTo( Entity target ) {
+		this.moveAndOrientTo( target, new AnimationDetails() );
+	}
+	public void moveAndOrientTo( Entity target, AnimationDetails details ) {
+		this.getImplementation().animateSetTransformation( target.getImplementation(), details.getDuration(), details.getStyle() );
 	}
 }

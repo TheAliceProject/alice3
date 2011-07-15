@@ -50,18 +50,18 @@ public class VantagePointAnimationDetailsFactory {
 	private VantagePointAnimationDetailsFactory() {
 		throw new AssertionError();
 	}
-	public static VantagePointAnimationDetails duration( Number value ) {
-		VantagePointAnimationDetails rv = new VantagePointAnimationDetails();
+	public static VantagePointRelativeAnimationDetails duration( Number value ) {
+		VantagePointRelativeAnimationDetails rv = new VantagePointRelativeAnimationDetails();
 		rv.duration( value );
 		return rv;
 	}
-	public static VantagePointAnimationDetails asSeenBy( Entity value ) {
-		VantagePointAnimationDetails rv = new VantagePointAnimationDetails();
+	public static VantagePointRelativeAnimationDetails asSeenBy( Entity value ) {
+		VantagePointRelativeAnimationDetails rv = new VantagePointRelativeAnimationDetails();
 		rv.asSeenBy( value );
 		return rv;
 	}
-	public static VantagePointAnimationDetails style( Style value ) {
-		VantagePointAnimationDetails rv = new VantagePointAnimationDetails();
+	public static VantagePointRelativeAnimationDetails style( Style value ) {
+		VantagePointRelativeAnimationDetails rv = new VantagePointRelativeAnimationDetails();
 		rv.style( value );
 		return rv;
 	}

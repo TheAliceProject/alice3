@@ -54,15 +54,15 @@ public abstract class Turnable extends Entity implements MutableRider {
 	}
 
 	public void turn( TurnDirection direction, Number amount ) {
-		this.turn( direction, amount, new VantagePointAnimationDetails() );
+		this.turn( direction, amount, new VantagePointRelativeAnimationDetails() );
 	}
-	public void turn( TurnDirection direction, Number amount, VantagePointAnimationDetails details ) {
+	public void turn( TurnDirection direction, Number amount, VantagePointRelativeAnimationDetails details ) {
 		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
 	public void roll( RollDirection direction, Number amount ) {
-		this.roll( direction, amount, new VantagePointAnimationDetails() );
+		this.roll( direction, amount, new VantagePointRelativeAnimationDetails() );
 	}
-	public void roll( RollDirection direction, Number amount, VantagePointAnimationDetails details ) {
+	public void roll( RollDirection direction, Number amount, VantagePointRelativeAnimationDetails details ) {
 		this.getImplementation().animateRotation( direction.getAxis(), new edu.cmu.cs.dennisc.math.AngleInRevolutions( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
 	}
 	
