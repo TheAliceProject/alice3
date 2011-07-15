@@ -40,19 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.implementation;
+
+import org.lookingglassandalice.storytelling.CameraMarker;
+import org.lookingglassandalice.storytelling.OrthographicCameraMarker;
 
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
+import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**
- * @author David Culyba
+ * @author dculyba
+ *
  */
-public class OrthographicCameraMarker extends CameraMarker {
+public class OthographicCameraMarkerImplementation extends CameraMarkerImplementation{
 
-	private final org.lookingglassandalice.storytelling.implementation.OthographicCameraMarkerImplementation implementation = new org.lookingglassandalice.storytelling.implementation.OthographicCameraMarkerImplementation( this );
+	private ClippedZPlane picturePlane = new ClippedZPlane();
+	private final edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] sgAppearances = {};
+	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = {};
+	
+	public OthographicCameraMarkerImplementation(OrthographicCameraMarker abstraction) {
+		super(abstraction);
+	}
+	
 	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.OthographicCameraMarkerImplementation getImplementation() {
-		return this.implementation;
+	protected void createVisuals()
+	{
+		//Do nothing
+	}
+	
+	public void setPicturePlane(ClippedZPlane picturePlane)
+	{
+		this.picturePlane.set(picturePlane);
+	}
+	
+	public ClippedZPlane getPicturePlane()
+	{
+		return this.picturePlane;
+	}
+
+	@Override
+	protected SingleAppearance[] getOpacityAppearances() {
+		return sgAppearances;
+	}
+
+	@Override
+	protected SingleAppearance[] getSgAppearances() {
+		return sgAppearances;
+	}
+
+	@Override
+	protected Visual[] getSgVisuals() {
+		return sgVisuals;
 	}
 
 }

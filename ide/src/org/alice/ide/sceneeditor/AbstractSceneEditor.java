@@ -42,6 +42,9 @@
  */
 package org.alice.ide.sceneeditor;
 
+import org.lookingglassandalice.storytelling.Entity;
+import org.lookingglassandalice.storytelling.ImplementationAccessor;
+
 
 /**
  * @author Dennis Cosgrove
@@ -101,16 +104,26 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 
 	public Object getInstanceInJavaVMForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field) {
-		
 		assert field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-		
 		return getActiveSceneInstance().getFieldValueInstanceInJava((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field);
 	}
 
 	public <E> E getInstanceInJavaVMForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Class<E> cls) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(
-				getInstanceInJavaVMForField(field), cls);
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(getInstanceInJavaVMForField(field), cls);
 	}
+	
+	public  <T extends org.lookingglassandalice.storytelling.implementation.EntityImplementation> T getImplementation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		org.lookingglassandalice.storytelling.Entity entity = getInstanceInJavaVMForField(field, org.lookingglassandalice.storytelling.Entity.class);
+		if (entity != null)
+		{
+			return ImplementationAccessor.getImplementation(entity);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
 	
 	public void removeField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.Statement... statements ){
 	}

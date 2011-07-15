@@ -43,22 +43,6 @@
 
 package org.lookingglassandalice.storytelling;
 
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
-
-public abstract class CameraMarker extends MarkerWithIcon 
+public abstract class CameraMarker extends Marker 
 {
-	public CameraMarker()
-	{
-		super();
-	}
-	
-	@Override
-	public void setName(String name) 
-	{
-		super.setName(name);
-		if (this.getIcon() == null)
-		{
-			this.setIcon( MoveAndTurnSceneEditor.getIconForCameraMarkerName(name) );
-		}
-	}
 }

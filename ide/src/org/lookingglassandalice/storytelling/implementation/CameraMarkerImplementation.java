@@ -40,49 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lookingglassandalice.storytelling.implementation;
 
-package org.lookingglassandalice.storytelling;
-
-import javax.swing.Icon;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public abstract class MarkerWithIcon extends Marker 
-{
-	
-	private Icon icon = null;
-	private Icon iconHighlighted = null;
-	
-	public MarkerWithIcon()
-	{
-		super();
+public abstract class CameraMarkerImplementation extends MarkerImplementation{
+	protected CameraMarkerImplementation(org.lookingglassandalice.storytelling.CameraMarker abstraction){
+		super(abstraction);
 	}
-	
-	public Icon getIcon()
-	{
-		return this.icon;
-	}
-	
-	public void setIcon(Icon icon)
-	{
-		this.icon = icon;
-	}
-	
-	public Icon getHighlightedIcon()
-	{
-		return this.iconHighlighted;
-	}
-	
-	public void setHighlightedIcon(Icon icon)
-	{
-		this.iconHighlighted = icon;
-	}
-	
-	@Override
-	public void setName(String name) 
-	{
-		super.setName(name);
-	}
-	
 }

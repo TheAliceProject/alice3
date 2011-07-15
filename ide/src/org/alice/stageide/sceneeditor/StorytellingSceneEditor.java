@@ -43,14 +43,9 @@
 package org.alice.stageide.sceneeditor;
 
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
-import org.alice.ide.sceneeditor.SceneFieldListSelectionState;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
-import org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState;
-import org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState;
-import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.lgna.croquet.components.DragComponent;
-import org.lgna.croquet.components.BorderPanel.Constraint;
 import org.lookingglassandalice.storytelling.ImplementationAccessor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
@@ -100,6 +95,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	
+	private org.lookingglassandalice.storytelling.implementation.CameraImplementation sceneCameraImplementation;
+	
 	@Override
 	protected void setProgramInstance(InstanceInAlice programInstance) 
 	{
@@ -107,9 +104,23 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setOnscreenLookingGlass(this.onscreenLookingGlass);
 	}
 	
+	protected void setSceneCamera(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField)
+	{
+		org.lookingglassandalice.storytelling.Camera camera = this.getInstanceInJavaVMForField(cameraField, org.lookingglassandalice.storytelling.Camera.class);
+		this.sceneCameraImplementation = ImplementationAccessor.getImplementation(camera);
+	}
+	
 	@Override
 	protected void setActiveScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		super.setActiveScene(sceneField);
+		for (edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneField.getDesiredValueType().getDeclaredFields())
+		{
+			if( field.getDesiredValueType().isAssignableTo(org.lookingglassandalice.storytelling.Camera.class)) 
+			{
+				this.setSceneCamera((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field);
+			}
+		}
+		
 	}
 	
 	@Override
