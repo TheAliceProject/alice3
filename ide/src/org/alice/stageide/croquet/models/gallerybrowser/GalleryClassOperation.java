@@ -131,9 +131,9 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 					}
 					
 				}
-				if (fieldObject instanceof org.alice.apis.moveandturn.Transformable)
+				if (fieldObject instanceof org.lookingglassandalice.storytelling.Transformable)
 				{
-					((org.alice.apis.moveandturn.Transformable)fieldObject).setLocalTransformation(objectTransform);
+					((org.lookingglassandalice.storytelling.Transformable)fieldObject).setLocalTransformation(objectTransform);
 				}
 			}
 			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, fieldObject );

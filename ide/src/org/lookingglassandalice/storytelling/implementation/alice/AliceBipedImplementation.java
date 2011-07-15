@@ -49,16 +49,15 @@ package org.lookingglassandalice.storytelling.implementation.alice;
 public class AliceBipedImplementation extends org.lookingglassandalice.storytelling.implementation.BipedImplementation {
 	public AliceBipedImplementation( org.lookingglassandalice.storytelling.Biped abstraction, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual, edu.cmu.cs.dennisc.texture.Texture texture ) {
 		super( abstraction, sgSkeletonVisual );
-		this.getSgAppearance().setDiffuseColorTexture( texture );
+		this.setDiffuseColorTexture( texture );
 	}
-	@Override
-	public edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getSgVisual() {
-		return (edu.cmu.cs.dennisc.scenegraph.SkeletonVisual)super.getSgVisual();
+	public edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getSgSkeletonVisual() {
+		return (edu.cmu.cs.dennisc.scenegraph.SkeletonVisual)this.getSgVisuals()[ 0 ];
 	}
 	@Override
 	protected JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
 		String key = jointId.toString();
-		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = this.getSgVisual().skeleton.getValue();
+		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = this.getSgSkeletonVisual().skeleton.getValue();
 		edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( key );
 		return new JointImplementation( this, jointId, sgJoint );
 	}

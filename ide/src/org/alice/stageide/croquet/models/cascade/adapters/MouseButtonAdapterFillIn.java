@@ -60,13 +60,13 @@ public class MouseButtonAdapterFillIn extends org.alice.ide.croquet.models.casca
 	}
 	private edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue() { 
 		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] { 
-				new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.alice.apis.moveandturn.event.MouseButtonEvent.class ) 
+				new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.lookingglassandalice.storytelling.event.MouseButtonEvent.class ) 
 		};
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement body = new edu.cmu.cs.dennisc.alice.ast.BlockStatement();
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( "mouseButtonClicked", Void.TYPE, parameters, body );
 		method.isSignatureLocked.setValue( true );
 		edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice type = new edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice();
-		type.superType.setValue( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonListener.class ) );
+		type.superType.setValue( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.event.MouseButtonListener.class ) );
 		type.methods.add( method );
 		edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor = edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor.get( type );
 		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );

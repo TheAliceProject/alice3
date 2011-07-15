@@ -43,7 +43,7 @@
 
 package org.alice.stageide.croquet.models.cascade.keymenus;
 
-import org.alice.apis.moveandturn.Key;
+import org.lookingglassandalice.storytelling.Key;
 
 /**
  * @author Dennis Cosgrove

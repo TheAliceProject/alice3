@@ -55,9 +55,9 @@ import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 
-public class ModelScaleAdapter extends AbstractScaleAdapter<org.alice.apis.moveandturn.Model>
+public class ModelScaleAdapter extends AbstractScaleAdapter<org.lookingglassandalice.storytelling.Model>
 {
-	public ModelScaleAdapter(org.alice.apis.moveandturn.Model instance)
+	public ModelScaleAdapter(org.lookingglassandalice.storytelling.Model instance)
 	{
 		super("Size", instance);
 	}
@@ -69,7 +69,7 @@ public class ModelScaleAdapter extends AbstractScaleAdapter<org.alice.apis.movea
 	}
 	
 	@Override
-	protected InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance) 
+	protected InstanceProperty<?> getPropertyInstanceForInstance(org.lookingglassandalice.storytelling.Model instance) 
 	{
 		if (this.instance != null)
 		{

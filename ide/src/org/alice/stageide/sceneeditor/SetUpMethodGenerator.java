@@ -42,10 +42,10 @@
  */
 package org.alice.stageide.sceneeditor;
 
-import org.alice.apis.moveandturn.AsSeenBy;
-import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.PointOfView;
-import org.alice.apis.moveandturn.Scene;
+import org.lookingglassandalice.storytelling.AsSeenBy;
+import org.lookingglassandalice.storytelling.CameraMarker;
+import org.lookingglassandalice.storytelling.PointOfView;
+import org.lookingglassandalice.storytelling.Scene;
 import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
 import org.lookingglassandalice.storytelling.ImplementationAccessor;
 import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
@@ -75,16 +75,16 @@ public class SetUpMethodGenerator {
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( type, e.name() );
 		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.font.Attribute attribute ) {
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.font.Attribute attribute ) {
 		if( attribute instanceof Enum ) {
 			return createExpression( (Enum)attribute );
 		} else {
-			throw new RuntimeException( "todo handle org.alice.apis.moveandturn.font.Attribute that is not an Enum" );
+			throw new RuntimeException( "todo handle org.lookingglassandalice.storytelling.font.Attribute that is not an Enum" );
 		}
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.ImageSource imageSource ) {
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.ImageSource imageSource ) {
 		if( imageSource != null ) {
-			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
+			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.lookingglassandalice.storytelling.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
 			edu.cmu.cs.dennisc.alice.ast.Expression arg0Expression;
 			org.alice.virtualmachine.resources.ImageResource imageResource = imageSource.getImageResource();
 			if( imageResource != null ) {
@@ -98,9 +98,9 @@ public class SetUpMethodGenerator {
 		}
 	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.Color color ) {
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.Color color ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression rv = null;
-		Class< ? > cls = org.alice.apis.moveandturn.Color.class;
+		Class< ? > cls = org.lookingglassandalice.storytelling.Color.class;
 		for( java.lang.reflect.Field fld : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( cls, cls ) ) {
 			if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, null ).equals( color ) ) {
 				edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression = new edu.cmu.cs.dennisc.alice.ast.TypeExpression( cls );
@@ -119,26 +119,26 @@ public class SetUpMethodGenerator {
 	}
 
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createPositionExpression( edu.cmu.cs.dennisc.math.Point3 translation ) {
-		Class< ? > cls = org.alice.apis.moveandturn.Position.class;
+		Class< ? > cls = org.lookingglassandalice.storytelling.Position.class;
 		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( translation.x ), createExpression( translation.y ), createExpression( translation.z ) );
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createQuaternionExpression( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation ) {
 		edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( orientation );
-		Class< ? > cls = org.alice.apis.moveandturn.Quaternion.class;
+		Class< ? > cls = org.lookingglassandalice.storytelling.Quaternion.class;
 		java.lang.reflect.Constructor< ? > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls, Number.class, Number.class, Number.class, Number.class );
 		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cnstrctr );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( q.x ), createExpression( q.y ), createExpression( q.z ), createExpression( q.w ) );
 	}
 	
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.PointOfView pointOfView ) {
-		Class< ? > cls = org.alice.apis.moveandturn.PointOfView.class;
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, org.alice.apis.moveandturn.Orientation.class, org.alice.apis.moveandturn.Position.class );
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.PointOfView pointOfView ) {
+		Class< ? > cls = org.lookingglassandalice.storytelling.PointOfView.class;
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, org.lookingglassandalice.storytelling.Orientation.class, org.lookingglassandalice.storytelling.Position.class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createQuaternionExpression( pointOfView.getInternal().orientation ), createPositionExpression( pointOfView.getInternal().translation ) );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.Font font ) {
-		Class< ? > cls = org.alice.apis.moveandturn.Font.class;
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, org.alice.apis.moveandturn.font.Attribute[].class );
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.Font font ) {
+		Class< ? > cls = org.lookingglassandalice.storytelling.Font.class;
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, org.lookingglassandalice.storytelling.font.Attribute[].class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( font.getFamily() ), createExpression( font.getWeight() ), createExpression( font.getPosture() ) );
 	}
 
@@ -155,7 +155,7 @@ public class SetUpMethodGenerator {
 	{
 		if (pointOfViewField != null)
 		{
-			bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.AbstractTransformable.class, "moveAndOrientTo", new Class< ? >[] {org.alice.apis.moveandturn.ReferenceFrame.class, Number.class}, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( false, pointOfViewField ), createExpression( 0.0 ) ) );
+			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "moveAndOrientTo", new Class< ? >[] {org.lookingglassandalice.storytelling.Entity.class, Number.class}, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( false, pointOfViewField ), createExpression( 0.0 ) ) );
 		}
 	}
 	
@@ -163,7 +163,7 @@ public class SetUpMethodGenerator {
 	{
 		if (vehicleField != null)
 		{
-			bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "setVehicle", org.alice.apis.moveandturn.Composite.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
+			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "setVehicle", org.lookingglassandalice.storytelling.Entity.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
 		}
 	}
 	
@@ -174,19 +174,19 @@ public class SetUpMethodGenerator {
 			EntityImplementation implementation = ImplementationAccessor.getImplementation(model);
 			Composite sgComposite = implementation.getSgComposite();
 			Composite sgParent = sgComposite.getParent();
-			org.alice.apis.moveandturn.Composite vehicle = (org.alice.apis.moveandturn.Composite)org.alice.apis.moveandturn.Element.getElement( sgParent );
+			org.lookingglassandalice.storytelling.Entity vehicle = (org.lookingglassandalice.storytelling.Entity)org.lookingglassandalice.storytelling.Entity.getElement( sgParent );
 			boolean isVehicleScene = (vehicle instanceof Scene);
 			edu.cmu.cs.dennisc.alice.ast.AbstractField vehicleField = mapper.getFieldForInstanceInJavaVM(vehicle);
-			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setVehicle", org.alice.apis.moveandturn.Composite.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
+			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setVehicle", org.lookingglassandalice.storytelling.Entity.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
 			
 			PointOfView pov = new PointOfView(sgComposite.getTransformation(sgParent));
-			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( pov ) ) );
+			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( pov ) ) );
 		}
-		else if( instance instanceof org.alice.apis.moveandturn.Element ) {
-			org.alice.apis.moveandturn.Element element = (org.alice.apis.moveandturn.Element)instance;
+		else if( instance instanceof org.lookingglassandalice.storytelling.Entity ) {
+			org.lookingglassandalice.storytelling.Entity element = (org.lookingglassandalice.storytelling.Entity)instance;
 			bodyStatementsProperty.add( createStatement( edu.cmu.cs.dennisc.pattern.AbstractElement.class, "setName", String.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( field.getName() ) ) );
-			if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
-				org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)element;
+			if( instance instanceof org.lookingglassandalice.storytelling.Transformable ) {
+				org.lookingglassandalice.storytelling.Transformable transformable = (org.lookingglassandalice.storytelling.Transformable)element;
 				
 				boolean isVehicleScene = (transformable.getVehicle() instanceof Scene);
 				SetUpMethodGenerator.fillInAutomaticVehicleAssignment(bodyStatementsProperty, field, mapper.getFieldForInstanceInJavaVM(transformable.getVehicle()), isVehicleScene);
@@ -195,75 +195,69 @@ public class SetUpMethodGenerator {
 				{
 					CameraMarker marker = (CameraMarker)transformable;
 					//CameraMarkers are all fields of the Scene but may be parented to the camera while being edited in the scene editor. Because of this, make sure to get their LocalPointOfView as seen by the Scene
-					bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.AbstractTransformable.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getPointOfView(AsSeenBy.SCENE) ) ) );
-					org.alice.apis.moveandturn.Color markerColor = marker.getColor();
-					bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Marker.class, "setColor", new Class< ? >[] { org.alice.apis.moveandturn.Color.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( markerColor ) ) );
+					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getPointOfView(AsSeenBy.SCENE) ) ) );
+					org.lookingglassandalice.storytelling.Color markerColor = marker.getColor();
+					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Marker.class, "setColor", new Class< ? >[] { org.lookingglassandalice.storytelling.Color.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( markerColor ) ) );
 				}
 				else
 				{
-					bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.AbstractTransformable.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getLocalPointOfView() ) ) );
+					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getLocalPointOfView() ) ) );
 				}
-				if( instance instanceof org.alice.apis.moveandturn.AbstractModel ) {
-					org.alice.apis.moveandturn.AbstractModel abstractModel = (org.alice.apis.moveandturn.AbstractModel)transformable;
+				if( instance instanceof org.lookingglassandalice.storytelling.Resizable ) {
+					org.lookingglassandalice.storytelling.Resizable resizable = (org.lookingglassandalice.storytelling.Resizable)transformable;
 
-					double widthFactor = abstractModel.getResizeWidthAmount();
+					double widthFactor = resizable.getResizeWidthAmount();
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( widthFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeWidth", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( widthFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
+						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "resizeWidth", new Class< ? >[] { Number.class, Number.class, org.lookingglassandalice.storytelling.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( widthFactor ), createExpression( 0.0 ), createExpression( org.lookingglassandalice.storytelling.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
-					double heightFactor = abstractModel.getResizeHeightAmount();
+					double heightFactor = resizable.getResizeHeightAmount();
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( heightFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeHeight", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( heightFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
+						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "resizeHeight", new Class< ? >[] { Number.class, Number.class, org.lookingglassandalice.storytelling.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( heightFactor ), createExpression( 0.0 ), createExpression( org.lookingglassandalice.storytelling.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
-					double depthFactor = abstractModel.getResizeDepthAmount();
+					double depthFactor = resizable.getResizeDepthAmount();
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( depthFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeDepth", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( depthFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
+						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Transformable.class, "resizeDepth", new Class< ? >[] { Number.class, Number.class, org.lookingglassandalice.storytelling.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( depthFactor ), createExpression( 0.0 ), createExpression( org.lookingglassandalice.storytelling.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
-					if( instance instanceof org.alice.apis.moveandturn.Model ) {
-						org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)transformable;
+					if( instance instanceof org.lookingglassandalice.storytelling.Model ) {
+						org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)transformable;
 
-						org.alice.apis.moveandturn.Color modelColor = model.getColor();
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Model.class, "setColor", new Class< ? >[] { org.alice.apis.moveandturn.Color.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( modelColor ) ) );
+						org.lookingglassandalice.storytelling.Color modelColor = model.getColor();
+						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setColor", new Class< ? >[] { org.lookingglassandalice.storytelling.Color.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( modelColor ) ) );
 						
 						Double modelOpacity = model.getOpacity();
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Model.class, "setOpacity", new Class< ? >[] { Number.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( modelOpacity ) ) );
+						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setOpacity", new Class< ? >[] { Number.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( modelOpacity ) ) );
 						
-						if( model instanceof org.alice.apis.moveandturn.Text ) {
-							org.alice.apis.moveandturn.Text text = (org.alice.apis.moveandturn.Text)model;
-							bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setValue", String.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( text.getValue() ) ) );
-							bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setFont", org.alice.apis.moveandturn.Font.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( text.getFont() ) ) );
-							bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setLetterHeight", Number.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( text.getLetterHeight() ) ) );
-						} else if( model instanceof org.alice.apis.stage.Person ) {
-							org.alice.apis.stage.Person person = (org.alice.apis.stage.Person)model;
-							if( person instanceof org.alice.apis.stage.MaleAdult || person instanceof org.alice.apis.stage.FemaleAdult ) {
-								//pass
-							} else {
-								bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setGender", org.alice.apis.stage.Gender.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( person.getGender() ) ) );
-							}
-
-							bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setHair", org.alice.apis.stage.Hair.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getHair() ) ) );
-							bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setEyeColor", org.alice.apis.stage.EyeColor.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getEyeColor() ) ) );
-							bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setSkinTone", org.alice.apis.stage.SkinTone.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getSkinTone() ) ) );
-							bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setOutfit", org.alice.apis.stage.Outfit.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getOutfit() ) ) );
-							bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setFitnessLevel", Number.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( person.getFitnessLevel() ) ) );
+						if( model instanceof org.lookingglassandalice.storytelling.Text ) {
+							org.lookingglassandalice.storytelling.Text text = (org.lookingglassandalice.storytelling.Text)model;
+							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Text.class, "setValue", String.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( text.getValue() ) ) );
+							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Text.class, "setFont", org.lookingglassandalice.storytelling.Font.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( text.getFont() ) ) );
+							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Text.class, "setLetterHeight", Number.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( text.getLetterHeight() ) ) );
+						} else if( model instanceof org.lookingglassandalice.storytelling.Person ) {
+							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setGender", org.lookingglassandalice.storytelling.Gender.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( person.getGender() ) ) );
+							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setHair", org.lookingglassandalice.storytelling.Hair.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getHair() ) ) );
+							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setEyeColor", org.lookingglassandalice.storytelling.EyeColor.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getEyeColor() ) ) );
+							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setSkinTone", org.lookingglassandalice.storytelling.SkinTone.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getSkinTone() ) ) );
+							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setOutfit", org.lookingglassandalice.storytelling.Outfit.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getOutfit() ) ) );
+							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setFitnessLevel", Number.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( person.getFitnessLevel() ) ) );
 
 						}
-					} else if( instance instanceof org.alice.apis.moveandturn.Billboard ) {
-						org.alice.apis.moveandturn.Billboard billboard = (org.alice.apis.moveandturn.Billboard)transformable;
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Billboard.class, "setFrontImageSource", org.alice.apis.moveandturn.ImageSource.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getFrontImageSource() ) ) );
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Billboard.class, "setBackImageSource", org.alice.apis.moveandturn.ImageSource.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getBackImageSource() ) ) );
+					} else if( instance instanceof org.lookingglassandalice.storytelling.Billboard ) {
+						org.lookingglassandalice.storytelling.Billboard billboard = (org.lookingglassandalice.storytelling.Billboard)transformable;
+						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Billboard.class, "setFrontImageSource", org.lookingglassandalice.storytelling.ImageSource.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getFrontImageSource() ) ) );
+						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Billboard.class, "setBackImageSource", org.lookingglassandalice.storytelling.ImageSource.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getBackImageSource() ) ) );
 					}
 				}
-//				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Composite.class, "addComponent", org.alice.apis.moveandturn.Transformable.class, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), SetUpMethodGenerator.createInstanceExpression( isThis, field ) ) );
+//				bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Entity.class, "addComponent", org.lookingglassandalice.storytelling.Transformable.class, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), SetUpMethodGenerator.createInstanceExpression( isThis, field ) ) );
 				
-			} else if( instance instanceof org.alice.apis.moveandturn.Scene ) {
-				org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)element;
-				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Scene.class, "setAtmosphereColor", org.alice.apis.moveandturn.Color.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( scene.getAtmosphereColor() ) ) );
+			} else if( instance instanceof org.lookingglassandalice.storytelling.Scene ) {
+				org.lookingglassandalice.storytelling.Scene scene = (org.lookingglassandalice.storytelling.Scene)element;
+				bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Scene.class, "setAtmosphereColor", org.lookingglassandalice.storytelling.Color.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( scene.getAtmosphereColor() ) ) );
 			}
 		}
 	}

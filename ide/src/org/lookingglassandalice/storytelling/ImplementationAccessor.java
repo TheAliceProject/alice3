@@ -56,4 +56,14 @@ public class ImplementationAccessor {
 	public static org.lookingglassandalice.storytelling.implementation.ProgramImplementation getImplementation( Program program ) {
 		return program.getImplementation();
 	}
+	public static edu.cmu.cs.dennisc.math.UnitQuaternion getUnitQuaternion( Quaternion quaternion ) {
+		return quaternion.getInternal();
+	}
+	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAffineMatrix4x4( PointOfView pointOfView ) {
+		return pointOfView.getInternal();
+	}
+	public static edu.cmu.cs.dennisc.color.Color4f getColor4f( Color color ) {
+		return color.getInternal();
+	}
+	
 }

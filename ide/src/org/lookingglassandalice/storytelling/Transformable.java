@@ -43,8 +43,6 @@
 
 package org.lookingglassandalice.storytelling;
 
-import org.alice.apis.moveandturn.PointOfView;
-
 /**
  * @author Dennis Cosgrove
  */

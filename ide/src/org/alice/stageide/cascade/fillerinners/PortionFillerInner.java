@@ -48,7 +48,7 @@ package org.alice.stageide.cascade.fillerinners;
  */
 public class PortionFillerInner extends org.alice.ide.cascade.fillerinners.AbstractDoubleFillerInner {
 	public PortionFillerInner() {
-		super( org.alice.apis.moveandturn.Portion.class, new double[] { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 } );
+		super( org.lookingglassandalice.storytelling.Portion.class, new double[] { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 } );
 	}
 	@Override
 	protected org.lgna.croquet.CascadeItem getCustomItem() {

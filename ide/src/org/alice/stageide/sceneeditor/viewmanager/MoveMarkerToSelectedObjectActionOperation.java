@@ -46,8 +46,8 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.alice.apis.moveandturn.MarkerWithIcon;
-import org.alice.apis.moveandturn.Transformable;
+import org.lookingglassandalice.storytelling.MarkerWithIcon;
+import org.lookingglassandalice.storytelling.Transformable;
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
@@ -147,17 +147,17 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 	@Override
 	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		final MarkerWithIcon objectMarker;
-		final org.alice.apis.moveandturn.PointOfView prevPOV;
-		final org.alice.apis.moveandturn.PointOfView nextPOV;
+		final org.lookingglassandalice.storytelling.PointOfView prevPOV;
+		final org.lookingglassandalice.storytelling.PointOfView nextPOV;
 		
 		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor());
 		
 		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
 		final Transformable selectedTransformable = sceneEditor.getTransformableForField(selectedField);
-		objectMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.alice.apis.moveandturn.ObjectMarker.class);
+		objectMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.lookingglassandalice.storytelling.ObjectMarker.class);
 		if( objectMarker != null ) {
-			prevPOV = objectMarker.getPointOfView( org.alice.apis.moveandturn.AsSeenBy.SCENE );
-			nextPOV = selectedTransformable.getPointOfView(org.alice.apis.moveandturn.AsSeenBy.SCENE);
+			prevPOV = objectMarker.getPointOfView( org.lookingglassandalice.storytelling.AsSeenBy.SCENE );
+			nextPOV = selectedTransformable.getPointOfView(org.lookingglassandalice.storytelling.AsSeenBy.SCENE);
 			if( nextPOV.getInternal().isNaN() ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveMarkerToSelectedObjectActionOperation isNaN" );
 				step.cancel();
@@ -184,8 +184,8 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 		
 	}
 	
-	private static void setAbsolutePOV( org.alice.apis.moveandturn.AbstractTransformable transformable, org.alice.apis.moveandturn.PointOfView pov ) {
-		org.alice.apis.moveandturn.Scene scene = transformable.getScene();
+	private static void setAbsolutePOV( org.lookingglassandalice.storytelling.Transformable transformable, org.lookingglassandalice.storytelling.PointOfView pov ) {
+		org.lookingglassandalice.storytelling.Scene scene = transformable.getScene();
 		assert scene != null;
 		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );
 	}

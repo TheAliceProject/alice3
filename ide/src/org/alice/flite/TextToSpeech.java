@@ -57,7 +57,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.Line;
 
-import org.alice.apis.moveandturn.AudioSource;
+import org.lookingglassandalice.storytelling.AudioSource;
 import org.alice.virtualmachine.resources.AudioResource;
 
 public class TextToSpeech 

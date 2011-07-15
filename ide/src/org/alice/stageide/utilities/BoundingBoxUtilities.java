@@ -82,13 +82,13 @@ public class BoundingBoxUtilities {
 		return getSGTransformableBBox(sgTransformable, false);
 	}
 	
-	public static AxisAlignedBox getTransformableScaledBBox(org.alice.apis.moveandturn.Transformable transformable)
+	public static AxisAlignedBox getTransformableScaledBBox(org.lookingglassandalice.storytelling.Transformable transformable)
 	{
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = transformable.getSGTransformable();
 		return getSGTransformableBBox(sgTransformable, true);
 	}
 	
-	public static AxisAlignedBox getTransformableUnscaledBBox(org.alice.apis.moveandturn.Transformable transformable)
+	public static AxisAlignedBox getTransformableUnscaledBBox(org.lookingglassandalice.storytelling.Transformable transformable)
 	{
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = transformable.getSGTransformable();
 		return getSGTransformableBBox(sgTransformable, false);

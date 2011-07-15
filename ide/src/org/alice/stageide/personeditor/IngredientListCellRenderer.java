@@ -51,7 +51,7 @@ import org.alice.stageide.croquet.models.personeditor.PersonInfo;
 abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< E > {
 	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
 	protected abstract String getSubPath();
-	private java.net.URL getIngredientResourceName( org.alice.apis.stage.SkinTone skinTone, String clsName, String enumConstantName ) {
+	private java.net.URL getIngredientResourceName( org.lookingglassandalice.storytelling.SkinTone skinTone, String clsName, String enumConstantName ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "images/" );
 		sb.append( this.getSubPath() );
@@ -67,15 +67,15 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 		return rv;
 	}
 
-	private org.alice.apis.stage.BaseSkinTone getBaseSkinTone() {
-		org.alice.apis.stage.Person person = PersonViewer.getSingleton().getPerson();
+	private org.lookingglassandalice.storytelling.BaseSkinTone getBaseSkinTone() {
+		org.lookingglassandalice.storytelling.Person person = PersonViewer.getSingleton().getPerson();
 		if( person != null ) {
-			org.alice.apis.stage.SkinTone skinTone = person.getSkinTone();
-			if( skinTone instanceof org.alice.apis.stage.BaseSkinTone ) {
-				return (org.alice.apis.stage.BaseSkinTone)skinTone;
+			org.lookingglassandalice.storytelling.SkinTone skinTone = person.getSkinTone();
+			if( skinTone instanceof org.lookingglassandalice.storytelling.BaseSkinTone ) {
+				return (org.lookingglassandalice.storytelling.BaseSkinTone)skinTone;
 			}
 		}
-		return org.alice.apis.stage.BaseSkinTone.DARK;
+		return org.lookingglassandalice.storytelling.BaseSkinTone.DARK;
 	}
 
 	@Override
@@ -85,7 +85,7 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 			String clsName = value.getClass().getSimpleName();
 			String enumConstantName = value.toString();
 			
-			org.alice.apis.stage.SkinTone baseSkinTone = this.getBaseSkinTone();
+			org.lookingglassandalice.storytelling.SkinTone baseSkinTone = this.getBaseSkinTone();
 
 			java.net.URL urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
 			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );

@@ -43,7 +43,7 @@
 package org.alice.stageide;
 
 
-public class TestMethodProgram extends org.alice.apis.moveandturn.Program {
+public class TestMethodProgram extends org.lookingglassandalice.storytelling.Program {
 	class TestVirtualMachine extends edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine {
 		@Override
 		public Object get( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
@@ -90,8 +90,8 @@ public class TestMethodProgram extends org.alice.apis.moveandturn.Program {
 		this.field = field;
 		this.emptyExpressionMethodInvocation = emptyExpressionMethodInvocation;
 		this.vm = new TestVirtualMachine();
-		this.vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
-		this.vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lookingglassandalice.storytelling.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lookingglassandalice.storytelling.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
 		this.addComponentListener( new java.awt.event.ComponentListener() {
 			public void componentShown( java.awt.event.ComponentEvent e ) {
 			}
@@ -114,7 +114,7 @@ public class TestMethodProgram extends org.alice.apis.moveandturn.Program {
 	@Override
 	protected void initialize() {
 		this.sceneInstance = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)this.vm.createInstanceEntryPoint( this.sceneType );
-		org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)this.sceneInstance.getInstanceInJava();
+		org.lookingglassandalice.storytelling.Scene scene = (org.lookingglassandalice.storytelling.Scene)this.sceneInstance.getInstanceInJava();
 		this.setScene( scene );
 	}
 	@Override

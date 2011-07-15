@@ -45,10 +45,10 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
-import org.alice.apis.moveandturn.Composite;
-import org.alice.apis.moveandturn.Light;
-import org.alice.apis.moveandturn.Scene;
-import org.alice.apis.moveandturn.Transformable;
+import org.lookingglassandalice.storytelling.Entity;
+import org.lookingglassandalice.storytelling.Light;
+import org.lookingglassandalice.storytelling.Scene;
+import org.lookingglassandalice.storytelling.Transformable;
 import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
@@ -59,14 +59,14 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 
-public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composite, Transformable> {
+public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity, Transformable> {
 
 	private HierarchyListener hierarchyListener;
 	private org.lgna.croquet.StandardPopupPrepModel popupMenuOperation;
 	
-	protected class SetVehicleOperation extends SetValueOperation<Composite>
+	protected class SetVehicleOperation extends SetValueOperation<Entity>
 	{
-		public SetVehicleOperation( Composite value, String name) {
+		public SetVehicleOperation( Entity value, String name) {
 			super( TransformableVehicleAdapter.this, value, name, java.util.UUID.fromString( "981768b7-f40b-4363-b64f-34264be73651" ) );
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getFieldForInstanceInJavaVM(value);
 			if (field != null)
@@ -103,9 +103,9 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 		this.notifyValueObservers(this.getValue());
 	}
 	
-	protected boolean isValidVehicle(Composite vehicle)
+	protected boolean isValidVehicle(Entity vehicle)
 	{
-		Composite o = vehicle;
+		Entity o = vehicle;
 		while( true ) {
 			if ( o == this.instance )
 			{
@@ -135,7 +135,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 					org.lgna.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > possibleFields = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
 					java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> setVehicleOperations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					
-					Composite currentVehicle = TransformableVehicleAdapter.this.getValue();
+					Entity currentVehicle = TransformableVehicleAdapter.this.getValue();
 					if (currentVehicle != null)
 					{
 						setVehicleOperations.add(new SetVehicleOperation(currentVehicle, TransformableVehicleAdapter.getNameForVehicle(currentVehicle)+TransformableVehicleAdapter.this.getCurrentValueLabelString()).getMenuItemPrepModel());
@@ -146,7 +146,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 					{
 						if (field instanceof FieldDeclaredInAlice)
 						{
-							Composite objectInJava = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getInstanceInJavaVMForField((FieldDeclaredInAlice)field, Composite.class);
+							Entity objectInJava = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getInstanceInJavaVMForField((FieldDeclaredInAlice)field, Entity.class);
 							boolean canBeVehicle = false;
 							if (objectInJava != null)
 							{
@@ -180,12 +180,12 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	}
 	
 	@Override
-	public SetValueOperation<Composite> getSetValueOperation(Composite value) 
+	public SetValueOperation<Entity> getSetValueOperation(Entity value) 
 	{
 		return new SetVehicleOperation(value, null);
 	}
 
-	public static String getNameForVehicle(Composite vehicle)
+	public static String getNameForVehicle(Entity vehicle)
 	{
 		if (vehicle != null)
 		{
@@ -206,7 +206,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 		}
 	}
 	
-	public static javax.swing.Icon getIconForVehicle(Composite vehicle)
+	public static javax.swing.Icon getIconForVehicle(Entity vehicle)
 	{
 		if (vehicle != null)
 		{
@@ -227,7 +227,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	}
 
 	@Override
-	public void setValue(Composite value) 
+	public void setValue(Entity value) 
 	{
 		super.setValue(value);
 		if (this.instance != null)
@@ -236,12 +236,12 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 		}
 	}
 
-	public Class<Composite> getPropertyType() 
+	public Class<Entity> getPropertyType() 
 	{
-		return Composite.class;
+		return Entity.class;
 	}
 
-	public Composite getValue() 
+	public Entity getValue() 
 	{
 		if (this.instance != null)
 		{
@@ -250,7 +250,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 		return null;
 	}
 	
-	public Composite getValueCopy() 
+	public Entity getValueCopy() 
 	{
 		return this.getValue();
 	}

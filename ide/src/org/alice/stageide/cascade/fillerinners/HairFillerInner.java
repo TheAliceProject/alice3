@@ -47,10 +47,10 @@ package org.alice.stageide.cascade.fillerinners;
  */
 public class HairFillerInner extends IngredientFillerInner {
 	public HairFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Hair.class ) );
+		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Hair.class ) );
 	}
 	@Override
-	protected Class<? extends org.alice.apis.stage.Ingredient>[] getClses( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
-		return org.alice.apis.stage.HairManager.getSingleton().getImplementingClasses( lifeStage, gender );
+	protected Class<? extends org.lookingglassandalice.storytelling.Ingredient>[] getClses( org.lookingglassandalice.storytelling.LifeStage lifeStage, org.lookingglassandalice.storytelling.Gender gender ) {
+		return org.lookingglassandalice.storytelling.HairManager.getSingleton().getImplementingClasses( lifeStage, gender );
 	}
 }

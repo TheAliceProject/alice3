@@ -95,7 +95,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 			} else {
 				rv.setSmallIcon( FOLDER_LARGE_ICON );
 			}
-			rv.setName( GalleryBrowser.getTextFor(treeNode, false) );
+			rv.setName( ClassBasedGalleryBrowser.getTextFor(treeNode, false) );
 			return rv;
 		}
 		public Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode) {
@@ -187,7 +187,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 			}
 			if( iterable != null ) {
 				for( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> child : iterable ) {
-					String name = GalleryBrowser.getTextFor(child, false);
+					String name = ClassBasedGalleryBrowser.getTextFor(child, false);
 					if( name != null ) {
 						if( child.isLeaf() ) {
 							this.addComponent( ClassBasedGalleryDragComponent.getInstance( child ) );
@@ -224,8 +224,8 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 	}
 
 	private static final int GAP = 4;
-	private static final javax.swing.ImageIcon FOLDER_LARGE_ICON = new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/folder.png"));
-	private static final javax.swing.ImageIcon FOLDER_SMALL_ICON = new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/folder24.png"));
+	private static final javax.swing.ImageIcon FOLDER_LARGE_ICON = new javax.swing.ImageIcon(ClassBasedGalleryBrowser.class.getResource("images/folder.png"));
+	private static final javax.swing.ImageIcon FOLDER_SMALL_ICON = new javax.swing.ImageIcon(ClassBasedGalleryBrowser.class.getResource("images/folder24.png"));
 	
 	private TreeSelectionState< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> > treeSelectionState;
 	private StringState filterState;
@@ -299,7 +299,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 		createPersonButton.setHorizontalTextPosition( HorizontalTextPosition.CENTER );
 		createPersonButton.setVerticalTextPosition( VerticalTextPosition.BOTTOM );
 
-		createPersonFieldOperation.setSmallIcon(new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
+		createPersonFieldOperation.setSmallIcon(new javax.swing.ImageIcon(ClassBasedGalleryBrowser.class.getResource("images/create_person.png")));
 
 		LineAxisPanel pathControlPanel = new LineAxisPanel();
 		pathControlPanel.addComponent( this.treeSelectionState.createClassBasedPathControl( this.createInitializer() ) );
@@ -373,7 +373,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 				return rv;
 			}
 			public Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode) {
-				String name = GalleryBrowser.getTextFor(treeNode, true);
+				String name = ClassBasedGalleryBrowser.getTextFor(treeNode, true);
 				if( name != null ) {
 					Operation<?> rv = GalleryClassOperation.getInstance( treeNode );
 					rv.setName( name );

@@ -75,6 +75,11 @@ public abstract class EntityImplementation {
 	}
 
 	protected static final double RIGHT_NOW = 0.0;
+	protected static final double DEFAULT_DURATION = 1.0;
+	protected static final edu.cmu.cs.dennisc.animation.Style DEFAULT_STYLE = edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY;
+//	public static final Style DEFAULT_SPEED_STYLE = org.alice.apis.moveandturn.TraditionalStyle.BEGIN_AND_END_ABRUPTLY;
+//	public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.THIS_AND_DESCENDANT_PARTS;
+	
 	private double getSimulationSpeedFactor() {
 		ProgramImplementation programImplementation = this.getProgram();
 		if( programImplementation != null ) {
@@ -97,6 +102,10 @@ public abstract class EntityImplementation {
 			}
 		}
 		return duration;
+	}
+	
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
+		return this.getSgComposite().getAbsoluteTransformation();
 	}
 	
 	protected void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {

@@ -51,8 +51,8 @@ public class OrientToUprightActionOperation extends TransformableFieldTileAction
 		this.setName( "Orient to Upright" );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = transformable.getSGAbstractTransformable().getAbsoluteTransformation();
+	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lookingglassandalice.storytelling.implementation.TransformableImplementation transformableImp ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = transformableImp.getAbsoluteTransformation();
 		edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 axes = edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createFromStandUp( m.orientation );
 		return new edu.cmu.cs.dennisc.math.AffineMatrix4x4( axes, m.translation );
 	}

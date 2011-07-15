@@ -48,7 +48,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.alice.apis.moveandturn.Model;
+import org.lookingglassandalice.storytelling.Model;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.alice.ide.properties.uicontroller.AbstractAdapterController;
@@ -97,7 +97,7 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 	@Override
 	public Class<?> getPropertyType() 
 	{
-		return org.alice.apis.moveandturn.Model.class;
+		return org.lookingglassandalice.storytelling.Model.class;
 	}
 
 	@Override

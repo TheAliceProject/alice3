@@ -61,13 +61,13 @@ public class KeyAdapterFillIn extends org.alice.ide.croquet.models.cascade.Expre
 	}
 	private edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue() { 
 		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] { 
-				new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.alice.apis.moveandturn.event.KeyEvent.class ) 
+				new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.lookingglassandalice.storytelling.event.KeyEvent.class ) 
 		};
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement body = new edu.cmu.cs.dennisc.alice.ast.BlockStatement();
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( "keyPressed", Void.TYPE, parameters, body );
 		method.isSignatureLocked.setValue( true );
 		edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice type = new edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice();
-		type.superType.setValue( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyListener.class ) );
+		type.superType.setValue( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.event.KeyListener.class ) );
 		type.methods.add( method );
 		edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor = edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor.get( type );
 		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );

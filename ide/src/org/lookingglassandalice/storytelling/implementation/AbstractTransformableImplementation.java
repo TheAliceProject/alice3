@@ -109,6 +109,16 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 			this.perform( new TranslateAnimation( duration, style, translation, asSeenBy ) );
 		}
 	}
+	public void animateTranslation( edu.cmu.cs.dennisc.math.Point3 translation, double duration, EntityImplementation asSeenBy ) {
+		this.animateTranslation( translation, duration, asSeenBy, DEFAULT_STYLE );
+	}
+	public void animateTranslation( edu.cmu.cs.dennisc.math.Point3 translation, double duration ) {
+		this.animateTranslation( translation, duration, this );
+	}
+	public void animateTranslation( edu.cmu.cs.dennisc.math.Point3 translation ) {
+		this.animateTranslation( translation, DEFAULT_DURATION );
+	}
+
 	public void rotateInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, EntityImplementation asSeenBy ) {
 		this.getSgComposite().applyRotationAboutArbitraryAxisInRadians( axis, angleInRadians, asSeenBy.getSgComposite() );
 	}

@@ -43,8 +43,8 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.OrthographicCameraMarker;
+import org.lookingglassandalice.storytelling.CameraMarker;
+import org.lookingglassandalice.storytelling.OrthographicCameraMarker;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 

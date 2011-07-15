@@ -47,30 +47,37 @@ package org.lookingglassandalice.storytelling.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractModelImplementation extends TransformableImplementation {
-	private final edu.cmu.cs.dennisc.scenegraph.Visual sgVisual;
-	private final edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
-	public AbstractModelImplementation( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
-		this.sgVisual = sgVisual;;
-		this.sgVisual.frontFacingAppearance.setValue( this.sgAppearance );
-		this.sgVisual.setParent( this.getSgComposite() );
+	protected abstract edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] getSgAppearances();
+	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
+	public final void setColor( edu.cmu.cs.dennisc.color.Color4f color ) {
+		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
+			sgAppearance.diffuseColor.setValue( color );
+		}
 	}
-	public edu.cmu.cs.dennisc.scenegraph.Visual getSgVisual() {
-		return this.sgVisual;
+	public final void setOpacity( float opacity ) {
+		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
+			sgAppearance.opacity.setValue( opacity );
+		}
 	}
-	public edu.cmu.cs.dennisc.scenegraph.SingleAppearance getSgAppearance() {
-		return this.sgAppearance;
+	public final void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
+		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
+			sgAppearance.diffuseColorTexture.setValue( diffuseColorTexture );
+		}
 	}
-	public edu.cmu.cs.dennisc.color.Color4f getColor() {
-		return this.sgAppearance.diffuseColor.getValue();
-	}
-	public void setColor( edu.cmu.cs.dennisc.color.Color4f color ) {
-		this.sgAppearance.diffuseColor.setValue( color );
-	}
-	public float getOpacity() {
-		return this.sgAppearance.opacity.getValue();
-	}
-	public void setOpacity( float opacity ) {
-		this.sgAppearance.opacity.setValue( opacity );
-	}
-
+//	@Override
+//	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans, boolean isOriginIncluded ) {
+//		super.updateCumulativeBound( rv, trans, isOriginIncluded );
+//		rv.add( this.sgFrontFace, trans );
+//		rv.add( this.sgBackFace, trans );
+//		return rv;
+//	}
+//	
+//	@Override
+//	protected void applyScale( edu.cmu.cs.dennisc.math.Vector3 axis, boolean isScootDesired ) {
+//		super.applyScale( axis, isScootDesired );
+//		edu.cmu.cs.dennisc.math.Matrix3x3 scale = sgFrontFace.scale.getValue();
+//		edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
+//		sgFrontFace.scale.setValue( scale );
+//		sgBackFace.scale.setValue( scale );
+//	}
 }

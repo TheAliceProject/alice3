@@ -56,9 +56,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.ObjectMarker;
-import org.alice.apis.moveandturn.PerspectiveCameraMarker;
+import org.lookingglassandalice.storytelling.CameraMarker;
+import org.lookingglassandalice.storytelling.ObjectMarker;
+import org.lookingglassandalice.storytelling.PerspectiveCameraMarker;
 import org.alice.interact.condition.InputCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;
@@ -426,7 +426,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		CameraMarker cameraMarker = null;
 		if (selected != null)
 		{
-			org.alice.apis.moveandturn.Element selectedMoveAndTurnObject = org.alice.apis.moveandturn.Element.getElement( selected );
+			org.lookingglassandalice.storytelling.Entity selectedMoveAndTurnObject = org.lookingglassandalice.storytelling.Entity.getElement( selected );
 			if (selectedMoveAndTurnObject instanceof CameraMarker)
 			{
 				cameraMarker = (CameraMarker)selectedMoveAndTurnObject;
@@ -457,7 +457,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		ObjectMarker objectMarker = null;
 		if (selected != null)
 		{
-			org.alice.apis.moveandturn.Element selectedMoveAndTurnObject = org.alice.apis.moveandturn.Element.getElement( selected );
+			org.lookingglassandalice.storytelling.Entity selectedMoveAndTurnObject = org.lookingglassandalice.storytelling.Entity.getElement( selected );
 			if (selectedMoveAndTurnObject instanceof ObjectMarker)
 			{
 				objectMarker = (ObjectMarker)selectedMoveAndTurnObject;
@@ -496,7 +496,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 		if (selected != null)
 		{
-			org.alice.apis.moveandturn.Element selectedMoveAndTurnObject = org.alice.apis.moveandturn.Element.getElement( selected );
+			org.lookingglassandalice.storytelling.Entity selectedMoveAndTurnObject = org.lookingglassandalice.storytelling.Entity.getElement( selected );
 			if (selectedMoveAndTurnObject instanceof ObjectMarker)
 			{
 				setSelectedObjectMarker(selected);

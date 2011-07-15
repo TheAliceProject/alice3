@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointedModelImplementation extends AbstractModelImplementation {
+public abstract class JointedModelImplementation extends SingleVisualModelImplementation {
 	private final java.util.Map< org.lookingglassandalice.storytelling.resources.JointId, JointImplementation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	protected abstract JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId );
 	public JointedModelImplementation( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {

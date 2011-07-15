@@ -57,8 +57,8 @@ public class HairColorSelectionState extends AbstractListSelectionState< String 
 	private HairColorSelectionState() {
 		super( java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), org.alice.ide.croquet.codecs.StringCodec.SINGLETON, EXCLUDE_GREY );
 	}
-	public void handleCataclysmicChange( org.alice.apis.stage.LifeStage lifeStage ) {
-//		if( lifeStage == org.alice.apis.stage.LifeStage.ADULT ) {
+	public void handleCataclysmicChange( org.lookingglassandalice.storytelling.LifeStage lifeStage ) {
+//		if( lifeStage == org.lookingglassandalice.storytelling.LifeStage.ADULT ) {
 //			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND", "GREY" );
 //		} else {
 //			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND" );

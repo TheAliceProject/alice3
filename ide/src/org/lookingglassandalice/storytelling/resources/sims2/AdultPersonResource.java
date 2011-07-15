@@ -47,15 +47,15 @@ package org.lookingglassandalice.storytelling.resources.sims2;
  * @author Dennis Cosgrove
  */
 public class AdultPersonResource implements org.lookingglassandalice.storytelling.resources.PersonResource {
-	private final org.alice.apis.stage.Gender gender;
-	private final org.alice.apis.stage.SkinTone skinTone;
-	private final org.alice.apis.stage.AdultFullBodyOutfit outfit; 
-	public AdultPersonResource( org.alice.apis.stage.Gender gender, org.alice.apis.stage.SkinTone skinTone, org.alice.apis.stage.AdultFullBodyOutfit outfit ) {
+	private final org.lookingglassandalice.storytelling.Gender gender;
+	private final org.lookingglassandalice.storytelling.SkinTone skinTone;
+	private final org.lookingglassandalice.storytelling.AdultFullBodyOutfit outfit; 
+	public AdultPersonResource( org.lookingglassandalice.storytelling.Gender gender, org.lookingglassandalice.storytelling.SkinTone skinTone, org.lookingglassandalice.storytelling.AdultFullBodyOutfit outfit ) {
 		this.gender = gender;
 		this.skinTone = skinTone;
 		this.outfit = outfit;
 	}
 	public org.lookingglassandalice.storytelling.implementation.BipedImplementation createImplementation( org.lookingglassandalice.storytelling.Biped abstraction ) {
-		return new org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation( abstraction, this, org.alice.apis.stage.LifeStage.ADULT, this.gender, this.skinTone, this.outfit );
+		return new org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation( abstraction, this, org.lookingglassandalice.storytelling.LifeStage.ADULT, this.gender, this.skinTone, this.outfit );
 	}
 }

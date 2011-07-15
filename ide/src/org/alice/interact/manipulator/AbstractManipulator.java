@@ -46,8 +46,8 @@ package org.alice.interact.manipulator;
 import java.util.List;
 import java.util.Vector;
 
-import org.alice.apis.moveandturn.Element;
-import org.alice.apis.moveandturn.Marker;
+import org.lookingglassandalice.storytelling.Entity;
+import org.lookingglassandalice.storytelling.Marker;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;

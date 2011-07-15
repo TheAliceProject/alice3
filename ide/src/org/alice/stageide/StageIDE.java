@@ -58,18 +58,7 @@ import edu.cmu.cs.dennisc.java.io.FileUtilities;
 public class StageIDE extends org.alice.ide.IDE {
 	private org.alice.ide.cascade.CascadeManager cascadeManager = new org.alice.stageide.cascade.CascadeManager();
 	public StageIDE() {
-		//a very short window...
-//		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "resize", org.alice.apis.moveandturn.Transformable.class );
-//		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "resizeWidth", org.alice.apis.moveandturn.Transformable.class );
-//		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "resizeHeight", org.alice.apis.moveandturn.Transformable.class );
-//		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "resizeDepth", org.alice.apis.moveandturn.Transformable.class );
-//		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setWidth", org.alice.apis.moveandturn.Transformable.class );
-//		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setHeight", org.alice.apis.moveandturn.Transformable.class );
-//		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setDepth", org.alice.apis.moveandturn.Transformable.class );
-		//
-		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilterWithinClass( new edu.cmu.cs.dennisc.alice.ast.ClassReflectionProxy( "edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel" ), "moveTo", "placeRelativeTo" );
-		
-		org.alice.ide.common.BeveledShapeForType.addRoundType( org.alice.apis.moveandturn.Transformable.class );
+		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lookingglassandalice.storytelling.Entity.class );
 		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
 			public void windowStateChanged( java.awt.event.WindowEvent e ) {
 				int oldState = e.getOldState();
@@ -85,7 +74,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		} );
 
 		final int SMALL_ICON_SIZE = 32;
-		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.alice.apis.moveandturn.DirectionalLight.class, new javax.swing.Icon() {
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lookingglassandalice.storytelling.Sun.class, new javax.swing.Icon() {
 
 			public int getIconWidth() {
 				return SMALL_ICON_SIZE;
@@ -131,8 +120,8 @@ public class StageIDE extends org.alice.ide.IDE {
 				}
 			}
 		} );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class, new javax.swing.ImageIcon( org.alice.stageide.gallerybrowser.ResourceManager.class.getResource( "images/SymmetricPerspectiveCamera.png" ) ) );
-//		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class, new javax.swing.Icon() {
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lookingglassandalice.storytelling.Camera.class, new javax.swing.ImageIcon( org.alice.stageide.gallerybrowser.ResourceManager.class.getResource( "images/SymmetricPerspectiveCamera.png" ) ) );
+//		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lookingglassandalice.storytelling.Camera.class, new javax.swing.Icon() {
 //			public int getIconWidth() {
 //				return SMALL_ICON_SIZE;
 //			}
@@ -163,13 +152,13 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected void registerAdapters(VirtualMachine vm) {
 		vm.registerAnonymousAdapter( Scene.class, SceneAdapter.class );
 	}
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava MOUSE_BUTTON_LISTENER_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonListener.class );
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava KEY_LISTENER_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyListener.class );
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava MOUSE_BUTTON_LISTENER_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.event.MouseButtonListener.class );
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava KEY_LISTENER_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.event.KeyListener.class );
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createPredeterminedExpressionIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > desiredValueType ) {
 		if( desiredValueType == MOUSE_BUTTON_LISTENER_TYPE ) {
 			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {
-					new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.alice.apis.moveandturn.event.MouseButtonEvent.class )
+					new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.lookingglassandalice.storytelling.event.MouseButtonEvent.class )
 			};
 			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = new edu.cmu.cs.dennisc.alice.ast.BlockStatement();
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( "mouseButtonClicked", Void.TYPE, parameters, body );
@@ -181,7 +170,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );
 		} else if( desiredValueType == KEY_LISTENER_TYPE ) {
 			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {
-					new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.alice.apis.moveandturn.event.KeyEvent.class )
+					new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.lookingglassandalice.storytelling.event.KeyEvent.class )
 			};
 			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = new edu.cmu.cs.dennisc.alice.ast.BlockStatement();
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( "keyPressed", Void.TYPE, parameters, body );
@@ -215,7 +204,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 
-	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava COLOR_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Color.class );
+	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava COLOR_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Color.class );
 
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon > mapFieldToIcon = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon >();
 
@@ -227,7 +216,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			} else {
 				try {
 					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField fieldInJava = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField)field;
-					org.alice.apis.moveandturn.Color color = (org.alice.apis.moveandturn.Color)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fieldInJava.getFieldReflectionProxy().getReification(), null );
+					org.lookingglassandalice.storytelling.Color color = (org.lookingglassandalice.storytelling.Color)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fieldInJava.getFieldReflectionProxy().getReification(), null );
 					rv = new org.alice.ide.swing.icons.ColorIcon( color.getInternal().getAsAWTColor() );
 					this.mapFieldToIcon.put( field, rv );
 				} catch( RuntimeException re ) {
@@ -241,13 +230,13 @@ public class StageIDE extends org.alice.ide.IDE {
 	
 //	@Override
 //	protected boolean isInclusionOfTypeDesired(edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> valueTypeInAlice) {
-//		return super.isInclusionOfTypeDesired(valueTypeInAlice) || valueTypeInAlice.isAssignableTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.AbstractCamera.class ) );
+//		return super.isInclusionOfTypeDesired(valueTypeInAlice) || valueTypeInAlice.isAssignableTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Camera.class ) );
 //	}
 
 	@Override
 	protected boolean isAccessibleDesired( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
 		if( super.isAccessibleDesired( accessible ) ) {
-//			if( accessible.getValueType().isAssignableTo( org.alice.apis.moveandturn.Marker.class) ) {
+//			if( accessible.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Marker.class) ) {
 //				return false;
 //			} else {
 				return accessible.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Entity.class );
@@ -266,8 +255,8 @@ public class StageIDE extends org.alice.ide.IDE {
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
 
-	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava REVOLUTIONS_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AngleInRevolutions.class, Number.class );
-	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava PORTION_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.Portion.class, Number.class );
+	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava REVOLUTIONS_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.lookingglassandalice.storytelling.AngleInRevolutions.class, Number.class );
+	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava PORTION_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.lookingglassandalice.storytelling.Portion.class, Number.class );
 
 	protected org.alice.ide.common.DeclarationNameLabel createDeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		//todo: better name
@@ -294,8 +283,8 @@ public class StageIDE extends org.alice.ide.IDE {
 			if( fieldExpression instanceof edu.cmu.cs.dennisc.alice.ast.ThisExpression ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
-				if( declaringType != null && declaringType.isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
-					if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
+				if( declaringType != null && declaringType.isAssignableTo( org.lookingglassandalice.storytelling.Scene.class ) ) {
+					if( field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Transformable.class ) ) {
 						return new org.alice.ide.common.ExpressionPane( expression, this.createDeclarationNameLabel( field ) ) {
 							@Override
 							protected boolean isExpressionTypeFeedbackDesired() {
@@ -326,7 +315,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	public boolean isDropDownDesiredForFieldInitializer( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType declaringType = field.getDeclaringType();
 		if( declaringType != null ) {
-			if( declaringType.isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
+			if( declaringType.isAssignableTo( org.lookingglassandalice.storytelling.Scene.class ) ) {
 				edu.cmu.cs.dennisc.alice.ast.Expression initializer = field.initializer.getValue();
 				if( initializer instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
 					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)initializer;
@@ -334,7 +323,7 @@ public class StageIDE extends org.alice.ide.IDE {
 					if( constructor != null ) {
 						edu.cmu.cs.dennisc.alice.ast.AbstractType type = constructor.getDeclaringType();
 						if( type != null ) {
-							if( type.isAssignableTo( org.alice.apis.moveandturn.AbstractTransformable.class ) ) {
+							if( type.isAssignableTo( org.lookingglassandalice.storytelling.Transformable.class ) ) {
 								return false;
 							}
 						}
@@ -352,7 +341,7 @@ public class StageIDE extends org.alice.ide.IDE {
 					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation) expression;
 					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = instanceCreation.getType();
 					if( type instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
-						if( type.isAssignableTo( org.alice.apis.moveandturn.event.KeyListener.class ) || type.isAssignableTo( org.alice.apis.moveandturn.event.MouseButtonListener.class ) ) {
+						if( type.isAssignableTo( org.lookingglassandalice.storytelling.event.KeyListener.class ) || type.isAssignableTo( org.lookingglassandalice.storytelling.event.MouseButtonListener.class ) ) {
 							return false;
 						}
 					}
@@ -363,8 +352,8 @@ public class StageIDE extends org.alice.ide.IDE {
 						edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 						assert field != null;
 						edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
-						if( declaringType != null && declaringType.isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
-							if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
+						if( declaringType != null && declaringType.isAssignableTo( org.lookingglassandalice.storytelling.Scene.class ) ) {
+							if( field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Transformable.class ) ) {
 								return false;
 							}
 						}
@@ -448,7 +437,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			if( sceneType != null ) {
 
 				//edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice cameraType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneType.fields.get( 2 ).valueType.getValue();
-				//cameraType.superType.setValue( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.FrustumPerspectiveCamera.class ) );
+				//cameraType.superType.setValue( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.FrustumPerspectiveCamera.class ) );
 				//cameraType.superType.setValue( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.SymmetricPerspectiveCamera.class ) );
 
 				final String CUSTOM_SET_UP_METHOD_NAME = "performMySetUp";
@@ -512,7 +501,6 @@ public class StageIDE extends org.alice.ide.IDE {
 		super.setProject( project );
 	}
 
-	private static final boolean IS_LIMITED_TO_LOOKING_GLASS_TYPES = true;
 	private static String createExampleText( String examples ) {
 		return "<html><em>examples:</em> " + examples + "</html>";
 	}
@@ -526,17 +514,6 @@ public class StageIDE extends org.alice.ide.IDE {
 			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, createExampleText( "1, 2, 42, 100" ) );
 			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, createExampleText( "true, false" ) );
 			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), createExampleText( "\"hello\", \"goodbye\"" ) );
-			
-//			if( IS_LIMITED_TO_LOOKING_GLASS_TYPES ) {
-//				
-//			} else {
-//				mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model.class ), "(a.k.a. Generic Alice Model)" );
-//				mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel.class ), "(a.k.a. Looking Glass Scenery)" );
-//				mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Character.class ), "(a.k.a. Looking Glass Character)" );
-//				mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Person.class ), "(a.k.a. Looking Glass Person)" );
-//				mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ), "(a.k.a. Stage Adult)" );
-//				mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Child.class ), "(a.k.a. Stage Child)" );
-//			}
 		}
 		return mapTypeToText.get( type );
 	}
@@ -544,34 +521,22 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	protected java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > addPrimeTimeJavaTypes( java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > rv ) {
 		rv = super.addPrimeTimeJavaTypes( rv );
-//		if( IS_LIMITED_TO_LOOKING_GLASS_TYPES ) {
-//			//pass
-//		} else {
-//			rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model.class ) );
-//		}
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel.class ) );
-//		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Character.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Person.class ) );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Biped.class ) );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Model.class ) );
 		return rv;
 	}
 
 	@Override
 	protected java.util.List<? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava> addSecondaryJavaTypes(java.util.List<? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava> rv) {
 		super.addSecondaryJavaTypes(rv);
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Color.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.MoveDirection.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.TurnDirection.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.RollDirection.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Marker.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.ObjectMarker.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.CameraMarker.class ) );
-		if( IS_LIMITED_TO_LOOKING_GLASS_TYPES ) {
-			//pass
-		} else {
-			rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ) );
-			rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Child.class ) );
-		}
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Color.class ) );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.MoveDirection.class ) );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.TurnDirection.class ) );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.RollDirection.class ) );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Model.class ) );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Marker.class ) );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.ObjectMarker.class ) );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.CameraMarker.class ) );
 		return rv;
 	}
 	@Override
@@ -582,7 +547,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> getClassGalleryRoot() {
 		try {
-			String rootGalleryPath = org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory() + "/assets/newAPI";
+			String rootGalleryPath = this.getApplicationRootDirectory() + "/assets/newAPI";
 
 			File[] jarFiles = FileUtilities.listDescendants(rootGalleryPath, "jar");
 			List<Class<?>> galleryClasses = new LinkedList<Class<?>>();
@@ -611,7 +576,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	public boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = typeInAlice.getFirstTypeEncounteredDeclaredInJava();
-		return false == edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( typeInJava.getClassReflectionProxy().getReification(), org.alice.apis.moveandturn.Scene.class, org.alice.apis.moveandturn.AbstractCamera.class, org.alice.apis.stage.Person.class );
+		return false == edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( typeInJava.getClassReflectionProxy().getReification(), org.lookingglassandalice.storytelling.Scene.class, org.lookingglassandalice.storytelling.Camera.class, org.lookingglassandalice.storytelling.Person.class );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgram( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, final int frameRate ) {
@@ -673,7 +638,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	public java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? >>> updateNameClsPairsForRelationalFillIns( java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? >>> rv ) {
 		super.updateNameClsPairsForRelationalFillIns( rv );
-		//rv.add( new edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > >( "Key", org.alice.apis.moveandturn.Key.class ) );
+		//rv.add( new edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > >( "Key", org.lookingglassandalice.storytelling.Key.class ) );
 		return rv;
 	}
 }

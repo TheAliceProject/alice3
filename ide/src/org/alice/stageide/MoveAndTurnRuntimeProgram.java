@@ -42,7 +42,7 @@
  */
 package org.alice.stageide;
 
-public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Program {
+public class MoveAndTurnRuntimeProgram extends org.lookingglassandalice.storytelling.Program {
 	private static java.awt.Dimension preferredSize = new java.awt.Dimension( 400, 300 );
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneInstance;
@@ -73,7 +73,7 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 	protected void initialize() {
 		//this.vm.setResources( org.alice.ide.IDE.getActiveInstance().getResources() );
 		this.sceneInstance = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)this.vm.createInstanceEntryPoint( this.sceneType );
-		org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)this.sceneInstance.getInstanceInJava();
+		org.lookingglassandalice.storytelling.Scene scene = (org.lookingglassandalice.storytelling.Scene)this.sceneInstance.getInstanceInJava();
 		this.setScene( scene );
 	}
 	@Override

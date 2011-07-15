@@ -43,9 +43,9 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.Element;
-import org.alice.apis.moveandturn.OrthographicCameraMarker;
+import org.lookingglassandalice.storytelling.CameraMarker;
+import org.lookingglassandalice.storytelling.Entity;
+import org.lookingglassandalice.storytelling.OrthographicCameraMarker;
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
@@ -128,18 +128,18 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 	{
 		
 		final CameraMarker cameraMarker;
-		final org.alice.apis.moveandturn.AbstractCamera camera;
-		final org.alice.apis.moveandturn.PointOfView prevPOV;
-		final org.alice.apis.moveandturn.PointOfView nextPOV;
+		final org.lookingglassandalice.storytelling.Camera camera;
+		final org.lookingglassandalice.storytelling.PointOfView prevPOV;
+		final org.lookingglassandalice.storytelling.PointOfView nextPOV;
 		
 		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor());
 		
-		cameraMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.alice.apis.moveandturn.CameraMarker.class);
+		cameraMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.lookingglassandalice.storytelling.CameraMarker.class);
 		AbstractCamera sgCamera = sceneEditor.getSGPerspectiveCamera();
-		camera = (org.alice.apis.moveandturn.AbstractCamera)Element.getElement(sgCamera);
+		camera = (org.lookingglassandalice.storytelling.Camera)Element.getElement(sgCamera);
 		if( cameraMarker != null ) {
-			nextPOV = cameraMarker.getPointOfView( org.alice.apis.moveandturn.AsSeenBy.SCENE );
-			prevPOV = camera.getPointOfView(org.alice.apis.moveandturn.AsSeenBy.SCENE);
+			nextPOV = cameraMarker.getPointOfView( org.lookingglassandalice.storytelling.AsSeenBy.SCENE );
+			prevPOV = camera.getPointOfView(org.lookingglassandalice.storytelling.AsSeenBy.SCENE);
 			if( nextPOV.getInternal().isNaN() ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveActiveCameraToMarkerActionOperation isNaN" );
 				step.cancel();
@@ -166,8 +166,8 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 		
 	}
 	
-	private static void setAbsolutePOV( org.alice.apis.moveandturn.AbstractTransformable transformable, org.alice.apis.moveandturn.PointOfView pov ) {
-		org.alice.apis.moveandturn.Scene scene = transformable.getScene();
+	private static void setAbsolutePOV( org.lookingglassandalice.storytelling.Transformable transformable, org.lookingglassandalice.storytelling.PointOfView pov ) {
+		org.lookingglassandalice.storytelling.Scene scene = transformable.getScene();
 		assert scene != null;
 		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );
 	}

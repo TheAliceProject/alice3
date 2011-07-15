@@ -46,7 +46,7 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import javax.swing.BorderFactory;
 
 
-import org.alice.apis.moveandturn.MarkerWithIcon;
+import org.lookingglassandalice.storytelling.MarkerWithIcon;
 import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.lgna.croquet.components.Label;

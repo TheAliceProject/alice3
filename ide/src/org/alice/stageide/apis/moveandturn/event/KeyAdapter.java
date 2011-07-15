@@ -42,14 +42,14 @@
  */
 package org.alice.stageide.apis.moveandturn.event;
 
-public class KeyAdapter implements org.alice.apis.moveandturn.event.KeyListener {
+public class KeyAdapter implements org.lookingglassandalice.storytelling.event.KeyListener {
 	private edu.cmu.cs.dennisc.alice.virtualmachine.Context context;
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	public KeyAdapter( edu.cmu.cs.dennisc.alice.virtualmachine.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type, Object[] arguments ) {
 		this.context = context;
-		this.method = type.getDeclaredMethod( "keyPressed", org.alice.apis.moveandturn.event.KeyEvent.class );
+		this.method = type.getDeclaredMethod( "keyPressed", org.lookingglassandalice.storytelling.event.KeyEvent.class );
 	}
-	public void keyPressed( org.alice.apis.moveandturn.event.KeyEvent e ) {
+	public void keyPressed( org.lookingglassandalice.storytelling.event.KeyEvent e ) {
 		this.context.invokeEntryPoint( this.method, e );
 	}
 }

@@ -46,7 +46,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class CreatePersonOperation extends PersonOperation {
-	private org.alice.apis.stage.Person person;
+	private org.lookingglassandalice.storytelling.Person person;
 
 	public CreatePersonOperation( org.lgna.croquet.Group group ) {
 		super( group, java.util.UUID.fromString( "e5d143e7-2aa2-4cd0-ae65-3f20cc0faf96" ) );
@@ -69,7 +69,7 @@ public class CreatePersonOperation extends PersonOperation {
 		}
 	}
 
-	public org.alice.apis.stage.Person getPerson() {
+	public org.lookingglassandalice.storytelling.Person getPerson() {
 		return this.person;
 	}
 }
