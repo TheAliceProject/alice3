@@ -42,8 +42,6 @@
  */
 package org.alice.ide.sceneeditor;
 
-import edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice;
-
 
 /**
  * @author Dennis Cosgrove
@@ -62,6 +60,14 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
 			AbstractSceneEditor.this.setProgramType( nextProject.getProgramType() );
 			AbstractSceneEditor.this.revalidateAndRepaint();
+		}
+	};
+	
+	private org.lgna.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > selectedSceneObserver  = new org.lgna.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
+		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
+			AbstractSceneEditor.this.setActiveScene(nextValue);
 		}
 	};
 	
@@ -136,7 +142,6 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		mapSceneFieldToInstance.put(sceneField, rv);
 		mapSceneInstanceToField.put(rv, sceneField);
 		SceneFieldListSelectionState.getInstance().addItem(sceneField);
-		SceneFieldListSelectionState.getInstance().setSelectedItem(sceneField);
 	}
 	
 	protected void setActiveScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
@@ -165,6 +170,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	
 	protected void setProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType ) {
 		this.programType = programType;
+		SceneFieldListSelectionState.getInstance().removeValueObserver(this.selectedSceneObserver);
 		SceneFieldListSelectionState.getInstance().clear();
 		mapSceneFieldToInstance.clear();
 		mapSceneInstanceToField.clear();
@@ -182,8 +188,9 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 		if (SceneFieldListSelectionState.getInstance().getItemCount() > 0)
 		{
-			setActiveScene(SceneFieldListSelectionState.getInstance().getItemAt(0));
+			SceneFieldListSelectionState.getInstance().setSelectedIndex(0);
 		}
+		SceneFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.selectedSceneObserver);
 	}
 	
 	@Override
