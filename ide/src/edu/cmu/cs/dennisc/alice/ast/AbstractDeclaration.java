@@ -70,5 +70,14 @@ public abstract class AbstractDeclaration extends AbstractNode {
 			return super.getName();
 		}
 	}
-	
+	@Override
+	public void setName( String name ) {
+		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
+		if( nameProperty != null ) {
+			nameProperty.setValue( name );
+		} else {
+			super.setName( name );
+		}
+		
+	}
 }

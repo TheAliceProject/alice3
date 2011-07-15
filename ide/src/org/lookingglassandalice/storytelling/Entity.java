@@ -46,6 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
+@edu.cmu.cs.dennisc.alice.annotations.ClassTemplate(isFollowToSuperClassDesired = false, isConsumptionBySubClassDesired=false)
 public abstract class Entity implements Rider {
 	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.EntityImplementation getImplementation();
 	public Entity getVehicle() {
