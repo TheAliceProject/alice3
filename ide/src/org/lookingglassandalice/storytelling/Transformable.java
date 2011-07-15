@@ -52,13 +52,7 @@ public abstract class Transformable extends Entity implements MutableRider, Move
 	public void setVehicle( Entity vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
-	
-//	//TEMPORARY
-//	public void setVehicle( org.alice.apis.moveandturn.Composite vehicle ) {
-//		edu.cmu.cs.dennisc.scenegraph.Composite sgObject = this.getImplementation().getSgComposite();
-//		sgObject.setParent((vehicle != null ? vehicle.getSGComposite() : null));
-//	}
-	
+
 	public void move( MoveDirection direction, Number amount ) {
 		this.move( direction, amount, new VantagePointAnimationDetails() );
 	}

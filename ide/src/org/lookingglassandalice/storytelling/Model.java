@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model extends Transformable {
+public abstract class Model extends Transformable implements Resizable {
 	@Override
 	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.AbstractModelImplementation getImplementation();
 	public Color getColor() {
