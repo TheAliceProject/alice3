@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitSelectionState extends AbstractListSelectionState<org.alice.apis.stage.FullBodyOutfit> {
+public class FullBodyOutfitSelectionState extends AbstractListSelectionState<org.lookingglassandalice.storytelling.FullBodyOutfit> {
 	private static class SingletonHolder {
 		private static FullBodyOutfitSelectionState instance = new FullBodyOutfitSelectionState();
 	}
@@ -53,30 +53,30 @@ public class FullBodyOutfitSelectionState extends AbstractListSelectionState<org
 		return SingletonHolder.instance;
 	}
 	private FullBodyOutfitSelectionState() {
-		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new org.lgna.croquet.ItemCodec< org.alice.apis.stage.FullBodyOutfit >(){
-			public Class< org.alice.apis.stage.FullBodyOutfit > getValueClass() {
-				return org.alice.apis.stage.FullBodyOutfit.class;
+		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new org.lgna.croquet.ItemCodec< org.lookingglassandalice.storytelling.FullBodyOutfit >(){
+			public Class< org.lookingglassandalice.storytelling.FullBodyOutfit > getValueClass() {
+				return org.lookingglassandalice.storytelling.FullBodyOutfit.class;
 			}
-			public org.alice.apis.stage.FullBodyOutfit decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			public org.lookingglassandalice.storytelling.FullBodyOutfit decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}
-			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.apis.stage.FullBodyOutfit t ) {
+			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lookingglassandalice.storytelling.FullBodyOutfit t ) {
 				throw new RuntimeException( "todo" );
 			}
-			public StringBuilder appendRepresentation( StringBuilder rv, org.alice.apis.stage.FullBodyOutfit value, java.util.Locale locale ) {
+			public StringBuilder appendRepresentation( StringBuilder rv, org.lookingglassandalice.storytelling.FullBodyOutfit value, java.util.Locale locale ) {
 				rv.append( value );
 				return rv;
 			}
 		} );
 	}
 	
-	public void handleCataclysmicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
+	public void handleCataclysmicChange( org.lookingglassandalice.storytelling.LifeStage lifeStage, org.lookingglassandalice.storytelling.Gender gender ) {
 		this.setListData( -1, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
 				edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-						org.alice.apis.stage.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
+						org.lookingglassandalice.storytelling.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
 						null 
 				),
-				org.alice.apis.stage.FullBodyOutfit.class
+				org.lookingglassandalice.storytelling.FullBodyOutfit.class
 		) );
 	}
 	@Override
@@ -84,8 +84,8 @@ public class FullBodyOutfitSelectionState extends AbstractListSelectionState<org
 		return -1;
 	}
 	@Override
-	public org.lgna.croquet.components.List<org.alice.apis.stage.FullBodyOutfit> createList() {
-		org.lgna.croquet.components.List<org.alice.apis.stage.FullBodyOutfit> rv = super.createList();
+	public org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.FullBodyOutfit> createList() {
+		org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.FullBodyOutfit> rv = super.createList();
 		rv.setCellRenderer( new org.alice.stageide.personeditor.FullBodyOutfitListCellRenderer() );
 		return rv;
 	}

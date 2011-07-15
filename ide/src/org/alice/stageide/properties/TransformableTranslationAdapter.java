@@ -45,15 +45,15 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
-import org.alice.apis.moveandturn.AsSeenBy;
+import org.lookingglassandalice.storytelling.AsSeenBy;
 import org.lgna.croquet.Operation;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 
-public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.alice.apis.moveandturn.Transformable> {
+public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.lookingglassandalice.storytelling.Transformable> {
 	
-	public TransformableTranslationAdapter(org.alice.apis.moveandturn.Transformable instance) {
+	public TransformableTranslationAdapter(org.lookingglassandalice.storytelling.Transformable instance) {
 		super(instance);
 	}
 

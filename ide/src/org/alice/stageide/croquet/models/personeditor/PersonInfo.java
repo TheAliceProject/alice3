@@ -52,41 +52,41 @@ public class PersonInfo {
 	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
 	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 
-	public static PersonInfo createFromPerson( org.alice.apis.stage.Person person ) {
+	public static PersonInfo createFromPerson( org.lookingglassandalice.storytelling.Person person ) {
 		return new PersonInfo( 
 				person.getLifeStage(), 
 				person.getGender(), 
-				(org.alice.apis.stage.BaseSkinTone)person.getSkinTone(), 
-				(org.alice.apis.stage.BaseEyeColor)person.getEyeColor(), 
-				(org.alice.apis.stage.FullBodyOutfit)person.getOutfit(), 
+				(org.lookingglassandalice.storytelling.BaseSkinTone)person.getSkinTone(), 
+				(org.lookingglassandalice.storytelling.BaseEyeColor)person.getEyeColor(), 
+				(org.lookingglassandalice.storytelling.FullBodyOutfit)person.getOutfit(), 
 				person.getHair(), 
 				person.getFitnessLevel()
 		);
 	}
 	public static PersonInfo createRandom() {
-		org.alice.apis.stage.LifeStage[] potentialLifeStages = { org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.LifeStage.CHILD };
-		org.alice.apis.stage.LifeStage lifeStage = edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( potentialLifeStages );
-		org.alice.apis.stage.Gender gender = org.alice.apis.stage.Gender.getRandom();
+		org.lookingglassandalice.storytelling.LifeStage[] potentialLifeStages = { org.lookingglassandalice.storytelling.LifeStage.ADULT, org.lookingglassandalice.storytelling.LifeStage.CHILD };
+		org.lookingglassandalice.storytelling.LifeStage lifeStage = edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( potentialLifeStages );
+		org.lookingglassandalice.storytelling.Gender gender = org.lookingglassandalice.storytelling.Gender.getRandom();
 		return new PersonInfo( 
 				lifeStage, 
 				gender,
-				org.alice.apis.stage.BaseSkinTone.getRandom(),
-				org.alice.apis.stage.BaseEyeColor.getRandom(),
-				org.alice.apis.stage.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
-				org.alice.apis.stage.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
+				org.lookingglassandalice.storytelling.BaseSkinTone.getRandom(),
+				org.lookingglassandalice.storytelling.BaseEyeColor.getRandom(),
+				org.lookingglassandalice.storytelling.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
+				org.lookingglassandalice.storytelling.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
 				edu.cmu.cs.dennisc.random.RandomUtilities.nextDouble()
 		);
 	}
 
-	private org.alice.apis.stage.LifeStage lifeStage;
-	private org.alice.apis.stage.Gender gender;
-	private org.alice.apis.stage.BaseSkinTone baseSkinTone;
-	private org.alice.apis.stage.BaseEyeColor baseEyeColor;
-	private org.alice.apis.stage.FullBodyOutfit fullBodyOutfit;
-	private org.alice.apis.stage.Hair hair;
+	private org.lookingglassandalice.storytelling.LifeStage lifeStage;
+	private org.lookingglassandalice.storytelling.Gender gender;
+	private org.lookingglassandalice.storytelling.BaseSkinTone baseSkinTone;
+	private org.lookingglassandalice.storytelling.BaseEyeColor baseEyeColor;
+	private org.lookingglassandalice.storytelling.FullBodyOutfit fullBodyOutfit;
+	private org.lookingglassandalice.storytelling.Hair hair;
 	private double fitnessLevel;
 
-	private PersonInfo( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, org.alice.apis.stage.BaseSkinTone baseSkinTone, org.alice.apis.stage.BaseEyeColor baseEyeColor, org.alice.apis.stage.FullBodyOutfit fullBodyOutfit, org.alice.apis.stage.Hair hair, double fitnessLevel ) {
+	private PersonInfo( org.lookingglassandalice.storytelling.LifeStage lifeStage, org.lookingglassandalice.storytelling.Gender gender, org.lookingglassandalice.storytelling.BaseSkinTone baseSkinTone, org.lookingglassandalice.storytelling.BaseEyeColor baseEyeColor, org.lookingglassandalice.storytelling.FullBodyOutfit fullBodyOutfit, org.lookingglassandalice.storytelling.Hair hair, double fitnessLevel ) {
 		this.lifeStage = lifeStage;
 		this.gender = gender;
 		this.baseSkinTone = baseSkinTone;
@@ -95,30 +95,30 @@ public class PersonInfo {
 		this.hair = hair;
 		this.fitnessLevel = fitnessLevel;
 	}
-	public org.alice.apis.stage.LifeStage getLifeStage() {
+	public org.lookingglassandalice.storytelling.LifeStage getLifeStage() {
 		return this.lifeStage;
 	}
-	public org.alice.apis.stage.Gender getGender() {
+	public org.lookingglassandalice.storytelling.Gender getGender() {
 		return this.gender;
 	}
-	public org.alice.apis.stage.BaseSkinTone getBaseSkinTone() {
+	public org.lookingglassandalice.storytelling.BaseSkinTone getBaseSkinTone() {
 		return this.baseSkinTone;
 	}
-	public org.alice.apis.stage.BaseEyeColor getBaseEyeColor() {
+	public org.lookingglassandalice.storytelling.BaseEyeColor getBaseEyeColor() {
 		return this.baseEyeColor;
 	}
-	public org.alice.apis.stage.FullBodyOutfit getFullBodyOutfit() {
+	public org.lookingglassandalice.storytelling.FullBodyOutfit getFullBodyOutfit() {
 		return this.fullBodyOutfit;
 	}
-	public org.alice.apis.stage.Hair getHair() {
+	public org.lookingglassandalice.storytelling.Hair getHair() {
 		return this.hair;
 	}
 	public double getFitnessLevel() {
 		return this.fitnessLevel;
 	}
 	
-	public org.alice.apis.stage.Person createPerson() {
-		org.alice.apis.stage.Person rv;
+	public org.lookingglassandalice.storytelling.Person createPerson() {
+		org.lookingglassandalice.storytelling.Person rv;
 		if( this.lifeStage != null ) {
 			rv = this.lifeStage.createInstance();
 			update( rv );
@@ -127,14 +127,14 @@ public class PersonInfo {
 		}
 		return rv;
 	}
-	public org.alice.apis.stage.Person update( org.alice.apis.stage.Person rv ) {
+	public org.lookingglassandalice.storytelling.Person update( org.lookingglassandalice.storytelling.Person rv ) {
 		assert rv.getLifeStage() == this.lifeStage;
 		rv.setGender( this.gender );
 		rv.setSkinTone( this.baseSkinTone );
 		rv.setEyeColor( this.baseEyeColor );
 		rv.setOutfit( this.fullBodyOutfit );
 		rv.setHair( this.hair );
-		rv.setFitnessLevel( this.fitnessLevel, org.alice.apis.stage.Person.RIGHT_NOW );
+		rv.setFitnessLevel( this.fitnessLevel, org.lookingglassandalice.storytelling.Person.RIGHT_NOW );
 		return rv;
 	}
 }

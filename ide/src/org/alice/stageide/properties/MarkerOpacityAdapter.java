@@ -47,15 +47,15 @@ import org.alice.ide.properties.adapter.AbstractOpacityPropertyAdapter;
 
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 
-public class MarkerOpacityAdapter extends AbstractOpacityPropertyAdapter<org.alice.apis.moveandturn.Marker> {
+public class MarkerOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lookingglassandalice.storytelling.Marker> {
 
-	public MarkerOpacityAdapter(org.alice.apis.moveandturn.Marker instance)
+	public MarkerOpacityAdapter(org.lookingglassandalice.storytelling.Marker instance)
 	{
 		super(instance);
 	}
 	
 	@Override
-	protected InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Marker instance) 
+	protected InstanceProperty<?> getPropertyInstanceForInstance(org.lookingglassandalice.storytelling.Marker instance) 
 	{
 		if (this.instance != null)
 		{

@@ -48,19 +48,19 @@ import org.lgna.croquet.components.BorderPanel.Constraint;
  * @author Dennis Cosgrove
  */
 class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
-	private org.alice.apis.moveandturn.Billboard billboard;
+	private org.lookingglassandalice.storytelling.Billboard billboard;
 	private org.alice.ide.croquet.ImageView imageView = new org.alice.ide.croquet.ImageView( 240 );
 	public CreateFieldFromBillboardPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		super( declaringType, org.alice.apis.moveandturn.Billboard.class, null );
+		super( declaringType, org.lookingglassandalice.storytelling.Billboard.class, null );
 		this.imageView.setBorder( javax.swing.BorderFactory.createEmptyBorder(0,0,0,8) );
 		this.addComponent( this.imageView, Constraint.LINE_END );
 	}
-	public org.alice.apis.moveandturn.Billboard getBillboard() {
+	public org.lookingglassandalice.storytelling.Billboard getBillboard() {
 		return this.billboard;
 	}
-	public void setBillboard( org.alice.apis.moveandturn.Billboard billboard ) {
+	public void setBillboard( org.lookingglassandalice.storytelling.Billboard billboard ) {
 		this.billboard = billboard;
-		org.alice.apis.moveandturn.ImageSource frontImageSource = billboard.getFrontImageSource();
+		org.lookingglassandalice.storytelling.ImageSource frontImageSource = billboard.getFrontImageSource();
 		if( frontImageSource != null ) {
 			org.alice.virtualmachine.resources.ImageResource imageResource = frontImageSource.getImageResource();
 			if( imageResource != null ) {
@@ -99,12 +99,12 @@ public class CreateBillboardOperation extends AbstractGalleryDeclareFieldOperati
 				if( project != null ) {
 					project.addResource( frontImageResource );
 				}
-				org.alice.apis.moveandturn.ImageSource frontImageSource = new org.alice.apis.moveandturn.ImageSource( frontImageResource );
-				org.alice.apis.moveandturn.Billboard billboard = new org.alice.apis.moveandturn.Billboard();
+				org.lookingglassandalice.storytelling.ImageSource frontImageSource = new org.lookingglassandalice.storytelling.ImageSource( frontImageResource );
+				org.lookingglassandalice.storytelling.Billboard billboard = new org.lookingglassandalice.storytelling.Billboard();
 				billboard.setFrontImageSource( frontImageSource );
 				rv.setBillboard( billboard );
 				//				String name = "billboard";
-				//				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getIDE().getTypeDeclaredInAliceFor(org.alice.apis.moveandturn.Billboard.class);
+				//				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getIDE().getTypeDeclaredInAliceFor(org.lookingglassandalice.storytelling.Billboard.class);
 				//				edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(type);
 				//				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice(name, type, initializer);
 				//				field.finalVolatileOrNeither.setValue(edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL);
@@ -119,7 +119,7 @@ public class CreateBillboardOperation extends AbstractGalleryDeclareFieldOperati
 		return rv;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.moveandturn.Billboard > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.lookingglassandalice.storytelling.Billboard > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		CreateFieldFromBillboardPane createFieldFromBillboardPane = context.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromBillboardPane.getInputValue();
 		if( field != null ) {

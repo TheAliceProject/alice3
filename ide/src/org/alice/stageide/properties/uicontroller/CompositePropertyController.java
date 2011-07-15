@@ -47,14 +47,14 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 
-import org.alice.apis.moveandturn.Composite;
+import org.lookingglassandalice.storytelling.Entity;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.uicontroller.LabelBasedPropertyController;
 import org.alice.stageide.properties.TransformableVehicleAdapter;
 
-public class CompositePropertyController extends LabelBasedPropertyController<Composite>{
+public class CompositePropertyController extends LabelBasedPropertyController<Entity>{
 
-	public CompositePropertyController(PropertyAdapter<Composite, ?> propertyAdapter) 
+	public CompositePropertyController(PropertyAdapter<Entity, ?> propertyAdapter) 
 	{
 		super(propertyAdapter);
 	}
@@ -62,7 +62,7 @@ public class CompositePropertyController extends LabelBasedPropertyController<Co
 	@Override
 	public Class<?> getPropertyType() 
 	{
-		return Composite.class;
+		return Entity.class;
 	}
 
 	@Override

@@ -43,7 +43,7 @@
 
 package org.alice.ide.properties.uicontroller;
 
-import org.alice.apis.moveandturn.Composite;
+import org.lookingglassandalice.storytelling.Entity;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.stageide.properties.FieldNameAdapter;
 import org.alice.stageide.properties.uicontroller.CompositePropertyController;
@@ -85,7 +85,7 @@ public class AdapterControllerUtilities
 		{
 			return new Point3PropertyController(propertyAdapter);
 		}
-		else if (Composite.class.isAssignableFrom(propertyType))
+		else if (Entity.class.isAssignableFrom(propertyType))
 		{
 			return new CompositePropertyController(propertyAdapter);
 		}

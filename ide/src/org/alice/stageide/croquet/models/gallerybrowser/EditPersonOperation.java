@@ -66,19 +66,19 @@ public class EditPersonOperation extends PersonOperation {
 	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor getMoveAndTurnSceneEditor() {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.alice.ide.IDE.getActiveInstance().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );
 	}
-	private org.alice.apis.stage.Person getSceneEditorPerson() {
+	private org.lookingglassandalice.storytelling.Person getSceneEditorPerson() {
 		return null;
 		//TODO: fix this 
 //		return this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.field, org.alice.apis.stage.Person.class );
 	}
 	@Override
 	protected org.alice.stageide.croquet.models.personeditor.PersonInfo getInitialPersonInfo() {
-		final org.alice.apis.stage.Person person = this.getSceneEditorPerson();
+		final org.lookingglassandalice.storytelling.Person person = this.getSceneEditorPerson();
 		return org.alice.stageide.croquet.models.personeditor.PersonInfo.createFromPerson( person );
 	}
 	@Override
 	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk ) {
-		final org.alice.apis.stage.Person person = this.getSceneEditorPerson();
+		final org.lookingglassandalice.storytelling.Person person = this.getSceneEditorPerson();
 		final org.alice.stageide.personeditor.PersonEditor personEditor = step.getMainPanel();
 		final org.alice.stageide.croquet.models.personeditor.PersonInfo prevPersonInfo = this.getInitialPersonInfo();
 		final org.alice.stageide.croquet.models.personeditor.PersonInfo nextPersonInfo = personEditor.getPersonInfo();

@@ -47,9 +47,9 @@ import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 
-public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.alice.apis.moveandturn.Marker> {
+public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.lookingglassandalice.storytelling.Marker> {
 
-	public MarkerColorAdapter(org.alice.apis.moveandturn.Marker instance)
+	public MarkerColorAdapter(org.lookingglassandalice.storytelling.Marker instance)
 	{
 		super(instance);
 	}
@@ -67,7 +67,7 @@ public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.alice.a
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Marker instance)
+	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.lookingglassandalice.storytelling.Marker instance)
 	{
 		if (this.instance != null)
 		{
@@ -85,7 +85,7 @@ public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.alice.a
 			new Thread() {
 				@Override
 				public void run() {
-					MarkerColorAdapter.this.instance.setColor(new org.alice.apis.moveandturn.Color(value));
+					MarkerColorAdapter.this.instance.setColor(new org.lookingglassandalice.storytelling.Color(value));
 				}
 			}.start();
 		}

@@ -43,9 +43,9 @@
 
 package org.alice.interact.manipulator;
 
-import org.alice.apis.moveandturn.Element;
-import org.alice.apis.moveandturn.Model;
-import org.alice.apis.moveandturn.SymmetricPerspectiveCamera;
+import org.lookingglassandalice.storytelling.Entity;
+import org.lookingglassandalice.storytelling.Model;
+import org.lookingglassandalice.storytelling.Camera;
 import org.alice.interact.InputState;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.handle.HandleSet;
@@ -86,14 +86,14 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 		{
 			Element cameraElement = Element.getElement(this.camera);
 			Element objectElement = Element.getElement(toLookAt);
-			if (cameraElement instanceof SymmetricPerspectiveCamera)
+			if (cameraElement instanceof Camera)
 			{
-				SymmetricPerspectiveCamera moveAndTurnCamera = (SymmetricPerspectiveCamera)cameraElement;
+				Camera storytellingCamera = (Camera)cameraElement;
 				if (objectElement instanceof Model)
 				{
 					this.hasDoneUpdate = true;
 					Model moveAndTurnModel = (Model)objectElement;
-					moveAndTurnCamera.getGoodLookAt(moveAndTurnModel);
+					storytellingCamera.getGoodLookAt(moveAndTurnModel);
 				}
 			}
 		}

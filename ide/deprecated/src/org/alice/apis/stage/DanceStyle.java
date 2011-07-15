@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.apis.stage;
+package org.lookingglassandalice.storytelling;
 
 /**
  * @author David Culyba

@@ -44,10 +44,10 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 
-import org.alice.apis.moveandturn.AsSeenBy;
-import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.OrthographicCameraMarker;
-import org.alice.apis.moveandturn.PerspectiveCameraMarker;
+import org.lookingglassandalice.storytelling.AsSeenBy;
+import org.lookingglassandalice.storytelling.CameraMarker;
+import org.lookingglassandalice.storytelling.OrthographicCameraMarker;
+import org.lookingglassandalice.storytelling.PerspectiveCameraMarker;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.animation.Animator;
@@ -70,7 +70,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 	private CameraMarker markerToUpdate = null;
 	private boolean shouldAnimate = true;
 	private MoveAndTurnSceneEditor sceneEditor;
-	private org.alice.apis.moveandturn.CameraMarker activeMarker = null;
+	private org.lookingglassandalice.storytelling.CameraMarker activeMarker = null;
 	
 	private java.util.Map< org.alice.stageide.sceneeditor.View, CameraMarker > mapViewToMarker = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map< CameraMarker, org.alice.stageide.sceneeditor.View > mapMarkerToView = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -255,7 +255,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 		this.markerToUpdate = null;
 	}
 	
-	private boolean doesMarkerMatchCamera(org.alice.apis.moveandturn.CameraMarker marker, AbstractCamera camera)
+	private boolean doesMarkerMatchCamera(org.lookingglassandalice.storytelling.CameraMarker marker, AbstractCamera camera)
 	{
 		if (camera instanceof OrthographicCamera)
 		{

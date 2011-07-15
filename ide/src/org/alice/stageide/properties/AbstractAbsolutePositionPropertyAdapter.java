@@ -43,7 +43,7 @@
 
 package org.alice.stageide.properties;
 
-import org.alice.apis.moveandturn.Transformable;
+import org.lookingglassandalice.storytelling.Transformable;
 import org.alice.ide.properties.adapter.AbstractPoint3PropertyAdapter;
 
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;

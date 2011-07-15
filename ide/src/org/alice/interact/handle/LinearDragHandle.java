@@ -43,7 +43,7 @@
 package org.alice.interact.handle;
 
 
-import org.alice.apis.moveandturn.TraditionalStyle;
+import org.lookingglassandalice.storytelling.TraditionalStyle;
 import org.alice.ide.IDE;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;

@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class BaseSkinToneSelectionState extends AbstractListSelectionState< org.alice.apis.stage.BaseSkinTone > {
+public class BaseSkinToneSelectionState extends AbstractListSelectionState< org.lookingglassandalice.storytelling.BaseSkinTone > {
 	private static class SingletonHolder {
 		private static BaseSkinToneSelectionState instance = new BaseSkinToneSelectionState();
 	}
@@ -53,11 +53,11 @@ public class BaseSkinToneSelectionState extends AbstractListSelectionState< org.
 		return SingletonHolder.instance;
 	}
 	private BaseSkinToneSelectionState() {
-		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.apis.stage.BaseSkinTone.class ), org.alice.apis.stage.BaseSkinTone.values() );
+		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lookingglassandalice.storytelling.BaseSkinTone.class ), org.lookingglassandalice.storytelling.BaseSkinTone.values() );
 	}
 	@Override
-	public org.lgna.croquet.components.List<org.alice.apis.stage.BaseSkinTone> createList() {
-		org.lgna.croquet.components.List<org.alice.apis.stage.BaseSkinTone> rv = super.createList();
+	public org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.BaseSkinTone> createList() {
+		org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.BaseSkinTone> rv = super.createList();
 		rv.setCellRenderer( org.alice.stageide.personeditor.SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}

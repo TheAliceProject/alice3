@@ -46,12 +46,12 @@ package org.alice.stageide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 class CreateFieldFromPersonPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
-	private org.alice.apis.stage.Person person;
-	public CreateFieldFromPersonPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, org.alice.apis.stage.Person person ) {
+	private org.lookingglassandalice.storytelling.Person person;
+	public CreateFieldFromPersonPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, org.lookingglassandalice.storytelling.Person person ) {
 		super( declaringType, person.getClass(), null );
 		this.person = person;
 	}
-	public org.alice.apis.stage.Person getPerson() {
+	public org.lookingglassandalice.storytelling.Person getPerson() {
 		return this.person;
 	}
 }
@@ -74,7 +74,7 @@ public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOpera
 		CreatePersonOperation createPersonOperation = new CreatePersonOperation( org.lgna.croquet.Application.INHERIT_GROUP );
 		createPersonOperation.fire();
 		
-		org.alice.apis.stage.Person person = createPersonOperation.getPerson();
+		org.lookingglassandalice.storytelling.Person person = createPersonOperation.getPerson();
 		
 		if( person != null ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -85,7 +85,7 @@ public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOpera
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.alice.apis.stage.Person > createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.lookingglassandalice.storytelling.Person > createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step ) {
 		CreateFieldFromPersonPane createFieldFromPersonPane = step.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.getInputValue();
 		if( field != null ) {

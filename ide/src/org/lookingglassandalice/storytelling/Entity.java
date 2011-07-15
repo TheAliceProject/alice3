@@ -48,7 +48,14 @@ package org.lookingglassandalice.storytelling;
  */
 @edu.cmu.cs.dennisc.alice.annotations.ClassTemplate(isFollowToSuperClassDesired = false, isConsumptionBySubClassDesired=false)
 public abstract class Entity implements Rider {
+	private String name;
 	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.EntityImplementation getImplementation();
+	public String getName() {
+		return this.name;
+	}
+	public void setName( String name ) {
+		this.name = name;
+	}
 	public Entity getVehicle() {
 		org.lookingglassandalice.storytelling.implementation.EntityImplementation vehicleImplementation = this.getImplementation().getVehicle();
 		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;

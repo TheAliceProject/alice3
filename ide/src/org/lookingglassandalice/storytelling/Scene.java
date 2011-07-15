@@ -92,10 +92,16 @@ public abstract class Scene extends Entity {
 		this.implementation.restoreVehiclesAndVantagePoints();
 	}
 	
-//	public void addEntity( Entity entity ) {
-//		this.implementation.addEntity( entity.getImplementation() );
-//	}
-//	public void removeEntity( Entity entity ) {
-//		this.implementation.removeEntity( entity.getImplementation() );
-//	}
+	public Color getAtmosphereColor() {
+		return new Color( this.implementation.getAtmosphereColor() );
+	}
+	public void setAtmosphereColor( Color color ) {
+		this.implementation.setAtmosphereColor( color.getInternal() );
+	}
+	public Color getAmbientLightColor() {
+		return new Color( this.implementation.getAmbientLightColor() );
+	}
+	public void setAmbientLightColor( Color color ) {
+		this.implementation.setAmbientLightColor( color.getInternal() );
+	}
 }

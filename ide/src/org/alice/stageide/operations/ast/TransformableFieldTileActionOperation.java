@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.operations.ast;
 
-import org.alice.ide.IDE;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -51,28 +49,28 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 	public TransformableFieldTileActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( individualId, field );
 	}
-	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable );
+	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lookingglassandalice.storytelling.implementation.TransformableImplementation transformableImp );
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		final org.alice.apis.moveandturn.AbstractTransformable transformable;
-		final org.alice.apis.moveandturn.PointOfView prevPOV;
-		final org.alice.apis.moveandturn.PointOfView nextPOV;
-		transformable = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( this.getField(), org.alice.apis.moveandturn.AbstractTransformable.class );
+		org.lookingglassandalice.storytelling.Transformable transformable = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( this.getField(), org.lookingglassandalice.storytelling.Transformable.class );
+		final org.lookingglassandalice.storytelling.implementation.TransformableImplementation transformableImp = org.lookingglassandalice.storytelling.ImplementationAccessor.getImplementation( transformable );
+		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevPOV;
+		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextPOV;
 		if( transformable != null ) {
-			prevPOV = transformable.getPointOfView( org.alice.apis.moveandturn.AsSeenBy.SCENE );
-			nextPOV = new org.alice.apis.moveandturn.PointOfView( this.calculateNextAbsoluteTransformation( transformable ) );
-			if( nextPOV.getInternal().isNaN() ) {
+			prevPOV = transformableImp.getAbsoluteTransformation();
+			nextPOV = this.calculateNextAbsoluteTransformation( transformableImp );
+			if( nextPOV.isNaN() ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TransformableFieldTileActionOperation isNaN" );
 				step.cancel();
 			} else {
 				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
-						setAbsolutePOV( transformable, nextPOV );
+						transformableImp.animateAbsoluteTransformation( nextPOV );
 					}
 					@Override
 					protected final void undoInternal() {
-						setAbsolutePOV( transformable, prevPOV );
+						transformableImp.animateAbsoluteTransformation( prevPOV );
 					}
 					@Override
 					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
@@ -86,11 +84,5 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TransformableFieldTileActionOperation" );
 			step.cancel();
 		}
-	}
-	
-	private static void setAbsolutePOV( org.alice.apis.moveandturn.AbstractTransformable transformable, org.alice.apis.moveandturn.PointOfView pov ) {
-		org.alice.apis.moveandturn.Scene scene = transformable.getScene();
-		assert scene != null;
-		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );
 	}
 }

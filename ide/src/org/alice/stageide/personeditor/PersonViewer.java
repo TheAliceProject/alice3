@@ -42,7 +42,7 @@
  */
 package org.alice.stageide.personeditor;
 
-import org.alice.apis.stage.*;
+import org.lookingglassandalice.storytelling.*;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 
 /**
@@ -145,12 +145,12 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			yFactor = 0.9;
 		}
 		if( this.getScene() != null ) {
-			org.alice.apis.moveandturn.PointOfView prevPOV = this.getCamera().getLocalPointOfView();
+			org.lookingglassandalice.storytelling.PointOfView prevPOV = this.getCamera().getLocalPointOfView();
 			this.getCamera().moveTo( this.getScene().createOffsetStandIn( -0.3*xzFactor, height*yFactor, -height*xzFactor ), 0.0 );
 			this.getCamera().pointAt( this.getScene().createOffsetStandIn( 0, height*yFactor, 0 ), 0.0 );
 			edu.cmu.cs.dennisc.animation.Animator animator = this.getAnimator();
 			if( duration > 0.0 && animator != null ) {
-				org.alice.apis.moveandturn.PointOfView nextPOV = this.getCamera().getLocalPointOfView();
+				org.lookingglassandalice.storytelling.PointOfView nextPOV = this.getCamera().getLocalPointOfView();
 				this.getCamera().setLocalPointOfView( prevPOV );
 
 				edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation povAnimation = new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( this.getCamera().getSGAbstractTransformable(), edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, nextPOV.getInternal() );

@@ -51,20 +51,18 @@ import java.util.List;
 
 import javax.swing.Icon;
 
-import org.alice.apis.moveandturn.AngleInDegrees;
-import org.alice.apis.moveandturn.AsSeenBy;
-import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.Element;
-import org.alice.apis.moveandturn.Marker;
-import org.alice.apis.moveandturn.MarkerWithIcon;
-import org.alice.apis.moveandturn.ObjectMarker;
-import org.alice.apis.moveandturn.OrthographicCameraMarker;
-import org.alice.apis.moveandturn.PerspectiveCameraMarker;
-import org.alice.apis.moveandturn.Scene;
-import org.alice.apis.moveandturn.Transformable;
-import org.alice.apis.stage.Collada;
-import org.alice.apis.stage.Ogre;
-import org.alice.apis.stage.Penguin;
+import org.lookingglassandalice.storytelling.AngleInDegrees;
+import org.lookingglassandalice.storytelling.AsSeenBy;
+import org.lookingglassandalice.storytelling.CameraMarker;
+import org.lookingglassandalice.storytelling.Entity;
+import org.lookingglassandalice.storytelling.Marker;
+import org.lookingglassandalice.storytelling.MarkerWithIcon;
+import org.lookingglassandalice.storytelling.ObjectMarker;
+import org.lookingglassandalice.storytelling.OrthographicCameraMarker;
+import org.lookingglassandalice.storytelling.PerspectiveCameraMarker;
+import org.lookingglassandalice.storytelling.Scene;
+import org.lookingglassandalice.storytelling.Transformable;
+import org.lookingglassandalice.storytelling.Collada;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.declarationpanes.CreateFieldFromGalleryPane;
@@ -167,7 +165,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	protected SnapState snapState;
 	protected SnapGrid snapGrid;
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
-	private org.alice.apis.moveandturn.Scene scene;
+	private org.lookingglassandalice.storytelling.Scene scene;
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = null;
 	private edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera = null;
 	private edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgPerspectiveCamera = null;
@@ -493,25 +491,25 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 				edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
 				instance = instanceInAlice.getInstanceInJava();
 			}
-			if( instance instanceof org.alice.apis.moveandturn.Model ) {
-				org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instance;
+			if( instance instanceof org.lookingglassandalice.storytelling.Model ) {
+				org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)instance;
 				this.globalDragAdapter.setSelectedObject( model.getSGTransformable() );
 				MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField(field);
 				MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField(field);
 				CreateObjectMarkerActionOperation.getInstance().setEnabled(true); //If a model field is selected, we can create a marker there
 				CreateObjectMarkerActionOperation.getInstance().setFieldName(field.getName());
 			}
-			else if( instance instanceof org.alice.apis.moveandturn.Marker ) {
-				org.alice.apis.moveandturn.Marker marker = (org.alice.apis.moveandturn.Marker)instance;
+			else if( instance instanceof org.lookingglassandalice.storytelling.Marker ) {
+				org.lookingglassandalice.storytelling.Marker marker = (org.lookingglassandalice.storytelling.Marker)instance;
 				this.globalDragAdapter.setSelectedObject( marker.getSGTransformable() );
 				MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField(null);
 				MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField(null);
 				CreateObjectMarkerActionOperation.getInstance().setEnabled(false); //If a marker field is selected, we can't make a marker there
 				CreateObjectMarkerActionOperation.getInstance().setFieldName(null);
 			} 
-			else if (instance instanceof org.alice.apis.moveandturn.SymmetricPerspectiveCamera)
+			else if (instance instanceof org.lookingglassandalice.storytelling.Camera)
 			{
-				org.alice.apis.moveandturn.SymmetricPerspectiveCamera mtCamera = (org.alice.apis.moveandturn.SymmetricPerspectiveCamera)instance;
+				org.lookingglassandalice.storytelling.Camera mtCamera = (org.lookingglassandalice.storytelling.Camera)instance;
 				if (mtCamera.getSGCamera() == this.sgPerspectiveCamera)
 				{
 					this.globalDragAdapter.setSelectedObject( this.openingSceneMarker.getSGTransformable() );
@@ -560,11 +558,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		}
 		else
 		{
-			objectInJava = org.alice.apis.moveandturn.Element.getElement( sgTransformable );
+			objectInJava = org.lookingglassandalice.storytelling.Entity.getElement( sgTransformable );
 		}
 		if (objectInJava == this.openingSceneMarker)
 		{
-			objectInJava = org.alice.apis.moveandturn.Element.getElement(this.sgPerspectiveCamera);
+			objectInJava = org.lookingglassandalice.storytelling.Entity.getElement(this.sgPerspectiveCamera);
 		}
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJavaVM( objectInJava );
 		if (objectInJava instanceof CameraMarker)
@@ -691,31 +689,31 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 			EntityImplementation implementation = ImplementationAccessor.getImplementation(model);
 			this.scene.getSGComposite().addComponent(implementation.getSgComposite());
 		}
-		else if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
-			final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
+		else if( instance instanceof org.lookingglassandalice.storytelling.Transformable ) {
+			final org.lookingglassandalice.storytelling.Transformable transformable = (org.lookingglassandalice.storytelling.Transformable)instance;
 
-			final org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = this.scene.findFirstMatch( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class );
+			final org.lookingglassandalice.storytelling.Camera camera = this.scene.findFirstMatch( org.lookingglassandalice.storytelling.Camera.class );
 			boolean isAnimationDesired = true;
 			if( isAnimationDesired && camera != null && 
-				(transformable instanceof org.alice.apis.moveandturn.Model  || transformable instanceof org.alice.apis.moveandturn.Marker)
+				(transformable instanceof org.lookingglassandalice.storytelling.Model  || transformable instanceof org.lookingglassandalice.storytelling.Marker)
 			  )	
 			{
 				new Thread() {
 					@Override
 					public void run() {
-						if (transformable instanceof org.alice.apis.moveandturn.Model)
+						if (transformable instanceof org.lookingglassandalice.storytelling.Model)
 						{
-							MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.alice.apis.moveandturn.Model)transformable );
+							MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.lookingglassandalice.storytelling.Model)transformable );
 						}
-						else if (transformable instanceof org.alice.apis.moveandturn.BookmarkCameraMarker)
+						else if (transformable instanceof org.lookingglassandalice.storytelling.BookmarkCameraMarker)
 						{
-							MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.alice.apis.moveandturn.BookmarkCameraMarker)transformable );
+							MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.lookingglassandalice.storytelling.BookmarkCameraMarker)transformable );
 							CameraMarkerFieldListSelectionState.getInstance().setSelectedItem(addedField);
 							CreateCameraMarkerActionOperation.getInstance().setEnabled(true);
 						}
-						else if (transformable instanceof org.alice.apis.moveandturn.ObjectMarker)
+						else if (transformable instanceof org.lookingglassandalice.storytelling.ObjectMarker)
 						{
-							MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.alice.apis.moveandturn.ObjectMarker)transformable );
+							MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.lookingglassandalice.storytelling.ObjectMarker)transformable );
 							ObjectMarkerFieldListSelectionState.getInstance().setSelectedItem(addedField);
 							CreateObjectMarkerActionOperation.getInstance().setEnabled(true);
 						}
@@ -738,8 +736,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		PrintUtilities.println( "todo: have handleFieldRemoved just remove the passed in field rather than check for inconsistencies." );
 
 		Object instance = this.getInstanceInJavaVMForField( removedField );
-		if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
-			final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
+		if( instance instanceof org.lookingglassandalice.storytelling.Transformable ) {
+			final org.lookingglassandalice.storytelling.Transformable transformable = (org.lookingglassandalice.storytelling.Transformable)instance;
 			this.scene.removeComponent( transformable );
 			this.removeField(removedField);
 		} else {
@@ -803,12 +801,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		List<FieldDeclaredInAlice> declaredFields = this.getDeclaredFields();
 		for( FieldDeclaredInAlice field : declaredFields) 
 		{
-			if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class ))
+			if (field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.CameraMarker.class ))
 			{
 				//PrintUtilities.println("Camera marker: "+field.getName());
 				cameraMarkerFields.add(field);
 			}
-			else if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.ObjectMarker.class ))
+			else if (field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.ObjectMarker.class ))
 			{
 				//PrintUtilities.println("Camera marker: "+field.getName());
 				objectMarkerFields.add(field);
@@ -879,7 +877,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		PrintUtilities.println( "todo: remove epic hack to handle camera marker removal" );
 		List<FieldDeclaredInAlice> declaredFields = this.getDeclaredFields();
 		for( FieldDeclaredInAlice field : declaredFields) {
-			if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.MarkerWithIcon.class )) {
+			if (field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.MarkerWithIcon.class )) {
 				if( CameraMarkerFieldListSelectionState.getInstance().containsItem( field ) || ObjectMarkerFieldListSelectionState.getInstance().containsItem( field ) ) {
 					//pass
 				} else {
@@ -933,25 +931,25 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	public CameraMarker getCameraMarkerForField( FieldDeclaredInAlice field )
 	{
-		CameraMarker cameraMarker = this.getInstanceInJavaVMForField(field, org.alice.apis.moveandturn.CameraMarker.class);
+		CameraMarker cameraMarker = this.getInstanceInJavaVMForField(field, org.lookingglassandalice.storytelling.CameraMarker.class);
 		return cameraMarker;
 	}
 	
 	public ObjectMarker getObjectMarkerForField( FieldDeclaredInAlice field )
 	{
-		ObjectMarker objectMarker = this.getInstanceInJavaVMForField(field, org.alice.apis.moveandturn.ObjectMarker.class);
+		ObjectMarker objectMarker = this.getInstanceInJavaVMForField(field, org.lookingglassandalice.storytelling.ObjectMarker.class);
 		return objectMarker;
 	}
 	
 	public MarkerWithIcon getMarkerForField( FieldDeclaredInAlice field )
 	{
-		MarkerWithIcon marker = this.getInstanceInJavaVMForField(field, org.alice.apis.moveandturn.MarkerWithIcon.class);
+		MarkerWithIcon marker = this.getInstanceInJavaVMForField(field, org.lookingglassandalice.storytelling.MarkerWithIcon.class);
 		return marker;
 	}
 	
 	public Transformable getTransformableForField( FieldDeclaredInAlice field )
 	{
-		Transformable transformable = this.getInstanceInJavaVMForField( field, org.alice.apis.moveandturn.Transformable.class );
+		Transformable transformable = this.getInstanceInJavaVMForField( field, org.lookingglassandalice.storytelling.Transformable.class );
 		return transformable;
 	}
 	
@@ -1126,7 +1124,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 			//pass
 		} else {
 			//We need to make a MoveAndTurn orthographic camera because the scene is fundamentally a MoveAndTurn scene
-			org.alice.apis.moveandturn.OrthographicCamera moveAndTurnOrthographicCamera = new org.alice.apis.moveandturn.OrthographicCamera();
+			org.lookingglassandalice.storytelling.OrthographicCamera moveAndTurnOrthographicCamera = new org.lookingglassandalice.storytelling.OrthographicCamera();
 			this.sgOrthographicCamera = moveAndTurnOrthographicCamera.getSGOrthographicCamera();
 			this.sgOrthographicCamera.nearClippingPlaneDistance.setValue(.01d);
 			edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = moveAndTurnOrthographicCamera.getSGTransformable();
@@ -1180,7 +1178,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	private void showRightClickMenuForModel( InputState clickState )
 	{
 		edu.cmu.cs.dennisc.scenegraph.Transformable t = clickState.getClickPickTransformable();
-		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement(t);
+		org.lookingglassandalice.storytelling.Entity element = org.lookingglassandalice.storytelling.Entity.getElement(t);
 		FieldDeclaredInAlice clickedJavaField = (FieldDeclaredInAlice)this.getFieldForInstanceInJavaVM(element);
 		if (clickedJavaField != null)
 		{
@@ -1192,9 +1190,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		}
 	}
 		
-	private void getGoodLookAtShowInstanceAndReturnCamera( org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera, org.alice.apis.moveandturn.Model model ) {
-		model.setOpacity( 0.0, org.alice.apis.moveandturn.Composite.RIGHT_NOW );
-		org.alice.apis.moveandturn.PointOfView pov = camera.getPointOfView( this.scene );
+	private void getGoodLookAtShowInstanceAndReturnCamera( org.lookingglassandalice.storytelling.Camera camera, org.lookingglassandalice.storytelling.Model model ) {
+		model.setOpacity( 0.0, org.lookingglassandalice.storytelling.Entity.RIGHT_NOW );
+		org.lookingglassandalice.storytelling.PointOfView pov = camera.getPointOfView( this.scene );
 		camera.getGoodLookAt( model, 0.5 );
 		this.scene.addComponent( model );
 		model.setOpacity( 1.0 );
@@ -1217,13 +1215,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		
 	}
 	
-	private void getGoodLookAtShowInstanceAndReturnCamera( org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera, org.alice.apis.moveandturn.Marker marker ) {
+	private void getGoodLookAtShowInstanceAndReturnCamera( org.lookingglassandalice.storytelling.Camera camera, org.lookingglassandalice.storytelling.Marker marker ) {
 		boolean wasShowing = marker.isShowing();
 		marker.setShowing(true);
-		marker.setOpacity( 0.0, org.alice.apis.moveandturn.Composite.RIGHT_NOW );
-		org.alice.apis.moveandturn.PointOfView pov = camera.getPointOfView( this.scene );
+		marker.setOpacity( 0.0, org.lookingglassandalice.storytelling.Entity.RIGHT_NOW );
+		org.lookingglassandalice.storytelling.PointOfView pov = camera.getPointOfView( this.scene );
 		camera.moveAndOrientTo(this.scene.createOffsetStandIn( calculateMarkerGoodLookAt(edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), marker) ), .5);
-		this.scene.addComponent( marker );
+		marker.setVehicle( this.scene );
 		marker.setOpacity( 1.0 );
 		camera.moveAndOrientTo( this.scene.createOffsetStandIn( pov.getInternal() ), 1.0 );
 		marker.setShowing(wasShowing);
@@ -1255,24 +1253,24 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 //					//pass
 //				}
 //				//				Object sceneInstanceInJava = this.getInstanceInJavaVMForField( sceneField );
-//				//				if( sceneInstanceInJava instanceof org.alice.apis.moveandturn.Scene ) {
-//				//					org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)sceneInstanceInJava;
+//				//				if( sceneInstanceInJava instanceof org.lookingglassandalice.storytelling.Scene ) {
+//				//					org.lookingglassandalice.storytelling.Scene scene = (org.lookingglassandalice.storytelling.Scene)sceneInstanceInJava;
 //				//					if( isSceneScope ) {
-//				//						scene.setAtmosphereColor( new org.alice.apis.moveandturn.Color( 0.75f, 0.75f, 1.0f ), org.alice.apis.moveandturn.Scene.RIGHT_NOW );
+//				//						scene.setAtmosphereColor( new org.lookingglassandalice.storytelling.Color( 0.75f, 0.75f, 1.0f ), org.lookingglassandalice.storytelling.Scene.RIGHT_NOW );
 //				//					} else {
-//				//						scene.setAtmosphereColor( org.alice.apis.moveandturn.Color.BLACK, org.alice.apis.moveandturn.Scene.RIGHT_NOW );
+//				//						scene.setAtmosphereColor( org.lookingglassandalice.storytelling.Color.BLACK, org.lookingglassandalice.storytelling.Scene.RIGHT_NOW );
 //				//					}
 //				//				}
 //				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : fields ) {
 //					Object instanceInJava = this.getInstanceInJavaVMForField( field );
-//					if( instanceInJava instanceof org.alice.apis.moveandturn.Model ) {
-//						org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instanceInJava;
+//					if( instanceInJava instanceof org.lookingglassandalice.storytelling.Model ) {
+//						org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)instanceInJava;
 //						if( isSceneScope || type.isAssignableTo( model.getClass() ) ) {
-//							model.setColor( org.alice.apis.moveandturn.Color.WHITE, org.alice.apis.moveandturn.Model.RIGHT_NOW );
-//							//							model.setOpacity( 1.0f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
+//							model.setColor( org.lookingglassandalice.storytelling.Color.WHITE, org.lookingglassandalice.storytelling.Model.RIGHT_NOW );
+//							//							model.setOpacity( 1.0f, org.lookingglassandalice.storytelling.Model.RIGHT_NOW );
 //						} else {
-//							model.setColor( new org.alice.apis.moveandturn.Color( 0.25, 0.25, 0.25 ), org.alice.apis.moveandturn.Model.RIGHT_NOW );
-//							//							model.setOpacity( 0.125f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
+//							model.setColor( new org.lookingglassandalice.storytelling.Color( 0.25, 0.25, 0.25 ), org.lookingglassandalice.storytelling.Model.RIGHT_NOW );
+//							//							model.setOpacity( 0.125f, org.lookingglassandalice.storytelling.Model.RIGHT_NOW );
 //						}
 //					}
 //				}
@@ -1329,10 +1327,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	protected void putFieldForInstanceInJava( Object instanceInJava, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 //		super.putFieldForInstanceInJava( instanceInJava, field );
-		if( instanceInJava instanceof org.alice.apis.moveandturn.Transformable ) {
-			org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instanceInJava;
+		if( instanceInJava instanceof org.lookingglassandalice.storytelling.Transformable ) {
+			org.lookingglassandalice.storytelling.Transformable transformable = (org.lookingglassandalice.storytelling.Transformable)instanceInJava;
 			transformable.realizeIfNecessary();
-			org.alice.apis.moveandturn.PickHintUtilities.setPickHint( transformable );
+			org.lookingglassandalice.storytelling.PickHintUtilities.setPickHint( transformable );
 		}
 	}
 
@@ -1343,7 +1341,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		{
 			if (field.getDesiredValueType().isAssignableTo(MarkerWithIcon.class))
 			{
-				MarkerWithIcon marker = this.getInstanceInJavaVMForField(field, org.alice.apis.moveandturn.MarkerWithIcon.class);
+				MarkerWithIcon marker = this.getInstanceInJavaVMForField(field, org.lookingglassandalice.storytelling.MarkerWithIcon.class);
 				if (marker != null)
 				{
 					marker.setShowing(isShowing);
@@ -1358,7 +1356,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		{
 			if (field.getDesiredValueType().isAssignableTo(MarkerWithIcon.class))
 			{
-				MarkerWithIcon marker = this.getInstanceInJavaVMForField(field, org.alice.apis.moveandturn.MarkerWithIcon.class);
+				MarkerWithIcon marker = this.getInstanceInJavaVMForField(field, org.lookingglassandalice.storytelling.MarkerWithIcon.class);
 				if (marker != null)
 				{
 					if (marker instanceof PerspectiveCameraMarker)
@@ -1430,8 +1428,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		refreshMarkerLists();
 		
 		//Set up the scene
-		this.scene = (org.alice.apis.moveandturn.Scene)((edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)rv).getInstanceInJava();
-		this.scene.setOwner( new org.alice.apis.moveandturn.SceneOwner() {
+		this.scene = (org.lookingglassandalice.storytelling.Scene)((edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)rv).getInstanceInJava();
+		this.scene.setOwner( new org.lookingglassandalice.storytelling.SceneOwner() {
 			private double simulationSpeedFactor = 1.0;
 
 			public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
@@ -1514,13 +1512,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	}
 	*/
 	
-	private void updateCameraMarkerToCamera( org.alice.apis.moveandturn.PerspectiveCameraMarker cameraMarker, SymmetricPerspectiveCamera perspectiveCamera)
+	private void updateCameraMarkerToCamera( org.lookingglassandalice.storytelling.PerspectiveCameraMarker cameraMarker, SymmetricPerspectiveCamera perspectiveCamera)
 	{
 		setViewingAngleOnMarker(cameraMarker, perspectiveCamera);
 		cameraMarker.setFarClippingPlane(perspectiveCamera.farClippingPlaneDistance.getValue());
 	}
 	
-	private void setViewingAngleOnMarker( org.alice.apis.moveandturn.PerspectiveCameraMarker cameraMarker, SymmetricPerspectiveCamera perspectiveCamera )
+	private void setViewingAngleOnMarker( org.lookingglassandalice.storytelling.PerspectiveCameraMarker cameraMarker, SymmetricPerspectiveCamera perspectiveCamera )
 	{
 		if (this.onscreenLookingGlass != null)
 		{
@@ -1553,10 +1551,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 
 
 	//	public void editPerson( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-	//		org.alice.apis.stage.Person person = this.getInstanceInJavaVMForField( field, org.alice.apis.stage.Person.class );
+	//		org.lookingglassandalice.storytelling.Person person = this.getInstanceInJavaVMForField( field, org.lookingglassandalice.storytelling.Person.class );
 	//		if( person != null ) {
 	//			org.alice.stageide.personeditor.PersonEditorInputPane inputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( person );
-	//			org.alice.apis.stage.Person result = inputPane.showInJDialog( this.getIDE() );
+	//			org.lookingglassandalice.storytelling.Person result = inputPane.showInJDialog( this.getIDE() );
 	//			edu.cmu.cs.dennisc.print.PrintUtilities.println( result );
 	//		}
 	//	}
@@ -1588,7 +1586,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	private static final String DEFAULT_CAMERA_MARKER_NAME;
 	private static final String[] COLOR_NAMES;
-	private static final org.alice.apis.moveandturn.Color[] COLORS;
+	private static final org.lookingglassandalice.storytelling.Color[] COLORS;
 	
 	static
 	{
@@ -1608,16 +1606,16 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		};
 		COLOR_NAMES = colorNames;
 		
-		org.alice.apis.moveandturn.Color[] colors = { 
-				org.alice.apis.moveandturn.Color.RED,
-				org.alice.apis.moveandturn.Color.GREEN,
-//				org.alice.apis.moveandturn.Color.BLUE,
-				org.alice.apis.moveandturn.Color.MAGENTA,
-				org.alice.apis.moveandturn.Color.YELLOW,
-//				org.alice.apis.moveandturn.Color.CYAN,
-				org.alice.apis.moveandturn.Color.ORANGE,
-				org.alice.apis.moveandturn.Color.PINK,
-				org.alice.apis.moveandturn.Color.PURPLE
+		org.lookingglassandalice.storytelling.Color[] colors = { 
+				org.lookingglassandalice.storytelling.Color.RED,
+				org.lookingglassandalice.storytelling.Color.GREEN,
+//				org.lookingglassandalice.storytelling.Color.BLUE,
+				org.lookingglassandalice.storytelling.Color.MAGENTA,
+				org.lookingglassandalice.storytelling.Color.YELLOW,
+//				org.lookingglassandalice.storytelling.Color.CYAN,
+				org.lookingglassandalice.storytelling.Color.ORANGE,
+				org.lookingglassandalice.storytelling.Color.PINK,
+				org.lookingglassandalice.storytelling.Color.PURPLE
 			};
 		COLORS = colors;
 	}
@@ -1658,7 +1656,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		return new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource(iconName));
 	}
 	
-	public static org.alice.apis.moveandturn.Color getColorForMarkerName(String markerName)
+	public static org.lookingglassandalice.storytelling.Color getColorForMarkerName(String markerName)
 	{
 		int colorIndex = getColorIndexForName(markerName);
 		if (colorIndex != -1)
@@ -1745,7 +1743,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	private void createOrthographicCameraMarkers()
 	{
 		this.orthographicCameraMarkers.clear();
-		this.topOrthoMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
+		this.topOrthoMarker = new org.lookingglassandalice.storytelling.OrthographicCameraMarker();
 		this.topOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon.png")));
 		this.topOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon_highlighted.png")));
 		AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
@@ -1762,7 +1760,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		this.topOrthoMarker.setPicturePlane(picturePlane);
 		orthographicCameraMarkers.add(this.topOrthoMarker);
 
-		this.sideOrthoMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
+		this.sideOrthoMarker = new org.lookingglassandalice.storytelling.OrthographicCameraMarker();
 		this.sideOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon.png")));
 		this.sideOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon_highlighted.png")));
 		AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
@@ -1775,7 +1773,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		this.sideOrthoMarker.setPicturePlane(picturePlane);
 		orthographicCameraMarkers.add(this.sideOrthoMarker);
 
-		this.frontOrthoMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
+		this.frontOrthoMarker = new org.lookingglassandalice.storytelling.OrthographicCameraMarker();
 		this.frontOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon.png")));
 		this.frontOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon_highlighted.png")));
 		AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
@@ -1839,55 +1837,55 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		return markerName;
 	}
 	
-	private void createPenguinModelField()
-	{
-		String penguinName = "Penguin";
-		
-		Penguin penguinModel = new Penguin();
-		penguinModel.setName( penguinName );
-
-		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.stage.Penguin.class );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice penguinModelField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( penguinName, org.alice.apis.stage.Penguin.class, initializer );
-		penguinModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
-		penguinModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
-		
-		org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( penguinModelField, penguinModel );
-		this.sceneType.fields.add(penguinModelField);
-	}
-	
-	private void createColladaModelField()
-    {
-        
-        String colladaName = "Collada";
-        
-        Collada colladaModel = new Collada();
-        colladaModel.setName( colladaName );
-
-        edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.stage.Collada.class );
-        edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice colladaModelField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( colladaName, org.alice.apis.stage.Collada.class, initializer );
-        colladaModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
-        colladaModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
-        
-        org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( colladaModelField, colladaModel );
-        this.sceneType.fields.add(colladaModelField);
-    }
-	
-	private void createOgreModelField()
-	{
-	    
-		String ogreName = "Ogre";
-		
-		Ogre ogreModel = new Ogre();
-		ogreModel.setName( ogreName );
-
-		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.stage.Ogre.class );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ogreModelField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( ogreName, org.alice.apis.stage.Ogre.class, initializer );
-		ogreModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
-		ogreModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
-		
-		org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( ogreModelField, ogreModel );
-		this.sceneType.fields.add(ogreModelField);
-	}
+//	private void createPenguinModelField()
+//	{
+//		String penguinName = "Penguin";
+//		
+//		Penguin penguinModel = new Penguin();
+//		penguinModel.setName( penguinName );
+//
+//		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.Penguin.class );
+//		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice penguinModelField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( penguinName, org.lookingglassandalice.storytelling.Penguin.class, initializer );
+//		penguinModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+//		penguinModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+//		
+//		org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( penguinModelField, penguinModel );
+//		this.sceneType.fields.add(penguinModelField);
+//	}
+//	
+//	private void createColladaModelField()
+//    {
+//        
+//        String colladaName = "Collada";
+//        
+//        Collada colladaModel = new Collada();
+//        colladaModel.setName( colladaName );
+//
+//        edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.Collada.class );
+//        edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice colladaModelField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( colladaName, org.lookingglassandalice.storytelling.Collada.class, initializer );
+//        colladaModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+//        colladaModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+//        
+//        org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( colladaModelField, colladaModel );
+//        this.sceneType.fields.add(colladaModelField);
+//    }
+//	
+//	private void createOgreModelField()
+//	{
+//	    
+//		String ogreName = "Ogre";
+//		
+//		Ogre ogreModel = new Ogre();
+//		ogreModel.setName( ogreName );
+//
+//		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.Ogre.class );
+//		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ogreModelField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( ogreName, org.lookingglassandalice.storytelling.Ogre.class, initializer );
+//		ogreModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+//		ogreModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+//		
+//		org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( ogreModelField, ogreModel );
+//		this.sceneType.fields.add(ogreModelField);
+//	}
 	
 	public Tuple2< FieldDeclaredInAlice, ObjectMarker > createObjectMarkerField( TypeDeclaredInAlice ownerType ) {
 		CreateObjectMarkerActionOperation.getInstance().setEnabled(false);
@@ -1896,32 +1894,32 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		Transformable selectedTransformable = this.getTransformableForField(selectedField);
 		String markerName = getNameForObjectMarker( ownerType, selectedField );
 
-		org.alice.apis.moveandturn.ObjectMarker objectMarker = new org.alice.apis.moveandturn.ObjectMarker();
+		org.lookingglassandalice.storytelling.ObjectMarker objectMarker = new org.lookingglassandalice.storytelling.ObjectMarker();
 		objectMarker.setName( markerName );
 		objectMarker.setShowing(true);
 		objectMarker.setLocalTransformation( selectedTransformable.getTransformation(AsSeenBy.SCENE) );
 
-		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.ObjectMarker.class );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice objectMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( markerName, org.alice.apis.moveandturn.ObjectMarker.class, initializer );
+		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.ObjectMarker.class );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice objectMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( markerName, org.lookingglassandalice.storytelling.ObjectMarker.class, initializer );
 		objectMarkerField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 		objectMarkerField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
 		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( objectMarkerField, objectMarker );
 	}
 	
-	public Tuple2< FieldDeclaredInAlice, org.alice.apis.moveandturn.BookmarkCameraMarker > createCameraMarkerField( TypeDeclaredInAlice ownerType ) {
+	public Tuple2< FieldDeclaredInAlice, org.lookingglassandalice.storytelling.BookmarkCameraMarker > createCameraMarkerField( TypeDeclaredInAlice ownerType ) {
 		CreateCameraMarkerActionOperation.getInstance().setEnabled(false);
 		String markerName = getNameForCameraMarker( ownerType );
 
-		org.alice.apis.moveandturn.BookmarkCameraMarker cameraMarker = new org.alice.apis.moveandturn.BookmarkCameraMarker();
+		org.lookingglassandalice.storytelling.BookmarkCameraMarker cameraMarker = new org.lookingglassandalice.storytelling.BookmarkCameraMarker();
 		cameraMarker.setName( markerName );
 //		cameraMarker.setMarkerColor( getColorForMarker().getInternal() );
 		cameraMarker.setShowing(true);
-		org.alice.apis.moveandturn.ReferenceFrame asSeenBy = AsSeenBy.SCENE;
+		org.lookingglassandalice.storytelling.ReferenceFrame asSeenBy = AsSeenBy.SCENE;
 		cameraMarker.setLocalTransformation( getSGCameraForCreatingMarker().getTransformation( asSeenBy.getSGReferenceFrame() ) );
 		updateCameraMarkerToCamera(cameraMarker, (SymmetricPerspectiveCamera)getSGCameraForCreatingMarker());
 
-		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.BookmarkCameraMarker.class );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( markerName, org.alice.apis.moveandturn.BookmarkCameraMarker.class, initializer );
+		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.BookmarkCameraMarker.class );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( markerName, org.lookingglassandalice.storytelling.BookmarkCameraMarker.class, initializer );
 		cameraMarkerField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 		cameraMarkerField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
 		
@@ -1934,7 +1932,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		MarkerWithIcon marker = this.getCameraMarkerForField(markerField);
 		if (marker != null)
 		{
-			org.alice.apis.moveandturn.AbstractCamera mvCamera = (org.alice.apis.moveandturn.AbstractCamera)Element.getElement(this.sgPerspectiveCamera);
+			org.lookingglassandalice.storytelling.Camera mvCamera = (org.lookingglassandalice.storytelling.Camera)Element.getElement(this.sgPerspectiveCamera);
 			mvCamera.moveAndOrientTo(marker);
 		}
 	}

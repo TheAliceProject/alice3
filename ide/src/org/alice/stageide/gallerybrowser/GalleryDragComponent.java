@@ -65,7 +65,7 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 		this.treeNode = treeNode;
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 		label.setIcon( ResourceManager.getLargeIcon( this.treeNode ) );
-		label.setText( GalleryBrowser.getTextFor( this.treeNode, false ) );
+		label.setText( ClassBasedGalleryBrowser.getTextFor( this.treeNode, false ) );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );

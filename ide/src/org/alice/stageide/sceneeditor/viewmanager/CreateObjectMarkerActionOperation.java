@@ -64,7 +64,7 @@ public class CreateObjectMarkerActionOperation extends AbstractSceneDeclareField
 	}
 	
 	@Override
-	protected Tuple2< FieldDeclaredInAlice, org.alice.apis.moveandturn.ObjectMarker > createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, TypeDeclaredInAlice ownerType ) 
+	protected Tuple2< FieldDeclaredInAlice, org.lookingglassandalice.storytelling.ObjectMarker > createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, TypeDeclaredInAlice ownerType ) 
 	{
 		return ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).createObjectMarkerField( ownerType );
 	}

@@ -81,18 +81,18 @@ public class FontChooser extends javax.swing.JPanel {
 			super( "Family:" );
 			m_list.setListData( new String[] { "Serif", "SansSerif" } );
 		}
-		public org.alice.apis.moveandturn.font.FamilyAttribute getFamilyAttribute() {
+		public org.lookingglassandalice.storytelling.font.FamilyAttribute getFamilyAttribute() {
 			Object value = m_list.getSelectedValue();
-			org.alice.apis.moveandturn.font.FamilyAttribute rv;
+			org.lookingglassandalice.storytelling.font.FamilyAttribute rv;
 			if( value.equals( "Serif" ) ) {
-				rv = org.alice.apis.moveandturn.font.FamilyConstant.SERIF;
+				rv = org.lookingglassandalice.storytelling.font.FamilyConstant.SERIF;
 			} else {
-				rv = org.alice.apis.moveandturn.font.FamilyConstant.SANS_SERIF;
+				rv = org.lookingglassandalice.storytelling.font.FamilyConstant.SANS_SERIF;
 			}
 			return rv;
 		}
-		public void setFamilyAttribute( org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute ) {
-			if( familyAttribute == org.alice.apis.moveandturn.font.FamilyConstant.SERIF ) {
+		public void setFamilyAttribute( org.lookingglassandalice.storytelling.font.FamilyAttribute familyAttribute ) {
+			if( familyAttribute == org.lookingglassandalice.storytelling.font.FamilyConstant.SERIF ) {
 				m_list.setSelectedValue( "Serif", true );
 			} else {
 				m_list.setSelectedValue( "SansSerif", true );
@@ -104,29 +104,29 @@ public class FontChooser extends javax.swing.JPanel {
 			super( "Style:" );
 			m_list.setListData( new String[] { "Regular", "Bold", "Italic", "Bold Italic" } );
 		}
-		public org.alice.apis.moveandturn.font.WeightAttribute getWeightAttribute() {
+		public org.lookingglassandalice.storytelling.font.WeightAttribute getWeightAttribute() {
 			Object value = m_list.getSelectedValue();
-			org.alice.apis.moveandturn.font.WeightAttribute rv;
+			org.lookingglassandalice.storytelling.font.WeightAttribute rv;
 			if( value != null && ( value.equals( "Bold" ) || value.equals( "Bold Italic" ) ) ) {
-				rv = org.alice.apis.moveandturn.font.WeightConstant.BOLD;
+				rv = org.lookingglassandalice.storytelling.font.WeightConstant.BOLD;
 			} else {
-				rv = org.alice.apis.moveandturn.font.WeightConstant.REGULAR;
+				rv = org.lookingglassandalice.storytelling.font.WeightConstant.REGULAR;
 			}
 			return rv;
 		}
-		public org.alice.apis.moveandturn.font.PostureAttribute getPostureAttribute() {
+		public org.lookingglassandalice.storytelling.font.PostureAttribute getPostureAttribute() {
 			Object value = m_list.getSelectedValue();
-			org.alice.apis.moveandturn.font.PostureAttribute rv;
+			org.lookingglassandalice.storytelling.font.PostureAttribute rv;
 			if( value != null && ( value.equals( "Italic" ) || value.equals( "Bold Italic" ) ) ) {
-				rv = org.alice.apis.moveandturn.font.PostureConstant.OBLIQUE;
+				rv = org.lookingglassandalice.storytelling.font.PostureConstant.OBLIQUE;
 			} else {
-				rv = org.alice.apis.moveandturn.font.PostureConstant.REGULAR;
+				rv = org.lookingglassandalice.storytelling.font.PostureConstant.REGULAR;
 			}
 			return rv;
 		}
-		public void setStyleAttributes(  org.alice.apis.moveandturn.font.WeightAttribute weight, org.alice.apis.moveandturn.font.PostureAttribute posture ) {
-			boolean isBold = ( weight == org.alice.apis.moveandturn.font.WeightConstant.BOLD );
-			boolean isItalic = ( posture == org.alice.apis.moveandturn.font.PostureConstant.OBLIQUE );
+		public void setStyleAttributes(  org.lookingglassandalice.storytelling.font.WeightAttribute weight, org.lookingglassandalice.storytelling.font.PostureAttribute posture ) {
+			boolean isBold = ( weight == org.lookingglassandalice.storytelling.font.WeightConstant.BOLD );
+			boolean isItalic = ( posture == org.lookingglassandalice.storytelling.font.PostureConstant.OBLIQUE );
 			Object selectedValue;
 			if( isBold ) {
 				if( isItalic ) {
@@ -150,15 +150,15 @@ public class FontChooser extends javax.swing.JPanel {
 			m_list.setListData( new String[] { "8", "9", "10", "12", "14", "18", "24", "32", "48", "64", "96" } );
 		}
 		
-		public org.alice.apis.moveandturn.font.SizeAttribute getSizeAttribute() {
+		public org.lookingglassandalice.storytelling.font.SizeAttribute getSizeAttribute() {
 			Object value = m_list.getSelectedValue();
 			if( value instanceof String ) {
-				return new org.alice.apis.moveandturn.font.SizeValue( Float.valueOf( (String) value ) );
+				return new org.lookingglassandalice.storytelling.font.SizeValue( Float.valueOf( (String) value ) );
 			} else {
 				return null;
 			}
 		}
-		public void setSizeAttribute( org.alice.apis.moveandturn.font.SizeAttribute sizeAttribute ) {
+		public void setSizeAttribute( org.lookingglassandalice.storytelling.font.SizeAttribute sizeAttribute ) {
 			int size = sizeAttribute.getValue().intValue();
 			m_list.setSelectedValue( Integer.toString( size ), true );
 		}
@@ -172,9 +172,9 @@ public class FontChooser extends javax.swing.JPanel {
 	private SizePane m_sizePane = new SizePane();
 	private javax.swing.JLabel m_sample = new javax.swing.JLabel();
 	public FontChooser() {
-		this( new org.alice.apis.moveandturn.Font() );
+		this( new org.lookingglassandalice.storytelling.Font() );
 	}
-	public FontChooser( org.alice.apis.moveandturn.Font font ) {
+	public FontChooser( org.lookingglassandalice.storytelling.Font font ) {
 		setSampleText( null );
 		m_sample.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
 		m_sample.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
@@ -208,18 +208,18 @@ public class FontChooser extends javax.swing.JPanel {
 		setValue( font );
 	}
 	
-	public org.alice.apis.moveandturn.Font getValue() {
-		org.alice.apis.moveandturn.font.FamilyAttribute family = m_familyPane.getFamilyAttribute();
-		org.alice.apis.moveandturn.font.WeightAttribute weight = m_stylePane.getWeightAttribute();
-		org.alice.apis.moveandturn.font.PostureAttribute posture = m_stylePane.getPostureAttribute();
-		org.alice.apis.moveandturn.font.SizeAttribute size = m_sizePane.getSizeAttribute();
+	public org.lookingglassandalice.storytelling.Font getValue() {
+		org.lookingglassandalice.storytelling.font.FamilyAttribute family = m_familyPane.getFamilyAttribute();
+		org.lookingglassandalice.storytelling.font.WeightAttribute weight = m_stylePane.getWeightAttribute();
+		org.lookingglassandalice.storytelling.font.PostureAttribute posture = m_stylePane.getPostureAttribute();
+		org.lookingglassandalice.storytelling.font.SizeAttribute size = m_sizePane.getSizeAttribute();
 		if( size != null ) {
-			return new org.alice.apis.moveandturn.Font( family, weight, posture, size );
+			return new org.lookingglassandalice.storytelling.Font( family, weight, posture, size );
 		} else {
 			return null;
 		}
 	}
-	public void setValue( org.alice.apis.moveandturn.Font font ) {
+	public void setValue( org.lookingglassandalice.storytelling.Font font ) {
 		m_familyPane.setFamilyAttribute( font.getFamily() );
 		m_stylePane.setStyleAttributes( font.getWeight(), font.getPosture() );
 		m_sizePane.setSizeAttribute( font.getSize() );
@@ -235,7 +235,7 @@ public class FontChooser extends javax.swing.JPanel {
 	}
 	
 	private void updateSample() { 
-		org.alice.apis.moveandturn.Font font = getValue();
+		org.lookingglassandalice.storytelling.Font font = getValue();
 		if( font != null ) {
 			m_sample.setFont( font.getAsAWTFont() );
 		}

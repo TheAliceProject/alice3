@@ -84,7 +84,7 @@ public class ClassBasedGalleryDragComponent extends NodeLikeSubstance {
 			label.setIcon( icon );
 		}
 		
-		label.setText( GalleryBrowser.getTextFor( this.treeNode, false ) );
+		label.setText( ClassBasedGalleryBrowser.getTextFor( this.treeNode, false ) );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );

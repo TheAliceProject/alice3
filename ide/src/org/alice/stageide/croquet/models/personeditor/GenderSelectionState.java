@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class GenderSelectionState extends AbstractListSelectionState< org.alice.apis.stage.Gender > {
+public class GenderSelectionState extends AbstractListSelectionState< org.lookingglassandalice.storytelling.Gender > {
 	private static class SingletonHolder {
 		private static GenderSelectionState instance = new GenderSelectionState();
 	}
@@ -53,11 +53,11 @@ public class GenderSelectionState extends AbstractListSelectionState< org.alice.
 		return SingletonHolder.instance;
 	}
 	private GenderSelectionState() {
-		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.alice.apis.stage.Gender.class ), org.alice.apis.stage.Gender.values() );
+		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lookingglassandalice.storytelling.Gender.class ), org.lookingglassandalice.storytelling.Gender.values() );
 	}
 	@Override
-	public org.lgna.croquet.components.List<org.alice.apis.stage.Gender> createList() {
-		org.lgna.croquet.components.List<org.alice.apis.stage.Gender> rv = super.createList();
+	public org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.Gender> createList() {
+		org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.Gender> rv = super.createList();
 		rv.setCellRenderer( org.alice.stageide.personeditor.SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}

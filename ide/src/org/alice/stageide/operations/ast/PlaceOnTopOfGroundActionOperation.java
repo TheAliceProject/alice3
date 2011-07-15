@@ -51,11 +51,11 @@ public class PlaceOnTopOfGroundActionOperation extends TransformableFieldTileAct
 		this.setName( "Place on top of Ground" );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable ) {
+	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lookingglassandalice.storytelling.implementation.TransformableImplementation transformableImp ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv = new edu.cmu.cs.dennisc.math.AffineMatrix4x4();
-		org.alice.apis.moveandturn.Model model = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( transformable, org.alice.apis.moveandturn.Model.class ); 
+		org.lookingglassandalice.storytelling.Model model = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( transformableImp, org.lookingglassandalice.storytelling.Model.class ); 
 		if( model != null ) {
-			org.alice.apis.moveandturn.Scene scene = model.getScene();
+			org.lookingglassandalice.storytelling.Scene scene = model.getScene();
 			assert scene != null;
 			edu.cmu.cs.dennisc.math.AxisAlignedBox bb = model.getAxisAlignedMinimumBoundingBox();
 			edu.cmu.cs.dennisc.math.Point3 position = model.getPosition( scene );

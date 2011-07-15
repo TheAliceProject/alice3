@@ -43,7 +43,7 @@
 
 package org.alice.ide.name.validators;
 
-import org.alice.apis.moveandturn.Marker;
+import org.lookingglassandalice.storytelling.Marker;
 
 public class MarkerColorValidator extends MemberNameValidator {
 

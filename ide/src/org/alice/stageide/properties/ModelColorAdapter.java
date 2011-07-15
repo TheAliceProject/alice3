@@ -47,9 +47,9 @@ import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.apis.moveandturn.Model> {
+public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lookingglassandalice.storytelling.Model> {
 
-	public ModelColorAdapter(org.alice.apis.moveandturn.Model instance)
+	public ModelColorAdapter(org.lookingglassandalice.storytelling.Model instance)
 	{
 		super(instance);
 	}
@@ -67,7 +67,7 @@ public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.ap
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance)
+	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.lookingglassandalice.storytelling.Model instance)
 	{
 		if (this.instance != null)
 		{
@@ -85,7 +85,7 @@ public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.ap
 			new Thread() {
 				@Override
 				public void run() {
-					ModelColorAdapter.this.instance.setColor(new org.alice.apis.moveandturn.Color(value));
+					ModelColorAdapter.this.instance.setColor(new org.lookingglassandalice.storytelling.Color(value));
 				}
 			}.start();
 		}

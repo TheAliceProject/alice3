@@ -46,14 +46,17 @@ package org.alice.stageide.modelviewer;
 /**
  * @author Dennis Cosgrove
  */
-//abstract class AbstractViewer extends org.alice.apis.moveandturn.Program {
 abstract class AbstractViewer extends org.lgna.croquet.components.BorderPanel {
 	//todo: should this be heavyweight?
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
-	private org.alice.apis.moveandturn.Scene scene = new org.alice.apis.moveandturn.Scene();
-	private org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = new org.alice.apis.moveandturn.SymmetricPerspectiveCamera();
-	private org.alice.apis.moveandturn.DirectionalLight sunLight = new org.alice.apis.moveandturn.DirectionalLight();
+	private org.lookingglassandalice.storytelling.Scene scene = new org.lookingglassandalice.storytelling.Scene() {
+		@Override
+		protected void handleActiveChanged(Boolean isActive, Integer activeCount) {
+		}
+	};
+	private org.lookingglassandalice.storytelling.Camera camera = new org.lookingglassandalice.storytelling.Camera();
+	private org.lookingglassandalice.storytelling.Sun sunLight = new org.lookingglassandalice.storytelling.Sun();
 	private org.lgna.croquet.components.Component<?> adapter;
 
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
@@ -62,9 +65,9 @@ abstract class AbstractViewer extends org.lgna.croquet.components.BorderPanel {
 		}
 	};
 	public AbstractViewer() {
-		this.scene.addComponent( this.camera );
-		this.scene.addComponent( this.sunLight );
-		this.sunLight.turn( org.alice.apis.moveandturn.TurnDirection.FORWARD, new org.alice.apis.moveandturn.AngleInRevolutions( 0.25 ) );
+		this.camera.setVehicle( this.scene );
+		this.sunLight.setVehicle( this.scene );
+		this.sunLight.turn( org.lookingglassandalice.storytelling.TurnDirection.FORWARD, new org.lookingglassandalice.storytelling.AngleInRevolutions( 0.25 ) );
 	}
 	private boolean isInitialized = false;
 	protected void initialize() {
@@ -80,13 +83,13 @@ abstract class AbstractViewer extends org.lgna.croquet.components.BorderPanel {
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
 	}
-	protected org.alice.apis.moveandturn.Scene getScene() {
+	protected org.lookingglassandalice.storytelling.Scene getScene() {
 		return this.scene;
 	}
-	protected org.alice.apis.moveandturn.SymmetricPerspectiveCamera getCamera() {
+	protected org.lookingglassandalice.storytelling.Camera getCamera() {
 		return this.camera;
 	}
-	protected org.alice.apis.moveandturn.DirectionalLight getSunLight() {
+	protected org.lookingglassandalice.storytelling.Sun getSunLight() {
 		return this.sunLight;
 	}
 	@Override
@@ -117,11 +120,11 @@ abstract class AbstractViewer extends org.lgna.croquet.components.BorderPanel {
  * @author Dennis Cosgrove
  */
 public class ModelViewer extends AbstractViewer {
-	private org.alice.apis.moveandturn.Model model = null;
-	public org.alice.apis.moveandturn.Model getModel() {
+	private org.lookingglassandalice.storytelling.Model model = null;
+	public org.lookingglassandalice.storytelling.Model getModel() {
 		return this.model;
 	}
-	public void setModel( org.alice.apis.moveandturn.Model model ) {
+	public void setModel( org.lookingglassandalice.storytelling.Model model ) {
 		if( model != this.model ) {
 			if( this.model != null ) {
 				this.getScene().removeComponent( this.model );

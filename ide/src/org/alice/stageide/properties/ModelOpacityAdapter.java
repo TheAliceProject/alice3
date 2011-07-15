@@ -47,15 +47,15 @@ import org.alice.ide.properties.adapter.AbstractOpacityPropertyAdapter;
 
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 
-public class ModelOpacityAdapter extends AbstractOpacityPropertyAdapter<org.alice.apis.moveandturn.Model> {
+public class ModelOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lookingglassandalice.storytelling.Model> {
 
-	public ModelOpacityAdapter(org.alice.apis.moveandturn.Model instance)
+	public ModelOpacityAdapter(org.lookingglassandalice.storytelling.Model instance)
 	{
 		super(instance);
 	}
 	
 	@Override
-	protected InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance) 
+	protected InstanceProperty<?> getPropertyInstanceForInstance(org.lookingglassandalice.storytelling.Model instance) 
 	{
 		if (this.instance != null)
 		{

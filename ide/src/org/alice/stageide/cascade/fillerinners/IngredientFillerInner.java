@@ -49,12 +49,12 @@ public abstract class IngredientFillerInner extends org.alice.ide.cascade.filler
 	public IngredientFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( type );
 	}
-	protected abstract Class<?>[] getClses( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender );
+	protected abstract Class<?>[] getClses( org.lookingglassandalice.storytelling.LifeStage lifeStage, org.lookingglassandalice.storytelling.Gender gender );
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-//		org.alice.apis.stage.LifeStage[] lifeStages = { org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.LifeStage.CHILD }; 
-//		for( final org.alice.apis.stage.LifeStage lifeStage : lifeStages ) {
-//			for( final org.alice.apis.stage.Gender gender : org.alice.apis.stage.Gender.values() ) {
+//		org.lookingglassandalice.storytelling.LifeStage[] lifeStages = { org.lookingglassandalice.storytelling.LifeStage.ADULT, org.lookingglassandalice.storytelling.LifeStage.CHILD }; 
+//		for( final org.lookingglassandalice.storytelling.LifeStage lifeStage : lifeStages ) {
+//			for( final org.lookingglassandalice.storytelling.Gender gender : org.lookingglassandalice.storytelling.Gender.values() ) {
 //				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( gender.name().toLowerCase() + " " + lifeStage.name().toLowerCase() ) {
 //					@Override
 //					protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {

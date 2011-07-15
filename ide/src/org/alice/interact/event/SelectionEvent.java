@@ -57,7 +57,7 @@ public class SelectionEvent extends Event< AbstractDragAdapter >{
 		this.transformable = transformable;
 	}
 	
-	public SelectionEvent( AbstractDragAdapter source, org.alice.apis.moveandturn.Transformable mtTransformable ) {
+	public SelectionEvent( AbstractDragAdapter source, org.lookingglassandalice.storytelling.Transformable mtTransformable ) {
 		super( source );
 		if (mtTransformable != null)
 		{

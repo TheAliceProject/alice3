@@ -47,7 +47,7 @@ package org.alice.stageide.cascade.fillerinners;
  */
 public class ImageSourceFillerInner extends SourceFillerInner< org.alice.virtualmachine.resources.ImageResource > {
 	public ImageSourceFillerInner() {
-		super( org.alice.apis.moveandturn.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
+		super( org.lookingglassandalice.storytelling.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
 	}
 
 	@Override

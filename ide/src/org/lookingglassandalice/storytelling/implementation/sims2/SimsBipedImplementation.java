@@ -48,16 +48,15 @@ package org.lookingglassandalice.storytelling.implementation.sims2;
  */
 public class SimsBipedImplementation extends org.lookingglassandalice.storytelling.implementation.BipedImplementation {
 	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
-	public SimsBipedImplementation( org.lookingglassandalice.storytelling.Biped abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource, org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, org.alice.apis.stage.SkinTone skinTone, org.alice.apis.stage.AdultFullBodyOutfit outfit ) {
+	public SimsBipedImplementation( org.lookingglassandalice.storytelling.Biped abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource, org.lookingglassandalice.storytelling.LifeStage lifeStage, org.lookingglassandalice.storytelling.Gender gender, org.lookingglassandalice.storytelling.SkinTone skinTone, org.lookingglassandalice.storytelling.AdultFullBodyOutfit outfit ) {
 		super( abstraction, new edu.cmu.cs.dennisc.scenegraph.Visual());
 		try {
-			switch (lifeStage)
-			{
-			case ADULT : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( new org.alice.apis.stage.Adult() ); break;
-			case CHILD : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( new org.alice.apis.stage.Child() ); break;
-			case ELDER : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( new org.alice.apis.stage.Elder() ); break;
-			case TEEN : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( new org.alice.apis.stage.Teen() ); break;
-			case TODDLER : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( new org.alice.apis.stage.Toddler() ); break;
+			switch (lifeStage) {
+			case ADULT : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.LifeStage.ADULT ); break;
+			case CHILD : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.LifeStage.CHILD ); break;
+			case ELDER : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.LifeStage.ELDER ); break;
+			case TEEN : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.LifeStage.TEEN ); break;
+			case TODDLER : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.LifeStage.TODDLER ); break;
 			default : this.nebPerson = null; break;
 			}
 			assert (this.nebPerson != null);
@@ -65,14 +64,14 @@ public class SimsBipedImplementation extends org.lookingglassandalice.storytelli
 			this.nebPerson.setOutfit( outfit );
 			this.nebPerson.setSkinTone( skinTone );
 			this.nebPerson.setFitnessLevel( 0.5 );
-			this.nebPerson.setHair( org.alice.apis.stage.FemaleAdultHairBraids.BLACK );
-			this.nebPerson.setEyeColor( org.alice.apis.stage.BaseEyeColor.getRandom() );
+			this.nebPerson.setHair( org.lookingglassandalice.storytelling.FemaleAdultHairBraids.BLACK );
+			this.nebPerson.setEyeColor( org.lookingglassandalice.storytelling.BaseEyeColor.getRandom() );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			throw new RuntimeException( lre );
 		}
-		this.getSgVisual().geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebPerson } );
+		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebPerson } );
 	}
-	public void setGender( org.alice.apis.stage.Gender gender ) {
+	public void setGender( org.lookingglassandalice.storytelling.Gender gender ) {
 	}
 	
 	@Override

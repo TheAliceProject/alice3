@@ -42,14 +42,14 @@
  */
 package org.alice.stageide.apis.moveandturn.event;
 
-public class MouseButtonAdapter implements org.alice.apis.moveandturn.event.MouseButtonListener {
+public class MouseButtonAdapter implements org.lookingglassandalice.storytelling.event.MouseButtonListener {
 	private edu.cmu.cs.dennisc.alice.virtualmachine.Context context;
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	public MouseButtonAdapter( edu.cmu.cs.dennisc.alice.virtualmachine.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type, Object[] arguments ) {
 		this.context = context;
-		this.method = type.getDeclaredMethod( "mouseButtonClicked", org.alice.apis.moveandturn.event.MouseButtonEvent.class );
+		this.method = type.getDeclaredMethod( "mouseButtonClicked", org.lookingglassandalice.storytelling.event.MouseButtonEvent.class );
 	}
-	public void mouseButtonClicked( org.alice.apis.moveandturn.event.MouseButtonEvent e ) {
+	public void mouseButtonClicked( org.lookingglassandalice.storytelling.event.MouseButtonEvent e ) {
 		this.context.invokeEntryPoint( this.method, e );
 	}
 }
