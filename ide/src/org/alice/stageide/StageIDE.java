@@ -577,62 +577,6 @@ public class StageIDE extends org.alice.ide.IDE {
 		return rv;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getGalleryRoot() {
-		try {
-			String jarPath = org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory() + "/mtwtGalleryLargeIcons.jar";
-			edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode jarRoot = edu.cmu.cs.dennisc.zip.ZipUtilities.createTreeNode( jarPath, false );
-			String[] paths = {
-					 "org/alice/stageide/gallerybrowser/images/edu/wustl/cse/lookingglass/apis/walkandtouch/gallery/characters", 
-					 "org/alice/stageide/gallerybrowser/images/edu/wustl/cse/lookingglass/apis/walkandtouch/gallery/scenes", 
-					 "org/alice/stageide/gallerybrowser/images/org/alice/apis/moveandturn/gallery", 
-			};
-			final int N = paths.length;
-			final java.util.ArrayList< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > children = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-			children.ensureCapacity( N );
-			edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> rv = new edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>() {
-				public java.util.Enumeration< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > children() {
-					return java.util.Collections.enumeration( children );
-				}
-				public java.util.Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> iterator() {
-					return children.iterator();
-				}
-				public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt(int childIndex) {
-					return children.get( childIndex );
-				}
-				public int getChildCount() {
-					return children.size();
-				}
-				public int getIndex(javax.swing.tree.TreeNode node) {
-					return children.indexOf( node );
-				}
-				public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getParent() {
-					return null;
-				}
-				public boolean getAllowsChildren() {
-					return true;
-				}
-				public boolean isLeaf() {
-					return false;
-				}
-				public String getValue() {
-					return null;
-				}
-				@Override
-				public String toString() {
-					return "thumbnails";
-				}
-			};
-			for( String path : paths ) {
-				edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = jarRoot.getDescendant( path );
-				zipTreeNode.setParent( rv );
-				children.add( zipTreeNode );
-			}
-			return rv;
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
-	@Override
 	protected org.lgna.croquet.components.JComponent<?> createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> root ) {
 		return new org.alice.stageide.gallerybrowser.ClassBasedGalleryBrowser( root );
 	}
@@ -654,10 +598,6 @@ public class StageIDE extends org.alice.ide.IDE {
 		} catch( Exception e ) {
 			throw new RuntimeException( e );
 		}
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent<?> createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
-		return new org.alice.stageide.gallerybrowser.GalleryBrowser( root );
 	}
 	
 //	@Override

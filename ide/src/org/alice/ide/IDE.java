@@ -43,9 +43,6 @@
 package org.alice.ide;
 
 import org.lgna.croquet.components.JComponent;
-
-import com.sun.jdi.VirtualMachine;
-
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 
 /**
@@ -455,9 +452,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return rv;
 	}
 
-	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > getGalleryRoot();
-	protected abstract org.lgna.croquet.components.JComponent< ? > createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > root );
-	
 	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> getClassGalleryRoot();
 	protected abstract JComponent< ? > createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> root );
 	
