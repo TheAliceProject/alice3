@@ -46,24 +46,23 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class RelativeVantagePointAnimationDetailsFactory {
-	private RelativeVantagePointAnimationDetailsFactory() {
+public class SetDimensionAnimationDetailsFactory {
+	private SetDimensionAnimationDetailsFactory() {
 		throw new AssertionError();
 	}
-	public static RelativeVantagePointAnimationDetails asSeenBy( Entity value ) {
-		RelativeVantagePointAnimationDetails rv = new RelativeVantagePointAnimationDetails();
-		rv.asSeenBy( value );
+	public static SetDimensionAnimationDetails policy( SetDimensionPolicy value ) {
+		SetDimensionAnimationDetails rv = new SetDimensionAnimationDetails();
+		rv.policy( value );
 		return rv;
 	}
-	public static RelativeVantagePointAnimationDetails duration( Number value ) {
-		RelativeVantagePointAnimationDetails rv = new RelativeVantagePointAnimationDetails();
+	public static SetDimensionAnimationDetails duration( Number value ) {
+		SetDimensionAnimationDetails rv = new SetDimensionAnimationDetails();
 		rv.duration( value );
 		return rv;
 	}
-	public static RelativeVantagePointAnimationDetails style( Style value ) {
-		RelativeVantagePointAnimationDetails rv = new RelativeVantagePointAnimationDetails();
+	public static SetDimensionAnimationDetails style( Style value ) {
+		SetDimensionAnimationDetails rv = new SetDimensionAnimationDetails();
 		rv.style( value );
 		return rv;
 	}
 }
-

@@ -40,25 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum SetSizePolicy {
-	PRESERVE_VOLUME( ResizePolicy.PRESERVE_VOLUME, false ),
-	PRESERVE_ASPECT_RATIO( ResizePolicy.PRESERVE_NOTHING, true ),
-	PRESERVE_NOTHING( ResizePolicy.PRESERVE_NOTHING, false );
-	private final ResizePolicy resizePolicy;
-	private final boolean isAspectRatioPreserved;
-	SetSizePolicy( ResizePolicy resizePolicy, boolean isAspectRatioPreserved ) {
-		this.resizePolicy = resizePolicy;
-		this.isAspectRatioPreserved = isAspectRatioPreserved;
+public class SetDimensionAnimationDetails extends AbstractAnimationDetails {
+	protected SetDimensionPolicy policy = SetDimensionPolicy.PRESERVE_ASPECT_RATIO;
+	public SetDimensionAnimationDetails policy( SetDimensionPolicy value ) {
+		this.policy = value;
+		return this;
 	}
-	public ResizePolicy getResizePolicy() {
-		return this.resizePolicy;
+	public SetDimensionAnimationDetails duration( Number value ) {
+		this.duration = value.doubleValue();
+		return this;
 	}
-	public boolean isAspectRatioPreserved() {
-		return this.isAspectRatioPreserved;
+	public SetDimensionAnimationDetails style( Style value ) {
+		this.style = value;
+		return this;
+	}
+	/*package-private*/ SetDimensionPolicy getPolicy() {
+		return this.policy;
 	}
 }

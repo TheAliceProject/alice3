@@ -40,19 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum ResizePolicy {
-	PRESERVE_VOLUME( true ),
-	PRESERVE_NOTHING( false );
-	private boolean m_isVolumePreserved;
-	ResizePolicy( boolean isVolumePreserved ) {
-		m_isVolumePreserved = isVolumePreserved;
+public class ResizeDimensionAnimationDetailsFactory {
+	private ResizeDimensionAnimationDetailsFactory() {
+		throw new AssertionError();
 	}
-	public boolean isVolumePreserved() {
-		return m_isVolumePreserved;
+	public static ResizeDimensionAnimationDetails isVolumePreserved( Boolean value ) {
+		ResizeDimensionAnimationDetails rv = new ResizeDimensionAnimationDetails();
+		rv.isVolumePreserved( value );
+		return rv;
+	}
+	public static ResizeDimensionAnimationDetails duration( Number value ) {
+		ResizeDimensionAnimationDetails rv = new ResizeDimensionAnimationDetails();
+		rv.duration( value );
+		return rv;
+	}
+	public static ResizeDimensionAnimationDetails style( Style value ) {
+		ResizeDimensionAnimationDetails rv = new ResizeDimensionAnimationDetails();
+		rv.style( value );
+		return rv;
 	}
 }

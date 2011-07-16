@@ -323,7 +323,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		rv.setName( this.instanceNameVC.getText() );
 		rv.setValue( this.textVC.getText() );
 		rv.setFont( new org.lookingglassandalice.storytelling.Font( familyAttribute, weightAttribute, postureAttribute ) );
-		rv.setLetterHeight( Double.parseDouble( this.heightTextField.getText() ) );
+		rv.setHeight( Double.parseDouble( this.heightTextField.getText() ) );
 		return rv;
 	}
 	

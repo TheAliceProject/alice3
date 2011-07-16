@@ -48,12 +48,12 @@ package org.lookingglassandalice.storytelling;
  */
 public class RelativeVantagePointAnimationDetails extends AbstractAnimationDetails {
 	protected Entity asSeenBy = null;
-	public RelativeVantagePointAnimationDetails duration( Number value ) {
-		this.duration = value.doubleValue();
-		return this;
-	}
 	public RelativeVantagePointAnimationDetails asSeenBy( Entity value ) {
 		this.asSeenBy = value;
+		return this;
+	}
+	public RelativeVantagePointAnimationDetails duration( Number value ) {
+		this.duration = value.doubleValue();
 		return this;
 	}
 	public RelativeVantagePointAnimationDetails style( Style value ) {

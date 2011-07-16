@@ -40,30 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RelativeVantagePointAnimationDetailsFactory {
-	private RelativeVantagePointAnimationDetailsFactory() {
-		throw new AssertionError();
+public enum SetDimensionPolicy {
+	PRESERVE_VOLUME( true, false ),
+	PRESERVE_ASPECT_RATIO( false, true ),
+	PRESERVE_NOTHING( false, false );
+	private final boolean isVolumePreserved;
+	private final boolean isAspectRatioPreserved;
+	SetDimensionPolicy( boolean isVolumePreserved, boolean isAspectRatioPreserved ) {
+		this.isVolumePreserved = isVolumePreserved;
+		this.isAspectRatioPreserved = isAspectRatioPreserved;
 	}
-	public static RelativeVantagePointAnimationDetails asSeenBy( Entity value ) {
-		RelativeVantagePointAnimationDetails rv = new RelativeVantagePointAnimationDetails();
-		rv.asSeenBy( value );
-		return rv;
+	/*package-private*/ boolean isVolumePreserved() {
+		return this.isVolumePreserved;
 	}
-	public static RelativeVantagePointAnimationDetails duration( Number value ) {
-		RelativeVantagePointAnimationDetails rv = new RelativeVantagePointAnimationDetails();
-		rv.duration( value );
-		return rv;
-	}
-	public static RelativeVantagePointAnimationDetails style( Style value ) {
-		RelativeVantagePointAnimationDetails rv = new RelativeVantagePointAnimationDetails();
-		rv.style( value );
-		return rv;
+	/*package-private*/ boolean isAspectRatioPreserved() {
+		return this.isAspectRatioPreserved;
 	}
 }
-

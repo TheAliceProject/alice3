@@ -48,7 +48,27 @@ package org.lookingglassandalice.storytelling;
  */
 public interface Resizable {
 	public Scale getScale();
-	public void setScale( Scale size );
+	public void setScale( Scale size, AnimationDetails details );
+	
 	public Size getSize();
-	public void setSize( Size size );
+	public void setSize( Size size, AnimationDetails details );
+
+	public Double getWidth();
+	public void setWidth( Number width );
+	public void setWidth( Number width, SetDimensionAnimationDetails details );
+	public Double getHeight();
+	public void setHeight( Number height );
+	public void setHeight( Number height, SetDimensionAnimationDetails details );
+	public Double getDepth();
+	public void setDepth( Number depth );
+	public void setDepth( Number depth, SetDimensionAnimationDetails details );
+	
+	public void resize( Number factor );
+	public void resize( Number factor, AnimationDetails details );
+	public void resizeWidth( Number factor );
+	public void resizeWidth( Number factor, ResizeDimensionAnimationDetails details );
+	public void resizeHeight( Number factor );
+	public void resizeHeight( Number factor, ResizeDimensionAnimationDetails details );
+	public void resizeDepth( Number factor );
+	public void resizeDepth( Number factor, ResizeDimensionAnimationDetails details );
 }
