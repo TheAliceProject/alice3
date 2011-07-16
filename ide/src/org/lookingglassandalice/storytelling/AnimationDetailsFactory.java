@@ -46,10 +46,18 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public interface Visual {
-	public Color getColor();
-	public void setColor( Color color, AnimationDetails details );
-	public Double getOpacity();
-	public void setOpacity( Number opacity );
-	public void setOpacity( Number opacity, AnimationDetails details );
+public class AnimationDetailsFactory {
+	private AnimationDetailsFactory() {
+		throw new AssertionError();
+	}
+	public static AnimationDetails duration( Number value ) {
+		AnimationDetails rv = new AnimationDetails();
+		rv.duration( value );
+		return rv;
+	}
+	public static AnimationDetails style( Style value ) {
+		AnimationDetails rv = new AnimationDetails();
+		rv.style( value );
+		return rv;
+	}
 }

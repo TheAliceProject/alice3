@@ -57,6 +57,11 @@ public abstract class ModelImplementation extends TransformableImplementation {
 			sgAppearance.diffuseColor.setValue( color );
 		}
 	}
+	public final void animateColor( edu.cmu.cs.dennisc.color.Color4f color, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		System.err.println( "todo: animateColor" );
+		this.setColor( color );
+	}
+	
 	public final float getOpacity() {
 		return this.getSgAppearances()[ 0 ].opacity.getValue();
 	}
@@ -65,6 +70,12 @@ public abstract class ModelImplementation extends TransformableImplementation {
 			sgAppearance.opacity.setValue( opacity );
 		}
 	}
+	public final void animateOpacity( float opacity, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		System.err.println( "todo: animateOpacity" );
+		this.setOpacity( opacity );
+	}
+	
+	
 	public final void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
 		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
 			sgAppearance.diffuseColorTexture.setValue( diffuseColorTexture );

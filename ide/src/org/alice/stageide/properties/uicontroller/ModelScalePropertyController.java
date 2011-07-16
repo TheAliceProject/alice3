@@ -251,12 +251,7 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 		}
 		if (this.propertyAdapter != null)
 		{
-		    Matrix3x3 originalScale = Matrix3x3.createIdentity();
-		    if (this.propertyAdapter.getInstance() instanceof Model)
-		    {
-		        originalScale = ((Model)this.propertyAdapter.getInstance()).getOriginalScale();
-		    }
-			SetValueOperation<Matrix3x3> setScale = this.propertyAdapter.getSetValueOperation(originalScale);
+			SetValueOperation<Matrix3x3> setScale = this.propertyAdapter.getSetValueOperation(Matrix3x3.createIdentity());
 			setScale.setName("Reset");
 			this.resetButton = setScale.createButton();
 			

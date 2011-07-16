@@ -53,13 +53,19 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 		return Color.createInstance( this.getImplementation().getColor() );
 	}
 	public void setColor( Color color ) {
-		this.getImplementation().setColor( Color.getInternal( color ) );
+		this.setColor( color, new AnimationDetails() );
+	}
+	public void setColor( org.lookingglassandalice.storytelling.Color color, org.lookingglassandalice.storytelling.AnimationDetails details ) {
+		this.getImplementation().animateColor( Color.getInternal( color ), details.getDuration(), details.getStyle() );
 	}
 	public Double getOpacity() {
 		return (double)this.getImplementation().getOpacity();
 	}
 	public void setOpacity( Number opacity ) {
-		this.getImplementation().setOpacity( opacity.floatValue() );
+		this.setOpacity( opacity, new AnimationDetails() );
+	}
+	public void setOpacity( java.lang.Number opacity, org.lookingglassandalice.storytelling.AnimationDetails details ) {
+		this.getImplementation().animateOpacity( opacity.floatValue(), details.getDuration(), details.getStyle() );
 	}
 	
 	public Scale getScale() {

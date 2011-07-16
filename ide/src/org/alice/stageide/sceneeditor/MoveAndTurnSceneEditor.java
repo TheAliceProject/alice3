@@ -1191,12 +1191,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	}
 		
 	private void getGoodLookAtShowInstanceAndReturnCamera( org.lookingglassandalice.storytelling.Camera camera, org.lookingglassandalice.storytelling.Model model ) {
-		model.setOpacity( 0.0, org.lookingglassandalice.storytelling.Entity.RIGHT_NOW );
-		org.lookingglassandalice.storytelling.VantagePoint pov = camera.getPointOfView( this.scene );
-		camera.getGoodLookAt( model, 0.5 );
-		this.scene.addComponent( model );
+		model.setOpacity( 0.0, org.lookingglassandalice.storytelling.AnimationDetailsFactory.duration( 0.5 ) );
+		org.lookingglassandalice.storytelling.VantagePoint vantagePoint = camera.getVantagePoint( this.scene );
+		camera.moveAndOrientToAGoodVantagePointOf( model, org.lookingglassandalice.storytelling.AnimationDetailsFactory.duration( 0.5 ) );
+		model.setVehicle( this.scene );
 		model.setOpacity( 1.0 );
-		camera.moveAndOrientTo( this.scene.createOffsetStandIn( pov.getInternal() ), 0.5 );
+		camera.moveAndOrientTo( this.scene.createOffsetStandIn( vantagePoint ), org.lookingglassandalice.storytelling.AnimationDetailsFactory.duration( 0.5 ) );
 	}
 	
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateMarkerGoodLookAt( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, Marker target) {

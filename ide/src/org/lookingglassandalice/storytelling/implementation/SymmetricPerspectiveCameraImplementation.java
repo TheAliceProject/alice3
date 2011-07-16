@@ -60,6 +60,8 @@ public class SymmetricPerspectiveCameraImplementation extends CameraImplementati
 		this.getSgComposite().setTranslationOnly( 2,4,-8, entityImplementation.getSgComposite() );
 		this.getSgComposite().setAxesOnlyToPointAt( entityImplementation.getSgComposite() );
 	}
-	public void animateSetTransformationToAGoodVantagePointOf() {
+	public void animateSetTransformationToAGoodVantagePointOf( EntityImplementation entityImplementation, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		//todo
+		this.setTransformationToAGoodVantagePointOf( entityImplementation );
 	}
 }
