@@ -86,4 +86,11 @@ public abstract class MovableTurnable extends Turnable {
 	public void moveAndOrientTo( Entity target, AnimationDetails details ) {
 		//this.getImplementation().animateSetTransformation( target.getImplementation(), details.getDuration(), details.getStyle() );
 	}
+	
+	public Position getPositionRelativeToVehicle() {
+		return Position.createInstance( this.getImplementation().getLocalPosition() ); 
+	}
+	public void setPositionRelativeToVehicle( Position position ) {
+		this.getImplementation().setLocalPosition( position.getInternal() ); 
+	}
 }

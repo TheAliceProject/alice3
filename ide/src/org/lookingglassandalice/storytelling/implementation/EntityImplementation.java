@@ -73,6 +73,10 @@ public abstract class EntityImplementation {
 		SceneImplementation scene = this.getScene();
 		return scene != null ? scene.getProgram() : null;
 	}
+	
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( EntityImplementation asSeenBy ) {
+		return this.getSgComposite().getTransformation( asSeenBy.getSgComposite() );
+	}
 
 	protected static final double RIGHT_NOW = 0.0;
 	protected static final double DEFAULT_DURATION = 1.0;

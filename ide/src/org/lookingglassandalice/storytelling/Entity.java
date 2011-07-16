@@ -60,4 +60,8 @@ public abstract class Entity implements Rider {
 		org.lookingglassandalice.storytelling.implementation.EntityImplementation vehicleImplementation = this.getImplementation().getVehicle();
 		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;
 	}
+	
+	public VantagePoint getVantagePoint( Entity entity ) {
+		return VantagePoint.createInstance( this.getImplementation().getTransformation( entity.getImplementation() ) ); 
+	}
 }

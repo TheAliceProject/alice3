@@ -66,8 +66,10 @@ public abstract class Turnable extends Entity implements MutableRider {
 		this.getImplementation().animateApplyRotationInRevolutions( direction.getAxis(), amount.doubleValue(), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
 	
-	//TEMPORARY
-	public void setLocalPointOfView( VantagePoint pointOfView ) {
-		this.getImplementation().getSgComposite().setLocalTransformation(pointOfView.getInternal());
+	public Orientation getOrientationRelativeToVehicle() {
+		return Orientation.createInstance( this.getImplementation().getLocalOrientation() ); 
+	}
+	public void setOrientationRelativeToVehicle( Orientation position ) {
+		this.getImplementation().setLocalOrientation( position.getInternal() ); 
 	}
 }

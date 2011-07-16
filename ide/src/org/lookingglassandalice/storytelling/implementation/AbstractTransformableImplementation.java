@@ -49,6 +49,30 @@ package org.lookingglassandalice.storytelling.implementation;
 public abstract class AbstractTransformableImplementation extends EntityImplementation {
 	@Override
 	public abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSgComposite();
+	
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation() {
+		return this.getSgComposite().getLocalTransformation();
+	}
+	public edu.cmu.cs.dennisc.math.Point3 getLocalPosition() {
+		return this.getLocalTransformation().translation;
+	}
+	public edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getLocalOrientation() {
+		return this.getLocalTransformation().orientation;
+	}
+	public void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation ) {
+		this.getSgComposite().setLocalTransformation( transformation );
+	}
+	public void setLocalPosition( edu.cmu.cs.dennisc.math.Point3 translation ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getLocalTransformation();
+		m.translation.set( translation );
+		this.setLocalTransformation( m );
+	}
+	public void setLocalOrientation( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getLocalTransformation();
+		m.orientation.setValue( orientation );
+		this.setLocalTransformation( m );
+	}
+	
 	public void applyTranslation( double x, double y, double z, EntityImplementation asSeenBy ) {
 		this.getSgComposite().applyTranslation( x, y, z, asSeenBy.getSgComposite() );
 	}
