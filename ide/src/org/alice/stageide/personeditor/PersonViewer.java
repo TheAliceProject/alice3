@@ -168,7 +168,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	public void setPerson( Person person ) {
 		assert person != null;
 		this.setModel( person );
-		this.dragAdapter.setSelectedObject( person.getSGTransformable() );
+		this.dragAdapter.setSelectedObject( person.getSgTransformable() );
 		double height = person.getHeight();
 		this.positionAndOrientCamera( height, 0, 0.0 );
 	}
@@ -176,7 +176,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	protected void initialize() {
 		super.initialize();
 		this.dragAdapter.setOnscreenLookingGlass( this.getOnscreenLookingGlass() );
-		this.dragAdapter.addCameraView( CameraView.MAIN, this.getCamera().getSGSymmetricPerspectiveCamera(), null );
-		this.dragAdapter.makeCameraActive( this.getCamera().getSGSymmetricPerspectiveCamera() );
+		this.dragAdapter.addCameraView( CameraView.MAIN, this.getCamera().getSgCamera(), null );
+		this.dragAdapter.makeCameraActive( this.getCamera().getSgCamera() );
 	}
 }

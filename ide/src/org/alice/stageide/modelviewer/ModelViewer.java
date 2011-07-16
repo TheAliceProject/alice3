@@ -50,13 +50,9 @@ abstract class AbstractViewer extends org.lgna.croquet.components.BorderPanel {
 	//todo: should this be heavyweight?
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
-	private org.lookingglassandalice.storytelling.Scene scene = new org.lookingglassandalice.storytelling.Scene() {
-		@Override
-		protected void handleActiveChanged(Boolean isActive, Integer activeCount) {
-		}
-	};
-	private org.lookingglassandalice.storytelling.Camera camera = new org.lookingglassandalice.storytelling.Camera();
-	private org.lookingglassandalice.storytelling.Sun sunLight = new org.lookingglassandalice.storytelling.Sun();
+	private org.lookingglassandalice.storytelling.implementation.SceneImplementation scene = new org.lookingglassandalice.storytelling.implementation.SceneImplementation( null );
+	private org.lookingglassandalice.storytelling.implementation.SymmetricPerspectiveCameraImplementation camera = new org.lookingglassandalice.storytelling.implementation.SymmetricPerspectiveCameraImplementation( null );
+	private org.lookingglassandalice.storytelling.implementation.SunImplementation sunLight = new org.lookingglassandalice.storytelling.implementation.SunImplementation( null );
 	private org.lgna.croquet.components.Component<?> adapter;
 
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
@@ -67,11 +63,11 @@ abstract class AbstractViewer extends org.lgna.croquet.components.BorderPanel {
 	public AbstractViewer() {
 		this.camera.setVehicle( this.scene );
 		this.sunLight.setVehicle( this.scene );
-		this.sunLight.turn( org.lookingglassandalice.storytelling.TurnDirection.FORWARD, new org.lookingglassandalice.storytelling.AngleInRevolutions( 0.25 ) );
+		this.sunLight.applyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3.accessNegativeXAxis(), 0.25 );
 	}
 	private boolean isInitialized = false;
 	protected void initialize() {
-		this.onscreenLookingGlass.addCamera( camera.getSGCamera() );
+		this.onscreenLookingGlass.addCamera( this.camera.getSgCamera() );
 		
 		this.adapter = new org.lgna.croquet.components.Component<java.awt.Component>() {
 			@Override
@@ -83,13 +79,13 @@ abstract class AbstractViewer extends org.lgna.croquet.components.BorderPanel {
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
 	}
-	protected org.lookingglassandalice.storytelling.Scene getScene() {
+	protected org.lookingglassandalice.storytelling.implementation.SceneImplementation getScene() {
 		return this.scene;
 	}
-	protected org.lookingglassandalice.storytelling.Camera getCamera() {
+	protected org.lookingglassandalice.storytelling.implementation.SymmetricPerspectiveCameraImplementation getCamera() {
 		return this.camera;
 	}
-	protected org.lookingglassandalice.storytelling.Sun getSunLight() {
+	protected org.lookingglassandalice.storytelling.implementation.SunImplementation getSunLight() {
 		return this.sunLight;
 	}
 	@Override
@@ -120,18 +116,18 @@ abstract class AbstractViewer extends org.lgna.croquet.components.BorderPanel {
  * @author Dennis Cosgrove
  */
 public class ModelViewer extends AbstractViewer {
-	private org.lookingglassandalice.storytelling.Model model = null;
-	public org.lookingglassandalice.storytelling.Model getModel() {
+	private org.lookingglassandalice.storytelling.implementation.ModelImplementation model = null;
+	public org.lookingglassandalice.storytelling.implementation.ModelImplementation getModel() {
 		return this.model;
 	}
-	public void setModel( org.lookingglassandalice.storytelling.Model model ) {
+	public void setModel( org.lookingglassandalice.storytelling.implementation.ModelImplementation model ) {
 		if( model != this.model ) {
 			if( this.model != null ) {
-				this.getScene().removeComponent( this.model );
+				this.model.setVehicle( null );
 			}
 			this.model = model;
 			if( this.model != null ) {
-				this.getScene().addComponent( this.model );
+				this.model.setVehicle( this.getScene() );
 			}
 		}
 	}

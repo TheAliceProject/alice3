@@ -52,12 +52,12 @@ public enum TurnDirection {
 	FORWARD ( edu.cmu.cs.dennisc.math.Vector3.createNegativeXAxis() ),
 	BACKWARD( edu.cmu.cs.dennisc.math.Vector3.createPositiveXAxis() );
 	
-	private edu.cmu.cs.dennisc.math.Vector3 m_axis;
+	private final edu.cmu.cs.dennisc.math.Vector3 axis;
 	
 	private TurnDirection( edu.cmu.cs.dennisc.math.Vector3 axis ) {
-		m_axis = axis;
+		this.axis = axis;
 	}
-	public edu.cmu.cs.dennisc.math.Vector3 getAxis() {
-		return m_axis;
+	/*package-private*/ edu.cmu.cs.dennisc.math.Vector3 getAxis() {
+		return this.axis;
 	}
 }

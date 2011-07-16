@@ -146,12 +146,22 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 	public void applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, EntityImplementation asSeenBy ) {
 		this.getSgComposite().applyRotationAboutArbitraryAxisInRadians( axis, angleInRadians, asSeenBy.getSgComposite() );
 	}
+	public void applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) {
+		this.applyRotationInRadians( axis, angleInRadians, this );
+	}
 	public void applyRotationInDegrees( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInDegrees, EntityImplementation asSeenBy ) {
 		this.applyRotationInRadians( axis, edu.cmu.cs.dennisc.math.AngleUtilities.degreesToRadians( angleInDegrees ), asSeenBy );
+	}
+	public void applyRotationInDegrees( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) {
+		this.applyRotationInDegrees( axis, angleInRadians, this );
 	}
 	public void applyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRevolutions, EntityImplementation asSeenBy ) {
 		this.applyRotationInRadians( axis, edu.cmu.cs.dennisc.math.AngleUtilities.revolutionsToRadians( angleInRevolutions ), asSeenBy );
 	}
+	public void applyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) {
+		this.applyRotationInRevolutions( axis, angleInRadians, this );
+	}
+	
 	public void animateApplyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, EntityImplementation asSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		assert axis != null;
 		assert duration >= 0 : "Invalid argument: duration " + duration + " must be >= 0";
