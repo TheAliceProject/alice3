@@ -84,7 +84,27 @@ public abstract class ModelImplementation extends TransformableImplementation {
 	}
 	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
 	}
+
 	public void animateSetSize( edu.cmu.cs.dennisc.math.Dimension3 size, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	}
+
+	public void animateSetWidth( double width, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		assert isVolumePreserved && isAspectRatioPreserved == false;
+	}
+	public void animateSetHeight( double height, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		assert isVolumePreserved && isAspectRatioPreserved == false;
+	}
+	public void animateSetDepth( double depth, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		assert isVolumePreserved && isAspectRatioPreserved == false;
+	}
+
+	public void animateResize( double factor, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	}
+	public void animateResizeWidth( double factor, boolean isVolumePreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	}
+	public void animateResizeHeight( double factor, boolean isVolumePreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	}
+	public void animateResizeDepth( double factor, boolean isVolumePreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 	}
 	
 //	@Override

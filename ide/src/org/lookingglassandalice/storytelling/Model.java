@@ -87,7 +87,8 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 		this.setWidth( width, new SetDimensionAnimationDetails() );
 	}
 	public void setWidth( Number width, SetDimensionAnimationDetails details ) {
-		this.getImplementation().animateSetWidth();
+		SetDimensionPolicy policy = details.getPolicy();
+		this.getImplementation().animateSetWidth( width.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), details.getDuration(), details.getStyle() );
 	}
 	public Double getHeight() {
 		return this.getImplementation().getSize().y;
@@ -96,7 +97,8 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 		this.setHeight( height, new SetDimensionAnimationDetails() );
 	}
 	public void setHeight( Number height, SetDimensionAnimationDetails details ) {
-		this.getImplementation().animateSetHeight();
+		SetDimensionPolicy policy = details.getPolicy();
+		this.getImplementation().animateSetHeight( height.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), details.getDuration(), details.getStyle() );
 	}
 	public Double getDepth() {
 		return this.getImplementation().getSize().z;
@@ -105,30 +107,31 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 		this.setDepth( depth, new SetDimensionAnimationDetails() );
 	}
 	public void setDepth( Number depth, SetDimensionAnimationDetails details ) {
-		this.getImplementation().animateSetDepth();
+		SetDimensionPolicy policy = details.getPolicy();
+		this.getImplementation().animateSetDepth( depth.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), details.getDuration(), details.getStyle() );
 	}
 	public void resize( Number factor ) {
 		this.resize( factor, new AnimationDetails() );
 	}
 	public void resize( Number factor, AnimationDetails details ) {
-		this.getImplementation().animateResize();
+		this.getImplementation().animateResize( factor.doubleValue(), details.getDuration(), details.getStyle() );
 	}
 	public void resizeWidth( Number factor ) {
 		this.resizeWidth( factor, new ResizeDimensionAnimationDetails() );
 	}
 	public void resizeWidth( Number factor, ResizeDimensionAnimationDetails details ) {
-		this.getImplementation().animateResizeWidth();
+		this.getImplementation().animateResizeWidth( factor.doubleValue(), details.isVolumePreserved(), details.getDuration(), details.getStyle() );
 	}
 	public void resizeHeight( Number factor ) {
 		this.resizeHeight( factor, new ResizeDimensionAnimationDetails() );
 	}
 	public void resizeHeight( Number factor, ResizeDimensionAnimationDetails details ) {
-		this.getImplementation().animateResizeHeight();
+		this.getImplementation().animateResizeHeight( factor.doubleValue(), details.isVolumePreserved(), details.getDuration(), details.getStyle() );
 	}
 	public void resizeDepth( Number factor ) {
 		this.resizeDepth( factor, new ResizeDimensionAnimationDetails() );
 	}
 	public void resizeDepth( Number factor, ResizeDimensionAnimationDetails details ) {
-		this.getImplementation().animateResizeDepth();
+		this.getImplementation().animateResizeDepth( factor.doubleValue(), details.isVolumePreserved(), details.getDuration(), details.getStyle() );
 	}
 }
