@@ -193,9 +193,9 @@ class SnowScene extends Scene {
 					SnowScene.this.blueCone.move( MoveDirection.UP, 1.0 );
 				}
 			} );
-			this.redCone.move( MoveDirection.DOWN, 1.0, VantagePointAnimationDetailsFactory.duration( 0.333 ) );
-			this.greenCone.move( MoveDirection.DOWN, 1.0, VantagePointAnimationDetailsFactory.duration( 0.333 ) );
-			this.blueCone.move( MoveDirection.DOWN, 1.0, VantagePointAnimationDetailsFactory.duration( 0.333 ) );
+			this.redCone.move( MoveDirection.DOWN, 1.0, RelativeVantagePointAnimationDetailsFactory.duration( 0.333 ) );
+			this.greenCone.move( MoveDirection.DOWN, 1.0, RelativeVantagePointAnimationDetailsFactory.duration( 0.333 ) );
+			this.blueCone.move( MoveDirection.DOWN, 1.0, RelativeVantagePointAnimationDetailsFactory.duration( 0.333 ) );
 		}
 	}
 }

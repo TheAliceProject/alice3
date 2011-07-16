@@ -93,13 +93,13 @@ public abstract class Scene extends Entity {
 	}
 	
 	public Color getAtmosphereColor() {
-		return new Color( this.implementation.getAtmosphereColor() );
+		return Color.createInstance( this.implementation.getAtmosphereColor() );
 	}
 	public void setAtmosphereColor( Color color ) {
 		this.implementation.setAtmosphereColor( color.getInternal() );
 	}
 	public Color getAmbientLightColor() {
-		return new Color( this.implementation.getAmbientLightColor() );
+		return Color.createInstance( this.implementation.getAmbientLightColor() );
 	}
 	public void setAmbientLightColor( Color color ) {
 		this.implementation.setAmbientLightColor( color.getInternal() );

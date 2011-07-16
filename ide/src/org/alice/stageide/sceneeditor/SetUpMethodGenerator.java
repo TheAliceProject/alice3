@@ -42,14 +42,7 @@
  */
 package org.alice.stageide.sceneeditor;
 
-import org.lookingglassandalice.storytelling.AsSeenBy;
-import org.lookingglassandalice.storytelling.CameraMarker;
-import org.lookingglassandalice.storytelling.VantagePoint;
-import org.lookingglassandalice.storytelling.Scene;
 import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
-import org.lookingglassandalice.storytelling.ImplementationAccessor;
-import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
-
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 
 /**
@@ -171,7 +164,7 @@ public class SetUpMethodGenerator {
 		if (instance instanceof org.lookingglassandalice.storytelling.Model)
 		{
 			org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)instance;
-			EntityImplementation implementation = ImplementationAccessor.getImplementation(model);
+			org.lookingglassandalice.storytelling.implementation.EntityImplementation implementation = org.lookingglassandalice.storytelling.ImplementationAccessor.getImplementation(model);
 			Composite sgComposite = implementation.getSgComposite();
 			Composite sgParent = sgComposite.getParent();
 			org.lookingglassandalice.storytelling.Entity vehicle = (org.lookingglassandalice.storytelling.Entity)org.lookingglassandalice.storytelling.Entity.getElement( sgParent );

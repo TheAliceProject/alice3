@@ -40,79 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Text extends Model {
-	private final org.lookingglassandalice.storytelling.implementation.TextImplementation implementation = new org.lookingglassandalice.storytelling.implementation.TextImplementation( this );
-	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.TextImplementation getImplementation() {
-		return this.implementation;
+public class RelativeVantagePointAnimationDetails extends AbstractAnimationDetails {
+	protected Entity asSeenBy = null;
+	public RelativeVantagePointAnimationDetails duration( Number value ) {
+		this.duration = value.doubleValue();
+		return this;
 	}
-	
-	public String getValue() {
-		return this.implementation.getValue();
+	public RelativeVantagePointAnimationDetails asSeenBy( Entity value ) {
+		this.asSeenBy = value;
+		return this;
 	}
-	public void setValue( String text ) {
-		this.implementation.setValue( text );
+	public RelativeVantagePointAnimationDetails style( Style value ) {
+		this.style = value;
+		return this;
 	}
-	public Font getFont() {
-		return new Font( this.implementation.getFont() );
+	/*package-private*/ Entity getAsSeenBy( Entity valueIfNull ) {
+		return this.asSeenBy != null ? this.asSeenBy : valueIfNull;
 	}
-	public void setFont( Font font ) {
-		this.implementation.setFont( font.getAsAWTFont() );
-	}
-	
-	public void append( Object value ) {
-		this.implementation.append( value );
-	}
-	
-	public Character charAt( Integer index ) {
-		return this.implementation.charAt( index );
-	}
-
-	public void delete( Integer start, Integer end ) {
-		this.implementation.delete( start, end );
-	}
-	public void deleteCharAt( Integer index ) {
-		this.implementation.deleteCharAt( index );
-	}
-
-	public Integer indexOf( String s ) {
-		return this.implementation.indexOf( s );
-	}
-	public Integer indexOf( String s, Integer fromIndex ) {
-		return this.implementation.indexOf( s, fromIndex );
-	}
-
-	public void insert( Integer offset, Object value ) {
-		this.implementation.insert( offset, value );
-	}
-
-	public Integer lastIndexOf( String s ) {
-		return this.implementation.lastIndexOf( s );
-	}
-	public Integer lastIndexOf( String s, Integer fromIndex ) {
-		return this.implementation.lastIndexOf( s, fromIndex );
-	}
-	
-	//todo: rename length?
-	public Integer getLength() {
-		return this.implementation.getLength();
-	}
-
-	public void replace( Integer start, Integer end, String s ) {
-		this.implementation.replace( start, end, s );
-	}
-
-	public void setCharAt( Integer index, Character c ) {
-		this.implementation.setCharAt( index, c );
-	}
-	
-//	public void setLength( Integer length ) {
-//		m_sb.setLength( length );
-//		updateSGText();
-//	}
 }

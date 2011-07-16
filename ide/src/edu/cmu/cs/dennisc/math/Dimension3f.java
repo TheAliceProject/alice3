@@ -40,79 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lookingglassandalice.storytelling;
+
+package edu.cmu.cs.dennisc.math;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Text extends Model {
-	private final org.lookingglassandalice.storytelling.implementation.TextImplementation implementation = new org.lookingglassandalice.storytelling.implementation.TextImplementation( this );
-	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.TextImplementation getImplementation() {
-		return this.implementation;
+public class Dimension3f extends Tuple3f {
+	public Dimension3f() {
 	}
-	
-	public String getValue() {
-		return this.implementation.getValue();
+	public Dimension3f( Tuple3f other ) {
+		super( other );
 	}
-	public void setValue( String text ) {
-		this.implementation.setValue( text );
-	}
-	public Font getFont() {
-		return new Font( this.implementation.getFont() );
-	}
-	public void setFont( Font font ) {
-		this.implementation.setFont( font.getAsAWTFont() );
-	}
-	
-	public void append( Object value ) {
-		this.implementation.append( value );
-	}
-	
-	public Character charAt( Integer index ) {
-		return this.implementation.charAt( index );
+	public Dimension3f( float x, float y, float z ) {
+		super( x, y, z );
 	}
 
-	public void delete( Integer start, Integer end ) {
-		this.implementation.delete( start, end );
+	public static Dimension3f createZero() {
+		return (Dimension3f)setReturnValueToZero( new Dimension3f() );
 	}
-	public void deleteCharAt( Integer index ) {
-		this.implementation.deleteCharAt( index );
+	public static Dimension3f createNaN() {
+		return (Dimension3f)setReturnValueToNaN( new Dimension3f() );
 	}
-
-	public Integer indexOf( String s ) {
-		return this.implementation.indexOf( s );
+	public static Dimension3f createAddition( Tuple3f a, Tuple3f b ) {
+		return (Dimension3f)setReturnValueToAddition( new Dimension3f(), a, b );
 	}
-	public Integer indexOf( String s, Integer fromIndex ) {
-		return this.implementation.indexOf( s, fromIndex );
+	public static Dimension3f createSubtraction( Tuple3f a, Tuple3f b ) {
+		return (Dimension3f)setReturnValueToSubtraction( new Dimension3f(), a, b );
 	}
-
-	public void insert( Integer offset, Object value ) {
-		this.implementation.insert( offset, value );
+	public static Dimension3f createNegation( Tuple3f a ) {
+		return (Dimension3f)setReturnValueToNegation( new Dimension3f(), a );
 	}
-
-	public Integer lastIndexOf( String s ) {
-		return this.implementation.lastIndexOf( s );
+	public static Dimension3f createMultiplication( Tuple3f a, Tuple3f b ) {
+		return (Dimension3f)setReturnValueToMultiplication( new Dimension3f(), a, b );
 	}
-	public Integer lastIndexOf( String s, Integer fromIndex ) {
-		return this.implementation.lastIndexOf( s, fromIndex );
+	public static Dimension3f createMultiplication( Tuple3f a, float b ) {
+		return (Dimension3f)setReturnValueToMultiplication( new Dimension3f(), a, b );
 	}
-	
-	//todo: rename length?
-	public Integer getLength() {
-		return this.implementation.getLength();
+	public static Dimension3f createDivision( Tuple3f a, Tuple3f b ) {
+		return (Dimension3f)setReturnValueToDivision( new Dimension3f(), a, b );
 	}
-
-	public void replace( Integer start, Integer end, String s ) {
-		this.implementation.replace( start, end, s );
+	public static Dimension3f createDivision( Tuple3f a, float b ) {
+		return (Dimension3f)setReturnValueToDivision( new Dimension3f(), a, b );
 	}
-
-	public void setCharAt( Integer index, Character c ) {
-		this.implementation.setCharAt( index, c );
+	public static Dimension3f createInterpolation( Tuple3f a, Tuple3f b, float portion ) {
+		return (Dimension3f)setReturnValueToInterpolation( new Dimension3f(), a, b, portion );
 	}
-	
-//	public void setLength( Integer length ) {
-//		m_sb.setLength( length );
-//		updateSGText();
-//	}
+	public static Dimension3f createNormalized( Tuple3f a ) {
+		return (Dimension3f)setReturnValueToNormalized( new Dimension3f(), a );
+	}
 }

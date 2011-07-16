@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Ground extends Entity implements MutableRider {
+public class Ground extends Entity implements MutableRider, Visual {
 	public static enum Appearance {
 		GRASS( "grass" ),
 		DIRT( "dirt" ),
@@ -69,6 +69,18 @@ public class Ground extends Entity implements MutableRider {
 	}
 	public void setVehicle( Entity vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
+	}
+	public Color getColor() {
+		return Color.createInstance( this.getImplementation().getColor() );
+	}
+	public void setColor( Color color ) {
+		this.getImplementation().setColor( Color.getInternal( color ) );
+	}
+	public Double getOpacity() {
+		return (double)this.getImplementation().getOpacity();
+	}
+	public void setOpacity( Number opacity ) {
+		this.getImplementation().setOpacity( opacity.floatValue() );
 	}
 	public Appearance getAppearance() {
 		return this.getImplementation().getAppearance();

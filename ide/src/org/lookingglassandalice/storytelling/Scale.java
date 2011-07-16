@@ -40,79 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lookingglassandalice.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Text extends Model {
-	private final org.lookingglassandalice.storytelling.implementation.TextImplementation implementation = new org.lookingglassandalice.storytelling.implementation.TextImplementation( this );
+public final class Scale {
+	public static final Scale IDENTITY = new Scale( new edu.cmu.cs.dennisc.math.Dimension3( 1.0, 1.0, 1.0 ) );
+	private final edu.cmu.cs.dennisc.math.Dimension3 internal;
+	private Scale( edu.cmu.cs.dennisc.math.Dimension3 internal ) {
+		this.internal = internal;
+	}
+	public Scale( Number leftToRight, Number bottomToTop, Number frontToBack ) {
+		this( new edu.cmu.cs.dennisc.math.Dimension3( leftToRight.doubleValue(), bottomToTop.doubleValue(), frontToBack.doubleValue() ) );
+	}
+	/*package-private*/ static Scale createInstance( edu.cmu.cs.dennisc.math.Dimension3 internal ) {
+		return internal != null ? new Scale( internal ) : null;
+	}
+	/*package-private*/ edu.cmu.cs.dennisc.math.Dimension3 getInternal() {
+		return this.internal;
+	}
+	/*package-private*/ static edu.cmu.cs.dennisc.math.Dimension3 getInternal( Scale scale ) {
+		return scale != null ? scale.internal : null;
+	}
+	
 	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.TextImplementation getImplementation() {
-		return this.implementation;
+	public boolean equals( Object obj ) {
+		if( obj instanceof Scale ) {
+			Scale other = (Scale)obj;
+			return this.internal.equals( other.internal );
+		} else {
+			return false;
+		}
 	}
-	
-	public String getValue() {
-		return this.implementation.getValue();
+	@Override
+	public int hashCode() {
+		return this.internal.hashCode();
 	}
-	public void setValue( String text ) {
-		this.implementation.setValue( text );
+	public Double getLeftToRight() {
+		return (double)this.internal.x;
 	}
-	public Font getFont() {
-		return new Font( this.implementation.getFont() );
+	public Double getBottomToTop() {
+		return (double)this.internal.y;
 	}
-	public void setFont( Font font ) {
-		this.implementation.setFont( font.getAsAWTFont() );
+	public Double getFrontToBack() {
+		return (double)this.internal.z;
 	}
-	
-	public void append( Object value ) {
-		this.implementation.append( value );
-	}
-	
-	public Character charAt( Integer index ) {
-		return this.implementation.charAt( index );
-	}
-
-	public void delete( Integer start, Integer end ) {
-		this.implementation.delete( start, end );
-	}
-	public void deleteCharAt( Integer index ) {
-		this.implementation.deleteCharAt( index );
-	}
-
-	public Integer indexOf( String s ) {
-		return this.implementation.indexOf( s );
-	}
-	public Integer indexOf( String s, Integer fromIndex ) {
-		return this.implementation.indexOf( s, fromIndex );
-	}
-
-	public void insert( Integer offset, Object value ) {
-		this.implementation.insert( offset, value );
-	}
-
-	public Integer lastIndexOf( String s ) {
-		return this.implementation.lastIndexOf( s );
-	}
-	public Integer lastIndexOf( String s, Integer fromIndex ) {
-		return this.implementation.lastIndexOf( s, fromIndex );
-	}
-	
-	//todo: rename length?
-	public Integer getLength() {
-		return this.implementation.getLength();
-	}
-
-	public void replace( Integer start, Integer end, String s ) {
-		this.implementation.replace( start, end, s );
-	}
-
-	public void setCharAt( Integer index, Character c ) {
-		this.implementation.setCharAt( index, c );
-	}
-	
-//	public void setLength( Integer length ) {
-//		m_sb.setLength( length );
-//		updateSGText();
-//	}
 }

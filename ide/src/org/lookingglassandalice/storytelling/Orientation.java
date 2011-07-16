@@ -45,18 +45,36 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Orientation {
+public final class Orientation {
+	public static final Orientation IDENTITY = new Orientation( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createIdentity() );
 	private final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 internal;
-	public Orientation() {
-		this.internal = edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createIdentity();
+	private Orientation( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 internal ) {
+		this.internal = internal;
 	}
 	public Orientation( Number x, Number y, Number z, Number w ) {
-		this.internal = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3( new edu.cmu.cs.dennisc.math.UnitQuaternion( x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue() ) );
+		this( new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3( new edu.cmu.cs.dennisc.math.UnitQuaternion( x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue() ) ) );
 	}
-	/*package-private*/ Orientation( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 internal ) {
-		this.internal = internal;
+	/*package-private*/ static Orientation createInstance( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 internal ) {
+		return internal != null ? new Orientation( internal ) : null;
 	}
 	/*package-private*/ edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getInternal() {
 		return this.internal;
+	}
+	/*package-private*/ static edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getInternal( Orientation orientation ) {
+		return orientation != null ? orientation.internal : null;
+	}
+	
+	@Override
+	public boolean equals( Object obj ) {
+		if( obj instanceof Orientation ) {
+			Orientation other = (Orientation)obj;
+			return this.internal.equals( other.internal );
+		} else {
+			return false;
+		}
+	}
+	@Override
+	public int hashCode() {
+		return this.internal.hashCode();
 	}
 }

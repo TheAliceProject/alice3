@@ -46,7 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Color {
+public final  class Color {
 	public static final Color BLACK = new Color( edu.cmu.cs.dennisc.color.Color4f.BLACK );
 	public static final Color BLUE = new Color( edu.cmu.cs.dennisc.color.Color4f.BLUE );
 	public static final Color CYAN = new Color( edu.cmu.cs.dennisc.color.Color4f.CYAN );
@@ -64,18 +64,38 @@ public class Color {
 	public static final Color PURPLE = new Color( edu.cmu.cs.dennisc.color.Color4f.PURPLE );
 	public static final Color BROWN = new Color( edu.cmu.cs.dennisc.color.Color4f.BROWN );
 
-	private edu.cmu.cs.dennisc.color.Color4f internal = new edu.cmu.cs.dennisc.color.Color4f();
+	private final edu.cmu.cs.dennisc.color.Color4f internal;
 	public Color( Number red, Number green, Number blue ) {
-		this.internal.set( red.floatValue(), green.floatValue(), blue.floatValue(), 1.0f );
+		this( new edu.cmu.cs.dennisc.color.Color4f( red.floatValue(), green.floatValue(), blue.floatValue(), 1.0f ) );
 	}
-	/*package-private*/ Color( edu.cmu.cs.dennisc.color.Color4f internal ) {
-		this.internal.set( internal );
+	private Color( edu.cmu.cs.dennisc.color.Color4f internal ) {
+		this.internal = internal;
 	}
-	
+	/*package-private*/ static Color createInstance( edu.cmu.cs.dennisc.color.Color4f internal ) {
+		return internal != null ? new Color( internal ) : null;
+	}
 	/*package-private*/ edu.cmu.cs.dennisc.color.Color4f getInternal() {
 		return this.internal;
 	}
+	/*package-private*/ static edu.cmu.cs.dennisc.color.Color4f getInternal( Color color ) {
+		return color != null ? color.internal : null;
+	}
 	
+	
+	@Override
+	public boolean equals( Object obj ) {
+		if( obj instanceof Color ) {
+			Color other = (Color)obj;
+			return this.internal.equals( other.internal );
+		} else {
+			return false;
+		}
+	}
+	@Override
+	public int hashCode() {
+		return this.internal.hashCode();
+	}
+
 	public Double getRed() {
 		return (double)this.internal.red;
 	}

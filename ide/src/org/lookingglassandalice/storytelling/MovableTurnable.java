@@ -48,15 +48,15 @@ package org.lookingglassandalice.storytelling;
  */
 public abstract class MovableTurnable extends Turnable {
 	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, new VantagePointRelativeAnimationDetails() );
+		this.move( direction, amount, new RelativeVantagePointAnimationDetails() );
 	}
-	public void move( MoveDirection direction, Number amount, VantagePointRelativeAnimationDetails details ) {
-		this.getImplementation().animateTranslate( direction.createTranslation( amount.doubleValue() ), details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
+	public void move( MoveDirection direction, Number amount, RelativeVantagePointAnimationDetails details ) {
+		this.getImplementation().animateApplyTranslation( direction.createTranslation( amount.doubleValue() ), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
 	public void moveToward( Entity target, Number amount ) {
-		this.moveToward( target, amount, new VantagePointRelativeAnimationDetails() );
+		this.moveToward( target, amount, new AnimationDetails() );
 	}
-	public void moveToward( Entity target, Number amount, VantagePointRelativeAnimationDetails details ) {
+	public void moveToward( Entity target, Number amount, AnimationDetails details ) {
 		edu.cmu.cs.dennisc.math.Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation;
 		edu.cmu.cs.dennisc.math.Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation;
 		edu.cmu.cs.dennisc.math.Vector3 v = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( tTarget, tThis );
@@ -66,24 +66,24 @@ public abstract class MovableTurnable extends Turnable {
 		} else {
 			v.set( 0, 0, amount.doubleValue() );
 		}
-		this.getImplementation().animateApplyTranslation( v.x, v.y, v.z, details.getDuration(), details.getAsSeenBy( this ).getImplementation(), details.getStyle() );
+		//this.getImplementation().animateApplyTranslation( v.x, v.y, v.z, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE, details.getDuration(), details.getStyle() );
 	}
 	public void moveAwayFrom( Entity target, Number amount ) {
-		this.moveAwayFrom( target, amount, new VantagePointRelativeAnimationDetails() );
+		this.moveAwayFrom( target, amount, new AnimationDetails() );
 	}
-	public void moveAwayFrom( Entity target, Number amount, VantagePointRelativeAnimationDetails details ) {
+	public void moveAwayFrom( Entity target, Number amount, AnimationDetails details ) {
 		this.moveToward( target, -amount.doubleValue(), details );
 	}
 	public void moveTo( Entity target ) {
 		this.moveTo( target, new AnimationDetails() );
 	}
 	public void moveTo( Entity target, AnimationDetails details ) {
-		this.getImplementation().animateSetTranslation( target.getImplementation(), details.getDuration(), details.getStyle() );
+		//this.getImplementation().animateSetTranslation( target.getImplementation(), details.getDuration(), details.getStyle() );
 	}
 	public void moveAndOrientTo( Entity target ) {
 		this.moveAndOrientTo( target, new AnimationDetails() );
 	}
 	public void moveAndOrientTo( Entity target, AnimationDetails details ) {
-		this.getImplementation().animateSetTransformation( target.getImplementation(), details.getDuration(), details.getStyle() );
+		//this.getImplementation().animateSetTransformation( target.getImplementation(), details.getDuration(), details.getStyle() );
 	}
 }

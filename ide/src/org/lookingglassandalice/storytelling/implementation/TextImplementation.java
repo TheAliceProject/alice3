@@ -49,7 +49,6 @@ package org.lookingglassandalice.storytelling.implementation;
 public class TextImplementation extends SimpleModelImplementation {
 	private final org.lookingglassandalice.storytelling.Text abstraction;
 	private final edu.cmu.cs.dennisc.scenegraph.Text sgText = new edu.cmu.cs.dennisc.scenegraph.Text();
-	private double letterHeight = 1.0;
 	private StringBuffer sb = new StringBuffer();
 
 	public TextImplementation( org.lookingglassandalice.storytelling.Text abstraction ) {
@@ -72,31 +71,16 @@ public class TextImplementation extends SimpleModelImplementation {
 		updateSGText();
 	}
 
-	private void updateScale() {
-		//todo:
-		final double FACTOR = 1/12.0;
-		getSGVisual().scale.setValue( edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleMatrix3d( FACTOR, FACTOR, FACTOR ) );
-	}
-	
 	public java.awt.Font getFont() {
 		return this.sgText.font.getValue();
 	}
 	public void setFont( java.awt.Font font ) {
 		this.sgText.font.setValue( font );
-		updateScale();
-	}
-	
-	public double getLetterHeight() {
-		return this.letterHeight;
-	}
-	public void setLetterHeight( double letterHeight ) {
-		this.letterHeight = letterHeight;
-		updateScale();
 	}
 
 	public void append( Object value ) {
 		this.sb.append( value );
-		updateSGText();
+		this.updateSGText();
 	}
 	
 	public char charAt( int index ) {
@@ -105,11 +89,11 @@ public class TextImplementation extends SimpleModelImplementation {
 
 	public void delete( int start, int end ) {
 		this.sb.delete( start, end );
-		updateSGText();
+		this.updateSGText();
 	}
 	public void deleteCharAt( int index ) {
 		this.sb.deleteCharAt( index );
-		updateSGText();
+		this.updateSGText();
 	}
 
 	public int indexOf( String s ) {
@@ -121,7 +105,7 @@ public class TextImplementation extends SimpleModelImplementation {
 
 	public void insert( int offset, Object value ) {
 		this.sb.append( value );
-		updateSGText();
+		this.updateSGText();
 	}
 
 	public int lastIndexOf( String s ) {
@@ -138,12 +122,12 @@ public class TextImplementation extends SimpleModelImplementation {
 
 	public void replace( int start, int end, String s ) {
 		this.sb.replace( start, end, s );
-		updateSGText();
+		this.updateSGText();
 	}
 
 	public void setCharAt( int index, Character c ) {
 		this.sb.setCharAt( index, c );
-		updateSGText();
+		this.updateSGText();
 	}
 	
 //	public void setLength( int length ) {

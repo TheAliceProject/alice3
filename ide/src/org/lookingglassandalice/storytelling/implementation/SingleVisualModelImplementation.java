@@ -62,10 +62,4 @@ public abstract class SingleVisualModelImplementation extends ModelImplementatio
 	protected edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] getSgAppearances() {
 		return this.sgAppearances;
 	}
-	public final edu.cmu.cs.dennisc.color.Color4f getColor() {
-		return this.sgAppearances[ 0 ].diffuseColor.getValue();
-	}
-	public final float getOpacity() {
-		return this.sgAppearances[ 0 ].opacity.getValue();
-	}
 }

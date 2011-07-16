@@ -43,10 +43,6 @@
 
 package org.lookingglassandalice.storytelling;
 
-class KeyMap {
-	static java.util.Map< Integer, Key > map = new java.util.HashMap< Integer, Key >();
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -240,13 +236,17 @@ public enum Key {
 	ALT_GRAPH( java.awt.event.KeyEvent.VK_ALT_GRAPH),
 	BEGIN( java.awt.event.KeyEvent.VK_BEGIN),
 	UNDEFINED( java.awt.event.KeyEvent.VK_UNDEFINED);
+
+	private static class MapContainer {
+		private static java.util.Map< Integer, Key > map = new java.util.HashMap< Integer, Key >();
+	}
 	private int keyCode;
 	private Key( int keyCode ) {
 		this.keyCode = keyCode;
-		KeyMap.map.put( this.keyCode, this );
+		MapContainer.map.put( this.keyCode, this );
 	}
 	public static Key get( java.awt.event.KeyEvent e ) {
-		return KeyMap.map.get( e.getKeyCode() );
+		return MapContainer.map.get( e.getKeyCode() );
 	}	
 //	public static void main( String[] args ) throws Exception {
 //		for( java.lang.reflect.Field field : java.awt.event.KeyEvent.class.getDeclaredFields() ) {

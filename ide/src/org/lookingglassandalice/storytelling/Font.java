@@ -48,7 +48,7 @@ import org.lookingglassandalice.storytelling.font.*;
 /**
  * @author Dennis Cosgrove
  */
-public class Font {
+public final class Font {
 	private java.awt.Font m_awtFont;
 
 	

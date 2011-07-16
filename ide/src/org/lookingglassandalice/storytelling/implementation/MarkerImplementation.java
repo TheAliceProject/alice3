@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author dculyba
  *
  */
-public abstract class MarkerImplementation extends AbstractModelImplementation {
+public abstract class MarkerImplementation extends ModelImplementation {
 	
 	private final org.lookingglassandalice.storytelling.Marker abstraction;
 	

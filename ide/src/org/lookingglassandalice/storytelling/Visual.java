@@ -46,24 +46,9 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class VantagePointAnimationDetailsFactory {
-	private VantagePointAnimationDetailsFactory() {
-		throw new AssertionError();
-	}
-	public static VantagePointRelativeAnimationDetails duration( Number value ) {
-		VantagePointRelativeAnimationDetails rv = new VantagePointRelativeAnimationDetails();
-		rv.duration( value );
-		return rv;
-	}
-	public static VantagePointRelativeAnimationDetails asSeenBy( Entity value ) {
-		VantagePointRelativeAnimationDetails rv = new VantagePointRelativeAnimationDetails();
-		rv.asSeenBy( value );
-		return rv;
-	}
-	public static VantagePointRelativeAnimationDetails style( Style value ) {
-		VantagePointRelativeAnimationDetails rv = new VantagePointRelativeAnimationDetails();
-		rv.style( value );
-		return rv;
-	}
+public interface Visual {
+	public Color getColor();
+	public void setColor( Color color );
+	public Double getOpacity();
+	public void setOpacity( Number opacity );
 }
-

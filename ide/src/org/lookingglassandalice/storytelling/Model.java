@@ -46,20 +46,38 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model extends MovableTurnable implements Resizable {
+public abstract class Model extends MovableTurnable implements Resizable, Visual {
 	@Override
 	/*package-private*/ abstract org.lookingglassandalice.storytelling.implementation.ModelImplementation getImplementation();
 	public Color getColor() {
-		edu.cmu.cs.dennisc.color.Color4f internal = this.getImplementation().getColor();
-		return internal != null ? new Color( internal ) : null;
+		return Color.createInstance( this.getImplementation().getColor() );
 	}
 	public void setColor( Color color ) {
-		this.getImplementation().setColor( color != null ? color.getInternal() : null );
+		this.getImplementation().setColor( Color.getInternal( color ) );
 	}
 	public Double getOpacity() {
 		return (double)this.getImplementation().getOpacity();
 	}
 	public void setOpacity( Number opacity ) {
 		this.getImplementation().setOpacity( opacity.floatValue() );
+	}
+	
+	public Scale getScale() {
+		return Scale.createInstance( this.getImplementation().getScale() );
+	}
+	public void setScale( Scale scale ) {
+		this.setScale( scale, new AnimationDetails() );
+	}
+	public void setScale( Scale scale, AnimationDetails details ) {
+		this.getImplementation().animateSetScale( Scale.getInternal( scale ), details.getDuration(), details.getStyle() );
+	}
+	public Size getSize() {
+		return Size.createInstance( this.getImplementation().getSize() );
+	}
+	public void setSize( Size size ) {
+		this.setSize( size, new AnimationDetails() );
+	}
+	public void setSize( Size size, AnimationDetails details ) {
+		this.getImplementation().animateSetSize( Size.getInternal( size ), details.getDuration(), details.getStyle() );
 	}
 }

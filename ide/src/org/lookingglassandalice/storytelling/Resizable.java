@@ -47,5 +47,8 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public interface Resizable {
-
+	public Scale getScale();
+	public void setScale( Scale size );
+	public Size getSize();
+	public void setSize( Size size );
 }

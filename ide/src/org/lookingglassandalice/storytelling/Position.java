@@ -45,18 +45,44 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class Position {
+public final class Position {
 	private final edu.cmu.cs.dennisc.math.Point3 internal;
-	public Position() {
-		this.internal = new edu.cmu.cs.dennisc.math.Point3();
-	}
-	public Position( Number x, Number y, Number z ) {
-		this.internal = new edu.cmu.cs.dennisc.math.Point3( x.doubleValue(), y.doubleValue(), z.doubleValue() );
-	}
-	/*package-private*/ Position( edu.cmu.cs.dennisc.math.Point3 internal ) {
+	private Position( edu.cmu.cs.dennisc.math.Point3 internal ) {
 		this.internal = internal;
+	}
+	public Position( Number right, Number up, Number backward ) {
+		this( new edu.cmu.cs.dennisc.math.Point3( right.doubleValue(), up.doubleValue(), backward.doubleValue() ) );
+	}
+	/*package-private*/ static Position createInstance( edu.cmu.cs.dennisc.math.Point3 internal ) {
+		return internal != null ? new Position( internal ) : null;
 	}
 	/*package-private*/ edu.cmu.cs.dennisc.math.Point3 getInternal() {
 		return this.internal;
+	}
+	/*package-private*/ static edu.cmu.cs.dennisc.math.Point3 getInternal( Position vantagePoint ) {
+		return vantagePoint != null ? vantagePoint.internal : null;
+	}
+	
+	@Override
+	public boolean equals( Object obj ) {
+		if( obj instanceof Position ) {
+			Position other = (Position)obj;
+			return this.internal.equals( other.internal );
+		} else {
+			return false;
+		}
+	}
+	@Override
+	public int hashCode() {
+		return this.internal.hashCode();
+	}
+	public Double getRight() {
+		return (double)this.internal.x;
+	}
+	public Double getUp() {
+		return (double)this.internal.y;
+	}
+	public Double getBackward() {
+		return (double)this.internal.z;
 	}
 }

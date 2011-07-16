@@ -45,8 +45,8 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageSource /*implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable*/ {
-	private org.alice.virtualmachine.resources.ImageResource imageResource;
+public final class ImageSource {
+	private final org.alice.virtualmachine.resources.ImageResource imageResource;
 	public ImageSource( org.alice.virtualmachine.resources.ImageResource imageResource ) {
 		this.imageResource = imageResource;
 	}

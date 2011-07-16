@@ -49,10 +49,16 @@ package org.lookingglassandalice.storytelling.implementation;
 public abstract class ModelImplementation extends TransformableImplementation {
 	protected abstract edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] getSgAppearances();
 	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
+	public final edu.cmu.cs.dennisc.color.Color4f getColor() {
+		return this.getSgAppearances()[ 0 ].diffuseColor.getValue();
+	}
 	public final void setColor( edu.cmu.cs.dennisc.color.Color4f color ) {
 		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
 			sgAppearance.diffuseColor.setValue( color );
 		}
+	}
+	public final float getOpacity() {
+		return this.getSgAppearances()[ 0 ].opacity.getValue();
 	}
 	public final void setOpacity( float opacity ) {
 		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
@@ -64,6 +70,23 @@ public abstract class ModelImplementation extends TransformableImplementation {
 			sgAppearance.diffuseColorTexture.setValue( diffuseColorTexture );
 		}
 	}
+	
+	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
+		return null;
+	}
+	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
+	}
+	public void animateSetScale( edu.cmu.cs.dennisc.math.Dimension3 scale, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	}
+
+	public edu.cmu.cs.dennisc.math.Dimension3 getSize() {
+		return null;
+	}
+	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+	}
+	public void animateSetSize( edu.cmu.cs.dennisc.math.Dimension3 size, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	}
+	
 //	@Override
 //	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans, boolean isOriginIncluded ) {
 //		super.updateCumulativeBound( rv, trans, isOriginIncluded );
