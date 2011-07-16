@@ -122,6 +122,12 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 	public void applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, EntityImplementation asSeenBy ) {
 		this.getSgComposite().applyRotationAboutArbitraryAxisInRadians( axis, angleInRadians, asSeenBy.getSgComposite() );
 	}
+	public void applyRotationInDegrees( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInDegrees, EntityImplementation asSeenBy ) {
+		this.applyRotationInRadians( axis, edu.cmu.cs.dennisc.math.AngleUtilities.degreesToRadians( angleInDegrees ), asSeenBy );
+	}
+	public void applyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRevolutions, EntityImplementation asSeenBy ) {
+		this.applyRotationInRadians( axis, edu.cmu.cs.dennisc.math.AngleUtilities.revolutionsToRadians( angleInRevolutions ), asSeenBy );
+	}
 	public void animateApplyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, EntityImplementation asSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		assert axis != null;
 		assert duration >= 0 : "Invalid argument: duration " + duration + " must be >= 0";
@@ -171,16 +177,39 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 		this.animateApplyRotationInRadians( axis, angleInRadians, this );
 	}
 	
+	public void animateApplyRotationInDegrees( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInDegrees, EntityImplementation asSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		this.animateApplyRotationInRadians( axis, edu.cmu.cs.dennisc.math.AngleUtilities.degreesToRadians( angleInDegrees ), asSeenBy, duration, style );
+	}
+	public void animateApplyRotationInDegrees( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInDegrees, EntityImplementation asSeenBy, double duration ) {
+		this.animateApplyRotationInDegrees( axis, angleInDegrees, asSeenBy, duration, DEFAULT_STYLE );
+	}
+	public void animateApplyRotationInDegrees( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInDegrees, EntityImplementation asSeenBy ) {
+		this.animateApplyRotationInDegrees( axis, angleInDegrees, asSeenBy, DEFAULT_DURATION );
+	}
+	public void animateApplyRotationInDegrees( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInDegrees ) {
+		this.animateApplyRotationInDegrees( axis, angleInDegrees, this );
+	}
+
+	public void animateApplyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRevolutions, EntityImplementation asSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		this.animateApplyRotationInRadians( axis, edu.cmu.cs.dennisc.math.AngleUtilities.revolutionsToRadians( angleInRevolutions ), asSeenBy, duration, style );
+	}
+	public void animateApplyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRevolutions, EntityImplementation asSeenBy, double duration ) {
+		this.animateApplyRotationInRevolutions( axis, angleInRevolutions, asSeenBy, duration, DEFAULT_STYLE );
+	}
+	public void animateApplyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRevolutions, EntityImplementation asSeenBy ) {
+		this.animateApplyRotationInRevolutions( axis, angleInRevolutions, asSeenBy, DEFAULT_DURATION );
+	}
+	public void animateApplyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRevolutions ) {
+		this.animateApplyRotationInRevolutions( axis, angleInRevolutions, this );
+	}
+
 	
 	
 	
 	
-//	//protected abstract double getBoundingSphereRadius();
-//	protected double getBoundingSphereRadius() {
-//		return 0.25;
-//	}
-//	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( EntityImplementation asSeenBy ) {
-//		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgComposite().getTransformation( asSeenBy.getSgComposite() );
-//		return new edu.cmu.cs.dennisc.math.Sphere( m.translation, 1.0 );
-//	}
+	protected abstract double getBoundingSphereRadius();
+	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( EntityImplementation asSeenBy ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgComposite().getTransformation( asSeenBy.getSgComposite() );
+		return new edu.cmu.cs.dennisc.math.Sphere( m.translation, 1.0 );
+	}
 }

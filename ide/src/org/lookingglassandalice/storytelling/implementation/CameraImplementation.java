@@ -46,22 +46,17 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class CameraImplementation extends TransformableImplementation {
-	private final org.lookingglassandalice.storytelling.Camera abstraction;
-	private final edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera = new edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera();
-	public CameraImplementation( org.lookingglassandalice.storytelling.Camera abstraction ) {
-		this.abstraction = abstraction;
-		this.sgSymmetricPerspectiveCamera.setParent( this.getSgComposite() );
+public abstract class CameraImplementation<S extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> extends TransformableImplementation {
+	private final S sgCamera;
+	public CameraImplementation( S sgCamera ) {
+		this.sgCamera = sgCamera;
+		this.sgCamera.setParent( this.getSgComposite() );
+	}
+	public final S getSgCamera() {
+		return this.sgCamera;
 	}
 	@Override
-	public org.lookingglassandalice.storytelling.Camera getAbstraction() {
-		return this.abstraction;
-	}
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCamera() {
-		return this.sgSymmetricPerspectiveCamera;
-	}
-	public void getAGoodLookAt( EntityImplementation entityImplementation ) {
-		this.getSgComposite().setTranslationOnly( 2,4,-8, entityImplementation.getSgComposite() );
-		this.getSgComposite().setAxesOnlyToPointAt( entityImplementation.getSgComposite() );
+	protected double getBoundingSphereRadius() {
+		return 0.0;
 	}
 }

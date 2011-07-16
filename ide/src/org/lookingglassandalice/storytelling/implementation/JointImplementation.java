@@ -66,4 +66,8 @@ public abstract class JointImplementation extends AbstractTransformableImplement
 		assert this.abstraction == null : this.abstraction;
 		this.abstraction = abstraction;
 	}
+	@Override
+	protected double getBoundingSphereRadius() {
+		return 0;
+	}
 }

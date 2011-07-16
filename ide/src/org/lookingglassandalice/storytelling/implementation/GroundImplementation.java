@@ -105,4 +105,8 @@ public class GroundImplementation extends SimpleModelImplementation {
 		this.setDiffuseColorTexture( diffuseColorTexture );
 	}
 	
+	@Override
+	protected double getBoundingSphereRadius() {
+		return Double.POSITIVE_INFINITY;
+	}
 }

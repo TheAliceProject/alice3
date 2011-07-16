@@ -41,18 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Camera extends MovableTurnable {
-	private final org.lookingglassandalice.storytelling.implementation.SymmetricPerspectiveCameraImplementation implementation = new org.lookingglassandalice.storytelling.implementation.SymmetricPerspectiveCameraImplementation( this );
-	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.SymmetricPerspectiveCameraImplementation getImplementation() {
-		return this.implementation;
+public class OrthographicCameraImplementation extends CameraImplementation<edu.cmu.cs.dennisc.scenegraph.OrthographicCamera> {
+	public OrthographicCameraImplementation() {
+		super( new edu.cmu.cs.dennisc.scenegraph.OrthographicCamera() );
 	}
-	public void moveAndOrientToAGoodVantagePointOf( Entity entity ) {
-		this.implementation.setTransformationToAGoodVantagePointOf( entity.getImplementation() );
+	@Override
+	public org.lookingglassandalice.storytelling.Entity getAbstraction() {
+		return null;
 	}
 }

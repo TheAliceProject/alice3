@@ -55,4 +55,8 @@ public class TargetImplementation extends TransformableImplementation {
 	public org.lookingglassandalice.storytelling.Target getAbstraction() {
 		return this.abstraction;
 	}
+	@Override
+	protected double getBoundingSphereRadius() {
+		return 0.0;
+	}
 }

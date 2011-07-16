@@ -85,7 +85,7 @@ class DesertScene extends Scene {
 		this.desert.setAppearance( Ground.Appearance.SAND );
 		this.sphere.setRadius( 0.1 );
 		this.sphere.setColor( Color.RED );
-		this.camera.getAGoodLookAt( this.sphere );
+		this.camera.moveAndOrientToAGoodVantagePointOf( this.sphere );
 	}
 	private void performCustomSetup() {
 	}
@@ -153,7 +153,7 @@ class SnowScene extends Scene {
 		this.ogre.move( MoveDirection.LEFT, 1.5 );
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
 		this.snow.setAppearance( Ground.Appearance.SNOW );
-		this.camera.getAGoodLookAt( this.ogre );
+		this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
 	private void performCustomSetup() {
 	}

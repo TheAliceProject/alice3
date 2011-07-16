@@ -41,18 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Camera extends MovableTurnable {
-	private final org.lookingglassandalice.storytelling.implementation.SymmetricPerspectiveCameraImplementation implementation = new org.lookingglassandalice.storytelling.implementation.SymmetricPerspectiveCameraImplementation( this );
-	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.SymmetricPerspectiveCameraImplementation getImplementation() {
-		return this.implementation;
+public class SymmetricPerspectiveCameraImplementation extends CameraImplementation< edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera > {
+	private final org.lookingglassandalice.storytelling.Camera abstraction;
+	public SymmetricPerspectiveCameraImplementation( org.lookingglassandalice.storytelling.Camera abstraction ) {
+		super( new edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera() );
+		this.abstraction = abstraction;
 	}
-	public void moveAndOrientToAGoodVantagePointOf( Entity entity ) {
-		this.implementation.setTransformationToAGoodVantagePointOf( entity.getImplementation() );
+	@Override
+	public org.lookingglassandalice.storytelling.Camera getAbstraction() {
+		return this.abstraction;
+	}
+	public void setTransformationToAGoodVantagePointOf( EntityImplementation entityImplementation ) {
+		this.getSgComposite().setTranslationOnly( 2,4,-8, entityImplementation.getSgComposite() );
+		this.getSgComposite().setAxesOnlyToPointAt( entityImplementation.getSgComposite() );
+	}
+	public void animateSetTransformationToAGoodVantagePointOf() {
 	}
 }
