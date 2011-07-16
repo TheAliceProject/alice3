@@ -42,9 +42,6 @@
  */
 package org.alice.stageide.sceneeditor;
 
-import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -111,23 +108,22 @@ public class SetUpMethodGenerator {
 		return rv;
 	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createPositionExpression( edu.cmu.cs.dennisc.math.Point3 translation ) {
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.Position position ) {
 		Class< ? > cls = org.lookingglassandalice.storytelling.Position.class;
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
-		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( translation.x ), createExpression( translation.y ), createExpression( translation.z ) );
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls );
+		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( position.getRight() ), createExpression( position.getUp() ), createExpression( position.getBackward() ) );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createQuaternionExpression( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation ) {
-		edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( orientation );
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.Scale scale ) {
+		Class< ? > cls = org.lookingglassandalice.storytelling.Scale.class;
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls );
+		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( scale.getLeftToRight() ), createExpression( scale.getBottomToTop() ), createExpression( scale.getFrontToBack() ) );
+	}
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.Orientation orientation ) {
+		edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 axes = org.lookingglassandalice.storytelling.ImplementationAccessor.getOrthogonalMatrix3x3( orientation );
+		edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( axes );
 		Class< ? > cls = org.lookingglassandalice.storytelling.Orientation.class;
-		java.lang.reflect.Constructor< ? > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls, Number.class, Number.class, Number.class, Number.class );
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cnstrctr );
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( q.x ), createExpression( q.y ), createExpression( q.z ), createExpression( q.w ) );
-	}
-	
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.VantagePoint pointOfView ) {
-		Class< ? > cls = org.lookingglassandalice.storytelling.VantagePoint.class;
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, org.lookingglassandalice.storytelling.Orientation.class, org.lookingglassandalice.storytelling.Position.class );
-		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createQuaternionExpression( pointOfView.getInternal().orientation ), createPositionExpression( pointOfView.getInternal().translation ) );
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.Font font ) {
 		Class< ? > cls = org.lookingglassandalice.storytelling.Font.class;
@@ -160,98 +156,104 @@ public class SetUpMethodGenerator {
 		}
 	}
 	
-	public static void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance, FieldAndInstanceMapper mapper ) {
-		if (instance instanceof org.lookingglassandalice.storytelling.Model)
-		{
-			org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)instance;
-			org.lookingglassandalice.storytelling.implementation.EntityImplementation implementation = org.lookingglassandalice.storytelling.ImplementationAccessor.getImplementation(model);
-			Composite sgComposite = implementation.getSgComposite();
-			Composite sgParent = sgComposite.getParent();
-			org.lookingglassandalice.storytelling.Entity vehicle = (org.lookingglassandalice.storytelling.Entity)org.lookingglassandalice.storytelling.Entity.getElement( sgParent );
-			boolean isVehicleScene = (vehicle instanceof Scene);
-			edu.cmu.cs.dennisc.alice.ast.AbstractField vehicleField = mapper.getFieldForInstanceInJavaVM(vehicle);
-			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setVehicle", org.lookingglassandalice.storytelling.Entity.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
-			
-			VantagePoint pov = new VantagePoint(sgComposite.getTransformation(sgParent));
-			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.VantagePoint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( pov ) ) );
-		}
-		else if( instance instanceof org.lookingglassandalice.storytelling.Entity ) {
-			org.lookingglassandalice.storytelling.Entity element = (org.lookingglassandalice.storytelling.Entity)instance;
-			bodyStatementsProperty.add( createStatement( edu.cmu.cs.dennisc.pattern.AbstractElement.class, "setName", String.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( field.getName() ) ) );
-			if( instance instanceof org.lookingglassandalice.storytelling.Turnable ) {
-				org.lookingglassandalice.storytelling.Turnable transformable = (org.lookingglassandalice.storytelling.Turnable)element;
-				
-				boolean isVehicleScene = (transformable.getVehicle() instanceof Scene);
-				SetUpMethodGenerator.fillInAutomaticVehicleAssignment(bodyStatementsProperty, field, mapper.getFieldForInstanceInJavaVM(transformable.getVehicle()), isVehicleScene);
-				
-				if (transformable instanceof CameraMarker)
-				{
-					CameraMarker marker = (CameraMarker)transformable;
-					//CameraMarkers are all fields of the Scene but may be parented to the camera while being edited in the scene editor. Because of this, make sure to get their LocalPointOfView as seen by the Scene
-					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.VantagePoint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getPointOfView(AsSeenBy.SCENE) ) ) );
-					org.lookingglassandalice.storytelling.Color markerColor = marker.getColor();
-					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Marker.class, "setColor", new Class< ? >[] { org.lookingglassandalice.storytelling.Color.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( markerColor ) ) );
-				}
-				else
-				{
-					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.VantagePoint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getLocalPointOfView() ) ) );
-				}
-				if( instance instanceof org.lookingglassandalice.storytelling.Resizable ) {
-					org.lookingglassandalice.storytelling.Resizable resizable = (org.lookingglassandalice.storytelling.Resizable)transformable;
+	public static void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance, org.alice.ide.sceneeditor.FieldAndInstanceMapper mapper ) {
+		if( instance instanceof org.lookingglassandalice.storytelling.Entity ) {
+			org.lookingglassandalice.storytelling.Entity entity = (org.lookingglassandalice.storytelling.Entity)instance;
+			String name = field.getName();
+			bodyStatementsProperty.add( 
+					createStatement( 
+							org.lookingglassandalice.storytelling.Entity.class, "setName", String.class, 
+							SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( field.getName() ) 
+					) 
+			);
 
-					double widthFactor = resizable.getResizeWidthAmount();
-					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( widthFactor, 1 ) ) {
-						//pass
-					} else {
-						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "resizeWidth", new Class< ? >[] { Number.class, Number.class, org.lookingglassandalice.storytelling.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( widthFactor ), createExpression( 0.0 ), createExpression( org.lookingglassandalice.storytelling.ResizePolicy.PRESERVE_NOTHING ) ) );
-					}
-					double heightFactor = resizable.getResizeHeightAmount();
-					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( heightFactor, 1 ) ) {
-						//pass
-					} else {
-						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "resizeHeight", new Class< ? >[] { Number.class, Number.class, org.lookingglassandalice.storytelling.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( heightFactor ), createExpression( 0.0 ), createExpression( org.lookingglassandalice.storytelling.ResizePolicy.PRESERVE_NOTHING ) ) );
-					}
-					double depthFactor = resizable.getResizeDepthAmount();
-					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( depthFactor, 1 ) ) {
-						//pass
-					} else {
-						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "resizeDepth", new Class< ? >[] { Number.class, Number.class, org.lookingglassandalice.storytelling.ResizePolicy.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( depthFactor ), createExpression( 0.0 ), createExpression( org.lookingglassandalice.storytelling.ResizePolicy.PRESERVE_NOTHING ) ) );
-					}
-					if( instance instanceof org.lookingglassandalice.storytelling.Model ) {
-						org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)transformable;
-
-						org.lookingglassandalice.storytelling.Color modelColor = model.getColor();
-						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setColor", new Class< ? >[] { org.lookingglassandalice.storytelling.Color.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( modelColor ) ) );
-						
-						Double modelOpacity = model.getOpacity();
-						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setOpacity", new Class< ? >[] { Number.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( modelOpacity ) ) );
-						
-						if( model instanceof org.lookingglassandalice.storytelling.Text ) {
-							org.lookingglassandalice.storytelling.Text text = (org.lookingglassandalice.storytelling.Text)model;
-							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Text.class, "setValue", String.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( text.getValue() ) ) );
-							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Text.class, "setFont", org.lookingglassandalice.storytelling.Font.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( text.getFont() ) ) );
-							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Text.class, "setLetterHeight", Number.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( text.getLetterHeight() ) ) );
-						} else if( model instanceof org.lookingglassandalice.storytelling.Person ) {
-							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setGender", org.lookingglassandalice.storytelling.Gender.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( person.getGender() ) ) );
-							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setHair", org.lookingglassandalice.storytelling.Hair.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getHair() ) ) );
-							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setEyeColor", org.lookingglassandalice.storytelling.EyeColor.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getEyeColor() ) ) );
-							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setSkinTone", org.lookingglassandalice.storytelling.SkinTone.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getSkinTone() ) ) );
-							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setOutfit", org.lookingglassandalice.storytelling.Outfit.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getOutfit() ) ) );
-							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setFitnessLevel", Number.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( person.getFitnessLevel() ) ) );
-
-						}
-					} else if( instance instanceof org.lookingglassandalice.storytelling.Billboard ) {
-						org.lookingglassandalice.storytelling.Billboard billboard = (org.lookingglassandalice.storytelling.Billboard)transformable;
-						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Billboard.class, "setFrontImageSource", org.lookingglassandalice.storytelling.ImageSource.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getFrontImageSource() ) ) );
-						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Billboard.class, "setBackImageSource", org.lookingglassandalice.storytelling.ImageSource.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getBackImageSource() ) ) );
-					}
-				}
-//				bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Entity.class, "addComponent", org.lookingglassandalice.storytelling.Transformable.class, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), SetUpMethodGenerator.createInstanceExpression( isThis, field ) ) );
-				
-			} else if( instance instanceof org.lookingglassandalice.storytelling.Scene ) {
-				org.lookingglassandalice.storytelling.Scene scene = (org.lookingglassandalice.storytelling.Scene)element;
+			if( instance instanceof org.lookingglassandalice.storytelling.Scene ) {
+				org.lookingglassandalice.storytelling.Scene scene = (org.lookingglassandalice.storytelling.Scene)entity;
 				bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Scene.class, "setAtmosphereColor", org.lookingglassandalice.storytelling.Color.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( scene.getAtmosphereColor() ) ) );
+			} else {
+				org.lookingglassandalice.storytelling.Entity vehicle = entity.getVehicle();
+				boolean isVehicleScene = (vehicle instanceof org.lookingglassandalice.storytelling.Scene);
+	
+				edu.cmu.cs.dennisc.alice.ast.AbstractField vehicleField = mapper.getFieldForInstanceInJavaVM(vehicle);
+				bodyStatementsProperty.add( 
+						createStatement( 
+								org.lookingglassandalice.storytelling.Entity.class, "setVehicle", org.lookingglassandalice.storytelling.Entity.class, 
+								SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) 
+						) 
+				);
+	
+				if( instance instanceof org.lookingglassandalice.storytelling.Turnable ) {
+					org.lookingglassandalice.storytelling.Turnable turnable = (org.lookingglassandalice.storytelling.Turnable)mapper;
+					org.lookingglassandalice.storytelling.Orientation orientation = turnable.getOrientationRelativeToVehicle();
+					bodyStatementsProperty.add( 
+							createStatement( 
+									org.lookingglassandalice.storytelling.Turnable.class, "setOrientationRelativeToVehicle", org.lookingglassandalice.storytelling.Orientation.class, 
+									SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( orientation ) 
+							) 
+					);
+					if( turnable instanceof org.lookingglassandalice.storytelling.MovableTurnable ) {
+						org.lookingglassandalice.storytelling.MovableTurnable movableTurnable = (org.lookingglassandalice.storytelling.MovableTurnable)turnable;
+						org.lookingglassandalice.storytelling.Position position = movableTurnable.getPositionRelativeToVehicle();
+						bodyStatementsProperty.add( 
+								createStatement( 
+										org.lookingglassandalice.storytelling.Turnable.class, "setPositionRelativeToVehicle", org.lookingglassandalice.storytelling.Position.class, 
+										SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( position ) 
+								) 
+						);
+						if( instance instanceof org.lookingglassandalice.storytelling.Billboard ) {
+							org.lookingglassandalice.storytelling.Billboard billboard = (org.lookingglassandalice.storytelling.Billboard)movableTurnable;
+							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Billboard.class, "setFrontImageSource", org.lookingglassandalice.storytelling.ImageSource.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getFrontImageSource() ) ) );
+							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Billboard.class, "setBackImageSource", org.lookingglassandalice.storytelling.ImageSource.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getBackImageSource() ) ) );
+						}
+					}
+				}
 			}
 		}
+		if( instance instanceof org.lookingglassandalice.storytelling.Resizable ) {
+			org.lookingglassandalice.storytelling.Resizable resizable = (org.lookingglassandalice.storytelling.Resizable)instance;
+			org.lookingglassandalice.storytelling.Scale scale = resizable.getScale();
+			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "setScale", new Class< ? >[] { org.lookingglassandalice.storytelling.Scale.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( scale ) ) );
+		}
+//		
+//		
+//				if (transformable instanceof CameraMarker)
+//				{
+//					CameraMarker marker = (CameraMarker)transformable;
+//					//CameraMarkers are all fields of the Scene but may be parented to the camera while being edited in the scene editor. Because of this, make sure to get their LocalPointOfView as seen by the Scene
+//					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.VantagePoint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getPointOfView(AsSeenBy.SCENE) ) ) );
+//					org.lookingglassandalice.storytelling.Color markerColor = marker.getColor();
+//					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Marker.class, "setColor", new Class< ? >[] { org.lookingglassandalice.storytelling.Color.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( markerColor ) ) );
+//				}
+//				else
+//				{
+//					bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "setLocalPointOfView", org.lookingglassandalice.storytelling.VantagePoint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getLocalPointOfView() ) ) );
+//				}
+//
+//					if( instance instanceof org.lookingglassandalice.storytelling.Model ) {
+//						org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)transformable;
+//
+//						org.lookingglassandalice.storytelling.Color modelColor = model.getColor();
+//						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setColor", new Class< ? >[] { org.lookingglassandalice.storytelling.Color.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( modelColor ) ) );
+//						
+//						Double modelOpacity = model.getOpacity();
+//						bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Model.class, "setOpacity", new Class< ? >[] { Number.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( modelOpacity ) ) );
+//						
+//						if( model instanceof org.lookingglassandalice.storytelling.Text ) {
+//							org.lookingglassandalice.storytelling.Text text = (org.lookingglassandalice.storytelling.Text)model;
+//							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Text.class, "setValue", String.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( text.getValue() ) ) );
+//							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Text.class, "setFont", org.lookingglassandalice.storytelling.Font.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( text.getFont() ) ) );
+//							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Text.class, "setLetterHeight", Number.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( text.getLetterHeight() ) ) );
+//						} else if( model instanceof org.lookingglassandalice.storytelling.Person ) {
+//							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setGender", org.lookingglassandalice.storytelling.Gender.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( person.getGender() ) ) );
+//							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setHair", org.lookingglassandalice.storytelling.Hair.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getHair() ) ) );
+//							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setEyeColor", org.lookingglassandalice.storytelling.EyeColor.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getEyeColor() ) ) );
+//							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setSkinTone", org.lookingglassandalice.storytelling.SkinTone.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getSkinTone() ) ) );
+//							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setOutfit", org.lookingglassandalice.storytelling.Outfit.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getOutfit() ) ) );
+//							bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Person.class, "setFitnessLevel", Number.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( person.getFitnessLevel() ) ) );
+//
+//						}
+//				}
+////				bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Entity.class, "addComponent", org.lookingglassandalice.storytelling.Transformable.class, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), SetUpMethodGenerator.createInstanceExpression( isThis, field ) ) );
+//		}
 	}
 }
