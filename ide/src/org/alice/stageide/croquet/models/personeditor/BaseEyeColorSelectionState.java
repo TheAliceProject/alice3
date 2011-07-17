@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class BaseEyeColorSelectionState extends AbstractListSelectionState<org.lookingglassandalice.storytelling.BaseEyeColor> {
+public class BaseEyeColorSelectionState extends AbstractListSelectionState<org.lookingglassandalice.storytelling.resources.sims2.BaseEyeColor> {
 	private static class SingletonHolder {
 		private static BaseEyeColorSelectionState instance = new BaseEyeColorSelectionState();
 	}
@@ -53,11 +53,11 @@ public class BaseEyeColorSelectionState extends AbstractListSelectionState<org.l
 		return SingletonHolder.instance;
 	}
 	private BaseEyeColorSelectionState() {
-		super(java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lookingglassandalice.storytelling.BaseEyeColor.class ), org.lookingglassandalice.storytelling.BaseEyeColor.values() );
+		super(java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lookingglassandalice.storytelling.resources.sims2.BaseEyeColor.class ), org.lookingglassandalice.storytelling.resources.sims2.BaseEyeColor.values() );
 	}
 	@Override
-	public org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.BaseEyeColor> createList() {
-		org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.BaseEyeColor> rv = super.createList();
+	public org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.resources.sims2.BaseEyeColor> createList() {
+		org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.resources.sims2.BaseEyeColor> rv = super.createList();
 		rv.setCellRenderer( org.alice.stageide.personeditor.SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}

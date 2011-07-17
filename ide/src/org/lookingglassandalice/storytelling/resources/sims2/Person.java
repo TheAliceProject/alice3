@@ -40,15 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lookingglassandalice.storytelling;
+
+package org.lookingglassandalice.storytelling.resources.sims2;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum Gender {
-	FEMALE, 
-	MALE;
-	public static Gender getRandom() {
-		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( Gender.class );
-	}
+@Deprecated
+public class Person {
 }

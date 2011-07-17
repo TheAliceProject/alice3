@@ -154,8 +154,8 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 		final Turnable selectedTransformable = sceneEditor.getTransformableForField(selectedField);
 		objectMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.lookingglassandalice.storytelling.ObjectMarker.class);
 		if( objectMarker != null ) {
-			nextPOV = objectMarker.getPointOfView( org.lookingglassandalice.storytelling.resources.sims2.AsSeenBy.SCENE );
-			prevPOV = selectedTransformable.getPointOfView(org.lookingglassandalice.storytelling.resources.sims2.AsSeenBy.SCENE);
+			nextPOV = objectMarker.getPointOfView( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE );
+			prevPOV = selectedTransformable.getPointOfView(org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE);
 			if( nextPOV.getInternal().isNaN() ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveSelectedObjectToMarkerActionOperation isNaN" );
 				step.cancel();

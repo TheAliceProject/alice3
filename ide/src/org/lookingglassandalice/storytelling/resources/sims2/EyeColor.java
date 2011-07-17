@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.resources.sims2;
 
-public interface SkinTone {
+public interface EyeColor {
 }

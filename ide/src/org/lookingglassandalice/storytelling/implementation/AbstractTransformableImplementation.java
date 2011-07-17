@@ -363,6 +363,52 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 	
 	
 	
+	public void applyScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
+//		class ScaleAnimation extends edu.cmu.cs.dennisc.math.animation.Vector3Animation {
+//			private edu.cmu.cs.dennisc.math.Vector3 m_vPrev = new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 );
+//			private edu.cmu.cs.dennisc.math.Vector3 m_vBuffer = new edu.cmu.cs.dennisc.math.Vector3();
+//
+//			private Transformable m_subject;
+//			private boolean m_isScootDesired;
+//			public ScaleAnimation( double duration, Style style, edu.cmu.cs.dennisc.math.Vector3 axis, Transformable subject, boolean isScootDesired ) {
+//				super( duration, style, new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 ), axis );
+//				m_subject = subject;
+//				m_isScootDesired = isScootDesired;
+//			}
+//			@Override
+//
+//			protected void updateValue( edu.cmu.cs.dennisc.math.Vector3 v ) {
+//				edu.cmu.cs.dennisc.math.Vector3.setReturnValueToDivision( m_vBuffer, v, m_vPrev );
+//				m_subject.applyScale( m_vBuffer, m_isScootDesired );
+//				m_vPrev.set( v );
+//			}
+//		}
+//		final double actualDuration = adjustDurationIfNecessary( duration );
+//		java.util.List< Transformable > transformables = new java.util.LinkedList< Transformable >();
+//		updateHowMuch( transformables, howMuch.isThisACandidate(), howMuch.isChildACandidate(), howMuch.isGrandchildAndBeyondACandidate() );
+//		
+//		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, RIGHT_NOW ) ) {
+//			for( Transformable transformable : transformables ) {
+//				transformable.applyScale( axis, transformable != this );
+//			}
+//		} else {
+//			Runnable[] runnables = new Runnable[ transformables.size() ];
+//			int i = 0;
+//			for( final Transformable transformable : transformables ) {
+//				runnables[ i++ ] = new Runnable() { 
+//					public void run() {
+//						perform( new ScaleAnimation( actualDuration, style, axis, transformable, transformable!=Transformable.this ) );
+//					}
+//				};
+//			}
+//			org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+//		}
+	}
+	public void animateApplyScale( edu.cmu.cs.dennisc.math.Dimension3 scale, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		
+	}
+	
+	
 	protected abstract double getBoundingSphereRadius();
 	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( ReferenceFrame asSeenBy ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgComposite().getTransformation( asSeenBy.getSgReferenceFrame() );

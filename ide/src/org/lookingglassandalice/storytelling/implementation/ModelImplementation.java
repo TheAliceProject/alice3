@@ -58,8 +58,17 @@ public abstract class ModelImplementation extends TransformableImplementation {
 		}
 	}
 	public final void animateColor( edu.cmu.cs.dennisc.color.Color4f color, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		System.err.println( "todo: animateColor" );
-		this.setColor( color );
+		duration = adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			this.setColor( color );
+		} else {
+			perform( new edu.cmu.cs.dennisc.color.animation.Color4fAnimation( duration, style, this.getColor(), color ) {
+				@Override
+				protected void updateValue( edu.cmu.cs.dennisc.color.Color4f c ) {
+					ModelImplementation.this.setColor( c );
+				}
+			} );
+		}
 	}
 	
 	public final float getOpacity() {
@@ -71,8 +80,17 @@ public abstract class ModelImplementation extends TransformableImplementation {
 		}
 	}
 	public final void animateOpacity( float opacity, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		System.err.println( "todo: animateOpacity" );
-		this.setOpacity( opacity );
+		duration = adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			this.setOpacity( opacity );
+		} else {
+			this.perform( new edu.cmu.cs.dennisc.animation.interpolation.FloatAnimation( duration, style, this.getOpacity(), opacity ) {
+				@Override
+				protected void updateValue( Float globalBrightness ) {
+					ModelImplementation.this.setOpacity( globalBrightness );
+				}
+			} );
+		}
 	}
 	
 	

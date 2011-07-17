@@ -40,18 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.resources.sims2;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum BaseEyeColor implements EyeColor {
-	LIGHT_BLUE,
-	DARK_BLUE,
-	GREEN,
-	GRAY,
-	DARK_BROWN;
-	public static BaseEyeColor getRandom() {
-		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( BaseEyeColor.class );
+public enum Gender {
+	FEMALE, 
+	MALE;
+	public static Gender getRandom() {
+		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( Gender.class );
 	}
 }

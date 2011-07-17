@@ -49,7 +49,7 @@ public abstract class IngredientFillerInner extends org.alice.ide.cascade.filler
 	public IngredientFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( type );
 	}
-	protected abstract Class<?>[] getClses( org.lookingglassandalice.storytelling.LifeStage lifeStage, org.lookingglassandalice.storytelling.Gender gender );
+	protected abstract Class<?>[] getClses( org.lookingglassandalice.storytelling.resources.sims2.LifeStage lifeStage, org.lookingglassandalice.storytelling.resources.sims2.Gender gender );
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 //		org.lookingglassandalice.storytelling.LifeStage[] lifeStages = { org.lookingglassandalice.storytelling.LifeStage.ADULT, org.lookingglassandalice.storytelling.LifeStage.CHILD }; 

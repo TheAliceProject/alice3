@@ -42,9 +42,7 @@
  */
 package org.lookingglassandalice.storytelling.resources.sims2;
 
-import org.lookingglassandalice.storytelling.Gender;
 import org.lookingglassandalice.storytelling.IngredientManager;
-import org.lookingglassandalice.storytelling.LifeStage;
 
 public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 	private static FullBodyOutfitManager singleton = new FullBodyOutfitManager();

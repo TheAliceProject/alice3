@@ -42,7 +42,9 @@
  */
 package org.lookingglassandalice.storytelling;
 
+import org.lookingglassandalice.storytelling.resources.sims2.Gender;
 import org.lookingglassandalice.storytelling.resources.sims2.Ingredient;
+import org.lookingglassandalice.storytelling.resources.sims2.LifeStage;
 
 public abstract class IngredientManager<E extends Ingredient> {
 	private java.util.Map<Class<? extends E>, Class<? extends E>[]> mapInterfaceClsToImplementingClses = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

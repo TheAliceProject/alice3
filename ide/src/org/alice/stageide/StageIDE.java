@@ -576,7 +576,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	public boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = typeInAlice.getFirstTypeEncounteredDeclaredInJava();
-		return false == edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( typeInJava.getClassReflectionProxy().getReification(), org.lookingglassandalice.storytelling.Scene.class, org.lookingglassandalice.storytelling.Camera.class, org.lookingglassandalice.storytelling.Person.class );
+		return false == edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( typeInJava.getClassReflectionProxy().getReification(), org.lookingglassandalice.storytelling.Scene.class, org.lookingglassandalice.storytelling.Camera.class, org.lookingglassandalice.storytelling.resources.sims2.Person.class );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgram( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, final int frameRate ) {

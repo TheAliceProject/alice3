@@ -66,10 +66,10 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> interfaceType ) {
 		if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Style.class ) ) {
 			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.TraditionalStyle.class );
-		} else if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.EyeColor.class ) ) {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.BaseEyeColor.class );
-		} else if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.SkinTone.class ) ) {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.BaseSkinTone.class );
+		} else if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.resources.sims2.EyeColor.class ) ) {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.resources.sims2.BaseEyeColor.class );
+		} else if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.resources.sims2.SkinTone.class ) ) {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.resources.sims2.BaseSkinTone.class );
 		} else {
 			return super.getEnumTypeForInterfaceType( interfaceType );
 		}

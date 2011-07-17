@@ -40,12 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lookingglassandalice.storytelling;
+package org.lookingglassandalice.storytelling.resources.sims2;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Toucher {
-	void touch( Entity entity );
+public enum BaseSkinTone implements SkinTone {
+	LIGHTER,
+	LIGHT,
+	DARK,
+	DARKER;
+	public static BaseSkinTone getRandom() {
+		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( BaseSkinTone.class );
+	}
 }

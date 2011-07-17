@@ -46,10 +46,7 @@ package org.lookingglassandalice.storytelling;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class Person extends Model {
-	@Override
-	org.lookingglassandalice.storytelling.implementation.ModelImplementation getImplementation() {
-		return null;
-	}
+public interface Articulable {
+	public void touch( Entity entity );
+	public void walkTo( Entity entity );
 }
