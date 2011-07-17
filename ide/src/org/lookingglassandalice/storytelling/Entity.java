@@ -64,4 +64,8 @@ public abstract class Entity implements Rider {
 	public VantagePoint getVantagePoint( Entity entity ) {
 		return VantagePoint.createInstance( this.getImplementation().getTransformation( entity.getImplementation() ) ); 
 	}
+	
+	public void delay( Number duration ) {
+		this.getImplementation().delay( duration.doubleValue() );
+	}
 }

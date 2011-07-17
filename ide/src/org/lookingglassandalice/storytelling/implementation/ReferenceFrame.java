@@ -41,54 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package test;
-
-import org.lookingglassandalice.storytelling.*;
-
-class MyScene extends Scene {
-	private final Camera camera = new Camera();
-	private final Sun sun = new Sun();
-	private final Ground snow = new Ground();
-	private void performGeneratedSetup() {
-		// this code is automatically generated
-		// edit performCustomSetup instead
-		this.snow.setVehicle( this );
-		this.sun.setVehicle( this );
-		this.camera.setVehicle( this );
-		this.snow.setAppearance( Ground.Appearance.SNOW );
-	}
-	private void performCustomSetup() {
-	}
-	@Override
-	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		if( isActive ) {
-			if( activeCount == 1 ) {
-				this.performGeneratedSetup();
-				this.performCustomSetup();
-			} else {
-				this.restoreVehiclesAndVantagePoints();
-			}
-		} else {
-			this.preserveVehiclesAndVantagePoints();
-		}
-	}
-	public void act1() {
-		this.camera.turn( TurnDirection.LEFT, 0.25 );
-	}
-}
+package org.lookingglassandalice.storytelling.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BootStrapStory extends Program {
-	private final MyScene myScene = new MyScene();
-	public void playOutStory() {
-		this.setActiveScene( this.myScene );
-		this.myScene.act1();
-	}
-	public static void main( String[] args ) {
-		BootStrapStory story = new BootStrapStory();
-		story.initializeInFrame( args );
-		story.playOutStory();
-	}
+public interface ReferenceFrame {
+	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame();
+	public EntityImplementation getActualEntityImplementation( EntityImplementation ths );	
 }

@@ -46,6 +46,7 @@ package edu.cmu.cs.dennisc.math;
  * @author Dennis Cosgrove
  */
 public final class Point3 extends Tuple3 {
+	public final static edu.cmu.cs.dennisc.math.Point3 ORIGIN = edu.cmu.cs.dennisc.math.Point3.createZero();
 	public Point3() {
 	}
 	public Point3( Tuple3 other ) {

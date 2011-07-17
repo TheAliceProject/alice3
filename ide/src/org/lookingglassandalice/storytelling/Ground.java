@@ -74,13 +74,19 @@ public class Ground extends Entity implements MutableRider, Visual {
 		return Color.createInstance( this.getImplementation().getColor() );
 	}
 	public void setColor( Color color ) {
-		this.getImplementation().setColor( Color.getInternal( color ) );
+		this.setColor( color, new AnimationDetails() );
+	}
+	public void setColor( Color color, AnimationDetails details ) {
+		this.getImplementation().animateColor( Color.getInternal( color ), details.getDuration(), details.getStyle() );
 	}
 	public Double getOpacity() {
 		return (double)this.getImplementation().getOpacity();
 	}
 	public void setOpacity( Number opacity ) {
-		this.getImplementation().setOpacity( opacity.floatValue() );
+		this.setOpacity( opacity, new AnimationDetails() );
+	}
+	public void setOpacity( Number opacity, AnimationDetails details ) {
+		this.getImplementation().animateOpacity( opacity.floatValue(), details.getDuration(), details.getStyle() );
 	}
 	public Appearance getAppearance() {
 		return this.getImplementation().getAppearance();

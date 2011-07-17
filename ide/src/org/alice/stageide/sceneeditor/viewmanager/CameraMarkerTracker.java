@@ -141,7 +141,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 	private void animateToTargetView()
 	{
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = this.perspectiveCamera.getAbsoluteTransformation();
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransform = this.activeMarker.getTransformation( AsSeenBy.SCENE );
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransform = this.activeMarker.getTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE );
 		
 		if (this.pointOfViewAnimation != null)
 		{
@@ -212,7 +212,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 			switchToOrthographicView();
 			Transformable cameraParent = (Transformable)CameraMarkerTracker.this.orthographicCamera.getParent();
 			CameraMarkerTracker.this.orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()) );
-			cameraParent.setTransformation( CameraMarkerTracker.this.activeMarker.getTransformation( AsSeenBy.SCENE ), CameraMarkerTracker.this.orthographicCamera.getRoot() );
+			cameraParent.setTransformation( CameraMarkerTracker.this.activeMarker.getTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE ), CameraMarkerTracker.this.orthographicCamera.getRoot() );
 			startTrackingCamera(this.orthographicCamera, orthoMarker);
 		}
 		else
@@ -234,7 +234,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 		if (this.markerToUpdate != null)
 		{
 			Transformable cameraParent = (Transformable)camera.getParent();
-			cameraParent.setTransformation( this.markerToUpdate.getTransformation( AsSeenBy.SCENE ), camera.getRoot() );
+			cameraParent.setTransformation( this.markerToUpdate.getTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE ), camera.getRoot() );
 			this.markerToUpdate.setShowing(false);
 			this.markerToUpdate.setLocalTransformation(AffineMatrix4x4.accessIdentity());
 			this.markerToUpdate.getSGTransformable().setParent(cameraParent);
@@ -246,7 +246,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 	{
 		if (this.markerToUpdate != null)
 		{
-			AffineMatrix4x4 previousMarkerTransform = this.markerToUpdate.getTransformation(AsSeenBy.SCENE);
+			AffineMatrix4x4 previousMarkerTransform = this.markerToUpdate.getTransformation(org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE);
 			this.markerToUpdate.getSGTransformable().setParent(this.markerToUpdate.getScene().getSGComposite());
 			this.markerToUpdate.getSGTransformable().setTransformation(previousMarkerTransform, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE);
 			this.markerToUpdate.setShowing(true);

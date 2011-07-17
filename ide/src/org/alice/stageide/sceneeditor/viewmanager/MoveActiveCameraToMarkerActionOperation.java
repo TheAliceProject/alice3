@@ -138,8 +138,8 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 		AbstractCamera sgCamera = sceneEditor.getSGPerspectiveCamera();
 		camera = (org.lookingglassandalice.storytelling.Camera)Element.getElement(sgCamera);
 		if( cameraMarker != null ) {
-			nextPOV = cameraMarker.getPointOfView( org.lookingglassandalice.storytelling.AsSeenBy.SCENE );
-			prevPOV = camera.getPointOfView(org.lookingglassandalice.storytelling.AsSeenBy.SCENE);
+			nextPOV = cameraMarker.getPointOfView( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE );
+			prevPOV = camera.getPointOfView(org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE);
 			if( nextPOV.getInternal().isNaN() ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveActiveCameraToMarkerActionOperation isNaN" );
 				step.cancel();

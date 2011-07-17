@@ -47,6 +47,13 @@ package org.lookingglassandalice.storytelling;
  * @author Dennis Cosgrove
  */
 public abstract class MovableTurnable extends Turnable {
+	public Position getPositionRelativeToVehicle() {
+		return Position.createInstance( this.getImplementation().getLocalPosition() ); 
+	}
+	public void setPositionRelativeToVehicle( Position position ) {
+		this.getImplementation().setLocalPosition( position.getInternal() ); 
+	}
+
 	public void move( MoveDirection direction, Number amount ) {
 		this.move( direction, amount, new RelativeVantagePointAnimationDetails() );
 	}
@@ -66,7 +73,7 @@ public abstract class MovableTurnable extends Turnable {
 		} else {
 			v.set( 0, 0, amount.doubleValue() );
 		}
-		//this.getImplementation().animateApplyTranslation( v.x, v.y, v.z, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE, details.getDuration(), details.getStyle() );
+		this.getImplementation().animateApplyTranslation( v.x, v.y, v.z, org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE, details.getDuration(), details.getStyle() );
 	}
 	public void moveAwayFrom( Entity target, Number amount ) {
 		this.moveAwayFrom( target, amount, new AnimationDetails() );
@@ -78,19 +85,12 @@ public abstract class MovableTurnable extends Turnable {
 		this.moveTo( target, new AnimationDetails() );
 	}
 	public void moveTo( Entity target, AnimationDetails details ) {
-		//this.getImplementation().animateSetTranslation( target.getImplementation(), details.getDuration(), details.getStyle() );
+		this.getImplementation().animatePositionOnly( target.getImplementation(), null, details.getDuration(), details.getStyle() );
 	}
 	public void moveAndOrientTo( Entity target ) {
 		this.moveAndOrientTo( target, new AnimationDetails() );
 	}
 	public void moveAndOrientTo( Entity target, AnimationDetails details ) {
-		//this.getImplementation().animateSetTransformation( target.getImplementation(), details.getDuration(), details.getStyle() );
-	}
-	
-	public Position getPositionRelativeToVehicle() {
-		return Position.createInstance( this.getImplementation().getLocalPosition() ); 
-	}
-	public void setPositionRelativeToVehicle( Position position ) {
-		this.getImplementation().setLocalPosition( position.getInternal() ); 
+		this.getImplementation().animateTransformation( target.getImplementation(), null, details.getDuration(), details.getStyle() );
 	}
 }

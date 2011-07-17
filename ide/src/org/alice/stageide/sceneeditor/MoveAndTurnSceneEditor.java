@@ -52,7 +52,7 @@ import java.util.List;
 import javax.swing.Icon;
 
 import org.lookingglassandalice.storytelling.AngleInDegrees;
-import org.lookingglassandalice.storytelling.AsSeenBy;
+import org.lookingglassandalice.storytelling.implementation.AsSeenBy;
 import org.lookingglassandalice.storytelling.CameraMarker;
 import org.lookingglassandalice.storytelling.Entity;
 import org.lookingglassandalice.storytelling.Marker;
@@ -1196,7 +1196,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		camera.moveAndOrientToAGoodVantagePointOf( model, org.lookingglassandalice.storytelling.AnimationDetailsFactory.duration( 0.5 ) );
 		model.setVehicle( this.scene );
 		model.setOpacity( 1.0 );
-		camera.moveAndOrientTo( this.scene.createOffsetStandIn( vantagePoint ), org.lookingglassandalice.storytelling.AnimationDetailsFactory.duration( 0.5 ) );
+		camera.moveAndOrientTo( this.scene.createOffsetMarker( vantagePoint ), org.lookingglassandalice.storytelling.AnimationDetailsFactory.duration( 0.5 ) );
 	}
 	
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateMarkerGoodLookAt( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, Marker target) {
@@ -1914,8 +1914,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		cameraMarker.setName( markerName );
 //		cameraMarker.setMarkerColor( getColorForMarker().getInternal() );
 		cameraMarker.setShowing(true);
-		org.lookingglassandalice.storytelling.ReferenceFrame asSeenBy = AsSeenBy.SCENE;
-		cameraMarker.setLocalTransformation( getSGCameraForCreatingMarker().getTransformation( asSeenBy.getSGReferenceFrame() ) );
+		cameraMarker.setLocalTransformation( getSGCameraForCreatingMarker().getTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE.getSgReferenceFrame() ) );
 		updateCameraMarkerToCamera(cameraMarker, (SymmetricPerspectiveCamera)getSGCameraForCreatingMarker());
 
 		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.BookmarkCameraMarker.class );

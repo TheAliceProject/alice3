@@ -46,16 +46,23 @@ package org.lookingglassandalice.storytelling.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EntityImplementation {
+public abstract class EntityImplementation implements ReferenceFrame {
 	protected static final String KEY = EntityImplementation.class.getName() + ".KEY";
-	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
-	public abstract org.lookingglassandalice.storytelling.Entity getAbstraction();
-	
 	protected static EntityImplementation getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
 		return (EntityImplementation)sgElement.getBonusDataFor( KEY );
 	}
 	protected void putInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
 		sgElement.putBonusDataFor( KEY, this );
+	}
+
+	
+	public abstract org.lookingglassandalice.storytelling.Entity getAbstraction();
+	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
+	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
+		return this.getSgReferenceFrame();
+	}
+	public EntityImplementation getActualEntityImplementation( EntityImplementation ths ) {
+		return this;
 	}
 	public EntityImplementation getVehicle() {
 		return getInstance( this.getSgComposite().getParent() );
@@ -74,8 +81,11 @@ public abstract class EntityImplementation {
 		return scene != null ? scene.getProgram() : null;
 	}
 	
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( EntityImplementation asSeenBy ) {
-		return this.getSgComposite().getTransformation( asSeenBy.getSgComposite() );
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
+		return this.getSgComposite().getAbsoluteTransformation();
+	}
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( ReferenceFrame asSeenBy ) {
+		return this.getSgComposite().getTransformation( asSeenBy.getSgReferenceFrame() );
 	}
 
 	protected static final double RIGHT_NOW = 0.0;
@@ -107,11 +117,27 @@ public abstract class EntityImplementation {
 		}
 		return duration;
 	}
-	
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
-		return this.getSgComposite().getAbsoluteTransformation();
+	public void alreadyAdjustedDelay( double duration ) {
+		if( duration == RIGHT_NOW ) {
+			//pass;
+		} else {
+			perform( new edu.cmu.cs.dennisc.animation.DurationBasedAnimation( duration ) {
+				@Override
+				protected void prologue() {
+				}
+				@Override
+				protected void setPortion( double portion ) {
+				}
+				@Override
+				protected void epilogue() {
+				}
+			} );
+		}
 	}
-	
+	public void delay( double duration ) {
+		this.alreadyAdjustedDelay( this.adjustDurationIfNecessary( duration ) );
+	}
+		
 	protected void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		ProgramImplementation programImplementation = this.getProgram();
 		if( programImplementation != null ) {

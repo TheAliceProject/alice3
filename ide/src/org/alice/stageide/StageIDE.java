@@ -217,7 +217,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				try {
 					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField fieldInJava = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField)field;
 					org.lookingglassandalice.storytelling.Color color = (org.lookingglassandalice.storytelling.Color)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fieldInJava.getFieldReflectionProxy().getReification(), null );
-					rv = new org.alice.ide.swing.icons.ColorIcon( color.getInternal().getAsAWTColor() );
+					rv = new org.alice.ide.swing.icons.ColorIcon( org.lookingglassandalice.storytelling.ImplementationAccessor.getColor4f( color ).getAsAWTColor() );
 					this.mapFieldToIcon.put( field, rv );
 				} catch( RuntimeException re ) {
 					//pass
