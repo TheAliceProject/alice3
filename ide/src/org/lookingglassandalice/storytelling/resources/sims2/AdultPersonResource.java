@@ -49,8 +49,8 @@ package org.lookingglassandalice.storytelling.resources.sims2;
 public class AdultPersonResource implements org.lookingglassandalice.storytelling.resources.PersonResource {
 	private final org.lookingglassandalice.storytelling.Gender gender;
 	private final org.lookingglassandalice.storytelling.SkinTone skinTone;
-	private final org.lookingglassandalice.storytelling.AdultFullBodyOutfit outfit; 
-	public AdultPersonResource( org.lookingglassandalice.storytelling.Gender gender, org.lookingglassandalice.storytelling.SkinTone skinTone, org.lookingglassandalice.storytelling.AdultFullBodyOutfit outfit ) {
+	private final org.lookingglassandalice.storytelling.resources.sims2.AdultFullBodyOutfit outfit; 
+	public AdultPersonResource( org.lookingglassandalice.storytelling.Gender gender, org.lookingglassandalice.storytelling.SkinTone skinTone, org.lookingglassandalice.storytelling.resources.sims2.AdultFullBodyOutfit outfit ) {
 		this.gender = gender;
 		this.skinTone = skinTone;
 		this.outfit = outfit;

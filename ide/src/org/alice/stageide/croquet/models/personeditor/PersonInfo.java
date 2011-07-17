@@ -58,7 +58,7 @@ public class PersonInfo {
 				person.getGender(), 
 				(org.lookingglassandalice.storytelling.BaseSkinTone)person.getSkinTone(), 
 				(org.lookingglassandalice.storytelling.BaseEyeColor)person.getEyeColor(), 
-				(org.lookingglassandalice.storytelling.FullBodyOutfit)person.getOutfit(), 
+				(org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit)person.getOutfit(), 
 				person.getHair(), 
 				person.getFitnessLevel()
 		);
@@ -72,8 +72,8 @@ public class PersonInfo {
 				gender,
 				org.lookingglassandalice.storytelling.BaseSkinTone.getRandom(),
 				org.lookingglassandalice.storytelling.BaseEyeColor.getRandom(),
-				org.lookingglassandalice.storytelling.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
-				org.lookingglassandalice.storytelling.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
+				org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
+				org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
 				edu.cmu.cs.dennisc.random.RandomUtilities.nextDouble()
 		);
 	}
@@ -82,11 +82,11 @@ public class PersonInfo {
 	private org.lookingglassandalice.storytelling.Gender gender;
 	private org.lookingglassandalice.storytelling.BaseSkinTone baseSkinTone;
 	private org.lookingglassandalice.storytelling.BaseEyeColor baseEyeColor;
-	private org.lookingglassandalice.storytelling.FullBodyOutfit fullBodyOutfit;
-	private org.lookingglassandalice.storytelling.Hair hair;
+	private org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit fullBodyOutfit;
+	private org.lookingglassandalice.storytelling.resources.sims2.Hair hair;
 	private double fitnessLevel;
 
-	private PersonInfo( org.lookingglassandalice.storytelling.LifeStage lifeStage, org.lookingglassandalice.storytelling.Gender gender, org.lookingglassandalice.storytelling.BaseSkinTone baseSkinTone, org.lookingglassandalice.storytelling.BaseEyeColor baseEyeColor, org.lookingglassandalice.storytelling.FullBodyOutfit fullBodyOutfit, org.lookingglassandalice.storytelling.Hair hair, double fitnessLevel ) {
+	private PersonInfo( org.lookingglassandalice.storytelling.LifeStage lifeStage, org.lookingglassandalice.storytelling.Gender gender, org.lookingglassandalice.storytelling.BaseSkinTone baseSkinTone, org.lookingglassandalice.storytelling.BaseEyeColor baseEyeColor, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit fullBodyOutfit, org.lookingglassandalice.storytelling.resources.sims2.Hair hair, double fitnessLevel ) {
 		this.lifeStage = lifeStage;
 		this.gender = gender;
 		this.baseSkinTone = baseSkinTone;
@@ -107,10 +107,10 @@ public class PersonInfo {
 	public org.lookingglassandalice.storytelling.BaseEyeColor getBaseEyeColor() {
 		return this.baseEyeColor;
 	}
-	public org.lookingglassandalice.storytelling.FullBodyOutfit getFullBodyOutfit() {
+	public org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit getFullBodyOutfit() {
 		return this.fullBodyOutfit;
 	}
-	public org.lookingglassandalice.storytelling.Hair getHair() {
+	public org.lookingglassandalice.storytelling.resources.sims2.Hair getHair() {
 		return this.hair;
 	}
 	public double getFitnessLevel() {

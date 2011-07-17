@@ -46,9 +46,9 @@ package org.alice.stageide.properties;
 import java.util.Locale;
 
 import org.lookingglassandalice.storytelling.Entity;
-import org.lookingglassandalice.storytelling.Light;
 import org.lookingglassandalice.storytelling.Scene;
 import org.lookingglassandalice.storytelling.Turnable;
+import org.lookingglassandalice.storytelling.resources.sims2.Light;
 import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;

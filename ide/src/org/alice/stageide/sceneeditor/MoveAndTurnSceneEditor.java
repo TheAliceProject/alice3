@@ -56,7 +56,6 @@ import org.lookingglassandalice.storytelling.implementation.AsSeenBy;
 import org.lookingglassandalice.storytelling.CameraMarker;
 import org.lookingglassandalice.storytelling.Entity;
 import org.lookingglassandalice.storytelling.Marker;
-import org.lookingglassandalice.storytelling.MarkerWithIcon;
 import org.lookingglassandalice.storytelling.ObjectMarker;
 import org.lookingglassandalice.storytelling.OrthographicCameraMarker;
 import org.lookingglassandalice.storytelling.PerspectiveCameraMarker;
@@ -126,6 +125,7 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.lookingglassandalice.storytelling.ImplementationAccessor;
 import org.lookingglassandalice.storytelling.Model;
 import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
+import org.lookingglassandalice.storytelling.resources.sims2.MarkerWithIcon;
 import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
 
 /**
@@ -1219,7 +1219,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		boolean wasShowing = marker.isShowing();
 		marker.setShowing(true);
 		marker.setOpacity( 0.0, org.lookingglassandalice.storytelling.Entity.RIGHT_NOW );
-		org.lookingglassandalice.storytelling.VantagePoint pov = camera.getPointOfView( this.scene );
+		org.lookingglassandalice.storytelling.VantagePoint pov = camera.getVantagePoint( this.scene );
 		camera.moveAndOrientTo(this.scene.createOffsetStandIn( calculateMarkerGoodLookAt(edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), marker) ), .5);
 		marker.setVehicle( this.scene );
 		marker.setOpacity( 1.0 );
@@ -1330,7 +1330,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		if( instanceInJava instanceof org.lookingglassandalice.storytelling.Turnable ) {
 			org.lookingglassandalice.storytelling.Turnable transformable = (org.lookingglassandalice.storytelling.Turnable)instanceInJava;
 			transformable.realizeIfNecessary();
-			org.lookingglassandalice.storytelling.PickHintUtilities.setPickHint( transformable );
+			org.lookingglassandalice.storytelling.resources.sims2.PickHintUtilities.setPickHint( transformable );
 		}
 	}
 

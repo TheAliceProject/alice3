@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class HairSelectionState extends AbstractListSelectionState<org.lookingglassandalice.storytelling.Hair> {
+public class HairSelectionState extends AbstractListSelectionState<org.lookingglassandalice.storytelling.resources.sims2.Hair> {
 	private static class SingletonHolder {
 		private static HairSelectionState instance = new HairSelectionState();
 	}
@@ -53,17 +53,17 @@ public class HairSelectionState extends AbstractListSelectionState<org.lookinggl
 		return SingletonHolder.instance;
 	}
 	private HairSelectionState() {
-		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new org.lgna.croquet.ItemCodec< org.lookingglassandalice.storytelling.Hair >(){
-			public Class< org.lookingglassandalice.storytelling.Hair > getValueClass() {
-				return org.lookingglassandalice.storytelling.Hair.class;
+		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new org.lgna.croquet.ItemCodec< org.lookingglassandalice.storytelling.resources.sims2.Hair >(){
+			public Class< org.lookingglassandalice.storytelling.resources.sims2.Hair > getValueClass() {
+				return org.lookingglassandalice.storytelling.resources.sims2.Hair.class;
 			}
-			public org.lookingglassandalice.storytelling.Hair decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			public org.lookingglassandalice.storytelling.resources.sims2.Hair decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}
-			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lookingglassandalice.storytelling.Hair t ) {
+			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lookingglassandalice.storytelling.resources.sims2.Hair t ) {
 				throw new RuntimeException( "todo" );
 			}
-			public StringBuilder appendRepresentation( StringBuilder rv, org.lookingglassandalice.storytelling.Hair value, java.util.Locale locale ) {
+			public StringBuilder appendRepresentation( StringBuilder rv, org.lookingglassandalice.storytelling.resources.sims2.Hair value, java.util.Locale locale ) {
 				rv.append( value );
 				return rv;
 			}
@@ -73,14 +73,14 @@ public class HairSelectionState extends AbstractListSelectionState<org.lookinggl
 		this.setListData( -1, 
 				edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
 						edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-								org.lookingglassandalice.storytelling.HairManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
-								new edu.cmu.cs.dennisc.pattern.Criterion< org.lookingglassandalice.storytelling.Hair >() {
-									public boolean accept( org.lookingglassandalice.storytelling.Hair hair ) {
+								org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
+								new edu.cmu.cs.dennisc.pattern.Criterion< org.lookingglassandalice.storytelling.resources.sims2.Hair >() {
+									public boolean accept( org.lookingglassandalice.storytelling.resources.sims2.Hair hair ) {
 										return hair.toString().equals( hairColor );
 									}
 								} 
 						),
-						org.lookingglassandalice.storytelling.Hair.class
+						org.lookingglassandalice.storytelling.resources.sims2.Hair.class
 				) 
 		);
 	}
@@ -89,8 +89,8 @@ public class HairSelectionState extends AbstractListSelectionState<org.lookinggl
 		return -1;
 	}
 	@Override
-	public org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.Hair> createList() {
-		org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.Hair> rv = super.createList();
+	public org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.resources.sims2.Hair> createList() {
+		org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.resources.sims2.Hair> rv = super.createList();
 		rv.setCellRenderer( new org.alice.stageide.personeditor.HairListCellRenderer() );
 		return rv;
 	}

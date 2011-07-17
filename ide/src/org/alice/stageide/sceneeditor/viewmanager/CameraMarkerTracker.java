@@ -44,10 +44,10 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 
-import org.lookingglassandalice.storytelling.AsSeenBy;
 import org.lookingglassandalice.storytelling.CameraMarker;
 import org.lookingglassandalice.storytelling.OrthographicCameraMarker;
 import org.lookingglassandalice.storytelling.PerspectiveCameraMarker;
+import org.lookingglassandalice.storytelling.resources.sims2.AsSeenBy;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.animation.Animator;

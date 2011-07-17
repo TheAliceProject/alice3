@@ -85,17 +85,17 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 			}
 		} );
 		
-		org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.lookingglassandalice.storytelling.FullBodyOutfit>() {
-			public void changing( org.lgna.croquet.State< org.lookingglassandalice.storytelling.FullBodyOutfit > state, org.lookingglassandalice.storytelling.FullBodyOutfit prevValue, org.lookingglassandalice.storytelling.FullBodyOutfit nextValue, boolean isAdjusting ) {
+		org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit>() {
+			public void changing( org.lgna.croquet.State< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit > state, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit prevValue, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.lgna.croquet.State< org.lookingglassandalice.storytelling.FullBodyOutfit > state, org.lookingglassandalice.storytelling.FullBodyOutfit prevValue, org.lookingglassandalice.storytelling.FullBodyOutfit nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit > state, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit prevValue, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit nextValue, boolean isAdjusting ) {
 				updatePerson();
 			}
 		} );
-		org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.lookingglassandalice.storytelling.Hair>() {
-			public void changing( org.lgna.croquet.State< org.lookingglassandalice.storytelling.Hair > state, org.lookingglassandalice.storytelling.Hair prevValue, org.lookingglassandalice.storytelling.Hair nextValue, boolean isAdjusting ) {
+		org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.lookingglassandalice.storytelling.resources.sims2.Hair>() {
+			public void changing( org.lgna.croquet.State< org.lookingglassandalice.storytelling.resources.sims2.Hair > state, org.lookingglassandalice.storytelling.resources.sims2.Hair prevValue, org.lookingglassandalice.storytelling.resources.sims2.Hair nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.lgna.croquet.State< org.lookingglassandalice.storytelling.Hair > state, org.lookingglassandalice.storytelling.Hair prevValue, org.lookingglassandalice.storytelling.Hair nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< org.lookingglassandalice.storytelling.resources.sims2.Hair > state, org.lookingglassandalice.storytelling.resources.sims2.Hair prevValue, org.lookingglassandalice.storytelling.resources.sims2.Hair nextValue, boolean isAdjusting ) {
 				updatePerson();
 			}
 		} );
@@ -202,12 +202,12 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 				}
 				this.updatePerson();
 				org.lookingglassandalice.storytelling.Person person = PersonViewer.getSingleton().getPerson();
-				org.lookingglassandalice.storytelling.Hair hair = person.getHair();
+				org.lookingglassandalice.storytelling.resources.sims2.Hair hair = person.getHair();
 				if( isLifeStageChange || isGenderChange || isHairColorChange ) {
 					org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().setSelectedItem( hair );
 				}
 				if( isLifeStageChange || isGenderChange ) {
-					org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().setSelectedItem( (org.lookingglassandalice.storytelling.FullBodyOutfit)person.getOutfit() );
+					org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().setSelectedItem( (org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit)person.getOutfit() );
 				}
 				if( isLifeStageChange ) {
 					org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().setSelectedItem( hair != null ? hair.toString() : null );
@@ -230,10 +230,10 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 				org.lookingglassandalice.storytelling.Gender gender = org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().getSelectedItem();
 				String hairColor = org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().getSelectedItem();
 
-				org.lookingglassandalice.storytelling.FullBodyOutfit fullBodyOutfit = org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().getSelectedItem();
+				org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit fullBodyOutfit = org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().getSelectedItem();
 				org.lookingglassandalice.storytelling.BaseEyeColor baseEyeColor = org.alice.stageide.croquet.models.personeditor.BaseEyeColorSelectionState.getInstance().getSelectedItem();
 				org.lookingglassandalice.storytelling.BaseSkinTone baseSkinTone = org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().getSelectedItem();
-				org.lookingglassandalice.storytelling.Hair hair = org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().getSelectedItem();
+				org.lookingglassandalice.storytelling.resources.sims2.Hair hair = org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().getSelectedItem();
 				double fitnessLevel = org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().getValue()*0.01;
 				
 				assert lifeStage != null;
@@ -245,14 +245,14 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 					if( baseSkinTone != null ) {
 						person.setSkinTone( baseSkinTone );
 						person.setFitnessLevel( fitnessLevel, org.lookingglassandalice.storytelling.Person.RIGHT_NOW );
-						if( fullBodyOutfit != null && org.lookingglassandalice.storytelling.FullBodyOutfitManager.getSingleton().isApplicable( fullBodyOutfit, lifeStage, gender ) ) {
+						if( fullBodyOutfit != null && org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().isApplicable( fullBodyOutfit, lifeStage, gender ) ) {
 							//pass
 						} else {
 //							org.lookingglassandalice.storytelling.Outfit outfit = person.getOutfit();
 //							if( outfit instanceof org.lookingglassandalice.storytelling.FullBodyOutfit ) {
 //								fullBodyOutfit = ( org.lookingglassandalice.storytelling.FullBodyOutfit )outfit;
 //							} else {
-								fullBodyOutfit = org.lookingglassandalice.storytelling.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+								fullBodyOutfit = org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
 //							}
 						}
 						person.setOutfit( fullBodyOutfit );
@@ -261,15 +261,15 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 						person.setEyeColor( baseEyeColor );
 					}
 					if( gender != null ) {
-						if( hair != null && org.lookingglassandalice.storytelling.HairManager.getSingleton().isApplicable( hair, lifeStage, gender ) ) {
+						if( hair != null && org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().isApplicable( hair, lifeStage, gender ) ) {
 							//pass
 						} else {
 							try {
-								Class<? extends org.lookingglassandalice.storytelling.Hair> cls = org.lookingglassandalice.storytelling.HairManager.getSingleton().getRandomClass(lifeStage, gender);
+								Class<? extends org.lookingglassandalice.storytelling.resources.sims2.Hair> cls = org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().getRandomClass(lifeStage, gender);
 								java.lang.reflect.Field field = cls.getField( hairColor );
-								hair = (org.lookingglassandalice.storytelling.Hair)field.get( null );
+								hair = (org.lookingglassandalice.storytelling.resources.sims2.Hair)field.get( null );
 							} catch( Exception e ) {
-								hair = org.lookingglassandalice.storytelling.HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender);
+								hair = org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender);
 							}
 						}
 						person.setHair( hair );
@@ -292,7 +292,7 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().setSelectedItem( personInfo.getBaseSkinTone() );
 		org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().setSelectedItem( personInfo.getFullBodyOutfit() );
 		
-		org.lookingglassandalice.storytelling.Hair hair = personInfo.getHair();
+		org.lookingglassandalice.storytelling.resources.sims2.Hair hair = personInfo.getHair();
 		org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().setSelectedItem( hair );
 		org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().setSelectedItem( hair.toString() );
 		org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().setValue( (int)(personInfo.getFitnessLevel()*100) );

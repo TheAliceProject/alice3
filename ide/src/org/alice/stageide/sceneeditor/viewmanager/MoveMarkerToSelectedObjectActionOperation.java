@@ -46,8 +46,8 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.lookingglassandalice.storytelling.MarkerWithIcon;
 import org.lookingglassandalice.storytelling.Turnable;
+import org.lookingglassandalice.storytelling.resources.sims2.MarkerWithIcon;
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
@@ -156,8 +156,8 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 		final Turnable selectedTransformable = sceneEditor.getTransformableForField(selectedField);
 		objectMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.lookingglassandalice.storytelling.ObjectMarker.class);
 		if( objectMarker != null ) {
-			prevPOV = objectMarker.getPointOfView( org.lookingglassandalice.storytelling.AsSeenBy.SCENE );
-			nextPOV = selectedTransformable.getPointOfView(org.lookingglassandalice.storytelling.AsSeenBy.SCENE);
+			prevPOV = objectMarker.getPointOfView( org.lookingglassandalice.storytelling.resources.sims2.AsSeenBy.SCENE );
+			nextPOV = selectedTransformable.getPointOfView(org.lookingglassandalice.storytelling.resources.sims2.AsSeenBy.SCENE);
 			if( nextPOV.getInternal().isNaN() ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveMarkerToSelectedObjectActionOperation isNaN" );
 				step.cancel();

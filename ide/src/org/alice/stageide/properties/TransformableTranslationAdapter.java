@@ -45,7 +45,7 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
-import org.lookingglassandalice.storytelling.AsSeenBy;
+import org.lookingglassandalice.storytelling.resources.sims2.AsSeenBy;
 import org.lgna.croquet.Operation;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;

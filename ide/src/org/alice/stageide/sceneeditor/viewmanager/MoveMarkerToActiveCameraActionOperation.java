@@ -44,8 +44,8 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.lookingglassandalice.storytelling.Entity;
-import org.lookingglassandalice.storytelling.MarkerWithIcon;
 import org.lookingglassandalice.storytelling.OrthographicCameraMarker;
+import org.lookingglassandalice.storytelling.resources.sims2.MarkerWithIcon;
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
@@ -136,8 +136,8 @@ public class MoveMarkerToActiveCameraActionOperation extends ActionOperation {
 		AbstractCamera sgCamera = sceneEditor.getSGPerspectiveCamera();
 		camera = (org.lookingglassandalice.storytelling.Camera)Element.getElement(sgCamera);
 		if( cameraMarker != null ) {
-			prevPOV = cameraMarker.getPointOfView( org.lookingglassandalice.storytelling.AsSeenBy.SCENE );
-			nextPOV = camera.getPointOfView(org.lookingglassandalice.storytelling.AsSeenBy.SCENE);
+			prevPOV = cameraMarker.getPointOfView( org.lookingglassandalice.storytelling.resources.sims2.AsSeenBy.SCENE );
+			nextPOV = camera.getPointOfView(org.lookingglassandalice.storytelling.resources.sims2.AsSeenBy.SCENE);
 			if( nextPOV.getInternal().isNaN() ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveActiveCameraToMarkerActionOperation isNaN" );
 				step.cancel();

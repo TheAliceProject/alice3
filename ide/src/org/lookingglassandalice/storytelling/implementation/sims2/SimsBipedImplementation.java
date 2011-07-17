@@ -48,7 +48,7 @@ package org.lookingglassandalice.storytelling.implementation.sims2;
  */
 public class SimsBipedImplementation extends org.lookingglassandalice.storytelling.implementation.BipedImplementation {
 	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
-	public SimsBipedImplementation( org.lookingglassandalice.storytelling.Biped abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource, org.lookingglassandalice.storytelling.LifeStage lifeStage, org.lookingglassandalice.storytelling.Gender gender, org.lookingglassandalice.storytelling.SkinTone skinTone, org.lookingglassandalice.storytelling.AdultFullBodyOutfit outfit ) {
+	public SimsBipedImplementation( org.lookingglassandalice.storytelling.Biped abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource, org.lookingglassandalice.storytelling.LifeStage lifeStage, org.lookingglassandalice.storytelling.Gender gender, org.lookingglassandalice.storytelling.SkinTone skinTone, org.lookingglassandalice.storytelling.resources.sims2.AdultFullBodyOutfit outfit ) {
 		super( abstraction, new edu.cmu.cs.dennisc.scenegraph.Visual());
 		try {
 			switch (lifeStage) {
@@ -64,7 +64,7 @@ public class SimsBipedImplementation extends org.lookingglassandalice.storytelli
 			this.nebPerson.setOutfit( outfit );
 			this.nebPerson.setSkinTone( skinTone );
 			this.nebPerson.setFitnessLevel( 0.5 );
-			this.nebPerson.setHair( org.lookingglassandalice.storytelling.FemaleAdultHairBraids.BLACK );
+			this.nebPerson.setHair( org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultHairBraids.BLACK );
 			this.nebPerson.setEyeColor( org.lookingglassandalice.storytelling.BaseEyeColor.getRandom() );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			throw new RuntimeException( lre );
