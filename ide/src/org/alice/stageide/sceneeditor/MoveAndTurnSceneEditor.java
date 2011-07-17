@@ -1124,7 +1124,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 			//pass
 		} else {
 			//We need to make a MoveAndTurn orthographic camera because the scene is fundamentally a MoveAndTurn scene
-			org.lookingglassandalice.storytelling.OrthographicCamera moveAndTurnOrthographicCamera = new org.lookingglassandalice.storytelling.OrthographicCamera();
+			org.lookingglassandalice.storytelling.implementation.OrthographicCameraImplementation moveAndTurnOrthographicCamera = new org.lookingglassandalice.storytelling.implementation.OrthographicCameraImplementation();
 			this.sgOrthographicCamera = moveAndTurnOrthographicCamera.getSGOrthographicCamera();
 			this.sgOrthographicCamera.nearClippingPlaneDistance.setValue(.01d);
 			edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = moveAndTurnOrthographicCamera.getSGTransformable();
