@@ -63,7 +63,7 @@ abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.c
 				return statement;
 			}
 		} else {
-			return null;
+			throw new org.lgna.croquet.CancelException();
 		}
 	}
 }
@@ -249,10 +249,19 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 		
 	};
 	private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
+	private org.lgna.croquet.DragModel dragModel = new ClipboardDragModel();
 	private Clipboard() {
-		this.setDragModel( new ClipboardDragModel() );
 		this.setMinimumPreferredWidth( 40 );
+		this.setDragModel( this.dragModel );
 		this.refresh();
+	}
+	@Override
+	public org.lgna.croquet.DragModel getDragModel() {
+		if( this.stack != null && this.stack.size() > 0 ) {
+			return super.getDragModel();
+		} else {
+			return null;
+		}
 	}
 	
 	@Override
@@ -275,7 +284,11 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 		this.repaint();
 	}
 	public edu.cmu.cs.dennisc.alice.ast.AbstractNode peek() {
-		return this.stack.peek();
+		if( this.stack.size() > 0  ) {
+			return this.stack.peek();
+		} else {
+			return null;
+		}
 	}
 	public void push( edu.cmu.cs.dennisc.alice.ast.AbstractNode node ) {
 		this.stack.push( node );
@@ -435,7 +448,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 			
 			java.awt.geom.Rectangle2D.Float paper = new java.awt.geom.Rectangle2D.Float( 0, 0, w, h );
 			
-			final boolean IS_SIMPLE = false;
+			final boolean IS_SIMPLE = true;
 			if( IS_SIMPLE || this.dragReceptorState != DragReceptorState.IDLE ) {
 				g2.setPaint( new java.awt.GradientPaint( x,y, java.awt.Color.LIGHT_GRAY, x+w, y+h, java.awt.Color.WHITE ) );
 				g2.fill( paper );

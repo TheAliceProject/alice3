@@ -139,7 +139,7 @@ public abstract class DragComponent extends Control {
 	}
 
 	private boolean isActuallyPotentiallyDraggable() {
-		boolean rv = this.dragModel != null;
+		boolean rv = this.getDragModel() != null;
 		if( rv ) {
 			if( this.dragProxy != null ) {
 				//pass
