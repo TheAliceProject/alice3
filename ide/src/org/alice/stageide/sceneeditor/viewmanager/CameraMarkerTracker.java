@@ -47,6 +47,9 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import org.lookingglassandalice.storytelling.CameraMarker;
 import org.lookingglassandalice.storytelling.OrthographicCameraMarker;
 import org.lookingglassandalice.storytelling.PerspectiveCameraMarker;
+import org.lookingglassandalice.storytelling.implementation.CameraMarkerImplementation;
+import org.lookingglassandalice.storytelling.implementation.OrthographicCameraMarkerImplementation;
+import org.lookingglassandalice.storytelling.implementation.PerspectiveCameraMarkerImplementation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.animation.Animator;
@@ -66,13 +69,13 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 	private OrthographicCamera orthographicCamera = null;
 	private Animator animator;
 	private PointOfViewAnimation pointOfViewAnimation = null;
-	private CameraMarker markerToUpdate = null;
+	private CameraMarkerImplementation markerToUpdate = null;
 	private boolean shouldAnimate = true;
 	private MoveAndTurnSceneEditor sceneEditor;
-	private org.lookingglassandalice.storytelling.CameraMarker activeMarker = null;
+	private CameraMarkerImplementation activeMarker = null;
 	
-	private java.util.Map< org.alice.stageide.sceneeditor.View, CameraMarker > mapViewToMarker = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private java.util.Map< CameraMarker, org.alice.stageide.sceneeditor.View > mapMarkerToView = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< org.alice.stageide.sceneeditor.View, CameraMarkerImplementation > mapViewToMarker = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< CameraMarkerImplementation, org.alice.stageide.sceneeditor.View > mapMarkerToView = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	public CameraMarkerTracker(MoveAndTurnSceneEditor sceneEditor, Animator animator)
 	{
@@ -80,11 +83,11 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 		this.animator = animator;
 	}
 	
-	public void mapViewToMarkerAndViceVersa( org.alice.stageide.sceneeditor.View view, CameraMarker cameraMarker ) {
+	public void mapViewToMarkerAndViceVersa( org.alice.stageide.sceneeditor.View view, CameraMarkerImplementation cameraMarker ) {
 		this.mapViewToMarker.put( view, cameraMarker );
 		this.mapMarkerToView.put( cameraMarker, view );
 	}
-	public CameraMarker getCameraMarker( org.alice.stageide.sceneeditor.View view ) {
+	public CameraMarkerImplementation getCameraMarker( org.alice.stageide.sceneeditor.View view ) {
 		return this.mapViewToMarker.get( view );
 	}
 	public org.alice.stageide.sceneeditor.View getView( CameraMarker cameraMarker ) {
@@ -94,13 +97,13 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 	
 	public void setCameras(SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera)
 	{
-		if (perspectiveCamera == null && this.markerToUpdate instanceof PerspectiveCameraMarker)
+		if (perspectiveCamera == null && this.markerToUpdate instanceof PerspectiveCameraMarkerImplementation)
 		{
 			this.stopTrackingCamera();
 			this.activeMarker = null;
 		}
 		this.perspectiveCamera = perspectiveCamera;
-		if (orthographicCamera == null && this.markerToUpdate instanceof OrthographicCameraMarker)
+		if (orthographicCamera == null && this.markerToUpdate instanceof OrthographicCameraMarkerImplementation)
 		{
 			this.stopTrackingCamera();
 			this.activeMarker = null;
@@ -189,7 +192,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 		}
 		else
 		{
-			CameraMarker previousMarker = this.activeMarker;
+			CameraMarkerImplementation previousMarker = this.activeMarker;
 			this.activeMarker = this.getCameraMarker( nextValue );
 			if (previousMarker != this.activeMarker)
 			{
@@ -205,9 +208,9 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 	private void setCameraToSelectedMarker()
 	{
 		stopTrackingCamera();
-		if (this.activeMarker instanceof OrthographicCameraMarker)
+		if (this.activeMarker instanceof OrthographicCameraMarkerImplementation)
 		{
-			OrthographicCameraMarker orthoMarker = (OrthographicCameraMarker)this.activeMarker;
+			OrthographicCameraMarkerImplementation orthoMarker = (OrthographicCameraMarkerImplementation)this.activeMarker;
 			switchToOrthographicView();
 			Transformable cameraParent = (Transformable)CameraMarkerTracker.this.orthographicCamera.getParent();
 			CameraMarkerTracker.this.orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()) );
@@ -223,7 +226,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 
 	//Sets the given camera to the absolute orientation of the given marker
 	//Parents the given marker to the camera and then zeros out the local transform
-	private void startTrackingCamera(AbstractCamera camera, CameraMarker markerToUpdate)
+	private void startTrackingCamera(AbstractCamera camera, CameraMarkerImplementation markerToUpdate)
 	{
 		if (this.markerToUpdate != null)
 		{
@@ -236,8 +239,8 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 			cameraParent.setTransformation( this.markerToUpdate.getTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE ), camera.getRoot() );
 			this.markerToUpdate.setShowing(false);
 			this.markerToUpdate.setLocalTransformation(AffineMatrix4x4.accessIdentity());
-			this.markerToUpdate.getSGTransformable().setParent(cameraParent);
-			this.sceneEditor.setHandleVisibilityForObject(this.markerToUpdate.getSGTransformable(), false);
+			this.markerToUpdate.getSgComposite().setParent(cameraParent);
+			this.sceneEditor.setHandleVisibilityForObject(this.markerToUpdate.getSgComposite(), false);
 		}
 	}
 	
@@ -246,23 +249,23 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 		if (this.markerToUpdate != null)
 		{
 			AffineMatrix4x4 previousMarkerTransform = this.markerToUpdate.getTransformation(org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE);
-			this.markerToUpdate.getSGTransformable().setParent(this.markerToUpdate.getScene().getSGComposite());
-			this.markerToUpdate.getSGTransformable().setTransformation(previousMarkerTransform, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE);
+			this.markerToUpdate.getSgComposite().setParent(this.markerToUpdate.getSgComposite().getRoot());
+			this.markerToUpdate.getSgComposite().setTransformation(previousMarkerTransform, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE);
 			this.markerToUpdate.setShowing(true);
-			this.sceneEditor.setHandleVisibilityForObject(this.markerToUpdate.getSGTransformable(), true);
+			this.sceneEditor.setHandleVisibilityForObject(this.markerToUpdate.getSgComposite(), true);
 		}
 		this.markerToUpdate = null;
 	}
 	
-	private boolean doesMarkerMatchCamera(org.lookingglassandalice.storytelling.CameraMarker marker, AbstractCamera camera)
+	private boolean doesMarkerMatchCamera(CameraMarkerImplementation marker, AbstractCamera camera)
 	{
 		if (camera instanceof OrthographicCamera)
 		{
-			return marker instanceof OrthographicCameraMarker;
+			return marker instanceof OrthographicCameraMarkerImplementation;
 		}
 		else if (camera instanceof SymmetricPerspectiveCamera)
 		{
-			return marker instanceof PerspectiveCameraMarker;
+			return marker instanceof PerspectiveCameraMarkerImplementation;
 		}
 		return false;
 	}
@@ -273,7 +276,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 		{		
 			if (doesMarkerMatchCamera( this.activeMarker, this.orthographicCamera ))
 			{
-				((OrthographicCameraMarker)this.activeMarker).setPicturePlane(this.orthographicCamera.picturePlane.getValue());
+				((OrthographicCameraMarkerImplementation)this.activeMarker).setPicturePlane(this.orthographicCamera.picturePlane.getValue());
 			}
 		}		
 	}

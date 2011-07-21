@@ -106,8 +106,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	protected void setSceneCamera(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField)
 	{
-		org.lookingglassandalice.storytelling.Camera camera = this.getInstanceInJavaVMForField(cameraField, org.lookingglassandalice.storytelling.Camera.class);
-		this.sceneCameraImplementation = ImplementationAccessor.getImplementation(camera);
+		this.sceneCameraImplementation = getImplementation(cameraField);
 	}
 	
 	@Override
@@ -120,7 +119,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 				this.setSceneCamera((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field);
 			}
 		}
-		
 	}
 	
 	@Override

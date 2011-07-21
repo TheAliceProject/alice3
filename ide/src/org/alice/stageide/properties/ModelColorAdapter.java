@@ -46,10 +46,11 @@ package org.alice.stageide.properties;
 import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lookingglassandalice.storytelling.Model> {
+public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lookingglassandalice.storytelling.implementation.ModelImplementation> {
 
-	public ModelColorAdapter(org.lookingglassandalice.storytelling.Model instance)
+	public ModelColorAdapter(org.lookingglassandalice.storytelling.implementation.ModelImplementation instance)
 	{
 		super(instance);
 	}
@@ -58,7 +59,7 @@ public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lookingg
 	{
 		if (this.instance != null)
 		{
-			return this.instance.getColor().getInternal();
+			return this.instance.getColor();
 		}
 		else
 		{
@@ -66,16 +67,6 @@ public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lookingg
 		}
 	}
 	
-	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.lookingglassandalice.storytelling.Model instance)
-	{
-		if (this.instance != null)
-		{
-			return this.instance.getSGSingleAppearance().diffuseColor;
-		}
-		return null;
-	}
-
 	@Override
 	public void setValue(final Color4f value) 
 	{
@@ -85,11 +76,28 @@ public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lookingg
 			new Thread() {
 				@Override
 				public void run() {
-					ModelColorAdapter.this.instance.setColor(new org.lookingglassandalice.storytelling.Color(value));
+					ModelColorAdapter.this.instance.setColor(value);
 				}
 			}.start();
 		}
 		
+	}
+
+	@Override
+	protected void addPropertyListener(PropertyListener propertyListener) 
+	{
+		if (this.instance != null)
+		{
+			instance.addColorListener(propertyListener);
+		}
+	}
+
+	@Override
+	protected void removePropertyListener(PropertyListener propertyListener) {
+		if (this.instance != null)
+		{
+			instance.removeColorListener(propertyListener);
+		}
 	}
 
 }

@@ -142,6 +142,19 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		return this.mapSceneFieldToInstance.get(activeSceneField);
 	}
 	
+	public  <T extends org.lookingglassandalice.storytelling.implementation.EntityImplementation> T getActiveSceneImplementation() {
+		org.lookingglassandalice.storytelling.Entity entity = getInstanceInJavaVMForField(getActiveSceneField(), org.lookingglassandalice.storytelling.Entity.class);
+		if (entity != null)
+		{
+			return ImplementationAccessor.getImplementation(entity);
+		}
+		else
+		{
+			return null;
+		}
+	} 
+	
+	
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getActiveInstance();
 	}

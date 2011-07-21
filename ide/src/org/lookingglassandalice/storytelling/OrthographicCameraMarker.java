@@ -49,9 +49,9 @@ import edu.cmu.cs.dennisc.math.ClippedZPlane;
  */
 public class OrthographicCameraMarker extends CameraMarker {
 
-	private final org.lookingglassandalice.storytelling.implementation.OthographicCameraMarkerImplementation implementation = new org.lookingglassandalice.storytelling.implementation.OthographicCameraMarkerImplementation( this );
+	private final org.lookingglassandalice.storytelling.implementation.OrthographicCameraMarkerImplementation implementation = new org.lookingglassandalice.storytelling.implementation.OrthographicCameraMarkerImplementation( this );
 	@Override
-	/*package-private*/ org.lookingglassandalice.storytelling.implementation.OthographicCameraMarkerImplementation getImplementation() {
+	/*package-private*/ org.lookingglassandalice.storytelling.implementation.OrthographicCameraMarkerImplementation getImplementation() {
 		return this.implementation;
 	}
 

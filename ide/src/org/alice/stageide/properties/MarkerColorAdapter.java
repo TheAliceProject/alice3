@@ -46,10 +46,11 @@ package org.alice.stageide.properties;
 import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.lookingglassandalice.storytelling.Marker> {
+public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.lookingglassandalice.storytelling.implementation.MarkerImplementation> {
 
-	public MarkerColorAdapter(org.lookingglassandalice.storytelling.Marker instance)
+	public MarkerColorAdapter(org.lookingglassandalice.storytelling.implementation.MarkerImplementation instance)
 	{
 		super(instance);
 	}
@@ -58,22 +59,12 @@ public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.looking
 	{
 		if (this.instance != null)
 		{
-			return this.instance.getColor().getInternal();
+			return this.instance.getColor();
 		}
 		else
 		{
 			return null;
 		}
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.lookingglassandalice.storytelling.Marker instance)
-	{
-		if (this.instance != null)
-		{
-			return instance.getSGSingleAppearance().diffuseColor;
-		}
-		return null;
 	}
 
 	@Override
@@ -85,11 +76,28 @@ public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.looking
 			new Thread() {
 				@Override
 				public void run() {
-					MarkerColorAdapter.this.instance.setColor(new org.lookingglassandalice.storytelling.Color(value));
+					MarkerColorAdapter.this.instance.setColor(value);
 				}
 			}.start();
 		}
 		
+	}
+
+	@Override
+	protected void addPropertyListener(PropertyListener propertyListener) 
+	{
+		if (this.instance != null)
+		{
+			instance.addColorListener(propertyListener);
+		}
+	}
+
+	@Override
+	protected void removePropertyListener(PropertyListener propertyListener) {
+		if (this.instance != null)
+		{
+			instance.removeColorListener(propertyListener);
+		}
 	}
 
 }

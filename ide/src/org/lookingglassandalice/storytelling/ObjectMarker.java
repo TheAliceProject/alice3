@@ -50,96 +50,11 @@ import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
 
-public class ObjectMarker extends MarkerWithIcon 
+public class ObjectMarker extends Marker 
 {
-	private java.util.Map< Cylinder.BottomToTopAxis, SingleAppearance > axisToSGAppearanceMap;
-	private double scale = 1.0;
-
-	private Arrow createArrow( double unit, double lengthFactor, Cylinder.BottomToTopAxis bottomToTopAxis ) {
-		double lengthCylinder = unit * lengthFactor * 0.8;
-		double radiusCylinder = unit * 0.05;
-		double lengthCone = unit * lengthFactor * 0.3;
-		double radiusCone = radiusCylinder * 3.0;
-		return new Arrow( lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, this.sgFrontFacingAppearance, axisToSGAppearanceMap.get( bottomToTopAxis ), false );
-	}
-	
-	private void createAxes( double unitLength, double forwardFactor ) {
-		axisToSGAppearanceMap = new java.util.HashMap< Cylinder.BottomToTopAxis, SingleAppearance >();
-		SingleAppearance sgRedAppearance = new SingleAppearance();
-		SingleAppearance sgGreenAppearance = new SingleAppearance();
-		SingleAppearance sgBlueAppearance = new SingleAppearance();
-		SingleAppearance sgWhiteAppearance = new SingleAppearance();
-
-		sgRedAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.RED );
-		sgGreenAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.GREEN );
-		sgBlueAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.BLUE );
-		sgWhiteAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.WHITE );
-		
-		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_X, sgRedAppearance );
-		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_Y, sgGreenAppearance );
-		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_Z, sgBlueAppearance );
-		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.NEGATIVE_Z, sgWhiteAppearance );
-		
-		Arrow sgXAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_X );
-		Arrow sgYAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Y );
-		Arrow sgZAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Z );
-		Arrow sgFAxis = createArrow( unitLength, 2.0, Cylinder.BottomToTopAxis.NEGATIVE_Z );
-
-		sgXAxis.setParent( this.getSGTransformable() );
-	    sgYAxis.setParent( this.getSGTransformable() );
-	    sgZAxis.setParent( this.getSGTransformable() );
-	    sgFAxis.setParent( this.getSGTransformable() );
-	    
-	    for (Visual v : sgXAxis.getVisuals()) { sgVisuals.add(v); }
-	    for (Visual v : sgYAxis.getVisuals()) { sgVisuals.add(v); }
-	    for (Visual v : sgZAxis.getVisuals()) { sgVisuals.add(v); }
-	    for (Visual v : sgFAxis.getVisuals()) { sgVisuals.add(v); }
-	    
-	}
-	
-//	public ObjectMarker(double scale)
-//	{
-//		super();
-//	}
-	
+	private final org.lookingglassandalice.storytelling.implementation.ObjectMarkerImplementation implementation = new org.lookingglassandalice.storytelling.implementation.ObjectMarkerImplementation( this );
 	@Override
-	public float getDefaultMarkerOpacity()
-	{
-		return .75f;
+	/*package-private*/ org.lookingglassandalice.storytelling.implementation.ObjectMarkerImplementation getImplementation() {
+		return this.implementation;
 	}
-	
-	public ObjectMarker()
-	{
-		super();
-		this.setShowing(false);
-	}
-
-	@Override
-	protected void createVisuals()
-	{
-		this.scale = .3;
-		createAxes(2.0*scale, scale);
-	}
-	
-	@Override
-	public void setName(String name) 
-	{
-		super.setName(name);
-		if (this.getIcon() == null)
-		{
-			this.setIcon( MoveAndTurnSceneEditor.getIconForObjectMarkerName(name) );
-		}
-	}
-	
-	@Override
-	protected void setModelOpacity(float opacity)
-	{
-		float scaledValue = opacity * this.getDefaultMarkerOpacity();
-		sgFrontFacingAppearance.opacity.setValue(scaledValue);
-		for (SingleAppearance appearance : axisToSGAppearanceMap.values() )
-		{
-			appearance.opacity.setValue(scaledValue);
-		}
-	}
-	
 }

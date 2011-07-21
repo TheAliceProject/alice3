@@ -49,6 +49,7 @@ import java.util.List;
 import org.lookingglassandalice.storytelling.AngleInDegrees;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.Vector3f;
@@ -96,14 +97,24 @@ public class PerspectiveCameraMarkerImplementation extends CameraMarkerImplement
 	private edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
 	private edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
 	private final edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] sgAppearances = { sgAppearance };
-	
 	private List<Visual> sgDetailedComponents;
 	
 	protected boolean showDetail = false;
 	
 	public PerspectiveCameraMarkerImplementation( org.lookingglassandalice.storytelling.PerspectiveCameraMarker abstraction ) {
 		super(abstraction);
-		this.setColor(Color4f.GRAY);
+	}
+	
+	@Override
+	protected Color4f getDefaultMarkerColor()
+	{
+		return Color4f.GRAY;
+	}
+	
+	@Override
+	protected float getDefaultMarkerOpacity()
+	{
+		return 1;
 	}
 
 	@Override
@@ -275,12 +286,8 @@ public class PerspectiveCameraMarkerImplementation extends CameraMarkerImplement
 		
 		setViewingAngle(new AngleInDegrees(90), new AngleInDegrees(45));
 		
-		edu.cmu.cs.dennisc.scenegraph.Visual[] visuals = { sgBoxVisual, sgCylinder1Visual, sgCylinder2Visual, sgLensVisual };
-		sgVisuals = visuals;
+		
 
-		
-		
-		
 	    sgLensVisual.setParent( this.getSgComposite() );
 		sgTransformableCylinder1.setParent( this.getSgComposite() );
 		sgTransformableCylinder2.setParent( this.getSgComposite() );
@@ -346,6 +353,5 @@ public class PerspectiveCameraMarkerImplementation extends CameraMarkerImplement
 	protected Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
-
 	
 }

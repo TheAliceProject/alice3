@@ -48,7 +48,6 @@ import java.util.Locale;
 import org.lookingglassandalice.storytelling.Entity;
 import org.lookingglassandalice.storytelling.Scene;
 import org.lookingglassandalice.storytelling.Turnable;
-import org.lookingglassandalice.storytelling.resources.sims2.Light;
 import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
@@ -150,11 +149,12 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 							boolean canBeVehicle = false;
 							if (objectInJava != null)
 							{
-								if (objectInJava instanceof Light)
-								{
-									canBeVehicle = false;
-								}
-								else if (objectInJava instanceof Turnable && TransformableVehicleAdapter.this.isValidVehicle(objectInJava))
+//								if (objectInJava instanceof Light)
+//								{
+//									canBeVehicle = false;
+//								}
+//								else 
+								if (objectInJava instanceof Turnable && TransformableVehicleAdapter.this.isValidVehicle(objectInJava))
 								{
 									canBeVehicle = true;
 								}
@@ -258,19 +258,19 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 	@Override
 	protected void startListening() 
 	{
-		if (this.instance != null && this.instance.getSGTransformable() != null)
+		if (this.instance != null)
 		{
 			this.initializeListenersIfNecessary();
-			this.instance.getSGTransformable().addHierarchyListener(this.hierarchyListener);
+//			this.instance.getSGTransformable().addHierarchyListener(this.hierarchyListener);
 		}
 	}
 
 	@Override
 	protected void stopListening() 
 	{
-		if (this.instance != null && this.instance.getSGTransformable() != null)
+		if (this.instance != null)
 		{
-			this.instance.getSGTransformable().removeHierarchyListener(this.hierarchyListener);
+//			this.instance.getSGTransformable().removeHierarchyListener(this.hierarchyListener);
 		}
 	}
 

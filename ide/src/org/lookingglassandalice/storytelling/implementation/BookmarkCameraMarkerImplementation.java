@@ -40,72 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lookingglassandalice.storytelling.implementation;
 
-package org.alice.ide.properties.adapter;
+import org.lookingglassandalice.storytelling.BookmarkCameraMarker;
 
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
+/**
+ * @author dculyba
+ *
+ */
+public class BookmarkCameraMarkerImplementation extends PerspectiveCameraMarkerImplementation{
 
-public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
-
-	private PropertyListener propertyListener;
-	
-	private void initializeListenersIfNecessary()
-	{
-		if (this.propertyListener == null)
-		{
-			this.propertyListener = new PropertyListener()
-			{
-				public void propertyChanging(PropertyEvent e) {}
-				
-				public void propertyChanged(PropertyEvent e)
-				{
-					handleInternalValueChanged();
-				}
-			};
-		}
+	public BookmarkCameraMarkerImplementation( BookmarkCameraMarker abstraction ) {
+		super(abstraction);
 	}
-	
+
 	@Override
-	protected void startListening() 
+	public float getDefaultMarkerOpacity() 
 	{
-		if (this.instance != null)
-		{
-			this.initializeListenersIfNecessary();
-			this.addPropertyListener(this.propertyListener);
-//			this.getPropertyInstanceForInstance(this.instance).addPropertyListener(this.propertyListener);
-		}
+		return .5f;
 	}
-	
-	@Override
-	protected void stopListening() 
-	{
-		if (this.instance != null)
-		{
-			this.removePropertyListener(this.propertyListener);
-//			this.getPropertyInstanceForInstance(this.instance).removePropertyListener(this.propertyListener);
-		}
-	}
-	
-	public AbstractInstancePropertyAdapter(String repr) 
-	{
-		super(repr);
-	}
-	
-	public AbstractInstancePropertyAdapter(String repr, O instance )
-	{
-		super(repr, instance);
-	}
-	
-	protected abstract void addPropertyListener(PropertyListener propertyListener);
-	protected abstract void removePropertyListener(PropertyListener propertyListener);
-
-//	protected abstract edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(O instance);
-	
-	protected void handleInternalValueChanged()
-	{
-		P newValue = this.getValue();
-		this.notifyValueObservers(newValue);
-	}
-
 }

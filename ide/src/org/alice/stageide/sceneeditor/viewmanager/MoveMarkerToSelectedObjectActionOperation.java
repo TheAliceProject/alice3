@@ -47,7 +47,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.lookingglassandalice.storytelling.Turnable;
-import org.lookingglassandalice.storytelling.resources.sims2.MarkerWithIcon;
+import org.lookingglassandalice.storytelling.implementation.CameraMarkerImplementation;
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
@@ -100,11 +100,11 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 		this.markerField = markerField;
 		if (this.markerField != null)
 		{
-			MarkerWithIcon marker = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getMarkerForField(this.markerField);
-			if (marker != null)
-			{
-				this.imageIcon.setLeftImage(marker.getIcon());				
-			}
+			CameraMarkerImplementation marker = IDE.getActiveInstance().getSceneEditor().getImplementation(this.markerField);
+//			if (marker != null)
+//			{
+//				this.imageIcon.setLeftImage(marker.getIcon());				
+//			}
 		}
 		this.updateBasedOnSettings();
 	}
@@ -146,48 +146,48 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 
 	@Override
 	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		final MarkerWithIcon objectMarker;
+		final CameraMarkerImplementation objectMarker;
 		final org.lookingglassandalice.storytelling.VantagePoint prevPOV;
 		final org.lookingglassandalice.storytelling.VantagePoint nextPOV;
 		
-		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor());
-		
-		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
-		final Turnable selectedTransformable = sceneEditor.getTransformableForField(selectedField);
-		objectMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.lookingglassandalice.storytelling.ObjectMarker.class);
-		if( objectMarker != null ) {
-			prevPOV = objectMarker.getPointOfView( org.lookingglassandalice.storytelling.resources.sims2.AsSeenBy.SCENE );
-			nextPOV = selectedTransformable.getPointOfView(org.lookingglassandalice.storytelling.resources.sims2.AsSeenBy.SCENE);
-			if( nextPOV.getInternal().isNaN() ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveMarkerToSelectedObjectActionOperation isNaN" );
-				step.cancel();
-			} else {
-				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
-					@Override
-					public void doOrRedoInternal( boolean isDo ) {
-						setAbsolutePOV( objectMarker, nextPOV );
-					}
-					@Override
-					public void undoInternal() {
-						setAbsolutePOV( objectMarker, prevPOV );
-					}
-					@Override
-					protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-						rv.append( MoveMarkerToSelectedObjectActionOperation.this.getName() );
-						return rv;
-					}
-				} );
-			}
-		} else {
-			step.cancel();
-		}
+//		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor());
+//		
+//		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
+//		final Turnable selectedTransformable = sceneEditor.getTransformableForField(selectedField);
+//		objectMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.lookingglassandalice.storytelling.ObjectMarker.class);
+//		if( objectMarker != null ) {
+//			prevPOV = objectMarker.getPointOfView( org.lookingglassandalice.storytelling.resources.sims2.AsSeenBy.SCENE );
+//			nextPOV = selectedTransformable.getPointOfView(org.lookingglassandalice.storytelling.resources.sims2.AsSeenBy.SCENE);
+//			if( nextPOV.getInternal().isNaN() ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveMarkerToSelectedObjectActionOperation isNaN" );
+//				step.cancel();
+//			} else {
+//				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
+//					@Override
+//					public void doOrRedoInternal( boolean isDo ) {
+//						setAbsolutePOV( objectMarker, nextPOV );
+//					}
+//					@Override
+//					public void undoInternal() {
+//						setAbsolutePOV( objectMarker, prevPOV );
+//					}
+//					@Override
+//					protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
+//						rv.append( MoveMarkerToSelectedObjectActionOperation.this.getName() );
+//						return rv;
+//					}
+//				} );
+//			}
+//		} else {
+//			step.cancel();
+//		}
 		
 	}
 	
 	private static void setAbsolutePOV( org.lookingglassandalice.storytelling.Turnable transformable, org.lookingglassandalice.storytelling.VantagePoint pov ) {
-		org.lookingglassandalice.storytelling.Scene scene = transformable.getScene();
-		assert scene != null;
-		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );
+//		org.lookingglassandalice.storytelling.Scene scene = transformable.getScene();
+//		assert scene != null;
+//		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );
 	}
 
 

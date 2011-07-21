@@ -45,15 +45,15 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
-import org.lookingglassandalice.storytelling.resources.sims2.AsSeenBy;
 import org.lgna.croquet.Operation;
+import org.lookingglassandalice.storytelling.ImplementationAccessor;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 
-public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.lookingglassandalice.storytelling.Turnable> {
+public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.lookingglassandalice.storytelling.MovableTurnable> {
 	
-	public TransformableTranslationAdapter(org.lookingglassandalice.storytelling.Turnable instance) {
+	public TransformableTranslationAdapter(org.lookingglassandalice.storytelling.MovableTurnable instance) {
 		super(instance);
 	}
 
@@ -61,7 +61,7 @@ public class TransformableTranslationAdapter extends AbstractAbsolutePositionPro
 	{
 		if (this.instance != null)
 		{
-			return this.instance.getPosition(AsSeenBy.SCENE);
+			return ImplementationAccessor.getImplementation(this.instance).getAbsoluteTransformation().translation;
 		}
 		return null;
 	}
@@ -72,7 +72,7 @@ public class TransformableTranslationAdapter extends AbstractAbsolutePositionPro
 		super.setValue(newValue);
 		if (this.instance != null)
 		{
-			AffineMatrix4x4 currentTrans = this.instance.getTransformation(AsSeenBy.SCENE);
+			AffineMatrix4x4 currentTrans = ImplementationAccessor.getImplementation(this.instance).getAbsoluteTransformation();
 			double dist = Point3.calculateDistanceBetween(currentTrans.translation, newValue);
 			double duration = 1;
 			if (dist < .02)
@@ -83,7 +83,9 @@ public class TransformableTranslationAdapter extends AbstractAbsolutePositionPro
 			{
 				duration = (dist - .02) / (.1 - .02);
 			}
-			this.instance.moveTo(this.instance.getScene().createOffsetStandIn(newValue), duration);
+			
+			org.lookingglassandalice.storytelling.implementation.AbstractTransformableImplementation implementation = ImplementationAccessor.getImplementation(this.instance);
+			implementation.getSgComposite().setTranslationOnly(newValue, implementation.getSgComposite().getRoot());
 		}
 	}
 

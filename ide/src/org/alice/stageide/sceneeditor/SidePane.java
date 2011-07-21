@@ -69,6 +69,7 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.PushButton;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.ToolPaletteTabbedPane;
+import org.lookingglassandalice.storytelling.ImplementationAccessor;
 
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
@@ -92,7 +93,7 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 	{
 		if (this.sceneGraphViewer != null)
 		{
-			Component root = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getScene().getSGComposite();
+			Component root = IDE.getActiveInstance().getSceneEditor().getActiveSceneImplementation().getSgComposite();
 			SidePane.this.sceneGraphViewer.setRoot(root);
 		}
 	}
@@ -131,7 +132,7 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 	{
 		if (this.lookingglassViewer != null)
 		{
-			SceneAdapter root = (SceneAdapter)AdapterFactory.getAdapterFor( ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getScene().getSGComposite() );
+			SceneAdapter root = (SceneAdapter)AdapterFactory.getAdapterFor( IDE.getActiveInstance().getSceneEditor().getActiveSceneImplementation().getSgComposite() );
 			SidePane.this.lookingglassViewer.setRoot(root);
 		}
 	}

@@ -46,6 +46,10 @@ package org.lookingglassandalice.storytelling.implementation;
 import org.lookingglassandalice.storytelling.Entity;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**
@@ -58,11 +62,13 @@ public abstract class MarkerImplementation extends ModelImplementation {
 	
 	protected boolean isShowing = true;
 	protected boolean displayEnabled = true;
+	private AxisAlignedBox boundingBox;
 	
 	protected MarkerImplementation(org.lookingglassandalice.storytelling.Marker abstraction){
 		super();
 		this.abstraction = abstraction;
 		createVisuals();
+		this.boundingBox = this.calculateBoundingBox();
 		setMarkerColor(getDefaultMarkerColor());
 		setMarkerOpacity(getDefaultMarkerOpacity());
 		this.setShowing(this.getDisplayEnabled());
@@ -113,6 +119,19 @@ public abstract class MarkerImplementation extends ModelImplementation {
 		}
 	}
 	
+	protected AxisAlignedBox calculateBoundingBox()
+	{
+		AxisAlignedBox bbox = new AxisAlignedBox();
+		for (Visual v : this.getSgVisuals())
+		{
+			for (Geometry g : v.geometries.getValue())
+			{
+				bbox.union(g.getAxisAlignedMinimumBoundingBox());
+			}
+		}
+		return bbox;
+	}
+	
 	protected Color4f getDefaultMarkerColor()
 	{
 		return Color4f.CYAN;
@@ -130,13 +149,13 @@ public abstract class MarkerImplementation extends ModelImplementation {
 	
 	public void setMarkerColor( Color4f color )
 	{
-		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getOpacityAppearances() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
 			sgAppearance.diffuseColor.setValue( color );
 		}
 	}
 	
-	public float getOpacity() {
-		float actualValue = this.getSgAppearances()[0].opacity.getValue();
+	public float getMarkerOpacity() {
+		float actualValue = this.getOpacityAppearances()[0].opacity.getValue();
 		float scaledValue = actualValue / this.getDefaultMarkerOpacity();
 		return scaledValue;
 	}
@@ -144,9 +163,28 @@ public abstract class MarkerImplementation extends ModelImplementation {
 	protected void setMarkerOpacity(float opacity)
 	{
 		float scaledValue = opacity * this.getDefaultMarkerOpacity();
-		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getOpacityAppearances() ) {
 			sgAppearance.opacity.setValue( scaledValue );
 		}
 	}
+	
+	@Override
+	public void addOpacityListener(PropertyListener listener)
+	{
+		this.getOpacityAppearances()[ 0 ].opacity.addPropertyListener(listener);
+	}
+	
+	@Override
+	public void removeOpacityListener(PropertyListener listener)
+	{
+		this.getOpacityAppearances()[ 0 ].opacity.removePropertyListener(listener);
+	}
+	
+	@Override
+	protected double getBoundingSphereRadius() {
+		double diagonal = Point3.calculateDistanceBetween(this.boundingBox.getMinimum(), this.boundingBox.getMaximum());
+		return diagonal*.5;
+	}
+
 	
 }

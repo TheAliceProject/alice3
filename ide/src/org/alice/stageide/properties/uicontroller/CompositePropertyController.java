@@ -52,6 +52,8 @@ import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.uicontroller.LabelBasedPropertyController;
 import org.alice.stageide.properties.TransformableVehicleAdapter;
 
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+
 public class CompositePropertyController extends LabelBasedPropertyController<Entity>{
 
 	public CompositePropertyController(PropertyAdapter<Entity, ?> propertyAdapter) 
@@ -77,7 +79,7 @@ public class CompositePropertyController extends LabelBasedPropertyController<En
 	}
 
 	@Override
-	protected void setValueOnUI(Composite value) 
+	protected void setValueOnUI(Entity value) 
 	{
 		this.label.setIcon(TransformableVehicleAdapter.getIconForVehicle(value));
 		this.label.setText(TransformableVehicleAdapter.getNameForVehicle(value));

@@ -46,7 +46,7 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import javax.swing.BorderFactory;
 
 
-import org.lookingglassandalice.storytelling.resources.sims2.MarkerWithIcon;
+import org.lookingglassandalice.storytelling.implementation.MarkerImplementation;
 import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.lgna.croquet.components.Label;
@@ -79,7 +79,7 @@ public class MarkerFieldTile extends LineAxisPanel
 	}
 	
 	public void setSelected( boolean isSelected ) {
-		MarkerWithIcon marker = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getMarkerForField(field);
+		MarkerImplementation marker = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getMarkerForField(field);
 		java.awt.Color foregroundColor = java.awt.Color.BLACK;
 		if( marker != null ) {
 			foregroundColor = marker.getMarkerColor().getAsAWTColor();
@@ -99,12 +99,12 @@ public class MarkerFieldTile extends LineAxisPanel
 		
 		this.textLabel.setText( this.field.getName() );
 		
-		MarkerWithIcon marker = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getMarkerForField(field);
+		MarkerImplementation marker = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getMarkerForField(field);
 		if (marker != null)
 		{
 			Color4f color = marker.getMarkerColor();
 			this.textLabel.setForegroundColor(color.getAsAWTColor());
-			this.iconLabel.setIcon(marker.getIcon());
+//			this.iconLabel.setIcon(marker.getIcon());
 		}
 		this.addComponent( iconLabel );
 		this.addComponent( this.textLabel );

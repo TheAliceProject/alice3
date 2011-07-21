@@ -42,7 +42,6 @@
  */
 package org.lookingglassandalice.storytelling.implementation;
 
-import org.lookingglassandalice.storytelling.CameraMarker;
 import org.lookingglassandalice.storytelling.OrthographicCameraMarker;
 
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
@@ -53,13 +52,13 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author dculyba
  *
  */
-public class OthographicCameraMarkerImplementation extends CameraMarkerImplementation{
+public class OrthographicCameraMarkerImplementation extends CameraMarkerImplementation{
 
 	private ClippedZPlane picturePlane = new ClippedZPlane();
 	private final edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] sgAppearances = {};
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = {};
 	
-	public OthographicCameraMarkerImplementation(OrthographicCameraMarker abstraction) {
+	public OrthographicCameraMarkerImplementation(OrthographicCameraMarker abstraction) {
 		super(abstraction);
 	}
 	

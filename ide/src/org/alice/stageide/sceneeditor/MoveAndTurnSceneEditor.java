@@ -53,6 +53,12 @@ import javax.swing.Icon;
 
 import org.lookingglassandalice.storytelling.AngleInDegrees;
 import org.lookingglassandalice.storytelling.implementation.AsSeenBy;
+import org.lookingglassandalice.storytelling.implementation.CameraMarkerImplementation;
+import org.lookingglassandalice.storytelling.implementation.MarkerImplementation;
+import org.lookingglassandalice.storytelling.implementation.ObjectMarkerImplementation;
+import org.lookingglassandalice.storytelling.implementation.OrthographicCameraMarkerImplementation;
+import org.lookingglassandalice.storytelling.implementation.PerspectiveCameraMarkerImplementation;
+import org.lookingglassandalice.storytelling.implementation.TransformableImplementation;
 import org.lookingglassandalice.storytelling.CameraMarker;
 import org.lookingglassandalice.storytelling.Entity;
 import org.lookingglassandalice.storytelling.Marker;
@@ -125,7 +131,6 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.lookingglassandalice.storytelling.ImplementationAccessor;
 import org.lookingglassandalice.storytelling.Model;
 import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
-import org.lookingglassandalice.storytelling.resources.sims2.MarkerWithIcon;
 import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
 
 /**
@@ -171,9 +176,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	private edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgPerspectiveCamera = null;
 	
 	private FieldRadioButtons fieldRadioButtons;
-	private OrthographicCameraMarker topOrthoMarker = null;
-	private OrthographicCameraMarker frontOrthoMarker = null;
-	private OrthographicCameraMarker sideOrthoMarker = null;
+	private OrthographicCameraMarkerImplementation topOrthoMarker = null;
+	private OrthographicCameraMarkerImplementation frontOrthoMarker = null;
+	private OrthographicCameraMarkerImplementation sideOrthoMarker = null;
 	private List<CameraMarker> orthographicCameraMarkers = new LinkedList<CameraMarker>();
 	private PerspectiveCameraMarker openingSceneMarker;
 	private PerspectiveCameraMarker sceneViewMarker;
@@ -443,16 +448,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	private void handleCameraMarkerFieldSelection( FieldDeclaredInAlice cameraMarkerField )
 	{
-		MarkerWithIcon newMarker = this.getCameraMarkerForField(cameraMarkerField);
-		if (newMarker != null)
-		{
-			this.globalDragAdapter.setSelectedCameraMarker(newMarker.getSGTransformable());
-		}
-		else
-		{
-			this.globalDragAdapter.setSelectedCameraMarker((CameraMarker)null);
-		}
-		
+		MarkerImplementation newMarker = this.getCameraMarkerForField(cameraMarkerField);
+		this.globalDragAdapter.setSelectedCameraMarker(newMarker);
 		MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		MarkerPanelTab.getInstance().getMainComponent().getCameraMarkerPanel().updateButtons();
@@ -460,15 +457,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	private void handleObjectMarkerFieldSelection( FieldDeclaredInAlice objectMarkerField )
 	{
-		MarkerWithIcon newMarker = this.getMarkerForField(objectMarkerField);
-		if (newMarker != null)
-		{
-			this.globalDragAdapter.setSelectedObjectMarker(newMarker.getSGTransformable());
-		}
-		else
-		{
-			this.globalDragAdapter.setSelectedObjectMarker((ObjectMarker)null);
-		}
+		MarkerImplementation newMarker = this.getMarkerForField(objectMarkerField);
+		this.globalDragAdapter.setSelectedObjectMarker(newMarker);
 		
 		MoveSelectedObjectToMarkerActionOperation.getInstance().setMarkerField(objectMarkerField);
 		MoveMarkerToSelectedObjectActionOperation.getInstance().setMarkerField(objectMarkerField);
@@ -476,7 +466,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		
 	}
 	
-	private void handleMainCameraViewSelection( CameraMarker cameraMarker )
+	private void handleMainCameraViewSelection( CameraMarkerImplementation cameraMarker )
 	{
 		MoveActiveCameraToMarkerActionOperation.getInstance().setCameraMarker(cameraMarker);
 		MoveMarkerToActiveCameraActionOperation.getInstance().setCameraMarker(cameraMarker);
@@ -493,7 +483,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 			}
 			if( instance instanceof org.lookingglassandalice.storytelling.Model ) {
 				org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)instance;
-				this.globalDragAdapter.setSelectedObject( model.getSGTransformable() );
+//				this.globalDragAdapter.setSelectedObject( model.getSgComposite() );
 				MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField(field);
 				MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField(field);
 				CreateObjectMarkerActionOperation.getInstance().setEnabled(true); //If a model field is selected, we can create a marker there
@@ -501,7 +491,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 			}
 			else if( instance instanceof org.lookingglassandalice.storytelling.Marker ) {
 				org.lookingglassandalice.storytelling.Marker marker = (org.lookingglassandalice.storytelling.Marker)instance;
-				this.globalDragAdapter.setSelectedObject( marker.getSGTransformable() );
+//				this.globalDragAdapter.setSelectedObject( marker.getSgComposite() );
 				MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField(null);
 				MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField(null);
 				CreateObjectMarkerActionOperation.getInstance().setEnabled(false); //If a marker field is selected, we can't make a marker there
@@ -510,10 +500,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 			else if (instance instanceof org.lookingglassandalice.storytelling.Camera)
 			{
 				org.lookingglassandalice.storytelling.Camera mtCamera = (org.lookingglassandalice.storytelling.Camera)instance;
-				if (mtCamera.getSGCamera() == this.sgPerspectiveCamera)
-				{
-					this.globalDragAdapter.setSelectedObject( this.openingSceneMarker.getSGTransformable() );
-				}
+//				if (mtCamera.getSGCamera() == this.sgPerspectiveCamera)
+//				{
+//					this.globalDragAdapter.setSelectedObject( this.openingSceneMarker.getSgComposite() );
+//				}
 				MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField(field);
 				MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField(field);
 				CreateObjectMarkerActionOperation.getInstance().setEnabled(true); //If a camera field is selected, we can make a marker there
@@ -550,19 +540,19 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	}
 	
 	private void handleSelectionEvent( org.alice.interact.event.SelectionEvent e ) {
-		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = e.getTransformable();
+		TransformableImplementation transformable = e.getTransformable();
 		Object objectInJava = null;
-		if (sgTransformable == null)
+		if (transformable == null)
 		{
 			objectInJava = this.scene;
 		}
 		else
 		{
-			objectInJava = org.lookingglassandalice.storytelling.Entity.getElement( sgTransformable );
+//			objectInJava = org.lookingglassandalice.storytelling.Entity.getElement( sgTransformable );
 		}
 		if (objectInJava == this.openingSceneMarker)
 		{
-			objectInJava = org.lookingglassandalice.storytelling.Entity.getElement(this.sgPerspectiveCamera);
+//			objectInJava = org.lookingglassandalice.storytelling.Entity.getElement(this.sgPerspectiveCamera);
 		}
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJavaVM( objectInJava );
 		if (objectInJava instanceof CameraMarker)
@@ -597,12 +587,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
         }
 	    
 		AffineMatrix4x4 goodPointOfView = new AffineMatrix4x4();
-		MarkerWithIcon selectedCameraMarker = getActiveCameraMarker();
-		AffineMatrix4x4 cameraTransform = selectedCameraMarker.getSGTransformable().getAbsoluteTransformation();
+		MarkerImplementation selectedCameraMarker = getActiveCameraMarker();
+		AffineMatrix4x4 cameraTransform = selectedCameraMarker.getSgComposite().getAbsoluteTransformation();
 		
 		//PrintUtilities.println("Camera marker: "+selectedCameraMarker.getName());
 		
-		if (selectedCameraMarker instanceof PerspectiveCameraMarker)
+		if (selectedCameraMarker instanceof PerspectiveCameraMarkerImplementation)
 		{
 			AbstractCamera selectedCamera = this.getSGPerspectiveCamera();
 			Vector3 cameraBackward = cameraTransform.orientation.backward;
@@ -687,12 +677,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		{
 			org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)instance;
 			EntityImplementation implementation = ImplementationAccessor.getImplementation(model);
-			this.scene.getSGComposite().addComponent(implementation.getSgComposite());
+//			this.scene.getSGComposite().addComponent(implementation.getSgComposite());
 		}
 		else if( instance instanceof org.lookingglassandalice.storytelling.Turnable ) {
 			final org.lookingglassandalice.storytelling.Turnable transformable = (org.lookingglassandalice.storytelling.Turnable)instance;
 
-			final org.lookingglassandalice.storytelling.Camera camera = this.scene.findFirstMatch( org.lookingglassandalice.storytelling.Camera.class );
+//			final org.lookingglassandalice.storytelling.Camera camera = this.scene.findFirstMatch( org.lookingglassandalice.storytelling.Camera.class );
+			final org.lookingglassandalice.storytelling.Camera camera = null;
 			boolean isAnimationDesired = true;
 			if( isAnimationDesired && camera != null && 
 				(transformable instanceof org.lookingglassandalice.storytelling.Model  || transformable instanceof org.lookingglassandalice.storytelling.Marker)
@@ -724,7 +715,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 					}
 				}.start();
 			} else {
-				this.scene.addComponent( transformable );
+//				this.scene.addComponent( transformable );
 			}
 		} else {
 			PrintUtilities.println( "handleFieldAdded", instance );
@@ -738,7 +729,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		Object instance = this.getInstanceInJavaVMForField( removedField );
 		if( instance instanceof org.lookingglassandalice.storytelling.Turnable ) {
 			final org.lookingglassandalice.storytelling.Turnable transformable = (org.lookingglassandalice.storytelling.Turnable)instance;
-			this.scene.removeComponent( transformable );
+//			this.scene.removeComponent( transformable );
 			this.removeField(removedField);
 		} else {
 			PrintUtilities.println( "handleFieldRemoved", instance );
@@ -877,15 +868,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		PrintUtilities.println( "todo: remove epic hack to handle camera marker removal" );
 		List<FieldDeclaredInAlice> declaredFields = this.getDeclaredFields();
 		for( FieldDeclaredInAlice field : declaredFields) {
-			if (field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.MarkerWithIcon.class )) {
-				if( CameraMarkerFieldListSelectionState.getInstance().containsItem( field ) || ObjectMarkerFieldListSelectionState.getInstance().containsItem( field ) ) {
-					//pass
-				} else {
-					int index = org.alice.ide.IDE.getActiveInstance().getSceneType().fields.indexOf( field );
-					assert index != -1;
-					org.alice.ide.IDE.getActiveInstance().getSceneType().fields.remove( index );
-				}
-			}
+//			if (field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.MarkerImplementation.class )) {
+//				if( CameraMarkerFieldListSelectionState.getInstance().containsItem( field ) || ObjectMarkerFieldListSelectionState.getInstance().containsItem( field ) ) {
+//					//pass
+//				} else {
+//					int index = org.alice.ide.IDE.getActiveInstance().getSceneType().fields.indexOf( field );
+//					assert index != -1;
+//					org.alice.ide.IDE.getActiveInstance().getSceneType().fields.remove( index );
+//				}
+//			}
 		}
 	}
 	
@@ -929,22 +920,19 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		return this.globalDragAdapter;
 	}
 	
-	public CameraMarker getCameraMarkerForField( FieldDeclaredInAlice field )
+	public CameraMarkerImplementation getCameraMarkerForField( FieldDeclaredInAlice field )
 	{
-		CameraMarker cameraMarker = this.getInstanceInJavaVMForField(field, org.lookingglassandalice.storytelling.CameraMarker.class);
-		return cameraMarker;
+		return this.getImplementation(field);
 	}
 	
-	public ObjectMarker getObjectMarkerForField( FieldDeclaredInAlice field )
+	public ObjectMarkerImplementation getObjectMarkerForField( FieldDeclaredInAlice field )
 	{
-		ObjectMarker objectMarker = this.getInstanceInJavaVMForField(field, org.lookingglassandalice.storytelling.ObjectMarker.class);
-		return objectMarker;
+		return this.getImplementation(field);
 	}
 	
-	public MarkerWithIcon getMarkerForField( FieldDeclaredInAlice field )
+	public MarkerImplementation getMarkerForField( FieldDeclaredInAlice field )
 	{
-		MarkerWithIcon marker = this.getInstanceInJavaVMForField(field, org.lookingglassandalice.storytelling.MarkerWithIcon.class);
-		return marker;
+		return this.getImplementation(field);
 	}
 	
 	public Turnable getTransformableForField( FieldDeclaredInAlice field )
@@ -958,12 +946,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 			//pass
 		} else {
 			this.openingSceneMarker = new PerspectiveCameraMarker();
-			this.openingSceneMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/mainCameraIcon.png")));
-			this.openingSceneMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/mainCameraIcon_highlighted.png")));
+//			this.openingSceneMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/mainCameraIcon.png")));
+//			this.openingSceneMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/mainCameraIcon_highlighted.png")));
 			this.sceneViewMarker = new PerspectiveCameraMarker();
-			this.sceneViewMarker.setDisplayVisuals(false);
-			this.sceneViewMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sceneEditorCameraIcon.png")));
-			this.sceneViewMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sceneEditorCameraIcon_highlighted.png")));
+//			this.sceneViewMarker.setDisplayVisuals(false);
+//			this.sceneViewMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sceneEditorCameraIcon.png")));
+//			this.sceneViewMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sceneEditorCameraIcon_highlighted.png")));
 			
 			createOrthographicCamera();
 			createOrthographicCameraMarkers();
@@ -1007,8 +995,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 
 			
 
-			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.STARTING_CAMERA_VIEW, this.openingSceneMarker );
-			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.LAYOUT_SCENE_VIEW, this.sceneViewMarker );
+//			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.STARTING_CAMERA_VIEW, this.openingSceneMarker );
+//			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.LAYOUT_SCENE_VIEW, this.sceneViewMarker );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.TOP, this.topOrthoMarker );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.SIDE, this.sideOrthoMarker );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.FRONT, this.frontOrthoMarker );
@@ -1033,8 +1021,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 				private final javax.swing.border.Border emptyBorder = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 0 );
 				@Override
 				protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, View view, int index, boolean isSelected, boolean cellHasFocus) {
-					MarkerWithIcon value = mainCameraViewTracker.getCameraMarker( view );
-					rv.setText(value.getName());
+					MarkerImplementation value = mainCameraViewTracker.getCameraMarker( view );
+//					rv.setText(value.getName());
 					
 					if( index == 0 ) {
 						rv.setBorder( separatorBelowBorder );
@@ -1052,14 +1040,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 						rv.setOpaque(false);
 						rv.setForeground(Color.BLACK);
 					}
-					if (isSelected && value.getHighlightedIcon() != null)
-					{
-						rv.setIcon(value.getHighlightedIcon());
-					}
-					else
-					{
-						rv.setIcon(value.getIcon());
-					}
+//					if (isSelected && value.getHighlightedIcon() != null)
+//					{
+//						rv.setIcon(value.getHighlightedIcon());
+//					}
+//					else
+//					{
+//						rv.setIcon(value.getIcon());
+//					}
 					
 //					if( value == openingSceneMarker ) {
 //						//pass
@@ -1125,9 +1113,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		} else {
 			//We need to make a MoveAndTurn orthographic camera because the scene is fundamentally a MoveAndTurn scene
 			org.lookingglassandalice.storytelling.implementation.OrthographicCameraImplementation moveAndTurnOrthographicCamera = new org.lookingglassandalice.storytelling.implementation.OrthographicCameraImplementation();
-			this.sgOrthographicCamera = moveAndTurnOrthographicCamera.getSGOrthographicCamera();
+//			this.sgOrthographicCamera = moveAndTurnOrthographicCamera.getSGOrthographicCamera();
 			this.sgOrthographicCamera.nearClippingPlaneDistance.setValue(.01d);
-			edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = moveAndTurnOrthographicCamera.getSGTransformable();
+			edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = moveAndTurnOrthographicCamera.getSgComposite();
 			sgTransformable.putBonusDataFor(org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.ORTHOGRAPHIC_CAMERA);
 		}
 	}
@@ -1162,7 +1150,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 			this.splitPane.setDividerSize( 0 );
 		
 			//Cache the currently selected view index
-			this.expandedViewSelectedMarker = this.mainCameraViewTracker.getCameraMarker( this.mainCameraMarkerList.getSelectedItem() );
+//			this.expandedViewSelectedMarker = this.mainCameraViewTracker.getCameraMarker( this.mainCameraMarkerList.getSelectedItem() );
 			this.globalDragAdapter.getInteractionSelectionStateList().setSelectedItem(this.globalDragAdapter.getInteractionSelectionStateList().getItemAt(0));
 			
 			//Switch the main view to the starting view
@@ -1177,8 +1165,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	}
 	private void showRightClickMenuForModel( InputState clickState )
 	{
-		edu.cmu.cs.dennisc.scenegraph.Transformable t = clickState.getClickPickTransformable();
-		org.lookingglassandalice.storytelling.Entity element = org.lookingglassandalice.storytelling.Entity.getElement(t);
+		TransformableImplementation t = clickState.getClickPickTransformable();
+		org.lookingglassandalice.storytelling.Entity element = t.getAbstraction();
 		FieldDeclaredInAlice clickedJavaField = (FieldDeclaredInAlice)this.getFieldForInstanceInJavaVM(element);
 		if (clickedJavaField != null)
 		{
@@ -1196,35 +1184,35 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		camera.moveAndOrientToAGoodVantagePointOf( model, org.lookingglassandalice.storytelling.AnimationDetailsFactory.duration( 0.5 ) );
 		model.setVehicle( this.scene );
 		model.setOpacity( 1.0 );
-		camera.moveAndOrientTo( this.scene.createOffsetMarker( vantagePoint ), org.lookingglassandalice.storytelling.AnimationDetailsFactory.duration( 0.5 ) );
+//		camera.moveAndOrientTo( this.scene.createOffsetMarker( vantagePoint ), org.lookingglassandalice.storytelling.AnimationDetailsFactory.duration( 0.5 ) );
 	}
 	
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateMarkerGoodLookAt( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, Marker target) {
-		AffineMatrix4x4 markerTransform = target.getTransformation(AsSeenBy.SCENE);
-		Point3 newLocation = new Point3(markerTransform.translation);
-		newLocation.add( Vector3.createMultiplication(markerTransform.orientation.backward, 3.0));
-		newLocation.add( Vector3.createMultiplication(markerTransform.orientation.up, 3.0));
-		newLocation.add( Vector3.createMultiplication(markerTransform.orientation.right, -1.0));
-		Vector3 pointAtMarker = Vector3.createSubtraction( markerTransform.translation, newLocation );
-		pointAtMarker.normalize();
-		
-		OrthogonalMatrix3x3 pointAtOrientation = OrthogonalMatrix3x3.createFromForwardAndUpGuide(pointAtMarker, markerTransform.orientation.up);
-		rv.translation.set(newLocation);
-		rv.orientation.setValue(pointAtOrientation);
+//		AffineMatrix4x4 markerTransform = target.getTransformation(AsSeenBy.SCENE);
+//		Point3 newLocation = new Point3(markerTransform.translation);
+//		newLocation.add( Vector3.createMultiplication(markerTransform.orientation.backward, 3.0));
+//		newLocation.add( Vector3.createMultiplication(markerTransform.orientation.up, 3.0));
+//		newLocation.add( Vector3.createMultiplication(markerTransform.orientation.right, -1.0));
+//		Vector3 pointAtMarker = Vector3.createSubtraction( markerTransform.translation, newLocation );
+//		pointAtMarker.normalize();
+//		
+//		OrthogonalMatrix3x3 pointAtOrientation = OrthogonalMatrix3x3.createFromForwardAndUpGuide(pointAtMarker, markerTransform.orientation.up);
+//		rv.translation.set(newLocation);
+//		rv.orientation.setValue(pointAtOrientation);
 		return rv;
 		
 	}
 	
 	private void getGoodLookAtShowInstanceAndReturnCamera( org.lookingglassandalice.storytelling.Camera camera, org.lookingglassandalice.storytelling.Marker marker ) {
-		boolean wasShowing = marker.isShowing();
-		marker.setShowing(true);
-		marker.setOpacity( 0.0, org.lookingglassandalice.storytelling.Entity.RIGHT_NOW );
-		org.lookingglassandalice.storytelling.VantagePoint pov = camera.getVantagePoint( this.scene );
-		camera.moveAndOrientTo(this.scene.createOffsetStandIn( calculateMarkerGoodLookAt(edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), marker) ), .5);
-		marker.setVehicle( this.scene );
-		marker.setOpacity( 1.0 );
-		camera.moveAndOrientTo( this.scene.createOffsetStandIn( pov.getInternal() ), 1.0 );
-		marker.setShowing(wasShowing);
+//		boolean wasShowing = marker.isShowing();
+//		marker.setShowing(true);
+//		marker.setOpacity( 0.0, org.lookingglassandalice.storytelling.Entity.RIGHT_NOW );
+//		org.lookingglassandalice.storytelling.VantagePoint pov = camera.getVantagePoint( this.scene );
+//		camera.moveAndOrientTo(this.scene.createOffsetStandIn( calculateMarkerGoodLookAt(edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), marker) ), .5);
+//		marker.setVehicle( this.scene );
+//		marker.setOpacity( 1.0 );
+//		camera.moveAndOrientTo( this.scene.createOffsetStandIn( pov.getInternal() ), 1.0 );
+//		marker.setShowing(wasShowing);
 	}
 
 
@@ -1327,45 +1315,45 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	protected void putFieldForInstanceInJava( Object instanceInJava, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 //		super.putFieldForInstanceInJava( instanceInJava, field );
-		if( instanceInJava instanceof org.lookingglassandalice.storytelling.Turnable ) {
-			org.lookingglassandalice.storytelling.Turnable transformable = (org.lookingglassandalice.storytelling.Turnable)instanceInJava;
-			transformable.realizeIfNecessary();
-			org.lookingglassandalice.storytelling.resources.sims2.PickHintUtilities.setPickHint( transformable );
-		}
+//		if( instanceInJava instanceof org.lookingglassandalice.storytelling.Turnable ) {
+//			org.lookingglassandalice.storytelling.Turnable transformable = (org.lookingglassandalice.storytelling.Turnable)instanceInJava;
+//			transformable.realizeIfNecessary();
+//			org.lookingglassandalice.storytelling.resources.sims2.PickHintUtilities.setPickHint( transformable );
+//		}
 	}
 
 	
 	private void setCameraMarkerVisibility(boolean isShowing)
 	{
-		for (AbstractField field : this.sceneType.fields)
-		{
-			if (field.getDesiredValueType().isAssignableTo(MarkerWithIcon.class))
-			{
-				MarkerWithIcon marker = this.getInstanceInJavaVMForField(field, org.lookingglassandalice.storytelling.MarkerWithIcon.class);
-				if (marker != null)
-				{
-					marker.setShowing(isShowing);
-				}
-			}
-		}
+//		for (AbstractField field : this.sceneType.fields)
+//		{
+//			if (field.getDesiredValueType().isAssignableTo(MarkerImplementation.class))
+//			{
+//				MarkerImplementation marker = this.getInstanceInJavaVMForField(field, org.lookingglassandalice.storytelling.MarkerImplementation.class);
+//				if (marker != null)
+//				{
+//					marker.setShowing(isShowing);
+//				}
+//			}
+//		}
 	}
 	
 	private void updateCameraMarkers()
 	{
-		for (AbstractField field : this.sceneType.fields)
-		{
-			if (field.getDesiredValueType().isAssignableTo(MarkerWithIcon.class))
-			{
-				MarkerWithIcon marker = this.getInstanceInJavaVMForField(field, org.lookingglassandalice.storytelling.MarkerWithIcon.class);
-				if (marker != null)
-				{
-					if (marker instanceof PerspectiveCameraMarker)
-					{
-						updateCameraMarkerToCamera((PerspectiveCameraMarker)marker, (SymmetricPerspectiveCamera)getSGCameraForCreatingMarker());
-					}
-				}
-			}
-		}
+//		for (AbstractField field : this.sceneType.fields)
+//		{
+//			if (field.getDesiredValueType().isAssignableTo(MarkerImplementation.class))
+//			{
+//				MarkerImplementation marker = this.getImplementation(field);
+//				if (marker != null)
+//				{
+//					if (marker instanceof PerspectiveCameraMarkerImplementation)
+//					{
+//						updateCameraMarkerToCamera((PerspectiveCameraMarkerImplementation)marker, (SymmetricPerspectiveCamera)getSGCameraForCreatingMarker());
+//					}
+//				}
+//			}
+//		}
 	}
 	
 	private void clearCameras()
@@ -1483,9 +1471,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		sceneViewTransform.applyTranslationAlongYAxis(12.0);
 		sceneViewTransform.applyTranslationAlongZAxis(10.0);
 		sceneViewTransform.applyRotationAboutXAxis(new AngleInDegrees(-40));
-		if (this.sceneViewMarker.getSGTransformable().getParent() != null)
+		if (this.sceneViewMarker.getSgComposite().getParent() != null)
 		{
-			this.sceneViewMarker.getSGTransformable().setTransformation( sceneViewTransform, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
+			this.sceneViewMarker.getSgComposite().setTransformation( sceneViewTransform, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
 		}
 		else
 		{
@@ -1514,16 +1502,16 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	private void updateCameraMarkerToCamera( org.lookingglassandalice.storytelling.PerspectiveCameraMarker cameraMarker, SymmetricPerspectiveCamera perspectiveCamera)
 	{
-		setViewingAngleOnMarker(cameraMarker, perspectiveCamera);
-		cameraMarker.setFarClippingPlane(perspectiveCamera.farClippingPlaneDistance.getValue());
+//		setViewingAngleOnMarker(cameraMarker, perspectiveCamera);
+//		cameraMarker.setFarClippingPlane(perspectiveCamera.farClippingPlaneDistance.getValue());
 	}
 	
 	private void setViewingAngleOnMarker( org.lookingglassandalice.storytelling.PerspectiveCameraMarker cameraMarker, SymmetricPerspectiveCamera perspectiveCamera )
 	{
-		if (this.onscreenLookingGlass != null)
-		{
-			cameraMarker.setViewingAngle(this.onscreenLookingGlass.getActualHorizontalViewingAngle(perspectiveCamera), this.onscreenLookingGlass.getActualVerticalViewingAngle(perspectiveCamera));
-		}
+//		if (this.onscreenLookingGlass != null)
+//		{
+//			cameraMarker.setViewingAngle(this.onscreenLookingGlass.getActualHorizontalViewingAngle(perspectiveCamera), this.onscreenLookingGlass.getActualVerticalViewingAngle(perspectiveCamera));
+//		}
 	}
 	
 	private void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field, FieldAndInstanceMapper mapper) {
@@ -1729,7 +1717,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		this.mainCameraNavigatorWidget.setToPerspectiveMode();
 	}
 	
-	public MarkerWithIcon getActiveCameraMarker()
+	public MarkerImplementation getActiveCameraMarker()
 	{
 		View view = this.mainCameraMarkerList.getSelectedItem();
 		return this.mainCameraViewTracker.getCameraMarker( view );
@@ -1742,82 +1730,82 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	private void createOrthographicCameraMarkers()
 	{
-		this.orthographicCameraMarkers.clear();
-		this.topOrthoMarker = new org.lookingglassandalice.storytelling.OrthographicCameraMarker();
-		this.topOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon.png")));
-		this.topOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon_highlighted.png")));
-		AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
-		topTransform.translation.y = 10;
-		topTransform.translation.z = -10;
-		topTransform.orientation.up.set( 0, 0, 1 );
-		topTransform.orientation.right.set( -1, 0, 0 );
-		topTransform.orientation.backward.set( 0, 1, 0 );
-		assert topTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
-		this.topOrthoMarker.setLocalTransformation( topTransform );
-		ClippedZPlane picturePlane = new ClippedZPlane();
-		picturePlane.setCenter(0, 0);
-		picturePlane.setHeight(16);
-		this.topOrthoMarker.setPicturePlane(picturePlane);
-		orthographicCameraMarkers.add(this.topOrthoMarker);
-
-		this.sideOrthoMarker = new org.lookingglassandalice.storytelling.OrthographicCameraMarker();
-		this.sideOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon.png")));
-		this.sideOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon_highlighted.png")));
-		AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
-		sideTransform.translation.x = 10;
-		sideTransform.translation.y = 1;
-		sideTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()) );
-		assert sideTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
-		this.sideOrthoMarker.setLocalTransformation( sideTransform );
-		picturePlane.setHeight(4);
-		this.sideOrthoMarker.setPicturePlane(picturePlane);
-		orthographicCameraMarkers.add(this.sideOrthoMarker);
-
-		this.frontOrthoMarker = new org.lookingglassandalice.storytelling.OrthographicCameraMarker();
-		this.frontOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon.png")));
-		this.frontOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon_highlighted.png")));
-		AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
-		frontTransform.translation.z = -10;
-		frontTransform.translation.y = 1;
-		frontTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()) );
-		assert frontTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
-		this.frontOrthoMarker.setLocalTransformation( frontTransform );
-		picturePlane.setHeight(4);
-		this.frontOrthoMarker.setPicturePlane(picturePlane);
-		orthographicCameraMarkers.add(this.frontOrthoMarker);
-		
-		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( MoveAndTurnSceneEditor.class.getPackage().getName() + ".cameraViews" );
-		this.openingSceneMarker.setName( resourceBundle.getString( "sceneCameraView" ) );
-		this.sceneViewMarker.setName( resourceBundle.getString( "layoutPerspectiveView" ) );
-		this.topOrthoMarker.setName( resourceBundle.getString( "topOrthographicView" ) );
-		this.sideOrthoMarker.setName( resourceBundle.getString( "leftOrthographicView" ) );
-		this.frontOrthoMarker.setName( resourceBundle.getString( "frontOrthographicView" ) );
+//		this.orthographicCameraMarkers.clear();
+//		this.topOrthoMarker = new org.lookingglassandalice.storytelling.OrthographicCameraMarker();
+//		this.topOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon.png")));
+//		this.topOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon_highlighted.png")));
+//		AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
+//		topTransform.translation.y = 10;
+//		topTransform.translation.z = -10;
+//		topTransform.orientation.up.set( 0, 0, 1 );
+//		topTransform.orientation.right.set( -1, 0, 0 );
+//		topTransform.orientation.backward.set( 0, 1, 0 );
+//		assert topTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+//		this.topOrthoMarker.setLocalTransformation( topTransform );
+//		ClippedZPlane picturePlane = new ClippedZPlane();
+//		picturePlane.setCenter(0, 0);
+//		picturePlane.setHeight(16);
+//		this.topOrthoMarker.setPicturePlane(picturePlane);
+//		orthographicCameraMarkers.add(this.topOrthoMarker);
+//
+//		this.sideOrthoMarker = new org.lookingglassandalice.storytelling.OrthographicCameraMarker();
+//		this.sideOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon.png")));
+//		this.sideOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon_highlighted.png")));
+//		AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
+//		sideTransform.translation.x = 10;
+//		sideTransform.translation.y = 1;
+//		sideTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()) );
+//		assert sideTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+//		this.sideOrthoMarker.setLocalTransformation( sideTransform );
+//		picturePlane.setHeight(4);
+//		this.sideOrthoMarker.setPicturePlane(picturePlane);
+//		orthographicCameraMarkers.add(this.sideOrthoMarker);
+//
+//		this.frontOrthoMarker = new org.lookingglassandalice.storytelling.OrthographicCameraMarker();
+//		this.frontOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon.png")));
+//		this.frontOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon_highlighted.png")));
+//		AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
+//		frontTransform.translation.z = -10;
+//		frontTransform.translation.y = 1;
+//		frontTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()) );
+//		assert frontTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+//		this.frontOrthoMarker.setLocalTransformation( frontTransform );
+//		picturePlane.setHeight(4);
+//		this.frontOrthoMarker.setPicturePlane(picturePlane);
+//		orthographicCameraMarkers.add(this.frontOrthoMarker);
+//		
+//		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( MoveAndTurnSceneEditor.class.getPackage().getName() + ".cameraViews" );
+//		this.openingSceneMarker.setName( resourceBundle.getString( "sceneCameraView" ) );
+//		this.sceneViewMarker.setName( resourceBundle.getString( "layoutPerspectiveView" ) );
+//		this.topOrthoMarker.setName( resourceBundle.getString( "topOrthographicView" ) );
+//		this.sideOrthoMarker.setName( resourceBundle.getString( "leftOrthographicView" ) );
+//		this.frontOrthoMarker.setName( resourceBundle.getString( "frontOrthographicView" ) );
 	}
 	
 	public void addCameraMarkersToScene(Scene sceneToAddTo)
 	{
-		Turnable[] existingComponents = sceneToAddTo.getComponents();
-		for (View view : this.mainCameraMarkerList)
-		{
-			MarkerWithIcon marker = this.mainCameraViewTracker.getCameraMarker( view );
-			boolean alreadyHasIt = false;
-			for (Turnable t : existingComponents)
-			{
-				if (t == marker)
-				{
-					alreadyHasIt = true;
-					break;
-				}
-			}
-			if (!alreadyHasIt)
-			{
-				if (marker.getVehicle() != null)
-				{
-					marker.setVehicle(null);
-				}
-				sceneToAddTo.addComponent(marker);
-			}
-		}
+//		Turnable[] existingComponents = sceneToAddTo.getComponents();
+//		for (View view : this.mainCameraMarkerList)
+//		{
+//			MarkerImplementation marker = this.mainCameraViewTracker.getCameraMarker( view );
+//			boolean alreadyHasIt = false;
+//			for (Turnable t : existingComponents)
+//			{
+//				if (t == marker)
+//				{
+//					alreadyHasIt = true;
+//					break;
+//				}
+//			}
+//			if (!alreadyHasIt)
+//			{
+//				if (marker.getVehicle() != null)
+//				{
+//					marker.setVehicle(null);
+//				}
+//				sceneToAddTo.addComponent(marker);
+//			}
+//		}
 	}
 
 	private String getNameForObjectMarker( TypeDeclaredInAlice ownerType, FieldDeclaredInAlice selectedField ) {
@@ -1896,8 +1884,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 
 		org.lookingglassandalice.storytelling.ObjectMarker objectMarker = new org.lookingglassandalice.storytelling.ObjectMarker();
 		objectMarker.setName( markerName );
-		objectMarker.setShowing(true);
-		objectMarker.setLocalTransformation( selectedTransformable.getTransformation(AsSeenBy.SCENE) );
+//		objectMarker.setShowing(true);
+//		objectMarker.setLocalTransformation( selectedTransformable.getTransformation(AsSeenBy.SCENE) );
 
 		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.ObjectMarker.class );
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice objectMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( markerName, org.lookingglassandalice.storytelling.ObjectMarker.class, initializer );
@@ -1913,8 +1901,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		org.lookingglassandalice.storytelling.BookmarkCameraMarker cameraMarker = new org.lookingglassandalice.storytelling.BookmarkCameraMarker();
 		cameraMarker.setName( markerName );
 //		cameraMarker.setMarkerColor( getColorForMarker().getInternal() );
-		cameraMarker.setShowing(true);
-		cameraMarker.setLocalTransformation( getSGCameraForCreatingMarker().getTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE.getSgReferenceFrame() ) );
+//		cameraMarker.setShowing(true);
+//		cameraMarker.setLocalTransformation( getSGCameraForCreatingMarker().getTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE.getSgReferenceFrame() ) );
 		updateCameraMarkerToCamera(cameraMarker, (SymmetricPerspectiveCamera)getSGCameraForCreatingMarker());
 
 		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.BookmarkCameraMarker.class );
@@ -1928,11 +1916,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 
 	public void moveActiveCameraToMarker(FieldDeclaredInAlice markerField)
 	{
-		MarkerWithIcon marker = this.getCameraMarkerForField(markerField);
+		MarkerImplementation marker = this.getCameraMarkerForField(markerField);
 		if (marker != null)
 		{
-			org.lookingglassandalice.storytelling.Camera mvCamera = (org.lookingglassandalice.storytelling.Camera)Element.getElement(this.sgPerspectiveCamera);
-			mvCamera.moveAndOrientTo(marker);
+//			org.lookingglassandalice.storytelling.Camera mvCamera = (org.lookingglassandalice.storytelling.Camera)Element.getElement(this.sgPerspectiveCamera);
+//			mvCamera.moveAndOrientTo(marker);
 		}
 	}
 	
@@ -1975,15 +1963,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		this.globalDragAdapter.setHandleShowingForObject(object, handlesVisible);
 	}
 	
-	public boolean isObjectSelected( edu.cmu.cs.dennisc.scenegraph.Transformable object )
+	public boolean isObjectSelected( TransformableImplementation object )
 	{
 		return this.globalDragAdapter.getSelectedObject() == object;
 	}
 	
-	public boolean isCameraMarkerActive( MarkerWithIcon marker )
+	public boolean isCameraMarkerActive( MarkerImplementation marker )
 	{
 		View view = this.mainCameraMarkerList.getSelectedItem();
-		MarkerWithIcon activeMarker = this.mainCameraViewTracker.getCameraMarker( view );
+		MarkerImplementation activeMarker = this.mainCameraViewTracker.getCameraMarker( view );
 		return marker == activeMarker;
 	}
 	

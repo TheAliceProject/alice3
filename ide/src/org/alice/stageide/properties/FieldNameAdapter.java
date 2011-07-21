@@ -50,6 +50,8 @@ import org.alice.ide.properties.adapter.AbstractNamePropertyAdapter;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.Button;
 
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+
 
 public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
 	
@@ -70,16 +72,6 @@ public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.den
 		}
 	}
 	
-	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice instance)
-	{
-		if (this.instance != null)
-		{
-			return this.instance.name;
-		}
-		return null;
-	}
-
 	@Override
 	public void setValue(String value) 
 	{
@@ -111,6 +103,20 @@ public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.den
 	public String getUndoRedoDescription(Locale locale) 
 	{
 		return "Field Name";
+	}
+
+	@Override
+	protected void addPropertyListener(PropertyListener propertyListener) {
+		if (this.instance != null){
+			this.instance.name.addPropertyListener(propertyListener);
+		}
+	}
+
+	@Override
+	protected void removePropertyListener(PropertyListener propertyListener) {
+		if (this.instance != null){
+			this.instance.name.addPropertyListener(propertyListener);
+		}
 	}
 
 }

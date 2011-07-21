@@ -46,29 +46,20 @@ package org.alice.stageide.properties;
 import org.alice.ide.properties.adapter.AbstractOpacityPropertyAdapter;
 
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-public class ModelOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lookingglassandalice.storytelling.Model> {
+public class ModelOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lookingglassandalice.storytelling.implementation.ModelImplementation> {
 
-	public ModelOpacityAdapter(org.lookingglassandalice.storytelling.Model instance)
+	public ModelOpacityAdapter(org.lookingglassandalice.storytelling.implementation.ModelImplementation instance)
 	{
 		super(instance);
-	}
-	
-	@Override
-	protected InstanceProperty<?> getPropertyInstanceForInstance(org.lookingglassandalice.storytelling.Model instance) 
-	{
-		if (this.instance != null)
-		{
-			return instance.getSGSingleAppearance().opacity;
-		}
-		return null;
 	}
 	
 	public Double getValue() 
 	{
 		if (this.instance != null)
 		{
-			return this.instance.getOpacity();
+			return (double)this.instance.getOpacity();
 		}
 		else
 		{
@@ -85,11 +76,25 @@ public class ModelOpacityAdapter extends AbstractOpacityPropertyAdapter<org.look
 			new Thread() {
 				@Override
 				public void run() {
-					ModelOpacityAdapter.this.instance.setOpacity(value);
+					ModelOpacityAdapter.this.instance.setOpacity(value.floatValue());
 				}
 			}.start();
 		}
 		
+	}
+
+	@Override
+	protected void addPropertyListener(PropertyListener propertyListener) {
+		if (this.instance != null){
+			this.instance.addOpacityListener(propertyListener);
+		}
+	}
+
+	@Override
+	protected void removePropertyListener(PropertyListener propertyListener) {
+		if (this.instance != null){
+			this.instance.removeOpacityListener(propertyListener);
+		}
 	}
 
 }

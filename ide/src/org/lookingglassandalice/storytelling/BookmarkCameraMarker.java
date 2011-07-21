@@ -43,17 +43,6 @@
 
 package org.lookingglassandalice.storytelling;
 
-public class BookmarkCameraMarker extends PerspectiveCameraMarker {
-
-	public BookmarkCameraMarker()
-	{
-		super();
-		this.setShowing(false);
-	}
+public class BookmarkCameraMarker extends PerspectiveCameraMarker {	
 	
-	@Override
-	public float getDefaultMarkerOpacity() 
-	{
-		return .5f;
-	}
 }

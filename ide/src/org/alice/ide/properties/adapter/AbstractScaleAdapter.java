@@ -42,12 +42,12 @@
  */
 
 package org.alice.ide.properties.adapter;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.Dimension3;
 
-public abstract class AbstractScaleAdapter<O> extends AbstractInstancePropertyAdapter<Matrix3x3, O> 
+public abstract class AbstractScaleAdapter<O> extends AbstractInstancePropertyAdapter<Dimension3, O> 
 {
-	protected class SetScaleOperation extends SetValueOperation<Matrix3x3> {
-		public SetScaleOperation( Matrix3x3 value, String name) {
+	protected class SetScaleOperation extends SetValueOperation<Dimension3> {
+		public SetScaleOperation( Dimension3 value, String name) {
 			super( AbstractScaleAdapter.this, value, name, java.util.UUID.fromString( "c742ea2e-cafe-41a0-9b76-38cb51921823" ) );
 		}
 	}
@@ -57,19 +57,19 @@ public abstract class AbstractScaleAdapter<O> extends AbstractInstancePropertyAd
 		super(repr, instance);
 	}
 	
-	public Class<Matrix3x3> getPropertyType()
+	public Class<Dimension3> getPropertyType()
 	{
-		return Matrix3x3.class;
+		return Dimension3.class;
 	}
 	
 	@Override
-	public SetValueOperation<Matrix3x3> getSetValueOperation(Matrix3x3 value) 
+	public SetValueOperation<Dimension3> getSetValueOperation(Dimension3 value) 
 	{
 		return new SetScaleOperation(value, null);
 	}
 	
-	public Matrix3x3 getValueCopy() 
+	public Dimension3 getValueCopy() 
 	{
-		return new Matrix3x3(this.getValue());
+		return new Dimension3(this.getValue());
 	}
 }

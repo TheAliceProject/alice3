@@ -59,6 +59,10 @@ import java.util.Map.Entry;
 import org.lookingglassandalice.storytelling.CameraMarker;
 import org.lookingglassandalice.storytelling.ObjectMarker;
 import org.lookingglassandalice.storytelling.PerspectiveCameraMarker;
+import org.lookingglassandalice.storytelling.implementation.CameraMarkerImplementation;
+import org.lookingglassandalice.storytelling.implementation.ObjectMarkerImplementation;
+import org.lookingglassandalice.storytelling.implementation.PerspectiveCameraMarkerImplementation;
+import org.lookingglassandalice.storytelling.implementation.TransformableImplementation;
 import org.alice.interact.condition.InputCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;
@@ -80,6 +84,8 @@ import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.ListSelectionState;
 
 import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.animation.Style;
+import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
@@ -180,7 +186,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	private boolean hasSetCameraTransformables = false;
 	
 	private boolean isInStageChange = false;
-	private Transformable toBeSelected = null;
+	private TransformableImplementation toBeSelected = null;
 	private boolean hasObjectToBeSelected = false;
 	
 	private Component currentRolloverComponent = null;
@@ -192,9 +198,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	protected SnapState snapState = null;
 	
-	private Transformable selectedObject = null;
-	private CameraMarker selectedCameraMarker = null;
-	private ObjectMarker selectedObjectMarker = null;
+	private TransformableImplementation selectedObject = null;
+	private CameraMarkerImplementation selectedCameraMarker = null;
+	private ObjectMarkerImplementation selectedObjectMarker = null;
 
 	protected java.util.Map< org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup > mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
@@ -283,7 +289,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return this.isInStageChange;
 	}
 	
-	public void setToBeSelected(Transformable toBeSelected)
+	public void setToBeSelected(TransformableImplementation toBeSelected)
 	{
 		this.toBeSelected = toBeSelected;
 		this.hasObjectToBeSelected = true;
@@ -369,7 +375,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return this.animator;
 	}
 	
-	public Transformable getSelectedObject()
+	public TransformableImplementation getSelectedObject()
 	{
 		return this.selectedObject;
 	}
@@ -382,7 +388,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 //		}
 	}
 	
-	public void triggerSelection(Transformable selected)
+	public void triggerSelection(TransformableImplementation selected)
 	{	
 		if (this.selectedObject != selected)
 		{
@@ -392,94 +398,94 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	private static double MARKER_SELECTION_DURATION = .25;
 	
-	public void setSelectedCameraMarker( CameraMarker selected )
+	public void setSelectedCameraMarker( CameraMarkerImplementation selected )
 	{
 		if (selected != this.selectedCameraMarker)
 		{
 			this.fireSelecting( new SelectionEvent(this, selected) );
 			if (this.selectedCameraMarker != null)
 			{
-				this.selectedCameraMarker.setOpacity(.3f, MARKER_SELECTION_DURATION);
-				if (this.selectedCameraMarker instanceof PerspectiveCameraMarker)
+				this.selectedCameraMarker.animateOpacity(.3f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
+				if (this.selectedCameraMarker instanceof PerspectiveCameraMarkerImplementation)
 				{
-					((PerspectiveCameraMarker)this.selectedCameraMarker).setDetailedViewShowing(false);
+					((PerspectiveCameraMarkerImplementation)this.selectedCameraMarker).setDetailedViewShowing(false);
 				}
 			}
 			this.selectedCameraMarker = selected;
 			if (this.selectedCameraMarker != null)
 			{
-				this.selectedCameraMarker.setOpacity(1f, MARKER_SELECTION_DURATION);
-				if (this.sceneEditor != null && this.selectedCameraMarker instanceof PerspectiveCameraMarker)
+				this.selectedCameraMarker.animateOpacity(1f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
+				if (this.sceneEditor != null && this.selectedCameraMarker instanceof PerspectiveCameraMarkerImplementation)
 				{
 					boolean isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive(this.selectedCameraMarker);
 					if (!isNewSelectedActiveCameraMarker)
 					{
-						((PerspectiveCameraMarker)this.selectedCameraMarker).setDetailedViewShowing(true);
+						((PerspectiveCameraMarkerImplementation)this.selectedCameraMarker).setDetailedViewShowing(true);
 					}
 				}
 			}
 		}
 	}
 	
-	public void setSelectedCameraMarker( Transformable selected )
+	public void setSelectedCameraMarker( TransformableImplementation selected )
 	{
-		CameraMarker cameraMarker = null;
+		CameraMarkerImplementation cameraMarker = null;
 		if (selected != null)
 		{
-			org.lookingglassandalice.storytelling.Entity selectedMoveAndTurnObject = org.lookingglassandalice.storytelling.Entity.getElement( selected );
-			if (selectedMoveAndTurnObject instanceof CameraMarker)
+//			org.lookingglassandalice.storytelling.Entity selectedMoveAndTurnObject = org.lookingglassandalice.storytelling.Entity.getElement( selected );
+			if (selected instanceof CameraMarkerImplementation)
 			{
-				cameraMarker = (CameraMarker)selectedMoveAndTurnObject;
+				cameraMarker = (CameraMarkerImplementation)selected;
 			}
 		}
 		setSelectedCameraMarker(cameraMarker);
 	}
 	
-	public void setSelectedObjectMarker( ObjectMarker selected )
+	public void setSelectedObjectMarker( ObjectMarkerImplementation selected )
 	{
 		if (selected != this.selectedObjectMarker)
 		{
 			this.fireSelecting( new SelectionEvent(this, selected) );
 			if (this.selectedObjectMarker != null)
 			{
-				this.selectedObjectMarker.setOpacity(.3f, MARKER_SELECTION_DURATION);
+				this.selectedObjectMarker.animateOpacity(.3f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
 			}
 			this.selectedObjectMarker = selected;
 			if (this.selectedObjectMarker != null)
 			{
-				this.selectedObjectMarker.setOpacity(1f, MARKER_SELECTION_DURATION);
+				this.selectedObjectMarker.animateOpacity(1f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
 			}
 		}
 	}
 	
-	public void setSelectedObjectMarker( Transformable selected )
+	public void setSelectedObjectMarker( TransformableImplementation selected )
 	{
-		ObjectMarker objectMarker = null;
+		ObjectMarkerImplementation objectMarker = null;
 		if (selected != null)
 		{
-			org.lookingglassandalice.storytelling.Entity selectedMoveAndTurnObject = org.lookingglassandalice.storytelling.Entity.getElement( selected );
-			if (selectedMoveAndTurnObject instanceof ObjectMarker)
+//			org.lookingglassandalice.storytelling.Entity selectedMoveAndTurnObject = org.lookingglassandalice.storytelling.Entity.getElement( selected );
+			if (selected instanceof ObjectMarkerImplementation)
 			{
-				objectMarker = (ObjectMarker)selectedMoveAndTurnObject;
+				objectMarker = (ObjectMarkerImplementation)selected;
 			}
 		}
 		setSelectedObjectMarker(objectMarker);
 	}
 	
-	public void setSelectedSceneObject( Transformable selected )
+	public void setSelectedSceneObject( TransformableImplementation selected )
 	{
 		if (this.selectedObject != selected)
 		{
 			this.fireSelecting( new SelectionEvent(this, selected) );
-			if (HandleManager.canHaveHandles(selected))
-			{
-				this.handleManager.setHandlesShowing(true);
-				this.handleManager.setSelectedObject( selected );
-			}
-			else
-			{
-				this.handleManager.setSelectedObject( null );
-			}
+//			if (HandleManager.canHaveHandles(selected))
+//			{
+//				this.handleManager.setHandlesShowing(true);
+//				this.handleManager.setSelectedObject( selected );
+//			}
+//			else
+//			{
+//				this.handleManager.setSelectedObject( null );
+//			}
 			this.currentInputState.setCurrentlySelectedObject( selected );
 			this.currentInputState.setTimeCaptured();
 			selectedObject = selected;
@@ -487,7 +493,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void setSelectedObject(Transformable selected)
+	public void setSelectedObject(TransformableImplementation selected)
 	{
 		if (this.isInStateChange())
 		{
@@ -496,12 +502,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 		if (selected != null)
 		{
-			org.lookingglassandalice.storytelling.Entity selectedMoveAndTurnObject = org.lookingglassandalice.storytelling.Entity.getElement( selected );
-			if (selectedMoveAndTurnObject instanceof ObjectMarker)
+//			org.lookingglassandalice.storytelling.Entity selectedMoveAndTurnObject = org.lookingglassandalice.storytelling.Entity.getElement( selected );
+			if (selected instanceof ObjectMarkerImplementation)
 			{
 				setSelectedObjectMarker(selected);
 			}
-			else if (selectedMoveAndTurnObject instanceof CameraMarker)
+			else if (selected instanceof CameraMarkerImplementation)
 			{
 				setSelectedCameraMarker(selected);
 			}
