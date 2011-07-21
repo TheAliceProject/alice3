@@ -74,11 +74,6 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	protected boolean isEditableInitializerComponentDesired() {
 		return true;
 	}
-
-	@Override
-	public String getDialogTitle() {
-		return "Declare Local";
-	}
 	
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getInputValue() {

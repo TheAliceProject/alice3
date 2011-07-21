@@ -52,10 +52,6 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 		this.declaringType = declaringType;
 	}
 	@Override
-	protected String getDeclarationText() {
-		return "Procedure";
-	}
-	@Override
 	protected org.lgna.croquet.components.Component< ? > createInitializerComponent() {
 		return null;
 	}

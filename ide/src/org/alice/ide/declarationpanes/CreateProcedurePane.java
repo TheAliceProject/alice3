@@ -51,10 +51,6 @@ public class CreateProcedurePane extends CreateMethodPane {
 		this.setBackgroundColor( getIDE().getTheme().getProcedureColor() );
 	}
 	@Override
-	protected String getDeclarationText() {
-		return "Procedure";
-	}
-	@Override
 	protected boolean isEditableValueTypeComponentDesired() {
 		return false;
 	}

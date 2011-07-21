@@ -46,10 +46,6 @@ package org.alice.ide.choosers;
  * @author Dennis Cosgrove
  */
 public abstract class ValueChooser<E extends edu.cmu.cs.dennisc.alice.ast.Expression> {
-	private String typeDescription;
-	public void setTypeDescription( String typeDescription ) {
-		this.typeDescription = typeDescription;
-	}
 	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
@@ -57,12 +53,6 @@ public abstract class ValueChooser<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 		} else {
 			return null;
 		}
-	}
-	public String getTitleDefault() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Enter Custom ");
-		sb.append( this.typeDescription );
-		return sb.toString();
 	}
 	public abstract org.lgna.croquet.components.Component< ? > createMainComponent();
 	public abstract E getValue();

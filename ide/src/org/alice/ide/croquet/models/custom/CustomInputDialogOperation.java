@@ -52,10 +52,6 @@ public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.al
 		super( org.lgna.croquet.Application.INHERIT_GROUP, id );
 		this.customInputPane = new CustomInputPane< E >( chooser );
 	}
-	
-	public void EPIC_HACK_setChooserTypeDescription( String typeDescription ) {
-		this.customInputPane.getValueChooser().setTypeDescription( typeDescription );
-	}
 	public E getActualInputValue() {
 		return this.customInputPane.getInputValue();
 	}
