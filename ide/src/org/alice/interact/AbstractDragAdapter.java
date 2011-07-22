@@ -63,6 +63,7 @@ import org.lookingglassandalice.storytelling.implementation.CameraMarkerImplemen
 import org.lookingglassandalice.storytelling.implementation.ObjectMarkerImplementation;
 import org.lookingglassandalice.storytelling.implementation.PerspectiveCameraMarkerImplementation;
 import org.lookingglassandalice.storytelling.implementation.TransformableImplementation;
+import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.condition.InputCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;
@@ -90,6 +91,7 @@ import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -168,7 +170,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	protected double mouseWheelTimeoutTime = 0;
 	protected Point mouseWheelStartLocation = null;
 	
-	protected MoveAndTurnSceneEditor sceneEditor;
+	protected AbstractSceneEditor sceneEditor;
 	
 	private Map<CameraView, CameraPair> cameraMap = new HashMap<CameraView, CameraPair>();
 	
@@ -198,7 +200,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	protected SnapState snapState = null;
 	
-	private TransformableImplementation selectedObject = null;
+	private Transformable selectedObject = null;
 	private CameraMarkerImplementation selectedCameraMarker = null;
 	private ObjectMarkerImplementation selectedObjectMarker = null;
 
@@ -375,20 +377,20 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return this.animator;
 	}
 	
-	public TransformableImplementation getSelectedObject()
+	public Transformable getSelectedObject()
 	{
 		return this.selectedObject;
 	}
 	
 	public void setHandleShowingForObject( Transformable object, boolean handlesShowing)
 	{
-//		if (this.selectedObject == object)
-//		{
-//			this.handleManager.setHandlesShowing(handlesShowing);
-//		}
+		if (this.selectedObject == object)
+		{
+			this.handleManager.setHandlesShowing(handlesShowing);
+		}
 	}
 	
-	public void triggerSelection(TransformableImplementation selected)
+	public void triggerSelection(Transformable selected)
 	{	
 		if (this.selectedObject != selected)
 		{
@@ -472,20 +474,20 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		setSelectedObjectMarker(objectMarker);
 	}
 	
-	public void setSelectedSceneObject( TransformableImplementation selected )
+	public void setSelectedSceneObject( Transformable selected )
 	{
 		if (this.selectedObject != selected)
 		{
 			this.fireSelecting( new SelectionEvent(this, selected) );
-//			if (HandleManager.canHaveHandles(selected))
-//			{
-//				this.handleManager.setHandlesShowing(true);
-//				this.handleManager.setSelectedObject( selected );
-//			}
-//			else
-//			{
-//				this.handleManager.setSelectedObject( null );
-//			}
+			if (HandleManager.canHaveHandles(selected))
+			{
+				this.handleManager.setHandlesShowing(true);
+				this.handleManager.setSelectedObject( selected );
+			}
+			else
+			{
+				this.handleManager.setSelectedObject( null );
+			}
 			this.currentInputState.setCurrentlySelectedObject( selected );
 			this.currentInputState.setTimeCaptured();
 			selectedObject = selected;
@@ -502,6 +504,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 		if (selected != null)
 		{
+			Composite c = selected.getSgComposite();
 //			org.lookingglassandalice.storytelling.Entity selectedMoveAndTurnObject = org.lookingglassandalice.storytelling.Entity.getElement( selected );
 			if (selected instanceof ObjectMarkerImplementation)
 			{
