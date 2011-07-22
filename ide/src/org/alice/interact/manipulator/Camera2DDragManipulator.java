@@ -48,13 +48,15 @@ import org.alice.interact.InputState;
 import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.ImageBasedManipulationHandle2D;
+import org.lookingglassandalice.storytelling.Entity;
+import org.lookingglassandalice.storytelling.implementation.TransformableImplementation;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
-import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
@@ -70,14 +72,15 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 	protected static final double MIN_PIXEL_MOVE_AMOUNT = 15.0d;
 	protected static final double OPPOSITE_DIRECTION_MIN_PIXEL_MOVE_AMOUNT = 5.0d;
 	
-	protected Vector3 initialMoveFactor = new Vector3(0.0d, 0.0d, 0.0d);
-	protected Vector3 initialRotateFactor = new Vector3(0.0d, 0.0d, 0.0d);
+	protected Point3 initialMoveFactor = new Point3(0.0d, 0.0d, 0.0d);
+	protected Point3 initialRotateFactor = new Point3(0.0d, 0.0d, 0.0d);
 	protected static final double INITIAL_MOVE_FACTOR = 10.0d;
 	protected static final double INITIAL_ROTATE_FACTOR = 8.0d;
 	protected static final double MOVE_CLICK_FACTOR = .04d;
 	protected static final double ROTATE_CLICK_FACTOR = .006d;
 	
-	protected Transformable standUpReference = new Transformable();
+	protected TransformableImplementation standUpReference;
+	
 	protected Color initialHandleColor = null;
 	protected Vector2 initialMousePosition = new Vector2();
 	protected InputState mouseDownState = null;
@@ -120,9 +123,9 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 	public void doClickManipulator(InputState clickInput, InputState previousInput) {
 		//This lets the manipulator know that the object has changed and we should push the change onto the undo/redo stack
 		this.hasDoneUpdate = true;
-		Vector3 amountToMoveClick = Vector3.createMultiplication( this.initialMoveFactor, MOVE_CLICK_FACTOR );
-		Vector3 amountToRotateClick = Vector3.createMultiplication( this.initialRotateFactor, ROTATE_CLICK_FACTOR );
-		this.manipulatedTransformable.setTransformation(this.initialTransform, AsSeenBy.SCENE);
+		Point3 amountToMoveClick = Point3.createMultiplication( this.initialMoveFactor, MOVE_CLICK_FACTOR );
+		Point3 amountToRotateClick = Point3.createMultiplication( this.initialRotateFactor, ROTATE_CLICK_FACTOR );
+		this.manipulatedTransformable.getSgComposite().setTransformation(this.initialTransform, AsSeenBy.SCENE);
 		applyMovement(amountToMoveClick, amountToRotateClick);
 	}
 
@@ -138,7 +141,7 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 		{
 			this.mouseDownState = new InputState(startInput);
 			this.initializeEventMessages();
-			this.standUpReference.setParent( this.getCamera().getParent() );
+			this.standUpReference.setVehicle( this.getCamera().getParent() );
 			this.standUpReference.localTransformation.setValue( AffineMatrix4x4.createIdentity() );
 			this.initialTransform = this.manipulatedTransformable.getAbsoluteTransformation();
 			this.standUpReference.setAxesOnlyToStandUp();
@@ -156,26 +159,26 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 		return false;
 	}
 
-	protected abstract Vector3 getRotationVectorForColor(Color color);
-	protected abstract Vector3 getMovementVectorForColor(Color color);
-	protected abstract Vector3 getRelativeMovementAmount(Vector2 mousePos, double time);
-	protected abstract Vector3 getRelativeRotationAmount(Vector2 mousePos, double time);
-	protected abstract ReferenceFrame getRotationReferenceFrame();
-	protected abstract ReferenceFrame getMovementReferenceFrame();
+	protected abstract Point3 getRotationVectorForColor(Color color);
+	protected abstract Point3 getMovementVectorForColor(Color color);
+	protected abstract Point3 getRelativeMovementAmount(Vector2 mousePos, double time);
+	protected abstract Point3 getRelativeRotationAmount(Vector2 mousePos, double time);
+	protected abstract org.lookingglassandalice.storytelling.implementation.ReferenceFrame getRotationReferenceFrame();
+	protected abstract org.lookingglassandalice.storytelling.implementation.ReferenceFrame getMovementReferenceFrame();
 	
-	protected Vector3 getTotalMovementAmount(Vector2 mousePos, double time)
+	protected Point3 getTotalMovementAmount(Vector2 mousePos, double time)
 	{
-		Vector3 relativeMovementAmount = this.getRelativeMovementAmount( mousePos, time );
-		Vector3 amountToMoveInitial = Vector3.createMultiplication( this.initialMoveFactor, WORLD_DISTANCE_PER_PIXEL_SECONDS * time );
-		Vector3 amountToMove = Vector3.createAddition(relativeMovementAmount, amountToMoveInitial);
+		Point3 relativeMovementAmount = this.getRelativeMovementAmount( mousePos, time );
+		Point3 amountToMoveInitial = Point3.createMultiplication( this.initialMoveFactor, WORLD_DISTANCE_PER_PIXEL_SECONDS * time );
+		Point3 amountToMove = Point3.createAddition(relativeMovementAmount, amountToMoveInitial);
 		return amountToMove;
 	}
 	
-	protected Vector3 getTotalRotationAmount(Vector2 mousePos, double time)
+	protected Point3 getTotalRotationAmount(Vector2 mousePos, double time)
 	{
-		Vector3 relativeRotationAmount = this.getRelativeRotationAmount( mousePos, time );
-		Vector3 amountToRotateInitial = Vector3.createMultiplication( this.initialRotateFactor, RADIANS_PER_PIXEL_SECONDS * time );
-		Vector3 amountToRotate = Vector3.createAddition(relativeRotationAmount, amountToRotateInitial);	
+		Point3 relativeRotationAmount = this.getRelativeRotationAmount( mousePos, time );
+		Point3 amountToRotateInitial = Point3.createMultiplication( this.initialRotateFactor, RADIANS_PER_PIXEL_SECONDS * time );
+		Point3 amountToRotate = Point3.createAddition(relativeRotationAmount, amountToRotateInitial);	
 		return amountToRotate;
 	}
 	
@@ -187,25 +190,25 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 			time = MAX_TIME;
 		
 		Vector2 mousePos = new Vector2( currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
-		Vector3 moveVector = this.getTotalMovementAmount( mousePos, time );
-		Vector3 rotateVector = this.getTotalRotationAmount( mousePos, time );
+		Point3 moveVector = this.getTotalMovementAmount( mousePos, time );
+		Point3 rotateVector = this.getTotalRotationAmount( mousePos, time );
 
 		applyMovement(moveVector, rotateVector);
 	}
 	
-	protected void applyMovement(Vector3 moveVector, Vector3 rotateVector)
+	protected void applyMovement(Point3 moveVector, Point3 rotateVector)
 	{
 		this.manipulatedTransformable.applyTranslation( moveVector, this.getMovementReferenceFrame() );
 		if (rotateVector.x != 0.0d)
-			this.manipulatedTransformable.applyRotationAboutXAxis( new AngleInRadians(rotateVector.x), getRotationReferenceFrame() );
+			this.manipulatedTransformable.applyRotationInRadians(edu.cmu.cs.dennisc.math.Vector3.accessPositiveXAxis(), rotateVector.x, getRotationReferenceFrame() );
 		if (rotateVector.y != 0.0d)
-			this.manipulatedTransformable.applyRotationAboutYAxis( new AngleInRadians(rotateVector.y), getRotationReferenceFrame() );
+			this.manipulatedTransformable.applyRotationInRadians(edu.cmu.cs.dennisc.math.Vector3.accessPositiveYAxis(), rotateVector.y, getRotationReferenceFrame() );
 		if (rotateVector.z != 0.0d)
-			this.manipulatedTransformable.applyRotationAboutZAxis( new AngleInRadians(rotateVector.z), getRotationReferenceFrame() );
+			this.manipulatedTransformable.applyRotationInRadians(edu.cmu.cs.dennisc.math.Vector3.accessPositiveZAxis(), rotateVector.z, getRotationReferenceFrame() );
 		
 		for (ManipulationEvent event : this.manipulationEvents)
 		{
-			Vector3 dotVector = null;
+			Point3 dotVector = null;
 			if (event.getType() == ManipulationEvent.EventType.Rotate)
 			{
 				dotVector = rotateVector;

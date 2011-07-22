@@ -46,6 +46,7 @@ package org.alice.interact.manipulator;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
+import org.lookingglassandalice.storytelling.implementation.CameraImplementation;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -55,10 +56,10 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  */
 public abstract class CameraManipulator extends AbstractManipulator implements CameraInformedManipulator {
 
-	protected AbstractCamera camera = null;
+	protected CameraImplementation<AbstractCamera> camera = null;
 	protected CameraView desiredCameraView;
 	
-	public AbstractCamera getCamera()
+	public CameraImplementation<AbstractCamera> getCamera()
 	{
 		return this.camera;
 	}
@@ -72,21 +73,12 @@ public abstract class CameraManipulator extends AbstractManipulator implements C
 		return this.desiredCameraView;
 	}
 	
-	public void setCamera( AbstractCamera camera ) 
+	public void setCamera( CameraImplementation<?> camera ) 
 	{
-		this.camera = camera;
-		this.manipulatedTransformable = this.getManipulatedTransformableFromCamera();
+		this.camera = (CameraImplementation<AbstractCamera>)camera;
+		this.manipulatedTransformable = camera;
 	}
 	
-	public Transformable getManipulatedTransformableFromCamera()
-	{
-		AbstractCamera camera = this.getCamera();
-		if (camera != null && camera.getParent() instanceof Transformable)
-		{
-			return (Transformable)camera.getParent();
-		}
-		return null;
-	}
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) 

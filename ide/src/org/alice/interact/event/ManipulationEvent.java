@@ -44,6 +44,7 @@ package org.alice.interact.event;
 
 import org.alice.interact.InputState;
 import org.alice.interact.condition.MovementDescription;
+import org.lookingglassandalice.storytelling.implementation.TransformableImplementation;
 
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -62,10 +63,10 @@ public class ManipulationEvent {
 	
 	private EventType type;
 	private MovementDescription movementDescription;
-	private Transformable target;
+	private TransformableImplementation target;
 	private InputState inputState;
 	
-	public ManipulationEvent( EventType type, MovementDescription movementDescription, Transformable target)
+	public ManipulationEvent( EventType type, MovementDescription movementDescription, TransformableImplementation target)
 	{
 		this.type = type;
 		this.movementDescription = movementDescription;
@@ -82,7 +83,7 @@ public class ManipulationEvent {
 	/**
 	 * @return the target
 	 */
-	public Transformable getTarget() {
+	public TransformableImplementation getTarget() {
 		return target;
 	}
 

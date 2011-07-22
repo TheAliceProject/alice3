@@ -50,6 +50,7 @@ import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.ImageBasedManipulationHandle2D;
 
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
@@ -80,8 +81,8 @@ public class Camera2DDragDriveManipulator extends Camera2DDragManipulator {
 	}
 	
 	@Override
-	protected Vector3 getMovementVectorForColor(Color color) {
-		Vector3 initialMove = new Vector3(0.0d, 0.0d, 0.0d);
+	protected Point3 getMovementVectorForColor(Color color) {
+		Point3 initialMove = new Point3(0.0d, 0.0d, 0.0d);
 		if (color != null)
 		{
 			if (color.equals( UP ))
@@ -97,8 +98,8 @@ public class Camera2DDragDriveManipulator extends Camera2DDragManipulator {
 	}
 	
 	@Override
-	protected Vector3 getRotationVectorForColor( Color color ) {
-		Vector3 initialRotate = new Vector3(0.0d, 0.0d, 0.0d);
+	protected Point3 getRotationVectorForColor( Color color ) {
+		Point3 initialRotate = new Point3(0.0d, 0.0d, 0.0d);
 		if (color != null)
 		{
 			if (color.equals( LEFT ))
@@ -115,7 +116,7 @@ public class Camera2DDragDriveManipulator extends Camera2DDragManipulator {
 	
 
 	@Override
-	protected Vector3 getRelativeMovementAmount(Vector2 mousePos, double time)
+	protected Point3 getRelativeMovementAmount(Vector2 mousePos, double time)
 	{
 		Vector2 relativeMousePos = Vector2.createSubtraction( mousePos, this.initialMousePosition );
 		
@@ -139,12 +140,12 @@ public class Camera2DDragDriveManipulator extends Camera2DDragManipulator {
 		}
 		
 		double amountToMoveZ = relativeMousePos.y * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
-		Vector3 amountToMoveMouse = new Vector3 (0.0d, 0.0d, amountToMoveZ);
+		Point3 amountToMoveMouse = new Point3 (0.0d, 0.0d, amountToMoveZ);
 		return amountToMoveMouse;
 	}
 	
 	@Override
-	protected Vector3 getRelativeRotationAmount(Vector2 mousePos, double time)
+	protected Point3 getRelativeRotationAmount(Vector2 mousePos, double time)
 	{
 		Vector2 relativeMousePos = Vector2.createSubtraction( mousePos, this.initialMousePosition );
 		
@@ -171,18 +172,18 @@ public class Camera2DDragDriveManipulator extends Camera2DDragManipulator {
 		}
 		
 		double amountToRotateY = -relativeMousePos.x * RADIANS_PER_PIXEL_SECONDS * time;
-		Vector3 amountToRotateMouse = new Vector3 (0.0d, amountToRotateY, 0.0d);
+		Point3 amountToRotateMouse = new Point3 (0.0d, amountToRotateY, 0.0d);
 		return amountToRotateMouse;
 	}
 	
 	@Override
-	protected ReferenceFrame getRotationReferenceFrame()
+	protected org.lookingglassandalice.storytelling.implementation.ReferenceFrame getRotationReferenceFrame()
 	{
 		return this.standUpReference;
 	}
 	
 	@Override
-	protected ReferenceFrame getMovementReferenceFrame()
+	protected org.lookingglassandalice.storytelling.implementation.ReferenceFrame getMovementReferenceFrame()
 	{
 		return this.standUpReference;
 	}
