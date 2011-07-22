@@ -124,8 +124,4 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 			return "value not set";
 		}
 	}
-	@Override
-	public String getTitleDefault() {
-		return "Press Key on Keyboard To Enter Custom Key";
-	}
 }

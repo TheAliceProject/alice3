@@ -51,10 +51,6 @@ public class CreateFunctionPane extends CreateMethodPane {
 		this.setBackgroundColor( getIDE().getTheme().getFunctionColor() );
 	}
 	@Override
-	protected String getDeclarationText() {
-		return "Function";
-	}
-	@Override
 	protected boolean isEditableValueTypeComponentDesired() {
 		return true;
 	}

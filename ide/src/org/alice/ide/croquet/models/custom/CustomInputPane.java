@@ -77,11 +77,6 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 	public org.alice.ide.choosers.ValueChooser< E > getValueChooser() {
 		return this.chooser;
 	}
-	
-	@Override
-	public final String getDialogTitle() {
-		return this.chooser.getTitleDefault();
-	}
 	@Override
 	public E getInputValue() {
 		return this.chooser.getValue();

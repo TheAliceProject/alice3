@@ -134,7 +134,6 @@ public abstract class PanelWithPreview< F > extends org.lgna.croquet.components.
 	}
 	
 	public abstract String getExplanationIfOkButtonShouldBeDisabled();
-	public abstract String getDialogTitle();
 	
 	@Override
 	protected void handleDisplayable() {

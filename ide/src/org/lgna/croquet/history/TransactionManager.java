@@ -57,6 +57,10 @@ public class TransactionManager {
 		throw new AssertionError();
 	}
 
+	public static void TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.Trigger trigger ) {
+		Transaction transaction = getActiveTransaction();
+		transaction.addPrepStep( new TODO_REMOVE_BogusStep( transaction, trigger ) );
+	}
 	public static TransactionHistory getRootTransactionHistory() {
 		return stack.firstElement();
 	}

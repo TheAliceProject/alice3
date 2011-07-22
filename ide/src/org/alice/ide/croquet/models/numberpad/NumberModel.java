@@ -62,6 +62,20 @@ public abstract class NumberModel< N extends edu.cmu.cs.dennisc.alice.ast.Expres
 		return "";
 	}
 	private javax.swing.text.Document document;
+	private javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
+		private void update( javax.swing.event.DocumentEvent e ) {
+			org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( new org.lgna.croquet.triggers.DocumentEventTrigger( e ) );
+		}
+		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+			this.update( e );
+		}
+		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+			this.update( e );
+		}
+		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+			this.update( e );
+		}
+	};
 	public NumberModel( org.lgna.croquet.Group group, java.util.UUID id ) {
 		//super( group, id, getInitialText() );
 		this.document = new javax.swing.text.PlainDocument();
@@ -75,7 +89,7 @@ public abstract class NumberModel< N extends edu.cmu.cs.dennisc.alice.ast.Expres
 		return this.document;
 	}
 	public org.lgna.croquet.components.JComponent< javax.swing.JTextField > createTextField() {
-		return new org.lgna.croquet.components.JComponent< javax.swing.JTextField >() {
+		org.lgna.croquet.components.JComponent< javax.swing.JTextField > rv = new org.lgna.croquet.components.JComponent< javax.swing.JTextField >() {
 			@Override
 			protected javax.swing.JTextField createAwtComponent() {
 				javax.swing.JTextField jTextField = new javax.swing.JTextField();
@@ -83,6 +97,9 @@ public abstract class NumberModel< N extends edu.cmu.cs.dennisc.alice.ast.Expres
 				return jTextField;
 			}
 		};
+		System.err.println( "todo: convert numpad text field to StringState" );
+		rv.getAwtComponent().getDocument().addDocumentListener( this.documentListener );
+		return rv;
 	}
 	private void append( String s ) {
 		javax.swing.text.Document document = this.getDocument();

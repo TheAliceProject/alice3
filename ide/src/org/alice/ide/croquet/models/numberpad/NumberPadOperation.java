@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.numberpad;
  * @author Dennis Cosgrove
  */
 public abstract class NumberPadOperation extends org.lgna.croquet.ActionOperation {
-	protected NumberModel numberModel;
-	public NumberPadOperation( java.util.UUID individualId, NumberModel numberModel ) {
+	protected NumberModel<?> numberModel;
+	public NumberPadOperation( java.util.UUID individualId, NumberModel<?> numberModel ) {
 		super( NumberModel.NUMBER_PAD_GROUP, individualId );
 		this.numberModel = numberModel;
 	}

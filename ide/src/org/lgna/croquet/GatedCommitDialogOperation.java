@@ -224,7 +224,7 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 	}
 
 	@Override
-	protected final void localize() {
+	protected void localize() {
 		super.localize();
 		this.completeOperation.setName( this.findLocalizedText( "commit", GatedCommitDialogOperation.class ) );
 		this.cancelOperation.setName( this.findLocalizedText( "cancel", GatedCommitDialogOperation.class ) );

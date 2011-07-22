@@ -56,10 +56,6 @@ public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDecla
 		return this.declaringType;
 	}
 	@Override
-	protected final String getDeclarationText() {
-		return "Property";
-	}
-	@Override
 	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getPreviewFactory(), this.getInputValue() );
 	}
