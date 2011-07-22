@@ -68,7 +68,7 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 	}
 
 	private org.lookingglassandalice.storytelling.resources.sims2.BaseSkinTone getBaseSkinTone() {
-		org.lookingglassandalice.storytelling.resources.sims2.Person person = PersonViewer.getSingleton().getPerson();
+		org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation person = PersonViewer.getSingleton().getPerson();
 		if( person != null ) {
 			org.lookingglassandalice.storytelling.resources.sims2.SkinTone skinTone = person.getSkinTone();
 			if( skinTone instanceof org.lookingglassandalice.storytelling.resources.sims2.BaseSkinTone ) {
