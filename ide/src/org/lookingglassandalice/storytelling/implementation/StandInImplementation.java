@@ -41,25 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.scenegraph;
+package org.lookingglassandalice.storytelling.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractOffsetReferenceFrame implements ReferenceFrame {
-	public boolean isSceneOf( Component other ) {
-		return false;
+public class StandInImplementation extends AbstractTransformableImplementation {
+	private final edu.cmu.cs.dennisc.scenegraph.StandIn sgStandIn = new edu.cmu.cs.dennisc.scenegraph.StandIn();
+	public StandInImplementation() {
+		this.putInstance( this.sgStandIn );
 	}
-	public boolean isVehicleOf( Component other ) {
-		return false;
+	@Override
+	public org.lookingglassandalice.storytelling.Entity getAbstraction() {
+		return null;
 	}
-	public boolean isLocalOf( Component other ) {
-		return false;
+	@Override
+	public edu.cmu.cs.dennisc.scenegraph.StandIn getSgComposite() {
+		return this.sgStandIn;
 	}
-	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
-		return getAbsoluteTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4() );
+	public void release() {
+		this.setVehicle( null );
 	}
-	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation() {
-		return getInverseAbsoluteTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4() );
+	@Override
+	protected double getBoundingSphereRadius() {
+		return 0;
 	}
 }

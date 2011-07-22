@@ -409,6 +409,12 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 	}
 	
 	
+	public StandInImplementation createStandIn() {
+		StandInImplementation rv = new StandInImplementation();
+		rv.setVehicle( this );
+		return rv;
+	}
+	
 	protected abstract double getBoundingSphereRadius();
 	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( ReferenceFrame asSeenBy ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgComposite().getTransformation( asSeenBy.getSgReferenceFrame() );

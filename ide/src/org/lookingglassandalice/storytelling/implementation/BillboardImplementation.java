@@ -223,4 +223,8 @@ public class BillboardImplementation extends ModelImplementation {
 	protected edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] getSgAppearances() {
 		return this.sgAppearances;
 	}
+	@Override
+	protected double getBoundingSphereRadius() {
+		return 0;
+	}
 }
