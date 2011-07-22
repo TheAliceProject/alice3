@@ -48,32 +48,88 @@ package org.lookingglassandalice.storytelling.implementation.sims2;
  */
 public class SimsBipedImplementation extends org.lookingglassandalice.storytelling.implementation.BipedImplementation {
 	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
-	public SimsBipedImplementation( org.lookingglassandalice.storytelling.Biped abstraction, org.lookingglassandalice.storytelling.resources.PersonResource resource, org.lookingglassandalice.storytelling.resources.sims2.LifeStage lifeStage, org.lookingglassandalice.storytelling.resources.sims2.Gender gender, org.lookingglassandalice.storytelling.resources.sims2.SkinTone skinTone, org.lookingglassandalice.storytelling.resources.sims2.AdultFullBodyOutfit outfit ) {
-		super( abstraction, new edu.cmu.cs.dennisc.scenegraph.Visual());
+	private final org.lookingglassandalice.storytelling.resources.sims2.LifeStage lifeStage;
+	private org.lookingglassandalice.storytelling.resources.sims2.Gender gender;
+	private org.lookingglassandalice.storytelling.resources.sims2.Outfit outfit;
+	private org.lookingglassandalice.storytelling.resources.sims2.SkinTone skinTone;
+	private double fitnessLevel;
+	private org.lookingglassandalice.storytelling.resources.sims2.Hair hair;
+	private org.lookingglassandalice.storytelling.resources.sims2.EyeColor eyeColor;
+
+	public SimsBipedImplementation( org.lookingglassandalice.storytelling.Biped abstraction, org.lookingglassandalice.storytelling.resources.sims2.LifeStage lifeStage ) {
+		super( abstraction, new edu.cmu.cs.dennisc.scenegraph.Visual() );
+		this.lifeStage = lifeStage;
 		try {
-			switch (lifeStage) {
-			case ADULT : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.resources.sims2.LifeStage.ADULT ); break;
-			case CHILD : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.resources.sims2.LifeStage.CHILD ); break;
-			case ELDER : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.resources.sims2.LifeStage.ELDER ); break;
-			case TEEN : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.resources.sims2.LifeStage.TEEN ); break;
-			case TODDLER : this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.resources.sims2.LifeStage.TODDLER ); break;
-			default : this.nebPerson = null; break;
+			switch( this.lifeStage ) {
+			case ADULT:
+				this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.resources.sims2.LifeStage.ADULT );
+				break;
+			case CHILD:
+				this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.resources.sims2.LifeStage.CHILD );
+				break;
+			case ELDER:
+				this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.resources.sims2.LifeStage.ELDER );
+				break;
+			case TEEN:
+				this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.resources.sims2.LifeStage.TEEN );
+				break;
+			case TODDLER:
+				this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lookingglassandalice.storytelling.resources.sims2.LifeStage.TODDLER );
+				break;
+			default:
+				this.nebPerson = null;
+				break;
 			}
-			assert (this.nebPerson != null);
-			this.nebPerson.setGender( gender );
-			this.nebPerson.setOutfit( outfit );
-			this.nebPerson.setSkinTone( skinTone );
-			this.nebPerson.setFitnessLevel( 0.5 );
-			this.nebPerson.setHair( org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultHairBraids.BLACK );
-			this.nebPerson.setEyeColor( org.lookingglassandalice.storytelling.resources.sims2.BaseEyeColor.getRandom() );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			throw new RuntimeException( lre );
 		}
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebPerson } );
 	}
-	public void setGender( org.lookingglassandalice.storytelling.resources.sims2.Gender gender ) {
+	public org.lookingglassandalice.storytelling.resources.sims2.LifeStage getLifeStage() {
+		return this.lifeStage;
 	}
-	
+	public org.lookingglassandalice.storytelling.resources.sims2.Gender getGender() {
+		return this.gender;
+	}
+	public void setGender( org.lookingglassandalice.storytelling.resources.sims2.Gender gender ) {
+		this.gender = gender;
+		this.nebPerson.setGender( this.gender );
+	}
+	public org.lookingglassandalice.storytelling.resources.sims2.Outfit getOutfit() {
+		return this.outfit;
+	}
+	public void setOutfit( org.lookingglassandalice.storytelling.resources.sims2.Outfit outfit ) {
+		this.outfit = outfit;
+		this.nebPerson.setOutfit( this.outfit );
+	}
+	public org.lookingglassandalice.storytelling.resources.sims2.SkinTone getSkinTone() {
+		return this.skinTone;
+	}
+	public void setSkinTone( org.lookingglassandalice.storytelling.resources.sims2.SkinTone skinTone ) {
+		this.skinTone = skinTone;
+		this.nebPerson.setSkinTone( this.skinTone );
+	}
+	public double getFitnessLevel() {
+		return this.fitnessLevel;
+	}
+	public void setFitnessLevel( double fitnessLevel ) {
+		this.fitnessLevel = fitnessLevel;
+		this.nebPerson.setFitnessLevel( this.fitnessLevel );
+	}
+	public org.lookingglassandalice.storytelling.resources.sims2.Hair getHair() {
+		return this.hair;
+	}
+	public void setHair( org.lookingglassandalice.storytelling.resources.sims2.Hair hair ) {
+		this.hair = hair;
+		this.nebPerson.setHair( this.hair );
+	}
+	public org.lookingglassandalice.storytelling.resources.sims2.EyeColor getEyeColor() {
+		return this.eyeColor;
+	}
+	public void setEyeColor( org.lookingglassandalice.storytelling.resources.sims2.EyeColor eyeColor ) {
+		this.eyeColor = eyeColor;
+		this.nebPerson.setEyeColor( this.eyeColor );
+	}
 	@Override
 	protected JointImplementation createJointImplementation( org.lookingglassandalice.storytelling.resources.JointId jointId ) {
 		return new JointImplementation( this, new NebulousJoint( this.nebPerson, jointId ) );

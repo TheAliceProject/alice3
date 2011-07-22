@@ -52,7 +52,7 @@ public class PersonInfo {
 	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
 	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 
-	public static PersonInfo createFromPerson( org.lookingglassandalice.storytelling.resources.sims2.Person person ) {
+	public static PersonInfo createFromPerson( org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation person ) {
 		return new PersonInfo( 
 				person.getLifeStage(), 
 				person.getGender(), 
@@ -117,24 +117,13 @@ public class PersonInfo {
 		return this.fitnessLevel;
 	}
 	
-	public org.lookingglassandalice.storytelling.resources.sims2.Person createPerson() {
-		org.lookingglassandalice.storytelling.resources.sims2.Person rv;
+	public org.lookingglassandalice.storytelling.resources.sims2.PersonResource createPersonResource() {
+		org.lookingglassandalice.storytelling.resources.sims2.PersonResource rv;
 		if( this.lifeStage != null ) {
-			rv = this.lifeStage.createInstance();
-			update( rv );
+			rv = this.lifeStage.createPersonResource( this.gender, this.baseSkinTone, this.baseEyeColor, this.hair, this.fitnessLevel, this.fullBodyOutfit );
 		} else {
 			rv = null;
 		}
-		return rv;
-	}
-	public org.lookingglassandalice.storytelling.resources.sims2.Person update( org.lookingglassandalice.storytelling.resources.sims2.Person rv ) {
-		assert rv.getLifeStage() == this.lifeStage;
-		rv.setGender( this.gender );
-		rv.setSkinTone( this.baseSkinTone );
-		rv.setEyeColor( this.baseEyeColor );
-		rv.setOutfit( this.fullBodyOutfit );
-		rv.setHair( this.hair );
-		rv.setFitnessLevel( this.fitnessLevel, org.lookingglassandalice.storytelling.resources.sims2.Person.RIGHT_NOW );
 		return rv;
 	}
 }

@@ -46,6 +46,50 @@ package org.lookingglassandalice.storytelling.resources.sims2;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class Person {
+public abstract class PersonResource implements org.lookingglassandalice.storytelling.resources.PersonResource {
+	private final Gender gender;
+	private final SkinTone skinTone;
+	private final EyeColor eyeColor;
+	private final Hair hair;
+	private final double obseityLevel;
+	private final Outfit outfit; 
+	
+	public PersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
+		this.gender = gender;
+		this.skinTone = skinTone;
+		this.eyeColor = eyeColor;
+		this.hair = hair;
+		this.obseityLevel = obseityLevel.doubleValue();
+		this.outfit = outfit;
+	}
+	public abstract LifeStage getLifeStage();
+	public Gender getGender() {
+		return this.gender;
+	}
+	public SkinTone getSkinTone() {
+		return this.skinTone;
+	}
+	public EyeColor getEyeColor() {
+		return this.eyeColor;
+	}
+	public Hair getHair() {
+		return this.hair;
+	}
+	public Double getObseityLevel() {
+		return this.obseityLevel;
+	}
+	public Outfit getOutfit() {
+		return this.outfit;
+	}
+	
+	public final org.lookingglassandalice.storytelling.implementation.BipedImplementation createImplementation( org.lookingglassandalice.storytelling.Biped abstraction ) {
+		org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation rv = new org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation( abstraction, this.getLifeStage() );
+		rv.setGender( this.getGender() );
+		rv.setOutfit( this.getOutfit() );
+		rv.setSkinTone( this.getSkinTone() );
+		rv.setFitnessLevel( this.getObseityLevel() );
+		rv.setHair( org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultHairBraids.BLACK );
+		rv.setEyeColor( org.lookingglassandalice.storytelling.resources.sims2.BaseEyeColor.getRandom() );
+		return rv;
+	}
 }

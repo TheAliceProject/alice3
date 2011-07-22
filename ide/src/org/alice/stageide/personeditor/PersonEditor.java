@@ -54,13 +54,14 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 	public static PersonEditor getInstance() {
 		return SingletonHolder.instance;
 	}
+	private java.util.Map<org.lookingglassandalice.storytelling.resources.sims2.LifeStage, org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private PersonEditor() {
 		org.lookingglassandalice.storytelling.resources.sims2.LifeStage[] lifeStages = {  org.lookingglassandalice.storytelling.resources.sims2.LifeStage.ADULT, org.lookingglassandalice.storytelling.resources.sims2.LifeStage.CHILD };
 		for( org.lookingglassandalice.storytelling.resources.sims2.LifeStage lifeStage : lifeStages ) {
-			map.put( lifeStage, lifeStage.createInstance() );
+			map.put( lifeStage, new org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation( null, lifeStage ) );
 		}
-		for( org.lookingglassandalice.storytelling.resources.sims2.Person person : map.values() ) {
-			person.getSGTransformable().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
+		for( org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation person : map.values() ) {
+			person.getSgComposite().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
 		}
 
 		org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.lookingglassandalice.storytelling.resources.sims2.LifeStage>() {
@@ -167,7 +168,6 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 //		} );
 	}
 
-	private java.util.Map<org.lookingglassandalice.storytelling.resources.sims2.LifeStage, org.lookingglassandalice.storytelling.resources.sims2.Person> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.croquet.PredeterminedTab> tabChangeAdapter = new org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.croquet.PredeterminedTab>() {
 		public void changing( org.lgna.croquet.State< org.lgna.croquet.PredeterminedTab > state, org.lgna.croquet.PredeterminedTab prevValue, org.lgna.croquet.PredeterminedTab nextValue, boolean isAdjusting ) {
 		}
@@ -201,7 +201,7 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 					org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().handleCataclysmicChange( lifeStage );
 				}
 				this.updatePerson();
-				org.lookingglassandalice.storytelling.resources.sims2.Person person = PersonViewer.getSingleton().getPerson();
+				org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation person = PersonViewer.getSingleton().getPerson();
 				org.lookingglassandalice.storytelling.resources.sims2.Hair hair = person.getHair();
 				if( isLifeStageChange || isGenderChange || isHairColorChange ) {
 					org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().setSelectedItem( hair );
@@ -237,14 +237,14 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 				double fitnessLevel = org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().getValue()*0.01;
 				
 				assert lifeStage != null;
-				org.lookingglassandalice.storytelling.resources.sims2.Person person = this.map.get( lifeStage );
+				org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation person = this.map.get( lifeStage );
 				if( person != null ) {
 					if( gender != null ) {
 						person.setGender( gender );
 					}
 					if( baseSkinTone != null ) {
 						person.setSkinTone( baseSkinTone );
-						person.setFitnessLevel( fitnessLevel, org.lookingglassandalice.storytelling.resources.sims2.Person.RIGHT_NOW );
+						person.setFitnessLevel( fitnessLevel );
 						if( fullBodyOutfit != null && org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().isApplicable( fullBodyOutfit, lifeStage, gender ) ) {
 							//pass
 						} else {

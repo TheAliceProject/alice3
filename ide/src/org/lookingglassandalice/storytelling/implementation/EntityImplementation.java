@@ -48,13 +48,15 @@ package org.lookingglassandalice.storytelling.implementation;
  */
 public abstract class EntityImplementation implements ReferenceFrame {
 	protected static final String KEY = EntityImplementation.class.getName() + ".KEY";
-	protected static EntityImplementation getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+	public static EntityImplementation getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
 		return (EntityImplementation)sgElement.getBonusDataFor( KEY );
 	}
 	protected void putInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
 		sgElement.putBonusDataFor( KEY, this );
 	}
-
+	public static <T extends EntityImplementation> T getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement, Class<T> cls ) {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getInstance( sgElement ), cls );
+	}
 	
 	public abstract org.lookingglassandalice.storytelling.Entity getAbstraction();
 	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();

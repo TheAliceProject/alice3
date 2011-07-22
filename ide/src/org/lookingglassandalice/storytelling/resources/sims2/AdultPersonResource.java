@@ -46,16 +46,12 @@ package org.lookingglassandalice.storytelling.resources.sims2;
 /**
  * @author Dennis Cosgrove
  */
-public class AdultPersonResource implements org.lookingglassandalice.storytelling.resources.PersonResource {
-	private final org.lookingglassandalice.storytelling.resources.sims2.Gender gender;
-	private final org.lookingglassandalice.storytelling.resources.sims2.SkinTone skinTone;
-	private final org.lookingglassandalice.storytelling.resources.sims2.AdultFullBodyOutfit outfit; 
-	public AdultPersonResource( org.lookingglassandalice.storytelling.resources.sims2.Gender gender, org.lookingglassandalice.storytelling.resources.sims2.SkinTone skinTone, org.lookingglassandalice.storytelling.resources.sims2.AdultFullBodyOutfit outfit ) {
-		this.gender = gender;
-		this.skinTone = skinTone;
-		this.outfit = outfit;
+public class AdultPersonResource extends PersonResource {
+	public AdultPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
+		super( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
 	}
-	public org.lookingglassandalice.storytelling.implementation.BipedImplementation createImplementation( org.lookingglassandalice.storytelling.Biped abstraction ) {
-		return new org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation( abstraction, this, org.lookingglassandalice.storytelling.resources.sims2.LifeStage.ADULT, this.gender, this.skinTone, this.outfit );
+	@Override
+	public LifeStage getLifeStage() {
+		return LifeStage.ADULT;
 	}
 }

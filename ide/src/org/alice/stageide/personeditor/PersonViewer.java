@@ -145,15 +145,15 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			yFactor = 0.9;
 		}
 		if( this.getScene() != null ) {
-			org.lookingglassandalice.storytelling.VantagePoint prevPOV = this.getCamera().getLocalPointOfView();
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation();
 			this.getCamera().moveTo( this.getScene().createOffsetStandIn( -0.3*xzFactor, height*yFactor, -height*xzFactor ), 0.0 );
 			this.getCamera().pointAt( this.getScene().createOffsetStandIn( 0, height*yFactor, 0 ), 0.0 );
 			edu.cmu.cs.dennisc.animation.Animator animator = this.getAnimator();
 			if( duration > 0.0 && animator != null ) {
-				org.lookingglassandalice.storytelling.VantagePoint nextPOV = this.getCamera().getLocalPointOfView();
-				this.getCamera().setLocalPointOfView( prevPOV );
+				edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextPOV = this.getCamera().getLocalTransformation();
+				this.getCamera().setLocalTransformation( prevPOV );
 
-				edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation povAnimation = new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( this.getCamera().getSGAbstractTransformable(), edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, nextPOV.getInternal() );
+				edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation povAnimation = new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( this.getCamera().getSgComposite(), edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, nextPOV );
 				povAnimation.setDuration( duration );
 
 				animator.completeAll( null );
@@ -162,13 +162,13 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 	}
 
-	public Person getPerson() { 
-		return (Person)this.getModel();
+	public org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation getPerson() { 
+		return (org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation)this.getModel();
 	}
-	public void setPerson( Person person ) {
+	public void setPerson( org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation person ) {
 		assert person != null;
 		this.setModel( person );
-		this.dragAdapter.setSelectedObject( person.getSgTransformable() );
+		this.dragAdapter.setSelectedObject( person.getSgComposite() );
 		double height = person.getHeight();
 		this.positionAndOrientCamera( height, 0, 0.0 );
 	}

@@ -42,30 +42,40 @@
  */
 package org.lookingglassandalice.storytelling.resources.sims2;
 
-import org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultFullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultHair;
-import org.lookingglassandalice.storytelling.resources.sims2.FemaleChildFullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.FemaleChildHair;
-import org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.Hair;
-import org.lookingglassandalice.storytelling.resources.sims2.MaleAdultFullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.MaleAdultHair;
-import org.lookingglassandalice.storytelling.resources.sims2.MaleChildFullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.MaleChildHair;
-import org.lookingglassandalice.storytelling.resources.sims2.UnisexAdultFullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.UnisexAdultHair;
-import org.lookingglassandalice.storytelling.resources.sims2.UnisexChildFullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.UnisexChildHair;
-
 /**
  * @author Dennis Cosgrove
  */
 public enum LifeStage {
-	TODDLER, 
-	CHILD, 
-	TEEN, 
-	ADULT, 
-	ELDER;
+	TODDLER {
+		@Override
+		public PersonResource createPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
+			return null;
+		} 
+	},
+	CHILD {
+		@Override
+		public PersonResource createPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
+			return null;
+		} 
+	}, 
+	TEEN {
+		@Override
+		public PersonResource createPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
+			return null;
+		} 
+	}, 
+	ADULT {
+		@Override
+		public PersonResource createPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
+			return new AdultPersonResource( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
+		} 
+	}, 
+	ELDER {
+		@Override
+		public PersonResource createPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
+			return null;
+		} 
+	};
 	
 	public static LifeStage getRandom() {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( LifeStage.class );
@@ -109,4 +119,6 @@ public enum LifeStage {
 	public Class<? extends Hair> getUnisexHairInterfaceClass() {	
 		return s_mapLifeStageUnisexHair.get( this );
 	}
-};
+	
+	public abstract PersonResource createPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit );
+}
