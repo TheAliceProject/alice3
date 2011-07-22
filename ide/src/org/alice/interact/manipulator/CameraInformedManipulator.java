@@ -43,7 +43,6 @@
 package org.alice.interact.manipulator;
 
 import org.alice.interact.AbstractDragAdapter;
-import org.lookingglassandalice.storytelling.implementation.CameraImplementation;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
@@ -52,8 +51,8 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
  */
 public interface CameraInformedManipulator {
 	
-	public CameraImplementation<?> getCamera();
-	public void setCamera( CameraImplementation<?> camera );
+	public AbstractCamera getCamera();
+	public void setCamera( AbstractCamera camera );
 	public AbstractDragAdapter.CameraView getDesiredCameraView();
 	public void setDesiredCameraView(AbstractDragAdapter.CameraView cameraView);
 	

@@ -50,16 +50,16 @@ import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 public class PredeterminedSetOrthographicPicturePlaneActionOperation extends org.lgna.croquet.ActionOperation {
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
-	private edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgCamera;
+	private OrthographicCamera orthoCamera;
 	private double previousPicturePlaneHeight;
 	private double nextPicturePlaneHeight;
 	
 	private String editPresentationKey;
-	public PredeterminedSetOrthographicPicturePlaneActionOperation( org.lgna.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgCamera, double previousPicturePlaneHeight, double nextPicturePlaneHeight, String editPresentationKey ) {
+	public PredeterminedSetOrthographicPicturePlaneActionOperation( org.lgna.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, OrthographicCamera orthoCamera, double previousPicturePlaneHeight, double nextPicturePlaneHeight, String editPresentationKey ) {
 		super( group, java.util.UUID.fromString( "67faf90c-97c6-40d4-9ddb-f31f22003682" ) );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
-		this.sgCamera = sgCamera;
+		this.orthoCamera = orthoCamera;
 
 		this.previousPicturePlaneHeight = previousPicturePlaneHeight;
 		this.nextPicturePlaneHeight = nextPicturePlaneHeight;
@@ -69,26 +69,26 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends org
 	
 	private void setHeightOnCamera(OrthographicCamera camera, double height)
 	{
-		ClippedZPlane picturePlane = PredeterminedSetOrthographicPicturePlaneActionOperation.this.sgCamera.picturePlane.getValue();
+		ClippedZPlane picturePlane = PredeterminedSetOrthographicPicturePlaneActionOperation.this.orthoCamera.picturePlane.getValue();
 		picturePlane.setHeight(height);
-		PredeterminedSetOrthographicPicturePlaneActionOperation.this.sgCamera.picturePlane.setValue(picturePlane);
+		PredeterminedSetOrthographicPicturePlaneActionOperation.this.orthoCamera.picturePlane.setValue(picturePlane);
 	}
 	
 	private void setPicturePlaneHeight( final double height ) {
 		if( this.animator != null ) {
 			class ZoomAnimation extends DoubleAnimation {
 				public ZoomAnimation() {
-					super( 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY, sgCamera.picturePlane.getValue().getHeight(), height);
+					super( 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY, orthoCamera.picturePlane.getValue().getHeight(), height);
 				}
 				@Override
 				protected void updateValue( Double newHeight) {
-					setHeightOnCamera(sgCamera, newHeight.doubleValue());
+					setHeightOnCamera(orthoCamera, newHeight.doubleValue());
 				}
 			}
 			this.animator.invokeLater( new ZoomAnimation(), null );
 		} else 
 		{
-			setHeightOnCamera(sgCamera, height);
+			setHeightOnCamera(orthoCamera, height);
 		}
 		
 	}

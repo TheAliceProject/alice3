@@ -53,8 +53,8 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author David Culyba
  */
 public class SelectionEvent extends Event< AbstractDragAdapter >{
-	private TransformableImplementation transformable;
-	public SelectionEvent( AbstractDragAdapter source, TransformableImplementation transformable ) {
+	private Transformable transformable;
+	public SelectionEvent( AbstractDragAdapter source, Transformable transformable ) {
 		super( source );
 		this.transformable = transformable;
 	}
@@ -63,7 +63,7 @@ public class SelectionEvent extends Event< AbstractDragAdapter >{
 		super( source );
 		if (mtTransformable != null)
 		{
-			this.transformable = ImplementationAccessor.getImplementation(mtTransformable);
+			this.transformable = (Transformable)ImplementationAccessor.getImplementation(mtTransformable).getSgComposite();
 		}
 		else
 		{
@@ -71,7 +71,7 @@ public class SelectionEvent extends Event< AbstractDragAdapter >{
 		}
 	}
 	
-	public TransformableImplementation getTransformable() {
+	public Transformable getTransformable() {
 		return this.transformable;
 	}
 }

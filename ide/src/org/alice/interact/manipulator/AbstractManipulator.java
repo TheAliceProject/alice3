@@ -67,7 +67,7 @@ import edu.cmu.cs.dennisc.scenegraph.Element;
  */
 public abstract class AbstractManipulator {
 	
-	protected org.lookingglassandalice.storytelling.implementation.TransformableImplementation manipulatedTransformable = null;
+	protected edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable = null;
 	protected AffineMatrix4x4 originalTransformation = null;
 	private boolean hasStarted = false;
 	protected AbstractDragAdapter dragAdapter;
@@ -75,12 +75,12 @@ public abstract class AbstractManipulator {
 
 	protected List< ManipulationEvent > manipulationEvents = new Vector< ManipulationEvent >();
 	
-	public void setManipulatedTransformable( org.lookingglassandalice.storytelling.implementation.TransformableImplementation manipulatedTransformable)
+	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable)
 	{
 		this.manipulatedTransformable = manipulatedTransformable;
 	}
 	
-	public org.lookingglassandalice.storytelling.implementation.TransformableImplementation getManipulatedTransformable()
+	public edu.cmu.cs.dennisc.scenegraph.Transformable getManipulatedTransformable()
 	{
 		return this.manipulatedTransformable;
 	}
@@ -114,11 +114,11 @@ public abstract class AbstractManipulator {
 	
 	public boolean doesManipulatedObjectHaveHandles()
 	{
-		if (!(this.manipulatedTransformable instanceof org.lookingglassandalice.storytelling.implementation.MarkerImplementation))
-		{
-			return true;
-		}
-		return false;
+//		if (!(this.manipulatedTransformable instanceof org.lookingglassandalice.storytelling.implementation.MarkerImplementation))
+//		{
+//			return true;
+//		}
+		return true;
 	}
 	
 	public List< ManipulationEvent > getManipulationEvents()
@@ -279,7 +279,7 @@ public abstract class AbstractManipulator {
 			{
 				System.out.println("boom");
 			}
-			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation(Project.GROUP, false, animator, this.getManipulatedTransformable().getSgComposite(), originalTransformation, newTransformation, getUndoRedoDescription());
+			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation(Project.GROUP, false, animator, this.getManipulatedTransformable(), originalTransformation, newTransformation, getUndoRedoDescription());
 			undoOperation.fire();
 		}
 	}
