@@ -55,8 +55,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-import edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter;
-import edu.cmu.cs.dennisc.lookingglass.opengl.LookingglassTreeNode;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.toolkit.scenegraph.SceneGraphTreeNode;
 
@@ -150,10 +148,10 @@ public class BasicTreeNodeViewerPanel  extends JPanel implements ActionListener 
 			{
 				newRoot = SceneGraphTreeNode.createSceneGraphTreeStructure((Component)this.root);
 			}
-			else if (this.root instanceof CompositeAdapter<?>)
-			{
-				newRoot = LookingglassTreeNode.createLookingglassTreeStructure((CompositeAdapter<?>)this.root);
-			}
+//			else if (this.root instanceof CompositeAdapter<?>)
+//			{
+//				newRoot = LookingglassTreeNode.createLookingglassTreeStructure((CompositeAdapter<?>)this.root);
+//			}
 			BasicTreeViewer oldTree = (BasicTreeViewer)this.splitPane.getBottomComponent();
 			if (oldTree != null)
 			{

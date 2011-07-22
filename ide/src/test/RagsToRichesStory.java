@@ -218,10 +218,14 @@ class SnowScene extends Scene {
  */
 class RagsToRichesStory extends Program {
 	private final Camera camera = new Camera();
-	private final CustomAdult susan = new CustomAdult( new org.lookingglassandalice.storytelling.resources.sims2.AdultPersonResource(
-			org.lookingglassandalice.storytelling.resources.sims2.Gender.FEMALE,
-			org.lookingglassandalice.storytelling.resources.sims2.BaseSkinTone.getRandom(),
-			org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
+	private final CustomAdult susan = new CustomAdult( 
+			new AdultPersonResource(
+					Gender.FEMALE,
+					BaseSkinTone.getRandom(),
+					BaseEyeColor.getRandom(),
+					FemaleAdultHairBraids.BLACK,
+					0.5,
+					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
 	private final CustomAdult ogre = new CustomAdult( org.lookingglassandalice.storytelling.resources.people.Ogre.BEAST_DIFFUSE );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );

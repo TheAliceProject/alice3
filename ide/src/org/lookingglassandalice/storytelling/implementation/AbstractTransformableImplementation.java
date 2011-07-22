@@ -320,15 +320,25 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 	public void animateOrientationOnly( EntityImplementation target ) {
 		this.animateOrientationOnly( target, edu.cmu.cs.dennisc.math.UnitQuaternion.accessIdentity() );
 	}
-	
-	
-	public void setTransformation( EntityImplementation target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset ) {
-		this.getSgComposite().setTransformation( offset, target.getSgComposite() );
+
+	public void setOrientationOnlyToPointAt( ReferenceFrame target ) {
+		this.getSgComposite().setAxesOnlyToPointAt( target.getActualEntityImplementation( this ).getSgComposite() );
 	}
-	public void setTransformation( EntityImplementation target ) {
+	
+//	public edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 calculatePointAt( ReferenceFrame target, ReferenceFrame asSeenByForUp ) {
+//		return ;
+//	}
+//	public edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 calculatePointAt( ReferenceFrame target ) {
+//		return this.calculatePointAt( target, AsSeenBy.SCENE );
+//	}
+	
+	public void setTransformation( ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset ) {
+		this.getSgComposite().setTransformation( offset, target.getSgReferenceFrame() );
+	}
+	public void setTransformation( ReferenceFrame target ) {
 		this.setTransformation( target, edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
 	}
-	public void animateTransformation( final EntityImplementation target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	public void animateTransformation( final ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
 			if( offset.isNaN() ) {
@@ -350,13 +360,13 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 			}
 		}
 	}
-	public void animateTransformation( EntityImplementation target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset, double duration ) {
+	public void animateTransformation( ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset, double duration ) {
 		this.animateTransformation( target, offset, duration, DEFAULT_STYLE );
 	}
-	public void animateTransformation( EntityImplementation target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset ) {
+	public void animateTransformation( ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset ) {
 		this.animateTransformation( target, offset, DEFAULT_DURATION );
 	}
-	public void animateTransformation( EntityImplementation target ) {
+	public void animateTransformation( ReferenceFrame target ) {
 		this.animateTransformation( target, edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
 	}
 	
@@ -407,14 +417,7 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 	public void animateApplyScale( edu.cmu.cs.dennisc.math.Dimension3 scale, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		
 	}
-	
-	
-	public StandInImplementation createStandIn() {
-		StandInImplementation rv = new StandInImplementation();
-		rv.setVehicle( this );
-		return rv;
-	}
-	
+
 	protected abstract double getBoundingSphereRadius();
 	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( ReferenceFrame asSeenBy ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgComposite().getTransformation( asSeenBy.getSgReferenceFrame() );

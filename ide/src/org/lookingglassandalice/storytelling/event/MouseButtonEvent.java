@@ -81,7 +81,7 @@ public class MouseButtonEvent extends edu.cmu.cs.dennisc.pattern.event.Event< ja
 									if( sgParent == null ) {
 										break;
 									}
-									if( sgParent == this.scene.getSGComposite() ) {
+									if( sgParent == this.scene.getSgComposite() ) {
 										org.lookingglassandalice.storytelling.Entity e = org.lookingglassandalice.storytelling.Entity.getElement( sgComponent );
 										if( e instanceof org.lookingglassandalice.storytelling.Model ) {
 											this.modelAtMouseLocation = (org.lookingglassandalice.storytelling.Model)e;

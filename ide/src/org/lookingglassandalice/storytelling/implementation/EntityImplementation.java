@@ -90,6 +90,19 @@ public abstract class EntityImplementation implements ReferenceFrame {
 		return this.getSgComposite().getTransformation( asSeenBy.getSgReferenceFrame() );
 	}
 
+	public StandInImplementation createStandIn() {
+		StandInImplementation rv = new StandInImplementation();
+		rv.setVehicle( this );
+		return rv;
+	}
+	public StandInImplementation createOffsetStandIn( double x, double y, double z ) {
+		StandInImplementation rv = this.createStandIn();
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+		m.translation.set( x, y, z );
+		rv.setLocalTransformation( m );
+		return rv;
+	}
+	
 	protected static final double RIGHT_NOW = 0.0;
 	protected static final double DEFAULT_DURATION = 1.0;
 	protected static final edu.cmu.cs.dennisc.animation.Style DEFAULT_STYLE = edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY;

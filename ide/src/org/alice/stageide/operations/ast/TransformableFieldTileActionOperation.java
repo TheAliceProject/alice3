@@ -66,11 +66,11 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
-						transformableImp.animateAbsoluteTransformation( nextPOV );
+						transformableImp.animateTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE, nextPOV );
 					}
 					@Override
 					protected final void undoInternal() {
-						transformableImp.animateAbsoluteTransformation( prevPOV );
+						transformableImp.animateTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE, prevPOV );
 					}
 					@Override
 					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

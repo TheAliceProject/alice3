@@ -146,8 +146,8 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 		if( this.getScene() != null ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation();
-			this.getCamera().moveTo( this.getScene().createOffsetStandIn( -0.3*xzFactor, height*yFactor, -height*xzFactor ), 0.0 );
-			this.getCamera().pointAt( this.getScene().createOffsetStandIn( 0, height*yFactor, 0 ), 0.0 );
+			this.getCamera().setTransformation( this.getScene().createOffsetStandIn( -0.3*xzFactor, height*yFactor, -height*xzFactor ) );
+			this.getCamera().setOrientationOnlyToPointAt( this.getScene().createOffsetStandIn( 0, height*yFactor, 0 ) );
 			edu.cmu.cs.dennisc.animation.Animator animator = this.getAnimator();
 			if( duration > 0.0 && animator != null ) {
 				edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextPOV = this.getCamera().getLocalTransformation();
@@ -168,8 +168,8 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	public void setPerson( org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation person ) {
 		assert person != null;
 		this.setModel( person );
-		this.dragAdapter.setSelectedObject( person.getSgComposite() );
-		double height = person.getHeight();
+		this.dragAdapter.setSelectedObject( person );
+		double height = person.getSize().y;
 		this.positionAndOrientCamera( height, 0, 0.0 );
 	}
 	@Override
