@@ -106,7 +106,7 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 						}
 					}
 					if( type != null ) {
-						rv = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane( this.getOwnerType(), type );
+						rv = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane( this.getDeclaringType(), type );
 					}
 				}
 			}

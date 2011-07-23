@@ -46,34 +46,52 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep step );
-	protected abstract boolean isInstanceValid();
-	
+	protected static class Initializer {
+		private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
+		private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
+		private java.util.List< edu.cmu.cs.dennisc.alice.ast.Statement > statements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		
+		public boolean isValid() {
+			return this.declaringType != null && this.field != null;
+		}
+		public edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+			return this.declaringType;
+		}
+		public void setDeclaringType( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+			this.declaringType = declaringType;
+		}
+		public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getField() {
+			return this.field;
+		}
+		public void setField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+			this.field = field;
+		}
+		public void addStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+			this.statements.add( statement );
+		}
+		public edu.cmu.cs.dennisc.alice.ast.Statement[] getStatements() {
+			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.statements, edu.cmu.cs.dennisc.alice.ast.Statement.class );
+		}
+	}
 	public AbstractDeclareFieldInputDialogOperation( java.util.UUID individualId ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 	}
 	
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType();
+	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer fillInInitializer( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
+		rv.setDeclaringType( this.getDeclaringType() );
+		return rv;
+	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getActiveInstance();
 	}
 	@Override
 	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> tuple = this.createFieldAndInstance( step );
-			if( tuple != null ) {
-				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
-				if( field != null ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
-					if( ownerType != null ) {
-						int index = ownerType.fields.size();
-						step.commitAndInvokeDo( new DeclareFieldEdit( step, ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
-					} else {
-						step.cancel();
-					}
-				} else {
-					step.cancel();
-				}
+			Initializer initializer = new Initializer();
+			this.fillInInitializer( initializer, step );
+			if( initializer.isValid() ) {
+				step.commitAndInvokeDo( new DeclareFieldEdit( step, initializer.getDeclaringType(), initializer.getField(), initializer.getStatements() ) );
 			} else {
 				step.cancel();
 			}

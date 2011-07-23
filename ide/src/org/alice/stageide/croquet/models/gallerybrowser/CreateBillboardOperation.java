@@ -50,7 +50,7 @@ import org.lgna.croquet.components.BorderPanel.Constraint;
 class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
 	private org.lookingglassandalice.storytelling.Billboard billboard;
 	private org.alice.ide.croquet.ImageView imageView = new org.alice.ide.croquet.ImageView( 240 );
-	public CreateFieldFromBillboardPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+	public CreateFieldFromBillboardPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType ) {
 		super( declaringType, org.lookingglassandalice.storytelling.Billboard.class, null );
 		this.imageView.setBorder( javax.swing.BorderFactory.createEmptyBorder(0,0,0,8) );
 		this.addComponent( this.imageView, Constraint.LINE_END );
@@ -91,7 +91,7 @@ public class CreateBillboardOperation extends AbstractGalleryDeclareFieldOperati
 	@Override
 	protected org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromBillboardPane prologue( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		org.alice.ide.resource.prompter.ImageResourcePrompter imageResourcePrompter = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton();
-		CreateFieldFromBillboardPane rv = new CreateFieldFromBillboardPane( this.getOwnerType() );
+		CreateFieldFromBillboardPane rv = new CreateFieldFromBillboardPane( this.getDeclaringType() );
 		try {
 			org.alice.virtualmachine.resources.ImageResource frontImageResource = imageResourcePrompter.promptUserForResource( this.getIDE().getFrame() );
 			if( frontImageResource != null ) {
@@ -119,14 +119,12 @@ public class CreateBillboardOperation extends AbstractGalleryDeclareFieldOperati
 		return rv;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.lookingglassandalice.storytelling.Billboard > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
-		CreateFieldFromBillboardPane createFieldFromBillboardPane = context.getMainPanel();
+	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer fillInInitializer( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
+		super.fillInInitializer( rv, step );
+		CreateFieldFromBillboardPane createFieldFromBillboardPane = step.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromBillboardPane.getInputValue();
-		if( field != null ) {
-			//ide.getSceneEditor().handleFieldCreation( declaringType, field, person );
-			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, createFieldFromBillboardPane.getBillboard() );
-		} else {
-			return null;
-		}
+		rv.setField( field );
+		//todo: add statements
+		return rv;
 	}
 }

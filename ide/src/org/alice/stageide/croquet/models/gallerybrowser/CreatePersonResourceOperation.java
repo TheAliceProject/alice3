@@ -40,17 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.stageide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractGalleryDeclareFieldOperation extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation {
-	public AbstractGalleryDeclareFieldOperation( java.util.UUID individualId ) {
-		super( individualId );
+public class CreatePersonResourceOperation extends org.lgna.croquet.InputDialogOperation< org.lookingglassandalice.storytelling.resources.sims2.PersonResource > {
+	public CreatePersonResourceOperation() {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ba44ed40-4ca2-4217-8b1b-0034a52ca702" ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
-		return org.alice.ide.IDE.getActiveInstance().getSceneType();
+	protected org.lgna.croquet.components.JComponent< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		org.alice.stageide.personeditor.PersonEditor rv = org.alice.stageide.personeditor.PersonEditor.getInstance();
+		rv.initialize( org.alice.stageide.croquet.models.personeditor.PersonInfo.createRandom() );
+		return rv;
+	}
+	@Override
+	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep step, boolean isCommit ) {
+		if( isCommit ) {
+			org.alice.stageide.personeditor.PersonEditor personEditor = step.getMainPanel();
+			org.alice.stageide.croquet.models.personeditor.PersonInfo personInfo = personEditor.getPersonInfo();
+			org.lookingglassandalice.storytelling.resources.sims2.PersonResource personResource = personInfo.createPersonResource();
+			if( personResource != null ) {
+				step.commitAndInvokeDo( edit );
+			}
+		} else {
+			step.cancel();
+		}
 	}
 }

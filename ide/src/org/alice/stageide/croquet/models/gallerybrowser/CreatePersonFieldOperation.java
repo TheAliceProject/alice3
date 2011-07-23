@@ -85,6 +85,11 @@ public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOpera
 		}
 	}
 	@Override
+	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer fillInInitializer( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
+		super.fillInInitializer( rv, step );
+		return rv;
+	}
+	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.lookingglassandalice.storytelling.resources.sims2.Person > createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step ) {
 		CreateFieldFromPersonPane createFieldFromPersonPane = step.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.getInputValue();

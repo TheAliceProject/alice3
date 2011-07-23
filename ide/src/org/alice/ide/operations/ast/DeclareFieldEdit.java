@@ -46,30 +46,23 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
-	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-	private int index;
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
+	private final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
+	private final edu.cmu.cs.dennisc.alice.ast.Statement[] statements;
 
-	private transient Object instance;
-	private transient boolean isInstanceValid;
-	
-	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, int index, Object instance, boolean isInstanceValid) {
+	private transient int index;
+	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.Statement[] statements) {
 		super( step );
 		this.declaringType = ownerType;
 		this.field = field;
-		this.index = index;
-		this.instance = instance;
-		this.isInstanceValid = isInstanceValid;
+		this.statements = statements;
 	}
 	public DeclareFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).decodeValue( binaryDecoder );
 		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class ).decodeValue( binaryDecoder );
-		this.index = binaryDecoder.decodeInt();
-		
-		//todo
-		this.isInstanceValid = false;
-		this.instance = null;
+		assert false : "todo";
+		this.statements = null;
 	}
 	
 	@Override
@@ -82,22 +75,19 @@ public class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		if (this.isInstanceValid) {
-			org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( this.field, this.instance );
-		}
-		this.declaringType.fields.add(this.index, this.field);
-//		if (this.isInstanceValid) {
-//			org.alice.ide.IDE.getActiveInstance().getSceneEditor().handleFieldCreation(ownerType, this.field, this.instance, isDo);
-//		}
+		org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField( this.field, this.statements );
+//		this.index = this.declaringType.fields.size(); 
+//		this.declaringType.fields.add(this.index, this.field);
 	}
 
 	@Override
 	protected final void undoInternal() {
-		if (this.declaringType.fields.get(this.index) == this.field) {
-			this.declaringType.fields.remove(this.index);
-		} else {
-			throw new javax.swing.undo.CannotUndoException();
-		}
+		org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField( this.field, this.statements );
+//		if (this.declaringType.fields.get(this.index) == this.field) {
+//			this.declaringType.fields.remove(this.index);
+//		} else {
+//			throw new javax.swing.undo.CannotUndoException();
+//		}
 	}
 
 	@Override

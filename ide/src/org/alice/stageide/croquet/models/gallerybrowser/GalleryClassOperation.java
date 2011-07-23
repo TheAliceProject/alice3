@@ -81,7 +81,7 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 	}
 	@Override
 	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(this.getOwnerType(), this.treeNode.getValue());
+		return new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(this.getDeclaringType(), this.treeNode.getValue());
 	}
 	
 	public void setDesiredTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 desiredTransformation )

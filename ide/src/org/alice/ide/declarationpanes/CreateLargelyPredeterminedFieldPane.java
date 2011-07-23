@@ -49,7 +49,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType;
 	private edu.cmu.cs.dennisc.alice.ast.Expression initializer;
 
-	public CreateLargelyPredeterminedFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
+	public CreateLargelyPredeterminedFieldPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
 		super( declaringType );
 		if( cls != null ) {
 			assert valueType == null;
