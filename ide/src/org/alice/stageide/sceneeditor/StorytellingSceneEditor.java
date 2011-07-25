@@ -44,7 +44,6 @@ package org.alice.stageide.sceneeditor;
 
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
-import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
 import org.lgna.croquet.components.DragComponent;
 import org.lookingglassandalice.storytelling.ImplementationAccessor;
 

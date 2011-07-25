@@ -46,9 +46,9 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CreatePersonResourceOperation extends org.lgna.croquet.InputDialogOperation< org.lookingglassandalice.storytelling.resources.sims2.PersonResource > {
-	public CreatePersonResourceOperation() {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ba44ed40-4ca2-4217-8b1b-0034a52ca702" ) );
+public abstract class PersonResourceOperation extends org.lgna.croquet.InputDialogOperation< org.lookingglassandalice.storytelling.resources.sims2.PersonResource > {
+	public PersonResourceOperation( org.lgna.croquet.Group group, java.util.UUID id ) {
+		super( group, id );
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {

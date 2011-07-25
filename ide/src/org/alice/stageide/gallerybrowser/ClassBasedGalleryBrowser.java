@@ -291,12 +291,12 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 		
 		this.setBackgroundColor(new java.awt.Color(220, 220, 255));
 
-		org.alice.stageide.croquet.models.gallerybrowser.CreatePersonFieldOperation createPersonFieldOperation = org.alice.stageide.croquet.models.gallerybrowser.CreatePersonFieldOperation.getInstance();
-		Button createPersonButton = createPersonFieldOperation.createButton();
+		org.alice.stageide.croquet.models.gallerybrowser.CreateTypeFromPersonResourceOperation createTypeFromPersonResourceOperation = org.alice.stageide.croquet.models.gallerybrowser.CreateTypeFromPersonResourceOperation.getInstance();
+		Button createPersonButton = createTypeFromPersonResourceOperation.createButton();
 		createPersonButton.setHorizontalTextPosition( HorizontalTextPosition.CENTER );
 		createPersonButton.setVerticalTextPosition( VerticalTextPosition.BOTTOM );
 
-		createPersonFieldOperation.setSmallIcon(new javax.swing.ImageIcon(ClassBasedGalleryBrowser.class.getResource("images/create_person.png")));
+		createTypeFromPersonResourceOperation.setSmallIcon(new javax.swing.ImageIcon(ClassBasedGalleryBrowser.class.getResource("images/create_person.png")));
 
 		LineAxisPanel pathControlPanel = new LineAxisPanel();
 		pathControlPanel.addComponent( this.treeSelectionState.createClassBasedPathControl( this.createInitializer() ) );
