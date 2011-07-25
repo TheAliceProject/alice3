@@ -46,7 +46,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class CreatePersonResourceOperation extends org.lgna.croquet.InputDialogOperation< org.lookingglassandalice.storytelling.resources.sims2.PersonResource > {
+public abstract class CreatePersonResourceOperation extends org.lgna.croquet.InputDialogOperation< org.lookingglassandalice.storytelling.resources.sims2.PersonResource > {
 	public CreatePersonResourceOperation() {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ba44ed40-4ca2-4217-8b1b-0034a52ca702" ) );
 	}
@@ -56,6 +56,7 @@ public class CreatePersonResourceOperation extends org.lgna.croquet.InputDialogO
 		rv.initialize( org.alice.stageide.croquet.models.personeditor.PersonInfo.createRandom() );
 		return rv;
 	}
+	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lookingglassandalice.storytelling.resources.sims2.PersonResource personResource );
 	@Override
 	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep step, boolean isCommit ) {
 		if( isCommit ) {
@@ -63,7 +64,7 @@ public class CreatePersonResourceOperation extends org.lgna.croquet.InputDialogO
 			org.alice.stageide.croquet.models.personeditor.PersonInfo personInfo = personEditor.getPersonInfo();
 			org.lookingglassandalice.storytelling.resources.sims2.PersonResource personResource = personInfo.createPersonResource();
 			if( personResource != null ) {
-				step.commitAndInvokeDo( edit );
+				step.commitAndInvokeDo( this.createEdit( personResource ) );
 			}
 		} else {
 			step.cancel();

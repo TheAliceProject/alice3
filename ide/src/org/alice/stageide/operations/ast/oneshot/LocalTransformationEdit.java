@@ -92,7 +92,7 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 	}
 	@Override
 	protected void undoInternal() {
-		this.transformable.animateLocalTransformation( this.m );
+		this.transformable.animateTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SELF, this.m );
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

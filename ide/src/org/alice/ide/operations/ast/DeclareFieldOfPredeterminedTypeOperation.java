@@ -46,45 +46,44 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGalleryDeclareFieldOperation {
+	private final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType;
 	private org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane;
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType;
 	
-	public DeclareFieldOfPredeterminedTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
-		super( java.util.UUID.fromString( "f3aeb501-8138-47dc-a839-83961ee1f26d" ) );
-		this.ownerType = ownerType;
+	public DeclareFieldOfPredeterminedTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
+		super( java.util.UUID.fromString( "f3aeb501-8138-47dc-a839-83961ee1f26d" ), declaringType );
 		this.valueType = valueType;
 		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( this.valueType ) );
 		this.setName( "<html>Declare New Instance...</html>" );
 		
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getOwnerType() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
 		return this.createFieldPane.getDeclaringType();
 	}
 	@Override
 	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue(org.lgna.croquet.history.InputDialogOperationStep context) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = this.valueType.getFirstTypeEncounteredDeclaredInJava();
-		this.createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane( ownerType, typeInJava.getClassReflectionProxy().getReification() );
+		this.createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane( this.getDeclaringType(), typeInJava.getClassReflectionProxy().getReification() );
 		return this.createFieldPane;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.history.InputDialogOperationStep context ) {
-		//dialog title: "Create New Instance"
-		return this.createFieldPane.getInputValue();
+	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer fillInInitializer( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
+		super.fillInInitializer( rv, step );
+		//todo
+		return rv;
 	}
-	@Override
-	protected boolean isInstanceValid() {
-		return true;
-	}
-	@Override
-	protected Object createInstance() {
-		try {
-			return this.valueType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification().newInstance();
-		} catch( InstantiationException ie ) {
-			throw new RuntimeException( ie );
-		} catch( IllegalAccessException iae ) {
-			throw new RuntimeException( iae );
-		}
-	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.history.InputDialogOperationStep context ) {
+//		return this.createFieldPane.getInputValue();
+//	}
+//	@Override
+//	protected Object createInstance() {
+//		try {
+//			return this.valueType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification().newInstance();
+//		} catch( InstantiationException ie ) {
+//			throw new RuntimeException( ie );
+//		} catch( IllegalAccessException iae ) {
+//			throw new RuntimeException( iae );
+//		}
+//	}
 }

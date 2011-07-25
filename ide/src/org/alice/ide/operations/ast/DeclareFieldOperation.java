@@ -57,35 +57,27 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 		}
 		return rv;
 	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ownerType;
-	private DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ownerType ) {
-		super( java.util.UUID.fromString( "e935b0ea-e927-49ff-b33b-2c8eaf5c8b57" ) );
+	private DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+		super( java.util.UUID.fromString( "e935b0ea-e927-49ff-b33b-2c8eaf5c8b57" ), declaringType );
 		this.setName( "Declare Property..." );
-		this.ownerType = ownerType;
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFieldOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFieldOperation >( this, this.ownerType, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getOwnerType() {
-		return this.ownerType;
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFieldOperation >( this, this.getDeclaringType(), edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class );
 	}
 	@Override
 	protected org.alice.ide.declarationpanes.CreateFieldPane prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.ide.declarationpanes.CreateFieldPane( this.ownerType );
+		return new org.alice.ide.declarationpanes.CreateFieldPane( this.getDeclaringType() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = step.getMainPanel();
-		return createFieldPane.getInputValue();
+	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer fillInInitializer( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
+		super.fillInInitializer( rv, step );
+		//todo
+		return rv;
 	}
-	@Override
-	protected boolean isInstanceValid() {
-		return false;
-	}
-	@Override
-	protected java.lang.Object createInstance() {
-		return null;
-	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.history.InputDialogOperationStep step ) {
+//		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = step.getMainPanel();
+//		return createFieldPane.getInputValue();
+//	}
 }

@@ -392,8 +392,8 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
 				if( field != null ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
-					int index = ownerType.fields.size();
-					step.commitAndInvokeDo( new org.alice.ide.operations.ast.DeclareFieldEdit( step, ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+					edu.cmu.cs.dennisc.alice.ast.Statement[] statements = null; //todo
+					step.commitAndInvokeDo( new org.alice.ide.operations.ast.DeclareFieldEdit( step, ownerType, field, statements ) );
 				} else {
 					step.cancel();
 				}

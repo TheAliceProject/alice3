@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.gallerybrowser;
 
-import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
-
 /**
  * @author Dennis Cosgrove
  */

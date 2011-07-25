@@ -49,9 +49,7 @@ import javax.swing.ImageIcon;
 import org.alice.stageide.croquet.models.gallerybrowser.Create3dTextOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.CreateBillboardOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation;
-import org.alice.stageide.croquet.models.gallerybrowser.CreateTextbookInstanceOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
-import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.State;
@@ -281,7 +279,6 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 
 		GridPanel fromFilePane = GridPanel.createGridPane( 2, 1, 0, 4 );
 		fromFilePane.addComponent( CreateMyInstanceOperation.getInstance().createButton());
-		fromFilePane.addComponent( CreateTextbookInstanceOperation.getInstance().createButton());
 
 		GridPanel bonusPane = GridPanel.createGridPane( 2, 1, 0, 4 );
 		bonusPane.addComponent(CreateBillboardOperation.getInstance().createButton());

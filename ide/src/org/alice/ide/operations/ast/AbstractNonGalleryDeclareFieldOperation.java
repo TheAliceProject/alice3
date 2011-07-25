@@ -48,13 +48,13 @@ package org.alice.ide.operations.ast;
 //todo: remove
 @Deprecated
 abstract class AbstractNonGalleryDeclareFieldOperation extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation {
-	public AbstractNonGalleryDeclareFieldOperation( java.util.UUID individualId ) {
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
+	public AbstractNonGalleryDeclareFieldOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType ) {
 		super( individualId );
+		this.declaringType = declaringType;
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.history.InputDialogOperationStep step );
-	protected abstract Object createInstance();
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( this.createField( step ), this.createInstance() );
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+		return this.declaringType;
 	}
 }
