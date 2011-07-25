@@ -42,12 +42,16 @@
  */
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
+
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance {
-	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, GalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static GalleryDragComponent getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
+	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>, GalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static GalleryDragComponent getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode ) {
 		GalleryDragComponent rv = map.get( treeNode );
 		if( rv != null ) {
 			//pass
@@ -58,23 +62,24 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 		return rv;
 	}
 	
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode;
-	private GalleryDragComponent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
+	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode;
+	private GalleryDragComponent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode ) {
 		this.treeNode = treeNode;
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
-		label.setIcon( ResourceManager.getLargeIcon( this.treeNode ) );
+//		label.setIcon( ResourceManager.getLargeIcon( this.treeNode ) );
 		label.setText( ClassBasedGalleryBrowser.getTextFor( this.treeNode, false ) );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 		this.setEnabledBackgroundPaint( new java.awt.Color( 0xf7e4b6 ) );
 		this.addComponent( label );
-		this.setLeftButtonClickModel( GalleryFileOperation.getInstance( treeNode ) );
+		
+		this.setLeftButtonClickModel( GalleryClassOperation.getInstance(treeNode) );
 		this.setDragModel( new org.alice.ide.croquet.models.GalleryDragModel() );
 		this.getAwtComponent().setOpaque( false );
 	}
 	
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getTreeNode() {
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> getTreeNode() {
 		return this.treeNode;
 	}
 

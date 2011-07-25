@@ -47,6 +47,7 @@ import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.lookingglassandalice.storytelling.Entity;
 import org.lookingglassandalice.storytelling.ImplementationAccessor;
 import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
+import org.lookingglassandalice.storytelling.implementation.TransformableImplementation;
 import org.lookingglassandalice.storytelling.resources.ModelResource;
 import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceTreeNode;
 import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceUtilities;
@@ -91,7 +92,7 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 
 	
 	//"Create New Instance"
-	@Override
+//	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = step.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();
@@ -131,9 +132,10 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 					}
 					
 				}
-				if (fieldObject instanceof org.lookingglassandalice.storytelling.Turnable)
+				if (fieldObject instanceof org.lookingglassandalice.storytelling.MovableTurnable)
 				{
-					((org.lookingglassandalice.storytelling.Turnable)fieldObject).setLocalTransformation(objectTransform);
+					 TransformableImplementation tranformable = ImplementationAccessor.getImplementation((org.lookingglassandalice.storytelling.MovableTurnable)fieldObject);
+					 tranformable.setLocalTransformation(objectTransform);
 				}
 			}
 			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, fieldObject );

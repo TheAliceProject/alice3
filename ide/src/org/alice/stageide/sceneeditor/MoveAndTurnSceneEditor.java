@@ -84,7 +84,6 @@ import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
-import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
 import org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState;
 import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
 import org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState;
@@ -128,6 +127,8 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+
 import org.lookingglassandalice.storytelling.ImplementationAccessor;
 import org.lookingglassandalice.storytelling.Model;
 import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
@@ -448,7 +449,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	private void handleCameraMarkerFieldSelection( FieldDeclaredInAlice cameraMarkerField )
 	{
-		MarkerImplementation newMarker = this.getCameraMarkerForField(cameraMarkerField);
+		CameraMarkerImplementation newMarker = this.getCameraMarkerForField(cameraMarkerField);
 		this.globalDragAdapter.setSelectedCameraMarker(newMarker);
 		MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField(cameraMarkerField);
@@ -457,7 +458,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	private void handleObjectMarkerFieldSelection( FieldDeclaredInAlice objectMarkerField )
 	{
-		MarkerImplementation newMarker = this.getMarkerForField(objectMarkerField);
+		ObjectMarkerImplementation newMarker = this.getObjectMarkerForField(objectMarkerField);
 		this.globalDragAdapter.setSelectedObjectMarker(newMarker);
 		
 		MoveSelectedObjectToMarkerActionOperation.getInstance().setMarkerField(objectMarkerField);
@@ -1165,7 +1166,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	}
 	private void showRightClickMenuForModel( InputState clickState )
 	{
-		TransformableImplementation t = clickState.getClickPickTransformable();
+		Transformable sgT = clickState.getClickPickTransformable();
+		TransformableImplementation t = EntityImplementation.getInstance(sgT, TransformableImplementation.class);
 		org.lookingglassandalice.storytelling.Entity element = t.getAbstraction();
 		FieldDeclaredInAlice clickedJavaField = (FieldDeclaredInAlice)this.getFieldForInstanceInJavaVM(element);
 		if (clickedJavaField != null)
@@ -1960,7 +1962,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	public void setHandleVisibilityForObject( edu.cmu.cs.dennisc.scenegraph.Transformable object, boolean handlesVisible)
 	{
-		this.globalDragAdapter.setHandleShowingForgetSelectedImplementation(object, handlesVisible);
+		TransformableImplementation t = EntityImplementation.getInstance(object, TransformableImplementation.class);
+		this.globalDragAdapter.setHandleShowingForgetSelectedImplementation(t, handlesVisible);
 	}
 	
 	public boolean isObjectSelected( TransformableImplementation object )
@@ -2020,9 +2023,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		dragSource.showDragProxy();
 		org.lgna.croquet.Model model = dragSource.getLeftButtonClickModel();
-		if (model instanceof GalleryFileOperation)
+		if (model instanceof GalleryClassOperation)
 		{
-			((GalleryFileOperation)model).setDesiredTransformation(null);
+			((GalleryClassOperation)model).setDesiredTransformation(null);
 		}
 	}
 
@@ -2083,12 +2086,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{
 			org.lgna.croquet.Model model = dragSource.getLeftButtonClickModel();
-			if (model instanceof GalleryFileOperation)
-			{
-				AffineMatrix4x4 dropTargetPosition = this.globalDragAdapter.getDropTargetTransformation();
-				((GalleryFileOperation)model).setDesiredTransformation(dropTargetPosition);
-			}
-			else if (model instanceof GalleryClassOperation)
+			if (model instanceof GalleryClassOperation)
 			{
 				AffineMatrix4x4 dropTargetPosition = this.globalDragAdapter.getDropTargetTransformation();
 				((GalleryClassOperation)model).setDesiredTransformation(dropTargetPosition);

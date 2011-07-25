@@ -217,7 +217,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 
 	public boolean isPotentiallyAcceptingOf(DragComponent source) {
-		return source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent;
+		return source instanceof org.alice.stageide.gallerybrowser.ClassBasedGalleryDragComponent;
 	}
 
 	public org.lgna.croquet.components.JComponent<?> getViewController() {
@@ -228,8 +228,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		dragSource.showDragProxy();
 		org.lgna.croquet.Model model = dragSource.getLeftButtonClickModel();
-		if (model instanceof GalleryFileOperation) {
-			((GalleryFileOperation) model).setDesiredTransformation(null);
+		if (model instanceof GalleryClassOperation) {
+			((GalleryClassOperation) model).setDesiredTransformation(null);
 		}
 	}
 
@@ -271,11 +271,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		if (isDropLocationOverLookingGlass(dragAndDropContext)) {
 			org.lgna.croquet.Model model = dragSource.getLeftButtonClickModel();
-			if (model instanceof GalleryFileOperation) {
-				// AffineMatrix4x4 dropTargetPosition =
-				// this.globalDragAdapter.getDropTargetTransformation();
-				// ((GalleryFileOperation)model).setDesiredTransformation(dropTargetPosition);
-			} else if (model instanceof GalleryClassOperation) {
+			if (model instanceof GalleryClassOperation) {
 				// AffineMatrix4x4 dropTargetPosition =
 				// this.globalDragAdapter.getDropTargetTransformation();
 				// ((GalleryClassOperation)model).setDesiredTransformation(dropTargetPosition);

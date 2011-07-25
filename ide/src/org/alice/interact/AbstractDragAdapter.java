@@ -406,7 +406,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	private static double MARKER_SELECTION_DURATION = .25;
 	
-	protected void setSelectedCameraMarker( CameraMarkerImplementation selected )
+	public void setSelectedCameraMarker( CameraMarkerImplementation selected )
 	{
 		if (selected != this.selectedCameraMarker)
 		{
@@ -436,7 +436,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	protected void setSelectedObjectMarker( ObjectMarkerImplementation selected )
+	public void setSelectedObjectMarker( ObjectMarkerImplementation selected )
 	{
 		if (selected != this.selectedObjectMarker)
 		{
@@ -453,7 +453,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	protected void setSelectedSceneObjectImplementation( TransformableImplementation selected )
+	public void setSelectedSceneObjectImplementation( TransformableImplementation selected )
 	{
 		if (this.selectedObject != selected) 
 		{

@@ -212,13 +212,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			DragComponent dragSource = startInput.getDragAndDropContext().getDragSource();
 			dragSource.hideDragProxy();
 			edu.cmu.cs.dennisc.math.AxisAlignedBox box = null;
-			if (dragSource instanceof GalleryDragComponent)
-			{
-				org.alice.stageide.gallerybrowser.GalleryDragComponent galleryDragComponent = (org.alice.stageide.gallerybrowser.GalleryDragComponent)dragSource;
-				edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode = galleryDragComponent.getTreeNode();
-				box = org.alice.stageide.gallerybrowser.ResourceManager.getAxisAlignedBox(treeNode);
-			}
-			else if (dragSource instanceof ClassBasedGalleryDragComponent)
+			if (dragSource instanceof ClassBasedGalleryDragComponent)
 			{
 				ClassBasedGalleryDragComponent galleryDragComponent = (ClassBasedGalleryDragComponent)dragSource;
 				edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode = galleryDragComponent.getTreeNode();
