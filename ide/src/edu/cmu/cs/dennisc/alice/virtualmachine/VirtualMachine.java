@@ -112,6 +112,15 @@ public abstract class VirtualMachine {
 			this.isConstructorBodyExecutionDesired = true;
 		}
 	}
+	
+	public InstanceInAlice ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		return null;
+	}
+	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_removeField( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, InstanceInAlice value ) {
+	}
+	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	}
+	
 		
 	private java.util.Map< Class<?>, Class<?> > mapAnonymousClsToAdapterCls = new java.util.HashMap< Class<?>, Class<?> >();
 	public void registerAnonymousAdapter( Class<?> anonymousCls, Class<?> adapterCls ) {
