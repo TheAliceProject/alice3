@@ -67,8 +67,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 				    org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)ExportVideoUploadToYouTubeOperation.this.getIDE();
 			        ide.ensureProjectCodeUpToDate();
 					edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
-					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType().getDeclaredFields().get( 0 ).getValueType();
-					return ide.createRuntimeProgram( vm, sceneType, frameRate );
+					return ide.createRuntimeProgramForMovieEncoding( vm, project.getProgramType(), frameRate );
 				}
 				
 				@Override

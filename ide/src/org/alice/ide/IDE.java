@@ -1337,7 +1337,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public abstract boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice );
-	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgram( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, int frameRate );
+	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType, int frameRate );
 
 	public java.util.Set< org.alice.virtualmachine.Resource > getResources() {
 		edu.cmu.cs.dennisc.alice.Project project = this.getProject();

@@ -147,10 +147,8 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 			edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = ide.createVirtualMachineForRuntimeProgram();
 			vm.registerAnonymousAdapter( org.lookingglassandalice.storytelling.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
 			vm.registerAnonymousAdapter( org.lookingglassandalice.storytelling.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
-			org.alice.stageide.MoveAndTurnRuntimeProgram rtProgram = new org.alice.stageide.MoveAndTurnRuntimeProgram( ide.getSceneType(), vm );
-
-			String[] args = {};
-			rtProgram.showInAWTContainer( rv.getAwtComponent(), dialog.getAwtComponent(), args );
+			
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo: run program" );
 
 			ide.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
 		} else {

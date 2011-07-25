@@ -194,8 +194,8 @@ public class StageIDE extends org.alice.ide.IDE {
 		final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
 		try {
 			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.alice.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 1 of 3): Alice 3", edu.cmu.cs.dennisc.alice.License.TEXT, "Alice" );
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.wustl.cse.lookingglass.apis.walkandtouch.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 2 of 3): Looking Glass Walk & Touch API",
-					edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT_FOR_USE_IN_ALICE, "the Looking Glass Walk & Touch API" );
+//			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.wustl.cse.lookingglass.apis.walkandtouch.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 2 of 3): Looking Glass Walk & Touch API",
+//					edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT_FOR_USE_IN_ALICE, "the Looking Glass Walk & Touch API" );
 			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.nebulous.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 3 of 3): The Sims (TM) 2 Art Assets",
 					edu.cmu.cs.dennisc.nebulous.License.TEXT, "The Sims (TM) 2 Art Assets" );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
@@ -579,23 +579,24 @@ public class StageIDE extends org.alice.ide.IDE {
 		return false == edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( typeInJava.getClassReflectionProxy().getReification(), org.lookingglassandalice.storytelling.Scene.class, org.lookingglassandalice.storytelling.Camera.class, org.lookingglassandalice.storytelling.resources.sims2.Person.class );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgram( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, final int frameRate ) {
-		return new MoveAndTurnRuntimeProgram( sceneType, vm ) {
-			@Override
-			protected java.awt.Component createSpeedMultiplierControlPanel() {
-				return null;
-			}
-			@Override
-			protected edu.cmu.cs.dennisc.animation.Animator createAnimator() {
-				return new edu.cmu.cs.dennisc.animation.FrameBasedAnimator( frameRate );
-			}
-
-			@Override
-			protected void postRun() {
-				super.postRun();
-				this.setMovieEncoder( null );
-			}
-		};
+	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType, int frameRate ) {
+		throw new RuntimeException( "todo" );
+//		return new MoveAndTurnRuntimeProgram( sceneType, vm ) {
+//			@Override
+//			protected java.awt.Component createSpeedMultiplierControlPanel() {
+//				return null;
+//			}
+//			@Override
+//			protected edu.cmu.cs.dennisc.animation.Animator createAnimator() {
+//				return new edu.cmu.cs.dennisc.animation.FrameBasedAnimator( frameRate );
+//			}
+//
+//			@Override
+//			protected void postRun() {
+//				super.postRun();
+//				this.setMovieEncoder( null );
+//			}
+//		};
 	}
 
 	private static final int THUMBNAIL_WIDTH = 160;
