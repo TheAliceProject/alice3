@@ -49,9 +49,22 @@ public class VolumeLevelChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 	private org.alice.stageide.controls.VolumeLevelControl volumeLevelControl = new org.alice.stageide.controls.VolumeLevelControl();
 	private org.lgna.croquet.components.Component< ? >[] components = { new org.lgna.croquet.components.SwingAdapter( this.volumeLevelControl ) };
 	public VolumeLevelChooser() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		//todo
 	}
+	@Override
+	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+		double volumeLevel;
+		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
+			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
+			volumeLevel = doubleLiteral.value.getValue();
+		} else {
+			//todo?
+			volumeLevel = 1.0;
+		}
+		this.volumeLevelControl.setVolumeLevel( volumeLevel );
+	}
+	
 	@Override
 	public org.lgna.croquet.components.Component< ? >[] getComponents() {
 		return this.components;

@@ -65,6 +65,10 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChoos
 		return this.components;
 	}
 	@Override
+	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		//todo?
+	}
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.DoubleLiteral getValue() {
 		double value = org.alice.stageide.croquet.models.custom.PortionState.getInstance().getValue() / 100.0;
 		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
