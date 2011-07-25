@@ -113,7 +113,7 @@ public abstract class VirtualMachine {
 		}
 	}
 	
-	public InstanceInAlice ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+	public Object ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		pushCurrentThread( null );
 		try {
 			return instance.createAndSetFieldInstance( this, field );

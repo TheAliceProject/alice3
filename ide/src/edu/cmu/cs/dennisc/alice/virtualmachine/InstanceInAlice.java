@@ -113,8 +113,8 @@ public class InstanceInAlice {
 		vm.popFrame();
 	}
 
-	public InstanceInAlice createAndSetFieldInstance( VirtualMachine vm, FieldDeclaredInAlice field ) {
-		InstanceInAlice rv = (InstanceInAlice)vm.evaluate( field.initializer.getValue() );
+	public Object createAndSetFieldInstance( VirtualMachine vm, FieldDeclaredInAlice field ) {
+		Object rv = vm.evaluate( field.initializer.getValue() );
 		this.setFieldValue( field, rv );
 		return rv;
 	}
