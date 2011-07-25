@@ -48,21 +48,24 @@ package org.alice.ide.operations.ast;
 public class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
 	private final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-	private final edu.cmu.cs.dennisc.alice.ast.Statement[] statements;
+	private final edu.cmu.cs.dennisc.alice.ast.Statement[] doStatements;
+	private final edu.cmu.cs.dennisc.alice.ast.Statement[] undoStatements;
 
 	private transient int index;
-	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.Statement[] statements) {
+	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.Statement[] doStatements, edu.cmu.cs.dennisc.alice.ast.Statement[] undoStatements ) {
 		super( step );
 		this.declaringType = ownerType;
 		this.field = field;
-		this.statements = statements;
+		this.doStatements = doStatements;
+		this.undoStatements = undoStatements;
 	}
 	public DeclareFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).decodeValue( binaryDecoder );
 		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class ).decodeValue( binaryDecoder );
 		assert false : "todo";
-		this.statements = null;
+		this.doStatements = null;
+		this.undoStatements = null;
 	}
 	
 	@Override
@@ -75,14 +78,14 @@ public class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField( this.field, this.statements );
+		org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField( this.field, this.doStatements );
 //		this.index = this.declaringType.fields.size(); 
 //		this.declaringType.fields.add(this.index, this.field);
 	}
 
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField( this.field, this.statements );
+		org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField( this.field, this.undoStatements );
 //		if (this.declaringType.fields.get(this.index) == this.field) {
 //			this.declaringType.fields.remove(this.index);
 //		} else {

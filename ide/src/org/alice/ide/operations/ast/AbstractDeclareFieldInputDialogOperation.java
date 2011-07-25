@@ -49,7 +49,8 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 	protected static class EpilogueData {
 		private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
 		private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-		private java.util.List< edu.cmu.cs.dennisc.alice.ast.Statement > statements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private java.util.List< edu.cmu.cs.dennisc.alice.ast.Statement > doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private java.util.List< edu.cmu.cs.dennisc.alice.ast.Statement > undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
 		public boolean isValid() {
 			return this.declaringType != null && this.field != null;
@@ -66,11 +67,17 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 		public void setField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 			this.field = field;
 		}
-		public void addStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-			this.statements.add( statement );
+		public void addDoStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+			this.doStatements.add( statement );
 		}
-		public edu.cmu.cs.dennisc.alice.ast.Statement[] getStatements() {
-			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.statements, edu.cmu.cs.dennisc.alice.ast.Statement.class );
+		public edu.cmu.cs.dennisc.alice.ast.Statement[] getDoStatements() {
+			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.doStatements, edu.cmu.cs.dennisc.alice.ast.Statement.class );
+		}
+		public void addUndoStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+			this.undoStatements.add( statement );
+		}
+		public edu.cmu.cs.dennisc.alice.ast.Statement[] getUndoStatements() {
+			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.undoStatements, edu.cmu.cs.dennisc.alice.ast.Statement.class );
 		}
 	}
 	public AbstractDeclareFieldInputDialogOperation( java.util.UUID individualId ) {
@@ -91,7 +98,7 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 			EpilogueData data = new EpilogueData();
 			this.fillInEpilogueData( data, step );
 			if( data.isValid() ) {
-				step.commitAndInvokeDo( new DeclareFieldEdit( step, data.getDeclaringType(), data.getField(), data.getStatements() ) );
+				step.commitAndInvokeDo( new DeclareFieldEdit( step, data.getDeclaringType(), data.getField(), data.getDoStatements(), data.getUndoStatements() ) );
 			} else {
 				step.cancel();
 			}
