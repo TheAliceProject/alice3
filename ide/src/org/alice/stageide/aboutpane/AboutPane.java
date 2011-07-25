@@ -89,10 +89,10 @@ class ViewEULAsPane extends edu.cmu.cs.dennisc.javax.swing.components.JRowsSprin
 	@Override
 	protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 		java.awt.Component aliceLabel = createLabel( "<html>Alice 3:</html>" );
-		java.awt.Component lookingGlassLabel = createLabel( "<html>Looking Glass Walk & Touch API:</html>" );
+//		java.awt.Component lookingGlassLabel = createLabel( "<html>Looking Glass Walk & Touch API:</html>" );
 		java.awt.Component simsLabel = createLabel( "<html>The Sims <sup>TM</sup> 2 Art Assets:</html>" );
 		rv.add( new java.awt.Component[] { aliceLabel, new javax.swing.JButton( new ViewEULAAction( edu.cmu.cs.dennisc.alice.License.TEXT, "License Agreement: Alice 3" ) ) } );
-		rv.add( new java.awt.Component[] { lookingGlassLabel, new javax.swing.JButton( new ViewEULAAction( edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT_FOR_USE_IN_ALICE, "License Agreement: Looking Glass Walk & Touch API" ) ) } );
+//		rv.add( new java.awt.Component[] { lookingGlassLabel, new javax.swing.JButton( new ViewEULAAction( edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT_FOR_USE_IN_ALICE, "License Agreement: Looking Glass Walk & Touch API" ) ) } );
 		rv.add( new java.awt.Component[] { simsLabel, new javax.swing.JButton( new ViewEULAAction( edu.cmu.cs.dennisc.nebulous.License.TEXT, "License Agreement: The Sims (TM) 2 Art Assets" ) ) } );
 		return rv;
 	}
