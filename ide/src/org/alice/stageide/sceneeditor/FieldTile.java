@@ -190,9 +190,6 @@ import org.lgna.croquet.BooleanState;
 //				placeOperation.setName( "place" );
 //				rv.add( placeOperation );
 			}
-			if( fieldType.isAssignableTo( org.lookingglassandalice.storytelling.resources.sims2.Person.class ) ) {
-				rv.add( org.alice.stageide.croquet.models.gallerybrowser.EditPersonOperation.getInstance( fieldInAlice ).getMenuItemPrepModel() );
-			}
 		}
 		return rv;
 	}

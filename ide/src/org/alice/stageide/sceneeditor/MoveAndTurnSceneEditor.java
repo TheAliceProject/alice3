@@ -67,7 +67,6 @@ import org.lookingglassandalice.storytelling.OrthographicCameraMarker;
 import org.lookingglassandalice.storytelling.PerspectiveCameraMarker;
 import org.lookingglassandalice.storytelling.Scene;
 import org.lookingglassandalice.storytelling.Turnable;
-import org.lookingglassandalice.storytelling.Collada;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.declarationpanes.CreateFieldFromGalleryPane;
