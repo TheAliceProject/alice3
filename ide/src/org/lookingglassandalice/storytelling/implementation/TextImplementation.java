@@ -135,4 +135,9 @@ public class TextImplementation extends SimpleModelImplementation {
 //		updateSGText();
 //	}
 
+	@Override
+	protected double getBoundingSphereRadius() {
+		//todo
+		return 1.0;
+	}
 }
