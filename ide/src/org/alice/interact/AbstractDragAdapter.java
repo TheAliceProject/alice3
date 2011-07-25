@@ -60,6 +60,7 @@ import org.lookingglassandalice.storytelling.CameraMarker;
 import org.lookingglassandalice.storytelling.ObjectMarker;
 import org.lookingglassandalice.storytelling.PerspectiveCameraMarker;
 import org.lookingglassandalice.storytelling.implementation.CameraMarkerImplementation;
+import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
 import org.lookingglassandalice.storytelling.implementation.ObjectMarkerImplementation;
 import org.lookingglassandalice.storytelling.implementation.PerspectiveCameraMarkerImplementation;
 import org.lookingglassandalice.storytelling.implementation.TransformableImplementation;
@@ -200,7 +201,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	protected SnapState snapState = null;
 	
-	private Transformable selectedObject = null;
+	private TransformableImplementation selectedObject = null;
 	private CameraMarkerImplementation selectedCameraMarker = null;
 	private ObjectMarkerImplementation selectedObjectMarker = null;
 
@@ -377,12 +378,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return this.animator;
 	}
 	
-	public Transformable getSelectedObject()
+	public TransformableImplementation getSelectedImplementation()
 	{
 		return this.selectedObject;
 	}
 	
-	public void setHandleShowingForObject( Transformable object, boolean handlesShowing)
+	public void setHandleShowingForgetSelectedImplementation( TransformableImplementation object, boolean handlesShowing)
 	{
 		if (this.selectedObject == object)
 		{
@@ -390,7 +391,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void triggerSelection(Transformable selected)
+	public void triggerImplementationSelection(TransformableImplementation selected)
 	{	
 		if (this.selectedObject != selected)
 		{
@@ -398,9 +399,14 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
+	public void triggerSgObjectSelection(Transformable selected)
+	{	
+		triggerImplementationSelection( EntityImplementation.getInstance(selected, TransformableImplementation.class) );
+	}
+	
 	private static double MARKER_SELECTION_DURATION = .25;
 	
-	public void setSelectedCameraMarker( CameraMarkerImplementation selected )
+	protected void setSelectedCameraMarker( CameraMarkerImplementation selected )
 	{
 		if (selected != this.selectedCameraMarker)
 		{
@@ -419,8 +425,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				this.selectedCameraMarker.animateOpacity(1f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
 				if (this.sceneEditor != null && this.selectedCameraMarker instanceof PerspectiveCameraMarkerImplementation)
 				{
-					boolean isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive(this.selectedCameraMarker);
-					if (!isNewSelectedActiveCameraMarker)
+					//TODO: Resolve the issue of showing the selection details of an active camera mark (active meaning it's currently attached to the camera)
+//					boolean isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive(this.selectedCameraMarker);
+//					if (!isNewSelectedActiveCameraMarker)
 					{
 						((PerspectiveCameraMarkerImplementation)this.selectedCameraMarker).setDetailedViewShowing(true);
 					}
@@ -429,21 +436,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void setSelectedCameraMarker( TransformableImplementation selected )
-	{
-		CameraMarkerImplementation cameraMarker = null;
-		if (selected != null)
-		{
-//			org.lookingglassandalice.storytelling.Entity selectedMoveAndTurnObject = org.lookingglassandalice.storytelling.Entity.getElement( selected );
-			if (selected instanceof CameraMarkerImplementation)
-			{
-				cameraMarker = (CameraMarkerImplementation)selected;
-			}
-		}
-		setSelectedCameraMarker(cameraMarker);
-	}
-	
-	public void setSelectedObjectMarker( ObjectMarkerImplementation selected )
+	protected void setSelectedObjectMarker( ObjectMarkerImplementation selected )
 	{
 		if (selected != this.selectedObjectMarker)
 		{
@@ -460,42 +453,49 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void setSelectedObjectMarker( TransformableImplementation selected )
+	protected void setSelectedSceneObjectImplementation( TransformableImplementation selected )
 	{
-		ObjectMarkerImplementation objectMarker = null;
-		if (selected != null)
-		{
-//			org.lookingglassandalice.storytelling.Entity selectedMoveAndTurnObject = org.lookingglassandalice.storytelling.Entity.getElement( selected );
-			if (selected instanceof ObjectMarkerImplementation)
-			{
-				objectMarker = (ObjectMarkerImplementation)selected;
-			}
-		}
-		setSelectedObjectMarker(objectMarker);
-	}
-	
-	public void setSelectedSceneObject( Transformable selected )
-	{
-		if (this.selectedObject != selected)
+		if (this.selectedObject != selected) 
 		{
 			this.fireSelecting( new SelectionEvent(this, selected) );
-			if (HandleManager.canHaveHandles(selected))
+			if (HandleManager.canHaveHandles(selected.getSgComposite()))
 			{
 				this.handleManager.setHandlesShowing(true);
-				this.handleManager.setSelectedObject( selected );
+				this.handleManager.setSelectedObject( selected.getSgComposite() );
 			}
 			else
 			{
 				this.handleManager.setSelectedObject( null );
 			}
-			this.currentInputState.setCurrentlySelectedObject( selected );
+			this.currentInputState.setCurrentlySelectedObject( selected.getSgComposite() );
 			this.currentInputState.setTimeCaptured();
 			selectedObject = selected;
 			this.handleStateChange();
 		}
 	}
 	
-	public void setSelectedObject(TransformableImplementation selected)
+//	public void setSelectedSgTransformable( Transformable selected )
+//	{
+//		if (this.selectedObject != selected) 
+//		{
+//			this.fireSelecting( new SelectionEvent(this, selected) );
+//			if (HandleManager.canHaveHandles(selected))
+//			{
+//				this.handleManager.setHandlesShowing(true);
+//				this.handleManager.setSelectedObject( selected );
+//			}
+//			else
+//			{
+//				this.handleManager.setSelectedObject( null );
+//			}
+//			this.currentInputState.setCurrentlySelectedObject( selected );
+//			this.currentInputState.setTimeCaptured();
+//			selectedObject = selected;
+//			this.handleStateChange();
+//		}
+//	}
+	
+	public void setSelectedImplementation(TransformableImplementation selected)
 	{
 		if (this.isInStateChange())
 		{
@@ -505,23 +505,22 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		if (selected != null)
 		{
 			Composite c = selected.getSgComposite();
-//			org.lookingglassandalice.storytelling.Entity selectedMoveAndTurnObject = org.lookingglassandalice.storytelling.Entity.getElement( selected );
 			if (selected instanceof ObjectMarkerImplementation)
 			{
-				setSelectedObjectMarker(selected);
+				setSelectedObjectMarker((ObjectMarkerImplementation)selected);
 			}
 			else if (selected instanceof CameraMarkerImplementation)
 			{
-				setSelectedCameraMarker(selected);
+				setSelectedCameraMarker((CameraMarkerImplementation)selected);
 			}
 			else
 			{
-				setSelectedSceneObject(selected);
+				setSelectedSceneObjectImplementation(selected);
 			}
 		}
 		else
 		{
-			setSelectedSceneObject(null);
+			setSelectedSceneObjectImplementation(null);
 		}
 		
 	}
@@ -693,7 +692,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		
 		if (!this.hasObjectToBeSelected && this.currentInputState.getCurrentlySelectedObject() != this.previousInputState.getCurrentlySelectedObject())
 		{
-			this.triggerSelection( this.currentInputState.getCurrentlySelectedObject() );
+			this.triggerImplementationSelection( EntityImplementation.getInstance( this.currentInputState.getCurrentlySelectedObject(), TransformableImplementation.class) );
 		}
 		
 		this.previousInputState.copyState(this.currentInputState);
@@ -701,7 +700,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		if (this.hasObjectToBeSelected)
 		{
 			this.hasObjectToBeSelected = false;
-			this.setSelectedObject( this.toBeSelected );
+			this.setSelectedImplementation( this.toBeSelected );
 		}
 	}
 	

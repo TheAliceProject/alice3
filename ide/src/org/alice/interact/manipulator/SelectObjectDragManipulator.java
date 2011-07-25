@@ -96,14 +96,14 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 		PickHint clickedObjectType = startInput.getClickPickType();
 		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) || clickedObjectType.intersects(PickHint.GROUND))
 		{
-			this.globalDragAdapter.triggerSelection( startInput.getClickPickedTransformable(true) );
+			this.globalDragAdapter.triggerSgObjectSelection( startInput.getClickPickedTransformable(true) );
 		}
 		else if (clickedObjectType.intersects( PickHint.THREE_D_HANDLES) )
 		{
 			Transformable pickedHandle = startInput.getClickPickedTransformable(true);
 			if (pickedHandle instanceof RotationRingHandle)
 			{
-				this.globalDragAdapter.triggerSelection( ((RotationRingHandle)pickedHandle).getManipulatedObject() );
+				this.globalDragAdapter.triggerSgObjectSelection( ((RotationRingHandle)pickedHandle).getManipulatedObject() );
 			}
 		}
 		else if (clickedObjectType.intersects( PickHint.TWO_D_HANDLES) )
@@ -112,7 +112,7 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 		}
 		else
 		{
-			this.globalDragAdapter.triggerSelection( null );
+			this.globalDragAdapter.triggerImplementationSelection( null );
 		}
 		return true;
 

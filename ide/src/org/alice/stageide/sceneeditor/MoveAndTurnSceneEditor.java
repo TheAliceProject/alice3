@@ -511,7 +511,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 			}
 			else if (instance instanceof Scene)
 			{
-				this.globalDragAdapter.setSelectedObject(null);
+				this.globalDragAdapter.setSelectedImplementation(null);
 				MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField(null);
 				MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField(null);
 				CreateObjectMarkerActionOperation.getInstance().setEnabled(false); //If a marker field is selected, we can't make a marker there
@@ -519,7 +519,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 			}
 			else
 			{
-				this.globalDragAdapter.setSelectedObject(null);
+				this.globalDragAdapter.setSelectedImplementation(null);
 				MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField(null);
 				MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField(null);
 				CreateObjectMarkerActionOperation.getInstance().setEnabled(false); //If a marker field is selected, we can't make a marker there
@@ -529,7 +529,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		}
 		else if (accessible == null)
 		{
-			this.globalDragAdapter.setSelectedObject(null);
+			this.globalDragAdapter.setSelectedImplementation(null);
 			MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField(null);
 			MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField(null);
 			CreateObjectMarkerActionOperation.getInstance().setEnabled(false); //If a nothing is selected, we can't make a marker there
@@ -1960,12 +1960,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	public void setHandleVisibilityForObject( edu.cmu.cs.dennisc.scenegraph.Transformable object, boolean handlesVisible)
 	{
-		this.globalDragAdapter.setHandleShowingForObject(object, handlesVisible);
+		this.globalDragAdapter.setHandleShowingForgetSelectedImplementation(object, handlesVisible);
 	}
 	
 	public boolean isObjectSelected( TransformableImplementation object )
 	{
-		return this.globalDragAdapter.getSelectedObject() == object;
+		return this.globalDragAdapter.getSelectedImplementation() == object;
 	}
 	
 	public boolean isCameraMarkerActive( MarkerImplementation marker )
