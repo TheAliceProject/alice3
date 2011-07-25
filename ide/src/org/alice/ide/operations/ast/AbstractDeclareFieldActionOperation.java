@@ -60,8 +60,8 @@ public abstract class AbstractDeclareFieldActionOperation extends org.alice.ide.
 			if( tuple != null ) {
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
 				if( field != null ) {
-					int index = ownerType.fields.size();
-					step.commitAndInvokeDo( new DeclareFieldEdit( step, ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+					edu.cmu.cs.dennisc.alice.ast.Statement[] statements = {}; //TODO: make this something for real
+					step.commitAndInvokeDo( new DeclareFieldEdit( step, ownerType, field, statements ));
 				} else {
 					step.cancel();
 				}
