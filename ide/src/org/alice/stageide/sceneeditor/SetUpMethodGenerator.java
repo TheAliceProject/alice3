@@ -156,6 +156,15 @@ public class SetUpMethodGenerator {
 		}
 	}
 	
+	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createSetVehicleStatement(edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractField vehicleField, boolean isVehicleScene)
+	{
+		if (vehicleField != null || isVehicleScene)
+		{
+			return createStatement( org.lookingglassandalice.storytelling.Turnable.class, "setVehicle", org.lookingglassandalice.storytelling.Entity.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) );
+		}
+		return null;
+	}
+	
 	public static void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance, org.alice.ide.sceneeditor.FieldAndInstanceMapper mapper ) {
 		if( instance instanceof org.lookingglassandalice.storytelling.Entity ) {
 			org.lookingglassandalice.storytelling.Entity entity = (org.lookingglassandalice.storytelling.Entity)instance;

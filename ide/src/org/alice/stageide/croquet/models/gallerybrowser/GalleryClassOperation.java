@@ -44,6 +44,8 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 
 import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
+import org.lgna.croquet.history.InputDialogOperationStep;
 import org.lookingglassandalice.storytelling.Entity;
 import org.lookingglassandalice.storytelling.ImplementationAccessor;
 import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
@@ -90,9 +92,64 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 		this.desiredTransformation = desiredTransformation;
 	}
 
+	@Override
+	protected EpilogueData fillInEpilogueData(EpilogueData rv, InputDialogOperationStep step) {
+		super.fillInEpilogueData(rv, step);
+		
+		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = step.getMainPanel();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();
+		if (field != null) {
+			
+			rv.addDoStatement(SetUpMethodGenerator.createSetVehicleStatement(field, null, true));
+			
+//			ModelResource resource = ((ModelResourceTreeNode)this.treeNode).getModelResource();
+//			Object fieldObject = createFieldFromGalleryPane.createInstanceInJavaForArguments(resource);
+			AffineMatrix4x4 objectTransform = null;
+//			if (this.desiredTransformation != null)
+//			{
+//				objectTransform = new edu.cmu.cs.dennisc.math.AffineMatrix4x4(this.desiredTransformation);
+//				//Reset the desired transform after using it
+//				this.desiredTransformation = null;
+//			}
+//			else
+//			{
+//				if (this.treeNode instanceof ModelResourceTreeNode)
+//				{
+//					Class<?> resourceClass = ((ModelResourceTreeNode)this.treeNode).getResourceClass();
+//					edu.cmu.cs.dennisc.math.AxisAlignedBox box = ModelResourceUtilities.getBoundingBox(resourceClass);
+//					if (box.isNaN())
+//                    {
+//                        System.err.println("TODO: fix broken bounding box for "+this.treeNode.getValue());
+//                    }
+//					objectTransform = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getGoodPointOfViewInSceneForObject(box);
+//					
+//				}
+//			}
+			if (objectTransform != null)
+			{
+//				if (fieldObject instanceof Entity)
+//				{
+//					EntityImplementation impl = ImplementationAccessor.getImplementation((Entity)fieldObject);
+//					if (impl.getSgComposite() instanceof AbstractTransformable)
+//					{
+//						AbstractTransformable trans = (AbstractTransformable)impl.getSgComposite();
+//						trans.setLocalTransformation(objectTransform);
+//					}
+//					
+//				}
+//				if (fieldObject instanceof org.lookingglassandalice.storytelling.MovableTurnable)
+//				{
+//					 TransformableImplementation tranformable = ImplementationAccessor.getImplementation((org.lookingglassandalice.storytelling.MovableTurnable)fieldObject);
+//					 tranformable.setLocalTransformation(objectTransform);
+//				}
+			}
+		}
+		
+		rv.setField(field);
+		return rv;
+	}
 	
-	//"Create New Instance"
-//	@Override
+
 	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = step.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();

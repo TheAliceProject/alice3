@@ -45,6 +45,8 @@ package org.alice.ide.sceneeditor;
 import org.lookingglassandalice.storytelling.Entity;
 import org.lookingglassandalice.storytelling.ImplementationAccessor;
 
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+
 
 /**
  * @author Dennis Cosgrove
@@ -124,11 +126,27 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	}
 	
-	
-	public void removeField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.Statement... statements ){
+	public void addField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.Statement... statements ){
+		this.getActiveSceneType().fields.add(field);
+		this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField(this.getActiveSceneInstance(), field);
+		for (edu.cmu.cs.dennisc.alice.ast.Statement statement : statements)
+		{
+			this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement(this.getActiveSceneInstance(), statement);
+		}
 	}
 	
-	public void addField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.Statement... statements ){
+	public void removeField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.Statement... statements ){
+	
+	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getActiveSceneType()
+	{
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getActiveSceneField().getValueType();
+		if (type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)
+		{
+			return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
+		}
+		return null;
 	}
 	
 	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActiveSceneField()
