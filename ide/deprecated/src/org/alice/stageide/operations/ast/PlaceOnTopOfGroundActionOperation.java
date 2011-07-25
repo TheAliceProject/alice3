@@ -53,8 +53,8 @@ public class PlaceOnTopOfGroundActionOperation extends TransformableFieldTileAct
 	@Override
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lookingglassandalice.storytelling.implementation.TransformableImplementation transformableImp ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv = new edu.cmu.cs.dennisc.math.AffineMatrix4x4();
-		org.lookingglassandalice.storytelling.Model model = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( transformableImp, org.lookingglassandalice.storytelling.Model.class ); 
-		if( model != null ) {
+		org.lookingglassandalice.storytelling.implementation.ModelImplementation modelImplementation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( transformableImp, org.lookingglassandalice.storytelling.implementation.ModelImplementation.class ); 
+		if( modelImplementation != null ) {
 			org.lookingglassandalice.storytelling.Scene scene = model.getScene();
 			assert scene != null;
 			edu.cmu.cs.dennisc.math.AxisAlignedBox bb = model.getAxisAlignedMinimumBoundingBox();
