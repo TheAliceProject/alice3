@@ -45,6 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFieldOperation {
 	public CreateInstanceFromFileOperation( java.util.UUID individualId ) {
 		super( individualId );
@@ -113,7 +114,8 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 		}
 		return rv;
 	}
-	@Override
+	
+	@Deprecated
 	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane = context.getMainPanel();
 		//todo: dialog title: "Create New Instance"
@@ -125,6 +127,8 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 			return null;
 		}
 	}
+	
+	
 //	@Override
 //	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 //		java.io.File directory = this.getInitialDirectory();

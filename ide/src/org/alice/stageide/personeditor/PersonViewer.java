@@ -168,7 +168,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	public void setPerson( org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation person ) {
 		assert person != null;
 		this.setModel( person );
-		this.dragAdapter.setSelectedObject( person );
+		this.dragAdapter.setSelectedImplementation( person );
 		double height = person.getSize().y;
 		this.positionAndOrientCamera( height, 0, 0.0 );
 	}
