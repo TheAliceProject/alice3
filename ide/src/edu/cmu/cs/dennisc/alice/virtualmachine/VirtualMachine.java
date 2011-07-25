@@ -114,11 +114,27 @@ public abstract class VirtualMachine {
 	}
 	
 	public InstanceInAlice ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		return null;
+		pushCurrentThread( null );
+		try {
+			return instance.createAndSetFieldInstance( this, field );
+		} finally {
+			popCurrentThread();
+		}
 	}
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_removeField( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, InstanceInAlice value ) {
 	}
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		assert statement instanceof edu.cmu.cs.dennisc.alice.ast.ReturnStatement == false;
+		pushCurrentThread( null );
+		try {
+			try {
+				this.execute( statement );
+			} catch( ReturnException re ) {
+				throw new AssertionError();
+			}
+		} finally {
+			popCurrentThread();
+		}
 	}
 	
 		

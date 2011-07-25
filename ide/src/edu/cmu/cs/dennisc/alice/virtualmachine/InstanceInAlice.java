@@ -101,7 +101,7 @@ public class InstanceInAlice {
 		for( AbstractField field : this.type.getDeclaredFields() ) {
 			assert field instanceof FieldDeclaredInAlice;
 			FieldDeclaredInAlice fieldDeclaredInAlice = (FieldDeclaredInAlice)field;
-			this.setFieldValue( fieldDeclaredInAlice, vm.evaluate( fieldDeclaredInAlice.initializer.getValue() ) );
+			this.createAndSetFieldInstance( vm, fieldDeclaredInAlice );
 		}
 		if( vm.isConstructorBodyExecutionDesired() ) {
 			try {
@@ -113,6 +113,11 @@ public class InstanceInAlice {
 		vm.popFrame();
 	}
 
+	public InstanceInAlice createAndSetFieldInstance( VirtualMachine vm, FieldDeclaredInAlice field ) {
+		InstanceInAlice rv = (InstanceInAlice)vm.evaluate( field.initializer.getValue() );
+		this.setFieldValue( field, rv );
+		return rv;
+	}
 	public AbstractTypeDeclaredInAlice<?> getType() {
 		return this.type;
 	}
