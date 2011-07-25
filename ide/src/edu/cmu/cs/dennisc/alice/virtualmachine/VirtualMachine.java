@@ -113,10 +113,18 @@ public abstract class VirtualMachine {
 		}
 	}
 	
+	private void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushFrame( InstanceInAlice instance ) {
+		this.pushMethodFrame( instance, new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, Object >() );
+	}
 	public Object ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		pushCurrentThread( null );
 		try {
-			return instance.createAndSetFieldInstance( this, field );
+			this.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushFrame( instance );
+			try {
+				return instance.createAndSetFieldInstance( this, field );
+			} finally {
+				this.popFrame();
+			}
 		} finally {
 			popCurrentThread();
 		}
@@ -127,10 +135,15 @@ public abstract class VirtualMachine {
 		assert statement instanceof edu.cmu.cs.dennisc.alice.ast.ReturnStatement == false;
 		pushCurrentThread( null );
 		try {
+			this.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushFrame( instance );
 			try {
-				this.execute( statement );
-			} catch( ReturnException re ) {
-				throw new AssertionError();
+				try {
+					this.execute( statement );
+				} catch( ReturnException re ) {
+					throw new AssertionError();
+				}
+			} finally {
+				this.popFrame();
 			}
 		} finally {
 			popCurrentThread();
