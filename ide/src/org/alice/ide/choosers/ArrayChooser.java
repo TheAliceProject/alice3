@@ -97,6 +97,11 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 //		} );
 	}
 	
+	@Override
+	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		//todo?
+	}
+		
 	//todo
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createLabel( String text ) {

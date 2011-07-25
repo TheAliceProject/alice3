@@ -137,8 +137,8 @@ public class TransactionManager {
 		org.lgna.croquet.triggers.MenuSelectionTrigger trigger = new org.lgna.croquet.triggers.MenuSelectionTrigger( e );
 		if( trigger.isValid() ) {
 			getActiveTransaction().addMenuSelection( trigger );
-		} else {
-			System.err.println( "warning: not croquet menu selection." );
+//		} else {
+//			System.err.println( "warning: not croquet menu selection." );
 		}
 	}
 	private static javax.swing.event.ChangeListener menuSelectionChangeListener = new javax.swing.event.ChangeListener() {
