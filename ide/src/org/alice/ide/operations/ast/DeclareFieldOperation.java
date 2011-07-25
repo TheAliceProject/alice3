@@ -70,8 +70,8 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 		return new org.alice.ide.declarationpanes.CreateFieldPane( this.getDeclaringType() );
 	}
 	@Override
-	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer fillInInitializer( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
-		super.fillInInitializer( rv, step );
+	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData fillInEpilogueData( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
+		super.fillInEpilogueData( rv, step );
 		//todo
 		return rv;
 	}

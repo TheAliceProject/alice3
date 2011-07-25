@@ -46,7 +46,7 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
-	protected static class Initializer {
+	protected static class EpilogueData {
 		private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
 		private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 		private java.util.List< edu.cmu.cs.dennisc.alice.ast.Statement > statements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -78,7 +78,7 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 	}
 	
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType();
-	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer fillInInitializer( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData fillInEpilogueData( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
 		rv.setDeclaringType( this.getDeclaringType() );
 		return rv;
 	}
@@ -88,10 +88,10 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 	@Override
 	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			Initializer initializer = new Initializer();
-			this.fillInInitializer( initializer, step );
-			if( initializer.isValid() ) {
-				step.commitAndInvokeDo( new DeclareFieldEdit( step, initializer.getDeclaringType(), initializer.getField(), initializer.getStatements() ) );
+			EpilogueData data = new EpilogueData();
+			this.fillInEpilogueData( data, step );
+			if( data.isValid() ) {
+				step.commitAndInvokeDo( new DeclareFieldEdit( step, data.getDeclaringType(), data.getField(), data.getStatements() ) );
 			} else {
 				step.cancel();
 			}

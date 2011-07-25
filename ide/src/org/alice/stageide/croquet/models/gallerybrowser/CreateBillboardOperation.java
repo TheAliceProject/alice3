@@ -119,8 +119,8 @@ public class CreateBillboardOperation extends AbstractGalleryDeclareFieldOperati
 		return rv;
 	}
 	@Override
-	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer fillInInitializer( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.Initializer rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
-		super.fillInInitializer( rv, step );
+	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData fillInEpilogueData( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
+		super.fillInEpilogueData( rv, step );
 		CreateFieldFromBillboardPane createFieldFromBillboardPane = step.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromBillboardPane.getInputValue();
 		rv.setField( field );
