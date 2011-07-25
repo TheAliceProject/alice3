@@ -57,6 +57,7 @@ public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.al
 	}
 	@Override
 	protected CustomInputPane< E > prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
+		this.customInputPane.handlePrologue( step );
 		return this.customInputPane;
 	}
 	@Override

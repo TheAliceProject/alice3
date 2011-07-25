@@ -51,6 +51,10 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 		this.chooser = chooser;
 	}
 
+	@Deprecated
+	public void handlePrologue(org.lgna.croquet.history.InputDialogOperationStep step) {
+		this.chooser.handlePrologue( step );
+	}
 	
 	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {

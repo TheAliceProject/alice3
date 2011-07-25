@@ -19,7 +19,7 @@ public abstract class AbstractDoubleFillerInner extends AbstractNumberFillerInne
 		}
 		if( isTop && prevExpression != null ) {
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			rv.add( org.alice.ide.croquet.models.cascade.integer.RandomCascadeMenu.getInstance() );
+			rv.add( org.alice.ide.croquet.models.cascade.number.RandomCascadeMenu.getInstance() );
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			rv.add( org.alice.ide.croquet.models.cascade.number.MathCascadeMenu.getInstance() );
 		}

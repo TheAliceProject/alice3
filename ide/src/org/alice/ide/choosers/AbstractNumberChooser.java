@@ -47,8 +47,10 @@ package org.alice.ide.choosers;
  */
 abstract class AbstractNumberChooser<N extends edu.cmu.cs.dennisc.alice.ast.Expression> extends ValueChooser< N > {
 	private org.alice.ide.croquet.models.numberpad.NumberModel<N> numberModel;
+	private org.lgna.croquet.components.JComponent< javax.swing.JTextField > view;
 	public AbstractNumberChooser( org.alice.ide.croquet.models.numberpad.NumberModel<N> numberModel ) {
 		this.numberModel = numberModel;
+		this.view = this.numberModel.createTextField();
 	}
 	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
@@ -58,6 +60,12 @@ abstract class AbstractNumberChooser<N extends edu.cmu.cs.dennisc.alice.ast.Expr
 	public N getValue() {
 		return this.numberModel.getExpressionValue();
 	}
+	@Override
+	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		this.view.getAwtComponent().setText( "" );
+		//this.view.getAwtComponent().selectAll();
+	}
+	
 	@Override
 	public org.lgna.croquet.components.Component< ? > createMainComponent() {
 		org.alice.ide.croquet.models.numberpad.PlusMinusOperation plusMinusOperation = org.alice.ide.croquet.models.numberpad.PlusMinusOperation.getInstance( this.numberModel );
@@ -98,9 +106,6 @@ abstract class AbstractNumberChooser<N extends edu.cmu.cs.dennisc.alice.ast.Expr
 			gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( this.numberModel, (short)0 ).createButton(), gbc );
 		}
 		gridBagPanel.addComponent( plusMinusOperation.createButton(), gbc );
-
-		org.lgna.croquet.components.JComponent< javax.swing.JTextField > view = this.numberModel.createTextField();
-		view.getAwtComponent().selectAll();
 
 		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel(
 				view, 

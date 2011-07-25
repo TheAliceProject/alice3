@@ -54,6 +54,8 @@ public abstract class ValueChooser<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 			return null;
 		}
 	}
+	@Deprecated
+	public abstract void handlePrologue(org.lgna.croquet.history.InputDialogOperationStep step);
 	public abstract org.lgna.croquet.components.Component< ? > createMainComponent();
 	public abstract E getValue();
 	public abstract String getExplanationIfOkButtonShouldBeDisabled();
