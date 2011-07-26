@@ -48,7 +48,7 @@ package org.lookingglassandalice.storytelling.implementation;
  */
 public class ProgramImplementation {
 	private final org.lookingglassandalice.storytelling.Program abstraction;
-	private final edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+	private edu.cmu.cs.dennisc.animation.Animator animator;
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
 	
 	private double simulationSpeedFactor = 1.0; 
@@ -71,6 +71,18 @@ public class ProgramImplementation {
 		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
 	
+	public edu.cmu.cs.dennisc.animation.Animator getAnimator() {
+		if( this.animator != null ) {
+			//pass
+		} else {
+			this.animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+		}
+		return this.animator;
+	}
+	public void setAnimator( edu.cmu.cs.dennisc.animation.Animator animator ) {
+		this.animator = animator;
+	}
+	
 	public double getSimulationSpeedFactor() {
 		return this.simulationSpeedFactor;
 	}
@@ -80,7 +92,7 @@ public class ProgramImplementation {
 	
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
-			ProgramImplementation.this.animator.update();
+			ProgramImplementation.this.getAnimator().update();
 		}
 	};
 	private void startAnimator() {
@@ -133,6 +145,6 @@ public class ProgramImplementation {
 	}
 	
 	/*package-private*/ void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		this.animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary( animation, animationObserver );
+		this.getAnimator().invokeAndWait_ThrowRuntimeExceptionsIfNecessary( animation, animationObserver );
 	}
 }

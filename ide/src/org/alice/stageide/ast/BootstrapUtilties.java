@@ -112,7 +112,7 @@ public class BootstrapUtilties {
 
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice myFirstMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PUBLIC, Void.TYPE, "myFirstMethod" );
 
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice performGeneratedSetupMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE, Void.TYPE, "performGeneratedSetup" );
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice performGeneratedSetupMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE, Void.TYPE, org.alice.ide.IDE.GENERATED_SET_UP_METHOD_NAME );
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
 		
 		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[] { cameraField, sunField, groundField } ) {

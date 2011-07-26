@@ -242,7 +242,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this(null);
 	}	
 	
-	public AbstractDragAdapter( MoveAndTurnSceneEditor sceneEditor )
+	public AbstractDragAdapter( AbstractSceneEditor sceneEditor )
 	{
 		this.sceneEditor = sceneEditor;
 		this.setUpControls();

@@ -43,9 +43,12 @@
 package org.alice.stageide.sceneeditor;
 
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
+import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.lgna.croquet.components.DragComponent;
 import org.lookingglassandalice.storytelling.ImplementationAccessor;
+import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
+import org.lookingglassandalice.storytelling.implementation.ProgramImplementation;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.StatementListProperty;
@@ -54,6 +57,7 @@ import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
  * @author dculyba
@@ -88,26 +92,152 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			javax.swing.JPanel rv = StorytellingSceneEditor.this.onscreenLookingGlass
 					.getJPanel();
 			rv.setLayout(new javax.swing.SpringLayout());
+			
+//			StorytellingSceneEditor.this.onscreenLookingGlass.getLookingGlassFactory().incrementAutomaticDisplayCount();
+			
 			return rv;
 		}
 	}
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	
+	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lookingglassandalice.storytelling.implementation.CameraImplementation sceneCameraImplementation;
 	
 	@Override
 	protected void setProgramInstance(InstanceInAlice programInstance) 
 	{
 		super.setProgramInstance(programInstance);
-		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setOnscreenLookingGlass(this.onscreenLookingGlass);
+		ProgramImplementation programImplementation = ImplementationAccessor.getImplementation(getProgramInstanceInJava());
+		programImplementation.setAnimator(this.animator);
+		programImplementation.setOnscreenLookingGlass(this.onscreenLookingGlass);
 	}
 	
 	protected void setSceneCamera(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField)
 	{
 		this.sceneCameraImplementation = getImplementation(cameraField);
-		
-		onscreenLookingGlass.addCamera( this.sceneCameraImplementation.getSgCamera() );
+		System.out.println("Scene editor camera: "+this.sceneCameraImplementation.getSgCamera().hashCode());
+		for (edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : this.onscreenLookingGlass.accessCameras())
+		{
+			System.out.println("Looking glass camera: "+camera.hashCode());
+		}
+		System.out.println();
+//		onscreenLookingGlass.addCamera( this.sceneCameraImplementation.getSgCamera() );
+	}
+	
+	private void initializeIfNecessary() {
+		if( this.globalDragAdapter != null ) {
+			//pass
+		} else {
+			
+//			
+//			this.snapGrid = new SnapGrid();
+//			this.snapState = new SnapState();
+//			this.snapState.getShowSnapGridState().addAndInvokeValueObserver(this.showSnapGridObserver);
+//			this.snapState.getIsSnapEnabledState().addAndInvokeValueObserver(this.snapEnabledObserver);
+			
+			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter(this);
+//			this.globalDragAdapter.setSnapState(this.snapState);
+			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
+			this.onscreenLookingGlass.addLookingGlassListener(this);
+			this.globalDragAdapter.setAnimator( animator );
+//			this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
+//				public void selecting( org.alice.interact.event.SelectionEvent e ) {
+//				}
+//				public void selected( org.alice.interact.event.SelectionEvent e ) {
+//					MoveAndTurnSceneEditor.this.handleSelectionEvent( e );
+//				}
+//			} );
+//			
+			
+//			this.sidePane = new SidePane(this);
+//			this.sidePane.setSnapState(this.snapState);
+//			this.splitPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+//			this.splitPane.setResizeWeight( 1.0 );
+//			this.splitPane.setDividerProportionalLocation( 1.0 );
+//			this.addComponent( this.splitPane, Constraint.CENTER );
+//			
+//			CameraMarkerFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.cameraMarkerFieldSelectionObserver);
+//			ObjectMarkerFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.objectMarkerFieldSelectionObserver);
+//			
+//			
+//			ClickedObjectCondition rightMouseAndInteractive = new ClickedObjectCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.MOVEABLE_OBJECTS ) );
+//			ManipulatorClickAdapter rightClickAdapter = new ManipulatorClickAdapter() {
+//				public void onClick(InputState clickInput) {
+//					showRightClickMenuForModel(clickInput);
+//					
+//				}
+//			};
+//			this.globalDragAdapter.addClickAdapter(rightClickAdapter, rightMouseAndInteractive);
+//			
+//			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
+//			this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
+//			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewTracker);
+//			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewSelectionObserver);
+//			this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
+//			this.mainCameraViewSelector.setFontSize(15);
+//
+//			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.TOP, this.topOrthoMarker );
+//			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.SIDE, this.sideOrthoMarker );
+//			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.FRONT, this.frontOrthoMarker );
+//\
+//			this.mainCameraViewSelector.setRenderer(new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< View >() {
+//				private final javax.swing.border.Border separatorBelowBorder = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 8, 0 );
+//				private final javax.swing.border.Border emptyBorder = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 0 );
+//				@Override
+//				protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, View view, int index, boolean isSelected, boolean cellHasFocus) {
+//					MarkerImplementation value = mainCameraViewTracker.getCameraMarker( view );
+//					if( index == 0 ) {
+//						rv.setBorder( separatorBelowBorder );
+//					} else {
+//						rv.setBorder( emptyBorder );
+//					}
+//					if (isSelected)
+//					{
+//						rv.setOpaque(true);
+//						rv.setBackground(new Color(57, 105, 138));
+//						rv.setForeground(Color.WHITE);
+//					}
+//					else
+//					{
+//						rv.setOpaque(false);
+//						rv.setForeground(Color.BLACK);
+//					}
+//					return rv;
+//				}
+//			});
+//			
+//			org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState isSceneEditorExpandedState = org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance();
+//			final org.lgna.croquet.components.CheckBox isSceneEditorExpandedCheckBox = isSceneEditorExpandedState.createCheckBox();
+//			isSceneEditorExpandedCheckBox.getAwtComponent().setUI( new IsExpandedCheckBoxUI() );
+//			final int X_PAD = 16;
+//			final int Y_PAD = 10;
+//			isSceneEditorExpandedCheckBox.getAwtComponent().setOpaque( false );
+//			isSceneEditorExpandedCheckBox.setFontSize( 18.0f );
+//			isSceneEditorExpandedCheckBox.setBorder( javax.swing.BorderFactory.createEmptyBorder( Y_PAD, X_PAD, Y_PAD, X_PAD ) );
+//			
+//			PrintUtilities.println( "todo: addAndInvokeValueObserver" );
+//			this.splitPane.setDividerSize( 0 );
+//			isSceneEditorExpandedState.addValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
+//				public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+//				}
+//				public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+//					handleExpandContractChange( nextValue );
+//				}
+//			} );
+//
+//			javax.swing.JPanel lgPanel = this.lookingGlassPanel.getAwtComponent();
+//			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouthEast( lgPanel, isSceneEditorExpandedCheckBox.getAwtComponent(), INSET );
+//			if( IS_RUN_BUTTON_DESIRED ) {
+//				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().getRunOperation().createButton().getAwtComponent(), INSET );
+//			}
+//			
+//			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( lgPanel, this.mainCameraViewSelector.getAwtComponent(), Horizontal.CENTER, 0, Vertical.NORTH, INSET );
+//			this.mainCameraViewSelector.getAwtComponent().setVisible(isSceneEditorExpandedState.getValue());
+//		
+//			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
+//			this.fieldRadioButtons = new FieldRadioButtons( org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance() );
+		}
 	}
 	
 	@Override
@@ -163,10 +293,25 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return null;
 	}
 
+	private void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field) {
+		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaVMForField(field), this.getActiveSceneInstance() );
+	}
+	
 	@Override
 	public void generateCodeForSetUp( StatementListProperty bodyStatementsProperty ) {
-		// TODO Auto-generated method stub
-
+		//Set the camera to have the point of view of the opening scene marker
+//		AffineMatrix4x4 currentCameraTransformable = this.sceneCameraImplementation.getAbsoluteTransformation();
+//		EntityImplementation cameraParent = this.sceneCameraImplementation.getVehicle();
+//		cameraParent.setTransformation(this.openingSceneMarker.getTransformation(AsSeenBy.SCENE), this.scene.getSGReferenceFrame());
+		
+		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
+		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : this.getActiveSceneType() .getDeclaredFields() ) {
+			this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
+		}
+		
+		//Set the camera back to its original position
+//		cameraParent.setTransformation(currentCameraTransformable, this.scene.getSGReferenceFrame());
 	}
 	
 	private boolean HACK_isDisplayableAlreadyHandled = false;
@@ -176,6 +321,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			System.err.println( "TODO: investigate is displayed" );
 		} else {
 			super.handleDisplayable();
+			initializeIfNecessary();
 			HACK_isDisplayableAlreadyHandled = true;
 		}
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
@@ -199,12 +345,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 
 	public void rendered(LookingGlassRenderEvent e) {
-		// if (this.onscreenLookingGlass.getCameraCount() > 0 &&
-		// this.onscreenLookingGlass.getCameraAt(0) instanceof
-		// OrthographicCamera){
-		// paintHorizonLine(e.getGraphics2D(), this.onscreenLookingGlass,
-		// (OrthographicCamera)this.onscreenLookingGlass.getCameraAt(0));
-		// }
+//		 if (this.onscreenLookingGlass.getCameraCount() > 0 &&
+//		 this.onscreenLookingGlass.getCameraAt(0) instanceof
+//		 OrthographicCamera){
+//		 paintHorizonLine(e.getGraphics2D(), this.onscreenLookingGlass,
+//		 (OrthographicCamera)this.onscreenLookingGlass.getCameraAt(0));
+//		 }
 	}
 
 	public void resized(LookingGlassResizeEvent e) {

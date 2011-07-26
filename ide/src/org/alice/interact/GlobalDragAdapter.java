@@ -44,6 +44,7 @@
 package org.alice.interact;
 import java.awt.event.KeyEvent;
 
+import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.condition.AndInputCondition;
 import org.alice.interact.condition.DoubleClickedObjectCondition;
@@ -98,7 +99,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 	
 	TargetManipulator dropTargetManipulator;
 	
-	public GlobalDragAdapter( MoveAndTurnSceneEditor sceneEditor )
+	public GlobalDragAdapter( AbstractSceneEditor sceneEditor )
 	{
 		super(sceneEditor);
 	}

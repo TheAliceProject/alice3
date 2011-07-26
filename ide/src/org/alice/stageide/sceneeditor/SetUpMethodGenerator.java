@@ -110,7 +110,7 @@ public class SetUpMethodGenerator {
 
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.Position position ) {
 		Class< ? > cls = org.lookingglassandalice.storytelling.Position.class;
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls );
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( position.getRight() ), createExpression( position.getUp() ), createExpression( position.getBackward() ) );
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.Scale scale ) {
@@ -122,7 +122,7 @@ public class SetUpMethodGenerator {
 		edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 axes = org.lookingglassandalice.storytelling.ImplementationAccessor.getOrthogonalMatrix3x3( orientation );
 		edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( axes );
 		Class< ? > cls = org.lookingglassandalice.storytelling.Orientation.class;
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls );
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class, Number.class);
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( q.x ), createExpression( q.y ), createExpression( q.z ), createExpression( q.w ) );
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.Font font ) {
@@ -165,7 +165,7 @@ public class SetUpMethodGenerator {
 		return null;
 	}
 	
-	public static void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance, org.alice.ide.sceneeditor.FieldAndInstanceMapper mapper ) {
+	public static void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance, edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneInstance ) {
 		if( instance instanceof org.lookingglassandalice.storytelling.Entity ) {
 			org.lookingglassandalice.storytelling.Entity entity = (org.lookingglassandalice.storytelling.Entity)instance;
 			String name = field.getName();
@@ -180,19 +180,21 @@ public class SetUpMethodGenerator {
 				org.lookingglassandalice.storytelling.Scene scene = (org.lookingglassandalice.storytelling.Scene)entity;
 				bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Scene.class, "setAtmosphereColor", org.lookingglassandalice.storytelling.Color.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( scene.getAtmosphereColor() ) ) );
 			} else {
-				org.lookingglassandalice.storytelling.Entity vehicle = entity.getVehicle();
-				boolean isVehicleScene = (vehicle instanceof org.lookingglassandalice.storytelling.Scene);
-	
-				edu.cmu.cs.dennisc.alice.ast.AbstractField vehicleField = mapper.getFieldForInstanceInJavaVM(vehicle);
-				bodyStatementsProperty.add( 
-						createStatement( 
-								org.lookingglassandalice.storytelling.Entity.class, "setVehicle", org.lookingglassandalice.storytelling.Entity.class, 
-								SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) 
-						) 
-				);
-	
+				if ( instance instanceof org.lookingglassandalice.storytelling.MutableRider )
+				{
+					org.lookingglassandalice.storytelling.Entity vehicle = entity.getVehicle();
+					boolean isVehicleScene = (vehicle instanceof org.lookingglassandalice.storytelling.Scene);
+		
+					edu.cmu.cs.dennisc.alice.ast.AbstractField vehicleField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(vehicle);
+					bodyStatementsProperty.add( 
+							createStatement( 
+									org.lookingglassandalice.storytelling.MutableRider.class, "setVehicle", org.lookingglassandalice.storytelling.Entity.class, 
+									SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) 
+							) 
+					);
+				}
 				if( instance instanceof org.lookingglassandalice.storytelling.Turnable ) {
-					org.lookingglassandalice.storytelling.Turnable turnable = (org.lookingglassandalice.storytelling.Turnable)mapper;
+					org.lookingglassandalice.storytelling.Turnable turnable = (org.lookingglassandalice.storytelling.Turnable)instance;
 					org.lookingglassandalice.storytelling.Orientation orientation = turnable.getOrientationRelativeToVehicle();
 					bodyStatementsProperty.add( 
 							createStatement( 
@@ -205,7 +207,7 @@ public class SetUpMethodGenerator {
 						org.lookingglassandalice.storytelling.Position position = movableTurnable.getPositionRelativeToVehicle();
 						bodyStatementsProperty.add( 
 								createStatement( 
-										org.lookingglassandalice.storytelling.Turnable.class, "setPositionRelativeToVehicle", org.lookingglassandalice.storytelling.Position.class, 
+										org.lookingglassandalice.storytelling.MovableTurnable.class, "setPositionRelativeToVehicle", org.lookingglassandalice.storytelling.Position.class, 
 										SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( position ) 
 								) 
 						);
