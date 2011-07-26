@@ -62,7 +62,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 			public void insertionIndexChanging( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
 			}
 			public void insertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
-				updateTitle();
+				ProjectApplication.this.handleInsertionIndexChanged( e );
 			}
 			public void clearing( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
 			}
@@ -71,6 +71,20 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		} );
 	}
 
+	private void updateUndoRedoEnabled() {
+		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
+		int index = historyManager.getInsertionIndex();
+		int size = historyManager.getStack().size();
+		org.alice.ide.croquet.models.history.UndoOperation.getInstance().setEnabled( index > 0 );
+		org.alice.ide.croquet.models.history.RedoOperation.getInstance().setEnabled( index < size );
+	}
+	protected void handleInsertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+		this.updateTitle();
+		edu.cmu.cs.dennisc.history.HistoryManager source = e.getTypedSource();
+		if( source.getGroup() == edu.cmu.cs.dennisc.alice.Project.GROUP ) {
+			this.updateUndoRedoEnabled();
+		}
+	}
 	protected abstract org.alice.ide.openprojectpane.TabContentPanel createTemplatesTabContentPane();
 
 	public abstract String getApplicationName();
@@ -257,6 +271,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = this.getProjectHistoryManager();
 		projectHistoryManager.performClear();
 		this.updateHistoryLengthAtLastFileOperation();
+		this.updateUndoRedoEnabled();
 		this.restoreProjectProperties();
 		setUri( uri );
 	}
