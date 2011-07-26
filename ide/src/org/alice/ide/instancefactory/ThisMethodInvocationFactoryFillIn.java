@@ -60,8 +60,11 @@ public class ThisMethodInvocationFactoryFillIn extends InstanceFactoryFillInWith
 			return rv;
 		}
 	}
+	public static ThisMethodInvocationFactoryFillIn getInstance( Class<?> declaringCls, String name ) {
+		return getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( declaringCls, name ) );
+	}
 	private ThisMethodInvocationFactoryFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "01f7980c-ee24-4a40-94e5-9e0318ecbe1a" ), ThisMethodInvocationFactory.getInstance( method ) );
+		super( java.util.UUID.fromString( "1ab72e54-03d3-4569-b777-cac55c793b6e" ), ThisMethodInvocationFactory.getInstance( method ) );
 	}
 	@Override
 	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {

@@ -149,6 +149,10 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	
 	@Override
+	public org.alice.ide.ApiConfigurationManager getApiConfigurationManager() {
+		return StoryApiConfigurationManager.SINGLETON;
+	}
+	@Override
 	protected void registerAdapters(VirtualMachine vm) {
 		vm.registerAnonymousAdapter( Scene.class, SceneAdapter.class );
 	}

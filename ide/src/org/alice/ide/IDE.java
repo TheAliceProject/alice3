@@ -162,6 +162,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private org.lgna.croquet.components.BorderPanel right = new org.lgna.croquet.components.BorderPanel();
 	private org.lgna.croquet.components.HorizontalSplitPane root = new org.lgna.croquet.components.HorizontalSplitPane( left, right );
 
+	
+	public abstract ApiConfigurationManager getApiConfigurationManager();
+	
 	@Override
 	public void initialize( java.lang.String[] args ) {
 		super.initialize( args );
