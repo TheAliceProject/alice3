@@ -81,39 +81,6 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 	private edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty;
 	private IsArrayState isArrayStateState;
 	
-//	private class TypeDropDownPane extends org.alice.ide.common.AbstractDropDownPane {
-//		private org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
-//		public TypeDropDownPane( org.lgna.croquet.PopupPrepModel model ) {
-//			super( model );
-//			this.addComponent( label );
-//		}
-//		
-//		private void refresh() {
-//			this.label.setIcon( new org.alice.ide.common.TypeIcon( typeProperty.getValue() ) {
-//				@Override
-//				protected java.awt.Color getTextColor(java.awt.Component c) {
-//					return super.getTextColor( TypeDropDownPane.this.getAwtComponent() );
-//				}
-//			} );
-//		}
-//		@Override
-//		protected int getInsetTop() {
-//			return super.getInsetTop() + 3;
-//		}
-//		@Override
-//		protected int getInsetLeft() {
-//			return super.getInsetLeft() + 3;
-//		}
-//		@Override
-//		protected int getInsetBottom() {
-//			return super.getInsetBottom() + 3;
-//		}
-//		@Override
-//		protected int getInsetRight() {
-//			return super.getInsetRight() + 3;
-//		}
-//	};
-
 	private class TypeDropDownPane extends org.lgna.croquet.components.ItemDropDown< edu.cmu.cs.dennisc.alice.ast.AbstractType, TypePropertyItemState > {
 		public TypeDropDownPane( TypePropertyItemState model ) {
 			super( model );
@@ -139,64 +106,18 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 	public TypePane( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isTypeComboBoxEnabled, boolean isArrayCheckBoxEnabled ) {
 		assert typeProperty != null;
 		this.typeProperty = typeProperty;
-//		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.typeProperty.getValue();
-//		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType;
-//		if( type != null ) {
-//			if( type.isArray() ) {
-//				componentType = type.getComponentType();
-//			} else {
-//				componentType = type;
-//			}
-//		} else {
-//			componentType = null;
-//		}
-
 		final TypeDropDownPane typeDropDownPane = new TypeDropDownPane( new TypePropertyItemState( typeProperty ) );
 		typeDropDownPane.getAwtComponent().setEnabled( isTypeComboBoxEnabled );
-////		this.typeSelectionState.setSelectedItem( componentType );
-//		if( isTypeComboBoxEnabled ) {
-//			typeDropDownPane.setLeftButtonPressModel( popupMenuOperation );
-//		}
-//		typeDropDownPane.refresh();
-		
-//		this.typeProperty.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-//			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//			}
-//			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//				typeDropDownPane.refresh();
-////				typeSelectionState.setSelectedItem( (edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>)e.getValue() );
-//			}
-//		} );
-
-//		
-//		isArrayProperty.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-//			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//			}
-//			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//				TypePane.this.updateTypeProperty();
-//			}
-//		} );
-		
-		
 		this.isArrayStateState = new IsArrayState( isArrayProperty );
 		this.isArrayStateState.setEnabled( isArrayCheckBoxEnabled );
 		
 		org.lgna.croquet.components.CheckBox isArrayCheckBox = this.isArrayStateState.createCheckBox();
 		isArrayCheckBox.setBackgroundColor( null );
-		
-//		this.typeSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>>() {
-//			public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> nextValue) {
-//				TypePane.this.typeProperty.setValue( nextValue );
-//			}
-//		} );
-//		
-//		this.addComponent( this.typeSelectionState.createComboBox() );
 		this.addComponent( typeDropDownPane, Constraint.CENTER );
 		this.addComponent( isArrayCheckBox, Constraint.LINE_END );
 	}
 	
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getValueType() {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rv = this.typeSelectionState.getSelectedItem();
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rv = this.typeProperty.getValue();
 		if( rv != null ) {
 			if( this.isArrayStateState.getValue() ) {
@@ -205,12 +126,4 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 		}
 		return rv;
 	}
-	
-	public void disableComboBox() {
-		//this.typeSelectionState.setEnabled( false );
-	}
-	
-//	private void updateTypeProperty() {
-//		this.typeProperty.setValue( this.typeSelectionState.getSelectedItem() );
-//	}
 }

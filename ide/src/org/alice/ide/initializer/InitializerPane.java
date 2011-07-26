@@ -54,17 +54,18 @@ public class InitializerPane extends org.lgna.croquet.components.CardPanel {
 
 	public InitializerPane(BogusNode bogusNode) {
 		this.bogusNode = bogusNode;
-//		this.bogusNode.componentType.addPropertyListener(new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-//			public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
-//			}
-//
-//			public void propertyChanged(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
+		this.bogusNode.componentType.addPropertyListener(new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+			public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
+			}
+
+			public void propertyChanged(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
+				itemInitializerPane.refresh();
 //				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = InitializerPane.this.bogusNode.componentType.getValue();
 //				if (type != null) {
 //					arrayInitializerPane.handleTypeChange(type.getArrayType());
 //				}
-//			}
-//		});
+			}
+		});
 		this.bogusNode.isArray.addPropertyListener(new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
 			}
