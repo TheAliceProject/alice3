@@ -54,9 +54,10 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 	
 	public ArrayChooser(edu.cmu.cs.dennisc.alice.ast.AbstractType<?, ?, ?> arrayComponentType) {
 		bogusNode.isArray.setValue( true );
-		this.typePane = new org.alice.ide.declarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, true, false );
-
 		edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getPreviousExpression(), edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class );
+		boolean isComponentTypeEnabled = arrayInstanceCreation != null;
+		boolean isArrayEnabled = false;
+		this.typePane = new org.alice.ide.declarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, isComponentTypeEnabled, isArrayEnabled );
 		if( arrayInstanceCreation != null ) {
 			//typePane.setAndLockType( arrayInstanceCreation.arrayType.getValue() );
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = arrayInstanceCreation.arrayType.getValue().getComponentType();
@@ -64,7 +65,6 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 			for( edu.cmu.cs.dennisc.alice.ast.Expression expression : arrayInstanceCreation.expressions ) {
 				bogusNode.arrayExpressions.add( expression );
 			}
-			typePane.disableComboBox();
 		}
 
 		this.arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.componentType, bogusNode.arrayExpressions );

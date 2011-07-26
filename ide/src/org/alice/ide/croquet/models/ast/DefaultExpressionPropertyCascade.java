@@ -64,6 +64,9 @@ public class DefaultExpressionPropertyCascade extends org.alice.ide.croquet.mode
 		}
 		return rv;
 	}
+	public static synchronized DefaultExpressionPropertyCascade EPIC_HACK_createInstance( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+		return new DefaultExpressionPropertyCascade( group, expressionProperty, desiredType );
+	}
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
 	private DefaultExpressionPropertyCascade( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
 		super( group, java.util.UUID.fromString( "77532795-0674-4ba4-ad18-989ee9ca0507" ), expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( desiredType ) );
