@@ -115,7 +115,7 @@ public class SetUpMethodGenerator {
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.Scale scale ) {
 		Class< ? > cls = org.lookingglassandalice.storytelling.Scale.class;
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls );
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( scale.getLeftToRight() ), createExpression( scale.getBottomToTop() ), createExpression( scale.getFrontToBack() ) );
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lookingglassandalice.storytelling.Orientation orientation ) {
@@ -223,7 +223,7 @@ public class SetUpMethodGenerator {
 		if( instance instanceof org.lookingglassandalice.storytelling.Resizable ) {
 			org.lookingglassandalice.storytelling.Resizable resizable = (org.lookingglassandalice.storytelling.Resizable)instance;
 			org.lookingglassandalice.storytelling.Scale scale = resizable.getScale();
-			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Turnable.class, "setScale", new Class< ? >[] { org.lookingglassandalice.storytelling.Scale.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( scale ) ) );
+			bodyStatementsProperty.add( createStatement( org.lookingglassandalice.storytelling.Resizable.class, "setScale", new Class< ? >[] { org.lookingglassandalice.storytelling.Scale.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( scale ) ) );
 		}
 //		
 //		

@@ -43,6 +43,7 @@
 
 package org.lookingglassandalice.storytelling.implementation;
 
+import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 /**
@@ -133,7 +134,7 @@ public abstract class ModelImplementation extends TransformableImplementation {
 	}
 	
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		return null;
+		return new Dimension3( 1.0, 1.0, 1.0 );
 	}
 	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
 	}
