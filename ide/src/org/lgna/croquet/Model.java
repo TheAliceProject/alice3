@@ -326,7 +326,9 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 //		Thread.dumpStack();
 		assert this.components.contains( firstComponentHint );
 		if( this.firstComponentHint != firstComponentHint ) {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "setFirstComponentHint", this.firstComponentHint, "->", firstComponentHint );
+//			if( this.firstComponentHint != null ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "setFirstComponentHint", this.firstComponentHint, "->", firstComponentHint );
+//			}
 			this.firstComponentHint = firstComponentHint;
 		}
 	}
