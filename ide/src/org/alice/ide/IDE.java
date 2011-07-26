@@ -859,26 +859,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	@Override
 	public void setProject( edu.cmu.cs.dennisc.alice.Project project ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice.class ) {
-			@Override
-			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor ) {
-				return true;
-			}
-		};
-		project.getProgramType().crawl( crawler, true );
-		for( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor : crawler.getList() ) {
-			edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement constructorBlockStatement = constructor.body.getValue();
-			edu.cmu.cs.dennisc.alice.ast.ConstructorInvocationStatement constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
-			edu.cmu.cs.dennisc.alice.ast.AbstractConstructor superConstructor = constructorInvocationStatement.contructor.getValue();
-			if( superConstructor != null ) {
-				//pass
-			} else {
-				constructorInvocationStatement.contructor.setValue( constructor.getDeclaringType().getSuperType().getDeclaredConstructor() );
-			}
-		}
-
 		super.setProject( project );
-		
 		this.isRespondingToRefreshAccessibles = false;
 		try {
 			this.setRootField( this.getSceneField() );

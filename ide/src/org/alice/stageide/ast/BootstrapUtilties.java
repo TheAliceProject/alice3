@@ -106,9 +106,11 @@ public class BootstrapUtilties {
 	}
 	
 	public static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createProgramType( org.lookingglassandalice.storytelling.Ground.Appearance appearance ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = createPrivateFinalField( org.lookingglassandalice.storytelling.Camera.class, "camera" );
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sunField = createPrivateFinalField( org.lookingglassandalice.storytelling.Sun.class, "sun" );
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice groundField = createPrivateFinalField( org.lookingglassandalice.storytelling.Ground.class, "ground" );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = createPrivateFinalField( org.lookingglassandalice.storytelling.Camera.class, "camera" );
+
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice myFirstMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PUBLIC, Void.TYPE, "myFirstMethod" );
 
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice performGeneratedSetupMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE, Void.TYPE, "performGeneratedSetup" );
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
@@ -133,7 +135,6 @@ public class BootstrapUtilties {
 		}
 		
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava setAppearanceMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( org.lookingglassandalice.storytelling.Ground.class, "setAppearance", org.lookingglassandalice.storytelling.Ground.Appearance.class );
-		//edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava setAppearanceMethod = groundField.getValueType().findMethod( "setAppearance", org.lookingglassandalice.storytelling.Ground.Appearance.class )
 		
 		performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setAppearanceMethod, createFieldAccess( appearance ) ) );
 
@@ -170,10 +171,6 @@ public class BootstrapUtilties {
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), performGeneratedSetupMethod ) );
 
 		Class< ? > sceneCls = org.lookingglassandalice.storytelling.Scene.class;
-		//Class< ? > sceneCls = SceneAdapter.class;
-		//System.err.println( "todo: add vm support for protected methods via adapter?" );
-		
-		
 		
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava preserveVehiclesAndVantagePointsMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( sceneCls, "preserveVehiclesAndVantagePoints" );
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava restoreVehiclesAndVantagePointsMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( sceneCls, "restoreVehiclesAndVantagePoints" );
@@ -183,12 +180,13 @@ public class BootstrapUtilties {
 		handleActiveChangedBody.statements.add( ifOuter );
 		
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = createType( "MyScene", org.lookingglassandalice.storytelling.Scene.class );
-		sceneType.fields.add( cameraField );
 		sceneType.fields.add( sunField );
 		sceneType.fields.add( groundField );
+		sceneType.fields.add( cameraField );
 		sceneType.methods.add( performCustomSetupMethod );
 		sceneType.methods.add( performGeneratedSetupMethod );
 		sceneType.methods.add( handleActiveChangedMethod );
+		sceneType.methods.add( myFirstMethod );
 
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = createPrivateFinalField( sceneType, "myScene" );
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice playOutStoryMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PUBLIC, Void.TYPE, "playOutStory" );
@@ -198,6 +196,12 @@ public class BootstrapUtilties {
 						new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), 
 						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( org.lookingglassandalice.storytelling.Program.class, "setActiveScene", org.lookingglassandalice.storytelling.Scene.class ),
 						createThisFieldAccess( sceneField )
+				)
+		);
+		playOutStoryBody.statements.add( 
+				createMethodInvocationStatement( 
+						createThisFieldAccess( sceneField ),
+						myFirstMethod
 				)
 		);
 		

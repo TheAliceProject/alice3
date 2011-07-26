@@ -43,6 +43,8 @@
 
 package org.lookingglassandalice.storytelling;
 
+import edu.cmu.cs.dennisc.alice.annotations.*;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,9 +54,11 @@ public class Camera extends MovableTurnable {
 	/*package-private*/ org.lookingglassandalice.storytelling.implementation.SymmetricPerspectiveCameraImplementation getImplementation() {
 		return this.implementation;
 	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void moveAndOrientToAGoodVantagePointOf( Entity entity ) {
 		this.moveAndOrientToAGoodVantagePointOf( entity, new AnimationDetails() );
 	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void moveAndOrientToAGoodVantagePointOf( Entity entity, AnimationDetails animationDetails ) {
 		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), animationDetails.getDuration(), animationDetails.getStyle() );
 	}

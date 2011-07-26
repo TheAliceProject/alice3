@@ -43,6 +43,7 @@
 
 package org.lookingglassandalice.storytelling;
 
+import edu.cmu.cs.dennisc.alice.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
@@ -54,15 +55,19 @@ public abstract class MovableTurnable extends Turnable {
 		this.getImplementation().setLocalPosition( position.getInternal() ); 
 	}
 
+	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void move( MoveDirection direction, Number amount ) {
 		this.move( direction, amount, new RelativeVantagePointAnimationDetails() );
 	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void move( MoveDirection direction, Number amount, RelativeVantagePointAnimationDetails details ) {
 		this.getImplementation().animateApplyTranslation( direction.createTranslation( amount.doubleValue() ), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void moveToward( Entity target, Number amount ) {
 		this.moveToward( target, amount, new AnimationDetails() );
 	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void moveToward( Entity target, Number amount, AnimationDetails details ) {
 		edu.cmu.cs.dennisc.math.Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation;
 		edu.cmu.cs.dennisc.math.Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation;
@@ -75,21 +80,27 @@ public abstract class MovableTurnable extends Turnable {
 		}
 		this.getImplementation().animateApplyTranslation( v.x, v.y, v.z, org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE, details.getDuration(), details.getStyle() );
 	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void moveAwayFrom( Entity target, Number amount ) {
 		this.moveAwayFrom( target, amount, new AnimationDetails() );
 	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void moveAwayFrom( Entity target, Number amount, AnimationDetails details ) {
 		this.moveToward( target, -amount.doubleValue(), details );
 	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void moveTo( Entity target ) {
 		this.moveTo( target, new AnimationDetails() );
 	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void moveTo( Entity target, AnimationDetails details ) {
 		this.getImplementation().animatePositionOnly( target.getImplementation(), null, details.getDuration(), details.getStyle() );
 	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void moveAndOrientTo( Entity target ) {
 		this.moveAndOrientTo( target, new AnimationDetails() );
 	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void moveAndOrientTo( Entity target, AnimationDetails details ) {
 		this.getImplementation().animateTransformation( target.getImplementation(), null, details.getDuration(), details.getStyle() );
 	}

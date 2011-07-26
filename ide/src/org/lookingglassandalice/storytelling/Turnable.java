@@ -43,6 +43,7 @@
 
 package org.lookingglassandalice.storytelling;
 
+import edu.cmu.cs.dennisc.alice.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
@@ -53,15 +54,19 @@ public abstract class Turnable extends Entity implements MutableRider {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 
+	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void turn( TurnDirection direction, Number amount ) {
 		this.turn( direction, amount, new RelativeVantagePointAnimationDetails() );
 	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void turn( TurnDirection direction, Number amount, RelativeVantagePointAnimationDetails details ) {
 		this.getImplementation().animateApplyRotationInRevolutions( direction.getAxis(), amount.doubleValue(), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void roll( RollDirection direction, Number amount ) {
 		this.roll( direction, amount, new RelativeVantagePointAnimationDetails() );
 	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void roll( RollDirection direction, Number amount, RelativeVantagePointAnimationDetails details ) {
 		this.getImplementation().animateApplyRotationInRevolutions( direction.getAxis(), amount.doubleValue(), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
