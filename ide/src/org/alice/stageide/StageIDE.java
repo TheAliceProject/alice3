@@ -284,7 +284,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
 				if( declaringType != null && declaringType.isAssignableTo( org.lookingglassandalice.storytelling.Scene.class ) ) {
-					if( field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Turnable.class ) ) {
+					if( field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Entity.class ) ) {
 						return new org.alice.ide.common.ExpressionPane( expression, this.createDeclarationNameLabel( field ) ) {
 							@Override
 							protected boolean isExpressionTypeFeedbackDesired() {

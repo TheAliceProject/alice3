@@ -229,9 +229,15 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 //		} );
 		
 		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
+		
+		
 		instancePanel.addComponent( instanceLabel );
+		
+		instancePanel.addComponent( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton() );
 		instancePanel.addComponent( comboBox );
 		instancePanel.addComponent( partComboBox );
+		
+		
 		//instancePanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
 
 		this.addComponent( instancePanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
