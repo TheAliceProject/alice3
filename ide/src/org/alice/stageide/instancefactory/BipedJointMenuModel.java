@@ -41,46 +41,57 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory;
+package org.alice.stageide.instancefactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithInternalBlank< InstanceFactory > {
-	private static class SingletonHolder {
-		private static InstanceFactoryState instance = new InstanceFactoryState();
+public class BipedJointMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
+	private static final String[] JOINT_METHOD_NAMES = {
+		"getPelvisForLowerBody",
+		"getPelvisForUpperBody",
+		"getSpineMiddle",
+		"getSpineUpper",
+		"getNeck",
+		"getHead",
+		"getRightHip",
+		"getRightKnee",
+		"getRightAnkle",
+		"getLeftHip",
+		"getLeftKnee",
+		"getLeftAnkle",
+		"getRightClavicle",
+		"getRightShoulder",
+		"getRightElbow",
+		"getRightWrist",
+		"getLeftClavicle",
+		"getLeftShoulder",
+		"getLeftElbow",
+		"getLeftWrist"
+	};
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, BipedJointMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static BipedJointMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice value ) {
+		synchronized( map ) {
+			BipedJointMenuModel rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new BipedJointMenuModel( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
 	}
-	public static InstanceFactoryState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private InstanceFactoryState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), InstanceFactoryCodec.SINGLETON );
+	private final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
+	private BipedJointMenuModel( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		super( java.util.UUID.fromString( "36fc18a7-7ff7-4bb6-8e29-2e39b15400f1" ) );
+		this.field = field;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< InstanceFactory > blankNode ) {
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager();
-		rv.add( ThisInstanceFactoryFillIn.getInstance() );
-		//rv.add( ThisMethodInvocationFactoryFillIn.getInstance( org.lookingglassandalice.storytelling.Entity.class, "getName" ) );
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = org.alice.ide.IDE.getActiveInstance().getSceneType();
-		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : type.getDeclaredFields() ) {
-			if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-				InstanceFactoryFillInWithoutBlanks fillIn = ThisFieldAccessFactoryFillIn.getInstance( field );
-				org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu = apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field );
-				if( subMenu != null ) {
-					rv.add( new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( fillIn, subMenu ) );
-				} else {
-					rv.add( fillIn );
-				}
-			}
-			//rv.add( ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, org.lookingglassandalice.storytelling.Entity.class, "getName" ) );
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
+		for( String jointMethodName : JOINT_METHOD_NAMES ) {
+			rv.add( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, org.lookingglassandalice.storytelling.Biped.class, jointMethodName ) );
 		}
 		return rv;
-	}
-	@Override
-	public org.alice.ide.instancefactory.InstanceFactory getValue() {
-		return null;
-	}
-	@Override
-	protected void setValue( org.alice.ide.instancefactory.InstanceFactory value ) {
 	}
 }

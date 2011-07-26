@@ -46,41 +46,28 @@ package org.alice.ide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithInternalBlank< InstanceFactory > {
-	private static class SingletonHolder {
-		private static InstanceFactoryState instance = new InstanceFactoryState();
-	}
-	public static InstanceFactoryState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private InstanceFactoryState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), InstanceFactoryCodec.SINGLETON );
-	}
-	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< InstanceFactory > blankNode ) {
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager();
-		rv.add( ThisInstanceFactoryFillIn.getInstance() );
-		//rv.add( ThisMethodInvocationFactoryFillIn.getInstance( org.lookingglassandalice.storytelling.Entity.class, "getName" ) );
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = org.alice.ide.IDE.getActiveInstance().getSceneType();
-		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : type.getDeclaredFields() ) {
-			if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-				InstanceFactoryFillInWithoutBlanks fillIn = ThisFieldAccessFactoryFillIn.getInstance( field );
-				org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu = apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field );
-				if( subMenu != null ) {
-					rv.add( new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( fillIn, subMenu ) );
-				} else {
-					rv.add( fillIn );
-				}
+public class ThisMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, ThisMethodInvocationFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ThisMethodInvocationFactoryFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod value ) {
+		synchronized( map ) {
+			ThisMethodInvocationFactoryFillIn rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ThisMethodInvocationFactoryFillIn( value );
+				map.put( value, rv );
 			}
-			//rv.add( ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, org.lookingglassandalice.storytelling.Entity.class, "getName" ) );
+			return rv;
 		}
-		return rv;
+	}
+	public static ThisMethodInvocationFactoryFillIn getInstance( Class<?> declaringCls, String name ) {
+		return getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( declaringCls, name ) );
+	}
+	private ThisMethodInvocationFactoryFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "1ab72e54-03d3-4569-b777-cac55c793b6e" ), ThisMethodInvocationFactory.getInstance( method ) );
 	}
 	@Override
-	public org.alice.ide.instancefactory.InstanceFactory getValue() {
-		return null;
-	}
-	@Override
-	protected void setValue( org.alice.ide.instancefactory.InstanceFactory value ) {
+	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
+		return this.getTransientValue( step );
 	}
 }
