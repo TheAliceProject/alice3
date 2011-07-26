@@ -106,11 +106,21 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	protected void setSceneCamera(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField)
 	{
 		this.sceneCameraImplementation = getImplementation(cameraField);
+		
+		onscreenLookingGlass.addCamera( this.sceneCameraImplementation.getSgCamera() );
 	}
 	
 	@Override
 	protected void setActiveScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		super.setActiveScene(sceneField);
+		
+		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
+		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setOnscreenLookingGlass(this.onscreenLookingGlass);
+
+		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneAliceInstance = getActiveSceneInstance();
+		org.lookingglassandalice.storytelling.Scene sceneJavaInstance = (org.lookingglassandalice.storytelling.Scene)sceneAliceInstance.getInstanceInJava();
+		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
+		
 		for (edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneField.getDesiredValueType().getDeclaredFields())
 		{
 			if( field.getDesiredValueType().isAssignableTo(org.lookingglassandalice.storytelling.Camera.class)) 
@@ -118,6 +128,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 				this.setSceneCamera((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field);
 			}
 		}
+		
+		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor( 1.0 );
 	}
 	
 	@Override

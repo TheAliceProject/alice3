@@ -49,7 +49,6 @@ import org.lookingglassandalice.storytelling.Program;
 import org.lookingglassandalice.storytelling.Scene;
 import org.lookingglassandalice.storytelling.Sun;
 import org.lookingglassandalice.storytelling.TurnDirection;
-import org.lookingglassandalice.storytelling.resources.sims2.*;
 
 class MyScene extends Scene {
 	private final Camera camera = new Camera();

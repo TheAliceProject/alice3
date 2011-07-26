@@ -61,7 +61,7 @@ public abstract class EntityImplementation implements ReferenceFrame {
 	public abstract org.lookingglassandalice.storytelling.Entity getAbstraction();
 	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
 	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
-		return this.getSgReferenceFrame();
+		return this.getSgComposite();
 	}
 	public EntityImplementation getActualEntityImplementation( EntityImplementation ths ) {
 		return this;
