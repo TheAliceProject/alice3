@@ -65,7 +65,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : type.getDeclaredFields() ) {
 			if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
 				InstanceFactoryFillInWithoutBlanks fillIn = ThisFieldAccessFactoryFillIn.getInstance( field );
-				org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu = apiConfigurationManager.getSubMenu( field );
+				org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu = apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field );
 				if( subMenu != null ) {
 					rv.add( new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( fillIn, subMenu ) );
 				} else {
