@@ -77,7 +77,7 @@ class DesertScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground desert = new Ground();
 	private final Sphere sphere = new Sphere();
-	private final CustomAdult fellowLaborer = new CustomAdult( org.lookingglassandalice.storytelling.resources.people.Ogre.BEAST_DIFFUSE );
+	private final CustomAdult fellowLaborer = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
 	private final Camera camera;
 	private final CustomAdult ogre;
 	public DesertScene( Camera camera, CustomAdult ogre ) {
@@ -229,7 +229,7 @@ class RagsToRichesStory extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
-	private final CustomAdult ogre = new CustomAdult( org.lookingglassandalice.storytelling.resources.people.Ogre.BEAST_DIFFUSE );
+	private final CustomAdult ogre = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 	public void playOutStory() {
