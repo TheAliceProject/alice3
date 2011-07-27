@@ -40,22 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+
+package edu.cmu.cs.dennisc.javax.swing.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PopupButton extends AbstractButton< javax.swing.JButton, org.lgna.croquet.PopupPrepModel >{
- 	public PopupButton( org.lgna.croquet.PopupPrepModel model ) {
- 		super( model );
+public class PopupArrowIcon extends AbstractArrowIcon {
+	public PopupArrowIcon( int size ) {
+		super( size );
 	}
-	private static final javax.swing.Icon ARROW_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.PopupArrowIcon( 14 );
-	@Override
-	protected javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton();
-		rv.setAction( this.getModel().getAction() );
-		rv.setIcon( ARROW_ICON );
-		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
-		return rv;
+	protected javax.swing.ButtonModel getButtonModel( java.awt.Component c ) {
+		javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+		return button.getModel();
+	}
+	public final void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+		javax.swing.ButtonModel buttonModel = this.getButtonModel( c );
+		java.awt.geom.GeneralPath path = this.createPath(x, y, Heading.SOUTH);
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		java.awt.Paint fillPaint;
+		if( buttonModel.isPressed() ) {
+			fillPaint = java.awt.Color.BLACK;
+		} else {
+			if( buttonModel.isRollover() ) {
+				fillPaint = java.awt.Color.GRAY;
+			} else {
+				fillPaint = java.awt.Color.DARK_GRAY;
+			}
+		}
+		g2.setPaint( fillPaint );
+		g2.fill( path );
 	}
 }
