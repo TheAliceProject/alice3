@@ -64,7 +64,29 @@ public class ThisMethodInvocationFactory implements InstanceFactory {
 	private ThisMethodInvocationFactory( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		this.method = method;
 	}
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getMethod() {
+		return this.method;
+	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
 		return new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), this.method );
+	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getValueType() {
+		return this.method.getReturnType();
+	}
+	public String getRepr() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+//		sb.append( "<strong>" );
+		sb.append( "this" );
+//		sb.append( "</strong>" );
+		sb.append( "'s " );
+//		sb.append( "<strong>" );
+		sb.append( this.method.getName().substring( 3 ) );
+//		sb.append( "</strong>" );
+		sb.append( "</html>" );
+		return sb.toString();
 	}
 }

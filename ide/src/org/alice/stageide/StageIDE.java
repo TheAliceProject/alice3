@@ -56,6 +56,9 @@ import edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 
 public class StageIDE extends org.alice.ide.IDE {
+	public static StageIDE getActiveInstance() {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(  org.alice.ide.IDE.getActiveInstance(), StageIDE.class );
+	}
 	private org.alice.ide.cascade.CascadeManager cascadeManager = new org.alice.stageide.cascade.CascadeManager();
 	public StageIDE() {
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lookingglassandalice.storytelling.Entity.class );
@@ -415,7 +418,7 @@ public class StageIDE extends org.alice.ide.IDE {
 //	}
 
 	@Override
-	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
+	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
 		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
 	}
 	
@@ -555,8 +558,8 @@ public class StageIDE extends org.alice.ide.IDE {
 			offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );
 			offscreenLookingGlass.setSize( THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT );
 		}
-		org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor moveAndTurnSceneEditor = (org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor)this.getSceneEditor();
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = moveAndTurnSceneEditor.getSGCameraForCreatingThumbnails();
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = this.getSceneEditor();
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = sceneEditor.getSGCameraForCreatingThumbnails();
 		boolean isClearingAndAddingRequired;
 		if( offscreenLookingGlass.getCameraCount() == 1 ) {
 			if( offscreenLookingGlass.getCameraAt( 0 ) == sgCamera ) {

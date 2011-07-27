@@ -50,7 +50,6 @@ import org.lookingglassandalice.storytelling.ObjectMarker;
 import org.lookingglassandalice.storytelling.Turnable;
 import org.lookingglassandalice.storytelling.implementation.ObjectMarkerImplementation;
 import org.alice.ide.IDE;
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.lgna.croquet.ActionOperation;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;

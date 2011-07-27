@@ -42,12 +42,6 @@
  */
 package org.alice.stageide.sceneeditor;
 
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-
-import org.lgna.croquet.BooleanState;
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -63,7 +57,7 @@ import org.lgna.croquet.BooleanState;
 //		FieldSelectedState state = FieldSelectedState.getInstance(accessible);
 //		return state.register( new FieldTile( accessible ) );
 //	}
-	public FieldTile( edu.cmu.cs.dennisc.alice.ast.Accessible accessible, BooleanState booleanState ) {
+	public FieldTile( edu.cmu.cs.dennisc.alice.ast.Accessible accessible, org.lgna.croquet.BooleanState booleanState ) {
 		super( booleanState );
 		assert accessible != null;
 		this.accessible = accessible;
@@ -136,9 +130,9 @@ import org.lgna.croquet.BooleanState;
 			@Override
 			protected void paintComponent(java.awt.Graphics g) {
 				g.setColor( this.getBackground() );
-				if (g instanceof Graphics2D)
+				if (g instanceof java.awt.Graphics2D)
                 {
-                   ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                   ((java.awt.Graphics2D)g).setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
                 }
 				g.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 8, 8 );
 				super.paintComponent(g);
@@ -200,15 +194,21 @@ import org.lgna.croquet.BooleanState;
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		java.awt.Color color = ide.getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
-		if( this.accessible == org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem() ) {
-			color = java.awt.Color.YELLOW;
-		} else {
-			if( ide.isAccessibleInScope( this.accessible ) ) {
-				color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.75, 0.75 );
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
+		if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
+			org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
+			if( thisFieldAccessFactory.getField() == this.accessible ) {
+				color = java.awt.Color.YELLOW;
 			} else {
-				color = java.awt.Color.GRAY;
+				if( ide.isAccessibleInScope( this.accessible ) ) {
+					color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.75, 0.75 );
+				} else {
+					color = java.awt.Color.GRAY;
+				}
+				//color = edu.cmu.cs.dennisc.awt.ColorUtilities.setAlpha( color, 191 );
 			}
-			//color = edu.cmu.cs.dennisc.awt.ColorUtilities.setAlpha( color, 191 );
+		} else {
+			color = java.awt.Color.RED;
 		}
 		return color;
 	}

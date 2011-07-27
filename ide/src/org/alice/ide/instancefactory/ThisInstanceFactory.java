@@ -48,7 +48,22 @@ package org.alice.ide.instancefactory;
  */
 public enum ThisInstanceFactory implements InstanceFactory {
 	SINGLETON;
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
 		return new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
+	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getValueType() {
+		return org.alice.ide.IDE.getActiveInstance().getTypeInScope();
+	}
+	public String getRepr() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+//		sb.append( "<strong>" );
+		sb.append( "this" );
+//		sb.append( "</strong>" );
+		sb.append( "</html>" );
+		return sb.toString();
 	}
 }

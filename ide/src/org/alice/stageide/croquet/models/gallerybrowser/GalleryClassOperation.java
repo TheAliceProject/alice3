@@ -43,7 +43,6 @@
 package org.alice.stageide.croquet.models.gallerybrowser;
 
 import org.alice.ide.IDE;
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
 import org.lgna.croquet.history.InputDialogOperationStep;
 import org.lookingglassandalice.storytelling.Entity;
@@ -173,7 +172,7 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
                     {
                         System.err.println("TODO: fix broken bounding box for "+this.treeNode.getValue());
                     }
-					objectTransform = ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getGoodPointOfViewInSceneForObject(box);
+					objectTransform = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getGoodPointOfViewInSceneForObject(box);
 					
 				}
 			}

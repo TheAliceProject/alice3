@@ -124,7 +124,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		//this.right.addComponent( new org.lgna.croquet.Label( "hello" ), org.lgna.croquet.BorderPanel.Constraint.CENTER );
 
 		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addAndInvokeValueObserver( this.isAlwaysShowingBlocksObserver );
-		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addAndInvokeValueObserver( this.accessibleSelectionObserver );
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactorySelectionObserver );
 
 		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -476,21 +476,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
 
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, edu.cmu.cs.dennisc.alice.ast.Accessible > mapCodeToAccessible = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	private org.lgna.croquet.State.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleSelectionObserver = new org.lgna.croquet.State.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
-		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory > mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 			if( nextValue != null ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractCode code = IDE.this.getFocusedCode();
 				if( code != null ) {
-					mapCodeToAccessible.put( code, nextValue );
+					mapCodeToInstanceFactory.put( code, nextValue );
 				}
 			}
 		}
 	};
-
 	public abstract org.alice.ide.cascade.CascadeManager getCascadeManager();
 	public boolean isJava() {
 		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem() == org.alice.ide.formatter.JavaFormatter.getInstance();
@@ -795,59 +793,59 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	
 	private boolean isRespondingToRefreshAccessibles = true;
 	public void refreshAccessibles() {
-		if( isRespondingToRefreshAccessibles ) {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
-
-			edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getFocusedCode();
-			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
-
-			java.util.List< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			if( this.rootField != null ) {
-				accessibles.add( this.rootField );
-				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : this.getRootTypeDeclaredInAlice().fields ) {
-					if( this.isAccessibleDesired( field ) ) {
-						accessibles.add( field );
-					}
-				}
-			}
-
-			int indexOfLastField = accessibles.size() - 1;
-			if( code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
-				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)code;
-				for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : codeDeclaredInAlice.getParamtersProperty() ) {
-					if( this.isAccessibleDesired( parameter ) ) {
-						accessibles.add( parameter );
-					}
-				}
-				for( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable : IDE.getVariables( code ) ) {
-					if( this.isAccessibleDesired( variable ) ) {
-						accessibles.add( variable );
-					}
-				}
-				for( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant : IDE.getConstants( code ) ) {
-					if( this.isAccessibleDesired( constant ) ) {
-						accessibles.add( constant );
-					}
-				}
-			}
-
-			int selectedIndex;
-			if( accessible != null ) {
-				selectedIndex = accessibles.indexOf( accessible );
-			} else {
-				selectedIndex = -1;
-			}
-			if( selectedIndex == -1 ) {
-				if( code != null ) {
-					accessible = this.mapCodeToAccessible.get( code );
-					selectedIndex = accessibles.indexOf( accessible );
-				}
-			}
-			if( selectedIndex == -1 ) {
-				selectedIndex = indexOfLastField;
-			}
-			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setListData( selectedIndex, accessibles );
-		}
+//		if( isRespondingToRefreshAccessibles ) {
+//			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
+//
+//			edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getFocusedCode();
+//			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
+//
+//			java.util.List< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//			if( this.rootField != null ) {
+//				accessibles.add( this.rootField );
+//				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : this.getRootTypeDeclaredInAlice().fields ) {
+//					if( this.isAccessibleDesired( field ) ) {
+//						accessibles.add( field );
+//					}
+//				}
+//			}
+//
+//			int indexOfLastField = accessibles.size() - 1;
+//			if( code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
+//				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)code;
+//				for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : codeDeclaredInAlice.getParamtersProperty() ) {
+//					if( this.isAccessibleDesired( parameter ) ) {
+//						accessibles.add( parameter );
+//					}
+//				}
+//				for( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable : IDE.getVariables( code ) ) {
+//					if( this.isAccessibleDesired( variable ) ) {
+//						accessibles.add( variable );
+//					}
+//				}
+//				for( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant : IDE.getConstants( code ) ) {
+//					if( this.isAccessibleDesired( constant ) ) {
+//						accessibles.add( constant );
+//					}
+//				}
+//			}
+//
+//			int selectedIndex;
+//			if( accessible != null ) {
+//				selectedIndex = accessibles.indexOf( accessible );
+//			} else {
+//				selectedIndex = -1;
+//			}
+//			if( selectedIndex == -1 ) {
+//				if( code != null ) {
+//					accessible = this.mapCodeToAccessible.get( code );
+//					selectedIndex = accessibles.indexOf( accessible );
+//				}
+//			}
+//			if( selectedIndex == -1 ) {
+//				selectedIndex = indexOfLastField;
+//			}
+//			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setListData( selectedIndex, accessibles );
+//		}
 	}
 	
 	private void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
@@ -1109,122 +1107,18 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return text;
 	}
 
-	private edu.cmu.cs.dennisc.alice.ast.Expression createInstanceExpression( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) /*throws OutOfScopeException*/{
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = getFocusedCode();
-		if( focusedCode != null ) {
-			if( accessible != null ) {
-				if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)accessible;
-					edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > focusedCodeDeclaringType = focusedCode.getDeclaringType();
-					if( focusedCodeDeclaringType != null ) {
-						edu.cmu.cs.dennisc.alice.ast.ThisExpression thisExpression = new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
-						if( focusedCodeDeclaringType.equals( field.getValueType() ) ) {
-							return thisExpression;
-						} else if( focusedCodeDeclaringType.equals( field.getDeclaringType() ) ) {
-							return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( thisExpression, field );
-						} else {
-							return null;
-						}
-					} else {
-						return null;
-					}
-				} else {
-					if( focusedCode == accessible.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class ) ) {
-						if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractParameter ) {
-							edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = (edu.cmu.cs.dennisc.alice.ast.AbstractParameter)accessible;
-							return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
-						} else if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
-							edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)accessible;
-							return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable );
-						} else if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
-							edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant = (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)accessible;
-							return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( constant );
-						} else {
-							assert false : accessible;
-							return null;
-						}
-					} else {
-						return null;
-					}
-				}
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
 	public final edu.cmu.cs.dennisc.alice.ast.Expression createInstanceExpression() /*throws OutOfScopeException*/{
-		edu.cmu.cs.dennisc.alice.ast.Expression rv = this.createInstanceExpression( org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem() );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField partField = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().getSelectedItem();
-		if( partField != null ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().getSelectedItem();
-			if( field != null ) {
-				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava fieldType = field.getValueType();
-				Class< ? > cls = fieldType.getClassReflectionProxy().getReification();
-				Class< ? > enclosingCls = cls.getEnclosingClass();
-				if( enclosingCls != null ) {
-					try {
-						java.lang.reflect.Method mthd = enclosingCls.getMethod( "getPart", cls );
-						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava method = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( mthd );
-						return org.alice.ide.ast.NodeUtilities.createMethodInvocation( rv, method, new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( fieldType ), field ) );
-					} catch( NoSuchMethodException nsme ) {
-						//pass
-					}
-				}
-			}
-		}
-		return rv;
+		return org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression();
 	}
 
-	public boolean isAccessibleInScope( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = getFocusedCode();
-		if( focusedCode != null ) {
-			if( accessible != null ) {
-				if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)accessible;
-					edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > focusedCodeDeclaringType = focusedCode.getDeclaringType();
-					if( focusedCodeDeclaringType != null ) {
-						edu.cmu.cs.dennisc.alice.ast.ThisExpression thisExpression = new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
-						if( focusedCodeDeclaringType.equals( field.getValueType() ) ) {
-							return true;
-						} else if( focusedCodeDeclaringType.equals( field.getDeclaringType() ) ) {
-							return true;
-						} else {
-							return false;
-						}
-					} else {
-						return false;
-					}
-				} else {
-					if( focusedCode == accessible.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class ) ) {
-						if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractParameter ) {
-							edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = (edu.cmu.cs.dennisc.alice.ast.AbstractParameter)accessible;
-							return true;
-						} else if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
-							edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)accessible;
-							return true;
-						} else if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
-							edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant = (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)accessible;
-							return true;
-						} else {
-							assert false : accessible;
-							return false;
-						}
-					} else {
-						return false;
-					}
-				}
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-//		return createInstanceExpression( accessible ) != null;
+	
+	@Deprecated
+	public final boolean isAccessibleInScope( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
+		return true;
 	}
+	@Deprecated
 	public final boolean isSelectedAccessibleInScope() {
-		return isAccessibleInScope( org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem() );
+		return true;
 	}
 
 	@Override

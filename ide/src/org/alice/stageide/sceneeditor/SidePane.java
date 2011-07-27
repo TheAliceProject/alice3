@@ -163,7 +163,7 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 		}
 	}
 	
-	public SidePane(MoveAndTurnSceneEditor sceneEditor) {
+	public SidePane(StorytellingSceneEditor sceneEditor) {
 	    
 	    ToolPaletteTabbedPane<PredeterminedTab> tptp = PropertyAndMarkerPanelSelectionState.getInstance().createDefaultToolPaletteTabbedPane();
 	    

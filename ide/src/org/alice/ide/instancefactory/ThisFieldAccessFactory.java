@@ -47,8 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessFactory implements InstanceFactory {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ThisFieldAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ThisFieldAccessFactory getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, ThisFieldAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ThisFieldAccessFactory getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		assert field != null;
 		ThisFieldAccessFactory rv = map.get( field );
 		if( rv != null ) {
@@ -59,11 +59,30 @@ public class ThisFieldAccessFactory implements InstanceFactory {
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-	private ThisFieldAccessFactory( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	private ThisFieldAccessFactory( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		this.field = field;
+	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {
+		return this.field;
+	}
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return this.field.getNamePropertyIfItExists();
 	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
 		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), this.field );
+	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getValueType() {
+		return this.field.getValueType();
+	}
+	public String getRepr() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( "this." );
+//		sb.append( "<strong>" );
+		sb.append( this.field.getName() );
+//		sb.append( "</strong>" );
+		sb.append( "</html>" );
+		return sb.toString();
 	}
 }

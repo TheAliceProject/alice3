@@ -49,8 +49,6 @@ import java.awt.Graphics;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
-
 public class MoveToImageIcon extends ImageIcon {
 	
 	public static int SUB_ICON_WIDTH = 25;
@@ -66,7 +64,7 @@ public class MoveToImageIcon extends ImageIcon {
 	
 	public MoveToImageIcon()
 	{
-		super(MoveAndTurnSceneEditor.class.getResource("images/moveToTemplateIcon.png"));
+		super(org.alice.stageide.sceneeditor.StorytellingSceneEditor.class.getResource("images/moveToTemplateIcon.png"));
 	}
 	
 	public MoveToImageIcon(Icon leftImage, Icon rightImage)

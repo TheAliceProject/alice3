@@ -47,8 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessMethodInvocationFactory implements InstanceFactory {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactory > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ThisFieldAccessMethodInvocationFactory getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactory > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ThisFieldAccessMethodInvocationFactory getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		assert field != null;
 		ThisFieldAccessMethodInvocationFactory rv = mapToMap.get( field, method );
 		if( rv != null ) {
@@ -59,16 +59,43 @@ public class ThisFieldAccessMethodInvocationFactory implements InstanceFactory {
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	private ThisFieldAccessMethodInvocationFactory( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private ThisFieldAccessMethodInvocationFactory( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		this.field = field;
 		this.method = method;
+	}
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return this.field.getNamePropertyIfItExists();
+	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {
+		return this.field;
+	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getMethod() {
+		return this.method;
 	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
 		return new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( 
 				new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), this.field ),
 				this.method
 		);
+	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getValueType() {
+		return this.method.getReturnType();
+	}
+
+	public String getRepr() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( "this." );
+//		sb.append( "<strong>" );
+		sb.append( this.field.getName() );
+//		sb.append( "</strong>" );
+		sb.append( "'s " );
+//		sb.append( "<strong>" );
+		sb.append( this.method.getName().substring( 3 ) );
+//		sb.append( "</strong>" );
+		sb.append( "</html>" );
+		return sb.toString();
 	}
 }

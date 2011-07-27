@@ -49,10 +49,10 @@ package org.alice.ide.croquet.models.templates;
 public abstract class MemberTemplateComposite extends TemplateComposite {
 	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
-			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
+			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
 			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type; 
-			if( accessible != null ) {
-				type = accessible.getValueType();
+			if( instanceFactory != null ) {
+				type = instanceFactory.getValueType();
 			} else {
 				type = null;
 			}

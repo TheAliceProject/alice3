@@ -51,7 +51,6 @@ import org.lookingglassandalice.storytelling.implementation.OrthographicCameraMa
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;

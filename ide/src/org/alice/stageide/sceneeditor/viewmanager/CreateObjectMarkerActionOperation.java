@@ -44,7 +44,6 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.ide.IDE;
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
@@ -66,7 +65,7 @@ public class CreateObjectMarkerActionOperation extends AbstractSceneDeclareField
 	@Override
 	protected Tuple2< FieldDeclaredInAlice, org.lookingglassandalice.storytelling.ObjectMarker > createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, TypeDeclaredInAlice ownerType ) 
 	{
-		return ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).createObjectMarkerField( ownerType );
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().createObjectMarkerField( ownerType );
 	}
 	
 	//TODO: Localize this

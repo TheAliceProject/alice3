@@ -45,19 +45,28 @@ package org.alice.stageide.sceneeditor;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
+import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.components.DragComponent;
+import org.lookingglassandalice.storytelling.BookmarkCameraMarker;
 import org.lookingglassandalice.storytelling.ImplementationAccessor;
+import org.lookingglassandalice.storytelling.ObjectMarker;
 import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
+import org.lookingglassandalice.storytelling.implementation.MarkerImplementation;
 import org.lookingglassandalice.storytelling.implementation.ProgramImplementation;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.StatementListProperty;
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.pattern.Tuple2;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author dculyba
@@ -453,5 +462,37 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return "Drop...";
 	}
 // ######### End implementation of org.lgna.croquet.DropReceptor
+
+	
+	public void setHandleVisibilityForObject( Transformable sgComposite, boolean b ) {
+		throw new RuntimeException( "todo" );
+	}
+	public Tuple2< FieldDeclaredInAlice, BookmarkCameraMarker > createCameraMarkerField( TypeDeclaredInAlice ownerType ) {
+		throw new RuntimeException( "todo" );
+	}
+	public Tuple2< FieldDeclaredInAlice, ObjectMarker > createObjectMarkerField( TypeDeclaredInAlice ownerType ) {
+		throw new RuntimeException( "todo" );
+	}
+	public void switchToOthographicCamera() {
+		throw new RuntimeException( "todo" );
+	}
+	public void switchToPerspectiveCamera() {
+		throw new RuntimeException( "todo" );
+	}
+	public AffineMatrix4x4 getGoodPointOfViewInSceneForObject( AxisAlignedBox box ) {
+		throw new RuntimeException( "todo" );
+	}
+	public MarkerImplementation getMarkerForField( FieldDeclaredInAlice field ) {
+		throw new RuntimeException( "todo" );
+	}
+	public SnapState getSnapState() {
+		throw new RuntimeException( "todo" );
+	}
+	public AbstractCamera getSGCameraForCreatingThumbnails() {
+		throw new RuntimeException( "todo" );
+	}
+	public void setSnapGridSpacing( double gridSpacing ) {
+		throw new RuntimeException( "todo" );
+	}
 	
 }

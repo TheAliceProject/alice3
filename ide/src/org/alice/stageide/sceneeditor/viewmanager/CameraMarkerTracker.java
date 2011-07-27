@@ -50,7 +50,6 @@ import org.lookingglassandalice.storytelling.PerspectiveCameraMarker;
 import org.lookingglassandalice.storytelling.implementation.CameraMarkerImplementation;
 import org.lookingglassandalice.storytelling.implementation.OrthographicCameraMarkerImplementation;
 import org.lookingglassandalice.storytelling.implementation.PerspectiveCameraMarkerImplementation;
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
@@ -71,13 +70,13 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 	private PointOfViewAnimation pointOfViewAnimation = null;
 	private CameraMarkerImplementation markerToUpdate = null;
 	private boolean shouldAnimate = true;
-	private MoveAndTurnSceneEditor sceneEditor;
+	private org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor;
 	private CameraMarkerImplementation activeMarker = null;
 	
 	private java.util.Map< org.alice.stageide.sceneeditor.View, CameraMarkerImplementation > mapViewToMarker = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map< CameraMarkerImplementation, org.alice.stageide.sceneeditor.View > mapMarkerToView = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	public CameraMarkerTracker(MoveAndTurnSceneEditor sceneEditor, Animator animator)
+	public CameraMarkerTracker(org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor, Animator animator)
 	{
 		this.sceneEditor = sceneEditor;
 		this.animator = animator;

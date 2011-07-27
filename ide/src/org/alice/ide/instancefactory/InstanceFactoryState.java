@@ -53,6 +53,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	public static InstanceFactoryState getInstance() {
 		return SingletonHolder.instance;
 	}
+	private InstanceFactory value;
 	private InstanceFactoryState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), InstanceFactoryCodec.SINGLETON );
 	}
@@ -78,9 +79,16 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	}
 	@Override
 	public org.alice.ide.instancefactory.InstanceFactory getValue() {
-		return null;
+		return this.value;
 	}
 	@Override
 	protected void setValue( org.alice.ide.instancefactory.InstanceFactory value ) {
+		this.value = value;
+	}
+	
+	public void changeValue( org.alice.ide.instancefactory.InstanceFactory value ) {
+		this.fireChanging( this.value, value, false );
+		this.setValue( value );
+		this.fireChanged( this.value, value, false );
 	}
 }

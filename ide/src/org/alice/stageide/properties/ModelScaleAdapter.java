@@ -48,7 +48,6 @@ import java.util.Locale;
 import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.AbstractScaleAdapter;
 import org.alice.interact.handle.ManipulationHandle3D;
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.lgna.croquet.Operation;
 
 import edu.cmu.cs.dennisc.math.Dimension3;

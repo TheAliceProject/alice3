@@ -43,13 +43,6 @@
 
 package org.lookingglassandalice.storytelling;
 
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
-
-import edu.cmu.cs.dennisc.scenegraph.Cylinder;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
-import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
-
 public class ObjectMarker extends Marker 
 {
 	private final org.lookingglassandalice.storytelling.implementation.ObjectMarkerImplementation implementation = new org.lookingglassandalice.storytelling.implementation.ObjectMarkerImplementation( this );

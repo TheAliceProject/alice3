@@ -51,7 +51,6 @@ import org.lookingglassandalice.storytelling.Turnable;
 import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.lgna.croquet.Model;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
@@ -67,7 +66,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 	{
 		public SetVehicleOperation( Entity value, String name) {
 			super( TransformableVehicleAdapter.this, value, name, java.util.UUID.fromString( "981768b7-f40b-4363-b64f-34264be73651" ) );
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getFieldForInstanceInJavaVM(value);
+			edu.cmu.cs.dennisc.alice.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(value);
 			if (field != null)
 			{
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
@@ -127,52 +126,53 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 	{
 		if (this.popupMenuOperation == null)
 		{
-			this.popupMenuOperation = new org.lgna.croquet.MenuModel( java.util.UUID.fromString( "2ae18028-e18a-47ad-8dda-ba6c186142a4" ) ) {
-				@Override
-				public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) 
-				{
-					org.lgna.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > possibleFields = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
-					java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> setVehicleOperations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-					
-					Entity currentVehicle = TransformableVehicleAdapter.this.getValue();
-					if (currentVehicle != null)
-					{
-						setVehicleOperations.add(new SetVehicleOperation(currentVehicle, TransformableVehicleAdapter.getNameForVehicle(currentVehicle)+TransformableVehicleAdapter.this.getCurrentValueLabelString()).getMenuItemPrepModel());
-						setVehicleOperations.add(org.lgna.croquet.MenuModel.SEPARATOR);
-					}
-					
-					for (edu.cmu.cs.dennisc.alice.ast.Accessible field : possibleFields)
-					{
-						if (field instanceof FieldDeclaredInAlice)
-						{
-							Entity objectInJava = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getInstanceInJavaVMForField((FieldDeclaredInAlice)field, Entity.class);
-							boolean canBeVehicle = false;
-							if (objectInJava != null)
-							{
-//								if (objectInJava instanceof Light)
+			System.err.println( "todo: getEditModel" );
+//			this.popupMenuOperation = new org.lgna.croquet.MenuModel( java.util.UUID.fromString( "2ae18028-e18a-47ad-8dda-ba6c186142a4" ) ) {
+//				@Override
+//				public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) 
+//				{
+//					org.lgna.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > possibleFields = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
+//					java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> setVehicleOperations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//					
+//					Entity currentVehicle = TransformableVehicleAdapter.this.getValue();
+//					if (currentVehicle != null)
+//					{
+//						setVehicleOperations.add(new SetVehicleOperation(currentVehicle, TransformableVehicleAdapter.getNameForVehicle(currentVehicle)+TransformableVehicleAdapter.this.getCurrentValueLabelString()).getMenuItemPrepModel());
+//						setVehicleOperations.add(org.lgna.croquet.MenuModel.SEPARATOR);
+//					}
+//					
+//					for (edu.cmu.cs.dennisc.alice.ast.Accessible field : possibleFields)
+//					{
+//						if (field instanceof FieldDeclaredInAlice)
+//						{
+//							Entity objectInJava = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getInstanceInJavaVMForField((FieldDeclaredInAlice)field, Entity.class);
+//							boolean canBeVehicle = false;
+//							if (objectInJava != null)
+//							{
+////								if (objectInJava instanceof Light)
+////								{
+////									canBeVehicle = false;
+////								}
+////								else 
+//								if (objectInJava instanceof Turnable && TransformableVehicleAdapter.this.isValidVehicle(objectInJava))
 //								{
-//									canBeVehicle = false;
+//									canBeVehicle = true;
 //								}
-//								else 
-								if (objectInJava instanceof Turnable && TransformableVehicleAdapter.this.isValidVehicle(objectInJava))
-								{
-									canBeVehicle = true;
-								}
-								else if (objectInJava instanceof Scene)
-								{
-									canBeVehicle = true;
-								}
-								
-							}
-							if (canBeVehicle)
-							{
-								setVehicleOperations.add(new SetVehicleOperation(objectInJava, TransformableVehicleAdapter.getNameForVehicle(objectInJava)).getMenuItemPrepModel());
-							}
-						}
-					}
-					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, setVehicleOperations );
-				}
-			}.getPopupPrepModel();
+//								else if (objectInJava instanceof Scene)
+//								{
+//									canBeVehicle = true;
+//								}
+//								
+//							}
+//							if (canBeVehicle)
+//							{
+//								setVehicleOperations.add(new SetVehicleOperation(objectInJava, TransformableVehicleAdapter.getNameForVehicle(objectInJava)).getMenuItemPrepModel());
+//							}
+//						}
+//					}
+//					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, setVehicleOperations );
+//				}
+//			}.getPopupPrepModel();
 		}
 		
 		// TODO Auto-generated method stub
@@ -189,7 +189,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 	{
 		if (vehicle != null)
 		{
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getFieldForInstanceInJavaVM(vehicle);
+			edu.cmu.cs.dennisc.alice.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
 			if (field != null)
 			{
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
@@ -210,7 +210,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 	{
 		if (vehicle != null)
 		{
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getFieldForInstanceInJavaVM(vehicle);
+			edu.cmu.cs.dennisc.alice.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
 			if (field != null)
 			{
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();

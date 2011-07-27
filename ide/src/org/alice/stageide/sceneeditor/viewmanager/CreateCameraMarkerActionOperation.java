@@ -42,9 +42,6 @@
  */
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.alice.ide.IDE;
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
-
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
@@ -74,7 +71,7 @@ public class CreateCameraMarkerActionOperation extends AbstractSceneDeclareField
 	@Override
 	protected Tuple2< FieldDeclaredInAlice, org.lookingglassandalice.storytelling.BookmarkCameraMarker > createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, TypeDeclaredInAlice ownerType ) 
 	{
-		return ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).createCameraMarkerField( ownerType );
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().createCameraMarkerField( ownerType );
 	}
 
 }

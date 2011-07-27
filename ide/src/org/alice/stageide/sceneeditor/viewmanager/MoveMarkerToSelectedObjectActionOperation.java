@@ -50,7 +50,6 @@ import org.lookingglassandalice.storytelling.Turnable;
 import org.lookingglassandalice.storytelling.implementation.CameraMarkerImplementation;
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;

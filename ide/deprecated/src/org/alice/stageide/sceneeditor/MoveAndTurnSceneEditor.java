@@ -566,7 +566,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		}
 		else
 		{
-			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem(field);
+			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setSelectedItem( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
 		}
 	}
 	
@@ -708,9 +708,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 							ObjectMarkerFieldListSelectionState.getInstance().setSelectedItem(addedField);
 							CreateObjectMarkerActionOperation.getInstance().setEnabled(true);
 						}
-						ListSelectionState<Accessible> accessibleListSelectionState = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
-						if( accessibleListSelectionState.containsItem( addedField ) ) {
-							accessibleListSelectionState.setSelectedItem( addedField );
+						org.alice.ide.instancefactory.InstanceFactoryState instanceFactoryState = org.alice.ide.instancefactory.InstanceFactoryState.getInstance();
+						org.alice.ide.instancefactory.ThisFieldAccessFactory addedFieldFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( addedField );
+						if( instanceFactoryState.containsItem( addedFieldFactory ) ) {
+							instanceFactoryState.setSelectedItem( addedFieldFactory );
 						}
 					}
 				}.start();

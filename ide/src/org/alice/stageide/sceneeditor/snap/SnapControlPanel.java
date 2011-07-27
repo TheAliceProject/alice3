@@ -55,11 +55,9 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
-import org.lgna.croquet.components.SwingAdapter;
 import org.lgna.croquet.components.ToolPalette;
 
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
@@ -67,7 +65,7 @@ import edu.cmu.cs.dennisc.math.AngleInDegrees;
 public class SnapControlPanel extends GridBagPanel implements ChangeListener, ActionListener
 {
 	private SnapState snapState;
-	private MoveAndTurnSceneEditor sceneEditor;
+	private org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor;
 	
 	private JSpinner gridSizeSpinner;
 	private Label gridSizeLabel;
@@ -92,7 +90,7 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 		}
 	};
 	
-	public SnapControlPanel(SnapState snapState, MoveAndTurnSceneEditor sceneEditor)
+	public SnapControlPanel(SnapState snapState, org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor)
 	{
 		this.sceneEditor = sceneEditor;
 		this.snapState = snapState;
@@ -137,14 +135,14 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
         snapToGridPanel.addComponent(this.snapState.getShowSnapGridState().createCheckBox());
         this.gridSizeLabel = new Label("   "+resourceBundle.getString("gridSpacing")+" ");
         snapToGridPanel.addComponent(this.gridSizeLabel);
-        snapToGridPanel.addComponent(new SwingAdapter(this.gridSizeSpinner));
+        snapToGridPanel.addComponent(new org.lgna.croquet.components.SwingAdapter(this.gridSizeSpinner));
         
         this.rotationSnapPanel = new LineAxisPanel();
         rotationSnapPanel.setBorder(null);
         rotationSnapPanel.addComponent(this.snapState.getIsRotationSnapEnabledState().createCheckBox());
         this.snapAngleLabel = new Label("   "+resourceBundle.getString("angleSnap")+"  ");
         rotationSnapPanel.addComponent(this.snapAngleLabel);
-        rotationSnapPanel.addComponent(new SwingAdapter(this.snapAngleSpinner));
+        rotationSnapPanel.addComponent(new org.lgna.croquet.components.SwingAdapter(this.snapAngleSpinner));
 	}
 	
 	protected void initializeUI()
@@ -160,12 +158,12 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 		this.snapToGridPanel.removeAllComponents();
 		this.snapToGridPanel.addComponent(this.snapState.getShowSnapGridState().createCheckBox());
 		snapToGridPanel.addComponent(this.gridSizeLabel);
-		snapToGridPanel.addComponent(new SwingAdapter(this.gridSizeSpinner));
+		snapToGridPanel.addComponent(new org.lgna.croquet.components.SwingAdapter(this.gridSizeSpinner));
 		
 		this.rotationSnapPanel.removeAllComponents();
 		rotationSnapPanel.addComponent(this.snapState.getIsRotationSnapEnabledState().createCheckBox());
 		rotationSnapPanel.addComponent(this.snapAngleLabel);
-		rotationSnapPanel.addComponent(new SwingAdapter(this.snapAngleSpinner));
+		rotationSnapPanel.addComponent(new org.lgna.croquet.components.SwingAdapter(this.snapAngleSpinner));
 
 		detailsPanel.addComponent(snapToGridPanel , new GridBagConstraints( 
 				0, //gridX
