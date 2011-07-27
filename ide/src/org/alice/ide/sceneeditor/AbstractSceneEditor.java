@@ -42,6 +42,8 @@
  */
 package org.alice.ide.sceneeditor;
 
+import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
+import org.lgna.croquet.components.BorderPanel.Constraint;
 import org.lgna.story.ImplementationAccessor;
 
 /**
@@ -72,6 +74,14 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	};
 	
+	private org.lgna.croquet.State.ValueObserver< Boolean > editorExpandedObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			handleExpandContractChange( nextValue );
+		}
+	};
+	
 	public abstract void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
 	public abstract void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
 
@@ -79,6 +89,29 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	public abstract Object getInstanceInJavaForUndo( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field );
 	
 	public abstract void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty );
+	
+	protected abstract void handleExpandContractChange( boolean isExpanded );
+	
+	
+	//Initialization
+	private boolean isInitialized = false;
+	private void initializeIfNecessary()
+	{
+		if (!this.isInitialized)
+		{
+			initializeComponents();
+			initializeObservers();
+			this.isInitialized = true;
+		}
+	}
+	
+	protected void initializeComponents(){
+		
+	}
+	protected void initializeObservers(){
+		IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver(this.editorExpandedObserver);
+	}
+	
 	
 	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
 		return SceneFieldListSelectionState.getInstance().getSelectedItem();
@@ -168,7 +201,6 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	} 
 	
-	
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getActiveInstance();
 	}
@@ -231,6 +263,12 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 			SceneFieldListSelectionState.getInstance().setSelectedIndex(0);
 		}
 		SceneFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.selectedSceneObserver);
+	}
+	
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		initializeIfNecessary();
 	}
 	
 	@Override

@@ -64,7 +64,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 /**
  * @author David Culyba
  */
-public abstract class ManipulationHandle2D extends JLabel implements ManipulationHandle, ManipulationListener {
+public abstract class ManipulationHandle2D extends org.lgna.croquet.components.Label implements ManipulationHandle, ManipulationListener {
 	protected Animator animator;
 	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
 	protected HandleState state = new HandleState();
@@ -86,7 +86,7 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 	
 	public Vector2 getCenter()
 	{
-		Dimension ourSize = this.getSize();
+		java.awt.Rectangle ourSize = this.getBounds();
 		return new Vector2(ourSize.width*.5d, ourSize.height*.5d);
 	}
 	
@@ -98,12 +98,12 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 		{
 			if (this.isVisible())
 			{
-				this.dragAdapter.addListeners( this );
+				this.dragAdapter.addListeners( this.getAwtComponent() );
 				this.dragAdapter.addManipulationListener( this );
 			}
 			else
 			{
-				this.dragAdapter.removeListeners( this );
+				this.dragAdapter.removeListeners( this.getAwtComponent() );
 				this.dragAdapter.removeManipulationListener( this );
 			}
 		}
@@ -124,7 +124,7 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 		if (this.dragAdapter != null)
 		{
 			this.dragAdapter.addHandle( this );
-			this.dragAdapter.addListeners( this );
+			this.dragAdapter.addListeners( this.getAwtComponent() );
 		}
 	}
 

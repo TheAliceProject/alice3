@@ -70,14 +70,14 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 		this.setImageMask();
 		this.setStateBasedOnManipulationStatus();
 		Dimension size = new Dimension(this.getIcon().getIconWidth(), this.getIcon().getIconHeight());
-		this.setSize( size );
-		this.setMinimumSize( size );
-		this.setPreferredSize( size );
+		this.getAwtComponent().setSize( size );
+		this.getAwtComponent().setMinimumSize( size );
+		this.getAwtComponent().setPreferredSize( size );
 	}
 	
 	public Color getColor( int x, int y)
 	{
-		if (super.contains( x, y ))
+		if (super.getAwtComponent().contains( x, y ))
 		{
 			if (this.imageMask != null)
 			{
@@ -91,10 +91,7 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 	
 	abstract protected void setImageMask(); 
 	
-	@Override
 	public boolean contains( int x, int y ) {
-		
-		
 		Color color = this.getColor( x, y );
 		if (color != null)
 		{
@@ -102,7 +99,7 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 		}
 		else
 		{
-			return super.contains( x, y );
+			return getAwtComponent().contains( x, y );
 		}
 	}
 	
