@@ -51,12 +51,20 @@ public class TestBootstrap {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.Appearance.GRASS );
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
 		vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
-		if( false ) {
-			Object programInstance = vm.createInstanceEntryPoint( programType );
-			vm.invokeEntryPoint( programType.findMethod( "initializeInFrame", String[].class ), programInstance, (Object)args );
-			vm.invokeEntryPoint( programType.methods.get( 0 ), programInstance );
+		if( true ) {
+			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice programInstance = vm.ENTRY_POINT_createInstance( programType );
+			vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
+			System.err.println();
+			System.err.println();
+			System.err.println();
+			System.err.println();
+			vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
+			System.err.println();
+			System.err.println();
+			System.err.println();
+			System.err.println();
 		} else {
-			vm.invokeEntryPoint( programType.findMethod( "main", String[].class ), null, (Object)args );
+			vm.ENTRY_POINT_invoke( null, programType.findMethod( "main", String[].class ), (Object)args );
 		}
 	}
 }

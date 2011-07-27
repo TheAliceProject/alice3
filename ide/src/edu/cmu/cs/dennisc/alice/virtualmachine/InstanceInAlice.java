@@ -87,35 +87,37 @@ public class InstanceInAlice {
 		}
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)constructor.getDeclaringType();
 		vm.pushConstructorFrame( type, stackMap );
-		Object[] nextArguments = vm.evaluateArguments( nextConstructor.getParameters(), constructorInvocationStatement.arguments );
-		if( nextConstructor.isDeclaredInAlice() ) {
-			this.nextInstance = new InstanceInAlice( vm, (ConstructorDeclaredInAlice)nextConstructor, nextArguments, fieldMap, inverseFieldMap );
-		} else {
-			ConstructorDeclaredInJava nextConstructorDeclaredInJava = (ConstructorDeclaredInJava)nextConstructor;
-			ConstructorReflectionProxy constructorReflectionProxy =  nextConstructorDeclaredInJava.getConstructorReflectionProxy();
-			java.lang.reflect.Constructor<?> cnstrctr = constructorReflectionProxy.getReification();
-			assert cnstrctr != null : constructorReflectionProxy.getDeclaringClassReflectionProxy().getName();
-			this.nextInstance = vm.createInstance( this.type, this, cnstrctr, nextArguments );
-		}
-		vm.setConstructorFrameInstanceInAlice( this );
-		for( AbstractField field : this.type.getDeclaredFields() ) {
-			assert field instanceof FieldDeclaredInAlice;
-			FieldDeclaredInAlice fieldDeclaredInAlice = (FieldDeclaredInAlice)field;
-			this.createAndSetFieldInstance( vm, fieldDeclaredInAlice );
-		}
-		if( vm.isConstructorBodyExecutionDesired() ) {
+		try {
+			Object[] nextArguments = vm.evaluateArguments( nextConstructor.getParameters(), constructorInvocationStatement.arguments );
+			if( nextConstructor.isDeclaredInAlice() ) {
+				this.nextInstance = new InstanceInAlice( vm, (ConstructorDeclaredInAlice)nextConstructor, nextArguments, fieldMap, inverseFieldMap );
+			} else {
+				ConstructorDeclaredInJava nextConstructorDeclaredInJava = (ConstructorDeclaredInJava)nextConstructor;
+				ConstructorReflectionProxy constructorReflectionProxy =  nextConstructorDeclaredInJava.getConstructorReflectionProxy();
+				java.lang.reflect.Constructor<?> cnstrctr = constructorReflectionProxy.getReification();
+				assert cnstrctr != null : constructorReflectionProxy.getDeclaringClassReflectionProxy().getName();
+				this.nextInstance = vm.createInstance( this.type, this, cnstrctr, nextArguments );
+			}
+			vm.setConstructorFrameInstanceInAlice( this );
+			for( AbstractField field : this.type.getDeclaredFields() ) {
+				assert field instanceof FieldDeclaredInAlice;
+				FieldDeclaredInAlice fieldDeclaredInAlice = (FieldDeclaredInAlice)field;
+				this.createAndSetFieldInstance( vm, fieldDeclaredInAlice );
+			}
 			try {
 				vm.executeBlockStatement( constructorBlockStatement );
 			} catch( ReturnException re ) {
 				throw new RuntimeException( re );
 			}
+		} finally {
+			vm.popFrame();
 		}
-		vm.popFrame();
 	}
 
 	public Object createAndSetFieldInstance( VirtualMachine vm, FieldDeclaredInAlice field ) {
 		Object rv = vm.evaluate( field.initializer.getValue() );
 		this.setFieldValue( field, rv );
+		//System.err.println( field + " " + rv );
 		return rv;
 	}
 	public AbstractTypeDeclaredInAlice<?> getType() {

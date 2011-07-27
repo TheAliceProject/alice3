@@ -52,7 +52,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice > mapSceneFieldToInstance = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice >();
 	private java.util.Map< edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > mapSceneInstanceToField = new java.util.HashMap< edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >();
 	
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType;
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice programInstance;
 	
 	private org.alice.ide.ProjectApplication.ProjectObserver projectObserver = new org.alice.ide.ProjectApplication.ProjectObserver() { 
@@ -178,7 +178,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	
 	protected void addScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice) sceneField.getValueType();
-		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice rv = getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMapWithoutExcutingConstructorBody(sceneType);
+		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice rv = getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMap(sceneType);
 		mapSceneFieldToInstance.put(sceneField, rv);
 		mapSceneInstanceToField.put(rv, sceneField);
 		SceneFieldListSelectionState.getInstance().addItem(sceneField);
@@ -208,14 +208,14 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		this.programInstance = programInstance;
 	}
 	
-	protected void setProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType ) {
+	protected void setProgramType( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType ) {
 		this.programType = programType;
 		SceneFieldListSelectionState.getInstance().removeValueObserver(this.selectedSceneObserver);
 		SceneFieldListSelectionState.getInstance().clear();
 		mapSceneFieldToInstance.clear();
 		mapSceneInstanceToField.clear();
 		if( this.programType != null ) {
-			setProgramInstance((edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)getVM().createInstanceEntryPoint(this.programType));
+			setProgramInstance((edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)getVM().ENTRY_POINT_createInstance(this.programType));
 			for (edu.cmu.cs.dennisc.alice.ast.AbstractField programField : this.programType.getDeclaredFields())
 			{
 				if( programField.getDesiredValueType().isAssignableTo(org.lgna.story.Scene.class)) 

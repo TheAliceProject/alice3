@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.alice.virtualmachine;
  */
 public interface Frame {
 	public Frame getOwner();
-	public Object getThis();
+	public InstanceInAlice getThis();
 	public Object lookup( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter );
 	public Object get( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local );
 	public void set( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local, Object value );
