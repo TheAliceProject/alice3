@@ -45,6 +45,10 @@ package org.alice.interact.condition;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+
 /**
  * @author David Culyba
  */
@@ -94,14 +98,36 @@ public class PickCondition {
 		}
 		else
 		{
-			Object bonusData = pickedObject.getBonusDataFor( PickHint.PICK_HINT_KEY );
-			if (bonusData instanceof PickHint)
+			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = null;
+			if (pickedObject instanceof edu.cmu.cs.dennisc.scenegraph.Composite)
 			{
-				return (PickHint)bonusData;
+				for(edu.cmu.cs.dennisc.scenegraph.Component c : ((edu.cmu.cs.dennisc.scenegraph.Composite)pickedObject).getComponents())
+				{
+					if (c instanceof edu.cmu.cs.dennisc.scenegraph.AbstractCamera)
+					{
+						camera = (edu.cmu.cs.dennisc.scenegraph.AbstractCamera)c;
+					}
+				}
+			}
+			if (camera instanceof SymmetricPerspectiveCamera)
+			{
+				return PickHint.PERSPECTIVE_CAMERA;
+			}
+			else if (camera instanceof OrthographicCamera)
+			{
+				return PickHint.ORTHOGRAPHIC_CAMERA;
 			}
 			else
 			{
-				return getPickType(pickedObject.getParent());
+				Object bonusData = pickedObject.getBonusDataFor( PickHint.PICK_HINT_KEY );
+				if (bonusData instanceof PickHint)
+				{
+					return (PickHint)bonusData;
+				}
+				else
+				{
+					return getPickType(pickedObject.getParent());
+				}
 			}
 		}
 	}

@@ -42,8 +42,10 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.components.DragComponent;
@@ -58,6 +60,8 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.StatementListProperty;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice;
+import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
+import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent;
@@ -95,15 +99,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			.getSingleton().createLightweightOnscreenLookingGlass();
 
 	private class LookingGlassPanel extends
-			org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
+			org.lgna.croquet.components.CompassPointSpringPanel {
 		@Override
-		protected javax.swing.JPanel createAwtComponent() {
+		protected javax.swing.JPanel createJPanel() {
 			javax.swing.JPanel rv = StorytellingSceneEditor.this.onscreenLookingGlass
 					.getJPanel();
 			rv.setLayout(new javax.swing.SpringLayout());
-			
-//			StorytellingSceneEditor.this.onscreenLookingGlass.getLookingGlassFactory().incrementAutomaticDisplayCount();
-			
 			return rv;
 		}
 	}
@@ -111,7 +112,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
-	private org.lgna.story.implementation.CameraImplementation sceneCameraImplementation;
+	private org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation sceneCameraImplementation;
+	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
+	private org.lgna.croquet.components.PushButton expandCollapseButton;
 	
 	@Override
 	protected void setProgramInstance(InstanceInAlice programInstance) 
@@ -125,16 +128,33 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	protected void setSceneCamera(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField)
 	{
 		this.sceneCameraImplementation = getImplementation(cameraField);
-		System.out.println("Scene editor camera: "+this.sceneCameraImplementation.getSgCamera().hashCode());
-		for (edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : this.onscreenLookingGlass.accessCameras())
-		{
-			System.out.println("Looking glass camera: "+camera.hashCode());
-		}
-		System.out.println();
-//		onscreenLookingGlass.addCamera( this.sceneCameraImplementation.getSgCamera() );
+
+		this.globalDragAdapter.clearCameraViews();
+		this.globalDragAdapter.addCameraView( CameraView.MAIN, this.sceneCameraImplementation.getSgCamera(), null );
+		this.globalDragAdapter.makeCameraActive( this.sceneCameraImplementation.getSgCamera() );
+//		this.mainCameraViewTracker.setCameras(perspectiveCamera, orthographicCamera);
+//		this.snapGrid.addCamera(perspectiveCamera);
+//		this.snapGrid.addCamera(orthographicCamera);
+//		this.snapGrid.setCurrentCamera(perspectiveCamera);
 	}
 	
-	private void initializeIfNecessary() {
+	private static final int INSET = 8;
+	
+	@Override
+	protected void handleExpandContractChange(boolean isExpanded) {
+		if (isExpanded)
+		{
+		}
+		else
+		{
+		}
+		this.mainCameraNavigatorWidget.setExpanded(isExpanded);
+		this.lookingGlassPanel.setSouthEastComponent(this.expandCollapseButton);
+		this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);
+	}
+	
+	@Override
+	protected void initializeComponents() {
 		if( this.globalDragAdapter != null ) {
 			//pass
 		} else {
@@ -150,6 +170,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 			this.onscreenLookingGlass.addLookingGlassListener(this);
 			this.globalDragAdapter.setAnimator( animator );
+			
+			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
+			
+			this.expandCollapseButton = IsSceneEditorExpandedState.getInstance().createPushButton();
+			
 //			this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
 //				public void selecting( org.alice.interact.event.SelectionEvent e ) {
 //				}
@@ -324,13 +349,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	
 	private boolean HACK_isDisplayableAlreadyHandled = false;
+	
 	@Override
 	protected void handleDisplayable() {
 		if( HACK_isDisplayableAlreadyHandled ) {
 			System.err.println( "TODO: investigate is displayed" );
 		} else {
 			super.handleDisplayable();
-			initializeIfNecessary();
 			HACK_isDisplayableAlreadyHandled = true;
 		}
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();

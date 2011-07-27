@@ -947,9 +947,10 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		{
 			return null;
 		}
-		else if (c instanceof ManipulationHandle)
+		org.lgna.croquet.components.Component lgc = org.lgna.croquet.components.Component.lookup(c);
+		if (lgc instanceof ManipulationHandle)
 		{
-			return (ManipulationHandle)c;
+			return (ManipulationHandle)lgc;
 		}
 		else
 		{
@@ -1021,6 +1022,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public void mouseMoved( java.awt.event.MouseEvent e ) {
 		if (!this.currentInputState.getIsDragEvent()) //If we haven't already handled it through dragAndDrop
 		{
+			Component c = e.getComponent();
 			this.currentInputState.setMouseLocation( e.getPoint() );
 			if (e.getComponent() == this.lookingGlassComponent)
 			{

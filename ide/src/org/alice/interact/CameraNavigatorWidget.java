@@ -42,6 +42,8 @@
  */
 package org.alice.interact;
 
+import java.awt.LayoutManager;
+
 import javax.swing.JPanel;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
@@ -64,7 +66,7 @@ import org.alice.interact.manipulator.OrthographicCameraDragZoomManipulator;
 /**
  * @author David Culyba
  */
-public class CameraNavigatorWidget extends JPanel {
+public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxisPanel {
 	
 	public enum CameraMode
 	{
@@ -86,8 +88,7 @@ public class CameraNavigatorWidget extends JPanel {
 		super();
 		
 		//this.setLayout( new FlowLayout() );
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
-		this.setOpaque(false);
+		this.setBackgroundColor(null); //transparent
 		this.dragAdapter = dragAdapter;
 		
 		//CAMERA DRIVER
@@ -241,21 +242,21 @@ public class CameraNavigatorWidget extends JPanel {
 	
 	protected void setControlsBasedOnMode(CameraMode mode)
 	{
-		this.removeAll();
+		this.removeAllComponents();
 		this.setExpanded( this.isExpanded );
 		switch (mode)
 		{
 		case PERSPECTIVE:
 			{
-				this.add(this.cameraControlStrafe);
-				this.add(this.cameraDriver);
-				this.add(this.cameraControlUpDown);
+				this.addComponent(this.cameraControlStrafe);
+				this.addComponent(this.cameraDriver);
+				this.addComponent(this.cameraControlUpDown);
 			}
 			break;
 		case ORTHOGRAPHIC:
 			{
-				this.add(this.orthographicCameraControlStrafe);
-				this.add(this.orthographicCameraControlZoom);
+				this.addComponent(this.orthographicCameraControlStrafe);
+				this.addComponent(this.orthographicCameraControlZoom);
 			}
 			break;
 		}
