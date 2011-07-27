@@ -158,7 +158,11 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 		
 		instancePanel.addComponent( instanceLabel );
 		
-		instancePanel.addComponent( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton() );
+		org.lgna.croquet.components.PopupButton popupButton = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Entity.class );
+		popupButton.getAwtComponent().add( new org.alice.ide.common.SelectedFieldExpressionPane( new org.alice.ide.ast.SelectedFieldExpression( type ) ).getAwtComponent() );
+//		popupButton.makeStandOut();
+		instancePanel.addComponent( popupButton );
 		this.addComponent( instancePanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		this.addComponent( cardPanel, Constraint.CENTER );
 	}
