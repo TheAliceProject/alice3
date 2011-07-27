@@ -96,6 +96,7 @@ public class SwingUtilities {
 		}
 	}
 	
+	private static final boolean IS_PRINT_USED = true;
 	private static java.awt.Container privateContainer = new java.awt.Container();
 	public static javax.swing.Icon createIcon( java.awt.Component component ) {
 		javax.swing.Icon rv;
@@ -103,7 +104,11 @@ public class SwingUtilities {
 		if( size.width > 0 && size.height > 0 ) {
 			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( size.width, size.height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
 			java.awt.Graphics g = image.getGraphics();
-			javax.swing.SwingUtilities.paintComponent( g, component, privateContainer, 0, 0, size.width, size.height );
+			if( IS_PRINT_USED ) {
+				component.print( g );
+			} else {
+				javax.swing.SwingUtilities.paintComponent( g, component, privateContainer, 0, 0, size.width, size.height );
+			}
 			g.dispose();
 			rv = new javax.swing.ImageIcon( image );
 		} else {
