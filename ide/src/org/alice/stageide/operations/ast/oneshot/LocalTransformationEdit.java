@@ -85,7 +85,7 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 			org.lgna.story.Turnable turnable = (org.lgna.story.Turnable)sceneEditor.getInstanceInJavaVMForField( this.field );
 			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( turnable );
 			this.m = this.transformable.getLocalTransformation();
-			vm.invokeEntryPoint( this.method, instanceInAlice, vm.evaluateEntryPoint( sceneInstanceInAlice, this.argumentExpressions ) );
+			vm.ENTRY_POINT_invoke( instanceInAlice, this.method, vm.ENTRY_POINT_evaluate( sceneInstanceInAlice, this.argumentExpressions ) );
 		} else {
 			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "cannot perform " + this.method.getName() + " for " + instance, "failure", org.lgna.croquet.MessageType.ERROR );
 		}

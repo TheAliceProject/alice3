@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.alice.virtualmachine;
  * @author Dennis Cosgrove
  */
 public abstract class VirtualMachine {
-	protected abstract Object getThis();
+	protected abstract InstanceInAlice getThis();
 
 	protected abstract void pushConstructorFrame( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map );
 	protected abstract void setConstructorFrameInstanceInAlice( InstanceInAlice instance );
@@ -60,82 +60,64 @@ public abstract class VirtualMachine {
 	protected abstract void setLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local, Object value );
 	protected abstract void popLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local );
 
-	protected abstract Frame createCopyOfCurrentFrame();
+//	protected abstract Frame createCopyOfCurrentFrame();
 	protected abstract Frame getFrameForThread( Thread thread );
 	
 	protected abstract void pushCurrentThread( Frame frame );
 	protected abstract void popCurrentThread();
 
-	public Object[] evaluateEntryPoint( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-		pushCurrentThread( null );
+	private void pushBogusFrame( InstanceInAlice instance ) {
+		this.pushMethodFrame( instance, new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, Object >() );
+	}
+
+	public Object[] ENTRY_POINT_evaluate( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		this.pushBogusFrame( instance );
 		try {
-			this.pushMethodFrame( instance, (java.util.Map)java.util.Collections.emptyMap() );
-			try {
-				Object[] rv = new Object[ expressions.length ];
-				for( int i=0; i<expressions.length; i++ ) {
-					rv[ i ] = this.evaluate( expressions[ i ] );
-				}
-				return rv;
-			} finally {
-				this.popFrame();
+			Object[] rv = new Object[ expressions.length ];
+			for( int i=0; i<expressions.length; i++ ) {
+				rv[ i ] = this.evaluate( expressions[ i ] );
 			}
+			return rv;
 		} finally {
-			popCurrentThread();
+			this.popFrame();
 		}
 	} 
-	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object instance, Object... arguments ) {
+	public void ENTRY_POINT_invoke( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object... arguments ) {
+		this.invoke( instance, method, arguments );
+	}
+	public InstanceInAlice ENTRY_POINT_createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<? extends edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice> entryPointType, Object... arguments ) {
+		return this.createInstanceFromConstructorDeclaredInAlice( entryPointType.getDeclaredConstructor(), arguments );
+	}
+
+	public InstanceInAlice ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMap( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice entryPointType, Object... arguments ) {
 		pushCurrentThread( null );
 		try {
-			invoke( method, instance, arguments );
+			return InstanceInAlice.createInstanceWithInverseMap( this, entryPointType.getDeclaredConstructor(), arguments );
 		} finally {
 			popCurrentThread();
-		}
-	}
-	public Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType, Object... arguments ) {
-		pushCurrentThread( null );
-		try {
-			return this.createInstance( entryPointType.getDeclaredConstructor(), arguments );
-		} finally {
-			popCurrentThread();
-		}
-	}
-	public InstanceInAlice ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMapWithoutExcutingConstructorBody( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice entryPointType, Object... arguments ) {
-		this.isConstructorBodyExecutionDesired = false;
-		try {
-			pushCurrentThread( null );
-			try {
-				return InstanceInAlice.createInstanceWithInverseMap( this, entryPointType.getDeclaredConstructor(), arguments );
-			} finally {
-				popCurrentThread();
-			}
-		} finally {
-			this.isConstructorBodyExecutionDesired = true;
 		}
 	}
 	
-	private void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushFrame( InstanceInAlice instance ) {
-		this.pushMethodFrame( instance, new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, Object >() );
-	}
 	public Object ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		pushCurrentThread( null );
+//		pushCurrentThread( null );
 		try {
-			this.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushFrame( instance );
+			this.pushBogusFrame( instance );
 			try {
 				return instance.createAndSetFieldInstance( this, field );
 			} finally {
 				this.popFrame();
 			}
 		} finally {
-			popCurrentThread();
+//			popCurrentThread();
 		}
 	}
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_removeField( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, InstanceInAlice value ) {
 	}
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( InstanceInAlice instance, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		assert statement instanceof edu.cmu.cs.dennisc.alice.ast.ReturnStatement == false;
-		pushCurrentThread( null );
+//		pushCurrentThread( null );
 		try {
-			this.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushFrame( instance );
+			this.pushBogusFrame( instance );
 			try {
 				try {
 					this.execute( statement );
@@ -146,7 +128,7 @@ public abstract class VirtualMachine {
 				this.popFrame();
 			}
 		} finally {
-			popCurrentThread();
+//			popCurrentThread();
 		}
 	}
 	
@@ -156,11 +138,7 @@ public abstract class VirtualMachine {
 		this.mapAnonymousClsToAdapterCls.put( anonymousCls, adapterCls );
 	}
 
-	private boolean isConstructorBodyExecutionDesired = true;
-	/*package-private*/ boolean isConstructorBodyExecutionDesired() {
-		return this.isConstructorBodyExecutionDesired;
-	}
-	private Object createInstanceFromConstructorDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor, Object[] arguments ) {
+	private InstanceInAlice createInstanceFromConstructorDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor, Object[] arguments ) {
 		return InstanceInAlice.createInstance( this, constructor, arguments );
 	}
 	private Object createInstanceFromConstructorDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor, Object[] arguments ) {
@@ -175,7 +153,7 @@ public abstract class VirtualMachine {
 		if( adapterCls != null ) {
 			Context context = new Context() {
 				public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, final Object... arguments ) {
-					VirtualMachine.this.invokeEntryPoint( method, instanceInAlice, arguments );
+					VirtualMachine.this.ENTRY_POINT_invoke( instanceInAlice, method, arguments );
 				}
 			};
 			Class< ? >[] parameterTypes = { Context.class, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class, Object[].class };
@@ -187,37 +165,38 @@ public abstract class VirtualMachine {
 	}
 	
 	protected Object createInstanceFromAnonymousConstructor( edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor, Object[] arguments ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = constructor.getDeclaringType();
-		if( type instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice anonymousType = (edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice)type;
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> superType = anonymousType.getSuperType();
-			if( superType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
-				Class< ? > anonymousCls = ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)superType).getClassReflectionProxy().getReification();
-				Class< ? > adapterCls = this.mapAnonymousClsToAdapterCls.get( anonymousCls );
-				if( adapterCls != null ) {
-					final Object instance = this.getThis();
-					Context context = new Context() {
-						public void invokeEntryPoint( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, final Object... arguments ) {
-//							new Thread() {
-//								@Override
-//								public void run() {
-									VirtualMachine.this.invokeEntryPoint( method, instance, arguments );
-//								}
-//							}.start();
-						}
-					};
-					Class< ? >[] parameterTypes = { Context.class, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class, Object[].class };
-					Object[] args = { context, anonymousType, arguments };
-					return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
-				} else {
-					throw new RuntimeException();
-				}
-			} else {
-				throw new RuntimeException();
-			}
-		} else {
-			throw new RuntimeException();
-		}
+		throw new RuntimeException( "todo" );
+//		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = constructor.getDeclaringType();
+//		if( type instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
+//			edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice anonymousType = (edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice)type;
+//			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> superType = anonymousType.getSuperType();
+//			if( superType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
+//				Class< ? > anonymousCls = ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)superType).getClassReflectionProxy().getReification();
+//				Class< ? > adapterCls = this.mapAnonymousClsToAdapterCls.get( anonymousCls );
+//				if( adapterCls != null ) {
+//					final InstanceInAlice instance = this.getThis();
+//					Context context = new Context() {
+//						public void invokeEntryPoint( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, final Object... arguments ) {
+////							new Thread() {
+////								@Override
+////								public void run() {
+//									VirtualMachine.this.ENTRY_POINT_invoke( instance, method, arguments );
+////								}
+////							}.start();
+//						}
+//					};
+//					Class< ? >[] parameterTypes = { Context.class, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class, Object[].class };
+//					Object[] args = { context, anonymousType, arguments };
+//					return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
+//				} else {
+//					throw new RuntimeException();
+//				}
+//			} else {
+//				throw new RuntimeException();
+//			}
+//		} else {
+//			throw new RuntimeException();
+//		}
 	}
 	protected Object createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, Object... arguments ) {
 		assert constructor != null;
@@ -311,7 +290,7 @@ public abstract class VirtualMachine {
 		}
 	}
 	protected Object getFieldDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
-		assert instance != null;
+		assert instance != null : field.getName();
 		assert instance instanceof InstanceInAlice;
 		InstanceInAlice instanceInAlice = (InstanceInAlice)instance;
 		return instanceInAlice.getFieldValue( field );
@@ -349,6 +328,7 @@ public abstract class VirtualMachine {
 	
 	protected Object get( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
 		assert field != null;
+		assert instance != null || field.isStatic();
 		if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			return this.getFieldDeclaredInAlice( (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field, instance );
 		} else if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField ) {
@@ -393,7 +373,7 @@ public abstract class VirtualMachine {
 			java.lang.reflect.Array.set( array, index, value );
 		}
 	}
-	protected Object invokeMethodDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, Object instance, Object... arguments ) {
+	protected Object invokeMethodDeclaredInAlice( Object instance, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, Object... arguments ) {
 		if( method.isStatic() ) {
 			assert instance == null;
 		} else {
@@ -418,7 +398,7 @@ public abstract class VirtualMachine {
 			this.popFrame();
 		}
 	}
-	protected Object invokeMethodDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava method, Object instance, Object... arguments ) {
+	protected Object invokeMethodDeclaredInJava( Object instance, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava method, Object... arguments ) {
 		instance = InstanceInAlice.getInstanceInJavaIfNecessary( instance );
 		InstanceInAlice.updateArrayWithInstancesInJavaIfNecessary( arguments );
 		java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
@@ -439,12 +419,12 @@ public abstract class VirtualMachine {
 //		}
 	}
 	
-	protected Object invoke( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object instance, Object... arguments ) {
+	protected Object invoke( Object instance, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object... arguments ) {
 		assert method != null;
 		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			return this.invokeMethodDeclaredInAlice( (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method, instance, arguments );
+			return this.invokeMethodDeclaredInAlice( instance, (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method, arguments );
 		} else if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava ) {
-			return this.invokeMethodDeclaredInJava( (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava)method, instance, arguments );
+			return this.invokeMethodDeclaredInJava( instance, (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava)method, arguments );
 		} else {
 			throw new RuntimeException();
 		}
@@ -563,7 +543,7 @@ public abstract class VirtualMachine {
 		if( methodInvocation.isValid() ) {
 			assert methodInvocation.method.getValue().getParameters().size() == methodInvocation.arguments.size() : methodInvocation.method.getValue().getName();
 			Object[] arguments = this.evaluateArguments( methodInvocation.method.getValue().getParameters(), methodInvocation.arguments );
-			return this.invoke( methodInvocation.method.getValue(), this.evaluate( methodInvocation.expression.getValue() ), arguments );
+			return this.invoke( this.evaluate( methodInvocation.expression.getValue() ), methodInvocation.method.getValue(), arguments );
 		} else {
 			javax.swing.JOptionPane.showMessageDialog( null, "skipping invalid methodInvocation: " + methodInvocation.method.getValue().getName() );
 			return null;
@@ -734,26 +714,27 @@ public abstract class VirtualMachine {
 	}
 	private static int threadCount = 0;
 	protected void executeDoInThread( final edu.cmu.cs.dennisc.alice.ast.DoInThread doInThread ) throws ReturnException {
-		final Frame frame = this.createCopyOfCurrentFrame();
-		new edu.cmu.cs.dennisc.java.lang.ThreadWithRevealingToString( org.alice.virtualmachine.ThreadGroupUtilities.getThreadGroup(), "DoInThread-"+(VirtualMachine.threadCount++) ) {
-			@Override
-			public void run() {
-				pushCurrentThread( frame );
-				try {
-					edu.cmu.cs.dennisc.alice.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
-						public void run() {
-							try {
-								execute( doInThread.body.getValue() );
-							} catch( ReturnException re ) {
-								//todo
-							}
-						}
-					} );
-				} finally {
-					popCurrentThread();
-				}
-			}
-		}.start();
+		throw new RuntimeException();
+//		final Frame frame = this.createCopyOfCurrentFrame();
+//		new edu.cmu.cs.dennisc.java.lang.ThreadWithRevealingToString( org.alice.virtualmachine.ThreadGroupUtilities.getThreadGroup(), "DoInThread-"+(VirtualMachine.threadCount++) ) {
+//			@Override
+//			public void run() {
+//				pushCurrentThread( frame );
+//				try {
+//					edu.cmu.cs.dennisc.alice.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
+//						public void run() {
+//							try {
+//								execute( doInThread.body.getValue() );
+//							} catch( ReturnException re ) {
+//								//todo
+//							}
+//						}
+//					} );
+//				} finally {
+//					popCurrentThread();
+//				}
+//			}
+//		}.start();
 	}
 	protected void executeDoTogether( edu.cmu.cs.dennisc.alice.ast.DoTogether doTogether ) throws ReturnException {
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = doTogether.body.getValue();

@@ -140,17 +140,29 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	}
 	@Override
 	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {
-		org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
+		final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		if( ide.getProject() != null ) {
 			ide.ensureProjectCodeUpToDate();
-			edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = ide.createVirtualMachineForRuntimeProgram();
-			vm.registerAnonymousAdapter( org.lgna.story.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
-			vm.registerAnonymousAdapter( org.lgna.story.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
-			
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo: run program" );
 
 			ide.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
+
+			new Thread() {
+				@Override
+				public void run() {
+					edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = ide.createVirtualMachineForRuntimeProgram();
+					vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
+					vm.registerAnonymousAdapter( org.lgna.story.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
+					vm.registerAnonymousAdapter( org.lgna.story.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
+					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = ide.getProgramType();
+					String[] args = {};
+					edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice programInstance = vm.ENTRY_POINT_createInstance( programType );
+					vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
+					vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "playOutStory" ) );
+				}
+			}.start();
+			
+			
 		} else {
 			ide.showMessageDialog( "Please open a project first." );
 		}
