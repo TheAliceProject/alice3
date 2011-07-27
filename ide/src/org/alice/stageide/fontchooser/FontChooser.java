@@ -81,18 +81,18 @@ public class FontChooser extends javax.swing.JPanel {
 			super( "Family:" );
 			m_list.setListData( new String[] { "Serif", "SansSerif" } );
 		}
-		public org.lookingglassandalice.storytelling.font.FamilyAttribute getFamilyAttribute() {
+		public org.lgna.story.font.FamilyAttribute getFamilyAttribute() {
 			Object value = m_list.getSelectedValue();
-			org.lookingglassandalice.storytelling.font.FamilyAttribute rv;
+			org.lgna.story.font.FamilyAttribute rv;
 			if( value.equals( "Serif" ) ) {
-				rv = org.lookingglassandalice.storytelling.font.FamilyConstant.SERIF;
+				rv = org.lgna.story.font.FamilyConstant.SERIF;
 			} else {
-				rv = org.lookingglassandalice.storytelling.font.FamilyConstant.SANS_SERIF;
+				rv = org.lgna.story.font.FamilyConstant.SANS_SERIF;
 			}
 			return rv;
 		}
-		public void setFamilyAttribute( org.lookingglassandalice.storytelling.font.FamilyAttribute familyAttribute ) {
-			if( familyAttribute == org.lookingglassandalice.storytelling.font.FamilyConstant.SERIF ) {
+		public void setFamilyAttribute( org.lgna.story.font.FamilyAttribute familyAttribute ) {
+			if( familyAttribute == org.lgna.story.font.FamilyConstant.SERIF ) {
 				m_list.setSelectedValue( "Serif", true );
 			} else {
 				m_list.setSelectedValue( "SansSerif", true );
@@ -104,29 +104,29 @@ public class FontChooser extends javax.swing.JPanel {
 			super( "Style:" );
 			m_list.setListData( new String[] { "Regular", "Bold", "Italic", "Bold Italic" } );
 		}
-		public org.lookingglassandalice.storytelling.font.WeightAttribute getWeightAttribute() {
+		public org.lgna.story.font.WeightAttribute getWeightAttribute() {
 			Object value = m_list.getSelectedValue();
-			org.lookingglassandalice.storytelling.font.WeightAttribute rv;
+			org.lgna.story.font.WeightAttribute rv;
 			if( value != null && ( value.equals( "Bold" ) || value.equals( "Bold Italic" ) ) ) {
-				rv = org.lookingglassandalice.storytelling.font.WeightConstant.BOLD;
+				rv = org.lgna.story.font.WeightConstant.BOLD;
 			} else {
-				rv = org.lookingglassandalice.storytelling.font.WeightConstant.REGULAR;
+				rv = org.lgna.story.font.WeightConstant.REGULAR;
 			}
 			return rv;
 		}
-		public org.lookingglassandalice.storytelling.font.PostureAttribute getPostureAttribute() {
+		public org.lgna.story.font.PostureAttribute getPostureAttribute() {
 			Object value = m_list.getSelectedValue();
-			org.lookingglassandalice.storytelling.font.PostureAttribute rv;
+			org.lgna.story.font.PostureAttribute rv;
 			if( value != null && ( value.equals( "Italic" ) || value.equals( "Bold Italic" ) ) ) {
-				rv = org.lookingglassandalice.storytelling.font.PostureConstant.OBLIQUE;
+				rv = org.lgna.story.font.PostureConstant.OBLIQUE;
 			} else {
-				rv = org.lookingglassandalice.storytelling.font.PostureConstant.REGULAR;
+				rv = org.lgna.story.font.PostureConstant.REGULAR;
 			}
 			return rv;
 		}
-		public void setStyleAttributes(  org.lookingglassandalice.storytelling.font.WeightAttribute weight, org.lookingglassandalice.storytelling.font.PostureAttribute posture ) {
-			boolean isBold = ( weight == org.lookingglassandalice.storytelling.font.WeightConstant.BOLD );
-			boolean isItalic = ( posture == org.lookingglassandalice.storytelling.font.PostureConstant.OBLIQUE );
+		public void setStyleAttributes(  org.lgna.story.font.WeightAttribute weight, org.lgna.story.font.PostureAttribute posture ) {
+			boolean isBold = ( weight == org.lgna.story.font.WeightConstant.BOLD );
+			boolean isItalic = ( posture == org.lgna.story.font.PostureConstant.OBLIQUE );
 			Object selectedValue;
 			if( isBold ) {
 				if( isItalic ) {
@@ -150,15 +150,15 @@ public class FontChooser extends javax.swing.JPanel {
 			m_list.setListData( new String[] { "8", "9", "10", "12", "14", "18", "24", "32", "48", "64", "96" } );
 		}
 		
-		public org.lookingglassandalice.storytelling.font.SizeAttribute getSizeAttribute() {
+		public org.lgna.story.font.SizeAttribute getSizeAttribute() {
 			Object value = m_list.getSelectedValue();
 			if( value instanceof String ) {
-				return new org.lookingglassandalice.storytelling.font.SizeValue( Float.valueOf( (String) value ) );
+				return new org.lgna.story.font.SizeValue( Float.valueOf( (String) value ) );
 			} else {
 				return null;
 			}
 		}
-		public void setSizeAttribute( org.lookingglassandalice.storytelling.font.SizeAttribute sizeAttribute ) {
+		public void setSizeAttribute( org.lgna.story.font.SizeAttribute sizeAttribute ) {
 			int size = sizeAttribute.getValue().intValue();
 			m_list.setSelectedValue( Integer.toString( size ), true );
 		}
@@ -172,9 +172,9 @@ public class FontChooser extends javax.swing.JPanel {
 	private SizePane m_sizePane = new SizePane();
 	private javax.swing.JLabel m_sample = new javax.swing.JLabel();
 	public FontChooser() {
-		this( new org.lookingglassandalice.storytelling.Font() );
+		this( new org.lgna.story.Font() );
 	}
-	public FontChooser( org.lookingglassandalice.storytelling.Font font ) {
+	public FontChooser( org.lgna.story.Font font ) {
 		setSampleText( null );
 		m_sample.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
 		m_sample.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
@@ -208,18 +208,18 @@ public class FontChooser extends javax.swing.JPanel {
 		setValue( font );
 	}
 	
-	public org.lookingglassandalice.storytelling.Font getValue() {
-		org.lookingglassandalice.storytelling.font.FamilyAttribute family = m_familyPane.getFamilyAttribute();
-		org.lookingglassandalice.storytelling.font.WeightAttribute weight = m_stylePane.getWeightAttribute();
-		org.lookingglassandalice.storytelling.font.PostureAttribute posture = m_stylePane.getPostureAttribute();
-		org.lookingglassandalice.storytelling.font.SizeAttribute size = m_sizePane.getSizeAttribute();
+	public org.lgna.story.Font getValue() {
+		org.lgna.story.font.FamilyAttribute family = m_familyPane.getFamilyAttribute();
+		org.lgna.story.font.WeightAttribute weight = m_stylePane.getWeightAttribute();
+		org.lgna.story.font.PostureAttribute posture = m_stylePane.getPostureAttribute();
+		org.lgna.story.font.SizeAttribute size = m_sizePane.getSizeAttribute();
 		if( size != null ) {
-			return new org.lookingglassandalice.storytelling.Font( family, weight, posture, size );
+			return new org.lgna.story.Font( family, weight, posture, size );
 		} else {
 			return null;
 		}
 	}
-	public void setValue( org.lookingglassandalice.storytelling.Font font ) {
+	public void setValue( org.lgna.story.Font font ) {
 		m_familyPane.setFamilyAttribute( font.getFamily() );
 		m_stylePane.setStyleAttributes( font.getWeight(), font.getPosture() );
 		m_sizePane.setSizeAttribute( font.getSize() );
@@ -235,7 +235,7 @@ public class FontChooser extends javax.swing.JPanel {
 	}
 	
 	private void updateSample() { 
-		org.lookingglassandalice.storytelling.Font font = getValue();
+		org.lgna.story.Font font = getValue();
 		if( font != null ) {
 			m_sample.setFont( font.getAsAWTFont() );
 		}

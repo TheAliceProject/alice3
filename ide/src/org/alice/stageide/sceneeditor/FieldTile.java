@@ -145,15 +145,15 @@ package org.alice.stageide.sceneeditor;
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.accessible;
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldType = fieldInAlice.getValueType();
 			rv.add( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( fieldInAlice ).getMenuItemPrepModel() );
-			if( fieldType.isAssignableTo( org.lookingglassandalice.storytelling.Turnable.class ) ) {
-				if( fieldType.isAssignableTo( org.lookingglassandalice.storytelling.Camera.class ) ) {
+			if( fieldType.isAssignableTo( org.lgna.story.Turnable.class ) ) {
+				if( fieldType.isAssignableTo( org.lgna.story.Camera.class ) ) {
 					//pass
 				} else {
 					rv.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( fieldInAlice ).getMenuItemPrepModel() );
 					rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( fieldInAlice ).getMenuItemPrepModel() );
 				}
 			}
-			if( fieldType.isAssignableTo( org.lookingglassandalice.storytelling.Model.class ) ) {
+			if( fieldType.isAssignableTo( org.lgna.story.Model.class ) ) {
 //				rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( fieldInAlice ).getMenuItemPrepModel() );
 				
 //				edu.cmu.cs.dennisc.croquet.Operation< ? > placeOperation = new org.alice.ide.croquet.models.ast.FillInExpressionsPopupMenuOperation( java.util.UUID.fromString( "2c49d08c-2baf-40c6-b8d5-74d5f9db567b" ) ) {

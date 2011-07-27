@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.cascade.source;
 /**
  * @author Dennis Cosgrove
  */
-public class ImportNewAudioSourceFillIn extends ImportNewSourceFillIn< org.lookingglassandalice.storytelling.AudioSource, org.alice.virtualmachine.resources.AudioResource > {
+public class ImportNewAudioSourceFillIn extends ImportNewSourceFillIn< org.lgna.story.AudioSource, org.alice.virtualmachine.resources.AudioResource > {
 	public ImportNewAudioSourceFillIn() {
 		super( java.util.UUID.fromString( "e0860b35-06fb-4116-be94-b2240def9d55" ) );
 	}
@@ -62,7 +62,7 @@ public class ImportNewAudioSourceFillIn extends ImportNewSourceFillIn< org.looki
 		return org.alice.virtualmachine.resources.AudioResource.class;
 	}
 	@Override
-	protected Class<org.lookingglassandalice.storytelling.AudioSource> getSourceClass() {
-		return org.lookingglassandalice.storytelling.AudioSource.class;
+	protected Class<org.lgna.story.AudioSource> getSourceClass() {
+		return org.lgna.story.AudioSource.class;
 	}
 }

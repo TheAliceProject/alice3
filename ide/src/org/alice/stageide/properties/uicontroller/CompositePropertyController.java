@@ -47,7 +47,7 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 
-import org.lookingglassandalice.storytelling.Entity;
+import org.lgna.story.Entity;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.uicontroller.LabelBasedPropertyController;
 import org.alice.stageide.properties.TransformableVehicleAdapter;

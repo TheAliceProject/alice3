@@ -48,7 +48,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.lookingglassandalice.storytelling.Model;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.alice.ide.properties.uicontroller.AbstractAdapterController;
@@ -62,6 +61,7 @@ import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.Panel;
 import org.lgna.croquet.components.SwingAdapter;
+import org.lgna.story.Model;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
@@ -97,7 +97,7 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 	@Override
 	public Class<?> getPropertyType() 
 	{
-		return org.lookingglassandalice.storytelling.Model.class;
+		return org.lgna.story.Model.class;
 	}
 
 	@Override

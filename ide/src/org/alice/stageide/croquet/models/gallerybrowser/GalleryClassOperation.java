@@ -45,13 +45,13 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
 import org.lgna.croquet.history.InputDialogOperationStep;
-import org.lookingglassandalice.storytelling.Entity;
-import org.lookingglassandalice.storytelling.ImplementationAccessor;
-import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
-import org.lookingglassandalice.storytelling.implementation.TransformableImplementation;
-import org.lookingglassandalice.storytelling.resources.ModelResource;
-import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceTreeNode;
-import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceUtilities;
+import org.lgna.story.Entity;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.implementation.EntityImplementation;
+import org.lgna.story.implementation.TransformableImplementation;
+import org.lgna.story.resources.ModelResource;
+import org.lgna.story.resourceutilities.ModelResourceTreeNode;
+import org.lgna.story.resourceutilities.ModelResourceUtilities;
 
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -188,9 +188,9 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 					}
 					
 				}
-				if (fieldObject instanceof org.lookingglassandalice.storytelling.MovableTurnable)
+				if (fieldObject instanceof org.lgna.story.MovableTurnable)
 				{
-					 TransformableImplementation tranformable = ImplementationAccessor.getImplementation((org.lookingglassandalice.storytelling.MovableTurnable)fieldObject);
+					 TransformableImplementation tranformable = ImplementationAccessor.getImplementation((org.lgna.story.MovableTurnable)fieldObject);
 					 tranformable.setLocalTransformation(objectTransform);
 				}
 			}

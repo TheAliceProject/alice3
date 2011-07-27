@@ -56,18 +56,18 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		public FamilySelectionOperation() {
 			super( java.util.UUID.fromString( "592061c5-2b39-4e03-87b4-3832473ffca2" ), 0, "Serif", "SansSerif" );
 		}
-		public org.lookingglassandalice.storytelling.font.FamilyAttribute getFamilyAttribute() {
+		public org.lgna.story.font.FamilyAttribute getFamilyAttribute() {
 			Object value = this.getSelectedItem();
-			org.lookingglassandalice.storytelling.font.FamilyAttribute rv;
+			org.lgna.story.font.FamilyAttribute rv;
 			if( value.equals( "Serif" ) ) {
-				rv = org.lookingglassandalice.storytelling.font.FamilyConstant.SERIF;
+				rv = org.lgna.story.font.FamilyConstant.SERIF;
 			} else {
-				rv = org.lookingglassandalice.storytelling.font.FamilyConstant.SANS_SERIF;
+				rv = org.lgna.story.font.FamilyConstant.SANS_SERIF;
 			}
 			return rv;
 		}
-		public void setFamilyAttribute( org.lookingglassandalice.storytelling.font.FamilyAttribute familyAttribute ) {
-			if( familyAttribute == org.lookingglassandalice.storytelling.font.FamilyConstant.SERIF ) {
+		public void setFamilyAttribute( org.lgna.story.font.FamilyAttribute familyAttribute ) {
+			if( familyAttribute == org.lgna.story.font.FamilyConstant.SERIF ) {
 				this.setSelectedItem( "Serif" );
 			} else {
 				this.setSelectedItem( "SansSerif" );
@@ -79,29 +79,29 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		public StyleSelectionOperation() {
 			super( java.util.UUID.fromString( "a7fa1996-526d-4599-bca8-84fd198fa823" ), 0, "Regular", "Bold", "Italic", "Bold Italic" );
 		}
-		public org.lookingglassandalice.storytelling.font.WeightAttribute getWeightAttribute() {
+		public org.lgna.story.font.WeightAttribute getWeightAttribute() {
 			Object value = this.getSelectedItem();
-			org.lookingglassandalice.storytelling.font.WeightAttribute rv;
+			org.lgna.story.font.WeightAttribute rv;
 			if( value != null && (value.equals( "Bold" ) || value.equals( "Bold Italic" )) ) {
-				rv = org.lookingglassandalice.storytelling.font.WeightConstant.BOLD;
+				rv = org.lgna.story.font.WeightConstant.BOLD;
 			} else {
-				rv = org.lookingglassandalice.storytelling.font.WeightConstant.REGULAR;
+				rv = org.lgna.story.font.WeightConstant.REGULAR;
 			}
 			return rv;
 		}
-		public org.lookingglassandalice.storytelling.font.PostureAttribute getPostureAttribute() {
+		public org.lgna.story.font.PostureAttribute getPostureAttribute() {
 			Object value = this.getSelectedItem();
-			org.lookingglassandalice.storytelling.font.PostureAttribute rv;
+			org.lgna.story.font.PostureAttribute rv;
 			if( value != null && (value.equals( "Italic" ) || value.equals( "Bold Italic" )) ) {
-				rv = org.lookingglassandalice.storytelling.font.PostureConstant.OBLIQUE;
+				rv = org.lgna.story.font.PostureConstant.OBLIQUE;
 			} else {
-				rv = org.lookingglassandalice.storytelling.font.PostureConstant.REGULAR;
+				rv = org.lgna.story.font.PostureConstant.REGULAR;
 			}
 			return rv;
 		}
-		public void setStyleAttributes( org.lookingglassandalice.storytelling.font.WeightAttribute weight, org.lookingglassandalice.storytelling.font.PostureAttribute posture ) {
-			boolean isBold = (weight == org.lookingglassandalice.storytelling.font.WeightConstant.BOLD);
-			boolean isItalic = (posture == org.lookingglassandalice.storytelling.font.PostureConstant.OBLIQUE);
+		public void setStyleAttributes( org.lgna.story.font.WeightAttribute weight, org.lgna.story.font.PostureAttribute posture ) {
+			boolean isBold = (weight == org.lgna.story.font.WeightConstant.BOLD);
+			boolean isItalic = (posture == org.lgna.story.font.PostureConstant.OBLIQUE);
 			String selectedValue;
 			if( isBold ) {
 				if( isItalic ) {
@@ -288,9 +288,9 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 	}
 
 	private void updateSample() {
-		org.lookingglassandalice.storytelling.font.FamilyAttribute familyAttribute = this.familySelection.getFamilyAttribute();
-		org.lookingglassandalice.storytelling.font.WeightAttribute weightAttribute = this.styleSelection.getWeightAttribute();
-		org.lookingglassandalice.storytelling.font.PostureAttribute postureAttribute = this.styleSelection.getPostureAttribute();
+		org.lgna.story.font.FamilyAttribute familyAttribute = this.familySelection.getFamilyAttribute();
+		org.lgna.story.font.WeightAttribute weightAttribute = this.styleSelection.getWeightAttribute();
+		org.lgna.story.font.PostureAttribute postureAttribute = this.styleSelection.getPostureAttribute();
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( this.sample.getAwtComponent(), familyAttribute.getKey(), familyAttribute.getValue(), weightAttribute.getKey(), weightAttribute.getValue(), postureAttribute.getKey(), postureAttribute.getValue() );
 	}
 //	@Override
@@ -314,15 +314,15 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 //	/*package-private*/ String getInstanceNameText() {
 //		return this.textVC.getText();
 //	}
-	protected org.lookingglassandalice.storytelling.Text createText() {
-		org.lookingglassandalice.storytelling.Text rv = new org.lookingglassandalice.storytelling.Text();
-		org.lookingglassandalice.storytelling.font.FamilyAttribute familyAttribute = this.familySelection.getFamilyAttribute();
-		org.lookingglassandalice.storytelling.font.WeightAttribute weightAttribute = this.styleSelection.getWeightAttribute();
-		org.lookingglassandalice.storytelling.font.PostureAttribute postureAttribute = this.styleSelection.getPostureAttribute();
+	protected org.lgna.story.Text createText() {
+		org.lgna.story.Text rv = new org.lgna.story.Text();
+		org.lgna.story.font.FamilyAttribute familyAttribute = this.familySelection.getFamilyAttribute();
+		org.lgna.story.font.WeightAttribute weightAttribute = this.styleSelection.getWeightAttribute();
+		org.lgna.story.font.PostureAttribute postureAttribute = this.styleSelection.getPostureAttribute();
 
 		rv.setName( this.instanceNameVC.getText() );
 		rv.setValue( this.textVC.getText() );
-		rv.setFont( new org.lookingglassandalice.storytelling.Font( familyAttribute, weightAttribute, postureAttribute ) );
+		rv.setFont( new org.lgna.story.Font( familyAttribute, weightAttribute, postureAttribute ) );
 		rv.setHeight( Double.parseDouble( this.heightTextField.getText() ) );
 		return rv;
 	}
@@ -361,12 +361,12 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 		return new CreateTextPane( this ); 
 	}
 	
-	private edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.lookingglassandalice.storytelling.Text > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
+	private edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.lgna.story.Text > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		//"Create Text"
 		CreateTextPane createTextPane = context.getMainPanel();
-		org.lookingglassandalice.storytelling.Text text = createTextPane.createText();
+		org.lgna.story.Text text = createTextPane.createText();
 		if( text != null ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = org.alice.ide.IDE.getActiveInstance().getTypeDeclaredInAliceFor( org.lookingglassandalice.storytelling.Text.class );
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = org.alice.ide.IDE.getActiveInstance().getTypeDeclaredInAliceFor( org.lgna.story.Text.class );
 			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( type );
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( text.getName(), type, initializer );
 			field.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
@@ -387,7 +387,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	@Override
 	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.lookingglassandalice.storytelling.Text> tuple = this.createFieldAndInstance( step );
+			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.lgna.story.Text> tuple = this.createFieldAndInstance( step );
 			if( tuple != null ) {
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
 				if( field != null ) {

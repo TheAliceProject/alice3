@@ -43,8 +43,8 @@
 package org.alice.interact.event;
 
 import org.alice.interact.AbstractDragAdapter;
-import org.lookingglassandalice.storytelling.ImplementationAccessor;
-import org.lookingglassandalice.storytelling.implementation.TransformableImplementation;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.implementation.TransformableImplementation;
 
 import edu.cmu.cs.dennisc.pattern.event.Event;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -59,7 +59,7 @@ public class SelectionEvent extends Event< AbstractDragAdapter >{
 		this.transformable = transformable;
 	}
 	
-	public SelectionEvent( AbstractDragAdapter source, org.lookingglassandalice.storytelling.Turnable mtTransformable ) {
+	public SelectionEvent( AbstractDragAdapter source, org.lgna.story.Turnable mtTransformable ) {
 		super( source );
 		if (mtTransformable != null)
 		{

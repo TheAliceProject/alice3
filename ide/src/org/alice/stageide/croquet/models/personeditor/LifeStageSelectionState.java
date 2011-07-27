@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class LifeStageSelectionState extends AbstractListSelectionState< org.lookingglassandalice.storytelling.resources.sims2.LifeStage > {
+public class LifeStageSelectionState extends AbstractListSelectionState< org.lgna.story.resources.sims2.LifeStage > {
 	private static class SingletonHolder {
 		private static LifeStageSelectionState instance = new LifeStageSelectionState();
 	}
@@ -53,11 +53,11 @@ public class LifeStageSelectionState extends AbstractListSelectionState< org.loo
 		return SingletonHolder.instance;
 	}
 	private LifeStageSelectionState() {
-		super( java.util.UUID.fromString( "ee61b76d-b154-4e45-a07c-fb2eac906895" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lookingglassandalice.storytelling.resources.sims2.LifeStage.class ), org.lookingglassandalice.storytelling.resources.sims2.LifeStage.CHILD, org.lookingglassandalice.storytelling.resources.sims2.LifeStage.ADULT );
+		super( java.util.UUID.fromString( "ee61b76d-b154-4e45-a07c-fb2eac906895" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), org.lgna.story.resources.sims2.LifeStage.CHILD, org.lgna.story.resources.sims2.LifeStage.ADULT );
 	}
 	@Override
-	public org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.resources.sims2.LifeStage> createList() {
-		org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.resources.sims2.LifeStage> rv = super.createList();
+	public org.lgna.croquet.components.List<org.lgna.story.resources.sims2.LifeStage> createList() {
+		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.LifeStage> rv = super.createList();
 		rv.setCellRenderer( org.alice.stageide.personeditor.SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}

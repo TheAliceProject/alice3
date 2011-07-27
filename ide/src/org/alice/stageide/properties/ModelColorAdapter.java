@@ -48,9 +48,9 @@ import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lookingglassandalice.storytelling.implementation.ModelImplementation> {
+public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lgna.story.implementation.ModelImplementation> {
 
-	public ModelColorAdapter(org.lookingglassandalice.storytelling.implementation.ModelImplementation instance)
+	public ModelColorAdapter(org.lgna.story.implementation.ModelImplementation instance)
 	{
 		super(instance);
 	}

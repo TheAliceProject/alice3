@@ -42,7 +42,7 @@
  */
 package org.alice.interact.handle;
 
-import org.lookingglassandalice.storytelling.TraditionalStyle;
+import org.lgna.story.TraditionalStyle;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;

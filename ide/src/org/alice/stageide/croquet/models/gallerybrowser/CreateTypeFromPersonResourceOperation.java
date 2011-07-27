@@ -57,7 +57,7 @@ public class CreateTypeFromPersonResourceOperation extends PersonResourceOperati
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "3ac22606-3b37-4b75-9613-89994c873782" ) );
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lookingglassandalice.storytelling.resources.sims2.PersonResource personResource ) {
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.story.resources.sims2.PersonResource personResource ) {
 		throw new RuntimeException( "todo" );
 	}
 }

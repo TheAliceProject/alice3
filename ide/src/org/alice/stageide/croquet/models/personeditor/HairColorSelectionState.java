@@ -57,7 +57,7 @@ public class HairColorSelectionState extends AbstractListSelectionState< String 
 	private HairColorSelectionState() {
 		super( java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), org.alice.ide.croquet.codecs.StringCodec.SINGLETON, EXCLUDE_GREY );
 	}
-	public void handleCataclysmicChange( org.lookingglassandalice.storytelling.resources.sims2.LifeStage lifeStage ) {
+	public void handleCataclysmicChange( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 //		if( lifeStage == org.lookingglassandalice.storytelling.LifeStage.ADULT ) {
 //			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND", "GREY" );
 //		} else {

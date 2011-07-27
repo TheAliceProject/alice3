@@ -42,7 +42,9 @@
  */
 package org.lookingglassandalice.storytelling.resources.sims2;
 
-import org.lookingglassandalice.storytelling.IngredientManager;
+import org.lgna.story.IngredientManager;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.LifeStage;
 
 public class HairManager extends IngredientManager< Hair > {
 	private static HairManager singleton = new HairManager();

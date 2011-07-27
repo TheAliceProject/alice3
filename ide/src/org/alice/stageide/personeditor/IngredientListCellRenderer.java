@@ -51,7 +51,7 @@ import org.alice.stageide.croquet.models.personeditor.PersonInfo;
 abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< E > {
 	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
 	protected abstract String getSubPath();
-	private java.net.URL getIngredientResourceName( org.lookingglassandalice.storytelling.resources.sims2.SkinTone skinTone, String clsName, String enumConstantName ) {
+	private java.net.URL getIngredientResourceName( org.lgna.story.resources.sims2.SkinTone skinTone, String clsName, String enumConstantName ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "images/" );
 		sb.append( this.getSubPath() );
@@ -67,15 +67,15 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 		return rv;
 	}
 
-	private org.lookingglassandalice.storytelling.resources.sims2.BaseSkinTone getBaseSkinTone() {
-		org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation person = PersonViewer.getSingleton().getPerson();
+	private org.lgna.story.resources.sims2.BaseSkinTone getBaseSkinTone() {
+		org.lgna.story.implementation.sims2.SimsBipedImplementation person = PersonViewer.getSingleton().getPerson();
 		if( person != null ) {
-			org.lookingglassandalice.storytelling.resources.sims2.SkinTone skinTone = person.getSkinTone();
-			if( skinTone instanceof org.lookingglassandalice.storytelling.resources.sims2.BaseSkinTone ) {
-				return (org.lookingglassandalice.storytelling.resources.sims2.BaseSkinTone)skinTone;
+			org.lgna.story.resources.sims2.SkinTone skinTone = person.getSkinTone();
+			if( skinTone instanceof org.lgna.story.resources.sims2.BaseSkinTone ) {
+				return (org.lgna.story.resources.sims2.BaseSkinTone)skinTone;
 			}
 		}
-		return org.lookingglassandalice.storytelling.resources.sims2.BaseSkinTone.DARK;
+		return org.lgna.story.resources.sims2.BaseSkinTone.DARK;
 	}
 
 	@Override
@@ -85,7 +85,7 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 			String clsName = value.getClass().getSimpleName();
 			String enumConstantName = value.toString();
 			
-			org.lookingglassandalice.storytelling.resources.sims2.SkinTone baseSkinTone = this.getBaseSkinTone();
+			org.lgna.story.resources.sims2.SkinTone baseSkinTone = this.getBaseSkinTone();
 
 			java.net.URL urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
 			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );

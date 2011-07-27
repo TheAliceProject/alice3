@@ -69,7 +69,7 @@ public class HairSelectionState extends AbstractListSelectionState<org.lookinggl
 			}
 		} );
 	}
-	public void handleCataclysmicChange( org.lookingglassandalice.storytelling.resources.sims2.LifeStage lifeStage, org.lookingglassandalice.storytelling.resources.sims2.Gender gender, final String hairColor ) {
+	public void handleCataclysmicChange( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender, final String hairColor ) {
 		this.setListData( -1, 
 				edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
 						edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 

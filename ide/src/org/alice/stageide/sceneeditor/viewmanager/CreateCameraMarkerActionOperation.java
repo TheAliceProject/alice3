@@ -69,7 +69,7 @@ public class CreateCameraMarkerActionOperation extends AbstractSceneDeclareField
 	}
 	
 	@Override
-	protected Tuple2< FieldDeclaredInAlice, org.lookingglassandalice.storytelling.BookmarkCameraMarker > createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, TypeDeclaredInAlice ownerType ) 
+	protected Tuple2< FieldDeclaredInAlice, org.lgna.story.BookmarkCameraMarker > createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, TypeDeclaredInAlice ownerType ) 
 	{
 		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().createCameraMarkerField( ownerType );
 	}

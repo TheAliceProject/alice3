@@ -43,10 +43,10 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.lookingglassandalice.storytelling.Entity;
-import org.lookingglassandalice.storytelling.OrthographicCameraMarker;
-import org.lookingglassandalice.storytelling.implementation.CameraMarkerImplementation;
-import org.lookingglassandalice.storytelling.implementation.OrthographicCameraMarkerImplementation;
+import org.lgna.story.Entity;
+import org.lgna.story.OrthographicCameraMarker;
+import org.lgna.story.implementation.CameraMarkerImplementation;
+import org.lgna.story.implementation.OrthographicCameraMarkerImplementation;
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
@@ -127,9 +127,9 @@ public class MoveMarkerToActiveCameraActionOperation extends ActionOperation {
 	@Override
 	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		final CameraMarkerImplementation cameraMarker;
-		final org.lookingglassandalice.storytelling.Camera camera;
-		final org.lookingglassandalice.storytelling.VantagePoint prevPOV;
-		final org.lookingglassandalice.storytelling.VantagePoint nextPOV;
+		final org.lgna.story.Camera camera;
+		final org.lgna.story.VantagePoint prevPOV;
+		final org.lgna.story.VantagePoint nextPOV;
 		
 //		AbstractSceneEditor sceneEditor = IDE.getActiveInstance().getSceneEditor();
 //		
@@ -165,7 +165,7 @@ public class MoveMarkerToActiveCameraActionOperation extends ActionOperation {
 		
 	}
 	
-	private static void setAbsolutePOV( org.lookingglassandalice.storytelling.Turnable transformable, org.lookingglassandalice.storytelling.VantagePoint pov ) {
+	private static void setAbsolutePOV( org.lgna.story.Turnable transformable, org.lgna.story.VantagePoint pov ) {
 //		org.lookingglassandalice.storytelling.Scene scene = transformable.getScene();
 //		assert scene != null;
 //		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );

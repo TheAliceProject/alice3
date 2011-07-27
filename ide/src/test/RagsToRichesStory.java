@@ -42,22 +42,24 @@
  */
 package test;
 
-import org.lookingglassandalice.storytelling.Biped;
-import org.lookingglassandalice.storytelling.Camera;
-import org.lookingglassandalice.storytelling.Color;
-import org.lookingglassandalice.storytelling.Cone;
-import org.lookingglassandalice.storytelling.Ground;
-import org.lookingglassandalice.storytelling.MoveDirection;
-import org.lookingglassandalice.storytelling.Program;
-import org.lookingglassandalice.storytelling.RelativeVantagePointAnimationDetailsFactory;
-import org.lookingglassandalice.storytelling.RollDirection;
-import org.lookingglassandalice.storytelling.Scene;
-import org.lookingglassandalice.storytelling.Sphere;
-import org.lookingglassandalice.storytelling.Sun;
-import org.lookingglassandalice.storytelling.TurnDirection;
-import org.lookingglassandalice.storytelling.resources.PersonResource;
-import org.lookingglassandalice.storytelling.resources.BipedResource;
-import org.lookingglassandalice.storytelling.resources.sims2.*;
+import org.lgna.story.Biped;
+import org.lgna.story.Camera;
+import org.lgna.story.Color;
+import org.lgna.story.Cone;
+import org.lgna.story.Ground;
+import org.lgna.story.MoveDirection;
+import org.lgna.story.Program;
+import org.lgna.story.RelativeVantagePointAnimationDetailsFactory;
+import org.lgna.story.RollDirection;
+import org.lgna.story.Scene;
+import org.lgna.story.Sphere;
+import org.lgna.story.Sun;
+import org.lgna.story.TurnDirection;
+import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.PersonResource;
+import org.lgna.story.resources.sims2.*;
+import org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
+import org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultHairBraids;
 
 abstract class CustomPerson extends Biped {
 	public CustomPerson( BipedResource resource ) {

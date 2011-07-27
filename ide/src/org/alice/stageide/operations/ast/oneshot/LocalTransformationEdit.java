@@ -50,7 +50,7 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
 	private final edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions;
-	private transient org.lookingglassandalice.storytelling.implementation.AbstractTransformableImplementation transformable;
+	private transient org.lgna.story.implementation.AbstractTransformableImplementation transformable;
 	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
 	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions ) {
 		super( completionStep );
@@ -82,8 +82,8 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 		Object instance = sceneEditor.getInstanceInAliceVMForField( this.field );
 		if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
 			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
-			org.lookingglassandalice.storytelling.Turnable turnable = (org.lookingglassandalice.storytelling.Turnable)sceneEditor.getInstanceInJavaVMForField( this.field );
-			this.transformable = org.lookingglassandalice.storytelling.ImplementationAccessor.getImplementation( turnable );
+			org.lgna.story.Turnable turnable = (org.lgna.story.Turnable)sceneEditor.getInstanceInJavaVMForField( this.field );
+			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( turnable );
 			this.m = this.transformable.getLocalTransformation();
 			vm.invokeEntryPoint( this.method, instanceInAlice, vm.evaluateEntryPoint( sceneInstanceInAlice, this.argumentExpressions ) );
 		} else {
@@ -92,7 +92,7 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 	}
 	@Override
 	protected void undoInternal() {
-		this.transformable.animateTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SELF, this.m );
+		this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.SELF, this.m );
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

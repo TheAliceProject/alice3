@@ -47,7 +47,7 @@ package org.alice.stageide.cascade.fillerinners;
  */
 public class AudioSourceFillerInner extends SourceFillerInner< org.alice.virtualmachine.resources.AudioResource > {
 	public AudioSourceFillerInner() {
-		super( org.lookingglassandalice.storytelling.AudioSource.class, org.alice.virtualmachine.resources.AudioResource.class );
+		super( org.lgna.story.AudioSource.class, org.alice.virtualmachine.resources.AudioResource.class );
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, ? > getImportFillIn() {

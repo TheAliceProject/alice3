@@ -141,7 +141,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 		}
 		@Override
 		protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
-			org.lookingglassandalice.storytelling.AudioSource audioSource = getAudioSource();
+			org.lgna.story.AudioSource audioSource = getAudioSource();
 			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
 			edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime() );
 			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
@@ -286,7 +286,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getValue() {
-		org.lookingglassandalice.storytelling.AudioSource audioSource = this.getAudioSource();
+		org.lgna.story.AudioSource audioSource = this.getAudioSource();
 		if( audioSource != null ) {
 			org.alice.virtualmachine.resources.AudioResource audioResource = audioSource.getAudioResource();
 
@@ -308,9 +308,9 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 			double stopTime = audioSource.getStopTime();
 
 			// apologies for the negative logic
-			boolean isNotDefaultVolume = org.lookingglassandalice.storytelling.AudioSource.isWithinReasonableEpsilonOfDefaultVolume( volume ) == false;
-			boolean isNotDefaultStartTime = org.lookingglassandalice.storytelling.AudioSource.isWithinReasonableEpsilonOfDefaultStartTime( startTime ) == false;
-			boolean isNotDefaultStopTime = org.lookingglassandalice.storytelling.AudioSource.isDefaultStopTime_aka_NaN( stopTime ) == false;
+			boolean isNotDefaultVolume = org.lgna.story.AudioSource.isWithinReasonableEpsilonOfDefaultVolume( volume ) == false;
+			boolean isNotDefaultStartTime = org.lgna.story.AudioSource.isWithinReasonableEpsilonOfDefaultStartTime( startTime ) == false;
+			boolean isNotDefaultStopTime = org.lgna.story.AudioSource.isDefaultStopTime_aka_NaN( stopTime ) == false;
 
 			if( isNotDefaultVolume || isNotDefaultStartTime || isNotDefaultStopTime ) {
 				edu.cmu.cs.dennisc.alice.ast.DoubleLiteral volumeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( volume );
@@ -320,7 +320,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 						edu.cmu.cs.dennisc.alice.ast.DoubleLiteral stopTimeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( stopTime );
 
 						edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
-								org.lookingglassandalice.storytelling.AudioSource.class, 
+								org.lgna.story.AudioSource.class, 
 								org.alice.virtualmachine.resources.AudioResource.class,
 								Number.class, 
 								Number.class, 
@@ -328,7 +328,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 						return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral, stopTimeLiteral );
 					} else {
 						edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
-								org.lookingglassandalice.storytelling.AudioSource.class, 
+								org.lgna.story.AudioSource.class, 
 								org.alice.virtualmachine.resources.AudioResource.class,
 								Number.class, 
 								Number.class );
@@ -336,14 +336,14 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 					}
 				} else {
 					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
-							org.lookingglassandalice.storytelling.AudioSource.class, 
+							org.lgna.story.AudioSource.class, 
 							org.alice.virtualmachine.resources.AudioResource.class,
 							Number.class );
 					return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral );
 				}
 			} else {
 				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
-						org.lookingglassandalice.storytelling.AudioSource.class, 
+						org.lgna.story.AudioSource.class, 
 						org.alice.virtualmachine.resources.AudioResource.class );
 				return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression );
 			}
@@ -352,7 +352,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 		}
 	}
 	
-	private org.lookingglassandalice.storytelling.AudioSource getAudioSource() {
+	private org.lgna.story.AudioSource getAudioSource() {
 		org.alice.virtualmachine.resources.AudioResource audioResource;
 		double volume = this.volumeLevelControl.getVolumeLevel();
 		double start;
@@ -388,6 +388,6 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 				stop = this.stopTimeSlider.getTime();
 			}
 		}
-		return new org.lookingglassandalice.storytelling.AudioSource( audioResource, volume, start, stop );
+		return new org.lgna.story.AudioSource( audioResource, volume, start, stop );
 	}
 }

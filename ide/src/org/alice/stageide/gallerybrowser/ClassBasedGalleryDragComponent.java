@@ -48,8 +48,8 @@ import javax.swing.ImageIcon;
 
 import org.alice.ide.common.NodeLikeSubstance;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
-import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceTreeNode;
-import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceUtilities;
+import org.lgna.story.resourceutilities.ModelResourceTreeNode;
+import org.lgna.story.resourceutilities.ModelResourceUtilities;
 
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 

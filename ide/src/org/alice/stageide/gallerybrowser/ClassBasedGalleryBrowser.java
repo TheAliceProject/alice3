@@ -65,8 +65,8 @@ import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.TextField;
 import org.lgna.croquet.components.VerticalTextPosition;
-import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceTreeNode;
-import org.lookingglassandalice.storytelling.resourceutilities.ModelResourceUtilities;
+import org.lgna.story.resourceutilities.ModelResourceTreeNode;
+import org.lgna.story.resourceutilities.ModelResourceUtilities;
 
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 

@@ -46,14 +46,14 @@ package org.alice.stageide.properties;
 import java.util.Locale;
 
 import org.lgna.croquet.Operation;
-import org.lookingglassandalice.storytelling.ImplementationAccessor;
+import org.lgna.story.ImplementationAccessor;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 
-public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.lookingglassandalice.storytelling.MovableTurnable> {
+public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.lgna.story.MovableTurnable> {
 	
-	public TransformableTranslationAdapter(org.lookingglassandalice.storytelling.MovableTurnable instance) {
+	public TransformableTranslationAdapter(org.lgna.story.MovableTurnable instance) {
 		super(instance);
 	}
 
@@ -84,7 +84,7 @@ public class TransformableTranslationAdapter extends AbstractAbsolutePositionPro
 				duration = (dist - .02) / (.1 - .02);
 			}
 			
-			org.lookingglassandalice.storytelling.implementation.AbstractTransformableImplementation implementation = ImplementationAccessor.getImplementation(this.instance);
+			org.lgna.story.implementation.AbstractTransformableImplementation implementation = ImplementationAccessor.getImplementation(this.instance);
 			implementation.getSgComposite().setTranslationOnly(newValue, implementation.getSgComposite().getRoot());
 		}
 	}

@@ -46,8 +46,8 @@ package org.alice.interact.manipulator;
 import java.util.List;
 import java.util.Vector;
 
-import org.lookingglassandalice.storytelling.Entity;
-import org.lookingglassandalice.storytelling.Marker;
+import org.lgna.story.Entity;
+import org.lgna.story.Marker;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;

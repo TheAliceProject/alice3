@@ -47,7 +47,7 @@ package org.alice.stageide.cascade;
  */
 public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	public CascadeManager() {
-		this.addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( org.lookingglassandalice.storytelling.Color.class ) );
+		this.addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( org.lgna.story.Color.class ) );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.KeyFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.AngleFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.PortionFillerInner() );
@@ -59,17 +59,17 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
 		
-		this.addRelationalTypeToBooleanFillerInner( org.lookingglassandalice.storytelling.Entity.class );
+		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.Entity.class );
 	}
 
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> interfaceType ) {
-		if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Style.class ) ) {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.TraditionalStyle.class );
-		} else if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.resources.sims2.EyeColor.class ) ) {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.resources.sims2.BaseEyeColor.class );
-		} else if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.resources.sims2.SkinTone.class ) ) {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.resources.sims2.BaseSkinTone.class );
+		if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Style.class ) ) {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.TraditionalStyle.class );
+		} else if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.resources.sims2.EyeColor.class ) ) {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.resources.sims2.BaseEyeColor.class );
+		} else if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.resources.sims2.SkinTone.class ) ) {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.resources.sims2.BaseSkinTone.class );
 		} else {
 			return super.getEnumTypeForInterfaceType( interfaceType );
 		}
@@ -88,11 +88,11 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getActualTypeForDesiredParameterType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		if( type.isAssignableTo( org.lookingglassandalice.storytelling.Angle.class ) ) {
+		if( type.isAssignableTo( org.lgna.story.Angle.class ) ) {
 			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE;
-		} else if( type.isAssignableTo( org.lookingglassandalice.storytelling.Portion.class ) ) {
+		} else if( type.isAssignableTo( org.lgna.story.Portion.class ) ) {
 			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE;
-		} else if( type.isAssignableTo( org.lookingglassandalice.storytelling.VolumeLevel.class ) ) {
+		} else if( type.isAssignableTo( org.lgna.story.VolumeLevel.class ) ) {
 			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE;
 		} else {
 			return super.getActualTypeForDesiredParameterType( type );
@@ -101,7 +101,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 
 	@Override
 	protected boolean areEnumConstantsDesired( edu.cmu.cs.dennisc.alice.ast.AbstractType enumType ) {
-		if( enumType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Key.class ) ) {
+		if( enumType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Key.class ) ) {
 			return false;
 		} else {
 			return super.areEnumConstantsDesired( enumType );
@@ -112,11 +112,11 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		rv = super.addCustomFillIns( rv, blankNode, type );
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression != null ) {
-			if( type.isAssignableFrom( org.lookingglassandalice.storytelling.Model.class ) ) {
+			if( type.isAssignableFrom( org.lgna.story.Model.class ) ) {
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice enclosingMethod = previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 				if( enclosingMethod != null ) {
 					for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
-						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeMouseButtonEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.event.MouseButtonEvent.class );
+						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeMouseButtonEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.event.MouseButtonEvent.class );
 						if( parameter.getValueType() == typeMouseButtonEvent ) {
 							String[] methodNames = new String[] { "getModelAtMouseLocation", "getPartAtMouseLocation" };
 							for( String methodName : methodNames ) {
@@ -131,10 +131,10 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice enclosingMethod = previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 				if( enclosingMethod != null ) {
 					for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
-						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeKeyEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.event.KeyEvent.class );
+						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeKeyEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.event.KeyEvent.class );
 						if( parameter.getValueType() == typeKeyEvent ) {
 							{
-								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( "isKey", org.lookingglassandalice.storytelling.Key.class );
+								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( "isKey", org.lgna.story.Key.class );
 								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
 								rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, method ) );
 							}
@@ -155,10 +155,10 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	@Override
 	protected org.lgna.croquet.CascadeBlankChild createBlankChildForFillInAndPossiblyPartFillIns( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type2 ) {
 		org.lgna.croquet.CascadeFillIn fillIn = (org.lgna.croquet.CascadeFillIn)super.createBlankChildForFillInAndPossiblyPartFillIns( expression, type, type2 );
-		if( type.isAssignableTo( org.lookingglassandalice.storytelling.Biped.class ) ) {
+		if( type.isAssignableTo( org.lgna.story.Biped.class ) ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = null;
 			Class< ? > paramCls = null;
-			if( type2.isAssignableFrom( org.lookingglassandalice.storytelling.Joint.class ) ) {
+			if( type2.isAssignableFrom( org.lgna.story.Joint.class ) ) {
 				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
 				Class< ? > cls = typeInJava.getClassReflectionProxy().getReification();
 				for( Class innerCls : cls.getDeclaredClasses() ) {

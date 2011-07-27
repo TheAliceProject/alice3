@@ -44,7 +44,7 @@ package org.alice.stageide.cascade.fillerinners;
 
 public class KeyListenerFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
 	public KeyListenerFillerInner() {
-		super( org.lookingglassandalice.storytelling.event.KeyListener.class );
+		super( org.lgna.story.event.KeyListener.class );
 	}
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {

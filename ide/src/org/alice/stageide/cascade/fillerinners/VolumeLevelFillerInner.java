@@ -47,7 +47,7 @@ package org.alice.stageide.cascade.fillerinners;
  */
 public class VolumeLevelFillerInner extends org.alice.ide.cascade.fillerinners.AbstractDoubleFillerInner {
 	public VolumeLevelFillerInner() {
-		super( org.lookingglassandalice.storytelling.VolumeLevel.class, new double[] { 0.0, 0.25, 0.5, 1.0, 2.0 } );
+		super( org.lgna.story.VolumeLevel.class, new double[] { 0.0, 0.25, 0.5, 1.0, 2.0 } );
 	}
 	@Override
 	protected org.lgna.croquet.CascadeItem getCustomItem() {

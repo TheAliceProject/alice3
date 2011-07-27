@@ -43,8 +43,8 @@
 
 package org.alice.stageide.properties;
 
-import org.lookingglassandalice.storytelling.ImplementationAccessor;
-import org.lookingglassandalice.storytelling.Turnable;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Turnable;
 import org.alice.ide.properties.adapter.AbstractPoint3PropertyAdapter;
 
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
@@ -83,7 +83,7 @@ public abstract class AbstractAbsolutePositionPropertyAdapter<O extends Turnable
 		if (this.instance != null)
 		{
 			this.initializeTransformationListenersIfNecessary();
-			org.lookingglassandalice.storytelling.implementation.AbstractTransformableImplementation implementation = ImplementationAccessor.getImplementation(this.instance);
+			org.lgna.story.implementation.AbstractTransformableImplementation implementation = ImplementationAccessor.getImplementation(this.instance);
 			implementation.getSgComposite().addAbsoluteTransformationListener(this.absoluteTransformationListener);
 		}
 	}
@@ -93,7 +93,7 @@ public abstract class AbstractAbsolutePositionPropertyAdapter<O extends Turnable
 	{
 		if (this.instance != null)
 		{
-			org.lookingglassandalice.storytelling.implementation.AbstractTransformableImplementation implementation = ImplementationAccessor.getImplementation(this.instance);
+			org.lgna.story.implementation.AbstractTransformableImplementation implementation = ImplementationAccessor.getImplementation(this.instance);
 			implementation.getSgComposite().removeAbsoluteTransformationListener(this.absoluteTransformationListener);
 		}
 	}

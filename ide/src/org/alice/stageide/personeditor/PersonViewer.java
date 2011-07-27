@@ -42,7 +42,7 @@
  */
 package org.alice.stageide.personeditor;
 
-import org.lookingglassandalice.storytelling.resources.sims2.*;
+import org.lgna.story.resources.sims2.*;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 
 /**
@@ -162,10 +162,10 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 	}
 
-	public org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation getPerson() { 
-		return (org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation)this.getModel();
+	public org.lgna.story.implementation.sims2.SimsBipedImplementation getPerson() { 
+		return (org.lgna.story.implementation.sims2.SimsBipedImplementation)this.getModel();
 	}
-	public void setPerson( org.lookingglassandalice.storytelling.implementation.sims2.SimsBipedImplementation person ) {
+	public void setPerson( org.lgna.story.implementation.sims2.SimsBipedImplementation person ) {
 		assert person != null;
 		this.setModel( person );
 		this.dragAdapter.setSelectedImplementation( person );

@@ -70,7 +70,7 @@ public class FullBodyOutfitSelectionState extends AbstractListSelectionState<org
 		} );
 	}
 	
-	public void handleCataclysmicChange( org.lookingglassandalice.storytelling.resources.sims2.LifeStage lifeStage, org.lookingglassandalice.storytelling.resources.sims2.Gender gender ) {
+	public void handleCataclysmicChange( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
 		this.setListData( -1, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
 				edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
 						org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 

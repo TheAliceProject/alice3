@@ -69,7 +69,7 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.PushButton;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.ToolPaletteTabbedPane;
-import org.lookingglassandalice.storytelling.ImplementationAccessor;
+import org.lgna.story.ImplementationAccessor;
 
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;

@@ -23,22 +23,22 @@ public class Person extends Model {
 	public native void setEyeColor( Object o );
 	public native void setHair( Object o );
 
-	public native void getLocalTransformationForBodyPartNamed( double[] transformOut, org.lookingglassandalice.storytelling.resources.JointId name );
-	public native void setLocalTransformationForBodyPartNamed( org.lookingglassandalice.storytelling.resources.JointId name, double[] transformIn );
-	public native void getAbsoluteTransformationForBodyPartNamed( double[] transformOut, org.lookingglassandalice.storytelling.resources.JointId name );
-	public native void setAbsoluteTransformationForBodyPartNamed( org.lookingglassandalice.storytelling.resources.JointId name, double[] transformIn );
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformationForJoint( org.lookingglassandalice.storytelling.resources.JointId joint ) {
+	public native void getLocalTransformationForBodyPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
+	public native void setLocalTransformationForBodyPartNamed( org.lgna.story.resources.JointId name, double[] transformIn );
+	public native void getAbsoluteTransformationForBodyPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
+	public native void setAbsoluteTransformationForBodyPartNamed( org.lgna.story.resources.JointId name, double[] transformIn );
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformationForJoint( org.lgna.story.resources.JointId joint ) {
 		double[] buffer = new double[ 12 ];
 		getLocalTransformationForBodyPartNamed( buffer, joint );
 		return edu.cmu.cs.dennisc.math.AffineMatrix4x4.createFromColumnMajorArray12( buffer );
 	}
 
-	public void setLocalTransformationForJoint( org.lookingglassandalice.storytelling.resources.JointId joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTrans ) {
+	public void setLocalTransformationForJoint( org.lgna.story.resources.JointId joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTrans ) {
 		setLocalTransformationForBodyPartNamed( joint, localTrans.getAsColumnMajorArray12() );
 	}
 	
 	@Deprecated
-	public void applyRotationToJointAboutArbitraryAxisInRadians( org.lookingglassandalice.storytelling.resources.JointId joint, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) {
+	public void applyRotationToJointAboutArbitraryAxisInRadians( org.lgna.story.resources.JointId joint, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) {
 		if( axis.isPositiveXAxis() ) {
 			applyTransformationToJoint( joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4.createRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( angleInRadians ) ) );
 		} else if( axis.isNegativeXAxis() ) {
@@ -57,7 +57,7 @@ public class Person extends Model {
 	}
 //
 	@Deprecated
-	private void applyTransformationToJoint( org.lookingglassandalice.storytelling.resources.JointId joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation ) {
+	private void applyTransformationToJoint( org.lgna.story.resources.JointId joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = getLocalTransformationForJoint( joint );
 		m.setToMultiplication( m, transformation );
 		setLocalTransformationForJoint( joint, m );

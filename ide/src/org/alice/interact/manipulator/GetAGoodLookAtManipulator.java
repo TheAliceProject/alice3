@@ -43,11 +43,11 @@
 
 package org.alice.interact.manipulator;
 
-import org.lookingglassandalice.storytelling.Entity;
-import org.lookingglassandalice.storytelling.Model;
-import org.lookingglassandalice.storytelling.Camera;
-import org.lookingglassandalice.storytelling.implementation.CameraImplementation;
-import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
+import org.lgna.story.Camera;
+import org.lgna.story.Entity;
+import org.lgna.story.Model;
+import org.lgna.story.implementation.CameraImplementation;
+import org.lgna.story.implementation.EntityImplementation;
 import org.alice.interact.InputState;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.handle.HandleSet;
@@ -86,9 +86,9 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 		Transformable toLookAt = endInput.getClickPickTransformable();
 		if (toLookAt != null && this.camera != null)
 		{
-			org.lookingglassandalice.storytelling.Entity cameraAbstraction  = EntityImplementation.getInstance(this.camera).getAbstraction();
-			assert cameraAbstraction instanceof org.lookingglassandalice.storytelling.Camera;
-			org.lookingglassandalice.storytelling.Camera storytellingCamera = (org.lookingglassandalice.storytelling.Camera)cameraAbstraction;
+			org.lgna.story.Entity cameraAbstraction  = EntityImplementation.getInstance(this.camera).getAbstraction();
+			assert cameraAbstraction instanceof org.lgna.story.Camera;
+			org.lgna.story.Camera storytellingCamera = (org.lgna.story.Camera)cameraAbstraction;
 			
 			storytellingCamera.moveAndOrientToAGoodVantagePointOf(EntityImplementation.getInstance(toLookAt).getAbstraction());
 		}

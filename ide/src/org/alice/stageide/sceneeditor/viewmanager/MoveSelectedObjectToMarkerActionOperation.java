@@ -46,11 +46,11 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.lookingglassandalice.storytelling.ObjectMarker;
-import org.lookingglassandalice.storytelling.Turnable;
-import org.lookingglassandalice.storytelling.implementation.ObjectMarkerImplementation;
 import org.alice.ide.IDE;
 import org.lgna.croquet.ActionOperation;
+import org.lgna.story.ObjectMarker;
+import org.lgna.story.Turnable;
+import org.lgna.story.implementation.ObjectMarkerImplementation;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
@@ -146,8 +146,8 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final ObjectMarkerImplementation objectMarker;
-		final org.lookingglassandalice.storytelling.VantagePoint prevPOV;
-		final org.lookingglassandalice.storytelling.VantagePoint nextPOV;
+		final org.lgna.story.VantagePoint prevPOV;
+		final org.lgna.story.VantagePoint nextPOV;
 		
 //		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor());
 //		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
@@ -181,7 +181,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 //		}
 	}
 	
-	private static void setAbsolutePOV( org.lookingglassandalice.storytelling.Turnable transformable, org.lookingglassandalice.storytelling.VantagePoint pov ) {
+	private static void setAbsolutePOV( org.lgna.story.Turnable transformable, org.lgna.story.VantagePoint pov ) {
 //		org.lookingglassandalice.storytelling.Scene scene = transformable.getScene();
 //		assert scene != null;
 //		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );

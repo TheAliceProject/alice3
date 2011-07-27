@@ -49,11 +49,11 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 	public TransformableFieldTileActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( individualId, field );
 	}
-	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lookingglassandalice.storytelling.implementation.TransformableImplementation transformableImp );
+	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lgna.story.implementation.TransformableImplementation transformableImp );
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		org.lookingglassandalice.storytelling.Turnable transformable = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( this.getField(), org.lookingglassandalice.storytelling.Turnable.class );
-		final org.lookingglassandalice.storytelling.implementation.TransformableImplementation transformableImp = org.lookingglassandalice.storytelling.ImplementationAccessor.getImplementation( transformable );
+		org.lgna.story.Turnable transformable = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( this.getField(), org.lgna.story.Turnable.class );
+		final org.lgna.story.implementation.TransformableImplementation transformableImp = org.lgna.story.ImplementationAccessor.getImplementation( transformable );
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevPOV;
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextPOV;
 		if( transformable != null ) {
@@ -66,11 +66,11 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
-						transformableImp.animateTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE, nextPOV );
+						transformableImp.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, nextPOV );
 					}
 					@Override
 					protected final void undoInternal() {
-						transformableImp.animateTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE, prevPOV );
+						transformableImp.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, prevPOV );
 					}
 					@Override
 					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

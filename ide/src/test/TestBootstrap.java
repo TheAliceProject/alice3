@@ -48,9 +48,9 @@ package test;
  */
 public class TestBootstrap {
 	public static void main( String[] args ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lookingglassandalice.storytelling.Ground.Appearance.GRASS );
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.Appearance.GRASS );
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
-		vm.registerAnonymousAdapter( org.lookingglassandalice.storytelling.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
+		vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
 		if( false ) {
 			Object programInstance = vm.createInstanceEntryPoint( programType );
 			vm.invokeEntryPoint( programType.findMethod( "initializeInFrame", String[].class ), programInstance, (Object)args );

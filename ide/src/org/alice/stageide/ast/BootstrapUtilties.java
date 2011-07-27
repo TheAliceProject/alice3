@@ -105,10 +105,10 @@ public class BootstrapUtilties {
 		return org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( value.getClass(), value.name() );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createProgramType( org.lookingglassandalice.storytelling.Ground.Appearance appearance ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sunField = createPrivateFinalField( org.lookingglassandalice.storytelling.Sun.class, "sun" );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice groundField = createPrivateFinalField( org.lookingglassandalice.storytelling.Ground.class, "ground" );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = createPrivateFinalField( org.lookingglassandalice.storytelling.Camera.class, "camera" );
+	public static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createProgramType( org.lgna.story.Ground.Appearance appearance ) {
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice groundField = createPrivateFinalField( org.lgna.story.Ground.class, "ground" );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = createPrivateFinalField( org.lgna.story.Camera.class, "camera" );
 
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice myFirstMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PUBLIC, Void.TYPE, "myFirstMethod" );
 
@@ -118,7 +118,7 @@ public class BootstrapUtilties {
 		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[] { cameraField, sunField, groundField } ) {
 			java.lang.reflect.Method mthd;
 			try {
-				mthd = ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)field.getValueType()).getClassReflectionProxy().getReification().getMethod( "setVehicle", org.lookingglassandalice.storytelling.Entity.class );
+				mthd = ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)field.getValueType()).getClassReflectionProxy().getReification().getMethod( "setVehicle", org.lgna.story.Entity.class );
 			} catch( NoSuchMethodException nsme ) {
 				throw new RuntimeException( nsme );
 			}
@@ -134,7 +134,7 @@ public class BootstrapUtilties {
 			);
 		}
 		
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava setAppearanceMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( org.lookingglassandalice.storytelling.Ground.class, "setAppearance", org.lookingglassandalice.storytelling.Ground.Appearance.class );
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava setAppearanceMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( org.lgna.story.Ground.class, "setAppearance", org.lgna.story.Ground.Appearance.class );
 		
 		performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setAppearanceMethod, createFieldAccess( appearance ) ) );
 
@@ -170,7 +170,7 @@ public class BootstrapUtilties {
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), performGeneratedSetupMethod ) );
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), performGeneratedSetupMethod ) );
 
-		Class< ? > sceneCls = org.lookingglassandalice.storytelling.Scene.class;
+		Class< ? > sceneCls = org.lgna.story.Scene.class;
 		
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava preserveVehiclesAndVantagePointsMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( sceneCls, "preserveVehiclesAndVantagePoints" );
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava restoreVehiclesAndVantagePointsMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( sceneCls, "restoreVehiclesAndVantagePoints" );
@@ -179,7 +179,7 @@ public class BootstrapUtilties {
 
 		handleActiveChangedBody.statements.add( ifOuter );
 		
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = createType( "MyScene", org.lookingglassandalice.storytelling.Scene.class );
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = createType( "MyScene", org.lgna.story.Scene.class );
 		sceneType.fields.add( sunField );
 		sceneType.fields.add( groundField );
 		sceneType.fields.add( cameraField );
@@ -194,7 +194,7 @@ public class BootstrapUtilties {
 		playOutStoryBody.statements.add( 
 				createMethodInvocationStatement( 
 						new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), 
-						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( org.lookingglassandalice.storytelling.Program.class, "setActiveScene", org.lookingglassandalice.storytelling.Scene.class ),
+						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class ),
 						createThisFieldAccess( sceneField )
 				)
 		);
@@ -206,7 +206,7 @@ public class BootstrapUtilties {
 		);
 		
 		
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = createType( "MyProgram", org.lookingglassandalice.storytelling.Program.class );
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = createType( "MyProgram", org.lgna.story.Program.class );
 		rv.fields.add( sceneField );
 		rv.methods.add( playOutStoryMethod );
 

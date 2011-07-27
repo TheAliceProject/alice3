@@ -56,9 +56,9 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-public class ModelScaleAdapter extends AbstractScaleAdapter<org.lookingglassandalice.storytelling.implementation.ModelImplementation>
+public class ModelScaleAdapter extends AbstractScaleAdapter<org.lgna.story.implementation.ModelImplementation>
 {
-	public ModelScaleAdapter(org.lookingglassandalice.storytelling.implementation.ModelImplementation instance)
+	public ModelScaleAdapter(org.lgna.story.implementation.ModelImplementation instance)
 	{
 		super("Size", instance);
 	}

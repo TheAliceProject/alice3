@@ -43,7 +43,7 @@
 
 package org.alice.ide.name.validators;
 
-import org.lookingglassandalice.storytelling.Marker;
+import org.lgna.story.Marker;
 
 public class MarkerColorValidator extends MemberNameValidator {
 

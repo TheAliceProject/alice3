@@ -48,19 +48,19 @@ import org.lgna.croquet.components.BorderPanel.Constraint;
  * @author Dennis Cosgrove
  */
 class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
-	private org.lookingglassandalice.storytelling.Billboard billboard;
+	private org.lgna.story.Billboard billboard;
 	private org.alice.ide.croquet.ImageView imageView = new org.alice.ide.croquet.ImageView( 240 );
 	public CreateFieldFromBillboardPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType ) {
-		super( declaringType, org.lookingglassandalice.storytelling.Billboard.class, null );
+		super( declaringType, org.lgna.story.Billboard.class, null );
 		this.imageView.setBorder( javax.swing.BorderFactory.createEmptyBorder(0,0,0,8) );
 		this.addComponent( this.imageView, Constraint.LINE_END );
 	}
-	public org.lookingglassandalice.storytelling.Billboard getBillboard() {
+	public org.lgna.story.Billboard getBillboard() {
 		return this.billboard;
 	}
-	public void setBillboard( org.lookingglassandalice.storytelling.Billboard billboard ) {
+	public void setBillboard( org.lgna.story.Billboard billboard ) {
 		this.billboard = billboard;
-		org.lookingglassandalice.storytelling.ImageSource frontImageSource = billboard.getFrontImageSource();
+		org.lgna.story.ImageSource frontImageSource = billboard.getFrontImageSource();
 		if( frontImageSource != null ) {
 			org.alice.virtualmachine.resources.ImageResource imageResource = frontImageSource.getImageResource();
 			if( imageResource != null ) {
@@ -99,8 +99,8 @@ public class CreateBillboardOperation extends AbstractGalleryDeclareFieldOperati
 				if( project != null ) {
 					project.addResource( frontImageResource );
 				}
-				org.lookingglassandalice.storytelling.ImageSource frontImageSource = new org.lookingglassandalice.storytelling.ImageSource( frontImageResource );
-				org.lookingglassandalice.storytelling.Billboard billboard = new org.lookingglassandalice.storytelling.Billboard();
+				org.lgna.story.ImageSource frontImageSource = new org.lgna.story.ImageSource( frontImageResource );
+				org.lgna.story.Billboard billboard = new org.lgna.story.Billboard();
 				billboard.setFrontImageSource( frontImageSource );
 				rv.setBillboard( billboard );
 				//				String name = "billboard";

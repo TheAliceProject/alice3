@@ -49,7 +49,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 	//	private javax.swing.JLabel keyReceiver = zoot.ZLabel.acquire( "<press any key>", zoot.font.ZTextWeight.LIGHT );
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
 		public void keyPressed( java.awt.event.KeyEvent e ) {
-			KeyChooser.this.updateKey( org.lookingglassandalice.storytelling.Key.get( e ) );
+			KeyChooser.this.updateKey( org.lgna.story.Key.get( e ) );
 		}
 		public void keyReleased( java.awt.event.KeyEvent e ) {
 		}
@@ -73,7 +73,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 		}
 	};
 	private org.lgna.croquet.components.Component< ? >[] components = { new org.lgna.croquet.components.SwingAdapter( this.keyReceiver ) };
-	private org.lookingglassandalice.storytelling.Key key = null;
+	private org.lgna.story.Key key = null;
 
 	public KeyChooser() {
 		this.keyReceiver.setFocusable( true );
@@ -82,10 +82,10 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)previousExpression;
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = fieldAccess.getType();
-			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Key.class ) ) {
+			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Key.class ) ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 				if( field != null ) {
-					this.updateKey( Enum.valueOf( org.lookingglassandalice.storytelling.Key.class, field.getName() ) );
+					this.updateKey( Enum.valueOf( org.lgna.story.Key.class, field.getName() ) );
 				}
 			}
 		}
@@ -95,7 +95,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
 		this.updateKey( null );
 	}
-	private void updateKey( org.lookingglassandalice.storytelling.Key key ) {
+	private void updateKey( org.lgna.story.Key key ) {
 		this.key = key;
 		if( this.key != null ) {
 			this.keyReceiver.setText( this.key.name() );
@@ -111,7 +111,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.FieldAccess getValue() {
 		if( this.key != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Key.class );
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Key.class );
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( type, this.key.name() );
 			assert field.isPublicAccess() && field.isStatic() && field.isFinal();
 			return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );

@@ -43,7 +43,7 @@
 
 package org.alice.ide.properties.uicontroller;
 
-import org.lookingglassandalice.storytelling.Entity;
+import org.lgna.story.Entity;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.stageide.properties.FieldNameAdapter;
 import org.alice.stageide.properties.uicontroller.CompositePropertyController;

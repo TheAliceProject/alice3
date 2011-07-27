@@ -50,9 +50,9 @@ abstract class AbstractViewer extends org.lgna.croquet.components.BorderPanel {
 	//todo: should this be heavyweight?
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
-	private org.lookingglassandalice.storytelling.implementation.SceneImplementation scene = new org.lookingglassandalice.storytelling.implementation.SceneImplementation( null );
-	private org.lookingglassandalice.storytelling.implementation.SymmetricPerspectiveCameraImplementation camera = new org.lookingglassandalice.storytelling.implementation.SymmetricPerspectiveCameraImplementation( null );
-	private org.lookingglassandalice.storytelling.implementation.SunImplementation sunLight = new org.lookingglassandalice.storytelling.implementation.SunImplementation( null );
+	private org.lgna.story.implementation.SceneImplementation scene = new org.lgna.story.implementation.SceneImplementation( null );
+	private org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation camera = new org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation( null );
+	private org.lgna.story.implementation.SunImplementation sunLight = new org.lgna.story.implementation.SunImplementation( null );
 	private org.lgna.croquet.components.Component<?> adapter;
 
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
@@ -79,13 +79,13 @@ abstract class AbstractViewer extends org.lgna.croquet.components.BorderPanel {
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
 	}
-	protected org.lookingglassandalice.storytelling.implementation.SceneImplementation getScene() {
+	protected org.lgna.story.implementation.SceneImplementation getScene() {
 		return this.scene;
 	}
-	protected org.lookingglassandalice.storytelling.implementation.SymmetricPerspectiveCameraImplementation getCamera() {
+	protected org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation getCamera() {
 		return this.camera;
 	}
-	protected org.lookingglassandalice.storytelling.implementation.SunImplementation getSunLight() {
+	protected org.lgna.story.implementation.SunImplementation getSunLight() {
 		return this.sunLight;
 	}
 	@Override
@@ -116,11 +116,11 @@ abstract class AbstractViewer extends org.lgna.croquet.components.BorderPanel {
  * @author Dennis Cosgrove
  */
 public class ModelViewer extends AbstractViewer {
-	private org.lookingglassandalice.storytelling.implementation.ModelImplementation model = null;
-	public org.lookingglassandalice.storytelling.implementation.ModelImplementation getModel() {
+	private org.lgna.story.implementation.ModelImplementation model = null;
+	public org.lgna.story.implementation.ModelImplementation getModel() {
 		return this.model;
 	}
-	public void setModel( org.lookingglassandalice.storytelling.implementation.ModelImplementation model ) {
+	public void setModel( org.lgna.story.implementation.ModelImplementation model ) {
 		if( model != this.model ) {
 			if( this.model != null ) {
 				this.model.setVehicle( null );

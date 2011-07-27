@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.cascade.source;
 /**
  * @author Dennis Cosgrove
  */
-public class ImportNewImageSourceFillIn extends ImportNewSourceFillIn< org.lookingglassandalice.storytelling.ImageSource, org.alice.virtualmachine.resources.ImageResource > {
+public class ImportNewImageSourceFillIn extends ImportNewSourceFillIn< org.lgna.story.ImageSource, org.alice.virtualmachine.resources.ImageResource > {
 	public ImportNewImageSourceFillIn() {
 		super( java.util.UUID.fromString( "dc0d114b-50c1-45d9-8ed5-9bdc0ea96326" ) );
 	}
@@ -62,7 +62,7 @@ public class ImportNewImageSourceFillIn extends ImportNewSourceFillIn< org.looki
 		return org.alice.virtualmachine.resources.ImageResource.class;
 	}
 	@Override
-	protected Class<org.lookingglassandalice.storytelling.ImageSource> getSourceClass() {
-		return org.lookingglassandalice.storytelling.ImageSource.class;
+	protected Class<org.lgna.story.ImageSource> getSourceClass() {
+		return org.lgna.story.ImageSource.class;
 	}
 }

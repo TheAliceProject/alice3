@@ -46,7 +46,7 @@ package org.alice.stageide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneAdapter extends org.lookingglassandalice.storytelling.Scene {
+public class SceneAdapter extends org.lgna.story.Scene {
 	private final edu.cmu.cs.dennisc.alice.virtualmachine.Context context;
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type; 
 	public SceneAdapter( edu.cmu.cs.dennisc.alice.virtualmachine.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type, Object[] arguments ) {

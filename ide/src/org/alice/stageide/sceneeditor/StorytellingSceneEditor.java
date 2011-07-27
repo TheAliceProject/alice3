@@ -47,12 +47,12 @@ import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.components.DragComponent;
-import org.lookingglassandalice.storytelling.BookmarkCameraMarker;
-import org.lookingglassandalice.storytelling.ImplementationAccessor;
-import org.lookingglassandalice.storytelling.ObjectMarker;
-import org.lookingglassandalice.storytelling.implementation.EntityImplementation;
-import org.lookingglassandalice.storytelling.implementation.MarkerImplementation;
-import org.lookingglassandalice.storytelling.implementation.ProgramImplementation;
+import org.lgna.story.BookmarkCameraMarker;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.ObjectMarker;
+import org.lgna.story.implementation.EntityImplementation;
+import org.lgna.story.implementation.MarkerImplementation;
+import org.lgna.story.implementation.ProgramImplementation;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.StatementListProperty;
@@ -111,7 +111,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
-	private org.lookingglassandalice.storytelling.implementation.CameraImplementation sceneCameraImplementation;
+	private org.lgna.story.implementation.CameraImplementation sceneCameraImplementation;
 	
 	@Override
 	protected void setProgramInstance(InstanceInAlice programInstance) 
@@ -257,12 +257,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setOnscreenLookingGlass(this.onscreenLookingGlass);
 
 		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneAliceInstance = getActiveSceneInstance();
-		org.lookingglassandalice.storytelling.Scene sceneJavaInstance = (org.lookingglassandalice.storytelling.Scene)sceneAliceInstance.getInstanceInJava();
+		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getInstanceInJava();
 		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
 		
 		for (edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneField.getDesiredValueType().getDeclaredFields())
 		{
-			if( field.getDesiredValueType().isAssignableTo(org.lookingglassandalice.storytelling.Camera.class)) 
+			if( field.getDesiredValueType().isAssignableTo(org.lgna.story.Camera.class)) 
 			{
 				this.setSceneCamera((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field);
 			}

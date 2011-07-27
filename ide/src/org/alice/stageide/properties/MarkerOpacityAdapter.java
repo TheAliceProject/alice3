@@ -48,9 +48,9 @@ import org.alice.ide.properties.adapter.AbstractOpacityPropertyAdapter;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-public class MarkerOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lookingglassandalice.storytelling.implementation.MarkerImplementation> {
+public class MarkerOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgna.story.implementation.MarkerImplementation> {
 
-	public MarkerOpacityAdapter(org.lookingglassandalice.storytelling.implementation.MarkerImplementation instance)
+	public MarkerOpacityAdapter(org.lgna.story.implementation.MarkerImplementation instance)
 	{
 		super(instance);
 	}

@@ -43,12 +43,12 @@
 
 package test;
 
-import org.lookingglassandalice.storytelling.Camera;
-import org.lookingglassandalice.storytelling.Ground;
-import org.lookingglassandalice.storytelling.Program;
-import org.lookingglassandalice.storytelling.Scene;
-import org.lookingglassandalice.storytelling.Sun;
-import org.lookingglassandalice.storytelling.TurnDirection;
+import org.lgna.story.Camera;
+import org.lgna.story.Ground;
+import org.lgna.story.Program;
+import org.lgna.story.Scene;
+import org.lgna.story.Sun;
+import org.lgna.story.TurnDirection;
 
 class MyScene extends Scene {
 	private final Camera camera = new Camera();

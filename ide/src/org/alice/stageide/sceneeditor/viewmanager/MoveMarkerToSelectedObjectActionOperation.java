@@ -46,8 +46,8 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.lookingglassandalice.storytelling.Turnable;
-import org.lookingglassandalice.storytelling.implementation.CameraMarkerImplementation;
+import org.lgna.story.Turnable;
+import org.lgna.story.implementation.CameraMarkerImplementation;
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
 
@@ -146,8 +146,8 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 	@Override
 	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
 		final CameraMarkerImplementation objectMarker;
-		final org.lookingglassandalice.storytelling.VantagePoint prevPOV;
-		final org.lookingglassandalice.storytelling.VantagePoint nextPOV;
+		final org.lgna.story.VantagePoint prevPOV;
+		final org.lgna.story.VantagePoint nextPOV;
 		
 //		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor());
 //		
@@ -183,7 +183,7 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 		
 	}
 	
-	private static void setAbsolutePOV( org.lookingglassandalice.storytelling.Turnable transformable, org.lookingglassandalice.storytelling.VantagePoint pov ) {
+	private static void setAbsolutePOV( org.lgna.story.Turnable transformable, org.lgna.story.VantagePoint pov ) {
 //		org.lookingglassandalice.storytelling.Scene scene = transformable.getScene();
 //		assert scene != null;
 //		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );

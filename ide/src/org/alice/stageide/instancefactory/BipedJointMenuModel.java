@@ -90,7 +90,7 @@ public class BipedJointMenuModel extends org.lgna.croquet.CascadeMenuModel<org.a
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
 		for( String jointMethodName : JOINT_METHOD_NAMES ) {
-			rv.add( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, org.lookingglassandalice.storytelling.Biped.class, jointMethodName ) );
+			rv.add( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, org.lgna.story.Biped.class, jointMethodName ) );
 		}
 		return rv;
 	}

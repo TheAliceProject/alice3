@@ -372,7 +372,7 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 		@Override
 		protected org.lgna.croquet.Operation<?> getDoubleClickOperation(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice item) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = item.getValueType();
-			if( valueType.isAssignableTo( org.lookingglassandalice.storytelling.CameraMarker.class ) ) {
+			if( valueType.isAssignableTo( org.lgna.story.CameraMarker.class ) ) {
 				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Currently, camera markers cannot be renamed." );
 				return null;
 			} else {

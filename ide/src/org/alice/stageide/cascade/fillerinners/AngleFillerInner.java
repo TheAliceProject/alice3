@@ -49,7 +49,7 @@ package org.alice.stageide.cascade.fillerinners;
  */
 public class AngleFillerInner extends org.alice.ide.cascade.fillerinners.AbstractDoubleFillerInner {
 	public AngleFillerInner() {
-		super( org.lookingglassandalice.storytelling.AngleInRevolutions.class, new double[] { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0 } );
+		super( org.lgna.story.AngleInRevolutions.class, new double[] { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0 } );
 	}
 	@Override
 	protected org.lgna.croquet.CascadeItem getCustomItem() {

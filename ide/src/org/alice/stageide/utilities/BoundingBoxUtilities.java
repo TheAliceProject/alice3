@@ -44,7 +44,7 @@
 package org.alice.stageide.utilities;
 
 import org.alice.interact.GlobalDragAdapter;
-import org.lookingglassandalice.storytelling.ImplementationAccessor;
+import org.lgna.story.ImplementationAccessor;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
@@ -83,13 +83,13 @@ public class BoundingBoxUtilities {
 		return getSGTransformableBBox(sgTransformable, false);
 	}
 	
-	public static AxisAlignedBox getTransformableScaledBBox(org.lookingglassandalice.storytelling.Turnable transformable)
+	public static AxisAlignedBox getTransformableScaledBBox(org.lgna.story.Turnable transformable)
 	{
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)ImplementationAccessor.getImplementation(transformable).getSgComposite();
 		return getSGTransformableBBox(sgTransformable, true);
 	}
 	
-	public static AxisAlignedBox getTransformableUnscaledBBox(org.lookingglassandalice.storytelling.Turnable transformable)
+	public static AxisAlignedBox getTransformableUnscaledBBox(org.lgna.story.Turnable transformable)
 	{
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)ImplementationAccessor.getImplementation(transformable).getSgComposite();
 		return getSGTransformableBBox(sgTransformable, false);

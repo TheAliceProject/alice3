@@ -59,7 +59,7 @@ public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 				models.add( FieldLabelSeparatorModel.getInstance( field ) );
 				models.add( ProceduresCascade.getInstance( field ).getMenuItemPrepModel() );
 				models.add( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-				if( field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Camera.class ) || field.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Scene.class ) )  {
+				if( field.getValueType().isAssignableTo( org.lgna.story.Camera.class ) || field.getValueType().isAssignableTo( org.lgna.story.Scene.class ) )  {
 					//pass
 				} else {
 					models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );

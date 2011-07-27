@@ -45,13 +45,13 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
-import org.lookingglassandalice.storytelling.Entity;
-import org.lookingglassandalice.storytelling.Scene;
-import org.lookingglassandalice.storytelling.Turnable;
 import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.lgna.croquet.Model;
+import org.lgna.story.Entity;
+import org.lgna.story.Scene;
+import org.lgna.story.Turnable;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;

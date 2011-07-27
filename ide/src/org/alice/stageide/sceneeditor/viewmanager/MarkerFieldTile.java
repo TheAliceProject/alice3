@@ -46,10 +46,10 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import javax.swing.BorderFactory;
 
 
-import org.lookingglassandalice.storytelling.implementation.MarkerImplementation;
 import org.alice.ide.IDE;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
+import org.lgna.story.implementation.MarkerImplementation;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.color.Color4f;
