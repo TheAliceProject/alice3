@@ -129,7 +129,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 //		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 //	}
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
-	private java.awt.Dimension size = null;
+	private java.awt.Dimension size = new java.awt.Dimension( 640, 480 );
 	@Override
 	protected java.awt.Point getDesiredDialogLocation( org.lgna.croquet.components.Dialog dialog ) {
 		return this.location;
@@ -141,7 +141,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	@Override
 	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {
 		final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+		final org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		if( ide.getProject() != null ) {
 			ide.ensureProjectCodeUpToDate();
 
@@ -155,10 +155,13 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 					vm.registerAnonymousAdapter( org.lgna.story.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
 					vm.registerAnonymousAdapter( org.lgna.story.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
 					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = ide.getProgramType();
-					String[] args = {};
+					//String[] args = {};
 					edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice programInstance = vm.ENTRY_POINT_createInstance( programType );
-					vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
-					vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "playOutStory" ) );
+					org.lgna.story.Program program = programInstance.getInstanceInJava( org.lgna.story.Program.class );
+					org.lgna.story.implementation.ProgramImplementation programImplementation = org.lgna.story.ImplementationAccessor.getImplementation( program );
+					programImplementation.initializeInAwtContainer( rv.getAwtComponent() );
+					//vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
+					vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
 				}
 			}.start();
 			

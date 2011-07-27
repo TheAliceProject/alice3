@@ -114,6 +114,10 @@ public class ProgramImplementation {
 			}
 		} );
 	}
+	public void initializeInAwtContainer( java.awt.Container container ) {
+		container.add( ProgramImplementation.this.getOnscreenLookingGlass().getAWTComponent() );
+		this.startAnimator();
+	}
 	public void initializeInFrame( javax.swing.JFrame frame ) {
 		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
 		this.initializeInFrame( frame, new Runnable() {
