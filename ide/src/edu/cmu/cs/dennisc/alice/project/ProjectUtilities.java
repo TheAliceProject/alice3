@@ -429,7 +429,7 @@ public abstract class ProjectUtilities {
 	}
 	public static <N extends edu.cmu.cs.dennisc.alice.ast.Node > N decodeNode( edu.cmu.cs.dennisc.alice.Project project, edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		java.util.UUID id = binaryDecoder.decodeId();
-		return lookupNode( project, id );
+		return (N)lookupNode( project, id );
 	}
 	public static void encodeNode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.alice.ast.Node node ) {
 		binaryEncoder.encode( node.getUUID() );
