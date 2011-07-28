@@ -41,34 +41,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.declaration;
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BillboardFieldDeclarationOperation extends SceneFieldDeclarationOperation {
-	private static class SingletonHolder {
-		private static BillboardFieldDeclarationOperation instance = new BillboardFieldDeclarationOperation();
+public class FunctionDeclarationOperation extends MethodDeclarationOperation {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, FunctionDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static FunctionDeclarationOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declarationType ) {
+		synchronized( map ) {
+			FunctionDeclarationOperation rv = map.get( declarationType );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new FunctionDeclarationOperation( declarationType );
+				map.put( declarationType, rv );
+			}
+			return rv;
+		}
 	}
-	public static BillboardFieldDeclarationOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private BillboardFieldDeclarationOperation() {
+	private FunctionDeclarationOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declarationType ) {
 		super( 
-				java.util.UUID.fromString( "1ce5a991-d315-40d3-a0ad-d711835e8140" ), 
-				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Billboard.class ), false, 
-				false, false, 
-				"", true, 
-				org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lgna.story.Billboard.class ), false 
+				java.util.UUID.fromString( "b48992c5-8b9c-46c9-ad47-3cf148778db7" ), 
+				declarationType, true,
+				null, true, 
+				false, true, 
+				"", true 
 		);
 	}
+
 	@Override
-	protected org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel( this );
-	}
-	@Override
-	protected org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization rv ) {
-		//rv.addDoStatement();
-		return rv;
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.ide.croquet.components.declaration.FunctionDeclarationPanel( this );
 	}
 }
