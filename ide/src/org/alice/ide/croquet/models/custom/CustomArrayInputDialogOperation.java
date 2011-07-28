@@ -57,7 +57,13 @@ public class CustomArrayInputDialogOperation extends CustomInputDialogOperation<
 		}
 		return rv;
 	}
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > componentType;
 	private CustomArrayInputDialogOperation( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > componentType ) {
-		super( java.util.UUID.fromString( "e4101f45-9c74-478e-b406-f8726a7b706a" ), new org.alice.ide.choosers.ArrayChooser( componentType ) );
+		super( java.util.UUID.fromString( "e4101f45-9c74-478e-b406-f8726a7b706a" ), null );
+		this.componentType = componentType;
+	}
+	@Override
+	protected org.alice.ide.croquet.models.custom.CustomInputPane< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > EPIC_HACK_createCustomInputPane() {
+		return new CustomInputPane< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation >( new org.alice.ide.choosers.ArrayChooser( this.componentType ) );
 	}
 }
