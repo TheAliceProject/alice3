@@ -281,7 +281,9 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 		fromFilePane.addComponent( CreateMyInstanceOperation.getInstance().createButton());
 
 		GridPanel bonusPane = GridPanel.createGridPane( 2, 1, 0, 4 );
-		bonusPane.addComponent(CreateBillboardOperation.getInstance().createButton());
+		//bonusPane.addComponent(CreateBillboardOperation.getInstance().createButton());
+		bonusPane.addComponent( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation.getInstance().createButton() );
+		
 		bonusPane.addComponent(Create3dTextOperation.getInstance().createButton());
 
 		BorderPanel buttonPane = new BorderPanel();

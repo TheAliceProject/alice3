@@ -41,25 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultItemState<T> extends org.lgna.croquet.ItemState< T > {
-	private T value;
-	public DefaultItemState( Group group, java.util.UUID id, ItemCodec< T > itemCodec, T initialValue ) {
-		super( group, id, itemCodec );
-		this.value = initialValue;
+public abstract class SceneFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation {
+	public SceneFieldDeclarationOperation( 
+			java.util.UUID id, 
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> initialValueComponentType,
+			boolean isValueComponentTypeEditable,
+			boolean initialIsArrayValueType,
+			boolean isIsArrayValueTypeEditable,
+			String initialName,
+			boolean isNameEditable,
+			edu.cmu.cs.dennisc.alice.ast.Expression initialExpression,
+			boolean isExpressionEditable
+		) {
+		super( 
+				id, 
+				null, false, 
+				initialValueComponentType, isValueComponentTypeEditable, 
+				initialIsArrayValueType, isIsArrayValueTypeEditable, 
+				initialName, isNameEditable, 
+				initialExpression, isExpressionEditable
+		);
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public T getValue() {
-		return this.value;
-	}
-	public void setValue( T value ) {
-		this.value = value;
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+		return org.alice.ide.IDE.getActiveInstance().getSceneType();
 	}
 }

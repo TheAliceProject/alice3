@@ -41,25 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.ide.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultItemState<T> extends org.lgna.croquet.ItemState< T > {
-	private T value;
-	public DefaultItemState( Group group, java.util.UUID id, ItemCodec< T > itemCodec, T initialValue ) {
-		super( group, id, itemCodec );
-		this.value = initialValue;
+public class PanelWithPreview< M extends org.lgna.croquet.InputDialogOperation< ? > > extends org.lgna.croquet.components.Panel {
+	private M model;
+	public PanelWithPreview( M model ) {
+		this.model = model;
+	}
+	public M getModel() {
+		return this.model;
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public T getValue() {
-		return this.value;
-	}
-	public void setValue( T value ) {
-		this.value = value;
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.BorderLayout();
 	}
 }

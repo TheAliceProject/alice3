@@ -41,25 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.croquet.components.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultItemState<T> extends org.lgna.croquet.ItemState< T > {
-	private T value;
-	public DefaultItemState( Group group, java.util.UUID id, ItemCodec< T > itemCodec, T initialValue ) {
-		super( group, id, itemCodec );
-		this.value = initialValue;
-	}
-	@Override
-	protected void localize() {
-	}
-	@Override
-	public T getValue() {
-		return this.value;
-	}
-	public void setValue( T value ) {
-		this.value = value;
+public class BillboardFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.DeclarationPanel< org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation > {
+	public BillboardFieldDeclarationPanel( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation model ) {
+		super( model );
 	}
 }

@@ -41,42 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.declaration;
+package org.alice.stageide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldDeclarationInputDialogBoxOperation extends DeclarationInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
-	protected static class StatementCollector {
-		private java.util.List< edu.cmu.cs.dennisc.alice.ast.Statement > doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private java.util.List< edu.cmu.cs.dennisc.alice.ast.Statement > undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		public void addDoStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-			this.doStatements.add( statement );
-		}
-		public edu.cmu.cs.dennisc.alice.ast.Statement[] getDoStatements() {
-			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.doStatements, edu.cmu.cs.dennisc.alice.ast.Statement.class );
-		}
-		public void addUndoStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-			this.undoStatements.add( statement );
-		}
-		public edu.cmu.cs.dennisc.alice.ast.Statement[] getUndoStatements() {
-			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.undoStatements, edu.cmu.cs.dennisc.alice.ast.Statement.class );
-		}
+public class BillboardFieldDeclarationOperation extends SceneFieldDeclarationOperation {
+	private static class SingletonHolder {
+		private static BillboardFieldDeclarationOperation instance = new BillboardFieldDeclarationOperation();
 	}
-
-	public FieldDeclarationInputDialogBoxOperation( java.util.UUID id ) {
-		super( id );
+	public static BillboardFieldDeclarationOperation getInstance() {
+		return SingletonHolder.instance;
 	}
-	protected abstract StatementCollector addStatements( StatementCollector rv );
+	private BillboardFieldDeclarationOperation() {
+		super( 
+				java.util.UUID.fromString( "1ce5a991-d315-40d3-a0ad-d711835e8140" ), 
+				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Billboard.class ), false, 
+				false, false, 
+				"", true, 
+				null, false 
+		);
+	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice();
-		field.valueType.setValue( valueType );
-		field.name.setValue( declarationName );
-		field.initializer.setValue( initializer );
-
-		StatementCollector statementCollector = new StatementCollector();
-		this.addStatements( statementCollector );
-		return new org.alice.ide.operations.ast.DeclareFieldEdit( step, this.getDeclaringTypeState().getValue(), field, statementCollector.getDoStatements(), statementCollector.getUndoStatements() );
+	protected org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel( this );
+	}
+	@Override
+	protected org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization rv ) {
+		//rv.addDoStatement();
+		return rv;
 	}
 }

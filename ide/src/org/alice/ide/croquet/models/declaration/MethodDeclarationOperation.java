@@ -41,25 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultItemState<T> extends org.lgna.croquet.ItemState< T > {
-	private T value;
-	public DefaultItemState( Group group, java.util.UUID id, ItemCodec< T > itemCodec, T initialValue ) {
-		super( group, id, itemCodec );
-		this.value = initialValue;
+public abstract class MethodDeclarationOperation extends DeclarationOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+	public MethodDeclarationOperation(
+			java.util.UUID id, 
+			edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> initialDeclaringType,
+			boolean isDeclaringTypeEditable,
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> initialValueComponentType,
+			boolean isValueComponentTypeEditable,
+			boolean initialIsArrayValueType,
+			boolean isIsArrayValueTypeEditable,
+			String initialName,
+			boolean isNameEditable
+	) {
+		super( 
+				id, 
+				initialDeclaringType, isDeclaringTypeEditable, 
+				initialValueComponentType, isValueComponentTypeEditable, 
+				initialIsArrayValueType, isIsArrayValueTypeEditable, 
+				initialName, isNameEditable, 
+				null, false
+		);
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public T getValue() {
-		return this.value;
-	}
-	public void setValue( T value ) {
-		this.value = value;
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
+		return null;
 	}
 }
