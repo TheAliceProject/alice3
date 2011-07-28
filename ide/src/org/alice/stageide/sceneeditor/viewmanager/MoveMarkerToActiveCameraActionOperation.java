@@ -69,7 +69,7 @@ public class MoveMarkerToActiveCameraActionOperation extends ActionOperation {
 	private MoveToImageIcon imageIcon;
 
 	private MoveMarkerToActiveCameraActionOperation() {
-		super(edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "a95908d8-0161-4a03-8a38-61eebea0c58c" ));
+		super(org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "a95908d8-0161-4a03-8a38-61eebea0c58c" ));
 		this.markerField = null;
 		this.cameraMarker = null;
 		this.setToolTipText("Move the camera to this marker.");

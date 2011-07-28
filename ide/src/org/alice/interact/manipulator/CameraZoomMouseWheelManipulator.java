@@ -448,7 +448,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
 			} else {
 				animator = null;
 			}
-			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation(Project.GROUP, false, animator, (OrthographicCamera)this.camera, this.originalOrthographicZoomValue, newZoom, getUndoRedoDescription());
+			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation(org.alice.ide.IDE.PROJECT_GROUP, false, animator, (OrthographicCamera)this.camera, this.originalOrthographicZoomValue, newZoom, getUndoRedoDescription());
 			undoOperation.fire();
 		}
 		else

@@ -52,7 +52,7 @@ public class SetValueOperation<P> extends org.lgna.croquet.ActionOperation
 	protected P originalValue;
 	
 	public SetValueOperation( PropertyAdapter <P, ?> propertyAdapter, P value, String name, java.util.UUID individualUUID) {
-		super( Project.GROUP, individualUUID );
+		super( org.alice.ide.IDE.PROJECT_GROUP, individualUUID );
 		this.propertyAdapter = propertyAdapter;
 		this.value = value;
 		this.setName( name );

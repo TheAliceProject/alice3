@@ -60,7 +60,7 @@ public class DeclareMethodParameterOperation extends org.alice.ide.croquet.model
 	}
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	private DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "108b8040-92e1-4792-b61e-594bd5eeb0bb" ) );
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "108b8040-92e1-4792-b61e-594bd5eeb0bb" ) );
 		this.method = method;
 	}
 	

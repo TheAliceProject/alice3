@@ -49,7 +49,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOperation {
 	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
 	public StatementInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
+		super( org.alice.ide.IDE.PROJECT_GROUP, id );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 	public org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {

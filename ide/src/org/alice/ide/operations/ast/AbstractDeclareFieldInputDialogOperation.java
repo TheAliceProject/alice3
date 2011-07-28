@@ -81,7 +81,7 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 		}
 	}
 	public AbstractDeclareFieldInputDialogOperation( java.util.UUID individualId ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
+		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 	}
 	
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType();

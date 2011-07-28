@@ -65,6 +65,8 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 			for( edu.cmu.cs.dennisc.alice.ast.Expression expression : arrayInstanceCreation.expressions ) {
 				bogusNode.arrayExpressions.add( expression );
 			}
+		} else {
+			bogusNode.componentType.setValue(arrayComponentType);
 		}
 
 		this.arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.componentType, bogusNode.arrayExpressions );
@@ -72,7 +74,6 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 		if (arrayComponentType.isAssignableFrom(Object.class)) {
 			this.components = new org.lgna.croquet.components.Component< ? >[] { this.typePane, this.arrayInitializerPane };
 		} else {
-			bogusNode.componentType.setValue(arrayComponentType);
 			org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
 			String typeName = formatter.getTextForType( arrayComponentType ) + " [ ]";
 			org.lgna.croquet.components.Label typeLabel = new org.lgna.croquet.components.Label( typeName );

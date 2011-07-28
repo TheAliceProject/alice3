@@ -49,7 +49,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 public abstract class StatementInsertCascade extends org.alice.ide.croquet.models.ast.cascade.ExpressionsCascade {
 	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
 	public StatementInsertCascade( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id, blanks );
+		super( org.alice.ide.IDE.PROJECT_GROUP, id, blanks );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 	public org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {

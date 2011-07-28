@@ -54,6 +54,6 @@ public class IsProjectHistoryShowingState extends org.alice.ide.croquet.models.I
 	}
 	@Override
 	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.history.HistoryPane( edu.cmu.cs.dennisc.alice.Project.GROUP );
+		return new edu.cmu.cs.dennisc.history.HistoryPane( org.alice.ide.IDE.PROJECT_GROUP );
 	}
 }

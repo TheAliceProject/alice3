@@ -41,23 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.gallerybrowser;
+package test;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CreateTypeFromPersonResourceOperation extends PersonResourceOperation {
-	private static class SingletonHolder {
-		private static CreateTypeFromPersonResourceOperation instance = new CreateTypeFromPersonResourceOperation();
-	}
-	public static CreateTypeFromPersonResourceOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private CreateTypeFromPersonResourceOperation() {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "3ac22606-3b37-4b75-9613-89994c873782" ) );
-	}
-	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.story.resources.sims2.PersonResource personResource ) {
-		throw new RuntimeException( "todo" );
+public class TestMenuBar {
+	public static void main( String[] args ) {
+		javax.swing.JFrame frame = new javax.swing.JFrame();
+		javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
+		javax.swing.JMenu menu = new javax.swing.JMenu( "a" );
+		menu.getPopupMenu().addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+			public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+				System.err.println( "popupMenuWillBecomeVisible: " + e );
+			}
+			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+				System.err.println( "popupMenuWillBecomeInvisible: " + e );
+			}
+			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+				System.err.println( "popupMenuCanceled: " + e );
+			}
+		} );
+		menu.add( new javax.swing.JMenuItem( "b" ) );
+		menuBar.add( menu );
+		frame.setJMenuBar( menuBar );
+		frame.setDefaultCloseOperation( javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		frame.pack();
+		frame.setVisible( true );
 	}
 }

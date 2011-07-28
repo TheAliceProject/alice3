@@ -78,7 +78,7 @@ public abstract class DeclarationInputDialogOperation< T extends edu.cmu.cs.denn
 	private final IsArrayState isArrayState = new IsArrayState( false );
 	private final InitializerState initializerState = new InitializerState();
 	public DeclarationInputDialogOperation( java.util.UUID id ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
+		super( org.alice.ide.IDE.PROJECT_GROUP, id );
 	}
 
 	public DeclaringTypeState getDeclaringTypeState() {

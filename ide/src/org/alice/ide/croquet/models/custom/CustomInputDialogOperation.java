@@ -50,13 +50,19 @@ public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.al
 	
 	public CustomInputDialogOperation( java.util.UUID id, org.alice.ide.choosers.ValueChooser< E > chooser ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, id );
-		this.customInputPane = new CustomInputPane< E >( chooser );
+		if( chooser != null ) {
+			this.customInputPane = new CustomInputPane< E >( chooser );
+		}
 	}
 	public E getActualInputValue() {
 		return this.customInputPane.getInputValue();
 	}
+	protected CustomInputPane< E > EPIC_HACK_createCustomInputPane() {
+		return this.customInputPane;
+	}
 	@Override
 	protected CustomInputPane< E > prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
+		this.customInputPane = this.EPIC_HACK_createCustomInputPane();
 		this.customInputPane.handlePrologue( step );
 		return this.customInputPane;
 	}

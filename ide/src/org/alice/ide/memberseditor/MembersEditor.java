@@ -155,7 +155,6 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 		
 		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
 		
-		
 		instancePanel.addComponent( instanceLabel );
 		
 		org.lgna.croquet.components.PopupButton popupButton = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
@@ -174,6 +173,7 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 		awtButton.add( arrowIconLabel );
 		awtButton.setIcon( null );
 		instancePanel.addComponent( popupButton );
+
 		this.addComponent( instancePanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		this.addComponent( cardPanel, Constraint.CENTER );
 	}
