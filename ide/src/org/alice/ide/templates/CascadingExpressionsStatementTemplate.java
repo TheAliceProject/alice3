@@ -66,7 +66,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 //				}
 //				@Override
 //				protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
-//					return edu.cmu.cs.dennisc.alice.Project.GROUP;
+//					return org.alice.ide.IDE.PROJECT_GROUP;
 //				}
 //				public org.alice.ide.codeeditor.InsertStatementEdit createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 //					edu.cmu.cs.dennisc.alice.ast.Statement statement = CascadingExpressionsStatementTemplate.this.createStatement( (edu.cmu.cs.dennisc.alice.ast.Expression)value ); 
@@ -93,7 +93,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 //				}
 //				@Override
 //				protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
-//					return edu.cmu.cs.dennisc.alice.Project.GROUP;
+//					return org.alice.ide.IDE.PROJECT_GROUP;
 //				}
 //				public org.alice.ide.codeeditor.InsertStatementEdit createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 //					edu.cmu.cs.dennisc.alice.ast.Statement statement = CascadingExpressionsStatementTemplate.this.createStatement( (edu.cmu.cs.dennisc.alice.ast.Expression[])value ); 
@@ -126,7 +126,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 //	protected edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > createCascadeOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types ) {
 //		class ExpressionCascadeOperation extends edu.cmu.cs.dennisc.croquet.CascadeOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
 //			public ExpressionCascadeOperation() {
-//				super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "2ac86fcd-f740-480e-8cfa-06501ab7bac5" ), edu.cmu.cs.dennisc.alice.ast.Expression.class, createExpressionBlanks( types ) );
+//				super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "2ac86fcd-f740-480e-8cfa-06501ab7bac5" ), edu.cmu.cs.dennisc.alice.ast.Expression.class, createExpressionBlanks( types ) );
 //			}
 //
 //			@Override

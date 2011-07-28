@@ -53,7 +53,7 @@ public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperati
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement toBlockStatement;
 	private int toIndex;
 	public MoveStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.BlockStatement fromBlockStatement, int fromIndex, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.BlockStatement toBlockStatement, int toIndex ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "a6aa2cea-f205-434a-8ec8-c068c9fb3b83" ) );
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "a6aa2cea-f205-434a-8ec8-c068c9fb3b83" ) );
 		this.fromBlockStatement = fromBlockStatement;
 		this.fromIndex = fromIndex;
 		this.statement = statement;

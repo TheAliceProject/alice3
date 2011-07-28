@@ -77,7 +77,7 @@ public class EditTypeOperation extends org.lgna.croquet.InputDialogOperation {
 	}
 	@Override
 	protected org.alice.ide.editorstabbedpane.EditTypePanel prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( org.alice.ide.IDE.PROJECT_GROUP );
 		int projectHistoryIndex = projectHistoryManager.getInsertionIndex();
 		return new org.alice.ide.editorstabbedpane.EditTypePanel( this.type, projectHistoryIndex );
 	}
@@ -87,7 +87,7 @@ public class EditTypeOperation extends org.lgna.croquet.InputDialogOperation {
 		if( isOk ) {
 			step.finish();
 		} else {
-			edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
+			edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( org.alice.ide.IDE.PROJECT_GROUP );
 			projectHistoryManager.setInsertionIndex( editTypePanel.getHistoryIndex() );
 			step.cancel();
 		}

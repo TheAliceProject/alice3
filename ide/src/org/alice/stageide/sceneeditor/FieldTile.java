@@ -168,7 +168,7 @@ import org.lgna.croquet.BooleanState;
 //					}
 //					@Override
 //					protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
-//						return edu.cmu.cs.dennisc.alice.Project.GROUP;
+//						return org.alice.ide.IDE.PROJECT_GROUP;
 //					}
 //					@Override
 //					protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getDesiredValueTypes() {

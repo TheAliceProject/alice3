@@ -51,7 +51,7 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 	protected abstract boolean isInstanceValid();
 	
 	public AbstractDeclareFieldInputDialogOperation( java.util.UUID individualId ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
+		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 	}
 	
 	protected org.alice.ide.IDE getIDE() {

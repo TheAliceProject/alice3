@@ -169,7 +169,7 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice
 public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel {
 	abstract class ResourceOperation extends org.alice.ide.operations.ActionOperation {
 		public ResourceOperation( java.util.UUID individualId ) {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
+			super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 		}
 		protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.OperationStep< ? > step, org.alice.virtualmachine.Resource resource );
 
@@ -360,7 +360,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 	class RenameResourceOperation extends org.lgna.croquet.InputDialogOperation {
 		private org.alice.virtualmachine.Resource resource;
 		public RenameResourceOperation() {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "da920b16-65fc-48a4-9203-b3c2979b0a59" ) );
+			super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "da920b16-65fc-48a4-9203-b3c2979b0a59" ) );
 			this.setName( "Rename..." );
 		}
 		@Override
@@ -476,7 +476,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		}
 
 		public ReloadResourceOperation() {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "05f5ede7-194a-45b2-bb97-c3d23aedf5b9" ) );
+			super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "05f5ede7-194a-45b2-bb97-c3d23aedf5b9" ) );
 			this.setName( "Reload Content..." );
 		}
 		@Override

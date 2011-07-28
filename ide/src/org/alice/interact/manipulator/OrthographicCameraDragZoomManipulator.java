@@ -171,7 +171,7 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
 			} else {
 				animator = null;
 			}
-			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation(Project.GROUP, false, animator, (OrthographicCamera)this.camera, this.originalZoomValue, newZoom, getUndoRedoDescription());
+			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation(org.alice.ide.IDE.PROJECT_GROUP, false, animator, (OrthographicCamera)this.camera, this.originalZoomValue, newZoom, getUndoRedoDescription());
 			undoOperation.fire();
 		}
 	}

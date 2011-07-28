@@ -49,7 +49,7 @@ package org.alice.ide.croquet.models.ast.cascade;
 public abstract class ProjectExpressionPropertyOperation extends org.lgna.croquet.ActionOperation {
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 	public ProjectExpressionPropertyOperation( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
+		super( org.alice.ide.IDE.PROJECT_GROUP, id );
 		this.expressionProperty = expressionProperty;
 	}
 	public final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
