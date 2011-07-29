@@ -6,7 +6,6 @@
               as the first entry and export the buildfile again. -->
 <project basedir="." default="build" name="ide">
     <property environment="env"/>
-    <property name="workspace_loc" value="../../Alice Build Workspace"/>
     <property name="project_loc:ide" value="."/>
     <property name="system_property:os.name" value="Windows 7"/>
     <property name="system_property:os.arch" value="x86"/>
@@ -34,7 +33,6 @@
         <pathelement location="generated/gallery/mtwtGalleryLargeIcons.jar"/>
         <pathelement location="generated/gallery/mtwtGalleryBoxes.jar"/>
         <pathelement location="generated/gallery/stagePersonEditorLargeIcons.jar"/>
-        <pathelement location="src/uist/ecard/lib/substance.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
@@ -92,58 +90,6 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-    <target name="ECard (2007)">
-        <java classname="autotutorial.ecard.ECardTutorial" failonerror="true" fork="yes">
-            <arg line="0 0 800 600 2007 &quot;${workspace_loc}/ecard-tutorial&quot;"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
-    <target name="ECard (2003)">
-        <java classname="autotutorial.ecard.ECardTutorial" failonerror="true" fork="yes">
-            <arg line="0 0 800 600 2003 &quot;${workspace_loc}/ecard-tutorial&quot;"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
-    <target name="TutorialIde (encode)">
-        <java classname="uist.TutorialIde" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.internalTesting=true"/>
-            <arg line="&quot;${project_loc:ide}/src/uist/fish.a3p&quot; 0 0 1000 720 true &quot;${workspace_loc}/lg-tutorial&quot;"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
-    <target name="TutorialIde (decode) (wizard of hastings) (data only)">
-        <java classname="uist.TutorialIde" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.internalTesting=true"/>
-            <arg line="&quot;${project_loc:ide}/src/uist/clown.a3p&quot; 0 0 1600 1200 false &quot;${workspace_loc}/lg-tutorial&quot; true false true false false"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
-    <target name="TutorialIde (decode) (wizard of hastings) (data only) (doc wizards)">
-        <java classname="uist.TutorialIde" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.internalTesting=true"/>
-            <arg line="&quot;${project_loc:ide}/src/uist/clown.a3p&quot; 280 0 800 600 false &quot;${workspace_loc}/lg-tutorial&quot; true false false false false"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
-    <target name="TutorialIde (decode) (wizard of hastings) (data and ui)">
-        <java classname="uist.TutorialIde" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.internalTesting=true"/>
-            <arg line="&quot;${project_loc:ide}/src/uist/clown.a3p&quot; 0 0 800 600 false &quot;${workspace_loc}/lg-tutorial&quot; true true true false false"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
-    <target name="TutorialECard (encode)">
-        <java classname="uist.TutorialECard" failonerror="true" fork="yes">
-            <arg line="0 0 1000 720 2003 &quot;${workspace_loc}/ecard-tutorial&quot;"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
-    <target name="TutorialECard (decode)">
-        <java classname="uist.TutorialECard" failonerror="true" fork="yes">
-            <arg line="0 0 1280 720 2007 ${workspace_loc}/ecard-tutorial"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
     <target name="StressTestTutorial">
         <java classname="org.alice.stageide.tutorial.StressTestTutorial" failonerror="true" fork="yes">
             <jvmarg line="-ea -Xmx1024m -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot;"/>
@@ -174,7 +120,7 @@
     </target>
     <target name="IDE">
         <java classname="org.alice.stageide.EntryPoint" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot;"/>
+            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dcom.apple.mrj.application.apple.menu.about.name=Alice3Beta -Dapple.laf.useScreenMenuBar=true"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
@@ -214,7 +160,7 @@
     </target>
     <target name="IDE (1.6)">
         <java classname="org.alice.stageide.EntryPoint" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.internalTesting=true"/>
+            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.internalTesting=true -Dorg.lgna.croquet.Element.isIdCheckDesired=true -Dcom.apple.mrj.application.apple.menu.about.name=Alice3Beta"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
@@ -232,45 +178,8 @@
     </target>
     <target name="IDE (1.6) (a)">
         <java classname="org.alice.stageide.EntryPoint" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.internalTesting=true"/>
+            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.internalTesting=true -Dorg.lgna.croquet.Element.isIdCheckDesired=true -Dcom.apple.mrj.application.apple.menu.about.name=Alice3Beta"/>
             <arg line="&quot;${system_property:user.home}/My Documents/Alice3/MyProjects/a.a3p&quot; 0 0 1280 720"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
-    <target name="TutorialIde (encode)">
-        <java classname="uist.TutorialIde" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.internalTesting=true"/>
-            <arg line="&quot;${project_loc:ide}/src/uist/fish.a3p&quot; 0 0 1280 720 true &quot;${workspace_loc}/lg-tutorial&quot;"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
-    <target name="TutorialECard (encode)">
-        <java classname="uist.TutorialECard" failonerror="true" fork="yes">
-            <arg line="0 0 1280 720 2003 &quot;${workspace_loc}/ecard-tutorial&quot;"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
-    <target name="TutorialECard (decode2)">
-        <java classname="uist.TutorialECard" failonerror="true" fork="yes">
-            <arg line="0 0 1280 720 2007 ${workspace_loc}/ecard-tutorial"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
-    <target name="ECard (2007 video)">
-        <java classname="uist.ecard.ECardTutorial" failonerror="true" fork="yes">
-            <arg line="0 0 800 600 2007 &quot;${workspace_loc}/ecard-tutorial&quot;"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
-    <target name="ECard (2003)">
-        <java classname="uist.ecard.ECardTutorial" failonerror="true" fork="yes">
-            <arg line="0 0 800 600 2003 &quot;${workspace_loc}/ecard-tutorial&quot;"/>
-            <classpath refid="ide.classpath"/>
-        </java>
-    </target>
-    <target name="ECard (2003 video)">
-        <java classname="uist.ecard.ECardTutorial" failonerror="true" fork="yes">
-            <arg line="0 0 800 600 2003 &quot;${workspace_loc}/ecard-tutorial&quot;"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
