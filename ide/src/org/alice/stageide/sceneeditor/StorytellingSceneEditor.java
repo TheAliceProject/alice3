@@ -129,13 +129,21 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	{
 		this.sceneCameraImplementation = getImplementation(cameraField);
 
-		this.globalDragAdapter.clearCameraViews();
-		this.globalDragAdapter.addCameraView( CameraView.MAIN, this.sceneCameraImplementation.getSgCamera(), null );
-		this.globalDragAdapter.makeCameraActive( this.sceneCameraImplementation.getSgCamera() );
+		doCameraDependentInitialization();
 //		this.mainCameraViewTracker.setCameras(perspectiveCamera, orthographicCamera);
 //		this.snapGrid.addCamera(perspectiveCamera);
 //		this.snapGrid.addCamera(orthographicCamera);
 //		this.snapGrid.setCurrentCamera(perspectiveCamera);
+	}
+		
+	private void doCameraDependentInitialization()
+	{
+		if (this.globalDragAdapter != null && this.sceneCameraImplementation != null)
+		{
+			this.globalDragAdapter.clearCameraViews();
+			this.globalDragAdapter.addCameraView( CameraView.MAIN, this.sceneCameraImplementation.getSgCamera(), null );
+			this.globalDragAdapter.makeCameraActive( this.sceneCameraImplementation.getSgCamera() );
+		}
 	}
 	
 	private static final int INSET = 8;
@@ -174,6 +182,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
 			
 			this.expandCollapseButton = IsSceneEditorExpandedState.getInstance().createPushButton();
+			
+			doCameraDependentInitialization();
 			
 //			this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
 //				public void selecting( org.alice.interact.event.SelectionEvent e ) {
