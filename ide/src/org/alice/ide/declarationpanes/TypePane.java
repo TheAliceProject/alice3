@@ -72,7 +72,7 @@ class TypePropertyItemState extends org.lgna.croquet.CustomItemState< edu.cmu.cs
 		return this.typeProperty.getValue();
 	}
 	@Override
-	protected void setValue( edu.cmu.cs.dennisc.alice.ast.AbstractType value ) {
+	protected void handleValueChange( edu.cmu.cs.dennisc.alice.ast.AbstractType value ) {
 		this.typeProperty.setValue( value );
 	}
 }

@@ -51,6 +51,6 @@ public class FieldItemSelectionOperation extends org.alice.ide.operations.Abstra
 	}
 	@Override
 	protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.AbstractField value) {
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().changeValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( value ) );
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( value ) );
 	}
 }

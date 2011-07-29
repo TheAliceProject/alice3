@@ -41,25 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.ide.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultItemState<T> extends org.lgna.croquet.ItemState< T > {
-	private T value;
-	public DefaultItemState( Group group, java.util.UUID id, ItemCodec< T > itemCodec, T initialValue ) {
-		super( group, id, itemCodec );
-		this.value = initialValue;
+public class TypeDropDown< M extends org.lgna.croquet.CustomItemState< edu.cmu.cs.dennisc.alice.ast.AbstractType > > extends org.lgna.croquet.components.ItemDropDown< edu.cmu.cs.dennisc.alice.ast.AbstractType, M > {
+	public TypeDropDown( M model ) {
+		super( model );
+		this.update( model.getValue() );
+		this.getAwtComponent().setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 	}
+	private void update( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		this.getAction().putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) {
+			@Override
+			protected java.awt.Color getTextColor(java.awt.Component c) {
+				return super.getTextColor( TypeDropDown.this.getAwtComponent() );
+			}
+		} );
+	}
+	
 	@Override
-	protected void localize() {
+	protected void handleChanged( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.AbstractType > state, edu.cmu.cs.dennisc.alice.ast.AbstractType prevValue, edu.cmu.cs.dennisc.alice.ast.AbstractType nextValue, boolean isAdjusting ) {
+		this.update( nextValue );
 	}
-	@Override
-	public T getValue() {
-		return this.value;
-	}
-	public void setValue( T value ) {
-		this.value = value;
-	}
-}
+};

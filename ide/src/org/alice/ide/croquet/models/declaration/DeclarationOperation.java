@@ -46,42 +46,7 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationOperation< T extends edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > extends org.lgna.croquet.InputDialogOperation< T > {
-	public static class DeclaringTypeState extends org.lgna.croquet.DefaultItemState< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice > {
-		private final DeclarationOperation<?> owner;
-		public DeclaringTypeState( DeclarationOperation<?> owner, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> initialValue ) {
-			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "7b2413e0-a945-49d1-800b-4fba4f0bc741" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ), initialValue );
-			this.owner = owner;
-		}
-	}
-	public static class ValueComponentTypeState extends org.lgna.croquet.DefaultItemState< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
-		private final DeclarationOperation<?> owner;
-		public ValueComponentTypeState( DeclarationOperation<?> owner, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> initialValue ) {
-			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "7b2413e0-a945-49d1-800b-4fba4f0bc741" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType.class ), initialValue );
-			this.owner = owner;
-		}
-	}
-	public static class IsArrayValueTypeState extends org.lgna.croquet.BooleanState {
-		private final DeclarationOperation<?> owner;
-		public IsArrayValueTypeState( DeclarationOperation<?> owner, boolean initialValue ) {
-			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "0d05e96f-4eee-4b50-8065-c6a1aff9a573" ), initialValue );
-			this.owner = owner;
-		}
-	}
-	public static class NameState extends org.lgna.croquet.StringState {
-		private final DeclarationOperation<?> owner;
-		public NameState( DeclarationOperation<?> owner, String initialValue ) {
-			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "cc8de0c1-261f-431e-a62c-60346a8fedff" ), initialValue );
-			this.owner = owner;
-		}
-	}
-	public static class InitializerState extends org.lgna.croquet.DefaultItemState< edu.cmu.cs.dennisc.alice.ast.Expression > {
-		private final DeclarationOperation<?> owner;
-		public InitializerState( DeclarationOperation<?> owner, edu.cmu.cs.dennisc.alice.ast.Expression initialValue ) {
-			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4edd354e-da3c-400d-9c55-66da924c09a7" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ), initialValue );
-			this.owner = owner;
-		}
-	}
+public abstract class DeclarationOperation< T extends edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > extends org.alice.ide.croquet.models.InputDialogOperationWithPreview< T > {
 	private final DeclaringTypeState declaringTypeState;
 	private final ValueComponentTypeState valueComponentTypeState;
 	private final IsArrayValueTypeState isArrayValueTypeState;
@@ -91,7 +56,8 @@ public abstract class DeclarationOperation< T extends edu.cmu.cs.dennisc.alice.a
 	private final boolean isValueComponentTypeEditable;
 	private final boolean isIsArrayValueTypeEditable;
 	private final boolean isNameEditable;
-	private final boolean isExpressionEditable;
+	private final boolean isInitializerEditable;
+	private String valueTypeLabelText; 
 
 	public DeclarationOperation( 
 			java.util.UUID id, 
@@ -104,7 +70,7 @@ public abstract class DeclarationOperation< T extends edu.cmu.cs.dennisc.alice.a
 			String initialName,
 			boolean isNameEditable,
 			edu.cmu.cs.dennisc.alice.ast.Expression initialExpression,
-			boolean isExpressionEditable
+			boolean isInitializerEditable
 	) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, id );
 		if( initialDeclaringType != null || isDeclaringTypeEditable ) {
@@ -122,7 +88,7 @@ public abstract class DeclarationOperation< T extends edu.cmu.cs.dennisc.alice.a
 		} else {
 			this.nameState = null;
 		}
-		if( initialExpression != null || isExpressionEditable ) {
+		if( initialExpression != null || isInitializerEditable ) {
 			this.initializerState = new InitializerState( this, initialExpression );
 		} else {
 			this.initializerState = null;
@@ -132,9 +98,37 @@ public abstract class DeclarationOperation< T extends edu.cmu.cs.dennisc.alice.a
 		this.isValueComponentTypeEditable = isValueComponentTypeEditable;
 		this.isIsArrayValueTypeEditable = isIsArrayValueTypeEditable;
 		this.isNameEditable = isNameEditable;
-		this.isExpressionEditable = isExpressionEditable;
+		this.isInitializerEditable = isInitializerEditable;
+		
+		this.isArrayValueTypeState.setEnabled( this.isIsArrayValueTypeEditable );
+	}
+	@Override
+	protected java.awt.Dimension getDesiredDialogSize( org.lgna.croquet.components.Dialog dialog ) {
+		final int WIDTH = 480;
+		final int HEIGHT = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( WIDTH );
+		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumSize( super.getDesiredDialogSize( dialog ), WIDTH, HEIGHT );
+	}
+	@Override
+	protected void localize() {
+		super.localize();
+		if( this.declaringTypeState != null ) {
+			this.declaringTypeState.setLabelText( this.findLocalizedText( "declaringTypeLabel", DeclarationOperation.class ) );
+		}
+		if( this.valueComponentTypeState != null ) {
+			this.valueTypeLabelText = this.findLocalizedText( "valueTypeLabel", DeclarationOperation.class );
+		}
+		if( this.nameState != null ) {
+			this.nameState.setLabelText( this.findLocalizedText( "nameLabel", DeclarationOperation.class ) );
+		}
+		if( this.initializerState != null ) {
+			this.initializerState.setLabelText( this.findLocalizedText( "initializerLabel", DeclarationOperation.class ) );
+		}
 	}
 
+	public String getValueTypeLabelText() {
+		return this.valueTypeLabelText;
+	}
+	
 	public DeclaringTypeState getDeclaringTypeState() {
 		return this.declaringTypeState;
 	}
@@ -163,18 +157,18 @@ public abstract class DeclarationOperation< T extends edu.cmu.cs.dennisc.alice.a
 	public boolean isNameEditable() {
 		return this.isNameEditable;
 	}
-	public boolean isExpressionEditable() {
-		return this.isExpressionEditable;
+	public boolean isInitializerEditable() {
+		return this.isInitializerEditable;
 	}
 	
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
 		if( this.declaringTypeState != null ) {
 			return this.declaringTypeState.getValue();
 		} else {
 			return null;
 		}
 	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getValueType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getValueType() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > componentType = this.valueComponentTypeState.getValue();
 		if( componentType != null ) {
 			if( this.isArrayValueTypeState.getValue() ) {
@@ -186,14 +180,14 @@ public abstract class DeclarationOperation< T extends edu.cmu.cs.dennisc.alice.a
 			return null;
 		}
 	}
-	private String getDeclarationName() {
+	public String getDeclarationName() {
 		if( this.nameState != null ) {
 			return this.nameState.getValue();
 		} else {
 			return null;
 		}
 	}
-	private edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
+	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
 		if( this.initializerState != null ) {
 			return this.initializerState.getValue();
 		} else {
@@ -201,10 +195,17 @@ public abstract class DeclarationOperation< T extends edu.cmu.cs.dennisc.alice.a
 		}
 	}
 	
+	@Override
+	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return "todo";
+	}
+
+	public abstract T createPreviewDeclaration();
+
 	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > valueType, String declarationName, edu.cmu.cs.dennisc.alice.ast.Expression initializer );
 	protected abstract org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step );
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
 		return this.createMainComponent( step );
 	}
 	@Override

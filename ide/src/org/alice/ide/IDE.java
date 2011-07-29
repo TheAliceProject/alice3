@@ -857,6 +857,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
 		}
 		this.refreshAccessibles();
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON );
+			}
+		} );
 	}
 	@Override
 	public void setProject( edu.cmu.cs.dennisc.alice.Project project ) {

@@ -67,6 +67,14 @@ public abstract class MethodDeclarationOperation extends DeclarationOperation< e
 				null, false
 		);
 	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createPreviewDeclaration() {
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice();
+		rv.name.setValue( this.getDeclarationName() );
+		rv.returnType.setValue( this.getValueType() );
+		return rv;
+	}
 	@Override
 	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
 		return null;

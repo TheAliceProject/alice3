@@ -55,7 +55,8 @@ public class TypeFunctionsPane extends AbstractTypeMethodsPane {
 	}
 	@Override
 	protected org.lgna.croquet.components.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( type ).createButton();
+		//return org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( type ).createButton();
+		return org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation.getInstance( type ).createButton();
 	}
 	@Override
 	protected org.lgna.croquet.components.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {

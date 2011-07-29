@@ -56,7 +56,7 @@ public abstract class SceneFieldDeclarationOperation extends org.alice.ide.croqu
 			String initialName,
 			boolean isNameEditable,
 			edu.cmu.cs.dennisc.alice.ast.Expression initialExpression,
-			boolean isExpressionEditable
+			boolean isInitializerEditable
 		) {
 		super( 
 				id, 
@@ -64,11 +64,11 @@ public abstract class SceneFieldDeclarationOperation extends org.alice.ide.croqu
 				initialValueComponentType, isValueComponentTypeEditable, 
 				initialIsArrayValueType, isIsArrayValueTypeEditable, 
 				initialName, isNameEditable, 
-				initialExpression, isExpressionEditable
+				initialExpression, isInitializerEditable
 		);
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
 		return org.alice.ide.IDE.getActiveInstance().getSceneType();
 	}
 }

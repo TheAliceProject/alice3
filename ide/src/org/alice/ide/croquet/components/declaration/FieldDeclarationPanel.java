@@ -41,34 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.javax.swing.icons;
+package org.alice.ide.croquet.components.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PopupArrowIcon extends AbstractArrowIcon {
-	public PopupArrowIcon( int size ) {
-		super( size );
+public abstract class FieldDeclarationPanel< M extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation > extends DeclarationPanel< M > {
+	public FieldDeclarationPanel( M model ) {
+		super( model );
 	}
-	protected javax.swing.ButtonModel getButtonModel( java.awt.Component c ) {
-		javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-		return button.getModel();
-	}
-	public final void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-		javax.swing.ButtonModel buttonModel = this.getButtonModel( c );
-		java.awt.geom.GeneralPath path = this.createPath(x, y, Heading.SOUTH);
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Paint fillPaint;
-		if( buttonModel.isPressed() ) {
-			fillPaint = java.awt.Color.BLACK;
-		} else {
-			if( buttonModel.isRollover() ) {
-				fillPaint = java.awt.Color.GRAY;
-			} else {
-				fillPaint = java.awt.Color.DARK_GRAY;
-			}
-		}
-		g2.setPaint( fillPaint );
-		g2.fill( path );
+	@Override
+	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
+		M model = this.getModel();
+		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getPreviewFactory(), model.createPreviewDeclaration() );
 	}
 }

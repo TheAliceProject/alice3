@@ -83,7 +83,7 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< ed
 			String initialName,
 			boolean isNameEditable,
 			edu.cmu.cs.dennisc.alice.ast.Expression initialExpression,
-			boolean isExpressionEditable
+			boolean isInitializerEditable
 		) {
 		super( 
 				id, 
@@ -91,10 +91,19 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< ed
 				initialValueComponentType, isValueComponentTypeEditable, 
 				initialIsArrayValueType, isIsArrayValueTypeEditable, 
 				initialName, isNameEditable, 
-				initialExpression, isExpressionEditable
+				initialExpression, isInitializerEditable
 		);
 	}
 	protected abstract EditCustomization customize( EditCustomization rv );
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createPreviewDeclaration() {
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice();
+		rv.name.setValue( this.getDeclarationName() );
+		rv.valueType.setValue( this.getValueType() );
+		rv.initializer.setValue( this.getInitializer() );
+		return rv;
+	}
+
 	@Override
 	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice();

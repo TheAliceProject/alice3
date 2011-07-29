@@ -46,8 +46,66 @@ package org.alice.ide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationPanel< M extends org.alice.ide.croquet.models.declaration.DeclarationOperation< ? > > extends org.alice.ide.croquet.components.PanelWithPreview< M > {
+public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.declaration.DeclarationOperation< ? > > extends org.alice.ide.croquet.components.PanelWithPreview< M > {
 	public DeclarationPanel( M model ) {
 		super( model );
+		final int INSET = 16;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
+	}
+	
+	@Override
+	protected org.lgna.croquet.components.Component< ? > createMainComponent() {
+		final M model = this.getModel();
+		class DetailsPanel extends org.lgna.croquet.components.RowsSpringPanel {
+			@Override
+			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+				if( model.getComponentValueTypeState() != null ) {
+					org.lgna.croquet.components.Component< ? > component;
+					if( model.isValueComponentTypeEditable() ) {
+						org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel();
+						panel.addComponent( new org.alice.ide.croquet.components.TypeDropDown( model.getComponentValueTypeState() ), Constraint.CENTER );
+						panel.addComponent( model.getIsArrayState().createCheckBox(), Constraint.LINE_END );
+						component = panel;
+					} else {
+						if( model.isIsArrayEditable() ) {
+							//todo? this case is not currently supported
+							component = null;
+						} else {
+							component = org.alice.ide.common.TypeComponent.createInstance( model.getValueType() );
+						}
+					}
+					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getValueTypeLabelText(), component ) );
+				}
+				if( model.getNameState() != null ) {
+					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameState().getLabelText(), model.getNameState().createTextField() ) );
+				}
+				if( model.getInitializerState() != null ) {
+					org.lgna.croquet.components.Component< ? > component;
+					if( model.isInitializerEditable() ) {
+						component = model.getInitializerState().getCascadeRoot().getPopupPrepModel().createPopupButton();
+					} else {
+						component = org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( model.getInitializerState().getValue() );
+					}
+					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getInitializerState().getLabelText(), component ) );
+				}
+				return rv;
+			}
+		}
+		DetailsPanel detailsPanel = new DetailsPanel();
+		org.lgna.croquet.components.Component< ? > rv;
+		if( model.getDeclaringTypeState() != null ) {
+			org.lgna.croquet.components.PageAxisPanel panel = new org.lgna.croquet.components.PageAxisPanel();
+			if( model.isDeclaringTypeEditable() ) {
+				panel.addComponent( model.getDeclaringTypeState().createComponent() );
+			} else {
+				//todo? this case is not currently supported
+			}
+			detailsPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 24, 64, 0, 0 ) );
+			panel.addComponent( detailsPanel );
+			rv = panel;
+		} else {
+			rv = detailsPanel;
+		}
+		return rv;
 	}
 }

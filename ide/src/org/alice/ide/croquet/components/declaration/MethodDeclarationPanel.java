@@ -41,57 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.ide.croquet.components.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomItemState< T > extends ItemState< T > {
-	public class CascadeCustomRoot extends org.lgna.croquet.CascadeRoot< T, org.lgna.croquet.history.CustomItemStateChangeStep< T > > {
-		public CascadeCustomRoot( CascadeBlank< T >... blanks ) {
-			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ), blanks );
-		}
-		@Override
-		public org.lgna.croquet.history.CustomItemStateChangeStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
-			return org.lgna.croquet.history.TransactionManager.addCustomItemStateChangeStep( CustomItemState.this, trigger );
-		}
-		@Override
-		public java.lang.Class< T > getComponentType() {
-			return CustomItemState.this.getItemCodec().getValueClass();
-		}
-		@Override
-		public CustomItemState< T > getCompletionModel() {
-			return CustomItemState.this;
-		}
-		@Override
-		public void prologue() {
-		}
-		@Override
-		public void epilogue() {
-		}
-		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CustomItemStateChangeStep< T > completionStep, T[] values) {
-			return new org.lgna.croquet.edits.CustomItemStateEdit( completionStep, CustomItemState.this.getValue(), values[ 0 ] );
-		}
-	}
-	private final CascadeCustomRoot root;
-	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< T > itemCodec, CascadeBlank< T >... blanks ) {
-		super( group, id, itemCodec );
-		this.root = new CascadeCustomRoot( blanks );
-	}
-	public CascadeCustomRoot getCascadeRoot() {
-		return this.root;
+public abstract class MethodDeclarationPanel< M extends org.alice.ide.croquet.models.declaration.MethodDeclarationOperation > extends DeclarationPanel< M > {
+	public MethodDeclarationPanel( M model ) {
+		super( model );
 	}
 	@Override
-	protected void localize() {
-	}
-	protected abstract void handleValueChange( T value );
-	public final void changeValue( T prevValue, T nextValue, boolean isAdjusting ) {
-		this.fireChanging( prevValue, nextValue, isAdjusting );
-		this.handleValueChange( nextValue );
-		for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
-			component.revalidateAndRepaint();
-		}
-		this.fireChanged( prevValue, nextValue, isAdjusting );
+	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
+		M model = this.getModel();
+		return new org.alice.ide.codeeditor.MethodHeaderPane( model.createPreviewDeclaration(), null, true, model.getDeclaringType() );
 	}
 }

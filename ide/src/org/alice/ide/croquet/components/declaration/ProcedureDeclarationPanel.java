@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureDeclarationPanel extends DeclarationPanel< org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation > {
+public class ProcedureDeclarationPanel extends MethodDeclarationPanel< org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation > {
 	public ProcedureDeclarationPanel( org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation model ) {
 		super( model );
 	}

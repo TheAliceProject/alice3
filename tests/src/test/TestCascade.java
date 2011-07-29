@@ -283,7 +283,7 @@ class EnumState<T extends Enum<T>> extends org.lgna.croquet.CustomItemStateWithI
 		return this.value;
 	}
 	@Override
-	public void setValue(T value) {
+	public void handleValueChange(T value) {
 		this.value = value;
 	}
 	@Override

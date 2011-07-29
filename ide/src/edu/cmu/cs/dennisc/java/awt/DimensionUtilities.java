@@ -47,11 +47,19 @@ package edu.cmu.cs.dennisc.java.awt;
  */
 public class DimensionUtilities {
 	public static java.awt.Dimension constrainToMinimumWidth( java.awt.Dimension rv, int minimumWidth ) {
-		rv.width = Math.max( rv.width, minimumWidth );
+		if( rv != null ) {
+			rv.width = Math.max( rv.width, minimumWidth );
+		} else {
+			rv = new java.awt.Dimension( minimumWidth, 0 );
+		}
 		return rv;
 	}
 	public static java.awt.Dimension constrainToMinimumHeight( java.awt.Dimension rv, int minimumHeight ) {
-		rv.height = Math.max( rv.height, minimumHeight );
+		if( rv != null ) {
+			rv.height = Math.max( rv.height, minimumHeight );
+		} else {
+			rv = new java.awt.Dimension( 0, minimumHeight );
+		}
 		return rv;
 	}
 	public static java.awt.Dimension constrainToMinimumSize( java.awt.Dimension rv, int minimumWidth, int minimumHeight ) {

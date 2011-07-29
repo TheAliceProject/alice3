@@ -41,57 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.ide.croquet.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomItemState< T > extends ItemState< T > {
-	public class CascadeCustomRoot extends org.lgna.croquet.CascadeRoot< T, org.lgna.croquet.history.CustomItemStateChangeStep< T > > {
-		public CascadeCustomRoot( CascadeBlank< T >... blanks ) {
-			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ), blanks );
-		}
-		@Override
-		public org.lgna.croquet.history.CustomItemStateChangeStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
-			return org.lgna.croquet.history.TransactionManager.addCustomItemStateChangeStep( CustomItemState.this, trigger );
-		}
-		@Override
-		public java.lang.Class< T > getComponentType() {
-			return CustomItemState.this.getItemCodec().getValueClass();
-		}
-		@Override
-		public CustomItemState< T > getCompletionModel() {
-			return CustomItemState.this;
-		}
-		@Override
-		public void prologue() {
-		}
-		@Override
-		public void epilogue() {
-		}
-		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CustomItemStateChangeStep< T > completionStep, T[] values) {
-			return new org.lgna.croquet.edits.CustomItemStateEdit( completionStep, CustomItemState.this.getValue(), values[ 0 ] );
-		}
-	}
-	private final CascadeCustomRoot root;
-	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< T > itemCodec, CascadeBlank< T >... blanks ) {
-		super( group, id, itemCodec );
-		this.root = new CascadeCustomRoot( blanks );
-	}
-	public CascadeCustomRoot getCascadeRoot() {
-		return this.root;
+public abstract class InputDialogOperationWithPreview<T> extends org.lgna.croquet.InputDialogOperation< T > {
+	public InputDialogOperationWithPreview( org.lgna.croquet.Group group, java.util.UUID id ) {
+		super( group, id );
 	}
 	@Override
-	protected void localize() {
-	}
-	protected abstract void handleValueChange( T value );
-	public final void changeValue( T prevValue, T nextValue, boolean isAdjusting ) {
-		this.fireChanging( prevValue, nextValue, isAdjusting );
-		this.handleValueChange( nextValue );
-		for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
-			component.revalidateAndRepaint();
+	protected void updateExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		super.updateExplanation( step );
+		org.alice.ide.croquet.components.PanelWithPreview< ? > panelWithPreview = step.getMainPanel();
+		if( panelWithPreview != null ) {
+			panelWithPreview.updatePreview();
 		}
-		this.fireChanged( prevValue, nextValue, isAdjusting );
 	}
+	@Override
+	protected abstract org.alice.ide.croquet.components.PanelWithPreview< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step );
 }
