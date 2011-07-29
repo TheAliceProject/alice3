@@ -48,15 +48,8 @@ package org.alice.ide.croquet.models.declaration;
  */
 public class NameState extends org.lgna.croquet.StringState {
 	private final DeclarationOperation<?> owner;
-	private String labelText; 
 	public NameState( DeclarationOperation<?> owner, String initialValue ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "cc8de0c1-261f-431e-a62c-60346a8fedff" ), initialValue );
 		this.owner = owner;
-	}
-	public String getLabelText() {
-		return this.labelText;
-	}
-	/*package-private*/ void setLabelText( String labelText ) {
-		this.labelText = labelText;
 	}
 }

@@ -77,6 +77,8 @@ public abstract class MethodDeclarationOperation extends DeclarationOperation< e
 	}
 	@Override
 	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
-		return null;
+		assert initializer == null;
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = org.alice.ide.ast.NodeUtilities.createMethod( declarationName, valueType );
+		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( step, declaringType, method );
 	}
 }

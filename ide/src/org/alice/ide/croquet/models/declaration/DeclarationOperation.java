@@ -57,7 +57,10 @@ public abstract class DeclarationOperation< T extends edu.cmu.cs.dennisc.alice.a
 	private final boolean isIsArrayValueTypeEditable;
 	private final boolean isNameEditable;
 	private final boolean isInitializerEditable;
+	private String declaringTypeLabelText; 
 	private String valueTypeLabelText; 
+	private String nameLabelText; 
+	private String initializerLabelText; 
 
 	public DeclarationOperation( 
 			java.util.UUID id, 
@@ -112,21 +115,30 @@ public abstract class DeclarationOperation< T extends edu.cmu.cs.dennisc.alice.a
 	protected void localize() {
 		super.localize();
 		if( this.declaringTypeState != null ) {
-			this.declaringTypeState.setLabelText( this.findLocalizedText( "declaringTypeLabel", DeclarationOperation.class ) );
+			this.declaringTypeLabelText = this.findLocalizedText( "declaringTypeLabel", DeclarationOperation.class );
 		}
 		if( this.valueComponentTypeState != null ) {
 			this.valueTypeLabelText = this.findLocalizedText( "valueTypeLabel", DeclarationOperation.class );
 		}
 		if( this.nameState != null ) {
-			this.nameState.setLabelText( this.findLocalizedText( "nameLabel", DeclarationOperation.class ) );
+			this.nameLabelText = this.findLocalizedText( "nameLabel", DeclarationOperation.class );
 		}
 		if( this.initializerState != null ) {
-			this.initializerState.setLabelText( this.findLocalizedText( "initializerLabel", DeclarationOperation.class ) );
+			this.initializerLabelText = this.findLocalizedText( "initializerLabel", DeclarationOperation.class );
 		}
 	}
 
+	public String getDeclaringTypeLabelText() {
+		return this.declaringTypeLabelText;
+	}
 	public String getValueTypeLabelText() {
 		return this.valueTypeLabelText;
+	}
+	public String getNameLabelText() {
+		return this.nameLabelText;
+	}
+	public String getInitializerLabelText() {
+		return this.initializerLabelText;
 	}
 	
 	public DeclaringTypeState getDeclaringTypeState() {
@@ -195,9 +207,60 @@ public abstract class DeclarationOperation< T extends edu.cmu.cs.dennisc.alice.a
 		}
 	}
 	
+	protected String getValueTypeExplanation( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > valueType ) {
+		if( valueType != null ) {
+			return null;
+		} else {
+			return "enter a valid " + this.valueTypeLabelText;
+		}
+	}
+	protected String getNameExplanation( String declarationName ) {
+		if( declarationName.length() > 0 ) {
+			return null;
+		} else {
+			return "\"" + declarationName + "\" is not a valid " + this.declaringTypeLabelText;
+		}
+	}
+	protected String getInitializerExplanation( edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
+		return null;
+	}
 	@Override
 	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return "todo";
+		final String valueTypeText;
+		if( this.valueComponentTypeState != null ) {
+			valueTypeText = this.getValueTypeExplanation( this.getValueType() );
+		} else {
+			valueTypeText = null;
+		}
+		final String nameText = this.getNameExplanation( this.nameState.getValue() );
+		final String initializerText;
+		if( this.initializerState != null ) {
+			initializerText = this.getInitializerExplanation( initializerState.getValue() );
+		} else {
+			initializerText = null;
+		}
+		if( valueTypeText != null || nameText != null || initializerText != null ) {
+			String preText = "";
+			StringBuilder sb = new StringBuilder();
+			sb.append( "You must " );
+			if( valueTypeText != null ) {
+				sb.append( valueTypeText );
+				preText = " AND ";
+			}
+			if( nameText != null ) {
+				sb.append( preText );
+				sb.append( nameText );
+				preText = " AND ";
+			}
+			if( initializerText != null ) {
+				sb.append( preText );
+				sb.append( initializerText );
+			}
+			sb.append( "." );
+			return sb.toString();
+		} else {
+			return null;
+		}
 	}
 
 	public abstract T createPreviewDeclaration();

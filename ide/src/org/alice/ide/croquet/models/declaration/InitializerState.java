@@ -48,7 +48,6 @@ package org.alice.ide.croquet.models.declaration;
  */
 public class InitializerState extends org.lgna.croquet.DefaultCustomItemState< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private final DeclarationOperation<?> owner;
-	private String labelText; 
 	public InitializerState( DeclarationOperation<?> owner, edu.cmu.cs.dennisc.alice.ast.Expression initialValue ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4edd354e-da3c-400d-9c55-66da924c09a7" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ), initialValue );
 		this.owner = owner;
@@ -56,11 +55,5 @@ public class InitializerState extends org.lgna.croquet.DefaultCustomItemState< e
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > blankNode ) {
 		return rv;
-	}
-	public String getLabelText() {
-		return this.labelText;
-	}
-	/*package-private*/ void setLabelText( String labelText ) {
-		this.labelText = labelText;
 	}
 }

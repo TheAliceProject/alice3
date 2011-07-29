@@ -74,10 +74,10 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 							component = org.alice.ide.common.TypeComponent.createInstance( model.getValueType() );
 						}
 					}
-					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getValueTypeLabelText(), component ) );
+					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getValueTypeLabelText() + ":", component ) );
 				}
 				if( model.getNameState() != null ) {
-					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameState().getLabelText(), model.getNameState().createTextField() ) );
+					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", model.getNameState().createTextField() ) );
 				}
 				if( model.getInitializerState() != null ) {
 					org.lgna.croquet.components.Component< ? > component;
@@ -86,7 +86,7 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 					} else {
 						component = org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( model.getInitializerState().getValue() );
 					}
-					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getInitializerState().getLabelText(), component ) );
+					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getInitializerLabelText() + ":", component ) );
 				}
 				return rv;
 			}

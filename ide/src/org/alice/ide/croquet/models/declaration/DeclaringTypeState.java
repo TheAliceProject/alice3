@@ -48,7 +48,6 @@ package org.alice.ide.croquet.models.declaration;
  */
 public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice > {
 	private final DeclarationOperation<?> owner;
-	private String labelText; 
 	public DeclaringTypeState( DeclarationOperation<?> owner, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> initialValue ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "20e50e4f-b627-4f5c-9851-5cbc18b5a5ee" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ), initialValue );
 		this.owner = owner;
@@ -62,13 +61,6 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 		}
 		return rv;
 	}
-	public String getLabelText() {
-		return this.labelText;
-	}
-	/*package-private*/ void setLabelText( String labelText ) {
-		this.labelText = labelText;
-	}
-	
 	public org.lgna.croquet.components.PopupButton createComponent() {
 		final org.lgna.croquet.components.PopupButton rv = this.getCascadeRoot().getPopupPrepModel().createPopupButton();
 		javax.swing.JButton awtButton = rv.getAwtComponent();
