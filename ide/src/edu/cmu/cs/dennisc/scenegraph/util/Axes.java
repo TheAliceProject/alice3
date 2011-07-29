@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.scenegraph.*;
  */
 @Deprecated
 public class Axes extends Visual {
-	private static SingleAppearance s_sgFrontFacingAppearance = new SingleAppearance();
+	private static TexturedAppearance s_sgFrontFacingAppearance = new TexturedAppearance();
 	static {
 		s_sgFrontFacingAppearance.setShadingStyle( ShadingStyle.NONE );
 	}

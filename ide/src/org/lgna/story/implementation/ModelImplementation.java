@@ -51,14 +51,14 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
  */
 public abstract class ModelImplementation extends TransformableImplementation {
 	
-	protected abstract edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] getSgAppearances();
+	protected abstract edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances();
 	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
 	
 	public final edu.cmu.cs.dennisc.color.Color4f getColor() {
 		return this.getSgAppearances()[ 0 ].diffuseColor.getValue();
 	}
 	public final void setColor( edu.cmu.cs.dennisc.color.Color4f color ) {
-		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : this.getSgAppearances() ) {
 			sgAppearance.diffuseColor.setValue( color );
 		}
 	}
@@ -80,7 +80,7 @@ public abstract class ModelImplementation extends TransformableImplementation {
 		return this.getSgAppearances()[ 0 ].opacity.getValue();
 	}
 	public final void setOpacity( float opacity ) {
-		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : this.getSgAppearances() ) {
 			sgAppearance.opacity.setValue( opacity );
 		}
 	}
@@ -100,7 +100,7 @@ public abstract class ModelImplementation extends TransformableImplementation {
 	
 	
 	public final void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
-		for( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance : this.getSgAppearances() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : this.getSgAppearances() ) {
 			sgAppearance.diffuseColorTexture.setValue( diffuseColorTexture );
 		}
 	}

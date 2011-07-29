@@ -129,6 +129,16 @@ public class ModelResourceExporter {
 	}
 	
 	
+	public String getName()
+	{
+		return this.name;
+	}
+	
+	public String getPackageString()
+	{
+		return this.packageString;
+	}
+	
 	public void addTexture(String textureName)
 	{
 		this.textures.add(textureName);

@@ -58,7 +58,7 @@ import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.LineArray;
 import edu.cmu.cs.dennisc.scenegraph.QuadArray;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
@@ -92,11 +92,11 @@ public class PerspectiveCameraMarkerImplementation extends CameraMarkerImplement
 	
 	private Vertex[] sgLaserLineVertices;
 	private LineArray sgLaserLine;
-	private SingleAppearance sgLaserLinesFrontFacingAppearance;
+	private TexturedAppearance sgLaserLinesFrontFacingAppearance;
 	
 	private edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
-	private edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
-	private final edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] sgAppearances = { sgAppearance };
+	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = { sgAppearance };
 	private List<Visual> sgDetailedComponents;
 	
 	protected boolean showDetail = false;
@@ -269,7 +269,7 @@ public class PerspectiveCameraMarkerImplementation extends CameraMarkerImplement
 //		sgViewLinesVisual.setParent( this.getSGTransformable() );
 //		sgDetailedComponents.add(sgViewLinesVisual);
 		
-		this.sgLaserLinesFrontFacingAppearance = new SingleAppearance();
+		this.sgLaserLinesFrontFacingAppearance = new TexturedAppearance();
 		this.sgLaserLinesFrontFacingAppearance.diffuseColor.setValue( Color4f.RED );
 		this.sgLaserLinesFrontFacingAppearance.shadingStyle.setValue(ShadingStyle.NONE);
 		this.sgLaserLineVertices = new Vertex[2];
@@ -339,13 +339,13 @@ public class PerspectiveCameraMarkerImplementation extends CameraMarkerImplement
 	}
 
 	@Override
-	protected SingleAppearance[] getOpacityAppearances() {
+	protected TexturedAppearance[] getOpacityAppearances() {
 		return this.getSgAppearances();
 	}
 
 
 	@Override
-	protected SingleAppearance[] getSgAppearances() {
+	protected TexturedAppearance[] getSgAppearances() {
 		return this.sgAppearances;
 	}
 

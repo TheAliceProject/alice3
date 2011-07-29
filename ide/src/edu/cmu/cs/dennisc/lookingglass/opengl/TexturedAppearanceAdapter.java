@@ -40,33 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.scenegraph.util;
 
-import edu.cmu.cs.dennisc.scenegraph.*;
+package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class Model extends Transformable {
-	private Visual m_sgVisual = new Visual();
-	private TexturedAppearance m_sgFrontFacingAppearance = new TexturedAppearance();
-	public Model() {
-		m_sgVisual.frontFacingAppearance.setValue( m_sgFrontFacingAppearance );
-		m_sgVisual.setParent( this );
+public class TexturedAppearanceAdapter extends SimpleAppearanceAdapter< edu.cmu.cs.dennisc.scenegraph.TexturedAppearance > {
+	private TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> m_diffuseColorTextureAdapter;
+	private boolean m_isDiffuseColorTextureAlphaBlended;
+	private boolean m_isDiffuseColorTextureClamped;
+	private TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> m_bumpTextureAdapter;
+
+	@Override
+	public boolean isAlphaBlended() {
+		return super.isAlphaBlended() || m_isDiffuseColorTextureAlphaBlended;
 	}
 
-	public Visual getSGVisual() {
-		return m_sgVisual;
+	@Override
+	public void setPipelineState( RenderContext rc, int face ) {
+		super.setPipelineState(rc, face);
+		setTexturePipelineState(rc);
 	}
-	public TexturedAppearance getSGFrontFacingAppearance() {
-		return m_sgFrontFacingAppearance;
+
+	public void setTexturePipelineState(RenderContext rc)
+	{
+		rc.setDiffuseColorTextureAdapter( m_diffuseColorTextureAdapter, m_isDiffuseColorTextureClamped );
+		rc.setBumpTextureAdapter( m_bumpTextureAdapter );
 	}
 	
 	@Override
-	public void setName( String name ) {
-		super.setName( name );
-		m_sgVisual.setName( name + ".m_sgVisual" );
-		m_sgFrontFacingAppearance.setName( name + ".m_sgFrontFacingAppearance" );
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.diffuseColorTexture ) {
+			m_diffuseColorTextureAdapter = AdapterFactory.getAdapterFor( m_element.diffuseColorTexture.getValue() );
+		} else if( property == m_element.isDiffuseColorTextureAlphaBlended ) {
+			m_isDiffuseColorTextureAlphaBlended = m_element.isDiffuseColorTextureAlphaBlended.getValue();
+		} else if( property == m_element.isDiffuseColorTextureClamped ) {
+			m_isDiffuseColorTextureClamped = m_element.isDiffuseColorTextureClamped.getValue();
+		} else if( property == m_element.bumpTexture ) {
+			m_bumpTextureAdapter = AdapterFactory.getAdapterFor( m_element.bumpTexture.getValue() );
+		} else {
+			super.propertyChanged( property );
+		}
 	}
 }

@@ -45,7 +45,7 @@ package org.lgna.story.implementation;
 import org.lgna.story.OrthographicCameraMarker;
 
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**
@@ -55,7 +55,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 public class OrthographicCameraMarkerImplementation extends CameraMarkerImplementation{
 
 	private ClippedZPlane picturePlane = new ClippedZPlane();
-	private final edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] sgAppearances = {};
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = {};
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = {};
 	
 	public OrthographicCameraMarkerImplementation(OrthographicCameraMarker abstraction) {
@@ -79,12 +79,12 @@ public class OrthographicCameraMarkerImplementation extends CameraMarkerImplemen
 	}
 
 	@Override
-	protected SingleAppearance[] getOpacityAppearances() {
+	protected TexturedAppearance[] getOpacityAppearances() {
 		return sgAppearances;
 	}
 
 	@Override
-	protected SingleAppearance[] getSgAppearances() {
+	protected TexturedAppearance[] getSgAppearances() {
 		return sgAppearances;
 	}
 

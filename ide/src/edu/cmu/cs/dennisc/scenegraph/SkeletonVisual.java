@@ -43,29 +43,52 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.pattern.Tuple2;
 
 public class SkeletonVisual extends Visual {
+	
     public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>(this, null);
     public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> baseBoundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>(this, new AxisAlignedBox());
-    public final edu.cmu.cs.dennisc.property.CopyableArrayProperty< WeightedMesh > weightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty< WeightedMesh >( this, new WeightedMesh[ 0 ] )
+
+    
+    public final edu.cmu.cs.dennisc.property.CopyableArrayProperty< TextureMeshAssociation > texturesAndMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty< TextureMeshAssociation >( this, new TextureMeshAssociation[ 0 ] )
     {
         @Override
-        protected WeightedMesh[] createArray( int length ) {
-            return new WeightedMesh[ length ];
+        protected TextureMeshAssociation[] createArray( int length ) {
+            return new TextureMeshAssociation[ length ];
         }
         @Override
-        protected WeightedMesh createCopy( WeightedMesh src ) {
+        protected TextureMeshAssociation createCopy( TextureMeshAssociation src ) {
             //todo?
             return src;
         }
     };
     
     @Override
+    protected void actuallyRelease() {
+        super.actuallyRelease();
+        if (skeleton.getValue() != null)
+        {
+        	skeleton.getValue().release();
+        }
+        for( TextureMeshAssociation textureAndMeshes : texturesAndMeshes.getValue() ) {
+        	textureAndMeshes.release();
+        }
+    }
+    
+    @Override
     public int getGeometryCount() 
     {
-        return super.getGeometryCount() + this.weightedMeshes.getLength();
+    	int meshCount = 0;
+    	for( TextureMeshAssociation textureAndMeshes : texturesAndMeshes.getValue() ) {
+    		meshCount += textureAndMeshes.meshCount();
+        }
+        return super.getGeometryCount() + meshCount;
     }
     
     @Override
@@ -77,8 +100,17 @@ public class SkeletonVisual extends Visual {
         }
         else
         {
-            return this.weightedMeshes.getValue()[index - super.getGeometryCount()];
+        	int currentIndex = super.getGeometryCount();
+        	for( TextureMeshAssociation textureAndMeshes : texturesAndMeshes.getValue() ) {
+        		int relativeIndex = index - currentIndex;
+        		if (relativeIndex < textureAndMeshes.meshCount())
+        		{
+        			return textureAndMeshes.getMesh(relativeIndex);
+        		}
+        		currentIndex += textureAndMeshes.meshCount();
+            }
         }
+        return null;
     };
     
     @Override

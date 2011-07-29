@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.scenegraph.*;
  * @author Dennis Cosgrove
  */
 public class ModestAxes extends Visual {
-	private static SingleAppearance s_sgFrontFacingAppearance = new SingleAppearance();
+	private static TexturedAppearance s_sgFrontFacingAppearance = new TexturedAppearance();
 	static {
 		s_sgFrontFacingAppearance.setShadingStyle( ShadingStyle.NONE );
 	}

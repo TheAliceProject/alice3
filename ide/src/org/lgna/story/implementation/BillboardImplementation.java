@@ -48,7 +48,7 @@ package org.lgna.story.implementation;
  */
 public class BillboardImplementation extends ModelImplementation {
 	private class Face extends edu.cmu.cs.dennisc.scenegraph.Visual {
-		private edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
+		private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
 		private edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
 		private edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
 				new edu.cmu.cs.dennisc.scenegraph.Vertex(),
@@ -142,7 +142,7 @@ public class BillboardImplementation extends ModelImplementation {
 	private final Face sgFrontFace = new Face( true );
 	private final Face sgBackFace = new Face( false );
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = { this.sgFrontFace, this.sgBackFace };
-	private final edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] sgAppearances = { this.sgFrontFace.sgAppearance, this.sgBackFace.sgAppearance };
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = { this.sgFrontFace.sgAppearance, this.sgBackFace.sgAppearance };
 	private org.lgna.story.ImageSource frontImageSource;
 	private org.lgna.story.ImageSource backImageSource;
 
@@ -220,7 +220,7 @@ public class BillboardImplementation extends ModelImplementation {
 		return this.sgVisuals;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] getSgAppearances() {
+	protected edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances() {
 		return this.sgAppearances;
 	}
 	@Override

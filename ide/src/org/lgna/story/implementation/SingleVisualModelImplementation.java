@@ -48,7 +48,7 @@ package org.lgna.story.implementation;
  */
 public abstract class SingleVisualModelImplementation extends ModelImplementation {
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
-	private final edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] { new edu.cmu.cs.dennisc.scenegraph.SingleAppearance() };
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] { new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance() };
 	public SingleVisualModelImplementation( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
 		this.sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { sgVisual };
 		this.sgVisuals[ 0 ].frontFacingAppearance.setValue( this.sgAppearances[ 0 ] );
@@ -59,7 +59,7 @@ public abstract class SingleVisualModelImplementation extends ModelImplementatio
 		return this.sgVisuals;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.SingleAppearance[] getSgAppearances() {
+	protected edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances() {
 		return this.sgAppearances;
 	}
 }

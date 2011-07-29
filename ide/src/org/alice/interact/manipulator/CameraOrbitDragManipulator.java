@@ -58,7 +58,7 @@ import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.StandIn;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
@@ -94,7 +94,7 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 	{
 		if (SHOW_SPHERE)
 		{
-			SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
+			TexturedAppearance sgFrontFacingAppearance = new TexturedAppearance();
 			sgFrontFacingAppearance.diffuseColor.setValue( Color4f.RED );
 			sgFrontFacingAppearance.opacity.setValue( new Float(1.0) );
 			

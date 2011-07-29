@@ -9,7 +9,7 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Element;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 public class SceneGraphTreeNode extends BasicTreeNode
@@ -129,9 +129,9 @@ public class SceneGraphTreeNode extends BasicTreeNode
 			if (sgComponent instanceof Visual)
 			{
 				Visual visual = (Visual)sgComponent;
-				if (visual.frontFacingAppearance.getValue() instanceof SingleAppearance)
+				if (visual.frontFacingAppearance.getValue() instanceof TexturedAppearance)
 				{	
-					SingleAppearance appearance = (SingleAppearance)visual.frontFacingAppearance.getValue();
+					TexturedAppearance appearance = (TexturedAppearance)visual.frontFacingAppearance.getValue();
 					this.color = new Color4f(appearance.diffuseColor.getValue());
 					this.opacity = appearance.opacity.getValue();
 				}
