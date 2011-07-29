@@ -47,9 +47,9 @@ package org.lgna.story.implementation.alice;
  * @author Dennis Cosgrove
  */
 public class AliceBipedImplementation extends org.lgna.story.implementation.BipedImplementation {
-	public AliceBipedImplementation( org.lgna.story.Biped abstraction, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual, edu.cmu.cs.dennisc.texture.Texture texture ) {
+	public AliceBipedImplementation( org.lgna.story.Biped abstraction, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual, edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] texturedAppearances ) {
 		super( abstraction, sgSkeletonVisual );
-		this.setDiffuseColorTexture( texture );
+		sgSkeletonVisual.textures.setValue(texturedAppearances);
 	}
 	public edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getSgSkeletonVisual() {
 		return (edu.cmu.cs.dennisc.scenegraph.SkeletonVisual)this.getSgVisuals()[ 0 ];

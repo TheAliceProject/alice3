@@ -40,33 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.scenegraph.util;
 
-import edu.cmu.cs.dennisc.scenegraph.*;
+package edu.cmu.cs.dennisc.scenegraph;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class Model extends Transformable {
-	private Visual m_sgVisual = new Visual();
-	private TexturedAppearance m_sgFrontFacingAppearance = new TexturedAppearance();
-	public Model() {
-		m_sgVisual.frontFacingAppearance.setValue( m_sgFrontFacingAppearance );
-		m_sgVisual.setParent( this );
-	}
-
-	public Visual getSGVisual() {
-		return m_sgVisual;
-	}
-	public TexturedAppearance getSGFrontFacingAppearance() {
-		return m_sgFrontFacingAppearance;
-	}
+public class TexturedAppearance extends SimpleAppearance {
+	public final edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.texture.Texture > diffuseColorTexture = new edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.texture.Texture >( this, null );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isDiffuseColorTextureAlphaBlended = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isDiffuseColorTextureClamped = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.texture.Texture > bumpTexture = new edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.texture.Texture >( this, null );
+	public final edu.cmu.cs.dennisc.property.IntegerProperty textureId = new edu.cmu.cs.dennisc.property.IntegerProperty(this, -1);
 	
 	@Override
-	public void setName( String name ) {
-		super.setName( name );
-		m_sgVisual.setName( name + ".m_sgVisual" );
-		m_sgFrontFacingAppearance.setName( name + ".m_sgFrontFacingAppearance" );
+	protected void actuallyRelease() {
+		super.actuallyRelease();
+		//todo: remove? referenceCount?
+		if( diffuseColorTexture.getValue() != null ) {
+			diffuseColorTexture.getValue().release();
+		}
+		//todo: remove? referenceCount?
+		if( bumpTexture.getValue() != null ) {
+			bumpTexture.getValue().release();
+		}
 	}
+
+	public void setDiffuseColorTextureAlphaBlended( boolean isDiffuseColorTextureAlphaBlended ) {
+		this.isDiffuseColorTextureAlphaBlended.setValue( isDiffuseColorTextureAlphaBlended );
+	}
+	public void setDiffuseColorTextureClamped( boolean isDiffuseColorTextureClamped ) {
+		this.isDiffuseColorTextureClamped.setValue( isDiffuseColorTextureClamped );
+	}
+	public void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
+		this.diffuseColorTexture.setValue( diffuseColorTexture );
+	}
+	public void setBumpTexture( edu.cmu.cs.dennisc.texture.Texture bumpTexture ) {
+		this.bumpTexture.setValue( bumpTexture );
+	}
+	
 }

@@ -191,8 +191,8 @@ public abstract class AdapterFactory {
 		return (AppearanceAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Appearance >)getAdapterForElement( sgAppearance );
 	}
 
-	public static SingleAppearanceAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgSingleAppearance ) {
-		return (SingleAppearanceAdapter)getAdapterForElement( sgSingleAppearance );
+	public static TexturedAppearanceAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgSingleAppearance ) {
+		return (TexturedAppearanceAdapter)getAdapterForElement( sgSingleAppearance );
 	}
 
 	public static MultipleAppearanceAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.MultipleAppearance sgMultipleAppearance ) {

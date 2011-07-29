@@ -47,12 +47,12 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public class MultipleAppearanceAdapter extends AppearanceAdapter<edu.cmu.cs.dennisc.scenegraph.MultipleAppearance> {
-	private SingleAppearanceAdapter[] m_singleAppearanceAdapters;
+	private TexturedAppearanceAdapter[] m_singleAppearanceAdapters;
 
 	@Override
 	public boolean isActuallyShowing() {
 		assert m_singleAppearanceAdapters != null;
-		for( SingleAppearanceAdapter sao : m_singleAppearanceAdapters ) {
+		for( TexturedAppearanceAdapter sao : m_singleAppearanceAdapters ) {
 			assert sao != null;
 			if( sao.isActuallyShowing() ) {
 				return true;
@@ -63,7 +63,7 @@ public class MultipleAppearanceAdapter extends AppearanceAdapter<edu.cmu.cs.denn
 	@Override
 	public boolean isAlphaBlended() {
 		assert m_singleAppearanceAdapters != null;
-		for( SingleAppearanceAdapter sao : m_singleAppearanceAdapters ) {
+		for( TexturedAppearanceAdapter sao : m_singleAppearanceAdapters ) {
 			assert sao != null;
 			if( sao.isAlphaBlended() ) {
 				return true;
@@ -74,7 +74,7 @@ public class MultipleAppearanceAdapter extends AppearanceAdapter<edu.cmu.cs.denn
 	@Override
 	public boolean isEthereal() {
 		assert m_singleAppearanceAdapters != null;
-		for( SingleAppearanceAdapter sao : m_singleAppearanceAdapters ) {
+		for( TexturedAppearanceAdapter sao : m_singleAppearanceAdapters ) {
 			assert sao != null;
 			if( sao.isEthereal() ) {
 				//pass
@@ -96,7 +96,7 @@ public class MultipleAppearanceAdapter extends AppearanceAdapter<edu.cmu.cs.denn
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.singleAppearances ) {
-			m_singleAppearanceAdapters = AdapterFactory.getAdaptersFor( m_element.singleAppearances.getValue(), SingleAppearanceAdapter.class );
+			m_singleAppearanceAdapters = AdapterFactory.getAdaptersFor( m_element.singleAppearances.getValue(), TexturedAppearanceAdapter.class );
 		} else {
 			super.propertyChanged( property );
 		}

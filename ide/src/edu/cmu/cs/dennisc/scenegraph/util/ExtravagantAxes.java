@@ -48,13 +48,13 @@ import edu.cmu.cs.dennisc.scenegraph.*;
  * @author Dennis Cosgrove
  */
 public class ExtravagantAxes extends Transformable {
-	private static java.util.Map< Cylinder.BottomToTopAxis, SingleAppearance > s_axisToSGAppearanceMap = new java.util.HashMap< Cylinder.BottomToTopAxis, SingleAppearance >();
+	private static java.util.Map< Cylinder.BottomToTopAxis, TexturedAppearance > s_axisToSGAppearanceMap = new java.util.HashMap< Cylinder.BottomToTopAxis, TexturedAppearance >();
 
 	static {
-		SingleAppearance sgRedAppearance = new SingleAppearance();
-		SingleAppearance sgGreenAppearance = new SingleAppearance();
-		SingleAppearance sgBlueAppearance = new SingleAppearance();
-		SingleAppearance sgWhiteAppearance = new SingleAppearance();
+		TexturedAppearance sgRedAppearance = new TexturedAppearance();
+		TexturedAppearance sgGreenAppearance = new TexturedAppearance();
+		TexturedAppearance sgBlueAppearance = new TexturedAppearance();
+		TexturedAppearance sgWhiteAppearance = new TexturedAppearance();
 
 		sgRedAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.RED );
 		sgGreenAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.GREEN );

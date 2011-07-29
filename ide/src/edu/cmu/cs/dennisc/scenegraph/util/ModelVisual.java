@@ -48,12 +48,12 @@ import edu.cmu.cs.dennisc.scenegraph.*;
  * @author Dennis Cosgrove
  */
 public class ModelVisual extends Visual {
-	private SingleAppearance m_sgFrontFacingAppearance = new SingleAppearance();
+	private TexturedAppearance m_sgFrontFacingAppearance = new TexturedAppearance();
 	public ModelVisual() {
 		frontFacingAppearance.setValue( m_sgFrontFacingAppearance );
 	}
 
-	public SingleAppearance getSGFrontFacingAppearance() {
+	public TexturedAppearance getSGFrontFacingAppearance() {
 		return m_sgFrontFacingAppearance;
 	}
 	

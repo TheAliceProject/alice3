@@ -43,12 +43,18 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.pattern.Tuple2;
 
 public class SkeletonVisual extends Visual {
+	
     public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>(this, null);
     public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> baseBoundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>(this, new AxisAlignedBox());
+
     public final edu.cmu.cs.dennisc.property.CopyableArrayProperty< WeightedMesh > weightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty< WeightedMesh >( this, new WeightedMesh[ 0 ] )
     {
         @Override
@@ -61,6 +67,34 @@ public class SkeletonVisual extends Visual {
             return src;
         }
     };
+    
+    public final edu.cmu.cs.dennisc.property.CopyableArrayProperty< TexturedAppearance > textures = new edu.cmu.cs.dennisc.property.CopyableArrayProperty< TexturedAppearance >( this, new TexturedAppearance[ 0 ] )
+    {
+        @Override
+        protected TexturedAppearance[] createArray( int length ) {
+            return new TexturedAppearance[ length ];
+        }
+        @Override
+        protected TexturedAppearance createCopy( TexturedAppearance src ) {
+            //todo?
+            return src;
+        }
+    };
+    
+    @Override
+    protected void actuallyRelease() {
+        super.actuallyRelease();
+        if (skeleton.getValue() != null)
+        {
+        	skeleton.getValue().release();
+        }
+        for( WeightedMesh mesh : weightedMeshes.getValue() ) {
+        	mesh.release();
+        }
+        for( TexturedAppearance texture : textures.getValue() ) {
+        	texture.release();
+        }
+    }
     
     @Override
     public int getGeometryCount() 

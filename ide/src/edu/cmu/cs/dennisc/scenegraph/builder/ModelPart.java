@@ -47,8 +47,8 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 			if( component instanceof edu.cmu.cs.dennisc.scenegraph.Visual ) {
 				edu.cmu.cs.dennisc.scenegraph.Visual visual = (edu.cmu.cs.dennisc.scenegraph.Visual)component;
 				edu.cmu.cs.dennisc.scenegraph.Appearance front = visual.frontFacingAppearance.getValue();
-				if( front instanceof edu.cmu.cs.dennisc.scenegraph.SingleAppearance ) {
-					edu.cmu.cs.dennisc.scenegraph.SingleAppearance singleAppearance = (edu.cmu.cs.dennisc.scenegraph.SingleAppearance)front;
+				if( front instanceof edu.cmu.cs.dennisc.scenegraph.TexturedAppearance ) {
+					edu.cmu.cs.dennisc.scenegraph.TexturedAppearance singleAppearance = (edu.cmu.cs.dennisc.scenegraph.TexturedAppearance)front;
 					edu.cmu.cs.dennisc.texture.Texture texture = singleAppearance.diffuseColorTexture.getValue();
 					if( texture != null ) {
 						if( texture instanceof edu.cmu.cs.dennisc.texture.BufferedImageTexture ) {
@@ -96,7 +96,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 	public edu.cmu.cs.dennisc.scenegraph.Transformable build() {
 		edu.cmu.cs.dennisc.scenegraph.Transformable rv = new edu.cmu.cs.dennisc.scenegraph.Transformable();
 		edu.cmu.cs.dennisc.scenegraph.Visual visual = new edu.cmu.cs.dennisc.scenegraph.Visual();
-		edu.cmu.cs.dennisc.scenegraph.SingleAppearance appearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
+		edu.cmu.cs.dennisc.scenegraph.TexturedAppearance appearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
 		appearance.setDiffuseColorTexture( this.texture );
 		visual.frontFacingAppearance.setValue( appearance );
 		assert this.geometry != null;

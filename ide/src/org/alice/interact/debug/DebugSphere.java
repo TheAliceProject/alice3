@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
@@ -59,7 +59,7 @@ public class DebugSphere extends Transformable{
 	
 	public DebugSphere( )
 	{
-		SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
+		TexturedAppearance sgFrontFacingAppearance = new TexturedAppearance();
 		sgFrontFacingAppearance.diffuseColor.setValue( Color4f.RED );
 		sgFrontFacingAppearance.opacity.setValue( new Float(1.0) );
 		
