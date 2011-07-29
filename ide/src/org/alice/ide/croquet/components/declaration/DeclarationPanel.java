@@ -43,24 +43,29 @@
 
 package org.alice.ide.croquet.components.declaration;
 
-import org.alice.ide.croquet.components.TypeDropDown;
-
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationPanel< M extends org.alice.ide.croquet.models.declaration.DeclarationOperation< ? > > extends org.alice.ide.croquet.components.PanelWithPreview< M > {
-	public DeclarationPanel( final M model ) {
+public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.declaration.DeclarationOperation< ? > > extends org.alice.ide.croquet.components.PanelWithPreview< M > {
+	public DeclarationPanel( M model ) {
 		super( model );
+		final int INSET = 16;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
+	}
+	
+	@Override
+	protected org.lgna.croquet.components.Component< ? > createMainComponent() {
+		final M model = this.getModel();
 		class DetailsPanel extends org.lgna.croquet.components.RowsSpringPanel {
 			@Override
 			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
 				if( model.getComponentValueTypeState() != null ) {
 					org.lgna.croquet.components.Component< ? > component;
 					if( model.isValueComponentTypeEditable() ) {
-						component = new org.lgna.croquet.components.LineAxisPanel(
-								new TypeDropDown( model.getComponentValueTypeState() ),
-								model.getIsArrayState().createCheckBox()
-						);
+						org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel();
+						panel.addComponent( new org.alice.ide.croquet.components.TypeDropDown( model.getComponentValueTypeState() ), Constraint.CENTER );
+						panel.addComponent( model.getIsArrayState().createCheckBox(), Constraint.LINE_END );
+						component = panel;
 					} else {
 						if( model.isIsArrayEditable() ) {
 							//todo? this case is not currently supported
@@ -87,6 +92,7 @@ public class DeclarationPanel< M extends org.alice.ide.croquet.models.declaratio
 			}
 		}
 		DetailsPanel detailsPanel = new DetailsPanel();
+		org.lgna.croquet.components.Component< ? > rv;
 		if( model.getDeclaringTypeState() != null ) {
 			org.lgna.croquet.components.PageAxisPanel panel = new org.lgna.croquet.components.PageAxisPanel();
 			if( model.isDeclaringTypeEditable() ) {
@@ -94,13 +100,12 @@ public class DeclarationPanel< M extends org.alice.ide.croquet.models.declaratio
 			} else {
 				//todo? this case is not currently supported
 			}
-			detailsPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 24, 32, 0, 0 ) );
+			detailsPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 24, 64, 0, 0 ) );
 			panel.addComponent( detailsPanel );
-			this.addComponent( panel, Constraint.CENTER );
+			rv = panel;
 		} else {
-			this.addComponent( detailsPanel, Constraint.CENTER );
+			rv = detailsPanel;
 		}
-		final int INSET = 16;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
+		return rv;
 	}
 }

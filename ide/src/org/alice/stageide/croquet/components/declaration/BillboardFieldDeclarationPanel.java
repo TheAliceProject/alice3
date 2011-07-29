@@ -46,7 +46,7 @@ package org.alice.stageide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class BillboardFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.DeclarationPanel< org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation > {
+public class BillboardFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation > {
 	public BillboardFieldDeclarationPanel( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation model ) {
 		super( model );
 	}

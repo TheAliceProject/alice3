@@ -72,6 +72,7 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 	public org.lgna.croquet.components.PopupButton createComponent() {
 		final org.lgna.croquet.components.PopupButton rv = this.getCascadeRoot().getPopupPrepModel().createPopupButton();
 		javax.swing.JButton awtButton = rv.getAwtComponent();
+		final int PAD = 8;
 		class TypeDropDownIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon {
 			public TypeDropDownIcon() {
 				super( 14 );
@@ -81,7 +82,7 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 			}
 			@Override
 			public int getIconWidth() {
-				return super.getIconWidth() + this.getTypeIcon().getIconWidth();
+				return super.getIconWidth() + PAD + this.getTypeIcon().getIconWidth();
 			}
 			@Override
 			public int getIconHeight() {
@@ -91,7 +92,7 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 				org.alice.ide.common.TypeIcon typeIcon = this.getTypeIcon();
 				typeIcon.paintIcon( c, g, x, y );
-				super.paintIcon( c, g, x + typeIcon.getIconWidth(), y );
+				super.paintIcon( c, g, x + typeIcon.getIconWidth() + PAD, y );
 			}
 		}
 		awtButton.setIcon( new TypeDropDownIcon() );

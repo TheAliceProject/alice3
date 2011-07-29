@@ -46,8 +46,13 @@ package org.alice.ide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureDeclarationPanel extends MethodDeclarationPanel< org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation > {
-	public ProcedureDeclarationPanel( org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation model ) {
+public abstract class FieldDeclarationPanel< M extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation > extends DeclarationPanel< M > {
+	public FieldDeclarationPanel( M model ) {
 		super( model );
+	}
+	@Override
+	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
+		M model = this.getModel();
+		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getPreviewFactory(), model.createPreviewDeclaration() );
 	}
 }

@@ -68,7 +68,7 @@ public abstract class SceneFieldDeclarationOperation extends org.alice.ide.croqu
 		);
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
 		return org.alice.ide.IDE.getActiveInstance().getSceneType();
 	}
 }

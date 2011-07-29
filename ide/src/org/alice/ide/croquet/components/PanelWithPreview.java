@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class PanelWithPreview< M extends org.lgna.croquet.InputDialogOperation< ? > > extends org.lgna.croquet.components.BorderPanel {
+public abstract class PanelWithPreview< M extends org.lgna.croquet.InputDialogOperation< ? > > extends org.lgna.croquet.components.BorderPanel {
 	private M model;
 	public PanelWithPreview( M model ) {
 		this.model = model;
@@ -54,4 +54,89 @@ public class PanelWithPreview< M extends org.lgna.croquet.InputDialogOperation< 
 	public M getModel() {
 		return this.model;
 	}
+	class PreviewPane extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
+		public void refresh() {
+			this.internalForgetAndRemoveAllComponents();
+			this.internalAddComponent( PanelWithPreview.this.createPreviewSubComponent(), java.awt.BorderLayout.CENTER );
+			this.revalidateAndRepaint();
+		}
+		@Override
+		protected javax.swing.JPanel createAwtComponent() {
+			javax.swing.JPanel rv = new javax.swing.JPanel() {
+				@Override
+				public boolean contains(int x, int y) {
+					return false;
+				}
+				@Override
+				public java.awt.Dimension getPreferredSize() {
+					return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+				}
+			};
+			rv.setOpaque( false );
+			rv.setLayout(new java.awt.BorderLayout());
+			return rv;
+		}
+		@Override
+		protected void handleDisplayable() {
+			super.handleDisplayable();
+			this.refresh();
+		}
+		@Override
+		protected void handleUndisplayable() {
+			this.internalForgetAndRemoveAllComponents();
+			super.handleUndisplayable();
+		}
+	}
+
+	private PreviewPane previewPane;
+	
+	protected boolean isPreviewDesired() {
+		return true;
+	}
+	
+	public PanelWithPreview() {
+		final int PAD = 16;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
+	}
+	protected abstract org.lgna.croquet.components.Component< ? > createPreviewSubComponent();
+	protected abstract org.lgna.croquet.components.Component< ? > createMainComponent();
+	private void initializeIfNecessary() {
+		if( this.previewPane != null ) {
+			//pass
+		} else {
+			this.addComponent( this.createMainComponent(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+
+			if( this.isPreviewDesired() ) {
+				this.previewPane = new PreviewPane();
+				org.lgna.croquet.components.PageAxisPanel northPanel = new org.lgna.croquet.components.PageAxisPanel(
+						new org.lgna.croquet.components.LineAxisPanel( 
+								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
+								new org.lgna.croquet.components.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
+								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
+								this.previewPane
+						),
+						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ),
+						new org.lgna.croquet.components.HorizontalSeparator(),
+						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 )
+				);
+				this.addComponent( northPanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+			}
+		}
+	}
+	public void updatePreview() {
+		if( this.previewPane != null ) {
+			this.previewPane.refresh();
+		}
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.initializeIfNecessary();
+	}
+//	@Override
+//	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//		this.removeComponent( this.centerPanel );
+//		super.handleRemovedFrom(parent);
+//	}
+	
 }
