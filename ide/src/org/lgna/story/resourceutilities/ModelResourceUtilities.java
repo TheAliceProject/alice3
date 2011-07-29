@@ -442,10 +442,11 @@ public class ModelResourceUtilities {
 					currentClass = null;
 				}
 			}
-			classNodes = addNodes(classStack, null);
+			classNodes = addNodes(classStack, classNodes);
 		}
 		ModelResourceTreeNode topNode = new ModelResourceTreeNode(null, null);
 		classNodes.setParent(topNode);
+		classNodes.printTree();
 		return topNode;
 	}
 	

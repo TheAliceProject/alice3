@@ -51,7 +51,8 @@ public class TexturedAppearance extends SimpleAppearance {
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isDiffuseColorTextureAlphaBlended = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isDiffuseColorTextureClamped = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
 	public final edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.texture.Texture > bumpTexture = new edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.texture.Texture >( this, null );
-
+	public final edu.cmu.cs.dennisc.property.IntegerProperty textureId = new edu.cmu.cs.dennisc.property.IntegerProperty(this, -1);
+	
 	@Override
 	protected void actuallyRelease() {
 		super.actuallyRelease();

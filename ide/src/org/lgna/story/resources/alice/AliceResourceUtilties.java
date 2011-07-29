@@ -52,8 +52,10 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
 
@@ -64,11 +66,11 @@ import edu.cmu.cs.dennisc.texture.Texture;
 public class AliceResourceUtilties {
 	
 	public static String MODEL_RESOURCE_EXTENSION = "a3r";
-	public static String TEXTURE_RESOURCE_EXTENSION = "png";
+	public static String TEXTURE_RESOURCE_EXTENSION = "a3t";
 	
 	
 	private static Map<URL, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual> urlToVisualMap = new HashMap<URL, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual>();
-	private static Map<URL, edu.cmu.cs.dennisc.texture.Texture> urlToTextureMap = new HashMap<URL, edu.cmu.cs.dennisc.texture.Texture>();
+	private static Map<URL, TexturedAppearance[]> urlToTextureMap = new HashMap<URL, TexturedAppearance[]>();
 	
 	private AliceResourceUtilties() {
 	}
@@ -87,13 +89,12 @@ public class AliceResourceUtilties {
 		return null;
 	}
 	
-	public static edu.cmu.cs.dennisc.texture.Texture decodeTexture( URL url ) {
+	public static TexturedAppearance[] decodeTexture( URL url ) {
 		try
 		{
-	    	edu.cmu.cs.dennisc.texture.BufferedImageTexture texture = new BufferedImageTexture();
-	    	BufferedImage image = ImageIO.read(url);
-	    	texture.setBufferedImage(image);
-	    	return texture;
+	    	java.io.InputStream is = url.openStream();
+	    	edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
+	    	return decoder.decodeReferenceableBinaryEncodableAndDecodableArray( TexturedAppearance.class, new java.util.HashMap< Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable >() );
 		}
 		catch (Exception e)
 		{
@@ -117,23 +118,17 @@ public class AliceResourceUtilties {
         fos.close();
 	}
 	
-	public static void encodeTexture(final Texture toSave, File file) throws IOException
+	public static void encodeTexture(final TexturedAppearance[] toSave, File file) throws IOException
 	{
 	    edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 	    if (!file.exists())
         {
 	        file.createNewFile();
         }
-
         java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
-        if (toSave instanceof BufferedImageTexture)
-        {
-        	BufferedImageTexture bTexture = (BufferedImageTexture)toSave;
-        	ImageIO.write(bTexture.getBufferedImage(), "png", fos);
-//	        edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( fos );
-//	        encoder.encode(toSave);
-//	        encoder.flush();
-        }
+        edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( fos );
+        encoder.encode(toSave, new java.util.HashMap< ReferenceableBinaryEncodableAndDecodable, Integer >());
+        encoder.flush();
         fos.close();
         
 	}
@@ -194,7 +189,7 @@ public class AliceResourceUtilties {
 		return createCopy(original);
 	}
 	
-	public static edu.cmu.cs.dennisc.texture.Texture getTexture(Object resource)
+	public static TexturedAppearance[] getTexturedAppearance(Object resource)
 	{
 		URL resourceURL = getTextureURL(resource);
 		if (urlToTextureMap.containsKey(resourceURL))
@@ -203,7 +198,7 @@ public class AliceResourceUtilties {
 		}
 		else
 		{
-			edu.cmu.cs.dennisc.texture.Texture texture = decodeTexture(resourceURL);
+			TexturedAppearance[] texture = decodeTexture(resourceURL);
 			urlToTextureMap.put(resourceURL, texture);
 			return texture;
 		}
@@ -211,7 +206,8 @@ public class AliceResourceUtilties {
 	
 	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual createCopy( edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal ) {
 	    edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = sgOriginal.geometries.getValue();
-	    edu.cmu.cs.dennisc.scenegraph.TextureMeshAssociation[] sgWeightedMeshes = sgOriginal.texturesAndMeshes.getValue();
+	    edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgTextureAppearances = sgOriginal.textures.getValue();
+	    edu.cmu.cs.dennisc.scenegraph.WeightedMesh[] sgWeightedMeshes = sgOriginal.weightedMeshes.getValue();
 		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
 
 	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual rv = new edu.cmu.cs.dennisc.scenegraph.SkeletonVisual();
@@ -219,7 +215,8 @@ public class AliceResourceUtilties {
 
     	rv.skeleton.setValue( sgSkeletonRootCopy );
 		rv.geometries.setValue( sgGeometries );
-		rv.texturesAndMeshes.setValue( sgWeightedMeshes );
+		rv.weightedMeshes.setValue( sgWeightedMeshes );
+		rv.textures.setValue( sgTextureAppearances );
 		return rv;
 	}
 }

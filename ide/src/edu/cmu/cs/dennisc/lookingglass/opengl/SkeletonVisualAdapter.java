@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -60,6 +61,7 @@ import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.TextureMeshAssociation;
+import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
 
 public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter< SkeletonVisual > implements PropertyListener{
@@ -103,16 +105,20 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
                 this.setListeningOnSkeleton(this.currentSkeleton, true);
                 this.skeletonIsDirty = true;
             }
-            for (TextureMeshAssociation tma : this.m_element.texturesAndMeshes.getValue())
+            for (TexturedAppearance ta : this.m_element.textures.getValue())
             {
-            	int weightedMeshCount = tma.meshCount();
-            	WeightedMeshControl[] controls = new WeightedMeshControl[weightedMeshCount];
-            	for (int i=0; i<weightedMeshCount; i++)
-                {
-            		controls[i] = new WeightedMeshControl();
-            		controls[i].initialize(tma.getMesh(i));
-                }
-            	appearanceToMeshControllersMap.put(AdapterFactory.getAdapterFor(tma.getAppearance()), controls);
+            	List<WeightedMeshControl> controls = new LinkedList<WeightedMeshControl>();
+	            for (WeightedMesh weightedMesh : this.m_element.weightedMeshes.getValue())
+	            {
+	            	if (weightedMesh.textureId.getValue() == ta.textureId.getValue())
+	            	{
+	            		WeightedMeshControl control = new WeightedMeshControl();
+	            		control.initialize(weightedMesh);
+	            		controls.add(control);
+	            	}
+	            	
+	            }
+	            appearanceToMeshControllersMap.put(AdapterFactory.getAdapterFor(ta), controls.toArray(new WeightedMeshControl[controls.size()]));
             }
         }
         this.isDataDirty = false;
@@ -376,7 +382,8 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
     @Override
     protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
         if( property == m_element.skeleton ||
-            property == m_element.texturesAndMeshes ) {
+            property == m_element.weightedMeshes ||
+            property == m_element.textures ) {
             this.isDataDirty = true;
         }
         else {

@@ -73,8 +73,8 @@ public class BipedImplementationFactory {
 	}
     
 	public org.lgna.story.implementation.BipedImplementation createImplementation( org.lgna.story.Biped abstraction ) {
-	    edu.cmu.cs.dennisc.texture.Texture texture = AliceResourceUtilties.getTexture( this.resource );
+	    edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] texturedAppearances = AliceResourceUtilties.getTexturedAppearance( this.resource );
 	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = AliceResourceUtilties.getVisualCopy( this.resource );
-		return new org.lgna.story.implementation.alice.AliceBipedImplementation( abstraction, sgSkeletonVisual, texture );
+		return new org.lgna.story.implementation.alice.AliceBipedImplementation( abstraction, sgSkeletonVisual, texturedAppearances );
 	}
 }
