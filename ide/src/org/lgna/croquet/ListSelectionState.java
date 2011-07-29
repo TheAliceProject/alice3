@@ -225,7 +225,7 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
 
 				this.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.listSelectionModel.getValueIsAdjusting() );
-
+				this.comboBoxModel.fireContentsChanged( this, this.index, this.index );
 				if( Manager.isInTheMidstOfUndoOrRedo() ) {
 					//pass
 				} else {
