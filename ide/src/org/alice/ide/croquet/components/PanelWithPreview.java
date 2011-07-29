@@ -46,16 +46,12 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class PanelWithPreview< M extends org.lgna.croquet.InputDialogOperation< ? > > extends org.lgna.croquet.components.Panel {
+public class PanelWithPreview< M extends org.lgna.croquet.InputDialogOperation< ? > > extends org.lgna.croquet.components.BorderPanel {
 	private M model;
 	public PanelWithPreview( M model ) {
 		this.model = model;
 	}
 	public M getModel() {
 		return this.model;
-	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.BorderLayout();
 	}
 }

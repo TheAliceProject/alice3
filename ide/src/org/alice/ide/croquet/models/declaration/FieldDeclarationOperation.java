@@ -83,7 +83,7 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< ed
 			String initialName,
 			boolean isNameEditable,
 			edu.cmu.cs.dennisc.alice.ast.Expression initialExpression,
-			boolean isExpressionEditable
+			boolean isInitializerEditable
 		) {
 		super( 
 				id, 
@@ -91,7 +91,7 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< ed
 				initialValueComponentType, isValueComponentTypeEditable, 
 				initialIsArrayValueType, isIsArrayValueTypeEditable, 
 				initialName, isNameEditable, 
-				initialExpression, isExpressionEditable
+				initialExpression, isInitializerEditable
 		);
 	}
 	protected abstract EditCustomization customize( EditCustomization rv );

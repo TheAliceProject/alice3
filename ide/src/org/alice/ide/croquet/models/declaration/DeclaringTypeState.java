@@ -41,25 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultItemState<T> extends org.lgna.croquet.ItemState< T > {
-	private T value;
-	public DefaultItemState( Group group, java.util.UUID id, ItemCodec< T > itemCodec, T initialValue ) {
-		super( group, id, itemCodec );
-		this.value = initialValue;
+public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice > {
+	private final DeclarationOperation<?> owner;
+	private String labelText; 
+	public DeclaringTypeState( DeclarationOperation<?> owner, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> initialValue ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "20e50e4f-b627-4f5c-9851-5cbc18b5a5ee" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ), initialValue );
+		this.owner = owner;
 	}
 	@Override
-	protected void localize() {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice > blankNode ) {
+		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > types = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getTypes( project );
+		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type : types ) {
+			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
+		}
+		return rv;
 	}
-	@Override
-	public T getValue() {
-		return this.value;
+	public String getLabelText() {
+		return this.labelText;
 	}
-	public void setValue( T value ) {
-		this.value = value;
+	/*package-private*/ void setLabelText( String labelText ) {
+		this.labelText = labelText;
 	}
 }

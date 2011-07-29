@@ -49,5 +49,6 @@ package org.alice.ide.croquet.components.declaration;
 public class FunctionDeclarationPanel extends DeclarationPanel< org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation > {
 	public FunctionDeclarationPanel( org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation model ) {
 		super( model );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFunctionColor() );
 	}
 }

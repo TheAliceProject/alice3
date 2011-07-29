@@ -47,7 +47,58 @@ package org.alice.ide.croquet.components.declaration;
  * @author Dennis Cosgrove
  */
 public class DeclarationPanel< M extends org.alice.ide.croquet.models.declaration.DeclarationOperation< ? > > extends org.alice.ide.croquet.components.PanelWithPreview< M > {
-	public DeclarationPanel( M model ) {
+	public DeclarationPanel( final M model ) {
 		super( model );
+		class DetailsPanel extends org.lgna.croquet.components.RowsSpringPanel {
+			@Override
+			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+				if( model.getComponentValueTypeState() != null ) {
+					org.lgna.croquet.components.Component< ? > component;
+					if( model.isValueComponentTypeEditable() ) {
+						component = new org.lgna.croquet.components.LineAxisPanel(
+								model.getComponentValueTypeState().getCascadeRoot().getPopupPrepModel().createPopupButton(),
+								model.getIsArrayState().createCheckBox()
+						);
+					} else {
+						if( model.isIsArrayEditable() ) {
+							//todo? this case is not currently supported
+							component = null;
+						} else {
+							component = org.alice.ide.common.TypeComponent.createInstance( model.getValueType() );
+						}
+					}
+					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getValueTypeLabelText(), component ) );
+				}
+				if( model.getNameState() != null ) {
+					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameState().getLabelText(), model.getNameState().createTextField() ) );
+				}
+				if( model.getInitializerState() != null ) {
+					org.lgna.croquet.components.Component< ? > component;
+					if( model.isInitializerEditable() ) {
+						component = model.getInitializerState().getCascadeRoot().getPopupPrepModel().createPopupButton();
+					} else {
+						component = org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( model.getInitializerState().getValue() );
+					}
+					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getInitializerState().getLabelText(), component ) );
+				}
+				return rv;
+			}
+		}
+		DetailsPanel detailsPanel = new DetailsPanel();
+		if( model.getDeclaringTypeState() != null ) {
+			org.lgna.croquet.components.PageAxisPanel panel = new org.lgna.croquet.components.PageAxisPanel();
+			if( model.isDeclaringTypeEditable() ) {
+				panel.addComponent( model.getDeclaringTypeState().getCascadeRoot().getPopupPrepModel().createPopupButton() );
+			} else {
+				//todo? this case is not currently supported
+			}
+			//panel.addComponent( new org.lgna.croquet.components.HorizontalSeparator() );
+			detailsPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 24, 32, 0, 0 ) );
+			panel.addComponent( detailsPanel );
+			this.addComponent( panel, Constraint.CENTER );
+		} else {
+			this.addComponent( detailsPanel, Constraint.CENTER );
+		}
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 	}
 }

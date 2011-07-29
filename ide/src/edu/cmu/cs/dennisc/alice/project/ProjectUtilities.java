@@ -434,4 +434,11 @@ public abstract class ProjectUtilities {
 	public static void encodeNode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.alice.ast.Node node ) {
 		binaryEncoder.encode( node.getUUID() );
 	}
+	
+	public static java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > getTypes( edu.cmu.cs.dennisc.alice.Project project ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
+		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
+		programType.crawl( crawler, true );
+		return crawler.getList();
+	}
 }

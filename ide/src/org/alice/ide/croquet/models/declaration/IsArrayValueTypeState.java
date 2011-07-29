@@ -41,54 +41,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomItemState< T > extends ItemState< T > {
-	public class CascadeCustomRoot extends org.lgna.croquet.CascadeRoot< T, org.lgna.croquet.history.CustomItemStateChangeStep< T > > {
-		public CascadeCustomRoot( CascadeBlank< T >... blanks ) {
-			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ), blanks );
-		}
-		@Override
-		public org.lgna.croquet.history.CustomItemStateChangeStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
-			return org.lgna.croquet.history.TransactionManager.addCustomItemStateChangeStep( CustomItemState.this, trigger );
-		}
-		@Override
-		public java.lang.Class< T > getComponentType() {
-			return CustomItemState.this.getItemCodec().getValueClass();
-		}
-		@Override
-		public CustomItemState< T > getCompletionModel() {
-			return CustomItemState.this;
-		}
-		@Override
-		public void prologue() {
-		}
-		@Override
-		public void epilogue() {
-		}
-		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CustomItemStateChangeStep< T > completionStep, T[] values) {
-			return new org.lgna.croquet.edits.CustomItemStateEdit( completionStep, CustomItemState.this.getValue(), values[ 0 ] );
-		}
-	}
-	private final CascadeCustomRoot root;
-	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< T > itemCodec, CascadeBlank< T >... blanks ) {
-		super( group, id, itemCodec );
-		this.root = new CascadeCustomRoot( blanks );
-	}
-	public CascadeCustomRoot getCascadeRoot() {
-		return this.root;
-	}
-	@Override
-	protected void localize() {
-	}
-	protected abstract void handleValueChange( T value );
-	public final void changeValue( T prevValue, T nextValue, boolean isAdjusting ) {
-		this.fireChanging( prevValue, nextValue, isAdjusting );
-		this.handleValueChange( nextValue );
-		this.fireChanged( prevValue, nextValue, isAdjusting );
+public class IsArrayValueTypeState extends org.lgna.croquet.BooleanState {
+	private final DeclarationOperation<?> owner;
+	public IsArrayValueTypeState( DeclarationOperation<?> owner, boolean initialValue ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "0d05e96f-4eee-4b50-8065-c6a1aff9a573" ), initialValue );
+		this.owner = owner;
 	}
 }

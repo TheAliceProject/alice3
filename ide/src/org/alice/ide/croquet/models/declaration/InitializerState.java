@@ -41,54 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomItemState< T > extends ItemState< T > {
-	public class CascadeCustomRoot extends org.lgna.croquet.CascadeRoot< T, org.lgna.croquet.history.CustomItemStateChangeStep< T > > {
-		public CascadeCustomRoot( CascadeBlank< T >... blanks ) {
-			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ), blanks );
-		}
-		@Override
-		public org.lgna.croquet.history.CustomItemStateChangeStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
-			return org.lgna.croquet.history.TransactionManager.addCustomItemStateChangeStep( CustomItemState.this, trigger );
-		}
-		@Override
-		public java.lang.Class< T > getComponentType() {
-			return CustomItemState.this.getItemCodec().getValueClass();
-		}
-		@Override
-		public CustomItemState< T > getCompletionModel() {
-			return CustomItemState.this;
-		}
-		@Override
-		public void prologue() {
-		}
-		@Override
-		public void epilogue() {
-		}
-		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CustomItemStateChangeStep< T > completionStep, T[] values) {
-			return new org.lgna.croquet.edits.CustomItemStateEdit( completionStep, CustomItemState.this.getValue(), values[ 0 ] );
-		}
-	}
-	private final CascadeCustomRoot root;
-	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< T > itemCodec, CascadeBlank< T >... blanks ) {
-		super( group, id, itemCodec );
-		this.root = new CascadeCustomRoot( blanks );
-	}
-	public CascadeCustomRoot getCascadeRoot() {
-		return this.root;
+public class InitializerState extends org.lgna.croquet.DefaultCustomItemState< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	private final DeclarationOperation<?> owner;
+	private String labelText; 
+	public InitializerState( DeclarationOperation<?> owner, edu.cmu.cs.dennisc.alice.ast.Expression initialValue ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4edd354e-da3c-400d-9c55-66da924c09a7" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ), initialValue );
+		this.owner = owner;
 	}
 	@Override
-	protected void localize() {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > blankNode ) {
+		return rv;
 	}
-	protected abstract void handleValueChange( T value );
-	public final void changeValue( T prevValue, T nextValue, boolean isAdjusting ) {
-		this.fireChanging( prevValue, nextValue, isAdjusting );
-		this.handleValueChange( nextValue );
-		this.fireChanged( prevValue, nextValue, isAdjusting );
+	public String getLabelText() {
+		return this.labelText;
+	}
+	/*package-private*/ void setLabelText( String labelText ) {
+		this.labelText = labelText;
 	}
 }

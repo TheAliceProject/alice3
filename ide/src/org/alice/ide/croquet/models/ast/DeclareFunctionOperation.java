@@ -58,7 +58,7 @@ public class DeclareFunctionOperation extends DeclareMethodOperation {
 		return rv;
 	}
 	private DeclareFunctionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-		super( java.util.UUID.fromString( "171164e5-8159-4641-9528-a230ef4d2600" ), type );
+		super( java.util.UUID.fromString( "1687287d-25f7-4ad0-a369-0bb59b96b53d" ), type );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFunctionOperation > createCodableResolver() {
