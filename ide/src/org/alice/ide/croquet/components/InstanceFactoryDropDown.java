@@ -41,57 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.ide.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomItemState< T > extends ItemState< T > {
-	public class CascadeCustomRoot extends org.lgna.croquet.CascadeRoot< T, org.lgna.croquet.history.CustomItemStateChangeStep< T > > {
-		public CascadeCustomRoot( CascadeBlank< T >... blanks ) {
-			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ), blanks );
+public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState< org.alice.ide.instancefactory.InstanceFactory > > extends org.lgna.croquet.components.ItemDropDown< org.alice.ide.instancefactory.InstanceFactory, M > {
+	private static class MainComponent extends org.lgna.croquet.components.BorderPanel {
+		private void refresh( org.alice.ide.instancefactory.InstanceFactory nextValue ) {
+			this.forgetAndRemoveAllComponents();
+			this.addComponent( org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( nextValue != null ? nextValue.createExpression() : null ), Constraint.CENTER );
+			this.revalidateAndRepaint();
 		}
-		@Override
-		public org.lgna.croquet.history.CustomItemStateChangeStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
-			return org.lgna.croquet.history.TransactionManager.addCustomItemStateChangeStep( CustomItemState.this, trigger );
-		}
-		@Override
-		public java.lang.Class< T > getComponentType() {
-			return CustomItemState.this.getItemCodec().getValueClass();
-		}
-		@Override
-		public CustomItemState< T > getCompletionModel() {
-			return CustomItemState.this;
-		}
-		@Override
-		public void prologue() {
-		}
-		@Override
-		public void epilogue() {
-		}
-		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CustomItemStateChangeStep< T > completionStep, T[] values) {
-			return new org.lgna.croquet.edits.CustomItemStateEdit( completionStep, CustomItemState.this.getValue(), values[ 0 ] );
-		}
-	}
-	private final CascadeCustomRoot root;
-	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< T > itemCodec, CascadeBlank< T >... blanks ) {
-		super( group, id, itemCodec );
-		this.root = new CascadeCustomRoot( blanks );
-	}
-	public CascadeCustomRoot getCascadeRoot() {
-		return this.root;
+	};
+	private final MainComponent mainComponent = new MainComponent();
+	public InstanceFactoryDropDown( M model ) {
+		super( model );
+		this.setMainComponent( this.mainComponent );
+		this.getAwtComponent().setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 	}
 	@Override
-	protected void localize() {
+	protected void handleChanged( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+		this.mainComponent.refresh( nextValue );
 	}
-	protected abstract void handleValueChange( T value );
-	public final void changeValue( T prevValue, T nextValue, boolean isAdjusting ) {
-		this.fireChanging( prevValue, nextValue, isAdjusting );
-		this.handleValueChange( nextValue );
-		for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
-			component.revalidateAndRepaint();
-		}
-		this.fireChanged( prevValue, nextValue, isAdjusting );
-	}
-}
+};

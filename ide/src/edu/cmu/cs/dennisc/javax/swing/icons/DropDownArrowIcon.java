@@ -41,57 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package edu.cmu.cs.dennisc.javax.swing.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomItemState< T > extends ItemState< T > {
-	public class CascadeCustomRoot extends org.lgna.croquet.CascadeRoot< T, org.lgna.croquet.history.CustomItemStateChangeStep< T > > {
-		public CascadeCustomRoot( CascadeBlank< T >... blanks ) {
-			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ), blanks );
-		}
-		@Override
-		public org.lgna.croquet.history.CustomItemStateChangeStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
-			return org.lgna.croquet.history.TransactionManager.addCustomItemStateChangeStep( CustomItemState.this, trigger );
-		}
-		@Override
-		public java.lang.Class< T > getComponentType() {
-			return CustomItemState.this.getItemCodec().getValueClass();
-		}
-		@Override
-		public CustomItemState< T > getCompletionModel() {
-			return CustomItemState.this;
-		}
-		@Override
-		public void prologue() {
-		}
-		@Override
-		public void epilogue() {
-		}
-		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CustomItemStateChangeStep< T > completionStep, T[] values) {
-			return new org.lgna.croquet.edits.CustomItemStateEdit( completionStep, CustomItemState.this.getValue(), values[ 0 ] );
-		}
+public class DropDownArrowIcon extends AbstractArrowIcon {
+	public DropDownArrowIcon( int size ) {
+		super( size );
 	}
-	private final CascadeCustomRoot root;
-	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< T > itemCodec, CascadeBlank< T >... blanks ) {
-		super( group, id, itemCodec );
-		this.root = new CascadeCustomRoot( blanks );
+	protected javax.swing.ButtonModel getButtonModel( java.awt.Component c ) {
+		javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+		return button.getModel();
 	}
-	public CascadeCustomRoot getCascadeRoot() {
-		return this.root;
-	}
-	@Override
-	protected void localize() {
-	}
-	protected abstract void handleValueChange( T value );
-	public final void changeValue( T prevValue, T nextValue, boolean isAdjusting ) {
-		this.fireChanging( prevValue, nextValue, isAdjusting );
-		this.handleValueChange( nextValue );
-		for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
-			component.revalidateAndRepaint();
+	public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+		javax.swing.ButtonModel buttonModel = this.getButtonModel( c );
+		java.awt.geom.GeneralPath path = this.createPath(x, y, Heading.SOUTH);
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		java.awt.Paint fillPaint;
+		if( buttonModel.isPressed() ) {
+			fillPaint = java.awt.Color.BLACK;
+		} else {
+			if( buttonModel.isRollover() ) {
+				fillPaint = java.awt.Color.GRAY;
+			} else {
+				fillPaint = java.awt.Color.DARK_GRAY;
+			}
 		}
-		this.fireChanged( prevValue, nextValue, isAdjusting );
+		g2.setPaint( fillPaint );
+		g2.fill( path );
 	}
 }

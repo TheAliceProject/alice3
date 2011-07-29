@@ -156,23 +156,7 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
 		
 		instancePanel.addComponent( instanceLabel );
-		
-		org.lgna.croquet.components.PopupButton popupButton = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
-		
-		final javax.swing.JButton awtButton = popupButton.getAwtComponent();
-		edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Entity.class );
-		javax.swing.JLabel arrowIconLabel = new javax.swing.JLabel( new edu.cmu.cs.dennisc.javax.swing.icons.PopupArrowIcon( 14 ) {
-			@Override
-			protected javax.swing.ButtonModel getButtonModel(java.awt.Component c) {
-				return awtButton.getModel();
-			}
-		} );
-		awtButton.setLayout( new javax.swing.BoxLayout( awtButton, javax.swing.BoxLayout.LINE_AXIS ) );
-		awtButton.add( new org.alice.ide.common.SelectedFieldExpressionPane( new org.alice.ide.ast.SelectedFieldExpression( type ) ).getAwtComponent() );
-		awtButton.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		awtButton.add( arrowIconLabel );
-		awtButton.setIcon( null );
-		instancePanel.addComponent( popupButton );
+		instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryDropDown( org.alice.ide.instancefactory.InstanceFactoryState.getInstance() ) );
 
 		this.addComponent( instancePanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		this.addComponent( cardPanel, Constraint.CENTER );

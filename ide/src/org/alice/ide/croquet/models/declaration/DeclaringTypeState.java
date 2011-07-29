@@ -68,4 +68,40 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 	/*package-private*/ void setLabelText( String labelText ) {
 		this.labelText = labelText;
 	}
+	
+	public org.lgna.croquet.components.PopupButton createComponent() {
+		final org.lgna.croquet.components.PopupButton rv = this.getCascadeRoot().getPopupPrepModel().createPopupButton();
+		javax.swing.JButton awtButton = rv.getAwtComponent();
+		class TypeDropDownIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon {
+			public TypeDropDownIcon() {
+				super( 14 );
+			}
+			private org.alice.ide.common.TypeIcon getTypeIcon() {
+				return org.alice.ide.common.TypeIcon.getInstance( DeclaringTypeState.this.getValue() );
+			}
+			@Override
+			public int getIconWidth() {
+				return super.getIconWidth() + this.getTypeIcon().getIconWidth();
+			}
+			@Override
+			public int getIconHeight() {
+				return Math.max( super.getIconHeight(), this.getTypeIcon().getIconHeight() );
+			}
+			@Override
+			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+				org.alice.ide.common.TypeIcon typeIcon = this.getTypeIcon();
+				typeIcon.paintIcon( c, g, x, y );
+				super.paintIcon( c, g, x + typeIcon.getIconWidth(), y );
+			}
+		}
+		awtButton.setIcon( new TypeDropDownIcon() );
+		this.addValueObserver( new ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice >() {
+			public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice> state, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice> state, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice nextValue, boolean isAdjusting ) {
+				rv.revalidateAndRepaint();
+			}
+		} );
+		return rv;
+	}
 }
