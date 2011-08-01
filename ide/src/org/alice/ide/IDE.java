@@ -338,6 +338,33 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		programType.crawl( crawler, true );
 		return crawler.getList();
 	}
+	public java.util.List< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > getArgumentLists( final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
+		assert programType != null;
+		class ArgumentListCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
+			private final java.util.List< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+				if( crawlable instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
+					edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)crawlable;
+					if( methodInvocation.method.getValue() == code ) {
+						this.list.add( methodInvocation.arguments );
+					}
+				} else if( crawlable instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
+					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)crawlable;
+					if( instanceCreation.constructor.getValue() == code ) {
+						this.list.add( instanceCreation.arguments );
+					}
+				}
+			}
+			public java.util.List< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > getList() {
+				return this.list;
+			}
+		}
+		ArgumentListCrawler crawler = new ArgumentListCrawler();
+		programType.crawl( crawler, true );
+		return crawler.getList();
+	}
+	
 
 	private org.alice.ide.memberseditor.Factory templatesFactory = new org.alice.ide.memberseditor.Factory();
 

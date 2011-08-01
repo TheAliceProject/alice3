@@ -92,7 +92,7 @@ public class TypeMenuModel extends org.lgna.croquet.MenuModel {
 		menuItemContainer.addSeparator();
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditConstructorOperation.getInstance( this.type.getDeclaredConstructor() ).getMenuItemPrepModel() );
 		menuItemContainer.addSeparator();
-		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, DeclareProcedureOperation.getInstance( this.type ).getMenuItemPrepModel() );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( this.type ).getMenuItemPrepModel() );
 		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
 			if( method.isProcedure() ) {
 				org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditMethodOperation.getInstance( method ).getMenuItemPrepModel() );
@@ -104,7 +104,7 @@ public class TypeMenuModel extends org.lgna.croquet.MenuModel {
 				org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditMethodOperation.getInstance( method ).getMenuItemPrepModel() );
 			}
 		}
-		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, DeclareFunctionOperation.getInstance( this.type ).getMenuItemPrepModel() );
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation.getInstance( this.type ).getMenuItemPrepModel() );
 		menuItemContainer.addSeparator();
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( this.type ).getMenuItemPrepModel() );
 		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.type.fields ) {

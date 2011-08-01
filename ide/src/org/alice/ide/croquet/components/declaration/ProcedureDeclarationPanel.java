@@ -49,5 +49,6 @@ package org.alice.ide.croquet.components.declaration;
 public class ProcedureDeclarationPanel extends MethodDeclarationPanel< org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation > {
 	public ProcedureDeclarationPanel( org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation model ) {
 		super( model );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
 	}
 }

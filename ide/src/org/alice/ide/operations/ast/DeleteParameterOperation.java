@@ -55,7 +55,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 	}
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
+		final java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty, edu.cmu.cs.dennisc.alice.ast.Argument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 		final int index = method.parameters.indexOf( this.getParameter() );
 		if( method != null && index >= 0 ) {
@@ -130,11 +130,11 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
-						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, getParameter(), index, getIDE().getMethodInvocations( method ) );
+						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, getParameter(), index, getIDE().getArgumentLists( method ) );
 					}
 					@Override
 					protected final void undoInternal() {
-						org.alice.ide.ast.NodeUtilities.addParameter( map, method, getParameter(), index, getIDE().getMethodInvocations( method ) );
+						org.alice.ide.ast.NodeUtilities.addParameter( map, method, getParameter(), index, getIDE().getArgumentLists( method ) );
 					}
 					@Override
 					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

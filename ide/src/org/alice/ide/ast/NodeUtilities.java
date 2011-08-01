@@ -385,30 +385,30 @@ public class NodeUtilities {
 //		return parameters.get( parameters.size()-1 );
 //	}
 	
-	public static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > removeParameter( java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > rv, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameterDeclaredInAlice, int index, java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations ) {
+	public static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty, edu.cmu.cs.dennisc.alice.ast.Argument > removeParameter( java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty, edu.cmu.cs.dennisc.alice.ast.Argument > rv, edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameterDeclaredInAlice, int index, java.util.List< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > argumentListProperties ) {
 		assert rv != null;
-		assert method.parameters.get( index ) == parameterDeclaredInAlice;
+		assert code.getParamtersProperty().get( index ) == parameterDeclaredInAlice;
 		rv.clear();
-		method.parameters.remove( index );
-		for( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation : methodInvocations ) {
-			edu.cmu.cs.dennisc.alice.ast.Argument argument = methodInvocation.arguments.remove( index );
+		code.getParamtersProperty().remove( index );
+		for( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty : argumentListProperties ) {
+			edu.cmu.cs.dennisc.alice.ast.Argument argument = argumentListProperty.remove( index );
 			if( argument != null ) {
-				rv.put( methodInvocation, argument );
+				rv.put( argumentListProperty, argument );
 			}
 		}
 		return rv;
 	}
-	public static void addParameter( java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameterDeclaredInAlice, int index, java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations ) {
-		method.parameters.add( index, parameterDeclaredInAlice );
-		for( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation : methodInvocations ) {
-			edu.cmu.cs.dennisc.alice.ast.Argument argument = map.get( methodInvocation );
+	public static void addParameter( java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty, edu.cmu.cs.dennisc.alice.ast.Argument > map, edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameterDeclaredInAlice, int index, java.util.List< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > argumentListProperties ) {
+		code.getParamtersProperty().add( index, parameterDeclaredInAlice );
+		for( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty : argumentListProperties ) {
+			edu.cmu.cs.dennisc.alice.ast.Argument argument = map.get( code );
 			if( argument != null ) {
 				//pass
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addParameter" );
 				argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameterDeclaredInAlice, new edu.cmu.cs.dennisc.alice.ast.NullLiteral() );
 			}
-			methodInvocation.arguments.add( index, argument );
+			argumentListProperty.add( index, argument );
 		}
 	}
 	

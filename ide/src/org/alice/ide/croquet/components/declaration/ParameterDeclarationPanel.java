@@ -40,38 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor;
+
+package org.alice.ide.croquet.components.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeProceduresPane extends AbstractTypeMethodsPane {
-	public TypeProceduresPane(edu.cmu.cs.dennisc.alice.ast.AbstractType<?, ?, ?> type) {
-		super(type);
+public class ParameterDeclarationPanel extends DeclarationPanel< org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation > {
+	public ParameterDeclarationPanel( org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation model ) {
+		super( model );
 	}
-
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty<? extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice>[] getListPropertiesToListenTo(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type) {
-		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods };
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Button createDeclareMemberButton(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type) {
-		return org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance(type).createButton();
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Button createEditConstructorButton(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type) {
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Component<?> createFunctionTemplate(edu.cmu.cs.dennisc.alice.ast.AbstractMethod method) {
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Component<?> createProcedureTemplate(edu.cmu.cs.dennisc.alice.ast.AbstractMethod method) {
-		return org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate(method);
+	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
+		org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation model = this.getModel();
+		return new org.alice.ide.codeeditor.TypedParameterPane( null, model.createPreviewDeclaration() );
 	}
 }

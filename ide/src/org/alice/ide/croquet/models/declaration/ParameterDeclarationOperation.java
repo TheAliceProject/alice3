@@ -40,53 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.edits.ast;
+
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodParameterEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation > {
-	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
-	private transient java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private transient int index;
+public class ParameterDeclarationOperation extends DeclarationOperation< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice >{
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice, ParameterDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ParameterDeclarationOperation getInstance( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+		synchronized( map ) {
+			ParameterDeclarationOperation rv = map.get( code );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ParameterDeclarationOperation( code );
+				map.put( code, rv );
+			}
+			return rv;
+		}
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code;
+	private ParameterDeclarationOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+		super( 
+				java.util.UUID.fromString( "ebaf5680-4b33-449d-aa07-f96b25b74c02" ), 
+				null, false,
+				null, true, 
+				false, true, 
+				"", true,
+				null, false
+		);
+		this.code = code;
+	}
 
-	public DeclareMethodParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( completionStep );
-		this.parameter = parameter;
-	}
-	public DeclareMethodParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.parameter = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice.class ).decodeValue( binaryDecoder );
+	public edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
+		return this.code;
 	}
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice.class ).encodeValue( binaryEncoder, this.parameter );
-	}
-
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = this.getModel().getMethod();
-		this.index = method.parameters.size();
-		org.alice.ide.ast.NodeUtilities.addParameter( map, method, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method ) );
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.ide.croquet.components.declaration.ParameterDeclarationPanel( this );
 	}
 	@Override
-	protected final void undoInternal() {
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = this.getModel().getMethod();
-		org.alice.ide.ast.NodeUtilities.removeParameter( map, method, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method ) );
+	public edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice createPreviewDeclaration() {
+		return new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( this.getDeclarationName(), this.getValueType() );
 	}
 	@Override
-	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-		rv.append( "declare:" );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, parameter, locale);
-		return rv;
-	}
-	@Override
-	public boolean canUndo() {
-		return true;
-	}
-	@Override
-	public boolean canRedo() {
-		return true;
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
+		assert declaringType == null;
+		assert valueType != null;
+		assert declarationName != null;
+		assert initializer == null;
+		return new org.alice.ide.croquet.edits.ast.ParameterDeclarationEdit( step, new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( declarationName, valueType ) );
 	}
 }

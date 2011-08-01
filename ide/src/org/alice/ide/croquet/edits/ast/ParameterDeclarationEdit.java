@@ -40,38 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor;
+package org.alice.ide.croquet.edits.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeProceduresPane extends AbstractTypeMethodsPane {
-	public TypeProceduresPane(edu.cmu.cs.dennisc.alice.ast.AbstractType<?, ?, ?> type) {
-		super(type);
+public class ParameterDeclarationEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation > {
+	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
+	private transient java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty, edu.cmu.cs.dennisc.alice.ast.Argument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private transient int index;
+
+	public ParameterDeclarationEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		super( completionStep );
+		this.parameter = parameter;
+	}
+	public ParameterDeclarationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.parameter = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice.class ).decodeValue( binaryDecoder );
+	}
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice.class ).encodeValue( binaryEncoder, this.parameter );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty<? extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice>[] getListPropertiesToListenTo(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type) {
-		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods };
+	protected final void doOrRedoInternal( boolean isDo ) {
+		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = this.getModel().getCode();
+		this.index = code.getParamtersProperty().size();
+		org.alice.ide.ast.NodeUtilities.addParameter( map, code, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
 	}
-
 	@Override
-	protected org.lgna.croquet.components.Button createDeclareMemberButton(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type) {
-		return org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance(type).createButton();
+	protected final void undoInternal() {
+		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = this.getModel().getCode();
+		org.alice.ide.ast.NodeUtilities.removeParameter( map, code, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
 	}
-
 	@Override
-	protected org.lgna.croquet.components.Button createEditConstructorButton(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type) {
-		return null;
+	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
+		rv.append( "declare:" );
+		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, parameter, locale);
+		return rv;
 	}
-
 	@Override
-	protected org.lgna.croquet.components.Component<?> createFunctionTemplate(edu.cmu.cs.dennisc.alice.ast.AbstractMethod method) {
-		return null;
+	public boolean canUndo() {
+		return true;
 	}
-
 	@Override
-	protected org.lgna.croquet.components.Component<?> createProcedureTemplate(edu.cmu.cs.dennisc.alice.ast.AbstractMethod method) {
-		return org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate(method);
+	public boolean canRedo() {
+		return true;
 	}
 }
