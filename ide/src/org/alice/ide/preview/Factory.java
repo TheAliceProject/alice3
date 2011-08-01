@@ -55,4 +55,12 @@ public class Factory extends org.alice.ide.common.Factory {
 	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType ) {
 		return this.createExpressionPane( expressionProperty.getValue() );
 	}
+	
+	// todo: investigate
+	// this epic hack was inserted to account for menu item icons returning a size of 0,0
+	// dennisc
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
+		return new org.lgna.croquet.components.LineAxisPanel( component );
+	}
 }
