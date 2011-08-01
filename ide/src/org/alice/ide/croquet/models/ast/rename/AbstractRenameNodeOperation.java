@@ -86,8 +86,8 @@ public abstract class AbstractRenameNodeOperation extends org.lgna.croquet.Input
 	}
 	
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize(org.lgna.croquet.components.Dialog dialog) {
-		return new java.awt.Dimension( 300, 150 );
+	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+		dialog.setSize( 300, 150 );
 	}
 	protected abstract edu.cmu.cs.dennisc.property.StringProperty getNameProperty();
 	protected abstract org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator();

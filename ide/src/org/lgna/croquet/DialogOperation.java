@@ -55,12 +55,9 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 		super(group, id);
 	}
 
-	protected void changePackedDialogSizeIfDesired( Dialog dialog ) {
+	protected void modifyPackedDialogSizeIfDesired( Dialog dialog ) {
 	}
 	protected java.awt.Point getDesiredDialogLocation( Dialog dialog ) {
-		return null;
-	}
-	protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
 		return null;
 	}
 	protected void tweakDialog( Dialog dialog, S context ) {
@@ -140,12 +137,8 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 		try {
 			if( contentPane != null ) {
 				dialog.getAwtComponent().setContentPane( contentPane.getAwtComponent() );
-				java.awt.Dimension size = this.getDesiredDialogSize( dialog );
-				if( size != null ) {
-					dialog.getAwtComponent().setSize( size );
-				} else {
-					dialog.pack();
-				}
+				dialog.pack();
+				this.modifyPackedDialogSizeIfDesired( dialog );
 				java.awt.Point location = this.getDesiredDialogLocation( dialog );
 				if( location != null ) {
 					dialog.setLocation( location );

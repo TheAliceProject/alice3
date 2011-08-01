@@ -72,8 +72,8 @@ public class EditTypeOperation extends org.lgna.croquet.InputDialogOperation {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditTypeOperation >( this, this.type, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
 	}
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize( org.lgna.croquet.components.Dialog dialog ) {
-		return new java.awt.Dimension( 640, 480 );
+	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+		dialog.setSize( 640, 480 );
 	}
 	@Override
 	protected org.alice.ide.editorstabbedpane.EditTypePanel prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {

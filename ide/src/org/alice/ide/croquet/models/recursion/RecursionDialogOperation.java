@@ -194,8 +194,8 @@ public class RecursionDialogOperation extends org.lgna.croquet.PlainDialogOperat
 	protected void releaseContentPane(org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane) {
 	}
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize(org.lgna.croquet.components.Dialog dialog) {
-		return new java.awt.Dimension( 760, 400 );
+	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+		dialog.setSize( 760, 400 );
 	}
 //	public static void main(String[] args) {
 //		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();

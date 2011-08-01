@@ -88,7 +88,7 @@ public abstract class SelectAndLoadProjectOperation extends org.lgna.croquet.Inp
 		}
 	}
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize( org.lgna.croquet.components.Dialog dialog ) {
-		return new java.awt.Dimension( 620, 480 );
+	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+		dialog.setSize( 620, 480 );
 	}
 }

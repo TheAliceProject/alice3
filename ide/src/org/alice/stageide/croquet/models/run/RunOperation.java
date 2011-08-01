@@ -135,8 +135,8 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		return this.location;
 	}
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize( org.lgna.croquet.components.Dialog dialog ) {
-		return this.size;
+	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+		dialog.setSize( this.size );
 	}
 	@Override
 	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {

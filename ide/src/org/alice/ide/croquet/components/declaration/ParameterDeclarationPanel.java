@@ -49,6 +49,7 @@ package org.alice.ide.croquet.components.declaration;
 public class ParameterDeclarationPanel extends DeclarationPanel< org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation > {
 	public ParameterDeclarationPanel( org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation model ) {
 		super( model );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getParameterColor() );
 	}
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {

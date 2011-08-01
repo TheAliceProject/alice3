@@ -60,7 +60,7 @@ public abstract class PersonOperation extends org.lgna.croquet.InputDialogOperat
 		return rv;
 	}
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize( org.lgna.croquet.components.Dialog dialog ) {
-		return new java.awt.Dimension( 1000, 700 );
+	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+		dialog.setSize( 1000, 700 );
 	}
 }
