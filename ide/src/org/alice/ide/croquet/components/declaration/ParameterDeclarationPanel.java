@@ -55,4 +55,66 @@ public class ParameterDeclarationPanel extends DeclarationPanel< org.alice.ide.c
 		org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation model = this.getModel();
 		return new org.alice.ide.codeeditor.TypedParameterPane( null, model.createPreviewDeclaration() );
 	}
+	@Override
+	protected org.lgna.croquet.components.Component< ? >[] createWarningRow() {
+		org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation model = this.getModel();
+		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = model.getCode();
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
+		final int N = argumentLists.size();
+		if( N > 0 ) {
+
+			String codeText;
+			if( code instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)code;
+				if( method.isProcedure() ) {
+					codeText = "procedure";
+				} else {
+					codeText = "function";
+				}
+			} else {
+				codeText = "constructor";
+			}
+			
+			String text = "I understand that I need to update the invocations to this " + codeText + ".";
+			org.lgna.croquet.BooleanState isUnderstandingConfirmed = new org.lgna.croquet.BooleanState( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "21efac8d-c2dd-451f-8065-d2e284a3e244" ), false ) {};
+			isUnderstandingConfirmed.setTextForBothTrueAndFalse( text );
+			org.lgna.croquet.components.CheckBox checkBox = isUnderstandingConfirmed.createCheckBox();
+			checkBox.setBackgroundColor( null );
+			
+			StringBuffer sb = new StringBuffer();
+			sb.append( "<html><body>There " );
+			if( N == 1 ) {
+				sb.append( "is 1 invocation" );
+			} else {
+				sb.append( "are " );
+				sb.append( N );
+				sb.append( " invocations" );
+			}
+			sb.append( " to this " );
+			sb.append( codeText );
+			sb.append( " in your program.<br>You will need to fill in " );
+			if( N == 1 ) {
+				sb.append( "a value" );
+			} else {
+				sb.append( "values" );
+			}
+			sb.append( " for the new " );
+			if( N == 1 ) {
+				sb.append( "argument at the" );
+			} else {
+				sb.append( "arguments at each" );
+			}
+			sb.append( " invocation.</body></html>" );
+
+			org.lgna.croquet.components.PageAxisPanel pane = new org.lgna.croquet.components.PageAxisPanel();
+			pane.addComponent( new org.lgna.croquet.components.Label( sb.toString() ) );
+			pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
+			pane.addComponent( new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( "Tip: look for " ), org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
+			pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
+			pane.addComponent( checkBox );
+			return new org.lgna.croquet.components.Component< ? >[] { new org.lgna.croquet.components.Label( "WARNING:" ), pane };
+		} else {
+			return null;
+		}
+	}
 }

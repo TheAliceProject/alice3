@@ -54,6 +54,9 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 	public DialogOperation(Group group, java.util.UUID id) {
 		super(group, id);
 	}
+
+	protected void changePackedDialogSizeIfDesired( Dialog dialog ) {
+	}
 	protected java.awt.Point getDesiredDialogLocation( Dialog dialog ) {
 		return null;
 	}

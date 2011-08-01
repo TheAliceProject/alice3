@@ -106,10 +106,10 @@ public abstract class DeclarationOperation< T extends edu.cmu.cs.dennisc.alice.a
 		this.isArrayValueTypeState.setEnabled( this.isIsArrayValueTypeEditable );
 	}
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize( org.lgna.croquet.components.Dialog dialog ) {
-		final int WIDTH = 480;
-		final int HEIGHT = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( WIDTH );
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumSize( super.getDesiredDialogSize( dialog ), WIDTH, HEIGHT );
+	protected void changePackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+		final int WIDTH = Math.min( dialog.getWidth(), 480 );
+		final int HEIGHT = Math.max( edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( WIDTH ), dialog.getHeight() );
+		dialog.setSize( edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumSize( dialog.getSize(), WIDTH, HEIGHT ) );
 	}
 	@Override
 	protected void localize() {

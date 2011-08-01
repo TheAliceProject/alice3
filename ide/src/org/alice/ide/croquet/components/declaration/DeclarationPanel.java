@@ -53,6 +53,9 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
 	
+	protected org.lgna.croquet.components.Component< ? >[] createWarningRow() {
+		return null;
+	}
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createMainComponent() {
 		final M model = this.getModel();
@@ -87,6 +90,10 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 						component = org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( model.getInitializerState().getValue() );
 					}
 					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getInitializerLabelText() + ":", component ) );
+				}
+				org.lgna.croquet.components.Component< ? >[] warningRow = DeclarationPanel.this.createWarningRow();
+				if( warningRow != null ) {
+					rv.add( warningRow );
 				}
 				return rv;
 			}
