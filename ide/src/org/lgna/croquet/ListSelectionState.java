@@ -42,10 +42,6 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.TrackableShape;
-import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.resolvers.CodableResolver;
-
 /*package-private*/ class ComboBoxModel<E> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	private final ListSelectionState< E > listSelectionState;
 	public ComboBoxModel( ListSelectionState< E > listSelectionState ) {
@@ -54,7 +50,6 @@ import org.lgna.croquet.resolvers.CodableResolver;
 	public E getSelectedItem() {
 		return this.listSelectionState.getSelectedItem();
 	}
-
 	public void setSelectedItem( Object item ) {
 		if( item != this.getSelectedItem() ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( item, this.getSelectedItem() ) ) {
@@ -64,26 +59,21 @@ import org.lgna.croquet.resolvers.CodableResolver;
 			this.fireContentsChanged( this, -1, -1 );
 		}
 	}
-
 	public Object getElementAt( int index ) {
 		return this.listSelectionState.getItemAt( index );
 	}
-
 	public int getSize() {
 		return this.listSelectionState.getItemCount();
 	}
 	
-	@Override
-	protected void fireContentsChanged( Object source, int index0, int index1 ) {
-		super.fireContentsChanged( source, index0, index1 );
+	/*package-private*/ void ACCESS_fireContentsChanged( Object source, int index0, int index1 ) {
+		this.fireContentsChanged( source, index0, index1 );
 	}
-	@Override
-	protected void fireIntervalAdded( Object source, int index0, int index1 ) {
-		super.fireIntervalAdded( source, index0, index1 );
+	/*package-private*/ void ACCESS_fireIntervalAdded( Object source, int index0, int index1 ) {
+		this.fireIntervalAdded( source, index0, index1 );
 	}
-	@Override
-	protected void fireIntervalRemoved( Object source, int index0, int index1 ) {
-		super.fireIntervalRemoved( source, index0, index1 );
+	/*package-private*/ void ACCESS_fireIntervalRemoved( Object source, int index0, int index1 ) {
+		this.fireIntervalRemoved( source, index0, index1 );
 	}
 }
 
@@ -225,7 +215,7 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
 
 				this.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.listSelectionModel.getValueIsAdjusting() );
-				this.comboBoxModel.fireContentsChanged( this, this.index, this.index );
+				this.comboBoxModel.ACCESS_fireContentsChanged( this, this.index, this.index );
 				if( Manager.isInTheMidstOfUndoOrRedo() ) {
 					//pass
 				} else {
@@ -242,38 +232,6 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 			}
 		}
 	}
-
-//	private void setSelectionIndex( int nextIndex, boolean isValueChangedInvocationDesired ) {
-//		int prevIndex = this.index;
-//		this.index = nextIndex;
-//		int firstIndex = Math.min( prevIndex, nextIndex );
-//		int lastIndex = Math.max( prevIndex, nextIndex );
-//		this.listSelectionModel.fireListSelectionChanged( firstIndex, lastIndex, this.listSelectionModel.getValueIsAdjusting() );
-//
-//		if( isValueChangedInvocationDesired ) {
-//			if( nextIndex != this.indexOfLastPerform ) {
-//				E prevSelection = this.getItemAt( this.indexOfLastPerform );
-//				E nextSelection = this.getItemAt( nextIndex );
-//				this.indexOfLastPerform = nextIndex;
-//
-//				if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
-//					//pass
-//				} else {
-//					this.commitEdit( new ListSelectionStateEdit< E >( this.mostRecentEvent, prevSelection, nextSelection ), this.mostRecentEvent, this.mostRecentViewController );
-//					//						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
-//					//						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
-//					//						ModelContext< ? > popContext = ContextManager.popContext();
-//					//						assert popContext == childContext;
-//				}
-//				this.fireValueChanged( nextSelection );
-//				this.mostRecentEvent = null;
-//				this.mostRecentViewController = null;
-//			}
-//		} else {
-//			this.indexOfLastPerform = nextIndex;
-//		}
-//	}
-
 	public ListSelectionState( Group group, java.util.UUID id, ItemCodec< E > codec, int selectionIndex ) {
 		super( group, id, codec );
 		this.index = selectionIndex;
@@ -377,7 +335,7 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 			this.internalAddItem( item );
 			
 			int index = this.getItemCount() - 1;
-			this.comboBoxModel.fireIntervalAdded( this, index, index );
+			this.comboBoxModel.ACCESS_fireIntervalAdded( this, index, index );
 			this.handleItemAdded( item );
 		} finally {
 			this.popAtomic();
@@ -388,7 +346,7 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 		try {
 			int index = this.indexOf( item );
 			this.internalRemoveItem( item );
-			this.comboBoxModel.fireIntervalRemoved( this, index, index );
+			this.comboBoxModel.ACCESS_fireIntervalRemoved( this, index, index );
 			this.handleItemRemoved( item );
 		} finally {
 			this.popAtomic();
@@ -428,7 +386,7 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 //				this.index = -1;
 //			}
 
-			this.comboBoxModel.fireContentsChanged( this, 0, this.getItemCount() );
+			this.comboBoxModel.ACCESS_fireContentsChanged( this, 0, this.getItemCount() );
 			for( E item : removed ) {
 				this.handleItemRemoved( item );
 			}
@@ -496,14 +454,10 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 		org.lgna.croquet.history.ListSelectionStateChangeStep< E > step = org.lgna.croquet.history.TransactionManager.addListSelectionStateChangeStep( this, trigger );
 		org.lgna.croquet.edits.ListSelectionStateEdit< E > edit = new org.lgna.croquet.edits.ListSelectionStateEdit< E >( step, prevValue, nextValue );
 		step.commitAndInvokeDo( edit );
-//		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
-//		childContext.commitAndInvokeDo( listSelectionStateEdit );
-//		ModelContext< ? > popContext = ContextManager.popContext();
-//		assert popContext == childContext;
 	}
 
 	@Override
-	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	public org.lgna.croquet.edits.ListSelectionStateEdit< E > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		assert originalEdit instanceof org.lgna.croquet.edits.ListSelectionStateEdit;
 		org.lgna.croquet.edits.ListSelectionStateEdit< E > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< E >)originalEdit;
 		this.commitEdit( listSelectionStateEdit.getPreviousValue(), listSelectionStateEdit.getNextValue(), new org.lgna.croquet.triggers.SimulatedTrigger() );
@@ -521,10 +475,6 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 		}
 		return rv;
 	}
-//	@Override
-//	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
-//		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
-//	}
 	public org.lgna.croquet.components.List< E > createList() {
 		return new org.lgna.croquet.components.List< E >( this );
 	}
@@ -538,7 +488,7 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 		return new org.lgna.croquet.components.MutableList< E >( this, factory );
 	}
 
-	public TrackableShape getTrackableShapeFor( E item ) {
+	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( E item ) {
 		org.lgna.croquet.components.ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( org.lgna.croquet.components.ItemSelectable.class );
 		if( itemSelectable != null ) {
 			return itemSelectable.getTrackableShapeFor( item );
@@ -547,19 +497,19 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 		}
 	}
 
-	public static class ListSelectionMenuModelResolver<E> implements CodableResolver< ListSelectionMenuModel< E > > {
+	public static class ListSelectionMenuModelResolver<E> implements org.lgna.croquet.resolvers.CodableResolver< ListSelectionMenuModel< E > > {
 		private ListSelectionMenuModel< E > listSelectionMenuModel;
 
 		public ListSelectionMenuModelResolver( ListSelectionMenuModel< E > listSelectionMenuModel ) {
 			this.listSelectionMenuModel = listSelectionMenuModel;
 		}
 		public ListSelectionMenuModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			CodableResolver< ListSelectionState< E >> listSelectionStateResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			org.lgna.croquet.resolvers.CodableResolver< ListSelectionState< E >> listSelectionStateResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 			ListSelectionState< E > listSelectionState = listSelectionStateResolver.getResolved();
 			this.listSelectionMenuModel = listSelectionState.getMenuModel();
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			CodableResolver< ListSelectionState< E >> listSelectionStateResolver = this.listSelectionMenuModel.listSelectionState.getCodableResolver();
+			org.lgna.croquet.resolvers.CodableResolver< ListSelectionState< E >> listSelectionStateResolver = this.listSelectionMenuModel.listSelectionState.getCodableResolver();
 			binaryEncoder.encode( listSelectionStateResolver );
 		}
 		public ListSelectionMenuModel< E > getResolved() {

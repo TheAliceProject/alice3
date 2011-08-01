@@ -51,4 +51,8 @@ public class ProcedureDeclarationPanel extends MethodDeclarationPanel< org.alice
 		super( model );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
 	}
+	@Override
+	protected boolean isValueTypeRowDesired() {
+		return false;
+	}
 }
