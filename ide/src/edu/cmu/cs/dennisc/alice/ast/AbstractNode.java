@@ -305,7 +305,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 				String text;
 				if( value instanceof org.alice.virtualmachine.Resource ) {
 					org.alice.virtualmachine.Resource resource = (org.alice.virtualmachine.Resource)value;
-					text = resource.getUUID().toString();
+					text = resource.getId().toString();
 				} else {
 					text = value.toString();
 				}

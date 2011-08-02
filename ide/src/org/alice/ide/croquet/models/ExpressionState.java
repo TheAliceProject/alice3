@@ -41,56 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.declaration;
+package org.alice.ide.croquet.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BillboardFieldDeclarationOperation extends SceneFieldDeclarationOperation {
-	private static class SingletonHolder {
-		private static BillboardFieldDeclarationOperation instance = new BillboardFieldDeclarationOperation();
+public abstract class ExpressionState extends org.lgna.croquet.DefaultCustomItemState< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type;
+	public ExpressionState( org.lgna.croquet.Group group, java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.Expression initialValue, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+		super( group, id, org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ), initialValue );
+		this.type = type;
 	}
-	public static BillboardFieldDeclarationOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private String frontFaceImageResourceLabelText;
-	private String backFaceImageResourceLabelText;
-	private BillboardFieldDeclarationOperation() {
-		super( 
-				java.util.UUID.fromString( "1ce5a991-d315-40d3-a0ad-d711835e8140" ), 
-				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Billboard.class ), false, 
-				false, false, 
-				"", true, 
-				org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lgna.story.Billboard.class ), false 
-		);
+	public ExpressionState( org.lgna.croquet.Group group, java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.Expression initialValue, Class<?> cls ) {
+		this( group, id, initialValue, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
 	}
 	@Override
-	protected void localize() {
-		super.localize();
-		this.frontFaceImageResourceLabelText = this.findLocalizedText( "frontFaceImageResourceLabel", BillboardFieldDeclarationOperation.class );
-		this.backFaceImageResourceLabelText = this.findLocalizedText( "backFaceImageResourceLabel", BillboardFieldDeclarationOperation.class );
-	}
-
-	public String getFrontFaceImageResourceLabelText() {
-		return this.frontFaceImageResourceLabelText;
-	}
-	public String getBackFaceImageResourceLabelText() {
-		return this.backFaceImageResourceLabelText;
-	}
-	
-	public FrontFaceImageResourceState getFrontFaceImageResourceState() {
-		return FrontFaceImageResourceState.getInstance();
-	}
-	public BackFaceImageResourceState getBackFaceImageResourceState() {
-		return BackFaceImageResourceState.getInstance();
-	}
-	@Override
-	protected org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel( this );
-	}
-	@Override
-	protected org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization rv ) {
-		//rv.addDoStatement();
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > blankNode ) {
+		org.alice.ide.IDE.getActiveInstance().getCascadeManager().updateChildren( rv, blankNode, this.type );
 		return rv;
+	}
+	public org.lgna.croquet.components.JComponent< ? > createComponent() {
+		//return this.getCascadeRoot().getPopupPrepModel().createPopupButton();
+		return new org.alice.ide.croquet.components.ExpressionDropDown( this );
 	}
 }

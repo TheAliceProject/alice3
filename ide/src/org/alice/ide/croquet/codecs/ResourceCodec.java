@@ -41,56 +41,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.declaration;
+package org.alice.ide.croquet.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BillboardFieldDeclarationOperation extends SceneFieldDeclarationOperation {
-	private static class SingletonHolder {
-		private static BillboardFieldDeclarationOperation instance = new BillboardFieldDeclarationOperation();
+public class ResourceCodec< R extends org.alice.virtualmachine.Resource > implements org.lgna.croquet.ItemCodec< R > {
+	private static java.util.Map< Class< org.alice.virtualmachine.Resource >, ResourceCodec< org.alice.virtualmachine.Resource > > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized < R extends org.alice.virtualmachine.Resource > ResourceCodec< R > getInstance( Class< R > cls ) {
+		ResourceCodec< ? > rv = map.get( cls );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ResourceCodec< R >( cls );
+		}
+		return (ResourceCodec< R >)rv;
 	}
-	public static BillboardFieldDeclarationOperation getInstance() {
-		return SingletonHolder.instance;
+	private Class<R> valueCls;
+	private ResourceCodec( Class<R> valueCls ) {
+		this.valueCls = valueCls;
 	}
-	private String frontFaceImageResourceLabelText;
-	private String backFaceImageResourceLabelText;
-	private BillboardFieldDeclarationOperation() {
-		super( 
-				java.util.UUID.fromString( "1ce5a991-d315-40d3-a0ad-d711835e8140" ), 
-				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Billboard.class ), false, 
-				false, false, 
-				"", true, 
-				org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lgna.story.Billboard.class ), false 
-		);
+	public Class< R > getValueClass() {
+		return this.valueCls;
 	}
-	@Override
-	protected void localize() {
-		super.localize();
-		this.frontFaceImageResourceLabelText = this.findLocalizedText( "frontFaceImageResourceLabel", BillboardFieldDeclarationOperation.class );
-		this.backFaceImageResourceLabelText = this.findLocalizedText( "backFaceImageResourceLabel", BillboardFieldDeclarationOperation.class );
+	public R decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
+		if( valueIsNotNull ) {
+			java.util.UUID id = binaryDecoder.decodeId();
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+			return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupResource( ide.getProject(), id );
+		} else {
+			return null;
+		}
 	}
-
-	public String getFrontFaceImageResourceLabelText() {
-		return this.frontFaceImageResourceLabelText;
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, R value) {
+		boolean valueIsNotNull = value != null;
+		binaryEncoder.encode( valueIsNotNull );
+		if( valueIsNotNull ) {
+			binaryEncoder.encode( value.getId() );
+		}
 	}
-	public String getBackFaceImageResourceLabelText() {
-		return this.backFaceImageResourceLabelText;
-	}
-	
-	public FrontFaceImageResourceState getFrontFaceImageResourceState() {
-		return FrontFaceImageResourceState.getInstance();
-	}
-	public BackFaceImageResourceState getBackFaceImageResourceState() {
-		return BackFaceImageResourceState.getInstance();
-	}
-	@Override
-	protected org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel( this );
-	}
-	@Override
-	protected org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization rv ) {
-		//rv.addDoStatement();
+	public StringBuilder appendRepresentation(StringBuilder rv, R value, java.util.Locale locale) {
+		rv.append( value );
 		return rv;
 	}
 }

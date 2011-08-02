@@ -49,7 +49,7 @@ package org.lgna.story.implementation;
 public abstract class EntityImplementation implements ReferenceFrame {
 	protected static final String KEY = EntityImplementation.class.getName() + ".KEY";
 	public static EntityImplementation getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
-		return (EntityImplementation)sgElement.getBonusDataFor( KEY );
+		return sgElement != null ? (EntityImplementation)sgElement.getBonusDataFor( KEY ) : null;
 	}
 	protected void putInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
 		sgElement.putBonusDataFor( KEY, this );

@@ -47,7 +47,24 @@ package org.alice.stageide.croquet.components.declaration;
  * @author Dennis Cosgrove
  */
 public class BillboardFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation > {
-	public BillboardFieldDeclarationPanel( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation model ) {
+	public BillboardFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation model ) {
 		super( model );
+		class SidePanel extends org.lgna.croquet.components.PageAxisPanel {
+			public SidePanel() {
+				this.addComponent( new org.lgna.croquet.components.Label( model.getFrontFaceImageResourceLabelText() ) );
+				this.addComponent( new ImageResourceExpresssionView( model.getFrontFaceImageResourceState() ) );
+				this.addComponent( new org.lgna.croquet.components.Label( model.getBackFaceImageResourceLabelText() ) );
+				this.addComponent( new ImageResourceExpresssionView( model.getBackFaceImageResourceState() ) );
+				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 32, 0, 0 ) );
+			}
+		}
+		this.addComponent( new SidePanel(), Constraint.LINE_END );
+	}
+	@Override
+	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation model ) {
+		super.updateComponentRows( rv, model );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getFrontFaceImageResourceLabelText()+":", model.getFrontFaceImageResourceState().createComponent() ) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getBackFaceImageResourceLabelText()+":", model.getBackFaceImageResourceState().createComponent() ) );
+		return rv;
 	}
 }

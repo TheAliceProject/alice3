@@ -59,48 +59,51 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 	protected boolean isValueTypeRowDesired() {
 		return true;
 	}
+	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, M model ) {
+		if( this.isValueTypeRowDesired() ) {
+			if( model.getComponentValueTypeState() != null ) {
+				org.lgna.croquet.components.Component< ? > component;
+				if( model.isValueComponentTypeEditable() ) {
+					org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel();
+					panel.addComponent( new org.alice.ide.croquet.components.TypeDropDown( model.getComponentValueTypeState() ), Constraint.CENTER );
+					panel.addComponent( model.getIsArrayState().createCheckBox(), Constraint.LINE_END );
+					component = panel;
+				} else {
+					if( model.isIsArrayEditable() ) {
+						//todo? this case is not currently supported
+						component = null;
+					} else {
+						component = org.alice.ide.common.TypeComponent.createInstance( model.getValueType() );
+					}
+				}
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getValueTypeLabelText() + ":", component ) );
+			}
+		}
+		if( model.getNameState() != null ) {
+			rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", model.getNameState().createTextField() ) );
+		}
+		if( model.getInitializerState() != null ) {
+			org.lgna.croquet.components.Component< ? > component;
+			if( model.isInitializerEditable() ) {
+				component = model.getInitializerState().getCascadeRoot().getPopupPrepModel().createPopupButton();
+			} else {
+				component = org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( model.getInitializerState().getValue() );
+			}
+			rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getInitializerLabelText() + ":", component ) );
+		}
+		org.lgna.croquet.components.Component< ? >[] warningRow = this.createWarningRow();
+		if( warningRow != null ) {
+			rv.add( warningRow );
+		}
+		return rv;
+	}
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createMainComponent() {
 		final M model = this.getModel();
 		class DetailsPanel extends org.lgna.croquet.components.RowsSpringPanel {
 			@Override
 			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
-				if( DeclarationPanel.this.isValueTypeRowDesired() ) {
-					if( model.getComponentValueTypeState() != null ) {
-						org.lgna.croquet.components.Component< ? > component;
-						if( model.isValueComponentTypeEditable() ) {
-							org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel();
-							panel.addComponent( new org.alice.ide.croquet.components.TypeDropDown( model.getComponentValueTypeState() ), Constraint.CENTER );
-							panel.addComponent( model.getIsArrayState().createCheckBox(), Constraint.LINE_END );
-							component = panel;
-						} else {
-							if( model.isIsArrayEditable() ) {
-								//todo? this case is not currently supported
-								component = null;
-							} else {
-								component = org.alice.ide.common.TypeComponent.createInstance( model.getValueType() );
-							}
-						}
-						rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getValueTypeLabelText() + ":", component ) );
-					}
-				}
-				if( model.getNameState() != null ) {
-					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", model.getNameState().createTextField() ) );
-				}
-				if( model.getInitializerState() != null ) {
-					org.lgna.croquet.components.Component< ? > component;
-					if( model.isInitializerEditable() ) {
-						component = model.getInitializerState().getCascadeRoot().getPopupPrepModel().createPopupButton();
-					} else {
-						component = org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( model.getInitializerState().getValue() );
-					}
-					rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getInitializerLabelText() + ":", component ) );
-				}
-				org.lgna.croquet.components.Component< ? >[] warningRow = DeclarationPanel.this.createWarningRow();
-				if( warningRow != null ) {
-					rv.add( warningRow );
-				}
-				return rv;
+				return DeclarationPanel.this.updateComponentRows( rv, DeclarationPanel.this.getModel() );
 			}
 		}
 		DetailsPanel detailsPanel = new DetailsPanel();

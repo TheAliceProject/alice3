@@ -46,51 +46,8 @@ package org.alice.stageide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class BillboardFieldDeclarationOperation extends SceneFieldDeclarationOperation {
-	private static class SingletonHolder {
-		private static BillboardFieldDeclarationOperation instance = new BillboardFieldDeclarationOperation();
-	}
-	public static BillboardFieldDeclarationOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private String frontFaceImageResourceLabelText;
-	private String backFaceImageResourceLabelText;
-	private BillboardFieldDeclarationOperation() {
-		super( 
-				java.util.UUID.fromString( "1ce5a991-d315-40d3-a0ad-d711835e8140" ), 
-				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Billboard.class ), false, 
-				false, false, 
-				"", true, 
-				org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lgna.story.Billboard.class ), false 
-		);
-	}
-	@Override
-	protected void localize() {
-		super.localize();
-		this.frontFaceImageResourceLabelText = this.findLocalizedText( "frontFaceImageResourceLabel", BillboardFieldDeclarationOperation.class );
-		this.backFaceImageResourceLabelText = this.findLocalizedText( "backFaceImageResourceLabel", BillboardFieldDeclarationOperation.class );
-	}
-
-	public String getFrontFaceImageResourceLabelText() {
-		return this.frontFaceImageResourceLabelText;
-	}
-	public String getBackFaceImageResourceLabelText() {
-		return this.backFaceImageResourceLabelText;
-	}
-	
-	public FrontFaceImageResourceState getFrontFaceImageResourceState() {
-		return FrontFaceImageResourceState.getInstance();
-	}
-	public BackFaceImageResourceState getBackFaceImageResourceState() {
-		return BackFaceImageResourceState.getInstance();
-	}
-	@Override
-	protected org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel( this );
-	}
-	@Override
-	protected org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization rv ) {
-		//rv.addDoStatement();
-		return rv;
+public abstract class ImageResourceState extends org.alice.ide.croquet.models.ExpressionState {
+	public ImageResourceState( java.util.UUID id ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, id, null, org.alice.virtualmachine.resources.ImageResource.class );
 	}
 }

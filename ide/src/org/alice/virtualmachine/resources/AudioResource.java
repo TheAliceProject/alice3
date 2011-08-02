@@ -96,14 +96,14 @@ public class AudioResource extends org.alice.virtualmachine.Resource {
 	}
 	public AudioResource( Class<?> cls, String resourceName, String contentType ) {
 		super( cls, resourceName, contentType );
-		uuidToResourceMap.put( this.getUUID(), this );
+		uuidToResourceMap.put( this.getId(), this );
 	}
 	public AudioResource( Class<?> cls, String resourceName ) {
 		this( cls, resourceName, getContentType( resourceName ) );
 	}
 	public AudioResource( java.io.File file, String contentType ) throws java.io.IOException {
 		super( file, contentType );
-		uuidToResourceMap.put( this.getUUID(), this );
+		uuidToResourceMap.put( this.getId(), this );
 	}
 	public AudioResource( java.io.File file ) throws java.io.IOException {
 		this( file, getContentType( file ) );

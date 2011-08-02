@@ -54,6 +54,10 @@ public class InitializerState extends org.lgna.croquet.DefaultCustomItemState< e
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > blankNode ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > valueType = this.owner.getValueType();
+		if( valueType != null ) {
+			org.alice.ide.IDE.getActiveInstance().getCascadeManager().updateChildren( rv, blankNode, valueType );
+		}
 		return rv;
 	}
 }

@@ -124,7 +124,7 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 	}
 	
 	
-	public java.util.UUID getUUID() {
+	public java.util.UUID getId() {
 		return this.uuid;
 	}
 	public String getContentType() {
@@ -179,7 +179,7 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 		sb.append( ";contentType=" );
 		sb.append( this.getContentType() );
 		sb.append( ";uuid=" );
-		sb.append( this.getUUID() );
+		sb.append( this.getId() );
 		sb.append( "]" );
 		return sb.toString();
 	}

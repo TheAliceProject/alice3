@@ -303,7 +303,7 @@ public abstract class ProjectUtilities {
 				for( org.alice.virtualmachine.Resource resource : resources ) {
 					org.w3c.dom.Element xmlElement = xmlDocument.createElement( XML_RESOURCE_TAG_NAME );
 					resource.encodeAttributes( xmlElement );
-					java.util.UUID uuid = resource.getUUID();
+					java.util.UUID uuid = resource.getId();
 					assert uuid != null;
 
 					xmlElement.setAttribute( XML_RESOURCE_CLASSNAME_ATTRIBUTE, resource.getClass().getName() );
@@ -411,6 +411,14 @@ public abstract class ProjectUtilities {
 		writeType( new java.io.File( path ), type, dataSources );
 	}
 
+	public static <N extends edu.cmu.cs.dennisc.alice.ast.Node > N decodeNode( edu.cmu.cs.dennisc.alice.Project project, edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		java.util.UUID id = binaryDecoder.decodeId();
+		return (N)lookupNode( project, id );
+	}
+	public static void encodeNode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.alice.ast.Node node ) {
+		binaryEncoder.encode( node.getUUID() );
+	}
+	
 	public static <N extends edu.cmu.cs.dennisc.alice.ast.Node > N lookupNode( edu.cmu.cs.dennisc.alice.Project project, final java.util.UUID id ) {
 		final edu.cmu.cs.dennisc.alice.ast.Node[] buffer = { null };
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = project.getProgramType();
@@ -427,14 +435,15 @@ public abstract class ProjectUtilities {
 		programType.crawl( crawler, true );
 		return (N)buffer[ 0 ];
 	}
-	public static <N extends edu.cmu.cs.dennisc.alice.ast.Node > N decodeNode( edu.cmu.cs.dennisc.alice.Project project, edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		java.util.UUID id = binaryDecoder.decodeId();
-		return (N)lookupNode( project, id );
+	public static <R extends org.alice.virtualmachine.Resource > R lookupResource( edu.cmu.cs.dennisc.alice.Project project, java.util.UUID id ) {
+		for( org.alice.virtualmachine.Resource resource : project.getResources() ) {
+			if( resource.getId() == id ) {
+				return (R)resource;
+			}
+		}
+		return null;
 	}
-	public static void encodeNode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.alice.ast.Node node ) {
-		binaryEncoder.encode( node.getUUID() );
-	}
-	
+
 	public static java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > getTypes( edu.cmu.cs.dennisc.alice.Project project ) {
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
 		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
