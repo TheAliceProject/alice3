@@ -142,6 +142,9 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 	public <T> T[] toArray( T[] a ) {
 		return getValue().toArray( a );
 	}
+	public <T> T[] toArray( Class<T> componentType ) {
+		return this.toArray( (T[])java.lang.reflect.Array.newInstance( componentType, this.size() ) );
+	}
 	public boolean isEmpty() {
 		return getValue().isEmpty();
 	}
