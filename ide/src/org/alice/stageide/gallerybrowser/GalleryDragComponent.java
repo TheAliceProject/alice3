@@ -43,15 +43,15 @@
 package org.alice.stageide.gallerybrowser;
 
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
-import org.lgna.project.ast.TypeDeclaredInAlice;
+import org.lgna.project.ast.NamedUserType;
 
 
 /**
  * @author Dennis Cosgrove
  */
 public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance {
-	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>, GalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static GalleryDragComponent getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode ) {
+	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>, GalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static GalleryDragComponent getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode ) {
 		GalleryDragComponent rv = map.get( treeNode );
 		if( rv != null ) {
 			//pass
@@ -62,8 +62,8 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 		return rv;
 	}
 	
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode;
-	private GalleryDragComponent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode ) {
+	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode;
+	private GalleryDragComponent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode ) {
 		this.treeNode = treeNode;
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 //		label.setIcon( ResourceManager.getLargeIcon( this.treeNode ) );
@@ -79,7 +79,7 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 		this.getAwtComponent().setOpaque( false );
 	}
 	
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> getTreeNode() {
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> getTreeNode() {
 		return this.treeNode;
 	}
 

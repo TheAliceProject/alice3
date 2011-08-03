@@ -49,8 +49,8 @@ package org.alice.ide.memberseditor.templates;
 	private org.lgna.project.ast.AbstractField field;
 	public FieldArrayLengthTemplate( org.lgna.project.ast.AbstractField field ) {
 		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
-			org.lgna.project.ast.FieldDeclaredInAlice fieldInAlice = (org.lgna.project.ast.FieldDeclaredInAlice)this.field;
+		if( this.field instanceof org.lgna.project.ast.UserField ) {
+			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
 			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
 		}
 	}
@@ -60,7 +60,7 @@ package org.alice.ide.memberseditor.templates;
 	}
 	@Override
 	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
-		return org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE;
+		return org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE;
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {

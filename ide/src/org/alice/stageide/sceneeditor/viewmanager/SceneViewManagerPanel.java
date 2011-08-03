@@ -45,7 +45,7 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.MutableList;
-import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.UserField;
 
 
 /**
@@ -59,7 +59,7 @@ public class SceneViewManagerPanel extends AbstractMarkerManagerPanel{
     }
 
 	@Override
-	protected MutableList<FieldDeclaredInAlice> createMutableList(org.lgna.croquet.components.MutableList.Factory<FieldDeclaredInAlice> factory)
+	protected MutableList<UserField> createMutableList(org.lgna.croquet.components.MutableList.Factory<UserField> factory)
 	{
 	    return org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState.getInstance().createMutableList( factory );
 	}

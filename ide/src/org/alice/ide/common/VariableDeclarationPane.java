@@ -47,7 +47,7 @@ package org.alice.ide.common;
  */
 
 class VariableDeclarationPane extends LocalDeclarationPane {
-	public VariableDeclarationPane( org.lgna.project.ast.VariableDeclaredInAlice variableDeclaredInAlice ) {
+	public VariableDeclarationPane( org.lgna.project.ast.UserVariable variableDeclaredInAlice ) {
 		super( variableDeclaredInAlice, new VariablePane( variableDeclaredInAlice ) );
 	}
 }

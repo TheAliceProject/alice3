@@ -361,14 +361,14 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 		return new CreateTextPane( this ); 
 	}
 	
-	private edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.FieldDeclaredInAlice, org.lgna.story.Text > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
+	private edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.UserField, org.lgna.story.Text > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		//"Create Text"
 		CreateTextPane createTextPane = context.getMainPanel();
 		org.lgna.story.Text text = createTextPane.createText();
 		if( text != null ) {
-			org.lgna.project.ast.TypeDeclaredInAlice type = org.alice.ide.IDE.getActiveInstance().getTypeDeclaredInAliceFor( org.lgna.story.Text.class );
+			org.lgna.project.ast.NamedUserType type = org.alice.ide.IDE.getActiveInstance().getTypeDeclaredInAliceFor( org.lgna.story.Text.class );
 			org.lgna.project.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( type );
-			org.lgna.project.ast.FieldDeclaredInAlice field = new org.lgna.project.ast.FieldDeclaredInAlice( text.getName(), type, initializer );
+			org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField( text.getName(), type, initializer );
 			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 			field.access.setValue( org.lgna.project.ast.Access.PRIVATE );
 			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, text );
@@ -377,7 +377,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 		}
 	}
 	
-	private final org.lgna.project.ast.TypeDeclaredInAlice getOwnerType() {
+	private final org.lgna.project.ast.NamedUserType getOwnerType() {
 		return org.alice.ide.IDE.getActiveInstance().getSceneType();
 	}
 	private boolean isInstanceValid() {
@@ -387,11 +387,11 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	@Override
 	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.FieldDeclaredInAlice, org.lgna.story.Text> tuple = this.createFieldAndInstance( step );
+			edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, org.lgna.story.Text> tuple = this.createFieldAndInstance( step );
 			if( tuple != null ) {
-				org.lgna.project.ast.FieldDeclaredInAlice field = tuple.getA();
+				org.lgna.project.ast.UserField field = tuple.getA();
 				if( field != null ) {
-					org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
+					org.lgna.project.ast.UserType<?> ownerType = this.getOwnerType();
 					org.lgna.project.ast.Statement[] doStatements = null; //todo
 					org.lgna.project.ast.Statement[] undoStatements = null; //todo
 					step.commitAndInvokeDo( new org.alice.ide.operations.ast.DeclareFieldEdit( step, ownerType, field, doStatements, undoStatements ) );

@@ -84,7 +84,7 @@ public class CreateLocalPane extends CreateDeclarationPane<org.lgna.project.ast.
 		org.lgna.project.ast.LocalDeclarationStatement rv;
 		if( isFinal ) {
 			rv = new org.lgna.project.ast.ConstantDeclarationStatement(
-					new org.lgna.project.ast.ConstantDeclaredInAlice(
+					new org.lgna.project.ast.UserConstant(
 							name,
 							type
 					),
@@ -92,7 +92,7 @@ public class CreateLocalPane extends CreateDeclarationPane<org.lgna.project.ast.
 			);
 		} else {
 			rv = new org.lgna.project.ast.VariableDeclarationStatement(
-					new org.lgna.project.ast.VariableDeclaredInAlice(
+					new org.lgna.project.ast.UserVariable(
 							name,
 							type
 					),

@@ -44,10 +44,10 @@
 package org.alice.ide.name.validators;
 
 public class ParameterNameValidator extends TransientNameValidator {
-	private static org.lgna.project.ast.CodeDeclaredInAlice getCode( org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
+	private static org.lgna.project.ast.CodeDeclaredInAlice getCode( org.lgna.project.ast.UserParameter parameter ) {
 		return (org.lgna.project.ast.CodeDeclaredInAlice)parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
 	}
-	public ParameterNameValidator( org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
+	public ParameterNameValidator( org.lgna.project.ast.UserParameter parameter ) {
 		super( parameter, getCode( parameter ), null );
 	}
 	public ParameterNameValidator( org.lgna.project.ast.CodeDeclaredInAlice code ) {

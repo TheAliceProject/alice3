@@ -50,9 +50,9 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 	interface MemberFilter< M extends org.lgna.project.ast.MemberDeclaredInAlice > {
 		public boolean isAcceptable( M member );
 	}
-	interface MethodFilter extends MemberFilter< org.lgna.project.ast.MethodDeclaredInAlice > {
+	interface MethodFilter extends MemberFilter< org.lgna.project.ast.UserMethod > {
 	}
-	interface FieldFilter extends MemberFilter< org.lgna.project.ast.FieldDeclaredInAlice > {
+	interface FieldFilter extends MemberFilter< org.lgna.project.ast.UserField > {
 	}
 	
 	class TypeMembersListModel< M extends org.lgna.project.ast.MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.javax.swing.models.AbstractReorderableListModel< M > { //javax.swing.DefaultListModel { //javax.swing.AbstractListModel implements javax.swing.MutableComboBoxModel {
@@ -79,33 +79,33 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 				refresh();
 			}
 		};
-		private org.lgna.project.ast.TypeDeclaredInAlice type;
+		private org.lgna.project.ast.NamedUserType type;
 		private MemberFilter<M> memberFilter;
 		private Class<M> cls;
-		public TypeMembersListModel( org.lgna.project.ast.TypeDeclaredInAlice type, MemberFilter<M> memberFilter, Class<M> cls ) {
+		public TypeMembersListModel( org.lgna.project.ast.NamedUserType type, MemberFilter<M> memberFilter, Class<M> cls ) {
 			this.type = type;
 			this.memberFilter = memberFilter;
 			this.cls = cls;
-			if (this.cls.isAssignableFrom(org.lgna.project.ast.MethodDeclaredInAlice.class)) {
+			if (this.cls.isAssignableFrom(org.lgna.project.ast.UserMethod.class)) {
 				this.type.methods.addListPropertyListener(this.listPropertyListener);
 			}
-			if (this.cls.isAssignableFrom(org.lgna.project.ast.FieldDeclaredInAlice.class)) {
+			if (this.cls.isAssignableFrom(org.lgna.project.ast.UserField.class)) {
 				this.type.fields.addListPropertyListener(this.listPropertyListener);
 			}
 			this.refresh();
 		}
 		private void refresh() {
 			this.list.clear();
-			if (cls.isAssignableFrom(org.lgna.project.ast.MethodDeclaredInAlice.class)) {
-				for (org.lgna.project.ast.MethodDeclaredInAlice method : this.type.methods) {
+			if (cls.isAssignableFrom(org.lgna.project.ast.UserMethod.class)) {
+				for (org.lgna.project.ast.UserMethod method : this.type.methods) {
 					M m = cls.cast(method);
 					if (memberFilter.isAcceptable(m)) {
 						this.list.add(m);
 					}
 				}
 			}
-			if (cls.isAssignableFrom(org.lgna.project.ast.FieldDeclaredInAlice.class)) {
-				for (org.lgna.project.ast.FieldDeclaredInAlice field : this.type.fields) {
+			if (cls.isAssignableFrom(org.lgna.project.ast.UserField.class)) {
+				for (org.lgna.project.ast.UserField field : this.type.fields) {
 					M m = cls.cast(field);
 					if (memberFilter.isAcceptable(m)) {
 						this.list.add(m);
@@ -146,29 +146,29 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 		
 		
 	}
-	class TypeMethodsListModel extends TypeMembersListModel< org.lgna.project.ast.MethodDeclaredInAlice > {
-		public TypeMethodsListModel( org.lgna.project.ast.TypeDeclaredInAlice type, MemberFilter<org.lgna.project.ast.MethodDeclaredInAlice> methodFilter ) {
-			super( type, methodFilter, org.lgna.project.ast.MethodDeclaredInAlice.class );
+	class TypeMethodsListModel extends TypeMembersListModel< org.lgna.project.ast.UserMethod > {
+		public TypeMethodsListModel( org.lgna.project.ast.NamedUserType type, MemberFilter<org.lgna.project.ast.UserMethod> methodFilter ) {
+			super( type, methodFilter, org.lgna.project.ast.UserMethod.class );
 		}
 	}
-	class TypeFieldsListModel extends TypeMembersListModel< org.lgna.project.ast.FieldDeclaredInAlice > {
-		public TypeFieldsListModel( org.lgna.project.ast.TypeDeclaredInAlice type, MemberFilter<org.lgna.project.ast.FieldDeclaredInAlice> fieldFilter ) {
-			super( type, fieldFilter, org.lgna.project.ast.FieldDeclaredInAlice.class );
+	class TypeFieldsListModel extends TypeMembersListModel< org.lgna.project.ast.UserField > {
+		public TypeFieldsListModel( org.lgna.project.ast.NamedUserType type, MemberFilter<org.lgna.project.ast.UserField> fieldFilter ) {
+			super( type, fieldFilter, org.lgna.project.ast.UserField.class );
 		}
 	}
 	
 	private static final MethodFilter ALL_PROCEDURES_FILTER = new MethodFilter() { 
-		public boolean isAcceptable( org.lgna.project.ast.MethodDeclaredInAlice method ) {
+		public boolean isAcceptable( org.lgna.project.ast.UserMethod method ) {
 			return method.isProcedure();
 		}
 	};
 	private static final MethodFilter ALL_FUNCTIONS_FILTER = new MethodFilter() { 
-		public boolean isAcceptable( org.lgna.project.ast.MethodDeclaredInAlice method ) {
+		public boolean isAcceptable( org.lgna.project.ast.UserMethod method ) {
 			return method.isFunction();
 		}
 	};
 	private static final FieldFilter ALL_FIELDS_FILTER = new FieldFilter() { 
-		public boolean isAcceptable( org.lgna.project.ast.FieldDeclaredInAlice field ) {
+		public boolean isAcceptable( org.lgna.project.ast.UserField field ) {
 			return true;
 		}
 	};
@@ -353,9 +353,9 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 		}
 	}
 	
-	static class MethodList extends EditableList< org.lgna.project.ast.MethodDeclaredInAlice > {
+	static class MethodList extends EditableList< org.lgna.project.ast.UserMethod > {
 		@Override
-		protected org.lgna.croquet.Operation<?> getDoubleClickOperation(org.lgna.project.ast.MethodDeclaredInAlice item) {
+		protected org.lgna.croquet.Operation<?> getDoubleClickOperation(org.lgna.project.ast.UserMethod item) {
 			if( item.isSignatureLocked.getValue() ) {
 				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( item.getName() + " is locked and therefore cannot be renamed." );
 				return null;
@@ -364,13 +364,13 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 			}
 		}
 		@Override
-		protected org.lgna.croquet.Operation<?> getPopupTriggerOperation(org.lgna.project.ast.MethodDeclaredInAlice item) {
+		protected org.lgna.croquet.Operation<?> getPopupTriggerOperation(org.lgna.project.ast.UserMethod item) {
 			return null;
 		}
 	}
-	static class FieldList extends EditableList< org.lgna.project.ast.FieldDeclaredInAlice > {
+	static class FieldList extends EditableList< org.lgna.project.ast.UserField > {
 		@Override
-		protected org.lgna.croquet.Operation<?> getDoubleClickOperation(org.lgna.project.ast.FieldDeclaredInAlice item) {
+		protected org.lgna.croquet.Operation<?> getDoubleClickOperation(org.lgna.project.ast.UserField item) {
 			org.lgna.project.ast.AbstractType<?,?,?> valueType = item.getValueType();
 			if( valueType.isAssignableTo( org.lgna.story.CameraMarker.class ) ) {
 				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Currently, camera markers cannot be renamed." );
@@ -380,14 +380,14 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 			}
 		}
 		@Override
-		protected org.lgna.croquet.Operation<?> getPopupTriggerOperation(org.lgna.project.ast.FieldDeclaredInAlice item) {
+		protected org.lgna.croquet.Operation<?> getPopupTriggerOperation(org.lgna.project.ast.UserField item) {
 			return null;
 		}
 	}
 	
 	
 	class Title extends org.lgna.croquet.components.FlowPanel {
-		public Title( org.lgna.project.ast.TypeDeclaredInAlice type ) {
+		public Title( org.lgna.project.ast.NamedUserType type ) {
 			super( Alignment.LEADING );
 			this.addComponent( new org.lgna.croquet.components.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type ) );
@@ -406,26 +406,26 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 	}
 
 	private int historyIndex;
-	public EditTypePanel( org.lgna.project.ast.TypeDeclaredInAlice type, int historyIndex ) {
+	public EditTypePanel( org.lgna.project.ast.NamedUserType type, int historyIndex ) {
 		this.historyIndex = historyIndex;
-		javax.swing.ListCellRenderer procedureListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.project.ast.MethodDeclaredInAlice >() {
+		javax.swing.ListCellRenderer procedureListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.project.ast.UserMethod >() {
 			@Override
-			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.MethodDeclaredInAlice value, int index, boolean isSelected, boolean cellHasFocus ) {
+			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.UserMethod value, int index, boolean isSelected, boolean cellHasFocus ) {
 				rv.setText( value.getName() );
 				return rv;
 			}
 		};
-		javax.swing.ListCellRenderer functionListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.project.ast.MethodDeclaredInAlice >() {
+		javax.swing.ListCellRenderer functionListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.project.ast.UserMethod >() {
 			@Override
-			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.MethodDeclaredInAlice value, int index, boolean isSelected, boolean cellHasFocus ) {
+			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.UserMethod value, int index, boolean isSelected, boolean cellHasFocus ) {
 				rv.setText( value.getName() );
 				rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getReturnType() ) );
 				return rv;
 			}
 		};
-		javax.swing.ListCellRenderer fieldListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.project.ast.FieldDeclaredInAlice >() {
+		javax.swing.ListCellRenderer fieldListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.project.ast.UserField >() {
 			@Override
-			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.FieldDeclaredInAlice value, int index, boolean isSelected, boolean cellHasFocus ) {
+			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.UserField value, int index, boolean isSelected, boolean cellHasFocus ) {
 				rv.setText( value.getName() );
 				rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getValueType() ) );
 				return rv;

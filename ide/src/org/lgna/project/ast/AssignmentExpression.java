@@ -74,6 +74,6 @@ public class AssignmentExpression extends Expression {
 	}
 	@Override
 	public AbstractType<?,?,?> getType() {
-		return TypeDeclaredInJava.VOID_TYPE;
+		return JavaType.VOID_TYPE;
 	}
 }

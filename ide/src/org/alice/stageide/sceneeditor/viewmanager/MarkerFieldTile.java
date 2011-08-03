@@ -49,14 +49,14 @@ import javax.swing.BorderFactory;
 import org.alice.ide.IDE;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
-import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.MarkerImplementation;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 
 public class MarkerFieldTile extends LineAxisPanel
 {
-	private FieldDeclaredInAlice field;
+	private UserField field;
 	private Label iconLabel = new Label();
 	private Label textLabel = new Label();
 	
@@ -71,7 +71,7 @@ public class MarkerFieldTile extends LineAxisPanel
 		this.textLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 	}
 	
-	public MarkerFieldTile( FieldDeclaredInAlice field )
+	public MarkerFieldTile( UserField field )
 	{
 		this();
 		setField(field);
@@ -91,7 +91,7 @@ public class MarkerFieldTile extends LineAxisPanel
 		this.textLabel.setForegroundColor( foregroundColor );
 	}
 	
-	public void setField( FieldDeclaredInAlice field )
+	public void setField( UserField field )
 	{
 		this.removeAllComponents();
 		this.field = field;

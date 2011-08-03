@@ -46,7 +46,7 @@ package org.alice.ide.memberseditor.templates;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class MethodPopupMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	public MethodPopupMenuModel( org.lgna.project.ast.MethodDeclaredInAlice methodInAlice ) {
+	public MethodPopupMenuModel( org.lgna.project.ast.UserMethod methodInAlice ) {
 		super( 
 			java.util.UUID.fromString( "5b1b6ac7-b2f9-453e-9fd9-ab06b621c473" ),
 			org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( methodInAlice ).getMenuItemPrepModel(),

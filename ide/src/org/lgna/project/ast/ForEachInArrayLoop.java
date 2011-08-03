@@ -50,14 +50,14 @@ public class ForEachInArrayLoop extends AbstractForEachLoop {
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
-			VariableDeclaredInAlice variable = ForEachInArrayLoop.this.variable.getValue();
+			UserVariable variable = ForEachInArrayLoop.this.variable.getValue();
 			AbstractType<?,?,?> type = variable.valueType.getValue();
 			return type.getArrayType();
 		}
 	};
 	public ForEachInArrayLoop() {
 	}
-	public ForEachInArrayLoop( VariableDeclaredInAlice variable, Expression array, BlockStatement body ) {
+	public ForEachInArrayLoop( UserVariable variable, Expression array, BlockStatement body ) {
 		super( variable, body );
 		this.array.setValue( array );
 	}

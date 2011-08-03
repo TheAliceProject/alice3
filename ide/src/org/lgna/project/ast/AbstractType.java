@@ -61,7 +61,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		s_mapPrimitiveToWrapper.put( java.lang.Float.TYPE, java.lang.Float.class );
 		s_mapPrimitiveToWrapper.put( java.lang.Double.TYPE, java.lang.Double.class );
 	}
-	private static Class<?> getClsWrapperIfNecessary( TypeDeclaredInJava typeDeclaredInJava ) { 
+	private static Class<?> getClsWrapperIfNecessary( JavaType typeDeclaredInJava ) { 
 		Class<?> rv = typeDeclaredInJava.getClassReflectionProxy().getReification();
 		assert rv != null : typeDeclaredInJava;
 		if( rv.isPrimitive() ) {
@@ -71,20 +71,20 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		return rv;
 	}
 	
-	public TypeDeclaredInJava getFirstTypeEncounteredDeclaredInJava() {
+	public JavaType getFirstTypeEncounteredDeclaredInJava() {
 		AbstractType<?,?,?> type = this; 
-		while( type instanceof TypeDeclaredInJava == false ) {
+		while( type instanceof JavaType == false ) {
 			type = type.getSuperType();
 		}
-		return (TypeDeclaredInJava)type;
+		return (JavaType)type;
 	}
 //	public Class<?> getFirstClassEncounteredDeclaredInJava() {
 //		return getFirstTypeEncounteredDeclaredInJava().getCls();
 //	}
 	public boolean isAssignableFrom( AbstractType<?,?,?> other ) {
 		if( other != null ) {
-			TypeDeclaredInJava thisTypeDeclaredInJava = this.getFirstTypeEncounteredDeclaredInJava();
-			TypeDeclaredInJava otherTypeDeclaredInJava = other.getFirstTypeEncounteredDeclaredInJava();
+			JavaType thisTypeDeclaredInJava = this.getFirstTypeEncounteredDeclaredInJava();
+			JavaType otherTypeDeclaredInJava = other.getFirstTypeEncounteredDeclaredInJava();
 			return getClsWrapperIfNecessary( thisTypeDeclaredInJava ).isAssignableFrom( getClsWrapperIfNecessary( otherTypeDeclaredInJava ) );
 		} else {
 			//todo?
@@ -92,13 +92,13 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		}
 	}
 	public boolean isAssignableFrom( Class<?> other ) {
-		return isAssignableFrom( TypeDeclaredInJava.get( other ) );
+		return isAssignableFrom( JavaType.getInstance( other ) );
 	}
 	public boolean isAssignableTo( AbstractType<?,?,?> other ) {
 		return other.isAssignableFrom( this );
 	}
 	public boolean isAssignableTo( Class<?> other ) {
-		return isAssignableTo( TypeDeclaredInJava.get( other ) );
+		return isAssignableTo( JavaType.getInstance( other ) );
 	}
 
 	public abstract boolean isFollowToSuperClassDesired();
@@ -140,7 +140,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		return rv;
 	}
 	public C getDeclaredConstructor( Class<?>... parameterClses ) {
-		return getDeclaredConstructor( TypeDeclaredInJava.get( parameterClses ) );
+		return getDeclaredConstructor( JavaType.getInstances( parameterClses ) );
 	}
 	public C getDeclaredConstructor() {
 		return getDeclaredConstructor( new AbstractType[] {} );
@@ -172,7 +172,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		return rv;
 	}
 	public M getDeclaredMethod( String name, Class<?>... parameterClses ) {
-		return getDeclaredMethod( name, TypeDeclaredInJava.get( parameterClses ) );
+		return getDeclaredMethod( name, JavaType.getInstances( parameterClses ) );
 	}
 	public M getDeclaredMethod( String name ) {
 		return getDeclaredMethod( name, new AbstractType[] {} );
@@ -191,7 +191,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		return rv;
 	}
 	public F getDeclaredField( Class<?> valueCls, String name ) {
-		return getDeclaredField( TypeDeclaredInJava.get( valueCls ), name );
+		return getDeclaredField( JavaType.getInstance( valueCls ), name );
 	}
 	public F getDeclaredField( String name ) {
 		return getDeclaredField( (AbstractType<?,?,?>)null, name );
@@ -213,7 +213,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		return rv;
 	}
 	public AbstractField findField( Class<?> valueCls, String name ) {
-		return findField( TypeDeclaredInJava.get( valueCls ), name );
+		return findField( JavaType.getInstance( valueCls ), name );
 		
 	}
 	public AbstractField findField( String name ) {
@@ -250,7 +250,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 //		return mthd != null;
 	}
 	public AbstractMethod findMethod( String name, Class<?>... parameterClses ) {
-		return findMethod( name, TypeDeclaredInJava.get( parameterClses ) );
+		return findMethod( name, JavaType.getInstances( parameterClses ) );
 	}
 	public AbstractMethod findMethod( String name ) {
 		return findMethod( name, new AbstractType<?,?,?>[] {} );

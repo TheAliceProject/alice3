@@ -64,7 +64,7 @@ import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.TextField;
 import org.lgna.croquet.components.VerticalTextPosition;
-import org.lgna.project.ast.TypeDeclaredInAlice;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
 
@@ -77,9 +77,9 @@ import org.lgna.story.resourceutilities.ModelResourceUtilities;
 public class ClassBasedGalleryBrowser extends BorderPanel {
 
 	private static org.lgna.croquet.ClassBasedPathControl.Initializer initializer = new org.lgna.croquet.ClassBasedPathControl.Initializer() {
-		public ActionOperation configure(ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode) {
+		public ActionOperation configure(ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode) {
 			javax.swing.Icon icon;
-			TypeDeclaredInAlice classValue = treeNode.getValue();
+			NamedUserType classValue = treeNode.getValue();
 			BufferedImage thumbnail = null;
 			if (treeNode instanceof ModelResourceTreeNode)
 			{
@@ -95,7 +95,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 			rv.setName( ClassBasedGalleryBrowser.getTextFor(treeNode, false) );
 			return rv;
 		}
-		public Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode) {
+		public Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode) {
 			return null;
 		}
 	};
@@ -117,8 +117,8 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 	}
 
 	class DirectoryView extends LineAxisPanel {
-		private org.lgna.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>> selectionObserver = new org.lgna.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>>() {
-			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> nextValue) {
+		private org.lgna.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>> selectionObserver = new org.lgna.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>>() {
+			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> nextValue) {
 				DirectoryView.this.handleSelectionChanged( nextValue );
 			}
 		};
@@ -147,7 +147,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 			super.handleUndisplayable();
 		}
 		
-		private java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>> update( java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>> rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode, String lcFilter, Criterion criterion ) {
+		private java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>> update( java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>> rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode, String lcFilter, Criterion criterion ) {
 
 			//TODO: do this
 //			String path = treeNode.getValue();
@@ -170,9 +170,9 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 		private void refresh() {
 			this.removeAllComponents();
 			String filter = filterState.getValue();
-			Iterable<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>> iterable;
+			Iterable<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>> iterable;
 			if( filter != null && filter.length() > 0 ) {
-				java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				String lcFilter = filter.toLowerCase();
 				update( list, treeSelectionState.getTreeModel().getRoot(), lcFilter, Criterion.STARTS_WITH );
 				if( lcFilter.length() > 1 ) {
@@ -183,7 +183,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 				iterable = treeSelectionState.getSelection();
 			}
 			if( iterable != null ) {
-				for( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> child : iterable ) {
+				for( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> child : iterable ) {
 					String name = ClassBasedGalleryBrowser.getTextFor(child, false);
 					if( name != null ) {
 						if( child.isLeaf() ) {
@@ -206,7 +206,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 		private void handleFilterChanged( String filter ) {
 			this.refresh();
 		}
-		private void handleSelectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> nextValue) {
+		private void handleSelectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> nextValue) {
 			this.refresh();
 		}
 	}
@@ -224,32 +224,32 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 	private static final javax.swing.ImageIcon FOLDER_LARGE_ICON = new javax.swing.ImageIcon(ClassBasedGalleryBrowser.class.getResource("images/folder.png"));
 	private static final javax.swing.ImageIcon FOLDER_SMALL_ICON = new javax.swing.ImageIcon(ClassBasedGalleryBrowser.class.getResource("images/folder24.png"));
 	
-	private TreeSelectionState< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> > treeSelectionState;
+	private TreeSelectionState< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> > treeSelectionState;
 	private StringState filterState;
 
-	public ClassBasedGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> root ) {
+	public ClassBasedGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> root ) {
 		//super(GAP * 2, 0);
 
-		edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<TypeDeclaredInAlice> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<TypeDeclaredInAlice>( root );
-		this.treeSelectionState = new TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>>( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "d374d9cd-fd27-46da-ba27-8ccdab4f2b67" ), new org.lgna.croquet.ItemCodec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> >() {
+		edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<NamedUserType> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<NamedUserType>( root );
+		this.treeSelectionState = new TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>>( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "d374d9cd-fd27-46da-ba27-8ccdab4f2b67" ), new org.lgna.croquet.ItemCodec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> >() {
 			public Class getValueClass() {
 				return edu.cmu.cs.dennisc.javax.swing.models.TreeNode.class;
 			}
-			public edu.cmu.cs.dennisc.javax.swing.models.TreeNode< TypeDeclaredInAlice > decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			public edu.cmu.cs.dennisc.javax.swing.models.TreeNode< NamedUserType > decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}
-			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< TypeDeclaredInAlice > value ) {
+			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< NamedUserType > value ) {
 				throw new RuntimeException( "todo" );
 			}
-			public StringBuilder appendRepresentation( StringBuilder rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< TypeDeclaredInAlice > value, java.util.Locale locale ) {
+			public StringBuilder appendRepresentation( StringBuilder rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< NamedUserType > value, java.util.Locale locale ) {
 				throw new RuntimeException( "todo" );
 			}
 		}, treeModel, treeModel.getRoot() ){};
 		
 		this.filterState = new StringState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "62d9d56d-6145-4c58-a20c-4b5d9797ef39" ), "" ) {};
 		
-		this.treeSelectionState.addSelectionObserver( new TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>>() {
-			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> nextValue) {
+		this.treeSelectionState.addSelectionObserver( new TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>>() {
+			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> nextValue) {
 				filterState.setValue( "" );
 			}
 		} );
@@ -359,7 +359,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 
 	private org.lgna.croquet.ClassBasedPathControl.Initializer createInitializer() {
 		return new org.lgna.croquet.ClassBasedPathControl.Initializer() {
-			public ActionOperation configure(ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode) {
+			public ActionOperation configure(ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode) {
 //				if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
 //					edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) treeNode;
 //					rv.setName( zipTreeNode.getName() );
@@ -370,7 +370,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 				rv.setSmallIcon( FOLDER_SMALL_ICON );
 				return rv;
 			}
-			public Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode) {
+			public Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode) {
 				String name = ClassBasedGalleryBrowser.getTextFor(treeNode, true);
 				if( name != null ) {
 					Operation<?> rv = GalleryClassOperation.getInstance( treeNode );

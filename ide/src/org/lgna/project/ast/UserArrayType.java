@@ -46,28 +46,28 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayTypeDeclaredInAlice extends AbstractType {
-	private static edu.cmu.cs.dennisc.map.MapToMap< AbstractTypeDeclaredInAlice<?>, Integer, ArrayTypeDeclaredInAlice > s_map = new edu.cmu.cs.dennisc.map.MapToMap< AbstractTypeDeclaredInAlice<?>, Integer, ArrayTypeDeclaredInAlice >();
-	public static ArrayTypeDeclaredInAlice get( AbstractTypeDeclaredInAlice<?> leafType, int dimensionCount ) {
-		ArrayTypeDeclaredInAlice rv = s_map.get( leafType, dimensionCount );
+public class UserArrayType extends AbstractType {
+	private static edu.cmu.cs.dennisc.map.MapToMap< UserType<?>, Integer, UserArrayType > s_map = new edu.cmu.cs.dennisc.map.MapToMap< UserType<?>, Integer, UserArrayType >();
+	public static UserArrayType getInstance( UserType<?> leafType, int dimensionCount ) {
+		UserArrayType rv = s_map.get( leafType, dimensionCount );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new ArrayTypeDeclaredInAlice( leafType, dimensionCount );
+			rv = new UserArrayType( leafType, dimensionCount );
 			s_map.put( leafType, dimensionCount, rv );
 		}
 		return rv;
 	}
 
-	private AbstractTypeDeclaredInAlice<?> m_leafType;
+	private UserType<?> m_leafType;
 	private int m_dimensionCount;
 	
-	private ArrayTypeDeclaredInAlice( AbstractTypeDeclaredInAlice<?> leafType, int dimensionCount ) {
+	private UserArrayType( UserType<?> leafType, int dimensionCount ) {
 		m_leafType = leafType;
 		m_dimensionCount = dimensionCount;
 	}
 	
-	public AbstractTypeDeclaredInAlice<?> getLeafType() {
+	public UserType<?> getLeafType() {
 		return m_leafType;
 	}
 	public int getDimensionCount() {
@@ -98,7 +98,7 @@ public class ArrayTypeDeclaredInAlice extends AbstractType {
 		if( m_dimensionCount == 1 ) {
 			return m_leafType;
 		} else {
-			return ArrayTypeDeclaredInAlice.get( m_leafType, m_dimensionCount-1 );
+			return UserArrayType.getInstance( m_leafType, m_dimensionCount-1 );
 		}
 	}
 	@Override
@@ -113,13 +113,13 @@ public class ArrayTypeDeclaredInAlice extends AbstractType {
 	@Override
 	public AbstractType<?,?,?> getSuperType() {
 		AbstractType<?,?,?> leafSuperType = m_leafType.getSuperType();
-		if( leafSuperType instanceof AbstractTypeDeclaredInAlice<?> ) {
-			return ArrayTypeDeclaredInAlice.get( ((AbstractTypeDeclaredInAlice<?>)leafSuperType), m_dimensionCount );
+		if( leafSuperType instanceof UserType<?> ) {
+			return UserArrayType.getInstance( ((UserType<?>)leafSuperType), m_dimensionCount );
 		} else {
-			assert leafSuperType instanceof TypeDeclaredInJava;
-			Class<?> leafSuperCls = ((TypeDeclaredInJava)leafSuperType).getClassReflectionProxy().getReification();
+			assert leafSuperType instanceof JavaType;
+			Class<?> leafSuperCls = ((JavaType)leafSuperType).getClassReflectionProxy().getReification();
 			Class<?> superCls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( leafSuperCls, m_dimensionCount );
-			return TypeDeclaredInJava.get( superCls );
+			return JavaType.getInstance( superCls );
 		}
 	}
 	@Override
@@ -181,6 +181,6 @@ public class ArrayTypeDeclaredInAlice extends AbstractType {
 	
 	@Override
 	public AbstractType getArrayType() {
-		return ArrayTypeDeclaredInAlice.get( m_leafType, m_dimensionCount+1 );
+		return UserArrayType.getInstance( m_leafType, m_dimensionCount+1 );
 	}
 }

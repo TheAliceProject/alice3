@@ -68,7 +68,7 @@ public class JavaFormatter extends Formatter {
 		return "this";
 	}
 	@Override
-	protected java.lang.String getTextForParameterDeclaredInJava( org.lgna.project.ast.ParameterDeclaredInJava parameterInJava ) {
+	protected java.lang.String getTextForParameterDeclaredInJava( org.lgna.project.ast.JavaParameter parameterInJava ) {
 		return parameterInJava.getName();
 	}
 	@Override

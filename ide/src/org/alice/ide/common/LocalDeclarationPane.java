@@ -47,9 +47,9 @@ package org.alice.ide.common;
  */
 
 class LocalDeclarationPane extends TypedDeclarationPane {
-	private org.lgna.project.ast.LocalDeclaredInAlice localDeclaredInAlice;
+	private org.lgna.project.ast.UserLocal localDeclaredInAlice;
 
-	public LocalDeclarationPane( org.lgna.project.ast.LocalDeclaredInAlice localDeclaredInAlice, org.lgna.croquet.components.Component< ? > component ) {
+	public LocalDeclarationPane( org.lgna.project.ast.UserLocal localDeclaredInAlice, org.lgna.croquet.components.Component< ? > component ) {
 		this.localDeclaredInAlice = localDeclaredInAlice;
 		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.localDeclaredInAlice.valueType.getValue() ) );
 		this.addComponent( component );

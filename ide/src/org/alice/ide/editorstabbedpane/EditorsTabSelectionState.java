@@ -278,8 +278,8 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 			button.scaleFont( 1.5f );
 			
 			org.lgna.project.ast.AbstractCode code = item.getCode();
-			if( code instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
-				final org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice = (org.lgna.project.ast.MethodDeclaredInAlice)code;
+			if( code instanceof org.lgna.project.ast.UserMethod ) {
+				final org.lgna.project.ast.UserMethod methodDeclaredInAlice = (org.lgna.project.ast.UserMethod)code;
 				methodDeclaredInAlice.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 					public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 					}
@@ -561,37 +561,37 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 			}
 		}
 	}
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.MethodDeclaredInAlice> typeMembersListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.MethodDeclaredInAlice>() {
-		public void adding(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserMethod> typeMembersListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserMethod>() {
+		public void adding(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<org.lgna.project.ast.UserMethod> e) {
 		}
-		public void added(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
+		public void added(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<org.lgna.project.ast.UserMethod> e) {
 		}
-		public void clearing(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
+		public void clearing(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<org.lgna.project.ast.UserMethod> e) {
 		}
-		public void cleared(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
+		public void cleared(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<org.lgna.project.ast.UserMethod> e) {
 			EditorsTabSelectionState.this.removeDeadCode();
 		}
-		public void removing(edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
+		public void removing(edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<org.lgna.project.ast.UserMethod> e) {
 		}
-		public void removed(edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
+		public void removed(edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<org.lgna.project.ast.UserMethod> e) {
 			EditorsTabSelectionState.this.removeDeadCode();
 		}
-		public void setting(edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
+		public void setting(edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<org.lgna.project.ast.UserMethod> e) {
 		}
-		public void set(edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
+		public void set(edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<org.lgna.project.ast.UserMethod> e) {
 			EditorsTabSelectionState.this.removeDeadCode();
 		}
 	};
-	private java.util.Set<org.lgna.project.ast.AbstractTypeDeclaredInAlice<?>> typeSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-	private void startListeningTo( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type ) {
+	private java.util.Set<org.lgna.project.ast.UserType<?>> typeSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+	private void startListeningTo( org.lgna.project.ast.UserType<?> type ) {
 	}
 
 	@Override
 	protected void handleItemAdded( CodeComposite item ) {
 		super.handleItemAdded( item );
 		org.lgna.project.ast.AbstractType<?,?,?> declaringType = item.getCode().getDeclaringType();
-		if (declaringType instanceof org.lgna.project.ast.AbstractTypeDeclaredInAlice<?>) {
-			org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (org.lgna.project.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
+		if (declaringType instanceof org.lgna.project.ast.UserType<?>) {
+			org.lgna.project.ast.UserType<?> typeInAlice = (org.lgna.project.ast.UserType<?>) declaringType;
 			if( this.typeSet.contains( typeInAlice ) ) {
 				//pass
 			} else {
@@ -613,7 +613,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 	@Override
 	public void clear() {
 		super.clear();
-		for( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type : this.typeSet ) {
+		for( org.lgna.project.ast.UserType<?> type : this.typeSet ) {
 			type.methods.removeListPropertyListener( this.typeMembersListener );
 		}
 		this.typeSet.clear();
@@ -628,8 +628,8 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 				this.addItem( item );
 				org.lgna.project.ast.AbstractType<?,?,?> declaringType = code.getDeclaringType();
 				if( declaringType != null ) {
-					if (declaringType instanceof org.lgna.project.ast.AbstractTypeDeclaredInAlice<?>) {
-						org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (org.lgna.project.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
+					if (declaringType instanceof org.lgna.project.ast.UserType<?>) {
+						org.lgna.project.ast.UserType<?> typeInAlice = (org.lgna.project.ast.UserType<?>) declaringType;
 						this.startListeningTo( typeInAlice );
 					}
 				} else {

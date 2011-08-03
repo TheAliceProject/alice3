@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.ParameterDeclaredInAlice, org.lgna.project.ast.ExpressionProperty, ParameterAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ParameterAccessOperation getInstance( org.lgna.project.ast.ParameterDeclaredInAlice parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ParameterAccessOperation getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert parameter != null;
 		assert expressionProperty != null;
 		ParameterAccessOperation rv = map.get( parameter, expressionProperty );
@@ -60,8 +60,8 @@ public class ParameterAccessOperation extends org.alice.ide.croquet.models.ast.c
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.ParameterDeclaredInAlice parameter;
-	private ParameterAccessOperation( org.lgna.project.ast.ParameterDeclaredInAlice parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	private final org.lgna.project.ast.UserParameter parameter;
+	private ParameterAccessOperation( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "30f93afc-3c73-4295-8b93-d1dac94b6c8c" ), expressionProperty );
 		this.parameter = parameter;
 	}

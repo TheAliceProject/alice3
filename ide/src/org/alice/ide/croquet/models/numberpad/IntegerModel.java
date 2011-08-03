@@ -65,16 +65,16 @@ public class IntegerModel extends NumberModel<org.lgna.project.ast.Expression> {
 		if( l > Integer.MAX_VALUE ) {
 			return new org.lgna.project.ast.FieldAccess( 
 					new org.lgna.project.ast.TypeExpression( 
-							org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE 
+							org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE 
 					), 
-					org.lgna.project.ast.FieldDeclaredInJavaWithField.get(Integer.class, "MAX_VALUE" ) 
+					org.lgna.project.ast.JavaField.getInstance(Integer.class, "MAX_VALUE" ) 
 			);
 		} else if( l < Integer.MIN_VALUE ) {
 			return new org.lgna.project.ast.FieldAccess( 
 					new org.lgna.project.ast.TypeExpression( 
-							org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE 
+							org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE 
 					), 
-					org.lgna.project.ast.FieldDeclaredInJavaWithField.get(Integer.class, "MIN_VALUE" ) 
+					org.lgna.project.ast.JavaField.getInstance(Integer.class, "MIN_VALUE" ) 
 			);
 		} else {
 			return new org.lgna.project.ast.IntegerLiteral( (int)l );

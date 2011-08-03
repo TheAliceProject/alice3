@@ -54,7 +54,7 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis() {
 			return null;
 		}
-		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.FieldDeclaredInAlice field ) {
+		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
 			org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
 			if( type.isAssignableTo( org.lgna.story.Biped.class ) ) {
 				return org.alice.stageide.instancefactory.BipedJointMenuModel.getInstance( field );

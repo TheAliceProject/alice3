@@ -50,8 +50,8 @@ package org.alice.ide.memberseditor.templates;
 	public SetArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
 		super( org.alice.ide.croquet.models.ast.SetArrayAtIndexDragModel.getInstance( field ) );
 		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
-			org.lgna.project.ast.FieldDeclaredInAlice fieldInAlice = (org.lgna.project.ast.FieldDeclaredInAlice)this.field;
+		if( this.field instanceof org.lgna.project.ast.UserField ) {
+			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
 			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
 		}
 	}
@@ -62,7 +62,7 @@ package org.alice.ide.memberseditor.templates;
 				new org.lgna.project.ast.ArrayAccess( 
 						field.getValueType(), 
 						org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( this.field ), 
-						new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) 
+						new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) 
 				), 
 				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, 
 				new org.alice.ide.ast.EmptyExpression( this.field.getDesiredValueType().getComponentType() )

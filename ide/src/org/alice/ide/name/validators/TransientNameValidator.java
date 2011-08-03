@@ -57,7 +57,7 @@ public abstract class TransientNameValidator extends NodeNameValidator {
 	protected boolean isNameAvailable( String name ) {
 		if( this.code != null ) {
 			org.lgna.project.ast.Node node = this.getNode();
-			for( org.lgna.project.ast.ParameterDeclaredInAlice parameter : this.code.getParamtersProperty() ) {
+			for( org.lgna.project.ast.UserParameter parameter : this.code.getParamtersProperty() ) {
 				if( parameter == node ) {
 					//pass
 				} else {
@@ -69,9 +69,9 @@ public abstract class TransientNameValidator extends NodeNameValidator {
 //			if( this.block != null ) {
 //				
 //			}
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.LocalDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.LocalDeclaredInAlice >( org.lgna.project.ast.LocalDeclaredInAlice.class );
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserLocal > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserLocal >( org.lgna.project.ast.UserLocal.class );
 			((org.lgna.project.ast.AbstractCode)this.code).crawl( crawler, false );
-			for( org.lgna.project.ast.LocalDeclaredInAlice local : crawler.getList() ) {
+			for( org.lgna.project.ast.UserLocal local : crawler.getList() ) {
 				if( local == node ) {
 					//pass
 				} else {

@@ -46,19 +46,19 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorDeclaredInJava extends AbstractConstructor {
-	private static java.util.Map< ConstructorReflectionProxy, ConstructorDeclaredInJava > s_map = new java.util.HashMap< ConstructorReflectionProxy, ConstructorDeclaredInJava >();
+public class JavaConstructor extends AbstractConstructor {
+	private static java.util.Map< ConstructorReflectionProxy, JavaConstructor > s_map = new java.util.HashMap< ConstructorReflectionProxy, JavaConstructor >();
 
 	private ConstructorReflectionProxy constructorReflectionProxy;
-	private java.util.ArrayList< ParameterDeclaredInJavaConstructor > parameters;
+	private java.util.ArrayList< JavaConstructorParameter > parameters;
 
-	public static ConstructorDeclaredInJava get( ConstructorReflectionProxy constructorReflectionProxy ) {
+	public static JavaConstructor getInstance( ConstructorReflectionProxy constructorReflectionProxy ) {
 		if( constructorReflectionProxy != null ) {
-			ConstructorDeclaredInJava rv = s_map.get( constructorReflectionProxy );
+			JavaConstructor rv = s_map.get( constructorReflectionProxy );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ConstructorDeclaredInJava( constructorReflectionProxy );
+				rv = new JavaConstructor( constructorReflectionProxy );
 				s_map.put( constructorReflectionProxy, rv );
 			}
 			return rv;
@@ -66,21 +66,21 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 			return null;
 		}
 	}
-	public static ConstructorDeclaredInJava get( java.lang.reflect.Constructor< ? > cnstrctr ) {
-		return get( new ConstructorReflectionProxy( cnstrctr ) );
+	public static JavaConstructor getInstance( java.lang.reflect.Constructor< ? > cnstrctr ) {
+		return getInstance( new ConstructorReflectionProxy( cnstrctr ) );
 	}
-	public static ConstructorDeclaredInJava get( Class<?> declaringCls, Class<?>... parameterClses ) {
-		return get( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( declaringCls, parameterClses ) );
+	public static JavaConstructor getInstance( Class<?> declaringCls, Class<?>... parameterClses ) {
+		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( declaringCls, parameterClses ) );
 	}
 	
-	private ConstructorDeclaredInJava( ConstructorReflectionProxy constructorReflectionProxy ) {
+	private JavaConstructor( ConstructorReflectionProxy constructorReflectionProxy ) {
 		this.constructorReflectionProxy = constructorReflectionProxy;
 		ClassReflectionProxy[] classReflectionProxies = this.constructorReflectionProxy.getParameterClassReflectionProxies();
-		this.parameters = new java.util.ArrayList< ParameterDeclaredInJavaConstructor >();
+		this.parameters = new java.util.ArrayList< JavaConstructorParameter >();
 		this.parameters.ensureCapacity( classReflectionProxies.length );
 		java.lang.annotation.Annotation[][] parameterAnnotations = this.constructorReflectionProxy.getParameterAnnotations();
 		for( int i = 0; i < classReflectionProxies.length; i++ ) {
-			this.parameters.add( new ParameterDeclaredInJavaConstructor( this, i, parameterAnnotations[ i ] ) );
+			this.parameters.add( new JavaConstructorParameter( this, i, parameterAnnotations[ i ] ) );
 		}
 	}
 	
@@ -89,8 +89,8 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 	}
 	
 	@Override
-	public TypeDeclaredInJava getDeclaringType() {
-		return TypeDeclaredInJava.get( this.constructorReflectionProxy.getDeclaringClassReflectionProxy() );
+	public JavaType getDeclaringType() {
+		return JavaType.getInstance( this.constructorReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
 	@Override
 	public java.util.ArrayList< ? extends AbstractParameter > getParameters() {
@@ -112,11 +112,11 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 		}
 	}
 
-	private ConstructorDeclaredInJava nextLongerInChain = null;
+	private JavaConstructor nextLongerInChain = null;
 
-	public boolean isParameterInShortestChainedConstructor( ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor ) {
+	public boolean isParameterInShortestChainedConstructor( JavaConstructorParameter parameterDeclaredInJavaConstructor ) {
 		int index = parameterDeclaredInJavaConstructor.getIndex();
-		ConstructorDeclaredInJava constructorDeclaredInJava = (ConstructorDeclaredInJava)getShortestInChain();
+		JavaConstructor constructorDeclaredInJava = (JavaConstructor)getShortestInChain();
 		return index < constructorDeclaredInJava.getParameters().size();
 	}
 	
@@ -124,17 +124,17 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 	public AbstractMember getNextLongerInChain() {
 		return this.nextLongerInChain;
 	}
-	public void setNextLongerInChain( ConstructorDeclaredInJava nextLongerInChain ) {
+	public void setNextLongerInChain( JavaConstructor nextLongerInChain ) {
 		this.nextLongerInChain = nextLongerInChain;
 	}
 
-	private ConstructorDeclaredInJava nextShorterInChain = null;
+	private JavaConstructor nextShorterInChain = null;
 
 	@Override
 	public AbstractMember getNextShorterInChain() {
 		return this.nextShorterInChain;
 	}
-	public void setNextShorterInChain( ConstructorDeclaredInJava nextShorterInChain ) {
+	public void setNextShorterInChain( JavaConstructor nextShorterInChain ) {
 		this.nextShorterInChain = nextShorterInChain;
 	}
 
@@ -150,7 +150,7 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 
 	@Override
 	public boolean isEquivalentTo( Object o ) {
-		ConstructorDeclaredInJava other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, ConstructorDeclaredInJava.class );
+		JavaConstructor other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, JavaConstructor.class );
 		if( other != null ) {
 			return this.constructorReflectionProxy.equals( other.constructorReflectionProxy );
 		} else {

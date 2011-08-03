@@ -46,8 +46,8 @@ package org.alice.ide.ubiquitouspane.templates;
  * @author Dennis Cosgrove
  */
 public class ParameterArrayAssignmentStatementTemplate extends ArrayAssignmentStatementTemplate {
-	private org.lgna.project.ast.ParameterDeclaredInAlice parameter;
-	public ParameterArrayAssignmentStatementTemplate( org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
+	private org.lgna.project.ast.UserParameter parameter;
+	public ParameterArrayAssignmentStatementTemplate( org.lgna.project.ast.UserParameter parameter ) {
 		super( org.alice.ide.ast.NodeUtilities.createIncompleteParameterArrayAssignmentStatement( parameter ) );
 		this.parameter = parameter;
 	}

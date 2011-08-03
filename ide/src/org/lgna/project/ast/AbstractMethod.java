@@ -69,7 +69,7 @@ public abstract class AbstractMethod extends AbstractCode {
 	}
 	
 	public boolean isFunction() {
-		return getReturnType() != TypeDeclaredInJava.VOID_TYPE;
+		return getReturnType() != JavaType.VOID_TYPE;
 	}
 	public boolean isProcedure() {
 		return isFunction() == false;

@@ -55,7 +55,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	}
 	private boolean isVoid() {
 		org.lgna.project.ast.AbstractType<?,?,?> type = getExpressionType();
-		return type == org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE;
+		return type == org.lgna.project.ast.JavaType.VOID_TYPE;
 	}
 	protected boolean isExpressionTypeFeedbackDesired() {
 		return org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() || isKnurlDesired();
@@ -120,7 +120,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		if( type != null ) {
 //			assert type != edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 		} else {
-			type = org.lgna.project.ast.TypeDeclaredInJava.OBJECT_TYPE;
+			type = org.lgna.project.ast.JavaType.OBJECT_TYPE;
 		}
 //		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET + ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, INSET, (float)width - 2 * INSET - ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, (float)height - 2 * INSET, 8, 8 );
 		int left = this.getDockInsetLeft();

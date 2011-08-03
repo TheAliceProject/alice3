@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
 import org.lgna.croquet.history.InputDialogOperationStep;
-import org.lgna.project.ast.TypeDeclaredInAlice;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.EntityImplementation;
@@ -64,8 +64,8 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation {
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 desiredTransformation = null;
 	
-	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>, GalleryClassOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static GalleryClassOperation getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode ) {
+	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>, GalleryClassOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static GalleryClassOperation getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode ) {
 		GalleryClassOperation rv = map.get( treeNode );
 		if( rv != null ) {
 			//pass
@@ -76,8 +76,8 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 		return rv;
 	}
 
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode;
-	private GalleryClassOperation(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode) {
+	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode;
+	private GalleryClassOperation(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode) {
 		super( java.util.UUID.fromString( "98886117-99d3-4c9a-b08d-78a2c95acb2d" ) );
 		this.treeNode = treeNode;
 	}
@@ -96,7 +96,7 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 		super.fillInEpilogueData(rv, step);
 		
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = step.getMainPanel();
-		org.lgna.project.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();
+		org.lgna.project.ast.UserField field = createFieldFromGalleryPane.getInputValue();
 		if (field != null) {
 			
 			rv.addDoStatement(SetUpMethodGenerator.createSetVehicleStatement(field, null, true));
@@ -149,9 +149,9 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 	}
 	
 
-	protected edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, java.lang.Object> createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = step.getMainPanel();
-		org.lgna.project.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();
+		org.lgna.project.ast.UserField field = createFieldFromGalleryPane.getInputValue();
 		if (field != null) {
 			ModelResource resource = ((ModelResourceTreeNode)this.treeNode).getModelResource();
 			Object fieldObject = createFieldFromGalleryPane.createInstanceInJavaForArguments(resource);

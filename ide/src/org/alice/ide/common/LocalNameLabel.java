@@ -46,11 +46,11 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class LocalNameLabel extends DeclarationNameLabel {
-	public LocalNameLabel( org.lgna.project.ast.LocalDeclaredInAlice local ) {
+	public LocalNameLabel( org.lgna.project.ast.UserLocal local ) {
 		super( local );
 	}
 	@Override
 	protected String getTextForNullName() {
-		return ((org.lgna.project.ast.LocalDeclaredInAlice)getDeclaration()).getValidName();
+		return ((org.lgna.project.ast.UserLocal)getDeclaration()).getValidName();
 	}
 }

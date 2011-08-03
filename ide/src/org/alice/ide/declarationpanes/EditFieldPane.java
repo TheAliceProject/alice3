@@ -45,12 +45,12 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public class EditFieldPane extends AbstractDeclarationPane< org.lgna.project.ast.FieldDeclaredInAlice > {
-	private org.lgna.project.ast.FieldDeclaredInAlice fieldDeclaredInAlice;
+public class EditFieldPane extends AbstractDeclarationPane< org.lgna.project.ast.UserField > {
+	private org.lgna.project.ast.UserField fieldDeclaredInAlice;
 	private boolean isReferenced;
 	private boolean isReassigned;
 	private boolean isDropDownForFieldInitializerDesired;
-	public EditFieldPane( org.lgna.project.ast.FieldDeclaredInAlice fieldDeclaredInAlice, boolean isReferenced, boolean isReassigned ) {
+	public EditFieldPane( org.lgna.project.ast.UserField fieldDeclaredInAlice, boolean isReferenced, boolean isReassigned ) {
 		super( new org.alice.ide.name.validators.FieldNameValidator( fieldDeclaredInAlice ), fieldDeclaredInAlice.valueType.getValue(), fieldDeclaredInAlice.initializer.getValue() );
 		this.fieldDeclaredInAlice = fieldDeclaredInAlice;
 		this.isReferenced = isReferenced;
@@ -105,8 +105,8 @@ public class EditFieldPane extends AbstractDeclarationPane< org.lgna.project.ast
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getPreviewFactory(), this.getInputValue() );
 	}
 	@Override
-	public final org.lgna.project.ast.FieldDeclaredInAlice getInputValue() {
-		org.lgna.project.ast.FieldDeclaredInAlice rv = new org.lgna.project.ast.FieldDeclaredInAlice( this.getDeclarationName(), this.getValueType(), this.getInitializer() );
+	public final org.lgna.project.ast.UserField getInputValue() {
+		org.lgna.project.ast.UserField rv = new org.lgna.project.ast.UserField( this.getDeclarationName(), this.getValueType(), this.getInitializer() );
 		org.lgna.project.ast.FieldModifierFinalVolatileOrNeither value;
 		if( this.isReassignable() ) {
 			value = org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.NEITHER;

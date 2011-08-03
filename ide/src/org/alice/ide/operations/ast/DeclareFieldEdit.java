@@ -46,13 +46,13 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
-	private final org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType;
-	private final org.lgna.project.ast.FieldDeclaredInAlice field;
+	private final org.lgna.project.ast.UserType<?> declaringType;
+	private final org.lgna.project.ast.UserField field;
 	private final org.lgna.project.ast.Statement[] doStatements;
 	private final org.lgna.project.ast.Statement[] undoStatements;
 
 	private transient int index;
-	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> ownerType, org.lgna.project.ast.FieldDeclaredInAlice field, org.lgna.project.ast.Statement[] doStatements, org.lgna.project.ast.Statement[] undoStatements ) {
+	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> ownerType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement[] doStatements, org.lgna.project.ast.Statement[] undoStatements ) {
 		super( step );
 		this.declaringType = ownerType;
 		this.field = field;
@@ -61,8 +61,8 @@ public class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
 	}
 	public DeclareFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractTypeDeclaredInAlice.class ).decodeValue( binaryDecoder );
-		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.FieldDeclaredInAlice.class ).decodeValue( binaryDecoder );
+		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).decodeValue( binaryDecoder );
+		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).decodeValue( binaryDecoder );
 		assert false : "todo";
 		this.doStatements = null;
 		this.undoStatements = null;
@@ -71,8 +71,8 @@ public class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractTypeDeclaredInAlice.class ).encodeValue( binaryEncoder, this.declaringType );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.FieldDeclaredInAlice.class ).encodeValue( binaryEncoder, this.field );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).encodeValue( binaryEncoder, this.declaringType );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).encodeValue( binaryEncoder, this.field );
 		binaryEncoder.encode( this.index );
 	}
 

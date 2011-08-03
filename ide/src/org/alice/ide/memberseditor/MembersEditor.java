@@ -146,9 +146,9 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 		org.lgna.croquet.components.Label instanceLabel = new org.lgna.croquet.components.Label( "instance:" );
 		instanceLabel.scaleFont( FONT_SCALAR );
 		
-		final org.lgna.project.ast.FieldDeclaredInJavaWithField PROTOTYPE_FIELD;
+		final org.lgna.project.ast.JavaField PROTOTYPE_FIELD;
 		try {
-			PROTOTYPE_FIELD = org.lgna.project.ast.FieldDeclaredInJavaWithField.get( MembersEditor.class.getField( "PROTOTYPE" ) );
+			PROTOTYPE_FIELD = org.lgna.project.ast.JavaField.getInstance( MembersEditor.class.getField( "PROTOTYPE" ) );
 		} catch( NoSuchFieldException nsfe ) {
 			throw new RuntimeException( nsfe );
 		}

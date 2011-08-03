@@ -47,14 +47,14 @@ package org.alice.ide.croquet.models.ast;
  */
 public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.AbstractMember > extends org.alice.ide.operations.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
 	private N member;
-	private org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> delaringType;
+	private org.lgna.project.ast.UserType<?> delaringType;
 	
 	//todo
 	//note: index not preserved and restored
 	//in the case where it is undone across sessions, it will not know where to insert the declaration
 	private transient int index = -1;
 	
-	public DeleteMemberOperation( java.util.UUID individualId, N node, org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> delaringType ) {
+	public DeleteMemberOperation( java.util.UUID individualId, N node, org.lgna.project.ast.UserType<?> delaringType ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 		this.member = node;
 		this.delaringType = delaringType;
@@ -68,7 +68,7 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 	public Class<?>[] getStaticGetInstanceParameterTypes() {
 		return new Class[] {
 				this.getNodeParameterType(),
-				org.lgna.project.ast.AbstractTypeDeclaredInAlice.class,
+				org.lgna.project.ast.UserType.class,
 				Integer.TYPE
 		};
 	}
@@ -101,7 +101,7 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 	protected N getMember() {
 		return this.member;
 	}
-	protected abstract org.lgna.project.ast.NodeListProperty<N> getNodeListProperty( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType );
+	protected abstract org.lgna.project.ast.NodeListProperty<N> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType );
 	protected abstract boolean isClearToDelete( N node );
 	
 	public void doOrRedoInternal( boolean isDo ) {

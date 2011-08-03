@@ -47,8 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private static java.util.Map< org.lgna.project.ast.FieldDeclaredInAlice, ThisFieldAccessFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisFieldAccessFactoryFillIn getInstance( org.lgna.project.ast.FieldDeclaredInAlice value ) {
+	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ThisFieldAccessFactoryFillIn getInstance( org.lgna.project.ast.UserField value ) {
 		synchronized( map ) {
 			ThisFieldAccessFactoryFillIn rv = map.get( value );
 			if( rv != null ) {
@@ -60,7 +60,7 @@ public class ThisFieldAccessFactoryFillIn extends InstanceFactoryFillInWithoutBl
 			return rv;
 		}
 	}
-	private ThisFieldAccessFactoryFillIn( org.lgna.project.ast.FieldDeclaredInAlice field ) {
+	private ThisFieldAccessFactoryFillIn( org.lgna.project.ast.UserField field ) {
 		super( java.util.UUID.fromString( "01f7980c-ee24-4a40-94e5-9e0318ecbe1a" ), ThisFieldAccessFactory.getInstance( field ) );
 	}
 	@Override

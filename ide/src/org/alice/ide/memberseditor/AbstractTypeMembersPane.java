@@ -93,14 +93,14 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 	}
 	public AbstractTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
-		if( this.type instanceof org.lgna.project.ast.TypeDeclaredInAlice ) {
-			for( edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice > listProperty : this.getListPropertiesToListenTo( (org.lgna.project.ast.TypeDeclaredInAlice)this.type ) ) {
+		if( this.type instanceof org.lgna.project.ast.NamedUserType ) {
+			for( edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice > listProperty : this.getListPropertiesToListenTo( (org.lgna.project.ast.NamedUserType)this.type ) ) {
 				listProperty.addListPropertyListener( this.listPropertyAdapter );
 			}
 		}
 		this.refresh();
 	}
-	protected abstract edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( org.lgna.project.ast.TypeDeclaredInAlice type );
+	protected abstract edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type );
 	private static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
 		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
 			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
@@ -125,8 +125,8 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 	}
 	protected abstract Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( org.lgna.project.ast.AbstractMember member );
 
-	protected abstract org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.TypeDeclaredInAlice type );
-	protected abstract org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.TypeDeclaredInAlice type );
+	protected abstract org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.NamedUserType type );
+	protected abstract org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type );
 	protected void refresh() {
 		this.removeAllComponents();
 		org.lgna.croquet.components.PageAxisPanel page = new org.lgna.croquet.components.PageAxisPanel();
@@ -153,8 +153,8 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 				}
 			}
 		}
-		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() == false && this.type instanceof org.lgna.project.ast.TypeDeclaredInAlice ) {
-			org.lgna.project.ast.TypeDeclaredInAlice typeInAlice = (org.lgna.project.ast.TypeDeclaredInAlice)type;
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() == false && this.type instanceof org.lgna.project.ast.NamedUserType ) {
+			org.lgna.project.ast.NamedUserType typeInAlice = (org.lgna.project.ast.NamedUserType)type;
 			org.lgna.croquet.components.Button createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
 			org.lgna.croquet.components.Button editConstructorButton = this.createEditConstructorButton( typeInAlice );
 			if( createAndAddMemberButton != null ) {

@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class ConstantDeclarationStatement extends LocalDeclarationStatement {
-	public DeclarationProperty< ConstantDeclaredInAlice > constant = new DeclarationProperty< ConstantDeclaredInAlice >( this ) {
+	public DeclarationProperty< UserConstant > constant = new DeclarationProperty< UserConstant >( this ) {
 		@Override
 		public boolean isReference() {
 			return false;
@@ -55,7 +55,7 @@ public class ConstantDeclarationStatement extends LocalDeclarationStatement {
 	};
 	public ConstantDeclarationStatement() {
 	}
-	public ConstantDeclarationStatement( ConstantDeclaredInAlice constant, Expression initializer ) {
+	public ConstantDeclarationStatement( UserConstant constant, Expression initializer ) {
 		super( initializer );
 		this.constant.setValue( constant );
 	}
@@ -64,7 +64,7 @@ public class ConstantDeclarationStatement extends LocalDeclarationStatement {
 //		return this.constant.getValue().valueType.getValue();
 //	}
 	@Override
-	public org.lgna.project.ast.LocalDeclaredInAlice getLocal() {
+	public org.lgna.project.ast.UserLocal getLocal() {
 		return this.constant.getValue();
 	}
 	

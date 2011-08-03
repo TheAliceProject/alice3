@@ -53,12 +53,12 @@ public class TypeLiteral extends AbstractValueLiteral {
 		this.value.setValue( value );
 	}
 	public TypeLiteral( Class< ? > cls ) {
-		this( TypeDeclaredInJava.get( cls ) );
+		this( JavaType.getInstance( cls ) );
 	}
 	@Override
 	public AbstractType<?,?,?> getType() {
 		//todo
-		return TypeDeclaredInJava.get( value.getValue().getClass() );
+		return JavaType.getInstance( value.getValue().getClass() );
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {

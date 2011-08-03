@@ -42,8 +42,8 @@
  */
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.lgna.project.ast.FieldDeclaredInAlice;
-import org.lgna.project.ast.TypeDeclaredInAlice;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.NamedUserType;
 
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 
@@ -70,7 +70,7 @@ public class CreateCameraMarkerActionOperation extends AbstractSceneDeclareField
 	}
 	
 	@Override
-	protected Tuple2< FieldDeclaredInAlice, org.lgna.story.BookmarkCameraMarker > createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, TypeDeclaredInAlice ownerType ) 
+	protected Tuple2< UserField, org.lgna.story.BookmarkCameraMarker > createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, NamedUserType ownerType ) 
 	{
 		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().createCameraMarkerField( ownerType );
 	}

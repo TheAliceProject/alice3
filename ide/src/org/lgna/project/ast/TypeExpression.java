@@ -53,11 +53,11 @@ public class TypeExpression extends Expression {
 		this.value.setValue( value );
 	}
 	public TypeExpression( Class< ? > cls ) {
-		this( TypeDeclaredInJava.get( cls ) );
+		this( JavaType.getInstance( cls ) );
 	}
 	@Override
 	public AbstractType<?,?,?> getType() {
 		//todo
-		return TypeDeclaredInJava.get( Class.class );
+		return JavaType.getInstance( Class.class );
 	}
 }

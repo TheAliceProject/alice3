@@ -60,7 +60,7 @@ public class ConstantsOwningFillerInner extends ExpressionFillerInner {
 		}
 	}
 	public static ConstantsOwningFillerInner getInstance( Class<?> cls ) {
-		return getInstance( org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
+		return getInstance( org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
 	private ConstantsOwningFillerInner( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		super( type );

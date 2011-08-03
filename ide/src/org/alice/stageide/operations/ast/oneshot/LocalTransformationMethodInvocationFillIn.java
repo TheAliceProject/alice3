@@ -67,7 +67,7 @@ public class LocalTransformationMethodInvocationFillIn extends MethodInvocationF
 		return getInstance( field, method );
 	}
 	public static LocalTransformationMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractField field, Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( field, org.lgna.project.ast.TypeDeclaredInJava.get( cls ), methodName, parameterClses );
+		return getInstance( field, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
 	}
 	private LocalTransformationMethodInvocationFillIn( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "955cb8c1-3861-4ac7-b76f-72ca93b1289b" ), field, method );

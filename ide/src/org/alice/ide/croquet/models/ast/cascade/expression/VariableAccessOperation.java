@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class VariableAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.VariableDeclaredInAlice, org.lgna.project.ast.ExpressionProperty, VariableAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized VariableAccessOperation getInstance( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserVariable, org.lgna.project.ast.ExpressionProperty, VariableAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized VariableAccessOperation getInstance( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert variable != null;
 		assert expressionProperty != null;
 		VariableAccessOperation rv = map.get( variable, expressionProperty );
@@ -60,8 +60,8 @@ public class VariableAccessOperation extends org.alice.ide.croquet.models.ast.ca
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.VariableDeclaredInAlice variable;
-	private VariableAccessOperation( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	private final org.lgna.project.ast.UserVariable variable;
+	private VariableAccessOperation( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "e3a514b8-1414-47a1-b9ec-82cd4678417c" ), expressionProperty );
 		this.variable = variable;
 	}

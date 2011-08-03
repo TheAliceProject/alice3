@@ -64,7 +64,7 @@ public class FocusCodeOperation extends org.alice.ide.operations.ActionOperation
 		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "82bf4d2a-f1ff-4df5-a5dc-80f981181ba5" ) );
 		this.nextCode = nextCode;
 		String name;
-		if( nextCode instanceof org.lgna.project.ast.ConstructorDeclaredInAlice ) {
+		if( nextCode instanceof org.lgna.project.ast.NamedUserConstructor ) {
 			name = "Edit Constructor";
 		} else {
 			name = "Edit";

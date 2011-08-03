@@ -52,10 +52,10 @@ abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 		boolean isNonConsumedTypeDeclaredInJavaAlreadyEncountered = false;
 
 		if( types.size() > 0 ) {
-			boolean isSeparatorDesired = types.get( 0 ) instanceof org.lgna.project.ast.TypeDeclaredInAlice;
+			boolean isSeparatorDesired = types.get( 0 ) instanceof org.lgna.project.ast.NamedUserType;
 			for( org.lgna.project.ast.AbstractType<?,?,?> type : types ) {
 				boolean isFirstNonConsumedTypeEncounteredInJava = false;
-				if( type instanceof org.lgna.project.ast.TypeDeclaredInJava ) {
+				if( type instanceof org.lgna.project.ast.JavaType ) {
 					if( isSeparatorDesired ) {
 						this.addComponent( new org.lgna.croquet.components.HorizontalSeparator() );
 						this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
@@ -75,7 +75,7 @@ abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 				if( type.isConsumptionBySubClassDesired() ) {
 					//pass
 				} else {
-					if( /*org.alice.ide.IDE.getActiveInstance().isEmphasizingClasses() ||*/ type instanceof org.lgna.project.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
+					if( /*org.alice.ide.IDE.getActiveInstance().isEmphasizingClasses() ||*/ type instanceof org.lgna.project.ast.NamedUserType || isFirstNonConsumedTypeEncounteredInJava ) {
 						this.addComponent( MembersEditor.getComponentFor( this.getClass(), type ) );
 					}
 				}

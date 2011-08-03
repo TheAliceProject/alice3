@@ -50,7 +50,7 @@ public class ArrayLength extends Expression {
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
-			return TypeDeclaredInJava.OBJECT_TYPE.getArrayType();
+			return JavaType.OBJECT_TYPE.getArrayType();
 		}
 	};
 
@@ -63,6 +63,6 @@ public class ArrayLength extends Expression {
 	public AbstractType<?,?,?> getType() {
 		//todo: 
 		//return TypeDeclaredInJava.INTEGER_PRIMITIVE_TYPE;
-		return TypeDeclaredInJava.INTEGER_OBJECT_TYPE;
+		return JavaType.INTEGER_OBJECT_TYPE;
 	}
 }

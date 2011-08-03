@@ -40,44 +40,59 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation {
-	private static java.util.Map< org.lgna.project.ast.UserType< ? >, DeclareFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static DeclareFieldOperation getInstance( org.lgna.project.ast.UserType< ? > ownerType ) {
-		DeclareFieldOperation rv = map.get( ownerType );
-		if( rv != null ) {
-			//pass
+public class AnonymousUserConstructor extends UserConstructor {
+	private static java.util.Map< AnonymousUserType, AnonymousUserConstructor > s_map;
+	private AnonymousUserType type;
+	public static AnonymousUserConstructor get( AnonymousUserType type ) {
+		if( type != null ) {
+			if( s_map != null ) {
+				//pass
+			} else {
+				s_map = new java.util.HashMap< AnonymousUserType, AnonymousUserConstructor >();
+			}
+			AnonymousUserConstructor rv = s_map.get( type );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new AnonymousUserConstructor( type );
+			}
+			return rv;
 		} else {
-			rv = new DeclareFieldOperation( ownerType );
-			map.put( ownerType, rv );
+			return null;
 		}
-		return rv;
 	}
-	private DeclareFieldOperation( org.lgna.project.ast.UserType< ? > declaringType ) {
-		super( java.util.UUID.fromString( "e935b0ea-e927-49ff-b33b-2c8eaf5c8b57" ), declaringType );
-		this.setName( "Declare Property..." );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFieldOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFieldOperation >( this, this.getDeclaringType(), org.lgna.project.ast.UserType.class );
+	private java.util.ArrayList< AbstractParameter > parameters = new java.util.ArrayList< AbstractParameter >();
+	private AnonymousUserConstructor( AnonymousUserType type ) {
+		this.type = type;
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateFieldPane prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.ide.declarationpanes.CreateFieldPane( this.getDeclaringType() );
+	public org.lgna.project.ast.Access getAccess() {
+		return null;
 	}
 	@Override
-	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData fillInEpilogueData( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
-		super.fillInEpilogueData( rv, step );
-		//todo
-		return rv;
+	public AnonymousUserType getDeclaringType() {
+		return this.type;
 	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.history.InputDialogOperationStep step ) {
-//		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = step.getMainPanel();
-//		return createFieldPane.getInputValue();
-//	}
+	@Override
+	public org.lgna.project.ast.AbstractMember getNextLongerInChain() {
+		return null;
+	}
+	@Override
+	public org.lgna.project.ast.AbstractMember getNextShorterInChain() {
+		return null;
+	}
+	@Override
+	public java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > getParameters() {
+		return this.parameters;
+	}
+	@Override
+	public org.lgna.project.annotations.Visibility getVisibility() {
+		return null;
+	}
 }

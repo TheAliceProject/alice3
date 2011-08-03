@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class ConstantArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.ConstantDeclaredInAlice, org.lgna.project.ast.ExpressionProperty, ConstantArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ConstantArrayLengthOperation getInstance( org.lgna.project.ast.ConstantDeclaredInAlice constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserConstant, org.lgna.project.ast.ExpressionProperty, ConstantArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ConstantArrayLengthOperation getInstance( org.lgna.project.ast.UserConstant constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert constant != null;
 		assert expressionProperty != null;
 		ConstantArrayLengthOperation rv = map.get( constant, expressionProperty );
@@ -60,8 +60,8 @@ public class ConstantArrayLengthOperation extends ArrayLengthOperation {
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.ConstantDeclaredInAlice constant;
-	private ConstantArrayLengthOperation( org.lgna.project.ast.ConstantDeclaredInAlice constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	private final org.lgna.project.ast.UserConstant constant;
+	private ConstantArrayLengthOperation( org.lgna.project.ast.UserConstant constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "96bc22e4-9d7c-4ed7-abc2-130a56b0d5b9" ), expressionProperty );
 		this.constant = constant;
 	}

@@ -64,10 +64,10 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< org.
 		return getInstance( type.findField( fieldName ) );
 	}
 	public static StaticFieldAccessFillIn getInstance( java.lang.reflect.Field fld ) {
-		return getInstance( org.lgna.project.ast.FieldDeclaredInJavaWithField.get( fld ) );
+		return getInstance( org.lgna.project.ast.JavaField.getInstance( fld ) );
 	}
 	public static StaticFieldAccessFillIn getInstance( Class<?> cls, String fieldName ) {
-		return getInstance( org.lgna.project.ast.TypeDeclaredInJava.get( cls ), fieldName );
+		return getInstance( org.lgna.project.ast.JavaType.getInstance( cls ), fieldName );
 	}
 	private final org.lgna.project.ast.FieldAccess transientValue;
 	private StaticFieldAccessFillIn( org.lgna.project.ast.AbstractField field ) {

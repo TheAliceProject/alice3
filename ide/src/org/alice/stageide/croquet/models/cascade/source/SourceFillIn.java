@@ -13,7 +13,7 @@ public abstract class SourceFillIn<T extends org.alice.virtualmachine.Resource> 
 		this.transientValue = this.createValue();
 	}
 	private final org.lgna.project.ast.InstanceCreation createValue() {
-		org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( this.sourceCls, this.resourceCls );
+		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( this.sourceCls, this.resourceCls );
 		org.lgna.project.ast.ResourceExpression resourceExpression = new org.lgna.project.ast.ResourceExpression( this.resourceCls, this.resource );
 		org.lgna.project.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
 		org.lgna.project.ast.Argument argument0 = new org.lgna.project.ast.Argument( parameter0, resourceExpression );

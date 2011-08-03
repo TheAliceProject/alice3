@@ -66,7 +66,7 @@ public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpression
 		return getInstance( method );
 	}
 	public static StaticMethodInvocationFillIn getInstance( Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( org.lgna.project.ast.TypeDeclaredInJava.get( cls ), methodName, parameterClses );
+		return getInstance( org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
 	}
 	private final org.lgna.project.ast.MethodInvocation transientValue;
 	private StaticMethodInvocationFillIn( org.lgna.project.ast.AbstractMethod method ) {

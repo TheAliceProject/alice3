@@ -46,19 +46,19 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodDeclaredInJava extends AbstractMethod {
-	private static java.util.Map< MethodReflectionProxy, MethodDeclaredInJava > s_mapReflectionProxyToJava = new java.util.HashMap< MethodReflectionProxy, MethodDeclaredInJava >();
+public class JavaMethod extends AbstractMethod {
+	private static java.util.Map< MethodReflectionProxy, JavaMethod > s_mapReflectionProxyToJava = new java.util.HashMap< MethodReflectionProxy, JavaMethod >();
 
 	private MethodReflectionProxy methodReflectionProxy;
-	private java.util.ArrayList< ParameterDeclaredInJavaMethod > parameters;
+	private java.util.ArrayList< JavaMethodParameter > parameters;
 
-	public static MethodDeclaredInJava get( MethodReflectionProxy methodReflectionProxy ) {
+	public static JavaMethod getInstance( MethodReflectionProxy methodReflectionProxy ) {
 		if( methodReflectionProxy != null ) {
-			MethodDeclaredInJava rv = s_mapReflectionProxyToJava.get( methodReflectionProxy );
+			JavaMethod rv = s_mapReflectionProxyToJava.get( methodReflectionProxy );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new MethodDeclaredInJava( methodReflectionProxy );
+				rv = new JavaMethod( methodReflectionProxy );
 				s_mapReflectionProxyToJava.put( methodReflectionProxy, rv );
 			}
 			return rv;
@@ -66,21 +66,21 @@ public class MethodDeclaredInJava extends AbstractMethod {
 			return null;
 		}
 	}
-	public static MethodDeclaredInJava get( java.lang.reflect.Method mthd ) {
-		return get( new MethodReflectionProxy( mthd ) );
+	public static JavaMethod getInstance( java.lang.reflect.Method mthd ) {
+		return getInstance( new MethodReflectionProxy( mthd ) );
 	}
-	public static MethodDeclaredInJava get( Class< ? > declaringCls, String name, Class< ? >... parameterClses ) {
-		return get( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( declaringCls, name, parameterClses ) );
+	public static JavaMethod getInstance( Class< ? > declaringCls, String name, Class< ? >... parameterClses ) {
+		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( declaringCls, name, parameterClses ) );
 	}
 
-	private MethodDeclaredInJava( MethodReflectionProxy methodReflectionProxy ) {
+	private JavaMethod( MethodReflectionProxy methodReflectionProxy ) {
 		this.methodReflectionProxy = methodReflectionProxy;
 		ClassReflectionProxy[] classReflectionProxies = this.methodReflectionProxy.getParameterClassReflectionProxies();
-		this.parameters = new java.util.ArrayList< ParameterDeclaredInJavaMethod >();
+		this.parameters = new java.util.ArrayList< JavaMethodParameter >();
 		this.parameters.ensureCapacity( classReflectionProxies.length );
 		java.lang.annotation.Annotation[][] parameterAnnotations = this.methodReflectionProxy.getParameterAnnotations();
 		for( int i = 0; i < classReflectionProxies.length; i++ ) {
-			this.parameters.add( new ParameterDeclaredInJavaMethod( this, i, parameterAnnotations[ i ] ) );
+			this.parameters.add( new JavaMethodParameter( this, i, parameterAnnotations[ i ] ) );
 		}
 	}
 
@@ -102,10 +102,10 @@ public class MethodDeclaredInJava extends AbstractMethod {
 	}
 
 	@Override
-	public TypeDeclaredInJava getReturnType() {
+	public JavaType getReturnType() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		if( mthd != null ) {
-			return TypeDeclaredInJava.get( mthd.getReturnType() );
+			return JavaType.getInstance( mthd.getReturnType() );
 		} else {
 			return null;
 		}
@@ -116,8 +116,8 @@ public class MethodDeclaredInJava extends AbstractMethod {
 	}
 
 	@Override
-	public TypeDeclaredInJava getDeclaringType() {
-		return TypeDeclaredInJava.get( this.methodReflectionProxy.getDeclaringClassReflectionProxy() );
+	public JavaType getDeclaringType() {
+		return JavaType.getInstance( this.methodReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
 	@Override
 	public org.lgna.project.annotations.Visibility getVisibility() {
@@ -134,29 +134,29 @@ public class MethodDeclaredInJava extends AbstractMethod {
 		}
 	}
 
-	public boolean isParameterInShortestChainedMethod( ParameterDeclaredInJavaMethod parameterDeclaredInJavaMethod ) {
+	public boolean isParameterInShortestChainedMethod( JavaMethodParameter parameterDeclaredInJavaMethod ) {
 		int index = parameterDeclaredInJavaMethod.getIndex();
-		MethodDeclaredInJava methodDeclaredInJava = (MethodDeclaredInJava)getShortestInChain();
+		JavaMethod methodDeclaredInJava = (JavaMethod)getShortestInChain();
 		return index < methodDeclaredInJava.getParameters().size();
 	}
 
-	private MethodDeclaredInJava nextLongerInChain = null;
+	private JavaMethod nextLongerInChain = null;
 
 	@Override
 	public AbstractMember getNextLongerInChain() {
 		return this.nextLongerInChain;
 	}
-	public void setNextLongerInChain( MethodDeclaredInJava nextLongerInChain ) {
+	public void setNextLongerInChain( JavaMethod nextLongerInChain ) {
 		this.nextLongerInChain = nextLongerInChain;
 	}
 
-	private MethodDeclaredInJava nextShorterInChain = null;
+	private JavaMethod nextShorterInChain = null;
 
 	@Override
 	public AbstractMember getNextShorterInChain() {
 		return this.nextShorterInChain;
 	}
-	public void setNextShorterInChain( MethodDeclaredInJava nextShorterInChain ) {
+	public void setNextShorterInChain( JavaMethod nextShorterInChain ) {
 		this.nextShorterInChain = nextShorterInChain;
 	}
 
@@ -205,7 +205,7 @@ public class MethodDeclaredInJava extends AbstractMethod {
 
 	@Override
 	public boolean isEquivalentTo( Object o ) {
-		MethodDeclaredInJava other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, MethodDeclaredInJava.class );
+		JavaMethod other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, JavaMethod.class );
 		if( other != null ) {
 			return this.methodReflectionProxy.equals( other.methodReflectionProxy );
 		} else {

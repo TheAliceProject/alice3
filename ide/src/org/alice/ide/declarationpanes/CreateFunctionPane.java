@@ -46,7 +46,7 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public class CreateFunctionPane extends CreateMethodPane {
-	public CreateFunctionPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+	public CreateFunctionPane( org.lgna.project.ast.UserType< ? > declaringType ) {
 		super( declaringType );
 		this.setBackgroundColor( getIDE().getTheme().getFunctionColor() );
 	}

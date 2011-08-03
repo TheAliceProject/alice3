@@ -48,15 +48,15 @@ package org.alice.stageide.ast;
  */
 public class SceneAdapter extends org.lgna.story.Scene {
 	private final org.lgna.project.virtualmachine.Context context;
-	private final org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type; 
-	public SceneAdapter( org.lgna.project.virtualmachine.Context context, org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type, Object[] arguments ) {
+	private final org.lgna.project.ast.UserType<?> type; 
+	public SceneAdapter( org.lgna.project.virtualmachine.Context context, org.lgna.project.ast.UserType<?> type, Object[] arguments ) {
 		this.context = context;
 		this.type = type;
 		assert arguments.length == 0;
 	}
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		org.lgna.project.ast.MethodDeclaredInAlice method = type.getDeclaredMethod( "handleActiveChanged", Boolean.class, Integer.class );
+		org.lgna.project.ast.UserMethod method = type.getDeclaredMethod( "handleActiveChanged", Boolean.class, Integer.class );
 		this.context.invokeEntryPoint( method, isActive, activeCount );
 	}
 	@Override

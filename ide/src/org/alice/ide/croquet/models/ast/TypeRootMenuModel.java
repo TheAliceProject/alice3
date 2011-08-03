@@ -60,7 +60,7 @@ public class TypeRootMenuModel extends org.lgna.croquet.MenuModel {
 		super.handleShowing( menuItemContainer, e );
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
 		final org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
-		for( org.lgna.project.ast.TypeDeclaredInAlice type : org.lgna.project.project.ProjectUtilities.getTypes( project ) ) {
+		for( org.lgna.project.ast.NamedUserType type : org.lgna.project.project.ProjectUtilities.getTypes( project ) ) {
 			if( type == programType ) {
 				//pass
 			} else {

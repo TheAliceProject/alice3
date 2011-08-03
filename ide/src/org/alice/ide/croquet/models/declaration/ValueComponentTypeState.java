@@ -54,13 +54,13 @@ public class ValueComponentTypeState extends org.lgna.croquet.DefaultCustomItemS
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
-		for( org.lgna.project.ast.TypeDeclaredInJava type : org.alice.ide.IDE.getActiveInstance().getPrimeTimeSelectableTypesDeclaredInJava() ) {
+		for( org.lgna.project.ast.JavaType type : org.alice.ide.IDE.getActiveInstance().getPrimeTimeSelectableTypesDeclaredInJava() ) {
 			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
 		}
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		java.util.List< org.lgna.project.ast.TypeDeclaredInAlice > types = org.lgna.project.project.ProjectUtilities.getTypes( project );
-		for( org.lgna.project.ast.TypeDeclaredInAlice type : types ) {
+		java.util.List< org.lgna.project.ast.NamedUserType > types = org.lgna.project.project.ProjectUtilities.getTypes( project );
+		for( org.lgna.project.ast.NamedUserType type : types ) {
 			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
 		}
 		return rv;

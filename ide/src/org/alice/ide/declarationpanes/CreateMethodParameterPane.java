@@ -48,7 +48,7 @@ package org.alice.ide.declarationpanes;
  */
 public class CreateMethodParameterPane extends CreateParameterPane {
 	private java.util.List< org.lgna.project.ast.MethodInvocation > methodInvocations;
-	public CreateMethodParameterPane( org.lgna.project.ast.MethodDeclaredInAlice method, java.util.List< org.lgna.project.ast.MethodInvocation > methodInvocations ) {
+	public CreateMethodParameterPane( org.lgna.project.ast.UserMethod method, java.util.List< org.lgna.project.ast.MethodInvocation > methodInvocations ) {
 		super( method );
 		this.methodInvocations = methodInvocations;
 	}

@@ -221,7 +221,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 		}
 		@Override
 		protected org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-			return org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE;
+			return org.lgna.project.ast.JavaType.VOID_TYPE;
 		}
 	}
 

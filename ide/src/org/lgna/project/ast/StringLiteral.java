@@ -54,7 +54,7 @@ public class StringLiteral extends AbstractValueLiteral {
 	}
 	@Override
 	public AbstractType<?,?,?> getType() {
-		return TypeDeclaredInJava.get( String.class );
+		return JavaType.getInstance( String.class );
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {

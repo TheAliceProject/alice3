@@ -44,12 +44,12 @@
 package org.alice.ide.name.validators;
 
 public abstract class MemberNameValidator extends NodeNameValidator {
-	private org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type;
-	public MemberNameValidator( org.lgna.project.ast.Node node, org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type ) {
+	private org.lgna.project.ast.UserType<?> type;
+	public MemberNameValidator( org.lgna.project.ast.Node node, org.lgna.project.ast.UserType<?> type ) {
 		super( node );
 		this.type = type;
 	}
-	public org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> getType() {
+	public org.lgna.project.ast.UserType<?> getType() {
 		return this.type;
 	}
 }

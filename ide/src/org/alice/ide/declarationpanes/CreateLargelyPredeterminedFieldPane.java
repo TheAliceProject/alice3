@@ -49,11 +49,11 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	private org.lgna.project.ast.AbstractType<?,?,?> valueType;
 	private org.lgna.project.ast.Expression initializer;
 
-	public CreateLargelyPredeterminedFieldPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType, Class< ? > cls, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
+	public CreateLargelyPredeterminedFieldPane( org.lgna.project.ast.UserType<?> declaringType, Class< ? > cls, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
 		super( declaringType );
 		if( cls != null ) {
 			assert valueType == null;
-			org.lgna.project.ast.TypeDeclaredInJava typeDeclaredInJava = org.lgna.project.ast.TypeDeclaredInJava.get( cls );
+			org.lgna.project.ast.JavaType typeDeclaredInJava = org.lgna.project.ast.JavaType.getInstance( cls );
 			this.valueType = this.getTypeDeclaredInAliceFor( typeDeclaredInJava );
 		} else {
 			assert valueType != null;
@@ -62,7 +62,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 		this.initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( this.valueType );
 	}
 	
-	protected org.lgna.project.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( org.lgna.project.ast.TypeDeclaredInJava typeDeclaredInJava ) {
+	protected org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType typeDeclaredInJava ) {
 		return getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
 	}
 	
@@ -71,7 +71,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
 	}
 
-	private static String getAvailableFieldName( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType, String baseName ) {
+	private static String getAvailableFieldName( org.lgna.project.ast.UserType<?> declaringType, String baseName ) {
 		org.alice.ide.name.validators.FieldNameValidator validator = new org.alice.ide.name.validators.FieldNameValidator( declaringType );
 
 		if( validator.isNameValid( baseName ) ) {
@@ -90,9 +90,9 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 		return rv;
 	}
 
-	private String getPotentialInstanceNameFor( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
+	private String getPotentialInstanceNameFor( org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
 		if( valueType != null ) {
-			org.lgna.project.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+			org.lgna.project.ast.JavaType typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
 			if( typeInJava != null ) {
 				if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
 					String typeName = typeInJava.getName();
@@ -153,7 +153,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	protected org.lgna.croquet.components.Component< ? > createValueTypeComponent() {
 		org.lgna.croquet.components.LineAxisPanel valueTypeLine = new org.lgna.croquet.components.LineAxisPanel();
 		valueTypeLine.addComponent( org.alice.ide.common.TypeComponent.createInstance( CreateLargelyPredeterminedFieldPane.this.valueType ) );
-		if( CreateLargelyPredeterminedFieldPane.this.valueType instanceof org.lgna.project.ast.TypeDeclaredInAlice ) {
+		if( CreateLargelyPredeterminedFieldPane.this.valueType instanceof org.lgna.project.ast.NamedUserType ) {
 			valueTypeLine.addComponent( new org.lgna.croquet.components.Label( " which extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			valueTypeLine.addComponent( org.alice.ide.common.TypeComponent.createInstance( CreateLargelyPredeterminedFieldPane.this.valueType.getSuperType() ) );
 //			valueTypeLine.add( zoot.ZLabel.acquire( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );

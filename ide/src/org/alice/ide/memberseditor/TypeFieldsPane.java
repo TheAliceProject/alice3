@@ -52,15 +52,15 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 		super( type );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( org.lgna.project.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type ) {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.fields };
 	}
 	@Override
-	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.TypeDeclaredInAlice type ) {
+	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.NamedUserType type ) {
 		return org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type ).createButton();
 	}
 	@Override
-	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.TypeDeclaredInAlice type ) {
+	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type ) {
 		return null;
 	}
 	@Override
@@ -72,8 +72,8 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 				//pass
 			} else {
-				if( field instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
-					org.lgna.project.ast.FieldDeclaredInAlice fieldInAlice = (org.lgna.project.ast.FieldDeclaredInAlice)field;
+				if( field instanceof org.lgna.project.ast.UserField ) {
+					org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)field;
 					org.lgna.croquet.components.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getTemplatesFactory(), fieldInAlice);
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: add popup menu to field declaration pane" );
 //					class EditFieldDeclarationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation { 

@@ -46,21 +46,5 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantDeclaredInAlice extends LocalDeclaredInAlice {
-	public ConstantDeclaredInAlice() {
-	}
-	public ConstantDeclaredInAlice( String name, AbstractType<?,?,?> valueType ) {
-		super( name, valueType );
-	}
-	public ConstantDeclaredInAlice( String name, Class<?> valueCls ) {
-		this( name, TypeDeclaredInJava.get( valueCls ) );
-	}
-	@Override
-	public boolean isFinal() {
-		return true;
-	}
-	@Override
-	protected String generateName( Node context ) {
-		return "N";
-	}
+public abstract class UserConstructor extends AbstractConstructor {
 }

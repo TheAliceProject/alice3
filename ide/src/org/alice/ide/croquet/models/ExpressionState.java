@@ -53,7 +53,7 @@ public abstract class ExpressionState extends org.lgna.croquet.DefaultCustomItem
 		this.type = type;
 	}
 	public ExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue, Class<?> cls ) {
-		this( group, id, initialValue, org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
+		this( group, id, initialValue, org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {

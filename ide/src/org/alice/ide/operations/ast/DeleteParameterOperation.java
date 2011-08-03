@@ -43,20 +43,20 @@
 package org.alice.ide.operations.ast;
 
 import org.lgna.project.ast.NodeListProperty;
-import org.lgna.project.ast.ParameterDeclaredInAlice;
+import org.lgna.project.ast.UserParameter;
 
 /**
  * @author Dennis Cosgrove
  */
 public class DeleteParameterOperation extends AbstractCodeParameterOperation {
-	public DeleteParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
+	public DeleteParameterOperation( NodeListProperty< UserParameter > parametersProperty, org.lgna.project.ast.UserParameter parameter ) {
 		super( java.util.UUID.fromString( "853fb6a3-ea7b-4575-93d6-547f687a7033" ), parametersProperty, parameter );
 		this.setName( "Delete" );
 	}
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-		final org.lgna.project.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), org.lgna.project.ast.MethodDeclaredInAlice.class );
+		final org.lgna.project.ast.UserMethod method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), org.lgna.project.ast.UserMethod.class );
 		final int index = method.parameters.indexOf( this.getParameter() );
 		if( method != null && index >= 0 ) {
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ParameterAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ParameterAccess >( org.lgna.project.ast.ParameterAccess.class ) {

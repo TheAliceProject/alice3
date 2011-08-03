@@ -73,7 +73,7 @@ public class MoreCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.
 		assert methodInvocation != null;
 		this.methodInvocation = methodInvocation;
 		this.expressionStatement = (org.lgna.project.ast.ExpressionStatement)this.methodInvocation.getParent();
-		assert this.expressionStatement != null : ((org.lgna.project.ast.MethodDeclaredInJava)this.methodInvocation.method.getValue()).getMethodReflectionProxy().getReification();
+		assert this.expressionStatement != null : ((org.lgna.project.ast.JavaMethod)this.methodInvocation.method.getValue()).getMethodReflectionProxy().getReification();
 		
 		org.lgna.project.ast.AbstractMethod method = this.methodInvocation.method.getValue();
 		org.lgna.project.ast.AbstractMethod nextMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();

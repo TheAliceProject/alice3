@@ -47,7 +47,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.UserField;
 import org.lgna.story.Turnable;
 import org.lgna.story.implementation.CameraMarkerImplementation;
 import org.alice.ide.IDE;
@@ -65,8 +65,8 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 		return SingletonHolder.instance;
 	}
 	
-	private FieldDeclaredInAlice markerField;
-	private FieldDeclaredInAlice selectedField;
+	private UserField markerField;
+	private UserField selectedField;
 	private MoveToImageIcon imageIcon;
 
 	private MoveMarkerToSelectedObjectActionOperation() {
@@ -94,7 +94,7 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 		this.setSmallIcon(this.imageIcon);
 	}
 	
-	public void setMarkerField(FieldDeclaredInAlice markerField)
+	public void setMarkerField(UserField markerField)
 	{
 		this.markerField = markerField;
 		if (this.markerField != null)
@@ -110,9 +110,9 @@ public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
 	
 	public void setSelectedField(AbstractField field)
 	{
-		if (field instanceof FieldDeclaredInAlice)
+		if (field instanceof UserField)
 		{
-			this.selectedField = (FieldDeclaredInAlice)field;
+			this.selectedField = (UserField)field;
 		}
 		else
 		{

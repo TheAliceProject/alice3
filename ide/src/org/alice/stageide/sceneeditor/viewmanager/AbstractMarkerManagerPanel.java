@@ -51,16 +51,16 @@ import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.MutableList;
-import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.UserField;
 
 
 public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
     
     protected Button moveToMarkerButton;
     protected Button moveToObjectButton;
-    protected MutableList<FieldDeclaredInAlice> fieldList;
+    protected MutableList<UserField> fieldList;
     
-    protected abstract MutableList<FieldDeclaredInAlice> createMutableList(org.lgna.croquet.components.MutableList.Factory<FieldDeclaredInAlice> factory);
+    protected abstract MutableList<UserField> createMutableList(org.lgna.croquet.components.MutableList.Factory<UserField> factory);
     protected abstract org.lgna.croquet.Operation<?> getAddItemOperation();
     protected abstract String getTitleString();
     
@@ -72,7 +72,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
     public AbstractMarkerManagerPanel()
     {
         super();
-        org.lgna.croquet.components.MutableList.Factory<FieldDeclaredInAlice> factory = new org.lgna.croquet.components.MutableList.Factory<FieldDeclaredInAlice>() {
+        org.lgna.croquet.components.MutableList.Factory<UserField> factory = new org.lgna.croquet.components.MutableList.Factory<UserField>() {
                 public org.lgna.croquet.components.Component<?> createLeadingComponent() {
                     return null;
                 }
@@ -82,7 +82,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
                 public org.lgna.croquet.components.Component<?> createTrailingComponent() {
                     return null;
                 }
-                public void update(org.lgna.croquet.components.Component<?> leadingComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> trailingComponent, int index, FieldDeclaredInAlice item) {
+                public void update(org.lgna.croquet.components.Component<?> leadingComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> trailingComponent, int index, UserField item) {
                     ((MarkerFieldTile)mainComponent).setField(item);
                 }
                 public void updateSelection(org.lgna.croquet.components.Component<?> leadingComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> trailingComponent, boolean isSelected) {

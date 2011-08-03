@@ -59,13 +59,13 @@ public abstract class Formatter {
 	
 	
 	protected abstract String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy );
-	protected abstract String getTextForParameterDeclaredInJava( org.lgna.project.ast.ParameterDeclaredInJava parameterInJava );
+	protected abstract String getTextForParameterDeclaredInJava( org.lgna.project.ast.JavaParameter parameterInJava );
 	public String getNameForDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		if (declaration instanceof org.lgna.project.ast.MethodDeclaredInJava) {
-			org.lgna.project.ast.MethodDeclaredInJava methodInJava = (org.lgna.project.ast.MethodDeclaredInJava) declaration;
+		if (declaration instanceof org.lgna.project.ast.JavaMethod) {
+			org.lgna.project.ast.JavaMethod methodInJava = (org.lgna.project.ast.JavaMethod) declaration;
 			return this.getTextForMethodReflectionProxy( methodInJava.getMethodReflectionProxy() );
-		} else if( declaration instanceof org.lgna.project.ast.ParameterDeclaredInJava ) {
-			org.lgna.project.ast.ParameterDeclaredInJava parameterInJava = (org.lgna.project.ast.ParameterDeclaredInJava)declaration;
+		} else if( declaration instanceof org.lgna.project.ast.JavaParameter ) {
+			org.lgna.project.ast.JavaParameter parameterInJava = (org.lgna.project.ast.JavaParameter)declaration;
 			return this.getTextForParameterDeclaredInJava( parameterInJava );
 		} else if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
 			org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
@@ -88,8 +88,8 @@ public abstract class Formatter {
 			if( type.isArray() ) {
 				return this.getTextForType( type.getComponentType() ) + "[]";
 			} else {
-				if (type instanceof org.lgna.project.ast.TypeDeclaredInJava) {
-					org.lgna.project.ast.TypeDeclaredInJava typeInJava = (org.lgna.project.ast.TypeDeclaredInJava) type;
+				if (type instanceof org.lgna.project.ast.JavaType) {
+					org.lgna.project.ast.JavaType typeInJava = (org.lgna.project.ast.JavaType) type;
 					Class<?> cls = typeInJava.getClassReflectionProxy().getReification();
 					return this.getTextForCls( cls );
 				} else {

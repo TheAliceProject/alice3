@@ -45,8 +45,8 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantPane extends LocalPane< org.lgna.project.ast.ConstantDeclaredInAlice > {
-	public ConstantPane( org.lgna.project.ast.ConstantDeclaredInAlice constant ) {
+public class ConstantPane extends LocalPane< org.lgna.project.ast.UserConstant > {
+	public ConstantPane( org.lgna.project.ast.UserConstant constant ) {
 		super( constant );
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( org.lgna.project.ast.ConstantAccess.class ) );
 	}

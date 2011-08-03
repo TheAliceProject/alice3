@@ -49,8 +49,8 @@ public interface Frame {
 	public Frame getOwner();
 	public InstanceInAlice getThis();
 	public Object lookup( org.lgna.project.ast.AbstractParameter parameter );
-	public Object get( org.lgna.project.ast.LocalDeclaredInAlice local );
-	public void set( org.lgna.project.ast.LocalDeclaredInAlice local, Object value );
-	public void push( org.lgna.project.ast.LocalDeclaredInAlice local, Object value );
-	public void pop( org.lgna.project.ast.LocalDeclaredInAlice local );
+	public Object get( org.lgna.project.ast.UserLocal local );
+	public void set( org.lgna.project.ast.UserLocal local, Object value );
+	public void push( org.lgna.project.ast.UserLocal local, Object value );
+	public void pop( org.lgna.project.ast.UserLocal local );
 }

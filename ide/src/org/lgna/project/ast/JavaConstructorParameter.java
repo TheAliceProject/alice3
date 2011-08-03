@@ -43,61 +43,66 @@
 
 package org.lgna.project.ast;
 
+//todo: name
 /**
  * @author Dennis Cosgrove
  */
-public class AnonymousInnerTypeDeclaredInAlice extends AbstractTypeDeclaredInAlice<AnonymousConstructor> {
-	private java.util.ArrayList< AnonymousConstructor > constructors;
-	public AnonymousInnerTypeDeclaredInAlice() {
-	}
-	public AnonymousInnerTypeDeclaredInAlice( AbstractType<?,?,?> superType, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
-		super( superType, methods, fields );
-	}
-	public AnonymousInnerTypeDeclaredInAlice( Class< ? > superCls, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
-		this( TypeDeclaredInJava.get( superCls ), methods, fields );
-	}
-	@Override
-	public java.util.ArrayList< AnonymousConstructor > getDeclaredConstructors() {
-		if( this.constructors != null ) {
-			//pass
-		} else {
-			this.constructors = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-			this.constructors.add( AnonymousConstructor.get( this ) );
+public class JavaConstructorParameter extends JavaParameter {
+	private static String getParameterNameFor( ConstructorReflectionProxy constructorReflectionProxy, int index ) {
+		String rv = null;
+		try {
+			org.lgna.project.reflect.ClassInfo classInfo = org.lgna.project.reflect.ClassInfoManager.get( constructorReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
+			if( classInfo != null ) {
+				org.lgna.project.reflect.ConstructorInfo constructorInfo = classInfo.lookupInfo( constructorReflectionProxy.getReification() );
+				if( constructorInfo != null ) {
+					String[] parameterNames = constructorInfo.getParameterNames();
+					if( parameterNames != null ) {
+						rv = parameterNames[ index ];
+					}
+				}
+			}
+		} catch( Throwable t ) {
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ParameterDeclaredInJavaConstructor getParameterNameFor: ", constructorReflectionProxy, index );
 		}
-		return this.constructors;
+		return rv;
 	}
-	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
-	@Override
-	public AbstractPackage getPackage() {
-		//todo?
-		return null;
-	}
-	@Override
-	public Access getAccess() {
-		//todo?
-		return null;
-	}
-	
-	//An anonymous class is never abstract (8.1.1.1). An anonymous class is always an inner class (8.1.3); it is never static (8.1.1, 8.5.2). An anonymous class is always implicitly final (8.1.1.2).
-	@Override
-	public boolean isAbstract() {
-		return false;
-	}
-	@Override
-	public boolean isStatic() {
-		return false;
-	}
-	@Override
-	public boolean isFinal() {
-		return true;
-	}
-	@Override
-	public boolean isStrictFloatingPoint() {
-		//todo?
-		return false;
+	private JavaConstructor m_constructor;
+	private int m_index;
+	private String m_name;
+	private JavaType m_valueType;
+	/*package-private*/ JavaConstructorParameter( JavaConstructor constructor, int index, java.lang.annotation.Annotation[] annotations ) {
+		super( annotations );
+		m_constructor = constructor;
+		m_index = index;
+		ConstructorReflectionProxy constructorReflectionProxy = constructor.getConstructorReflectionProxy();
+		m_name = getParameterNameFor( constructorReflectionProxy, m_index );
+		m_valueType = JavaType.getInstance( constructorReflectionProxy.getParameterClassReflectionProxies()[ m_index ] );
+		assert m_valueType != null;
 	}
 	
+	public JavaConstructor getConstructor() {
+		return m_constructor;
+	}
+	public int getIndex() {
+		return m_index;
+	}
+	
+	@Override
+	public String getName() {
+		return m_name;
+	}
+	@Override
+	public AbstractType<?,?,?> getValueType() {
+		return m_valueType;
+	}
+
+	@Override
+	public boolean isEquivalentTo( Object other ) {
+		if( other instanceof JavaConstructorParameter ) {
+			JavaConstructorParameter otherPDIJC = (JavaConstructorParameter)other;
+			return m_constructor.equals( otherPDIJC.m_constructor ) && m_index == otherPDIJC.m_index && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_name, otherPDIJC.m_name ) && m_valueType.equals( otherPDIJC.m_valueType );
+		} else {
+			return false;
+		}
+	}
 }

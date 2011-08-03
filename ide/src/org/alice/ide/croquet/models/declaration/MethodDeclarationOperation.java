@@ -46,10 +46,10 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodDeclarationOperation extends DeclarationOperation< org.lgna.project.ast.MethodDeclaredInAlice > {
+public abstract class MethodDeclarationOperation extends DeclarationOperation< org.lgna.project.ast.UserMethod > {
 	public MethodDeclarationOperation(
 			java.util.UUID id, 
-			org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> initialDeclaringType,
+			org.lgna.project.ast.UserType<?> initialDeclaringType,
 			boolean isDeclaringTypeEditable,
 			org.lgna.project.ast.AbstractType<?,?,?> initialValueComponentType,
 			boolean isValueComponentTypeEditable,
@@ -69,16 +69,16 @@ public abstract class MethodDeclarationOperation extends DeclarationOperation< o
 	}
 	
 	@Override
-	public org.lgna.project.ast.MethodDeclaredInAlice createPreviewDeclaration() {
-		org.lgna.project.ast.MethodDeclaredInAlice rv = new org.lgna.project.ast.MethodDeclaredInAlice();
+	public org.lgna.project.ast.UserMethod createPreviewDeclaration() {
+		org.lgna.project.ast.UserMethod rv = new org.lgna.project.ast.UserMethod();
 		rv.name.setValue( this.getDeclarationName() );
 		rv.returnType.setValue( this.getValueType() );
 		return rv;
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, org.lgna.project.ast.Expression initializer ) {
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, org.lgna.project.ast.Expression initializer ) {
 		assert initializer == null;
-		org.lgna.project.ast.MethodDeclaredInAlice method = org.alice.ide.ast.NodeUtilities.createMethod( declarationName, valueType );
+		org.lgna.project.ast.UserMethod method = org.alice.ide.ast.NodeUtilities.createMethod( declarationName, valueType );
 		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( step, declaringType, method );
 	}
 }

@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.cascade.array;
  * @author Dennis Cosgrove
  */
 public class ConstantArrayLengthFillIn extends ArrayLengthFillIn {
-	private static java.util.Map< org.lgna.project.ast.ConstantDeclaredInAlice, ConstantArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ConstantArrayLengthFillIn getInstance( org.lgna.project.ast.ConstantDeclaredInAlice constant ) {
+	private static java.util.Map< org.lgna.project.ast.UserConstant, ConstantArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ConstantArrayLengthFillIn getInstance( org.lgna.project.ast.UserConstant constant ) {
 		assert constant != null;
 		ConstantArrayLengthFillIn rv = map.get( constant );
 		if( rv != null ) {
@@ -59,8 +59,8 @@ public class ConstantArrayLengthFillIn extends ArrayLengthFillIn {
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.ConstantDeclaredInAlice constant;
-	private ConstantArrayLengthFillIn( org.lgna.project.ast.ConstantDeclaredInAlice constant ) {
+	private final org.lgna.project.ast.UserConstant constant;
+	private ConstantArrayLengthFillIn( org.lgna.project.ast.UserConstant constant ) {
 		super( java.util.UUID.fromString( "b9ef605a-403e-4b18-b495-c4cf5782870a" ) );
 		this.constant = constant;
 	}

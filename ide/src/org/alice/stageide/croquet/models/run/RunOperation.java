@@ -154,7 +154,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 					vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
 					vm.registerAnonymousAdapter( org.lgna.story.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
 					vm.registerAnonymousAdapter( org.lgna.story.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
-					org.lgna.project.ast.TypeDeclaredInAlice programType = ide.getProgramType();
+					org.lgna.project.ast.NamedUserType programType = ide.getProgramType();
 					//String[] args = {};
 					org.lgna.project.virtualmachine.InstanceInAlice programInstance = vm.ENTRY_POINT_createInstance( programType );
 					org.lgna.story.Program program = programInstance.getInstanceInJava( org.lgna.story.Program.class );

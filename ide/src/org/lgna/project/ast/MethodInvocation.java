@@ -92,7 +92,7 @@ public class MethodInvocation extends Expression {
 				} else {
 					AbstractType<?,?,?> declaringType = m.getDeclaringType();
 					AbstractType<?,?,?> expressionType = e.getType();
-					if( expressionType instanceof AnonymousInnerTypeDeclaredInAlice ) {
+					if( expressionType instanceof AnonymousUserType ) {
 						//todo
 						rv = true;
 					} else {

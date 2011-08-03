@@ -49,7 +49,7 @@ import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.lgna.croquet.Model;
-import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.UserField;
 import org.lgna.story.Entity;
 import org.lgna.story.Scene;
 import org.lgna.story.Turnable;

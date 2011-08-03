@@ -50,14 +50,14 @@ public class EachInArrayTogether extends AbstractEachInTogether {
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
-			VariableDeclaredInAlice variable = EachInArrayTogether.this.variable.getValue();
+			UserVariable variable = EachInArrayTogether.this.variable.getValue();
 			AbstractType<?,?,?> type = variable.valueType.getValue();
 			return type.getArrayType();
 		}
 	};
 	public EachInArrayTogether() {
 	}
-	public EachInArrayTogether( VariableDeclaredInAlice variable, Expression array, BlockStatement body ) {
+	public EachInArrayTogether( UserVariable variable, Expression array, BlockStatement body ) {
 		super( variable, body );
 		this.array.setValue( array );
 	}

@@ -68,7 +68,7 @@ public abstract class SceneFieldDeclarationOperation extends org.alice.ide.croqu
 		);
 	}
 	@Override
-	public org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
 		return org.alice.ide.IDE.getActiveInstance().getSceneType();
 	}
 }

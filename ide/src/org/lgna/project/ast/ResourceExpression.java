@@ -55,7 +55,7 @@ public class ResourceExpression extends Expression {
 		this.resource.setValue( resource );
 	}
 	public <T extends org.alice.virtualmachine.Resource> ResourceExpression( Class<T> cls, T resource ) {
-		this( TypeDeclaredInJava.get( cls ), resource );
+		this( JavaType.getInstance( cls ), resource );
 	}
 	@Override
 	public AbstractType<?,?,?> getType() {

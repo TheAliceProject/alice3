@@ -181,11 +181,11 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			ParametersPane parametersPane = new ParametersPane( this.getIDE().getCodeFactory(), codeDeclaredInAlice );
 			AbstractCodeHeaderPane header;
 //			org.lgna.croquet.components.Component< ? > superInvocationPane = null;
-			if( code instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
-				org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice = (org.lgna.project.ast.MethodDeclaredInAlice)code;
+			if( code instanceof org.lgna.project.ast.UserMethod ) {
+				org.lgna.project.ast.UserMethod methodDeclaredInAlice = (org.lgna.project.ast.UserMethod)code;
 				header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane, false );
-			} else if( code instanceof org.lgna.project.ast.ConstructorDeclaredInAlice ) {
-				org.lgna.project.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice = (org.lgna.project.ast.ConstructorDeclaredInAlice)code;
+			} else if( code instanceof org.lgna.project.ast.NamedUserConstructor ) {
+				org.lgna.project.ast.NamedUserConstructor constructorDeclaredInAlice = (org.lgna.project.ast.NamedUserConstructor)code;
 				header = new ConstructorHeaderPane( constructorDeclaredInAlice, parametersPane, false );
 //				superInvocationPane = new org.lgna.croquet.components.Label( "super()" );
 			} else {
@@ -242,7 +242,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		return org.alice.ide.IDE.getActiveInstance();
 	}
 	public java.util.List< org.lgna.croquet.DropReceptor > addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > rv, final org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		if( type == org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE ) {
+		if( type == org.lgna.project.ast.JavaType.VOID_TYPE ) {
 			rv.add( this );
 		} else {
 			java.util.List< ExpressionPropertyDropDownPane > list = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
@@ -256,7 +256,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 							if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
 								return true;
 							} else {
-								for( org.lgna.project.ast.TypeDeclaredInJava integerType : org.lgna.project.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
+								for( org.lgna.project.ast.JavaType integerType : org.lgna.project.ast.JavaType.INTEGER_TYPES ) {
 									if( expressionType == integerType ) {
 										return true;
 									}

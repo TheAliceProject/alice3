@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class ConstantArrayAccessCascade extends ArrayAccessCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.ConstantDeclaredInAlice, org.lgna.project.ast.ExpressionProperty, ConstantArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ConstantArrayAccessCascade getInstance( org.lgna.project.ast.ConstantDeclaredInAlice constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserConstant, org.lgna.project.ast.ExpressionProperty, ConstantArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ConstantArrayAccessCascade getInstance( org.lgna.project.ast.UserConstant constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert constant != null;
 		assert expressionProperty != null;
 		ConstantArrayAccessCascade rv = map.get( constant, expressionProperty );
@@ -60,8 +60,8 @@ public class ConstantArrayAccessCascade extends ArrayAccessCascade {
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.ConstantDeclaredInAlice constant;
-	private ConstantArrayAccessCascade( org.lgna.project.ast.ConstantDeclaredInAlice constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	private final org.lgna.project.ast.UserConstant constant;
+	private ConstantArrayAccessCascade( org.lgna.project.ast.UserConstant constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "bad422f3-67ca-4ecf-871e-07eae04a2881" ), expressionProperty );
 		this.constant = constant;
 	}

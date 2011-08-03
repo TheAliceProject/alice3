@@ -163,10 +163,10 @@ public abstract class ProjectUtilities {
 		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( zipFile.getInputStream( entry ) );
 	}
 
-	private static org.lgna.project.ast.TypeDeclaredInAlice readType( java.util.zip.ZipFile zipFile, String entryName ) throws java.io.IOException {
+	private static org.lgna.project.ast.NamedUserType readType( java.util.zip.ZipFile zipFile, String entryName ) throws java.io.IOException {
 		String version = readVersion( zipFile );
 		org.w3c.dom.Document xmlDocument = readXML( zipFile, entryName );
-		return (org.lgna.project.ast.TypeDeclaredInAlice)org.lgna.project.ast.AbstractNode.decode( xmlDocument, version );
+		return (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, version );
 	}
 	private static java.util.Set< org.alice.virtualmachine.Resource > readResources( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
 		java.util.Set< org.alice.virtualmachine.Resource > rv = new java.util.HashSet< org.alice.virtualmachine.Resource >();
@@ -201,7 +201,7 @@ public abstract class ProjectUtilities {
 
 	public static org.lgna.project.Project readProject( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
 		assert zipFile != null;
-		org.lgna.project.ast.TypeDeclaredInAlice type = readType( zipFile, PROGRAM_TYPE_ENTRY_NAME );
+		org.lgna.project.ast.NamedUserType type = readType( zipFile, PROGRAM_TYPE_ENTRY_NAME );
 		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipFile );
 		org.lgna.project.Project rv = new org.lgna.project.Project( type, resources );
 		readProperties( rv, zipFile );
@@ -421,7 +421,7 @@ public abstract class ProjectUtilities {
 	
 	public static <N extends org.lgna.project.ast.Node > N lookupNode( org.lgna.project.Project project, final java.util.UUID id ) {
 		final org.lgna.project.ast.Node[] buffer = { null };
-		org.lgna.project.ast.TypeDeclaredInAlice programType = project.getProgramType();
+		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 		edu.cmu.cs.dennisc.pattern.Crawler crawler = new edu.cmu.cs.dennisc.pattern.Crawler() {
 			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 				if( crawlable instanceof org.lgna.project.ast.Node ) {
@@ -444,8 +444,8 @@ public abstract class ProjectUtilities {
 		return null;
 	}
 
-	public static java.util.List< org.lgna.project.ast.TypeDeclaredInAlice > getTypes( org.lgna.project.Project project ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.TypeDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.TypeDeclaredInAlice >( org.lgna.project.ast.TypeDeclaredInAlice.class );
+	public static java.util.List< org.lgna.project.ast.NamedUserType > getTypes( org.lgna.project.Project project ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.NamedUserType > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.NamedUserType >( org.lgna.project.ast.NamedUserType.class );
 		final org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
 		programType.crawl( crawler, true );
 		return crawler.getList();

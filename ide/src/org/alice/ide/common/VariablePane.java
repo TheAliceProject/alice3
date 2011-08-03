@@ -45,8 +45,8 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends LocalPane<org.lgna.project.ast.VariableDeclaredInAlice> {
-	public VariablePane( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
+public class VariablePane extends LocalPane<org.lgna.project.ast.UserVariable> {
+	public VariablePane( org.lgna.project.ast.UserVariable variable ) {
 		super( variable );
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( org.lgna.project.ast.VariableAccess.class ) );
 	}

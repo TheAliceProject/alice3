@@ -62,18 +62,18 @@ public class InstanceInAlice {
 		}
 		return rv;
 	}
-	public static InstanceInAlice createInstance( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments ) {
-		return new InstanceInAlice( vm, constructor, arguments, new java.util.HashMap< FieldDeclaredInAlice, Object >(), null );
+	public static InstanceInAlice createInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments ) {
+		return new InstanceInAlice( vm, constructor, arguments, new java.util.HashMap< UserField, Object >(), null );
 	}
-	public static InstanceInAlice createInstanceWithInverseMap( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments ) {
-		return new InstanceInAlice( vm, constructor, arguments, new java.util.HashMap< FieldDeclaredInAlice, Object >(), new java.util.HashMap< Object, FieldDeclaredInAlice >() );
+	public static InstanceInAlice createInstanceWithInverseMap( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments ) {
+		return new InstanceInAlice( vm, constructor, arguments, new java.util.HashMap< UserField, Object >(), new java.util.HashMap< Object, UserField >() );
 	}
 	
 	private final Object nextInstance;
-	private final AbstractTypeDeclaredInAlice<?> type;
-	private final java.util.Map< FieldDeclaredInAlice, Object > fieldMap;
-	private final java.util.Map< Object, FieldDeclaredInAlice > inverseFieldMap;
-	private InstanceInAlice( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments, java.util.Map< FieldDeclaredInAlice, Object > fieldMap, java.util.Map< Object, FieldDeclaredInAlice > inverseFieldMap ) {
+	private final UserType<?> type;
+	private final java.util.Map< UserField, Object > fieldMap;
+	private final java.util.Map< Object, UserField > inverseFieldMap;
+	private InstanceInAlice( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments, java.util.Map< UserField, Object > fieldMap, java.util.Map< Object, UserField > inverseFieldMap ) {
 		this.type = constructor.getDeclaringType();
 		this.fieldMap = fieldMap;
 		this.inverseFieldMap = inverseFieldMap;
@@ -85,14 +85,14 @@ public class InstanceInAlice {
 		for( int i=0; i<arguments.length; i++ ) {
 			stackMap.put( constructor.parameters.get( i ), arguments[ i ] );
 		}
-		org.lgna.project.ast.TypeDeclaredInAlice type = (org.lgna.project.ast.TypeDeclaredInAlice)constructor.getDeclaringType();
+		org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)constructor.getDeclaringType();
 		vm.pushConstructorFrame( type, stackMap );
 		try {
 			Object[] nextArguments = vm.evaluateArguments( nextConstructor.getParameters(), constructorInvocationStatement.arguments );
 			if( nextConstructor.isDeclaredInAlice() ) {
-				this.nextInstance = new InstanceInAlice( vm, (ConstructorDeclaredInAlice)nextConstructor, nextArguments, fieldMap, inverseFieldMap );
+				this.nextInstance = new InstanceInAlice( vm, (NamedUserConstructor)nextConstructor, nextArguments, fieldMap, inverseFieldMap );
 			} else {
-				ConstructorDeclaredInJava nextConstructorDeclaredInJava = (ConstructorDeclaredInJava)nextConstructor;
+				JavaConstructor nextConstructorDeclaredInJava = (JavaConstructor)nextConstructor;
 				ConstructorReflectionProxy constructorReflectionProxy =  nextConstructorDeclaredInJava.getConstructorReflectionProxy();
 				java.lang.reflect.Constructor<?> cnstrctr = constructorReflectionProxy.getReification();
 				assert cnstrctr != null : constructorReflectionProxy.getDeclaringClassReflectionProxy().getName();
@@ -100,8 +100,8 @@ public class InstanceInAlice {
 			}
 			vm.setConstructorFrameInstanceInAlice( this );
 			for( AbstractField field : this.type.getDeclaredFields() ) {
-				assert field instanceof FieldDeclaredInAlice;
-				FieldDeclaredInAlice fieldDeclaredInAlice = (FieldDeclaredInAlice)field;
+				assert field instanceof UserField;
+				UserField fieldDeclaredInAlice = (UserField)field;
 				this.createAndSetFieldInstance( vm, fieldDeclaredInAlice );
 			}
 			try {
@@ -114,13 +114,13 @@ public class InstanceInAlice {
 		}
 	}
 
-	public Object createAndSetFieldInstance( VirtualMachine vm, FieldDeclaredInAlice field ) {
+	public Object createAndSetFieldInstance( VirtualMachine vm, UserField field ) {
 		Object rv = vm.evaluate( field.initializer.getValue() );
 		this.setFieldValue( field, rv );
 		//System.err.println( field + " " + rv );
 		return rv;
 	}
-	public AbstractTypeDeclaredInAlice<?> getType() {
+	public UserType<?> getType() {
 		return this.type;
 	}
 	public Object getInstanceInJava() {
@@ -130,23 +130,23 @@ public class InstanceInAlice {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getInstanceInJava(), cls );
 	}
 	
-	public Object getFieldValue( FieldDeclaredInAlice field ) {
+	public Object getFieldValue( UserField field ) {
 		return this.fieldMap.get( field );
 	}
-	public Object getFieldValueInstanceInJava( FieldDeclaredInAlice field ) {
+	public Object getFieldValueInstanceInJava( UserField field ) {
 		return getInstanceInJavaIfNecessary( this.getFieldValue( field ) );
 	}
-	public <E> E getFieldValueInstanceInJava( FieldDeclaredInAlice field, Class<E> cls ) {
+	public <E> E getFieldValueInstanceInJava( UserField field, Class<E> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getFieldValueInstanceInJava( field ), cls );
 	}
-	public void setFieldValue( FieldDeclaredInAlice field, Object value ) {
+	public void setFieldValue( UserField field, Object value ) {
 		this.fieldMap.put( field, value );
 		if( this.inverseFieldMap != null ) {
 			this.inverseFieldMap.put( getInstanceInJavaIfNecessary( value ), field );
 		}
 	}
 	
-	public FieldDeclaredInAlice ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( Object key ) {
+	public UserField ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( Object key ) {
 		assert this.inverseFieldMap != null;
 		return this.inverseFieldMap.get( key );
 	}

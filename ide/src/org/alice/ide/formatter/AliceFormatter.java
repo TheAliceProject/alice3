@@ -115,7 +115,7 @@ public class AliceFormatter extends Formatter {
 	}
 
 	@Override
-	protected String getTextForParameterDeclaredInJava( org.lgna.project.ast.ParameterDeclaredInJava parameterInJava ) {
+	protected String getTextForParameterDeclaredInJava( org.lgna.project.ast.JavaParameter parameterInJava ) {
 		return this.getLocalizedText( parameterInJava.getName() );
 	}
 	@Override

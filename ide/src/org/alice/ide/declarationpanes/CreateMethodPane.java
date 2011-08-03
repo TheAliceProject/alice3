@@ -45,9 +45,9 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTypePane< org.lgna.project.ast.MethodDeclaredInAlice > {
-	private org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
-	public CreateMethodPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTypePane< org.lgna.project.ast.UserMethod > {
+	private org.lgna.project.ast.UserType< ? > declaringType;
+	public CreateMethodPane( org.lgna.project.ast.UserType< ? > declaringType ) {
 		super( new org.alice.ide.name.validators.MethodNameValidator( declaringType ) );
 		this.declaringType = declaringType;
 	}
@@ -70,7 +70,7 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 	}
 	
 	@Override
-	public org.lgna.project.ast.MethodDeclaredInAlice getInputValue() {
-		return new org.lgna.project.ast.MethodDeclaredInAlice( this.getDeclarationName(), this.getValueType(), new org.lgna.project.ast.ParameterDeclaredInAlice[] {}, new org.lgna.project.ast.BlockStatement() );
+	public org.lgna.project.ast.UserMethod getInputValue() {
+		return new org.lgna.project.ast.UserMethod( this.getDeclarationName(), this.getValueType(), new org.lgna.project.ast.UserParameter[] {}, new org.lgna.project.ast.BlockStatement() );
 	}
 }

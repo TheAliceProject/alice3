@@ -50,7 +50,7 @@ public class InstanceCreation extends Expression {
 	public DeclarationProperty< AbstractConstructor > constructor = new DeclarationProperty< AbstractConstructor >( this ) {
 		@Override
 		public boolean isReference() {
-			return ( this.getValue() instanceof AnonymousConstructor ) == false; 
+			return ( this.getValue() instanceof AnonymousUserConstructor ) == false; 
 		}
 	};
 	public ArgumentListProperty arguments = new ArgumentListProperty( this );

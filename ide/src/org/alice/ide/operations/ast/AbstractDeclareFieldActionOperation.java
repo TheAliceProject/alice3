@@ -46,19 +46,19 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDeclareFieldActionOperation extends org.alice.ide.operations.ActionOperation {
-	protected abstract org.lgna.project.ast.TypeDeclaredInAlice getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, org.lgna.project.ast.TypeDeclaredInAlice ownerType );
+	protected abstract org.lgna.project.ast.NamedUserType getOwnerType();
+	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, ? extends Object> createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, org.lgna.project.ast.NamedUserType ownerType );
 	protected abstract boolean isInstanceValid();
 	public AbstractDeclareFieldActionOperation( java.util.UUID individualId ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 	}
 	@Override
 	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		org.lgna.project.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
+		org.lgna.project.ast.NamedUserType ownerType = this.getOwnerType();
 		if( ownerType != null ) {
-			final edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.FieldDeclaredInAlice, ? extends Object> tuple = this.createFieldAndInstance( step, ownerType );
+			final edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, ? extends Object> tuple = this.createFieldAndInstance( step, ownerType );
 			if( tuple != null ) {
-				org.lgna.project.ast.FieldDeclaredInAlice field = tuple.getA();
+				org.lgna.project.ast.UserField field = tuple.getA();
 				if( field != null ) {
 					org.lgna.project.ast.Statement[] doStatements = {}; //TODO: make this something for real
 					org.lgna.project.ast.Statement[] undoStatements = {}; //TODO: make this something for real

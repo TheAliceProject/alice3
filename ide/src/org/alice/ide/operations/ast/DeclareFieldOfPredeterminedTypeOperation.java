@@ -46,10 +46,10 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGalleryDeclareFieldOperation {
-	private final org.lgna.project.ast.TypeDeclaredInAlice valueType;
+	private final org.lgna.project.ast.NamedUserType valueType;
 	private org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane;
 	
-	public DeclareFieldOfPredeterminedTypeOperation( org.lgna.project.ast.TypeDeclaredInAlice declaringType, org.lgna.project.ast.TypeDeclaredInAlice valueType ) {
+	public DeclareFieldOfPredeterminedTypeOperation( org.lgna.project.ast.NamedUserType declaringType, org.lgna.project.ast.NamedUserType valueType ) {
 		super( java.util.UUID.fromString( "f3aeb501-8138-47dc-a839-83961ee1f26d" ), declaringType );
 		this.valueType = valueType;
 		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( this.valueType ) );
@@ -57,12 +57,12 @@ public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGallery
 		
 	}
 	@Override
-	protected org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+	protected org.lgna.project.ast.UserType< ? > getDeclaringType() {
 		return this.createFieldPane.getDeclaringType();
 	}
 	@Override
 	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue(org.lgna.croquet.history.InputDialogOperationStep context) {
-		org.lgna.project.ast.TypeDeclaredInJava typeInJava = this.valueType.getFirstTypeEncounteredDeclaredInJava();
+		org.lgna.project.ast.JavaType typeInJava = this.valueType.getFirstTypeEncounteredDeclaredInJava();
 		this.createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane( this.getDeclaringType(), typeInJava.getClassReflectionProxy().getReification() );
 		return this.createFieldPane;
 	}

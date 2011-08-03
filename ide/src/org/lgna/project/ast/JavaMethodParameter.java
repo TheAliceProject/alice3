@@ -43,56 +43,72 @@
 
 package org.lgna.project.ast;
 
+//todo: name
 /**
  * @author Dennis Cosgrove
  */
-public class AnonymousConstructor extends AbstractConstructor {
-	private static java.util.Map< AnonymousInnerTypeDeclaredInAlice, AnonymousConstructor > s_map;
-	private AnonymousInnerTypeDeclaredInAlice type;
-	public static AnonymousConstructor get( AnonymousInnerTypeDeclaredInAlice type ) {
-		if( type != null ) {
-			if( s_map != null ) {
-				//pass
-			} else {
-				s_map = new java.util.HashMap< AnonymousInnerTypeDeclaredInAlice, AnonymousConstructor >();
+public class JavaMethodParameter extends JavaParameter {
+	private static String getParameterNameFor( MethodReflectionProxy methodReflectionProxy, int index ) {
+		String rv = null;
+		try {
+			org.lgna.project.reflect.ClassInfo classInfo = org.lgna.project.reflect.ClassInfoManager.get( methodReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
+			if( classInfo != null ) {
+				org.lgna.project.reflect.MethodInfo methodInfo = classInfo.lookupInfo( methodReflectionProxy.getReification() );
+				if( methodInfo != null ) {
+					String[] parameterNames = methodInfo.getParameterNames();
+					if( parameterNames != null ) {
+						rv = parameterNames[ index ];
+					}
+				}
 			}
-			AnonymousConstructor rv = s_map.get( type );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new AnonymousConstructor( type );
-			}
-			return rv;
-		} else {
-			return null;
+		} catch( Throwable t ) {
+			//t.printStackTrace();
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "ParameterDeclaredInJavaMethod getParameterNameFor: ", methodReflectionProxy, index );
 		}
+		return rv;
 	}
-	private java.util.ArrayList< AbstractParameter > parameters = new java.util.ArrayList< AbstractParameter >();
-	private AnonymousConstructor( AnonymousInnerTypeDeclaredInAlice type ) {
-		this.type = type;
+
+	private JavaMethod m_method;
+	private int m_index;
+	private String m_name;
+	private JavaType m_valueType;
+	/*package-private*/ JavaMethodParameter( JavaMethod method, int index, java.lang.annotation.Annotation[] annotations ) {
+		super( annotations );
+		m_method = method;
+		m_index = index;
+		MethodReflectionProxy methodReflectionProxy = m_method.getMethodReflectionProxy();
+		m_name = getParameterNameFor( methodReflectionProxy, m_index );
+		m_valueType = JavaType.getInstance( methodReflectionProxy.getParameterClassReflectionProxies()[ m_index ] );
+	}
+	
+	public JavaMethod getMethod() {
+		return m_method;
+	}
+	public int getIndex() {
+		return m_index;
+	}
+	
+	@Override
+	public String getName() {
+		return m_name;
 	}
 	@Override
-	public org.lgna.project.ast.Access getAccess() {
-		return null;
+	public AbstractType<?,?,?> getValueType() {
+		return m_valueType;
 	}
+
 	@Override
-	public AnonymousInnerTypeDeclaredInAlice getDeclaringType() {
-		return this.type;
+	public boolean isVariableLength() {
+		return false;
 	}
+	
 	@Override
-	public org.lgna.project.ast.AbstractMember getNextLongerInChain() {
-		return null;
-	}
-	@Override
-	public org.lgna.project.ast.AbstractMember getNextShorterInChain() {
-		return null;
-	}
-	@Override
-	public java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > getParameters() {
-		return this.parameters;
-	}
-	@Override
-	public org.lgna.project.annotations.Visibility getVisibility() {
-		return null;
+	public boolean isEquivalentTo( Object other ) {
+		if( other instanceof JavaMethodParameter ) {
+			JavaMethodParameter otherPDIJM = (JavaMethodParameter)other;
+			return m_method.equals( otherPDIJM.m_method ) && m_index == otherPDIJM.m_index && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_name, otherPDIJM.m_name ) && m_valueType.equals( otherPDIJM.m_valueType );
+		} else {
+			return false;
+		}
 	}
 }

@@ -51,7 +51,7 @@ public class PreviousValueExpression extends org.lgna.project.ast.Expression {
 		this.type = type;
 	}
 	public PreviousValueExpression( Class<?> cls ) {
-		this( org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
+		this( org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
 	@Override
 	public org.lgna.project.ast.AbstractType<?,?,?> getType() {

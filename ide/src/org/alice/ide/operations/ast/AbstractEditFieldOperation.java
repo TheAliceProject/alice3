@@ -42,30 +42,30 @@
  */
 package org.alice.ide.operations.ast;
 
-import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.UserField;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.lgna.project.ast.FieldDeclaredInAlice> {
-	private FieldDeclaredInAlice field;
+public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.lgna.project.ast.UserField> {
+	private UserField field;
 
 	private org.lgna.project.ast.FieldModifierFinalVolatileOrNeither prevFinalVolatileOrNeither;
 	private org.lgna.project.ast.AbstractType<?,?,?> prevValueType;
 	private String prevName;
 	private org.lgna.project.ast.Expression prevInitializer;
 	
-	public AbstractEditFieldOperation( org.lgna.croquet.Group group, java.util.UUID individualId, String name, FieldDeclaredInAlice field ) {
+	public AbstractEditFieldOperation( org.lgna.croquet.Group group, java.util.UUID individualId, String name, UserField field ) {
 		super( group, individualId );
 		this.setName( name );
 		this.field = field;
 		
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: AbstractEditFieldOperation" );
 	}
-	protected FieldDeclaredInAlice getField() {
+	protected UserField getField() {
 		return this.field;
 	}
-	protected org.alice.ide.declarationpanes.EditFieldPane prologue( org.lgna.croquet.history.InputDialogOperationStep step, java.util.Set< FieldDeclaredInAlice > referencedFields, java.util.Set< FieldDeclaredInAlice > reassignedFields ) {
+	protected org.alice.ide.declarationpanes.EditFieldPane prologue( org.lgna.croquet.history.InputDialogOperationStep step, java.util.Set< UserField > referencedFields, java.util.Set< UserField > reassignedFields ) {
 		if( this.field != null ) {
 			this.prevFinalVolatileOrNeither = field.finalVolatileOrNeither.getValue();
 			this.prevValueType = field.valueType.getValue();
@@ -80,7 +80,7 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.m
 	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk ) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.EditFieldPane editFieldPane = step.getMainPanel();
-			FieldDeclaredInAlice tempField = editFieldPane.getInputValue();
+			UserField tempField = editFieldPane.getInputValue();
 			if( tempField != null ) {
 				final org.lgna.project.ast.FieldModifierFinalVolatileOrNeither nextFinalVolatileOrNeither = tempField.finalVolatileOrNeither.getValue();
 				final org.lgna.project.ast.AbstractType<?,?,?> nextValueType = tempField.valueType.getValue();

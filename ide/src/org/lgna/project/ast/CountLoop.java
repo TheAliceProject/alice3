@@ -47,13 +47,13 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class CountLoop extends AbstractLoop {
-	public DeclarationProperty< VariableDeclaredInAlice > variable = new DeclarationProperty< VariableDeclaredInAlice >( this ) {
+	public DeclarationProperty< UserVariable > variable = new DeclarationProperty< UserVariable >( this ) {
 		@Override
 		public boolean isReference() {
 			return false;
 		}
 	};
-	public DeclarationProperty< ConstantDeclaredInAlice > constant = new DeclarationProperty< ConstantDeclaredInAlice >( this ) {
+	public DeclarationProperty< UserConstant > constant = new DeclarationProperty< UserConstant >( this ) {
 		@Override
 		public boolean isReference() {
 			return false;
@@ -62,12 +62,12 @@ public class CountLoop extends AbstractLoop {
 	public ExpressionProperty count = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
-			return TypeDeclaredInJava.get( Integer.class );
+			return JavaType.getInstance( Integer.class );
 		}
 	};
 	public CountLoop() {
 	}
-	public CountLoop( VariableDeclaredInAlice variable, ConstantDeclaredInAlice constant, Expression count, BlockStatement body ) {
+	public CountLoop( UserVariable variable, UserConstant constant, Expression count, BlockStatement body ) {
 		super( body );
 		this.variable.setValue( variable );
 		this.constant.setValue( constant );
@@ -77,10 +77,10 @@ public class CountLoop extends AbstractLoop {
 	protected void postDecode() {
 		super.postDecode();
 		if( this.variable.getValue() == null ) {
-			this.variable.setValue( new VariableDeclaredInAlice( null, Integer.class ) );
+			this.variable.setValue( new UserVariable( null, Integer.class ) );
 		}
 		if( this.constant.getValue() == null ) {
-			this.constant.setValue( new ConstantDeclaredInAlice( null, Integer.class ) );
+			this.constant.setValue( new UserConstant( null, Integer.class ) );
 		}
 	}
 	@Override

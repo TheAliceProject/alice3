@@ -43,13 +43,13 @@
 package org.alice.ide.operations.ast;
 
 import org.lgna.project.ast.NodeListProperty;
-import org.lgna.project.ast.ParameterDeclaredInAlice;
+import org.lgna.project.ast.UserParameter;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ForwardShiftParameterOperation extends ShiftParameterOperation {
-	public ForwardShiftParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
+	public ForwardShiftParameterOperation( NodeListProperty< UserParameter > parametersProperty, UserParameter parameter ) {
 		super( java.util.UUID.fromString( "75777bff-85f1-4816-b860-cebf04cc95ee" ), parametersProperty, parameter );
 		this.setName( "Shift Forward" );
 	}

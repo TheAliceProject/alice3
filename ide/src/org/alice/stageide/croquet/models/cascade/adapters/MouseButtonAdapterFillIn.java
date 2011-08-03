@@ -59,16 +59,16 @@ public class MouseButtonAdapterFillIn extends org.alice.ide.croquet.models.casca
 		this.transientValue = this.createValue();
 	}
 	private org.lgna.project.ast.InstanceCreation createValue() { 
-		org.lgna.project.ast.ParameterDeclaredInAlice[] parameters = new org.lgna.project.ast.ParameterDeclaredInAlice[] { 
-				new org.lgna.project.ast.ParameterDeclaredInAlice( "e", org.lgna.story.event.MouseButtonEvent.class ) 
+		org.lgna.project.ast.UserParameter[] parameters = new org.lgna.project.ast.UserParameter[] { 
+				new org.lgna.project.ast.UserParameter( "e", org.lgna.story.event.MouseButtonEvent.class ) 
 		};
 		org.lgna.project.ast.BlockStatement body = new org.lgna.project.ast.BlockStatement();
-		org.lgna.project.ast.MethodDeclaredInAlice method = new org.lgna.project.ast.MethodDeclaredInAlice( "mouseButtonClicked", Void.TYPE, parameters, body );
+		org.lgna.project.ast.UserMethod method = new org.lgna.project.ast.UserMethod( "mouseButtonClicked", Void.TYPE, parameters, body );
 		method.isSignatureLocked.setValue( true );
-		org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice type = new org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice();
-		type.superType.setValue( org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.event.MouseButtonListener.class ) );
+		org.lgna.project.ast.AnonymousUserType type = new org.lgna.project.ast.AnonymousUserType();
+		type.superType.setValue( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.MouseButtonListener.class ) );
 		type.methods.add( method );
-		org.lgna.project.ast.AnonymousConstructor constructor = org.lgna.project.ast.AnonymousConstructor.get( type );
+		org.lgna.project.ast.AnonymousUserConstructor constructor = org.lgna.project.ast.AnonymousUserConstructor.get( type );
 		return new org.lgna.project.ast.InstanceCreation( constructor );
 	}
 	@Override

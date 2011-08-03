@@ -43,7 +43,7 @@
 package org.alice.ide.common;
 
 class MethodPane extends org.lgna.croquet.components.BorderPanel {
-	public MethodPane( Factory factory, org.lgna.project.ast.MethodDeclaredInAlice method ) {
+	public MethodPane( Factory factory, org.lgna.project.ast.UserMethod method ) {
 		org.alice.ide.codeeditor.ParametersPane parametersPane = new org.alice.ide.codeeditor.ParametersPane( factory, method );
 		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane, false ), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ), Constraint.LINE_START );
@@ -68,8 +68,8 @@ class MethodPane extends org.lgna.croquet.components.BorderPanel {
  * @author Dennis Cosgrove
  */
 public class AnonymousConstructorPane extends ExpressionLikeSubstance {
-	private org.lgna.project.ast.AnonymousConstructor anonymousConstructor;
-	public AnonymousConstructorPane( Factory factory, org.lgna.project.ast.AnonymousConstructor anonymousConstructor ) {
+	private org.lgna.project.ast.AnonymousUserConstructor anonymousConstructor;
+	public AnonymousConstructorPane( Factory factory, org.lgna.project.ast.AnonymousUserConstructor anonymousConstructor ) {
 		this.anonymousConstructor = anonymousConstructor;
 		if( getIDE().isJava() ) {
 			org.lgna.croquet.components.LineAxisPanel header = new org.lgna.croquet.components.LineAxisPanel( 
@@ -81,8 +81,8 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 			this.addComponent( header );
 		}
 		
-		org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice type = this.anonymousConstructor.getDeclaringType();
-		for( org.lgna.project.ast.MethodDeclaredInAlice method : type.getDeclaredMethods() ) {
+		org.lgna.project.ast.AnonymousUserType type = this.anonymousConstructor.getDeclaringType();
+		for( org.lgna.project.ast.UserMethod method : type.getDeclaredMethods() ) {
 			org.lgna.croquet.components.GridPanel pane = org.lgna.croquet.components.GridPanel.createGridPane( 1, 1 );
 			int inset = 4;
 			int left = 4;

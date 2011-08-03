@@ -46,32 +46,32 @@ package org.alice.ide.croquet.edits.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.alice.ide.croquet.models.declaration.MethodDeclarationOperation> {
-	private org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType;
-	private org.lgna.project.ast.MethodDeclaredInAlice method;
+	private org.lgna.project.ast.UserType<?> declaringType;
+	private org.lgna.project.ast.UserMethod method;
 	
 	private transient org.lgna.project.ast.AbstractCode prevFocusedCode;
 
-	public DeclareMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType, org.lgna.project.ast.MethodDeclaredInAlice method ) {
+	public DeclareMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserMethod method ) {
 		super( completionStep );
 		this.declaringType = declaringType;
 		this.method = method;
 	}
 	public DeclareMethodEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractTypeDeclaredInAlice.class ).decodeValue( binaryDecoder );
-		this.method = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.MethodDeclaredInAlice.class ).decodeValue( binaryDecoder );
+		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).decodeValue( binaryDecoder );
+		this.method = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMethod.class ).decodeValue( binaryDecoder );
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractTypeDeclaredInAlice.class ).encodeValue( binaryEncoder, this.declaringType );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.MethodDeclaredInAlice.class ).encodeValue( binaryEncoder, this.method );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).encodeValue( binaryEncoder, this.declaringType );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMethod.class ).encodeValue( binaryEncoder, this.method );
 	}
 	
-	public org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
 		return this.declaringType;
 	}
-	public org.lgna.project.ast.MethodDeclaredInAlice getMethod() {
+	public org.lgna.project.ast.UserMethod getMethod() {
 		return this.method;
 	}
 

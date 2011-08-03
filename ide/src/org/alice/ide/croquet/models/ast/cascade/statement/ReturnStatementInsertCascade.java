@@ -49,8 +49,8 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 public class ReturnStatementInsertCascade extends StatementInsertCascade {
 	private static org.lgna.project.ast.AbstractType<?,?,?> getReturnType( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		org.lgna.project.ast.AbstractCode code = blockStatementIndexPair.getBlockStatement().getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
-		if( code instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
-			org.lgna.project.ast.MethodDeclaredInAlice method = (org.lgna.project.ast.MethodDeclaredInAlice)code;
+		if( code instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
 			if( method.isFunction() ) {
 				return method.returnType.getValue();
 			}

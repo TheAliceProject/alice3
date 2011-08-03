@@ -50,7 +50,7 @@ public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
 		super( type );
 	}
 	public AbstractNumberFillerInner( Class<?> cls ) {
-		this( org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
+		this( org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {

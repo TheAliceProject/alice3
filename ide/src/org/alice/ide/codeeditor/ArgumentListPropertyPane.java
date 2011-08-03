@@ -53,11 +53,11 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 	protected boolean isNameDesired( org.lgna.project.ast.AbstractParameter parameter ) {
 		boolean rv;
 		if( parameter.getName() != null ) {
-			if( parameter instanceof org.lgna.project.ast.ParameterDeclaredInJavaMethod ) {
-				org.lgna.project.ast.ParameterDeclaredInJavaMethod parameterDeclaredInJavaMethod = (org.lgna.project.ast.ParameterDeclaredInJavaMethod)parameter;
-				org.lgna.project.ast.MethodDeclaredInJava methodDeclaredInJava = parameterDeclaredInJavaMethod.getMethod();
+			if( parameter instanceof org.lgna.project.ast.JavaMethodParameter ) {
+				org.lgna.project.ast.JavaMethodParameter parameterDeclaredInJavaMethod = (org.lgna.project.ast.JavaMethodParameter)parameter;
+				org.lgna.project.ast.JavaMethod methodDeclaredInJava = parameterDeclaredInJavaMethod.getMethod();
 				rv = methodDeclaredInJava.isParameterInShortestChainedMethod( parameterDeclaredInJavaMethod ) == false;
-			} else if( parameter instanceof org.lgna.project.ast.ParameterDeclaredInJavaConstructor ) {
+			} else if( parameter instanceof org.lgna.project.ast.JavaConstructorParameter ) {
 				//todo
 
 //				edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaConstructor)parameter;

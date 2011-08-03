@@ -57,8 +57,8 @@ public class MyTypesMenuModel extends org.lgna.croquet.CascadeMenuModel< org.lgn
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
-		java.util.List< org.lgna.project.ast.TypeDeclaredInAlice > aliceTypes = org.alice.ide.IDE.getActiveInstance().getTypesDeclaredInAlice();
-		for( org.lgna.project.ast.TypeDeclaredInAlice aliceType : aliceTypes ) {
+		java.util.List< org.lgna.project.ast.NamedUserType > aliceTypes = org.alice.ide.IDE.getActiveInstance().getTypesDeclaredInAlice();
+		for( org.lgna.project.ast.NamedUserType aliceType : aliceTypes ) {
 			rv.add( TypeFillIn.getInstance( aliceType ) );
 		}
 		return rv;

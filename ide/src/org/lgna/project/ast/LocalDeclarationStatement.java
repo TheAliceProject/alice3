@@ -59,5 +59,5 @@ public abstract class LocalDeclarationStatement extends Statement {
 		this.initializer.setValue( initializer );
 	}
 //	protected abstract AbstractType getLocalType();
-	public abstract LocalDeclaredInAlice getLocal();
+	public abstract UserLocal getLocal();
 }

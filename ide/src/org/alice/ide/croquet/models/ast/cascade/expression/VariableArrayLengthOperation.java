@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class VariableArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.VariableDeclaredInAlice, org.lgna.project.ast.ExpressionProperty, VariableArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized VariableArrayLengthOperation getInstance( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserVariable, org.lgna.project.ast.ExpressionProperty, VariableArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized VariableArrayLengthOperation getInstance( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert variable != null;
 		assert expressionProperty != null;
 		VariableArrayLengthOperation rv = map.get( variable, expressionProperty );
@@ -60,8 +60,8 @@ public class VariableArrayLengthOperation extends ArrayLengthOperation {
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.VariableDeclaredInAlice variable;
-	private VariableArrayLengthOperation( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	private final org.lgna.project.ast.UserVariable variable;
+	private VariableArrayLengthOperation( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "becb523c-7af9-433d-8c63-3cda63a45680" ), expressionProperty );
 		this.variable = variable;
 	}

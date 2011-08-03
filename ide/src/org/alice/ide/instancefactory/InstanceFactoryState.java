@@ -62,8 +62,8 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager();
 		rv.add( ThisInstanceFactoryFillIn.getInstance() );
 		//rv.add( ThisMethodInvocationFactoryFillIn.getInstance( org.lookingglassandalice.storytelling.Entity.class, "getName" ) );
-		org.lgna.project.ast.TypeDeclaredInAlice type = org.alice.ide.IDE.getActiveInstance().getSceneType();
-		for( org.lgna.project.ast.FieldDeclaredInAlice field : type.getDeclaredFields() ) {
+		org.lgna.project.ast.NamedUserType type = org.alice.ide.IDE.getActiveInstance().getSceneType();
+		for( org.lgna.project.ast.UserField field : type.getDeclaredFields() ) {
 			if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
 				InstanceFactoryFillInWithoutBlanks fillIn = ThisFieldAccessFactoryFillIn.getInstance( field );
 				org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu = apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field );

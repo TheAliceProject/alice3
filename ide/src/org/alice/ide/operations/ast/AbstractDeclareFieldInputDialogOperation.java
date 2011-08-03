@@ -45,26 +45,26 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.lgna.project.ast.FieldDeclaredInAlice> {
+public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.lgna.project.ast.UserField> {
 	protected static class EpilogueData {
-		private org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType;
-		private org.lgna.project.ast.FieldDeclaredInAlice field;
+		private org.lgna.project.ast.UserType<?> declaringType;
+		private org.lgna.project.ast.UserField field;
 		private java.util.List< org.lgna.project.ast.Statement > doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private java.util.List< org.lgna.project.ast.Statement > undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
 		public boolean isValid() {
 			return this.declaringType != null && this.field != null;
 		}
-		public org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+		public org.lgna.project.ast.UserType< ? > getDeclaringType() {
 			return this.declaringType;
 		}
-		public void setDeclaringType( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+		public void setDeclaringType( org.lgna.project.ast.UserType< ? > declaringType ) {
 			this.declaringType = declaringType;
 		}
-		public org.lgna.project.ast.FieldDeclaredInAlice getField() {
+		public org.lgna.project.ast.UserField getField() {
 			return this.field;
 		}
-		public void setField( org.lgna.project.ast.FieldDeclaredInAlice field ) {
+		public void setField( org.lgna.project.ast.UserField field ) {
 			this.field = field;
 		}
 		public void addDoStatement( org.lgna.project.ast.Statement statement ) {
@@ -84,7 +84,7 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 	}
 	
-	protected abstract org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType();
+	protected abstract org.lgna.project.ast.UserType< ? > getDeclaringType();
 	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData fillInEpilogueData( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
 		rv.setDeclaringType( this.getDeclaringType() );
 		return rv;

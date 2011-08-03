@@ -49,11 +49,11 @@ public class ExpressionUtilities {
 	public static org.lgna.project.ast.Expression getNextExpression( org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.ast.Expression previousExpression ) {
 		//todo: check to see if acceptable
 		org.lgna.project.ast.Expression rv;
-		if( type == org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) {
+		if( type == org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ) {
 			rv = new org.lgna.project.ast.BooleanLiteral( false );
-		} else if( type == org.lgna.project.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) {
+		} else if( type == org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE ) {
 			rv = new org.lgna.project.ast.DoubleLiteral( 0.0 );
-		} else if( type == org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) {
+		} else if( type == org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) {
 			rv = new org.lgna.project.ast.IntegerLiteral( 0 );
 		} else {
 			rv = new org.lgna.project.ast.NullLiteral();

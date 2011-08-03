@@ -47,19 +47,19 @@ package org.alice.ide.memberseditor.templates;
  */
 /*package-private*/ class FunctionInvocationTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
 	private org.lgna.project.ast.AbstractMethod method;
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.ParameterDeclaredInAlice > parameterAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< org.lgna.project.ast.ParameterDeclaredInAlice >() {
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserParameter > parameterAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< org.lgna.project.ast.UserParameter >() {
 		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.ParameterDeclaredInAlice > e ) {
+		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.UserParameter > e ) {
 		}
 		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.ParameterDeclaredInAlice > e ) {
+		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.UserParameter > e ) {
 			FunctionInvocationTemplate.this.refresh();
 		}
 	};
 	public FunctionInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
 		this.method = method;
-		if( method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
-			org.lgna.project.ast.MethodDeclaredInAlice methodInAlice = (org.lgna.project.ast.MethodDeclaredInAlice)method;
+		if( method instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod methodInAlice = (org.lgna.project.ast.UserMethod)method;
 			this.setPopupPrepModel( new MethodPopupMenuModel( methodInAlice ).getPopupPrepModel() );
 		}
 	}
@@ -75,15 +75,15 @@ package org.alice.ide.memberseditor.templates;
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		if( this.method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
 			this.refresh();
-			((org.lgna.project.ast.MethodDeclaredInAlice)this.method).parameters.addListPropertyListener( this.parameterAdapter );
+			((org.lgna.project.ast.UserMethod)this.method).parameters.addListPropertyListener( this.parameterAdapter );
 		}
 	}
 	@Override
 	protected void handleUndisplayable() {
-		if( this.method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
-			((org.lgna.project.ast.MethodDeclaredInAlice)this.method).parameters.removeListPropertyListener( this.parameterAdapter );
+		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
+			((org.lgna.project.ast.UserMethod)this.method).parameters.removeListPropertyListener( this.parameterAdapter );
 		}
 		super.handleUndisplayable();
 	}

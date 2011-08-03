@@ -61,7 +61,7 @@ public class SetUpMethodGenerator {
 		return new org.lgna.project.ast.StringLiteral( s );
 	}
 	private static org.lgna.project.ast.Expression createExpression( Enum e ) {
-		org.lgna.project.ast.TypeDeclaredInJava type = org.lgna.project.ast.TypeDeclaredInJava.get( e.getClass() );
+		org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( e.getClass() );
 		org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, e.name() );
 		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
 	}
@@ -74,7 +74,7 @@ public class SetUpMethodGenerator {
 	}
 	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.ImageSource imageSource ) {
 		if( imageSource != null ) {
-			org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( org.lgna.story.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
+			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( org.lgna.story.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
 			org.lgna.project.ast.Expression arg0Expression;
 			org.alice.virtualmachine.resources.ImageResource imageResource = imageSource.getImageResource();
 			if( imageResource != null ) {
@@ -94,7 +94,7 @@ public class SetUpMethodGenerator {
 		for( java.lang.reflect.Field fld : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( cls, cls ) ) {
 			if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, null ).equals( color ) ) {
 				org.lgna.project.ast.TypeExpression typeExpression = new org.lgna.project.ast.TypeExpression( cls );
-				org.lgna.project.ast.FieldDeclaredInJavaWithField field = org.lgna.project.ast.FieldDeclaredInJavaWithField.get( fld );
+				org.lgna.project.ast.JavaField field = org.lgna.project.ast.JavaField.getInstance( fld );
 				rv = new org.lgna.project.ast.FieldAccess( typeExpression, field );
 				break;
 			}
@@ -102,7 +102,7 @@ public class SetUpMethodGenerator {
 		if( rv != null ) {
 			//pass
 		} else {
-			org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
+			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
 			rv = org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( color.getRed() ), createExpression( color.getGreen() ), createExpression( color.getBlue() ) );
 		}
 		return rv;
@@ -125,24 +125,24 @@ public class SetUpMethodGenerator {
 
 	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Position position ) {
 		Class< ? > cls = org.lgna.story.Position.class;
-		org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
+		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( position.getRight() ), createExpression( position.getUp() ), createExpression( position.getBackward() ) );
 	}
 	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Scale scale ) {
 		Class< ? > cls = org.lgna.story.Scale.class;
-		org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
+		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( scale.getLeftToRight() ), createExpression( scale.getBottomToTop() ), createExpression( scale.getFrontToBack() ) );
 	}
 	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Orientation orientation ) {
 		edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 axes = org.lgna.story.ImplementationAccessor.getOrthogonalMatrix3x3( orientation );
 		edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( axes );
 		Class< ? > cls = org.lgna.story.Orientation.class;
-		org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class, Number.class);
+		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class, Number.class);
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( q.x ), createExpression( q.y ), createExpression( q.z ), createExpression( q.w ) );
 	}
 	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Font font ) {
 		Class< ? > cls = org.lgna.story.Font.class;
-		org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( cls, org.lgna.story.font.Attribute[].class );
+		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, org.lgna.story.font.Attribute[].class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( font.getFamily() ), createExpression( font.getWeight() ), createExpression( font.getPosture() ) );
 	}
 

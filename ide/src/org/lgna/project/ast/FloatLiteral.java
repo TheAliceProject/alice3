@@ -54,7 +54,7 @@ public class FloatLiteral extends AbstractValueLiteral {
 	}
 	@Override
 	public AbstractType<?,?,?> getType() {
-		return TypeDeclaredInJava.get( Float.class );
+		return JavaType.getInstance( Float.class );
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {

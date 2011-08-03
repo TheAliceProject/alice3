@@ -46,30 +46,30 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDeclaredInAlice extends AbstractTypeDeclaredInAlice<ConstructorDeclaredInAlice> {
+public class NamedUserType extends UserType<NamedUserConstructor> {
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public DeclarationProperty< PackageDeclaredInAlice > _package = new DeclarationProperty< PackageDeclaredInAlice >( this );
-	public NodeListProperty< ConstructorDeclaredInAlice > constructors = new NodeListProperty< ConstructorDeclaredInAlice >( this );
+	public DeclarationProperty< UserPackage > _package = new DeclarationProperty< UserPackage >( this );
+	public NodeListProperty< NamedUserConstructor > constructors = new NodeListProperty< NamedUserConstructor >( this );
 	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
 	public edu.cmu.cs.dennisc.property.EnumProperty< TypeModifierFinalAbstractOrNeither > finalAbstractOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty< TypeModifierFinalAbstractOrNeither >( this, TypeModifierFinalAbstractOrNeither.NEITHER );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 
-	public TypeDeclaredInAlice() {
+	public NamedUserType() {
 		this.addListenerForConstructors();
 	}
-	public TypeDeclaredInAlice( String name, PackageDeclaredInAlice _package, AbstractType<?,?,?> superType, ConstructorDeclaredInAlice[] constructors, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
+	public NamedUserType( String name, UserPackage _package, AbstractType<?,?,?> superType, NamedUserConstructor[] constructors, UserMethod[] methods, UserField[] fields ) {
 		super( superType, methods, fields );
 		this.addListenerForConstructors();
 		this.name.setValue( name );
 		this._package.setValue( _package );
 		this.constructors.add( constructors );
 	}
-	public TypeDeclaredInAlice( String name, PackageDeclaredInAlice _package, Class< ? > superCls, ConstructorDeclaredInAlice[] constructors, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
-		this( name, _package, TypeDeclaredInJava.get( superCls ), constructors, methods, fields );
+	public NamedUserType( String name, UserPackage _package, Class< ? > superCls, NamedUserConstructor[] constructors, UserMethod[] methods, UserField[] fields ) {
+		this( name, _package, JavaType.getInstance( superCls ), constructors, methods, fields );
 	}
 	
 	private void addListenerForConstructors() {
-		this.constructors.addListPropertyListener( new Adapter< ConstructorDeclaredInAlice >() );
+		this.constructors.addListPropertyListener( new Adapter< NamedUserConstructor >() );
 	}
 	
 
@@ -108,7 +108,7 @@ public class TypeDeclaredInAlice extends AbstractTypeDeclaredInAlice<Constructor
 		return _package.getValue();
 	}
 	@Override
-	public java.util.ArrayList< ConstructorDeclaredInAlice > getDeclaredConstructors() {
+	public java.util.ArrayList< NamedUserConstructor > getDeclaredConstructors() {
 		return constructors.getValue();
 	}
 	

@@ -61,7 +61,7 @@ public class ThisMethodInvocationFactoryFillIn extends InstanceFactoryFillInWith
 		}
 	}
 	public static ThisMethodInvocationFactoryFillIn getInstance( Class<?> declaringCls, String name ) {
-		return getInstance( org.lgna.project.ast.MethodDeclaredInJava.get( declaringCls, name ) );
+		return getInstance( org.lgna.project.ast.JavaMethod.getInstance( declaringCls, name ) );
 	}
 	private ThisMethodInvocationFactoryFillIn( org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "1ab72e54-03d3-4569-b777-cac55c793b6e" ), ThisMethodInvocationFactory.getInstance( method ) );

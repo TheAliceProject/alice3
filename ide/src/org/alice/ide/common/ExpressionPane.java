@@ -71,7 +71,7 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 		if( this.expression != null ) {
 			return this.expression.getType();
 		} else {
-			return org.lgna.project.ast.TypeDeclaredInJava.OBJECT_TYPE;
+			return org.lgna.project.ast.JavaType.OBJECT_TYPE;
 		}
 	}
 	@Override

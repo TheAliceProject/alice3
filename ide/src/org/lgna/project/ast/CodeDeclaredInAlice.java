@@ -48,6 +48,6 @@ package org.lgna.project.ast;
  */
 public interface CodeDeclaredInAlice extends MemberDeclaredInAlice {
 	public NodeProperty< ? extends BlockStatement > getBodyProperty();
-	public NodeListProperty< ParameterDeclaredInAlice > getParamtersProperty();
+	public NodeListProperty< UserParameter > getParamtersProperty();
 	//public boolean isSignatureLocked();
 }

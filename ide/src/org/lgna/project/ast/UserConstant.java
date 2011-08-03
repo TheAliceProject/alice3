@@ -46,28 +46,21 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class VariableDeclaredInAlice extends LocalDeclaredInAlice {
-	public VariableDeclaredInAlice() {
+public class UserConstant extends UserLocal {
+	public UserConstant() {
 	}
-	public VariableDeclaredInAlice( String name, AbstractType<?,?,?> valueType ) {
+	public UserConstant( String name, AbstractType<?,?,?> valueType ) {
 		super( name, valueType );
 	}
-	public VariableDeclaredInAlice( String name, Class<?> valueCls ) {
-		this( name, TypeDeclaredInJava.get( valueCls ) );
+	public UserConstant( String name, Class<?> valueCls ) {
+		this( name, JavaType.getInstance( valueCls ) );
 	}
 	@Override
 	public boolean isFinal() {
-		return false;
+		return true;
 	}
 	@Override
 	protected String generateName( Node context ) {
-		AbstractType<?,?,?> type = this.valueType.getValue();
-		String name = type.getName();
-		if( name != null && name.length() > 0 ) {
-			return Character.toString( Character.toLowerCase( name.charAt( 0 ) ) );
-		} else {
-			return "v";
-		}
+		return "N";
 	}
-	
 }

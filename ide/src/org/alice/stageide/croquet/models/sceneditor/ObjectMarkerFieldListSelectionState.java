@@ -44,9 +44,9 @@
 package org.alice.stageide.croquet.models.sceneditor;
 
 
-import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.UserField;
 
-public class ObjectMarkerFieldListSelectionState extends org.lgna.croquet.DefaultListSelectionState< FieldDeclaredInAlice > {
+public class ObjectMarkerFieldListSelectionState extends org.lgna.croquet.DefaultListSelectionState< UserField > {
 	private static class SingletonHolder {
 		private static ObjectMarkerFieldListSelectionState instance = new ObjectMarkerFieldListSelectionState();
 	}
@@ -54,6 +54,6 @@ public class ObjectMarkerFieldListSelectionState extends org.lgna.croquet.Defaul
 		return SingletonHolder.instance;
 	}
 	private ObjectMarkerFieldListSelectionState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "35ba71ac-34f5-46ec-9bf4-3b8127717366" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( FieldDeclaredInAlice.class ) );
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "35ba71ac-34f5-46ec-9bf4-3b8127717366" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserField.class ) );
 	}
 }

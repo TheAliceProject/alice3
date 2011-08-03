@@ -46,17 +46,17 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.AbstractTypeDeclaredInAlice > {
+public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.UserType > {
 	private final DeclarationOperation<?> owner;
-	public DeclaringTypeState( DeclarationOperation<?> owner, org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> initialValue ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "20e50e4f-b627-4f5c-9851-5cbc18b5a5ee" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractTypeDeclaredInAlice.class ), initialValue );
+	public DeclaringTypeState( DeclarationOperation<?> owner, org.lgna.project.ast.UserType<?> initialValue ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "20e50e4f-b627-4f5c-9851-5cbc18b5a5ee" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ), initialValue );
 		this.owner = owner;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractTypeDeclaredInAlice > blankNode ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.UserType > blankNode ) {
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		java.util.List< org.lgna.project.ast.TypeDeclaredInAlice > types = org.lgna.project.project.ProjectUtilities.getTypes( project );
-		for( org.lgna.project.ast.TypeDeclaredInAlice type : types ) {
+		java.util.List< org.lgna.project.ast.NamedUserType > types = org.lgna.project.project.ProjectUtilities.getTypes( project );
+		for( org.lgna.project.ast.NamedUserType type : types ) {
 			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
 		}
 		return rv;
@@ -88,10 +88,10 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 			}
 		}
 		awtButton.setIcon( new TypeDropDownIcon() );
-		this.addValueObserver( new ValueObserver< org.lgna.project.ast.AbstractTypeDeclaredInAlice >() {
-			public void changing( org.lgna.croquet.State< org.lgna.project.ast.AbstractTypeDeclaredInAlice> state, org.lgna.project.ast.AbstractTypeDeclaredInAlice prevValue, org.lgna.project.ast.AbstractTypeDeclaredInAlice nextValue, boolean isAdjusting ) {
+		this.addValueObserver( new ValueObserver< org.lgna.project.ast.UserType >() {
+			public void changing( org.lgna.croquet.State< org.lgna.project.ast.UserType> state, org.lgna.project.ast.UserType prevValue, org.lgna.project.ast.UserType nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.lgna.croquet.State< org.lgna.project.ast.AbstractTypeDeclaredInAlice> state, org.lgna.project.ast.AbstractTypeDeclaredInAlice prevValue, org.lgna.project.ast.AbstractTypeDeclaredInAlice nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< org.lgna.project.ast.UserType> state, org.lgna.project.ast.UserType prevValue, org.lgna.project.ast.UserType nextValue, boolean isAdjusting ) {
 				rv.revalidateAndRepaint();
 			}
 		} );

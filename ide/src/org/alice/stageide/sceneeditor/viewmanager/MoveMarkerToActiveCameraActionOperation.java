@@ -43,7 +43,7 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.UserField;
 import org.lgna.story.Entity;
 import org.lgna.story.OrthographicCameraMarker;
 import org.lgna.story.implementation.CameraMarkerImplementation;
@@ -64,7 +64,7 @@ public class MoveMarkerToActiveCameraActionOperation extends ActionOperation {
 		return SingletonHolder.instance;
 	}
 	
-	private FieldDeclaredInAlice markerField;
+	private UserField markerField;
 	private CameraMarkerImplementation cameraMarker;
 	private MoveToImageIcon imageIcon;
 
@@ -100,7 +100,7 @@ public class MoveMarkerToActiveCameraActionOperation extends ActionOperation {
 		this.setSmallIcon(this.imageIcon);
 	}
 	
-	public void setMarkerField(FieldDeclaredInAlice markerField)
+	public void setMarkerField(UserField markerField)
 	{
 		this.markerField = markerField;
 		if (this.markerField != null)

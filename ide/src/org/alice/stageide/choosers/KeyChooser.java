@@ -82,7 +82,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 		if( previousExpression instanceof org.lgna.project.ast.FieldAccess ) {
 			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)previousExpression;
 			org.lgna.project.ast.AbstractType<?,?,?> type = fieldAccess.getType();
-			if( type == org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Key.class ) ) {
+			if( type == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class ) ) {
 				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 				if( field != null ) {
 					this.updateKey( Enum.valueOf( org.lgna.story.Key.class, field.getName() ) );
@@ -111,7 +111,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 	@Override
 	public org.lgna.project.ast.FieldAccess getValue() {
 		if( this.key != null ) {
-			org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Key.class );
+			org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class );
 			org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, this.key.name() );
 			assert field.isPublicAccess() && field.isStatic() && field.isFinal();
 			return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );

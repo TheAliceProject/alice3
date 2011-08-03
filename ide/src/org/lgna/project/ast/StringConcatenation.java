@@ -50,13 +50,13 @@ public class StringConcatenation extends Expression {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
 			//todo: allow both objects?
-			return TypeDeclaredInJava.OBJECT_TYPE;
+			return JavaType.OBJECT_TYPE;
 		}
 	};
 	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
-			return TypeDeclaredInJava.OBJECT_TYPE;
+			return JavaType.OBJECT_TYPE;
 		}
 	};
 	public StringConcatenation() {
@@ -67,7 +67,7 @@ public class StringConcatenation extends Expression {
 	}
 	@Override
 	public AbstractType<?,?,?> getType() {
-		return TypeDeclaredInJava.get( String.class );
+		return JavaType.getInstance( String.class );
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {

@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public class FunctionDeclarationOperation extends MethodDeclarationOperation {
-	private static java.util.Map< org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? >, FunctionDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FunctionDeclarationOperation getInstance( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declarationType ) {
+	private static java.util.Map< org.lgna.project.ast.UserType< ? >, FunctionDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static FunctionDeclarationOperation getInstance( org.lgna.project.ast.UserType< ? > declarationType ) {
 		synchronized( map ) {
 			FunctionDeclarationOperation rv = map.get( declarationType );
 			if( rv != null ) {
@@ -60,7 +60,7 @@ public class FunctionDeclarationOperation extends MethodDeclarationOperation {
 			return rv;
 		}
 	}
-	private FunctionDeclarationOperation( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declarationType ) {
+	private FunctionDeclarationOperation( org.lgna.project.ast.UserType< ? > declarationType ) {
 		super( 
 				java.util.UUID.fromString( "b48992c5-8b9c-46c9-ad47-3cf148778db7" ), 
 				declarationType, true,

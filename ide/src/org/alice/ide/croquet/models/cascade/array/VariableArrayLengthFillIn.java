@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.cascade.array;
  * @author Dennis Cosgrove
  */
 public class VariableArrayLengthFillIn extends ArrayLengthFillIn {
-	private static java.util.Map< org.lgna.project.ast.VariableDeclaredInAlice, VariableArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized VariableArrayLengthFillIn getInstance( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
+	private static java.util.Map< org.lgna.project.ast.UserVariable, VariableArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized VariableArrayLengthFillIn getInstance( org.lgna.project.ast.UserVariable variable ) {
 		assert variable != null;
 		VariableArrayLengthFillIn rv = map.get( variable );
 		if( rv != null ) {
@@ -59,8 +59,8 @@ public class VariableArrayLengthFillIn extends ArrayLengthFillIn {
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.VariableDeclaredInAlice variable;
-	private VariableArrayLengthFillIn( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
+	private final org.lgna.project.ast.UserVariable variable;
+	private VariableArrayLengthFillIn( org.lgna.project.ast.UserVariable variable ) {
 		super( java.util.UUID.fromString( "007ec992-c623-4a2b-afcc-5642dfd7be75" ) );
 		this.variable = variable;
 	}

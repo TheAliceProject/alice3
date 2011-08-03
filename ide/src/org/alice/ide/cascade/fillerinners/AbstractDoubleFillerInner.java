@@ -7,7 +7,7 @@ public abstract class AbstractDoubleFillerInner extends AbstractNumberFillerInne
 		this.literals = literals;
 	}
 	public AbstractDoubleFillerInner( Class<?> cls, double[] literals ) {
-		this( org.lgna.project.ast.TypeDeclaredInJava.get( cls ), literals );
+		this( org.lgna.project.ast.JavaType.getInstance( cls ), literals );
 	}
 	
 	protected abstract org.lgna.croquet.CascadeItem getCustomItem();

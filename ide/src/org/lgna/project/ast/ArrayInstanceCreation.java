@@ -58,7 +58,7 @@ public class ArrayInstanceCreation extends Expression {
 		this.expressions.add( expressions );
 	}
 	public ArrayInstanceCreation( Class<?> arrayCls, Integer[] lengths, Expression... expressions ) {
-		this( TypeDeclaredInJava.get( arrayCls ), lengths, expressions );
+		this( JavaType.getInstance( arrayCls ), lengths, expressions );
 	}
 	
 	@Override

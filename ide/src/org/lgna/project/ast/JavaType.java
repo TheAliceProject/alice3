@@ -46,43 +46,43 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDeclaredInJava extends AbstractType<ConstructorDeclaredInJava, MethodDeclaredInJava, FieldDeclaredInJava> {
-	private static java.util.Map< ClassReflectionProxy, TypeDeclaredInJava > s_mapReflectionProxyToJava = new java.util.HashMap< ClassReflectionProxy, TypeDeclaredInJava >();
-	public static final TypeDeclaredInJava VOID_TYPE = get( Void.TYPE );
+public class JavaType extends AbstractType<JavaConstructor, JavaMethod, FieldDeclaredInJava> {
+	private static java.util.Map< ClassReflectionProxy, JavaType > s_mapReflectionProxyToJava = new java.util.HashMap< ClassReflectionProxy, JavaType >();
+	public static final JavaType VOID_TYPE = getInstance( Void.TYPE );
 
-	public static final TypeDeclaredInJava BOOLEAN_PRIMITIVE_TYPE = get( Boolean.TYPE );
-	public static final TypeDeclaredInJava BOOLEAN_OBJECT_TYPE = get( Boolean.class );
+	public static final JavaType BOOLEAN_PRIMITIVE_TYPE = getInstance( Boolean.TYPE );
+	public static final JavaType BOOLEAN_OBJECT_TYPE = getInstance( Boolean.class );
 
-	public static final TypeDeclaredInJava NUMBER_OBJECT_TYPE = get( Number.class );
+	public static final JavaType NUMBER_OBJECT_TYPE = getInstance( Number.class );
 
-	public static final TypeDeclaredInJava INTEGER_PRIMITIVE_TYPE = get( Integer.TYPE );
-	public static final TypeDeclaredInJava INTEGER_OBJECT_TYPE = get( Integer.class );
-	public static final TypeDeclaredInJava DOUBLE_PRIMITIVE_TYPE = get( Double.TYPE );
-	public static final TypeDeclaredInJava DOUBLE_OBJECT_TYPE = get( Double.class );
+	public static final JavaType INTEGER_PRIMITIVE_TYPE = getInstance( Integer.TYPE );
+	public static final JavaType INTEGER_OBJECT_TYPE = getInstance( Integer.class );
+	public static final JavaType DOUBLE_PRIMITIVE_TYPE = getInstance( Double.TYPE );
+	public static final JavaType DOUBLE_OBJECT_TYPE = getInstance( Double.class );
 
-	public static final TypeDeclaredInJava[] BOOLEAN_TYPES = { BOOLEAN_PRIMITIVE_TYPE, BOOLEAN_OBJECT_TYPE };
-	public static final TypeDeclaredInJava[] INTEGER_TYPES = { INTEGER_PRIMITIVE_TYPE, INTEGER_OBJECT_TYPE };
-	public static final TypeDeclaredInJava[] DOUBLE_TYPES = { DOUBLE_PRIMITIVE_TYPE, DOUBLE_OBJECT_TYPE };
+	public static final JavaType[] BOOLEAN_TYPES = { BOOLEAN_PRIMITIVE_TYPE, BOOLEAN_OBJECT_TYPE };
+	public static final JavaType[] INTEGER_TYPES = { INTEGER_PRIMITIVE_TYPE, INTEGER_OBJECT_TYPE };
+	public static final JavaType[] DOUBLE_TYPES = { DOUBLE_PRIMITIVE_TYPE, DOUBLE_OBJECT_TYPE };
 	
-	public static final TypeDeclaredInJava OBJECT_TYPE = get( Object.class );
+	public static final JavaType OBJECT_TYPE = getInstance( Object.class );
 
-	public static TypeDeclaredInJava get( ClassReflectionProxy classReflectionProxy ) {
+	public static JavaType getInstance( ClassReflectionProxy classReflectionProxy ) {
 		if( classReflectionProxy != null ) {
-			TypeDeclaredInJava rv = s_mapReflectionProxyToJava.get( classReflectionProxy );
+			JavaType rv = s_mapReflectionProxyToJava.get( classReflectionProxy );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new TypeDeclaredInJava( classReflectionProxy );
+				rv = new JavaType( classReflectionProxy );
 				s_mapReflectionProxyToJava.put( classReflectionProxy, rv );
 				Class< ? > cls = classReflectionProxy.getReification();
 				if( cls != null ) {
 					//todo: handle constructors as methods are (set up chains...)
 					for( java.lang.reflect.Constructor< ? > cnstrctr : cls.getDeclaredConstructors() ) {
-						rv.constructors.add( ConstructorDeclaredInJava.get( cnstrctr ) );
+						rv.constructors.add( JavaConstructor.getInstance( cnstrctr ) );
 					}
 					
 					for( java.lang.reflect.Field fld : cls.getDeclaredFields() ) {
-						rv.fields.add( FieldDeclaredInJavaWithField.get( fld ) );
+						rv.fields.add( JavaField.getInstance( fld ) );
 					}
 
 					java.util.Set< java.lang.reflect.Method > methodSet = null;
@@ -116,24 +116,24 @@ public class TypeDeclaredInJava extends AbstractType<ConstructorDeclaredInJava, 
 			return null;
 		}
 	}
-	public static TypeDeclaredInJava get( Class< ? > cls ) {
+	public static JavaType getInstance( Class< ? > cls ) {
 		if( cls != null ) {
-			return get( new ClassReflectionProxy( cls ) );
+			return getInstance( new ClassReflectionProxy( cls ) );
 		} else {
 			return null;
 		}
 	}
-	public static TypeDeclaredInJava[] get( Class< ? >[] clses ) {
-		TypeDeclaredInJava[] rv = new TypeDeclaredInJava[ clses.length ];
+	public static JavaType[] getInstances( Class< ? >[] clses ) {
+		JavaType[] rv = new JavaType[ clses.length ];
 		for( int i = 0; i < clses.length; i++ ) {
-			rv[ i ] = get( clses[ i ] );
+			rv[ i ] = getInstance( clses[ i ] );
 		}
 		return rv;
 	}
-	public static TypeDeclaredInJava[] get( ClassReflectionProxy[] classReflectionProxies ) {
-		TypeDeclaredInJava[] rv = new TypeDeclaredInJava[ classReflectionProxies.length ];
+	public static JavaType[] getInstances( ClassReflectionProxy[] classReflectionProxies ) {
+		JavaType[] rv = new JavaType[ classReflectionProxies.length ];
 		for( int i = 0; i < classReflectionProxies.length; i++ ) {
-			rv[ i ] = get( classReflectionProxies[ i ] );
+			rv[ i ] = getInstance( classReflectionProxies[ i ] );
 		}
 		return rv;
 	}
@@ -146,11 +146,11 @@ public class TypeDeclaredInJava extends AbstractType<ConstructorDeclaredInJava, 
 //	}
 
 	private ClassReflectionProxy classReflectionProxy;
-	private java.util.ArrayList< ConstructorDeclaredInJava > constructors = new java.util.ArrayList< ConstructorDeclaredInJava >();
-	private java.util.ArrayList< MethodDeclaredInJava > methods = new java.util.ArrayList< MethodDeclaredInJava >();
+	private java.util.ArrayList< JavaConstructor > constructors = new java.util.ArrayList< JavaConstructor >();
+	private java.util.ArrayList< JavaMethod > methods = new java.util.ArrayList< JavaMethod >();
 	private java.util.ArrayList< FieldDeclaredInJava > fields = new java.util.ArrayList< FieldDeclaredInJava >();
 
-	private TypeDeclaredInJava( ClassReflectionProxy classReflectionProxy ) {
+	private JavaType( ClassReflectionProxy classReflectionProxy ) {
 		this.classReflectionProxy = classReflectionProxy;
 	}
 
@@ -193,23 +193,23 @@ public class TypeDeclaredInJava extends AbstractType<ConstructorDeclaredInJava, 
 	}
 	@Override
 	public AbstractPackage getPackage() {
-		return PackageDeclaredInJava.get( this.classReflectionProxy.getPackageReflectionProxy() );
+		return JavaPackage.getInstance( this.classReflectionProxy.getPackageReflectionProxy() );
 	}
 	@Override
 	public AbstractType<?,?,?> getSuperType() {
 		Class< ? > cls = this.classReflectionProxy.getReification();
 		if( cls != null ) {
-			return TypeDeclaredInJava.get( cls.getSuperclass() );
+			return JavaType.getInstance( cls.getSuperclass() );
 		} else {
 			return null;
 		}
 	}
 	@Override
-	public java.util.ArrayList< ConstructorDeclaredInJava > getDeclaredConstructors() {
+	public java.util.ArrayList< JavaConstructor > getDeclaredConstructors() {
 		return this.constructors;
 	}
 	@Override
-	public java.util.ArrayList< MethodDeclaredInJava > getDeclaredMethods() {
+	public java.util.ArrayList< JavaMethod > getDeclaredMethods() {
 		return this.methods;
 	}
 	@Override
@@ -261,16 +261,16 @@ public class TypeDeclaredInJava extends AbstractType<ConstructorDeclaredInJava, 
 				//				} else {
 				//					nodeListProperty = this.questions;
 				//				}
-				MethodDeclaredInJava methodDeclaredInJava = MethodDeclaredInJava.get( mthd );
+				JavaMethod methodDeclaredInJava = JavaMethod.getInstance( mthd );
 				org.lgna.project.annotations.Visibility visibility = methodDeclaredInJava.getVisibility();
 
 				if( visibility == org.lgna.project.annotations.Visibility.PRIME_TIME ) {
-					MethodDeclaredInJava longer = methodDeclaredInJava;
+					JavaMethod longer = methodDeclaredInJava;
 					java.lang.reflect.Method _mthd = mthd;
 					while( true ) {
 						_mthd = getNextShorterInChain( _mthd );
 						if( _mthd != null ) {
-							MethodDeclaredInJava shorter = MethodDeclaredInJava.get( _mthd );
+							JavaMethod shorter = JavaMethod.getInstance( _mthd );
 							if( shorter.getVisibility() == org.lgna.project.annotations.Visibility.CHAINED ) {
 								longer.setNextShorterInChain( shorter );
 								shorter.setNextLongerInChain( longer );
@@ -347,20 +347,20 @@ public class TypeDeclaredInJava extends AbstractType<ConstructorDeclaredInJava, 
 	}
 	@Override
 	public AbstractType<?,?,?> getComponentType() {
-		return TypeDeclaredInJava.get( this.classReflectionProxy.getComponentClassReflectionProxy() );
+		return JavaType.getInstance( this.classReflectionProxy.getComponentClassReflectionProxy() );
 	}
 
 	@Override
 	public AbstractType<?,?,?> getArrayType() {
 		Class< ? > cls = this.classReflectionProxy.getReification();
 		assert cls != null;
-		return TypeDeclaredInJava.get( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( cls ) );
+		return JavaType.getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( cls ) );
 	}
 
 	@Override
 	public boolean isEquivalentTo( Object other ) {
-		if( other instanceof TypeDeclaredInJava ) {
-			return classReflectionProxy.equals( ((TypeDeclaredInJava)other).classReflectionProxy );
+		if( other instanceof JavaType ) {
+			return classReflectionProxy.equals( ((JavaType)other).classReflectionProxy );
 		} else {
 			return false;
 		}

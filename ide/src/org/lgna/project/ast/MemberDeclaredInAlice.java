@@ -47,6 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public interface MemberDeclaredInAlice extends Node {
-	public AbstractTypeDeclaredInAlice<?> getDeclaringType();
-	public void setDeclaringType( AbstractTypeDeclaredInAlice<?> declaringType );
+	public UserType<?> getDeclaringType();
+	public void setDeclaringType( UserType<?> declaringType );
 }

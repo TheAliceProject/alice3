@@ -50,16 +50,16 @@ public class TypeFunctionsPane extends AbstractTypeMethodsPane {
 		super( type );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( org.lgna.project.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type ) {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods, type.constructors };
 	}
 	@Override
-	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.TypeDeclaredInAlice type ) {
+	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.NamedUserType type ) {
 		//return org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( type ).createButton();
 		return org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation.getInstance( type ).createButton();
 	}
 	@Override
-	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.TypeDeclaredInAlice type ) {
+	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type ) {
 		return org.alice.ide.operations.ast.FocusCodeOperation.getInstance( type.getDeclaredConstructor() ).createButton();
 	}
 	@Override

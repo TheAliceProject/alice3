@@ -46,22 +46,29 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterDeclaredInAlice extends AbstractParameter {
-	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+public abstract class UserLocal extends AbstractTransient {
+	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null ) {
+		@Override
+		protected boolean isNullAcceptable() {
+			return true;
+		}
+	};
 	public DeclarationProperty< AbstractType<?,?,?> > valueType = new DeclarationProperty< AbstractType<?,?,?> >( this );
-	public ParameterDeclaredInAlice() {
+	public UserLocal() {
 	}
-	public ParameterDeclaredInAlice( String name, AbstractType<?,?,?> valueType ) {
+	public UserLocal( String name, AbstractType<?,?,?> valueType ) {
 		this.name.setValue( name );
 		this.valueType.setValue( valueType );
 	}
-	public ParameterDeclaredInAlice( String name, Class< ? > valueCls ) {
-		this( name, TypeDeclaredInJava.get( valueCls ) );
+	public UserLocal( String name, Class<?> valueCls ) {
+		this( name, JavaType.getInstance( valueCls ) );
 	}
+	
 	@Override
-	public boolean isDeclaredInAlice() {
-		return true;
+	public AbstractType<?,?,?> getValueType() {
+		return this.valueType.getValue();
 	}
+	
 	@Override
 	public String getName() {
 		return name.getValue();
@@ -71,15 +78,17 @@ public class ParameterDeclaredInAlice extends AbstractParameter {
 		return this.name;
 	}
 	@Override
-	public AbstractType<?,?,?> getValueType() {
-		return valueType.getValue();
+	public boolean isDeclaredInAlice() {
+		return true;
 	}
-	@Override
-	public AbstractType<?,?,?> getDesiredValueType() {
-		return getValueType();
+	public abstract boolean isFinal();
+	protected abstract String generateName( Node context );
+	public final String getValidName( Node context ) {
+		String name = this.name.getValue();
+		if( name != null ) {
+			return name;
+		} else {
+			return generateName( context );
+		}
 	}
-	@Override
-	public boolean isVariableLength() {
-		return false;
-	}	
 }

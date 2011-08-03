@@ -47,10 +47,10 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class VariableAccess extends Expression {
-	public DeclarationProperty< VariableDeclaredInAlice > variable = new DeclarationProperty< VariableDeclaredInAlice >( this );
+	public DeclarationProperty< UserVariable > variable = new DeclarationProperty< UserVariable >( this );
 	public VariableAccess() {
 	}
-	public VariableAccess( VariableDeclaredInAlice variable ){
+	public VariableAccess( UserVariable variable ){
 		this.variable.setValue( variable );
 	}
 	@Override

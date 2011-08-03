@@ -47,11 +47,11 @@ package org.alice.stageide.ast;
  * @author Dennis Cosgrove
  */
 public class BootstrapUtilties {
-	private static org.lgna.project.ast.TypeDeclaredInAlice createType( String name, org.lgna.project.ast.AbstractType< ?,?,? > superType ) {
-		org.lgna.project.ast.TypeDeclaredInAlice rv = new org.lgna.project.ast.TypeDeclaredInAlice();
+	private static org.lgna.project.ast.NamedUserType createType( String name, org.lgna.project.ast.AbstractType< ?,?,? > superType ) {
+		org.lgna.project.ast.NamedUserType rv = new org.lgna.project.ast.NamedUserType();
 		rv.name.setValue( name );
 		rv.superType.setValue( superType );
-		org.lgna.project.ast.ConstructorDeclaredInAlice constructor = new org.lgna.project.ast.ConstructorDeclaredInAlice();
+		org.lgna.project.ast.NamedUserConstructor constructor = new org.lgna.project.ast.NamedUserConstructor();
 		org.lgna.project.ast.ConstructorBlockStatement constructorBlockStatement = new org.lgna.project.ast.ConstructorBlockStatement();
 		org.lgna.project.ast.SuperConstructorInvocationStatement superConstructorInvocationStatement = new org.lgna.project.ast.SuperConstructorInvocationStatement();
 		superConstructorInvocationStatement.contructor.setValue( superType.getDeclaredConstructor() );
@@ -60,12 +60,12 @@ public class BootstrapUtilties {
 		rv.constructors.add( constructor );
 		return rv;
 	}
-	private static org.lgna.project.ast.TypeDeclaredInAlice createType( String name, Class<?> superCls ) {
-		return createType( name, org.lgna.project.ast.TypeDeclaredInJava.get( superCls ) );
+	private static org.lgna.project.ast.NamedUserType createType( String name, Class<?> superCls ) {
+		return createType( name, org.lgna.project.ast.JavaType.getInstance( superCls ) );
 	}
 	
-	private static org.lgna.project.ast.FieldDeclaredInAlice createPrivateFinalField( org.lgna.project.ast.AbstractType< ?,?,? > valueType, String name ) {
-		org.lgna.project.ast.FieldDeclaredInAlice rv = new org.lgna.project.ast.FieldDeclaredInAlice();
+	private static org.lgna.project.ast.UserField createPrivateFinalField( org.lgna.project.ast.AbstractType< ?,?,? > valueType, String name ) {
+		org.lgna.project.ast.UserField rv = new org.lgna.project.ast.UserField();
 		rv.access.setValue( org.lgna.project.ast.Access.PRIVATE );
 		rv.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 		rv.valueType.setValue( valueType );
@@ -73,20 +73,20 @@ public class BootstrapUtilties {
 		rv.initializer.setValue( org.alice.ide.ast.NodeUtilities.createInstanceCreation( valueType ) );
 		return rv;
 	}
-	private static org.lgna.project.ast.FieldDeclaredInAlice createPrivateFinalField( Class< ? > cls, String name ) {
-		return createPrivateFinalField( org.lgna.project.ast.TypeDeclaredInJava.get( cls ), name );
+	private static org.lgna.project.ast.UserField createPrivateFinalField( Class< ? > cls, String name ) {
+		return createPrivateFinalField( org.lgna.project.ast.JavaType.getInstance( cls ), name );
 	}
 	
-	private static org.lgna.project.ast.MethodDeclaredInAlice createMethod( org.lgna.project.ast.Access access, org.lgna.project.ast.AbstractType< ?,?,? > returnType, String name ) {
-		org.lgna.project.ast.MethodDeclaredInAlice rv = new org.lgna.project.ast.MethodDeclaredInAlice();
+	private static org.lgna.project.ast.UserMethod createMethod( org.lgna.project.ast.Access access, org.lgna.project.ast.AbstractType< ?,?,? > returnType, String name ) {
+		org.lgna.project.ast.UserMethod rv = new org.lgna.project.ast.UserMethod();
 		rv.access.setValue( access );
 		rv.returnType.setValue( returnType );
 		rv.name.setValue( name );
 		rv.body.setValue( new org.lgna.project.ast.BlockStatement() );
 		return rv;
 	}
-	private static org.lgna.project.ast.MethodDeclaredInAlice createMethod( org.lgna.project.ast.Access access, Class< ? > cls, String name ) {
-		return createMethod( access, org.lgna.project.ast.TypeDeclaredInJava.get( cls ), name );
+	private static org.lgna.project.ast.UserMethod createMethod( org.lgna.project.ast.Access access, Class< ? > cls, String name ) {
+		return createMethod( access, org.lgna.project.ast.JavaType.getInstance( cls ), name );
 	}
 	
 	private static org.lgna.project.ast.FieldAccess createThisFieldAccess( org.lgna.project.ast.AbstractField field ) {
@@ -97,7 +97,7 @@ public class BootstrapUtilties {
 	}
 
 	private static org.lgna.project.ast.VariableDeclarationStatement createVariableDeclarationStatementInitializedByInstanceCreation( String name, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		org.lgna.project.ast.VariableDeclaredInAlice variable = new org.lgna.project.ast.VariableDeclaredInAlice( name, type );
+		org.lgna.project.ast.UserVariable variable = new org.lgna.project.ast.UserVariable( name, type );
 		return org.alice.ide.ast.NodeUtilities.createVariableDeclarationStatement( variable, new org.lgna.project.ast.InstanceCreation( type.getDeclaredConstructor() ) );
 	}
 	
@@ -105,24 +105,24 @@ public class BootstrapUtilties {
 		return org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( value.getClass(), value.name() );
 	}
 	
-	public static org.lgna.project.ast.TypeDeclaredInAlice createProgramType( org.lgna.story.Ground.Appearance appearance ) {
-		org.lgna.project.ast.FieldDeclaredInAlice sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
-		org.lgna.project.ast.FieldDeclaredInAlice groundField = createPrivateFinalField( org.lgna.story.Ground.class, "ground" );
-		org.lgna.project.ast.FieldDeclaredInAlice cameraField = createPrivateFinalField( org.lgna.story.Camera.class, "camera" );
+	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Ground.Appearance appearance ) {
+		org.lgna.project.ast.UserField sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
+		org.lgna.project.ast.UserField groundField = createPrivateFinalField( org.lgna.story.Ground.class, "ground" );
+		org.lgna.project.ast.UserField cameraField = createPrivateFinalField( org.lgna.story.Camera.class, "camera" );
 
-		org.lgna.project.ast.MethodDeclaredInAlice myFirstMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "myFirstMethod" );
+		org.lgna.project.ast.UserMethod myFirstMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "myFirstMethod" );
 
-		org.lgna.project.ast.MethodDeclaredInAlice performGeneratedSetupMethod = createMethod( org.lgna.project.ast.Access.PRIVATE, Void.TYPE, org.alice.ide.IDE.GENERATED_SET_UP_METHOD_NAME );
+		org.lgna.project.ast.UserMethod performGeneratedSetupMethod = createMethod( org.lgna.project.ast.Access.PRIVATE, Void.TYPE, org.alice.ide.IDE.GENERATED_SET_UP_METHOD_NAME );
 		org.lgna.project.ast.BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
 		
-		for( org.lgna.project.ast.FieldDeclaredInAlice field : new org.lgna.project.ast.FieldDeclaredInAlice[] { cameraField, sunField, groundField } ) {
+		for( org.lgna.project.ast.UserField field : new org.lgna.project.ast.UserField[] { cameraField, sunField, groundField } ) {
 			java.lang.reflect.Method mthd;
 			try {
-				mthd = ((org.lgna.project.ast.TypeDeclaredInJava)field.getValueType()).getClassReflectionProxy().getReification().getMethod( "setVehicle", org.lgna.story.Entity.class );
+				mthd = ((org.lgna.project.ast.JavaType)field.getValueType()).getClassReflectionProxy().getReification().getMethod( "setVehicle", org.lgna.story.Entity.class );
 			} catch( NoSuchMethodException nsme ) {
 				throw new RuntimeException( nsme );
 			}
-			org.lgna.project.ast.AbstractMethod method = org.lgna.project.ast.MethodDeclaredInJava.get( mthd );
+			org.lgna.project.ast.AbstractMethod method = org.lgna.project.ast.JavaMethod.getInstance( mthd );
 			//edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = field.getValueType().findMethod( "setVehicle", org.lookingglassandalice.storytelling.Entity.class );
 
 			performGeneratedSetupBody.statements.add( 
@@ -134,15 +134,15 @@ public class BootstrapUtilties {
 			);
 		}
 		
-		org.lgna.project.ast.MethodDeclaredInJava setAppearanceMethod = org.lgna.project.ast.MethodDeclaredInJava.get( org.lgna.story.Ground.class, "setAppearance", org.lgna.story.Ground.Appearance.class );
+		org.lgna.project.ast.JavaMethod setAppearanceMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Ground.class, "setAppearance", org.lgna.story.Ground.Appearance.class );
 		
 		performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setAppearanceMethod, createFieldAccess( appearance ) ) );
 
-		org.lgna.project.ast.MethodDeclaredInAlice performCustomSetupMethod = createMethod( org.lgna.project.ast.Access.PRIVATE, Void.TYPE, "performCustomSetup" );
+		org.lgna.project.ast.UserMethod performCustomSetupMethod = createMethod( org.lgna.project.ast.Access.PRIVATE, Void.TYPE, "performCustomSetup" );
 
-		org.lgna.project.ast.MethodDeclaredInAlice handleActiveChangedMethod = createMethod( org.lgna.project.ast.Access.PROTECTED, Void.TYPE, "handleActiveChanged" );
-		org.lgna.project.ast.ParameterDeclaredInAlice isActiveParameter = new org.lgna.project.ast.ParameterDeclaredInAlice( "isActive", Boolean.class );
-		org.lgna.project.ast.ParameterDeclaredInAlice activeCountParameter = new org.lgna.project.ast.ParameterDeclaredInAlice( "activeCount", Integer.class );
+		org.lgna.project.ast.UserMethod handleActiveChangedMethod = createMethod( org.lgna.project.ast.Access.PROTECTED, Void.TYPE, "handleActiveChanged" );
+		org.lgna.project.ast.UserParameter isActiveParameter = new org.lgna.project.ast.UserParameter( "isActive", Boolean.class );
+		org.lgna.project.ast.UserParameter activeCountParameter = new org.lgna.project.ast.UserParameter( "activeCount", Integer.class );
 		handleActiveChangedMethod.parameters.add( isActiveParameter );
 		handleActiveChangedMethod.parameters.add( activeCountParameter );
 
@@ -172,14 +172,14 @@ public class BootstrapUtilties {
 
 		Class< ? > sceneCls = org.lgna.story.Scene.class;
 		
-		org.lgna.project.ast.MethodDeclaredInJava preserveVehiclesAndVantagePointsMethod = org.lgna.project.ast.MethodDeclaredInJava.get( sceneCls, "preserveVehiclesAndVantagePoints" );
-		org.lgna.project.ast.MethodDeclaredInJava restoreVehiclesAndVantagePointsMethod = org.lgna.project.ast.MethodDeclaredInJava.get( sceneCls, "restoreVehiclesAndVantagePoints" );
+		org.lgna.project.ast.JavaMethod preserveVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "preserveVehiclesAndVantagePoints" );
+		org.lgna.project.ast.JavaMethod restoreVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "restoreVehiclesAndVantagePoints" );
 		ifInnerFalseBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), restoreVehiclesAndVantagePointsMethod ) );
 		ifOuterFalseBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), preserveVehiclesAndVantagePointsMethod ) );
 
 		handleActiveChangedBody.statements.add( ifOuter );
 		
-		org.lgna.project.ast.TypeDeclaredInAlice sceneType = createType( "MyScene", org.lgna.story.Scene.class );
+		org.lgna.project.ast.NamedUserType sceneType = createType( "MyScene", org.lgna.story.Scene.class );
 		sceneType.fields.add( sunField );
 		sceneType.fields.add( groundField );
 		sceneType.fields.add( cameraField );
@@ -188,13 +188,13 @@ public class BootstrapUtilties {
 		sceneType.methods.add( handleActiveChangedMethod );
 		sceneType.methods.add( myFirstMethod );
 
-		org.lgna.project.ast.FieldDeclaredInAlice sceneField = createPrivateFinalField( sceneType, "myScene" );
-		org.lgna.project.ast.MethodDeclaredInAlice playOutStoryMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "playOutStory" );
+		org.lgna.project.ast.UserField sceneField = createPrivateFinalField( sceneType, "myScene" );
+		org.lgna.project.ast.UserMethod playOutStoryMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "playOutStory" );
 		org.lgna.project.ast.BlockStatement playOutStoryBody = playOutStoryMethod.body.getValue();
 		playOutStoryBody.statements.add( 
 				createMethodInvocationStatement( 
 						new org.lgna.project.ast.ThisExpression(), 
-						org.lgna.project.ast.MethodDeclaredInJava.get( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class ),
+						org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class ),
 						createThisFieldAccess( sceneField )
 				)
 		);
@@ -206,21 +206,21 @@ public class BootstrapUtilties {
 		);
 		
 		
-		org.lgna.project.ast.TypeDeclaredInAlice rv = createType( "MyProgram", org.lgna.story.Program.class );
+		org.lgna.project.ast.NamedUserType rv = createType( "MyProgram", org.lgna.story.Program.class );
 		rv.fields.add( sceneField );
 		rv.methods.add( playOutStoryMethod );
 
 		
 		
-		org.lgna.project.ast.ParameterDeclaredInAlice argsParameter = new org.lgna.project.ast.ParameterDeclaredInAlice( "args", String[].class );
-		org.lgna.project.ast.MethodDeclaredInAlice mainMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "main" );
+		org.lgna.project.ast.UserParameter argsParameter = new org.lgna.project.ast.UserParameter( "args", String[].class );
+		org.lgna.project.ast.UserMethod mainMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "main" );
 		mainMethod.parameters.add( argsParameter );
 		org.lgna.project.ast.BlockStatement mainBody = mainMethod.body.getValue();
 
 		mainMethod.isStatic.setValue( true );
 		
 		org.lgna.project.ast.VariableDeclarationStatement variableDeclarationStatement = createVariableDeclarationStatementInitializedByInstanceCreation( "story", rv );
-		org.lgna.project.ast.VariableDeclaredInAlice storyVariable = variableDeclarationStatement.variable.getValue();
+		org.lgna.project.ast.UserVariable storyVariable = variableDeclarationStatement.variable.getValue();
 		mainBody.statements.add( variableDeclarationStatement );
 		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.VariableAccess( storyVariable ), rv.findMethod( "initializeInFrame", String[].class ), new org.lgna.project.ast.ParameterAccess( argsParameter ) ) );
 		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.VariableAccess( storyVariable ), playOutStoryMethod ) );

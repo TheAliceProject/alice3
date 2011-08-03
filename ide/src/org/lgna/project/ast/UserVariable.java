@@ -46,24 +46,28 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class PackageDeclaredInAlice extends AbstractPackage {
-	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-
-	public PackageDeclaredInAlice() {
+public class UserVariable extends UserLocal {
+	public UserVariable() {
 	}
-	public PackageDeclaredInAlice( String name ) {
-		this.name.setValue( name );
+	public UserVariable( String name, AbstractType<?,?,?> valueType ) {
+		super( name, valueType );
 	}
-	@Override
-	public boolean isDeclaredInAlice() {
-		return true;
+	public UserVariable( String name, Class<?> valueCls ) {
+		this( name, JavaType.getInstance( valueCls ) );
 	}
 	@Override
-	public String getName() {
-		return name.getValue();
+	public boolean isFinal() {
+		return false;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return this.name;
+	protected String generateName( Node context ) {
+		AbstractType<?,?,?> type = this.valueType.getValue();
+		String name = type.getName();
+		if( name != null && name.length() > 0 ) {
+			return Character.toString( Character.toLowerCase( name.charAt( 0 ) ) );
+		} else {
+			return "v";
+		}
 	}
+	
 }

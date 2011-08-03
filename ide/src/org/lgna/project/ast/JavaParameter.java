@@ -43,72 +43,47 @@
 
 package org.lgna.project.ast;
 
-//todo: name
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterDeclaredInJavaMethod extends ParameterDeclaredInJava {
-	private static String getParameterNameFor( MethodReflectionProxy methodReflectionProxy, int index ) {
-		String rv = null;
-		try {
-			org.lgna.project.reflect.ClassInfo classInfo = org.lgna.project.reflect.ClassInfoManager.get( methodReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
-			if( classInfo != null ) {
-				org.lgna.project.reflect.MethodInfo methodInfo = classInfo.lookupInfo( methodReflectionProxy.getReification() );
-				if( methodInfo != null ) {
-					String[] parameterNames = methodInfo.getParameterNames();
-					if( parameterNames != null ) {
-						rv = parameterNames[ index ];
-					}
-				}
-			}
-		} catch( Throwable t ) {
-			//t.printStackTrace();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "ParameterDeclaredInJavaMethod getParameterNameFor: ", methodReflectionProxy, index );
-		}
-		return rv;
-	}
-
-	private MethodDeclaredInJava m_method;
-	private int m_index;
-	private String m_name;
-	private TypeDeclaredInJava m_valueType;
-	/*package-private*/ ParameterDeclaredInJavaMethod( MethodDeclaredInJava method, int index, java.lang.annotation.Annotation[] annotations ) {
-		super( annotations );
-		m_method = method;
-		m_index = index;
-		MethodReflectionProxy methodReflectionProxy = m_method.getMethodReflectionProxy();
-		m_name = getParameterNameFor( methodReflectionProxy, m_index );
-		m_valueType = TypeDeclaredInJava.get( methodReflectionProxy.getParameterClassReflectionProxies()[ m_index ] );
-	}
-	
-	public MethodDeclaredInJava getMethod() {
-		return m_method;
-	}
-	public int getIndex() {
-		return m_index;
-	}
-	
-	@Override
-	public String getName() {
-		return m_name;
+public abstract class JavaParameter extends AbstractParameter {
+	private java.lang.annotation.Annotation[] m_annotations;
+	public JavaParameter( java.lang.annotation.Annotation[] annotations ) {
+		m_annotations = annotations;
 	}
 	@Override
-	public AbstractType<?,?,?> getValueType() {
-		return m_valueType;
+	public boolean isDeclaredInAlice() {
+		return false;
 	}
-
+	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
 	@Override
 	public boolean isVariableLength() {
+		for( java.lang.annotation.Annotation annotation : m_annotations ) {
+			if( annotation instanceof edu.cmu.cs.dennisc.java.lang.ParameterAnnotation ) {
+				edu.cmu.cs.dennisc.java.lang.ParameterAnnotation parameterAnnotation = (edu.cmu.cs.dennisc.java.lang.ParameterAnnotation)annotation;
+				return parameterAnnotation.isVariable();
+			}
+		}
 		return false;
 	}
 	
-	@Override
-	public boolean isEquivalentTo( Object other ) {
-		if( other instanceof ParameterDeclaredInJavaMethod ) {
-			ParameterDeclaredInJavaMethod otherPDIJM = (ParameterDeclaredInJavaMethod)other;
-			return m_method.equals( otherPDIJM.m_method ) && m_index == otherPDIJM.m_index && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_name, otherPDIJM.m_name ) && m_valueType.equals( otherPDIJM.m_valueType );
-		} else {
-			return false;
-		}
+	public JavaType getValueTypeDeclaredInJava() {
+		return (JavaType)getValueType();
 	}
+	@Override
+	public AbstractType<?,?,?> getDesiredValueType() {
+		if( m_annotations != null ) {
+			for( java.lang.annotation.Annotation annotation : m_annotations ) {
+				if( annotation instanceof org.lgna.project.annotations.ParameterTemplate ) {
+					org.lgna.project.annotations.ParameterTemplate parameterTemplate = (org.lgna.project.annotations.ParameterTemplate)annotation;
+					return JavaType.getInstance( parameterTemplate.preferredArgumentClass() );
+				}
+			}
+		}
+		return getValueType();
+	}
+	
 }

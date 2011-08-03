@@ -49,7 +49,7 @@ public class BooleanExpressionBodyPair extends AbstractNode {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
-			return TypeDeclaredInJava.get( Boolean.class );
+			return JavaType.getInstance( Boolean.class );
 		}
 	};
 	public NodeProperty< BlockStatement > body = new NodeProperty< BlockStatement >( this );

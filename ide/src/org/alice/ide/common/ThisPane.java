@@ -46,7 +46,7 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class ThisPane extends AccessiblePane {
-	private static final org.lgna.project.ast.TypeDeclaredInJava TYPE_FOR_NULL = org.lgna.project.ast.TypeDeclaredInJava.get( Void.class );
+	private static final org.lgna.project.ast.JavaType TYPE_FOR_NULL = org.lgna.project.ast.JavaType.getInstance( Void.class );
 	private org.lgna.project.ast.AbstractType<?,?,?> type = TYPE_FOR_NULL;
 	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > codeSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {

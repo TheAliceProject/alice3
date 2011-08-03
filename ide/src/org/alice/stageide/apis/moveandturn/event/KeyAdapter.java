@@ -44,8 +44,8 @@ package org.alice.stageide.apis.moveandturn.event;
 
 public class KeyAdapter implements org.lgna.story.event.KeyListener {
 	private org.lgna.project.virtualmachine.Context context;
-	private org.lgna.project.ast.MethodDeclaredInAlice method;
-	public KeyAdapter( org.lgna.project.virtualmachine.Context context, org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > type, Object[] arguments ) {
+	private org.lgna.project.ast.UserMethod method;
+	public KeyAdapter( org.lgna.project.virtualmachine.Context context, org.lgna.project.ast.UserType< ? > type, Object[] arguments ) {
 		this.context = context;
 		this.method = type.getDeclaredMethod( "keyPressed", org.lgna.story.event.KeyEvent.class );
 	}

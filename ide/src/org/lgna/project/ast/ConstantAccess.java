@@ -47,10 +47,10 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class ConstantAccess extends Expression {
-	public DeclarationProperty< ConstantDeclaredInAlice > constant = new DeclarationProperty< ConstantDeclaredInAlice >( this );
+	public DeclarationProperty< UserConstant > constant = new DeclarationProperty< UserConstant >( this );
 	public ConstantAccess() {
 	}
-	public ConstantAccess( ConstantDeclaredInAlice constant ){
+	public ConstantAccess( UserConstant constant ){
 		this.constant.setValue( constant );
 	}
 	@Override

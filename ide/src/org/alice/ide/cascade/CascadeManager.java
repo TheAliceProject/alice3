@@ -63,7 +63,7 @@ public abstract class CascadeManager {
 		this.booleanFillerInner.addRelationalType( operandType );
 	}
 	public void addRelationalTypeToBooleanFillerInner( Class<?> operandCls ) {
-		addRelationalTypeToBooleanFillerInner( org.lgna.project.ast.TypeDeclaredInJava.get( operandCls ) );
+		addRelationalTypeToBooleanFillerInner( org.lgna.project.ast.JavaType.getInstance( operandCls ) );
 	}
 	private org.lgna.project.ast.Expression previousExpression = null;
 	private org.alice.ide.codeeditor.BlockStatementIndexPair contextBlockStatementIndexPair = null;
@@ -87,7 +87,7 @@ public abstract class CascadeManager {
 		return type;
 	}
 
-	private java.util.LinkedList< org.lgna.project.ast.LocalDeclaredInAlice > updateAccessibleLocalsForBlockStatementAndIndex( java.util.LinkedList< org.lgna.project.ast.LocalDeclaredInAlice > rv, org.lgna.project.ast.BlockStatement blockStatement, int index ) {
+	private java.util.LinkedList< org.lgna.project.ast.UserLocal > updateAccessibleLocalsForBlockStatementAndIndex( java.util.LinkedList< org.lgna.project.ast.UserLocal > rv, org.lgna.project.ast.BlockStatement blockStatement, int index ) {
 		while( index >= 1 ) {
 			index--;
 			org.lgna.project.ast.Statement statementI = blockStatement.statements.get( index );
@@ -98,7 +98,7 @@ public abstract class CascadeManager {
 		}
 		return rv;
 	}
-	private java.util.LinkedList< org.lgna.project.ast.LocalDeclaredInAlice > updateAccessibleLocals( java.util.LinkedList< org.lgna.project.ast.LocalDeclaredInAlice > rv, org.lgna.project.ast.Statement statement ) {
+	private java.util.LinkedList< org.lgna.project.ast.UserLocal > updateAccessibleLocals( java.util.LinkedList< org.lgna.project.ast.UserLocal > rv, org.lgna.project.ast.Statement statement ) {
 		org.lgna.project.ast.Node parent = statement.getParent();
 		if( parent instanceof org.lgna.project.ast.BooleanExpressionBodyPair ) {
 			parent = parent.getParent();
@@ -128,8 +128,8 @@ public abstract class CascadeManager {
 		return rv;
 	}
 
-	private Iterable< org.lgna.project.ast.LocalDeclaredInAlice > getAccessibleLocals( org.lgna.project.ast.BlockStatement blockStatement, int index ) {
-		java.util.LinkedList< org.lgna.project.ast.LocalDeclaredInAlice > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private Iterable< org.lgna.project.ast.UserLocal > getAccessibleLocals( org.lgna.project.ast.BlockStatement blockStatement, int index ) {
+		java.util.LinkedList< org.lgna.project.ast.UserLocal > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		updateAccessibleLocalsForBlockStatementAndIndex( rv, blockStatement, index );
 		updateAccessibleLocals( rv, blockStatement );
 		return rv;
@@ -152,7 +152,7 @@ public abstract class CascadeManager {
 		if( codeInFocus != null ) {
 
 			java.util.List< org.alice.ide.croquet.models.cascade.array.ArrayLengthFillIn > arrayLengthFillIns;
-			if( type.isAssignableFrom( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) && blankNode.isTop() ) {
+			if( type.isAssignableFrom( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) && blankNode.isTop() ) {
 				arrayLengthFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			} else {
 				arrayLengthFillIns = null;
@@ -198,15 +198,15 @@ public abstract class CascadeManager {
 						}
 					}
 				}
-				for( org.lgna.project.ast.LocalDeclaredInAlice local : this.getAccessibleLocals( this.contextBlockStatementIndexPair.getBlockStatement(), this.contextBlockStatementIndexPair.getIndex() ) ) {
+				for( org.lgna.project.ast.UserLocal local : this.getAccessibleLocals( this.contextBlockStatementIndexPair.getBlockStatement(), this.contextBlockStatementIndexPair.getIndex() ) ) {
 					org.lgna.project.ast.AbstractType<?,?,?> localType = local.getValueType();
 					if( type.isAssignableFrom( localType ) ) {
 						org.lgna.project.ast.Expression expression;
-						if( local instanceof org.lgna.project.ast.VariableDeclaredInAlice ) {
-							org.lgna.project.ast.VariableDeclaredInAlice variable = (org.lgna.project.ast.VariableDeclaredInAlice)local;
+						if( local instanceof org.lgna.project.ast.UserVariable ) {
+							org.lgna.project.ast.UserVariable variable = (org.lgna.project.ast.UserVariable)local;
 							expression = new org.lgna.project.ast.VariableAccess( variable );
-						} else if( local instanceof org.lgna.project.ast.ConstantDeclaredInAlice ) {
-							org.lgna.project.ast.ConstantDeclaredInAlice constant = (org.lgna.project.ast.ConstantDeclaredInAlice)local;
+						} else if( local instanceof org.lgna.project.ast.UserConstant ) {
+							org.lgna.project.ast.UserConstant constant = (org.lgna.project.ast.UserConstant)local;
 							expression = new org.lgna.project.ast.ConstantAccess( constant );
 						} else {
 							expression = null;
@@ -217,8 +217,8 @@ public abstract class CascadeManager {
 					}
 					if( localType.isArray() ) {
 						org.lgna.project.ast.AbstractType<?,?,?> localArrayComponentType = localType.getComponentType();
-						if( local instanceof org.lgna.project.ast.VariableDeclaredInAlice ) {
-							org.lgna.project.ast.VariableDeclaredInAlice variable = (org.lgna.project.ast.VariableDeclaredInAlice)local;
+						if( local instanceof org.lgna.project.ast.UserVariable ) {
+							org.lgna.project.ast.UserVariable variable = (org.lgna.project.ast.UserVariable)local;
 							if( type.isAssignableFrom( localArrayComponentType ) ) {
 								rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( new org.lgna.project.ast.VariableAccess( variable ) ) );
 							}
@@ -227,8 +227,8 @@ public abstract class CascadeManager {
 									arrayLengthFillIns.add( org.alice.ide.croquet.models.cascade.array.VariableArrayLengthFillIn.getInstance( variable ) );
 								}
 							}
-						} else if( local instanceof org.lgna.project.ast.ConstantDeclaredInAlice ) {
-							org.lgna.project.ast.ConstantDeclaredInAlice constant = (org.lgna.project.ast.ConstantDeclaredInAlice)local;
+						} else if( local instanceof org.lgna.project.ast.UserConstant ) {
+							org.lgna.project.ast.UserConstant constant = (org.lgna.project.ast.UserConstant)local;
 							if( type.isAssignableFrom( localArrayComponentType ) ) {
 								rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( new org.lgna.project.ast.ConstantAccess( constant ) ) );
 							}
@@ -270,8 +270,8 @@ public abstract class CascadeManager {
 	}
 
 	protected org.lgna.project.ast.AbstractType<?,?,?> getTypeFor( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		if( type == org.lgna.project.ast.TypeDeclaredInJava.get( Number.class ) ) {
-			return org.lgna.project.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE;
+		if( type == org.lgna.project.ast.JavaType.getInstance( Number.class ) ) {
+			return org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE;
 		} else {
 			return type;
 		}
@@ -294,7 +294,7 @@ public abstract class CascadeManager {
 			}
 			this.addCustomFillIns( rv, blankNode, type );
 			type = getTypeFor( type );
-			if( type == org.lgna.project.ast.TypeDeclaredInJava.get( Object.class ) ) {
+			if( type == org.lgna.project.ast.JavaType.getInstance( Object.class ) ) {
 				this.assumingStringConcatenationObjectFillerInner.addItems( rv, isRoot, this.previousExpression );
 			} else {
 				for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
@@ -336,7 +336,7 @@ public abstract class CascadeManager {
 		return rv;
 	}
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, Class<?> cls ) {
-		return this.updateChildren( rv, blankNode, org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
+		return this.updateChildren( rv, blankNode, org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
 //	@Deprecated
 //	private void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent, int dropIndex, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {

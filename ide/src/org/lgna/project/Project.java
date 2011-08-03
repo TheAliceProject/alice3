@@ -194,17 +194,17 @@ public class Project {
 		}
 	}
 	
-	private org.lgna.project.ast.TypeDeclaredInAlice programType = null;
+	private org.lgna.project.ast.NamedUserType programType = null;
 	private java.util.Set< org.alice.virtualmachine.Resource > resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
 	private Properties properties = new Properties();
-	public Project( org.lgna.project.ast.TypeDeclaredInAlice programType, java.util.Set< org.alice.virtualmachine.Resource > resources ) {
+	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set< org.alice.virtualmachine.Resource > resources ) {
 		this( programType );
 		this.resources.addAll( resources );
 	}
-	public Project( org.lgna.project.ast.TypeDeclaredInAlice programType ) {
+	public Project( org.lgna.project.ast.NamedUserType programType ) {
 		this.programType = programType;
 	}
-	public org.lgna.project.ast.TypeDeclaredInAlice getProgramType() {
+	public org.lgna.project.ast.NamedUserType getProgramType() {
 		return this.programType;
 	}
 

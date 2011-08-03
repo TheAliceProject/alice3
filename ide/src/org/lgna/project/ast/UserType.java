@@ -46,13 +46,13 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTypeDeclaredInAlice<C extends AbstractConstructor> extends AbstractType<C, MethodDeclaredInAlice, FieldDeclaredInAlice> {
+public abstract class UserType<C extends AbstractConstructor> extends AbstractType<C, UserMethod, UserField> {
 	protected class Adapter<E extends AbstractMember> implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > {
 		private void handleAdd( E member ) {
 			assert member instanceof MemberDeclaredInAlice;
 			assert member.getDeclaringType() == null : member.getDeclaringType();
 			MemberDeclaredInAlice memberDeclaredInAlice = (MemberDeclaredInAlice)member;
-			memberDeclaredInAlice.setDeclaringType( AbstractTypeDeclaredInAlice.this );
+			memberDeclaredInAlice.setDeclaringType( UserType.this );
 		}
 		private void handleRemove( E member ) {
 			assert member instanceof MemberDeclaredInAlice;
@@ -110,20 +110,20 @@ public abstract class AbstractTypeDeclaredInAlice<C extends AbstractConstructor>
 			super.setValue( owner, value );
 		}
 	};
-	public NodeListProperty< MethodDeclaredInAlice > methods = new NodeListProperty< MethodDeclaredInAlice >( this );
-	public NodeListProperty< FieldDeclaredInAlice > fields = new NodeListProperty< FieldDeclaredInAlice >( this );
-	public AbstractTypeDeclaredInAlice() {
+	public NodeListProperty< UserMethod > methods = new NodeListProperty< UserMethod >( this );
+	public NodeListProperty< UserField > fields = new NodeListProperty< UserField >( this );
+	public UserType() {
 		this.addListenersForMethodsAndFields();
 	}
-	public AbstractTypeDeclaredInAlice( AbstractType<?,?,?> superType, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
+	public UserType( AbstractType<?,?,?> superType, UserMethod[] methods, UserField[] fields ) {
 		this.addListenersForMethodsAndFields();
 		this.superType.setValue( superType );
 		this.methods.add( methods );
 		this.fields.add( fields );
 	}
 	private void addListenersForMethodsAndFields() {
-		this.methods.addListPropertyListener( new Adapter< MethodDeclaredInAlice >() );
-		this.fields.addListPropertyListener( new Adapter< FieldDeclaredInAlice >() );
+		this.methods.addListPropertyListener( new Adapter< UserMethod >() );
+		this.fields.addListPropertyListener( new Adapter< UserField >() );
 	}
 	
 	@Override
@@ -139,11 +139,11 @@ public abstract class AbstractTypeDeclaredInAlice<C extends AbstractConstructor>
 		return superType.getValue();
 	}
 	@Override
-	public final java.util.ArrayList< MethodDeclaredInAlice > getDeclaredMethods() {
+	public final java.util.ArrayList< UserMethod > getDeclaredMethods() {
 		return methods.getValue();
 	}
 	@Override
-	public final java.util.ArrayList< FieldDeclaredInAlice > getDeclaredFields() {
+	public final java.util.ArrayList< UserField > getDeclaredFields() {
 		return fields.getValue();
 	}
 	
@@ -166,6 +166,6 @@ public abstract class AbstractTypeDeclaredInAlice<C extends AbstractConstructor>
 	}
 	@Override
 	public final AbstractType<?,?,?> getArrayType() {
-		return ArrayTypeDeclaredInAlice.get( this, 1 );
+		return UserArrayType.getInstance( this, 1 );
 	}
 }

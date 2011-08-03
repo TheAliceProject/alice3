@@ -64,7 +64,7 @@ public class CascadeManager {
 	public static ExpressionBlank getBlankForType( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		Class<?> cls;
 		if( type != null ) {
-			org.lgna.project.ast.TypeDeclaredInJava typeDeclaredInJava = type.getFirstTypeEncounteredDeclaredInJava();
+			org.lgna.project.ast.JavaType typeDeclaredInJava = type.getFirstTypeEncounteredDeclaredInJava();
 			assert typeDeclaredInJava != null : type;
 			cls = typeDeclaredInJava.getClassReflectionProxy().getReification();
 		} else {
@@ -81,6 +81,6 @@ public class CascadeManager {
 		return rv;
 	}
 	public static org.alice.ide.croquet.models.cascade.ExpressionBlank[] createBlanks( Class<?>... clses ) {
-		return createBlanks( org.lgna.project.ast.TypeDeclaredInJava.get( clses ) );
+		return createBlanks( org.lgna.project.ast.JavaType.getInstances( clses ) );
 	}
 }

@@ -53,17 +53,17 @@ public class Decoder {
 		Decoder.mapToMapMethodName.put( classReflectionProxy, prevName, nextName );
 	}
 	public static void addMethodFilterWithinClass( Class<?> cls, String prevName, String nextName ) {
-		addMethodFilterWithinClass( TypeDeclaredInJava.get( cls ).getClassReflectionProxy(), prevName, nextName );
+		addMethodFilterWithinClass( JavaType.getInstance( cls ).getClassReflectionProxy(), prevName, nextName );
 	}
 
 	public static void addClassFilter( ClassReflectionProxy prevClassReflectionProxy, ClassReflectionProxy nextClassReflectionProxy ) {
 		Decoder.mapClassNameToClassName.put( prevClassReflectionProxy.getName(), nextClassReflectionProxy.getName() );
 	}
 	public static void addClassFilter( ClassReflectionProxy prevClassReflectionProxy, Class<?> nextCls ) {
-		addClassFilter( prevClassReflectionProxy, TypeDeclaredInJava.get( nextCls ).getClassReflectionProxy() );
+		addClassFilter( prevClassReflectionProxy, JavaType.getInstance( nextCls ).getClassReflectionProxy() );
 	}
 	public static void addClassFilter( Class<?> prevCls, Class<?> nextCls ) {
-		addClassFilter( TypeDeclaredInJava.get( prevCls ).getClassReflectionProxy(), TypeDeclaredInJava.get( nextCls ).getClassReflectionProxy() );
+		addClassFilter( JavaType.getInstance( prevCls ).getClassReflectionProxy(), JavaType.getInstance( nextCls ).getClassReflectionProxy() );
 	}
 
 	private static String filterClassNameIfNecessary( String clsName ) {
@@ -176,19 +176,19 @@ public class Decoder {
 		return createClassReflectionProxy( clsName );
 	}
 
-	private ArrayTypeDeclaredInAlice decodeArrayTypeDeclaredInAlice( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
+	private UserArrayType decodeArrayTypeDeclaredInAlice( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
 		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "leafType" );
 		org.w3c.dom.Element xmlDimensionCount = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "dimensionCount" );
 		org.w3c.dom.Element xmlLeafTypeNode = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlLeafType, "node" );
-		TypeDeclaredInAlice leafType = (TypeDeclaredInAlice)decode( xmlLeafTypeNode, map );
+		NamedUserType leafType = (NamedUserType)decode( xmlLeafTypeNode, map );
 		int dimensionCount = Integer.parseInt( xmlDimensionCount.getTextContent() );
-		return ArrayTypeDeclaredInAlice.get( leafType, dimensionCount );
+		return UserArrayType.getInstance( leafType, dimensionCount );
 	}
-	private AnonymousConstructor decodeAnonymousConstructor( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
+	private AnonymousUserConstructor decodeAnonymousConstructor( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
 		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "anonymousType" );
 		org.w3c.dom.Element xmlLeafTypeNode = (org.w3c.dom.Element)xmlLeafType.getChildNodes().item( 0 );
-		AnonymousInnerTypeDeclaredInAlice anonymousType = (AnonymousInnerTypeDeclaredInAlice)decode( xmlLeafTypeNode, map );
-		return AnonymousConstructor.get( anonymousType );
+		AnonymousUserType anonymousType = (AnonymousUserType)decode( xmlLeafTypeNode, map );
+		return AnonymousUserConstructor.get( anonymousType );
 	}
 
 	private ClassReflectionProxy decodeDeclaringClass( org.w3c.dom.Element xmlElement ) {
@@ -227,35 +227,35 @@ public class Decoder {
 		AbstractNode rv;
 		if( xmlElement.hasAttribute( CodecConstants.TYPE_ATTRIBUTE ) ) {
 			String clsName = getClassName( xmlElement );
-			if( clsName.equals( TypeDeclaredInJava.class.getName() ) ) {
-				rv = TypeDeclaredInJava.get( decodeType( xmlElement, "type" ) );
-			} else if( clsName.equals( ArrayTypeDeclaredInAlice.class.getName() ) ) {
+			if( clsName.equals( JavaType.class.getName() ) ) {
+				rv = JavaType.getInstance( decodeType( xmlElement, "type" ) );
+			} else if( clsName.equals( UserArrayType.class.getName() ) ) {
 				rv = decodeArrayTypeDeclaredInAlice( xmlElement, map );
-			} else if( clsName.equals( ConstructorDeclaredInJava.class.getName() ) ) {
-				rv = ConstructorDeclaredInJava.get( decodeConstructor( xmlElement, "constructor" ) );
-			} else if( clsName.equals( MethodDeclaredInJava.class.getName() ) ) {
-				rv = MethodDeclaredInJava.get( decodeMethod( xmlElement, "method" ) );
-			} else if( clsName.equals( FieldDeclaredInJavaWithField.class.getName() ) ) {
-				rv = FieldDeclaredInJavaWithField.get( decodeField( xmlElement, "field" ) );
+			} else if( clsName.equals( JavaConstructor.class.getName() ) ) {
+				rv = JavaConstructor.getInstance( decodeConstructor( xmlElement, "constructor" ) );
+			} else if( clsName.equals( JavaMethod.class.getName() ) ) {
+				rv = JavaMethod.getInstance( decodeMethod( xmlElement, "method" ) );
+			} else if( clsName.equals( JavaField.class.getName() ) ) {
+				rv = JavaField.getInstance( decodeField( xmlElement, "field" ) );
 			} else if( clsName.equals( FieldDeclaredInJavaWithGetterAndSetter.class.getName() ) ) {
 				MethodReflectionProxy gttr = decodeMethod( xmlElement, "getter" );
 				MethodReflectionProxy sttr = decodeMethod( xmlElement, "setter" );
 				rv = FieldDeclaredInJavaWithGetterAndSetter.get( gttr, sttr );
-			} else if( clsName.equals( AnonymousConstructor.class.getName() ) ) {
+			} else if( clsName.equals( AnonymousUserConstructor.class.getName() ) ) {
 				rv = decodeAnonymousConstructor( xmlElement, map );
-			} else if( clsName.equals( ParameterDeclaredInJavaConstructor.class.getName() ) ) {
+			} else if( clsName.equals( JavaConstructorParameter.class.getName() ) ) {
 				org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
 				assert nodeList.getLength() == 2;
 				org.w3c.dom.Element xmlConstructor = (org.w3c.dom.Element)nodeList.item( 0 );
-				ConstructorDeclaredInJava constructorDeclaredInJava = (ConstructorDeclaredInJava)decodeValue( xmlConstructor, map );
+				JavaConstructor constructorDeclaredInJava = (JavaConstructor)decodeValue( xmlConstructor, map );
 				org.w3c.dom.Element xmlIndex = (org.w3c.dom.Element)nodeList.item( 1 );
 				int index = Integer.parseInt( xmlIndex.getTextContent() );
 				rv = constructorDeclaredInJava.getParameters().get( index );
-			} else if( clsName.equals( ParameterDeclaredInJavaMethod.class.getName() ) ) {
+			} else if( clsName.equals( JavaMethodParameter.class.getName() ) ) {
 				org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
 				assert nodeList.getLength() == 2;
 				org.w3c.dom.Element xmlMethod = (org.w3c.dom.Element)nodeList.item( 0 );
-				MethodDeclaredInJava methodDeclaredInJava = (MethodDeclaredInJava)decodeValue( xmlMethod, map );
+				JavaMethod methodDeclaredInJava = (JavaMethod)decodeValue( xmlMethod, map );
 				org.w3c.dom.Element xmlIndex = (org.w3c.dom.Element)nodeList.item( 1 );
 				int index = Integer.parseInt( xmlIndex.getTextContent() );
 				rv = methodDeclaredInJava.getParameters().get( index );

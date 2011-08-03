@@ -50,7 +50,7 @@ import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
 import org.lgna.croquet.components.DragComponent;
-import org.lgna.project.ast.TypeDeclaredInAlice;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
 import org.alice.stageide.gallerybrowser.ClassBasedGalleryDragComponent;
@@ -215,7 +215,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			if (dragSource instanceof ClassBasedGalleryDragComponent)
 			{
 				ClassBasedGalleryDragComponent galleryDragComponent = (ClassBasedGalleryDragComponent)dragSource;
-				edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode = galleryDragComponent.getTreeNode();
+				edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode = galleryDragComponent.getTreeNode();
 				if (treeNode instanceof ModelResourceTreeNode)
 				{
 					Class<?> resourceClass = ((ModelResourceTreeNode)treeNode).getResourceClass();

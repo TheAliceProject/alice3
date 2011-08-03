@@ -72,10 +72,10 @@ public abstract class Factory {
 	}
 	protected abstract org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty );
 	
-	protected org.lgna.croquet.components.JComponent< ? > createVariableDeclarationPane( org.lgna.project.ast.VariableDeclaredInAlice variableDeclaredInAlice ) {
+	protected org.lgna.croquet.components.JComponent< ? > createVariableDeclarationPane( org.lgna.project.ast.UserVariable variableDeclaredInAlice ) {
 		return new VariableDeclarationPane( variableDeclaredInAlice );
 	}
-	protected org.lgna.croquet.components.JComponent< ? > createConstantDeclaredInAlice( org.lgna.project.ast.ConstantDeclaredInAlice constantDeclaredInAlice ) {
+	protected org.lgna.croquet.components.JComponent< ? > createConstantDeclaredInAlice( org.lgna.project.ast.UserConstant constantDeclaredInAlice ) {
 		return new ConstantDeclarationPane( constantDeclaredInAlice );
 	}
 	
@@ -87,17 +87,17 @@ public abstract class Factory {
 		org.lgna.croquet.components.JComponent< ? > rv;
 		if( underscoreCount == 2 ) {
 			if( "variable".equals( propertyName ) ) {
-				rv = this.createVariableDeclarationPane( (org.lgna.project.ast.VariableDeclaredInAlice)property.getValue() );
+				rv = this.createVariableDeclarationPane( (org.lgna.project.ast.UserVariable)property.getValue() );
 			} else if( "constant".equals( propertyName ) ) {
-				rv = this.createConstantDeclaredInAlice( (org.lgna.project.ast.ConstantDeclaredInAlice)property.getValue() );
+				rv = this.createConstantDeclaredInAlice( (org.lgna.project.ast.UserConstant)property.getValue() );
 			} else {
 				rv = new org.lgna.croquet.components.Label( "TODO: handle underscore count 2: " + propertyName );
 			}
 		} else if( underscoreCount == 1 ) {
 			if( "variable".equals( propertyName ) ) {
-				rv = new VariablePane( (org.lgna.project.ast.VariableDeclaredInAlice)property.getValue() );
+				rv = new VariablePane( (org.lgna.project.ast.UserVariable)property.getValue() );
 			} else if( "constant".equals( propertyName ) ) {
-				rv = new ConstantPane( (org.lgna.project.ast.ConstantDeclaredInAlice)property.getValue() );
+				rv = new ConstantPane( (org.lgna.project.ast.UserConstant)property.getValue() );
 			} else {
 				rv = new org.lgna.croquet.components.Label( "TODO: handle underscore count 1: " + propertyName );
 			}
@@ -166,7 +166,7 @@ public abstract class Factory {
 			org.alice.ide.common.DeclarationNameLabel label = new org.alice.ide.common.DeclarationNameLabel( declaration );
 			if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
 				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
-				if( method.getReturnType() == org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE ) {
+				if( method.getReturnType() == org.lgna.project.ast.JavaType.VOID_TYPE ) {
 					label.scaleFont( 1.1f );
 					label.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 				}
@@ -353,8 +353,8 @@ public abstract class Factory {
 	}
 	protected org.lgna.croquet.components.JComponent< ? > createInstanceCreationPane( org.lgna.project.ast.InstanceCreation instanceCreation ) {
 		org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-		if( constructor instanceof org.lgna.project.ast.AnonymousConstructor ) {
-			return new AnonymousConstructorPane( this, (org.lgna.project.ast.AnonymousConstructor)constructor );
+		if( constructor instanceof org.lgna.project.ast.AnonymousUserConstructor ) {
+			return new AnonymousConstructorPane( this, (org.lgna.project.ast.AnonymousUserConstructor)constructor );
 		} else {
 			return new ExpressionPane( instanceCreation, this.createComponent( instanceCreation ) );
 		}

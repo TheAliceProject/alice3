@@ -48,7 +48,7 @@ import javax.swing.ImageIcon;
 
 import org.alice.ide.common.NodeLikeSubstance;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
-import org.lgna.project.ast.TypeDeclaredInAlice;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
 
@@ -58,8 +58,8 @@ import org.lgna.story.resourceutilities.ModelResourceUtilities;
  *
  */
 public class ClassBasedGalleryDragComponent extends NodeLikeSubstance {
-	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice>, ClassBasedGalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ClassBasedGalleryDragComponent getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode ) {
+	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>, ClassBasedGalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ClassBasedGalleryDragComponent getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode ) {
 		ClassBasedGalleryDragComponent rv = map.get( treeNode );
 		if( rv != null ) {
 			//pass
@@ -70,12 +70,12 @@ public class ClassBasedGalleryDragComponent extends NodeLikeSubstance {
 		return rv;
 	}
 	
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode;
-	private ClassBasedGalleryDragComponent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> treeNode ) {
+	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode;
+	private ClassBasedGalleryDragComponent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode ) {
 		this.treeNode = treeNode;
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 		
-		TypeDeclaredInAlice classValue = treeNode.getValue();
+		NamedUserType classValue = treeNode.getValue();
 		if (treeNode instanceof ModelResourceTreeNode)
 		{
 			Class<?> resourceClass = ((ModelResourceTreeNode)treeNode).getResourceClass();
@@ -95,7 +95,7 @@ public class ClassBasedGalleryDragComponent extends NodeLikeSubstance {
 		this.getAwtComponent().setOpaque( false );
 	}
 	
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> getTreeNode() {
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> getTreeNode() {
 		return this.treeNode;
 	}
 

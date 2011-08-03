@@ -91,7 +91,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 			}
 		} else if( expression instanceof org.lgna.project.ast.VariableAccess ) {
 			org.lgna.project.ast.VariableAccess variableAccess = (org.lgna.project.ast.VariableAccess)expression;
-			org.lgna.project.ast.VariableDeclaredInAlice variable = variableAccess.variable.getValue();
+			org.lgna.project.ast.UserVariable variable = variableAccess.variable.getValue();
 			//todo?
 			//desiredValueType = variable.getDesiredValueType();
 			desiredValueType = null;
@@ -100,7 +100,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 			org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)expression;
 			org.lgna.project.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
 			desiredValueType = parameter.getDesiredValueType();
-			parent.addComponent( new ParameterPane( null, (org.lgna.project.ast.ParameterDeclaredInAlice)parameter ) );
+			parent.addComponent( new ParameterPane( null, (org.lgna.project.ast.UserParameter)parameter ) );
 		} else {
 			desiredValueType = null;
 			parent.addComponent( new org.lgna.croquet.components.Label( "TODO" ) );

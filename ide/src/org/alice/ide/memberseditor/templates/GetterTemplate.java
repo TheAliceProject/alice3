@@ -51,8 +51,8 @@ public class GetterTemplate extends org.alice.ide.templates.CascadingExpressions
 	private org.lgna.project.ast.AbstractField field;
 	protected GetterTemplate( org.lgna.project.ast.AbstractField field ) {
 		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
-			org.lgna.project.ast.FieldDeclaredInAlice fieldInAlice = (org.lgna.project.ast.FieldDeclaredInAlice)this.field;
+		if( this.field instanceof org.lgna.project.ast.UserField ) {
+			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
 			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
 		}
 	}

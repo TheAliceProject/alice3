@@ -61,7 +61,7 @@ public class RelationalExpressionLeftAndRightOperandsFillIn extends ExpressionFi
 		}
 	}
 	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( Class<?> operandCls, org.lgna.project.ast.RelationalInfixExpression.Operator operator ) {
-		return getInstance( org.lgna.project.ast.TypeDeclaredInJava.get( operandCls ), operator );
+		return getInstance( org.lgna.project.ast.JavaType.getInstance( operandCls ), operator );
 	}
 	private final org.lgna.project.ast.RelationalInfixExpression transientValue;
 	private RelationalExpressionLeftAndRightOperandsFillIn( org.lgna.project.ast.AbstractType< ?,?,? > operandType, org.lgna.project.ast.RelationalInfixExpression.Operator operator ) {

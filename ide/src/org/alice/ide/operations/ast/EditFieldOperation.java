@@ -46,17 +46,17 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class EditFieldOperation extends AbstractEditFieldOperation {
-	public EditFieldOperation( org.lgna.project.ast.FieldDeclaredInAlice field ) {
+	public EditFieldOperation( org.lgna.project.ast.UserField field ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "66bf123b-f047-4cba-86ea-04d3a0a1f689" ), "<html>Edit <strong>" + field.getName() + "</strong>...</html>", field );
 	}
 	@Override
 	protected org.alice.ide.declarationpanes.EditFieldPane prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		final java.util.Set< org.lgna.project.ast.FieldDeclaredInAlice > referencedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-		final java.util.Set< org.lgna.project.ast.FieldDeclaredInAlice > reassignedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		final java.util.Set< org.lgna.project.ast.UserField > referencedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		final java.util.Set< org.lgna.project.ast.UserField > reassignedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project = ide.getProject();
 		if( project != null ) {
-			final org.lgna.project.ast.FieldDeclaredInAlice field = this.getField();
+			final org.lgna.project.ast.UserField field = this.getField();
 			ide.ensureProjectCodeUpToDate();
 			org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess >( org.lgna.project.ast.FieldAccess.class ) {

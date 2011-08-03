@@ -46,7 +46,7 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public class CreateFieldPane extends AbstractCreateFieldPane {
-	public CreateFieldPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+	public CreateFieldPane( org.lgna.project.ast.UserType< ? > declaringType ) {
 		super( declaringType );
 	}
 	@Override

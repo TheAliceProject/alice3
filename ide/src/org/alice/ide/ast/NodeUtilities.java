@@ -46,20 +46,20 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class NodeUtilities {
-	public static org.lgna.project.ast.MethodDeclaredInAlice createMethod( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
-		return new org.lgna.project.ast.MethodDeclaredInAlice( name, returnType, new org.lgna.project.ast.ParameterDeclaredInAlice[] {}, new org.lgna.project.ast.BlockStatement() );
+	public static org.lgna.project.ast.UserMethod createMethod( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
+		return new org.lgna.project.ast.UserMethod( name, returnType, new org.lgna.project.ast.UserParameter[] {}, new org.lgna.project.ast.BlockStatement() );
 	}
-	public static org.lgna.project.ast.MethodDeclaredInAlice createFunction( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
+	public static org.lgna.project.ast.UserMethod createFunction( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
 		return createMethod( name, returnType );
 	}
-	public static org.lgna.project.ast.MethodDeclaredInAlice createProcedure( String name ) {
-		return createMethod( name, org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE );
+	public static org.lgna.project.ast.UserMethod createProcedure( String name ) {
+		return createMethod( name, org.lgna.project.ast.JavaType.VOID_TYPE );
 	}
 	
-	public static org.lgna.project.ast.TypeDeclaredInAlice createType( String name, org.lgna.project.ast.AbstractType<?,?,?> superType ) {
-		org.lgna.project.ast.ConstructorDeclaredInAlice constructor = new org.lgna.project.ast.ConstructorDeclaredInAlice();
+	public static org.lgna.project.ast.NamedUserType createType( String name, org.lgna.project.ast.AbstractType<?,?,?> superType ) {
+		org.lgna.project.ast.NamedUserConstructor constructor = new org.lgna.project.ast.NamedUserConstructor();
 		constructor.body.setValue( new org.lgna.project.ast.ConstructorBlockStatement() );
-		org.lgna.project.ast.TypeDeclaredInAlice rv = new org.lgna.project.ast.TypeDeclaredInAlice();
+		org.lgna.project.ast.NamedUserType rv = new org.lgna.project.ast.NamedUserType();
 		rv.name.setValue( name );
 		rv.superType.setValue( superType );
 		rv.constructors.add( constructor );
@@ -81,53 +81,53 @@ public class NodeUtilities {
 		return new org.lgna.project.ast.ArithmeticInfixExpression( leftOperand, operator, new org.alice.ide.ast.EmptyExpression( rightOperandType ), expressionType );
 	}
 	public static org.lgna.project.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( org.lgna.project.ast.Expression leftOperand, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
-		return createIncompleteArithmeticInfixExpression( leftOperand, operator, org.lgna.project.ast.TypeDeclaredInJava.get( rightOperandCls ), org.lgna.project.ast.TypeDeclaredInJava.get( expressionCls ) );
+		return createIncompleteArithmeticInfixExpression( leftOperand, operator, org.lgna.project.ast.JavaType.getInstance( rightOperandCls ), org.lgna.project.ast.JavaType.getInstance( expressionCls ) );
 	}
 	public static org.lgna.project.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( org.lgna.project.ast.AbstractType<?,?,?> leftOperandType, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?,?,?> rightOperandType, org.lgna.project.ast.AbstractType<?,?,?> expressionType ) {
 		return createIncompleteArithmeticInfixExpression( new org.alice.ide.ast.EmptyExpression( rightOperandType ), operator, rightOperandType, expressionType );
 	}
 	public static org.lgna.project.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( Class<?> leftOperandCls, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
-		return createIncompleteArithmeticInfixExpression( org.lgna.project.ast.TypeDeclaredInJava.get( leftOperandCls ), operator, org.lgna.project.ast.TypeDeclaredInJava.get( rightOperandCls ), org.lgna.project.ast.TypeDeclaredInJava.get( expressionCls ) );
+		return createIncompleteArithmeticInfixExpression( org.lgna.project.ast.JavaType.getInstance( leftOperandCls ), operator, org.lgna.project.ast.JavaType.getInstance( rightOperandCls ), org.lgna.project.ast.JavaType.getInstance( expressionCls ) );
 	}
 	public static org.lgna.project.ast.ConditionalInfixExpression createIncompleteConditionalInfixExpression( org.lgna.project.ast.Expression leftOperand, org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
-		return new org.lgna.project.ast.ConditionalInfixExpression( leftOperand, operator, new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
+		return new org.lgna.project.ast.ConditionalInfixExpression( leftOperand, operator, new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ) );
 	}
 	public static org.lgna.project.ast.ConditionalInfixExpression createIncompleteConditionalInfixExpression( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
-		return createIncompleteConditionalInfixExpression( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ), operator );
+		return createIncompleteConditionalInfixExpression( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ), operator );
 	}
 	
 	public static org.lgna.project.ast.RelationalInfixExpression createIncompleteRelationalInfixExpression( org.lgna.project.ast.AbstractType<?,?,?> leftOperandType, org.lgna.project.ast.RelationalInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?,?,?> rightOperandType ) {
 		return new org.lgna.project.ast.RelationalInfixExpression( new org.alice.ide.ast.EmptyExpression( rightOperandType ), operator, new org.alice.ide.ast.EmptyExpression( rightOperandType ), leftOperandType, rightOperandType );
 	}
 	public static org.lgna.project.ast.RelationalInfixExpression createIncompleteRelationalInfixExpression( Class<?> leftOperandCls, org.lgna.project.ast.RelationalInfixExpression.Operator operator, Class<?> rightOperandCls ) {
-		return createIncompleteRelationalInfixExpression( org.lgna.project.ast.TypeDeclaredInJava.get( leftOperandCls ), operator, org.lgna.project.ast.TypeDeclaredInJava.get( rightOperandCls ) );
+		return createIncompleteRelationalInfixExpression( org.lgna.project.ast.JavaType.getInstance( leftOperandCls ), operator, org.lgna.project.ast.JavaType.getInstance( rightOperandCls ) );
 	}
 
 	public static org.lgna.project.ast.LogicalComplement createIncompleteLogicalComplement() {
-		return new org.lgna.project.ast.LogicalComplement( new EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
+		return new org.lgna.project.ast.LogicalComplement( new EmptyExpression( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ) );
 	}
 	
-	public static org.lgna.project.ast.VariableDeclarationStatement createVariableDeclarationStatement( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.Expression initializerExpression ) {
+	public static org.lgna.project.ast.VariableDeclarationStatement createVariableDeclarationStatement( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.Expression initializerExpression ) {
 		return new org.lgna.project.ast.VariableDeclarationStatement(
 				variable,
 				initializerExpression 
 		);
 	}
 	public static org.lgna.project.ast.VariableDeclarationStatement createIncompleteVariableDeclarationStatement() {
-		org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.TypeDeclaredInJava.OBJECT_TYPE;
-		return createVariableDeclarationStatement( new org.lgna.project.ast.VariableDeclaredInAlice( "???", type ), new org.alice.ide.ast.EmptyExpression( type ) );
+		org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.JavaType.OBJECT_TYPE;
+		return createVariableDeclarationStatement( new org.lgna.project.ast.UserVariable( "???", type ), new org.alice.ide.ast.EmptyExpression( type ) );
 	}
 
 	public static org.lgna.project.ast.CountLoop createCountLoop( org.lgna.project.ast.Expression count ) {
 		return new org.lgna.project.ast.CountLoop(
-				new org.lgna.project.ast.VariableDeclaredInAlice( null, org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ),
-				new org.lgna.project.ast.ConstantDeclaredInAlice( null, org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ),
+				new org.lgna.project.ast.UserVariable( null, org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ),
+				new org.lgna.project.ast.UserConstant( null, org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ),
 				count, 
 				new org.lgna.project.ast.BlockStatement() 
 		);
 	}
 	public static org.lgna.project.ast.CountLoop createIncompleteCountLoop() {
-		return createCountLoop( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) );
+		return createCountLoop( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) );
 	}
 	public static org.lgna.project.ast.WhileLoop createWhileLoop( org.lgna.project.ast.Expression conditional ) {
 		return new org.lgna.project.ast.WhileLoop(
@@ -136,7 +136,7 @@ public class NodeUtilities {
 		);
 	}
 	public static org.lgna.project.ast.WhileLoop createIncompleteWhileLoop() {
-		return createWhileLoop( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
+		return createWhileLoop( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ) );
 	}
 	public static org.lgna.project.ast.ConditionalStatement createConditionalStatement( org.lgna.project.ast.Expression conditional ) {
 		return new org.lgna.project.ast.ConditionalStatement(
@@ -150,11 +150,11 @@ public class NodeUtilities {
 		);
 	}
 	public static org.lgna.project.ast.ConditionalStatement createIncompleteConditionalStatement() {
-		return createConditionalStatement( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
+		return createConditionalStatement( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ) );
 	}
 
 	public static org.lgna.project.ast.ForEachInArrayLoop createForEachInArrayLoop( org.lgna.project.ast.Expression arrayExpression ) {
-		org.lgna.project.ast.VariableDeclaredInAlice variable = new org.lgna.project.ast.VariableDeclaredInAlice( null, arrayExpression.getType().getComponentType() );
+		org.lgna.project.ast.UserVariable variable = new org.lgna.project.ast.UserVariable( null, arrayExpression.getType().getComponentType() );
 		return new org.lgna.project.ast.ForEachInArrayLoop(
 				variable,
 				arrayExpression, 
@@ -162,11 +162,11 @@ public class NodeUtilities {
 		);
 	}
 	public static org.lgna.project.ast.ForEachInArrayLoop createIncompleteForEachInArrayLoop() {
-		return createForEachInArrayLoop( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.get( Object[].class ) ) );
+		return createForEachInArrayLoop( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.getInstance( Object[].class ) ) );
 	}
 
 	public static org.lgna.project.ast.EachInArrayTogether createEachInArrayTogether( org.lgna.project.ast.Expression arrayExpression ) {
-		org.lgna.project.ast.VariableDeclaredInAlice variable = new org.lgna.project.ast.VariableDeclaredInAlice( null, arrayExpression.getType().getComponentType() );
+		org.lgna.project.ast.UserVariable variable = new org.lgna.project.ast.UserVariable( null, arrayExpression.getType().getComponentType() );
 		return new org.lgna.project.ast.EachInArrayTogether(
 				variable,
 				arrayExpression, 
@@ -174,7 +174,7 @@ public class NodeUtilities {
 		);
 	}
 	public static org.lgna.project.ast.EachInArrayTogether createIncompleteEachInArrayTogether() {
-		return createEachInArrayTogether( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.get( Object[].class ) ) );
+		return createEachInArrayTogether( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.getInstance( Object[].class ) ) );
 	}
 	
 	public static org.lgna.project.ast.MethodInvocation createIncompleteMethodInvocation( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
@@ -208,7 +208,7 @@ public class NodeUtilities {
 	}
 	public static org.lgna.project.ast.FieldAccess createStaticFieldAccess( Class<?> cls, String fieldName ) {
 		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredField( cls, fieldName );
-		org.lgna.project.ast.FieldDeclaredInJavaWithField field = org.lgna.project.ast.FieldDeclaredInJavaWithField.get( fld );
+		org.lgna.project.ast.JavaField field = org.lgna.project.ast.JavaField.getInstance( fld );
 		return createStaticFieldAccess( field );
 	}
 	
@@ -287,7 +287,7 @@ public class NodeUtilities {
 		return new org.lgna.project.ast.TypeExpression( type );
 	}
 	public static org.lgna.project.ast.TypeExpression createTypeExpression( Class<?> cls ) {
-		return createTypeExpression( org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
+		return createTypeExpression( org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
 	
 	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.Expression... argumentExpressions ) {
@@ -304,10 +304,10 @@ public class NodeUtilities {
 		return createInstanceCreation( type.getDeclaredConstructor() );
 	}
 	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( Class<?> cls, Class<?>[] parameterClses, org.lgna.project.ast.Expression... argumentExpressions ) {
-		return createInstanceCreation( org.lgna.project.ast.ConstructorDeclaredInJava.get( cls, parameterClses ), argumentExpressions );
+		return createInstanceCreation( org.lgna.project.ast.JavaConstructor.getInstance( cls, parameterClses ), argumentExpressions );
 	}
 	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( Class<?> cls ) {
-		return createInstanceCreation( org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
+		return createInstanceCreation( org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
 	
 	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( org.lgna.project.ast.AbstractType<?,?,?> arrayType, org.lgna.project.ast.Expression... expressions ) {
@@ -315,17 +315,17 @@ public class NodeUtilities {
 		return new org.lgna.project.ast.ArrayInstanceCreation( arrayType, lengths, expressions );
 	}
 	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, org.lgna.project.ast.Expression... expressions ) {
-		return createArrayInstanceCreation( org.lgna.project.ast.TypeDeclaredInJava.get( arrayCls ), expressions );
+		return createArrayInstanceCreation( org.lgna.project.ast.JavaType.getInstance( arrayCls ), expressions );
 	}
 	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( org.lgna.project.ast.AbstractType<?,?,?> arrayType, java.util.Collection< org.lgna.project.ast.Expression > expressions ) {
 		return createArrayInstanceCreation( arrayType, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( expressions, org.lgna.project.ast.Expression.class ) );
 	}
 	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, java.util.Collection< org.lgna.project.ast.Expression > expressions ) {
-		return createArrayInstanceCreation( org.lgna.project.ast.TypeDeclaredInJava.get( arrayCls ), edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( expressions, org.lgna.project.ast.Expression.class ) );
+		return createArrayInstanceCreation( org.lgna.project.ast.JavaType.getInstance( arrayCls ), edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( expressions, org.lgna.project.ast.Expression.class ) );
 	}
 
-	public static org.lgna.project.ast.MethodDeclaredInJava lookupMethod( Class<?> cls, String methodName, Class<?>... parameterTypes ) {
-		return org.lgna.project.ast.MethodDeclaredInJava.get( cls, methodName, parameterTypes );
+	public static org.lgna.project.ast.JavaMethod lookupMethod( Class<?> cls, String methodName, Class<?>... parameterTypes ) {
+		return org.lgna.project.ast.JavaMethod.getInstance( cls, methodName, parameterTypes );
 	}
 
 	
@@ -336,34 +336,34 @@ public class NodeUtilities {
 		return new org.lgna.project.ast.ReturnStatement( type, expression );
 	}
 	
-	public static org.lgna.project.ast.Expression createVariableAssignment( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.Expression valueExpression ) {
+	public static org.lgna.project.ast.Expression createVariableAssignment( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.Expression valueExpression ) {
 		org.lgna.project.ast.Expression variableAccess = new org.lgna.project.ast.VariableAccess( variable ); 
 		return new org.lgna.project.ast.AssignmentExpression( variable.valueType.getValue(), variableAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
 	}
-	public static org.lgna.project.ast.ExpressionStatement createVariableAssignmentStatement( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.Expression valueExpression ) {
+	public static org.lgna.project.ast.ExpressionStatement createVariableAssignmentStatement( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.Expression valueExpression ) {
 		return new org.lgna.project.ast.ExpressionStatement( createVariableAssignment( variable, valueExpression) );
 	}
-	public static org.lgna.project.ast.ExpressionStatement createIncompleteVariableAssignmentStatement( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteVariableAssignmentStatement( org.lgna.project.ast.UserVariable variable ) {
 		return createVariableAssignmentStatement( variable, new EmptyExpression( variable.valueType.getValue() ) );
 	}
 
-	public static org.lgna.project.ast.ExpressionStatement createVariableArrayAssignmentStatement( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.Expression indexExpression, org.lgna.project.ast.Expression valueExpression ) {
+	public static org.lgna.project.ast.ExpressionStatement createVariableArrayAssignmentStatement( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.Expression indexExpression, org.lgna.project.ast.Expression valueExpression ) {
 		org.lgna.project.ast.Expression variableAccess = new org.lgna.project.ast.VariableAccess( variable ); 
 		org.lgna.project.ast.ArrayAccess arrayAccess = new org.lgna.project.ast.ArrayAccess( variable.valueType.getValue(), variableAccess, indexExpression ); 
 		org.lgna.project.ast.Expression expression = new org.lgna.project.ast.AssignmentExpression( variable.valueType.getValue().getComponentType(), arrayAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
 		return new org.lgna.project.ast.ExpressionStatement( expression );
 	}
-	public static org.lgna.project.ast.ExpressionStatement createIncompleteVariableArrayAssignmentStatement( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
-		return createVariableArrayAssignmentStatement( variable, new EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ), new EmptyExpression( variable.valueType.getValue().getComponentType() ) );
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteVariableArrayAssignmentStatement( org.lgna.project.ast.UserVariable variable ) {
+		return createVariableArrayAssignmentStatement( variable, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( variable.valueType.getValue().getComponentType() ) );
 	}
-	public static org.lgna.project.ast.ExpressionStatement createParameterArrayAssignmentStatement( org.lgna.project.ast.ParameterDeclaredInAlice parameter, org.lgna.project.ast.Expression indexExpression, org.lgna.project.ast.Expression valueExpression ) {
+	public static org.lgna.project.ast.ExpressionStatement createParameterArrayAssignmentStatement( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.Expression indexExpression, org.lgna.project.ast.Expression valueExpression ) {
 		org.lgna.project.ast.Expression parameterAccess = new org.lgna.project.ast.ParameterAccess( parameter ); 
 		org.lgna.project.ast.ArrayAccess arrayAccess = new org.lgna.project.ast.ArrayAccess( parameter.valueType.getValue(), parameterAccess, indexExpression ); 
 		org.lgna.project.ast.Expression expression = new org.lgna.project.ast.AssignmentExpression( parameter.valueType.getValue().getComponentType(), arrayAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
 		return new org.lgna.project.ast.ExpressionStatement( expression );
 	}
-	public static org.lgna.project.ast.ExpressionStatement createIncompleteParameterArrayAssignmentStatement( org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
-		return createParameterArrayAssignmentStatement( parameter, new EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ), new EmptyExpression( parameter.valueType.getValue().getComponentType() ) );
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteParameterArrayAssignmentStatement( org.lgna.project.ast.UserParameter parameter ) {
+		return createParameterArrayAssignmentStatement( parameter, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( parameter.valueType.getValue().getComponentType() ) );
 	}
 
 	
@@ -371,10 +371,10 @@ public class NodeUtilities {
 		return new org.lgna.project.ast.StringConcatenation( left, right );
 	}
 	public static org.lgna.project.ast.StringConcatenation createIncompleteStringConcatenation( org.lgna.project.ast.Expression leftOperand ) {
-		return createStringConcatenation( leftOperand, new EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
+		return createStringConcatenation( leftOperand, new EmptyExpression( org.lgna.project.ast.JavaType.OBJECT_TYPE ) );
 	}
 	public static org.lgna.project.ast.StringConcatenation createIncompleteStringConcatenation() {
-		return createIncompleteStringConcatenation( new EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
+		return createIncompleteStringConcatenation( new EmptyExpression( org.lgna.project.ast.JavaType.OBJECT_TYPE ) );
 	}
 
 //	public static edu.cmu.cs.dennisc.alice.ast.AbstractParameter getNextParameter( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
@@ -385,7 +385,7 @@ public class NodeUtilities {
 //		return parameters.get( parameters.size()-1 );
 //	}
 	
-	public static java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > removeParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > rv, org.lgna.project.ast.CodeDeclaredInAlice code, org.lgna.project.ast.ParameterDeclaredInAlice parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
+	public static java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > removeParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > rv, org.lgna.project.ast.CodeDeclaredInAlice code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
 		assert rv != null;
 		assert code.getParamtersProperty().get( index ) == parameterDeclaredInAlice;
 		rv.clear();
@@ -398,7 +398,7 @@ public class NodeUtilities {
 		}
 		return rv;
 	}
-	public static void addParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > map, org.lgna.project.ast.CodeDeclaredInAlice code, org.lgna.project.ast.ParameterDeclaredInAlice parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
+	public static void addParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > map, org.lgna.project.ast.CodeDeclaredInAlice code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
 		code.getParamtersProperty().add( index, parameterDeclaredInAlice );
 		for( org.lgna.project.ast.ArgumentListProperty argumentListProperty : argumentListProperties ) {
 			org.lgna.project.ast.Argument argument = map.get( code );

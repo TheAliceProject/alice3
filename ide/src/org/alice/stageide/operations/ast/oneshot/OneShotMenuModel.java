@@ -47,9 +47,9 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< org.lgna.project.ast.FieldDeclaredInAlice, OneShotMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< org.lgna.project.ast.UserField, OneShotMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static OneShotMenuModel getInstance( org.lgna.project.ast.FieldDeclaredInAlice field ) {
+	public static OneShotMenuModel getInstance( org.lgna.project.ast.UserField field ) {
 		synchronized( map ) {
 			OneShotMenuModel rv = map.get( field );
 			if( rv != null ) {
@@ -70,7 +70,7 @@ public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 			return rv;
 		}
 	}
-	private OneShotMenuModel( org.lgna.project.ast.FieldDeclaredInAlice field, java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models ) {
+	private OneShotMenuModel( org.lgna.project.ast.UserField field, java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models ) {
 		super( java.util.UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ), models );
 	}
 }

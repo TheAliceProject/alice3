@@ -210,7 +210,7 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 		float x1 = x0 + width;
 		float y1 = y0 + height;
 		BeveledShapeForType rv;
-		if( type == org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE ) {
+		if( type == org.lgna.project.ast.JavaType.VOID_TYPE ) {
 			java.awt.geom.GeneralPath basePath = new java.awt.geom.GeneralPath();
 			java.awt.geom.GeneralPath shadowPath = new java.awt.geom.GeneralPath();
 			java.awt.geom.GeneralPath highlightPath = new java.awt.geom.GeneralPath();

@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class VariableDeclarationStatement extends LocalDeclarationStatement {
-	public DeclarationProperty< VariableDeclaredInAlice > variable = new DeclarationProperty< VariableDeclaredInAlice >( this ) {
+	public DeclarationProperty< UserVariable > variable = new DeclarationProperty< UserVariable >( this ) {
 		@Override
 		public boolean isReference() {
 			return false;
@@ -55,7 +55,7 @@ public class VariableDeclarationStatement extends LocalDeclarationStatement {
 	};
 	public VariableDeclarationStatement() {
 	}
-	public VariableDeclarationStatement( VariableDeclaredInAlice variable, Expression initializer ) {
+	public VariableDeclarationStatement( UserVariable variable, Expression initializer ) {
 		super( initializer );
 		this.variable.setValue( variable );
 	}
@@ -64,7 +64,7 @@ public class VariableDeclarationStatement extends LocalDeclarationStatement {
 //		return this.variable.getValue().valueType.getValue();
 //	}
 	@Override
-	public org.lgna.project.ast.LocalDeclaredInAlice getLocal() {
+	public org.lgna.project.ast.UserLocal getLocal() {
 		return this.variable.getValue();
 	}
 	

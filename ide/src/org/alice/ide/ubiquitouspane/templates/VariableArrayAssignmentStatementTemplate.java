@@ -46,8 +46,8 @@ package org.alice.ide.ubiquitouspane.templates;
  * @author Dennis Cosgrove
  */
 public class VariableArrayAssignmentStatementTemplate extends ArrayAssignmentStatementTemplate {
-	private org.lgna.project.ast.VariableDeclaredInAlice variable;
-	public VariableArrayAssignmentStatementTemplate( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
+	private org.lgna.project.ast.UserVariable variable;
+	public VariableArrayAssignmentStatementTemplate( org.lgna.project.ast.UserVariable variable ) {
 		super( org.alice.ide.ast.NodeUtilities.createIncompleteVariableArrayAssignmentStatement( variable ) );
 		this.variable = variable;
 	}

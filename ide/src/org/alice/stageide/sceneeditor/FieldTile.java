@@ -64,8 +64,8 @@ package org.alice.stageide.sceneeditor;
 		//this.setOpaque( false );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
 		//this.setPopupMenuOperation( new org.lgna.croquet.PredeterminedMenuModel( java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ), FieldTile.this.createPopupOperations() ).getPopupMenuOperation() );
-		if( this.accessible instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
-			org.lgna.project.ast.FieldDeclaredInAlice field = (org.lgna.project.ast.FieldDeclaredInAlice)this.accessible;
+		if( this.accessible instanceof org.lgna.project.ast.UserField ) {
+			org.lgna.project.ast.UserField field = (org.lgna.project.ast.UserField)this.accessible;
 			this.setPopupPrepModel( org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( field ).getPopupPrepModel() );
 		}
 		this.updateLabel();
@@ -141,8 +141,8 @@ package org.alice.stageide.sceneeditor;
 	}
 
 	protected java.util.List< org.lgna.croquet.MenuItemPrepModel > updatePopupOperations( java.util.List< org.lgna.croquet.MenuItemPrepModel > rv ) {
-		if( this.accessible instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
-			org.lgna.project.ast.FieldDeclaredInAlice fieldInAlice = (org.lgna.project.ast.FieldDeclaredInAlice)this.accessible;
+		if( this.accessible instanceof org.lgna.project.ast.UserField ) {
+			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.accessible;
 			org.lgna.project.ast.AbstractType<?,?,?> fieldType = fieldInAlice.getValueType();
 			rv.add( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( fieldInAlice ).getMenuItemPrepModel() );
 			if( fieldType.isAssignableTo( org.lgna.story.Turnable.class ) ) {

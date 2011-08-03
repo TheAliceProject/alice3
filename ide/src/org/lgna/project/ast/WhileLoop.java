@@ -50,7 +50,7 @@ public class WhileLoop extends AbstractLoop {
 	public ExpressionProperty conditional = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
-			return TypeDeclaredInJava.get( Boolean.class );
+			return JavaType.getInstance( Boolean.class );
 		}
 	};
 	public WhileLoop() {

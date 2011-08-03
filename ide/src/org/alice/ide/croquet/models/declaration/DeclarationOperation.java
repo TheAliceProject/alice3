@@ -64,7 +64,7 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 
 	public DeclarationOperation( 
 			java.util.UUID id, 
-			org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> initialDeclaringType,
+			org.lgna.project.ast.UserType<?> initialDeclaringType,
 			boolean isDeclaringTypeEditable,
 			org.lgna.project.ast.AbstractType<?,?,?> initialValueComponentType,
 			boolean isValueComponentTypeEditable,
@@ -173,7 +173,7 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 		return this.isInitializerEditable;
 	}
 	
-	public org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
 		if( this.declaringTypeState != null ) {
 			return this.declaringTypeState.getValue();
 		} else {
@@ -265,7 +265,7 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 
 	public abstract T createPreviewDeclaration();
 
-	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType, org.lgna.project.ast.AbstractType< ?,?,? > valueType, String declarationName, org.lgna.project.ast.Expression initializer );
+	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?,?,? > valueType, String declarationName, org.lgna.project.ast.Expression initializer );
 	protected abstract org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step );
 	@Override
 	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {

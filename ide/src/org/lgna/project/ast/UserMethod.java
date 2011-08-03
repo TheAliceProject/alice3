@@ -46,59 +46,70 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldDeclaredInAlice extends AbstractField implements MemberDeclaredInAlice {
-	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public DeclarationProperty< AbstractType<?,?,?> > valueType = new DeclarationProperty< AbstractType<?,?,?> >( this );
+public class UserMethod extends AbstractMethod implements CodeDeclaredInAlice {
 	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
-	public edu.cmu.cs.dennisc.property.EnumProperty< FieldModifierFinalVolatileOrNeither > finalVolatileOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty< FieldModifierFinalVolatileOrNeither >( this, FieldModifierFinalVolatileOrNeither.NEITHER );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isTransient = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public edu.cmu.cs.dennisc.property.BooleanProperty isAbstract = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public edu.cmu.cs.dennisc.property.BooleanProperty isFinal = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	//public edu.cmu.cs.dennisc.property.BooleanProperty isNative = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public edu.cmu.cs.dennisc.property.BooleanProperty isSynchronized = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public DeclarationProperty< AbstractType<?,?,?> > returnType = new DeclarationProperty< AbstractType<?,?,?> >( this );
+	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+	public NodeListProperty< UserParameter > parameters = new NodeListProperty< UserParameter >( this );
+	public NodeProperty< BlockStatement > body = new NodeProperty< BlockStatement >( this );
+	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
 
-	public ExpressionProperty initializer = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?,?,?> getExpressionType() {
-			return FieldDeclaredInAlice.this.valueType.getValue();
-		}
-	};
-	
-	private AbstractTypeDeclaredInAlice<?> m_declaringType;
+	private UserType<?> m_declaringType;
 	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME; 
 
-	public FieldDeclaredInAlice() {
+	public UserMethod() {
 	}
-	public FieldDeclaredInAlice( String name, AbstractType<?,?,?> valueType, Expression initializer ) {
+	public UserMethod( String name, AbstractType<?,?,?> returnType, UserParameter[] parameters, BlockStatement body ) {
 		this.name.setValue( name );
-		this.valueType.setValue( valueType );
-		this.initializer.setValue( initializer );
+		this.returnType.setValue( returnType );
+		this.parameters.add( parameters );
+		this.body.setValue( body );
 	}
-	public FieldDeclaredInAlice( String name, Class< ? > valueCls, Expression initializer ) {
-		this( name, TypeDeclaredInJava.get( valueCls ), initializer );
+	public UserMethod( String name, Class<?> returnCls, UserParameter[] parameters, BlockStatement body ) {
+		this( name, JavaType.getInstance( returnCls ), parameters, body );
 	}
+		
 
+	public NodeProperty< BlockStatement > getBodyProperty() {
+		return this.body;
+	}
+	public NodeListProperty< UserParameter > getParamtersProperty() {
+		return this.parameters;
+	}
+	
+	@Override
+	public boolean isValid() {
+		return true;
+	}
+	
 	@Override
 	public String getName() {
-		return name.getValue();
+		return this.name.getValue();
 	}
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return this.name;
 	}
-	
 	@Override
-	public AbstractType<?,?,?> getValueType() {
-		return valueType.getValue();
+	public AbstractType<?,?,?> getReturnType() {
+		return returnType.getValue();
 	}
 	@Override
-	public AbstractType<?,?,?> getDesiredValueType() {
-		return getValueType();
+	public java.util.ArrayList< ? extends AbstractParameter > getParameters() {
+		return parameters.getValue();
 	}
-
 	@Override
-	public AbstractTypeDeclaredInAlice<?> getDeclaringType() {
+	public UserType<?> getDeclaringType() {
 		return m_declaringType;
 	}
-	public void setDeclaringType( AbstractTypeDeclaredInAlice<?> declaringType ) {
+	public void setDeclaringType( UserType<?> declaringType ) {
 		m_declaringType = declaringType;
 	}
 	@Override
@@ -108,7 +119,7 @@ public class FieldDeclaredInAlice extends AbstractField implements MemberDeclare
 	public void setVisibility( org.lgna.project.annotations.Visibility visibility ) {
 		m_visibility = visibility;
 	}
-
+	
 	@Override
 	public AbstractMember getNextLongerInChain() {
 		return null;
@@ -117,26 +128,55 @@ public class FieldDeclaredInAlice extends AbstractField implements MemberDeclare
 	public AbstractMember getNextShorterInChain() {
 		return null;
 	}
-
+	
 	@Override
 	public Access getAccess() {
 		return this.access.getValue();
 	}
-	
+
 	@Override
 	public boolean isStatic() {
 		return this.isStatic.getValue();
 	}
 	@Override
+	public boolean isAbstract() {
+		return this.isAbstract.getValue();
+	}
+	@Override
 	public boolean isFinal() {
-		return finalVolatileOrNeither.getValue() == FieldModifierFinalVolatileOrNeither.FINAL;
+		return this.isFinal.getValue();
 	}
 	@Override
-	public boolean isVolatile() {
-		return finalVolatileOrNeither.getValue() == FieldModifierFinalVolatileOrNeither.VOLATILE;
+	public boolean isNative() {
+		return false;
+		//return this.isNative.getValue();
 	}
 	@Override
-	public boolean isTransient() {
-		return this.isStatic.getValue();
+	public boolean isSynchronized() {
+		return this.isSynchronized.getValue();
 	}
+	@Override
+	public boolean isStrictFloatingPoint() {
+		return this.isStrictFloatingPoint.getValue();
+	}
+	
+//	@Override
+//	public boolean isOverride() {
+//		//todo: this will need to be udpated when you can inherit from other TypesDeclaredInAlice
+//		TypeDeclaredInJava typeDeclaredInJava = this.getDeclaringType().getFirstTypeEncounteredDeclaredInJava();
+//		Class<?> clsDeclaredInJava = typeDeclaredInJava.getCls();
+//		Class<?>[] parameterClses = new Class< ? >[ this.parameters.size() ];
+//		int i = 0;
+//		for( AbstractParameter parameter : this.parameters ) {
+//			if( parameter instanceof ParameterDeclaredInJava ) {
+//				ParameterDeclaredInJava parameterDeclaredInJava = (ParameterDeclaredInJava)parameter;
+//				parameterClses[ i ] = parameterDeclaredInJava.getValueTypeDeclaredInJava().getCls();
+//			} else {
+//				return false;
+//			}
+//			i++;
+//		}
+//		java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( clsDeclaredInJava, this.getName(), parameterClses );
+//		return mthd != null;
+//	}
 }

@@ -46,15 +46,15 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
-	private static java.util.Map< FieldReflectionProxy, FieldDeclaredInJavaWithField > s_map = new java.util.HashMap< FieldReflectionProxy, FieldDeclaredInJavaWithField >();
-	public static FieldDeclaredInJavaWithField get( FieldReflectionProxy fieldReflectionProxy ) {
+public class JavaField extends FieldDeclaredInJava {
+	private static java.util.Map< FieldReflectionProxy, JavaField > s_map = new java.util.HashMap< FieldReflectionProxy, JavaField >();
+	public static JavaField getInstance( FieldReflectionProxy fieldReflectionProxy ) {
 		if( fieldReflectionProxy != null ) {
-			FieldDeclaredInJavaWithField rv = s_map.get( fieldReflectionProxy );
+			JavaField rv = s_map.get( fieldReflectionProxy );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new FieldDeclaredInJavaWithField( fieldReflectionProxy );
+				rv = new JavaField( fieldReflectionProxy );
 				s_map.put( fieldReflectionProxy, rv );
 			}
 			return rv;
@@ -62,15 +62,15 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 			return null;
 		}
 	}
-	public static FieldDeclaredInJavaWithField get( java.lang.reflect.Field fld ) {
-		return get( new FieldReflectionProxy( fld ) );
+	public static JavaField getInstance( java.lang.reflect.Field fld ) {
+		return getInstance( new FieldReflectionProxy( fld ) );
 	}
-	public static FieldDeclaredInJavaWithField get( Class<?> declaringCls, String name ) {
-		return get( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField(  declaringCls, name ) );
+	public static JavaField getInstance( Class<?> declaringCls, String name ) {
+		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField(  declaringCls, name ) );
 	}
 
 	private FieldReflectionProxy fieldReflectionProxy;
-	private FieldDeclaredInJavaWithField( FieldReflectionProxy fieldReflectionProxy ) {
+	private JavaField( FieldReflectionProxy fieldReflectionProxy ) {
 		this.fieldReflectionProxy = fieldReflectionProxy;
 	}
 	
@@ -78,8 +78,8 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 		return this.fieldReflectionProxy;
 	}
 	@Override
-	public TypeDeclaredInJava getDeclaringType() {
-		return TypeDeclaredInJava.get( this.fieldReflectionProxy.getDeclaringClassReflectionProxy() );
+	public JavaType getDeclaringType() {
+		return JavaType.getInstance( this.fieldReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
 	@Override
 	public org.lgna.project.annotations.Visibility getVisibility() {
@@ -101,13 +101,13 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 		return this.fieldReflectionProxy.getName();
 	}
 	@Override
-	public TypeDeclaredInJava getValueType() {
+	public JavaType getValueType() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
 		assert fld != null;
-		return TypeDeclaredInJava.get( fld.getType() );
+		return JavaType.getInstance( fld.getType() );
 	}
 	@Override
-	public TypeDeclaredInJava getDesiredValueType() {
+	public JavaType getDesiredValueType() {
 		return getValueType();
 	}
 	
@@ -152,7 +152,7 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 	
 	@Override
 	public boolean isEquivalentTo( Object o ) {
-		FieldDeclaredInJavaWithField other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, FieldDeclaredInJavaWithField.class );
+		JavaField other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, JavaField.class );
 		if( other != null ) {
 			return this.fieldReflectionProxy.equals( other.fieldReflectionProxy );
 		} else {

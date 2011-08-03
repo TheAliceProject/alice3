@@ -46,7 +46,7 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CreateParameterPane extends CreateDeclarationPane<org.lgna.project.ast.ParameterDeclaredInAlice> {
+public abstract class CreateParameterPane extends CreateDeclarationPane<org.lgna.project.ast.UserParameter> {
 	private org.lgna.project.ast.CodeDeclaredInAlice code;
 	public CreateParameterPane( org.lgna.project.ast.CodeDeclaredInAlice code ) {
 		super( new org.alice.ide.name.validators.ParameterNameValidator( code ) );
@@ -82,7 +82,7 @@ public abstract class CreateParameterPane extends CreateDeclarationPane<org.lgna
 		return new org.alice.ide.codeeditor.TypedParameterPane( null, this.getInputValue() );
 	}
 	@Override
-	public org.lgna.project.ast.ParameterDeclaredInAlice getInputValue() {
-		return new org.lgna.project.ast.ParameterDeclaredInAlice( this.getDeclarationName(), this.getValueType() );
+	public org.lgna.project.ast.UserParameter getInputValue() {
+		return new org.lgna.project.ast.UserParameter( this.getDeclarationName(), this.getValueType() );
 	}
 }

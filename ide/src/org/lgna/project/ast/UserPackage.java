@@ -46,44 +46,24 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ParameterDeclaredInJava extends AbstractParameter {
-	private java.lang.annotation.Annotation[] m_annotations;
-	public ParameterDeclaredInJava( java.lang.annotation.Annotation[] annotations ) {
-		m_annotations = annotations;
+public class UserPackage extends AbstractPackage {
+	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+
+	public UserPackage() {
+	}
+	public UserPackage( String name ) {
+		this.name.setValue( name );
 	}
 	@Override
 	public boolean isDeclaredInAlice() {
-		return false;
+		return true;
+	}
+	@Override
+	public String getName() {
+		return name.getValue();
 	}
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
+		return this.name;
 	}
-	@Override
-	public boolean isVariableLength() {
-		for( java.lang.annotation.Annotation annotation : m_annotations ) {
-			if( annotation instanceof edu.cmu.cs.dennisc.java.lang.ParameterAnnotation ) {
-				edu.cmu.cs.dennisc.java.lang.ParameterAnnotation parameterAnnotation = (edu.cmu.cs.dennisc.java.lang.ParameterAnnotation)annotation;
-				return parameterAnnotation.isVariable();
-			}
-		}
-		return false;
-	}
-	
-	public TypeDeclaredInJava getValueTypeDeclaredInJava() {
-		return (TypeDeclaredInJava)getValueType();
-	}
-	@Override
-	public AbstractType<?,?,?> getDesiredValueType() {
-		if( m_annotations != null ) {
-			for( java.lang.annotation.Annotation annotation : m_annotations ) {
-				if( annotation instanceof org.lgna.project.annotations.ParameterTemplate ) {
-					org.lgna.project.annotations.ParameterTemplate parameterTemplate = (org.lgna.project.annotations.ParameterTemplate)annotation;
-					return TypeDeclaredInJava.get( parameterTemplate.preferredArgumentClass() );
-				}
-			}
-		}
-		return getValueType();
-	}
-	
 }

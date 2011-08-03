@@ -43,7 +43,7 @@
 package org.alice.ide;
 
 import org.lgna.croquet.components.JComponent;
-import org.lgna.project.ast.TypeDeclaredInAlice;
+import org.lgna.project.ast.NamedUserType;
 
 /**
  * @author Dennis Cosgrove
@@ -293,10 +293,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public org.lgna.project.ast.MethodDeclaredInAlice getPerformEditorGeneratedSetUpMethod() {
-		org.lgna.project.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
+	public org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod() {
+		org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
 		if( sceneType != null ) {
-			for( org.lgna.project.ast.MethodDeclaredInAlice method : sceneType.methods ) {
+			for( org.lgna.project.ast.UserMethod method : sceneType.methods ) {
 				if( IDE.performSceneEditorGeneratedSetUpMethodNameSet.contains( method.name.getValue() ) ) {
 					return method;
 				}
@@ -305,16 +305,16 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return null;
 	}
 
-	public org.lgna.project.ast.TypeDeclaredInAlice getStrippedProgramType() {
-		org.lgna.project.ast.TypeDeclaredInAlice rv = this.getProgramType();
+	public org.lgna.project.ast.NamedUserType getStrippedProgramType() {
+		org.lgna.project.ast.NamedUserType rv = this.getProgramType();
 		if( rv != null ) {
-			org.lgna.project.ast.MethodDeclaredInAlice setUpMethod = this.getPerformEditorGeneratedSetUpMethod();
+			org.lgna.project.ast.UserMethod setUpMethod = this.getPerformEditorGeneratedSetUpMethod();
 			setUpMethod.body.getValue().statements.clear();
 		}
 		return rv;
 	}
 	public java.util.List< org.lgna.project.ast.FieldAccess > getFieldAccesses( final org.lgna.project.ast.AbstractField field ) {
-		org.lgna.project.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
+		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
 		assert programType != null;
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess >( org.lgna.project.ast.FieldAccess.class ) {
 			@Override
@@ -326,7 +326,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return crawler.getList();
 	}
 	public java.util.List< org.lgna.project.ast.MethodInvocation > getMethodInvocations( final org.lgna.project.ast.AbstractMethod method ) {
-		org.lgna.project.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
+		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
 		assert programType != null;
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.MethodInvocation >(
 				org.lgna.project.ast.MethodInvocation.class ) {
@@ -339,7 +339,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return crawler.getList();
 	}
 	public java.util.List< org.lgna.project.ast.ArgumentListProperty > getArgumentLists( final org.lgna.project.ast.CodeDeclaredInAlice code ) {
-		org.lgna.project.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
+		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
 		assert programType != null;
 		class ArgumentListCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
 			private final java.util.List< org.lgna.project.ast.ArgumentListProperty > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -394,20 +394,20 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 	}
 
-	public org.lgna.project.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( org.lgna.project.ast.TypeDeclaredInJava superType ) {
-		java.util.List< org.lgna.project.ast.TypeDeclaredInAlice > aliceTypes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType superType ) {
+		java.util.List< org.lgna.project.ast.NamedUserType > aliceTypes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addAliceTypes( aliceTypes, true );
 		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : aliceTypes ) {
 			assert type != null;
 			if( type.getFirstTypeEncounteredDeclaredInJava() == superType ) {
-				return (org.lgna.project.ast.TypeDeclaredInAlice)type;
+				return (org.lgna.project.ast.NamedUserType)type;
 			}
 		}
 		String name = "My" + superType.getName();
 		return org.alice.ide.ast.NodeUtilities.createType( name, superType );
 	}
-	public org.lgna.project.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( Class< ? > superCls ) {
-		return getTypeDeclaredInAliceFor( org.lgna.project.ast.TypeDeclaredInJava.get( superCls ) );
+	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( Class< ? > superCls ) {
+		return getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType.getInstance( superCls ) );
 
 	}
 
@@ -415,7 +415,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return null;
 	}
 
-	public boolean isDropDownDesiredForFieldInitializer( org.lgna.project.ast.FieldDeclaredInAlice field ) {
+	public boolean isDropDownDesiredForFieldInitializer( org.lgna.project.ast.UserField field ) {
 		return true;
 	}
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
@@ -429,30 +429,30 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return null;
 	}
 
-	protected java.util.List< ? super org.lgna.project.ast.TypeDeclaredInJava > addPrimeTimeJavaTypes( java.util.List< ? super org.lgna.project.ast.TypeDeclaredInJava > rv ) {
-		rv.add( org.lgna.project.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE );
-		rv.add( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
-		rv.add( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
-		rv.add( org.lgna.project.ast.TypeDeclaredInJava.get( String.class ) );
+	protected java.util.List< ? super org.lgna.project.ast.JavaType > addPrimeTimeJavaTypes( java.util.List< ? super org.lgna.project.ast.JavaType > rv ) {
+		rv.add( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE );
+		rv.add( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE );
+		rv.add( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( String.class ) );
 		return rv;
 	}
-	protected java.util.List< ? super org.lgna.project.ast.TypeDeclaredInJava > addSecondaryJavaTypes( java.util.List< ? super org.lgna.project.ast.TypeDeclaredInJava > rv ) {
+	protected java.util.List< ? super org.lgna.project.ast.JavaType > addSecondaryJavaTypes( java.util.List< ? super org.lgna.project.ast.JavaType > rv ) {
 		return rv;
 	}
 
-	protected boolean isInclusionOfTypeDesired( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > valueTypeInAlice ) {
+	protected boolean isInclusionOfTypeDesired( org.lgna.project.ast.UserType< ? > valueTypeInAlice ) {
 		return true;
 		//return valueTypeInAlice.methods.size() > 0 || valueTypeInAlice.fields.size() > 0;
 	}
 
-	protected java.util.List< ? super org.lgna.project.ast.TypeDeclaredInAlice > addAliceTypes( java.util.List< ? super org.lgna.project.ast.TypeDeclaredInAlice > rv, boolean isInclusionOfTypesWithoutMembersDesired ) {
-		org.lgna.project.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
+	protected java.util.List< ? super org.lgna.project.ast.NamedUserType > addAliceTypes( java.util.List< ? super org.lgna.project.ast.NamedUserType > rv, boolean isInclusionOfTypesWithoutMembersDesired ) {
+		org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
 		if( sceneType != null ) {
 			rv.add( sceneType );
 			for( org.lgna.project.ast.AbstractField field : sceneType.getDeclaredFields() ) {
 				org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
-				if( valueType instanceof org.lgna.project.ast.TypeDeclaredInAlice ) {
-					org.lgna.project.ast.TypeDeclaredInAlice valueTypeInAlice = (org.lgna.project.ast.TypeDeclaredInAlice)valueType;
+				if( valueType instanceof org.lgna.project.ast.NamedUserType ) {
+					org.lgna.project.ast.NamedUserType valueTypeInAlice = (org.lgna.project.ast.NamedUserType)valueType;
 					if( rv.contains( valueType ) ) {
 						//pass
 					} else {
@@ -466,24 +466,24 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return rv;
 	}
 
-	public java.util.List< org.lgna.project.ast.TypeDeclaredInJava > getPrimeTimeSelectableTypesDeclaredInJava() {
-		java.util.List< org.lgna.project.ast.TypeDeclaredInJava > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public java.util.List< org.lgna.project.ast.JavaType > getPrimeTimeSelectableTypesDeclaredInJava() {
+		java.util.List< org.lgna.project.ast.JavaType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addPrimeTimeJavaTypes( rv );
 		return rv;
 	}
-	public java.util.List< org.lgna.project.ast.TypeDeclaredInJava > getSecondarySelectableTypesDeclaredInJava() {
-		java.util.List< org.lgna.project.ast.TypeDeclaredInJava > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public java.util.List< org.lgna.project.ast.JavaType > getSecondarySelectableTypesDeclaredInJava() {
+		java.util.List< org.lgna.project.ast.JavaType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addSecondaryJavaTypes( rv );
 		return rv;
 	}
-	public java.util.List< org.lgna.project.ast.TypeDeclaredInAlice > getTypesDeclaredInAlice() {
-		java.util.List< org.lgna.project.ast.TypeDeclaredInAlice > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public java.util.List< org.lgna.project.ast.NamedUserType > getTypesDeclaredInAlice() {
+		java.util.List< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addAliceTypes( rv, true );
 		return rv;
 	}
 
-	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> getClassGalleryRoot();
-	protected abstract JComponent< ? > createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<TypeDeclaredInAlice> root );
+	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> getClassGalleryRoot();
+	protected abstract JComponent< ? > createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> root );
 	
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
 		return new org.alice.ide.memberseditor.MembersEditor();
@@ -782,36 +782,36 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.enableRendering();
 	}
 
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.FieldDeclaredInAlice >() {
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField >() {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 		}
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 			IDE.this.refreshAccessibles();
 		}
 
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 			IDE.this.refreshAccessibles();
 		}
 
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 		}
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 			IDE.this.refreshAccessibles();
 		}
 
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 		}
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 			IDE.this.refreshAccessibles();
 		}
 	};
 
-	private org.lgna.project.ast.FieldDeclaredInAlice rootField;
+	private org.lgna.project.ast.UserField rootField;
 
-	private org.lgna.project.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
-		return (org.lgna.project.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
+	private org.lgna.project.ast.NamedUserType getRootTypeDeclaredInAlice() {
+		return (org.lgna.project.ast.NamedUserType)this.rootField.valueType.getValue();
 	}
 	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
 		return accessible.getValueType().isArray() == false;
@@ -875,7 +875,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //		}
 	}
 	
-	private void setRootField( org.lgna.project.ast.FieldDeclaredInAlice rootField ) {
+	private void setRootField( org.lgna.project.ast.UserField rootField ) {
 		if( this.rootField != null ) {
 			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
 		}
@@ -903,7 +903,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public <N extends org.lgna.project.ast.AbstractNode> N createCopy( N original ) {
-		org.lgna.project.ast.TypeDeclaredInAlice root = this.getProgramType();
+		org.lgna.project.ast.NamedUserType root = this.getProgramType();
 		java.util.Set< org.lgna.project.ast.AbstractDeclaration > abstractDeclarations = root.createDeclarationSet();
 		original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
 		java.util.Map< Integer, org.lgna.project.ast.AbstractDeclaration > map = org.lgna.project.ast.AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
@@ -1000,13 +1000,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //		}
 //	}
 
-	private static Iterable< org.lgna.project.ast.VariableDeclaredInAlice > getVariables( org.lgna.project.ast.AbstractCode codeInFocus ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.VariableDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.VariableDeclaredInAlice >( org.lgna.project.ast.VariableDeclaredInAlice.class );
+	private static Iterable< org.lgna.project.ast.UserVariable > getVariables( org.lgna.project.ast.AbstractCode codeInFocus ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserVariable > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserVariable >( org.lgna.project.ast.UserVariable.class );
 		codeInFocus.crawl( crawler, false );
 		return crawler.getList();
 	}
-	private static Iterable< org.lgna.project.ast.ConstantDeclaredInAlice > getConstants( org.lgna.project.ast.AbstractCode codeInFocus ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ConstantDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ConstantDeclaredInAlice >( org.lgna.project.ast.ConstantDeclaredInAlice.class );
+	private static Iterable< org.lgna.project.ast.UserConstant > getConstants( org.lgna.project.ast.AbstractCode codeInFocus ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserConstant > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserConstant >( org.lgna.project.ast.UserConstant.class );
 		codeInFocus.crawl( crawler, false );
 		return crawler.getList();
 	}
@@ -1058,7 +1058,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private static final String GENERATED_CODE_WARNING = "DO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT\n\nThis code is automatically generated.  Any work you perform in this method will be overwritten.\n\nDO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT";
 	private void generateCodeForSceneSetUp() {
-		org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getPerformEditorGeneratedSetUpMethod();
+		org.lgna.project.ast.UserMethod methodDeclaredInAlice = this.getPerformEditorGeneratedSetUpMethod();
 		org.lgna.project.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
 		bodyStatementsProperty.clear();
 		bodyStatementsProperty.add( new org.lgna.project.ast.Comment( GENERATED_CODE_WARNING ) );
@@ -1066,7 +1066,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	@Deprecated
-	public org.lgna.project.ast.TypeDeclaredInAlice getProgramType() {
+	public org.lgna.project.ast.NamedUserType getProgramType() {
 		org.lgna.project.Project project = this.getProject();
 		if( project != null ) {
 			return project.getProgramType();
@@ -1075,15 +1075,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	@Deprecated
-	public org.lgna.project.ast.FieldDeclaredInAlice getSceneField() {
-		org.lgna.project.ast.TypeDeclaredInAlice programType = getProgramType();
+	public org.lgna.project.ast.UserField getSceneField() {
+		org.lgna.project.ast.NamedUserType programType = getProgramType();
 		return getSceneFieldFromProgramType( programType );
 	}
 
 	@Deprecated
-	protected static org.lgna.project.ast.FieldDeclaredInAlice getSceneFieldFromProgramType( org.lgna.project.ast.AbstractType< ?, ?, ? > programType ) {
-		if( programType instanceof org.lgna.project.ast.TypeDeclaredInAlice ) {
-			org.lgna.project.ast.TypeDeclaredInAlice programAliceType = (org.lgna.project.ast.TypeDeclaredInAlice)programType;
+	protected static org.lgna.project.ast.UserField getSceneFieldFromProgramType( org.lgna.project.ast.AbstractType< ?, ?, ? > programType ) {
+		if( programType instanceof org.lgna.project.ast.NamedUserType ) {
+			org.lgna.project.ast.NamedUserType programAliceType = (org.lgna.project.ast.NamedUserType)programType;
 			if( programAliceType.fields.size() > 0 ) {
 				return programAliceType.fields.get( 0 );
 			} else {
@@ -1094,20 +1094,20 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	@Deprecated
-	protected static org.lgna.project.ast.TypeDeclaredInAlice getSceneTypeFromProgramType( org.lgna.project.ast.AbstractType< ?, ?, ? > programType ) {
-		if( programType instanceof org.lgna.project.ast.TypeDeclaredInAlice ) {
-			org.lgna.project.ast.FieldDeclaredInAlice sceneField = getSceneFieldFromProgramType( programType );
-			return (org.lgna.project.ast.TypeDeclaredInAlice)sceneField.getValueType();
+	protected static org.lgna.project.ast.NamedUserType getSceneTypeFromProgramType( org.lgna.project.ast.AbstractType< ?, ?, ? > programType ) {
+		if( programType instanceof org.lgna.project.ast.NamedUserType ) {
+			org.lgna.project.ast.UserField sceneField = getSceneFieldFromProgramType( programType );
+			return (org.lgna.project.ast.NamedUserType)sceneField.getValueType();
 		} else {
 			return null;
 		}
 	}
 
 	@Deprecated
-	public org.lgna.project.ast.TypeDeclaredInAlice getSceneType() {
-		org.lgna.project.ast.FieldDeclaredInAlice sceneField = getSceneField();
+	public org.lgna.project.ast.NamedUserType getSceneType() {
+		org.lgna.project.ast.UserField sceneField = getSceneField();
 		if( sceneField != null ) {
-			return (org.lgna.project.ast.TypeDeclaredInAlice)sceneField.getValueType();
+			return (org.lgna.project.ast.NamedUserType)sceneField.getValueType();
 		} else {
 			return null;
 		}
@@ -1184,7 +1184,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( rv != null ) {
 			//pass
 		} else {
-			org.lgna.project.ast.TypeDeclaredInAlice type = this.getProgramType();
+			org.lgna.project.ast.NamedUserType type = this.getProgramType();
 			type.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
 				public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 					if( crawlable instanceof org.lgna.project.ast.Node ) {
@@ -1246,8 +1246,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return true;
 	}
 
-	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.TypeDeclaredInAlice typeInAlice );
-	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.TypeDeclaredInAlice programType, int frameRate );
+	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType typeInAlice );
+	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.NamedUserType programType, int frameRate );
 
 	public java.util.Set< org.alice.virtualmachine.Resource > getResources() {
 		org.lgna.project.Project project = this.getProject();

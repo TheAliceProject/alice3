@@ -286,7 +286,7 @@ public class Factory extends org.alice.ide.common.Factory {
 			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
 				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
 				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-				if( method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+				if( method instanceof org.lgna.project.ast.UserMethod ) {
 					rv.add( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( method ).getMenuItemPrepModel() );
 				}
 			}

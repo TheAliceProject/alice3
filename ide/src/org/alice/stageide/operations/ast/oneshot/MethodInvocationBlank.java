@@ -47,8 +47,8 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< MethodInvocationEditFactory > {
-	private static java.util.Map< org.lgna.project.ast.FieldDeclaredInAlice, MethodInvocationBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static MethodInvocationBlank getInstance( org.lgna.project.ast.FieldDeclaredInAlice value ) {
+	private static java.util.Map< org.lgna.project.ast.UserField, MethodInvocationBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static MethodInvocationBlank getInstance( org.lgna.project.ast.UserField value ) {
 		synchronized( map ) {
 			MethodInvocationBlank rv = map.get( value );
 			if( rv != null ) {
@@ -60,8 +60,8 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 			return rv;
 		}
 	}
-	private final org.lgna.project.ast.FieldDeclaredInAlice field;
-	private MethodInvocationBlank( org.lgna.project.ast.FieldDeclaredInAlice field ) {
+	private final org.lgna.project.ast.UserField field;
+	private MethodInvocationBlank( org.lgna.project.ast.UserField field ) {
 		super( java.util.UUID.fromString( "3c5f528b-340b-4bcc-8094-3475867d2f6e" ) );
 		this.field = field;
 	}

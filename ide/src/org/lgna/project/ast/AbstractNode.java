@@ -381,11 +381,11 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 		}
 		rv.setAttribute( CodecConstants.UUID_ATTRIBUTE, m_uuid.toString() );
 		rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, getClass().getName() );
-		if( this instanceof TypeDeclaredInJava ) {
-			TypeDeclaredInJava typeDeclaredInJava = (TypeDeclaredInJava)this;
+		if( this instanceof JavaType ) {
+			JavaType typeDeclaredInJava = (JavaType)this;
 			rv.appendChild( encodeType( xmlDocument, "type", typeDeclaredInJava.getClassReflectionProxy() ) );
-		} else if( this instanceof ArrayTypeDeclaredInAlice ) {
-			ArrayTypeDeclaredInAlice arrayTypeDeclaredInAlice = (ArrayTypeDeclaredInAlice)this;
+		} else if( this instanceof UserArrayType ) {
+			UserArrayType arrayTypeDeclaredInAlice = (UserArrayType)this;
 
 			org.w3c.dom.Element xmlLeafType = xmlDocument.createElement( "leafType" );
 			xmlLeafType.appendChild( encodeValue( arrayTypeDeclaredInAlice.getLeafType(), xmlDocument, set ) );
@@ -395,35 +395,35 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 			xmlDimensionCount.appendChild( xmlDocument.createTextNode( Integer.toString( arrayTypeDeclaredInAlice.getDimensionCount() ) ) );
 			rv.appendChild( xmlDimensionCount );
 		
-		} else if( this instanceof ConstructorDeclaredInJava ) {
-			ConstructorDeclaredInJava constructorDeclaredInJava = (ConstructorDeclaredInJava)this;
+		} else if( this instanceof JavaConstructor ) {
+			JavaConstructor constructorDeclaredInJava = (JavaConstructor)this;
 			rv.appendChild( encodeConstructor( xmlDocument, "constructor", constructorDeclaredInJava.getConstructorReflectionProxy() ) );
-		} else if( this instanceof MethodDeclaredInJava ) {
-			MethodDeclaredInJava methodDeclaredInJava = (MethodDeclaredInJava)this;
+		} else if( this instanceof JavaMethod ) {
+			JavaMethod methodDeclaredInJava = (JavaMethod)this;
 			rv.appendChild( encodeMethod( xmlDocument, "method", methodDeclaredInJava.getMethodReflectionProxy() ) );
-		} else if( this instanceof FieldDeclaredInJavaWithField ) {
-			FieldDeclaredInJavaWithField fieldDeclaredInJavaWithField = (FieldDeclaredInJavaWithField)this;
+		} else if( this instanceof JavaField ) {
+			JavaField fieldDeclaredInJavaWithField = (JavaField)this;
 			rv.appendChild( encodeField( xmlDocument, "field", fieldDeclaredInJavaWithField.getFieldReflectionProxy() ) );
 		} else if( this instanceof FieldDeclaredInJavaWithGetterAndSetter ) {
 			FieldDeclaredInJavaWithGetterAndSetter fieldDeclaredInJavaWithGetterAndSetter = (FieldDeclaredInJavaWithGetterAndSetter)this;
 			rv.appendChild( encodeMethod( xmlDocument, "getter", fieldDeclaredInJavaWithGetterAndSetter.getGetterReflectionProxy() ) );
 			rv.appendChild( encodeMethod( xmlDocument, "setter", fieldDeclaredInJavaWithGetterAndSetter.getSetterReflectionProxy() ) );
-		} else if( this instanceof AnonymousConstructor ) {
-			AnonymousConstructor anonymousConstructor = (AnonymousConstructor)this;
+		} else if( this instanceof AnonymousUserConstructor ) {
+			AnonymousUserConstructor anonymousConstructor = (AnonymousUserConstructor)this;
 			org.w3c.dom.Element xmlType = xmlDocument.createElement( "anonymousType" );
 			xmlType.appendChild( encodeValue( anonymousConstructor.getDeclaringType(), xmlDocument, set ) );
 			rv.appendChild( xmlType );
-		} else if( this instanceof ParameterDeclaredInJavaConstructor ) {
-			ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor = (ParameterDeclaredInJavaConstructor)this;
-			ConstructorDeclaredInJava constructor = parameterDeclaredInJavaConstructor.getConstructor();
+		} else if( this instanceof JavaConstructorParameter ) {
+			JavaConstructorParameter parameterDeclaredInJavaConstructor = (JavaConstructorParameter)this;
+			JavaConstructor constructor = parameterDeclaredInJavaConstructor.getConstructor();
 			rv.appendChild( encodeValue( constructor, xmlDocument, set ) );
 
 			org.w3c.dom.Element xmlIndex = xmlDocument.createElement( "index" );
 			xmlIndex.appendChild( xmlDocument.createTextNode( Integer.toString( parameterDeclaredInJavaConstructor.getIndex() ) ) );
 			rv.appendChild( xmlIndex );
-		} else if( this instanceof ParameterDeclaredInJavaMethod ) {
-			ParameterDeclaredInJavaMethod parameterDeclaredInJavaMethod = (ParameterDeclaredInJavaMethod)this;
-			MethodDeclaredInJava method = parameterDeclaredInJavaMethod.getMethod();
+		} else if( this instanceof JavaMethodParameter ) {
+			JavaMethodParameter parameterDeclaredInJavaMethod = (JavaMethodParameter)this;
+			JavaMethod method = parameterDeclaredInJavaMethod.getMethod();
 			rv.appendChild( encodeValue( method, xmlDocument, set ) );
 
 			org.w3c.dom.Element xmlIndex = xmlDocument.createElement( "index" );

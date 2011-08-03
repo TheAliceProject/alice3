@@ -55,7 +55,7 @@ public abstract class ArithmeticExpressionLeftAndRightOperandsFillIn extends org
 		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteArithmeticInfixExpression( leftOperandType, operator, rightOperandType, resultType );
 	}
 	public ArithmeticExpressionLeftAndRightOperandsFillIn( java.util.UUID id, Class<?> resultCls, Class<?> leftOperandCls, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls ) {
-		this( id, org.lgna.project.ast.TypeDeclaredInJava.get( resultCls ), org.lgna.project.ast.TypeDeclaredInJava.get( leftOperandCls ), operator, org.lgna.project.ast.TypeDeclaredInJava.get( rightOperandCls ) );
+		this( id, org.lgna.project.ast.JavaType.getInstance( resultCls ), org.lgna.project.ast.JavaType.getInstance( leftOperandCls ), operator, org.lgna.project.ast.JavaType.getInstance( rightOperandCls ) );
 	}
 	@Override
 	protected org.lgna.project.ast.ArithmeticInfixExpression createValue( org.lgna.project.ast.Expression[] expressions ) {

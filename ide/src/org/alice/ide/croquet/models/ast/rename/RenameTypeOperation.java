@@ -45,9 +45,9 @@ package org.alice.ide.croquet.models.ast.rename;
 /**
  * @author Dennis Cosgrove
  */
-public class RenameTypeOperation extends RenameDeclarationOperation< org.lgna.project.ast.TypeDeclaredInAlice > {
-	private static java.util.Map< org.lgna.project.ast.TypeDeclaredInAlice, RenameTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized RenameTypeOperation getInstance( org.lgna.project.ast.TypeDeclaredInAlice type ) {
+public class RenameTypeOperation extends RenameDeclarationOperation< org.lgna.project.ast.NamedUserType > {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, RenameTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameTypeOperation getInstance( org.lgna.project.ast.NamedUserType type ) {
 		RenameTypeOperation rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -58,12 +58,12 @@ public class RenameTypeOperation extends RenameDeclarationOperation< org.lgna.pr
 		return rv;
 	}
 
-	private RenameTypeOperation( org.lgna.project.ast.TypeDeclaredInAlice type ) {
+	private RenameTypeOperation( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "94fd3bb8-2f02-4e70-a16c-05df244b317b" ), type, new org.alice.ide.name.validators.TypeNameValidator( type ) );
 		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameTypeOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameTypeOperation >( this, this.getDeclaration(), org.lgna.project.ast.TypeDeclaredInAlice.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameTypeOperation >( this, this.getDeclaration(), org.lgna.project.ast.NamedUserType.class );
 	}
 }

@@ -217,15 +217,15 @@ public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixE
 		super( leftOperand, operator, rightOperand );
 		//todo
 		assert 
-			TypeDeclaredInJava.get( Number.class ).isAssignableFrom( expressionType ) 
+			JavaType.getInstance( Number.class ).isAssignableFrom( expressionType ) 
 			|| 
-			TypeDeclaredInJava.get( Double.TYPE ).isAssignableFrom( expressionType ) 
+			JavaType.getInstance( Double.TYPE ).isAssignableFrom( expressionType ) 
 			|| 
-			TypeDeclaredInJava.get( Integer.TYPE ).isAssignableFrom( expressionType );
+			JavaType.getInstance( Integer.TYPE ).isAssignableFrom( expressionType );
 		this.expressionType.setValue( expressionType );
 	}
 	public ArithmeticInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, Class<?> expressionCls ) {
-		this( leftOperand, operator, rightOperand, TypeDeclaredInJava.get( expressionCls ) );
+		this( leftOperand, operator, rightOperand, JavaType.getInstance( expressionCls ) );
 	}
 	@Override
 	protected AbstractType<?,?,?> getLeftOperandType() {

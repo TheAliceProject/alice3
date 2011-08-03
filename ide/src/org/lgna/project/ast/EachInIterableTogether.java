@@ -55,7 +55,7 @@ public class EachInIterableTogether extends AbstractEachInTogether {
 	};
 	public EachInIterableTogether() {
 	}
-	public EachInIterableTogether( VariableDeclaredInAlice variable, Expression iterable, BlockStatement body ) {
+	public EachInIterableTogether( UserVariable variable, Expression iterable, BlockStatement body ) {
 		super( variable, body );
 	}
 }

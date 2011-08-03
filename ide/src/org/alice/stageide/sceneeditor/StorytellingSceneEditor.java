@@ -49,9 +49,9 @@ import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.components.DragComponent;
-import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.StatementListProperty;
-import org.lgna.project.ast.TypeDeclaredInAlice;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.virtualmachine.InstanceInAlice;
 import org.lgna.story.BookmarkCameraMarker;
 import org.lgna.story.ImplementationAccessor;
@@ -125,7 +125,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		programImplementation.setOnscreenLookingGlass(this.onscreenLookingGlass);
 	}
 	
-	protected void setSceneCamera(org.lgna.project.ast.FieldDeclaredInAlice cameraField)
+	protected void setSceneCamera(org.lgna.project.ast.UserField cameraField)
 	{
 		this.sceneCameraImplementation = getImplementation(cameraField);
 
@@ -285,7 +285,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	
 	@Override
-	protected void setActiveScene( org.lgna.project.ast.FieldDeclaredInAlice sceneField ) {
+	protected void setActiveScene( org.lgna.project.ast.UserField sceneField ) {
 		super.setActiveScene(sceneField);
 		
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
@@ -299,7 +299,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		{
 			if( field.getDesiredValueType().isAssignableTo(org.lgna.story.Camera.class)) 
 			{
-				this.setSceneCamera((org.lgna.project.ast.FieldDeclaredInAlice)field);
+				this.setSceneCamera((org.lgna.project.ast.UserField)field);
 			}
 		}
 		
@@ -326,13 +326,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 
 	@Override
 	public void putInstanceForInitializingPendingField(
-			FieldDeclaredInAlice field, Object instance) {
+			UserField field, Object instance) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public Object getInstanceInJavaForUndo(FieldDeclaredInAlice field) {
+	public Object getInstanceInJavaForUndo(UserField field) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -502,10 +502,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	public void setHandleVisibilityForObject( Transformable sgComposite, boolean b ) {
 		throw new RuntimeException( "todo" );
 	}
-	public Tuple2< FieldDeclaredInAlice, BookmarkCameraMarker > createCameraMarkerField( TypeDeclaredInAlice ownerType ) {
+	public Tuple2< UserField, BookmarkCameraMarker > createCameraMarkerField( NamedUserType ownerType ) {
 		throw new RuntimeException( "todo" );
 	}
-	public Tuple2< FieldDeclaredInAlice, ObjectMarker > createObjectMarkerField( TypeDeclaredInAlice ownerType ) {
+	public Tuple2< UserField, ObjectMarker > createObjectMarkerField( NamedUserType ownerType ) {
 		throw new RuntimeException( "todo" );
 	}
 	public void switchToOthographicCamera() {
@@ -517,7 +517,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	public AffineMatrix4x4 getGoodPointOfViewInSceneForObject( AxisAlignedBox box ) {
 		throw new RuntimeException( "todo" );
 	}
-	public MarkerImplementation getMarkerForField( FieldDeclaredInAlice field ) {
+	public MarkerImplementation getMarkerForField( UserField field ) {
 		throw new RuntimeException( "todo" );
 	}
 	public SnapState getSnapState() {

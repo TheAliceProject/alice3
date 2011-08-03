@@ -58,7 +58,7 @@ public class BillboardFieldDeclarationOperation extends SceneFieldDeclarationOpe
 	private BillboardFieldDeclarationOperation() {
 		super( 
 				java.util.UUID.fromString( "1ce5a991-d315-40d3-a0ad-d711835e8140" ), 
-				org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Billboard.class ), false, 
+				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Billboard.class ), false, 
 				false, false, 
 				"", true, 
 				org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lgna.story.Billboard.class ), false 

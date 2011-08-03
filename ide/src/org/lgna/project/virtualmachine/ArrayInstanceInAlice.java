@@ -47,10 +47,10 @@ package org.lgna.project.virtualmachine;
  * @author Dennis Cosgrove
  */
 public class ArrayInstanceInAlice {
-	private final org.lgna.project.ast.ArrayTypeDeclaredInAlice type;
+	private final org.lgna.project.ast.UserArrayType type;
 	private final int[] lengths;
 	private final Object[] values;
-	public ArrayInstanceInAlice( org.lgna.project.ast.ArrayTypeDeclaredInAlice type, int[] lengths, Object[] values ) {
+	public ArrayInstanceInAlice( org.lgna.project.ast.UserArrayType type, int[] lengths, Object[] values ) {
 		assert lengths.length == 1;
 		this.type = type;
 		this.lengths = lengths;
@@ -63,7 +63,7 @@ public class ArrayInstanceInAlice {
 			}
 		}
 	}
-	public org.lgna.project.ast.ArrayTypeDeclaredInAlice getType() {
+	public org.lgna.project.ast.UserArrayType getType() {
 		return this.type;
 	}
 	public Object get( int index ) {

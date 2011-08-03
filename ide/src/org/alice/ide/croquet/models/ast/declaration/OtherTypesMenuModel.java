@@ -57,8 +57,8 @@ public class OtherTypesMenuModel extends org.lgna.croquet.CascadeMenuModel< org.
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
-		java.util.List< org.lgna.project.ast.TypeDeclaredInJava > otherTypes = org.alice.ide.IDE.getActiveInstance().getSecondarySelectableTypesDeclaredInJava();
-		for( org.lgna.project.ast.TypeDeclaredInJava otherType : otherTypes ) {
+		java.util.List< org.lgna.project.ast.JavaType > otherTypes = org.alice.ide.IDE.getActiveInstance().getSecondarySelectableTypesDeclaredInJava();
+		for( org.lgna.project.ast.JavaType otherType : otherTypes ) {
 			rv.add( TypeFillIn.getInstance( otherType ) );
 		}
 		return rv;

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldDeclarationOperation extends DeclarationOperation< org.lgna.project.ast.FieldDeclaredInAlice > {
+public abstract class FieldDeclarationOperation extends DeclarationOperation< org.lgna.project.ast.UserField > {
 	protected static class EditCustomization {
 		private final java.util.List< org.lgna.project.ast.Statement > doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private final java.util.List< org.lgna.project.ast.Statement > undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -74,7 +74,7 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 
 	public FieldDeclarationOperation( 
 			java.util.UUID id, 
-			org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> initialDeclaringType,
+			org.lgna.project.ast.UserType<?> initialDeclaringType,
 			boolean isDeclaringTypeEditable,
 			org.lgna.project.ast.AbstractType<?,?,?> initialValueComponentType,
 			boolean isValueComponentTypeEditable,
@@ -96,8 +96,8 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 	}
 	protected abstract EditCustomization customize( EditCustomization rv );
 	@Override
-	public org.lgna.project.ast.FieldDeclaredInAlice createPreviewDeclaration() {
-		org.lgna.project.ast.FieldDeclaredInAlice rv = new org.lgna.project.ast.FieldDeclaredInAlice();
+	public org.lgna.project.ast.UserField createPreviewDeclaration() {
+		org.lgna.project.ast.UserField rv = new org.lgna.project.ast.UserField();
 		rv.name.setValue( this.getDeclarationName() );
 		rv.valueType.setValue( this.getValueType() );
 		rv.initializer.setValue( this.getInitializer() );
@@ -105,8 +105,8 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, org.lgna.project.ast.Expression initializer ) {
-		org.lgna.project.ast.FieldDeclaredInAlice field = new org.lgna.project.ast.FieldDeclaredInAlice();
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, org.lgna.project.ast.Expression initializer ) {
+		org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField();
 		field.valueType.setValue( valueType );
 		field.name.setValue( declarationName );
 		field.initializer.setValue( initializer );

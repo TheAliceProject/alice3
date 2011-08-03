@@ -54,7 +54,7 @@ public abstract class AbstractKeyCascadeMenu extends org.alice.ide.croquet.model
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.FieldAccess > context ) {
-		org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Key.class );
+		org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class );
 		for( org.lgna.story.Key key : this.keys ) {
  			org.lgna.project.ast.AbstractField field = type.getDeclaredField( key.name() );
  			assert field.isPublicAccess() && field.isStatic() && field.isFinal();

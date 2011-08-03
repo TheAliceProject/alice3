@@ -47,10 +47,10 @@ import org.lgna.story.Marker;
 
 public class MarkerColorValidator extends MemberNameValidator {
 
-	public MarkerColorValidator( org.lgna.project.ast.FieldDeclaredInAlice field ) {
+	public MarkerColorValidator( org.lgna.project.ast.UserField field ) {
 		super( field, field.getDeclaringType() );
 	}
-	public MarkerColorValidator( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type ) {
+	public MarkerColorValidator( org.lgna.project.ast.UserType<?> type ) {
 		super( null, type );
 	}
 	
@@ -76,9 +76,9 @@ public class MarkerColorValidator extends MemberNameValidator {
 		String suffix = getColorAndNumberSuffix(name);
 		
 		org.lgna.project.ast.Node node = this.getNode();
-		org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type = this.getType();
+		org.lgna.project.ast.UserType<?> type = this.getType();
 		if( type != null ) {
-			for( org.lgna.project.ast.FieldDeclaredInAlice field : type.fields ) {
+			for( org.lgna.project.ast.UserField field : type.fields ) {
 				assert field != null;
 				if( field == node) {
 					//pass

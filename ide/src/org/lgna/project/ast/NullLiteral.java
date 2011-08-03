@@ -49,7 +49,7 @@ public class NullLiteral extends AbstractLiteral {
 	@Override
 	public AbstractType<?,?,?> getType() {
 		//todo
-		return TypeDeclaredInJava.OBJECT_TYPE;
+		return JavaType.OBJECT_TYPE;
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {

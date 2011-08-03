@@ -43,13 +43,13 @@
 package org.alice.ide.operations.ast;
 
 import org.lgna.project.ast.NodeListProperty;
-import org.lgna.project.ast.ParameterDeclaredInAlice;
+import org.lgna.project.ast.UserParameter;
 
 /**
  * @author Dennis Cosgrove
  */
 public class BackwardShiftParameterOperation extends ShiftParameterOperation {
-	public BackwardShiftParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
+	public BackwardShiftParameterOperation( NodeListProperty< UserParameter > parametersProperty, UserParameter parameter ) {
 		super( java.util.UUID.fromString( "d318d441-f58e-49b1-b01e-d16f15259c95" ), parametersProperty, parameter );
 		this.setName( "Shift Backward" );
 	}

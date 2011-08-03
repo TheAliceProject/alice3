@@ -68,15 +68,15 @@ public class ConditionalInfixExpression extends InfixExpression< ConditionalInfi
 	}
 	@Override
 	protected AbstractType<?,?,?> getLeftOperandType() {
-		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
+		return JavaType.BOOLEAN_OBJECT_TYPE;
 	}
 	@Override
 	protected AbstractType<?,?,?> getRightOperandType() {
-		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
+		return JavaType.BOOLEAN_OBJECT_TYPE;
 	}
 	@Override
 	public AbstractType<?,?,?> getType() {
-		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
+		return JavaType.BOOLEAN_OBJECT_TYPE;
 	}
 	@Override
 	protected void handleMissingProperty( String propertyName, Object value ) {

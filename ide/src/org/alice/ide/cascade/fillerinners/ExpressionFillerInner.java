@@ -51,7 +51,7 @@ public abstract class ExpressionFillerInner {
 		this.type = type;
 	}
 	public ExpressionFillerInner( Class<?> cls ) {
-		this( org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
+		this( org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
 
 	protected org.lgna.project.ast.AbstractType<?,?,?> getType() {

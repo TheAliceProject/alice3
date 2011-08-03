@@ -46,49 +46,56 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LocalDeclaredInAlice extends AbstractTransient {
-	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null ) {
-		@Override
-		protected boolean isNullAcceptable() {
-			return true;
+public class JavaPackage extends AbstractPackage {
+	private static java.util.Map< PackageReflectionProxy, JavaPackage > s_map = new java.util.HashMap< PackageReflectionProxy, JavaPackage >();
+
+	private PackageReflectionProxy packageReflectionProxy;
+
+	public static JavaPackage getInstance( PackageReflectionProxy packageReflectionProxy ) {
+		if( packageReflectionProxy != null ) {
+			JavaPackage rv = s_map.get( packageReflectionProxy );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new JavaPackage( packageReflectionProxy );
+				s_map.put( packageReflectionProxy, rv );
+			}
+			return rv;
+		} else {
+			return null;
 		}
-	};
-	public DeclarationProperty< AbstractType<?,?,?> > valueType = new DeclarationProperty< AbstractType<?,?,?> >( this );
-	public LocalDeclaredInAlice() {
 	}
-	public LocalDeclaredInAlice( String name, AbstractType<?,?,?> valueType ) {
-		this.name.setValue( name );
-		this.valueType.setValue( valueType );
+	public static JavaPackage getInstance( Package pckg ) {
+		return getInstance( new PackageReflectionProxy( pckg ) );
 	}
-	public LocalDeclaredInAlice( String name, Class<?> valueCls ) {
-		this( name, TypeDeclaredInJava.get( valueCls ) );
+	private JavaPackage( PackageReflectionProxy packageReflectionProxy ) {
+		this.packageReflectionProxy = packageReflectionProxy;
 	}
-	
+
+	public PackageReflectionProxy getPackageReflectionProxy() {
+		return this.packageReflectionProxy;
+	}
+
 	@Override
-	public AbstractType<?,?,?> getValueType() {
-		return this.valueType.getValue();
+	public boolean isDeclaredInAlice() {
+		return false;
 	}
-	
 	@Override
 	public String getName() {
-		return name.getValue();
+		return this.packageReflectionProxy.getName();
 	}
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return this.name;
+		return null;
 	}
+	
 	@Override
-	public boolean isDeclaredInAlice() {
-		return true;
-	}
-	public abstract boolean isFinal();
-	protected abstract String generateName( Node context );
-	public final String getValidName( Node context ) {
-		String name = this.name.getValue();
-		if( name != null ) {
-			return name;
+	public boolean isEquivalentTo( Object o ) {
+		JavaPackage other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, JavaPackage.class );
+		if( other != null ) {
+			return this.packageReflectionProxy.equals( other.packageReflectionProxy );
 		} else {
-			return generateName( context );
+			return false;
 		}
 	}
 }

@@ -44,7 +44,7 @@
 package org.alice.ide.name.validators;
 
 public class LocalNameValidator extends TransientNameValidator {
-	private static org.lgna.project.ast.CodeDeclaredInAlice getCode( org.lgna.project.ast.LocalDeclaredInAlice local ) {
+	private static org.lgna.project.ast.CodeDeclaredInAlice getCode( org.lgna.project.ast.UserLocal local ) {
 		return getCode( getBlock( local ) );
 	}
 	private static org.lgna.project.ast.CodeDeclaredInAlice getCode( org.lgna.project.ast.BlockStatement block ) {
@@ -54,10 +54,10 @@ public class LocalNameValidator extends TransientNameValidator {
 			return null;
 		}
 	}
-	private static org.lgna.project.ast.BlockStatement getBlock( org.lgna.project.ast.LocalDeclaredInAlice local ) {
+	private static org.lgna.project.ast.BlockStatement getBlock( org.lgna.project.ast.UserLocal local ) {
 		return local.getFirstAncestorAssignableTo( org.lgna.project.ast.BlockStatement.class );
 	}
-	public LocalNameValidator( org.lgna.project.ast.LocalDeclaredInAlice local ) {
+	public LocalNameValidator( org.lgna.project.ast.UserLocal local ) {
 		super( local, getCode( local ), getBlock( local ) );
 	}
 	public LocalNameValidator( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {

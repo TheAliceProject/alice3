@@ -110,7 +110,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 		private org.lgna.project.ast.ExpressionProperty bogusProperty = new org.lgna.project.ast.ExpressionProperty( this ) {
 			@Override
 			public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
-				return org.lgna.project.ast.TypeDeclaredInJava.get( org.alice.virtualmachine.resources.AudioResource.class );
+				return org.lgna.project.ast.JavaType.getInstance( org.alice.virtualmachine.resources.AudioResource.class );
 			}
 		};
 		@Override
@@ -319,7 +319,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 					if( isNotDefaultStopTime ) {
 						org.lgna.project.ast.DoubleLiteral stopTimeLiteral = new org.lgna.project.ast.DoubleLiteral( stopTime );
 
-						org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( 
+						org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( 
 								org.lgna.story.AudioSource.class, 
 								org.alice.virtualmachine.resources.AudioResource.class,
 								Number.class, 
@@ -327,7 +327,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 								Number.class );
 						return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral, stopTimeLiteral );
 					} else {
-						org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( 
+						org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( 
 								org.lgna.story.AudioSource.class, 
 								org.alice.virtualmachine.resources.AudioResource.class,
 								Number.class, 
@@ -335,14 +335,14 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 						return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral );
 					}
 				} else {
-					org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( 
+					org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( 
 							org.lgna.story.AudioSource.class, 
 							org.alice.virtualmachine.resources.AudioResource.class,
 							Number.class );
 					return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral );
 				}
 			} else {
-				org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( 
+				org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( 
 						org.lgna.story.AudioSource.class, 
 						org.alice.virtualmachine.resources.AudioResource.class );
 				return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression );

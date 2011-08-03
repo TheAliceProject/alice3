@@ -45,14 +45,14 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDeclaringTypePane< org.lgna.project.ast.FieldDeclaredInAlice > {
-	private org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
-	public AbstractCreateFieldPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDeclaringTypePane< org.lgna.project.ast.UserField > {
+	private org.lgna.project.ast.UserType< ? > declaringType;
+	public AbstractCreateFieldPane( org.lgna.project.ast.UserType< ? > declaringType ) {
 		super( new org.alice.ide.name.validators.FieldNameValidator( declaringType ) );
 		this.declaringType = declaringType;
 		this.setBackgroundColor( getIDE().getTheme().getFieldColor() );
 	}
-	public org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
 		return this.declaringType;
 	}
 	@Override
@@ -60,8 +60,8 @@ public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDecla
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getPreviewFactory(), this.getInputValue() );
 	}
 	@Override
-	public final org.lgna.project.ast.FieldDeclaredInAlice getInputValue() {
-		org.lgna.project.ast.FieldDeclaredInAlice rv = new org.lgna.project.ast.FieldDeclaredInAlice( this.getDeclarationName(), this.getValueType(), this.getInitializer() );
+	public final org.lgna.project.ast.UserField getInputValue() {
+		org.lgna.project.ast.UserField rv = new org.lgna.project.ast.UserField( this.getDeclarationName(), this.getValueType(), this.getInitializer() );
 		org.lgna.project.ast.FieldModifierFinalVolatileOrNeither value;
 		if( this.isReassignable() ) {
 			value = org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.NEITHER;

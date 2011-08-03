@@ -60,11 +60,11 @@ package org.alice.ide.croquet.models.ast;
 /**
 * @author Dennis Cosgrove
 */
-public class EditMethodOperation extends EditCodeOperation< org.lgna.project.ast.MethodDeclaredInAlice > {
+public class EditMethodOperation extends EditCodeOperation< org.lgna.project.ast.UserMethod > {
 //	private static CheckMarkIcon checkMarkIcon = new CheckMarkIcon();
 
-	private static java.util.Map< org.lgna.project.ast.MethodDeclaredInAlice, EditMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized EditMethodOperation getInstance( org.lgna.project.ast.MethodDeclaredInAlice method ) {
+	private static java.util.Map< org.lgna.project.ast.UserMethod, EditMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized EditMethodOperation getInstance( org.lgna.project.ast.UserMethod method ) {
 		EditMethodOperation rv = map.get( method );
 		if( rv != null ) {
 			//pass
@@ -74,7 +74,7 @@ public class EditMethodOperation extends EditCodeOperation< org.lgna.project.ast
 		}
 		return rv;
 	}
-	private EditMethodOperation( org.lgna.project.ast.MethodDeclaredInAlice method ) {
+	private EditMethodOperation( org.lgna.project.ast.UserMethod method ) {
 		super( java.util.UUID.fromString( "4a6e51f7-630a-4f36-b7db-5fa37c62eb54" ), method );
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );
@@ -95,6 +95,6 @@ public class EditMethodOperation extends EditCodeOperation< org.lgna.project.ast
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation >( this, this.getCode(), org.lgna.project.ast.MethodDeclaredInAlice.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation >( this, this.getCode(), org.lgna.project.ast.UserMethod.class );
 	}
 }

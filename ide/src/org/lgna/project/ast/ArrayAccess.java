@@ -59,7 +59,7 @@ public class ArrayAccess extends Expression {
 	public ExpressionProperty index = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
-			return TypeDeclaredInJava.get( Integer.class );
+			return JavaType.getInstance( Integer.class );
 		}
 	};
 
@@ -72,7 +72,7 @@ public class ArrayAccess extends Expression {
 		this.index.setValue( index );
 	}
 	public ArrayAccess( Class<?> arrayCls, Expression array, Expression index ){
-		this( TypeDeclaredInJava.get( arrayCls ), array, index );
+		this( JavaType.getInstance( arrayCls ), array, index );
 	}
 	@Override
 	public AbstractType<?,?,?> getType() {

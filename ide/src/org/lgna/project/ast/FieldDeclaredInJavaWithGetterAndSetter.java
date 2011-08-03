@@ -51,7 +51,7 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 
 	private MethodReflectionProxy getterReflectionProxy;
 	private MethodReflectionProxy setterReflectionProxy;
-	private java.util.ArrayList< ParameterDeclaredInJavaMethod > parameters;
+	private java.util.ArrayList< JavaMethodParameter > parameters;
 	private java.lang.annotation.Annotation[] parameterAnnotations0;
 
 	public static FieldDeclaredInJavaWithGetterAndSetter get( MethodReflectionProxy getterReflectionProxy, MethodReflectionProxy setterReflectionProxy ) {
@@ -106,8 +106,8 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 	//	}
 
 	@Override
-	public TypeDeclaredInJava getDeclaringType() {
-		return TypeDeclaredInJava.get( this.setterReflectionProxy.getDeclaringClassReflectionProxy() );
+	public JavaType getDeclaringType() {
+		return JavaType.getInstance( this.setterReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
 
 	@Override
@@ -149,18 +149,18 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 		}
 	}
 	@Override
-	public TypeDeclaredInJava getValueType() {
+	public JavaType getValueType() {
 		java.lang.reflect.Method gttr = this.getterReflectionProxy.getReification();
 		assert gttr != null;
-		return TypeDeclaredInJava.get( gttr.getReturnType() );
+		return JavaType.getInstance( gttr.getReturnType() );
 	}
 	@Override
-	public TypeDeclaredInJava getDesiredValueType() {
+	public JavaType getDesiredValueType() {
 		if( this.parameterAnnotations0 != null ) {
 			for( java.lang.annotation.Annotation annotation : parameterAnnotations0 ) {
 					if( annotation instanceof org.lgna.project.annotations.ParameterTemplate ) {
 					org.lgna.project.annotations.ParameterTemplate parameterTemplate = (org.lgna.project.annotations.ParameterTemplate)annotation;
-					return TypeDeclaredInJava.get( parameterTemplate.preferredArgumentClass() );
+					return JavaType.getInstance( parameterTemplate.preferredArgumentClass() );
 				}
 			}
 		}

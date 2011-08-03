@@ -278,7 +278,7 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 		this.rightOperandType.setValue( rightOperandType );
 	}
 	public RelationalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, Class<?> leftOperandCls, Class<?> rightOperandCls ) {
-		this( leftOperand, operator, rightOperand, TypeDeclaredInJava.get( leftOperandCls ), TypeDeclaredInJava.get( rightOperandCls ) );
+		this( leftOperand, operator, rightOperand, JavaType.getInstance( leftOperandCls ), JavaType.getInstance( rightOperandCls ) );
 	}
 	@Override
 	protected AbstractType<?,?,?> getLeftOperandType() {
@@ -290,13 +290,13 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 	}
 	@Override
 	public AbstractType<?,?,?> getType() {
-		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
+		return JavaType.BOOLEAN_OBJECT_TYPE;
 	}
 	@Override
 	protected void handleMissingProperty( String propertyName, Object value ) {
 		assert propertyName.equals( "expressionType" );
-		if( value == TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) {
-			value = TypeDeclaredInJava.get( Number.class );
+		if( value == JavaType.DOUBLE_OBJECT_TYPE ) {
+			value = JavaType.getInstance( Number.class );
 		}
 		this.leftOperandType.setValue( (AbstractType<?,?,?>)value );
 		this.rightOperandType.setValue( (AbstractType<?,?,?>)value );

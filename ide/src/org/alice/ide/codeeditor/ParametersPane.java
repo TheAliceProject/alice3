@@ -43,12 +43,12 @@
 package org.alice.ide.codeeditor;
 
 import org.lgna.project.ast.NodeListProperty;
-import org.lgna.project.ast.ParameterDeclaredInAlice;
+import org.lgna.project.ast.UserParameter;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< NodeListProperty< ParameterDeclaredInAlice >> {
+public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< NodeListProperty< UserParameter >> {
 	public ParametersPane( org.alice.ide.common.Factory factory, org.lgna.project.ast.CodeDeclaredInAlice code ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, code.getParamtersProperty() );
 	}
@@ -63,7 +63,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createComponent( Object parameter ) {
-		return new TypedParameterPane( getProperty(), (org.lgna.project.ast.ParameterDeclaredInAlice)parameter );
+		return new TypedParameterPane( getProperty(), (org.lgna.project.ast.UserParameter)parameter );
 	}
 	@Override
 	protected void addPrefixComponents() {
@@ -101,8 +101,8 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 		super.addPostfixComponents();
 		org.lgna.project.ast.CodeDeclaredInAlice code = getCode();
 
-		if( code instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
-			org.lgna.project.ast.MethodDeclaredInAlice method = (org.lgna.project.ast.MethodDeclaredInAlice)code;
+		if( code instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
 			if( method.isSignatureLocked.getValue() ) {
 				//pass
 			} else {

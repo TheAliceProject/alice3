@@ -54,7 +54,7 @@ public abstract class ExpressionBlank extends org.lgna.croquet.CascadeBlank< org
 		this.valueType = valueType;
 	}
 	public ExpressionBlank( java.util.UUID id, Class< ? > cls ) {
-		this( id, org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
+		this( id, org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
 		return this.valueType;

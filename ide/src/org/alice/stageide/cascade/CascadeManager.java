@@ -64,12 +64,12 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 
 	@Override
 	protected org.lgna.project.ast.AbstractType<?,?,?> getEnumTypeForInterfaceType( org.lgna.project.ast.AbstractType<?,?,?> interfaceType ) {
-		if( interfaceType == org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Style.class ) ) {
-			return org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.TraditionalStyle.class );
-		} else if( interfaceType == org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.resources.sims2.EyeColor.class ) ) {
-			return org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.resources.sims2.BaseEyeColor.class );
-		} else if( interfaceType == org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.resources.sims2.SkinTone.class ) ) {
-			return org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.resources.sims2.BaseSkinTone.class );
+		if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Style.class ) ) {
+			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.TraditionalStyle.class );
+		} else if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.EyeColor.class ) ) {
+			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.BaseEyeColor.class );
+		} else if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.SkinTone.class ) ) {
+			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.BaseSkinTone.class );
 		} else {
 			return super.getEnumTypeForInterfaceType( interfaceType );
 		}
@@ -89,11 +89,11 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	@Override
 	protected org.lgna.project.ast.AbstractType<?,?,?> getActualTypeForDesiredParameterType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		if( type.isAssignableTo( org.lgna.story.Angle.class ) ) {
-			return org.lgna.project.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE;
+			return org.lgna.project.ast.JavaType.NUMBER_OBJECT_TYPE;
 		} else if( type.isAssignableTo( org.lgna.story.Portion.class ) ) {
-			return org.lgna.project.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE;
+			return org.lgna.project.ast.JavaType.NUMBER_OBJECT_TYPE;
 		} else if( type.isAssignableTo( org.lgna.story.VolumeLevel.class ) ) {
-			return org.lgna.project.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE;
+			return org.lgna.project.ast.JavaType.NUMBER_OBJECT_TYPE;
 		} else {
 			return super.getActualTypeForDesiredParameterType( type );
 		}
@@ -101,7 +101,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 
 	@Override
 	protected boolean areEnumConstantsDesired( org.lgna.project.ast.AbstractType enumType ) {
-		if( enumType == org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Key.class ) ) {
+		if( enumType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class ) ) {
 			return false;
 		} else {
 			return super.areEnumConstantsDesired( enumType );
@@ -113,10 +113,10 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression != null ) {
 			if( type.isAssignableFrom( org.lgna.story.Model.class ) ) {
-				org.lgna.project.ast.MethodDeclaredInAlice enclosingMethod = previousExpression.getFirstAncestorAssignableTo( org.lgna.project.ast.MethodDeclaredInAlice.class );
+				org.lgna.project.ast.UserMethod enclosingMethod = previousExpression.getFirstAncestorAssignableTo( org.lgna.project.ast.UserMethod.class );
 				if( enclosingMethod != null ) {
-					for( org.lgna.project.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
-						org.lgna.project.ast.TypeDeclaredInJava typeMouseButtonEvent = org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.event.MouseButtonEvent.class );
+					for( org.lgna.project.ast.UserParameter parameter : enclosingMethod.parameters ) {
+						org.lgna.project.ast.JavaType typeMouseButtonEvent = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.MouseButtonEvent.class );
 						if( parameter.getValueType() == typeMouseButtonEvent ) {
 							String[] methodNames = new String[] { "getModelAtMouseLocation", "getPartAtMouseLocation" };
 							for( String methodName : methodNames ) {
@@ -128,10 +128,10 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 					}
 				}
 			} else if( type.isAssignableFrom( Boolean.class ) ) {
-				org.lgna.project.ast.MethodDeclaredInAlice enclosingMethod = previousExpression.getFirstAncestorAssignableTo( org.lgna.project.ast.MethodDeclaredInAlice.class );
+				org.lgna.project.ast.UserMethod enclosingMethod = previousExpression.getFirstAncestorAssignableTo( org.lgna.project.ast.UserMethod.class );
 				if( enclosingMethod != null ) {
-					for( org.lgna.project.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
-						org.lgna.project.ast.TypeDeclaredInJava typeKeyEvent = org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.event.KeyEvent.class );
+					for( org.lgna.project.ast.UserParameter parameter : enclosingMethod.parameters ) {
+						org.lgna.project.ast.JavaType typeKeyEvent = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.KeyEvent.class );
 						if( parameter.getValueType() == typeKeyEvent ) {
 							{
 								org.lgna.project.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( "isKey", org.lgna.story.Key.class );
@@ -156,7 +156,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	protected org.lgna.croquet.CascadeBlankChild createBlankChildForFillInAndPossiblyPartFillIns( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractType< ?, ?, ? > type2 ) {
 		org.lgna.croquet.CascadeFillIn fillIn = (org.lgna.croquet.CascadeFillIn)super.createBlankChildForFillInAndPossiblyPartFillIns( expression, type, type2 );
 		if( type.isAssignableTo( org.lgna.story.Biped.class ) ) {
-			org.lgna.project.ast.TypeDeclaredInJava typeInJava = null;
+			org.lgna.project.ast.JavaType typeInJava = null;
 			Class< ? > paramCls = null;
 			if( type2.isAssignableFrom( org.lgna.story.Joint.class ) ) {
 				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();

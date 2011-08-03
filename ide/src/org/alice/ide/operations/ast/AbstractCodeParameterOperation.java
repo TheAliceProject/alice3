@@ -43,20 +43,20 @@
 package org.alice.ide.operations.ast;
 
 import org.lgna.project.ast.NodeListProperty;
-import org.lgna.project.ast.ParameterDeclaredInAlice;
+import org.lgna.project.ast.UserParameter;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCodeParameterOperation extends AbstractCodeActionOperation {
-	private ParameterDeclaredInAlice parameter;
-	private NodeListProperty< ParameterDeclaredInAlice > parametersProperty;
-	public AbstractCodeParameterOperation( java.util.UUID individualId, NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
+	private UserParameter parameter;
+	private NodeListProperty< UserParameter > parametersProperty;
+	public AbstractCodeParameterOperation( java.util.UUID individualId, NodeListProperty< UserParameter > parametersProperty, UserParameter parameter ) {
 		super( individualId );
 		this.parametersProperty = parametersProperty;
 		this.parameter = parameter;
 	}
-	protected org.lgna.project.ast.ParameterDeclaredInAlice getParameter() {
+	protected org.lgna.project.ast.UserParameter getParameter() {
 		return this.parameter;
 	}
 	protected int getIndex() {

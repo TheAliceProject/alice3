@@ -46,19 +46,19 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorDeclaredInAlice extends AbstractConstructor implements CodeDeclaredInAlice {
+public class NamedUserConstructor extends UserConstructor implements CodeDeclaredInAlice {
 	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
-	public NodeListProperty< ParameterDeclaredInAlice > parameters = new NodeListProperty< ParameterDeclaredInAlice >( this );
+	public NodeListProperty< UserParameter > parameters = new NodeListProperty< UserParameter >( this );
 	public NodeProperty< ConstructorBlockStatement > body = new NodeProperty< ConstructorBlockStatement >( this );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 
 	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME; 
-	private AbstractTypeDeclaredInAlice<?> m_declaringType;
+	private UserType<?> m_declaringType;
 
-	public ConstructorDeclaredInAlice() {
+	public NamedUserConstructor() {
 	}
-	public ConstructorDeclaredInAlice( ParameterDeclaredInAlice[] parameters, ConstructorBlockStatement body ) {
+	public NamedUserConstructor( UserParameter[] parameters, ConstructorBlockStatement body ) {
 		this.parameters.add( parameters );
 		this.body.setValue( body );
 	}
@@ -85,14 +85,14 @@ public class ConstructorDeclaredInAlice extends AbstractConstructor implements C
 	public NodeProperty< ConstructorBlockStatement > getBodyProperty() {
 		return this.body;
 	}
-	public NodeListProperty< ParameterDeclaredInAlice > getParamtersProperty() {
+	public NodeListProperty< UserParameter > getParamtersProperty() {
 		return this.parameters;
 	}
 	@Override
-	public AbstractTypeDeclaredInAlice<?> getDeclaringType() {
+	public UserType<?> getDeclaringType() {
 		return m_declaringType;
 	}
-	public void setDeclaringType( AbstractTypeDeclaredInAlice<?> declaringType ) {
+	public void setDeclaringType( UserType<?> declaringType ) {
 		m_declaringType = declaringType;
 	}
 	@Override

@@ -50,25 +50,25 @@ import org.lgna.project.ast.*;
 public class ReleaseVirtualMachine extends VirtualMachine {
 	protected static abstract class AbstractFrame implements Frame {
 		private Frame m_owner = null;
-		private java.util.Map< LocalDeclaredInAlice, Object > m_mapLocalToValue = new java.util.concurrent.ConcurrentHashMap< LocalDeclaredInAlice, Object >();
+		private java.util.Map< UserLocal, Object > m_mapLocalToValue = new java.util.concurrent.ConcurrentHashMap< UserLocal, Object >();
 
 		public AbstractFrame( Frame owner ) {
 			m_owner = owner;
 		}
 		public AbstractFrame( Frame owner, AbstractFrame other ) {
 			this( owner );
-			m_mapLocalToValue = new java.util.concurrent.ConcurrentHashMap< LocalDeclaredInAlice, Object >( other.m_mapLocalToValue );
+			m_mapLocalToValue = new java.util.concurrent.ConcurrentHashMap< UserLocal, Object >( other.m_mapLocalToValue );
 		}
 		public Frame getOwner() {
 			return m_owner;
 		}
-		private boolean contains( LocalDeclaredInAlice local ) {
+		private boolean contains( UserLocal local ) {
 			return m_mapLocalToValue.containsKey( local );
 		}
-		public void push( LocalDeclaredInAlice local, Object value ) {
+		public void push( UserLocal local, Object value ) {
 			m_mapLocalToValue.put( local, value );
 		}
-		public Object get( LocalDeclaredInAlice local ) {
+		public Object get( UserLocal local ) {
 			if( contains( local ) ) {
 				return m_mapLocalToValue.get( local );
 			} else {
@@ -79,14 +79,14 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 				}
 			}
 		}
-		public void set( LocalDeclaredInAlice local, Object value ) {
+		public void set( UserLocal local, Object value ) {
 			if( contains( local ) ) {
 				m_mapLocalToValue.put( local, value );
 			} else {
 				m_owner.set( local, value );
 			}
 		}
-		public void pop( LocalDeclaredInAlice local ) {
+		public void pop( UserLocal local ) {
 			assert contains( local );
 			m_mapLocalToValue.remove( local );
 		}
@@ -140,8 +140,8 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 	}
 	protected static class ConstructorInvocationFrame extends InvocationFrame {
-		private final TypeDeclaredInAlice type;
-		public ConstructorInvocationFrame( Frame owner, TypeDeclaredInAlice type, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
+		private final NamedUserType type;
+		public ConstructorInvocationFrame( Frame owner, NamedUserType type, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
 			super( owner, null, mapParameterToValue );
 			this.type = type;
 		}
@@ -244,7 +244,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		this.setCurrentFrame( frame );
 	}
 	@Override
-	protected void pushConstructorFrame( org.lgna.project.ast.TypeDeclaredInAlice type, java.util.Map< AbstractParameter, Object > map ) {
+	protected void pushConstructorFrame( org.lgna.project.ast.NamedUserType type, java.util.Map< AbstractParameter, Object > map ) {
 		Frame owner = getCurrentFrame();
 		this.pushFrame( new ConstructorInvocationFrame( owner, type, map ) );
 	}
@@ -261,19 +261,19 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		this.pushFrame( new MethodInvocationFrame( owner, instance, map ) );
 	}
 	@Override
-	protected void pushLocal( org.lgna.project.ast.LocalDeclaredInAlice local, Object value ) {
+	protected void pushLocal( org.lgna.project.ast.UserLocal local, Object value ) {
 		getCurrentFrame().push( local, value );
 	}
 	@Override
-	protected void setLocal( org.lgna.project.ast.LocalDeclaredInAlice local, Object value ) {
+	protected void setLocal( org.lgna.project.ast.UserLocal local, Object value ) {
 		getCurrentFrame().set( local, value );
 	}
 	@Override
-	protected Object getLocal( org.lgna.project.ast.LocalDeclaredInAlice local ) {
+	protected Object getLocal( org.lgna.project.ast.UserLocal local ) {
 		return getCurrentFrame().get( local );
 	}
 	@Override
-	protected void popLocal( org.lgna.project.ast.LocalDeclaredInAlice local ) {
+	protected void popLocal( org.lgna.project.ast.UserLocal local ) {
 		getCurrentFrame().pop( local );
 	}
 

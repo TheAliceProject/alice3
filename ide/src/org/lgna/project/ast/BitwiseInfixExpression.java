@@ -124,11 +124,11 @@ public class BitwiseInfixExpression extends Expression {
 	}
 	public BitwiseInfixExpression( AbstractType<?,?,?> expressionType, Expression leftOperand, Operator operator, Expression rightOperand ) {
 		assert 
-			TypeDeclaredInJava.get( Long.class ).isAssignableFrom( expressionType ) || 
-			TypeDeclaredInJava.get( Integer.class ).isAssignableFrom( expressionType ) || 
-			TypeDeclaredInJava.get( Short.class ).isAssignableFrom( expressionType ) || 
-			TypeDeclaredInJava.get( Byte.class ).isAssignableFrom( expressionType ) || 
-			TypeDeclaredInJava.get( Character.class ).isAssignableFrom( expressionType )
+			JavaType.getInstance( Long.class ).isAssignableFrom( expressionType ) || 
+			JavaType.getInstance( Integer.class ).isAssignableFrom( expressionType ) || 
+			JavaType.getInstance( Short.class ).isAssignableFrom( expressionType ) || 
+			JavaType.getInstance( Byte.class ).isAssignableFrom( expressionType ) || 
+			JavaType.getInstance( Character.class ).isAssignableFrom( expressionType )
 		;
 		this.expressionType.setValue( expressionType );
 		this.leftOperand.setValue( leftOperand );

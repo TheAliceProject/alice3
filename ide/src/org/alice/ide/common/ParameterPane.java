@@ -45,10 +45,10 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterPane extends TransientPane<org.lgna.project.ast.ParameterDeclaredInAlice> {
-	private org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.ParameterDeclaredInAlice > parametersProperty;
+public class ParameterPane extends TransientPane<org.lgna.project.ast.UserParameter> {
+	private org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > parametersProperty;
 
-	public ParameterPane( org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.ParameterDeclaredInAlice > parametersProperty, final org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
+	public ParameterPane( org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > parametersProperty, final org.lgna.project.ast.UserParameter parameter ) {
 		super( parameter );
 		this.parametersProperty = parametersProperty;
 		this.addComponent( new org.alice.ide.common.DeclarationNameLabel( parameter ) );

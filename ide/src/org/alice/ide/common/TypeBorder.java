@@ -63,7 +63,7 @@ class TypeBorder implements javax.swing.border.Border {
 
 	public static TypeBorder getSingletonFor( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
-			if( type instanceof org.lgna.project.ast.TypeDeclaredInAlice ) {
+			if( type instanceof org.lgna.project.ast.NamedUserType ) {
 				return TypeBorder.singletonForDeclaredInAlice;
 			} else {
 				return TypeBorder.singletonForDeclaredInJava;

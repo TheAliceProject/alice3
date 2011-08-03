@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterDeclarationOperation extends DeclarationOperation< org.lgna.project.ast.ParameterDeclaredInAlice >{
+public class ParameterDeclarationOperation extends DeclarationOperation< org.lgna.project.ast.UserParameter >{
 	private static java.util.Map< org.lgna.project.ast.CodeDeclaredInAlice, ParameterDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static ParameterDeclarationOperation getInstance( org.lgna.project.ast.CodeDeclaredInAlice code ) {
 		synchronized( map ) {
@@ -81,15 +81,15 @@ public class ParameterDeclarationOperation extends DeclarationOperation< org.lgn
 		return new org.alice.ide.croquet.components.declaration.ParameterDeclarationPanel( this );
 	}
 	@Override
-	public org.lgna.project.ast.ParameterDeclaredInAlice createPreviewDeclaration() {
-		return new org.lgna.project.ast.ParameterDeclaredInAlice( this.getDeclarationName(), this.getValueType() );
+	public org.lgna.project.ast.UserParameter createPreviewDeclaration() {
+		return new org.lgna.project.ast.UserParameter( this.getDeclarationName(), this.getValueType() );
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, org.lgna.project.ast.Expression initializer ) {
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, org.lgna.project.ast.Expression initializer ) {
 		assert declaringType == null;
 		assert valueType != null;
 		assert declarationName != null;
 		assert initializer == null;
-		return new org.alice.ide.croquet.edits.ast.ParameterDeclarationEdit( step, new org.lgna.project.ast.ParameterDeclaredInAlice( declarationName, valueType ) );
+		return new org.alice.ide.croquet.edits.ast.ParameterDeclarationEdit( step, new org.lgna.project.ast.UserParameter( declarationName, valueType ) );
 	}
 }

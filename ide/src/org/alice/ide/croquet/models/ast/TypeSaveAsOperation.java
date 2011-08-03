@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast;
  */
 public class TypeSaveAsOperation extends org.alice.ide.croquet.models.projecturi.AbstractSaveOperation {
 
-	private static java.util.Map< org.lgna.project.ast.TypeDeclaredInAlice, TypeSaveAsOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized TypeSaveAsOperation getInstance( org.lgna.project.ast.TypeDeclaredInAlice type ) {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, TypeSaveAsOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized TypeSaveAsOperation getInstance( org.lgna.project.ast.NamedUserType type ) {
 		TypeSaveAsOperation rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -59,8 +59,8 @@ public class TypeSaveAsOperation extends org.alice.ide.croquet.models.projecturi
 		return rv;
 	}
 
-	private org.lgna.project.ast.TypeDeclaredInAlice type;
-	private TypeSaveAsOperation( org.lgna.project.ast.TypeDeclaredInAlice type ) {
+	private org.lgna.project.ast.NamedUserType type;
+	private TypeSaveAsOperation( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "e8da4117-db15-40d6-b486-7f226d827be7" ) );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SaveAsTypeOperation" );
 		this.type = type;
@@ -70,7 +70,7 @@ public class TypeSaveAsOperation extends org.alice.ide.croquet.models.projecturi
 
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeSaveAsOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeSaveAsOperation >( this, this.type, org.lgna.project.ast.TypeDeclaredInAlice.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeSaveAsOperation >( this, this.type, org.lgna.project.ast.NamedUserType.class );
 	}
 
 	@Override
