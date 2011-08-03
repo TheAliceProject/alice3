@@ -71,8 +71,8 @@ public class PaintView extends org.lgna.croquet.components.ViewController< javax
 	protected javax.swing.JComponent createAwtComponent() {
 		javax.swing.JComponent rv = new javax.swing.JComponent() {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return new java.awt.Dimension( 128, 128 );
+			public java.awt.Dimension getMinimumSize() {
+				return this.getPreferredSize();
 			}
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
@@ -100,6 +100,7 @@ public class PaintView extends org.lgna.croquet.components.ViewController< javax
 				}
 			}
 		};
+		rv.setPreferredSize( new java.awt.Dimension( 128, 128 ) );
 		return rv;
 	}
 }

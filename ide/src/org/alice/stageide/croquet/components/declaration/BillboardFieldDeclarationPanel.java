@@ -49,16 +49,24 @@ package org.alice.stageide.croquet.components.declaration;
 public class BillboardFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation > {
 	public BillboardFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation model ) {
 		super( model );
-		class SidePanel extends org.lgna.croquet.components.PageAxisPanel {
+		class SidePanel extends org.lgna.croquet.components.GridBagPanel {
 			public SidePanel() {
-				this.addComponent( new org.lgna.croquet.components.Label( model.getFrontPaintLabelText() ) );
-				this.addComponent( new PaintView( model.getFrontPaintState() ) );
-				this.addComponent( new org.lgna.croquet.components.Label( model.getBackPaintLabelText() ) );
-				this.addComponent( new PaintView( model.getBackPaintState() ) );
+				java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+				gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+				gbc.weighty = 0.0;
+				gbc.fill = java.awt.GridBagConstraints.BOTH;
+				gbc.anchor = java.awt.GridBagConstraints.PAGE_START;
+				this.addComponent( new org.lgna.croquet.components.Label( model.getFrontPaintLabelText() ), gbc );
+				this.addComponent( new PaintView( model.getFrontPaintState() ), gbc );
+				this.addComponent( new org.lgna.croquet.components.Label( model.getBackPaintLabelText() ), gbc );
+				this.addComponent( new PaintView( model.getBackPaintState() ), gbc );
+				gbc.weighty = 1.0;
+				this.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue(), gbc );
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 32, 0, 0 ) );
 			}
 		}
-		this.addComponent( new SidePanel(), Constraint.LINE_END );
+		SidePanel sidePanel = new SidePanel();
+		this.addComponent( sidePanel, Constraint.LINE_END );
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation model ) {
