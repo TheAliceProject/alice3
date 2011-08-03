@@ -385,7 +385,7 @@ public class NodeUtilities {
 //		return parameters.get( parameters.size()-1 );
 //	}
 	
-	public static java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > removeParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > rv, org.lgna.project.ast.CodeDeclaredInAlice code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
+	public static java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > removeParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > rv, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
 		assert rv != null;
 		assert code.getParamtersProperty().get( index ) == parameterDeclaredInAlice;
 		rv.clear();
@@ -398,7 +398,7 @@ public class NodeUtilities {
 		}
 		return rv;
 	}
-	public static void addParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > map, org.lgna.project.ast.CodeDeclaredInAlice code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
+	public static void addParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > map, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
 		code.getParamtersProperty().add( index, parameterDeclaredInAlice );
 		for( org.lgna.project.ast.ArgumentListProperty argumentListProperty : argumentListProperties ) {
 			org.lgna.project.ast.Argument argument = map.get( code );

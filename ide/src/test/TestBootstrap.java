@@ -52,7 +52,7 @@ public class TestBootstrap {
 		org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 		vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
 		if( true ) {
-			org.lgna.project.virtualmachine.InstanceInAlice programInstance = vm.ENTRY_POINT_createInstance( programType );
+			org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance( programType );
 			vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
 			System.err.println();
 			System.err.println();

@@ -49,4 +49,23 @@ package org.lgna.project.ast;
  */
 public abstract class AbstractCode extends AbstractMember {
 	public abstract java.util.ArrayList< ? extends AbstractParameter > getParameters();
+	
+	public AbstractCode getShortestInChain() {
+		AbstractCode next = this.getNextShorterInChain();
+		if( next != null ) {
+			return next.getShortestInChain();
+		} else {
+			return this;
+		}
+	}
+	public AbstractCode getLongestInChain() {
+		AbstractCode next = this.getNextLongerInChain();
+		if( next != null ) {
+			return next.getLongestInChain();
+		} else {
+			return this;
+		}
+	}
+	public abstract AbstractCode getNextLongerInChain();
+	public abstract AbstractCode getNextShorterInChain();		
 }

@@ -44,9 +44,9 @@
 package org.alice.ide.name.validators;
 
 public abstract class TransientNameValidator extends NodeNameValidator {
-	private final org.lgna.project.ast.CodeDeclaredInAlice code;
+	private final org.lgna.project.ast.UserCode code;
 	private final org.lgna.project.ast.BlockStatement block;
-	public TransientNameValidator( org.lgna.project.ast.Node node, org.lgna.project.ast.CodeDeclaredInAlice code, org.lgna.project.ast.BlockStatement block ) {
+	public TransientNameValidator( org.lgna.project.ast.Node node, org.lgna.project.ast.UserCode code, org.lgna.project.ast.BlockStatement block ) {
 		super( node );
 //		assert code != null;
 //		assert block != null;

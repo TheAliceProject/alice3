@@ -110,6 +110,17 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 						}
 					}
 				}
+				for( JavaMethod method : rv.methods ) {
+					java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
+					org.lgna.project.annotations.GetterTemplate propertyGetterTemplate = mthd.getAnnotation( org.lgna.project.annotations.GetterTemplate.class );
+					if( propertyGetterTemplate != null ) {
+						java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( mthd );
+						if( sttr != null ) {
+							JavaMethod setter = JavaMethod.getInstance( sttr );
+							rv.getterSetterPairs.add( new JavaGetterSetterPair( method, (JavaMethod)setter.getLongestInChain() ) );
+						}
+					}
+				}
 			}
 			return rv;
 		} else {
@@ -145,11 +156,12 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 //		return (modifiers & prohibited) == 0;
 //	}
 
-	private ClassReflectionProxy classReflectionProxy;
-	private java.util.ArrayList< JavaConstructor > constructors = new java.util.ArrayList< JavaConstructor >();
-	private java.util.ArrayList< JavaMethod > methods = new java.util.ArrayList< JavaMethod >();
-	private java.util.ArrayList< JavaField > fields = new java.util.ArrayList< JavaField >();
-
+	private final ClassReflectionProxy classReflectionProxy;
+	private final java.util.ArrayList< JavaConstructor > constructors = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+	private final java.util.ArrayList< JavaMethod > methods = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+	private final java.util.ArrayList< JavaField > fields = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+	private final java.util.ArrayList< JavaGetterSetterPair > getterSetterPairs = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+	
 	private JavaType( ClassReflectionProxy classReflectionProxy ) {
 		this.classReflectionProxy = classReflectionProxy;
 	}
@@ -215,6 +227,10 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	@Override
 	public java.util.ArrayList< JavaField > getDeclaredFields() {
 		return this.fields;
+	}
+	
+	public java.util.ArrayList< JavaGetterSetterPair > getGetterSetterPairs() {
+		return this.getterSetterPairs;
 	}
 
 	private static Class< ? >[] trimLast( Class< ? >[] src ) {

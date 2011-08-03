@@ -121,7 +121,7 @@ public class JavaConstructor extends AbstractConstructor {
 	}
 	
 	@Override
-	public AbstractMember getNextLongerInChain() {
+	public AbstractCode getNextLongerInChain() {
 		return this.nextLongerInChain;
 	}
 	public void setNextLongerInChain( JavaConstructor nextLongerInChain ) {
@@ -131,7 +131,7 @@ public class JavaConstructor extends AbstractConstructor {
 	private JavaConstructor nextShorterInChain = null;
 
 	@Override
-	public AbstractMember getNextShorterInChain() {
+	public AbstractCode getNextShorterInChain() {
 		return this.nextShorterInChain;
 	}
 	public void setNextShorterInChain( JavaConstructor nextShorterInChain ) {

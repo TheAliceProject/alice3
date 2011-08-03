@@ -80,11 +80,11 @@ public class AnonymousUserConstructor extends UserConstructor {
 		return this.type;
 	}
 	@Override
-	public org.lgna.project.ast.AbstractMember getNextLongerInChain() {
+	public org.lgna.project.ast.AbstractCode getNextLongerInChain() {
 		return null;
 	}
 	@Override
-	public org.lgna.project.ast.AbstractMember getNextShorterInChain() {
+	public org.lgna.project.ast.AbstractCode getNextShorterInChain() {
 		return null;
 	}
 	@Override

@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class NamedUserConstructor extends UserConstructor implements CodeDeclaredInAlice {
+public class NamedUserConstructor extends UserConstructor implements UserCode {
 	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
 	public NodeListProperty< UserParameter > parameters = new NodeListProperty< UserParameter >( this );
 	public NodeProperty< ConstructorBlockStatement > body = new NodeProperty< ConstructorBlockStatement >( this );
@@ -104,11 +104,11 @@ public class NamedUserConstructor extends UserConstructor implements CodeDeclare
 	}
 	
 	@Override
-	public AbstractMember getNextLongerInChain() {
+	public AbstractCode getNextLongerInChain() {
 		return null;
 	}
 	@Override
-	public AbstractMember getNextShorterInChain() {
+	public AbstractCode getNextShorterInChain() {
 		return null;
 	}
 	

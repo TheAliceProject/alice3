@@ -143,7 +143,7 @@ public class JavaMethod extends AbstractMethod {
 	private JavaMethod nextLongerInChain = null;
 
 	@Override
-	public AbstractMember getNextLongerInChain() {
+	public AbstractCode getNextLongerInChain() {
 		return this.nextLongerInChain;
 	}
 	public void setNextLongerInChain( JavaMethod nextLongerInChain ) {
@@ -153,7 +153,7 @@ public class JavaMethod extends AbstractMethod {
 	private JavaMethod nextShorterInChain = null;
 
 	@Override
-	public AbstractMember getNextShorterInChain() {
+	public AbstractCode getNextShorterInChain() {
 		return this.nextShorterInChain;
 	}
 	public void setNextShorterInChain( JavaMethod nextShorterInChain ) {

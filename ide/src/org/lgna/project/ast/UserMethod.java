@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class UserMethod extends AbstractMethod implements CodeDeclaredInAlice {
+public class UserMethod extends AbstractMethod implements UserCode {
 	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isAbstract = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
@@ -121,11 +121,11 @@ public class UserMethod extends AbstractMethod implements CodeDeclaredInAlice {
 	}
 	
 	@Override
-	public AbstractMember getNextLongerInChain() {
+	public AbstractCode getNextLongerInChain() {
 		return null;
 	}
 	@Override
-	public AbstractMember getNextShorterInChain() {
+	public AbstractCode getNextShorterInChain() {
 		return null;
 	}
 	

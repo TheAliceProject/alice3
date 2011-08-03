@@ -49,15 +49,15 @@ package org.lgna.project.ast;
 public abstract class UserType<C extends AbstractConstructor> extends AbstractType<C, UserMethod, UserField> {
 	protected class Adapter<E extends AbstractMember> implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > {
 		private void handleAdd( E member ) {
-			assert member instanceof MemberDeclaredInAlice;
+			assert member instanceof UserMember;
 			assert member.getDeclaringType() == null : member.getDeclaringType();
-			MemberDeclaredInAlice memberDeclaredInAlice = (MemberDeclaredInAlice)member;
+			UserMember memberDeclaredInAlice = (UserMember)member;
 			memberDeclaredInAlice.setDeclaringType( UserType.this );
 		}
 		private void handleRemove( E member ) {
-			assert member instanceof MemberDeclaredInAlice;
+			assert member instanceof UserMember;
 			assert member.getDeclaringType() != null;
-			MemberDeclaredInAlice memberDeclaredInAlice = (MemberDeclaredInAlice)member;
+			UserMember memberDeclaredInAlice = (UserMember)member;
 			memberDeclaredInAlice.setDeclaringType( null );
 		}
 

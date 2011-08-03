@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public class ParameterDeclarationOperation extends DeclarationOperation< org.lgna.project.ast.UserParameter >{
-	private static java.util.Map< org.lgna.project.ast.CodeDeclaredInAlice, ParameterDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ParameterDeclarationOperation getInstance( org.lgna.project.ast.CodeDeclaredInAlice code ) {
+	private static java.util.Map< org.lgna.project.ast.UserCode, ParameterDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ParameterDeclarationOperation getInstance( org.lgna.project.ast.UserCode code ) {
 		synchronized( map ) {
 			ParameterDeclarationOperation rv = map.get( code );
 			if( rv != null ) {
@@ -60,8 +60,8 @@ public class ParameterDeclarationOperation extends DeclarationOperation< org.lgn
 			return rv;
 		}
 	}
-	private final org.lgna.project.ast.CodeDeclaredInAlice code;
-	private ParameterDeclarationOperation( org.lgna.project.ast.CodeDeclaredInAlice code ) {
+	private final org.lgna.project.ast.UserCode code;
+	private ParameterDeclarationOperation( org.lgna.project.ast.UserCode code ) {
 		super( 
 				java.util.UUID.fromString( "ebaf5680-4b33-449d-aa07-f96b25b74c02" ), 
 				null, false,
@@ -73,7 +73,7 @@ public class ParameterDeclarationOperation extends DeclarationOperation< org.lgn
 		this.code = code;
 	}
 
-	public org.lgna.project.ast.CodeDeclaredInAlice getCode() {
+	public org.lgna.project.ast.UserCode getCode() {
 		return this.code;
 	}
 	@Override

@@ -51,11 +51,11 @@ import org.lgna.story.ImplementationAccessor;
  */
 public abstract class AbstractSceneEditor extends org.lgna.croquet.components.BorderPanel {
 	
-	private java.util.Map< org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.InstanceInAlice > mapSceneFieldToInstance = new java.util.HashMap< org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.InstanceInAlice >();
-	private java.util.Map< org.lgna.project.virtualmachine.InstanceInAlice, org.lgna.project.ast.UserField > mapSceneInstanceToField = new java.util.HashMap< org.lgna.project.virtualmachine.InstanceInAlice, org.lgna.project.ast.UserField >();
+	private java.util.Map< org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.UserInstance > mapSceneFieldToInstance = new java.util.HashMap< org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.UserInstance >();
+	private java.util.Map< org.lgna.project.virtualmachine.UserInstance, org.lgna.project.ast.UserField > mapSceneInstanceToField = new java.util.HashMap< org.lgna.project.virtualmachine.UserInstance, org.lgna.project.ast.UserField >();
 	
 	private org.lgna.project.ast.NamedUserType programType;
-	private org.lgna.project.virtualmachine.InstanceInAlice programInstance;
+	private org.lgna.project.virtualmachine.UserInstance programInstance;
 	
 	private org.alice.ide.ProjectApplication.ProjectObserver projectObserver = new org.alice.ide.ProjectApplication.ProjectObserver() { 
 		public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
@@ -183,7 +183,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		return SceneFieldListSelectionState.getInstance().getSelectedItem();
 	}
 	
-	public org.lgna.project.virtualmachine.InstanceInAlice getActiveSceneInstance()
+	public org.lgna.project.virtualmachine.UserInstance getActiveSceneInstance()
 	{
 		org.lgna.project.ast.UserField activeSceneField = SceneFieldListSelectionState.getInstance().getSelectedItem();
 		return this.mapSceneFieldToInstance.get(activeSceneField);
@@ -210,7 +210,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	
 	protected void addScene( org.lgna.project.ast.UserField sceneField ) {
 		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType) sceneField.getValueType();
-		org.lgna.project.virtualmachine.InstanceInAlice rv = getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMap(sceneType);
+		org.lgna.project.virtualmachine.UserInstance rv = getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMap(sceneType);
 		mapSceneFieldToInstance.put(sceneField, rv);
 		mapSceneInstanceToField.put(rv, sceneField);
 		SceneFieldListSelectionState.getInstance().addItem(sceneField);
@@ -225,7 +225,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 //		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
 	}
 	
-	protected org.lgna.project.virtualmachine.InstanceInAlice getProgramInstanceInAlice()
+	protected org.lgna.project.virtualmachine.UserInstance getProgramInstanceInAlice()
 	{
 		return this.programInstance;
 	}
@@ -235,7 +235,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		return  (org.lgna.story.Program)this.programInstance.getInstanceInJava();
 	}
 	
-	protected void setProgramInstance(org.lgna.project.virtualmachine.InstanceInAlice programInstance)
+	protected void setProgramInstance(org.lgna.project.virtualmachine.UserInstance programInstance)
 	{
 		this.programInstance = programInstance;
 	}
@@ -247,7 +247,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		mapSceneFieldToInstance.clear();
 		mapSceneInstanceToField.clear();
 		if( this.programType != null ) {
-			setProgramInstance((org.lgna.project.virtualmachine.InstanceInAlice)getVM().ENTRY_POINT_createInstance(this.programType));
+			setProgramInstance((org.lgna.project.virtualmachine.UserInstance)getVM().ENTRY_POINT_createInstance(this.programType));
 			for (org.lgna.project.ast.AbstractField programField : this.programType.getDeclaredFields())
 			{
 				if( programField.getDesiredValueType().isAssignableTo(org.lgna.story.Scene.class)) 

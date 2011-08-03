@@ -78,10 +78,10 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
 		org.lgna.project.virtualmachine.VirtualMachine vm = ide.getVirtualMachineForSceneEditor();
-		org.lgna.project.virtualmachine.InstanceInAlice sceneInstanceInAlice = (org.lgna.project.virtualmachine.InstanceInAlice)sceneEditor.getInstanceInAliceVMForField( sceneEditor.getSceneField() );
+		org.lgna.project.virtualmachine.UserInstance sceneInstanceInAlice = (org.lgna.project.virtualmachine.UserInstance)sceneEditor.getInstanceInAliceVMForField( sceneEditor.getSceneField() );
 		Object instance = sceneEditor.getInstanceInAliceVMForField( this.field );
-		if( instance instanceof org.lgna.project.virtualmachine.InstanceInAlice ) {
-			org.lgna.project.virtualmachine.InstanceInAlice instanceInAlice = (org.lgna.project.virtualmachine.InstanceInAlice)instance;
+		if( instance instanceof org.lgna.project.virtualmachine.UserInstance ) {
+			org.lgna.project.virtualmachine.UserInstance instanceInAlice = (org.lgna.project.virtualmachine.UserInstance)instance;
 			org.lgna.story.Turnable turnable = (org.lgna.story.Turnable)sceneEditor.getInstanceInJavaVMForField( this.field );
 			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( turnable );
 			this.m = this.transformable.getLocalTransformation();

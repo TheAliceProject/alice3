@@ -47,7 +47,7 @@ package org.lgna.project.virtualmachine;
  */
 public interface Frame {
 	public Frame getOwner();
-	public InstanceInAlice getThis();
+	public UserInstance getThis();
 	public Object lookup( org.lgna.project.ast.AbstractParameter parameter );
 	public Object get( org.lgna.project.ast.UserLocal local );
 	public void set( org.lgna.project.ast.UserLocal local, Object value );

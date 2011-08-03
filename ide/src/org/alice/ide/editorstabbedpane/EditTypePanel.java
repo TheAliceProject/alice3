@@ -47,7 +47,7 @@ package org.alice.ide.editorstabbedpane;
  * @author Dennis Cosgrove
  */
 public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
-	interface MemberFilter< M extends org.lgna.project.ast.MemberDeclaredInAlice > {
+	interface MemberFilter< M extends org.lgna.project.ast.UserMember > {
 		public boolean isAcceptable( M member );
 	}
 	interface MethodFilter extends MemberFilter< org.lgna.project.ast.UserMethod > {
@@ -55,7 +55,7 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 	interface FieldFilter extends MemberFilter< org.lgna.project.ast.UserField > {
 	}
 	
-	class TypeMembersListModel< M extends org.lgna.project.ast.MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.javax.swing.models.AbstractReorderableListModel< M > { //javax.swing.DefaultListModel { //javax.swing.AbstractListModel implements javax.swing.MutableComboBoxModel {
+	class TypeMembersListModel< M extends org.lgna.project.ast.UserMember > extends edu.cmu.cs.dennisc.javax.swing.models.AbstractReorderableListModel< M > { //javax.swing.DefaultListModel { //javax.swing.AbstractListModel implements javax.swing.MutableComboBoxModel {
 		private java.util.List< M > list = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		private edu.cmu.cs.dennisc.property.event.ListPropertyListener listPropertyListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener() {
 			public void adding(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e) {

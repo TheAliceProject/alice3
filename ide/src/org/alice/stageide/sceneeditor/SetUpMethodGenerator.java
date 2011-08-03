@@ -180,7 +180,7 @@ public class SetUpMethodGenerator {
 		return null;
 	}
 	
-	public static void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, Object instance, org.lgna.project.virtualmachine.InstanceInAlice sceneInstance ) {
+	public static void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance ) {
 		if( instance instanceof org.lgna.story.Entity ) {
 			org.lgna.story.Entity entity = (org.lgna.story.Entity)instance;
 			String name = field.getName();

@@ -176,8 +176,8 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		}
 
 		this.forgetAndRemoveAllComponents();
-		if( this.code instanceof org.lgna.project.ast.CodeDeclaredInAlice ) {
-			final org.lgna.project.ast.CodeDeclaredInAlice codeDeclaredInAlice = (org.lgna.project.ast.CodeDeclaredInAlice)this.code;
+		if( this.code instanceof org.lgna.project.ast.UserCode ) {
+			final org.lgna.project.ast.UserCode codeDeclaredInAlice = (org.lgna.project.ast.UserCode)this.code;
 			ParametersPane parametersPane = new ParametersPane( this.getIDE().getCodeFactory(), codeDeclaredInAlice );
 			AbstractCodeHeaderPane header;
 //			org.lgna.croquet.components.Component< ? > superInvocationPane = null;
@@ -421,7 +421,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 									height = null;
 								} else {
 									p.y += StatementListPropertyPane.INTRASTICIAL_PAD;
-									if( this.currentUnder.getProperty() == ((org.lgna.project.ast.CodeDeclaredInAlice)this.code).getBodyProperty().getValue().statements ) {
+									if( this.currentUnder.getProperty() == ((org.lgna.project.ast.UserCode)this.code).getBodyProperty().getValue().statements ) {
 										height = null;
 									}
 								}

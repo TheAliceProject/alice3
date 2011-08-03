@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class UserField extends AbstractField implements MemberDeclaredInAlice {
+public class UserField extends AbstractField implements UserMember {
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
 	public DeclarationProperty< AbstractType<?,?,?> > valueType = new DeclarationProperty< AbstractType<?,?,?> >( this );
 	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
@@ -107,15 +107,6 @@ public class UserField extends AbstractField implements MemberDeclaredInAlice {
 	}
 	public void setVisibility( org.lgna.project.annotations.Visibility visibility ) {
 		m_visibility = visibility;
-	}
-
-	@Override
-	public AbstractMember getNextLongerInChain() {
-		return null;
-	}
-	@Override
-	public AbstractMember getNextShorterInChain() {
-		return null;
 	}
 
 	@Override

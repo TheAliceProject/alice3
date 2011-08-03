@@ -49,5 +49,5 @@ public abstract class AbstractCodeActionOperation extends org.alice.ide.operatio
 	public AbstractCodeActionOperation( java.util.UUID individualId ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 	}
-	protected abstract org.lgna.project.ast.CodeDeclaredInAlice getCode();
+	protected abstract org.lgna.project.ast.UserCode getCode();
 }

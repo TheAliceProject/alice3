@@ -49,7 +49,7 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< NodeListProperty< UserParameter >> {
-	public ParametersPane( org.alice.ide.common.Factory factory, org.lgna.project.ast.CodeDeclaredInAlice code ) {
+	public ParametersPane( org.alice.ide.common.Factory factory, org.lgna.project.ast.UserCode code ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, code.getParamtersProperty() );
 	}
 	
@@ -57,8 +57,8 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 		return org.alice.ide.IDE.getActiveInstance();
 	}
 
-	private org.lgna.project.ast.CodeDeclaredInAlice getCode() {
-		return (org.lgna.project.ast.CodeDeclaredInAlice)getProperty().getOwner();
+	private org.lgna.project.ast.UserCode getCode() {
+		return (org.lgna.project.ast.UserCode)getProperty().getOwner();
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	@Override
 	protected void addPostfixComponents() {
 		super.addPostfixComponents();
-		org.lgna.project.ast.CodeDeclaredInAlice code = getCode();
+		org.lgna.project.ast.UserCode code = getCode();
 
 		if( code instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;

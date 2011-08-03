@@ -46,7 +46,7 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 class InstanceLine extends org.lgna.croquet.components.LineAxisPanel {
-	public InstanceLine( org.lgna.project.ast.CodeDeclaredInAlice code ) {
+	public InstanceLine( org.lgna.project.ast.UserCode code ) {
 //		zoot.ZLabel a = zoot.ZLabel.acquire( "current instance of " );
 //		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 //		this.add( a );

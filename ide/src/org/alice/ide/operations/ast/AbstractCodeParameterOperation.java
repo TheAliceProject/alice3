@@ -66,7 +66,7 @@ public abstract class AbstractCodeParameterOperation extends AbstractCodeActionO
 		return this.parametersProperty.size();
 	}
 	@Override
-	protected org.lgna.project.ast.CodeDeclaredInAlice getCode() {
-		return (org.lgna.project.ast.CodeDeclaredInAlice)this.parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
+	protected org.lgna.project.ast.UserCode getCode() {
+		return (org.lgna.project.ast.UserCode)this.parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
 	}
 }

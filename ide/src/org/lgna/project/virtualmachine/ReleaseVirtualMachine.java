@@ -90,7 +90,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			assert contains( local );
 			m_mapLocalToValue.remove( local );
 		}
-		public abstract InstanceInAlice getThis();
+		public abstract UserInstance getThis();
 		public abstract Object lookup( AbstractParameter parameter );
 		protected abstract StringBuilder appendRepr( StringBuilder rv );
 		@Override
@@ -105,9 +105,9 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	}
 
 	protected static abstract class InvocationFrame extends AbstractFrame {
-		protected InstanceInAlice m_instance;
+		protected UserInstance m_instance;
 		private java.util.Map< AbstractParameter, Object > m_mapParameterToValue;
-		public InvocationFrame( Frame owner, InstanceInAlice instance, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
+		public InvocationFrame( Frame owner, UserInstance instance, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
 			super( owner );
 			m_instance = instance;
 			m_mapParameterToValue = mapParameterToValue;
@@ -118,7 +118,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			m_mapParameterToValue = new java.util.concurrent.ConcurrentHashMap< AbstractParameter, Object >( other.m_mapParameterToValue );
 		}
 		@Override
-		public InstanceInAlice getThis() {
+		public UserInstance getThis() {
 			return m_instance;
 		}
 		@Override
@@ -128,7 +128,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	}
 	
 	protected static class MethodInvocationFrame extends InvocationFrame {
-		public MethodInvocationFrame( Frame owner, InstanceInAlice instance, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
+		public MethodInvocationFrame( Frame owner, UserInstance instance, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
 			super( owner, instance, mapParameterToValue );
 		}
 		public MethodInvocationFrame( Frame owner, MethodInvocationFrame other ) {
@@ -149,7 +149,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			super( owner, other );
 			this.type = other.type;
 		}
-		public void setThis( InstanceInAlice instance ) {
+		public void setThis( UserInstance instance ) {
 			m_instance = instance;
 		}
 		@Override
@@ -168,7 +168,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			super( owner, other );
 		}
 		@Override
-		public InstanceInAlice getThis() {
+		public UserInstance getThis() {
 			Frame owner = this.getOwner();
 			assert owner != null;
 			if( owner != null ) {
@@ -235,7 +235,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 //	}
 
 	@Override
-	protected InstanceInAlice getThis() {
+	protected UserInstance getThis() {
 		Frame currentFrame = this.getCurrentFrame();
 		return currentFrame != null ? currentFrame.getThis() : null;
 	}
@@ -249,14 +249,14 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		this.pushFrame( new ConstructorInvocationFrame( owner, type, map ) );
 	}
 	@Override
-	protected void setConstructorFrameInstanceInAlice( org.lgna.project.virtualmachine.InstanceInAlice instance ) {
+	protected void setConstructorFrameInstanceInAlice( org.lgna.project.virtualmachine.UserInstance instance ) {
 		Frame currentFrame = getCurrentFrame();
 		assert currentFrame instanceof ConstructorInvocationFrame;
 		ConstructorInvocationFrame constructorInvocationFrame = (ConstructorInvocationFrame)currentFrame;
 		constructorInvocationFrame.setThis( instance );
 	}
 	@Override
-	protected void pushMethodFrame( InstanceInAlice instance, java.util.Map< AbstractParameter, Object > map ) {
+	protected void pushMethodFrame( UserInstance instance, java.util.Map< AbstractParameter, Object > map ) {
 		Frame owner = getCurrentFrame();
 		this.pushFrame( new MethodInvocationFrame( owner, instance, map ) );
 	}

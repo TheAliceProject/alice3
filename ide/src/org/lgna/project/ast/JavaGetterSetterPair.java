@@ -46,8 +46,17 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public interface CodeDeclaredInAlice extends MemberDeclaredInAlice {
-	public NodeProperty< ? extends BlockStatement > getBodyProperty();
-	public NodeListProperty< UserParameter > getParamtersProperty();
-	//public boolean isSignatureLocked();
+public class JavaGetterSetterPair {
+	private final AbstractMethod getter;
+	private final AbstractMethod setter;
+	public JavaGetterSetterPair( AbstractMethod getter, AbstractMethod setter ) {
+		this.getter = getter;
+		this.setter = setter;
+	}
+	public AbstractMethod getGetter() {
+		return this.getter;
+	}
+	public AbstractMethod getSetter() {
+		return this.setter;
+	}
 }

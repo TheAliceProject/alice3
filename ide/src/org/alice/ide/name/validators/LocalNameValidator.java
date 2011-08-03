@@ -44,12 +44,12 @@
 package org.alice.ide.name.validators;
 
 public class LocalNameValidator extends TransientNameValidator {
-	private static org.lgna.project.ast.CodeDeclaredInAlice getCode( org.lgna.project.ast.UserLocal local ) {
+	private static org.lgna.project.ast.UserCode getCode( org.lgna.project.ast.UserLocal local ) {
 		return getCode( getBlock( local ) );
 	}
-	private static org.lgna.project.ast.CodeDeclaredInAlice getCode( org.lgna.project.ast.BlockStatement block ) {
+	private static org.lgna.project.ast.UserCode getCode( org.lgna.project.ast.BlockStatement block ) {
 		if( block != null ) {
-			return (org.lgna.project.ast.CodeDeclaredInAlice)block.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
+			return (org.lgna.project.ast.UserCode)block.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
 		} else {
 			return null;
 		}

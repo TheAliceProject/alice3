@@ -48,10 +48,10 @@ import org.lgna.project.ast.*;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceInAlice {
+public class UserInstance {
 	public static Object getInstanceInJavaIfNecessary( Object instance ) {
-		if( instance instanceof InstanceInAlice ) {
-			return ((InstanceInAlice)instance).getInstanceInJava();
+		if( instance instanceof UserInstance ) {
+			return ((UserInstance)instance).getInstanceInJava();
 		} else {
 			return instance;
 		}
@@ -62,18 +62,18 @@ public class InstanceInAlice {
 		}
 		return rv;
 	}
-	public static InstanceInAlice createInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments ) {
-		return new InstanceInAlice( vm, constructor, arguments, new java.util.HashMap< UserField, Object >(), null );
+	public static UserInstance createInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments ) {
+		return new UserInstance( vm, constructor, arguments, new java.util.HashMap< UserField, Object >(), null );
 	}
-	public static InstanceInAlice createInstanceWithInverseMap( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments ) {
-		return new InstanceInAlice( vm, constructor, arguments, new java.util.HashMap< UserField, Object >(), new java.util.HashMap< Object, UserField >() );
+	public static UserInstance createInstanceWithInverseMap( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments ) {
+		return new UserInstance( vm, constructor, arguments, new java.util.HashMap< UserField, Object >(), new java.util.HashMap< Object, UserField >() );
 	}
 	
 	private final Object nextInstance;
 	private final UserType<?> type;
 	private final java.util.Map< UserField, Object > fieldMap;
 	private final java.util.Map< Object, UserField > inverseFieldMap;
-	private InstanceInAlice( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments, java.util.Map< UserField, Object > fieldMap, java.util.Map< Object, UserField > inverseFieldMap ) {
+	private UserInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments, java.util.Map< UserField, Object > fieldMap, java.util.Map< Object, UserField > inverseFieldMap ) {
 		this.type = constructor.getDeclaringType();
 		this.fieldMap = fieldMap;
 		this.inverseFieldMap = inverseFieldMap;
@@ -90,7 +90,7 @@ public class InstanceInAlice {
 		try {
 			Object[] nextArguments = vm.evaluateArguments( nextConstructor.getParameters(), constructorInvocationStatement.arguments );
 			if( nextConstructor.isDeclaredInAlice() ) {
-				this.nextInstance = new InstanceInAlice( vm, (NamedUserConstructor)nextConstructor, nextArguments, fieldMap, inverseFieldMap );
+				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fieldMap, inverseFieldMap );
 			} else {
 				JavaConstructor nextConstructorDeclaredInJava = (JavaConstructor)nextConstructor;
 				ConstructorReflectionProxy constructorReflectionProxy =  nextConstructorDeclaredInJava.getConstructorReflectionProxy();

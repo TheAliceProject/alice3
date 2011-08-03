@@ -52,7 +52,7 @@ import org.lgna.croquet.components.DragComponent;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.virtualmachine.InstanceInAlice;
+import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.BookmarkCameraMarker;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.ObjectMarker;
@@ -117,7 +117,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private org.lgna.croquet.components.PushButton expandCollapseButton;
 	
 	@Override
-	protected void setProgramInstance(InstanceInAlice programInstance) 
+	protected void setProgramInstance(UserInstance programInstance) 
 	{
 		super.setProgramInstance(programInstance);
 		ProgramImplementation programImplementation = ImplementationAccessor.getImplementation(getProgramInstanceInJava());
@@ -291,7 +291,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setOnscreenLookingGlass(this.onscreenLookingGlass);
 
-		org.lgna.project.virtualmachine.InstanceInAlice sceneAliceInstance = getActiveSceneInstance();
+		org.lgna.project.virtualmachine.UserInstance sceneAliceInstance = getActiveSceneInstance();
 		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getInstanceInJava();
 		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
 		

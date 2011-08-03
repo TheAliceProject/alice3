@@ -47,14 +47,14 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public abstract class CreateParameterPane extends CreateDeclarationPane<org.lgna.project.ast.UserParameter> {
-	private org.lgna.project.ast.CodeDeclaredInAlice code;
-	public CreateParameterPane( org.lgna.project.ast.CodeDeclaredInAlice code ) {
+	private org.lgna.project.ast.UserCode code;
+	public CreateParameterPane( org.lgna.project.ast.UserCode code ) {
 		super( new org.alice.ide.name.validators.ParameterNameValidator( code ) );
 		this.code = code;
 		this.setBackgroundColor( getIDE().getTheme().getParameterColor() );
 		
 	}
-	protected org.lgna.project.ast.CodeDeclaredInAlice getCode() {
+	protected org.lgna.project.ast.UserCode getCode() {
 		return this.code;
 	}
 	@Override

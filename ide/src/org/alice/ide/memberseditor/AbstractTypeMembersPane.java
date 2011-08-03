@@ -94,13 +94,13 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 	public AbstractTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
 		if( this.type instanceof org.lgna.project.ast.NamedUserType ) {
-			for( edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice > listProperty : this.getListPropertiesToListenTo( (org.lgna.project.ast.NamedUserType)this.type ) ) {
+			for( edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.UserMember > listProperty : this.getListPropertiesToListenTo( (org.lgna.project.ast.NamedUserType)this.type ) ) {
 				listProperty.addListPropertyListener( this.listPropertyAdapter );
 			}
 		}
 		this.refresh();
 	}
-	protected abstract edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type );
+	protected abstract edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.UserMember >[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type );
 	private static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
 		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
 			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;

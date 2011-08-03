@@ -338,7 +338,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		programType.crawl( crawler, true );
 		return crawler.getList();
 	}
-	public java.util.List< org.lgna.project.ast.ArgumentListProperty > getArgumentLists( final org.lgna.project.ast.CodeDeclaredInAlice code ) {
+	public java.util.List< org.lgna.project.ast.ArgumentListProperty > getArgumentLists( final org.lgna.project.ast.UserCode code ) {
 		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
 		assert programType != null;
 		class ArgumentListCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {

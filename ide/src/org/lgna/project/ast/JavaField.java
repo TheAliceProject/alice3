@@ -90,8 +90,8 @@ public class JavaField extends AbstractField {
 	public org.lgna.project.annotations.Visibility getVisibility() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
 		if( fld != null ) {
-			if( fld.isAnnotationPresent( org.lgna.project.annotations.PropertyFieldTemplate.class ) ) {
-				org.lgna.project.annotations.PropertyFieldTemplate propertyFieldTemplate = fld.getAnnotation( org.lgna.project.annotations.PropertyFieldTemplate.class );
+			if( fld.isAnnotationPresent( org.lgna.project.annotations.FieldTemplate.class ) ) {
+				org.lgna.project.annotations.FieldTemplate propertyFieldTemplate = fld.getAnnotation( org.lgna.project.annotations.FieldTemplate.class );
 				return propertyFieldTemplate.visibility();
 			} else {
 				return null;
@@ -116,14 +116,6 @@ public class JavaField extends AbstractField {
 		return getValueType();
 	}
 	
-	@Override
-	public AbstractMember getNextLongerInChain() {
-		return null;
-	}
-	@Override
-	public AbstractMember getNextShorterInChain() {
-		return null;
-	}
 	@Override
 	public Access getAccess() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
