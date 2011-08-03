@@ -56,6 +56,26 @@ public class GraphicsUtilities {
 		int y = (component.getHeight() - image.getHeight( component ) ) / 2;
 		g.drawImage( image, x, y, component );
 	}
+	public static void drawCenteredScaledToFitImage( java.awt.Graphics g, java.awt.Image image, java.awt.Component component ) {
+		int imageWidth = image.getWidth( component );
+		int imageHeight = image.getHeight( component );
+		int componentWidth = component.getWidth();
+		int componentHeight = component.getHeight();
+		double widthRatio = imageWidth / (double)componentWidth;
+		double heightRatio = imageHeight /(double)componentHeight;
+		int widthFactor = -1;
+		int heightFactor = -1;
+		if( widthRatio > heightRatio && widthRatio > 1.0 ) {
+			widthFactor = componentWidth;
+		} else if( heightRatio > widthRatio && heightRatio > 1.0 ) {
+			heightFactor = componentHeight;
+		}
+		if( widthFactor > 0 || heightFactor > 0 ) {
+			image = image.getScaledInstance( widthFactor, heightFactor, java.awt.Image.SCALE_SMOOTH );
+		}
+		drawCenteredImage( g, image, component );
+	}
+	
 	public static void drawCenteredText( java.awt.Graphics g, String s, int x, int y, int width, int height ) {
 		if( s != null ) {
 			java.awt.FontMetrics fm = g.getFontMetrics();

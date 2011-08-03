@@ -69,7 +69,7 @@ public class ImageResourceExpresssionView extends org.lgna.croquet.components.Vi
 	}
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
-		return new javax.swing.JComponent() {
+		javax.swing.JComponent rv = new javax.swing.JComponent() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return new java.awt.Dimension( 128, 128 );
@@ -77,13 +77,27 @@ public class ImageResourceExpresssionView extends org.lgna.croquet.components.Vi
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				super.paintComponent( g );
-				g.setColor( java.awt.Color.WHITE );
-				g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-				g.setColor( java.awt.Color.BLACK );
 				edu.cmu.cs.dennisc.alice.ast.Expression value = ImageResourceExpresssionView.this.getModel().getValue();
-				String text = value != null ? value.toString() : null;
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, text, this.getSize() );
+				
+				java.awt.image.BufferedImage image = null;
+				if( value instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression ) {
+					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)value;
+					org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
+					if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
+						org.alice.virtualmachine.resources.ImageResource imageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
+						image = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
+					}
+				}
+				if( image != null ) {
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredScaledToFitImage( g, image, this );
+				} else {
+					g.setColor( java.awt.Color.BLACK );
+					String text = value != null ? value.toString() : null;
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, text, this.getSize() );
+				}
 			}
 		};
+		rv.setBackground( java.awt.Color.WHITE );
+		return rv;
 	}
 }
