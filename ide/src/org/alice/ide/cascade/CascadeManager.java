@@ -315,6 +315,7 @@ public abstract class CascadeManager {
 				}
 			}
 			if( enumType != null && this.areEnumConstantsDesired( enumType ) ) {
+				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( enumType ).addItems( rv, isRoot, this.previousExpression );
 			}
 

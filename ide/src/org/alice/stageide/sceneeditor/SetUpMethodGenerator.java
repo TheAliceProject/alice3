@@ -107,6 +107,21 @@ public class SetUpMethodGenerator {
 		}
 		return rv;
 	}
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lgna.story.Paint paint ) {
+		if( paint != null ) {
+			if( paint instanceof org.lgna.story.Color ) {
+				org.lgna.story.Color color = (org.lgna.story.Color)paint;
+				return createExpression( color );
+			} else if( paint instanceof org.lgna.story.ImageSource ) {
+				org.lgna.story.ImageSource imageSource = (org.lgna.story.ImageSource)paint;
+				return createExpression( imageSource );
+			} else {
+				return null;
+			}
+		} else {
+			return new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+		}
+	}
 
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lgna.story.Position position ) {
 		Class< ? > cls = org.lgna.story.Position.class;
@@ -213,8 +228,8 @@ public class SetUpMethodGenerator {
 						);
 						if( instance instanceof org.lgna.story.Billboard ) {
 							org.lgna.story.Billboard billboard = (org.lgna.story.Billboard)movableTurnable;
-							bodyStatementsProperty.add( createStatement( org.lgna.story.Billboard.class, "setFrontImageSource", org.lgna.story.ImageSource.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getFrontImageSource() ) ) );
-							bodyStatementsProperty.add( createStatement( org.lgna.story.Billboard.class, "setBackImageSource", org.lgna.story.ImageSource.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getBackImageSource() ) ) );
+							bodyStatementsProperty.add( createStatement( org.lgna.story.Billboard.class, "setFrontPaint", org.lgna.story.Paint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getFrontPaint() ) ) );
+							bodyStatementsProperty.add( createStatement( org.lgna.story.Billboard.class, "setBackPaint", org.lgna.story.Paint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getBackPaint() ) ) );
 						}
 					}
 				}

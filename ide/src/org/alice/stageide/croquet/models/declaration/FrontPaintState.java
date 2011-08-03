@@ -46,14 +46,14 @@ package org.alice.stageide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class BackFaceImageResourceState extends ImageResourceState {
+public class FrontPaintState extends PaintState {
 	private static class SingletonHolder {
-		private static BackFaceImageResourceState instance = new BackFaceImageResourceState();
+		private static FrontPaintState instance = new FrontPaintState();
 	}
-	public static BackFaceImageResourceState getInstance() {
+	public static FrontPaintState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private BackFaceImageResourceState() {
-		super( java.util.UUID.fromString( "3ce5728f-098d-4beb-b5ad-d5224accd93d" ) );
+	private FrontPaintState() {
+		super( java.util.UUID.fromString( "f400e909-947f-4595-9064-f713db128042" ) );
 	}
 }

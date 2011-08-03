@@ -53,8 +53,8 @@ public class BillboardFieldDeclarationOperation extends SceneFieldDeclarationOpe
 	public static BillboardFieldDeclarationOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private String frontFaceImageResourceLabelText;
-	private String backFaceImageResourceLabelText;
+	private String frontPaintLabelText;
+	private String backPaintLabelText;
 	private BillboardFieldDeclarationOperation() {
 		super( 
 				java.util.UUID.fromString( "1ce5a991-d315-40d3-a0ad-d711835e8140" ), 
@@ -67,22 +67,22 @@ public class BillboardFieldDeclarationOperation extends SceneFieldDeclarationOpe
 	@Override
 	protected void localize() {
 		super.localize();
-		this.frontFaceImageResourceLabelText = this.findLocalizedText( "frontFaceImageResourceLabel", BillboardFieldDeclarationOperation.class );
-		this.backFaceImageResourceLabelText = this.findLocalizedText( "backFaceImageResourceLabel", BillboardFieldDeclarationOperation.class );
+		this.frontPaintLabelText = this.findLocalizedText( "frontPaintLabel", BillboardFieldDeclarationOperation.class );
+		this.backPaintLabelText = this.findLocalizedText( "backPaintLabel", BillboardFieldDeclarationOperation.class );
 	}
 
-	public String getFrontFaceImageResourceLabelText() {
-		return this.frontFaceImageResourceLabelText;
+	public String getFrontPaintLabelText() {
+		return this.frontPaintLabelText;
 	}
-	public String getBackFaceImageResourceLabelText() {
-		return this.backFaceImageResourceLabelText;
+	public String getBackPaintLabelText() {
+		return this.backPaintLabelText;
 	}
 	
-	public FrontFaceImageResourceState getFrontFaceImageResourceState() {
-		return FrontFaceImageResourceState.getInstance();
+	public FrontPaintState getFrontPaintState() {
+		return FrontPaintState.getInstance();
 	}
-	public BackFaceImageResourceState getBackFaceImageResourceState() {
-		return BackFaceImageResourceState.getInstance();
+	public BackPaintState getBackPaintState() {
+		return BackPaintState.getInstance();
 	}
 	@Override
 	protected org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {

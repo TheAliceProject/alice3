@@ -47,7 +47,6 @@ package org.alice.stageide.cascade;
  */
 public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	public CascadeManager() {
-		this.addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( org.lgna.story.Color.class ) );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.KeyFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.AngleFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.PortionFillerInner() );
@@ -58,6 +57,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.KeyListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
+		this.addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( org.lgna.story.Color.class ) );
 		
 		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.Entity.class );
 	}

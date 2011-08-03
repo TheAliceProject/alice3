@@ -46,7 +46,7 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public final  class Color {
+public final class Color implements Paint {
 	public static final Color BLACK = new Color( edu.cmu.cs.dennisc.color.Color4f.BLACK );
 	public static final Color BLUE = new Color( edu.cmu.cs.dennisc.color.Color4f.BLUE );
 	public static final Color CYAN = new Color( edu.cmu.cs.dennisc.color.Color4f.CYAN );

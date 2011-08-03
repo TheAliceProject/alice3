@@ -47,7 +47,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 
 import org.alice.stageide.croquet.models.gallerybrowser.Create3dTextOperation;
-import org.alice.stageide.croquet.models.gallerybrowser.CreateBillboardOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.lgna.croquet.ActionOperation;

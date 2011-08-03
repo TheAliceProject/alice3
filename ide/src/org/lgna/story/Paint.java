@@ -41,13 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.declaration;
+package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImageResourceState extends org.alice.ide.croquet.models.ExpressionState {
-	public ImageResourceState( java.util.UUID id ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, id, null, org.alice.virtualmachine.resources.ImageResource.class );
-	}
+public interface Paint {
+
 }

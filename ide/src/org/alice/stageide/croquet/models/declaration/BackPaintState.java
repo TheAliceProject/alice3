@@ -40,28 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
 
-//definitely feels like some double negatives going on here
+package org.alice.stageide.croquet.models.declaration;
+
 /**
  * @author Dennis Cosgrove
  */
-public class Billboard extends Model {
-	private final org.lgna.story.implementation.BillboardImplementation implementation = new org.lgna.story.implementation.BillboardImplementation( this );
-	@Override
-	/*package-private*/ org.lgna.story.implementation.BillboardImplementation getImplementation() {
-		return this.implementation;
+public class BackPaintState extends PaintState {
+	private static class SingletonHolder {
+		private static BackPaintState instance = new BackPaintState();
 	}
-	public Paint getFrontPaint() {
-		return this.implementation.getFrontPaint();
+	public static BackPaintState getInstance() {
+		return SingletonHolder.instance;
 	}
-	public void setFrontPaint( Paint frontPaint ) {
-		this.implementation.setFrontPaint( frontPaint );
-	}
-	public Paint getBackPaint() {
-		return this.implementation.getBackPaint();
-	}
-	public void setBackPaint( Paint frontPaint ) {
-		this.implementation.setBackPaint( frontPaint );
+	private BackPaintState() {
+		super( java.util.UUID.fromString( "3ce5728f-098d-4beb-b5ad-d5224accd93d" ) );
 	}
 }

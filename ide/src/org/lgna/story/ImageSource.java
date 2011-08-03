@@ -45,7 +45,7 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public final class ImageSource {
+public final class ImageSource implements Paint {
 	private final org.alice.virtualmachine.resources.ImageResource imageResource;
 	public ImageSource( org.alice.virtualmachine.resources.ImageResource imageResource ) {
 		this.imageResource = imageResource;

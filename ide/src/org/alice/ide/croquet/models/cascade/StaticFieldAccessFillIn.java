@@ -63,6 +63,9 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< edu.
 	public static StaticFieldAccessFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type, String fieldName ) {
 		return getInstance( type.findField( fieldName ) );
 	}
+	public static StaticFieldAccessFillIn getInstance( java.lang.reflect.Field fld ) {
+		return getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( fld ) );
+	}
 	public static StaticFieldAccessFillIn getInstance( Class<?> cls, String fieldName ) {
 		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), fieldName );
 	}

@@ -68,4 +68,25 @@ public class ImplementationAccessor {
 	public static edu.cmu.cs.dennisc.color.Color4f getColor4f( Color color ) {
 		return color.getInternal();
 	}
+
+	public static edu.cmu.cs.dennisc.color.Color4f getColor4f( Paint paint, edu.cmu.cs.dennisc.color.Color4f defaultValue ) {
+		if( paint instanceof org.lgna.story.Color ) {
+			return getColor4f( (org.lgna.story.Color)paint );
+		} else {
+			return defaultValue;
+		}
+	}
+	public static edu.cmu.cs.dennisc.texture.BufferedImageTexture getTexture( Paint paint, edu.cmu.cs.dennisc.texture.BufferedImageTexture defaultValue ) {
+		if( paint instanceof org.lgna.story.ImageSource ) {
+			org.lgna.story.ImageSource imageSource = (org.lgna.story.ImageSource)paint;
+			org.alice.virtualmachine.resources.ImageResource imageResource = imageSource.getImageResource();
+			if( imageResource != null ) {
+				return edu.cmu.cs.dennisc.texture.TextureFactory.getTexture( imageResource, true );
+			} else {
+				return null;
+			}
+		} else {
+			return defaultValue;
+		}
+	}
 }

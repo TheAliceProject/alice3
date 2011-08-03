@@ -49,15 +49,6 @@ package org.lgna.story;
 public abstract class Model extends MovableTurnable implements Resizable, Visual {
 	@Override
 	/*package-private*/ abstract org.lgna.story.implementation.ModelImplementation getImplementation();
-	public Color getColor() {
-		return Color.createInstance( this.getImplementation().getColor() );
-	}
-	public void setColor( Color color ) {
-		this.setColor( color, new AnimationDetails() );
-	}
-	public void setColor( org.lgna.story.Color color, org.lgna.story.AnimationDetails details ) {
-		this.getImplementation().animateColor( Color.getInternal( color ), details.getDuration(), details.getStyle() );
-	}
 	public Double getOpacity() {
 		return (double)this.getImplementation().getOpacity();
 	}

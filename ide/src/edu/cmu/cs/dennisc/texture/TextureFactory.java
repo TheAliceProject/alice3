@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.texture;
  * @author Dennis Cosgrove
  */
 public final class TextureFactory {
-	private static java.util.Map< org.alice.virtualmachine.resources.ImageResource, Texture > resourceToTextureMap = new java.util.HashMap< org.alice.virtualmachine.resources.ImageResource, Texture >();
+	private static java.util.Map< org.alice.virtualmachine.resources.ImageResource, BufferedImageTexture > resourceToTextureMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static org.alice.virtualmachine.event.ResourceContentListener resourceContentListener = new org.alice.virtualmachine.event.ResourceContentListener() {
 		public void contentChanging( org.alice.virtualmachine.event.ResourceContentEvent e ) {
 		}
@@ -82,9 +82,9 @@ public final class TextureFactory {
 		bufferedImageTexture.setPotentiallyAlphaBlended( isPotenentiallyAlphaBlended );
 	}
 	
-	public static Texture getTexture( org.alice.virtualmachine.resources.ImageResource imageResource, boolean isMipMappingDesired ) {
+	public static BufferedImageTexture getTexture( org.alice.virtualmachine.resources.ImageResource imageResource, boolean isMipMappingDesired ) {
 		assert imageResource != null;
-		Texture rv = TextureFactory.resourceToTextureMap.get( imageResource );
+		BufferedImageTexture rv = TextureFactory.resourceToTextureMap.get( imageResource );
 		if( rv != null ) {
 			//pass
 		} else {

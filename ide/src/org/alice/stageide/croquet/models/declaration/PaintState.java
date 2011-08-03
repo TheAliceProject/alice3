@@ -46,14 +46,8 @@ package org.alice.stageide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class FrontFaceImageResourceState extends ImageResourceState {
-	private static class SingletonHolder {
-		private static FrontFaceImageResourceState instance = new FrontFaceImageResourceState();
-	}
-	public static FrontFaceImageResourceState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private FrontFaceImageResourceState() {
-		super( java.util.UUID.fromString( "f400e909-947f-4595-9064-f713db128042" ) );
+public abstract class PaintState extends org.alice.ide.croquet.models.ExpressionState {
+	public PaintState( java.util.UUID id ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, id, null, org.lgna.story.Paint.class );
 	}
 }

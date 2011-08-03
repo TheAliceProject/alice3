@@ -47,8 +47,9 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public interface Visual {
-	public Color getColor();
-	public void setColor( Color color, AnimationDetails details );
+//	public Color getColor();
+//	public void setColor( Color color );
+//	public void setColor( Color color, AnimationDetails details );
 	public Double getOpacity();
 	public void setOpacity( Number opacity );
 	public void setOpacity( Number opacity, AnimationDetails details );

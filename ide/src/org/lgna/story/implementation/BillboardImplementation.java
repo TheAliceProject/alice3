@@ -48,6 +48,7 @@ package org.lgna.story.implementation;
  */
 public class BillboardImplementation extends ModelImplementation {
 	private class Face extends edu.cmu.cs.dennisc.scenegraph.Visual {
+		private org.lgna.story.Paint paint;
 		private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
 		private edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
 		private edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
@@ -124,10 +125,10 @@ public class BillboardImplementation extends ModelImplementation {
 				return +1.0f;
 			}
 		}
-		public edu.cmu.cs.dennisc.texture.Texture getTexture() {
+		private edu.cmu.cs.dennisc.texture.Texture getTexture() {
 			return this.sgAppearance.diffuseColorTexture.getValue();
 		}
-		public void setTexture( edu.cmu.cs.dennisc.texture.Texture texture ) {
+		private void setTexture( edu.cmu.cs.dennisc.texture.Texture texture ) {
 			this.sgAppearance.diffuseColorTexture.setValue( texture );
 			boolean isDiffuseColorTextureAlphaBlended;
 			if( texture != null ) {
@@ -137,14 +138,20 @@ public class BillboardImplementation extends ModelImplementation {
 			}
 			this.sgAppearance.isDiffuseColorTextureAlphaBlended.setValue( isDiffuseColorTextureAlphaBlended );
 		}
+		public org.lgna.story.Paint getPaint() {
+			return this.paint;
+		}
+		public void setPaint( org.lgna.story.Paint paint ) {
+			this.sgAppearance.setDiffuseColor( org.lgna.story.ImplementationAccessor.getColor4f( paint, edu.cmu.cs.dennisc.color.Color4f.WHITE ) );
+			this.setTexture( org.lgna.story.ImplementationAccessor.getTexture( paint, null ) );
+		}
 	}
 
 	private final Face sgFrontFace = new Face( true );
 	private final Face sgBackFace = new Face( false );
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = { this.sgFrontFace, this.sgBackFace };
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = { this.sgFrontFace.sgAppearance, this.sgBackFace.sgAppearance };
-	private org.lgna.story.ImageSource frontImageSource;
-	private org.lgna.story.ImageSource backImageSource;
+	private org.lgna.story.Paint backPaint;
 
 	private final org.lgna.story.Billboard abstraction;
 	public BillboardImplementation( org.lgna.story.Billboard abstraction ) {
@@ -186,33 +193,19 @@ public class BillboardImplementation extends ModelImplementation {
 		this.sgFrontFace.updateAspectRatio( widthToHeightAspectRatio );
 		this.sgBackFace.updateAspectRatio( widthToHeightAspectRatio );
 	}
-	public org.lgna.story.ImageSource getFrontImageSource() {
-		return this.frontImageSource;
+	public org.lgna.story.Paint getFrontPaint() {
+		return this.sgFrontFace.getPaint();
 	}
-	public void setFrontImageSource( org.lgna.story.ImageSource frontImageSource ) {
-		this.frontImageSource = frontImageSource;
-		edu.cmu.cs.dennisc.texture.Texture texture;
-		if( this.frontImageSource != null ) {
-			texture = edu.cmu.cs.dennisc.texture.TextureFactory.getTexture( frontImageSource.getImageResource(), true );
-		} else {
-			texture = null;
-		}
+	public void setFrontPaint( org.lgna.story.Paint frontPaint ) {
+		this.sgFrontFace.setPaint( frontPaint );
 		this.updateAspectRatio();
-		this.sgFrontFace.setTexture( texture );
 	}
-	public org.lgna.story.ImageSource getBackImageSource() {
-		return this.backImageSource;
+	public org.lgna.story.Paint getBackPaint() {
+		return this.sgBackFace.getPaint();
 	}
-	public void setBackImageSource( org.lgna.story.ImageSource backImageSource ) {
-		this.backImageSource = backImageSource;
-		edu.cmu.cs.dennisc.texture.Texture texture;
-		if( this.backImageSource != null ) {
-			texture = edu.cmu.cs.dennisc.texture.TextureFactory.getTexture( backImageSource.getImageResource(), true );
-		} else {
-			texture = null;
-		}
+	public void setBackPaint( org.lgna.story.Paint backPaint ) {
+		this.sgBackFace.setPaint( backPaint );
 		this.updateAspectRatio();
-		this.sgBackFace.setTexture( texture );
 	}
 	
 	@Override

@@ -46,15 +46,15 @@ package org.alice.stageide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageResourceExpresssionView extends org.lgna.croquet.components.ViewController< javax.swing.JComponent, org.alice.stageide.croquet.models.declaration.ImageResourceState > {
+public class PaintView extends org.lgna.croquet.components.ViewController< javax.swing.JComponent, org.alice.stageide.croquet.models.declaration.PaintState > {
 	private org.lgna.croquet.State.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
 		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Expression > state, edu.cmu.cs.dennisc.alice.ast.Expression prevValue, edu.cmu.cs.dennisc.alice.ast.Expression nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Expression > state, edu.cmu.cs.dennisc.alice.ast.Expression prevValue, edu.cmu.cs.dennisc.alice.ast.Expression nextValue, boolean isAdjusting ) {
-			ImageResourceExpresssionView.this.repaint();
+			PaintView.this.repaint();
 		}
 	};
-	public ImageResourceExpresssionView( org.alice.stageide.croquet.models.declaration.ImageResourceState model ) {
+	public PaintView( org.alice.stageide.croquet.models.declaration.PaintState model ) {
 		super( model );
 	}
 	@Override
@@ -77,27 +77,29 @@ public class ImageResourceExpresssionView extends org.lgna.croquet.components.Vi
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				super.paintComponent( g );
-				edu.cmu.cs.dennisc.alice.ast.Expression value = ImageResourceExpresssionView.this.getModel().getValue();
-				
-				java.awt.image.BufferedImage image = null;
-				if( value instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression ) {
-					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)value;
-					org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
-					if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
-						org.alice.virtualmachine.resources.ImageResource imageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
-						image = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
+				edu.cmu.cs.dennisc.alice.ast.Expression expression = PaintView.this.getModel().getValue();
+				if( expression != null ) {
+					edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
+					
+					Object[] values = vm.ENTRY_POINT_evaluate( null, new edu.cmu.cs.dennisc.alice.ast.Expression[] { expression } );
+					assert values.length == 1;
+					if( values[ 0 ] instanceof org.lgna.story.Paint ) {
+						org.lgna.story.Paint paint = (org.lgna.story.Paint)values[ 0 ];
+						
+						edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.ImplementationAccessor.getColor4f( paint, null );
+						edu.cmu.cs.dennisc.texture.BufferedImageTexture texture = org.lgna.story.ImplementationAccessor.getTexture( paint, null );
+
+						if( color != null ) {
+							g.setColor( color.getAsAWTColor() );
+							g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+						}
+						if( texture != null ) {
+							edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredScaledToFitImage( g, texture.getBufferedImage(), this );
+						}
 					}
-				}
-				if( image != null ) {
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredScaledToFitImage( g, image, this );
-				} else {
-					g.setColor( java.awt.Color.BLACK );
-					String text = value != null ? value.toString() : null;
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, text, this.getSize() );
 				}
 			}
 		};
-		rv.setBackground( java.awt.Color.WHITE );
 		return rv;
 	}
 }
