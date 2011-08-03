@@ -237,10 +237,6 @@ public class Decoder {
 				rv = JavaMethod.getInstance( decodeMethod( xmlElement, "method" ) );
 			} else if( clsName.equals( JavaField.class.getName() ) ) {
 				rv = JavaField.getInstance( decodeField( xmlElement, "field" ) );
-			} else if( clsName.equals( FieldDeclaredInJavaWithGetterAndSetter.class.getName() ) ) {
-				MethodReflectionProxy gttr = decodeMethod( xmlElement, "getter" );
-				MethodReflectionProxy sttr = decodeMethod( xmlElement, "setter" );
-				rv = FieldDeclaredInJavaWithGetterAndSetter.get( gttr, sttr );
 			} else if( clsName.equals( AnonymousUserConstructor.class.getName() ) ) {
 				rv = decodeAnonymousConstructor( xmlElement, map );
 			} else if( clsName.equals( JavaConstructorParameter.class.getName() ) ) {

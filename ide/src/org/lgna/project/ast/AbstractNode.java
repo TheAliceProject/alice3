@@ -404,10 +404,6 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 		} else if( this instanceof JavaField ) {
 			JavaField fieldDeclaredInJavaWithField = (JavaField)this;
 			rv.appendChild( encodeField( xmlDocument, "field", fieldDeclaredInJavaWithField.getFieldReflectionProxy() ) );
-		} else if( this instanceof FieldDeclaredInJavaWithGetterAndSetter ) {
-			FieldDeclaredInJavaWithGetterAndSetter fieldDeclaredInJavaWithGetterAndSetter = (FieldDeclaredInJavaWithGetterAndSetter)this;
-			rv.appendChild( encodeMethod( xmlDocument, "getter", fieldDeclaredInJavaWithGetterAndSetter.getGetterReflectionProxy() ) );
-			rv.appendChild( encodeMethod( xmlDocument, "setter", fieldDeclaredInJavaWithGetterAndSetter.getSetterReflectionProxy() ) );
 		} else if( this instanceof AnonymousUserConstructor ) {
 			AnonymousUserConstructor anonymousConstructor = (AnonymousUserConstructor)this;
 			org.w3c.dom.Element xmlType = xmlDocument.createElement( "anonymousType" );

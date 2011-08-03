@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class JavaType extends AbstractType<JavaConstructor, JavaMethod, FieldDeclaredInJava> {
+public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaField> {
 	private static java.util.Map< ClassReflectionProxy, JavaType > s_mapReflectionProxyToJava = new java.util.HashMap< ClassReflectionProxy, JavaType >();
 	public static final JavaType VOID_TYPE = getInstance( Void.TYPE );
 
@@ -148,7 +148,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, FieldDec
 	private ClassReflectionProxy classReflectionProxy;
 	private java.util.ArrayList< JavaConstructor > constructors = new java.util.ArrayList< JavaConstructor >();
 	private java.util.ArrayList< JavaMethod > methods = new java.util.ArrayList< JavaMethod >();
-	private java.util.ArrayList< FieldDeclaredInJava > fields = new java.util.ArrayList< FieldDeclaredInJava >();
+	private java.util.ArrayList< JavaField > fields = new java.util.ArrayList< JavaField >();
 
 	private JavaType( ClassReflectionProxy classReflectionProxy ) {
 		this.classReflectionProxy = classReflectionProxy;
@@ -213,7 +213,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, FieldDec
 		return this.methods;
 	}
 	@Override
-	public java.util.ArrayList< FieldDeclaredInJava > getDeclaredFields() {
+	public java.util.ArrayList< JavaField > getDeclaredFields() {
 		return this.fields;
 	}
 
@@ -247,49 +247,29 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, FieldDec
 	private void handleMthd( java.lang.reflect.Method mthd ) {
 		int modifiers = mthd.getModifiers();
 		if( isMask( modifiers, java.lang.reflect.Modifier.PUBLIC ) /*&& isNotMask( modifiers, java.lang.reflect.Modifier.STATIC )*/) {
-			if( edu.cmu.cs.dennisc.property.PropertyUtilities.isGetterAndSetterExists( mthd ) ) {
-				java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( mthd );
-				this.fields.add( FieldDeclaredInJavaWithGetterAndSetter.get( mthd, sttr ) );
-			} else if( edu.cmu.cs.dennisc.property.PropertyUtilities.isSetterAndGetterExists( mthd ) ) {
-				//pass
-			} else if( edu.cmu.cs.dennisc.property.PropertyUtilities.isSetterWithExtraParametersAndGetterExists( mthd ) ) {
-				//pass
-			} else {
-				//				NodeListProperty nodeListProperty;
-				//				if( mthd.getReturnType() == Void.TYPE ) {
-				//					nodeListProperty = this.actions;
-				//				} else {
-				//					nodeListProperty = this.questions;
-				//				}
-				JavaMethod methodDeclaredInJava = JavaMethod.getInstance( mthd );
-				org.lgna.project.annotations.Visibility visibility = methodDeclaredInJava.getVisibility();
+			JavaMethod methodDeclaredInJava = JavaMethod.getInstance( mthd );
+			org.lgna.project.annotations.Visibility visibility = methodDeclaredInJava.getVisibility();
 
-				if( visibility == org.lgna.project.annotations.Visibility.PRIME_TIME ) {
-					JavaMethod longer = methodDeclaredInJava;
-					java.lang.reflect.Method _mthd = mthd;
-					while( true ) {
-						_mthd = getNextShorterInChain( _mthd );
-						if( _mthd != null ) {
-							JavaMethod shorter = JavaMethod.getInstance( _mthd );
-							if( shorter.getVisibility() == org.lgna.project.annotations.Visibility.CHAINED ) {
-								longer.setNextShorterInChain( shorter );
-								shorter.setNextLongerInChain( longer );
-								longer = shorter;
-							} else {
-								break;
-							}
+			if( visibility == org.lgna.project.annotations.Visibility.PRIME_TIME ) {
+				JavaMethod longer = methodDeclaredInJava;
+				java.lang.reflect.Method _mthd = mthd;
+				while( true ) {
+					_mthd = getNextShorterInChain( _mthd );
+					if( _mthd != null ) {
+						JavaMethod shorter = JavaMethod.getInstance( _mthd );
+						if( shorter.getVisibility() == org.lgna.project.annotations.Visibility.CHAINED ) {
+							longer.setNextShorterInChain( shorter );
+							shorter.setNextLongerInChain( longer );
+							longer = shorter;
 						} else {
 							break;
 						}
+					} else {
+						break;
 					}
 				}
-				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "adding method:", methodDeclaredInJava );
-				this.methods.add( methodDeclaredInJava );
-				//				else if( visibility == edu.cmu.cs.dennisc.alice.annotations.Visibility.CHAINED ) {
-				//				} else if( visibility == edu.cmu.cs.dennisc.alice.annotations.Visibility.COMPLETELY_HIDDEN ) {
-				//				} else {
-				//				}
 			}
+			this.methods.add( methodDeclaredInJava );
 		}
 	}
 	

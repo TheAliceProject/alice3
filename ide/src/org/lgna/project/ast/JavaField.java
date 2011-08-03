@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class JavaField extends FieldDeclaredInJava {
+public class JavaField extends AbstractField {
 	private static java.util.Map< FieldReflectionProxy, JavaField > s_map = new java.util.HashMap< FieldReflectionProxy, JavaField >();
 	public static JavaField getInstance( FieldReflectionProxy fieldReflectionProxy ) {
 		if( fieldReflectionProxy != null ) {
@@ -72,6 +72,11 @@ public class JavaField extends FieldDeclaredInJava {
 	private FieldReflectionProxy fieldReflectionProxy;
 	private JavaField( FieldReflectionProxy fieldReflectionProxy ) {
 		this.fieldReflectionProxy = fieldReflectionProxy;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
 	}
 	
 	public FieldReflectionProxy getFieldReflectionProxy() {

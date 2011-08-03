@@ -308,23 +308,6 @@ public abstract class VirtualMachine {
 		instance = InstanceInAlice.getInstanceInJavaIfNecessary( instance );
 		edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.set( field.getFieldReflectionProxy().getReification(), instance, value );
 	}
-	protected Object getFieldDeclaredInJavaWithGetterAndSetter( org.lgna.project.ast.FieldDeclaredInJavaWithGetterAndSetter field, Object instance ) {
-		instance = InstanceInAlice.getInstanceInJavaIfNecessary( instance );
-		if( instance != null ) {
-			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, field.getGetterReflectionProxy().getReification() );
-		} else {
-			throw new NullPointerException();
-		}
-	}
-	protected void setFieldDeclaredInJavaWithGetterAndSetter( org.lgna.project.ast.FieldDeclaredInJavaWithGetterAndSetter field, Object instance, Object value ) {
-		instance = InstanceInAlice.getInstanceInJavaIfNecessary( instance );
-		value = InstanceInAlice.getInstanceInJavaIfNecessary( value );
-		if( instance != null ) {
-			edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, field.getSetterReflectionProxy().getReification(), value );
-		} else {
-			throw new NullPointerException();
-		}
-	}
 	
 	protected Object get( org.lgna.project.ast.AbstractField field, Object instance ) {
 		assert field != null;
@@ -333,8 +316,6 @@ public abstract class VirtualMachine {
 			return this.getFieldDeclaredInAlice( (org.lgna.project.ast.UserField)field, instance );
 		} else if( field instanceof org.lgna.project.ast.JavaField ) {
 			return this.getFieldDeclaredInJavaWithField( (org.lgna.project.ast.JavaField)field, instance );
-		} else if( field instanceof org.lgna.project.ast.FieldDeclaredInJavaWithGetterAndSetter ) {
-			return this.getFieldDeclaredInJavaWithGetterAndSetter( (org.lgna.project.ast.FieldDeclaredInJavaWithGetterAndSetter)field, instance );
 		} else {
 			throw new RuntimeException();
 		}
@@ -345,8 +326,6 @@ public abstract class VirtualMachine {
 			this.setFieldDeclaredInAlice( (org.lgna.project.ast.UserField)field, instance, value );
 		} else if( field instanceof org.lgna.project.ast.JavaField ) {
 			this.setFieldDeclaredInJavaWithField( (org.lgna.project.ast.JavaField)field, instance, value );
-		} else if( field instanceof org.lgna.project.ast.FieldDeclaredInJavaWithGetterAndSetter ) {
-			this.setFieldDeclaredInJavaWithGetterAndSetter( (org.lgna.project.ast.FieldDeclaredInJavaWithGetterAndSetter)field, instance, value );
 		} else {
 			throw new RuntimeException();
 		}
